@@ -20,6 +20,7 @@ import { ZNoteSharedModalSharingComponent } from './shared/modal/sharing/sharing
 import * as fromRoot from './shared/reducers/index';
 import { Folder } from './shared/reducers/folder';
 import * as note from './shared/actions/note';
+import { MixedEntityService } from './shared/mixed-enity/mixed-entity.service';
 
 
 declare var _: any;
@@ -53,7 +54,9 @@ export class AppComponent implements OnInit, OnDestroy {
               private apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService,
               private store: Store<fromRoot.State>,
-              private noteService: ZNoteService) {
+              private noteService: ZNoteService,
+              private mixedEntityService: MixedEntityService
+  ) {
     // console.log('Environment config', Config);
     this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent' || event.channel == 'noteActionsBar').subscribe((event: any) => {
       this.doEvent(event);
@@ -120,10 +123,18 @@ export class AppComponent implements OnInit, OnDestroy {
         this.modal.sharedObjects = [event.payload];
         this.modal.open();
         break;
-      case 'note:folder:move_to_folder':
+      case 'note:mixed_entity:open_move_to_folder_modal':
         this.loadModalComponent(ZNoteSharedModalFolderMoveComponent);
-        this.modal.selectedObjects = [event.payload];
+        this.modal.selectedObjects = event.payload;
         this.modal.open();
+        break;
+      case 'note:mixed_entity:move_to_folder':
+        this.mixedEntityService.update({payload: event.payload}, true)
+          .subscribe((res: any) => {
+            this.store.dispatch(new note.NotesDeleted(event.payload));
+            this.store.dispatch(new note.LoadSuccess(event.payload));
+          });
+
         break;
       case 'note:folder:delete':
         this.wthConfirmService.confirm({

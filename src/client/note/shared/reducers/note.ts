@@ -29,7 +29,7 @@ export interface State {
   folders: {[id: number]: Folder};
   page: number;
   orderDesc: boolean;
-  selectedObjects: {id: string, object_type: string}[];
+  selectedObjects: {id: string, object_type: string, parent_id: number}[];
   selectAll: boolean;
   viewMode: string;
 };
@@ -187,6 +187,11 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         });
 
       }
+      return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll, notes: inotes, folders: folders});
+    }
+
+    case note.MOVE_TO_FOLDER: {
+
       return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll, notes: inotes, folders: folders});
     }
     case note.CHANGE_VIEW_MODE: {
