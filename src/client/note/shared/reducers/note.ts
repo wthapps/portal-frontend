@@ -12,7 +12,7 @@ export const UNDO_STACK_SIZE = 10;
 export const ITEM_TYPE = {
   NOTE: 'note',
   FOLDER: 'folder'
-}
+};
 export const VIEW_MODE = {
   LIST: 'list',
   GRID: 'grid'
@@ -58,9 +58,19 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       return {...state, notes: notes, currentNote: action['payload']};
     }
     case note.MULTI_NOTES_ADDED: {
-      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {acc[item.id] = item; return acc;}, {});
+      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {
+        if (item.object_type == ITEM_TYPE.NOTE)
+          acc[item.id] = item;
+        return acc;}, {});
+      let hFolders: any = action['payload'].reduce((acc: any, item: any) => {
+        if (item.object_type == ITEM_TYPE.FOLDER)
+          acc[item.id] = item;
+        return acc;}, {});
+
       let notes: any = {...state.notes, ...hNotes};
-      return Object.assign({}, state, {notes: notes});
+      let folders : any = {...state.folders, ...hFolders};
+
+      return Object.assign({}, state, {notes: notes, folders: folders});
     }
     case note.MULTI_NOTES_UPDATED: {
       let hNotes: any = action['payload'].reduce((acc: any, item: any) => {acc[item.id] = item; return acc;}, {});
@@ -93,8 +103,6 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         noteStack.unshift(action['payload']);
       }
 
-      console.debug('NOTE_UPDATED: current node: ', notes4, ' note stack: ', noteStack);
-
       return Object.assign({}, state, {notes: notes4,
         noteHistory: {stack: noteStack, stackId: 0}}
         );
@@ -111,14 +119,12 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let stackId =  state.noteHistory.stackId + 1;
       let currentNote = state.noteHistory.stack[stackId];
       let noteHistory = {...state.noteHistory, stackId: stackId};
-      console.debug('UNDO: current node: ', currentNote, ' note stack: ', noteHistory);
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
     case note.REDO: {
       let stackId = state.noteHistory.stackId > 0 ? state.noteHistory.stackId - 1 : 0;
       let currentNote = state.noteHistory.stack[stackId];
       let noteHistory = {...state.noteHistory, stackId: stackId};
-      console.debug('REDO: current node: ', currentNote, ' note stack: ', noteHistory);
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
     case note.LOAD_SUCCESS: {

@@ -136,6 +136,13 @@ export class AppComponent implements OnInit, OnDestroy {
           });
 
         break;
+      case 'note:mixed_entity:make_a_copy':
+        this.mixedEntityService.create(event.payload, true)
+          .subscribe((res: any) => {
+            this.store.dispatch(new note.MultiNotesAdded(event.payload));
+          });
+
+        break;
       case 'note:folder:delete':
         this.wthConfirmService.confirm({
           message: 'Are you sure you want to delete this folder?',
