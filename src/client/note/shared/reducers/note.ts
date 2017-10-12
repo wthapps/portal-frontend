@@ -4,7 +4,7 @@ import * as note from '../actions/note';
 import { Note } from '../../../core/shared/models/note.model';
 import { Folder } from './folder';
 
-declare let _: any;
+// declare let _: any;
 
 // Constants
 export const PAGE_SIZE = 10;
@@ -49,7 +49,7 @@ export const noteInitialState: State = {
 
 // Reducer
 export function reducer(state: State = noteInitialState, action: note.NoteActions): State {
-  let stateClone = _.clone(state);
+  // let stateClone = _.clone(state);
   switch (action.type) {
     case note.NOTE_ADDED: {
       let hNote: any = {};

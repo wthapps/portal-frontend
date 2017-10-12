@@ -153,6 +153,11 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'note:mixed_entity:delete':
         this.mixedEntityService.delete(0, event.payload)
           .subscribe((res: any) => {
+            this.commonEventService.broadcast({
+              channel: 'noteFolderEvent',
+              action: 'note:folder:delete_success',
+              payload: res.data
+            });
             this.store.dispatch(new note.NotesDeleted(event.payload));
           });
 
