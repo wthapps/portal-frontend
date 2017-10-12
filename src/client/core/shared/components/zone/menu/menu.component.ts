@@ -51,6 +51,8 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroySubject: Subject<any> = new Subject<any>();
 
 
+  private currentFolderTree: any;
+
   constructor(private userService: UserService,
               private route: ActivatedRoute,
               private router: Router,
@@ -95,38 +97,38 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
       } else if (event.action == 'updateFoldersTree') {
+        if (event.payload) {
+          console.log('event------', event);
 
-        console.log('event------', event);
-        $('[class^=\'js-note-folders-tree-\']').remove('active');
-        console.log($('.js-note-folders-tree-' + event.payload.id + ' > a'));
-        $('.js-note-folders-tree-' + event.payload.id + ' > a').addClass('active');
-        if (event.payload.parent_id) {
-          console.log('click');
+          $('[class^=\'js-note-folders-tree-\']').remove('active');
+          $('.js-note-folders-tree-' + event.payload.id + ' > a').addClass('active');
+
+          // push menus to noteFoldersTree
+          if (event.payload.parent_id) {
+            let currentFolder = this.findAll(event.payload.parent_id, this.noteFoldersTree);
+            console.log('currentFolder:', currentFolder);
+          }
         }
-
-        // let currentFolder: any = _.find(this.noteFoldersTree, ['id', event.payload.parent_id]);
-        //
-        // console.log('currentFolder:', currentFolder);
-        //
-        // if (currentFolder) {
-        //   $('[class^=\'js-note-folders-tree-\']').remove('active');
-        //   $('.' + currentFolder.styleClass + ' > a').addClass('active');
-        //
-        //   currentFolder.items.length = 0;
-        //   _.map(event.payload.data, (folder: any)=> {
-        //     folder.label = folder.name;
-        //     folder.icon = 'fa-folder-o';
-        //     folder.styleClass = `js-note-folders-tree-${folder.id}`;
-        //     folder.items = [];
-        //     folder.command = (eventClick: any)=> this.loadMenu(eventClick);
-        //     currentFolder.items.push(folder);
-        //   });
-        //   // currentFolder.expanded = true;
-        //   console.log(this.noteFoldersTree, 'this.noteFoldersTree');
-        // }
       }
 
     });
+  }
+
+  findAll(id: any, items: any): any {
+    let found: any, result: any = [];
+
+    for (let i: number = 0; i < items.length; i++) {
+      if (items[i].id === id) {
+        result.push(items[i]);
+      } else if (_.isArray(items[i].items)) {
+        found = this.findAll(id, items[i].items);
+        if (found.length) {
+          result = result.concat(found);
+        }
+      }
+    }
+
+    return result;
   }
 
   ngAfterViewInit() {
