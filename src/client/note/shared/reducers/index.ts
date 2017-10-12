@@ -52,4 +52,8 @@ export const getFirstSelectedObject = createSelector(getNotesState, fromNote.get
 
 export const getFoldersState = (state: State) => state.folders;
 // export const getFoldersTree = createSelector(getFoldersState, fromFolder.getFoldersTree);
-export const getFoldersTree = createSelector(getFoldersState, fromFolder.getFolders);
+export const getFoldersTree = createSelector(getFoldersState, fromFolder.getFoldersTree);
+export const getCurrentFolderPath = createSelector(getFoldersState, fromFolder.getCurrentFolderPath);
+export const getCurrentFolder = createSelector(getFoldersState, fromFolder.getCurrentFolder);
+
+

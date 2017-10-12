@@ -127,15 +127,15 @@ export class NoteEditModalComponent implements OnDestroy {
     this.modal.open().then();
     this.editMode = options.mode;
 
-    // this.assignFormValue(this.note);
+    this.assignFormValue(this.note);
 
-    this.store.select(fromRoot.getCurrentNote)
-      .takeUntil(this.closeSubject)
-      // .take(1)
-      .subscribe((note: Note) => {
-        console.debug('assign form value: ', note);
-        this.assignFormValue(note)
-      });
+    // this.store.select(fromRoot.getCurrentNote)
+    //   .takeUntil(this.closeSubject)
+    //   // .take(1)
+    //   .subscribe((note: Note) => {
+    //     console.debug('assign form value: ', note);
+    //     this.assignFormValue(note)
+    //   });
     this.registerAutoSave();
   }
 

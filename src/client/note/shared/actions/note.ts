@@ -22,6 +22,8 @@ export const CHANGE_VIEW_MODE = '[Note] Change View Mode';
 export const UNDO = '[Note] Undo';
 export const REDO = '[Note] Redo';
 export const SET_FOLDERS = '[Note] Set Folders';
+export const RESET_CURRENT_NOTE = '[Note] Reset Current Note';
+
 
 // Actions
 
@@ -66,6 +68,10 @@ export class NoteAdded implements Action {
   }
 }
 
+export class ResetCurrentNote implements Action {
+  readonly type = RESET_CURRENT_NOTE;
+}
+
 export class MultiNotesAdded implements Action {
   readonly type = MULTI_NOTES_ADDED;
 
@@ -76,7 +82,6 @@ export class MultiNotesAdded implements Action {
 export class Load implements Action {
   readonly type = LOAD;
 
-  // parent_id: Selected folder id
   constructor(public payload: any) {
   }
 }
@@ -155,4 +160,9 @@ export class Redo implements Action {
 }
 
 // TODO: Add RouterState | Activated Route
+<<<<<<< HEAD
 export type NoteActions = any;
+=======
+export type NoteActions = Add | Update | Edit | NoteUpdated | MultiNotesUpdated | NoteAdded | MultiNotesAdded | Delete | MultiDelete | NotesDeleted | Load | LoadSuccess | LoadFail | ChangeSortOrder | Select | SelectAll | InitLoad
+  | InitLoadDone | ChangeViewMode | Undo | Redo | ResetCurrentNote;
+>>>>>>> 8b6cca278fff89baf8e94bc40a11011d4142acc4

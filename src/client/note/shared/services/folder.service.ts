@@ -25,6 +25,10 @@ export class ZFolderService extends BaseEntityService<any> {
     return this.apiBaseService.post(`${this.url}/get_root`);
   }
 
+  getFolderPath(id: number): Observable<any> {
+    return this.apiBaseService.get(`${this.url}/get_folder_path/${id}`);
+  }
+
   private handleError(error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
