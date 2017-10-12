@@ -22,6 +22,8 @@ declare var _: any;
 export class FolderItemComponent implements OnInit {
   @Input() data: any;
   tooltip: any = Constants.tooltip;
+  @Input() readonly: boolean = false;
+  
 
   // selected: boolean = false;
   isSelectAll$: Observable<boolean>;

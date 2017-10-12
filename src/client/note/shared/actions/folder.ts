@@ -108,7 +108,7 @@ export class ChangeSortOrder implements Action {
 export class UpdateCurrentFolder implements Action {
   readonly type = UPDATE_CURRENT;
 
-  constructor(public payload: number) {
+  constructor(public payload: any) {
   }
 }
 

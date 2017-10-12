@@ -41,7 +41,7 @@ export function reducer(state = initialState, action: folder.Actions): State {
     }
     case folder.UPDATE_CURRENT: {
 
-      return {...state};
+      return {...state, currentFolder: action.payload.currentFolder};
     }
     case folder.LOAD_SUCCESS: {
       return {...state, folders: action['payload']};

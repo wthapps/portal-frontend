@@ -85,7 +85,7 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         return acc;}, {});
 
       return Object.assign({}, state, {
-        folders: hFolders
+        folders: {...state.folders, ...hFolders}
       });
     }
     case note.NOTE_UPDATED: {

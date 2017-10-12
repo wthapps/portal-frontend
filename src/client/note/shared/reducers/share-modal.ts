@@ -4,6 +4,7 @@ import { BaseModel } from '../../../core/shared/models/base.model';
 export const ADD_SELECTED_CONTACT = '[NOTE] SHARE_MODAL_ADD_SELECTED_CONTACT';
 export const SET_SHARED_CONTACTS = '[NOTE] SHARE_MODAL_SET_SHARED_CONTACTS';
 export const REMOVE_SHARED_CONTACT = '[NOTE] SHARE_MODAL_REMOVE_SHARED_CONTACT';
+export const REMOVE_SELECTED_CONTACT = '[NOTE] SHARE_MODAL_REMOVE_SELECTED_CONTACT';
 export const CANCEL_REMOVE_SHARED_CONTACT = '[NOTE] SHARE_MODAL_CANCEL_REMOVE_SHARED_CONTACT';
 export const CANCEL_ACTIONS = '[NOTE] SHARE_MODAL_CANCEL_ACTIONS';
 export const SAVE = '[NOTE] SHARE_MODAL_SAVE';
@@ -68,6 +69,9 @@ export function reducer(state: any = {
         }
       }
       return stateClone;
+		case REMOVE_SELECTED_CONTACT:
+			_.remove(stateClone.current.selectedContacts, (contact: any) => {return contact.id == action.payload.id});
+			return stateClone;
     default:
       return stateClone;
   }

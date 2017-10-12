@@ -82,10 +82,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent').subscribe((event: any) => {
-      console.log(event);
-
       if (event.action == 'updateFolders') {
-        this.noteFoldersTree.length = 0;
         for (let folder of event.payload) {
           if (!folder.parent_id) {
             folder.label = folder.name;
@@ -94,6 +91,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
             folder.items = [];
             folder.command = (eventClick: any)=> this.loadMenu(eventClick);
             this.noteFoldersTree.push(folder);
+            this.noteFoldersTree = _.uniqBy(this.noteFoldersTree, 'id');
           }
         }
       } else if (event.action == 'updateFoldersTree') {

@@ -109,6 +109,11 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
     this.store.dispatch({type: fromShareModal.REMOVE_SHARED_CONTACT, payload: contact});
   }
 
+  removeSelected(contact: any) {
+    console.log(contact);
+    this.store.dispatch({type: fromShareModal.REMOVE_SELECTED_CONTACT, payload: contact});
+  }
+
   cancel() {
     this.store.dispatch({type: fromShareModal.CANCEL_ACTIONS});
   }
@@ -122,7 +127,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
       this.store.dispatch({type: fromShareModal.SAVE});
       this.apiBaseService.post(`note/sharings`, {objects: this.sharedObjects, recipients: this.sharedContacts}).subscribe((res: any) => {
         if (res.data.length > 0) {
-          this.mode = 'edit'
+          this.mode = 'edit';
         }
       });
     } else {

@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
+import * as folder from '../shared/actions/folder';
 import { Observable } from 'rxjs/Observable';
 import { Folder } from '../shared/reducers/folder';
 import { Note } from '../../core/shared/models/note.model';
@@ -46,6 +47,7 @@ export class ZNoteMyNoteComponent implements OnInit {
     this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
       this.store.dispatch({type: note.SET_FOLDERS, payload: event.payload});
     });
+    this.store.dispatch({type: folder.UPDATE_CURRENT, payload: {parent_id: null}})
   }
 
   onNewNote() {

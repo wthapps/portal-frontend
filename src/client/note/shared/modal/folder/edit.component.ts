@@ -4,6 +4,8 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { Store } from '@ngrx/store';
+import * as note from '../../actions/note';
 
 declare var $: any;
 
@@ -23,10 +25,10 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
   form: FormGroup;
   name: AbstractControl;
   folder: any = {};
+  currentFolder: any = {};
 
   mode: string = 'add';
-
-  constructor(private fb: FormBuilder, private commonEventService: CommonEventService, private apiBaseService: ApiBaseService) {
+  constructor(private fb: FormBuilder, private commonEventService: CommonEventService, private apiBaseService: ApiBaseService, private store: Store<any>) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
     });
@@ -52,7 +54,7 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
   }
 
   open(options?: any ) {
-    this.mode= options.mode;
+    this.mode = options.mode;
     if(this.mode == 'add') {
       this.titleModal = 'Add Folder';
     } else if(this.mode == 'edit') {
@@ -102,10 +104,20 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
         this.modal.close();
       });
     } else {
-      this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
-        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data})
-        this.modal.close();
-      });
+      if (this.currentFolder) {
+        this.folder.parent_id = this.currentFolder.id;
+        this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
+          this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data});
+          this.store.dispatch({type: note.SET_FOLDERS, payload: res.data});
+          this.modal.close();
+        });
+      } else {
+        this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
+          this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data})
+          this.modal.close();
+        });
+      }
+
     }
   }
 }

@@ -46,6 +46,8 @@ export class AppComponent implements OnInit, OnDestroy {
   modalComponent: any;
   modal: any;
   folders$: Observable<Folder[]>;
+  folder$: any;
+  currentFolder: any;
   destroySubject: Subject<any> = new Subject();
 
   constructor(private router: Router,
@@ -74,6 +76,9 @@ export class AppComponent implements OnInit, OnDestroy {
           payload: folders
         })
       });
+    this.folder$ = this.store.select(fromRoot.getCurrentFolder).subscribe((folder: any) => {
+      this.currentFolder = folder;
+    });
   }
 
   ngOnInit() {
@@ -95,6 +100,9 @@ export class AppComponent implements OnInit, OnDestroy {
     switch (event.action) {
       case 'note:folder:create':
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);
+        if (this.currentFolder) {
+          this.modal.currentFolder = this.currentFolder;
+        }
         this.modal.open({mode: 'add'});
         break;
       case 'note:open_note_edit_modal':

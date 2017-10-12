@@ -41,7 +41,7 @@
 
   <h4 class="ml10" *ngIf="folderItems.length > 0 && viewOption == 'grid'">Folders</h4>
   <ng-container *ngFor="let item of folderItems">
-    <folder-item [data]="item" class="component-listbox-body"></folder-item>
+    <folder-item [data]="item" [readonly]="readonly" class="component-listbox-body"></folder-item>
   </ng-container>
 
   <div class="clearfix"></div>
