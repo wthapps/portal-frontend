@@ -36,7 +36,11 @@ export class BaseEntityService<T> {
     }
   }
 
-  delete(id: any): Observable<any> {
-    return this.api.delete(`${this.url}/${id}`);
+  delete(id: any, payload?: any): Observable<any> {
+    if(id == 0) {
+      return this.api.post(`${this.url}/0`, {multiple: true, payload: payload});
+    } else {
+      return this.api.delete(`${this.url}/${id}`);
+    }
   }
 }

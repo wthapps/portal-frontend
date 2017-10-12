@@ -132,14 +132,18 @@ export class AppComponent implements OnInit, OnDestroy {
         this.mixedEntityService.update({payload: event.payload}, true)
           .subscribe((res: any) => {
             this.store.dispatch(new note.NotesDeleted(event.payload));
-            this.store.dispatch(new note.LoadSuccess(event.payload));
           });
-
         break;
       case 'note:mixed_entity:make_a_copy':
         this.mixedEntityService.create(event.payload, true)
           .subscribe((res: any) => {
-            this.store.dispatch(new note.MultiNotesAdded(event.payload));
+            this.store.dispatch(new note.MultiNotesAdded(res.data));
+          });
+        break;
+      case 'note:mixed_entity:delete':
+        this.mixedEntityService.delete(0, event.payload)
+          .subscribe((res: any) => {
+            this.store.dispatch(new note.NotesDeleted(event.payload));
           });
 
         break;

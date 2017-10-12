@@ -1,13 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Constants } from '../../../core/shared/config/constants';
 import { ZNoteService } from '../services/note.service';
-import { Note } from '../../../core/shared/models/note.model';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import * as note from '../actions/note';
-import * as fromRoot from '../reducers/index';
-import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
+
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -24,7 +23,6 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   // selectedObjects$: Observable<any[]>;
 
   constructor(public noteService: ZNoteService,
-              private store: Store<fromRoot.State>,
               private wthConfirm: WthConfirmService,
               public commonEventService: CommonEventService) {
     // this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
@@ -33,31 +31,39 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   ngOnInit() {
   }
 
-  onDelete() {
-    if (this.multiple || this.selectedObjects.length > 1) {
-      // TODO:
-      // this.noteService.deleteNote();
+  delete() {
+    if (this.selectedObjects.length >= 1) {
+      let message = `You are about to delete Folder(s).
+       Once deleted - you cannot Undo deleting. 
+       <br/>&emsp;Folder and all included Notes and sub-folders will be permanently deleted`;
+      let header = 'Delete Note and Folder';
+
+      if(this.isOnlyNote()) {
+        message = `You are about to delete Note(s).
+       Once deleted - you cannot Undo deleting. 
+       <br/>&emsp;Notes will be permanently deleted`;
+        header = 'Delete Note';
+      }
+
+      if(this.isOnlyFolder()) {
+        header = 'Delete Folder'
+      }
 
       this.wthConfirm.confirm({
-        message: 'Are you sure you want to delete following objects?',
-        header: 'Delete Objects',
+        message: message,
+        header: header,
         accept: () => {
-          this.store.dispatch(new note.MultiDelete());
-        }
-      });
-    } else {
-      let data: any = this.selectedObjects[0];
-      this.wthConfirm.confirm({
-        message: 'Are you sure you want to delete this object?',
-        header: 'Delete Object',
-        accept: () => {
-          this.store.dispatch(new note.Delete([{id: data.id, object_type: data.object_type}]));
+          this.commonEventService.broadcast({
+            channel: 'noteActionsBar',
+            action: 'note:mixed_entity:delete',
+            payload: this.selectedObjects
+          });
         }
       });
     }
   }
 
-  onShare() {
+  share() {
     // TODO: Share multiple folders and notes
     if(this.selectedObjects.length > 0) {
       let data = this.selectedObjects[0];
@@ -65,7 +71,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
     }
   }
 
-  onEdit() {
+  edit() {
     if(this.selectedObjects.length > 0) {
       let selectedObject = this.selectedObjects[0];
       switch (selectedObject.object_type) {
@@ -93,5 +99,27 @@ export class ZNoteSharedActionBarComponent implements OnInit {
       action: 'note:mixed_entity:make_a_copy',
       payload: this.selectedObjects
     });
+  }
+
+  isOnlyNote(): boolean {
+    let result = true;
+    _.forEach(this.selectedObjects, (item: any) => {
+      if (item.object_type == 'folder') {
+        result = false;
+        return;
+      }
+    });
+    return result;
+  }
+
+  isOnlyFolder(): boolean {
+    let result = true;
+    _.forEach(this.selectedObjects, (item: any) => {
+      if (item.object_type == 'note') {
+        result = false;
+        return;
+      }
+    });
+    return result;
   }
 }

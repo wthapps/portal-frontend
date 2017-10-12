@@ -1,18 +1,18 @@
 <ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0">
   <li *ngIf="selectedObjects.length <= 1">
-    <a href="javascript:;" class="btn btn-default" (click)="onEdit()"
+    <a href="javascript:;" class="btn btn-default" (click)="edit()"
        pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom">
       <i class="fa fa-pencil"></i>
     </a>
   </li>
   <li>
-    <a href="javascript:;" class="btn btn-default" (click)="onShare()"
+    <a href="javascript:;" class="btn btn-default" (click)="share()"
        pTooltip="{{ tooltip.share }}" tooltipPosition="bottom">
       <i class="fa fa-share-alt"></i>
     </a>
   </li>
   <li>
-    <a href="javascript:;" class="btn btn-default" (click)="onDelete()"
+    <a href="javascript:;" class="btn btn-default" (click)="delete()"
        pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
       <i class="fa fa-trash-o"></i>
     </a>
@@ -23,7 +23,7 @@
       <i class="fa fa-ellipsis-v"></i>
     </button>
     <ul class="dropdown-menu dropdown-menu-right text-right">
-      <li role="presentation">
+      <li role="presentation" *ngIf="isOnlyNote()">
         <a role="menuitem" tabindex="-1" href="javascript:void(0);"
         (click)="makeACopy(data)">Make copy</a>
       </li>
