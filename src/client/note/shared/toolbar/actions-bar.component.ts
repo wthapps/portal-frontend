@@ -38,14 +38,14 @@ export class ZNoteSharedActionBarComponent implements OnInit {
        <br/>&emsp;Folder and all included Notes and sub-folders will be permanently deleted`;
       let header = 'Delete Note and Folder';
 
-      if(this.isOnlyNote()) {
+      if (this.isOnlyNote()) {
         message = `You are about to delete Note(s).
        Once deleted - you cannot Undo deleting. 
        <br/>&emsp;Notes will be permanently deleted`;
         header = 'Delete Note';
       }
 
-      if(this.isOnlyFolder()) {
+      if (this.isOnlyFolder()) {
         header = 'Delete Folder'
       }
 
@@ -65,21 +65,25 @@ export class ZNoteSharedActionBarComponent implements OnInit {
 
   share() {
     // TODO: Share multiple folders and notes
-    if(this.selectedObjects.length > 0) {
+    if (this.selectedObjects.length > 0) {
       let data = this.selectedObjects[0];
       this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:sharing', payload: data});
     }
   }
 
   edit() {
-    if(this.selectedObjects.length > 0) {
+    if (this.selectedObjects.length > 0) {
       let selectedObject = this.selectedObjects[0];
       switch (selectedObject.object_type) {
         case 'note':
           this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: selectedObject});
           break;
         case 'folder':
-          this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:edit', payload: selectedObject});
+          this.commonEventService.broadcast({
+            channel: 'noteActionsBar',
+            action: 'note:folder:edit',
+            payload: selectedObject
+          });
           break;
       }
     }

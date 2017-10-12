@@ -36,7 +36,7 @@ declare var Quill: any;
   styleUrls: ['note-edit-modal.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class NoteEditModalComponent implements OnDestroy {
+export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
   // @Input() note: Note = new Note();
 
@@ -46,11 +46,11 @@ export class NoteEditModalComponent implements OnDestroy {
   onKeyPress(ev: KeyboardEvent) {
     console.debug('on key press', ev);
 
-    if(ev.key == 'b' && ev.ctrlKey ) {
+    if (ev.key == 'b' && ev.ctrlKey) {
       this.undo();
     }
 
-    if(ev.key == 'n' && ev.ctrlKey ) {
+    if (ev.key == 'n' && ev.ctrlKey) {
       this.redo();
     }
 
@@ -89,13 +89,13 @@ export class NoteEditModalComponent implements OnDestroy {
   }
 
   registerAutoSave() {
-      // Auto save
+    // Auto save
     this.form.valueChanges
       .takeUntil(this.noSave$)
       .debounceTime(DEBOUNCE_MS)
       .takeUntil(this.noSave$)
       .subscribe(() => {
-        if(this.editMode == Constants.modal.add) {
+        if (this.editMode == Constants.modal.add) {
           this.onFirstSave();
         } else {
           let noteObj: any = Object.assign({}, this.note, this.form.value);
@@ -187,6 +187,7 @@ export class NoteEditModalComponent implements OnDestroy {
     this.noSaveSubject.next('');
     this.registerAutoSave();
   }
+
   /*
    * Ignore if the file is uploading
    * Delete if the file was uploaded
@@ -204,27 +205,28 @@ export class NoteEditModalComponent implements OnDestroy {
   }
 
   onSubmit(value: any) {
-    if(this.editMode == Constants.modal.add) {
+    if (this.editMode == Constants.modal.add) {
       this.store.dispatch(new note.Add({...value, parent_id: this.parentId}));
-    }
-    else {
+    } else {
       this.store.dispatch(new note.Update({...value, id: this.note.id}));
     }
     this.modal.close()
-      .then(() => { this.closeSubject.next(''); });
+      .then(() => {
+        this.closeSubject.next('');
+      });
   }
 
   /**
    * Save post and change to EDIT mode
    */
   onFirstSave() {
-    if(this.editMode == Constants.modal.add) {
+    if (this.editMode == Constants.modal.add) {
       this.noteService.create({...this.form.value, parent_id: this.parentId}).toPromise()
         .then((res: any) => {
-        this.note = res.data;
-        this.editMode = Constants.modal.edit;
-        this.store.dispatch(new note.MultiNotesAdded([res['data']]));
-      })
+          this.note = res.data;
+          this.editMode = Constants.modal.edit;
+          this.store.dispatch(new note.MultiNotesAdded([res['data']]));
+        })
     }
   }
 

@@ -34,6 +34,9 @@ export class WTHNavigateService {
         case 'contact':
           this.redirectIfNeed(path, Constants.baseUrls.contact, queryParams);
           break;
+        case 'note':
+          this.redirectIfNeed(path, Constants.baseUrls.note, queryParams);
+          break;
         default:
           break;
       }
