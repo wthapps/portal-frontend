@@ -8,7 +8,7 @@ export interface State {
   selectingItems: Array<any>;
 };
 
-const INITIAL: any = {
+export const INITIAL: any = {
   item: null,
   items: new Array<any>(),
   selectedItems: new Array<any>(),

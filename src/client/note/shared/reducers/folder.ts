@@ -15,7 +15,7 @@ export interface State {
   currentFolderPath: {id: number, label: string}[]
 }
 
-const initialState: State = {
+export const initialState: State = {
   folders: {},
   currentFolder: null, // null stands for root folder
   currentFolderPath: []
