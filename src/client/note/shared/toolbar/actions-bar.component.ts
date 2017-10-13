@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+
+import 'rxjs/add/operator/take';
+
 import { Constants } from '../../../core/shared/config/constants';
 import { ZNoteService } from '../services/note.service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import * as note from '../actions/note';
-import 'rxjs/add/operator/take';
 import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 declare var _: any;
@@ -12,7 +14,8 @@ declare var _: any;
   moduleId: module.id,
   selector: 'z-note-shared-actions-bar',
   templateUrl: 'actions-bar.component.html',
-  styleUrls: ['actions-bar.component.css']
+  styleUrls: ['actions-bar.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ZNoteSharedActionBarComponent implements OnInit {
   @Input() multiple: boolean = false;

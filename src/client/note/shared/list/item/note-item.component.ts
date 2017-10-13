@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -15,7 +15,8 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'note-item',
-  templateUrl: 'note-item.component.html'
+  templateUrl: 'note-item.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteItemComponent implements OnInit {
   @Input() data: Note = new Note();

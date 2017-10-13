@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, Input, ViewEncapsulation, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
@@ -17,7 +17,8 @@ declare var _: any;
   selector: 'note-list',
   templateUrl: 'note-list.component.html',
   styleUrls: ['note-list.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteListComponent implements OnInit {
   @Input() data: any[];
