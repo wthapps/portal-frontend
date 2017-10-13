@@ -4,6 +4,20 @@
   </button>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
-  <note-list [noteItems]="(noteItems$ | async)" [folderItems]="folderItems$ | async" [viewOption]="(nodeState$ | async)?.viewMode" [orderDesc]="orderDesc$ | async"
-             [isSelectAll]="(noteState$ | async)?.isSelectAll"></note-list>
+  <!--<note-list [noteItems]="(noteItems$ | async)" [folderItems]="folderItems$ | async" [viewOption]="(nodeState$ | async)?.viewMode"-->
+             <!--[sortOption]="sortOption$ | async"-->
+             <!--[isSelectAll]="(noteState$ | async)?.isSelectAll"></note-list>-->
+
+
+  <ng-container *ngIf="!(loading$ | async); else loadingBlock">
+    <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
+      <note-list [noteItems]="(noteItems$ | async)" [folderItems]="folderItems$ | async" [viewOption]="(nodeState$ | async)?.viewMode"
+                 [sortOption]="sortOption$ | async"
+                 [isSelectAll]="(noteState$ | async)?.isSelectAll"></note-list>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #loadingBlock>...Loading </ng-template>
+  <ng-template #noDataBlock>[FOLDER] No data  </ng-template>
+
 </div>

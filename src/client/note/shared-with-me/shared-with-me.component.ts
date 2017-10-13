@@ -19,10 +19,11 @@ export class ZNoteSharedWithMeComponent implements OnInit {
 
   noteItems$: Observable<Note[]>;
   folderItems$: Observable<any>;
-  orderDesc$: Observable<boolean>;
+  sortOption$: Observable<any>;
   nodeState$: Observable<any>;
   selectedObjects$: Observable<any[]>;
   isSelectAll$: Observable<boolean>;
+  loading$: Observable<any>;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -33,10 +34,11 @@ export class ZNoteSharedWithMeComponent implements OnInit {
   ngOnInit() {
     this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
-    this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
+    this.sortOption$ = this.store.select(fromRoot.getSortOption);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
+    this.loading$ = this.store.select(fromRoot.getLoading);
     this.store.dispatch(new note.Load({parent_id: null, shared_with_me: true}));
   }
 

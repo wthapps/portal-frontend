@@ -4,7 +4,7 @@ import * as note from '../actions/note';
 import { Note } from '../../../core/shared/models/note.model';
 import { Folder } from './folder';
 
-declare let _: any;
+// declare let _: any;
 
 // Constants
 export const PAGE_SIZE = 10;
@@ -29,9 +29,12 @@ export interface State {
   folders: {[id: number]: Folder}; //{1 :{id: 1, name: "abc"}, 2 :{id: 2, name: "sdfsdf"}  }
   page: number;
   orderDesc: boolean;
+  sortOption: {field: string, desc: boolean};
   selectedObjects: {id: string, object_type: string, parent_id: number}[];
   selectAll: boolean;
   viewMode: string;
+  loading: boolean;
+  loaded: boolean;
 };
 
 export const noteInitialState: State = {
@@ -41,15 +44,18 @@ export const noteInitialState: State = {
   folders: {},
   page: 0,
   orderDesc: true,
+  sortOption: {field: 'name', desc: true},
   selectedObjects: [],
   selectAll: false,
   viewMode: VIEW_MODE.LIST,
+  loading: false,
+  loaded: false
 };
 
 
 // Reducer
 export function reducer(state: State = noteInitialState, action: note.NoteActions): State {
-  let stateClone = _.clone(state);
+  // let stateClone = _.clone(state);
   switch (action.type) {
     case note.NOTE_ADDED: {
       let hNote: any = {};
@@ -85,7 +91,7 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         return acc;}, {});
 
       return Object.assign({}, state, {
-        folders: hFolders
+        folders: {...state.folders, ...hFolders}
       });
     }
     case note.NOTE_UPDATED: {
@@ -128,6 +134,9 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let noteHistory = {...state.noteHistory, stackId: stackId};
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
+    case note.LOAD: {
+      return {...state, loading: true};
+    }
     case note.LOAD_SUCCESS: {
       let hNotes: any = action['payload'].reduce((acc: any, item: any) => {
         if (item.object_type == ITEM_TYPE.NOTE)
@@ -142,7 +151,11 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         notes: hNotes,
         folders: hFolders,
         selectedObjects: noteInitialState.selectedObjects,
-        selectAll: noteInitialState.selectAll});
+        selectAll: noteInitialState.selectAll,
+        sortOption: noteInitialState.sortOption,
+        loading: false,
+        loaded: true
+      });
     }
     case note.NOTES_DELETED: {
       let noteIds: any[] = action['payload'].reduce((acc: any[], item: any) => {if(item['object_type'] == ITEM_TYPE.NOTE) acc.push(item.id); return acc;}, []);
@@ -160,8 +173,14 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       });
     }
     case note.CHANGE_SORT_ORDER: {
-      let rOrderDesc = !state.orderDesc;
-      return {...state, orderDesc: rOrderDesc};
+      let sortOption: any = {...state.sortOption};
+      if(sortOption.field == action['payload']) {
+        sortOption.desc = !sortOption.desc;
+      } else {
+        sortOption = {field: action['payload'], desc: noteInitialState.sortOption.desc};
+      }
+
+      return {...state, sortOption: sortOption};
     }
     case note.SELECT: {
       let selected: any = action['payload'];
@@ -229,11 +248,14 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
 export const getNotes = (state: State ) => state.notes;
 export const getPage = (state: State ) => state.page;
 export const getOrderDesc = (state: State ) => state.orderDesc;
+export const getSortOption = (state: State ) => state.sortOption;
 export const getFolders = (state: State ) => state.folders;
 export const getSelectAll = (state: State ) => state.selectAll;
 export const getSelectedObjects = (state: State ) => state.selectedObjects;
 export const getViewMode = (state: State ) => state.viewMode;
 export const getCurrentNote = (state: State ) => state.currentNote;
+export const getLoading = (state: State ) => state.loading;
+export const getLoaded = (state: State ) => state.loaded;
 
 
 export const getFirstSelectedObject = (state: State) => {
@@ -252,18 +274,23 @@ export const getFirstSelectedObject = (state: State) => {
   }
 }
 
-export const getSortedNotes = createSelector(getNotes, getOrderDesc, (notes, orderDesc) => {
+export const getSortedNotes = createSelector(getNotes, getSortOption, (notes, sortOption) => {
   // Convert original HASH notes to an sorted ARRAY notes
   let cloneNotes: any[] = [];
   Object.keys(notes).forEach((idx: any) => cloneNotes.push(notes[idx]));
-  return cloneNotes.sort((a: Note, b: Note) => compareBy(a, b, orderDesc, 'title'));
+  if(!sortOption.field)
+    return cloneNotes;
+  return cloneNotes.sort((a: Note, b: Note) => compareBy(a, b, sortOption.desc, sortOption.field));
 });
 
-export const getSortedFolders = createSelector(getFolders, getOrderDesc, (folders, orderDesc) => {
+export const getSortedFolders = createSelector(getFolders, getSortOption, (folders, sortOption) => {
   // Convert original HASH folders to an sorted ARRAY folders
   let cloneFolders: any[] = [];
+  let sortField = ['name', 'title'].includes(sortOption.field) ? 'name' : sortOption.field;
   Object.keys(folders).forEach((idx: any) => cloneFolders.push(folders[idx]));
-  return cloneFolders.sort((a: Folder, b: Folder) => compareBy(a, b, orderDesc, 'name'));
+  if(!sortOption.field)
+    return cloneFolders;
+  return cloneFolders.sort((a: Folder, b: Folder) => compareBy(a, b, sortOption.desc, sortField));
 });
 
 export function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'title'): number {

@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
+import * as folder from '../shared/actions/folder';
 import { Observable } from 'rxjs/Observable';
 import { Folder } from '../shared/reducers/folder';
 import { Note } from '../../core/shared/models/note.model';
@@ -24,20 +25,21 @@ export class ZNoteMyNoteComponent implements OnInit {
   viewOption: string = 'grid';
   noteItems$: Observable<Note[]>;
   folderItems$: Observable<Folder[]>;
-  orderDesc$: Observable<boolean>;
+  sortOption$: Observable<any>;
   nodeState$: Observable<any>;
   selectedObjects$: Observable<any[]>;
   isSelectAll$: Observable<boolean>;
-
+  loading$: Observable<boolean>;
   items: Observable<any>;
 
   constructor(private noteService: ZNoteService, private commonEventService: CommonEventService, private store: Store<fromRoot.State>) {
     this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
-    this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
+    this.sortOption$ = this.store.select(fromRoot.getSortOption);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
+    this.loading$ = this.store.select(fromRoot.getLoading);
   }
 
   ngOnInit() {
@@ -46,6 +48,7 @@ export class ZNoteMyNoteComponent implements OnInit {
     this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
       this.store.dispatch({type: note.SET_FOLDERS, payload: event.payload});
     });
+    this.store.dispatch({type: folder.UPDATE_CURRENT, payload: {parent_id: null}})
   }
 
   onNewNote() {

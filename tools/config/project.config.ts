@@ -135,6 +135,13 @@ export class ProjectConfig extends SeedConfig {
         }
       },
       {
+        name: '@ngrx/store-devtools',
+        path: 'node_modules/@ngrx/store-devtools/bundles/store-devtools.umd.js',
+        packageMeta: {
+          defaultExtension: 'js'
+        }
+      },
+      {
         name: '@angular/cdk',
         path: 'node_modules/@angular/cdk/bundles/cdk.umd.js'
       },

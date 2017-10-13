@@ -16,6 +16,7 @@
                       [minLength]="1"
                       field="name"
                       (onSelect)="selectContact($event)"
+                      (onUnselect)="removeSelected($event)"
                       (completeMethod)="contactTerm$.next($event)">
       </p-autoComplete>
     </div>

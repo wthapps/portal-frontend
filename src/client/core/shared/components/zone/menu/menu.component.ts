@@ -82,33 +82,38 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent').subscribe((event: any) => {
-      console.log(event);
-
-      if (event.action == 'updateFolders') {
-        this.noteFoldersTree.length = 0;
-        for (let folder of event.payload) {
-          if (!folder.parent_id) {
-            folder.label = folder.name;
-            folder.icon = 'fa-folder-o';
-            folder.styleClass = `js-note-folders-tree-${folder.id}`;
-            folder.items = [];
-            folder.command = (eventClick: any)=> this.loadMenu(eventClick);
-            this.noteFoldersTree.push(folder);
+      switch (event.action) {
+        case 'updateFolders':
+          for (let folder of event.payload) {
+            if (!folder.parent_id) {
+              folder.label = folder.name;
+              folder.icon = 'fa-folder-o';
+              folder.styleClass = `js-note-folders-tree-${folder.id}`;
+              folder.items = [];
+              folder.command = (eventClick: any)=> this.loadMenu(eventClick);
+              this.noteFoldersTree.push(folder);
+              this.noteFoldersTree = _.uniqBy(this.noteFoldersTree, 'id');
+            }
           }
-        }
-      } else if (event.action == 'updateFoldersTree') {
-        if (event.payload) {
-          console.log('event------', event);
+          break;
+        case 'updateFoldersTree':
+          if (event.payload) {
+            console.log('event------', event);
 
-          $('[class^=\'js-note-folders-tree-\']').remove('active');
-          $('.js-note-folders-tree-' + event.payload.id + ' > a').addClass('active');
+            $('[class^=\'js-note-folders-tree-\']').remove('active');
+            $('.js-note-folders-tree-' + event.payload.id + ' > a').addClass('active');
 
-          // push menus to noteFoldersTree
-          if (event.payload.parent_id) {
-            let currentFolder = this.findAll(event.payload.parent_id, this.noteFoldersTree);
-            console.log('currentFolder:', currentFolder);
+            // push menus to noteFoldersTree
+            if (event.payload.parent_id) {
+              let currentFolder = this.findAll(event.payload.parent_id, this.noteFoldersTree);
+            }
           }
-        }
+          break;
+        case 'note:folder:delete_success':
+          _.forEach(event.payload, (deletedItem: any) => {
+            _.remove(this.noteFoldersTree, {id: deletedItem.id});
+          });
+          break;
       }
 
     });

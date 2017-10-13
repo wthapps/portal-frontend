@@ -72,7 +72,7 @@ export class CommentItemEditorComponent implements OnInit {
     this.comment = _.cloneDeep(this.originComment);
     //Init From controls
     this.commentEditorForm = this.fb.group({
-      'content': [this.comment.content, null],
+      'content': [this.comment.content, ''],
       'photo': [this.comment.photo, null]
     });
     this.contentCtrl = this.commentEditorForm.controls['content'];
@@ -90,10 +90,6 @@ export class CommentItemEditorComponent implements OnInit {
   onKey(e: any) {
     // Create, Update, Reply
     if (e.keyCode == 13) {
-
-      // this.comment.content = this.commentEditorForm.value.content;
-      // this.comment.photo = this.commentEditorForm.value.photo;
-      // this.post(this.comment);
 
       if (this.checkValidForm()) {
         // this.comment.content = this.commentEditorForm.value;
@@ -117,11 +113,14 @@ export class CommentItemEditorComponent implements OnInit {
    * */
   editComment(photo: any) {
     this.comment.photo = photo;
+    this.commentEditorForm.controls['photo'].setValue(photo);
+
   }
 
   setCommentAttributes(attributes: any) {
     if ('photo' in attributes) {
       this.comment.photo = attributes.photo;
+      this.commentEditorForm.controls['photo'].setValue(attributes.photo)
     }
     if ('content' in attributes) {
       this.comment.content = attributes.content || '';
@@ -180,12 +179,10 @@ export class CommentItemEditorComponent implements OnInit {
   }
 
   cancel() {
-
-
     this.comment.content = '';
     this.comment.photo = null;
-    this.commentEditorForm.value.content = '';
-    this.commentEditorForm.value.photo = null;
+    this.commentEditorForm.controls['content'].setValue('');
+    this.commentEditorForm.controls['photo'].setValue(null);
     this.hasUpdatedContent = false;
     if (this.mode == CommentEditorMode.Add) {
       // add new comment/reply to post
@@ -197,8 +194,6 @@ export class CommentItemEditorComponent implements OnInit {
       _.set(this.originComment, 'isEditting', false);
       this.eventEmitter.emit(new CancelEditCommentEvent(this.comment));
     }
-
-
   }
 
   post(comment: any) {
@@ -223,6 +218,7 @@ export class CommentItemEditorComponent implements OnInit {
     this.eventEmitter.emit(event);
     this.comment.content = '';
     this.comment.photo = null;
+    this.commentEditorForm.controls['photo'].setValue(null);
     this.files = null;
     this.hasUpdatedContent = false;
   }
@@ -231,10 +227,13 @@ export class CommentItemEditorComponent implements OnInit {
     switch (response.action) {
       case 'remove':
         this.comment.photo = null;
+        this.commentEditorForm.controls['photo'].setValue(null);
         this.files = null;
-        // _.remove(this.comment.photos, (photo: any) =>{
-        //   return photo.uuid == response.data.uuid;
-        // });
+        if (this.comment.content != '')
+          this.hasUpdatedContent = true;
+        else
+          this.hasUpdatedContent = false;
+
         break;
       case 'cancelUploadingPhoto':
         break;
@@ -244,5 +243,13 @@ export class CommentItemEditorComponent implements OnInit {
   checkValidForm(): boolean {
     // remove leading and trailing whitespaces: spaces, tabs, new lines from comment content before saving
     return this.hasUpdatedContent && this.comment.content.replace(/^\s+|\s+$/g, '') !== '';
+  }
+
+  hasChanged() {
+    if (this.commentEditorForm.controls['content'].value == '' &&
+    this.commentEditorForm.controls['photo'].value == null) {
+      return false;
+    }
+    return true;
   }
 }

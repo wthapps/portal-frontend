@@ -1,13 +1,29 @@
 
 <z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)">
-  
+
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
-  <note-list [noteItems]="noteItems$ | async"
-             [folderItems]="folderItems$ | async"
-             [viewOption]="(nodeState$ | async)?.viewMode"
-             [orderDesc]="orderDesc$ | async"
-             [readonly]="true"
-             [isSelectAll]="isSelectAll$ | async">
-  </note-list>
+  <!--<note-list [noteItems]="noteItems$ | async"-->
+             <!--[folderItems]="folderItems$ | async"-->
+             <!--[viewOption]="(nodeState$ | async)?.viewMode"-->
+             <!--[sortOption]="sortOption$ | async"-->
+             <!--[readonly]="true"-->
+             <!--[isSelectAll]="isSelectAll$ | async">-->
+  <!--</note-list>-->
+
+
+  <ng-container *ngIf="!(loading$ | async); else loadingBlock">
+    <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
+      <note-list [noteItems]="noteItems$ | async"
+        [folderItems]="folderItems$ | async"
+        [viewOption]="(nodeState$ | async)?.viewMode"
+        [sortOption]="sortOption$ | async"
+        [readonly]="true"
+        [isSelectAll]="isSelectAll$ | async">
+      </note-list>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #loadingBlock>...Loading </ng-template>
+  <ng-template #noDataBlock>[SHARED WITH ME] No data  </ng-template>
 </div>

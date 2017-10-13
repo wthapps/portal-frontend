@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, Input, ViewEncapsulation, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
@@ -17,7 +17,8 @@ declare var _: any;
   selector: 'note-list',
   templateUrl: 'note-list.component.html',
   styleUrls: ['note-list.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteListComponent implements OnInit {
   @Input() data: any[];
@@ -26,16 +27,18 @@ export class NoteListComponent implements OnInit {
   @Input() folderItems: Folder[];
   @Input() viewOption: string = 'grid';
   @Input() orderDesc: boolean;
+  @Input() sortOption: any;
   @Input() isSelectAll: boolean;
   @Input() readonly: boolean = false;
 
-  sortType: string = 'name';
+  // sortType: string = 'name';
   // sortDescending: boolean = false;
 
   readonly VIEW_MODE = {
     GRID: 'grid',
     LIST: 'list'
   };
+
 
   constructor(public noteService: ZNoteService, public store: Store<fromRoot.State>) {
   }
@@ -44,19 +47,10 @@ export class NoteListComponent implements OnInit {
   }
 
   onSort(name: any) {
-    // if (this.sortType == name) {
-    //   this.sortDescending = !this.sortDescending;
-    // } else {
-    //   this.sortDescending = false;
-    // }
-    // this.sortType = name;
-    // this.noteService.changeSortOption(this.sortType, this.sortDescending);
-
-    this.store.dispatch(new note.ChangeSortOrder());
+    this.store.dispatch(new note.ChangeSortOrder(name));
   }
 
   onSelectedAll() {
-    // this.noteService.onSelectAll();
     this.store.dispatch(new note.SelectAll());
   }
 

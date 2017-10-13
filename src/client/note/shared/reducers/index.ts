@@ -41,6 +41,7 @@ export const getNotesState = (state: State) => state.notes;
 
 export const getNotesEntities = createSelector(getNotesState, fromNote.getNotes);
 export const getOrderDesc = createSelector(getNotesState, fromNote.getOrderDesc);
+export const getSortOption = createSelector(getNotesState, fromNote.getSortOption);
 export const getSortedNotes = createSelector(getNotesState, fromNote.getSortedNotes);
 export const getFolderEntities = createSelector(getNotesState, fromNote.getFolders);
 export const getSortedFolders = createSelector(getNotesState, fromNote.getSortedFolders);
@@ -49,9 +50,10 @@ export const getSelectedObjects = createSelector(getNotesState, fromNote.getSele
 export const getCurrentNote = createSelector(getNotesState, fromNote.getCurrentNote);
 export const getViewMode = createSelector(getNotesState, fromNote.getViewMode);
 export const getFirstSelectedObject = createSelector(getNotesState, fromNote.getFirstSelectedObject);
+export const getLoading = createSelector(getNotesState, fromNote.getLoading);
+export const getLoaded = createSelector(getNotesState, fromNote.getLoaded);
 
 export const getFoldersState = (state: State) => state.folders;
-// export const getFoldersTree = createSelector(getFoldersState, fromFolder.getFoldersTree);
 export const getFoldersTree = createSelector(getFoldersState, fromFolder.getFoldersTree);
 export const getCurrentFolderPath = createSelector(getFoldersState, fromFolder.getCurrentFolderPath);
 export const getCurrentFolder = createSelector(getFoldersState, fromFolder.getCurrentFolder);

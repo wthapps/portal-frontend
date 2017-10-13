@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 
 
@@ -17,11 +17,14 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'folder-item',
-  templateUrl: 'folder-item.component.html'
+  templateUrl: 'folder-item.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FolderItemComponent implements OnInit {
   @Input() data: any;
   tooltip: any = Constants.tooltip;
+  @Input() readonly: boolean = false;
+
 
   // selected: boolean = false;
   isSelectAll$: Observable<boolean>;
