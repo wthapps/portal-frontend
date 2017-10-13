@@ -109,9 +109,9 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
         this.folder.parent_id = this.currentFolder.id;
         this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
           this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data});
-          // this.store.dispatch({type: note.SET_FOLDERS, payload: res.data});
+          this.store.dispatch({type: note.SET_FOLDERS, payload: res.data});
           //TODO temp fix. need to fix
-          this.store.dispatch(new note.MultiNotesAdded([res.data]));
+          // this.store.dispatch(new note.MultiNotesAdded([res.data]));
           this.modal.close();
         });
       } else {
@@ -120,7 +120,6 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
           this.modal.close();
         });
       }
-
     }
   }
 }

@@ -94,4 +94,8 @@ export class CustomValidator {
   public static isPresent(obj: any): boolean {
     return obj !== undefined && obj !== null;
   }
+
+  static requiredOptional(controls: any) {
+    console.log('controls::::', controls);
+  }
 }
