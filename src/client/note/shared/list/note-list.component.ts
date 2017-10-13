@@ -26,10 +26,11 @@ export class NoteListComponent implements OnInit {
   @Input() folderItems: Folder[];
   @Input() viewOption: string = 'grid';
   @Input() orderDesc: boolean;
+  @Input() sortOption: any;
   @Input() isSelectAll: boolean;
   @Input() readonly: boolean = false;
 
-  sortType: string = 'name';
+  // sortType: string = 'name';
   // sortDescending: boolean = false;
 
   readonly VIEW_MODE = {
@@ -52,7 +53,7 @@ export class NoteListComponent implements OnInit {
     // this.sortType = name;
     // this.noteService.changeSortOption(this.sortType, this.sortDescending);
 
-    this.store.dispatch(new note.ChangeSortOrder());
+    this.store.dispatch(new note.ChangeSortOrder(name));
   }
 
   onSelectedAll() {

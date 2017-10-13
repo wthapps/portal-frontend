@@ -25,17 +25,16 @@ export class ZNoteMyNoteComponent implements OnInit {
   viewOption: string = 'grid';
   noteItems$: Observable<Note[]>;
   folderItems$: Observable<Folder[]>;
-  orderDesc$: Observable<boolean>;
+  sortOption$: Observable<any>;
   nodeState$: Observable<any>;
   selectedObjects$: Observable<any[]>;
   isSelectAll$: Observable<boolean>;
-
   items: Observable<any>;
 
   constructor(private noteService: ZNoteService, private commonEventService: CommonEventService, private store: Store<fromRoot.State>) {
     this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
-    this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
+    this.sortOption$ = this.store.select(fromRoot.getSortOption);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);

@@ -7,7 +7,7 @@
   <note-list [noteItems]="noteItems$ | async"
              [folderItems]="folderItems$ | async"
              [viewOption]="(nodeState$ | async)?.viewMode"
-             [orderDesc]="orderDesc$ | async"
+             [sortOption]="sortOption$ | async"
              [isSelectAll]="(nodeState$ | async)?.isSelectAll">
   </note-list>
 </div>

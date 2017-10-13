@@ -136,6 +136,10 @@ export class SelectAll implements Action {
 
 export class ChangeSortOrder implements Action {
   readonly type = CHANGE_SORT_ORDER;
+
+  constructor(public payload: string) {
+
+  }
 }
 
 export class InitLoad implements Action {

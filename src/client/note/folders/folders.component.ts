@@ -24,7 +24,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   viewOption: string = 'grid';
   noteItems$: Observable<Note[]>;
   folderItems$: Observable<Folder[]>;
-  orderDesc$: Observable<boolean>;
+  sortOption$: Observable<any>;
   nodeState$: Observable<any>;
   selectedObjects$: Observable<any[]>;
   currentFolderPath$: Observable<any[]>;
@@ -41,7 +41,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
               private commonEventService: CommonEventService) {
     this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
-    this.orderDesc$ = this.store.select(fromRoot.getOrderDesc);
+    this.sortOption$ = this.store.select(fromRoot.getSortOption);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.currentFolderPath$ = this.store.select(fromRoot.getCurrentFolderPath);
