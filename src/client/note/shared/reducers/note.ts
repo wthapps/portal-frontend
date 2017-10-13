@@ -33,6 +33,8 @@ export interface State {
   selectedObjects: {id: string, object_type: string, parent_id: number}[];
   selectAll: boolean;
   viewMode: string;
+  loading: boolean;
+  loaded: boolean;
 };
 
 export const noteInitialState: State = {
@@ -46,6 +48,8 @@ export const noteInitialState: State = {
   selectedObjects: [],
   selectAll: false,
   viewMode: VIEW_MODE.LIST,
+  loading: false,
+  loaded: false
 };
 
 
@@ -130,6 +134,9 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let noteHistory = {...state.noteHistory, stackId: stackId};
       return {...state, currentNote: currentNote, noteHistory: noteHistory};
     }
+    case note.LOAD: {
+      return {...state, loading: true};
+    }
     case note.LOAD_SUCCESS: {
       let hNotes: any = action['payload'].reduce((acc: any, item: any) => {
         if (item.object_type == ITEM_TYPE.NOTE)
@@ -146,6 +153,8 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         selectedObjects: noteInitialState.selectedObjects,
         selectAll: noteInitialState.selectAll,
         sortOption: noteInitialState.sortOption,
+        loading: false,
+        loaded: true
       });
     }
     case note.NOTES_DELETED: {
@@ -245,6 +254,8 @@ export const getSelectAll = (state: State ) => state.selectAll;
 export const getSelectedObjects = (state: State ) => state.selectedObjects;
 export const getViewMode = (state: State ) => state.viewMode;
 export const getCurrentNote = (state: State ) => state.currentNote;
+export const getLoading = (state: State ) => state.loading;
+export const getLoaded = (state: State ) => state.loaded;
 
 
 export const getFirstSelectedObject = (state: State) => {

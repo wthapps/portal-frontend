@@ -29,6 +29,7 @@ export class ZNoteMyNoteComponent implements OnInit {
   nodeState$: Observable<any>;
   selectedObjects$: Observable<any[]>;
   isSelectAll$: Observable<boolean>;
+  loading$: Observable<boolean>;
   items: Observable<any>;
 
   constructor(private noteService: ZNoteService, private commonEventService: CommonEventService, private store: Store<fromRoot.State>) {
@@ -38,6 +39,7 @@ export class ZNoteMyNoteComponent implements OnInit {
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
+    this.loading$ = this.store.select(fromRoot.getLoading);
   }
 
   ngOnInit() {

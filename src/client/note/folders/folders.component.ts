@@ -28,6 +28,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   nodeState$: Observable<any>;
   selectedObjects$: Observable<any[]>;
   currentFolderPath$: Observable<any[]>;
+  loading$: Observable<boolean>;
   currentFolder: any;
 
   items: Observable<any>;
@@ -45,6 +46,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.currentFolderPath$ = this.store.select(fromRoot.getCurrentFolderPath);
+    this.loading$ = this.store.select(fromRoot.getLoading);
   }
 
   ngOnInit() {

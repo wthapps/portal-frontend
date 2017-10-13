@@ -16,12 +16,28 @@
              <!--[isSelectAll]="(nodeState$ | async)?.isSelectAll">-->
   <!--</note-list>-->
 
-  <note-list [noteItems]="noteItems$ | async"
-             [folderItems]="folderItems$ | async"
-             [viewOption]="(nodeState$ | async)?.viewMode"
-             [sortOption]="sortOption$ | async"
-             [isSelectAll]="isSelectAll$ | async">
+  <!--<note-list [noteItems]="noteItems$ | async"-->
+             <!--[folderItems]="folderItems$ | async"-->
+             <!--[viewOption]="(nodeState$ | async)?.viewMode"-->
+             <!--[sortOption]="sortOption$ | async"-->
+             <!--[isSelectAll]="isSelectAll$ | async">-->
 
-  </note-list>
+  <!--</note-list>-->
+
+
+  <ng-container *ngIf="!(loading$ | async); else loadingBlock">
+    <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
+      <note-list [noteItems]="noteItems$ | async"
+                 [folderItems]="folderItems$ | async"
+                 [viewOption]="(nodeState$ | async)?.viewMode"
+                 [sortOption]="sortOption$ | async"
+                 [isSelectAll]="isSelectAll$ | async">
+
+      </note-list>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #loadingBlock>...Loading </ng-template>
+  <ng-template #noDataBlock>[MY NOTE] No data  </ng-template>
 
 </div>

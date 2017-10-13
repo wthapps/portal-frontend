@@ -38,6 +38,7 @@ export class NoteListComponent implements OnInit {
     LIST: 'list'
   };
 
+
   constructor(public noteService: ZNoteService, public store: Store<fromRoot.State>) {
   }
 
@@ -45,19 +46,10 @@ export class NoteListComponent implements OnInit {
   }
 
   onSort(name: any) {
-    // if (this.sortType == name) {
-    //   this.sortDescending = !this.sortDescending;
-    // } else {
-    //   this.sortDescending = false;
-    // }
-    // this.sortType = name;
-    // this.noteService.changeSortOption(this.sortType, this.sortDescending);
-
     this.store.dispatch(new note.ChangeSortOrder(name));
   }
 
   onSelectedAll() {
-    // this.noteService.onSelectAll();
     this.store.dispatch(new note.SelectAll());
   }
 

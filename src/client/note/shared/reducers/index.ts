@@ -50,6 +50,8 @@ export const getSelectedObjects = createSelector(getNotesState, fromNote.getSele
 export const getCurrentNote = createSelector(getNotesState, fromNote.getCurrentNote);
 export const getViewMode = createSelector(getNotesState, fromNote.getViewMode);
 export const getFirstSelectedObject = createSelector(getNotesState, fromNote.getFirstSelectedObject);
+export const getLoading = createSelector(getNotesState, fromNote.getLoading);
+export const getLoaded = createSelector(getNotesState, fromNote.getLoaded);
 
 export const getFoldersState = (state: State) => state.folders;
 export const getFoldersTree = createSelector(getFoldersState, fromFolder.getFoldersTree);
