@@ -47,14 +47,76 @@
         visibility: hidden;
       }
     }
-
+  }
+  .component-listbox-row {
     &.active {
-      .fa-check {
-        color: $theme-color;
-        &:before {
-          visibility: visible;
+      .component-listbox-input {
+        .fa-check {
+          color: $theme-color;
+          &:before {
+            visibility: visible;
+          }
         }
       }
     }
   }
 }
+
+.component-listbox-grid {
+  .component-listbox-body {
+    .component-listbox-row {
+      overflow: hidden;
+      .component-listbox-input {
+        display: none;
+        position: absolute;
+        left: 5px;
+        top: 5px;
+        width: 27px;
+        height: 27px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 24px;
+        color: #fff;
+        i {
+          visibility: hidden;
+        }
+      }
+
+      &.active {
+        border-color: $theme-color;
+        border-width: 2px;
+        .component-listbox-input {
+          display: block;
+          background-color: $theme-color;
+          border-color: $theme-color;
+          i {
+            visibility: visible;
+          }
+        }
+        &:hover {
+          &:before {
+            display: none;
+          }
+        }
+      }
+      &:hover {
+        &:before {
+          content: '';
+          position: absolute;
+          height: 75px;
+          top: 0;
+          left: 0;
+          right: 0;
+          opacity: 0.29;
+          background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 0%, #000000 100%);
+        }
+        .component-listbox-input {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+
