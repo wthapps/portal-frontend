@@ -40,7 +40,7 @@
   <!--</ng-container>-->
 
   <ng-container *ngIf="!(loading$ | async); else loadingBlock">
-    <ng-container *ngIf="noteItems?.length + noteItems?.length > 0; else noDataBlock">
+    <ng-container *ngIf="(noteItems?.length + folderItems?.length > 0);else noDataBlock">
       <h4 class="ml10" *ngIf="folderItems?.length > 0 && viewOption == VIEW_MODE.GRID">Folders</h4>
       <ng-container *ngFor="let item of folderItems">
         <folder-item [data]="item" [readonly]="readonly" class="component-listbox-body"></folder-item>
