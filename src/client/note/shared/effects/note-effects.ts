@@ -17,6 +17,7 @@ import 'rxjs/add/operator/map';
 
 import * as note from '../actions/note';
 import * as fromRoot from '../reducers/index';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 
 
 @Injectable()
@@ -26,8 +27,8 @@ export class NoteEffects {
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
     return this.noteService.create(payload)
-      .map((res: any) => new note.MultiNotesAdded([res['data']]))
-      .catch(() => of(new note.MultiNotesAdded([])))
+      .map((res: any) => ({type: note.MULTI_NOTES_ADDED, payload: [res['data']]}))
+      .catch(() => of({type: note.MULTI_NOTES_ADDED, payload: []}))
       ;
     });
 
@@ -36,8 +37,13 @@ export class NoteEffects {
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
       return this.noteService.update(payload)
-        .map((res: any) => new note.NoteUpdated(res['data']))
-        .catch(() => empty())
+        .map((res: any) => {
+          this.toastsService.success('Note updated successfully, yay');
+          return ({type: note.NOTE_UPDATED, payload: res['data']});
+        } )
+        .catch(() => {
+          this.toastsService.danger("Note updated FAIL, something's wrong happened");
+          return empty();})
         ;
     });
 
@@ -46,8 +52,8 @@ export class NoteEffects {
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
       return this.noteService.multiDelete(payload)
-        .map((res: any) => new note.NotesDeleted(res.data))
-        .catch(() => of(new note.NotesDeleted([])))
+        .map((res: any) => ({type: note.NOTES_DELETED, payload: res.data}))
+        .catch(() => of({type: note.NOTES_DELETED, payload: []}))
         ;
     });
 
@@ -56,8 +62,8 @@ export class NoteEffects {
     .withLatestFrom(this.store, (action: any, state: any) => state.notes.selectedObjects)
     .switchMap((selectedObjects: any[]) => {
       return this.noteService.multiDelete(selectedObjects)
-        .map((res: any) => new note.NotesDeleted(res.data))
-        .catch(() => of(new note.NotesDeleted([])))
+        .map((res: any) => ({type: note.NOTES_DELETED, payload: res.data}))
+        .catch(() => of({type: note.NOTES_DELETED, payload: []}))
         ;
     });
 
@@ -66,8 +72,8 @@ export class NoteEffects {
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
     return this.apiBaseService.get(`note/mixed_entities`, payload)
-      .map((res: any) => new note.LoadSuccess(res.data))
-      .catch(() => of(new note.LoadSuccess([])));
+      .map((res: any) => ({type: note.LOAD_SUCCESS, payload: res.data}))
+      .catch(() => of({type: note.LOAD_SUCCESS, payload: []}));
     });
 
 
@@ -82,11 +88,8 @@ export class NoteEffects {
 
 
   constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
+              private toastsService: ToastsService,
               private store: Store<fromRoot.State>) {
   }
 
-}
-
-function createFilters(p: Params): Filters {
-  return {folder: p['folder'] || null};
 }
