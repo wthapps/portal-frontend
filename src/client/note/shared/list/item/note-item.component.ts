@@ -100,5 +100,6 @@ export class NoteItemComponent implements OnInit {
 
   private deSelectObjects() {
     console.log('deSelectObjects');
+    this.store.dispatch({type: note.DESELECT_ALL});
   }
 }

@@ -11,7 +11,6 @@ import { Folder } from '../reducers/folder';
 
 declare var _: any;
 
-
 @Component({
   moduleId: module.id,
   selector: 'note-list',
