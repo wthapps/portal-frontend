@@ -310,9 +310,10 @@ export const getSortedNotes = createSelector(getNotes, getSortOption, (notes, so
   // Convert original HASH notes to an sorted ARRAY notes
   let cloneNotes: any[] = [];
   Object.keys(notes).forEach((idx: any) => cloneNotes.push(notes[idx]));
+  let sortField = ['name', 'title'].includes(sortOption.field) ? 'title' : sortOption.field;
   if(!sortOption.field)
     return cloneNotes;
-  return cloneNotes.sort((a: Note, b: Note) => compareBy(a, b, sortOption.desc, sortOption.field));
+  return cloneNotes.sort((a: Note, b: Note) => compareBy(a, b, sortOption.desc, sortField));
 });
 
 export const getSortedFolders = createSelector(getFolders, getSortOption, (folders, sortOption) => {
