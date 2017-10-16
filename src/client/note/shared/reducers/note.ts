@@ -4,7 +4,7 @@ import * as note from '../actions/note';
 import { Note } from '../../../core/shared/models/note.model';
 import { Folder } from './folder';
 
-// declare let _: any;
+declare let _: any;
 
 // Constants
 export const PAGE_SIZE = 10;
@@ -203,6 +203,26 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         return {...state, selectedObjects: newselectedObjects, folders: folders};
       }
       return {...state};
+    }
+    case note.SELECT_ONE: {
+      let selected: any = action.payload;
+      let notes: any = {};
+      Object.keys(state.notes).forEach((idx: any) => {
+        notes[idx] = {...state.notes[idx], selected: false};
+      });
+
+      let folders: any = {};
+      Object.keys(state.folders).forEach((idx: any) => {
+        folders[idx] = {...state.folders[idx], selected: false};
+      });
+
+      if(selected.object_type == ITEM_TYPE.NOTE) {
+        notes[selected.id].selected = !notes[selected.id].selected;
+      }
+      if(selected.object_type == ITEM_TYPE.FOLDER) {
+        folders[selected.id]['selected'] = !folders[selected.id]['selected'];
+      }
+      return {...state, selectedObjects: [selected], notes: notes, folders: folders};
     }
     case note.SELECT_ALL: {
       let selectedObjects: any[] = [];

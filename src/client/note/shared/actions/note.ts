@@ -11,6 +11,7 @@ export const DELETE = '[Note] Delete';
 export const MULTI_DELETE = '[Note] Multi-Delete';
 export const NOTES_DELETED = '[Notes] Deleted';
 export const SELECT = '[Note] Select';
+export const SELECT_ONE = '[Note] Select One';
 export const SELECT_ALL = '[Note] Deselect All';
 export const CHANGE_SORT_ORDER = '[Note] Change Sort Order';
 export const LOAD = '[Note] Load';
@@ -125,6 +126,13 @@ export class NotesDeleted implements Action {
 
 export class Select implements Action {
   readonly type = SELECT;
+
+  constructor(public payload: {id: number, object_type: string, parent_id: number}) {
+  }
+}
+
+export class SelectOne implements Action {
+  readonly type = SELECT_ONE;
 
   constructor(public payload: {id: number, object_type: string, parent_id: number}) {
   }
