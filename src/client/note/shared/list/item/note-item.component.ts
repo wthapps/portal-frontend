@@ -49,6 +49,7 @@ export class NoteItemComponent implements OnInit {
     // }
 
     this.store.dispatch(new note.Select({id: this.data.id, object_type: this.data.object_type, parent_id: this.data.parent_id}));
+    // this.store.dispatch({type: note.SELECT_ONE, payload: {id: this.data.id, object_type: this.data.object_type, parent_id: this.data.parent_id}});
   }
 
   onClick() {
