@@ -69,7 +69,6 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
 
     let htmlTarget: any = event.originalEvent.target;
     if ($(htmlTarget).hasClass('fa-caret-right') || $(htmlTarget).hasClass('fa-caret-down')) {
-      console.log(event);
       if (event.item.expanded) {
         this.apiBaseService.get(`note/folders/${event.item.id}`).subscribe((res: any) => {
           event.item.items.length = 0;
@@ -101,25 +100,19 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
     this.folder.name = value.name;
     if (this.folder.id) {
       this.apiBaseService.put('note/folders/' + this.folder.id, this.folder).subscribe((res: any) => {
-        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data});
+        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: [res.data]});
+        this.store.dispatch(new note.MultiNotesAdded([res.data]));
         this.modal.close();
       });
     } else {
       if (this.currentFolder) {
         this.folder.parent_id = this.currentFolder.id;
-        this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
-          this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data});
-          this.store.dispatch({type: note.SET_FOLDERS, payload: res.data});
-          //TODO temp fix. need to fix
-          // this.store.dispatch(new note.MultiNotesAdded([res.data]));
-          this.modal.close();
-        });
-      } else {
-        this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
-          this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: res.data});
-          this.modal.close();
-        });
       }
+      this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
+        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: [res.data]});
+        this.store.dispatch(new note.MultiNotesAdded([res.data]));
+        this.modal.close();
+      });
     }
   }
 }
