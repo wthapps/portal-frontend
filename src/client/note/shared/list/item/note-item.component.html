@@ -1,5 +1,5 @@
 <div *ngIf="data" class="component-listbox-row"
-     [ngClass]="{'item-folder': data.object_type == 'folder', 'active': data?.selected || (isSelectAll$ | async)}">
+     [ngClass]="{'item-folder': data.object_type == 'folder', 'active': data?.selected}">
   <div class="component-listbox-input">
     <i (click)="onSelected()" class="fa fa-check"></i>
   </div>

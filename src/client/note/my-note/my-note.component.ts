@@ -48,7 +48,7 @@ export class ZNoteMyNoteComponent implements OnInit {
     this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent' && event.action == 'updateFolders').subscribe((event: any) => {
       this.store.dispatch({type: note.SET_FOLDERS, payload: event.payload});
     });
-    this.store.dispatch({type: folder.UPDATE_CURRENT, payload: {parent_id: null}})
+    this.store.dispatch({type: folder.UPDATE_CURRENT, payload: {parent_id: null}});
   }
 
   onNewNote() {

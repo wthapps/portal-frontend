@@ -1,8 +1,7 @@
 <div [ngClass]="{'component-listbox-list': viewOption == VIEW_MODE.LIST, 'component-listbox-grid': viewOption == VIEW_MODE.GRID}">
   <div class="component-listbox-header">
-    <div class="component-listbox-row">
-      <div class="component-listbox-input"
-           [ngClass]="{'active': isSelectAll}">
+    <div class="component-listbox-row" [ngClass]="{'active': isSelectAll}">
+      <div class="component-listbox-input">
         <i (click)="onSelectedAll()" class="fa fa-check"></i>
       </div>
       <div class="component-listbox-name">
