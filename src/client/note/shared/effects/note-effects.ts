@@ -77,6 +77,33 @@ export class NoteEffects {
     });
 
 
+  @Effect() trashLoad = this.actions
+    .ofType(note.TRASH_LOAD)
+    .switchMap(() => {
+      return this.apiBaseService.get(`note/trashs`)
+        .map((res: any) => ({type: note.LOAD_SUCCESS, payload: res.data}))
+        .catch(() => of({type: note.LOAD_SUCCESS, payload: []}));
+    });
+
+  @Effect() restore = this.actions
+    .ofType(note.RESTORE)
+    .map((action: any) => action['payload'])
+    .switchMap((payload: any) => {
+      return this.apiBaseService.post(`note/trash/restore`, {objects: payload} )
+        .map((res: any) => ({type: note.NOTES_DELETED, payload: res.data}))
+        .catch(() => of({type: note.NOTES_DELETED, payload: []}));
+    });
+
+  @Effect() permanentDelete = this.actions
+    .ofType(note.PERMANENT_DELETE)
+    .map((action: any) => action['payload'])
+    .switchMap((payload: any) => {
+      return this.apiBaseService.post(`note/trash/permanent_delete`, {objects: payload})
+        .map((res: any) => ({type: note.NOTES_DELETED, payload: res.data}))
+        .catch(() => of({type: note.NOTES_DELETED, payload: []}));
+    });
+
+
   // @Effect() initLoad = this.actions
   //   .ofType(note.INIT_LOAD)
   //   .map((action: any) => action['payload'])

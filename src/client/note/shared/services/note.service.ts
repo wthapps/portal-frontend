@@ -149,6 +149,14 @@ export class ZNoteService extends BaseEntityService<any> {
     }
   }
 
+  restore(body: any) {
+    return this.apiBaseService.post(`note/trash/restore`, {objects: body});
+  }
+
+  permanentDelete(body: any) {
+    return this.apiBaseService.post(`note/trash/permanent_delete`, {objects: body});
+  }
+
   modalEvent(event: any) {
     this.modalEventSubject.next(event);
   }

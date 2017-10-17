@@ -1,0 +1,15 @@
+<ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0">
+  <li>
+    <a href="javascript:;" class="btn btn-default" (click)="restore()"
+       pTooltip="{{ tooltip.restore }}" tooltipPosition="bottom">
+      <i class="fa fa-history"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="btn btn-default" (click)="permanentDelete()"
+       pTooltip="{{ tooltip.permanentDelete }}" tooltipPosition="bottom">
+      <i class="fa fa-trash-o"></i>
+    </a>
+  </li>
+</ul>
+

@@ -25,6 +25,7 @@ import { reducers } from './shared/reducers/index';
 import * as fromNote from './shared/reducers/note';
 import * as fromFolder from './shared/reducers/folder';
 import * as fromMixEntity from './shared/mixed-enity/mixed-entity.reducer'
+import { ZNoteTrashModule } from './trash/trash.module';
 
 
 
@@ -42,6 +43,7 @@ import * as fromMixEntity from './shared/mixed-enity/mixed-entity.reducer'
     ZNoteSharedWithMeModule,
     ZNoteMyProfileModule,
     ZNoteSettingsModule,
+    ZNoteTrashModule,
     ZNoteSharedModule.forRoot(),
 
     StoreModule.forRoot(AppStore),

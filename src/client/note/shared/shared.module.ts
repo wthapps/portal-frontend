@@ -19,6 +19,7 @@ import { ZNoteSharedModalFolderMoveComponent } from './modal/folder/move.compone
 import { ZNoteSharedModalSharingComponent } from './modal/sharing/sharing.component';
 import { ZFolderService } from './services/folder.service';
 import { MixedEntityService } from './mixed-enity/mixed-entity.service';
+import { ZNoteSharedTrashActionBarComponent } from './toolbar/trash/trash-actions-bar.component';
 
 
 /**
@@ -42,6 +43,7 @@ import { MixedEntityService } from './mixed-enity/mixed-entity.service';
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
+    ZNoteSharedTrashActionBarComponent,
     ZNoteSharedModalSharingComponent
   ],
   exports: [
@@ -56,6 +58,7 @@ import { MixedEntityService } from './mixed-enity/mixed-entity.service';
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
+    ZNoteSharedTrashActionBarComponent,
     ZNoteSharedModalSharingComponent
   ]
 })

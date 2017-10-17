@@ -20,6 +20,7 @@ export const LOAD_SUCCESS = '[Note] Load Success';
 export const LOAD_FAIL = '[Note] Load Failed';
 export const INIT_LOAD = '[Note] Init Load';
 export const INIT_LOAD_DONE = '[Note] Init Load Done';
+export const TRASH_LOAD = '[Note] Trash Load';
 export const CHANGE_VIEW_MODE = '[Note] Change View Mode';
 export const UNDO = '[Note] Undo';
 export const REDO = '[Note] Redo';
@@ -27,6 +28,8 @@ export const SET_FOLDERS = '[Note] Set Folders';
 export const RESET_CURRENT_NOTE = '[Note] Reset Current Note';
 export const MOVE_TO_FOLDER = '[MixedEntity] MOVE_TO_FOLDER';
 export const MAKE_A_COPY    = '[MixedEntity] MAKE_A_COPY';
+export const RESTORE    = '[MixedEntity] Restore';
+export const PERMANENT_DELETE    = '[MixedEntity] Permanent Delete';
 
 // Actions
 

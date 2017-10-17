@@ -383,6 +383,8 @@ export let Constants = {
     zoom: 'Zoom',
     zoomIn: 'Zoom in',
     zoomOut: 'Zoom out',
+    restore: 'Restore',
+    permanentDelete: 'Permanent Delete'
   },
 
   confirmDialog: {
