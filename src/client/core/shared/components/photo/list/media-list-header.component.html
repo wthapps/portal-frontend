@@ -29,15 +29,15 @@
   <div class="photo-box-nav">
     <div class="photo-box-figure">
       <div (click)="setSortName('Name'); toggleSort(); doSort()" class="photo-box-name can-click">
-        Name <i *ngIf="sortName" class="fa"
+        Name <i *ngIf="sortName=='Name'" class="fa"
                 [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
       </div>
       <div (click)="setSortName('owner'); toggleSort(); doSort()" class="photo-box-owner can-click">Owner
-        <i *ngIf="sort" class="fa"
+        <i *ngIf="sortName=='owner'" class="fa"
            [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
       </div>
       <div (click)="setSortName('Date'); toggleSort(); doSort()" class="photo-box-date can-click">
-        Create Date <i *ngIf="sort" class="fa"
+        Created Date <i *ngIf="sortName=='Date'" class="fa"
                        [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
       </div>
       <div class="photo-box-size">Size</div>

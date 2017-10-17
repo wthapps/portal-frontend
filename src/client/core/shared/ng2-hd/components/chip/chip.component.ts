@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { MdChipInputEvent, ENTER } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material';
 
 const COMMA = 188;
-
+const ENTER = 13;
 declare var _: any;
 /**
  * This class represents tag component
@@ -25,7 +25,7 @@ export class ChipComponent {
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
 
-  add(event: MdChipInputEvent): void {
+  add(event: MatChipInputEvent): void {
     let input = event.input;
     let value = event.value;
 
