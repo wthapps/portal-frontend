@@ -25,6 +25,10 @@ export class NoteItemComponent implements OnInit {
 
   private pressingCtrlKey: boolean = false;
 
+  private timer: any = 0;
+  private delay: number = 200;
+  private prevent: boolean = false;
+
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
     if (this.pressedCtrlKey(ke)) {
@@ -67,6 +71,8 @@ export class NoteItemComponent implements OnInit {
     // } else {
     //   this.noteService.removeItemSelectedObjects(this.data);
     // }
+
+
     if (this.pressingCtrlKey) {
       this.store.dispatch(new note.Select({
         id: this.data.id,
@@ -82,11 +88,20 @@ export class NoteItemComponent implements OnInit {
   }
 
   onClick() {
-    this.onSelected();
-    console.log('click');
+    let _this = this;
+
+    this.timer = setTimeout(() => {
+      if (!_this.prevent) {
+        _this.onSelected();
+      }
+      _this.prevent = false;
+    }, _this.delay);
   }
 
   onView() {
+    clearTimeout(this.timer);
+    this.prevent = true;
+
     if (this.readonly) {
       this.noteService.modalEvent({action: 'note:open_note_view_modal', payload: this.data});
     } else {

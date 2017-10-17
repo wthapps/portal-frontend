@@ -26,6 +26,10 @@ export class FolderItemComponent implements OnInit {
 
   private pressingCtrlKey: boolean = false;
 
+  private timer: any = 0;
+  private delay: number = 200;
+  private prevent: boolean = false;
+
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
     if (this.pressedCtrlKey(ke)) {
@@ -83,11 +87,19 @@ export class FolderItemComponent implements OnInit {
   }
 
   onClick() {
-    this.onSelected();
-    console.log('click');
+    let _this = this;
+
+    this.timer = setTimeout(() => {
+      if (!_this.prevent) {
+        _this.onSelected();
+      }
+      _this.prevent = false;
+    }, _this.delay);
   }
 
   onView() {
+    clearTimeout(this.timer);
+    this.prevent = true;
     this.router.navigate([`/folders`, this.data.id]);
   }
 
