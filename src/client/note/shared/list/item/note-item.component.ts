@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -23,30 +23,15 @@ export class NoteItemComponent implements OnInit {
   tooltip: any = Constants.tooltip;
   @Input() readonly: boolean = false;
 
-  private pressingCtrlKey: boolean = false;
+  @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
 
-  private timer: any = 0;
-  private delay: number = 200;
-  private prevent: boolean = false;
 
-  @HostListener('document:keydown', ['$event'])
-  onKeyDown(ke: KeyboardEvent) {
-    if (this.pressedCtrlKey(ke)) {
-      this.pressingCtrlKey = true;
-    }
-  }
 
-  @HostListener('document:keyup', ['$event'])
-  onKeyUp(ke: KeyboardEvent) {
-    if (this.pressedCtrlKey(ke)) {
-      this.pressingCtrlKey = false;
-    }
+  // private timer: any = 0;
+  // private delay: number = 200;
+  // private prevent: boolean = false;
 
-    //if0 pressing ESC key
-    if (ke.keyCode == 27) {
-      this.deSelectObjects();
-    }
-  }
+
 
   // selected: boolean = false;
   isSelectAll$: Observable<boolean>;
@@ -73,48 +58,50 @@ export class NoteItemComponent implements OnInit {
     // }
 
 
-    if (this.pressingCtrlKey) {
-      this.store.dispatch(new note.Select({
-        id: this.data.id,
-        object_type: this.data.object_type,
-        parent_id: this.data.parent_id
-      }));
-    } else {
-      this.store.dispatch({
-        type: note.SELECT_ONE,
-        payload: {id: this.data.id, object_type: this.data.object_type, parent_id: this.data.parent_id}
-      });
-    }
+    // if (this.pressingCtrlKey) {
+    //   this.store.dispatch(new note.Select({
+    //     id: this.data.id,
+    //     object_type: this.data.object_type,
+    //     parent_id: this.data.parent_id
+    //   }));
+    // } else {
+    //   this.store.dispatch({
+    //     type: note.SELECT_ONE,
+    //     payload: {id: this.data.id, object_type: this.data.object_type, parent_id: this.data.parent_id}
+    //   });
+    // }
   }
 
   onClick() {
-    let _this = this;
+    // let _this = this;
+    //
+    // this.timer = setTimeout(() => {
+    //   if (!_this.prevent) {
+    //     _this.onSelected();
+    //   }
+    //   _this.prevent = false;
+    // }, _this.delay);
 
-    this.timer = setTimeout(() => {
-      if (!_this.prevent) {
-        _this.onSelected();
-      }
-      _this.prevent = false;
-    }, _this.delay);
+    this.onAction.emit({
+      action: 'click',
+      data: this.data,
+    });
+
   }
 
   onView() {
-    clearTimeout(this.timer);
-    this.prevent = true;
+    // clearTimeout(this.timer);
+    // this.prevent = true;
+    //
+    // if (this.readonly) {
+    //   this.noteService.modalEvent({action: 'note:open_note_view_modal', payload: this.data});
+    // } else {
+    //   this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
+    // }
 
-    if (this.readonly) {
-      this.noteService.modalEvent({action: 'note:open_note_view_modal', payload: this.data});
-    } else {
-      this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
-    }
-  }
-
-  private pressedCtrlKey(ke: KeyboardEvent): boolean {
-    return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
-  }
-
-  private deSelectObjects() {
-    console.log('deSelectObjects');
-    this.store.dispatch({type: note.DESELECT_ALL});
+    this.onAction.emit({
+      action: 'dblclick',
+      data: this.data,
+    });
   }
 }

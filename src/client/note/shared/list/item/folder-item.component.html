@@ -1,7 +1,7 @@
 <div *ngIf="data" class="component-listbox-row"
      [ngClass]="{'item-folder': data.object_type == 'folder', 'active': data?.selected}">
   <div class="component-listbox-input">
-    <i (click)="onSelected()" class="fa fa-check"></i>
+    <i (click)="onClick()" class="fa fa-check"></i>
   </div>
   <div class="component-listbox-name can-click" (click)="onClick()" (dblclick)="onView()">
     <span>
