@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, OnDestroy,
+  HostListener
+} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -9,6 +12,7 @@ import { Constants } from '../../../../core/shared/config/constants';
 import { ZNoteService } from '../../services/note.service';
 import * as fromRoot from '../../reducers/index';
 import * as note from '../../actions/note';
+import { Subscription } from 'rxjs';
 
 declare var _: any;
 
@@ -16,43 +20,44 @@ declare var _: any;
   moduleId: module.id,
   selector: 'note-item',
   templateUrl: 'note-item.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteItemComponent implements OnInit, OnDestroy {
   @Input() data: Note = new Note();
   tooltip: any = Constants.tooltip;
-
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
 
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ke: KeyboardEvent) {
+    if (this.pressedCtrlKey(ke)) {
+      this.pressingCtrlKey = true;
+    }
+  }
 
+  @HostListener('document:keyup', ['$event'])
+  onKeyUp(ke: KeyboardEvent) {
+    if (this.pressedCtrlKey(ke)) {
+      this.pressingCtrlKey = false;
+    }
+  }
 
-  // private timer: any = 0;
-  // private delay: number = 200;
-  // private prevent: boolean = false;
-
-
-
-  // selected: boolean = false;
-  isSelectAll$: Observable<boolean>;
-  sub: any;
-  selected: any;
-  pressingCtrlKey: any;
+  selected: boolean = false;
+  sub: Subscription;
+  pressingCtrlKey: boolean;
 
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               private router: Router) {
-    // this.noteService.isSelectAll$.subscribe((isSelectAll: boolean)=> {
-    //   this.selected = isSelectAll;
-    // });
-
-    this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
   }
-//
+
+
   ngOnInit() {
     this.sub = this.store.select(fromRoot.getSelectedObjects).subscribe((objects: any[]) => {
+      let sel: boolean = false;
       for(let o of objects) {
-        if(o.id == this.data.id) this.selected = true;
+        if(o.object_type == 'note' && o.id == this.data.id) sel = true;
       }
+      this.selected = sel;
     });
   }
 
@@ -62,12 +67,6 @@ export class NoteItemComponent implements OnInit, OnDestroy {
 
   onSelected() {
     this.selected = !this.selected;
-    // if (this.selected) {
-    //   this.noteService.addItemSelectedObjects(this.data);
-    // } else {
-    //   this.noteService.removeItemSelectedObjects(this.data);
-    // }
-
 
     if (this.pressingCtrlKey) {
       this.store.dispatch(new note.Select({
@@ -84,35 +83,19 @@ export class NoteItemComponent implements OnInit, OnDestroy {
   }
 
   onClick() {
-    // let _this = this;
-    //
-    // this.timer = setTimeout(() => {
-    //   if (!_this.prevent) {
-    //     _this.onSelected();
-    //   }
-    //   _this.prevent = false;
-    // }, _this.delay);
-
-    // this.onAction.emit({
-    //   action: 'click',
-    //   data: this.data,
-    // });
     this.onSelected();
   }
 
   onView() {
-    // clearTimeout(this.timer);
-    // this.prevent = true;
-    //
-    // if (this.readonly) {
-    //   this.noteService.modalEvent({action: 'note:open_note_view_modal', payload: this.data});
-    // } else {
-    //   this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
-    // }
-    this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
-    // this.onAction.emit({
-    //   action: 'dblclick',
-    //   data: this.data,
-    // });
+    if (this.data['permission'] == 'view') {
+      this.noteService.modalEvent({action: 'note:open_note_view_modal', payload: this.data});
+    } else {
+      this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
+    }
   }
+
+  private pressedCtrlKey(ke: KeyboardEvent): boolean {
+    return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
+  }
+
 }

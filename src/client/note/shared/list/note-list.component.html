@@ -41,14 +41,14 @@
   <ng-container *ngIf="!(loading$ | async);else loadingBlock">
     <h4 class="ml10" *ngIf="folderItems?.length > 0 && viewOption == VIEW_MODE.GRID">Folders</h4>
     <ng-container *ngFor="let item of folderItems">
-      <folder-item [data]="item" (onAction)="onActionItem($event)" class="component-listbox-body"></folder-item>
+      <folder-item [data]="item" class="component-listbox-body"></folder-item>
     </ng-container>
 
     <div class="clearfix"></div>
 
     <h4 class="ml10" *ngIf="noteItems?.length > 0 && viewOption == VIEW_MODE.GRID">Notes</h4>
     <ng-container *ngFor="let item of noteItems">
-      <note-item [data]="item" (onAction)="onActionItem($event)" class="component-listbox-body"></note-item>
+      <note-item [data]="item" class="component-listbox-body"></note-item>
     </ng-container>
   </ng-container>
 

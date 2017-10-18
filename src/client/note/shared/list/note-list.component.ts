@@ -34,31 +34,14 @@ export class NoteListComponent implements OnInit {
     LIST: 'list'
   };
 
-  private pressingCtrlKey: boolean = false;
-
-  @HostListener('document:keydown', ['$event'])
-  onKeyDown(ke: KeyboardEvent) {
-    if (this.pressedCtrlKey(ke)) {
-      this.pressingCtrlKey = true;
-    }
-  }
-
   @HostListener('document:keyup', ['$event'])
   onKeyUp(ke: KeyboardEvent) {
-    if (this.pressedCtrlKey(ke)) {
-      this.pressingCtrlKey = false;
-    }
 
     //if0 pressing ESC key
     if (ke.keyCode == 27) {
       this.deSelectObjects();
     }
   }
-
-
-  // sortType: string = 'name';
-  // sortDescending: boolean = false;
-
 
   constructor(public noteService: ZNoteService, public store: Store<fromRoot.State>) {
   }
@@ -74,22 +57,11 @@ export class NoteListComponent implements OnInit {
     this.store.dispatch(new note.SelectAll());
   }
 
-
-  onActionItem(event: any) {
-    console.log(event);
-
-    if (this.pressingCtrlKey) {
-      console.log('pressingCtrlKey', true);
-    } else {
-      console.log('pressingCtrlKey', false);
-    }
-  }
-
   private pressedCtrlKey(ke: KeyboardEvent): boolean {
     return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
 
   private deSelectObjects() {
-    console.log('deSelectObjects');
+    this.store.dispatch({type: note.DESELECT_ALL});
   }
 }

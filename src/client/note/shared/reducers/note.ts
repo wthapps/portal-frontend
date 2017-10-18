@@ -207,19 +207,8 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
     case note.SELECT_ONE: {
       let selected: any = action.payload;
       let selectedObjects: any[] = [...state.selectedObjects];
-      let notes: any = {...state.notes};
       let selectAll: boolean = ((Object.keys(state.notes).length + Object.keys(state.folders).length) > 1) ? noteInitialState.selectAll : true;
 
-      let folders: any = {...state.folders};
-
-      if(selected.object_type == ITEM_TYPE.NOTE) {
-        if(!(selectedObjects.length == 1 && selectedObjects[0].id == selected.id))
-          notes[selected.id].selected = !notes[selected.id].selected;
-      }
-      if(selected.object_type == ITEM_TYPE.FOLDER) {
-        if(!(selectedObjects.length == 1 && selectedObjects[0].id == selected.id))
-          folders[selected.id]['selected'] = !folders[selected.id]['selected'];
-      }
       selectedObjects = (selectedObjects.length == 1 && selectedObjects[0].id == selected.id) ? [] : [selected];
       return {...state, selectedObjects: selectedObjects, selectAll: selectAll};
     }
@@ -233,7 +222,7 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       Object.keys(state.folders).forEach((idx: any) => {
         folders[idx] = {...state.folders[idx], selected: false};
       });
-      return {...state, selectedObjects: [], notes: notes, folders: folders};
+      return {...state, selectedObjects: [], notes: notes, folders: folders, selectAll: noteInitialState.selectAll};
     }
     case note.SELECT_ALL: {
       let selectedObjects: any[] = [];
