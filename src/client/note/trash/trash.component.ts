@@ -9,6 +9,8 @@ import { ZNoteService } from '../shared/services/note.service';
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
 import { Note } from '../../core/shared/models/note.model';
+import { Constants } from '../../core/shared/config/constants';
+
 @Component({
   moduleId: module.id,
   selector: 'z-note-trash',
@@ -24,6 +26,9 @@ export class ZNoteTrashComponent implements OnInit {
   selectedObjects$: Observable<any[]>;
   isSelectAll$: Observable<boolean>;
   loading$: Observable<any>;
+
+
+  readonly PAGE_TYPE: any = Constants.notePageType;
 
   constructor(private router: Router,
               private route: ActivatedRoute,

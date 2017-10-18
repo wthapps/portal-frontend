@@ -92,6 +92,14 @@ export let Constants = {
     {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},
   ],
 
+
+  notePageType:{
+    MY_NOTE: 'MY_NOTE',
+    TRASH: 'TRASH',
+    SHARED_WITH_ME: 'SHARED_WITH_ME',
+    MY_SHARINGS: 'MY_SHARINGS'
+  },
+
   contactMenuItems: [
     {name: 'All Contacts', value: 'all contacts', link: '/list', icon: 'fa fa-address-book-o', hasMenu: false},
     {name: '', value: '', link: '', icon: ''},

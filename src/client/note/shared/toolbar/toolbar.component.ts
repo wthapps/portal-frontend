@@ -21,12 +21,7 @@ export class ZNoteSharedToolBarComponent implements OnInit {
   tooltip: any = Constants.tooltip;
 
   viewOption: string = 'list';
-  readonly PAGE_TYPE: any = {
-    MY_NOTE: 'MY_NOTE',
-    TRASH: 'TRASH',
-    SHARED_WITH_ME: 'SHARED_WITH_ME',
-    MY_SHARINGS: 'MY_SHARINGS'
-  };
+  readonly PAGE_TYPE: any = Constants.notePageType;
 
   constructor(private noteService: ZNoteService, private store: Store<fromRoot.State>) {
     // if(this.page === '')

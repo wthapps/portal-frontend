@@ -8,7 +8,9 @@
         [folderItems]="folderItems$ | async"
         [viewOption]="(nodeState$ | async)?.viewMode"
         [sortOption]="sortOption$ | async"
-        [isSelectAll]="isSelectAll$ | async">
+        [isSelectAll]="isSelectAll$ | async"
+        [page]="PAGE_TYPE.TRASH"
+      >
       </note-list>
     </ng-container>
   </ng-container>

@@ -25,11 +25,13 @@ declare var _: any;
 })
 export class FolderItemComponent implements OnInit, OnDestroy {
   @Input() data: any;
+  @Input() page: string = 'MY_NOTE';
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
   tooltip: any = Constants.tooltip;
   selected: boolean = false;
   sub: Subscription;
   pressingCtrlKey: boolean;
+
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
@@ -45,6 +47,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
     }
   }
 
+  readonly PAGE_TYPE: any = Constants.notePageType;
 
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,

@@ -28,6 +28,7 @@ export class NoteListComponent implements OnInit {
   @Input() orderDesc: boolean;
   @Input() sortOption: any;
   @Input() isSelectAll: boolean;
+  @Input() page: string;
 
   readonly VIEW_MODE = {
     GRID: 'grid',
