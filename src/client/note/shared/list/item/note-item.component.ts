@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -18,10 +18,9 @@ declare var _: any;
   templateUrl: 'note-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NoteItemComponent implements OnInit {
+export class NoteItemComponent implements OnInit, OnDestroy {
   @Input() data: Note = new Note();
   tooltip: any = Constants.tooltip;
-  @Input() readonly: boolean = false;
 
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
 
@@ -35,6 +34,9 @@ export class NoteItemComponent implements OnInit {
 
   // selected: boolean = false;
   isSelectAll$: Observable<boolean>;
+  sub: any;
+  selected: any;
+  pressingCtrlKey: any;
 
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
@@ -45,12 +47,21 @@ export class NoteItemComponent implements OnInit {
 
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
   }
-
+//
   ngOnInit() {
+    this.sub = this.store.select(fromRoot.getSelectedObjects).subscribe((objects: any[]) => {
+      for(let o of objects) {
+        if(o.id == this.data.id) this.selected = true;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   onSelected() {
-    // this.selected = !this.selected;
+    this.selected = !this.selected;
     // if (this.selected) {
     //   this.noteService.addItemSelectedObjects(this.data);
     // } else {
@@ -58,18 +69,18 @@ export class NoteItemComponent implements OnInit {
     // }
 
 
-    // if (this.pressingCtrlKey) {
-    //   this.store.dispatch(new note.Select({
-    //     id: this.data.id,
-    //     object_type: this.data.object_type,
-    //     parent_id: this.data.parent_id
-    //   }));
-    // } else {
-    //   this.store.dispatch({
-    //     type: note.SELECT_ONE,
-    //     payload: {id: this.data.id, object_type: this.data.object_type, parent_id: this.data.parent_id}
-    //   });
-    // }
+    if (this.pressingCtrlKey) {
+      this.store.dispatch(new note.Select({
+        id: this.data.id,
+        object_type: this.data.object_type,
+        parent_id: this.data.parent_id
+      }));
+    } else {
+      this.store.dispatch({
+        type: note.SELECT_ONE,
+        payload: {id: this.data.id, object_type: this.data.object_type, parent_id: this.data.parent_id}
+      });
+    }
   }
 
   onClick() {
@@ -82,11 +93,11 @@ export class NoteItemComponent implements OnInit {
     //   _this.prevent = false;
     // }, _this.delay);
 
-    this.onAction.emit({
-      action: 'click',
-      data: this.data,
-    });
-
+    // this.onAction.emit({
+    //   action: 'click',
+    //   data: this.data,
+    // });
+    this.onSelected();
   }
 
   onView() {
@@ -98,10 +109,10 @@ export class NoteItemComponent implements OnInit {
     // } else {
     //   this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
     // }
-
-    this.onAction.emit({
-      action: 'dblclick',
-      data: this.data,
-    });
+    this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
+    // this.onAction.emit({
+    //   action: 'dblclick',
+    //   data: this.data,
+    // });
   }
 }

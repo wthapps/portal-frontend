@@ -22,7 +22,6 @@ declare var _: any;
 export class FolderItemComponent implements OnInit {
   @Input() data: any;
   tooltip: any = Constants.tooltip;
-  @Input() readonly: boolean = false;
 
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
 
@@ -39,6 +38,7 @@ export class FolderItemComponent implements OnInit {
 
   ngOnInit() {
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
+    
   }
 
   onClick() {

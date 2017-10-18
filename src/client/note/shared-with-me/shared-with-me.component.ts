@@ -14,7 +14,7 @@ import { Note } from '../../core/shared/models/note.model';
   selector: 'z-note-shared-with-me',
   templateUrl: 'shared-with-me.component.html'
 })
-export class ZNoteSharedWithMeComponent implements OnInit {
+export class ZNoteSharedWithMeComponent implements OnInit, OnDestroy {
   viewOption: string = 'list';
 
   noteItems$: Observable<Note[]>;
@@ -24,6 +24,7 @@ export class ZNoteSharedWithMeComponent implements OnInit {
   selectedObjects$: Observable<any[]>;
   isSelectAll$: Observable<boolean>;
   loading$: Observable<any>;
+  sub: any;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -39,7 +40,18 @@ export class ZNoteSharedWithMeComponent implements OnInit {
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.loading$ = this.store.select(fromRoot.getLoading);
-    this.store.dispatch(new note.Load({parent_id: null, shared_with_me: true}));
+    this.sub = this.route.params.subscribe((params: any) => {
+      if(params['id']) {
+        this.store.dispatch(new note.Load({parent_id: params['id'], shared_with_me: true}));
+      } else {
+        this.store.dispatch(new note.Load({parent_id: null, shared_with_me: true}));
+      }
+    });
+
+  }
+
+  ngOnDestroy() {
+    if(this.sub) this.sub.unsubscribe();
   }
 
   onNewNote() {
