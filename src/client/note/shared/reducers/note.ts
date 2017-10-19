@@ -186,23 +186,25 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let selected: any = action['payload'];
       let index = state.selectedObjects.findIndex((o: any) => o.id == selected.id && o.object_type == selected.object_type);
       let newselectedObjects: any[]= [];
+      let selectAll: boolean;
       if(index == -1)
         newselectedObjects = [...state.selectedObjects, selected];
       else
         newselectedObjects = state.selectedObjects.filter((o: any, idx: number) => idx !== index);
+      selectAll = (Object.keys(state.notes).length + Object.keys(state.folders).length) <= newselectedObjects.length;
 
       // Update NOTE/FOLDER state
       if(selected.object_type == ITEM_TYPE.NOTE) {
         let notes: any = {...state.notes};
         notes[selected.id].selected = !notes[selected.id].selected;
-        return {...state, selectedObjects: newselectedObjects, notes: notes};
+        return {...state, selectedObjects: newselectedObjects, notes: notes, selectAll: selectAll};
       }
       if(selected.object_type == ITEM_TYPE.FOLDER) {
         let folders: any = {...state.folders};
         folders[selected.id]['selected'] = !folders[selected.id]['selected'];
-        return {...state, selectedObjects: newselectedObjects, folders: folders};
+        return {...state, selectedObjects: newselectedObjects, folders: folders, selectAll: selectAll};
       }
-      return {...state};
+      return {...state, selectAll: selectAll};
     }
     case note.SELECT_ONE: {
       let selected: any = action.payload;
