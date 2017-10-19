@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, Input } from '@angular/core';
+import { Component, OnInit, HostBinding, Input, ViewEncapsulation } from '@angular/core';
 import { Constants } from '../../../core/shared/config/constants';
 import { ZNoteService } from '../services/note.service';
 import * as fromRoot from '../reducers/index';
@@ -11,7 +11,8 @@ import * as note from '../actions/note';
   moduleId: module.id,
   selector: 'z-note-shared-toolbar',
   templateUrl: 'toolbar.component.html',
-  styleUrls: ['toolbar.component.css']
+  styleUrls: ['toolbar.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ZNoteSharedToolBarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';

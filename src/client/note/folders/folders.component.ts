@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { Folder } from '../shared/reducers/folder';
 import { Note } from '../../core/shared/models/note.model';
 import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
+import { NoteBreadcrumb } from '../shared/breadcrumb/breadcrumb';
 
 declare var _: any;
 
@@ -35,6 +36,10 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
 
   sub: Subscription;
   sub2: Subscription;
+  sub3: Subscription;
+
+  breadcrumbs: NoteBreadcrumb[] = [];
+  breadcrumbsInit: any = {label: 'My notes', routerLink: '/'};
 
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
@@ -77,17 +82,42 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
         }
       );
 
+      this.sub3 = this.store.select(fromRoot.getCurrentFolderPath).subscribe((res: any)=> {
+        this.breadcrumbs.length = 0;
+        this.breadcrumbs.push(this.breadcrumbsInit);
+        _.map(res, (v: any)=> {
+          this.breadcrumbs.push({label: v.name, routerLink: '/folders/' + v.id});
+        });
+      });
+
     });
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
+    this.sub2.unsubscribe();
   }
 
   onNewNote() {
     this.noteService.modalEvent({
       action: 'note:open_note_add_modal',
+      payload: {parent_id: +this.route.snapshot.params['id']}
+    });
+  }
+
+  onFolder() {
+    this.noteService.modalEvent({
+      action: 'note:folder:create',
+      payload: {parent_id: +this.route.snapshot.params['id']}
+    });
+  }
+
+  onBreadcrumbAction(event: any) {
+    // console.log('onBreadcrumbAction', event);
+
+    this.noteService.modalEvent({
+      action: event,
       payload: {parent_id: +this.route.snapshot.params['id']}
     });
   }

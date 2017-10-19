@@ -20,6 +20,7 @@ import { ZNoteSharedModalSharingComponent } from './modal/sharing/sharing.compon
 import { ZFolderService } from './services/folder.service';
 import { MixedEntityService } from './mixed-enity/mixed-entity.service';
 import { ZNoteSharedTrashActionBarComponent } from './toolbar/trash/trash-actions-bar.component';
+import { ZNoteSharedBreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 
 /**
@@ -44,7 +45,8 @@ import { ZNoteSharedTrashActionBarComponent } from './toolbar/trash/trash-action
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
     ZNoteSharedTrashActionBarComponent,
-    ZNoteSharedModalSharingComponent
+    ZNoteSharedModalSharingComponent,
+    ZNoteSharedBreadcrumbComponent
   ],
   exports: [
     CoreSharedModule,
@@ -59,7 +61,8 @@ import { ZNoteSharedTrashActionBarComponent } from './toolbar/trash/trash-action
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
     ZNoteSharedTrashActionBarComponent,
-    ZNoteSharedModalSharingComponent
+    ZNoteSharedModalSharingComponent,
+    ZNoteSharedBreadcrumbComponent
   ]
 })
 export class ZNoteSharedModule {

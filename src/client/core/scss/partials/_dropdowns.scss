@@ -11,7 +11,16 @@
       position: relative;
     }
   }
+  &.dropdown-menu-sm {
+    > li {
+      > a {
+        padding: 5px 15px;
+        position: relative;
+      }
+    }
+  }
 }
+
 .dropdown-menu-min-width {
   > li {
     > a {

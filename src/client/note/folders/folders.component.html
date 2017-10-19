@@ -1,14 +1,25 @@
 <z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)">
-  <button (click)="onNewNote()" class="btn btn-outline-primary" type="button">
-    <i class="fa fa-plus"></i> New Note
-  </button>
+  <div class="btn-group">
+    <button type="button" class="btn btn-primary btn-min dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+      New
+    </button>
+    <ul class="dropdown-menu dropdown-menu-sm">
+      <li><a (click)="onNewNote()" href="javascript:;"><i class="fa fa-sticky-note"></i> New note</a></li>
+      <li><a (click)="onFolder()" href="javascript:;"><i class="fa fa-folder-o"></i> New folder</a></li>
+    </ul>
+  </div>
+
+  <z-note-shared-breadcrumb class="note-breadcrumb" [model]="breadcrumbs"
+                            (onBreadcrumbAction)="onBreadcrumbAction($event)">
+  </z-note-shared-breadcrumb>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
   <!--<note-list [noteItems]="noteItems$ | async"-->
-             <!--[folderItems]="folderItems$ | async"-->
-             <!--[viewOption]="(nodeState$ | async)?.viewMode"-->
-             <!--[sortOption]="sortOption$ | async"-->
-             <!--[isSelectAll]="(nodeState$ | async)?.isSelectAll">-->
+  <!--[folderItems]="folderItems$ | async"-->
+  <!--[viewOption]="(nodeState$ | async)?.viewMode"-->
+  <!--[sortOption]="sortOption$ | async"-->
+  <!--[isSelectAll]="(nodeState$ | async)?.isSelectAll">-->
   <!--</note-list>-->
 
 
@@ -23,8 +34,8 @@
     </ng-container>
   </ng-container>
 
-  <ng-template #loadingBlock>...Loading </ng-template>
-  <ng-template #noDataBlock>[FOLDER] No data  </ng-template>
+  <ng-template #loadingBlock>...Loading</ng-template>
+  <ng-template #noDataBlock>[FOLDER] No data</ng-template>
 </div>
 
 
