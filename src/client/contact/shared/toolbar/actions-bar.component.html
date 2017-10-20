@@ -4,8 +4,8 @@
       {{ number }} selected
     </span>
   </li>
-  <li *ngIf="showQuickInvitation">
-    <button (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})">Invite <i class="fa fa-envelope" aria-hidden="true"></i></button>
+  <li *ngIf="showInvitation">
+    <a href="javascript:;" class="btn btn-outline-default" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})"><i class="fa fa-envelope" aria-hidden="true"></i> Invite</a>
   </li>
   <li>
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite'})"

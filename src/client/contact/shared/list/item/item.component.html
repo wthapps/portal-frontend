@@ -33,7 +33,7 @@
 <z-contact-shared-actions-bar
   class="contact-listbox-action"
   [data]="data"
-  [showQuickInvitation]="true"
+  [showQuickInvitation]="data.wthapps_user == null"
   [showNumber]="false"
   [showSocial]="data | isContactInternal"
   [showChat]="data | isContactInternal"
