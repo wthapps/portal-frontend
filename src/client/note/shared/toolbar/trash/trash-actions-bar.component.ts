@@ -36,7 +36,6 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
 
   permanentDelete() {
     if (this.selectedObjects.length >= 1) {
-      console.debug('inside permanent delete !!!');
       let message = `You are about to delete Folder(s).
        Once deleted - you cannot Undo deleting. 
        <br/>&emsp;Folder and all included Notes and sub-folders will be permanently deleted`;

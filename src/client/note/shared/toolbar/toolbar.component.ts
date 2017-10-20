@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, HostBinding, Input, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 ;
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
