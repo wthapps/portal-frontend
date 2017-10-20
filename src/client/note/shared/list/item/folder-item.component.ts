@@ -14,6 +14,7 @@ import { ZNoteService } from '../../services/note.service';
 import * as fromRoot from '../../reducers/index';
 import * as note from '../../actions/note';
 import { Subscription } from 'rxjs';
+import { WthConfirmService } from '../../../../core/shared/components/confirmation/wth-confirm.service';
 
 declare var _: any;
 
@@ -51,6 +52,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
 
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
+              private wthConfirm: WthConfirmService,
               private router: Router) {
   }
 
@@ -87,7 +89,19 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   }
 
   onView() {
-    this.router.navigate([`/folders`, this.data.id]);
+    if(!this.data.deleted_at)
+      this.router.navigate([`/folders`, this.data.id]);
+    else {
+      this.wthConfirm.confirm({
+        acceptLabel: 'RESTORE',
+        rejectLabel: 'CANCEL',
+        message: `To view this folder, you'll need to restore it from your trash`,
+        header: 'This folder is in your trash',
+        accept: () => {
+          this.store.dispatch({type: note.RESTORE, payload: [this.data]});
+        }
+      })
+    }
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {
