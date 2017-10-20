@@ -29,6 +29,7 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
   currentFolder: any = {};
 
   mode: string = 'add';
+
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService, private apiBaseService: ApiBaseService, private store: Store<any>) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
@@ -38,27 +39,33 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    // this.getNoteFolder();
+
+    this.name.setValue(this.folder.name)
+  }
+
+  getNoteFolder() {
     this.apiBaseService.get(`note/folders`).subscribe((event: any) => {
       for (let folder of event.data) {
-        if(this.folder && this.folder.id == folder.id) {
+        if (this.folder && this.folder.id == folder.id) {
           continue;
         } else {
           folder.label = folder.name;
           folder.icon = 'fa-folder-o';
           folder.items = [];
-          folder.command = (event: any)=> this.loadMenu(event)
+          folder.command = (event: any)=> this.loadMenu(event);
           this.menuItems.push(folder);
         }
       }
     });
-    this.name.setValue(this.folder.name)
   }
 
-  open(options?: any ) {
+  open(options?: any) {
     this.mode = options.mode;
-    if(this.mode == 'add') {
+    if (this.mode == 'add') {
       this.titleModal = 'Add Folder';
-    } else if(this.mode == 'edit') {
+    } else if (this.mode == 'edit') {
       this.titleModal = 'Edit Folder';
     }
     this.modal.open();
