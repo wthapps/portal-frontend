@@ -193,25 +193,14 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         newselectedObjects = state.selectedObjects.filter((o: any, idx: number) => idx !== index);
       selectAll = (Object.keys(state.notes).length + Object.keys(state.folders).length) <= newselectedObjects.length;
 
-      // Update NOTE/FOLDER state
-      if(selected.object_type == ITEM_TYPE.NOTE) {
-        let notes: any = {...state.notes};
-        notes[selected.id].selected = !notes[selected.id].selected;
-        return {...state, selectedObjects: newselectedObjects, notes: notes, selectAll: selectAll};
-      }
-      if(selected.object_type == ITEM_TYPE.FOLDER) {
-        let folders: any = {...state.folders};
-        folders[selected.id]['selected'] = !folders[selected.id]['selected'];
-        return {...state, selectedObjects: newselectedObjects, folders: folders, selectAll: selectAll};
-      }
-      return {...state, selectAll: selectAll};
+      return {...state, selectedObjects: newselectedObjects, selectAll: selectAll};
     }
     case note.SELECT_ONE: {
       let selected: any = action.payload;
       let selectedObjects: any[] = [...state.selectedObjects];
       let selectAll: boolean = ((Object.keys(state.notes).length + Object.keys(state.folders).length) > 1) ? noteInitialState.selectAll : true;
+      selectedObjects = ((selectedObjects.length === 1) && (selectedObjects[0].id === selected.id) && (selectedObjects[0].object_type === selected.object_type)) ? [] : [selected];
 
-      selectedObjects = (selectedObjects.length == 1 && selectedObjects[0].id == selected.id) ? [] : [selected];
       return {...state, selectedObjects: selectedObjects, selectAll: selectAll};
     }
     case note.DESELECT_ALL: {
@@ -234,23 +223,15 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       if(state.selectedObjects.length !== Object.keys(state.folders).length + Object.keys(state.notes).length) {
         Object.keys(state.notes).forEach((idx: any) => {
           selectedObjects.push({id: idx, object_type: ITEM_TYPE.NOTE});
-          inotes[idx] = {...state.notes[idx], selected: true};
+          // inotes[idx] = {...state.notes[idx], selected: true};
         });
         Object.keys(state.folders).forEach((idx: any) => {
           selectedObjects.push({id: idx, object_type: ITEM_TYPE.FOLDER});
-          folders[idx] = {...state.folders[idx], selected: true};
+          // folders[idx] = {...state.folders[idx], selected: true};
         });
         selectAll = true;
-      } else {
-        Object.keys(state.notes).forEach((idx: any) => {
-          inotes[idx] = {...state.notes[idx], selected: false};
-        });
-        Object.keys(state.folders).forEach((idx: any) => {
-          folders[idx] = {...state.folders[idx], selected: false};
-        });
-
       }
-      return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll, notes: inotes, folders: folders});
+      return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll});
     }
 
     case note.MOVE_TO_FOLDER: {
