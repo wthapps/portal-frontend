@@ -1,8 +1,14 @@
-my sharing
 <z-note-shared-toolbar>
-  <button (click)="onNewNote()" class="btn btn-outline-primary" type="button">
-    <i class="fa fa-plus"></i> New Note
-  </button>
+  <div class="btn-group">
+    <button type="button" class="btn btn-primary btn-min dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+      New
+    </button>
+    <ul class="dropdown-menu dropdown-menu-sm">
+      <li><a (click)="onNewNote()" href="javascript:;"><i class="fa fa-sticky-note"></i> New note</a></li>
+      <li><a (click)="onFolder()" href="javascript:;"><i class="fa fa-folder-o"></i> New folder</a></li>
+    </ul>
+  </div>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
   <note-list [data]="data" [viewOption]="viewOption"></note-list>

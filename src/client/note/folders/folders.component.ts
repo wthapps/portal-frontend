@@ -96,7 +96,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.sub.unsubscribe();
     this.sub2.unsubscribe();
-    this.sub2.unsubscribe();
+    this.sub3.unsubscribe();
   }
 
   onNewNote() {

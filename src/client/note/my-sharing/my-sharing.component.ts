@@ -45,4 +45,13 @@ export class ZNoteMySharingComponent implements OnInit, OnDestroy {
     this.destroySubject.unsubscribe();
   }
 
+  onNewNote() {
+    this.noteService.modalEvent({action: 'note:open_note_add_modal'});
+  }
+
+  onFolder() {
+    this.noteService.modalEvent({
+      action: 'note:folder:create'
+    });
+  }
 }

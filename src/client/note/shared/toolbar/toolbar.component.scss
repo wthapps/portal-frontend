@@ -26,9 +26,12 @@
             -ms-text-overflow: ellipsis;
             text-overflow: ellipsis;
             position: relative;
+            &.dropdown-toggle {
+              padding-right: 25px;
+            }
             .caret {
               position: absolute;
-              right: 5px;
+              right: 8px;
               top: 50%;
               margin-top: -3px;
             }

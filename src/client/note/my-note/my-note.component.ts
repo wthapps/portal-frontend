@@ -54,4 +54,10 @@ export class ZNoteMyNoteComponent implements OnInit {
   onNewNote() {
     this.noteService.modalEvent({action: 'note:open_note_add_modal'});
   }
+
+  onFolder() {
+    this.noteService.modalEvent({
+      action: 'note:folder:create'
+    });
+  }
 }
