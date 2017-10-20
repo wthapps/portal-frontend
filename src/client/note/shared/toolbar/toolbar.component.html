@@ -5,7 +5,7 @@
     <li class="dropdown action">
       <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
               pTooltip="{{ tooltip.changeView }}" tooltipPosition="bottom">
-        <i class="fa" [ngClass]="{'fa-th-list': viewOption == 'list', 'fa-th-large': viewOption == 'grid'}"></i>
+        <i class="fa" [ngClass]="{'fa-th-list': (viewMode$ | async) == 'list', 'fa-th-large': (viewMode$ | async) == 'grid'}"></i>
       </button>
       <ul class="dropdown-menu dropdown-menu-right text-right">
         <li>

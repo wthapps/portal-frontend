@@ -54,7 +54,7 @@ export class FolderEffects {
     });
 
   @Effect() setCurrentFolder = this.actions
-    .ofType(folder.SET_CURRENT)
+    .ofType(folder.SET_CURRENT_FOLDER)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
       return this.folderService.getFolderPath(payload)

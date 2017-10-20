@@ -27,7 +27,7 @@ export interface State {
   currentNote: Note | null;
   noteHistory: { id: number | string, stackId: number, stack: Note[] }; // Lastest note is at index 0 in Note Undo stack
   folders: {[id: number]: Folder}; //{1 :{id: 1, name: "abc"}, 2 :{id: 2, name: "sdfsdf"}  }
-  page: number;
+  pageNo: number;
   orderDesc: boolean;
   sortOption: {field: string, desc: boolean};
   selectedObjects: {id: string, object_type: string, parent_id: number}[];
@@ -42,7 +42,7 @@ export const noteInitialState: State = {
   currentNote: null,
   noteHistory: {id: '', stackId: -1, stack: []},
   folders: {},
-  page: 0,
+  pageNo: 0,
   orderDesc: true,
   sortOption: {field: 'name', desc: true},
   selectedObjects: [],
@@ -268,7 +268,7 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
 }
 
 export const getNotes = (state: State ) => state.notes;
-export const getPage = (state: State ) => state.page;
+export const getPageNo = (state: State ) => state.pageNo;
 export const getOrderDesc = (state: State ) => state.orderDesc;
 export const getSortOption = (state: State ) => state.sortOption;
 export const getFolders = (state: State ) => state.folders;

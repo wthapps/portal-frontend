@@ -1,7 +1,6 @@
-
-
 import { Folder } from '../reducers/folder';
 import { Action } from '@ngrx/store';
+
 export const UPDATE = '[Folder] Update';
 export const FOLDERS_UPDATED = '[Folders] Updated';
 export const FOLDER_UPDATED = '[Folder] Updated';
@@ -15,7 +14,7 @@ export const LOAD_SUCCESS = '[Folder] Load Success';
 export const SELECT = '[Folder] Select';
 export const DESELECT_ALL = '[Folder] Deselect All';
 export const CHANGE_SORT_ORDER = '[Folder] Change Sort Order';
-export const SET_CURRENT = '[Folder] Set Current';
+export const SET_CURRENT_FOLDER = '[Folder] Set Current Folder';
 export const SET_FOLDER_PATH = '[Folder] Set Folder Path';
 export const UPDATE_CURRENT = '[Folder] Update Current Folder';
 
@@ -113,7 +112,7 @@ export class UpdateCurrentFolder implements Action {
 }
 
 export class SetCurrentFolder implements Action {
-  readonly type = SET_CURRENT;
+  readonly type = SET_CURRENT_FOLDER;
 
   constructor(public payload: number) {
 

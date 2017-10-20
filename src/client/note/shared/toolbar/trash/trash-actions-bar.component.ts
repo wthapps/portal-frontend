@@ -35,13 +35,58 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
   }
 
   permanentDelete() {
-    console.debug('inside permanent delete !!!');
-    this.store.dispatch({type: note.PERMANENT_DELETE, payload: this.selectedObjects});
+    if (this.selectedObjects.length >= 1) {
+      console.debug('inside permanent delete !!!');
+      let message = `You are about to delete Folder(s).
+       Once deleted - you cannot Undo deleting. 
+       <br/>&emsp;Folder and all included Notes and sub-folders will be permanently deleted`;
+      let header = 'Delete Note and Folder';
+
+      if (this.isOnlyNote()) {
+        message = `You are about to delete Note(s).
+       Once deleted - you cannot Undo deleting. 
+       <br/>&emsp;Notes will be permanently deleted`;
+        header = 'Delete Note';
+      }
+
+      if (this.isOnlyFolder()) {
+        header = 'Delete Folder'
+      }
+
+      this.wthConfirm.confirm({
+        message: message,
+        header: header,
+        accept: () => {
+          this.store.dispatch({type: note.PERMANENT_DELETE, payload: this.selectedObjects});
+        }
+      });
+    }
   }
 
   restore() {
     console.debug('inside restore !!!');
     this.store.dispatch({type: note.RESTORE, payload: this.selectedObjects});
+  }
+  isOnlyNote(): boolean {
+    let result = true;
+    _.forEach(this.selectedObjects, (item: any) => {
+      if (item.object_type == 'folder') {
+        result = false;
+        return;
+      }
+    });
+    return result;
+  }
+
+  isOnlyFolder(): boolean {
+    let result = true;
+    _.forEach(this.selectedObjects, (item: any) => {
+      if (item.object_type == 'note') {
+        result = false;
+        return;
+      }
+    });
+    return result;
   }
 
 }
