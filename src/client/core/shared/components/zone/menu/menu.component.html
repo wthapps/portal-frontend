@@ -55,15 +55,14 @@
       </ul>
     </li>
 
-    <li class="has-sub has-action" [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
+    <!-- <li class="has-sub has-action" [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('note')">
         Notes
       </a>
       <ul [ngClass]="{'active': urls.note == hostname}" class="menuleft-nav-sub">
         <li [routerLinkActive]="['active']">
           <a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']" (click)="onNoteClick($event)">
-          <!--<a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']">-->
-            <i class="{{ noteMenu[0].icon }}"></i> {{ noteMenu[0].name }}
+            {{ noteMenu[0].name }}
           </a>
         </li>
         <ng-template ngFor let-folder [ngForOf]="noteFolders" let-i="index">
@@ -102,7 +101,8 @@
         </ng-template>
 
       </ul>
-    </li>
+    </li> -->
+    <ng-content></ng-content>
 
     <li class="has-sub has-action"
         [ngClass]="{'active': urls.contact == hostname && !isProfileTab, 'show': urls.contact == hostname}">

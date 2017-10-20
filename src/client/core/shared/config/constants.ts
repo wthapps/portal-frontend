@@ -86,7 +86,6 @@ export let Constants = {
 
   noteMenuItems: [
     {name: 'My Notes', value: 'My notes', link: '/my-note', icon: 'fa fa-sticky-note'},
-    {name: 'New Folder', value: 'new folder', link: '#', icon: 'fa fa-plus', action: 'note:folder:create'},
     {name: 'Shared With Me', value: 'shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'},
     {name: 'Trash', value: 'Trash', link: '/trash', icon: 'fa fa-trash-o'},
     {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},

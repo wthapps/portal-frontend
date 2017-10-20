@@ -36,10 +36,32 @@ export class ZNoteSharedActionBarComponent implements OnInit {
 
   delete() {
     if (this.selectedObjects.length >= 1) {
-      this.commonEventService.broadcast({
-        channel: 'noteActionsBar',
-        action: 'note:mixed_entity:delete',
-        payload: this.selectedObjects
+      let message = `You are about to delete Folder(s).
+       Once deleted - you cannot Undo deleting.
+       <br/>&emsp;Folder and all included Notes and sub-folders will be permanently deleted`;
+      let header = 'Delete Note and Folder';
+
+      if (this.isOnlyNote()) {
+        message = `You are about to delete Note(s).
+       Once deleted - you cannot Undo deleting.
+       <br/>&emsp;Notes will be permanently deleted`;
+        header = 'Delete Note';
+      }
+
+      if (this.isOnlyFolder()) {
+        header = 'Delete Folder'
+      }
+
+      this.wthConfirm.confirm({
+        message: message,
+        header: header,
+        accept: () => {
+          this.commonEventService.broadcast({
+            channel: 'noteActionsBar',
+            action: 'note:mixed_entity:delete',
+            payload: this.selectedObjects
+          });
+        }
       });
     }
   }
@@ -47,7 +69,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   share() {
     // TODO: Share multiple folders and notes
     if (this.selectedObjects.length > 0) {
-      let data = this.selectedObjects[0];
+      let data = this.selectedObjects;
       this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:sharing', payload: data});
     }
   }

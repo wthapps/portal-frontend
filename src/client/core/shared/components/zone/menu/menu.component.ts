@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, OnChanges, AfterViewInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd, Params } from '@angular/router';
 
@@ -21,7 +21,8 @@ declare var _: any;
   moduleId: module.id,
   selector: 'z-shared-menu',
   templateUrl: 'menu.component.html',
-  styleUrls: ['menu.component.css']
+  styleUrls: ['menu.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -81,42 +82,42 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         this.currentLabel = this.extractLabel(event.url);
       });
 
-    this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent').subscribe((event: any) => {
-      switch (event.action) {
-        case 'updateFolders':
-          for (let folder of event.payload) {
-            if (!folder.parent_id) {
-              folder.label = folder.name;
-              folder.icon = 'fa-folder-o';
-              folder.styleClass = `js-note-folders-tree-${folder.id}`;
-              folder.items = [];
-              folder.command = (eventClick: any)=> this.loadMenu(eventClick);
-              this.noteFoldersTree.push(folder);
-              this.noteFoldersTree = _.uniqBy(this.noteFoldersTree, 'id');
-            }
-          }
-          break;
-        case 'updateFoldersTree':
-          if (event.payload) {
-            console.log('event------', event);
-
-            $('[class^=\'js-note-folders-tree-\']').remove('active');
-            $('.js-note-folders-tree-' + event.payload.id + ' > a').addClass('active');
-
-            // push menus to noteFoldersTree
-            if (event.payload.parent_id) {
-              let currentFolder = this.findAll(event.payload.parent_id, this.noteFoldersTree);
-            }
-          }
-          break;
-        case 'note:folder:delete_success':
-          _.forEach(event.payload, (deletedItem: any) => {
-            _.remove(this.noteFoldersTree, {id: deletedItem.id});
-          });
-          break;
-      }
-
-    });
+    // this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent').subscribe((event: any) => {
+    //   switch (event.action) {
+    //     case 'updateFolders':
+    //       for (let folder of event.payload) {
+    //         if (!folder.parent_id) {
+    //           folder.label = folder.name;
+    //           folder.icon = 'fa-folder-o';
+    //           folder.styleClass = `js-note-folders-tree-${folder.id}`;
+    //           folder.items = [];
+    //           folder.command = (eventClick: any)=> this.loadMenu(eventClick);
+    //           this.noteFoldersTree.push(folder);
+    //           this.noteFoldersTree = _.uniqBy(this.noteFoldersTree, 'id');
+    //         }
+    //       }
+    //       break;
+    //     case 'updateFoldersTree':
+    //       if (event.payload) {
+    //         console.log('event------', event);
+    //
+    //         $('[class^=\'js-note-folders-tree-\']').remove('active');
+    //         $('.js-note-folders-tree-' + event.payload.id + ' > a').addClass('active');
+    //
+    //         // push menus to noteFoldersTree
+    //         if (event.payload.parent_id) {
+    //           let currentFolder = this.findAll(event.payload.parent_id, this.noteFoldersTree);
+    //         }
+    //       }
+    //       break;
+    //     case 'note:folder:delete_success':
+    //       _.forEach(event.payload, (deletedItem: any) => {
+    //         _.remove(this.noteFoldersTree, {id: deletedItem.id});
+    //       });
+    //       break;
+    //   }
+    //
+    // });
   }
 
   findAll(id: any, items: any): any {
@@ -209,47 +210,5 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.commonEventSub.unsubscribe();
     this.destroySubject.unsubscribe();
-  }
-
-  onNoteClick(event: any) {
-    $(event.target).closest('ul').find('.well-folder-tree a').removeClass('active');
-  }
-
-  loadMenu(event: any) {
-    event.originalEvent.stopPropagation();
-
-    let htmlTarget: any = event.originalEvent.target;
-    if ($(htmlTarget).hasClass('fa-caret-right') || $(htmlTarget).hasClass('fa-caret-down')) {
-      console.log(event);
-      if (event.item.expanded) {
-        this.apiBaseService.get(`note/folders/${event.item.id}`).subscribe((res: any) => {
-          event.item.items.length = 0;
-          for (let folder of res.data) {
-            folder.label = folder.name;
-            folder.icon = 'fa-folder-o';
-            folder.styleClass = `js-note-folders-tree-${folder.id}`;
-            folder.items = [];
-            folder.command = (event: any)=> this.loadMenu(event);
-            event.item.items.push(folder);
-          }
-        });
-      }
-      /*} else if ($(htmlTarget).hasClass('fa-pencil')) {
-       event.item.expanded = !event.item.expanded;
-
-       console.log('edit');
-
-       } else if ($(htmlTarget).hasClass('fa-trash-o')) {
-       event.item.expanded = !event.item.expanded;
-
-       console.log('delete');*/
-
-    } else {
-      this.router.navigate(['/folders', event.item.id]);
-      event.item.expanded = !event.item.expanded;
-
-      $(htmlTarget).closest('.well-folder-tree').find('a').removeClass('active');
-      $(htmlTarget).closest('a').addClass('active');
-    }
   }
 }

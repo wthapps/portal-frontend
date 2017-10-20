@@ -56,7 +56,6 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      console.log(+params['id']);
       let id = +params['id'];
 
       // this.store.dispatch(new note.Load({parent_id: id}));
@@ -78,7 +77,6 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
               payload: res
             });
           }
-
         }
       );
 

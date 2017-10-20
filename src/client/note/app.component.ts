@@ -66,7 +66,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.noteService.modalEvent$.subscribe((event: any)=> this.doEvent(event));
 
     this.store.select(fromRoot.getFoldersTree)
-      // .map((folders: any[]) => { return folders.map((f: any) => fromFolder.mapFolderToItem(f));})
       .do((folders: any[]) => console.debug('app folders: ', folders))
       .takeUntil(this.destroySubject)
       .subscribe((folders: any[]) => {
@@ -128,7 +127,7 @@ export class AppComponent implements OnInit, OnDestroy {
         break;
       case 'note:folder:sharing':
         this.loadModalComponent(ZNoteSharedModalSharingComponent);
-        this.modal.sharedObjects = [event.payload];
+        this.modal.sharedObjects = event.payload;
         this.modal.open();
         break;
       case 'note:mixed_entity:open_move_to_folder_modal':

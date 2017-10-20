@@ -95,9 +95,11 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
       this.apiBaseService.post(`note/sharings/get_sharing_info_object`, {object_id: this.sharedObjects[0].id, object_type: this.sharedObjects[0].object_type}).subscribe((res: any) => {
         this.store.dispatch({type: fromShareModal.SET_SHARED_CONTACTS, payload: res.data});
         if (res.data.length > 0) {
-          this.mode = 'edit'
+          this.mode = 'edit';
         }
       });
+    } else {
+      this.store.dispatch({type: fromShareModal.SET_SHARED_CONTACTS, payload: []});
     }
   }
 
@@ -110,7 +112,6 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   }
 
   removeSelected(contact: any) {
-    console.log(contact);
     this.store.dispatch({type: fromShareModal.REMOVE_SELECTED_CONTACT, payload: contact});
   }
 
@@ -132,12 +133,13 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
       });
     } else {
       // Only update single object
-      let object = this.sharedObjects[0];
       this.store.dispatch({type: fromShareModal.SAVE});
-      this.apiBaseService.put(`note/sharings/${object.id}`, {object: object, recipients: this.sharedContacts}).subscribe((res: any) => {
-        this.store.dispatch({type: fromShareModal.SET_SHARED_CONTACTS, payload: res.data});
-        this.store.dispatch({type: fromShareModal.SAVE});
-      });
+      for (let object of this.sharedObjects) {
+        this.apiBaseService.put(`note/sharings/${object.id}`, {object: object, recipients: this.sharedContacts}).subscribe((res: any) => {
+          this.store.dispatch({type: fromShareModal.SET_SHARED_CONTACTS, payload: res.data});
+          this.store.dispatch({type: fromShareModal.SAVE});
+        });
+      }
     }
   }
 }
