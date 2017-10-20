@@ -62,7 +62,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
       // this.store.dispatch(new note.Load({parent_id: id}));
       // this.store.dispatch(new folder.SetCurrentFolder(id));
       this.store.dispatch({type: note.LOAD, payload: {parent_id: id}});
-      this.store.dispatch({type: folder.SET_CURRENT, payload: id});
+      this.store.dispatch({type: folder.SET_CURRENT_FOLDER, payload: id});
 
       if (this.sub2 && !this.sub.closed) {
         this.sub2.unsubscribe();
