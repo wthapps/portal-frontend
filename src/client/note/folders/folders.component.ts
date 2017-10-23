@@ -69,7 +69,6 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
 
       this.sub2 = this.store.select(fromRoot.getCurrentFolder).subscribe(
         (res: any)=> {
-          console.log('this.sub2:', res);
           if (res && res.id == id) {
             this.commonEventService.broadcast({
               channel: 'noteFolderEvent',

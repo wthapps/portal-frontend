@@ -120,22 +120,22 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     // });
   }
 
-  findAll(id: any, items: any): any {
-    let found: any, result: any = [];
-
-    for (let i: number = 0; i < items.length; i++) {
-      if (items[i].id === id) {
-        result.push(items[i]);
-      } else if (_.isArray(items[i].items)) {
-        found = this.findAll(id, items[i].items);
-        if (found.length) {
-          result = result.concat(found);
-        }
-      }
-    }
-
-    return result;
-  }
+  // findAll(id: any, items: any): any {
+  //   let found: any, result: any = [];
+  //
+  //   for (let i: number = 0; i < items.length; i++) {
+  //     if (items[i].id === id) {
+  //       result.push(items[i]);
+  //     } else if (_.isArray(items[i].items)) {
+  //       found = this.findAll(id, items[i].items);
+  //       if (found.length) {
+  //         result = result.concat(found);
+  //       }
+  //     }
+  //   }
+  //
+  //   return result;
+  // }
 
   ngAfterViewInit() {
     /*let html_append = '<i class="fa fa-pencil"></i> <i class="fa fa-trash-o"></i>';

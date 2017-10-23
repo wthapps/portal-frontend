@@ -11,7 +11,7 @@ export const AppStore = {
   mixedEntity: fromMixedEntity.reducer,
   notes: fromNote.reducer,
   folders: fromFolder.reducer,
-  share: fromShareModal.reducer,
+  share: fromShareModal.reducer
 };
 
 export let AppEffects: Array<any> = [MixedEntityEffects, NoteEffects, FolderEffects];
