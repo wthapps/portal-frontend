@@ -57,8 +57,8 @@ export class NoteItemComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.store.select(fromRoot.getSelectedObjects).subscribe((objects: any[]) => {
       let sel: boolean = false;
-      for(let o of objects) {
-        if(o.object_type == 'note' && o.id == this.data.id) sel = true;
+      for (let o of objects) {
+        if (o.object_type == 'note' && o.id == this.data.id) sel = true;
       }
       this.selected = sel;
     });
@@ -87,6 +87,14 @@ export class NoteItemComponent implements OnInit, OnDestroy {
 
   onClick() {
     this.onSelected();
+  }
+
+  onClickMulti() {
+    this.store.dispatch(new note.Select({
+      id: this.data.id,
+      object_type: this.data.object_type,
+      parent_id: this.data.parent_id
+    }));
   }
 
   onView() {

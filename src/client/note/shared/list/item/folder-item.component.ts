@@ -88,6 +88,14 @@ export class FolderItemComponent implements OnInit, OnDestroy {
     }
   }
 
+  onClickMulti() {
+    this.store.dispatch(new note.Select({
+      id: this.data.id,
+      object_type: this.data.object_type,
+      parent_id: this.data.parent_id
+    }));
+  }
+
   onView() {
     if(!this.data.deleted_at)
       this.router.navigate([`/folders`, this.data.id]);
