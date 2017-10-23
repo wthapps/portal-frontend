@@ -11,5 +11,17 @@
       <i class="fa fa-trash-o"></i>
     </a>
   </li>
+  <li class="dropdown action" *ngIf="toolbarOnly">
+    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+            pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
+      <i class="fa fa-ellipsis-v"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right text-right">
+      <li role="presentation" >
+        <a role="menuitem" tabindex="-1" href="javascript:void(0);"
+           (click)="emptyAll()">Empty Trash</a>
+      </li>
+    </ul>
+  </li>
 </ul>
 

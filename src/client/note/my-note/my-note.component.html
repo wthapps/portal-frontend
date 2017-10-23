@@ -1,9 +1,3 @@
-
-<!--<ul>-->
-  <!--<li *ngFor="let item of (selectedObjects$ | async)">-->
-    <!--{{ item.id }} - {{ item.object_type }}-->
-  <!--</li>-->
-<!--</ul>-->
 <z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)">
   <div class="btn-group">
     <button type="button" class="btn btn-primary btn-min dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -21,19 +15,6 @@
   </span>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
-  <!--<note-list [items] = "(items | async).items"-->
-             <!--[viewOption]="(nodeState$ | async)?.viewMode"-->
-             <!--[orderDesc]="orderDesc$ | async"-->
-             <!--[isSelectAll]="(nodeState$ | async)?.isSelectAll">-->
-  <!--</note-list>-->
-
-  <!--<note-list [noteItems]="noteItems$ | async"-->
-             <!--[folderItems]="folderItems$ | async"-->
-             <!--[viewOption]="(nodeState$ | async)?.viewMode"-->
-             <!--[sortOption]="sortOption$ | async"-->
-             <!--[isSelectAll]="isSelectAll$ | async">-->
-
-  <!--</note-list>-->
 
 
   <ng-container *ngIf="!(loading$ | async); else loadingBlock">

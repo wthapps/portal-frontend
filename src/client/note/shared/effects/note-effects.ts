@@ -103,6 +103,13 @@ export class NoteEffects {
         .catch(() => of({type: note.NOTES_DELETED, payload: []}));
     });
 
+  @Effect() emptyAll = this.actions
+    .ofType(note.EMPTY_ALL)
+    .switchMap((payload: any) => {
+      return this.apiBaseService.post(`note/trash/empty_all`)
+        .map((res: any) => ({type: note.ALL_DELETED}))
+        .catch(() => empty());
+    });
 
   // @Effect() initLoad = this.actions
   //   .ofType(note.INIT_LOAD)

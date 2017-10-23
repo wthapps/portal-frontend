@@ -101,14 +101,14 @@ export class FolderItemComponent implements OnInit, OnDestroy {
       this.router.navigate([`/folders`, this.data.id]);
     else {
       this.wthConfirm.confirm({
-        acceptLabel: 'RESTORE',
-        rejectLabel: 'CANCEL',
+        acceptLabel: 'Restore',
+        rejectLabel: 'Cancel',
         message: `To view this folder, you'll need to restore it from your trash`,
         header: 'This folder is in your trash',
         accept: () => {
           this.store.dispatch({type: note.RESTORE, payload: [this.data]});
         }
-      })
+      });
     }
   }
 

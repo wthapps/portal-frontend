@@ -15,13 +15,6 @@
   </z-note-shared-breadcrumb>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
-  <!--<note-list [noteItems]="noteItems$ | async"-->
-  <!--[folderItems]="folderItems$ | async"-->
-  <!--[viewOption]="(nodeState$ | async)?.viewMode"-->
-  <!--[sortOption]="sortOption$ | async"-->
-  <!--[isSelectAll]="(nodeState$ | async)?.isSelectAll">-->
-  <!--</note-list>-->
-
 
   <ng-container *ngIf="!(loading$ | async); else loadingBlock">
     <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
@@ -29,7 +22,7 @@
                  [folderItems]="folderItems$ | async"
                  [viewOption]="(nodeState$ | async)?.viewMode"
                  [sortOption]="sortOption$ | async"
-                 [isSelectAll]="(nodeState$ | async)?.isSelectAll">
+                 [isSelectAll]="(selectAll$ | async)">
       </note-list>
     </ng-container>
   </ng-container>

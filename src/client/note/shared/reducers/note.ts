@@ -100,8 +100,8 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       hNote[idx] = {...action['payload'], selected: state.notes[idx].selected};
       let notes4: any = {...state.notes, ...hNote};
 
-      let noteStack: Note[] = [...state.noteHistory.stack];
-      // let noteStack: Note[] = state.noteHistory.stack.slice(state.noteHistory.stackId);
+      // let noteStack: Note[] = [...state.noteHistory.stack];
+      let noteStack: Note[] = state.noteHistory.stack.slice(state.noteHistory.stackId);
 
       if(noteStack.length >= UNDO_STACK_SIZE) {
         noteStack.pop();
@@ -172,6 +172,15 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         selectAll: noteInitialState.selectAll
       });
     }
+    case note.ALL_DELETED: {
+      return {
+        ...state,
+        notes: noteInitialState.notes,
+        folders: noteInitialState.folders,
+        selectedObjects: noteInitialState.selectedObjects,
+        selectAll: noteInitialState.selectAll
+      };
+    }
     case note.CHANGE_SORT_ORDER: {
       let sortOption: any = {...state.sortOption};
       if(sortOption.field == action['payload']) {
@@ -199,7 +208,8 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let selected: any = action.payload;
       let selectedObjects: any[] = [...state.selectedObjects];
       let selectAll: boolean = ((Object.keys(state.notes).length + Object.keys(state.folders).length) > 1) ? noteInitialState.selectAll : true;
-      selectedObjects = ((selectedObjects.length === 1) && (selectedObjects[0].id === selected.id) && (selectedObjects[0].object_type === selected.object_type)) ? [] : [selected];
+      // selectedObjects = ((selectedObjects.length === 1) && (selectedObjects[0].id === selected.id) && (selectedObjects[0].object_type === selected.object_type)) ? [] : [selected];
+      selectedObjects = [selected];
 
       return {...state, selectedObjects: selectedObjects, selectAll: selectAll};
     }

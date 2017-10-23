@@ -28,8 +28,10 @@ export const SET_FOLDERS = '[Note] Set Folders';
 export const RESET_CURRENT_NOTE = '[Note] Reset Current Note';
 export const MOVE_TO_FOLDER = '[MixedEntity] MOVE_TO_FOLDER';
 export const MAKE_A_COPY    = '[MixedEntity] MAKE_A_COPY';
-export const RESTORE    = '[MixedEntity] Restore';
-export const PERMANENT_DELETE    = '[MixedEntity] Permanent Delete';
+export const RESTORE    = '[Trash] Restore';
+export const PERMANENT_DELETE    = '[Trash] Permanent Delete';
+export const EMPTY_ALL    = '[Trash] Empty All';
+export const ALL_DELETED    = '[Trash] All Deleted';
 
 // Actions
 
@@ -196,3 +198,4 @@ export class MakeACopy implements Action {
 }
 
 export type NoteActions = any;
+

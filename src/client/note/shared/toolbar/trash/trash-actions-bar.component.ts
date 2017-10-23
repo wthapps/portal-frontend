@@ -22,6 +22,7 @@ declare var _: any;
 })
 export class ZNoteSharedTrashActionBarComponent implements OnInit {
   @Input() selectedObjects: any[] = [];
+  @Input() toolbarOnly: boolean;
 
   readonly tooltip: any = Constants.tooltip;
 
@@ -62,8 +63,21 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
     }
   }
 
+  emptyAll() {
+    this.wthConfirm.confirm({
+      acceptLabel: 'Delete',
+      rejectLabel: 'Cancel',
+      message: `All notes and folders in your trash will be permanently deleted.
+      <br/>&emsp;<b>This action cannot be undo</b>
+      `,
+      header: 'Empty Trash',
+      accept: () => {
+        this.store.dispatch({type: note.PERMANENT_DELETE, payload: this.selectedObjects});
+      }
+    });
+  }
+
   restore() {
-    console.debug('inside restore !!!');
     this.store.dispatch({type: note.RESTORE, payload: this.selectedObjects});
   }
   isOnlyNote(): boolean {
