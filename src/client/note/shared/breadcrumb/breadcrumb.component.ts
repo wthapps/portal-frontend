@@ -41,8 +41,7 @@ export class ZNoteSharedBreadcrumbComponent implements OnDestroy {
   }
 
   onClick(item: any) {
-    console.log(item);
-    this.router.navigate([item.routerLink]);
+    if (item) this.router.navigate([item.routerLink]);
   }
 
   onMenu(event: string) {

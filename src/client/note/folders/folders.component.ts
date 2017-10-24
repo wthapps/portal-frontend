@@ -39,7 +39,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   sub3: Subscription;
 
   breadcrumbs: NoteBreadcrumb[] = [];
-  breadcrumbsInit: any = {label: 'My notes', routerLink: '/'};
+  breadcrumbsInit: any = {id: null, name: null, label: 'My notes', routerLink: '/'};
 
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
@@ -63,27 +63,11 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
       this.store.dispatch({type: note.LOAD, payload: {parent_id: id}});
       this.store.dispatch({type: folder.SET_CURRENT_FOLDER, payload: id});
 
-      if (this.sub2 && !this.sub.closed) {
-        this.sub2.unsubscribe();
-      }
-
-      this.sub2 = this.store.select(fromRoot.getCurrentFolder).subscribe(
-        (res: any)=> {
-          if (res && res.id == id) {
-            this.commonEventService.broadcast({
-              channel: 'noteFolderEvent',
-              action: 'updateFoldersTree',
-              payload: res
-            });
-          }
-        }
-      );
-
       this.sub3 = this.store.select(fromRoot.getCurrentFolderPath).subscribe((res: any)=> {
         this.breadcrumbs.length = 0;
         this.breadcrumbs.push(this.breadcrumbsInit);
         _.map(res, (v: any)=> {
-          this.breadcrumbs.push({label: v.name, routerLink: '/folders/' + v.id});
+          this.breadcrumbs.push({id: v.id, name: v.name, object_type: v.object_type, parent_id: v.parent_id, label: v.name, routerLink: '/folders/' + v.id});
         });
       });
 
@@ -92,7 +76,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-    this.sub2.unsubscribe();
+    // this.sub2.unsubscribe();
     this.sub3.unsubscribe();
   }
 
@@ -111,11 +95,9 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   }
 
   onBreadcrumbAction(event: any) {
-    // console.log('onBreadcrumbAction', event);
-
     this.noteService.modalEvent({
-      action: event,
-      payload: {parent_id: +this.route.snapshot.params['id']}
+      action: event.action,
+      payload: event.payload
     });
   }
 }
