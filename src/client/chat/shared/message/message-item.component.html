@@ -15,6 +15,7 @@
       </figure>
     </div>
     <div class="message-item-content-card">
+
       <div class="message-item-content-main">
 
         <!--mesasge menu-->
@@ -51,7 +52,7 @@
           </ul>
 
           <!--other menu -->
-          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'FileMedium'">
+          <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Common::GenericFile'">
             <li *ngIf="message.file_json && message.message_type !== 'message_deleted' && message.message_type !== 'message_cancel'">
               <a [href]="message.file_json.url" target="_blank" download>
                 Download
@@ -103,7 +104,7 @@
             </figure>
             {{ message.to_json }}
           </div>
-          <div class="message-item-content-other-files" *ngIf="message.file_type == 'FileMedium'">
+          <div class="message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
             <a class="media-div link-text" [href]="message.file_json?.url" target="_blank" download>
               <div class="pull-left">
                 <i class="fa fa-file-o"></i>
