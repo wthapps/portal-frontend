@@ -12,29 +12,25 @@
         <button class="btn btn-outline-default"><i class="fa fa-download"></i> Download all</button>
       </div>
     </div> -->
-    <!-- <div class="row row-img grid">
-      <div class="col-sm-3">
-        <div class="photo-box">
-          <div class="photo-box-action pt5">
-            <span class="label label-default">10kb</span>
-          </div>
-          <div class="photo-box-action photo-box-action-right">
-            <button class="btn btn-sm btn-outline-default" type="button">
-              <i class="fa fa-download"></i>
-            </button>
-          </div>
-          <div class="photo-box-figure">
-            <figure class="img-center-dv">
-              <div class="photo-box-figure-in">
-                <img class="img-center"
-                     src="https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/seed_files/media/building1.jpg">
-              </div>
-            </figure>
-            <div class="photo-box-name">
-              <span class="can-click"><i class="fa fa-picture-o"></i> Photo no 1.jpg</span>
-            </div>
-          </div>
+
+    <!-- <div class="attachment-list" *ngIf="note.attachments">
+      <div class="attachment-item" *ngFor="let att of note.attachments">
+        <div class="attachment-item-action">
+          <button class="btn btn-sm btn-outline-default" type="button">
+            <i class="fa fa-download"></i>
+          </button>
+          <button (click)="cancelUpload(att)" class="btn btn-sm btn-outline-default" type="button">
+            <i class="fa fa-trash-o"></i>
+          </button>
         </div>
+        <div class="attachment-item-thumb">
+          &lt;!&ndash;<i class="fa fa-file-zip-o"></i>&ndash;&gt;
+          <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
+          <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+        </div>
+        <p>{{ att.name }}</p>
+        <span *ngIf="att.thumbnail_url" class="text-fade">{{ att.size | bytes:3 }}</span>
+        <span *ngIf="!att.thumbnail_url" class="text-fade">Uploading</span>
       </div>
     </div> -->
 

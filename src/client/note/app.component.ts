@@ -64,17 +64,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.doEvent(event);
     });
     this.noteService.modalEvent$.subscribe((event: any)=> this.doEvent(event));
-
-    this.store.select(fromRoot.getFoldersTree)
-      .do((folders: any[]) => console.debug('app folders: ', folders))
-      .takeUntil(this.destroySubject)
-      .subscribe((folders: any[]) => {
-        this.commonEventService.broadcast({
-          channel: 'noteFolderEvent',
-          action: 'updateFolders',
-          payload: folders
-        })
-      });
     this.folder$ = this.store.select(fromRoot.getCurrentFolder).subscribe((folder: any) => {
       this.currentFolder = folder;
     });
@@ -152,12 +141,8 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'note:mixed_entity:delete':
         this.mixedEntityService.delete(0, event.payload)
           .subscribe((res: any) => {
-            this.commonEventService.broadcast({
-              channel: 'noteFolderEvent',
-              action: 'note:folder:delete_success',
-              payload: res.data
-            });
             this.store.dispatch(new note.NotesDeleted(event.payload));
+            this.commonEventService.broadcast({action: 'destroy', channel: 'noteLeftMenu', payload: event.payload});
           });
 
         break;
