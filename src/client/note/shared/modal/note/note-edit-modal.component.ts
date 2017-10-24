@@ -4,7 +4,6 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/takeUntil';
@@ -13,6 +12,8 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/toPromise';
+
+import { Editor } from 'primeng/components/editor/editor'
 
 
 import * as fromRoot from '../../reducers/index';
@@ -38,8 +39,8 @@ declare var Quill: any;
 })
 export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('editor') editor: Editor;
   @Input() note: Note = new Note();
-
 
   // @HostListener('document:keypress', ['$event'])
   // onKeyPress(ev: KeyboardEvent) {
@@ -88,13 +89,13 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   registerAutoSave() {
-      // Auto save
+    // Auto save
     this.form.valueChanges
       .takeUntil(this.noSave$)
       .debounceTime(DEBOUNCE_MS)
       .takeUntil(this.noSave$)
       .subscribe(() => {
-        if(this.editMode == Constants.modal.add) {
+        if (this.editMode == Constants.modal.add) {
           this.onFirstSave();
         } else {
           let noteObj: any = Object.assign({}, this.note, this.form.value);
@@ -104,7 +105,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    $(document).on('hidden.bs.modal', '.modal', ()=> {
+    $(document).on('hidden.bs.modal', '.modal', () => {
       if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
       }
@@ -112,14 +113,24 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
     // Add custom to whitelist
     let Font = Quill.import('formats/font');
-    Font.whitelist = ['sans-serif', 'serif', 'monospace', 'lato'];
+    Font.whitelist = ['gotham', 'georgia', 'helvetica', 'courier-new', 'times-new-roman', 'trebuchet', 'verdana'];
     Quill.register(Font, true);
 
     let Size = Quill.import('attributors/style/size');
     Size.whitelist = [
-      '9px', '10px', '11px', '12px', '13px', '14px', '18px', '24px', '36px', '48px', '64px', '72px'
+      '8px', '10px', '12px', '14px', '18px', '24px', '36px'
     ];
     Quill.register(Size, true);
+
+
+    let BlockEmbed = Quill.import('blots/block/embed');
+
+    class DividerBlot extends BlockEmbed {
+    }
+
+    DividerBlot.blotName = 'divider';
+    DividerBlot.tagName = 'hr';
+    Quill.register(DividerBlot);
   }
 
   open(options: any = {mode: Constants.modal.add, note: undefined, parent_id: undefined}) {
@@ -176,7 +187,6 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     // Stop and restart auto-save feature
     this.noSaveSubject.next('');
     this.registerAutoSave();
-    ;
   }
 
   redo() {
@@ -186,6 +196,11 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     this.noSaveSubject.next('');
     this.registerAutoSave();
   }
+
+  divider() {
+    console.log(this.editor);
+  }
+
   /*
    * Ignore if the file is uploading
    * Delete if the file was uploaded
@@ -201,27 +216,29 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   onSubmit(value: any) {
-    if(this.editMode == Constants.modal.add) {
+    if (this.editMode == Constants.modal.add) {
       this.store.dispatch(new note.Add({...value, parent_id: this.parentId}));
     }
     else {
       this.store.dispatch(new note.Update({...value, id: this.note.id}));
     }
     this.modal.close()
-      .then(() => { this.closeSubject.next(''); });
+      .then(() => {
+        this.closeSubject.next('');
+      });
   }
 
   /**
    * Save post and change to EDIT mode
    */
   onFirstSave() {
-    if(this.editMode == Constants.modal.add) {
+    if (this.editMode == Constants.modal.add) {
       this.noteService.create({...this.form.value, parent_id: this.parentId}).toPromise()
         .then((res: any) => {
-        this.note = res.data;
-        this.editMode = Constants.modal.edit;
-        this.store.dispatch(new note.MultiNotesAdded([res['data']]));
-      })
+          this.note = res.data;
+          this.editMode = Constants.modal.edit;
+          this.store.dispatch(new note.MultiNotesAdded([res['data']]));
+        })
     }
   }
 

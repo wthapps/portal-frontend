@@ -3,215 +3,222 @@
 
     <modal-body>
 
-        <div class="form-group no-label" [ngClass]="{'has-error': (!title.valid && title.touched)}">
-          <input [formControl]="title" type="text" class="form-control" id="note_form_title"
-                 placeholder="Title">
-        </div>
-        <div class="form-group">
-          <p-editor formControlName="content" [style]="{'height':'320px'}">
-            <p-header>
-              <div class="ql-format-group">
-                <div class="ql-formats">
-                  <!-- Add font size dropdown -->
-                  <button type="button" (click)="undo()"><i class="fa fa-reply"></i></button>
-                  <button type="button" (click)="redo()"><i class="fa fa-share"></i></button>
-
-                  <!-- Add font family dropdown -->
-                  <select class="ql-font">
-                    <option value="sans-serif" selected="">Sans Serif</option>
-                    <option value="serif">Serif</option>
-                    <option value="monospace">Monospace</option>
-                    <option value="lato">Lato</option>
-                  </select>
-                  <!-- Add font size dropdown -->
-                  <select class="ql-size ql-size-sm">
-                    <option value="9px">9</option>
-                    <option value="10px">10</option>
-                    <option value="11px">11</option>
-                    <option value="12px">12</option>
-                    <option value="13px">13</option>
-                    <option selected value="14px">14</option>
-                    <option value="18px">18</option>
-                    <option value="24px">24</option>
-                    <option value="36px">36</option>
-                    <option value="48px">48</option>
-                    <option value="64px">64</option>
-                    <option value="72px">72</option>
-                  </select>
-                </div>
-                <div class="ql-formats">
-                  <!-- Add colors -->
-                  <select class="ql-color" title="Colour">
-                    <option value="#ffffff"></option>
-                    <option value="#facccc"></option>
-                    <option value="#ffebcc"></option>
-                    <option value="#ffffcc"></option>
-                    <option value="#cce8cc"></option>
-                    <option value="#cce0f5"></option>
-                    <option value="#ebd6ff"></option>
-                    <option value="#bbbbbb"></option>
-                    <option value="#f06666"></option>
-                    <option value="#ffc266"></option>
-                    <option value="#ffff66"></option>
-                    <option value="#66b966"></option>
-                    <option value="#66a3e0"></option>
-                    <option value="#c285ff"></option>
-                    <option value="#888888"></option>
-                    <option value="#a10000"></option>
-                    <option value="#b26b00"></option>
-                    <option value="#b2b200"></option>
-                    <option value="#006100"></option>
-                    <option value="#0047b2"></option>
-                    <option value="#6b24b2"></option>
-                    <option value="#444444"></option>
-                    <option value="#5c0000"></option>
-                    <option value="#663d00"></option>
-                    <option value="#666600"></option>
-                    <option value="#003700"></option>
-                    <option value="#002966"></option>
-                    <option value="#3d1466"></option>
-                    <option value="#000000"></option>
-                    <option value="#e60000"></option>
-                    <option value="#ff9900"></option>
-                    <option value="#ffff00"></option>
-                    <option value="#008a00"></option>
-                    <option value="#0066cc"></option>
-                    <option value="#9933ff"></option>
-                  </select>
-                  <!-- Add background -->
-                  <select class="ql-background" title="Background">
-                    <option value="#ffffff"></option>
-                    <option value="#facccc"></option>
-                    <option value="#ffebcc"></option>
-                    <option value="#ffffcc"></option>
-                    <option value="#cce8cc"></option>
-                    <option value="#cce0f5"></option>
-                    <option value="#ebd6ff"></option>
-                    <option value="#bbbbbb"></option>
-                    <option value="#f06666"></option>
-                    <option value="#ffc266"></option>
-                    <option value="#ffff66"></option>
-                    <option value="#66b966"></option>
-                    <option value="#66a3e0"></option>
-                    <option value="#c285ff"></option>
-                    <option value="#888888"></option>
-                    <option value="#a10000"></option>
-                    <option value="#b26b00"></option>
-                    <option value="#b2b200"></option>
-                    <option value="#006100"></option>
-                    <option value="#0047b2"></option>
-                    <option value="#6b24b2"></option>
-                    <option value="#444444"></option>
-                    <option value="#5c0000"></option>
-                    <option value="#663d00"></option>
-                    <option value="#666600"></option>
-                    <option value="#003700"></option>
-                    <option value="#002966"></option>
-                    <option value="#3d1466"></option>
-                    <option value="#000000"></option>
-                    <option value="#e60000"></option>
-                    <option value="#ff9900"></option>
-                    <option value="#ffff00"></option>
-                    <option value="#008a00"></option>
-                    <option value="#0066cc"></option>
-                    <option value="#9933ff"></option>
-                  </select>
-                </div>
-                <div class="ql-formats">
-                  <!-- Add subscript and superscript buttons -->
-                  <button class="ql-script" value="sub"></button>
-                  <button class="ql-script" value="super"></button>
-                </div>
-                <div class="ql-formats">
-                  <button class="ql-bold" aria-label="Bold"></button>
-                  <button class="ql-italic" aria-label="Italic"></button>
-                  <button class="ql-underline" aria-label="Underline"></button>
-                  <button class="ql-strike" aria-label="Strikethrough"></button>
-                </div>
-                <div class="ql-formats">
-                  <select class="ql-align">
-                    <option selected></option>
-                    <option value="center"></option>
-                    <option value="right"></option>
-                    <option value="justify"></option>
-                  </select>
-                </div>
-                <div class="ql-formats">
-                  <button class="ql-list" value="check"></button>
-                  <button class="ql-list" value="ordered"></button>
-                  <button class="ql-list" value="bullet"></button>
-                </div>
-                <div class="ql-formats">
-                  <button class="ql-link"></button>
-                  <button class="ql-image"></button>
-                  <!--<button class="ql-video"></button>-->
-                </div>
-                <div class="ql-formats">
-                  <!--<button class="ql-formula"></button>-->
-                  <button class="ql-code-block"></button>
-                </div>
-                <!--<div class="ql-formats">
-                  <button class="ql-clean"></button>
-                </div>-->
+      <div class="form-group no-label" [ngClass]="{'has-error': (!title.valid && title.touched)}">
+        <input autofocus [formControl]="title" type="text" class="form-control" id="note_form_title"
+               placeholder="Title">
+      </div>
+      <div class="form-group">
+        <p-editor #editor formControlName="content" [style]="{'min-height':'320px'}">
+          <p-header>
+            <div class="ql-format-group">
+              <div class="ql-formats">
+                <button type="button" (click)="undo()"><i class="fa fa-reply"></i></button>
+                <button type="button" (click)="redo()"><i class="fa fa-share"></i></button>
+              </div>
+              <div class="ql-formats">
+                <!-- Add font family dropdown -->
+                <select class="ql-font">
+                  <option value="gotham" selected="">Gotham</option>
+                  <option value="georgia">Georgia</option>
+                  <option value="helvetica">Helvetica</option>
+                  <option value="courier-new">Courier New</option>
+                  <option value="times-new-roman">Times New Roman</option>
+                  <option value="trebuchet">Trebuchet</option>
+                  <option value="verdana">Verdana</option>
+                </select>
+              </div>
+              <div class="ql-formats">
+                <!-- Add font size dropdown -->
+                <select class="ql-size ql-size-sm">
+                  <option value="8px">8</option>
+                  <option value="10px">10</option>
+                  <option value="12px">12</option>
+                  <option selected value="14px">14</option>
+                  <option value="18px">18</option>
+                  <option value="24px">24</option>
+                  <option value="36px">36</option>
+                </select>
+              </div>
+              <div class="ql-formats">
+                <!-- Add colors -->
+                <select class="ql-color" title="Colour">
+                  <option value="#ffffff"></option>
+                  <option value="#facccc"></option>
+                  <option value="#ffebcc"></option>
+                  <option value="#ffffcc"></option>
+                  <option value="#cce8cc"></option>
+                  <option value="#cce0f5"></option>
+                  <option value="#ebd6ff"></option>
+                  <option value="#bbbbbb"></option>
+                  <option value="#f06666"></option>
+                  <option value="#ffc266"></option>
+                  <option value="#ffff66"></option>
+                  <option value="#66b966"></option>
+                  <option value="#66a3e0"></option>
+                  <option value="#c285ff"></option>
+                  <option value="#888888"></option>
+                  <option value="#a10000"></option>
+                  <option value="#b26b00"></option>
+                  <option value="#b2b200"></option>
+                  <option value="#006100"></option>
+                  <option value="#0047b2"></option>
+                  <option value="#6b24b2"></option>
+                  <option value="#444444"></option>
+                  <option value="#5c0000"></option>
+                  <option value="#663d00"></option>
+                  <option value="#666600"></option>
+                  <option value="#003700"></option>
+                  <option value="#002966"></option>
+                  <option value="#3d1466"></option>
+                  <option value="#000000"></option>
+                  <option value="#e60000"></option>
+                  <option value="#ff9900"></option>
+                  <option value="#ffff00"></option>
+                  <option value="#008a00"></option>
+                  <option value="#0066cc"></option>
+                  <option value="#9933ff"></option>
+                </select>
+                <!-- Add background -->
+                <select class="ql-background" title="Background">
+                  <option value="#ffffff"></option>
+                  <option value="#facccc"></option>
+                  <option value="#ffebcc"></option>
+                  <option value="#ffffcc"></option>
+                  <option value="#cce8cc"></option>
+                  <option value="#cce0f5"></option>
+                  <option value="#ebd6ff"></option>
+                  <option value="#bbbbbb"></option>
+                  <option value="#f06666"></option>
+                  <option value="#ffc266"></option>
+                  <option value="#ffff66"></option>
+                  <option value="#66b966"></option>
+                  <option value="#66a3e0"></option>
+                  <option value="#c285ff"></option>
+                  <option value="#888888"></option>
+                  <option value="#a10000"></option>
+                  <option value="#b26b00"></option>
+                  <option value="#b2b200"></option>
+                  <option value="#006100"></option>
+                  <option value="#0047b2"></option>
+                  <option value="#6b24b2"></option>
+                  <option value="#444444"></option>
+                  <option value="#5c0000"></option>
+                  <option value="#663d00"></option>
+                  <option value="#666600"></option>
+                  <option value="#003700"></option>
+                  <option value="#002966"></option>
+                  <option value="#3d1466"></option>
+                  <option value="#000000"></option>
+                  <option value="#e60000"></option>
+                  <option value="#ff9900"></option>
+                  <option value="#ffff00"></option>
+                  <option value="#008a00"></option>
+                  <option value="#0066cc"></option>
+                  <option value="#9933ff"></option>
+                </select>
+              </div>
+              <div class="ql-formats">
+                <!-- Add subscript and superscript buttons -->
+                <button class="ql-script" value="sub"></button>
+                <button class="ql-script" value="super"></button>
+              </div>
+              <div class="ql-formats">
+                <button class="ql-bold" aria-label="Bold"></button>
+                <button class="ql-italic" aria-label="Italic"></button>
+                <button class="ql-underline" aria-label="Underline"></button>
+                <button class="ql-strike" aria-label="Strikethrough"></button>
+              </div>
+              <div class="ql-formats">
+                <select class="ql-align">
+                  <option selected></option>
+                  <option value="center"></option>
+                  <option value="right"></option>
+                  <option value="justify"></option>
+                </select>
+              </div>
+              <div class="ql-formats">
+                <button class="ql-list" value="check"></button>
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
               </div>
 
-            </p-header>
-          </p-editor>
-        </div>
-
-        <hr class="divider">
-
-        <div class="row">
-          <div class="col-sm-6">
-            <label>Attachment</label>
-          </div>
-          <div class="col-sm-6 text-right">
-            <button class="btn btn-outline-default" (click)="selectFiles()"><i class="fa fa-plus"></i> Add more</button>
-            <button class="btn btn-outline-default" (click)="downloadAttachments()">
-              <i class="fa fa-download"></i> Download all</button>
-          </div>
-        </div>
-        <div class="row row-img grid">
-          <div class="col-sm-3 mb10" *ngFor="let att of note.attachments">
-            <div class="photo-box" >
-              <div class="photo-box-action photo-box-action-right">
-                <button class="btn btn-sm btn-sm btn-default" type="button" (click)="cancelUpload(att)">
-                  <i class="fa fa-times"></i>
+              <div class="ql-formats">
+                <button type="button" (click)="divider()">
+                  <i>&mdash;</i>
                 </button>
               </div>
-              <div class="photo-box-figure">
-                <figure class="img-center-dv" *ngIf="!att.thumbnail_url">
-                  <div class="img-box bg-gray">
-                    <div class="img-box-item text-center" style="color: #ffffff;">
-                      <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
-                    </div>
-                  </div>
-                </figure>
 
-                <figure class="img-center-dv" *ngIf="att.thumbnail_url">
-                  <div class="photo-box-figure-in">
-                    <img class="img-center"
-                         [src]="att.thumbnail_url">
-                  </div>
-                </figure>
-
-                <div class="photo-box-name">
-                  <span class="can-click"><i class="fa fa-picture-o"></i> {{ att.name }}</span>
-                </div>
+              <div class="ql-formats">
+                <button class="ql-link"></button>
+                <button class="ql-image"></button>
+                <button class="ql-code-block"></button>
+                <!--<button class="ql-video"></button>-->
+                <!--<button class="ql-formula"></button>-->
               </div>
+              <!--<div class="ql-formats">
+                <button class="ql-clean"></button>
+              </div>-->
             </div>
+
+          </p-header>
+        </p-editor>
+      </div>
+
+      <hr class="divider">
+
+      <div class="form-group">
+        <button class="btn btn-outline-default mr10" (click)="selectFiles()">
+          <i class="fa fa-plus"></i> Photo
+        </button>
+        <button class="btn btn-outline-default mr10" (click)="selectFiles()">
+          <i class="fa fa-paperclip"></i> Attachment
+        </button>
+        <button class="btn btn-outline-default mr10" (click)="downloadAttachments()">
+          <i class="fa fa-download"></i> Download all
+        </button>
+      </div>
+
+      <div class="attachment-list" *ngIf="note.attachments">
+        <div class="attachment-item" *ngFor="let att of note.attachments">
+          <div class="attachment-item-action">
+            <button class="btn btn-sm btn-outline-default" type="button">
+              <i class="fa fa-download"></i>
+            </button>
+            <button (click)="cancelUpload(att)" class="btn btn-sm btn-outline-default" type="button">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+          <div class="attachment-item-thumb">
+            <!--<i class="fa fa-file-zip-o"></i>-->
+            <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
+            <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+          </div>
+          <p>{{ att.name }}</p>
+          <span *ngIf="att.thumbnail_url" class="text-fade">{{ att.size | bytes:3 }}</span>
+          <span *ngIf="!att.thumbnail_url" class="text-fade">Uploading</span>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label for="note_form_tags" class="col-sm-2 col-md-1 control-label">Labels</label>
+          <div class="col-sm-10 col-md-11">
+            <input [formControl]="tags" type="text" class="form-control" id="note_form_tags"
+                   placeholder="Tags">
           </div>
         </div>
+      </div>
 
-        <!--<hr class="divider">-->
-        <!--<div class="form-horizontal">-->
-          <!--<div class="form-group">-->
-            <!--<label class="col-sm-2 col-md-1 control-label">Labels</label>-->
-            <!--<div class="col-sm-10 col-md-11">-->
-              <!--&lt;!&ndash;<h-chip [tags]="note?.tags"></h-chip>&ndash;&gt;-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
+      <!--<hr class="divider">-->
+      <!--<div class="form-horizontal">-->
+      <!--<div class="form-group">-->
+      <!--<label class="col-sm-2 col-md-1 control-label">Labels</label>-->
+      <!--<div class="col-sm-10 col-md-11">-->
+      <!--&lt;!&ndash;<h-chip [tags]="note?.tags"></h-chip>&ndash;&gt;-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
 
     </modal-body>
 
@@ -220,7 +227,8 @@
         <button class="btn btn-sm btn-default"><i class="fa fa-share-alt"></i></button>
         <button class="btn btn-sm btn-default"><i class="fa fa-trash-o"></i></button>
         <div class="btn-group">
-          <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+          <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                  data-toggle="dropdown">
             <i class="fa fa-ellipsis-v"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">

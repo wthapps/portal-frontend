@@ -1,26 +1,6 @@
 <modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'" [backdrop]="'static'">
-  <modal-header [show-close]="false">
-    <h4 class="modal-title pull-left">Note</h4>
-    <!-- <div class="modal-title-action">
-      <button class="btn btn-sm btn-default"><i class="fa fa-share-alt"></i></button>
-      <button class="btn btn-sm btn-default"><i class="fa fa-trash-o"></i></button>
-      <div class="btn-group">
-        <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-          <i class="fa fa-ellipsis-v"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-          <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">Make a copy</a>
-          </li>
-          <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">Move to folder</a>
-          </li>
-        </ul>
-      </div>
-    </div> -->
-  </modal-header>
   <modal-body>
-    <h4 class="text-normal mt0">{{ data.title }}</h4>
+    <h3 class="text-normal mt0">{{ data.title }}</h3>
     <div [innerHTML]="data.content"></div>
     <hr class="divider">
     <!-- <div class="row">
@@ -68,4 +48,22 @@
       </div>
     </div> -->
   </modal-body>
+
+  <modal-footer>
+    <div class="modal-title-action pull-left">
+      <button class="btn btn-sm btn-default"><i class="fa fa-trash-o"></i></button>
+      <div class="btn-group">
+        <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                data-toggle="dropdown">
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+          <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="#">Add to my notes</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal">Done</button>
+  </modal-footer>
 </modal>

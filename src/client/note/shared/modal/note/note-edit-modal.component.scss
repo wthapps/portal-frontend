@@ -13,6 +13,54 @@
   }
 }
 
+body .ui-widget-header {
+  &.ql-toolbar {
+    background-color: #F6F6F6;
+
+    .ql-formats {
+      margin-right: 3px;
+
+      button {
+        > i {
+          position: relative;
+          top: -2px;
+        }
+      }
+
+      button, .ql-picker {
+        border: 1px solid $btn-default-border;
+        background-color: #ffffff;
+        &:hover {
+          background-color: #F6F6F6;
+        }
+
+        & + button {
+          margin-left: -1px;
+        }
+        &:first-child {
+          @include border-left-radius(4px);
+        }
+        &:last-child {
+          @include border-right-radius(4px);
+        }
+      }
+      .ql-picker {
+        @include border-left-radius(4px);
+        @include border-right-radius(4px);
+      }
+    }
+  }
+}
+
+.ql-font {
+  .ql-picker-label {
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+  }
+}
+
 /* Set dropdown font-families */
 [quill-editor-toolbar] .ql-font span[data-label="Lato"]::before {
   font-family: "Lato";
@@ -21,6 +69,34 @@
 /* Set content font-families */
 .ql-font-lato {
   font-family: "Lato";
+}
+
+.ql-font-gotham, .ql-font span[data-value="gotham"]:before {
+  font-family: 'gotham', 'Gotham', 'helvetica', 'arial', 'sans-serif';
+}
+
+.ql-font-georgia, .ql-font span[data-value="georgia"]:before {
+  font-family: 'georgia', 'Georgia', 'palatina', 'serif';
+}
+
+.ql-font-helvetica, .ql-font span[data-value="helvetica"]:before {
+  font-family: 'helvetica', 'Helvetica', 'arial', 'sans-serif';
+}
+
+.ql-font-courier-new, .ql-font span[data-value="courier-new"]:before {
+  font-family: 'courier new', 'Courier New', 'courier', 'monospace';
+}
+
+.ql-font-times-new-roman, .ql-font span[data-value="times-new-roman"]:before {
+  font-family: 'times new roman', 'Times New Roman', 'times', 'serif';
+}
+
+.ql-font-trebuchet-ms, .ql-font span[data-value="trebuchet-ms"]:before {
+  font-family: 'trebuchet ms', 'Trebuchet MS', 'geneva', 'sans-serif';
+}
+
+.ql-font-verdana, .ql-font span[data-value="verdana"]:before {
+  font-family: 'verdana', 'Verdana', 'helvetica', 'sans-serif';
 }
 
 .ql-snow .ql-picker.ql-size {
@@ -49,7 +125,15 @@
   }
 }
 
+.ql-container {
+  height: auto !important;
 
-#note_form_title{
+  hr {
+    border-top-color: #ccc;
+  }
+}
+
+
+#note_form_title {
   font-size: 24px;
 }
