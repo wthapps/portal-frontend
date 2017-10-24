@@ -130,6 +130,13 @@ export class AppComponent implements OnInit, OnDestroy {
         this.mixedEntityService.update({payload: event.payload}, true)
           .subscribe((res: any) => {
             this.store.dispatch(new note.NotesDeleted(event.payload));
+            this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: event.payload});
+            // Delete old folders
+            _.forEach(event.payload, (item: any) => {
+              item.parent_id = item.parent_old_id;
+            });
+            this.commonEventService.broadcast({action: 'destroy', channel: 'noteLeftMenu', payload: event.payload});
+
           });
         break;
       case 'note:mixed_entity:make_a_copy':

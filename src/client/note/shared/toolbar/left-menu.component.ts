@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding, Input, OnDestroy } from '@angular/core';
 import { Constants } from '../../../core/shared/config/constants';
 import { ZNoteService } from '../services/note.service';
-import * as fromFolder from '../reducers/folder';
+import * as fromFolder from '../actions/folder';
 import * as fromRoot from '../reducers/index';
 import { Store } from '@ngrx/store';
 
@@ -35,6 +35,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       if(!(event.payload instanceof Array)) {
         event.payload = [event.payload];
       }
+      console.log(event);
       switch(event.action) {
         case "update": {
           for(let folder of event.payload) {
@@ -43,14 +44,16 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
           break;
         }
         case "destroy": {
-
           for(let folder of event.payload) {
             this.destroy(folder, this.noteFoldersTree);
           }
+
           break;
         }
         default:
       }
+
+
     })
   }
 
@@ -90,7 +93,6 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       if (_.some(folders, ['id', target.id])) {
         for(let folder of folders) {
           if (folder.id == target.id) {
-            // Keep items in folder
             folder.label = target.label;
             folder.name = target.name;
           };
@@ -101,7 +103,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       return;
     }
     for(let folder of folders) {
-      if (folder.items instanceof Array && folder.items.length > 1) {
+      if (folder.items instanceof Array && folder.items.length > 0) {
         this.update(target, folder.items);
       }
       if (target.parent_id == folder.id) {
