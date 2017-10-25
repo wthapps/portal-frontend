@@ -10,6 +10,7 @@ import { Filters } from '../reducers/note';
 import { ZNoteService } from '../services/note.service';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
@@ -38,7 +39,7 @@ export class NoteEffects {
     .switchMap((payload: any) => {
       return this.noteService.update(payload)
         .map((res: any) => {
-          this.toastsService.success('Note updated successfully, yay');
+          // this.toastsService.success('Note updated successfully, yay');
           return ({type: note.NOTE_UPDATED, payload: res['data']});
         } )
         .catch(() => {
@@ -72,7 +73,9 @@ export class NoteEffects {
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
     return this.apiBaseService.get(`note/mixed_entities`, payload)
-      .map((res: any) => ({type: note.LOAD_SUCCESS, payload: res.data}))
+      .mergeMap((res: any) => { return [
+          {type: note.LOAD_SUCCESS, payload: res.data},
+          {type: note.SET_LIST_PERMISSION, payload: {canAdd: false}}]; })
       .catch(() => of({type: note.LOAD_SUCCESS, payload: []}));
     });
 
@@ -81,7 +84,9 @@ export class NoteEffects {
     .ofType(note.TRASH_LOAD)
     .switchMap(() => {
       return this.apiBaseService.get(`note/trashs`)
-        .map((res: any) => ({type: note.LOAD_SUCCESS, payload: res.data}))
+        .mergeMap((res: any) => { return [
+          {type: note.LOAD_SUCCESS, payload: res.data},
+          {type: note.SET_LIST_PERMISSION, payload: {canAdd: false}}]; })
         .catch(() => of({type: note.LOAD_SUCCESS, payload: []}));
     });
 

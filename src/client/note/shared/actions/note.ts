@@ -32,6 +32,8 @@ export const RESTORE    = '[Trash] Restore';
 export const PERMANENT_DELETE    = '[Trash] Permanent Delete';
 export const EMPTY_ALL    = '[Trash] Empty All';
 export const ALL_DELETED    = '[Trash] All Deleted';
+export const SET_PAGE_TYPE    = '[MixedEntity] Set Page Type';
+export const SET_LIST_PERMISSION    = '[MixedEntity] Set List Permission';
 
 // Actions
 

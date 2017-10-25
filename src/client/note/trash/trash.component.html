@@ -1,4 +1,19 @@
 <z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" page="TRASH">
+  <div class="btn-group">
+    <button type="button" class="btn btn-primary btn-min dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+      New
+    </button>
+    <ul class="dropdown-menu dropdown-menu-sm">
+      <li><a (click)="onNewNote()" href="javascript:;"><i class="fa fa-sticky-note"></i> New note</a></li>
+      <li><a (click)="onFolder()" href="javascript:;"><i class="fa fa-folder-o"></i> New folder</a></li>
+    </ul>
+  </div>
+
+
+  <span class="btn-text ml15">
+    Trash
+  </span>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
   <ng-container *ngIf="!(loading$ | async); else loadingBlock">

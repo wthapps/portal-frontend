@@ -47,4 +47,18 @@ export class ZNoteTrashComponent implements OnInit {
 
     this.store.dispatch({type: note.TRASH_LOAD});
   }
+
+  onNewNote() {
+    this.noteService.modalEvent({
+      action: 'note:open_note_add_modal',
+      payload: {parent_id: null}
+    });
+  }
+
+  onFolder() {
+    this.noteService.modalEvent({
+      action: 'note:folder:create',
+      payload: {parent_id: null}
+    });
+  }
 }

@@ -35,6 +35,7 @@ export interface State {
   viewMode: string;
   loading: boolean;
   loaded: boolean;
+  listPermission: { canAdd: boolean};
 };
 
 export const noteInitialState: State = {
@@ -49,7 +50,8 @@ export const noteInitialState: State = {
   selectAll: false,
   viewMode: VIEW_MODE.LIST,
   loading: false,
-  loaded: false
+  loaded: false,
+  listPermission: { canAdd: true},
 };
 
 
@@ -60,7 +62,7 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
     case note.NOTE_ADDED: {
       let hNote: any = {};
       hNote[action['payload']['id']] = action['payload'];
-      let notes = {...state.notes, hNote};
+      let notes = state.listPermission.canAdd ? {...state.notes, hNote} : {...state.notes};
       return {...state, notes: notes, currentNote: action['payload']};
     }
     case note.MULTI_NOTES_ADDED: {
@@ -73,8 +75,8 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
           acc[item.id] = item;
         return acc;}, {});
 
-      let notes: any = {...state.notes, ...hNotes};
-      let folders : any = {...state.folders, ...hFolders};
+      let notes: any = state.listPermission.canAdd ? {...state.notes, ...hNotes} : {...state.notes};
+      let folders : any = state.listPermission.canAdd ? {...state.folders, ...hFolders} : {...state.folders};
 
       return Object.assign({}, state, {notes: notes, folders: folders});
     }
@@ -95,10 +97,10 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       });
     }
     case note.NOTE_UPDATED: {
-      let hNote: any = {};
-      let idx: any = action['payload']['id'];
-      hNote[idx] = {...action['payload'], selected: state.notes[idx].selected};
-      let notes4: any = {...state.notes, ...hNote};
+      let hNote: any = {...action.payload};
+      // let idx: any = action['payload']['id'];
+      // hNote[idx] = {...action['payload'], selected: state.notes[idx]['selected']};
+      let notes4: any = state.listPermission.canAdd ? {...state.notes, hNote}: {...state.notes};
 
       // let noteStack: Note[] = [...state.noteHistory.stack];
       let noteStack: Note[] = state.noteHistory.stack.slice(state.noteHistory.stackId);
@@ -137,6 +139,9 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
     case note.LOAD: {
       return {...state, loading: true};
     }
+    case note.TRASH_LOAD: {
+      return {...state, loading: true};
+    }
     case note.LOAD_SUCCESS: {
       let hNotes: any = action['payload'].reduce((acc: any, item: any) => {
         if (item.object_type == ITEM_TYPE.NOTE)
@@ -156,6 +161,9 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
         loading: false,
         loaded: true
       });
+    }
+    case note.SET_LIST_PERMISSION: {
+      return {...state, listPermission: action['payload']};
     }
     case note.NOTES_DELETED: {
       let noteIds: any[] = action['payload'].reduce((acc: any[], item: any) => {if(item['object_type'] == ITEM_TYPE.NOTE) acc.push(item.id); return acc;}, []);
