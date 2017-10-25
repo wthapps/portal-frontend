@@ -1,9 +1,13 @@
 import { Component, ViewChild, ViewEncapsulation, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../shared/reducers/index';
+
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { Note } from '../../../../core/shared/models/note.model';
 
 declare var $: any;
 declare var _: any;
@@ -12,7 +16,7 @@ declare var _: any;
   moduleId: module.id,
   selector: 'z-note-shared-modal-folder-move',
   templateUrl: 'move.component.html',
-  styleUrls: ['edit.component.css']
+  styleUrls: ['move.component.css']
 })
 
 export class ZNoteSharedModalFolderMoveComponent implements OnInit {
@@ -20,6 +24,9 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
 
   titleModal: string = 'Move to Folder';
   menuItems: any = [];
+  rootFolder: Note;
+  listFolder: Note[] = new Array<Note>();
+
   hasCreateFolder: boolean = false;
 
   form: FormGroup;
@@ -27,7 +34,10 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   folder: any = {};
   selectedObjects: any = [];
 
-  constructor(private fb: FormBuilder, private commonEventService: CommonEventService, private apiBaseService: ApiBaseService) {
+  constructor(private fb: FormBuilder,
+              private commonEventService: CommonEventService,
+              private apiBaseService: ApiBaseService,
+              private store: Store<fromRoot.State>,) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
     });
@@ -44,11 +54,24 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
           folder.label = folder.name;
           folder.icon = 'fa-folder-o';
           folder.items = [];
-          folder.command = (event: any)=> this.loadMenu(event);
+          folder.command = (event: any) => this.loadMenu(event);
           this.menuItems.push(folder);
         }
       }
     });
+
+
+    this.store.select(fromRoot.getCurrentFolder).subscribe(
+      res => {
+        console.log('getCurrentFolder:', res);
+        if (res) {
+          this.nextFolder(res);
+        } else {
+          this.initialMenu();
+        }
+      }
+    );
+
   }
 
   open() {
@@ -68,7 +91,7 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
             folder.icon = 'fa-folder-o';
             folder.styleClass = `js-note-folders-tree-${folder.id}`;
             folder.items = [];
-            folder.command = (event: any)=> this.loadMenu(event);
+            folder.command = (event: any) => this.loadMenu(event);
             event.item.items.push(folder);
           }
         });
@@ -80,6 +103,49 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
       $(htmlTarget).closest('.well-folder-tree').find('a').removeClass('active');
       $(htmlTarget).closest('a').addClass('active');
     }
+  }
+
+  nextFolder(item: any) {
+    this.folder = item;
+
+    this.apiBaseService.get(`note/folders/${item.id}`).subscribe(
+      (res: any) => {
+        console.log('nextFolder:', res);
+        this.rootFolder = res.parent;
+        this.listFolder = res.data;
+      });
+  }
+
+  prevFolder(item: any) {
+
+    if (item.parent_id) {
+      this.apiBaseService.get(`note/folders/${item.parent_id}`).subscribe(
+        (res: any) => {
+          console.log('prevFolder:', res);
+          this.rootFolder = res.parent;
+          this.folder = res.parent;
+          this.listFolder = res.data;
+        });
+    } else {
+      this.initialMenu();
+    }
+  }
+
+  initialMenu() {
+    this.apiBaseService.get(`note/folders`).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.rootFolder = null;
+        this.listFolder = res.data;
+      });
+  }
+
+  chooseFolder(item: any) {
+    this.folder.parent_id = item.id;
+  }
+
+  isCurrent(item: any) {
+    return _.some(this.selectedObjects, { 'id': item.id });
   }
 
 

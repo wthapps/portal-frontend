@@ -6,15 +6,29 @@
     <modal-body>
       <p>Choose folder to move to</p>
       <div class="form-group">
-
-        <div class="well-folder-tree-root">
-          <a [ngClass]="{'active': folder.parent_id == null}" href="javascript:;"
-             (click)="setDestinationFolder({name: 'My notes', parent_id: null})">
-            My Notes
-          </a>
-        </div>
-        <div class="well-folder-tree">
-          <p-panelMenu [model]="menuItems"></p-panelMenu>
+        <div class="well-folder-move">
+          <div class="well-folder-move-header">
+            <button *ngIf="rootFolder" (click)="prevFolder(rootFolder)" class="btn btn-outline-default" type="button">
+              <i class="fa fa-arrow-left" aria-hidden="true"></i> <i class="fa fa-folder-o" aria-hidden="true"></i>
+              {{ rootFolder.name }}
+            </button>
+            <button *ngIf="!rootFolder" [disabled]="!rootFolder" class="btn btn-outline-default" type="button">
+              <i class="fa fa-sticky-note"></i> My Notes
+            </button>
+          </div>
+          <div class="well-folder-move-content">
+            <ul class="list-unstyled">
+              <li *ngFor="let item of listFolder" [ngClass]="{'disabled': isCurrent(item)}">
+                <span class="can-click" (click)="nextFolder(item)"><i class="fa fa-chevron-right"></i></span>
+                <div class="can-click"
+                     [ngClass]="{'active': item.id == folder?.parent_id }"
+                     (click)="chooseFolder(item)"
+                     (dblclick)="nextFolder(item)">
+                  <i class="fa fa-folder-o" aria-hidden="true"></i> {{ item.name }}
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </modal-body>
