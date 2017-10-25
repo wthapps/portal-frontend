@@ -55,6 +55,12 @@ export class ZNoteSharedWithMeComponent implements OnInit, OnDestroy {
   }
 
   onNewNote() {
-    this.noteService.modalEvent({action: 'note:open_note_edit_modal'});
+    this.noteService.modalEvent({action: 'note:open_note_add_modal'});
+  }
+
+  onFolder() {
+    this.noteService.modalEvent({
+      action: 'note:folder:create'
+    });
   }
 }

@@ -136,6 +136,18 @@
 .btn-outline {
 }
 
+.btn-text {
+  cursor: auto;
+  &, &:hover, &:focus {
+    background-color: transparent;
+    @include box-shadow(none);
+    padding: 6px 12px;
+    line-height: 20px;
+    font-weight: bold;
+    border:1px solid transparent;
+  }
+}
+
 .btn-outline-default {
   @include button-outline($btn-default-color);
   border-color: #9B9B9B;
