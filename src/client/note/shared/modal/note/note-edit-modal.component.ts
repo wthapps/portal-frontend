@@ -4,6 +4,7 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/takeUntil';
@@ -41,6 +42,9 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
   @ViewChild('editor') editor: Editor;
   @Input() note: Note = new Note();
+
+  customEditor: any;
+
 
   // @HostListener('document:keypress', ['$event'])
   // onKeyPress(ev: KeyboardEvent) {
@@ -111,6 +115,13 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
       }
     });
 
+
+    this.customEditor = this.editor.quill;
+
+    this.customEditor.options.readOnly = true;
+    // console.log(this.customEditor.options.readOnly);
+    console.log(this.customEditor.options.readOnly);
+
     // Add custom to whitelist
     let Font = Quill.import('formats/font');
     Font.whitelist = ['gotham', 'georgia', 'helvetica', 'courier-new', 'times-new-roman', 'trebuchet', 'verdana'];
@@ -154,8 +165,8 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
   assignFormValue(data: Note) {
     this.form = this.fb.group({
-      'title': [_.get(data, 'title', ''), Validators.compose([Validators.required])],
-      'content': [_.get(data, 'content', '')],
+      'title': [_.get(data, 'title', '')],
+      'content': [_.get(data, 'content', ''), Validators.compose([Validators.required])],
       'tags': [_.get(data, 'tags', [])],
       'attachments': [_.get(data, 'attachments', [])]
     });
@@ -198,7 +209,10 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   divider() {
-    console.log(this.editor);
+    let range = this.customEditor.getSelection(true);
+    this.customEditor.insertText(range.index, '\n', Quill.sources.USER);
+    this.customEditor.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER);
+    this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
   }
 
   /*

@@ -104,6 +104,7 @@ body .ui-widget-header {
 }
 
 .ql-editor {
+  min-height: 320px;
   ul[data-checked=false], ul[data-checked=true] {
     > li::before {
       @include fa-icon;
@@ -133,7 +134,13 @@ body .ui-widget-header {
   }
 }
 
-
 #note_form_title {
   font-size: 24px;
+}
+
+.note-read-only {
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
 }

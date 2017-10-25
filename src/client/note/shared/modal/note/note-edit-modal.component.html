@@ -2,13 +2,12 @@
   <modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'" [backdrop]="'static'">
 
     <modal-body>
-
-      <div class="form-group no-label" [ngClass]="{'has-error': (!title.valid && title.touched)}">
+      <div class="form-group no-label">
         <input autofocus [formControl]="title" type="text" class="form-control" id="note_form_title"
                placeholder="Title">
       </div>
       <div class="form-group">
-        <p-editor #editor formControlName="content" [style]="{'min-height':'320px'}">
+        <p-editor #editor formControlName="content">
           <p-header>
             <div class="ql-format-group">
               <div class="ql-formats">
