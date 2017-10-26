@@ -31,7 +31,7 @@ export function reducer(state = initialState, action: folder.Actions): State {
       return {...state};
     }
     case folder.FOLDER_UPDATED: {
-      return state;
+      return {...state, folders: action['payload']};
     }
     case folder.SET_FOLDER_PATH: {
       let convertedPath: any[] = action['payload'];

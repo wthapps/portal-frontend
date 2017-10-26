@@ -71,8 +71,9 @@ export function reducer(state: any = {
       return stateClone;
 		case REMOVE_SELECTED_CONTACT:
 			_.remove(stateClone.current.selectedContacts, (contact: any) => {return contact.id == action.payload.id});
+      if(stateClone.current.selectedContacts.length == 0) stateClone.changed = false;
 			return stateClone;
     default:
-      return stateClone;
+      return state;
   }
 }

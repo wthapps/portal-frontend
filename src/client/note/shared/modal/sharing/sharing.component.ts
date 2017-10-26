@@ -103,6 +103,10 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
     }
   }
 
+  close() {
+    this.modal.close();
+  }
+
   selectContact(contact: any) {
     this.store.dispatch({type: fromShareModal.ADD_SELECTED_CONTACT, payload: contact});
   }

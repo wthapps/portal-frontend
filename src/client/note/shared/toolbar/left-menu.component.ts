@@ -9,6 +9,7 @@ import * as note from '../actions/note';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Router } from '@angular/router';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
+import * as folder from '../actions/folder';
 
 declare let $: any;
 declare let _: any;
@@ -35,7 +36,8 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       if(!(event.payload instanceof Array)) {
         event.payload = [event.payload];
       }
-      console.log(event);
+      event.payload = event.payload.filter((i: any) => {return i.object_type == 'folder'});
+
       switch(event.action) {
         case "update": {
           for(let folder of event.payload) {
@@ -47,13 +49,11 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
           for(let folder of event.payload) {
             this.destroy(folder, this.noteFoldersTree);
           }
-
+          this.store.dispatch({type: folder.FOLDER_UPDATED, payload: this.noteFoldersTree});
           break;
         }
         default:
       }
-
-
     })
   }
 

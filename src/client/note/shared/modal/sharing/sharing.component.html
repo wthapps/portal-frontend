@@ -22,7 +22,7 @@
     </div>
 
     <div class="modal-body-collapse">
-      <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
+      <a *ngIf="sharedObjects.length == 1" role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
          aria-controls="collapseExample">
         Shared with {{ sharedContacts.length }} Contacts
       </a>
@@ -85,10 +85,13 @@
     </div>
   </modal-body>
   <modal-footer>
-    <button *ngIf="showCancelButton" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
-    <button type="button" [ngClass]="{'text-disable': !changed}"
+    <button *ngIf="showCancelButton && changed" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
+    <button *ngIf="changed" type="button" [ngClass]="{'text-disable': !changed}"
             [disabled]="!changed" (click)="save()"
             class="btn btn-outline-primary btn-min">Save changes
+    </button>
+    <button *ngIf="!changed" type="button" (click)="close()"
+            class="btn btn-outline-primary btn-min"> Done
     </button>
   </modal-footer>
 </modal>

@@ -38,13 +38,13 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
   permanentDelete() {
     if (this.selectedObjects.length >= 1) {
       let message = `You are about to delete Folder(s).
-       Once deleted - you cannot Undo deleting. 
+       Once deleted - you cannot Undo deleting.
        <br/>&emsp;Folder and all included Notes and sub-folders will be permanently deleted`;
       let header = 'Delete Note and Folder';
 
       if (this.isOnlyNote()) {
         message = `You are about to delete Note(s).
-       Once deleted - you cannot Undo deleting. 
+       Once deleted - you cannot Undo deleting.
        <br/>&emsp;Notes will be permanently deleted`;
         header = 'Delete Note';
       }
@@ -79,6 +79,7 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
 
   restore() {
     this.store.dispatch({type: note.RESTORE, payload: this.selectedObjects});
+    this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: this.selectedObjects});
   }
   isOnlyNote(): boolean {
     let result = true;
