@@ -97,10 +97,9 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       });
     }
     case note.NOTE_UPDATED: {
-      let hNote: any = {...action.payload};
-      // let idx: any = action['payload']['id'];
-      // hNote[idx] = {...action['payload'], selected: state.notes[idx]['selected']};
-      let notes4: any = state.listPermission.canAdd ? {...state.notes, hNote}: {...state.notes};
+      let hNote: any = {};
+      hNote[action.payload.id] = action.payload;
+      let notes4: any = state.listPermission.canAdd ? {...state.notes, ...hNote}: {...state.notes};
 
       // let noteStack: Note[] = [...state.noteHistory.stack];
       let noteStack: Note[] = state.noteHistory.stack.slice(state.noteHistory.stackId);

@@ -39,14 +39,13 @@ export class ZNoteSharedModalNoteViewComponent {
   }
 
   pdfDownload() {
-    let html = this.getModalHtmlContent();
-    let doc = new jsPDF();
-    doc.fromHTML(html, 10, 10);
-    doc.save(`${this.data.title}.pdf`);
+    // let html = this.getModalHtmlContent();
+    // let doc = new jsPDF();
+    // doc.fromHTML(html, 10, 10);
+    // doc.save(`${this.data.title}.pdf`);
 
-
-    // this.noteService.get(this.data.id).subscribe((res: any) => {
-    //   console.debug('pdf Download res: ', res);
-    // })
+    this.noteService.get(this.data.id).subscribe((res: any) => {
+      console.debug('pdf Download res: ', res);
+    })
   }
 }
