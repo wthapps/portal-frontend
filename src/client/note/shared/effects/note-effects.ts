@@ -75,7 +75,7 @@ export class NoteEffects {
     return this.apiBaseService.get(`note/mixed_entities`, payload)
       .mergeMap((res: any) => { return [
           {type: note.LOAD_SUCCESS, payload: res.data},
-          {type: note.SET_LIST_PERMISSION, payload: {canAdd: false}}]; })
+          {type: note.SET_LIST_PERMISSION, payload: {canAdd: true}}]; })
       .catch(() => of({type: note.LOAD_SUCCESS, payload: []}));
     });
 
