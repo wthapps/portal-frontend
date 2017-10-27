@@ -43,12 +43,12 @@ export class ZNoteSharedModalNoteViewComponent {
   }
 
   pdfDownload() {
-    // this.api.get('note/notes/pdf_download/' + this.data.id).subscribe((res: any) => {
-    //   console.debug('pdf Download res: ', res);
-    //
-    //   var blob = new Blob([res], {type: 'application/pdf'});
-    //   saveAs(blob, 'note.pdf');
-    // })
+    this.api.download('note/notes/pdf_download/' + this.data.id).subscribe((res: any) => {
+      // console.debug('pdf Download res: ', res);
+
+      var blob = new Blob([res.blob()], {type: 'application/pdf'});
+      saveAs(blob, this.data.title + '.pdf');
+    })
   }
 
   print() {
