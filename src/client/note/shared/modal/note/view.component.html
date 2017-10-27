@@ -1,5 +1,5 @@
-<modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'" [backdrop]="'static'">
-  <modal-body>
+<modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'" [backdrop]="'static'" >
+  <modal-body id="noteview">
     <h3 class="text-normal mt0">{{ data.title }}</h3>
     <div class="note-read-only" [innerHTML]="data.content"></div>
     <hr class="divider">
@@ -43,6 +43,26 @@
         </div>
       </div>
     </div> -->
+    <div class="attachment-list" *ngIf="data.attachments">
+      <div class="attachment-item" *ngFor="let att of data.attachments">
+        <div class="attachment-item-action">
+          <button class="btn btn-sm btn-outline-default" type="button">
+            <i class="fa fa-download"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-default" type="button">
+            <i class="fa fa-trash-o"></i>
+          </button>
+        </div>
+        <div class="attachment-item-thumb">
+          <!--<i class="fa fa-file-zip-o"></i>-->
+          <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
+          <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+        </div>
+        <p>{{ att.name }}</p>
+        <span *ngIf="att.thumbnail_url" class="text-fade">{{ att.size | bytes:3 }}</span>
+        <span *ngIf="!att.thumbnail_url" class="text-fade">Uploading</span>
+      </div>
+    </div>
   </modal-body>
 
   <modal-footer>
@@ -61,6 +81,7 @@
       </div>
     </div>
     <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal">Done</button>
+    <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal" (click)="print()">Print</button>
     <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal" (click)="pdfDownload()">Export as PDF</button>
   </modal-footer>
 </modal>

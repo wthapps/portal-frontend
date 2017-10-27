@@ -3,9 +3,12 @@ import { Component, ViewChild, ViewEncapsulation, Input, ElementRef, ViewChildre
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Note } from '../../../../core/shared/models/note.model';
 import { ZNoteService } from '../../services/note.service';
+import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
 
 declare let $: any;
 declare let jsPDF: any;
+declare let saveAs: any;
+declare let printJS: any;
 
 @Component({
   moduleId: module.id,
@@ -20,7 +23,8 @@ export class ZNoteSharedModalNoteViewComponent {
   @ViewChildren('pModal') pModals: QueryList<any>;
   @Input() data: Note;
 
-  constructor( private noteService: ZNoteService) {
+  constructor( private noteService: ZNoteService,
+              private api: ApiBaseService) {
   }
 
   open() {
@@ -39,13 +43,15 @@ export class ZNoteSharedModalNoteViewComponent {
   }
 
   pdfDownload() {
-    // let html = this.getModalHtmlContent();
-    // let doc = new jsPDF();
-    // doc.fromHTML(html, 10, 10);
-    // doc.save(`${this.data.title}.pdf`);
+    // this.api.get('note/notes/pdf_download/' + this.data.id).subscribe((res: any) => {
+    //   console.debug('pdf Download res: ', res);
+    //
+    //   var blob = new Blob([res], {type: 'application/pdf'});
+    //   saveAs(blob, 'note.pdf');
+    // })
+  }
 
-    this.noteService.get(this.data.id).subscribe((res: any) => {
-      console.debug('pdf Download res: ', res);
-    })
+  print() {
+    printJS({ printable: 'noteview', type: 'html', header: this.data.title});
   }
 }
