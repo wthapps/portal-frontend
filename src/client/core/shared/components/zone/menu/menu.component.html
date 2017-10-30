@@ -40,7 +40,7 @@
 
     <li class="has-sub" [ngClass]="{'active': urls.media == hostname && !isProfileTab, 'show': urls.media == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('media')">
-        Picture
+        Pictures
       </a>
       <ul [ngClass]="{'active': urls.media == hostname}" class="menuleft-nav-sub">
         <ng-template ngFor let-media [ngForOf]="mediaMenu" let-i="index">
@@ -60,13 +60,13 @@
         Notes
       </a>
     </li>
-    
+
     <ng-content></ng-content>
 
     <li class="has-sub has-action"
         [ngClass]="{'active': urls.contact == hostname && !isProfileTab, 'show': urls.contact == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('contact')">
-        Contact
+        Contacts
       </a>
       <ul [ngClass]="{'active': urls.contact == hostname}"
           class="menuleft-nav-sub"
@@ -80,7 +80,7 @@
         </li>
         <li class="divider"></li>
         <li>
-          <a draggable="false" href="javascript:;">
+          <a draggable="false" href="javascript:void(0);" style="cursor: default;">
             <i class="fa fa-tag"></i> Labels
           </a>
         </li>

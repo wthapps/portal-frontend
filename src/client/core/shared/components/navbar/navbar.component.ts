@@ -102,6 +102,9 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       case 'contacts':
         url = `${Constants.baseUrls.contact}`;
         break;
+      case 'notes':
+        url = `${Constants.baseUrls.note}`;
+        break;
     }
 
     window.location.href = url + '/' + path;
