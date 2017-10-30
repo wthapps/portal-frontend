@@ -55,53 +55,12 @@
       </ul>
     </li>
 
-    <!-- <li class="has-sub has-action" [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
+    <li *ngIf="urls.note != hostname" class="has-sub has-action" [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('note')">
         Notes
       </a>
-      <ul [ngClass]="{'active': urls.note == hostname}" class="menuleft-nav-sub">
-        <li [routerLinkActive]="['active']">
-          <a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']" (click)="onNoteClick($event)">
-            {{ noteMenu[0].name }}
-          </a>
-        </li>
-        <ng-template ngFor let-folder [ngForOf]="noteFolders" let-i="index">
-          <li>
-            <a class="folder-title" [routerLink]="['/folders', folder.id]" class="">
-              {{ folder.name }}
-            </a>
-            <div class="menuleft-nav-sub-action" >
-              <span class="can-click"
-                    (click)="doEvent({action:'note:folder:edit', payload: folder})"
-                    title="edit folder name">
-                <i class="fa fa-pencil"></i>
-              </span>
-              <span class="can-click" (click)="doEvent({action:'note:folder:delete', payload: folder})" title="delete label">
-                <i class="fa fa-trash"></i>
-              </span>
-            </div>
-          </li>
-        </ng-template>
-        <li class="well-folder-tree-left">
-          <div class="well-folder-tree">
-            <p-panelMenu [model]="noteFoldersTree"></p-panelMenu>
-          </div>
-        </li>
-        <ng-template ngFor let-note [ngForOf]="noteMenu" let-i="index" >
-          <li *ngIf="note.name != '' && i > 0" [routerLinkActive]="['active']" [ngClass]="{'hidden': note.link == '/search'}">
-            <a *ngIf="note.link != '#'" draggable="false" [routerLink]="[note.link]" [queryParams]="{}"
-               (click)="onNoteClick($event)">
-              <i class="{{ note.icon }}"></i> {{ note.name }}
-            </a>
-            <a *ngIf="note.link == '#'" class="can-click" draggable="false" (click)="doEvent({action: note.action})">
-              <i class="{{ note.icon }}"></i> {{ note.name }}
-            </a>
-          </li>
-          <li class="divider" *ngIf="note.name == ''"></li>
-        </ng-template>
-
-      </ul>
-    </li> -->
+    </li>
+    
     <ng-content></ng-content>
 
     <li class="has-sub has-action"
