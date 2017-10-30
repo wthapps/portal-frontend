@@ -73,17 +73,24 @@ export class FolderItemComponent implements OnInit, OnDestroy {
 
   onClick() {
     this.selected = !this.selected;
+    console.log(this.data);
 
     if (this.pressingCtrlKey) {
       this.store.dispatch(new note.Select({
         id: this.data.id,
         object_type: this.data.object_type,
+        name: this.data.name,
         parent_id: this.data.parent_id
       }));
     } else {
       this.store.dispatch({
         type: note.SELECT_ONE,
-        payload: {id: this.data.id, object_type: this.data.object_type, parent_id: this.data.parent_id}
+        payload: {
+          id: this.data.id,
+          object_type: this.data.object_type,
+          name: this.data.name,
+          parent_id: this.data.parent_id
+        }
       });
     }
   }
@@ -92,6 +99,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
     this.store.dispatch(new note.Select({
       id: this.data.id,
       object_type: this.data.object_type,
+      name: this.data.name,
       parent_id: this.data.parent_id
     }));
   }
