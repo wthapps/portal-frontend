@@ -30,7 +30,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: folders});
     });
     this.sub2 = this.commonEventService.filter((event: any) => event.channel == 'noteLeftMenu').subscribe((event: any) => {
-      if(!event.payload || event.action == "") {
+      if(!event.payload || event.action == '') {
         return;
       }
       if(!(event.payload instanceof Array)) {
@@ -39,13 +39,13 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       event.payload = event.payload.filter((i: any) => {return i.object_type == 'folder'});
 
       switch(event.action) {
-        case "update": {
+        case 'update': {
           for(let folder of event.payload) {
             this.update(folder, this.noteFoldersTree);
           }
           break;
         }
-        case "destroy": {
+        case 'destroy': {
           for(let folder of event.payload) {
             this.destroy(folder, this.noteFoldersTree);
           }
