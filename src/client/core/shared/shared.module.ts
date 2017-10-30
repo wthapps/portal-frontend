@@ -72,6 +72,8 @@ import { InvitationModule } from './components/invitation/invitation.module';
 import { Ng2HdModule } from './ng2-hd/ng2-hd.module';
 import { WthConfirmModule } from './components/confirmation/wth-confirm.module';
 import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
+import { BoxLoadingModule } from './components/box-loading/box-loading.module';
+import { BoxNoDataModule } from './components/box-no-data/box-no-data.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -107,6 +109,8 @@ import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
     PanelMenuModule,
 
     WthConfirmModule,
+    BoxLoadingModule,
+    BoxNoDataModule,
 
     FooterModule,
     HeaderModule,

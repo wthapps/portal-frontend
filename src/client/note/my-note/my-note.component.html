@@ -29,7 +29,17 @@
     </ng-container>
   </ng-container>
 
-  <ng-template #loadingBlock>...Loading </ng-template>
-  <ng-template #noDataBlock>[MY NOTE] No data  </ng-template>
+  <ng-template #loadingBlock>
+    <box-loading></box-loading>
+  </ng-template>
+  <ng-template #noDataBlock>
+    <box-no-data [icon]="'fa fa-sticky-note'"
+                 [title]="'There is no note!'"
+                 [subTitle]="'Try to update create one'">
+      <a class="btn btn-outline-primary" (click)="onNewNote()" href="javascript:;">
+        <i class="fa fa-plus" aria-hidden="true"></i> New note
+      </a>
+    </box-no-data>
+  </ng-template>
 
 </div>

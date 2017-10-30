@@ -17,5 +17,15 @@
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
   <note-list [data]="data" [viewOption]="viewOption"></note-list>
-</div>
 
+  <ng-template #loadingBlock>
+    <box-loading></box-loading>
+  </ng-template>
+  <ng-template #noDataBlock>
+    <box-no-data
+      [icon]="'fa fa-share-alt'"
+      [title]="'There is no note shared by you!'"
+      [subTitle]="'Note can be shared to your connected contact'">
+    </box-no-data>
+  </ng-template>
+</div>

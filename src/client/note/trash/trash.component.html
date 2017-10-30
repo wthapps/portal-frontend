@@ -29,6 +29,15 @@
     </ng-container>
   </ng-container>
 
-  <ng-template #loadingBlock>...Loading </ng-template>
-  <ng-template #noDataBlock>[TRASH] No data  </ng-template>
+
+  <ng-template #loadingBlock>
+    <box-loading></box-loading>
+  </ng-template>
+  <ng-template #noDataBlock>
+    <box-no-data
+      [icon]="'fa fa-trash-o'"
+      [title]="'There is no note or folder in Trash'"
+      [subTitle]="'Move files you don\'t need to Trash. Click on'">
+    </box-no-data>
+  </ng-template>
 </div>

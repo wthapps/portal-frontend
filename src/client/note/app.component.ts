@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewEncapsulation,
+  ViewChild,
+  ViewContainerRef,
+  ComponentFactoryResolver
+} from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
@@ -33,6 +41,7 @@ declare var _: any;
   selector: 'sd-app',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
+  encapsulation: ViewEncapsulation.None,
   entryComponents: [
     NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
@@ -57,13 +66,12 @@ export class AppComponent implements OnInit, OnDestroy {
               private wthConfirmService: WthConfirmService,
               private store: Store<fromRoot.State>,
               private noteService: ZNoteService,
-              private mixedEntityService: MixedEntityService
-  ) {
+              private mixedEntityService: MixedEntityService) {
     // console.log('Environment config', Config);
     this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent' || event.channel == 'noteActionsBar').subscribe((event: any) => {
       this.doEvent(event);
     });
-    this.noteService.modalEvent$.subscribe((event: any)=> this.doEvent(event));
+    this.noteService.modalEvent$.subscribe((event: any) => this.doEvent(event));
     this.folder$ = this.store.select(fromRoot.getCurrentFolder).subscribe((folder: any) => {
       this.currentFolder = folder;
     });
