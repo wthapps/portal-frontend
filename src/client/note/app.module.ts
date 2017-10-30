@@ -26,8 +26,7 @@ import * as fromNote from './shared/reducers/note';
 import * as fromFolder from './shared/reducers/folder';
 import * as fromMixEntity from './shared/mixed-enity/mixed-entity.reducer'
 import { ZNoteTrashModule } from './trash/trash.module';
-
-
+import { ZNotePhotoModule } from './photo/photo.module';
 
 @NgModule({
   imports: [
@@ -44,6 +43,7 @@ import { ZNoteTrashModule } from './trash/trash.module';
     ZNoteMyProfileModule,
     ZNoteSettingsModule,
     ZNoteTrashModule,
+    ZNotePhotoModule,
     ZNoteSharedModule.forRoot(),
 
     StoreModule.forRoot(AppStore),

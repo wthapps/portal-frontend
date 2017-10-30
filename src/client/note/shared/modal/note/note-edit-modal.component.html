@@ -1,5 +1,5 @@
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'" [backdrop]="'static'">
+  <modal id="modal-note-edit" #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'" [backdrop]="'static'">
 
     <modal-body>
       <div class="form-group no-label">
@@ -180,21 +180,23 @@
       <div class="attachment-list" *ngIf="note.attachments">
         <div class="attachment-item" *ngFor="let att of note.attachments">
           <div class="attachment-item-action">
-            <button class="btn btn-sm btn-outline-default" type="button">
+            <button class="btn btn-sm btn-outline-default" type="button" (click)="download(att)">
               <i class="fa fa-download"></i>
             </button>
             <button (click)="cancelUpload(att)" class="btn btn-sm btn-outline-default" type="button">
               <i class="fa fa-trash-o"></i>
             </button>
           </div>
-          <div class="attachment-item-thumb">
-            <!--<i class="fa fa-file-zip-o"></i>-->
-            <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
-            <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+          <div class="can-click" (click)="photoAttachmentClick(att.id)">
+            <div class="attachment-item-thumb">
+              <!--<i class="fa fa-file-zip-o"></i>-->
+              <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
+              <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+            </div>
+            <p>{{ att.name }}</p>
+            <span *ngIf="att.thumbnail_url" class="text-fade">{{ att.size | bytes:3 }}</span>
+            <span *ngIf="!att.thumbnail_url" class="text-fade">Uploading</span>
           </div>
-          <p>{{ att.name }}</p>
-          <span *ngIf="att.thumbnail_url" class="text-fade">{{ att.size | bytes:3 }}</span>
-          <span *ngIf="!att.thumbnail_url" class="text-fade">Uploading</span>
         </div>
       </div>
 

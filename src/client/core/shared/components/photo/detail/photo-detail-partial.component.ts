@@ -1,6 +1,6 @@
 import {
   Component, AfterViewInit, Input, EventEmitter, Output, ViewChild,
-  ViewContainerRef, ComponentFactoryResolver, OnInit, OnChanges, SimpleChanges
+  ViewContainerRef, ComponentFactoryResolver, OnInit, OnChanges, SimpleChanges, OnDestroy
 } from '@angular/core';
 
 import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
@@ -25,7 +25,7 @@ declare let Cropper: any;
     TaggingModalComponent
   ]
 })
-export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnChanges {
+export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   @Input() module: string;
   @Input() photo: any;
@@ -86,13 +86,10 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
       , (e: any) => {
         e.stopPropagation();
       });
+  }
 
-    // $('.photo-detail-img img').load(function () {
-    //   if ($(this).height() > 100) {
-    //     $(this).addClass('bigImg');
-    //   }
-    // });
-
+  ngOnDestroy() {
+    this.event.emit({action: 'destroy'});
   }
 
   loadMenu() {
@@ -197,16 +194,6 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         break;
     }
     return false;
-  }
-
-  open(options: any) {
-    // if (_.has(options, 'show')) {
-    //   this.show = options.show;
-    // }
-  }
-
-  close(options: any) {
-    this.modal.close();
   }
 
   goBack() {

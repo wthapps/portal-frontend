@@ -24,12 +24,15 @@ import { Constants } from '../../../../core/shared/config/constants';
 import { ZNoteService } from '../../services/note.service';
 import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
 import { PhotoUploadService } from '../../../../core/shared/services/photo-upload.service';
+import { Router } from '@angular/router';
+import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
 
 const DEBOUNCE_MS = 1000;
 
 declare var _: any;
 declare var $: any;
 declare var Quill: any;
+declare let saveAs: any;
 
 @Component({
   moduleId: module.id,
@@ -78,8 +81,10 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
   constructor(private fb: FormBuilder,
               private noteService: ZNoteService,
+              protected router: Router,
               private store: Store<fromRoot.State>,
               private photoSelectDataService: PhotoModalDataService,
+              private apiBaseService: ApiBaseService,
               private photoUploadService: PhotoUploadService) {
     this.noSave$ = this.noSaveSubject.asObservable().merge(this.destroySubject, this.closeSubject);
 
@@ -254,6 +259,20 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
           this.store.dispatch(new note.MultiNotesAdded([res['data']]));
         })
     }
+  }
+
+  download(file: any) {
+    this.apiBaseService.download('common/files/download', {id: file.id, object_type: file.object_type}).subscribe((res: any) => {
+      console.log(res);
+      var blob = new Blob([res.blob()], {type: file.content_type});
+      saveAs(blob, file.name);
+    });
+  }
+
+  photoAttachmentClick(photoId: any) {
+    $("#modal-note-edit").css('z-index', '0');
+    $(".modal-backdrop").css('z-index', '0');
+    this.router.navigate([{outlets: {modal: ['photos', photoId, {ids: [photoId]}]}}]);
   }
 
   private subscribePhotoSelectEvents() {

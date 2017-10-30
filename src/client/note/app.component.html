@@ -13,6 +13,8 @@
       </aside>
     </div>
     <div class="main-page-body">
+      <ng-template #modalContainer></ng-template>
+      <router-outlet name="modal"></router-outlet>
       <router-outlet></router-outlet>
     </div>
   </main>
@@ -21,5 +23,3 @@
   <wth-confirm></wth-confirm>
   <h-file-select></h-file-select>
 </div>
-
-<ng-template #modalContainer></ng-template>

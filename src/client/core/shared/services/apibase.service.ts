@@ -91,11 +91,14 @@ export class ApiBaseService {
   }
 
   download(path: string, body: any=''): Observable<Response> {
+    if (typeof body == 'object') {
+      body = JSON.stringify(body);
+    }
     return this.http.post(this._baseUrl + path, body, {
       method: RequestMethod.Post,
       responseType: ResponseContentType.Blob,
       headers: this._headers
-    });
+    }).take(1);
   }
 
   paramsToString(params: any): string {
