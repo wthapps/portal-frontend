@@ -56,6 +56,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.wthico-shared-with-me:before {
+  content: "\e901";
+}
 .wthico-album:before {
   content: "\e900";
   color: #4a4a4a;
