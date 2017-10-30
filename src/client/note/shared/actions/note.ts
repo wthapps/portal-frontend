@@ -135,7 +135,7 @@ export class NotesDeleted implements Action {
 export class Select implements Action {
   readonly type = SELECT;
 
-  constructor(public payload: {id: number, object_type: string, parent_id: number}) {
+  constructor(public payload: any) {
   }
 }
 
@@ -200,4 +200,3 @@ export class MakeACopy implements Action {
 }
 
 export type NoteActions = any;
-

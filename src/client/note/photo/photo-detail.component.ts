@@ -51,9 +51,9 @@ export class NotePhotoDetailComponent extends BasePhotoDetailComponent implement
         this.router.navigate([{outlets: {modal: null}}]);
         break;
       case 'destroy':
-        $("#modal-note-edit").css('z-index', '1050');
-        $("#modal-note-edit").css('display', 'block');
-        $(".modal-backdrop").css('z-index', '1040');
+        $('#modal-note-edit').css('z-index', '1050');
+        $('#modal-note-edit').css('display', 'block');
+        $('.modal-backdrop').css('z-index', '1040');
         break;
       default:
         super.doEvent(event);
