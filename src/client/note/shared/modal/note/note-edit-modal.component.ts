@@ -24,10 +24,13 @@ import { Constants } from '../../../../core/shared/config/constants';
 import { ZNoteService } from '../../services/note.service';
 import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
 import { PhotoUploadService } from '../../../../core/shared/services/photo-upload.service';
+import { FileUploadHelper } from '../../../../core/shared/helpers/file/file-upload.helper';
+import { GenericFile } from '../../../../core/shared/models/generic-file.model';
+import { GenericFileService } from '../../../../core/shared/services/generic-file.service';
 import { Router } from '@angular/router';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
 
-const DEBOUNCE_MS = 1000;
+const DEBOUNCE_MS = 2500;
 
 declare var _: any;
 declare var $: any;
@@ -47,21 +50,8 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   @Input() note: Note = new Note();
 
   customEditor: any;
-
-
-  // @HostListener('document:keypress', ['$event'])
-  // onKeyPress(ev: KeyboardEvent) {
-  //   console.debug('on key press', ev);
-  //
-  //   if(ev.key == 'b' && ev.ctrlKey ) {
-  //     this.undo();
-  //   }
-  //
-  //   if(ev.key == 'n' && ev.ctrlKey ) {
-  //     this.redo();
-  //   }
-  //
-  // }
+  public fileUploadHelper: FileUploadHelper;
+  tooltip: any = Constants.tooltip;
 
   titleModal: string = 'New Note';
 
@@ -84,10 +74,11 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
               protected router: Router,
               private store: Store<fromRoot.State>,
               private photoSelectDataService: PhotoModalDataService,
+              private fileService: GenericFileService,
               private apiBaseService: ApiBaseService,
               private photoUploadService: PhotoUploadService) {
     this.noSave$ = this.noSaveSubject.asObservable().merge(this.destroySubject, this.closeSubject);
-
+    this.fileUploadHelper = new FileUploadHelper();
   }
 
   ngOnDestroy() {
@@ -229,7 +220,22 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     this.form.controls['attachments'].setValue(this.note.attachments);
   }
 
-  selectFiles() {
+  selectFiles(event: any) {
+    console.debug('inside SelectFiles: ', event);
+    let files = event.target.files;
+    if (files.length == 0) {
+      return;
+    }
+    this.fileUploadHelper.allowUpload(files, (filesAllowed: any[], filesNotAllowed: any[]) => {
+      console.debug('file allowed: ', filesAllowed, ' - file NOT allowed: ', filesNotAllowed);
+      this.note.attachments = [...this.note.attachments, ...filesAllowed];
+      // this.form.controls['attachments'].setValue(this.note.attachments);
+
+      this.uploadFiles(filesAllowed);
+    });
+  }
+
+  selectPhotos() {
     this.photoSelectDataService.open({return: true});
     this.subscribePhotoSelectEvents();
   }
@@ -261,6 +267,34 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     }
   }
 
+  private uploadFiles(files: any, parent?: any) {
+    // for (let i = 0; i < files.length; i++) {
+    //   files[0].parent = {
+    //     id: parent.id,
+    //     uuid: '',
+    //     type: 'Chat::Message'
+    //   };
+    // }
+    this.fileUploadHelper.upload(files, (event: any, file: any) => {
+      let genericFile = new GenericFile({
+        file: event.target['result'],
+        name: file.name,
+        content_type: file.type,
+        parent: file.parent
+      });
+      // update current message and broadcast on server
+      this.fileService.create(genericFile)
+        .subscribe((response: any) => {
+          console.log('Upload file successfully', response);
+
+          // this.note.attachments.push(response.data);
+          let index = _.indexOf(this.note.attachments, file);
+          this.note.attachments[index] = {object_type: 'file',...response.data};
+          this.form.controls['attachments'].setValue(this.note.attachments);
+        });
+    });
+  }
+
   download(file: any) {
     this.apiBaseService.download('common/files/download', {id: file.id, object_type: file.object_type}).subscribe((res: any) => {
       console.log(res);
@@ -288,12 +322,12 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
     this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe((files: any) => {
       this.note.attachments.push(...files);
-      this.uploadFiles(files);
+      this.uploadPhotos(files);
     });
   }
 
 
-  private uploadFiles(files: Array<any>) {
+  private uploadPhotos(files: Array<any>) {
 
     _.forEach(files, (file: any) => {
       this.photoUploadService.uploadPhotos([file])

@@ -166,12 +166,20 @@
       <hr class="divider">
 
       <div class="form-group">
-        <button class="btn btn-outline-default mr10" (click)="selectFiles()">
+        <button class="btn btn-outline-default mr10" (click)="selectPhotos()">
           <i class="fa fa-plus"></i> Photo
         </button>
-        <button class="btn btn-outline-default mr10" (click)="selectFiles()">
-          <i class="fa fa-paperclip"></i> Attachment
-        </button>
+        <!--<button class="btn btn-outline-default mr10" (click)="selectFiles()">-->
+          <!--<i class="fa fa-paperclip"></i> Attachment-->
+        <!--</button>-->
+
+        <span class="btn btn-outline-default mr10 btn-style-1 fileinput-button"
+              pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top">
+            <i class="fa fa-paperclip"></i> Attachment
+            <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';" (change)="selectFiles($event)" />
+
+          </span>
+
         <button class="btn btn-outline-default mr10" (click)="downloadAttachments()">
           <i class="fa fa-download"></i> Download all
         </button>
@@ -191,6 +199,7 @@
             <div class="attachment-item-thumb">
               <!--<i class="fa fa-file-zip-o"></i>-->
               <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
+              <i *ngIf="att.thumbnail_url && att.object_type !== 'photo'" class="fa fa-file"></i>
               <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
             </div>
             <p>{{ att.name }}</p>

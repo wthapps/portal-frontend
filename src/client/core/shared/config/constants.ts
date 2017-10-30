@@ -333,6 +333,7 @@ export let Constants = {
     addToAlbum: 'Add to album',
     addToBlacklist: 'Add to blacklist',
     addToFavorites: 'Add to favorites',
+    addAttachments: 'Add attachments',
     back: 'Back',
     cancelUploading: 'Cancel uploading',
     changeView: 'Change view',

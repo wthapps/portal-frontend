@@ -144,3 +144,19 @@ body .ui-widget-header {
     height: auto !important;
   }
 }
+
+
+.fileinput-button{
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  input{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    @include opacity(0);
+    cursor: pointer;
+  }
+}
