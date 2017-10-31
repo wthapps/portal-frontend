@@ -36,6 +36,7 @@ declare var _: any;
 declare var $: any;
 declare var Quill: any;
 declare let saveAs: any;
+declare let printJS: any;
 
 @Component({
   moduleId: module.id,
@@ -307,6 +308,17 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     $("#modal-note-edit").css('z-index', '0');
     $(".modal-backdrop").css('z-index', '0');
     this.router.navigate([{outlets: {modal: ['photos', photoId, {ids: [photoId]}]}}]);
+  }
+
+  pdfDownload() {
+    this.apiBaseService.download('note/notes/pdf_download/' + this.note.id).subscribe((res: any) => {
+      var blob = new Blob([res.blob()], {type: 'application/pdf'});
+      saveAs(blob, this.note.title + '.pdf');
+    })
+  }
+
+  print() {
+    printJS({ printable: 'noteview', type: 'html', header: this.note.title});
   }
 
   private subscribePhotoSelectEvents() {

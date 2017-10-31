@@ -41,7 +41,7 @@
     <div class="menuleft-nav-item has-sub"
          [ngClass]="{'active': urls.media == hostname && !isProfileTab, 'show': urls.media == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('media')">
-        Picture
+        Pictures
       </a>
       <div [ngClass]="{'active': urls.media == hostname}" class="menuleft-nav-sub">
         <ng-template ngFor let-media [ngForOf]="mediaMenu" let-i="index">
@@ -71,7 +71,7 @@
     <div class="menuleft-nav-item has-sub has-action"
          [ngClass]="{'active': urls.contact == hostname && !isProfileTab, 'show': urls.contact == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('contact')">
-        Contact
+        Contacts
       </a>
       <div [ngClass]="{'active': urls.contact == hostname}"
            class="menuleft-nav-sub"

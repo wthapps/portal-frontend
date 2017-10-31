@@ -6,12 +6,12 @@ const ProdConfig: EnvConfig = {
   DOMAIN: 'wthapps.com',
   SUB_DOMAIN: {
     APP: 'https://wthapps.com',
-    MYACCOUNT: 'https://my.wthapps.com',
+    MYACCOUNT: 'https://myaccount.wthapps.com',
     MEDIA: 'https://media.wthapps.com',
     SOCIAL: 'https://social.wthapps.com',
     CHAT: 'https://chat.wthapps.com',
-    CONTACT: 'https://contact.wthapps.com',
-    NOTE: 'https://note.wthapps.com',
+    CONTACT: 'https://contacts.wthapps.com',
+    NOTE: 'https://notes.wthapps.com',
   }
 };
 

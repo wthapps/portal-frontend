@@ -22,27 +22,33 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
             <li>
-              <a (click)="redirectTo('social', '', $event)" href="javascript:;">
+              <a (click)="redirectTo('social', '', $event)" href="javascript:void(0);">
                 <i class="fa fa-globe"></i>
                 <span>Social</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('chat', '', $event)" href="javascript:;">
+              <a (click)="redirectTo('chat', '', $event)" href="javascript:void(0);">
                 <i class="fa fa-comments"></i>
                 <span>Chat</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('media', '', $event)" href="javascript:;">
+              <a (click)="redirectTo('media', '', $event)" href="javascript:void(0);">
                 <i class="fa fa-picture-o"></i>
                 <span>Pictures</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('contacts', '', $event)" href="javascript:;">
+              <a (click)="redirectTo('contacts', '', $event)" href="javascript:void(0);">
                 <i class="fa fa-address-book"></i>
                 <span>Contacts</span>
+              </a>
+            </li>
+            <li>
+              <a (click)="redirectTo('notes', '', $event)" href="javascript:void(0);">
+                <i class="fa fa-sticky-note"></i>
+                <span>Notes</span>
               </a>
             </li>
           </ul>

@@ -7,8 +7,11 @@ import { ZNoteService } from '../services/note.service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import * as note from '../actions/note';
 import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
 declare var _: any;
+declare let saveAs: any;
+declare let printJS: any;
 
 @Component({
   moduleId: module.id,
@@ -27,6 +30,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
 
   constructor(public noteService: ZNoteService,
               private wthConfirm: WthConfirmService,
+              private api: ApiBaseService,
               public commonEventService: CommonEventService) {
     // this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
   }
@@ -106,5 +110,18 @@ export class ZNoteSharedActionBarComponent implements OnInit {
       }
     });
     return result;
+  }
+
+  pdfDownload() {
+    let note = this.selectedObjects[0];
+    this.api.download('note/notes/pdf_download/' + note.id).subscribe((res: any) => {
+      var blob = new Blob([res.blob()], {type: 'application/pdf'});
+      saveAs(blob, note.title + '.pdf');
+    })
+  }
+
+  print() {
+    let note = this.selectedObjects[0];
+    printJS({ printable: 'noteview', type: 'html', header: note.title});
   }
 }
