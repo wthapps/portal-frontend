@@ -77,11 +77,15 @@
           <li role="presentation">
             <a role="menuitem" tabindex="-1" href="#">Add to my notes</a>
           </li>
+          <li role="presentation">
+            <a role="menuitem" href="javascript:;" (click)="print()">Print</a>
+          </li>
+          <li role="presentation">
+            <a role="menuitem" href="javascript:;" (click)="pdfDownload()">Export as PDF</a>
+          </li>
         </ul>
       </div>
     </div>
     <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal">Done</button>
-    <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal" (click)="print()">Print</button>
-    <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal" (click)="pdfDownload()">Export as PDF</button>
   </modal-footer>
 </modal>
