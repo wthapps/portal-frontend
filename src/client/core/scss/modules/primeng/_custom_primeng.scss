@@ -321,28 +321,6 @@ body {
       }
     }
   }
-
-  /*.well-folder-tree-left {
-    overflow: hidden;
-    .well-folder-tree {
-      padding-top: 0;
-      padding-bottom: 0;
-      width: $main-page-left-sm;
-      @media (min-width: $screen-md-min) {
-        width: $main-page-left;
-      }
-      .ui-panelmenu {
-        .ui-panelmenu-header {
-          > a {
-            padding-left: 30px;
-          }
-        }
-        .ui-panelmenu-content {
-          margin-left: 20px;
-        }
-      }
-    }
-  }*/
 }
 
 body {
@@ -362,7 +340,7 @@ body {
           margin-right: 0;
           .ui-panelmenu-headerlink-hasicon {
             margin: 0;
-            padding: 10px 15px 10px 30px;
+            padding: 10px 15px 10px 45px;
             line-height: 1;
             &:hover {
               background-color: lighten(#d8d8d8, 5%);
