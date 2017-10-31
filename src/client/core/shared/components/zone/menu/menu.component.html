@@ -1,92 +1,96 @@
 <nav class="page-menuleft" draggable="false">
-  <ul class="menuleft-nav">
-    <li class="has-sub"
-        [ngClass]="{'active': urls.social == hostname && !isProfileTab, 'show': urls.social == hostname}">
+  <div class="menuleft-nav">
+
+    <div class="menuleft-nav-item has-sub">
       <a draggable="false" href="javascript:;" (click)="onMenu('social')">
         Social Network
       </a>
-      <ul [ngClass]="{'active': urls.social == hostname}" class="menuleft-nav-sub">
+      <div [ngClass]="{'active': urls.social == hostname}" class="menuleft-nav-sub">
         <ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">
-          <li *ngIf="social.name != ''" [routerLinkActive]="['active']" (click)="clearOutlets()"
-              [ngClass]="{'hidden': social.link == '/search'}">
+          <div *ngIf="social.name != ''" [routerLinkActive]="['active']" (click)="clearOutlets()"
+               [ngClass]="{'hidden': social.link == '/search'}" class="menuleft-nav-sub-item">
             <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
               <i class="{{ social.icon }}"></i> {{ social.name }}
             </a>
             <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]">
               <i class="{{ social.icon }}"></i> {{ social.name }}
             </a>
-          </li>
-          <li class="divider" *ngIf="social.name == ''"></li>
+          </div>
+          <div class="divider" *ngIf="social.name == ''"></div>
         </ng-template>
-      </ul>
-    </li>
+      </div>
+    </div>
 
-    <li class="has-sub" [ngClass]="{'active': urls.chat == hostname && !isProfileTab, 'show': urls.chat == hostname}">
+    <div class="menuleft-nav-item has-sub"
+         [ngClass]="{'active': urls.chat == hostname && !isProfileTab, 'show': urls.chat == hostname}">
       <a draggable="false" [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
         Chat
       </a>
-      <ul [ngClass]="{'active': urls.chat == hostname}" class="menuleft-nav-sub" id="zone_menu_chat">
+      <div [ngClass]="{'active': urls.chat == hostname}" class="menuleft-nav-sub">
         <ng-template ngFor let-chat [ngForOf]="chatMenu" let-i="index">
-          <li *ngIf="chat.name != ''" [routerLinkActive]="['active']">
+          <div *ngIf="chat.name != ''" [routerLinkActive]="['active']" class="menuleft-nav-sub-item">
             <a draggable="false" [routerLink]="[chat.link]">
               <i class="{{ chat.icon }}"></i> {{ chat.name }}
             </a>
-          </li>
-          <li class="divider" *ngIf="chat.name == ''"></li>
+          </div>
+          <div class="divider" *ngIf="chat.name == ''"></div>
         </ng-template>
-      </ul>
-    </li>
+      </div>
+    </div>
 
-
-    <li class="has-sub" [ngClass]="{'active': urls.media == hostname && !isProfileTab, 'show': urls.media == hostname}">
+    <div class="menuleft-nav-item has-sub"
+         [ngClass]="{'active': urls.media == hostname && !isProfileTab, 'show': urls.media == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('media')">
         Picture
       </a>
-      <ul [ngClass]="{'active': urls.media == hostname}" class="menuleft-nav-sub">
+      <div [ngClass]="{'active': urls.media == hostname}" class="menuleft-nav-sub">
         <ng-template ngFor let-media [ngForOf]="mediaMenu" let-i="index">
-          <li *ngIf="media.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
+          <div *ngIf="media.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}"
+               class="menuleft-nav-sub-item">
             <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}">
               <i class="{{ media.icon }}"></i> {{ media.name }}
             </a>
-          </li>
-          <li class="divider" *ngIf="media.name == ''"></li>
+          </div>
+          <div class="divider" *ngIf="media.name == ''"></div>
         </ng-template>
 
-      </ul>
-    </li>
+      </div>
+    </div>
 
-    <li *ngIf="urls.note != hostname" class="has-sub has-action" [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
+
+    <div class="menuleft-nav-item has-sub has-action"
+         *ngIf="urls.note != hostname"
+         [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('note')">
         Notes
       </a>
-    </li>
-    
+    </div>
+
     <ng-content></ng-content>
 
-    <li class="has-sub has-action"
-        [ngClass]="{'active': urls.contact == hostname && !isProfileTab, 'show': urls.contact == hostname}">
+    <div class="menuleft-nav-item has-sub has-action"
+         [ngClass]="{'active': urls.contact == hostname && !isProfileTab, 'show': urls.contact == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('contact')">
         Contact
       </a>
-      <ul [ngClass]="{'active': urls.contact == hostname}"
-          class="menuleft-nav-sub"
-          id="zone_menu_contact"
-          [routerLinkActive]="['active']">
-        <li [ngClass]="(currentLabel === 'all contacts') ? 'active' : ''">
+      <div [ngClass]="{'active': urls.contact == hostname}"
+           class="menuleft-nav-sub"
+           [routerLinkActive]="['active']">
+        <div class="menuleft-nav-sub-item" [ngClass]="(currentLabel === 'all contacts') ? 'active' : ''">
           <a draggable="false" href="javascript:;" [routerLink]="['contacts', {label: 'all contacts'}]"
              (click)="doEvent({action: 'contacts', event: $event})">
             <i class="fa fa-address-book-o"></i> All Contacts ({{ totalContactCount }})
           </a>
-        </li>
-        <li class="divider"></li>
-        <li>
+        </div>
+        <div class="divider"></div>
+        <div class="menuleft-nav-sub-item">
           <a draggable="false" href="javascript:;">
             <i class="fa fa-tag"></i> Labels
           </a>
-        </li>
+        </div>
         <ng-template ngFor let-label [ngForOf]="contactMenu" let-i="index">
-          <li *ngIf="label.name != ''" class="text-capitalize"
-              [ngClass]="(currentLabel === label?.name) ? 'active' : ''">
+          <div class="menuleft-nav-sub-item text-capitalize" *ngIf="label.name != ''"
+               [ngClass]="(currentLabel === label?.name) ? 'active' : ''">
             <a *ngIf="label.name !='labels'" draggable="false" [routerLink]="['contacts', {label: label.name}]"
                (click)="doEvent({action: label?.action, event: $event})">
               <i class="{{ label.icon }}"></i> {{ label.name }} ({{ label?.count }})
@@ -106,52 +110,27 @@
                 <i class="fa fa-trash"></i>
               </span>
             </div>
-          </li>
+          </div>
 
         </ng-template>
-        <li>
+        <div class="menuleft-nav-sub-item">
           <a draggable="false" href="javascript:;"
              (click)="doEvent({action: 'contact:label:open_modal_edit', payload:{mode: 'add'}, event: $event})">
             <i class="fa fa-plus"></i> New label
           </a>
-        </li>
-        <li class="divider"></li>
-        <li [routerLinkActive]="['active']">
+        </div>
+        <div class="divider"></div>
+        <div class="menuleft-nav-sub-item" [routerLinkActive]="['active']">
           <a draggable="false" [routerLink]="['/settings']">
             <i class="fa fa fa-cog"></i> Settings
           </a>
-        </li>
+        </div>
 
-      </ul>
-    </li>
+      </div>
+    </div>
 
-    <li [routerLinkActive]="['active']">
+    <div class="menuleft-nav-item" [routerLinkActive]="['active']">
       <a draggable="false" [routerLink]="['/my-profile']">Profile</a>
-    </li>
-
-    <!--<li>-->
-    <!--<a draggable="false" href="#">Calendar</a>-->
-    <!--</li>-->
-    <!--<li>-->
-    <!--<a draggable="false" href="#">Gadget</a>-->
-    <!--</li>-->
-    <!--<li>-->
-    <!--<a draggable="false" href="#">Bookmarks</a>-->
-    <!--</li>-->
-    <!--<li>-->
-    <!--<a draggable="false" href="#">Documents</a>-->
-    <!--</li>-->
-    <!--<li>-->
-    <!--<a draggable="false" href="#">Networking</a>-->
-    <!--</li>-->
-    <!--<li>-->
-    <!--<a draggable="false" href="#">Games</a>-->
-    <!--</li>-->
-    <!--<li>-->
-    <!--<a draggable="false" href="#">Dating</a>-->
-    <!--</li>-->
-    <!--<li>-->
-    <!--<a draggable="false" href="#">Project</a>-->
-    <!--</li>-->
-  </ul>
+    </div>
+  </div>
 </nav>
