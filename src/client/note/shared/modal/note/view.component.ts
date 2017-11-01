@@ -31,21 +31,8 @@ export class ZNoteSharedModalNoteViewComponent {
     this.modal.open();
   }
 
-  getModalHtmlContent(): string {
-    let html: string = '';
-    html += '<div>' + (this.data.title || 'Untitled' ) + '</div>';
-    html += '<div>' + (this.data.content ) + '</div>';
-    html += '<div> Attachments </div>';
-    this.data.attachments.forEach((a: any) => { html += `<div><a href='${a.url}'> ${a.name} </a></div>`;});
-
-    console.debug('result: html', html);
-    return html;
-  }
-
   pdfDownload() {
     this.api.download('note/notes/pdf_download/' + this.data.id).subscribe((res: any) => {
-      // console.debug('pdf Download res: ', res);
-
       var blob = new Blob([res.blob()], {type: 'application/pdf'});
       saveAs(blob, this.data.title + '.pdf');
     })
