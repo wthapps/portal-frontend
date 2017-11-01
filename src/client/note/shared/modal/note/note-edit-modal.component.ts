@@ -298,7 +298,6 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
   download(file: any) {
     this.apiBaseService.download('common/files/download', {id: file.id, object_type: file.object_type}).subscribe((res: any) => {
-      console.log(res);
       var blob = new Blob([res.blob()], {type: file.content_type});
       saveAs(blob, file.name);
     });
@@ -319,6 +318,14 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
   print() {
     printJS({ printable: 'noteview', type: 'html', header: this.note.title});
+  }
+
+  downloadAttachments() {
+    if(this.note.attachments) {
+      for(let att of this.note.attachments) {
+        this.download(att);
+      }
+    }
   }
 
   private subscribePhotoSelectEvents() {
