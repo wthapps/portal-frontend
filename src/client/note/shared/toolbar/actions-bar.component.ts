@@ -8,6 +8,7 @@ import { CommonEventService } from '../../../core/shared/services/common-event/c
 import * as note from '../actions/note';
 import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { Store } from '@ngrx/store';
 
 declare var _: any;
 declare let saveAs: any;
@@ -21,8 +22,8 @@ declare let printJS: any;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ZNoteSharedActionBarComponent implements OnInit {
-  @Input() multiple: boolean = false;
   @Input() data: any;
+  @Input() page: any;
   @Input() selectedObjects: any[] = [];
 
   readonly tooltip: any = Constants.tooltip;
@@ -30,6 +31,7 @@ export class ZNoteSharedActionBarComponent implements OnInit {
 
   constructor(public noteService: ZNoteService,
               private wthConfirm: WthConfirmService,
+              private store: Store<any>,
               private api: ApiBaseService,
               public commonEventService: CommonEventService) {
     // this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
@@ -123,5 +125,16 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   print() {
     let note = this.selectedObjects[0];
     printJS({ printable: 'noteview', type: 'html', header: note.title});
+  }
+
+  removeShares() {
+    this.wthConfirm.confirm({
+      message: 'Are you sure to remove selected item(s) from Share with me page. After pressing Remove, selected item(s) will disappear on this page.',
+      header: 'Remove',
+      accept: () => {
+        this.store.dispatch({type: note.REMOVE_SHARE_WITH_ME, payload: this.selectedObjects})
+      }
+    })
+
   }
 }

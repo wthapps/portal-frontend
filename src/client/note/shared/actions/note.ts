@@ -34,6 +34,8 @@ export const EMPTY_ALL    = '[Trash] Empty All';
 export const ALL_DELETED    = '[Trash] All Deleted';
 export const SET_PAGE_TYPE    = '[MixedEntity] Set Page Type';
 export const SET_LIST_PERMISSION    = '[MixedEntity] Set List Permission';
+export const REMOVE_SHARE_WITH_ME    = '[MixedEntity] Remove Share With Me';
+export const REMOVED_SHARE_WITH_ME    = '[MixedEntity] Removed Share With Me';
 
 // Actions
 

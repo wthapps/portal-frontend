@@ -1,4 +1,4 @@
-<ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0">
+<ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0  && page == 'MY_NOTE'">
   <li *ngIf="selectedObjects.length <= 1">
     <a href="javascript:;" class="btn btn-default" (click)="edit()"
        pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom">
@@ -34,3 +34,16 @@
   </li>
 </ul>
 
+<ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0  && page == 'SHARED_WITH_ME'">
+  <li class="dropdown action">
+    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+            pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
+      <i class="fa fa-ellipsis-v"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right text-right">
+      <li role="presentation">
+        <a (click)="removeShares()" role="menuitem" tabindex="-1" href="javascript:;">Remove</a>
+      </li>
+    </ul>
+  </li>
+</ul>

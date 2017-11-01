@@ -19,7 +19,7 @@
     {{ data.created_at | timeFormat }}
   </div>
   <div class="component-listbox-action">
-    <z-note-shared-actions-bar *ngIf="(!data.permission || data.permission == 'edit') && (page !== PAGE_TYPE.TRASH)" class="action" [data]="data"
+    <z-note-shared-actions-bar *ngIf="page !== PAGE_TYPE.TRASH" class="action" [data]="data" [page]="page"
                                [selectedObjects]="[data]"></z-note-shared-actions-bar>
     <z-note-shared-trash-actions-bar [selectedObjects]="[data]" *ngIf="page === PAGE_TYPE.TRASH"></z-note-shared-trash-actions-bar>
   </div>
