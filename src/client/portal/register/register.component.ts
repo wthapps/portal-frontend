@@ -16,7 +16,8 @@ declare var $: any;
 @Component({
   moduleId: module.id,
   selector: 'page-register',
-  templateUrl: 'register.component.html'
+  templateUrl: 'register.component.html',
+  styleUrls: ['register.component.css']
 })
 export class RegisterComponent {
   errorMessage: string = '';

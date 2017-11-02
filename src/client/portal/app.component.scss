@@ -17,7 +17,7 @@
   &:after {
     content: "";
     @include center(true, false);
-    bottom: -20px;
+    bottom: -19px;
     @include make-arrow(bottom, #191a1e, 20px, 20px);
   }
   .hero-banner-center {

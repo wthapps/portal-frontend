@@ -5,6 +5,12 @@ Header
   position: relative;
   z-index: 1000;
   @include box-shadow($box-shadow-bottom);
+
+  .navbar-toggle {
+    width: 34px;
+    margin: 13px 0;
+    padding: 6px 0;
+  }
 }
 
 .navbar-default {

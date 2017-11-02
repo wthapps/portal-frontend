@@ -1,15 +1,16 @@
 <nav class="header-nav" role="navigation">
   <div class="container-fluid">
-    <div class="header-nav-left">
-      <ng-content></ng-content>
-    </div>
+    <ng-content></ng-content>
+
     <div class="header-nav-right">
       <ng-template [ngIf]="!userService.loggedIn">
-        <div class="btn-group header-nav-link">
-          <a [routerLink]="['/signup']" class="btn btn-link" href="#">Sign up</a>
-        </div>
-        <div class="btn-group header-nav-link">
-          <a [routerLink]="['/login']" class="btn btn-link" href="#">Log in</a>
+        <div class="hidden-xs">
+          <div class="btn-group header-nav-link">
+            <a [routerLink]="['/signup']" class="btn btn-link" href="#">Sign up</a>
+          </div>
+          <div class="btn-group header-nav-link">
+            <a [routerLink]="['/login']" class="btn btn-link" href="#">Log in</a>
+          </div>
         </div>
       </ng-template>
       <ng-template [ngIf]="userService.loggedIn">
