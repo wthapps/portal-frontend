@@ -268,34 +268,6 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  private uploadFiles(files: any, parent?: any) {
-    // for (let i = 0; i < files.length; i++) {
-    //   files[0].parent = {
-    //     id: parent.id,
-    //     uuid: '',
-    //     type: 'Chat::Message'
-    //   };
-    // }
-    this.fileUploadHelper.upload(files, (event: any, file: any) => {
-      let genericFile = new GenericFile({
-        file: event.target['result'],
-        name: file.name,
-        content_type: file.type,
-        parent: file.parent
-      });
-      // update current message and broadcast on server
-      this.fileService.create(genericFile)
-        .subscribe((response: any) => {
-          console.log('Upload file successfully', response);
-
-          // this.note.attachments.push(response.data);
-          let index = _.indexOf(this.note.attachments, file);
-          this.note.attachments[index] = {object_type: 'file',...response.data};
-          this.form.controls['attachments'].setValue(this.note.attachments);
-        });
-    });
-  }
-
   download(file: any) {
     this.apiBaseService.download('common/files/download', {id: file.id, object_type: file.object_type}).subscribe((res: any) => {
       var blob = new Blob([res.blob()], {type: file.content_type});
@@ -305,8 +277,8 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
   fileAttachmentClick(file: any) {
     if(file.object_type == 'photo') {
-      $("#modal-note-edit").css('z-index', '0');
-      $(".modal-backdrop").css('z-index', '0');
+      $('#modal-note-edit').css('z-index', '0');
+      $('.modal-backdrop').css('z-index', '0');
       this.router.navigate([{outlets: {modal: ['photos', file.id, {ids: [file.id]}]}}]);
     }
   }
@@ -328,6 +300,27 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
         this.download(att);
       }
     }
+  }
+
+  private uploadFiles(files: any, parent?: any) {
+    this.fileUploadHelper.upload(files, (event: any, file: any) => {
+      let genericFile = new GenericFile({
+        file: event.target['result'],
+        name: file.name,
+        content_type: file.type,
+        parent: file.parent
+      });
+      // update current message and broadcast on server
+      this.fileService.create(genericFile)
+        .subscribe((response: any) => {
+          console.log('Upload file successfully', response);
+
+          // this.note.attachments.push(response.data);
+          let index = _.indexOf(this.note.attachments, file);
+          this.note.attachments[index] = {object_type: 'file',...response.data};
+          this.form.controls['attachments'].setValue(this.note.attachments);
+        });
+    });
   }
 
   private subscribePhotoSelectEvents() {

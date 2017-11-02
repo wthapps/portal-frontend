@@ -25,8 +25,13 @@ declare var _: any;
 export class NoteItemComponent implements OnInit, OnDestroy {
   @Input() data: Note = new Note();
   @Input() page: string = 'MY_NOTE';
-  tooltip: any = Constants.tooltip;
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
+
+  readonly tooltip: any = Constants.tooltip;
+  readonly PAGE_TYPE: any = Constants.notePageType;
+  selected: boolean = false;
+  sub: Subscription;
+  pressingCtrlKey: boolean;
 
 
   @HostListener('document:keydown', ['$event'])
@@ -43,10 +48,6 @@ export class NoteItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  selected: boolean = false;
-  sub: Subscription;
-  pressingCtrlKey: boolean;
-  readonly PAGE_TYPE: any = Constants.notePageType;
 
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,

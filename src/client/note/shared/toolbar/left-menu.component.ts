@@ -10,6 +10,7 @@ import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Router } from '@angular/router';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import * as folder from '../actions/folder';
+import { Folder } from '../reducers/folder';
 
 declare let $: any;
 declare let _: any;
@@ -24,6 +25,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
   sub: any;
   sub2: any;
   noteFoldersTree: any[] = [];
+  noteFolders: Folder[] = [] ;
 
   constructor(private store: Store<any>, private apiBaseService: ApiBaseService, private router: Router, private commonEventService: CommonEventService) {
     this.sub = this.store.select(fromRoot.getFoldersTree).subscribe((folders: any) => {

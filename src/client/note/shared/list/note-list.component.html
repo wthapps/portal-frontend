@@ -38,7 +38,7 @@
     <!--<note-item [data]="item" *ngIf="item.object_type == 'note'" class="component-listbox-body"></note-item>-->
   <!--</ng-container>-->
 
-  <ng-container *ngIf="!(loading$ | async);else loadingBlock">
+  <ng-container *ngIf="!(loading$ | async); else loadingBlock">
     <h4 class="ml10" *ngIf="folderItems?.length > 0 && viewOption == VIEW_MODE.GRID">Folders</h4>
     <ng-container *ngFor="let item of folderItems">
       <folder-item [data]="item" class="component-listbox-body" [page]="page"></folder-item>

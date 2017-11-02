@@ -33,6 +33,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   sub: Subscription;
   pressingCtrlKey: boolean;
 
+  readonly PAGE_TYPE: any = Constants.notePageType;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
@@ -48,7 +49,6 @@ export class FolderItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  readonly PAGE_TYPE: any = Constants.notePageType;
 
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,

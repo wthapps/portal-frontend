@@ -23,10 +23,6 @@ import { ToastsService } from '../../../core/shared/components/toast/toast-messa
 
 @Injectable()
 export class NoteEffects {
-  constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
-              private toastsService: ToastsService,
-              private store: Store<fromRoot.State>) {
-  }
 
   @Effect() addNote = this.actions
     .ofType(note.ADD)
@@ -48,7 +44,7 @@ export class NoteEffects {
           return ({type: note.NOTE_UPDATED, payload: res['data']});
         } )
         .catch(() => {
-          this.toastsService.danger("Note updated FAIL, something's wrong happened");
+          this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
           return empty();})
         ;
     });
@@ -130,4 +126,8 @@ export class NoteEffects {
           .catch(() => empty());
       });
 
+  constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
+              private toastsService: ToastsService,
+              private store: Store<fromRoot.State>) {
+  }
 }
