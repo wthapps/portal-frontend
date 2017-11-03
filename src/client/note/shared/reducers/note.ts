@@ -259,6 +259,15 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
     case note.CHANGE_VIEW_MODE: {
       return {...state, viewMode: action.payload};
     }
+    case note.REMOVED_SHARE_WITH_ME: {
+      let foldersDeleted = action.payload.filter((f: any) => {return f.object_type == 'folder'});
+      let notesDeleted = action.payload.filter((n: any) => {return n.object_type == 'note'});
+      let notes = {...state.notes};
+      notesDeleted.forEach((n: any) => delete notes[n.id]);
+      let folders = {...state.folders};
+      foldersDeleted.forEach((f: any) => delete folders[f.id]);
+      return {...state, folders: folders, notes: notes};
+    }
     default: {
       return state;
     }

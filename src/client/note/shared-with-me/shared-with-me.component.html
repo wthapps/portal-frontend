@@ -1,5 +1,4 @@
-
-<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="'SHARE_WITH_ME'">
+<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="'SHARED_WITH_ME'">
   <div class="btn-group">
     <button type="button" class="btn btn-primary btn-min dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
@@ -14,7 +13,6 @@
   <span class="btn-text ml15">
     Shared with me
   </span>
-
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
   <!--<note-list [noteItems]="noteItems$ | async"-->
@@ -32,6 +30,7 @@
         [folderItems]="folderItems$ | async"
         [viewOption]="(nodeState$ | async)?.viewMode"
         [sortOption]="sortOption$ | async"
+        [page]="'SHARED_WITH_ME'"
         [isSelectAll]="isSelectAll$ | async">
       </note-list>
     </ng-container>

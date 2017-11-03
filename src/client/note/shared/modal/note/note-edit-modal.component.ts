@@ -303,10 +303,12 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     });
   }
 
-  photoAttachmentClick(photoId: any) {
-    $("#modal-note-edit").css('z-index', '0');
-    $(".modal-backdrop").css('z-index', '0');
-    this.router.navigate([{outlets: {modal: ['photos', photoId, {ids: [photoId]}]}}]);
+  fileAttachmentClick(file: any) {
+    if(file.object_type == 'photo') {
+      $("#modal-note-edit").css('z-index', '0');
+      $(".modal-backdrop").css('z-index', '0');
+      this.router.navigate([{outlets: {modal: ['photos', file.id, {ids: [file.id]}]}}]);
+    }
   }
 
   pdfDownload() {

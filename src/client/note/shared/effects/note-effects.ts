@@ -23,6 +23,11 @@ import { ToastsService } from '../../../core/shared/components/toast/toast-messa
 
 @Injectable()
 export class NoteEffects {
+  constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
+              private toastsService: ToastsService,
+              private store: Store<fromRoot.State>) {
+  }
+
   @Effect() addNote = this.actions
     .ofType(note.ADD)
     .map((action: any) => action['payload'])
@@ -116,19 +121,13 @@ export class NoteEffects {
         .catch(() => empty());
     });
 
-  // @Effect() initLoad = this.actions
-  //   .ofType(note.INIT_LOAD)
-  //   .map((action: any) => action['payload'])
-  //   .switchMap((payload: any) => {
-  //   return this.apiBaseService.get(`note/dashboards`, {parent_id: null})
-  //     .map((res: any) => new note.InitLoadDone([res.data]))
-  //     .catch(() => of(new note.InitLoadDone([])));
-  //   })
-
-
-  constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
-              private toastsService: ToastsService,
-              private store: Store<fromRoot.State>) {
-  }
+    @Effect() removeShareWithMe = this.actions
+      .ofType(note.REMOVE_SHARE_WITH_ME)
+      .map((action: any) => action['payload'])
+      .switchMap((payload: any) => {
+        return this.apiBaseService.post(`note/sharings/remove_share_with_me`, {objects: payload.map((i: any) => {return {id: i.id, object_type: i.object_type}})})
+          .map((res: any) => ({type: note.REMOVED_SHARE_WITH_ME, payload: res.data}))
+          .catch(() => empty());
+      });
 
 }
