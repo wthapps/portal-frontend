@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZSocialSharedModule } from '../shared/shared.module';
 
-import { ZSocialProfileRoutingModule } from './profile-routing.module';
 import { ZSocialProfileComponent } from './profile.component';
 import { ZSocialProfileAboutComponent } from './about/about.component';
 import { ZSocialProfileCoverComponent } from './cover/cover.component';
@@ -20,7 +19,6 @@ import { ZSocialProfileDataService } from './profile-data.service';
 @NgModule({
   imports: [
     CommonModule,
-    ZSocialProfileRoutingModule,
     CoreSharedModule.forRoot(),
     ZSocialSharedModule.forRoot(),
   ],

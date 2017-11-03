@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { PostListComponent } from '../shared/post/post-list.component';
+import { PostListComponent } from '../shared/second-routes/post/post-list.component';
 
 declare let $: any;
 declare let _: any;

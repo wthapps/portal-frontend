@@ -1,0 +1,49 @@
+@import "../../../../core/scss/global";
+
+.photo-box-detail {
+  .navbar-right {
+    > li {
+      font-weight: normal;
+      &:nth-child(1),
+      &:nth-child(2),
+      &:nth-child(3) {
+        font-size: 14px;
+      }
+      > .fa {
+        margin-right: 5px;
+        width: 34px;
+        height: 34px;
+        text-align: center;
+        display: inline-block;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        line-height: 32px;
+        cursor: pointer;
+        font-size: 14px;
+        float: left;
+        &.fa-thumbs-o-down,
+        &.fa-thumbs-o-up,
+        &.fa-share-alt {
+          border: 1px solid #cdcdcd;
+          font-size: 20px;
+        }
+        &:hover {
+          background-color: $light-slate;
+          color: #ffffff;
+        }
+        &.active {
+          background-color: $button-dislike-color;
+          border-color: $button-dislike-color;
+          color: #ffffff;
+        }
+        &.fa-thumbs-o-up {
+          &.active {
+            background-color: $button-like-color;
+            border-color: $button-like-color;
+          }
+        }
+      }
+    }
+  }
+}

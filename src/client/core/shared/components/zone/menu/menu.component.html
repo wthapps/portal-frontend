@@ -1,11 +1,12 @@
 <nav class="page-menuleft" draggable="false">
   <div class="menuleft-nav">
 
-    <div class="menuleft-nav-item has-sub">
+    <div class="menuleft-nav-item has-sub" [ngClass]="{'active': urls.social == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('social')">
         Social Network
       </a>
-      <div [ngClass]="{'active': urls.social == hostname}" class="menuleft-nav-sub">
+
+      <div class="menuleft-nav-sub">
         <ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">
           <div *ngIf="social.name != ''" [routerLinkActive]="['active']" (click)="clearOutlets()"
                [ngClass]="{'hidden': social.link == '/search'}" class="menuleft-nav-sub-item">

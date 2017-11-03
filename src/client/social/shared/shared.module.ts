@@ -6,16 +6,16 @@ import { CoreSharedModule } from '../../core/shared/shared.module';
 import { SocialService } from './services/social.service';
 import { SoCommunityService } from './services/community.service';
 
-import { PostModule } from './post/post.module';
+import { PostModule } from './second-routes/post/post.module';
 import {
   PostComponent,
   PostHeaderComponent,
   PostBodyComponent,
   PostFooterComponent
-} from './post/index';
-import { PostDetailComponent } from './post/post-detail.component';
-import { PostDetailPhotoComponent } from './post/post-detail-photo.component';
-import { PostListComponent } from './post/post-list.component';
+} from './second-routes/post/index';
+import { PostDetailComponent } from './second-routes/post/post-detail.component';
+import { PostDetailPhotoComponent } from './second-routes/post/post-detail-photo.component';
+import { PostListComponent } from './second-routes/post/post-list.component';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { ZSocialMembersComponent } from '../friends/members.component';

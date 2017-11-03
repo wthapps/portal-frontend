@@ -1,5 +1,5 @@
 import { Component, OnInit, HostBinding, Input, OnChanges, EventEmitter, Output } from '@angular/core';
-import * as fromMember from '../../actions/member';
+import * as fromMember from '../../shared/actions/member';
 
 
 declare var _: any;

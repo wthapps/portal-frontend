@@ -13,9 +13,9 @@ import { ZSocialHomeModule } from './home/home.module';
 import { ZSocialCommunityModule } from './communities/communities.module';
 import { SocialSettingsModule } from './settings/setting.module';
 import { ZSocialProfileModule } from './profile/profile.module';
-import { ZSocialPhotoModule } from './photo/photo.module';
 import { ZSocialSearchModule } from './search/search.module';
 import { ZSocialMyProfileModule } from './my-profile/my-profile.module';
+import { ZSocialPhotoModule } from './shared/second-routes/photo/photo.module';
 
 @NgModule({
   imports: [

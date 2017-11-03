@@ -10,7 +10,7 @@ import { LoadingService } from '../../core/shared/components/loading/loading.ser
 import { ZSharedReportService } from '../../core/shared/components/zone/report/report.service';
 import { SocialFavoriteService } from '../shared/services/social-favorites.service';
 import { Constants } from '../../core/shared/config/constants';
-import * as fromMember from '../actions/member';
+import * as fromMember from '../shared/actions/member';
 
 declare var $: any;
 declare var _: any;
