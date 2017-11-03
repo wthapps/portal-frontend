@@ -15,7 +15,7 @@ import { ToastsService } from '../../../core/shared/components/toast/toast-messa
 import { SocialService } from '../../shared/services/social.service';
 import { Constants } from '../../../core/shared/config/constants';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
-import { PostListComponent } from '../../shared/post/post-list.component';
+import { PostListComponent } from '../../shared/second-routes/post/post-list.component';
 import { EntitySelectComponent } from '../../../core/shared/components/entity-select/entity-select.component';
 import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
 import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';

@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import { Constants } from '../../../../core/shared/config/constants';
 import { SocialService } from '../../services/social.service';
 import { SocialFavoriteService } from '../../services/social-favorites.service';
-import * as fromMember from '../../../actions/member';
+import * as fromMember from '../../../shared/actions/member';
 
 declare var _: any;
 

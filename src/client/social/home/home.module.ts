@@ -5,12 +5,10 @@ import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZSocialSharedModule } from '../shared/shared.module';
 
 import { ZSocialHomeComponent } from './home.component';
-import { ZSocialHomeRoutingModule } from './home-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    ZSocialHomeRoutingModule,
     ZSocialSharedModule.forRoot(),
     CoreSharedModule.forRoot()
   ],

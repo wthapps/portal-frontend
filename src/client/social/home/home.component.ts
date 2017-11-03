@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, HostListener, OnInit } from '@angular/core';
-import { PostListComponent } from '../shared/post/post-list.component';
+import { PostListComponent } from '../shared/second-routes/post/post-list.component';
 import { SocialService } from '../shared/services/social.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { SocialFavoriteService } from '../shared/services/social-favorites.service';

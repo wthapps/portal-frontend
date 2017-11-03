@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 
-import { SocialSettingsRoutingModule } from './setting-routing.module';
 import { ZSocialSettingComponent } from './setting.component';
 import { ZSocialSharedModule } from '../shared/shared.module';
 import { CoreSharedModule } from '../../core/shared/shared.module';
@@ -14,8 +13,6 @@ import { CoreSharedModule } from '../../core/shared/shared.module';
     CommonModule,
     FormsModule,
     HttpModule,
-    SocialSettingsRoutingModule,
-    // ZSocialSharedModule,
     CoreSharedModule.forRoot(),
   ],
   declarations: [
