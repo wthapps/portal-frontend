@@ -1,12 +1,12 @@
-import {Component, OnInit, OnDestroy, ViewEncapsulation} from '@angular/core';
-import {Router, NavigationEnd} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 import './operators';
 import 'rxjs/add/operator/filter';
 
-import {Config} from '../core/shared/config/env.config';
+import { Config } from '../core/shared/config/env.config';
 
-declare var $: any;
+declare let $: any;
 
 /**
  * This class represents the main application component.

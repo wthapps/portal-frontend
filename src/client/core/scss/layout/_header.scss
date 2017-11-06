@@ -37,12 +37,6 @@ Header
   }
 }
 
-.navbar-default {
-  .navbar-toggle {
-    //border-color: $btn-default-border;
-    border-color: $btn-default-color;
-  }
-}
 
 .navbar-searchTop {
   @media (min-width: $screen-sm-min) {
@@ -59,5 +53,13 @@ Header
     .ui-autocomplete-panel {
       margin-top: 3px;
     }
+  }
+}
+
+
+.navbar-default {
+  .navbar-toggle {
+    //border-color: $btn-default-border;
+    border-color: $btn-default-color;
   }
 }

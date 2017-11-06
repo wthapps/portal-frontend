@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { CoreSharedModule } from '../../core/shared/shared.module';
 import { PortalSharedFooterComponent, PortalSharedFooterPromotionComponent } from './footer/footer.component';
+import { PortalSharedHeaderComponent } from './header/header.component';
 
 
 /**
@@ -10,15 +11,17 @@ import { PortalSharedFooterComponent, PortalSharedFooterPromotionComponent } fro
 
 @NgModule({
   imports: [
-    CoreSharedModule.forRoot()
+    CoreSharedModule
   ],
   declarations: [
     PortalSharedFooterComponent,
     PortalSharedFooterPromotionComponent,
+    PortalSharedHeaderComponent
   ],
   exports: [
     PortalSharedFooterComponent,
     PortalSharedFooterPromotionComponent,
+    PortalSharedHeaderComponent,
     CoreSharedModule
   ]
 })
