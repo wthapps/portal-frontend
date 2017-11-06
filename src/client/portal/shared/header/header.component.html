@@ -4,9 +4,15 @@
       <img src="/assets/images_new/logo.png" alt="WTHApps">
     </a>
     <ul class="nav navbar-nav hidden-xs">
-      <li class="nav-item"><a [routerLink]="['/products']" class="nav-link" href="#">Apps</a></li>
-      <li class="nav-item"><a [routerLink]="['/pricing']" class="nav-link" href="#">Pricing</a></li>
-      <li class="nav-item"><a [routerLink]="['/about']" class="nav-link" href="#">About Us</a></li>
+      <li class="nav-item">
+        <a [routerLink]="['/products']" [routerLinkActive]="['active']" class="nav-link" href="#">Apps</a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="['/pricing']" [routerLinkActive]="['active']" class="nav-link" href="#">Pricing</a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="['/about']" [routerLinkActive]="['active']" class="nav-link" href="#">About Us</a>
+      </li>
     </ul>
   </div>
 
@@ -21,13 +27,13 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="wth-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a [routerLink]="['/products']" href="#">Apps</a></li>
-        <li><a [routerLink]="['/pricing']" href="#">Pricing</a></li>
-        <li class="nav-item"><a [routerLink]="['/about']" href="#">About Us</a></li>
+        <li><a [routerLink]="['/products']" [routerLinkActive]="['active']" href="#">Apps</a></li>
+        <li><a [routerLink]="['/pricing']" [routerLinkActive]="['active']" href="#">Pricing</a></li>
+        <li class="nav-item"><a [routerLink]="['/about']" [routerLinkActive]="['active']" href="#">About Us</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a [routerLink]="['/signup']" class="nav-link" href="#">Sign up</a></li>
-        <li><a [routerLink]="['/login']" class="nav-link" href="#">Log in</a></li>
+        <li><a [routerLink]="['/signup']" [routerLinkActive]="['active']" class="nav-link" href="#">Sign up</a></li>
+        <li><a [routerLink]="['/login']" [routerLinkActive]="['active']" class="nav-link" href="#">Log in</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div>

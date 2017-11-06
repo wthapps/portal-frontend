@@ -5,6 +5,7 @@ import { GrowlModule } from 'primeng/components/growl/growl';
 
 import { ToastsComponent } from './toast-message.component';
 import { ToastsService } from './toast-message.service';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @NgModule({
   imports: [
@@ -13,7 +14,10 @@ import { ToastsService } from './toast-message.service';
   ],
   declarations: [ToastsComponent],
   exports: [ToastsComponent],
-  providers: [ToastsService]
+  providers: [
+    ToastsService,
+    MessageService
+  ]
 })
 
 export class ToastsModule {

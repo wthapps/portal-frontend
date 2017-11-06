@@ -6,6 +6,13 @@ Header
   z-index: 1000;
   @include box-shadow($box-shadow-bottom);
 
+  .nav-link {
+    color: $text-color;
+    &.active {
+      color: $theme-color;
+    }
+  }
+
   .navbar-toggle {
     width: 34px;
     margin: 13px 0;
@@ -31,12 +38,15 @@ Header
           &.nav-link {
             color: $text-color;
           }
+          &:hover, &.active {
+            background-color: transparent;
+            color: $theme-color;
+          }
         }
       }
     }
   }
 }
-
 
 .navbar-searchTop {
   @media (min-width: $screen-sm-min) {
@@ -55,7 +65,6 @@ Header
     }
   }
 }
-
 
 .navbar-default {
   .navbar-toggle {
