@@ -32,7 +32,7 @@
   </div>
 
   <!--type == 'album'-->
-  <div *ngIf="object.object_type == 'album'" class="photo-box-figure"
+  <div *ngIf="object.object_type == 'album' || object.object_type == 'sharing'" class="photo-box-figure"
        (click)="onAction({action:'select', params: {selectedObject: object }})">
     <div class="photo-box-input">
       <i class="fa fa-check"></i>

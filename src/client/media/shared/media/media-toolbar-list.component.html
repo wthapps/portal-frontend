@@ -199,9 +199,20 @@
       </li>
     </ul>
 
+    <ul class="page-body-control-menu"
+        *ngIf="page == 'shared-by-me'"
+        [ngClass]="{'text-disable': noSelectedObjects}"
+        [class.disabled]="noSelectedObjects">
+      <li>
+        <a class="btn btn-default" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})"
+           pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
+          <i class="fa fa-trash-o"></i>
+        </a>
+      </li>
+    </ul>
 
     <!--album list-->
-
     <ul class="page-body-control-menu" *ngIf="page == 'albums'" [ngClass]="{'text-disable': noSelectedObjects}"
         [class.disabled]="noSelectedObjects">
       <li>
