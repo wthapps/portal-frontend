@@ -34,6 +34,7 @@ import { SliderModule } from 'primeng/components/slider/slider';
 import { PhotoItemPreviewComponent } from './photo-item-preview.component';
 import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
 import { BasePhotoDetailComponent } from './detail/base-photo-detail.component';
+import { BoxLoadingModule } from '../box-loading/box-loading.module';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { BasePhotoDetailComponent } from './detail/base-photo-detail.component';
     TooltipModule,
     SliderModule,
     PipeModule,
+    BoxLoadingModule,
     PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule
   ],
@@ -73,6 +75,7 @@ import { BasePhotoDetailComponent } from './detail/base-photo-detail.component';
     BasePhotoDetailComponent
   ],
   exports: [
+    BoxLoadingModule,
     PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule,
 

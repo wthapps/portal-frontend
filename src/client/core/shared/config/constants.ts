@@ -79,6 +79,7 @@ export let Constants = {
     logoWhite: '/assets/images/logo-white.png',
     logoZone: '/assets/images/logo-zone.png',
     logoZoneWhite: '/assets/images/logo-zone-white.png',
+    default: '/assets/images/thumbnail/image_default.png',
   },
   windows: {
     scrollBarWidth: getBarwidth()

@@ -5,6 +5,7 @@ import { PostComponent } from '../post.component';
 import { SoPost } from '../../../../../core/shared/models/social_network/so-post.model';
 import { UserService } from '../../../../../core/shared/services/user.service';
 import { PhotoService } from '../../../../../core/shared/services/photo.service';
+import { Constants } from '../../../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -32,6 +33,7 @@ export class PostBodyComponent implements OnChanges {
   };
   hasLike: boolean;
   hasDislike: boolean;
+  readonly DEFAULT_IMAGE: string = Constants.img.default;
 
   constructor(private router: Router,
               public photoService: PhotoService,

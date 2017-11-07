@@ -32,7 +32,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   loading: boolean;
   mode: number;
   showDetail: boolean;
-  recipients: Array<any> = [];
+  recipients: Array<any> = [];src
 
   // private routeSub: any;
   private destroySubject: Subject<any> = new Subject<any>();
@@ -83,6 +83,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         (error: any) => {
+          this.loading = false;
           console.error('Error when loading photo ', error);
         });
   }
