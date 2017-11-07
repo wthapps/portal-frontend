@@ -14,7 +14,7 @@
     </div>
     <figure class="img-center-dv can-click" (dblclick)="onAction({action:'previewAllPhotos', params: {selectedObject: object}})">
       <div class="photo-box-figure-in">
-        <img draggable="false" class="img-center" [src]="object.thumbnail_url" alt="">
+        <img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.thumbnail_url" alt="">
       </div>
     </figure>
     <div class="photo-box-name">
@@ -39,7 +39,7 @@
     </div>
     <figure class="img-center-dv can-click" (dblclick)="onAction({action:'viewDetails', params: {selectedObject: object }})">
       <div class="photo-box-figure-in">
-        <img draggable="false" class="img-center" [src]="object.photo_default" alt="">
+        <img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.photo_default" alt="">
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->

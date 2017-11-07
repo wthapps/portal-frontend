@@ -99,12 +99,13 @@
     </span>
   </div>
 
-  <div class="photo-view-wrap" [ngClass]="{'no-display': loading}">
+  <!--<div class="photo-view-wrap" [ngClass]="{'no-display': loading}">-->
+  <div class="photo-view-wrap" *ngIf="!loading; else loadingBlock">
     <img imgFull class="img-zoom-{{ imgZoomClass }} lazyload" draggable="false" id="photo-detail-image"
          [attr.data-src]="photo?.url" alt="">
   </div>
 
-  <box-loading *ngIf="loading"></box-loading>
+  <!--<box-loading *ngIf="loading"></box-loading>-->
 
   <div *ngIf="photo" class="photo-detail-info">
     <h3>Information <a href="javascript:;" draggable="false" (click)="doAction({action: 'viewInfo'})"><i
@@ -113,7 +114,7 @@
       <h4><i class="fa fa-file-text-o"></i> Details</h4>
       <a href="javascript:;"
          draggable="false"
-         (click)="initCropper(); doAction({action: 'openModal', params: {modalName: 'editInfoModal'}, data: photo})">
+         (click)="doAction({action: 'openModal', params: {modalName: 'editInfoModal'}, data: photo})">
         Edit
       </a>
     </div>

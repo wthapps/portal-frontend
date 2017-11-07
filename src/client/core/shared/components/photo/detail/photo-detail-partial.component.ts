@@ -8,6 +8,7 @@ import { PhotoEditModalComponent } from '../modal/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
 import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
 import { Constants } from '../../../config/constants';
+import { PhotoService } from '../../../services/photo.service';
 
 declare let $: any;
 declare let _: any;
@@ -53,6 +54,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
 
   editing: boolean = false;
   cropping: boolean;
+  readonly DEFAULT_IMAGE: string = Constants.img.default;
   private cropperDefaultOptions: any = {
     viewMode: 2,
     dragMode: 'none',
@@ -61,7 +63,8 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     center: true
   };
 
-  constructor(private resolver: ComponentFactoryResolver) {
+  constructor(private resolver: ComponentFactoryResolver,
+              private photoService: PhotoService) {
   }
 
   ngOnInit() {
@@ -73,7 +76,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
       console.log(this.loading);
     } else {
       this.currentIndex = _.indexOf(this.ids, this.photo.id);
-      this.initCropper();
+      // this.initCropper();
     }
   }
 
@@ -210,6 +213,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   ////////////////////////////////////////////////////CROPPER/////////////////////////////////////
 
   editPhoto() {
+    this.initCropper();
     this.setMode(1);
     this.event.emit({action: 'editPhoto'});
   }
@@ -224,7 +228,10 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   }
 
   initCropper() {
+    this.clearCropper();
+    console.debug('after clear cropper: ', this.cropper);
     if (this.cropper == null) {
+      console.debug('init cropper ...');
       let image = document.getElementById('photo-detail-image');
       this.cropper = new Cropper(image, {
         dragMode: 'none',
@@ -242,6 +249,14 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
       });
     }
     this.cropper.replace(this.photo.url);
+  }
+
+  clearCropper() {
+    console.debug('Clear cropper ...');
+    if(this.cropper !== null) {
+      this.cropper.clear();
+      this.cropper = null;
+    }
   }
 
   rotateCropper(leftDirect: boolean) {
@@ -279,12 +294,13 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     this.editing = false;
   }
 
-  cancel() {
+  cancel(noReset: boolean = false) {
     if(this.cropping) {
       $('.cropper-crop-box').hide();
     }
     this.editing = false;
-    this.cropper.reset();
+    if(!noReset)
+      this.cropper.reset();
     this.cropper.setDragMode('none');
     this.setMode(0);
   }
@@ -292,7 +308,13 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   cropperSave() {
     // get cropped image data
     let editedData = this.cropper.getCroppedCanvas().toDataURL(this.photo.content_type);
-    this.event.emit({action: 'confirmUpdate', editedData: editedData});
+    this.photoService.confirmUpdate(this.photo, editedData)
+      .then((data: any) => {
+          this.event.emit({action: 'photoUpdated', payload: data});
+          this.cancel(true);
+        }
+      );
+    // this.event.emit({action: 'confirmUpdate', editedData: editedData});
     // this.cancel();
   }
   /////////////////////////////////////////END-CROPPER/////////////////////////////////////
