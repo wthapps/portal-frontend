@@ -1,6 +1,9 @@
 <div class="navbar-form navbar-left">
   <div class="navbar-searchTop">
-    <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onKeyUpEvent)="onKey($event)"
+    <textbox-search #textbox
+                    [search]="search"
+                    (onEnterEvent)="onEnter($event)"
+                    (onKeyUpEvent)="onKey($event)"
                     [placeholder]="'Search something'">
       <div class="input-group-suggestions" *ngIf="show">
         <div class="list-group">

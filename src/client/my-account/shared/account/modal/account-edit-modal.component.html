@@ -1,0 +1,93 @@
+<form [formGroup]="form" novalidate>
+  <modal #modal
+         [cssClass]="'modal-account-edit'"
+         [keyboard]="false"
+         [animation]="false"
+         [backdrop]="'static'" >
+    <modal-header>
+      <button aria-label="Close" class="close" (click)="close()" type="button">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title">Edit Account</h4>
+
+    </modal-header>
+    <modal-body>
+
+
+        <div class="row">
+          <div class="col-xs-12 col-sm-12">
+            <div class="form-group" [ngClass]="{'has-error': (!fullName.valid && fullName.touched)}">
+              <label for="fullName">Full name</label>
+              <input [formControl]="fullName" type="password" class="form-control" id="fullName"
+                     placeholder="Account full name">
+              <div *ngIf="!fullName.valid && fullName.touched">
+                <span *ngIf="!fullName.valid && fullName.errors.required" class="help-block">Full name is required</span>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
+              <label for="password">Email</label>
+              <input [formControl]="email" type="email" class="form-control" id="email"
+                     placeholder="Account email">
+
+              <div *ngIf="!email.valid && email.touched">
+                <span *ngIf="!email.valid && email.errors.required" class="help-block">Email is required</span>
+              </div>
+            </div>
+
+            <div class="form-group has-password" [ngClass]="{'has-error': (!password.valid && password.touched)}">
+              <label for="password">Current Password</label>
+              <input [formControl]="password" type="password" class="form-control" id="password"
+                     placeholder="Input account password">
+              <span (click)="togglePassword($event)" class="hideShowPassword-toggle"
+                    pTooltip="{{ tooltip.showPassword }}" tooltipPosition="top"></span>
+              <div *ngIf="!password.valid && password.touched">
+                <span *ngIf="!password.valid && password.errors.required" class="help-block">Current password is required</span>
+              </div>
+            </div>
+
+
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12">
+            <p>New password must:</p>
+            <ul [ngClass]="{'text-danger': (!password.valid && password.touched), 'text-success': (password.valid && password.touched)}">
+
+              <ng-template [ngIf]="!password.valid">
+                <ng-template [ngIf]="password.errors.required">
+                  <li>Contain at least 8 characters or more</li>
+                </ng-template>
+                <ng-template [ngIf]="password.errors.minlength">
+                  <li class="text-danger">Contain at least 8 characters or more</li>
+                </ng-template>
+                <ng-template [ngIf]="!password.errors.required && !password.errors.minlength">
+                  <li class="text-success">Contain at least 8 characters or more</li>
+                </ng-template>
+                <li [ngClass]="{'text-success': (!password.errors.lowercaseUppercase)}">Contain both uppercase and lowercase characters</li>
+                <li [ngClass]="{'text-success': (!password.errors.specialSymbolOrNumber)}">Contain at least one number or symbol</li>
+
+              </ng-template>
+              <ng-template [ngIf]="password.valid">
+                <li>Contain at least 8 characters or more</li>
+                <li>Contain both uppercase and lowercase characters</li>
+                <li>Contain at least one number or symbol</li>
+              </ng-template>
+            </ul>
+          </div>
+      </div>
+    </modal-body>
+
+    <modal-footer>
+    <div>
+        <button type="button" class="btn btn-outline-default btn-min"
+                (click)="close()">Cancel</button>
+        <button type="submit" class="btn btn-outline-primary btn-min pull-right"
+                (click)="save()">Continue
+        </button>
+      </div>
+    </modal-footer>
+  </modal>
+
+</form>

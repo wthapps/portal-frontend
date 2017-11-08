@@ -11,12 +11,14 @@ import { MyPreferencesComponent } from './preferences/preferences.component';
   imports: [
     RouterModule.forChild([
       {
-        path: 'setting',
+        path: 'settings',
         component: MySettingComponent,
         children: [
           {path: 'preferences', component: MyPreferencesComponent},
           {path: 'account', component: MyAccountComponent},
           {path: 'profile', component: MyProfileComponent},
+          {path: 'password', component: MyAccountComponent},
+          {path: 'delete_account', component: MyAccountComponent},
           {path: '', component: MySettingComponent},
           {path: '*', component: MySettingComponent}
         ]

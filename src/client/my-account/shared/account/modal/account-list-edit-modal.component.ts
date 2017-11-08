@@ -2,17 +2,19 @@ import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter,
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { CustomValidator } from '../../validator/custom.validator';
+import { CustomValidator } from '../../../../core/shared/validator/custom.validator';
+import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
 
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'invitation-create-modal',
-  templateUrl: 'invitation-create-modal.component.html'
+  selector: 'account-list-edit-modal',
+  templateUrl: 'account-list-edit-modal.component.html',
+  styleUrls: ['account-list-edit-modal.component.css']
 })
 
-export class InvitationCreateModalComponent implements OnInit {
+export class AccountListEditModalComponent implements OnInit {
   @Input() data: any;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modal') modal: ModalComponent;
@@ -22,18 +24,20 @@ export class InvitationCreateModalComponent implements OnInit {
   type: string = 'items';
   noOfCtrl: number = 3;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private commonEventService: CommonEventService) {
   }
 
   ngOnInit() {
-    this.form = this.fb.group({
-      'items': this.fb.array([])
-    });
-    // this.initialize();
+    this.initialize();
   }
 
-  open(options?: any) {
-    if(options.data == undefined) {
+  /*
+  * @parameter: option: object
+  * @data: array of item
+  * @mode: add or edit or view. default is add
+  * */
+  open(options: any = {data: undefined, mode:'add'}) {
+    if (options.data == undefined) {
       this.initialize();
     } else {
       this.data = options.data;
@@ -43,10 +47,16 @@ export class InvitationCreateModalComponent implements OnInit {
   }
 
   close(options?: any) {
+    this.removeAll();
     this.modal.close(options).then();
   }
 
   initialize() {
+    if(this.form == undefined) {
+      this.form = this.fb.group({
+        'items': this.fb.array([])
+      });
+    }
     for (let i = 0; i < this.noOfCtrl; i++) {
       this.add();
     }
@@ -65,13 +75,15 @@ export class InvitationCreateModalComponent implements OnInit {
       return this.fb.group({
         email: [item.email, Validators.compose([Validators.required, CustomValidator.emailFormat])],
         fullName: [item.fullName, Validators.compose([Validators.required])],
-        contactId: [item.contactId]
+        birthday: ['', Validators.compose([Validators.required])],
+        id: [item.id]
       });
     } else {
       return this.fb.group({
         email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])],
         fullName: ['', Validators.compose([Validators.required])],
-        contactId: [null]
+        birthday: ['', Validators.compose([Validators.required])],
+        id: [null]
       });
     }
   }
@@ -85,29 +97,17 @@ export class InvitationCreateModalComponent implements OnInit {
     }
   }
 
-
-  doEvent(options: any) {
+  continue() {
     let data = this.form.value.items;
-    switch (options.action) {
-      case 'invitation:send_to_recipients':
-        // remove items whose email is empty
-        _.remove(data, (item: any) => {
-          if(item.email != '') {
-            item.fullName = item.email.split('@')[0];
-          }
-          return item.email == '';
-        });
-        options['payload'] = data;
-        this.modal.close();
-        this.event.emit(options);
-        break;
-      case 'cancel':
-        this.modal.close(null).then();
-        this.removeAll();
-        break;
-      default:
-        break;
-    }
+    _.remove(data, (item: any) => {
+      return item.email == '' || item.fullName == '';
+    });
+    this.modal.close(null).then();
+    this.commonEventService.broadcast({
+      channel: 'my_account',
+      action: 'my_account:subscription:open_subscription_update_modal',
+      payload: data
+    });
   }
 
   done(values: any) {

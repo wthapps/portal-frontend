@@ -4,7 +4,6 @@ const DevConfig: EnvConfig = {
   // API: 'http://54.213.41.54:4000',
   API: 'http://localhost:4000',
   // API: 'http://192.168.0.106:4000',
-  // API: 'http://localhost:4000',
   // API: 'http://192.168.0.111:4000',
   // API: 'http://192.168.0.103:4000',
   ENV: 'DEV',

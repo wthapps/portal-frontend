@@ -14,7 +14,7 @@ import { MyAppsModule } from './apps/apps.module';
 import { MyBillingModule } from './billing/billing.module';
 import { MyMyAppsModule } from './my-apps/my-apps.module';
 import { MyPaymentModule } from './payment/payment.module';
-import { MySettingModule } from './setting/setting.module';
+import { MySettingModule } from './settings/setting.module';
 import { MyPlansModule } from './plans/plans.module';
 import { MyAdminModule } from './admin/admin.module';
 import { CheckboxModule } from 'primeng/components/checkbox/checkbox';

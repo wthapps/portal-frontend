@@ -1,6 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TextBoxSearchComponent } from '../../../core/shared/components/header/search/components/textbox-search.component';
 import { ServiceManager } from '../../../core/shared/services/service-manager';
+import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 declare var _:any;
 
@@ -13,22 +15,37 @@ declare var _:any;
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.css'],
 })
-export class ZSocialSharedHeaderComponent {
+export class ZSocialSharedHeaderComponent implements OnInit {
   suggestions: any = [];
   show: boolean = false;
   search: string;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
-  constructor(public serviceManager: ServiceManager) {
+  constructor(private router: Router, private route: ActivatedRoute, private location: Location,
+              public serviceManager: ServiceManager) {
+
+  }
+
+  ngOnInit() {
+
+    this.route.queryParams.subscribe((params: Params) => {
+      this.search = params['q'];
+    });
   }
 
   onEnter(e: any) {
     this.show = false;
-    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: e.search}});
+    this.route.params.forEach((params: any) => {
+      console.log('params meter', params['category']);
+      });
+    this.router.events.subscribe((event: any) => {
+      console.log('current path::::', event.url.toString().split('?')[0]);
+
+    });
+    this.router.navigate(['search','all'], {queryParams: {q: e.search}});
   }
 
   onKey(e: any) {
-    console.log(e);
     if (!e.search) {
       this.show = false;
       return;

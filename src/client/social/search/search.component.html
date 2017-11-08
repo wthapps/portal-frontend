@@ -5,7 +5,8 @@
         <div class="panel-heading">
           <h3 class="panel-title">
             <a class="link-text"
-               [routerLink]="['/search', group=='members'?'member':group=='communities'?'community':'post']">
+               [routerLink]="['/search', group=='members'?'member':group=='communities'?'community':'post']"
+               [queryParams]="{q:params}">
               {{ group | titleCase }}
             </a>
           </h3>

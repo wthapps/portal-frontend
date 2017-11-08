@@ -1,61 +1,70 @@
-import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, OnChanges,
+  SimpleChanges
+} from '@angular/core';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormArray
+} from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { CustomValidator } from '../../validator/custom.validator';
+
+import { forEach } from '@angular/router/src/utils/collection';
+import { CustomValidator } from '../../../core/shared/validator/custom.validator';
+// import { ProfileFormMixin } from '../../mixins/form/profile/profile-form.mixin';
+// import { Mixin } from '../../../design-patterns/decorator/mixin-decorator';
 
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'invitation-create-modal',
-  templateUrl: 'invitation-create-modal.component.html'
+  selector: 'account-create-partial',
+  templateUrl: 'account-create-partial.component.html'
 })
 
-export class InvitationCreateModalComponent implements OnInit {
-  @Input() data: any;
+export class AccountCreatePartialComponent implements OnInit, OnChanges {
+  @Input('data') data: Array<any> = [];
+
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('modal') modal: ModalComponent;
 
   form: FormGroup;
   deleteObjects: any = [];
   type: string = 'items';
   noOfCtrl: number = 3;
 
+  // removeItem: (i: number, item: any) => void;
+  // onSubmit: (values: any) => void;
+  // removeAll: () => void;
+  // getFormControls: () => any;
+
   constructor(private fb: FormBuilder) {
+    console.log('testing inside partial::::');
   }
 
   ngOnInit() {
     this.form = this.fb.group({
       'items': this.fb.array([])
     });
-    // this.initialize();
+    this.initialize();
   }
 
-  open(options?: any) {
-    if(options.data == undefined) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['data'] != undefined && changes['data'].currentValue != undefined) {
+      this.data = changes['data'].currentValue;
       this.initialize();
-    } else {
-      this.data = options.data;
-      this.fillData();
     }
-    this.modal.open(options).then();
-  }
-
-  close(options?: any) {
-    this.modal.close(options).then();
   }
 
   initialize() {
-    for (let i = 0; i < this.noOfCtrl; i++) {
-      this.add();
-    }
-  }
-
-  fillData() {
     if (this.data) {
       for (let i = 0; i < this.data.length; i++) {
         this.add(this.data[i]);
+      }
+    } else {
+      for (let i = 0; i < this.noOfCtrl; i++) {
+        this.add();
       }
     }
   }
@@ -64,13 +73,13 @@ export class InvitationCreateModalComponent implements OnInit {
     if (item) {
       return this.fb.group({
         email: [item.email, Validators.compose([Validators.required, CustomValidator.emailFormat])],
-        fullName: [item.fullName, Validators.compose([Validators.required])],
+        fullName: [item.fullName],
         contactId: [item.contactId]
       });
     } else {
       return this.fb.group({
         email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])],
-        fullName: ['', Validators.compose([Validators.required])],
+        fullName: [''],
         contactId: [null]
       });
     }
@@ -79,9 +88,9 @@ export class InvitationCreateModalComponent implements OnInit {
   add(item?: any) {
     const control = <FormArray>this.form.controls[this.type];
     if (item) {
-      control.insert(0, this.create(item));
+      control.push(this.create(item));
     } else {
-      control.insert(0, this.create());
+      control.push(this.create());
     }
   }
 
@@ -89,7 +98,7 @@ export class InvitationCreateModalComponent implements OnInit {
   doEvent(options: any) {
     let data = this.form.value.items;
     switch (options.action) {
-      case 'invitation:send_to_recipients':
+      case 'done':
         // remove items whose email is empty
         _.remove(data, (item: any) => {
           if(item.email != '') {
@@ -98,12 +107,10 @@ export class InvitationCreateModalComponent implements OnInit {
           return item.email == '';
         });
         options['payload'] = data;
-        this.modal.close();
         this.event.emit(options);
         break;
       case 'cancel':
-        this.modal.close(null).then();
-        this.removeAll();
+        this.event.emit(options);
         break;
       default:
         break;
@@ -139,19 +146,4 @@ export class InvitationCreateModalComponent implements OnInit {
     return (<FormArray>this.form.get(this.type)).controls;
   }
 
-  validItems(): boolean {
-    let result = false;
-    let items = this.form.value.items;
-
-    if(items.length == 0) return false;
-    if(items.length == 1) {
-      return this.form.valid;
-    }
-    _.forEach(this.form.value.items, (item: any) => {
-      if(item.email != '' && item.fullName != '') {
-        result = true;
-      }
-    });
-    return result;
-  }
 }

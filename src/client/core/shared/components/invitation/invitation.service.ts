@@ -4,8 +4,6 @@ import { ApiBaseService } from '../../services/apibase.service';
 import { Invitation } from './invitation.model';
 import { Observable } from 'rxjs/Observable';
 
-declare var _: any;
-
 @Injectable()
 export class InvitationService extends BaseEntityService<Invitation> {
 

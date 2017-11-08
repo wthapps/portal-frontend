@@ -2,17 +2,18 @@ import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter,
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { CustomValidator } from '../../validator/custom.validator';
+import { CustomValidator } from '../../../../core/shared/validator/custom.validator';
 
 declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'invitation-create-modal',
-  templateUrl: 'invitation-create-modal.component.html'
+  selector: 'account-detail-modal',
+  templateUrl: 'account-detail-modal.component.html',
+  styleUrls: ['account-detail-modal.component.css']
 })
 
-export class InvitationCreateModalComponent implements OnInit {
+export class AccountDetailModalComponent implements OnInit {
   @Input() data: any;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modal') modal: ModalComponent;
@@ -29,11 +30,15 @@ export class InvitationCreateModalComponent implements OnInit {
     this.form = this.fb.group({
       'items': this.fb.array([])
     });
-    // this.initialize();
   }
 
-  open(options?: any) {
-    if(options.data == undefined) {
+  /*
+  * @parameter: option: object
+  * @data: array of item
+  * @mode: add or edit or view. default is add
+  * */
+  open(options: any = {data: undefined, mode: 'add'}) {
+    if (options.data == undefined) {
       this.initialize();
     } else {
       this.data = options.data;
