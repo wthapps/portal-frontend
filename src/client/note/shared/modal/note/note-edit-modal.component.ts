@@ -268,6 +268,40 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     }
   }
 
+  download(file: any) {
+    this.apiBaseService.download('common/files/download', {id: file.id, object_type: file.object_type}).subscribe((res: any) => {
+      var blob = new Blob([res.blob()], {type: file.content_type});
+      saveAs(blob, file.name);
+    });
+  }
+
+  fileAttachmentClick(file: any) {
+    if(file.object_type == 'photo') {
+      $('#modal-note-edit').css('z-index', '0');
+      $('.modal-backdrop').css('z-index', '0');
+      this.router.navigate([{outlets: {modal: ['photos', file.id, {ids: [file.id]}]}}]);
+    }
+  }
+
+  pdfDownload() {
+    this.apiBaseService.download('note/notes/pdf_download/' + this.note.id).subscribe((res: any) => {
+      var blob = new Blob([res.blob()], {type: 'application/pdf'});
+      saveAs(blob, this.note.title + '.pdf');
+    })
+  }
+
+  print() {
+    printJS({ printable: 'noteview', type: 'html', header: this.note.title});
+  }
+
+  downloadAttachments() {
+    if(this.note.attachments) {
+      for(let att of this.note.attachments) {
+        this.download(att);
+      }
+    }
+  }
+
   private uploadFiles(files: any, parent?: any) {
     // for (let i = 0; i < files.length; i++) {
     //   files[0].parent = {
@@ -294,40 +328,6 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
           this.form.controls['attachments'].setValue(this.note.attachments);
         });
     });
-  }
-
-  download(file: any) {
-    this.apiBaseService.download('common/files/download', {id: file.id, object_type: file.object_type}).subscribe((res: any) => {
-      var blob = new Blob([res.blob()], {type: file.content_type});
-      saveAs(blob, file.name);
-    });
-  }
-
-  fileAttachmentClick(file: any) {
-    if(file.object_type == 'photo') {
-      $("#modal-note-edit").css('z-index', '0');
-      $(".modal-backdrop").css('z-index', '0');
-      this.router.navigate([{outlets: {modal: ['photos', file.id, {ids: [file.id]}]}}]);
-    }
-  }
-
-  pdfDownload() {
-    this.apiBaseService.download('note/notes/pdf_download/' + this.note.id).subscribe((res: any) => {
-      var blob = new Blob([res.blob()], {type: 'application/pdf'});
-      saveAs(blob, this.note.title + '.pdf');
-    })
-  }
-
-  print() {
-    printJS({ printable: 'noteview', type: 'html', header: this.note.title});
-  }
-
-  downloadAttachments() {
-    if(this.note.attachments) {
-      for(let att of this.note.attachments) {
-        this.download(att);
-      }
-    }
   }
 
   private subscribePhotoSelectEvents() {

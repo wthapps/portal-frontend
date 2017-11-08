@@ -1,4 +1,4 @@
-import { BaseEvent } from "../../../core/shared/event/base-event";
+import { BaseEvent } from '../../../core/shared/event/base-event';
 
 
 export class CommentCreateEvent implements BaseEvent {

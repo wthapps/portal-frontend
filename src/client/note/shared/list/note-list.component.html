@@ -1,4 +1,5 @@
-<div [ngClass]="{'component-listbox-list': viewOption == VIEW_MODE.LIST, 'component-listbox-grid': viewOption == VIEW_MODE.GRID}">
+<div
+  [ngClass]="{'component-listbox-list': viewOption == VIEW_MODE.LIST, 'component-listbox-grid': viewOption == VIEW_MODE.GRID}">
   <div class="component-listbox-header">
     <div class="component-listbox-row" [ngClass]="{'active': isSelectAll}">
       <div class="component-listbox-input">
@@ -19,7 +20,7 @@
       <div class="component-listbox-date">
         <span class="can-click" (click)="onSort('created_at')">
           Created Date <i *ngIf="sortOption?.field == 'created_at'" class="fa"
-                         [ngClass]="{'fa-arrow-up': !sortOption?.desc, 'fa-arrow-down': sortOption?.desc}"></i>
+                          [ngClass]="{'fa-arrow-up': !sortOption?.desc, 'fa-arrow-down': sortOption?.desc}"></i>
         </span>
       </div>
       <div class="component-listbox-action">&nbsp;</div>
@@ -28,17 +29,17 @@
 
   <!--<h4 class="ml10" *ngIf="items?.length > 0 && viewOption == 'grid'">Folders</h4>-->
   <!--<ng-container *ngFor="let item of items">-->
-    <!--<folder-item [data]="item" *ngIf="item.object_type == 'folder'" class="component-listbox-body"></folder-item>-->
+  <!--<folder-item [data]="item" *ngIf="item.object_type == 'folder'" class="component-listbox-body"></folder-item>-->
   <!--</ng-container>-->
 
   <!--<div class="clearfix"></div>-->
 
   <!--<h4 class="ml10" *ngIf="items?.length > 0 && viewOption == 'grid'">Notes</h4>-->
   <!--<ng-container *ngFor="let item of items">-->
-    <!--<note-item [data]="item" *ngIf="item.object_type == 'note'" class="component-listbox-body"></note-item>-->
+  <!--<note-item [data]="item" *ngIf="item.object_type == 'note'" class="component-listbox-body"></note-item>-->
   <!--</ng-container>-->
 
-  <ng-container *ngIf="!(loading$ | async);else loadingBlock">
+  <ng-container *ngIf="!(loading$ | async); else loadingBlock">
     <h4 class="ml10" *ngIf="folderItems?.length > 0 && viewOption == VIEW_MODE.GRID">Folders</h4>
     <ng-container *ngFor="let item of folderItems">
       <folder-item [data]="item" class="component-listbox-body" [page]="page"></folder-item>
@@ -52,5 +53,5 @@
     </ng-container>
   </ng-container>
 
-  <ng-template #loadingBlock>...Loading </ng-template>
+  <ng-template #loadingBlock>...Loading</ng-template>
 </div>

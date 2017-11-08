@@ -1,5 +1,5 @@
-import { ApiBaseService } from "../../../core/shared/services/apibase.service";
-import { PostComponent } from "../second-routes/post/post.component";
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { PostComponent } from '../second-routes/post/post.component';
 
 export class BaseZoneSocialItem {
   item: any;

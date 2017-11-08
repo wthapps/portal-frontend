@@ -23,19 +23,15 @@ import { ToastsService } from '../../../core/shared/components/toast/toast-messa
 
 @Injectable()
 export class NoteEffects {
-  constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
-              private toastsService: ToastsService,
-              private store: Store<fromRoot.State>) {
-  }
 
   @Effect() addNote = this.actions
     .ofType(note.ADD)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-    return this.noteService.create(payload)
-      .map((res: any) => ({type: note.MULTI_NOTES_ADDED, payload: [res['data']]}))
-      .catch(() => of({type: note.MULTI_NOTES_ADDED, payload: []}))
-      ;
+      return this.noteService.create(payload)
+        .map((res: any) => ({type: note.MULTI_NOTES_ADDED, payload: [res['data']]}))
+        .catch(() => of({type: note.MULTI_NOTES_ADDED, payload: []}))
+        ;
     });
 
   @Effect() updateNote = this.actions
@@ -46,10 +42,11 @@ export class NoteEffects {
         .map((res: any) => {
           // this.toastsService.success('Note updated successfully, yay');
           return ({type: note.NOTE_UPDATED, payload: res['data']});
-        } )
+        })
         .catch(() => {
-          this.toastsService.danger("Note updated FAIL, something's wrong happened");
-          return empty();})
+          this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
+          return empty();
+        })
         ;
     });
 
@@ -77,11 +74,13 @@ export class NoteEffects {
     .ofType(note.LOAD)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-    return this.apiBaseService.get(`note/mixed_entities`, payload)
-      .mergeMap((res: any) => { return [
-          {type: note.LOAD_SUCCESS, payload: res.data},
-          {type: note.SET_LIST_PERMISSION, payload: {canAdd: true}}]; })
-      .catch(() => of({type: note.LOAD_SUCCESS, payload: []}));
+      return this.apiBaseService.get(`note/mixed_entities`, payload)
+        .mergeMap((res: any) => {
+          return [
+            {type: note.LOAD_SUCCESS, payload: res.data},
+            {type: note.SET_LIST_PERMISSION, payload: {canAdd: true}}];
+        })
+        .catch(() => of({type: note.LOAD_SUCCESS, payload: []}));
     });
 
 
@@ -89,9 +88,11 @@ export class NoteEffects {
     .ofType(note.TRASH_LOAD)
     .switchMap(() => {
       return this.apiBaseService.get(`note/trashs`)
-        .mergeMap((res: any) => { return [
-          {type: note.LOAD_SUCCESS, payload: res.data},
-          {type: note.SET_LIST_PERMISSION, payload: {canAdd: false}}]; })
+        .mergeMap((res: any) => {
+          return [
+            {type: note.LOAD_SUCCESS, payload: res.data},
+            {type: note.SET_LIST_PERMISSION, payload: {canAdd: false}}];
+        })
         .catch(() => of({type: note.LOAD_SUCCESS, payload: []}));
     });
 
@@ -99,7 +100,7 @@ export class NoteEffects {
     .ofType(note.RESTORE)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-      return this.apiBaseService.post(`note/trash/restore`, {objects: payload} )
+      return this.apiBaseService.post(`note/trash/restore`, {objects: payload})
         .map((res: any) => ({type: note.NOTES_DELETED, payload: res.data}))
         .catch(() => of({type: note.NOTES_DELETED, payload: []}));
     });
@@ -121,13 +122,22 @@ export class NoteEffects {
         .catch(() => empty());
     });
 
-    @Effect() removeShareWithMe = this.actions
-      .ofType(note.REMOVE_SHARE_WITH_ME)
-      .map((action: any) => action['payload'])
-      .switchMap((payload: any) => {
-        return this.apiBaseService.post(`note/sharings/remove_share_with_me`, {objects: payload.map((i: any) => {return {id: i.id, object_type: i.object_type}})})
-          .map((res: any) => ({type: note.REMOVED_SHARE_WITH_ME, payload: res.data}))
-          .catch(() => empty());
-      });
+  @Effect() removeShareWithMe = this.actions
+    .ofType(note.REMOVE_SHARE_WITH_ME)
+    .map((action: any) => action['payload'])
+    .switchMap((payload: any) => {
+      return this.apiBaseService.post(`note/sharings/remove_share_with_me`, {
+        objects: payload.map((i: any) => {
+          return {id: i.id, object_type: i.object_type}
+        })
+      })
+        .map((res: any) => ({type: note.REMOVED_SHARE_WITH_ME, payload: res.data}))
+        .catch(() => empty());
+    });
+
+  constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
+              private toastsService: ToastsService,
+              private store: Store<fromRoot.State>) {
+  }
 
 }
