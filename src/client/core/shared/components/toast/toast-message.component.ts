@@ -26,7 +26,8 @@
 //   clickToClose: false
 // });
 
-import { Component, OnInit, } from '@angular/core';
+import { Component } from '@angular/core';
+import { Message } from 'primeng/primeng';
 
 @Component({
   moduleId: module.id,
@@ -36,6 +37,8 @@ import { Component, OnInit, } from '@angular/core';
 })
 export class ToastsComponent {
   life: number = 3000;
+  msgs: Message[] = [];
+
   constructor() {
   }
 }
