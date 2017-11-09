@@ -79,6 +79,7 @@ export let Constants = {
     logoWhite: '/assets/images/logo-white.png',
     logoZone: '/assets/images/logo-zone.png',
     logoZoneWhite: '/assets/images/logo-zone-white.png',
+    default: '/assets/images/thumbnail/image_default.png',
   },
   windows: {
     scrollBarWidth: getBarwidth()
@@ -129,7 +130,8 @@ export let Constants = {
     {name: 'Photos', link: '/photos', icon: 'fa fa-photo'},
     {name: 'Albums', link: '/albums', icon: 'fa fa-file-photo-o'},
     {name: 'Favourites', link: '/favourites', icon: 'fa fa-star'},
-    {name: 'Shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'},
+    {name: 'Shared with me', link: '/shared-with-me', icon: 'wthico-shared-with-me'},
+    {name: 'Shared by me', link: '/shared-by-me', icon: 'fa fa-share-alt'},
     {name: 'Search', link: '/search', icon: 'fa fa-search'}
   ],
 

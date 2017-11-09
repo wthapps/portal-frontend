@@ -303,13 +303,6 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   private uploadFiles(files: any, parent?: any) {
-    // for (let i = 0; i < files.length; i++) {
-    //   files[0].parent = {
-    //     id: parent.id,
-    //     uuid: '',
-    //     type: 'Chat::Message'
-    //   };
-    // }
     this.fileUploadHelper.upload(files, (event: any, file: any) => {
       let genericFile = new GenericFile({
         file: event.target['result'],

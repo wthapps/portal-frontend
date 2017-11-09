@@ -15,6 +15,7 @@ import { ZMediaFavoriteModule } from './favourites/favourites.module';
 import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZMediaSearchModule } from './search/search.module';
 import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
+import { ZMediaSharedByMeModule } from './shared-by-me/shared-by-me.module';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
     ZMediaPhotoModule,
     ZMediaFavoriteModule,
     ZMediaSharedWithMeModule,
+    ZMediaSharedByMeModule,
     ZMediaSearchModule,
     ZMediaMyProfileModule,
     ZMediaSharedModule.forRoot(),

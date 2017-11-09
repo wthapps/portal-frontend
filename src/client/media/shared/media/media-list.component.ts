@@ -33,6 +33,7 @@ import { ZMediaAlbumService } from '../../album/album.service';
 import { PhotoService } from '../../../core/shared/services/photo.service';
 import { ZMediaStore } from '../store/media.store';
 import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 
 declare var _: any;
 declare var $: any;
@@ -123,6 +124,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
               protected loadingService: LoadingService,
               protected mediaObjectService: MediaObjectService,
               protected photoService: PhotoService,
+              protected apiBaseService: ApiBaseService,
               protected location: Location,
               protected mediaStore: ZMediaStore,
               protected cdr: ChangeDetectorRef,
@@ -338,23 +340,12 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       case 'editInfo':
         this.editInfo(event.params.selectedObject);
         break;
-      case 'delete':
-        this.delete();
-        break;
-      // Delete albums and photos in list screen: photo list, album list, favorites list, album detail screen
-      case 'deleteMedia':
-        this.deleteMedia(event.params);
-        break;
       case 'confirmDeleteMedia':
         this.confirmDeleteMedia(event.params);
         break;
       // Hide photos / albums present in shared-with-me screen
       case 'hideMedia':
         this.hideMedia(event.params);
-        break;
-      //  Delete album itself in album detail screen
-      case 'deleteAlbumAndBack':
-        this.deleteAlbumAndBack(event.params);
         break;
       case 'removeFromAlbum':
         this.removeFromAlbum(event.params);
@@ -544,6 +535,11 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
           console.log(error);
         }
       );
+    } else if (selectedObject.object_type == 'sharing') {
+      this.apiBaseService.post(`media/sharings/update_attributes`, selectedObject).subscribe((res: any) => {
+        this.loadingService.stop();
+        this.refreshPrimaryList();
+      })
     }
   }
 
@@ -589,58 +585,25 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  delete() {
-    let objType = this.selectedObjects[0].object_type;
-    let objIds = _.map(this.selectedObjects, 'id'); // ['1','2'];
-    if (objType == 'photo') {
-      this.wthConfirmService.confirm({
-        acceptLabel: 'Delete',
-        message: 'Are you sure to delete ' + this.selectedObjects.length + ' ' + objType + (this.selectedObjects.length > 1 ? 's' : '') + ' ?',
-        accept: () => {
-          let body = JSON.stringify({ids: objIds});
-          this.loadingService.start();
-
-          this.photoService.deletePhoto(body).toPromise().then(
-            (res: any)=> {
-              _.map(objIds, (id: any)=> {
-                _.remove(this.objects, ['id', id]);
-              });
-              this.loadingService.stop();
-              this.refreshPrimaryList();
-            });
-        }
-      });
-    } else if (objType == 'album') {
-      console.log('testing...... detete: album');
-    }
-  }
-
-  // Delete multiple objects: photos, albums
-  // Allow delete photos in album (options)
-  // Params format:
-  // { objects: [{id: <value>, object_type: <value>}], child_destroy: <true/false> }
-  deleteMedia(params: any): Promise<any> {
-    let objs = _.map(params.selectedObjects, (o: any) => _.pick(o, ['id', 'object_type'])); // ['1','2'];
-
-    this.loadingService.start();
-    return this.mediaObjectService.deleteObjects(objs, params.child_destroy).toPromise().then(
-      (res: any) => {
-        _.map(objs, (obj: any)=> {
-          _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
-        });
-        this.loadingService.stop();
-        this.refreshPrimaryList();
-      },
-      (error: any) => this.loadingService.stop());
-
-  }
-
   confirmDeleteMedia(params: any) {
     // Ask for user confirmation before delete media items
     let photos = _.filter(params.selectedObjects, (o: any) => o.object_type == 'photo');
     let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
+    let sharings = _.filter(params.selectedObjects, (o: any) => o.object_type == 'sharing');
     let photos_count = photos.length + (photos.length > 1 ? ' photos?' : ' photo?');
-
+    if (sharings.length > 0) {
+      let ids = sharings.map((s: any) => { return s.id })
+      this.wthConfirmService.confirm({
+        acceptLabel: 'Delete',
+        message: 'Are you sure to delete ' + sharings.length + ' sharings ?',
+        accept: () => {
+          this.apiBaseService.post(`media/sharings/destroy`, {ids: ids}).subscribe((res: any) => {
+            this.loadingService.stop();
+            this.refreshPrimaryList();
+          });
+        }
+      });
+    }
     if (photos.length > 0) {
       // Ask for user confirmation before deleting selected PHOTOS
       this.wthConfirmService.confirm({
@@ -669,22 +632,16 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
             this.onAction({action: 'openModal', params: {modalName: 'deleteModal', selectedObjects: albums}});
         }
       });
-    } else {
+    }
+    if (albums.length > 0){
       // Ask for user confirmation before deleting selected ALBUMS
       this.onAction({action: 'openModal', params: {modalName: 'deleteModal', selectedObjects: albums}});
     }
-
   }
 
   // Hide media present in shared with me screen
   hideMedia(params: any, callback?: any) {
     return;
-  }
-
-  // Delete album in album detail and go back to album list / favourite list
-  deleteAlbumAndBack(params: any): Promise<any> {
-    return this.deleteMedia(params)
-      .then(() => this.clearOutletsAndRefreshList());
   }
 
   removeFromAlbum(params: any) {
@@ -824,4 +781,3 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     this.getObjects(data);
   }
 }
-

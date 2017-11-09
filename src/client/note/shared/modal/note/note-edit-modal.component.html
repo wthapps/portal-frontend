@@ -195,7 +195,7 @@
               <i class="fa fa-trash-o"></i>
             </button>
           </div>
-          <div class="can-click" (click)="fileAttachmentClick(att)">
+          <div ngClass="{can-click: att.object_type == 'photo'}" (click)="fileAttachmentClick(att)">
             <div class="attachment-item-thumb">
               <!--<i class="fa fa-file-zip-o"></i>-->
               <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>

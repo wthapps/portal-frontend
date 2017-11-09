@@ -46,7 +46,7 @@ export class MyPaymentConfirmComponent implements OnInit {
   }
 
   confirm(): void {
-    this.router.navigateByUrl('account/setting/profile');
+    this.router.navigateByUrl('account/settings/profile');
   }
 
   upgrade(): void {

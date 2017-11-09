@@ -16,7 +16,12 @@
 
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
-  <note-list [data]="data" [viewOption]="viewOption"></note-list>
+  <note-list [noteItems]="noteItems$ | async"
+             [folderItems]="folderItems$ | async"
+             [viewOption]="(viewMode$ | async)"
+             [sortOption]="sortOption$ | async"
+             [isSelectAll]="(selectAll$ | async)">
+  </note-list>
 
   <ng-template #loadingBlock>
     <box-loading></box-loading>

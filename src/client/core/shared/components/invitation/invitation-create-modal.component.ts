@@ -29,13 +29,16 @@ export class InvitationCreateModalComponent implements OnInit {
     this.form = this.fb.group({
       'items': this.fb.array([])
     });
-    this.initialize();
+    // this.initialize();
   }
 
   open(options?: any) {
-    this.data = options.data;
-    // this.initialize();
-    this.fillData();
+    if(options.data == undefined) {
+      this.initialize();
+    } else {
+      this.data = options.data;
+      this.fillData();
+    }
     this.modal.open(options).then();
   }
 

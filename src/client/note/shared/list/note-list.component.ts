@@ -30,6 +30,8 @@ export class NoteListComponent implements OnInit {
   @Input() isSelectAll: boolean;
   @Input() page: string;
 
+  loading$: Observable<boolean>;
+
   readonly VIEW_MODE = {
     GRID: 'grid',
     LIST: 'list'
@@ -45,6 +47,7 @@ export class NoteListComponent implements OnInit {
   }
 
   constructor(public noteService: ZNoteService, public store: Store<fromRoot.State>) {
+    this.loading$ = this.store.select(fromRoot.getLoading);
   }
 
   ngOnInit() {

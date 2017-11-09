@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeUntil';
 
 import { ApiBaseService } from './apibase.service';
+import { WthConfirmService } from '../components/confirmation/wth-confirm.service';
+import { Photo } from '../models/photo.model';
 
 declare var _: any;
 
@@ -19,7 +21,8 @@ export class PhotoService {
   private closePreviewSubject: Subject<any> = new Subject();
   private modifiedPhotosSubject: BehaviorSubject<any> = new BehaviorSubject({action: null, payload: {}}); // including UPDATED and DELETED photos
 
-  constructor(private apiBaseService: ApiBaseService) {
+  constructor(private apiBaseService: ApiBaseService,
+              private wthConfirmService: WthConfirmService) {
     this.closePreview$ = this.closePreviewSubject.asObservable();
     this.modifiedPhotos$ = this.modifiedPhotosSubject.asObservable();
   }
@@ -85,5 +88,47 @@ export class PhotoService {
   loadMore(next: string): any {
     return this.apiBaseService.get(next);
   }
+
+  confirmUpdate(photo: Photo, payload: any): Promise<any> {
+    return new Promise<any>((resolve: any) => {
+      this.wthConfirmService.confirm({
+        message: 'Are you sure to save the photo?\nThis photo will replace current photo!',
+        header: 'Save Photo',
+        accept: () => {
+          return this.update({
+            id: photo.id,
+            name: photo.name + `.${photo.extension}`,
+            type: photo.content_type,
+            file: payload
+          }).toPromise()
+            .then((response: any) => {
+              // this.photo = response.data;
+              // this.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
+              resolve(response.data);
+            });
+        }
+      });
+    });
+  }
+
+  confirmDelete(photo: Photo, payload: any): Promise<any> {
+    // Ask for user confirmation before deleting selected PHOTOS
+    return new Promise<any>((resolve: any) => {
+      this.wthConfirmService.confirm({
+        message: `Are you sure to delete photo ${photo.name}`,
+        accept: () => {
+          let body = JSON.stringify({ids: [photo.id]});
+          this.deletePhoto(body).toPromise().then((res: any)=> {
+
+            resolve(photo);
+          });
+        },
+        reject: () => {
+          // Ask for user confirmation before deleting selected ALBUMS
+        }
+      });
+    });
+  }
+
 
 }

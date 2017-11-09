@@ -83,6 +83,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         (error: any) => {
+          this.loading = false;
           console.error('Error when loading photo ', error);
         });
   }
@@ -104,9 +105,12 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
           tree.root.children.primary.segments[1].path = payload.id;
         this.router.navigateByUrl(tree);
         break;
-      case 'confirmUpdate':
-        this.confirmUpdate(payload);
-
+      // case 'confirmUpdate':
+      //   this.confirmUpdate(payload);
+      //
+      //   break;
+      case 'photoUpdated':
+        this.refreshUpdatedPhoto(payload.payload);
         break;
       case 'favourite':
         this.favourite();
@@ -135,25 +139,22 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   }
 
   confirmUpdate(payload: any): Promise<any> {
-    return new Promise<any>((resolve: any) => {
-      this.wthConfirmService.confirm({
-        message: 'Are you sure to save the photo?\nThis photo will replace current photo!',
-        header: 'Save Photo',
-        accept: () => {
-          return this.photoService.update({
-            id: this.photo.id,
-            name: this.photo.name + `.${this.photo.extension}`,
-            type: this.photo.content_type,
-            file: payload.editedData
-          }).toPromise()
-            .then((response: any) => {
-              this.photo = response.data;
-              this.photoService.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
-              resolve(this.photo);
-            });
-        }
+    return this.photoService.confirmUpdate(this.photo, payload)
+      .then((data: any) => {
+        this.photo = data;
+        this.photoService.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
+        return this.photo;
       });
-    });
+  }
+
+  refreshUpdatedPhoto(payload: any) {
+    console.debug('refresh Photo: ', payload);
+    this.photo = payload;
+    this.photoService.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
+  }
+
+  refreshDeletedPhoto(payload: any) {
+
   }
 
   confirmDelete(payload: any): Promise<any> {

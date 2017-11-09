@@ -1,0 +1,133 @@
+<form [formGroup]="form" novalidate>
+
+  <modal #modal
+         [cssClass]="'modal-lg modal-account-add'"
+         [keyboard]="false"
+         [animation]="false"
+         [backdrop]="'static'" >
+    <modal-header>
+      <button aria-label="Close" class="close" (click)="doEvent({action: 'cancel'})" type="button">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title"><i class="fa fa-plus"></i> Add account</h4>
+
+    </modal-header>
+    <modal-body>
+
+
+        <div class="pb5 bold">
+          <div class="row row-12">
+            <div class="col-lg-4">
+              Full name
+            </div>
+            <div class="col-lg-2 pl0">
+              Birthday
+            </div>
+            <div class="col-lg-4">
+              Email address
+            </div>
+            <div class="col-lg-2">
+              Account type
+            </div>
+          </div>
+        </div>
+
+        <div formArrayName="items">
+          <div *ngFor="let item of getFormControls(); let i=index" class="media mt0">
+            <div *ngIf="item" class="media-body" [formGroupName]="i">
+
+              <div class="row row-12">
+
+                <div class="col-lg-4">
+                  <div class="form-group no-label" [ngClass]="{
+                    'has-error': (!item['controls'].fullName.valid
+                                && item['controls'].fullName.touched),
+                    'has-success': (item['controls'].fullName.valid
+                                && item['controls'].fullName.touched
+                                && form.value.items[i].fullName.length > 0)}">
+                    <input type="text" class="form-control" formControlName="fullName" placeholder="Full name">
+                    <div *ngIf="!item['controls'].fullName.valid && item['controls'].fullName.touched">
+                      <span class="help-block text-danger" *ngIf="item['controls'].fullName.errors.required">
+                        Full name is required
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 p2">
+
+                  <div class="form-group no-label">
+                    <!--<input matInput [matDatepicker]="birthday"/>-->
+                    <!--<mat-datepicker #birthday></mat-datepicker>-->
+                    <input #birthday class="form-control" placeholder="birthday">
+                    <!--<p-calendar class="input-block"-->
+                                <!--baseZIndex="1000"-->
+                    <!--&gt;</p-calendar>-->
+
+                  </div>
+                </div>
+
+                <div class="col-lg-4 p2">
+
+                  <div class="form-group no-label"
+                       [ngClass]="{
+                    'has-error': (!item['controls'].email.valid
+                                && item['controls'].email.touched),
+                    'has-success': (item['controls'].email.valid
+                                && item['controls'].email.touched
+                                && form.value.items[i].email.length > 0)}">
+                    <input type="email" email class="form-control" formControlName="email" placeholder="account-email@example.com">
+                    <div
+                      *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
+                      <span
+                        *ngIf="!item['controls'].email.valid && item['controls'].email.errors.emailFormat"
+                        class="help-block text-danger">
+                        Email is not valid
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 p2">
+                  <div class="form-group no-label">
+                    <select class="form-control" id="accountType">
+                      <option value="0">Sub Account</option>
+                      <option value="1">Full account</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="media-right">
+              <button *ngIf="this.form.value.items.length > 1" type="button" class="btn btn-default" (click)="remove(i, item.controls)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mb10">
+          <button type="button" class="btn btn-default" (click)="add()">
+            <i class="fa fa-plus"></i> Add more sub account
+          </button>
+          <button type="button" class="btn btn-default" (click)="add()">
+            <i class="fa fa-plus"></i> Add more full account
+          </button>
+        </div>
+
+    </modal-body>
+
+    <modal-footer>
+    <div>
+        <button type="button" class="btn btn-outline-default btn-min"
+                (click)="doEvent({action: 'cancel'})">Cancel</button>
+      <!--<button [disabled]="!validItems()" type="submit" class="btn btn-outline-primary btn-min pull-right"-->
+              <!--(click)="doEvent({action: 'account:add_account_modal:continue'})">Continue-->
+      <!--</button>-->
+        <button type="submit" class="btn btn-outline-primary btn-min pull-right"
+                (click)="doEvent({action: 'account:add_account_modal:continue'})">Continue
+        </button>
+      </div>
+    </modal-footer>
+  </modal>
+
+</form>
