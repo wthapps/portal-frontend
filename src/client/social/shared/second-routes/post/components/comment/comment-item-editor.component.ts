@@ -16,6 +16,7 @@ import { UserService } from '../../../../../../core/shared/services/user.service
 import { User } from '../../../../../../core/shared/models/user.model';
 import { ZChatEmojiService } from '../../../../../../core/shared/emoji/emoji.service';
 import { Constants } from '../../../../../../core/shared/config/constants';
+
 export enum CommentEditorMode {
   Add,
   Edit,
@@ -23,8 +24,9 @@ export enum CommentEditorMode {
   EditReply
 }
 
-declare var $: any;
-declare var _: any;
+declare let $: any;
+declare let _: any;
+declare let document: any;
 
 @Component({
   moduleId: module.id,
@@ -77,19 +79,12 @@ export class CommentItemEditorComponent implements OnInit {
     });
     this.contentCtrl = this.commentEditorForm.controls['content'];
     this.photosCtrl = this.commentEditorForm.controls['photo'];
-
-    // $('.js-textarea-autoheight').each(function () {
-    //   this.setAttribute('style', 'height: 34px; overflow:hidden; word-wrap: break-word; resize: none; padding-right: 50px;');
-    // }).on('input', function () {
-    //   this.style.height = 'auto';
-    //   this.style.height = (this.scrollHeight) + 'px';
-    // });
   }
 
 
   onKey(e: any) {
     // Create, Update, Reply
-    if (e.keyCode == 13) {
+    if (e.keyCode == 13 && !e.shiftKey) {
 
       if (this.checkValidForm()) {
         // this.comment.content = this.commentEditorForm.value;
@@ -98,9 +93,10 @@ export class CommentItemEditorComponent implements OnInit {
         this.cancel();
       }
       return;
-    }
-    // Cancel comment
-    if (e.keyCode == 27) {
+    } else if (e.keyCode == 13 && e.shiftKey) {
+      e.preventDefault();
+      return;
+    } else if (e.keyCode == 27) {
       this.cancel();
       return;
     }
@@ -197,7 +193,6 @@ export class CommentItemEditorComponent implements OnInit {
   }
 
   post(comment: any) {
-
     let event: any = null;
 
     if (this.mode == CommentEditorMode.Add) {
@@ -247,9 +242,10 @@ export class CommentItemEditorComponent implements OnInit {
 
   hasChanged() {
     if (this.commentEditorForm.controls['content'].value == '' &&
-    this.commentEditorForm.controls['photo'].value == null) {
+      this.commentEditorForm.controls['photo'].value == null) {
       return false;
     }
     return true;
   }
+
 }

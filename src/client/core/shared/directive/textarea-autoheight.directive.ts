@@ -16,6 +16,7 @@ export class TextAreaAutoHeightDirective implements AfterContentChecked {
   }
 
   constructor(public element: ElementRef) {
+
   }
 
   ngAfterContentChecked(): void {
