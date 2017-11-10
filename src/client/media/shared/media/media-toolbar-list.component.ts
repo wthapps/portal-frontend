@@ -42,8 +42,8 @@ export class MediaToolbarListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.displayCreateButtons = (this.page == 'search' || this.page == 'album_detail' ? false : true);
-    this.displayBackButton = (this.page == 'search' || this.page == 'album_detail' ? true : false);
+    this.displayBackButton = (this.page == 'search' || this.page == 'album_detail' || this.page == 'sharing_detail' ? true : false);
+    this.displayCreateButtons = !this.displayBackButton;
   }
 
   initProperties(properties: any) {
@@ -51,6 +51,7 @@ export class MediaToolbarListComponent implements OnInit {
     this.currentPath = properties.currentPath;
     this.currentPage = properties.currentPage;
     this.page = properties.page;
+    this.object = properties.object;
   }
 
 
@@ -62,7 +63,6 @@ export class MediaToolbarListComponent implements OnInit {
     if (options.action == 'favourite') {
       this.isFavourited = !this.isFavourited;
       this.favouriteTooltip = this.isFavourited ? 'Remove from favourites' : 'Add to favourites';
-
     }
     this.events.emit(options);
   }

@@ -182,6 +182,8 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     } else if (this.page == 'album_detail' && this.params && options && Object.keys(options).length > 0) {
       url = `photos`;
       moreOptions = Object.assign({}, options, {'album': this.params['id']});
+    } else if (this.page == 'sharing_detail') {
+      url = `sharings/${this.params['id']}`;
     } else if (this.params) {
       url = `photos`;
       moreOptions = {album: this.params['id']};
@@ -248,7 +250,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         this.mediaStore.setCurrentSelectedObject(_.get(options, 'params.selectedObject'));
       }
     }
-
     this.doAction(options);
     switch (options.action) {
       case 'select':
@@ -280,7 +281,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   actionSortbar(event: any) {
-    console.log(event);
     if (event.action == 'slider') {
       this.sliderViewNumber = event.number;
     }
@@ -294,12 +294,12 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   actionItem(ev: any) {
-    console.log('raise event:', ev);
     this.events.emit(ev);
   }
 
   // considering moving doAction into list-media
   doAction(event: any) {
+    console.log(event)
     switch (event.action) {
       case 'uploadPhoto':
         this.upload();
@@ -343,6 +343,9 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       case 'confirmDeleteMedia':
         this.confirmDeleteMedia(event.params);
         break;
+      case 'confirmRemoveSharing':
+        this.confirmRemoveSharing(event.params.selectedObjects);
+        break;
       // Hide photos / albums present in shared-with-me screen
       case 'hideMedia':
         this.hideMedia(event.params);
@@ -364,6 +367,12 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         } else {
           this.viewInfo();
         }
+        if (this.selectedObjects[0].object_type == 'sharing') {
+          this.router.navigate([{outlets: {detail: ['shared-by-me', this.selectedObjects[0].id]}}], {
+            queryParamsHandling: 'preserve',
+            preserveFragment: true
+          });
+        }
         break;
       case 'slideShow':
         this.slideShow();
@@ -376,6 +385,21 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         this.setSelectedObjects(event.params.selectedObjects);
         break;
     }
+  }
+
+  confirmRemoveSharing(objects: any) {
+    let ids = objects.map((o: any) => {return o.id})
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Remove',
+      message: 'Are you sure to remove ' + objects.length + ' sharings ?',
+      accept: () => {
+        this.loadingService.start();
+        this.apiBaseService.post(`media/sharings/destroy_objects`, {id: this.params.id, ids: ids}).subscribe((res: any) => {
+          this.loadingService.stop();
+          this.refreshPrimaryList();
+        });
+      }
+    });
   }
 
   upload() {
@@ -610,7 +634,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         acceptLabel: 'Delete',
         message: 'Are you sure to delete ' + photos_count,
         accept: () => {
-
           this.loadingService.start();
           this.mediaObjectService.deleteObjects(photos, params.child_destroy).toPromise().then(
             (res: any) => {

@@ -7,6 +7,7 @@ import { ZMediaSharedModule } from '../shared/shared.module';
 
 import { ZMediaSharedByMeComponent } from './shared-by-me.component';
 import { ZMediaSharedByMeService } from './shared-by-me.service';
+import { ZMediaSharingDetailComponent } from './sharing-detail.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ZMediaSharedByMeService } from './shared-by-me.service';
     CoreSharedModule.forRoot()
   ],
   declarations: [
-    ZMediaSharedByMeComponent
+    ZMediaSharedByMeComponent,
+    ZMediaSharingDetailComponent
   ],
   exports: [
     ZMediaSharedByMeComponent
