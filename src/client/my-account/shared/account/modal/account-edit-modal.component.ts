@@ -4,6 +4,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../../core/shared/validator/custom.validator';
 import { Constants } from '../../../../core/shared/config/constants';
+import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
 
 declare var _: any;
 declare var $: any;
@@ -17,7 +18,7 @@ declare var $: any;
 })
 
 export class AccountEditModalComponent implements OnInit {
-  @Input() data: any;
+  @Input() item: any;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modal') modal: ModalComponent;
 
@@ -28,7 +29,7 @@ export class AccountEditModalComponent implements OnInit {
   tooltip: any = Constants.tooltip;
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private commonEventService: CommonEventService) {
 
   }
 
@@ -42,11 +43,13 @@ export class AccountEditModalComponent implements OnInit {
   * @mode: add or edit or view. default is add
   * */
   open(options: any = {data: undefined, mode: 'edit'}) {
-      this.initialize();
-    // } else {
-    //   this.data = options.data;
-    //   this.fillData();
-    // }
+    this.initialize();
+    if(options.data) {
+      this.item = options.data;
+      this.form.controls['fullName'].setValue(this.item.name);
+      this.form.controls['email'].setValue(this.item.email);
+      // this.form.controls['password'].setValue(item.name);
+    }
     this.modal.open(options).then();
   }
 
@@ -68,7 +71,10 @@ export class AccountEditModalComponent implements OnInit {
           Validators.minLength(8),
           CustomValidator.lowercaseUppercase,
           CustomValidator.specialSymbolOrNumber
-        ])]
+        ])],
+        'group': ['', Validators.compose([
+          Validators.required
+        ])],
       });
 
       this.fullName = this.form.controls['fullName'];
@@ -78,13 +84,21 @@ export class AccountEditModalComponent implements OnInit {
 
   }
 
-  fillData() {
-
+  delete() {
+    this.commonEventService.broadcast({
+      channel: 'my_account',
+      action: 'my_account:account:open_account_delete_confirmation_modal',
+      payload: {data: this.item}
+    });
   }
 
 
-  done(values: any) {
-
+  save() {
+    this.commonEventService.broadcast({
+      channel: 'my_account',
+      action: 'my_account:account:update',
+      payload: {data: this.form.value}
+    });
   }
 
   togglePassword(event: any): void {

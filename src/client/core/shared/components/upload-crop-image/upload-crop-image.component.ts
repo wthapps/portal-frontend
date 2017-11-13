@@ -176,4 +176,10 @@ export class UploadCropImageComponent implements AfterViewInit {
 
     });
   }
+
+  open(file?: any) {
+
+    console.debug('upload crop image - open file: ', file);
+    this.modal.open();
+  }
 }

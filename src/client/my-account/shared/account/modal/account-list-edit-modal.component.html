@@ -1,7 +1,7 @@
 <form [formGroup]="form" novalidate>
 
   <modal #modal
-         [cssClass]="'modal-lg modal-account-add'"
+         [cssClass]="'modal-lg modal-account-list-edit'"
          [keyboard]="false"
          [animation]="false"
          [backdrop]="'static'" >
@@ -13,62 +13,50 @@
 
     </modal-header>
     <modal-body>
+<div>
 
-
+</div>
         <div class="pb5 bold">
           <div class="row row-12">
-            <div class="col-lg-4">
+            <div class="col-sm-3">
               Full name
             </div>
-            <div class="col-lg-2 pl0">
-              Birthday
-            </div>
-            <div class="col-lg-4">
+            <div class="col-sm-3 ml50">
               Email address
             </div>
-            <div class="col-lg-2">
-              Account type
+            <div class="col-sm-2 ml55 pl25">
+              Birthday
+            </div>
+            <div class="col-sm-2">
+              Group
             </div>
           </div>
         </div>
 
         <div formArrayName="items">
-          <div *ngFor="let item of getFormControls(); let i=index" class="media mt0">
-            <div *ngIf="item" class="media-body" [formGroupName]="i">
+
+          <div *ngFor="let item of form.get('items').controls; let i=index;" class="media mt0">
+            <div *ngIf="item['controls'].parent_id.value == null" class="media-body" [formGroupName]="i">
 
               <div class="row row-12">
 
-                <div class="col-lg-4">
+                <div class="col-sm-4 pr0">
                   <div class="form-group no-label" [ngClass]="{
-                    'has-error': (!item['controls'].fullName.valid
-                                && item['controls'].fullName.touched),
-                    'has-success': (item['controls'].fullName.valid
-                                && item['controls'].fullName.touched
-                                && form.value.items[i].fullName.length > 0)}">
-                    <input type="text" class="form-control" formControlName="fullName" placeholder="Full name">
-                    <div *ngIf="!item['controls'].fullName.valid && item['controls'].fullName.touched">
-                      <span class="help-block text-danger" *ngIf="item['controls'].fullName.errors.required">
+                    'has-error': (!item['controls'].name.valid
+                                && item['controls'].name.touched),
+                    'has-success': (item['controls'].name.valid
+                                && item['controls'].name.touched
+                                && form.value.items[i].name.length > 0)}">
+                    <input type="text" class="form-control" formControlName="name" placeholder="Full name">
+                    <div *ngIf="!item['controls'].name.valid && item['controls'].name.touched">
+                      <span class="help-block text-danger" *ngIf="item['controls'].name.errors.required">
                         Full name is required
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div class="col-lg-2 p2">
-
-                  <div class="form-group no-label">
-                    <!--<input matInput [matDatepicker]="birthday"/>-->
-                    <!--<mat-datepicker #birthday></mat-datepicker>-->
-                    <input #birthday class="form-control" placeholder="birthday">
-                    <!--<p-calendar class="input-block"-->
-                                <!--baseZIndex="1000"-->
-                    <!--&gt;</p-calendar>-->
-
-                  </div>
-                </div>
-
-                <div class="col-lg-4 p2">
-
+                <div class="col-sm-4 pl5 pr0">
                   <div class="form-group no-label"
                        [ngClass]="{
                     'has-error': (!item['controls'].email.valid
@@ -88,31 +76,180 @@
                   </div>
                 </div>
 
-                <div class="col-lg-2 p2">
+                <div class="col-sm-2 pl5 pr0">
+
                   <div class="form-group no-label">
-                    <select class="form-control" id="accountType">
-                      <option value="0">Sub Account</option>
-                      <option value="1">Full account</option>
+                    <input #birthday type="date" class="form-control pl5 pr0">
+                  </div>
+                </div>
+                <div class="col-sm-2 pl5">
+                  <div class="form-group no-label">
+                    <select class="form-control">
+                      <option value="family">Family</option>
+                      <option value="student">Student</option>
                     </select>
                   </div>
                 </div>
+
               </div>
             </div>
             <div class="media-right">
-              <button *ngIf="this.form.value.items.length > 1" type="button" class="btn btn-default" (click)="remove(i, item.controls)">
+              <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == null"
+                      type="button"
+                      class="btn btn-default"
+                      (click)="remove(i, item.controls)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </div>
           </div>
         </div>
         <div class="mb10">
-          <button type="button" class="btn btn-default" (click)="add()">
-            <i class="fa fa-plus"></i> Add more sub account
+          <button type="button" class="btn btn-outline-default btn-min" (click)="add(false)">
+            <i class="fa fa-plus"></i> Add Full Account
           </button>
-          <button type="button" class="btn btn-default" (click)="add()">
-            <i class="fa fa-plus"></i> Add more full account
-          </button>
+          <div class="pull-right">
+            <div>
+              2 sub accounts x $9.99 = $19.98
+            </div>
+          </div>
         </div>
+
+
+      <div class="pb5 bold">
+        <div class="row row-12">
+          <div class="col-sm-3">
+            Full name
+          </div>
+          <div class="col-sm-3 ml50">
+            Email address
+          </div>
+          <div class="col-sm-2 ml55 pl25">
+            Birthday
+          </div>
+          <div class="col-sm-2">
+            Group
+          </div>
+        </div>
+      </div>
+
+      <div formArrayName="items">
+
+        <div *ngFor="let item of form.get('items').controls; let i=index;" class="media mt0">
+          <div *ngIf="item['controls'].parent_id.value == 0" class="media-body" [formGroupName]="i">
+
+            <div class="row row-12">
+
+              <div class="col-sm-4 pr0">
+                <div class="form-group no-label" [ngClass]="{
+                    'has-error': (!item['controls'].name.valid
+                                && item['controls'].name.touched),
+                    'has-success': (item['controls'].name.valid
+                                && item['controls'].name.touched
+                                && form.value.items[i].name.length > 0)}">
+                  <input type="text" class="form-control" formControlName="name" placeholder="Full name">
+                  <div *ngIf="!item['controls'].name.valid && item['controls'].name.touched">
+                      <span class="help-block text-danger" *ngIf="item['controls'].name.errors.required">
+                        Full name is required
+                      </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4 pl5 pr0">
+
+                <div class="form-group no-label"
+                     [ngClass]="{
+                    'has-error': (!item['controls'].email.valid
+                                && item['controls'].email.touched),
+                    'has-success': (item['controls'].email.valid
+                                && item['controls'].email.touched
+                                && form.value.items[i].email.length > 0)}">
+                  <input type="email" email class="form-control" formControlName="email" placeholder="account-email@example.com">
+                  <div
+                    *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
+                      <span
+                        *ngIf="!item['controls'].email.valid && item['controls'].email.errors.emailFormat"
+                        class="help-block text-danger">
+                        Email is not valid
+                      </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-2 pl5 pr0">
+
+                <div class="form-group no-label">
+                  <input #birthday type="date" class="form-control pl5 pr0">
+                </div>
+              </div>
+
+              <div class="col-sm-2 pl5">
+                <div class="form-group no-label">
+                  <select class="form-control">
+                    <option value="family">Family</option>
+                    <option value="student">Student</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="media-right">
+            <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == 0"
+                    type="button"
+                    class="btn btn-default"
+                    (click)="remove(i, item.controls)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="mb10">
+        <button type="button" class="btn btn-outline-default btn-min" (click)="add(true)">
+          <i class="fa fa-plus"></i> Add Sub Account
+        </button>
+        <div class="pull-right">
+          <div>
+            2 sub accounts x $9.99 = $19.98
+          </div>
+        </div>
+      </div>
+
+      <div> *Account needs to be at least 13 years old</div>
+
+
+      <div class="panel panel-default mb0">
+        <div class="row row-12 panel-body">
+          <div class="col-sm-10 text-right">
+            <div>New full accounts:</div>
+          </div>
+          <div class="col-sm-2 text-left">
+            <div>$19.98</div>
+          </div>
+
+          <div class="col-sm-10 text-right" >
+            <div>New sub accounts:</div>
+          </div>
+          <div class="col-sm-2 text-left">
+            <div>Label2</div>
+          </div>
+
+          <div class="col-sm-10 text-right">
+            <div>Current accounts:</div>
+          </div>
+          <div class="col-sm-2 text-left">
+            <div>Label2</div>
+          </div>
+
+          <div class="col-sm-10 text-right">
+            <div class="bold">Total:</div>
+          </div>
+          <div class="col-sm-2 text-left bold">
+            <div>Label2</div>
+          </div>
+        </div>
+      </div>
+
+
 
     </modal-body>
 

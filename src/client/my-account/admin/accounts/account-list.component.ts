@@ -53,7 +53,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_account_list_edit_modal',
-      payload: {mode: 'add', data: null}
+      payload: {mode: 'add', data: undefined}
     });
   }
 
@@ -78,33 +78,27 @@ export class AccountListComponent implements OnInit, OnDestroy {
     // }
   }
 
-  view() {
+  view(item: any) {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_account_edit_modal',
-      payload: {mode: 'view', data: this.data}
+      payload: {mode: 'edit', data: item}
     });
   }
 
-  edit() {
+  edit(item: any) {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_account_edit_modal',
-      payload: {mode: 'edit', data: this.data}
+      payload: {mode: 'edit', data: item}
     });
   }
 
-  delete() {
-    this.wthConfirmService.confirm({
-      message: 'Are you sure you want to delete this account?',
-      header: 'Delete account',
-      accept: () => {
-        this.commonEventService.broadcast({
-          channel: 'my_account',
-          action: 'my_account:account:delete',
-          payload: {data: this.data}
-        });
-      }
+  delete(item: any) {
+    this.commonEventService.broadcast({
+      channel: 'my_account',
+      action: 'my_account:account:open_account_delete_confirmation_modal',
+      payload: {data: item}
     });
   }
 

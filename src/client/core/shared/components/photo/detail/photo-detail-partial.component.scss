@@ -24,6 +24,11 @@
       right: 0;
       bottom: 0;
       z-index: 2;
+
+      .cropper-drag-box, .box-loading{
+        @include center();
+      }
+
     }
 
     .photo-detail-img-control {

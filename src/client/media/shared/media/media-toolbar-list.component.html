@@ -15,7 +15,6 @@
     </ul>
   </div>
 
-
   <div class="page-body-control-nav page-body-control-nav-action" *ngIf="displayBackButton">
     <ul class="page-body-control-menu">
       <li class="divider">
@@ -32,8 +31,7 @@
           Search result
         </a>
       </li>
-
-      <li class="name dropdown" *ngIf="object && page != 'search'">
+      <li class="name dropdown" *ngIf="object && page == 'album_detail'">
         <a class="btn btn-inline" href="javascript:;" data-toggle="dropdown" draggable="false">
           {{ object.name }} <i class="fa fa-caret-down"></i>
         </a>
@@ -104,6 +102,48 @@
             <a href="javascript:;" draggable="false"
                (click)="onAction({action: 'deleteAlbumAndBack', params: {selectedObjects: [object]}})">
               <i class="fa fa-trash-o"></i> Delete Album
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="name dropdown" *ngIf="object && page == 'sharing_detail'">
+        <a class="btn btn-inline" href="javascript:;" data-toggle="dropdown" draggable="false">
+          {{ object.name }} <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          <li>
+            <a class="text-disable" (click)="onAction({action: 'previewAllPhotos', params: {}})" href="javascript:;" draggable="false">
+              <i class="fa fa-eye"></i> Preview all
+            </a>
+          </li>
+          <li>
+            <a class="text-disable" (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})" href="javascript:;"
+                 draggable="false">
+            <i class="fa fa-plus-square"></i> Add More Photos</a>
+          </li>
+          <li>
+            <a (click)="onAction({action: 'openModal', params: {modalName: 'editNameModal', selectedObjects: [object]}})"
+               href="javascript:;"
+               draggable="false">
+              <i class="fa fa-edit"></i> Edit Title
+            </a>
+          </li>
+          <li>
+            <a class="text-disable" href="javascript:;" draggable="false"
+               (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal', selectedObjects: [object]}})">
+              <i class="fa fa-share-alt"></i> Sharing
+            </a>
+          </li>
+          <li>
+            <a class="text-disable" (click)="onAction({action: 'download', params: {}})">
+              <i class="fa fa-download"></i> Download All
+            </a>
+          </li>
+          <li>
+            <a class="text-disable" href="javascript:;" draggable="false"
+               (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: [object]}})">
+              <i class="fa fa-trash-o"></i> Delete
             </a>
           </li>
         </ul>
@@ -198,12 +238,30 @@
         </ul>
       </li>
     </ul>
-
+    <!-- shared-by-me -->
     <ul class="page-body-control-menu"
         *ngIf="page == 'shared-by-me'"
         [ngClass]="{'text-disable': noSelectedObjects}"
         [class.disabled]="noSelectedObjects">
       <li>
+        <a class="btn btn-default" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})"
+           pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
+          <i class="fa fa-trash-o"></i>
+        </a>
+      </li>
+    </ul>
+    <!-- sharing_detail -->
+    <ul class="page-body-control-menu"
+        *ngIf="page == 'sharing_detail'"
+        [ngClass]="{'text-disable': noSelectedObjects}"
+        [class.disabled]="noSelectedObjects">
+      <li>
+        <a class="btn btn-default" href="javascript:;" draggable="false"
+           (click)="onAction({action: 'confirmRemoveSharing', params: {selectedObjects: selectedObjects}})"
+           pTooltip="{{ tooltip.remove }}" tooltipPosition="bottom">
+          <i class="fa fa-times"></i>
+        </a>
         <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})"
            pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">

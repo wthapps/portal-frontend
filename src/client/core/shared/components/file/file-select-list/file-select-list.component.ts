@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { LoadingService } from '../../loading/loading.service';
 import { ApiBaseService } from '../../../services/apibase.service';
+import 'rxjs/add/operator/take';
 
 declare var _: any;
 declare var $: any;
@@ -15,6 +16,7 @@ export class FileSelectListComponent {
   @ViewChild('filesSelection') fileSelection: ElementRef;
   @Input() showUpload: boolean = false;
   @Input() showFavourite: boolean = false;
+  @Input() editCurrentMode: boolean = false;
   multipleSelect: boolean = true;
 
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
@@ -50,7 +52,7 @@ export class FileSelectListComponent {
   loadPhotos() {
     this.loading.start();
     console.log('photo list loadPhotos: ');
-    this.apiService.get(`media/photos`).subscribe(
+    this.apiService.get(`media/photos`).take(1).subscribe(
       (response: any) => {
         this.photos = response['data'];
         this.loading.stop();
@@ -90,6 +92,10 @@ export class FileSelectListComponent {
 
   clickParent(event: any) {
     this.clearSelection();
+  }
+
+  editCurrentImage() {
+    console.debug('inside edit current image ...');
   }
 
   addFavourite(event: any, item: any) {

@@ -100,10 +100,15 @@
   </div>
 
   <!--<div class="photo-view-wrap" [ngClass]="{'no-display': loading}">-->
-  <div class="photo-view-wrap" *ngIf="!loading; else loadingBlock">
-    <img imgFull class="img-zoom-{{ imgZoomClass }} lazyload" draggable="false" id="photo-detail-image"
+  <div class="photo-view-wrap">
+    <img *ngIf="!loading; else loadingBlock" class="img-zoom-{{ imgZoomClass }} cropper-drag-box lazyload" draggable="false" id="photo-detail-image"
          [attr.data-src]="photo?.url" alt="">
+
+    <ng-template #loadingBlock>
+      <box-loading></box-loading>
+    </ng-template>
   </div>
+
 
   <!--<box-loading *ngIf="loading"></box-loading>-->
 
@@ -172,6 +177,3 @@
 </div>
 
 <ng-template #modalContainer></ng-template>
-<ng-template #loadingBlock>
-  <box-loading></box-loading>
-</ng-template>

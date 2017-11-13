@@ -138,8 +138,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
     this.currentPage = `${this.objectType}_${this.pageType}`;
 
-    console.debug('media-view-container this.currentPath: ', this.currentPath);
-    console.log(saveAs);
   }
 
   updateMediaList(res: any) {
@@ -155,7 +153,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   ngAfterViewInit(): void {
-    // console.log('this. object:', this.object, this.params);
 
     this.createToolbarComponent();
 
@@ -165,6 +162,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       currentPath: this.currentPath,
       objectType: this.objectType,
       pageType: this.pageType,
+      object: this.object,
       page: this.page
     });
 
@@ -249,7 +247,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   // considering moving doAction into list-media
   doAction(event: any) {
-    console.debug('doAction: ', event);
+    console.log('doAction: ', event);
     switch (event.action) {
       case 'select':
       case 'deselect':
@@ -434,9 +432,9 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'editNameModal':
         this.loadModalComponent(BaseObjectEditNameModalComponent);
         options = {selectedObject: this.selectedObjects[0]};
+        if (params.selectedObjects) options = {selectedObject: params.selectedObjects[0]};
         break;
       case 'editInfoModal':
-        console.log('params deetai;', params.detail);
         let object = params.detail == true ? this.object : this.selectedObjects[0] || this.object;
         this.loadModalComponent(
           object.object_type == 'photo' ? PhotoEditModalComponent : AlbumEditModalComponent

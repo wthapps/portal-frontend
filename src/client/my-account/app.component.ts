@@ -13,8 +13,10 @@ import {
   AccountEditModalComponent,
   AccountDetailModalComponent
 } from './shared/account/modal/index';
-import { SubscriptionUpdateModalComponent } from './shared/subscription/modal/subscription-update-modal.component';
+import { SubscriptionEditModalComponent } from './shared/subscription/modal/subscription-edit-modal.component';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
+import { WthConfirmService } from '../core/shared/components/confirmation/wth-confirm.service';
+import { SubscriptionService } from './shared/subscription/subscription.service';
 
 
 /**
@@ -30,7 +32,7 @@ import { CommonEventService } from '../core/shared/services/common-event/common-
     AccountListEditModalComponent,
     AccountEditModalComponent,
     AccountDetailModalComponent,
-    SubscriptionUpdateModalComponent
+    SubscriptionEditModalComponent
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -39,9 +41,13 @@ export class AppComponent implements OnInit, OnDestroy {
   modal: any;
   routerSubscription: Subscription;
 
-  constructor(private router: Router,
-              private resolver: ComponentFactoryResolver,
-              private commonEventService: CommonEventService) {
+  constructor(
+    private router: Router,
+    private resolver: ComponentFactoryResolver,
+    private commonEventService: CommonEventService,
+    private wthConfirmService: WthConfirmService,
+    private subscriptionService: SubscriptionService
+  ) {
     console.log('Environment config', Config);
     this.commonEventService.filter((event: any) => event.channel == 'my_account').subscribe((event: any) => {
       this.doEvent(event);
@@ -58,21 +64,51 @@ export class AppComponent implements OnInit, OnDestroy {
 
   doEvent(event: any) {
     switch (event.action) {
+      // Account
       case 'my_account:account:open_account_list_edit_modal':
         this.loadModalComponent(AccountListEditModalComponent);
-        this.modal.open({mode: event.payload.mode, data: undefined});
+        this.modal.open({...event.payload});
         break;
       case 'my_account:account:open_account_edit_modal':
         this.loadModalComponent(AccountEditModalComponent);
-        this.modal.open({mode: event.payload.mode, data: undefined});
+        this.modal.open({...event.payload});
         break;
       case 'my_account:account:open_account_detail_modal':
         this.loadModalComponent(AccountDetailModalComponent);
         this.modal.open();
         break;
+      case 'my_account:account:open_account_delete_confirmation_modal':
+        this.wthConfirmService.confirm({
+          message: 'You are about Delete account.' +
+          'This action will change your current subscription' +
+          'Are you sure you want to delete this account?',
+          header: 'Delete account',
+          acceptLabel: 'Yes, Delete',
+          accept: () => {
+            this.loadModalComponent(SubscriptionEditModalComponent);
+            this.modal.open({...event.payload, mode: 'edit'});
+          }
+        });
+        break;
+      case 'my_account:account:update':
+        this.wthConfirmService.confirm({
+          message: 'You are about Update Subscription.' +
+          'This action will change your subscription and you will be charged $20/month' +
+          'Are you sure you want to update?',
+          header: 'Update subscription',
+          acceptLabel: 'Yes, Update',
+          accept: () => {
+           this.subscriptionService.update({...event.payload}).subscribe((response: any) => {
+             console.log(response.data);
+           });
+          }
+        });
+        break;
+
+      // Subscription
       case 'my_account:subscription:open_subscription_update_modal':
-        this.loadModalComponent(SubscriptionUpdateModalComponent);
-        this.modal.open({mode: 'update'});
+        this.loadModalComponent(SubscriptionEditModalComponent);
+        this.modal.open({...event.payload});
         break;
       case 'my_account:subscription:update':
         console.log('update subscription::::', event.payload);

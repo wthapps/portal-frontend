@@ -1,7 +1,7 @@
 <form novalidate>
 
   <modal #modal
-         [cssClass]="'modal-lg modal-account-add'"
+         [cssClass]="'modal-lg modal-subscription-edit'"
          [keyboard]="false"
          [animation]="false"
          [backdrop]="'static'" >
@@ -60,15 +60,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of items">
-            <td>
-              <a rel="nofollow" target="_top" href="mailto:{{ item.recipient_email }}">{{ item.recipient_email }}</a>
-            </td>
-            <td>
-              <a rel="nofollow" target="_top" href="mailto:{{ item.recipient_email }}">{{ item.recipient_email }}</a>
-            </td>
-            <td>
-              <a rel="nofollow" target="_top" href="mailto:{{ item.recipient_email }}">{{ item.recipient_email }}</a>
-            </td>
+            <td><a href="javascript:void(0);" (click)="view()">{{ item.name }}</a></td>
+            <td><a rel="nofollow" target="_top"
+                   href="mailto:{{ item.email }}">{{ item.email }}</a></td>
+            <td> {{ item.parent_id == null ? 'Full account': 'Sub account' }} </td>
           </tr>
         </tbody>
       </table>
