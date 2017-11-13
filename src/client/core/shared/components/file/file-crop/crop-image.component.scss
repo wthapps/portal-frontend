@@ -1,0 +1,13 @@
+//@import '../../../../scss/partials/images';
+@import '../../../../scss/global';
+
+.dropzonecrop-wrap, .cropper-drag-box-center, .cropper-wrap-box {
+  img: {
+    @include center();
+  }
+}
+
+.selectcrop-control {
+  text-align: center;
+  margin-top: 10px;
+}

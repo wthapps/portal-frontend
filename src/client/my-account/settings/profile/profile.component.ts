@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild }    from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy }    from '@angular/core';
 import 'rxjs/add/observable/fromPromise';
+import { Subject } from 'rxjs/Subject';
 
 import {
   FormGroup,
@@ -15,6 +16,9 @@ import { CountryService } from '../../../core/shared/components/countries/countr
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { UploadCropImageComponent } from '../../../core/shared/components/upload-crop-image/upload-crop-image.component';
+import { PhotoModalDataService } from '../../../core/shared/services/photo-modal-data.service';
+import { PhotoUploadService } from '../../../core/shared/services/photo-upload.service';
+import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 
 declare var $: any;
 declare var _: any;
@@ -25,11 +29,12 @@ declare var _: any;
   templateUrl: 'profile.component.html'
 })
 
-export class MyProfileComponent implements OnInit {
-  @ViewChild('uploadProfile') uploadProfile: UploadCropImageComponent;
+export class MyProfileComponent implements OnInit, OnDestroy {
+  // @ViewChild('uploadProfile') uploadProfile: UploadCropImageComponent;
 
   pageTitle: string = 'Profile';
   errorMessage: string = Constants.errorMessage.default;
+  defaultAvatar: string = Constants.img.avatar;
   profile_image: string = '';
 
   sex: number = 0;
@@ -53,15 +58,24 @@ export class MyProfileComponent implements OnInit {
   birthday_month: AbstractControl;
   birthday_year: AbstractControl;
 
+  validDays: number[] = [];
+  // validMonths: number[] = [];
+  validYears: number[] = [];
   submitted: boolean = false;
+  private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(public userService: UserService,
               private fb: FormBuilder,
               private countryService: CountryService,
               private toastsService: ToastsService,
+              // private photoSelectDataService : PhotoModalDataService,
+              // private photoUploadService: PhotoUploadService,
+              private commonEventService: CommonEventService,
               private loadingService: LoadingService) {
 
     this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
+    this.validDays = this.range(1, 31);
+    this.validYears = this.range(2016, 1905);
 
     if (!this.userService.profile.profile_image) {
       this.userService.profile.profile_image = Constants.img.avatar;
@@ -108,8 +122,13 @@ export class MyProfileComponent implements OnInit {
 
     this.profile_image = this.userService.profile.profile_image;
     this.countryService.getCountries().subscribe(
-      data => this.countriesCode = data,
-      error => this.errorMessage = <any>error);
+      (data: any) => this.countriesCode = data,
+      (error: any) => this.errorMessage = <any>error);
+  }
+
+  ngOnDestroy() {
+    this.destroySubject.next();
+    this.destroySubject.unsubscribe();
   }
 
   onSubmit(values: any): void {
@@ -155,17 +174,50 @@ export class MyProfileComponent implements OnInit {
 
   uploadImage(event: any): void {
     event.preventDefault();
-    this.uploadProfile.modal.open();
+    // this.uploadProfile.modal.open();
+    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: this.userService.profile.profile_image });
+    this.handleSelectCropEvent();
   }
 
-  onImageClicked(img: string): void {
+  handleSelectCropEvent() {
+    this.commonEventService.filter((event: any) => event.channel == 'SELECT_CROP_EVENT')
+      .take(1)
+      .subscribe((event: any) => {
+        this.doEvent(event);
+      });
+  }
 
-    let body = JSON.stringify({image: img});
+
+  doEvent(event: any) {
+    // console.log(event);
+    switch (event.action) {
+      case 'SELECT_CROP:DONE':
+        console.debug('inside doEvent - SELECT_CROP:DONE', event);
+        // Change user profile
+        this.updateProfileImageBase64(event.payload);
+        break;
+      default:
+        break;
+    }
+  }
+
+  updateProfileImageBase64(img: string): void {
+    this.updateUser(JSON.stringify({image: img}));
+  }
+
+  updateProfileImageUrl(imgUrl: string) {
+    this.updateUser(JSON.stringify({image_url: imgUrl}));
+  }
+
+  private updateUser(body: string): void {
     this.userService.update(`users/${this.userService.profile.id}`, body)
       .subscribe((result: any) => {
           // stop loading
           this.loadingService.stop();
           this.toastsService.success(result.message);
+
+        //  reload profile image
+          $('img.lazyloaded').addClass('lazyload');
         },
         error => {
           // stop loading
@@ -175,6 +227,12 @@ export class MyProfileComponent implements OnInit {
         }
       );
   }
+
+  private range (start: number, end: number) {
+    let f: number = (end > start) ? start : end;
+    let res: number[] = Array.from(Array(Math.abs(end - start) + 1).keys()).map((i: number) => { return i + f;})
+    return (end > start) ? res : res.reverse();
+  };
 
 
   /**

@@ -21,6 +21,7 @@ declare let App: any; //This App stands for ActionCable
 })
 export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   tooltip: any = Constants.tooltip;
+  defaultAvatar: string = Constants.img.avatar;
 
   constructor(public userService: UserService,
               private navigateService: WTHNavigateService,

@@ -8,6 +8,14 @@
     </a>
     <file-browse #filesSelection [multipleSelect]="multipleSelect" (onFilesChanged)="changeFiles($event)"></file-browse>
   </div>
+  <div class="photo-box-img z-upload-item" *ngIf="editCurrentMode">
+    <a href="#" (click)="editCurrentImage()">
+      <div>
+        <i class="fa fa-cloud-upload"></i>
+        <span>Edit current</span>
+      </div>
+    </a>
+  </div>
   <div *ngFor="let p of photos" class="photo-box-img item-selectable">
     <div class="photo-box-img-action" *ngIf="showFavourite">
       <i (click)="addFavourite($event, p)" class="fa" [ngClass]="p.favorite ? 'fa-star': 'fa-star-o'"></i>

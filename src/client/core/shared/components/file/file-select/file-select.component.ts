@@ -26,6 +26,7 @@ export class FileSelectComponent implements OnInit, OnDestroy {
   uploadPhotos: Array<any> = new Array<any>();
   hasBack: boolean = false;
   files: Array<any> = new Array<any>();
+  editCurrentMode: boolean = false;
 
   // Subscription list
   initSubscription: Subscription;
@@ -40,7 +41,6 @@ export class FileSelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     this.initSubscription = this.photoDataService.initObs$.subscribe((options: any) => {
         this.init(options);
       }
@@ -52,11 +52,6 @@ export class FileSelectComponent implements OnInit, OnDestroy {
         this.open(options);
       }
     );
-
-    // this.closeSubscription = this.photoDataService.closeObs$.subscribe(
-    //   () => { this.close(); }
-    // );
-
   }
 
   ngOnDestroy() {
@@ -74,7 +69,10 @@ export class FileSelectComponent implements OnInit, OnDestroy {
     if (options.return == true) {
       this.hasBack = true;
     }
-    if (_.get(options, 'multipleSelect', true) === true)
+
+    this.editCurrentMode = _.get(options, 'editCurrentMode') == true;
+
+    if (_.get(options, 'multipleSelect', true) === true && !this.editCurrentMode)
       this.photoList.multipleSelect = true;
     else
       this.photoList.multipleSelect = false;
@@ -104,11 +102,16 @@ export class FileSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  chooseFiles(files: any) {
+  // onImageClicked(img: any): void {
+  //   console.debug('inside onImageClicked: ', img);
+  //   this.photoDataService.upload([img]);
+  // }
+
+  chooseFiles(files: any[]) {
     this.files = files;
     this.doAction({action: 'photoSelectUpload', params: {data: files}});
-    this.close();
     this.photoDataService.upload(files);
+    this.close();
   }
 
   private unsubscribeAll(subs: Array<Subscription>) {
