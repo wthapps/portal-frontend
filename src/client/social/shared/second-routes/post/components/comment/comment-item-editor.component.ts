@@ -59,6 +59,8 @@ export class CommentItemEditorComponent implements OnInit {
 
   tooltip: any = Constants.tooltip;
 
+  textContent = 'Let\'s try 1st sample';
+
   constructor(private fb: FormBuilder,
               public userService: UserService) {
     this.user$ = this.userService.profile$;

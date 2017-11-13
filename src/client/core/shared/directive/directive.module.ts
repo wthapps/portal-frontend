@@ -5,6 +5,7 @@ import { ImgFullDirective } from './img-full.directive';
 import { ScrollToBottomDirective } from './scroll-to-bottom.directive';
 import { TextAreaAutoHeightDirective } from './textarea-autoheight.directive';
 import { ShiftEnterDirective } from './shiftEnter.directive';
+import { ContentEditableDirective } from './contenteditable.directive';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ShiftEnterDirective } from './shiftEnter.directive';
     ImgFullDirective,
     ScrollToBottomDirective,
     TextAreaAutoHeightDirective,
-    ShiftEnterDirective
+    ShiftEnterDirective,
+    ContentEditableDirective
   ],
   exports: [
     AutofocusInputDirective,
@@ -22,7 +24,8 @@ import { ShiftEnterDirective } from './shiftEnter.directive';
     ImgFullDirective,
     ScrollToBottomDirective,
     TextAreaAutoHeightDirective,
-    ShiftEnterDirective
+    ShiftEnterDirective,
+    ContentEditableDirective
   ]
 })
 export class DirectiveModule {
