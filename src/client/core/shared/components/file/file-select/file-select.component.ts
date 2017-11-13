@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
 import { FileSelectListComponent } from '../file-select-list/file-select-list.component';
+import { CommonEventService } from '../../../services/common-event/common-event.service';
 
 declare var _: any;
 
@@ -33,7 +34,8 @@ export class FileSelectComponent implements OnInit, OnDestroy {
   openSubscription: Subscription;
   closeSubscription: Subscription;
 
-  constructor(private photoDataService: PhotoModalDataService) {
+  constructor(private photoDataService: PhotoModalDataService,
+              private commonEventService: CommonEventService) {
   }
 
   doAction(options: any) {
@@ -82,6 +84,7 @@ export class FileSelectComponent implements OnInit, OnDestroy {
   }
 
   close() {
+    this.photoDataService.close();
     this.modal.close().then();
   }
 
@@ -100,6 +103,11 @@ export class FileSelectComponent implements OnInit, OnDestroy {
     } else {
       this.photoList.clearSelection();
     }
+  }
+
+  onEditCurrentImage() {
+    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:EDIT_CURRENT'})
+    this.close();
   }
 
   // onImageClicked(img: any): void {
