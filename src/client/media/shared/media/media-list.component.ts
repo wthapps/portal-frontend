@@ -622,8 +622,13 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         message: 'Are you sure to delete ' + sharings.length + ' sharings ?',
         accept: () => {
           this.apiBaseService.post(`media/sharings/destroy`, {ids: ids}).subscribe((res: any) => {
-            this.loadingService.stop();
-            this.refreshPrimaryList();
+            if(params.page == 'sharing_detail') {
+              this.router.navigate([{outlets: {detail: null}}]);
+              setTimeout(() => {this.refreshPrimaryList()}, 200);
+            } else {
+              this.loadingService.stop();
+              this.refreshPrimaryList();
+            }
           });
         }
       });
@@ -733,14 +738,23 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
   addPhotosToList(photos?: any) {
     // Add data to album detail if possible
-    if (['album_detail', 'albums'].indexOf(this.currentPath) > -1)
+    if (['album_detail', 'albums'].indexOf(this.currentPath) > -1) {
       this.albumService.addToAlbum(this.params.id, photos).take(1)
         .toPromise().then((res: any) => console.log(photos.length, ' photos are added to album - id: ', this.params.id),
         (err: any) => console.error('Errors when adding photos to album - id: ', this.params.id))
-        .then(()=> this.refreshPrimaryList())
-      ;
+        .then(()=> {
+          this.refreshPrimaryList();
+          this.objects.unshift(...photos)}
+        );
+    }
+    if (this.page == 'sharing_detail') {
+      this.apiBaseService.post(`media/sharings/add_object_to_sharing`, {id: this.params.id, objects: photos}).subscribe((res: any) => {
+        this.refreshPrimaryList();
+        this.objects = res.data;
+      });
+    }
 
-    this.objects.unshift(...photos);
+
   }
 
   private refreshPrimaryList(): void {

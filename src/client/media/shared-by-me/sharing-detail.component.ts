@@ -22,9 +22,8 @@ export class ZMediaSharingDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
-        this.apiBaseService.get(`media/sharings/detail/${params.id}`).subscribe((res: any) => {
-          this.params = res.data;
-          console.log(this.params)
+        this.apiBaseService.get(`media/sharings/${params.id}`).subscribe((res: any) => {
+          this.params = res.sharing;
         });
       }
     )

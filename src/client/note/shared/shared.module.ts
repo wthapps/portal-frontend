@@ -22,6 +22,7 @@ import { MixedEntityService } from './mixed-enity/mixed-entity.service';
 import { ZNoteSharedTrashActionBarComponent } from './toolbar/trash/trash-actions-bar.component';
 import { ZNoteSharedBreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { ZNoteSharedLeftMenuComponent } from './toolbar/left-menu.component';
+import { ZNoteSharedHeaderComponent } from './header/header.component';
 
 
 /**
@@ -48,6 +49,7 @@ import { ZNoteSharedLeftMenuComponent } from './toolbar/left-menu.component';
     ZNoteSharedTrashActionBarComponent,
     ZNoteSharedModalSharingComponent,
     ZNoteSharedBreadcrumbComponent,
+    ZNoteSharedHeaderComponent,
     ZNoteSharedLeftMenuComponent
   ],
   exports: [
@@ -57,6 +59,7 @@ import { ZNoteSharedLeftMenuComponent } from './toolbar/left-menu.component';
     NoteListComponent,
     NoteItemComponent,
     FolderItemComponent,
+    ZNoteSharedHeaderComponent,
 
     NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,

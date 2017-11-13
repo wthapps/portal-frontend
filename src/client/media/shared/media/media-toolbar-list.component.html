@@ -118,7 +118,7 @@
             </a>
           </li>
           <li>
-            <a class="text-disable" (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})" href="javascript:;"
+            <a (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})" href="javascript:;"
                  draggable="false">
             <i class="fa fa-plus-square"></i> Add More Photos</a>
           </li>
@@ -141,8 +141,8 @@
             </a>
           </li>
           <li>
-            <a class="text-disable" href="javascript:;" draggable="false"
-               (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: [object]}})">
+            <a href="javascript:;" draggable="false"
+               (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: [object], page: 'sharing_detail'}})">
               <i class="fa fa-trash-o"></i> Delete
             </a>
           </li>
