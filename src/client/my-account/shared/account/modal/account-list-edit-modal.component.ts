@@ -6,6 +6,8 @@ import { CustomValidator } from '../../../../core/shared/validator/custom.valida
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
 
 declare var _: any;
+declare let moment:any;
+
 
 @Component({
   moduleId: module.id,
@@ -73,26 +75,32 @@ export class AccountListEditModalComponent implements OnInit {
 
   create(subAccount: boolean, item?: any) {
     let parentId = subAccount == false? null: this.userId;
+    let creatorId = parentId == null ? 0 : null;
     if (item) {
       return this.fb.group({
         email: [item.email, Validators.compose([Validators.required, CustomValidator.emailFormat])],
         name: [item.name, Validators.compose([Validators.required])],
-        birthday: ['', Validators.compose([Validators.required])],
+        birthday: [item.birthday, Validators.compose([
+          Validators.required
+        ])],
         id: [item.id],
         parent_id: [item.parent_id],
-        created_by_id: [item.created_by_id]
+        creator_id: [item.creator_id]
       });
     } else {
-
       let group = this.fb.group({
         email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])],
         name: ['', Validators.compose([Validators.required])],
-        birthday: ['', Validators.compose([Validators.required])],
+        birthday: [moment().subtract(13, 'years').calendar(), Validators.compose([
+          Validators.required
+        ])],
         id: [null],
         parent_id: [parentId],
-        created_by_id: [parentId]
+        creator_id: [creatorId]
       });
-      group.controls['parent_id'].setValue(parentId);
+      // group.controls['parent_id'].setValue(parentId);
+      // group.controls['creator_id'].setValue(creatorId);
+      // group.controls['birthday'].setValue(moment().subtract(13, 'years').calendar());
       return group;
     }
   }
@@ -115,7 +123,7 @@ export class AccountListEditModalComponent implements OnInit {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:subscription:open_subscription_update_modal',
-      payload: {data: data}
+      payload: {data: data, accountAction: 'add'}
     });
   }
 
@@ -146,6 +154,10 @@ export class AccountListEditModalComponent implements OnInit {
 
   getFormControls() {
     return (<FormArray>this.form.get(this.type)).controls;
+  }
+
+  validBirthday() {
+
   }
 
   validItems(): boolean {

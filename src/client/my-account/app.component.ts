@@ -1,6 +1,6 @@
 import {
   Component, OnInit, OnDestroy, ViewEncapsulation, ViewContainerRef, ViewChild,
-  ComponentFactoryResolver
+  ComponentFactoryResolver, AfterViewInit
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -17,7 +17,9 @@ import { SubscriptionEditModalComponent } from './shared/subscription/modal/subs
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { WthConfirmService } from '../core/shared/components/confirmation/wth-confirm.service';
 import { SubscriptionService } from './shared/subscription/subscription.service';
+import { Constants } from '../core/shared/config/constants';
 
+declare var $: any;
 
 /**
  * This class represents the main application component.
@@ -35,7 +37,7 @@ import { SubscriptionService } from './shared/subscription/subscription.service'
     SubscriptionEditModalComponent
   ]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
@@ -62,6 +64,10 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
 
+  ngOnDestroy() {
+    this.routerSubscription.unsubscribe();
+  }
+
   doEvent(event: any) {
     switch (event.action) {
       // Account
@@ -86,23 +92,23 @@ export class AppComponent implements OnInit, OnDestroy {
           acceptLabel: 'Yes, Delete',
           accept: () => {
             this.loadModalComponent(SubscriptionEditModalComponent);
-            this.modal.open({...event.payload, mode: 'edit'});
+            this.modal.open({data: event.payload.data, mode: 'edit', accountAction: 'delete'});
           }
         });
         break;
       case 'my_account:account:update':
-        this.wthConfirmService.confirm({
-          message: 'You are about Update Subscription.' +
-          'This action will change your subscription and you will be charged $20/month' +
-          'Are you sure you want to update?',
-          header: 'Update subscription',
-          acceptLabel: 'Yes, Update',
-          accept: () => {
-           this.subscriptionService.update({...event.payload}).subscribe((response: any) => {
-             console.log(response.data);
-           });
-          }
-        });
+        // this.wthConfirmService.confirm({
+        //   message: 'You are about Update Subscription.' +
+        //   'This action will change your subscription and you will be charged $20/month' +
+        //   'Are you sure you want to update?',
+        //   header: 'Update subscription',
+        //   acceptLabel: 'Yes, Update',
+        //   accept: () => {
+        //    this.subscriptionService.update({subscription: {...event.payload}}).subscribe((response: any) => {
+        //      console.log(response.data);
+        //    });
+        //   }
+        // });
         break;
 
       // Subscription
@@ -111,14 +117,22 @@ export class AppComponent implements OnInit, OnDestroy {
         this.modal.open({...event.payload});
         break;
       case 'my_account:subscription:update':
-        console.log('update subscription::::', event.payload);
+        this.wthConfirmService.confirm({
+          message: 'You are about Update Subscription.' +
+          'This action will change your subscription and you will be charged $20/month' +
+          'Are you sure you want to update?',
+          header: 'Update subscription',
+          acceptLabel: 'Yes, Update',
+          accept: () => {
+            this.subscriptionService.update({id: 0, ...event.payload}).subscribe((response: any) => {
+              console.log(response.data);
+            });
+          }
+        });
         break;
     }
   }
 
-  ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
-  }
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);

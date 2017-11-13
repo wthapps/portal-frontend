@@ -98,7 +98,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_account_delete_confirmation_modal',
-      payload: {data: item}
+      payload: {data: [item]}
     });
   }
 

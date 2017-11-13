@@ -1,6 +1,7 @@
 <form novalidate>
 
   <modal #modal
+         id="modal-subscription-edit"
          [cssClass]="'modal-lg modal-subscription-edit'"
          [keyboard]="false"
          [animation]="false"
@@ -72,7 +73,7 @@
 
     <modal-footer>
       <div>
-        <button class="btn btn-outline-default btn-min pull-left" (click)="edit()">
+        <button *ngIf="accountAction == 'add'" class="btn btn-outline-default btn-min pull-left" (click)="edit()">
           <i class="fa fa-pencil"></i> Edit
         </button>
         <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>

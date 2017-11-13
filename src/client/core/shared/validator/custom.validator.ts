@@ -96,6 +96,13 @@ export class CustomValidator {
   }
 
   static requiredOptional(controls: any) {
-    console.log('controls::::', controls);
+    // console.log('controls::::', controls);
+  }
+
+  static requiredMinAge(c: AbstractControl) {
+    // let currentDate = Date.now();
+    //
+    console.log('controls::::', c.value);
+    return true;
   }
 }

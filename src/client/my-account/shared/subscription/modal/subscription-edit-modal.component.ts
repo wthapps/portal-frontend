@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
@@ -10,7 +10,8 @@ declare var _: any;
   moduleId: module.id,
   selector: 'subscription-edit-modal',
   templateUrl: 'subscription-edit-modal.component.html',
-  styleUrls: ['subscription-edit-modal.component.css']
+  styleUrls: ['subscription-edit-modal.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class SubscriptionEditModalComponent implements OnInit {
@@ -18,6 +19,7 @@ export class SubscriptionEditModalComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
 
   mode: string = 'view';
+  accountAction: string = 'add'; //'add' or 'delete'
 
   constructor(private commonEventService: CommonEventService, private wthConfirmService: WthConfirmService) {
   }
@@ -31,7 +33,9 @@ export class SubscriptionEditModalComponent implements OnInit {
   * @data: array of item
   * @mode: add or edit or view. default is add
   * */
-  open(options: any = {data: undefined, mode: 'edit'}) {
+  open(options: any = {data: undefined, mode: 'edit', accountAction: 'add'}) {
+    this.mode = options.mode;
+    this.accountAction = options.accountAction;
     if (options.data == undefined) {
       // this.initialize();
     } else {
@@ -46,8 +50,8 @@ export class SubscriptionEditModalComponent implements OnInit {
       this.wthConfirmService.confirm({
         message: 'You are about Update Subscription.' +
         'This action will change your subscription and you will be charged $20/month' +
-        'Are you sure you want to update?',
-        header: 'Update subscription',
+        'Are you sure you want to cancel ' + this.accountAction + ' account',
+        header: 'Cancel updating subscription' ,
         rejectLabel: 'No',
         acceptLabel: 'Yes, Cancel',
         accept: () => {

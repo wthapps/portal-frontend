@@ -79,7 +79,7 @@
                 <div class="col-sm-2 pl5 pr0">
 
                   <div class="form-group no-label">
-                    <input #birthday type="date" class="form-control pl5 pr0">
+                    <input #birthday type="date" class="form-control pl5 pr0" formControlName="birthday">
                   </div>
                 </div>
                 <div class="col-sm-2 pl5">
@@ -165,8 +165,7 @@
                                 && item['controls'].email.touched
                                 && form.value.items[i].email.length > 0)}">
                   <input type="email" email class="form-control" formControlName="email" placeholder="account-email@example.com">
-                  <div
-                    *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
+                  <div *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
                       <span
                         *ngIf="!item['controls'].email.valid && item['controls'].email.errors.emailFormat"
                         class="help-block text-danger">
@@ -178,7 +177,14 @@
               <div class="col-sm-2 pl5 pr0">
 
                 <div class="form-group no-label">
-                  <input #birthday type="date" class="form-control pl5 pr0">
+                  <input #birthday type="date" class="form-control pl5 pr0" formControlName="birthday">
+                  <div *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.touched">
+                      <span
+                        *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.errors.requiredMinAge"
+                        class="help-block text-danger">
+                        Birthday is not valid
+                      </span>
+                  </div>
                 </div>
               </div>
 
