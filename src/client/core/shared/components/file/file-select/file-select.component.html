@@ -3,7 +3,7 @@
     <h4 class="modal-title pull-left">Add photo</h4>
   </modal-header>
   <modal-body>
-    <h-file-select-list #photoList [showUpload]="true" [editCurrentMode]="editCurrentMode" (onFilesChanged)="chooseFiles($event)"></h-file-select-list>
+    <h-file-select-list #photoList [showUpload]="true" [editCurrentMode]="editCurrentMode" (onFilesChanged)="chooseFiles($event)" (onEditCurrent)="onEditCurrentImage()"></h-file-select-list>
   </modal-body>
   <modal-footer>
     <span class="modal-title pull-left">

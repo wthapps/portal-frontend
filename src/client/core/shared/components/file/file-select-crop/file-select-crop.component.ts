@@ -68,6 +68,10 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
         this.currentImage = event.payload;
         this.openPhotoSelect();
         break;
+      case 'SELECT_CROP:EDIT_CURRENT':
+        console.debug('inside doEvent - SELECT_CROP:EDIT_CURRENT', event);
+        this.editCurrentImage();
+        break;
       default:
         break;
     }
@@ -78,7 +82,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   }
 
   openPhotoSelect() {
-    this.photoSelectDataService.open();
+    this.photoSelectDataService.open({editCurrentMode: true});
     this.subscribePhotoSelectEvents();
   }
 
@@ -91,7 +95,6 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     });
 
     this.photoSelectDataService.uploadObs$.takeUntil(this.close$).subscribe((files: any) => {
-      console.debug('inside file-select-crop - uploadOb$ handling ...');
       this.handleLocalImage(files);
     });
   }
@@ -102,6 +105,11 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     // this.unsubscribeAll([this.commonSubscription]);
   }
 
+  editCurrentImage() {
+    console.debug('inside file-select-crop - editCurrentImage handling ...', this.currentImage);
+    this.cropImage.open(this.currentImage);
+    this.photoSelectDataService.close();
+  }
 
   next(files: any[]) {
     if(files.length < 1) {
@@ -132,13 +140,11 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   //   // this.photoDataService.upload([img]);
   // }
 
-  onChangeImage() {
-    console.debug('inside onchangeImage: ');
+  onChangeImage() {]
     this.openPhotoSelect();
   }
 
   onDone(image: string) {
-    console.debug('inside onDone: ', image);
     this.dispatchEvent({action: 'SELECT_CROP:DONE', payload: image});
   }
 

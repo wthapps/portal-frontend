@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, Input, Output, EventEmitter, HostList
 import { LoadingService } from '../../loading/loading.service';
 import { ApiBaseService } from '../../../services/apibase.service';
 import 'rxjs/add/operator/take';
+import { CommonEventService } from '../../../services/common-event/common-event.service';
 
 declare var _: any;
 declare var $: any;
@@ -21,6 +22,7 @@ export class FileSelectListComponent {
 
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
   @Output() onFilesChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onEditCurrent: EventEmitter<any> = new EventEmitter<any>();
 
   photos: Array<any> = new Array<any>();
   selectedItems: Array<any> = new Array<any>();
@@ -46,7 +48,8 @@ export class FileSelectListComponent {
     }
   }
 
-  constructor(private apiService: ApiBaseService, private loading: LoadingService) {
+  constructor(private apiService: ApiBaseService,
+              private loading: LoadingService) {
   }
 
   loadPhotos() {
@@ -96,6 +99,8 @@ export class FileSelectListComponent {
 
   editCurrentImage() {
     console.debug('inside edit current image ...');
+    this.onEditCurrent.emit(true);
+
   }
 
   addFavourite(event: any, item: any) {
