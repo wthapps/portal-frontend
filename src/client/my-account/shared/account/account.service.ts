@@ -8,6 +8,6 @@ export class AccountService extends BaseEntityService<any> {
 
   constructor(protected api: ApiBaseService) {
     super(api);
-    this.url = 'my_account/accounts';
+    this.url = 'account/accounts';
   }
 }

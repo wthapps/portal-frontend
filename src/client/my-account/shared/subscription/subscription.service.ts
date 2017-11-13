@@ -9,6 +9,6 @@ export class SubscriptionService extends BaseEntityService<any> {
 
   constructor(protected api: ApiBaseService) {
     super(api);
-    this.url = 'my_account/subscriptions';
+    this.url = 'account/subscriptions';
   }
 }

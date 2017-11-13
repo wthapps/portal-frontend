@@ -9,7 +9,7 @@ export class InvitationService extends BaseEntityService<Invitation> {
 
   constructor(protected api: ApiBaseService) {
     super(api);
-    this.url = 'my_account/invitations';
+    this.url = 'account/invitations';
   }
 
   getByStatus(body: any): Observable<any> {

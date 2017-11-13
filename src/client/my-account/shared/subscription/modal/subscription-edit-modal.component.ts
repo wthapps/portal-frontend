@@ -8,9 +8,9 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'subscription-update-modal',
-  templateUrl: 'subscription-update-modal.component.html',
-  styleUrls: ['subscription-update-modal.component.css']
+  selector: 'subscription-edit-modal',
+  templateUrl: 'subscription-edit-modal.component.html',
+  styleUrls: ['subscription-edit-modal.component.css']
 })
 
 export class SubscriptionEditModalComponent implements OnInit {
