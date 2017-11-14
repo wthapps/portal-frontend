@@ -33,7 +33,7 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
     ACCEPTED: { value: 'accepted', name: 'Accepted invitation'}
   };
 
-  private destroySubject: Subject<any> = new Subject();
+  private destroySubject: Subject<any> = new Subject<any>();
   constructor(
     private invitationService: InvitationService,
     private toaster: ToastsService,

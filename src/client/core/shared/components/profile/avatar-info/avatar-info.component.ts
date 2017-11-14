@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Output, EventEmitter, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import {
   FormGroup
 } from '@angular/forms';
@@ -6,7 +6,9 @@ import {
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/takeUntil';
 
 import { QuestionBase } from '../../form/base/question-base';
 import { QuestionControlService } from '../../form/base/question-control.service';
@@ -20,6 +22,7 @@ import { ToastsService } from '../../toast/toast-message.service';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
 
+
 declare let _: any;
 declare let $: any;
 
@@ -31,7 +34,7 @@ declare let $: any;
   encapsulation: ViewEncapsulation.None
 })
 
-export class PartialsProfileAvatarInfoComponent implements OnInit {
+export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
   @Input() data: any;
   @Input() editable: boolean = true;
   @Input() nameOnly: boolean = false;
@@ -41,6 +44,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   closeObs$: Observable<any>;
+  destroySubject: Subject<any> = new Subject<any>();
   nextPhotoSubscription: Subscription;
   uploadPhotoSubscription: Subscription;
 
@@ -98,6 +102,11 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
     this.form = this.questionControlService.toFormGroup(this.questions);
   }
 
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
+  }
+
   onOpenModal() {
     if (this.data.name && this.form.controls['name']) {
       this.form.controls['name'].setValue(this.data.name);
@@ -141,7 +150,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
 
   handleSelectCropEvent() {
     this.commonEventService.filter((event: any) => event.channel == 'SELECT_CROP_EVENT')
-      .take(1)
+      .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         this.doEvent(event);
       });
