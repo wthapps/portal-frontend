@@ -4,7 +4,6 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Constants } from '../../../config/constants';
 
 declare var $: any;
-declare var dropzone: any;
 declare let Cropper: any;
 
 @Component({
@@ -16,7 +15,6 @@ declare let Cropper: any;
 
 export class CropImageComponent implements AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
-  // @Output() imageClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() changeImageEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() doneEvent: EventEmitter<string> = new EventEmitter<string>();
 
@@ -24,14 +22,24 @@ export class CropImageComponent implements AfterViewInit {
   cropper: any = null;
 
   readonly DEFAULT_IMG: string = Constants.img.avatar;
+  readonly DEFAULT_CROP_OPTION: any = {
+    viewMode: 3
+    , aspectRatio: 1 / 1
+    , dragMode: 'move'
+    , autoCropArea: 0.8
+    , restore: false
+    //, modal: false
+    , guides: false
+    , highlight: false
+    , cropBoxMovable: true
+    , cropBoxResizable: true
+  };
 
   ngAfterViewInit(): void {
 
   }
 
   open(file?: any) {
-
-    console.debug('upload crop image - open file: ', file);
     if(file !== undefined) {
       this.curImage = file;
       this.initCropper();
@@ -41,23 +49,10 @@ export class CropImageComponent implements AfterViewInit {
 
   initCropper() {
     this.clearCropper();
-    console.debug('after clear cropper: ', this.cropper);
     if (this.cropper == null) {
-      console.debug('init cropper ...');
       let image = document.getElementById('image');
       this.cropper = new Cropper(image, {
-        dragMode: 'none',
-        // autoCrop: true,
-        // autoCropArea: 0,
-        // viewMode: 2,
-        modal: false,
-        ready: () => {
-          // // hide crop area on view mode
-          // $('.cropper-crop-box').hide();
-        },
-        cropstart: () => {
-          // $('.cropper-crop-box').show();
-        }
+        ...this.DEFAULT_CROP_OPTION,
       });
     }
     this.cropper.replace(this.curImage);
@@ -69,7 +64,6 @@ export class CropImageComponent implements AfterViewInit {
   }
 
   clearCropper() {
-    console.debug('Clear cropper ...');
     if(this.cropper !== null) {
       this.cropper.destroy();
       this.cropper = null;
@@ -78,15 +72,12 @@ export class CropImageComponent implements AfterViewInit {
 
   done() {
     let editedData = this.cropper.getCroppedCanvas().toDataURL(this.curImage);
-    // console.debug('crop image DONE: ', this.curImage, editedData);
-
     this.doneEvent.emit(editedData);
     this.clearCropper();
     this.modal.close();
   }
 
   changeImage() {
-    console.debug('crop image ChangeImage');
     this.changeImageEvent.emit(null);
     this.clearCropper();
     this.modal.close();

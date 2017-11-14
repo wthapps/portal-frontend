@@ -181,7 +181,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
   handleSelectCropEvent() {
     this.commonEventService.filter((event: any) => event.channel == 'SELECT_CROP_EVENT')
-      .take(1)
+      .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         this.doEvent(event);
       });

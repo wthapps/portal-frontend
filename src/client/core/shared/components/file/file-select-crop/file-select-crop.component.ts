@@ -24,22 +24,12 @@ declare var _: any;
 
 export class FileSelectCropComponent implements OnInit, OnDestroy {
   @ViewChild('cropImage') cropImage: UploadCropImageComponent;
-  // @Input() selectedItems: Array<any>;
-  // @Output() onUpload: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
-  // action: string = 'Done';
-
-  // postPhotos: Array<any> = new Array<any>();
-  // uploadPhotos: Array<any> = new Array<any>();
-  // hasBack: boolean = false;
-  // files: Array<any> = new Array<any>();
-  // editCurrentMode: boolean = false;
   currentImage: string;
 
   close$: Observable<any>;
   destroySubject: Subject<any> = new Subject<any>();
-  // commonSubscription: Subscription;
 
   constructor(private commonEventService: CommonEventService,
               private photoSelectDataService : PhotoModalDataService,
@@ -61,7 +51,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   }
 
   doEvent(event: any) {
-    // console.log(event);
+    console.debug('inside file-select-crop doEvent: ', event);
     switch (event.action) {
       case 'SELECT_CROP:OPEN':
         console.debug('inside doEvent - SELECT_CROP:OPEN', event);
@@ -135,11 +125,6 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     }
   }
 
-  // onImageClicked(img: any): void {
-  //   console.debug('inside onImageClicked: ', img);
-  //   // this.photoDataService.upload([img]);
-  // }
-
   onChangeImage() {
     this.openPhotoSelect();
   }
@@ -147,12 +132,6 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   onDone(image: string) {
     this.dispatchEvent({action: 'SELECT_CROP:DONE', payload: image});
   }
-
-  // private unsubscribeAll(subs: Array<Subscription>) {
-  //   _.each(subs, (s: Subscription) => {
-  //     if (s) s.unsubscribe();
-  //   });
-  // }
 
 }
 
