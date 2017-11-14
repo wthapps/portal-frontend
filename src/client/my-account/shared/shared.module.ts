@@ -16,6 +16,7 @@ import { AccountService } from './account/account.service';
 import { SubscriptionService } from './subscription/subscription.service';
 
 import { TooltipModule } from 'primeng/primeng';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 
 
 
@@ -31,7 +32,8 @@ import { TooltipModule } from 'primeng/primeng';
     RouterModule,
 
     Ng2Bs3ModalModule,
-    TooltipModule
+    // TooltipModule,
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     MySharedMenuComponent,

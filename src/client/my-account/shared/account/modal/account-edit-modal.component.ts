@@ -48,6 +48,7 @@ export class AccountEditModalComponent implements OnInit {
       this.item = options.data;
       this.form.controls['fullName'].setValue(this.item.name);
       this.form.controls['email'].setValue(this.item.email);
+      this.form.controls['password'].setValue(this.item.generated_password);
       // this.form.controls['password'].setValue(item.name);
     }
     this.modal.open(options).then();

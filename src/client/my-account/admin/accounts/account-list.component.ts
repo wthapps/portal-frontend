@@ -10,6 +10,7 @@ import { LoadingService } from '../../../core/shared/components/loading/loading.
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { AccountService } from '../../shared/account/account.service';
 import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
+import { UserService } from '../../../core/shared/services/user.service';
 
 declare let _: any;
 
@@ -25,7 +26,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
   items: Array<any> = new Array<any>();
   selectedItems: Array<any> = [];
   isSelectAll: boolean;
-
+  currentUser: any;
   private destroySubject: Subject<any> = new Subject();
 
   constructor(
@@ -34,11 +35,14 @@ export class AccountListComponent implements OnInit, OnDestroy {
     private toaster: ToastsService,
     private route: ActivatedRoute,
     private loadingService: LoadingService,
-    private wthConfirmService: WthConfirmService
+    private wthConfirmService: WthConfirmService,
+    private userService: UserService
   ) {
+
   }
 
   ngOnInit() {
+    this.currentUser = this.userService.profile;
     this.accountService.getAll().subscribe((response: any) => {
       this.items = response.data;
     });

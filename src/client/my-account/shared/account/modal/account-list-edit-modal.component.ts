@@ -27,6 +27,14 @@ export class AccountListEditModalComponent implements OnInit {
   noOfCtrl: number = 4;
   userId: number = 0;
 
+  noOfMaster: number = 0;
+  noOfSub: number = 0;
+  // These are get value form subscription and plan
+  masterPrice: any = 9.99;
+  subPrice: any = 4.99;
+  defaultDate: string = moment().subtract(13, 'years').calendar(); // at least 13 year-old
+  maxDate: Date = new Date(moment().subtract(13, 'years').calendar());
+
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService) {
   }
 
@@ -76,13 +84,12 @@ export class AccountListEditModalComponent implements OnInit {
   create(subAccount: boolean, item?: any) {
     let parentId = subAccount == false? null: this.userId;
     let creatorId = parentId == null ? 0 : null;
+
     if (item) {
       return this.fb.group({
         email: [item.email, Validators.compose([Validators.required, CustomValidator.emailFormat])],
         name: [item.name, Validators.compose([Validators.required])],
-        birthday: [item.birthday, Validators.compose([
-          Validators.required
-        ])],
+        birthday: [item.birthday, Validators.compose([Validators.required])],
         id: [item.id],
         parent_id: [item.parent_id],
         creator_id: [item.creator_id]
@@ -91,9 +98,7 @@ export class AccountListEditModalComponent implements OnInit {
       let group = this.fb.group({
         email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])],
         name: ['', Validators.compose([Validators.required])],
-        birthday: [moment().subtract(13, 'years').calendar(), Validators.compose([
-          Validators.required
-        ])],
+        birthday: [this.defaultDate, Validators.compose([Validators.required])],
         id: [null],
         parent_id: [parentId],
         creator_id: [creatorId]

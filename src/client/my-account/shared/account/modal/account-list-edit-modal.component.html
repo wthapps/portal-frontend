@@ -18,13 +18,13 @@
 </div>
         <div class="pb5 bold">
           <div class="row row-12">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               Full name
             </div>
-            <div class="col-sm-3 ml50">
+            <div class="col-sm-3 ml5 pl0">
               Email address
             </div>
-            <div class="col-sm-2 ml55 pl25">
+            <div class="col-sm-2 pl0">
               Birthday
             </div>
             <div class="col-sm-2">
@@ -35,8 +35,8 @@
 
         <div formArrayName="items">
 
-          <div *ngFor="let item of form.get('items').controls; let i=index;" class="media mt0">
-            <div *ngIf="item['controls'].parent_id.value == null" class="media-body" [formGroupName]="i">
+          <div *ngFor="let item of form.get('items').controls; let i=index;" class="mt0">
+            <div *ngIf="item['controls'].parent_id.value == null" [formGroupName]="i">
 
               <div class="row row-12">
 
@@ -56,7 +56,7 @@
                   </div>
                 </div>
 
-                <div class="col-sm-4 pl5 pr0">
+                <div class="col-sm-3 pl5 pr0">
                   <div class="form-group no-label"
                        [ngClass]="{
                     'has-error': (!item['controls'].email.valid
@@ -76,40 +76,57 @@
                   </div>
                 </div>
 
-                <div class="col-sm-2 pl5 pr0">
+                <div class="col-sm-4 pl5 pr0">
+                  <div class="form-group no-label"
+                       [ngClass]="{
+                    'has-error': (!item['controls'].birthday.valid
+                                && item['controls'].birthday.touched),
+                    'has-success': (item['controls'].birthday.valid
+                                && item['controls'].birthday.touched
+                                && form.value.items[i].birthday.length > 0)}">
+                    <p-calendar class="input-block"
+                                inputStyleClass="input-birthday"
+                                [maxDate]="maxDate" require="true"
+                                formControlName="birthday"></p-calendar>
 
-                  <div class="form-group no-label">
-                    <input #birthday type="date" class="form-control pl5 pr0" formControlName="birthday">
+                    <div *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.touched">
+                      <span
+                        *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.errors.required"
+                        class="help-block text-danger">
+                        Birthday is required
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-2 pl5">
-                  <div class="form-group no-label">
-                    <select class="form-control">
-                      <option value="family">Family</option>
-                      <option value="student">Student</option>
-                    </select>
-                  </div>
-                </div>
+                <!--<div class="col-sm-2 pl5">-->
+                  <!--<div class="form-group no-label">-->
+                    <!--<select class="form-control">-->
+                      <!--<option value="family">Family</option>-->
+                      <!--<option value="student">Student</option>-->
+                    <!--</select>-->
+                  <!--</div>-->
+                <!--</div>-->
 
+                <div class="col-sm-1">
+                  <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == null"
+                          type="button"
+                          class="btn btn-default"
+                          (click)="remove(i, item.controls)">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </div>
               </div>
             </div>
-            <div class="media-right">
-              <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == null"
-                      type="button"
-                      class="btn btn-default"
-                      (click)="remove(i, item.controls)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </div>
+
           </div>
         </div>
         <div class="mb10">
           <button type="button" class="btn btn-outline-default btn-min" (click)="add(false)">
             <i class="fa fa-plus"></i> Add Full Account
           </button>
-          <div class="pull-right">
+          <div class="pull-right pr20">
             <div>
-              2 sub accounts x $9.99 = $19.98
+              2 full accounts x ${{ masterPrice }} = $ {{ 2*masterPrice }}
             </div>
           </div>
         </div>
@@ -117,13 +134,13 @@
 
       <div class="pb5 bold">
         <div class="row row-12">
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             Full name
           </div>
-          <div class="col-sm-3 ml50">
+          <div class="col-sm-3 ml5 pl0">
             Email address
           </div>
-          <div class="col-sm-2 ml55 pl25">
+          <div class="col-sm-2 pl0">
             Birthday
           </div>
           <div class="col-sm-2">
@@ -134,8 +151,8 @@
 
       <div formArrayName="items">
 
-        <div *ngFor="let item of form.get('items').controls; let i=index;" class="media mt0">
-          <div *ngIf="item['controls'].parent_id.value == 0" class="media-body" [formGroupName]="i">
+        <div *ngFor="let item of form.get('items').controls; let i=index;" class="mt0">
+          <div *ngIf="item['controls'].parent_id.value == 0" [formGroupName]="i">
 
             <div class="row row-12">
 
@@ -174,48 +191,59 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-2 pl5 pr0">
+              <div class="col-sm-3 pl5 pr0">
 
-                <div class="form-group no-label">
-                  <input #birthday type="date" class="form-control pl5 pr0" formControlName="birthday">
+                <div class="form-group no-label"
+                     [ngClass]="{
+                    'has-error': (!item['controls'].birthday.valid
+                                && item['controls'].birthday.touched),
+                    'has-success': (item['controls'].birthday.valid
+                                && item['controls'].birthday.touched
+                                && form.value.items[i].birthday.length > 0)}">
+                  <p-calendar class="input-block"
+                              inputStyleClass="input-birthday"
+                              [maxDate]="maxDate" required="true"
+                              formControlName="birthday"></p-calendar>
+
                   <div *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.touched">
                       <span
-                        *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.errors.requiredMinAge"
+                        *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.errors.required"
                         class="help-block text-danger">
-                        Birthday is not valid
+                        Birthday is required
                       </span>
                   </div>
                 </div>
               </div>
 
-              <div class="col-sm-2 pl5">
-                <div class="form-group no-label">
-                  <select class="form-control">
-                    <option value="family">Family</option>
-                    <option value="student">Student</option>
-                  </select>
-                </div>
-              </div>
+              <!--<div class="col-sm-2 pl5">-->
+                <!--<div class="form-group no-label">-->
+                  <!--<select class="form-control">-->
+                    <!--<option value="family">Family</option>-->
+                    <!--<option value="student">Student</option>-->
+                  <!--</select>-->
+                <!--</div>-->
+              <!--</div>-->
 
+              <div class="col-sm-1">
+                <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == 0"
+                        type="button"
+                        class="btn btn-default"
+                        (click)="remove(i, item.controls)">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </div>
             </div>
           </div>
-          <div class="media-right">
-            <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == 0"
-                    type="button"
-                    class="btn btn-default"
-                    (click)="remove(i, item.controls)">
-              <i class="fa fa-trash-o"></i>
-            </button>
-          </div>
+
         </div>
       </div>
       <div class="mb10">
         <button type="button" class="btn btn-outline-default btn-min" (click)="add(true)">
           <i class="fa fa-plus"></i> Add Sub Account
         </button>
-        <div class="pull-right">
+        <div class="pull-right pr20">
           <div>
-            2 sub accounts x $9.99 = $19.98
+            2 sub accounts x ${{ subPrice }} = ${{ 2*subPrice }}
           </div>
         </div>
       </div>
@@ -224,32 +252,32 @@
 
 
       <div class="panel panel-default mb0">
-        <div class="row row-12 panel-body">
-          <div class="col-sm-10 text-right">
+        <div class="row row-12 panel-body text-right">
+          <div class="col-sm-10">
             <div>New full accounts:</div>
           </div>
-          <div class="col-sm-2 text-left">
+          <div class="col-sm-2">
             <div>$19.98</div>
           </div>
 
-          <div class="col-sm-10 text-right" >
+          <div class="col-sm-10" >
             <div>New sub accounts:</div>
           </div>
-          <div class="col-sm-2 text-left">
+          <div class="col-sm-2">
             <div>Label2</div>
           </div>
 
-          <div class="col-sm-10 text-right">
+          <div class="col-sm-10">
             <div>Current accounts:</div>
           </div>
-          <div class="col-sm-2 text-left">
+          <div class="col-sm-2">
             <div>Label2</div>
           </div>
 
-          <div class="col-sm-10 text-right">
+          <div class="col-sm-10">
             <div class="bold">Total:</div>
           </div>
-          <div class="col-sm-2 text-left bold">
+          <div class="col-sm-2 bold">
             <div>Label2</div>
           </div>
         </div>

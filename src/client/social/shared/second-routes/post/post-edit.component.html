@@ -142,10 +142,10 @@
         <button type="button" class="btn btn-outline-default pull-left" *ngIf="parent == null" (click)="addMorePhoto($event)">
           <i class="fa fa-camera"></i> Add Photo
         </button>
+        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel
+        </button>
         <button type="submit" class="btn btn-outline-primary btn-min"
                 [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0)) || (files.length > 0)">Done
-        </button>
-        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel
         </button>
       </div>
     </form>
