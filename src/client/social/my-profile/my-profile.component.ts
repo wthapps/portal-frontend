@@ -1,8 +1,13 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/take';
+
 import { UserService } from '../../core/shared/services/user.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
+
 
 @Component({
   moduleId: module.id,
@@ -12,17 +17,19 @@ import { ApiBaseService } from '../../core/shared/services/apibase.service';
 })
 export class ZSocialMyProfileComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
-
-  data: any;
+  soUserProfile$: Observable<any>;
+  // data: any;
 
   constructor(private route: ActivatedRoute,
               private userService: UserService,
               private apiBaseService: ApiBaseService) {
+    this.soUserProfile$ = this.userService.soProfile$;
   }
 
   ngOnInit() {
-    this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`).subscribe((res: any) => {
-      this.data = res.data;
+    this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`).take(1).subscribe((res: any) => {
+      // this.data = res.data;
+      this.userService.soUserProfile = res.data;
     });
   }
 
@@ -37,8 +44,9 @@ export class ZSocialMyProfileComponent implements OnInit {
   }
 
   doEvent(e: any) {
-    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, this.data).subscribe((res: any) => {
-      this.data = res.data;
+    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, e).subscribe((res: any) => {
+      // this.data = res.data;
+      this.userService.soUserProfile = res.data;
     });
   }
 }

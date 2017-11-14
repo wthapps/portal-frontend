@@ -2,7 +2,7 @@
   <div class="page-body-content-in">
     <partials-profile>
       <partials-profile-avatar-info
-        [data]="data"
+        [data]="soUserProfile$ | async"
         [editable]="true"
         (eventOut)="doEvent($event)">
       </partials-profile-avatar-info>
@@ -11,10 +11,10 @@
           <h3 class="panel-title">Contact Information</h3>
         </div>
         <div class="panel-body">
-          <partials-profile-email #email *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-email>
-          <partials-profile-phone #phone *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-phone>
-          <partials-profile-address #address *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-address>
-          <partials-profile-media #media *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-media>
+          <partials-profile-email #email *ngIf="soUserProfile$ | async" [data]="soUserProfile$ | async" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-email>
+          <partials-profile-phone #phone *ngIf="soUserProfile$ | async" [data]="soUserProfile$ | async" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-phone>
+          <partials-profile-address #address *ngIf="soUserProfile$ | async" [data]="soUserProfile$ | async" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-address>
+          <partials-profile-media #media *ngIf="soUserProfile$ | async" [data]="soUserProfile$ | async" [editable]="true" (eventOut)="doEvent($event)"></partials-profile-media>
         </div>
       </div>
       <div class="panel panel-default">
@@ -22,11 +22,11 @@
           <h3 class="panel-title">Works & Educations</h3>
         </div>
         <div class="panel-body">
-          <partials-profile-work [data]="data" [editable]="true"></partials-profile-work>
-          <partials-profile-edu [data]="data" [editable]="true"></partials-profile-edu>
+          <partials-profile-work [data]="soUserProfile$ | async" [editable]="true"></partials-profile-work>
+          <partials-profile-edu [data]="soUserProfile$ | async" [editable]="true"></partials-profile-edu>
         </div>
       </div>
-      <partials-profile-hobby [data]="data" [editable]="true"></partials-profile-hobby>
+      <partials-profile-hobby [data]="soUserProfile$ | async" [editable]="true"></partials-profile-hobby>
     </partials-profile>
   </div>
 </div>
