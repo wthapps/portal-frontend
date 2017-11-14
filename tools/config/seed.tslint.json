@@ -21,10 +21,9 @@
     "one-line": [true,
       "check-open-brace",
       "check-catch",
-//      "check-else",
       "check-whitespace"
     ],
-    "quotemark": [true, "single"],
+    "quotemark": false,
     "semicolon": [true, "always"],
     "trailing-comma": true,
     "triple-equals": false,
