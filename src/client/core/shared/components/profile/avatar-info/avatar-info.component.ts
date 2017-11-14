@@ -4,6 +4,9 @@ import {
 } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/take';
 
 import { QuestionBase } from '../../form/base/question-base';
 import { QuestionControlService } from '../../form/base/question-control.service';
@@ -12,13 +15,13 @@ import { UserInfo } from '../../../models/user/user-info.model';
 import { LoadingService } from '../../loading/loading.service';
 import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
 import { PhotoUploadService } from '../../../services/photo-upload.service';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { UserService } from '../../../services/user.service';
 import { ToastsService } from '../../toast/toast-message.service';
 import { ApiBaseService } from '../../../services/apibase.service';
+import { CommonEventService } from '../../../services/common-event/common-event.service';
 
-declare var _: any;
+declare let _: any;
+declare let $: any;
 
 @Component({
   moduleId: module.id,
@@ -50,6 +53,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
               private apiBaseService: ApiBaseService,
               private userService: UserService,
               private toastsService: ToastsService,
+              private commonEventService: CommonEventService,
               private photoUploadService: PhotoUploadService) {
     this.closeObs$ = this.photoSelectDataService.closeObs$.merge(
       this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
@@ -126,70 +130,125 @@ export class PartialsProfileAvatarInfoComponent implements OnInit {
     this.eventOut.emit({action: 'update', item: 'info', data: values});
   }
 
-  changeProfileImage(e: any) {
-    let loadingId: string = '#profile_image';
-    this.selectPhoto((photos: any) => {
-      // Update avatar image
-      let img_url = photos[0].url;
-      this.data.profile_image = img_url;
-      this.updateItem({'profile_image': img_url}, 'profile_image');
-    }, loadingId);
+
+
+  changeProfileImage(event: any): void {
+    event.preventDefault();
+    // this.uploadProfile.modal.open();
+    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: this.userService.profile.profile_image });
+    this.handleSelectCropEvent();
   }
 
-  selectPhoto(callback: any, loadingId?: string) {
-    this.photoSelectDataService.open({'multipleSelect': false});
-    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
-      .take(1) // User can only select 1 photo to change profile avatar / cover image
-      .takeUntil(this.closeObs$).subscribe(
-        (photo: any) => {
-          callback(photo);
-        }, (err: any) => console.error('cover profile selectPhoto error: ', err));
-
-    this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$
+  handleSelectCropEvent() {
+    this.commonEventService.filter((event: any) => event.channel == 'SELECT_CROP_EVENT')
       .take(1)
-      .takeUntil(this.closeObs$)
-      .switchMap((photos: any) => {
-        this.loadingService.start(loadingId);
-        return this.photoUploadService.uploadPhotos(photos);
-      })
-      .subscribe(
-        (res: any) => {
-          callback([res.data]);
-          this.loadingService.stop(loadingId);
-        }, (err: any) => this.loadingService.stop(loadingId));
+      .subscribe((event: any) => {
+        this.doEvent(event);
+      });
   }
 
-  // this.loadingService.start();
-  updateItem(body: any, updateItem?: any, callback?: any): void {
-    this.onAction({'action': 'updateItem', 'body': body, 'updateItem': updateItem});
 
-  }
-
-  // Perform other events beside choose Photo actions
-  onAction(event: any) {
-    if (event.action == 'updateItem') {
-      // Update profile via API call
-      // this.apiBaseService.put('zone/social_network/users/update', body).take(1);
-      this.apiBaseService.put('zone/social_network/users/update', event.body).take(1)
-        .subscribe((result: any) => {
-          console.log('update profile sucess: ', result);
-          let toastMsg:string = '';
-          if (_.has(event.body, 'profile_image')) {
-            toastMsg = 'You have updated profile image successfully';
-            // Update user profile
-            if (this.userService.profile.uuid === _.get(result, 'data.uuid')) {
-              Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
-              Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
-              this.userService.updateProfile(this.userService.profile);
-            }
-          } else if (_.has(event.body, 'cover_image')) {
-                toastMsg = 'You have updated cover image of this community successfully';
-          } else {
-            toastMsg = result.message;
-          }
-
-          this.toastsService.success(toastMsg);
-        });
+  doEvent(event: any) {
+    // console.log(event);
+    switch (event.action) {
+      case 'SELECT_CROP:DONE':
+        console.debug('inside doEvent - SELECT_CROP:DONE', event);
+        // Change user profile
+        this.updateProfileImageBase64(event.payload);
+        break;
+      default:
+        break;
     }
   }
+
+  updateProfileImageBase64(img: string): void {
+    this.updateUser(JSON.stringify({image: img}));
+  }
+
+  private updateUser(body: string): void {
+    // this.apiBaseService.put('zone/social_network/users/update', body)
+    this.userService.update(`users/${this.userService.profile.id}`, body)
+      .subscribe((result: any) => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.success(result.message);
+
+          //  reload profile image
+          $('img.lazyloaded').addClass('lazyload');
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(error);
+          console.log(error);
+        }
+      );
+  }
+
+  // changeProfileImage(e: any) {
+  //   let loadingId: string = '#profile_image';
+  //   this.selectPhoto((photos: any) => {
+  //     // Update avatar image
+  //     let img_url = photos[0].url;
+  //     this.data.profile_image = img_url;
+  //     this.updateItem({'profile_image': img_url}, 'profile_image');
+  //   }, loadingId);
+  // }
+  //
+  // selectPhoto(callback: any, loadingId?: string) {
+  //   this.photoSelectDataService.open({'multipleSelect': false});
+  //   this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
+  //     .take(1) // User can only select 1 photo to change profile avatar / cover image
+  //     .takeUntil(this.closeObs$).subscribe(
+  //       (photo: any) => {
+  //         callback(photo);
+  //       }, (err: any) => console.error('cover profile selectPhoto error: ', err));
+  //
+  //   this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$
+  //     .take(1)
+  //     .takeUntil(this.closeObs$)
+  //     .switchMap((photos: any) => {
+  //       this.loadingService.start(loadingId);
+  //       return this.photoUploadService.uploadPhotos(photos);
+  //     })
+  //     .subscribe(
+  //       (res: any) => {
+  //         callback([res.data]);
+  //         this.loadingService.stop(loadingId);
+  //       }, (err: any) => this.loadingService.stop(loadingId));
+  // }
+  //
+  // // this.loadingService.start();
+  // updateItem(body: any, updateItem?: any, callback?: any): void {
+  //   this.onAction({'action': 'updateItem', 'body': body, 'updateItem': updateItem});
+  //
+  // }
+  //
+  // // Perform other events beside choose Photo actions
+  // onAction(event: any) {
+  //   if (event.action == 'updateItem') {
+  //     // Update profile via API call
+  //     // this.apiBaseService.put('zone/social_network/users/update', body).take(1);
+  //     this.apiBaseService.put('zone/social_network/users/update', event.body).take(1)
+  //       .subscribe((result: any) => {
+  //         console.log('update profile sucess: ', result);
+  //         let toastMsg:string = '';
+  //         if (_.has(event.body, 'profile_image')) {
+  //           toastMsg = 'You have updated profile image successfully';
+  //           // Update user profile
+  //           if (this.userService.profile.uuid === _.get(result, 'data.uuid')) {
+  //             Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
+  //             Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
+  //             this.userService.updateProfile(this.userService.profile);
+  //           }
+  //         } else if (_.has(event.body, 'cover_image')) {
+  //               toastMsg = 'You have updated cover image of this community successfully';
+  //         } else {
+  //           toastMsg = result.message;
+  //         }
+  //
+  //         this.toastsService.success(toastMsg);
+  //       });
+  //   }
+  // }
 }

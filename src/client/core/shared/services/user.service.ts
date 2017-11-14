@@ -10,6 +10,7 @@ import { Constants } from '../config/constants';
 
 import { ApiBaseService } from './apibase.service';
 import { User }           from '../models/user.model';
+import { UserInfo } from '../models/user/user-info.model';
 
 @Injectable()
 export class UserService extends ApiBaseService {
@@ -21,13 +22,16 @@ export class UserService extends ApiBaseService {
   public cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;
 
   public readonly profile$: Observable<any>;
+  public readonly soProfile$: Observable<any>;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  private _soProfile: BehaviorSubject<any> = new BehaviorSubject<any>(new UserInfo());
   constructor(http: Http, router: Router,
               public cookieService: CookieService) {
     super(http, router, cookieService);
     this.readUserInfo();
 
     this.profile$ = this._profile.asObservable();
+    this.soProfile$ = this._soProfile.asObservable();
   }
 
   login(path: string, body: string, useJwt: boolean = true): Observable<Response> {
@@ -149,10 +153,14 @@ export class UserService extends ApiBaseService {
     return this.profile != null ? this.profile.uuid : '';
   }
 
+  set soUserProfile(data: any) {
+    this._soProfile.next(data);
+  }
 
-  updateProfile(profile: Object) {
+  updateProfile(profile: any) {
     this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
     this.setProfile(profile);
+    this.soUserProfile = {...this._soProfile.getValue(), profile_image: profile.profile_image};
   }
 
   private storeDefaultPayment(response: any) {

@@ -205,10 +205,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.updateUser(JSON.stringify({image: img}));
   }
 
-  updateProfileImageUrl(imgUrl: string) {
-    this.updateUser(JSON.stringify({image_url: imgUrl}));
-  }
-
   private updateUser(body: string): void {
     this.userService.update(`users/${this.userService.profile.id}`, body)
       .subscribe((result: any) => {

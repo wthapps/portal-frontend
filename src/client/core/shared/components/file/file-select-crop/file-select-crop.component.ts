@@ -140,7 +140,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   //   // this.photoDataService.upload([img]);
   // }
 
-  onChangeImage() {]
+  onChangeImage() {
     this.openPhotoSelect();
   }
 
