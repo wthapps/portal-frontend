@@ -246,6 +246,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     }
     if (options.action == 'previewAllPhotos') {
       this.selectAllPhotos();
+
       if (_.has(options, 'params.selectedObject')) {
         this.mediaStore.setCurrentSelectedObject(_.get(options, 'params.selectedObject'));
       }

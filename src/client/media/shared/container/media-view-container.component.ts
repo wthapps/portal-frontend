@@ -83,6 +83,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   @Input() params: any;
   @Input() object: any; // object for detail pages
   @Input() page: string;
+  @Input() recipients: any;
   @Input() showDetailInfo: boolean = false;
 
 
@@ -274,7 +275,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.mediaUploaderDataService.onShowUp();
         break;
 
-      case 'previewAllPhotos':
+      case 'previewAllPhotos': {
         let ids2 = _.map(this.mediaStore.getSelectedObjects(), 'id');
         let selectedIdx = this.mediaStore.getCurrentSelectedIndex();
 
@@ -286,6 +287,21 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         );
 
         break;
+      }
+
+      case 'previewAllPhotosToolBar': {
+        let ids = _.map(this.list.objects, 'id');
+
+        if(ids.length > 0) {
+          this.router.navigate([{outlets: {modal: [
+              'photos',
+              ids[0],
+              {ids: ids, mode: 0}
+            ]}}], {queryParamsHandling: 'preserve', preserveFragment: true}
+          );
+        }
+        break;
+      }
 
       case 'previewModal':
         let ids = _.map(this.selectedObjects, 'id');
@@ -309,10 +325,19 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'downloadAlbum':
         this.downloadAlbum(event.params.selectedObjects[0]);
         break;
+      case 'downloadAllToolbar':
+        this.download(this.list.objects);
+        break;
       default:
         this.list.doAction(event);
         break;
     }
+  }
+
+  private selectAllPhotos() {
+    this.selectedObjects.length = 0;
+    this.selectedObjects.push(..._.filter(this.objects, ['object_type', 'photo']));
+    this.mediaStore.selectObjects(this.selectedObjects);
   }
 
   upload() {
@@ -460,6 +485,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         var objects = _.get(params, 'selectedObjects', []).concat(this.selectedObjects);
         options = {selectedObjects: objects, updateListObjects: params.updateListObjects};
         break;
+      case 'sharingModalToolbar': {
+        this.loadModalComponent(SharingModalComponent);
+        options = {sharing: this.params, recipients: this.recipients};
+        break;
+      }
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
         if (params.object) {
