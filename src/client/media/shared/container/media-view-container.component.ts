@@ -334,12 +334,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     }
   }
 
-  private selectAllPhotos() {
-    this.selectedObjects.length = 0;
-    this.selectedObjects.push(..._.filter(this.objects, ['object_type', 'photo']));
-    this.mediaStore.selectObjects(this.selectedObjects);
-  }
-
   upload() {
     // this.loadModalComponent(MediaUloaderComponent);
     return;
@@ -539,6 +533,12 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     });
 
     this.toolbar.updateProperties({object: this.object});
+  }
+
+  private selectAllPhotos() {
+    this.selectedObjects.length = 0;
+    this.selectedObjects.push(..._.filter(this.objects, ['object_type', 'photo']));
+    this.mediaStore.selectObjects(this.selectedObjects);
   }
 
   private refreshPrimaryList(): void {

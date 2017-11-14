@@ -77,18 +77,6 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   }
 
 
-
-  private subscribePhotoSelectEvents() {
-
-    this.photoSelectDataService.nextObs$.takeUntil(this.close$).subscribe((photos : any) => {
-      this.next(photos);
-    });
-
-    this.photoSelectDataService.uploadObs$.takeUntil(this.close$).subscribe((files: any) => {
-      this.handleLocalImage(files);
-    });
-  }
-
   ngOnDestroy() {
     this.destroySubject.next();
     this.destroySubject.unsubscribe();
@@ -131,6 +119,18 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
 
   onDone(image: string) {
     this.dispatchEvent({action: 'SELECT_CROP:DONE', payload: image});
+  }
+
+
+  private subscribePhotoSelectEvents() {
+
+    this.photoSelectDataService.nextObs$.takeUntil(this.close$).subscribe((photos : any) => {
+      this.next(photos);
+    });
+
+    this.photoSelectDataService.uploadObs$.takeUntil(this.close$).subscribe((files: any) => {
+      this.handleLocalImage(files);
+    });
   }
 
 }
