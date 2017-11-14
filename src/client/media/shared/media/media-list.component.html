@@ -58,6 +58,16 @@
           </button>
         </p>
       </div>
+      <div *ngIf="page == 'shared-by-me'">
+        <h2><i class="fa fa-share-alt"></i></h2>
+        <h3>There is no sharing!</h3>
+        <h4>Media are shared by you.</h4>
+        <p>
+          <button class="btn btn-default">
+            Learn More
+          </button>
+        </p>
+      </div>
     </div>
 
     <div id="list-photo" class="row-img row-img-{{ sliderViewNumber }}" *ngIf="objects" (dragenter)="onDragenter($event)"
