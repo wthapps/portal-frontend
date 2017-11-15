@@ -67,9 +67,8 @@
         <!--</th>-->
         <th>Full name</th>
         <th>Email</th>
-        <th>Last logged in</th>
         <th>Account Type</th>
-
+        <th>Last logged in</th>
         <th>Action</th>
 
       </tr>
@@ -85,15 +84,14 @@
           <td><a href="javascript:void(0);" (click)="view(item)">{{ item.name }}</a></td>
           <td><a rel="nofollow" target="_top"
                  href="mailto:{{ item.email }}">{{ item.email }}</a></td>
+          <td> {{ item.parent_id == null ? 'Full account': 'Sub account' }} </td>
           <td *ngIf="item.last_sign_in_at"> {{ item.last_sign_in_at | date: 'yMMMd' }} </td>
           <td *ngIf="!item.last_sign_in_at"> N/A </td>
-          <td> {{ item.parent_id == null ? 'Full account': 'Sub account' }} </td>
+
           <td>
             <div>
-              <button class="btn btn-default"
-                      (click)="edit(item)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-              <button class="btn btn-default"
-                      (click)="delete(item)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              <button class="btn btn-default" (click)="view(item)">View</button>
+              <button class="btn btn-default" (click)="delete(item)">Remove</button>
             </div>
           </td>
         </tr>

@@ -57,7 +57,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_account_list_edit_modal',
-      payload: {mode: 'add', data: undefined}
+      payload: {mode: 'edit', accountAction: 'add', data: new Array<any>(), accounts: this.items}
     });
   }
 
@@ -86,7 +86,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_account_edit_modal',
-      payload: {mode: 'edit', data: item}
+      payload: {mode: 'view', data: item}
     });
   }
 
@@ -102,7 +102,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_account_delete_confirmation_modal',
-      payload: {data: [item]}
+      payload: {mode: 'edit', accountAction: 'delete', data: [item], accounts: this.items}
     });
   }
 
