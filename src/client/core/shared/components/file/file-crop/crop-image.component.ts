@@ -44,7 +44,11 @@ export class CropImageComponent implements AfterViewInit {
       this.curImage = file;
       this.initCropper();
     }
-    this.modal.open();
+
+    setTimeout(() => {
+      this.modal.open();
+    }, 200);
+
   }
 
   initCropper() {

@@ -1,0 +1,33 @@
+<section class="page-content bg-gray-light">
+  <div class="container">
+    <div class="page-takeatour">
+      <div class="box-content">
+        <div class="clearfix">
+          <div class="pull-right">
+            <a [routerLink]="['/profile']" class="text-faded" href="#">Skip all</a>
+          </div>
+          <h4>First, let’s set up your public profile.</h4>
+        </div>
+        <p>Your public profile is for public view such as contact book and social only. Information in your public
+          profile can be different from your administration profile. You can also edit your public profile later.</p>
+
+        <partials-basic-info #basicInfo>
+        </partials-basic-info>
+
+        <div class="clearfix text-right">
+          <button (click)="test()" type="button" class="btn btn-primary">Save &amp; continue</button>
+        </div>
+
+      </div>
+
+      <div class="box-content">
+        <h4>{{ loadingTitle }}</h4>
+        <p>{{ loadingContent }}</p>
+        <div class="pt50 text-center text-faded">
+          <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

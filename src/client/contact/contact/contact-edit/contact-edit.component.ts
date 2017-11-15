@@ -6,9 +6,7 @@ import { CustomValidator } from '../../../core/shared/validator/custom.validator
 import { Contact } from '../contact.model';
 import { Constants } from '../../../core/shared/config/constants';
 import { LabelService } from '../../label/label.service';
-import { Label } from '../../label/label.model';
-import { TagInput } from '../../../core/shared/models/tag-input.model';
-declare var _: any;
+declare let _: any;
 
 @Component({
   moduleId: module.id,

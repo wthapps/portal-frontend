@@ -30,8 +30,8 @@
           </div>
         </span>
 
-        <textarea #commentContent class="form-control comment-editor-input" placeholder="Add a comment"
-                  textAreaAutoHeight
+        <textarea #commentContent class="form-control-autoheight comment-editor-input" placeholder="Add a comment"
+                  commentAutoHeight
                   [formControl]="contentCtrl"
                   (keyup)="onKey($event)"
                   [(ngModel)]="comment.content"></textarea>

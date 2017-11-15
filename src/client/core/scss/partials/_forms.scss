@@ -117,6 +117,7 @@
     }
   }
 }
+
 /*
 .navbar-searchTop {
   position: relative;
@@ -205,6 +206,13 @@
 
 textarea {
   resize: vertical;
+}
+
+.form-control-autoheight {
+  @extend .form-control;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 16px;
 }
 
 .form-control-phone-country {

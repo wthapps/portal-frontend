@@ -21,7 +21,6 @@ import { RecoveryModule } from './recovery/recovery.module';
 import { RegisterModule } from './register/register.module';
 import { SubscribeModule } from './sub_unsub/subscribe.module';
 import { SupportModule } from './support/support.module';
-import { WelcomeModule } from './welcome/welcome.module';
 
 
 @NgModule({
@@ -42,7 +41,6 @@ import { WelcomeModule } from './welcome/welcome.module';
     RegisterModule,
     SubscribeModule,
     SupportModule,
-    WelcomeModule,
     PortalSharedModule.forRoot(),
     CoreSharedModule.forRoot()
   ],

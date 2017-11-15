@@ -23,6 +23,7 @@ import { PartialsFormModule } from '../form/partials-form.module';
 import { PartialsProfileEducationComponent } from './work-edu/education.component';
 import { CoverProfileModule } from '../cover-profile/cover-profile.module';
 import { FileModule } from '../file/file.module';
+import { PartialsBasicInfoComponent } from './basic-info/basic-info.component';
 
 @NgModule({
   imports: [
@@ -49,7 +50,9 @@ import { FileModule } from '../file/file.module';
     PartialsProfileContactComponent,
     PartialsProfileWorkComponent,
     PartialsProfileEducationComponent,
-    PartialsProfileHobbyComponent
+    PartialsProfileHobbyComponent,
+
+    PartialsBasicInfoComponent
   ],
   exports: [
     PartialsProfileComponent,
@@ -63,7 +66,9 @@ import { FileModule } from '../file/file.module';
     PartialsProfileContactComponent,
     PartialsProfileWorkComponent,
     PartialsProfileEducationComponent,
-    PartialsProfileHobbyComponent
+    PartialsProfileHobbyComponent,
+
+    PartialsBasicInfoComponent
   ],
   providers: [
     PartialsProfileService

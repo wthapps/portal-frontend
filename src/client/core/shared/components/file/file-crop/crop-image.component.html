@@ -1,4 +1,4 @@
-<modal #modal [keyboard]="false" [backdrop]="false">
+<modal #modal [keyboard]="false" [animation]="false" [backdrop]="static">
   <modal-header [show-close]="true">
     <h4 class="modal-title">Profile Picture</h4>
   </modal-header>
@@ -8,13 +8,13 @@
       <img id="image" [src]="curImage" />
     </div>
     <div class="selectcrop-control">
-      <button id="cropper-rotate-left" class="btn btn-default" (click)="rotateCropper(true)">
+      <button id="cropper-rotate-left" class="btn btn-outline-default" (click)="rotateCropper(true)">
         <i class="fa fa-undo"></i>
       </button>
-      <button id="cropper-rotate-right" class="btn btn-default" (click)="rotateCropper(false)">
+      <button id="cropper-rotate-right" class="btn btn-outline-default" (click)="rotateCropper(false)">
         <i class="fa fa-repeat"></i>
       </button>
-      <button id="cropper-remove" (click)="changeImage()" class="btn btn-default">
+      <button id="cropper-remove" (click)="changeImage()" class="btn btn-outline-default">
         Change Picture
       </button>
       <button id="cropper-upload" (click)="done()" class="btn btn-outline-primary">

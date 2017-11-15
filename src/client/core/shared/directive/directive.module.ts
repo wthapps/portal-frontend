@@ -4,6 +4,7 @@ import { DisplayAsHtmlDirective } from './display-as-html.directive';
 import { ImgFullDirective } from './img-full.directive';
 import { ScrollToBottomDirective } from './scroll-to-bottom.directive';
 import { TextAreaAutoHeightDirective } from './textarea-autoheight.directive';
+import { CommentAutoHeightDirective } from './comment-autoheight.directive';
 import { ShiftEnterDirective } from './shiftEnter.directive';
 import { ContentEditableDirective } from './contenteditable.directive';
 
@@ -15,6 +16,7 @@ import { ContentEditableDirective } from './contenteditable.directive';
     ImgFullDirective,
     ScrollToBottomDirective,
     TextAreaAutoHeightDirective,
+    CommentAutoHeightDirective,
     ShiftEnterDirective,
     ContentEditableDirective
   ],
@@ -24,6 +26,7 @@ import { ContentEditableDirective } from './contenteditable.directive';
     ImgFullDirective,
     ScrollToBottomDirective,
     TextAreaAutoHeightDirective,
+    CommentAutoHeightDirective,
     ShiftEnterDirective,
     ContentEditableDirective
   ]

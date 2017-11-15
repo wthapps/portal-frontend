@@ -17,9 +17,8 @@ import { SubscriptionEditModalComponent } from './shared/subscription/modal/subs
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { WthConfirmService } from '../core/shared/components/confirmation/wth-confirm.service';
 import { SubscriptionService } from './shared/subscription/subscription.service';
-import { Constants } from '../core/shared/config/constants';
 
-declare var $: any;
+declare let $: any;
 
 /**
  * This class represents the main application component.
@@ -37,7 +36,7 @@ declare var $: any;
     SubscriptionEditModalComponent
   ]
 })
-export class AppComponent implements OnInit, OnDestroy, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
@@ -62,6 +61,14 @@ export class AppComponent implements OnInit, OnDestroy, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
+  }
+
+  ngAfterViewInit() {
+    $(document).on('hidden.bs.modal', '.modal', () => {
+      if ($('.modal:visible').length) {
+        $(document.body).addClass('modal-open');
+      }
+    });
   }
 
   ngOnDestroy() {

@@ -5,7 +5,6 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-
 import { MySharedModule } from './shared/shared.module';
 import { CoreSharedModule } from '../core/shared/shared.module';
 
@@ -17,7 +16,7 @@ import { MyPaymentModule } from './payment/payment.module';
 import { MySettingModule } from './settings/setting.module';
 import { MyPlansModule } from './plans/plans.module';
 import { MyAdminModule } from './admin/admin.module';
-import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
+import { WelcomeModule } from './welcome/welcome.module';
 
 
 @NgModule({
@@ -33,6 +32,7 @@ import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
     MyPlansModule,
     MySettingModule,
     MyAdminModule,
+    WelcomeModule,
 
     MySharedModule.forRoot(),
     CoreSharedModule.forRoot()

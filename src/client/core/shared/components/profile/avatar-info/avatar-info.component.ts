@@ -22,7 +22,6 @@ import { ToastsService } from '../../toast/toast-message.service';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
 
-
 declare let _: any;
 declare let $: any;
 

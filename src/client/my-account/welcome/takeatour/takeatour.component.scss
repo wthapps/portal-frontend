@@ -1,0 +1,17 @@
+@import '../../../core/scss/global';
+
+.box-content {
+  padding-left: 60px;
+  padding-right: 60px;
+  background-color: #ffffff;
+}
+
+.page-content {
+  padding-top: 20px;
+  min-height: calc(100vh - 60px);
+  &.bg-gray-light {
+    @media (max-width: $screen-xs-max) {
+      background-color: #ffffff;
+    }
+  }
+}

@@ -2,18 +2,21 @@ import { NgModule } from '@angular/core';
 
 import { WelcomeRoutingModule } from './welcome-routing.module';
 import { WelcomeComponent } from './welcome.component';
-import { PortalSharedModule } from '../shared/shared.module';
+import { TakeATourComponent } from './takeatour/takeatour.component';
+import { MySharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     WelcomeRoutingModule,
-    PortalSharedModule.forRoot()
+    MySharedModule
   ],
   declarations: [
-    WelcomeComponent
+    WelcomeComponent,
+    TakeATourComponent
   ],
   exports: [
-    WelcomeComponent
+    WelcomeComponent,
+    TakeATourComponent
   ]
 })
 

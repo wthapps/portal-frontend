@@ -1,20 +1,18 @@
-import { Component, ViewChild, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/takeUntil';
 
 import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
-import { FileSelectListComponent } from '../file-select-list/file-select-list.component';
 import { UploadCropImageComponent } from '../../upload-crop-image/upload-crop-image.component';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { PhotoUploadService } from '../../../services/photo-upload.service';
 import { Subject } from 'rxjs/Subject';
 
 
-declare var _: any;
+declare let $: any;
+declare let _: any;
 
 @Component({
   moduleId: module.id,
@@ -32,13 +30,10 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private commonEventService: CommonEventService,
-              private photoSelectDataService : PhotoModalDataService,
+              private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService) {
   }
 
-  doAction(options: any) {
-    this.event.emit(options);
-  }
 
   ngOnInit(): void {
     this.close$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.openObs$, this.photoSelectDataService.dismissObs$, this.destroySubject);
@@ -46,9 +41,21 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     this.commonEventService.filter((event: any) => event.channel == 'SELECT_CROP_EVENT')
       .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
-      this.doEvent(event);
-    });
+        this.doEvent(event);
+      });
   }
+
+
+  ngOnDestroy() {
+    this.destroySubject.next();
+    this.destroySubject.unsubscribe();
+    // this.unsubscribeAll([this.commonSubscription]);
+  }
+
+  doAction(options: any) {
+    this.event.emit(options);
+  }
+
 
   doEvent(event: any) {
     console.debug('inside file-select-crop doEvent: ', event);
@@ -76,13 +83,6 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     this.subscribePhotoSelectEvents();
   }
 
-
-  ngOnDestroy() {
-    this.destroySubject.next();
-    this.destroySubject.unsubscribe();
-    // this.unsubscribeAll([this.commonSubscription]);
-  }
-
   editCurrentImage() {
     console.debug('inside file-select-crop - editCurrentImage handling ...', this.currentImage);
     this.cropImage.open(this.currentImage);
@@ -90,7 +90,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   }
 
   next(files: any[]) {
-    if(files.length < 1) {
+    if (files.length < 1) {
       console.error('file-select-crop: next error: files should have at least 1 element');
     } else {
       console.debug('inside file-select-crop - next handling ...', files);
@@ -102,7 +102,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
 
   handleLocalImage(files: any[]) {
     console.debug('inside file-select-crop - handleLocalImage handling ...', files);
-    if(files.length < 1) {
+    if (files.length < 1) {
       console.error('file-select-crop: handleLocalImage error: files should have at least 1 element');
     } else {
       this.photoUploadService.getPhoto(files[0])
@@ -124,7 +124,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
 
   private subscribePhotoSelectEvents() {
 
-    this.photoSelectDataService.nextObs$.takeUntil(this.close$).subscribe((photos : any) => {
+    this.photoSelectDataService.nextObs$.takeUntil(this.close$).subscribe((photos: any) => {
       this.next(photos);
     });
 

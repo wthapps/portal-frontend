@@ -51,7 +51,8 @@ import { CoreSharedModule } from '../../core/shared/shared.module';
     AccountEditModalComponent,
     AccountDetailModalComponent,
     AccountListEditModalComponent,
-    SubscriptionEditModalComponent
+    SubscriptionEditModalComponent,
+    CoreSharedModule
   ]
 })
 export class MySharedModule {
