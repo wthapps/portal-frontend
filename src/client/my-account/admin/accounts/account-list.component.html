@@ -81,7 +81,10 @@
                           <!--[(ngModel)]="item.selected" binary="true" (onChange)="select(item)"></p-checkbox>-->
             <!--</div>-->
           <!--</th>-->
-          <td><a href="javascript:void(0);" (click)="view(item)">{{ item.name }}</a></td>
+          <td>
+            <a href="javascript:void(0);" (click)="view(item)">{{ item.name }}</a>
+            <label *ngIf="item.parent_id == null && item.creator_id == null" class="ql-bg-red ql-color-white">Admin</label>
+          </td>
           <td><a rel="nofollow" target="_top"
                  href="mailto:{{ item.email }}">{{ item.email }}</a></td>
           <td> {{ item.parent_id == null ? 'Full account': 'Sub account' }} </td>
@@ -91,7 +94,7 @@
           <td>
             <div>
               <button class="btn btn-default" (click)="view(item)">View</button>
-              <button class="btn btn-default" (click)="delete(item)">Remove</button>
+              <button *ngIf="item.parent_id != null || item.creator_id != null" class="btn btn-default" (click)="delete(item)">Remove</button>
             </div>
           </td>
         </tr>

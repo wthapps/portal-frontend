@@ -23,11 +23,11 @@ export class AccountEditModalComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
 
   form: FormGroup;
-  fullName: AbstractControl;
-  email: AbstractControl;
-  password: AbstractControl;
+  // name: AbstractControl;
+  // email: AbstractControl;
+  // password: AbstractControl;
   tooltip: any = Constants.tooltip;
-
+  mode: string; // 'add', 'edit', 'view'
 
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService) {
 
@@ -43,53 +43,56 @@ export class AccountEditModalComponent implements OnInit {
   * @mode: add or edit or view. default is add
   * */
   open(options: any = {data: undefined, mode: 'edit'}) {
+    this.mode = options.mode || 'edit';
+    this.item = options.data;
     this.initialize();
     if(options.data) {
-      this.item = options.data;
-      this.form.controls['fullName'].setValue(this.item.name);
-      this.form.controls['email'].setValue(this.item.email);
-      this.form.controls['password'].setValue(this.item.generated_password);
+
+      // this.form.controls['name'].setValue(this.item.name);
+      // this.form.controls['name'].setValue(this.item.name);
+      // this.form.controls['email'].setValue(this.item.email);
+      // this.form.controls['password'].setValue(this.item.generated_password);
       // this.form.controls['password'].setValue(item.name);
     }
     this.modal.open(options).then();
   }
 
+  edit() {
+    this.mode = 'edit';
+  }
+
   close(options?: any) {
+    this.mode = 'view';
     this.modal.close(options).then();
   }
 
   initialize() {
     if(this.form == undefined) {
       this.form = this.fb.group({
-        'fullName': ['', Validators.compose([
+        'id': [this.item.id, Validators.compose([
           Validators.required
         ])],
-        'email': ['', Validators.compose([
+        'name': [this.item.name, Validators.compose([
           Validators.required
         ])],
-        'password': ['', Validators.compose([
+        'email': [this.item.email, Validators.compose([
+          Validators.required
+        ])],
+        'password': [this.item.generated_password, Validators.compose([
           Validators.required,
           Validators.minLength(8),
           CustomValidator.lowercaseUppercase,
           CustomValidator.specialSymbolOrNumber
-        ])],
-        'group': ['', Validators.compose([
-          Validators.required
-        ])],
+        ])]
       });
-
-      this.fullName = this.form.controls['fullName'];
-      this.email = this.form.controls['email'];
-      this.password = this.form.controls['password'];
     }
-
   }
 
   delete() {
     this.commonEventService.broadcast({
       channel: 'my_account',
-      action: 'my_account:account:open_account_delete_confirmation_modal',
-      payload: {data: this.item}
+      action: 'my_account:account:open_delete_modal',
+      payload: {mode: 'edit', accountAction: 'delete', data: [this.item], accounts: []}
     });
   }
 
@@ -98,6 +101,14 @@ export class AccountEditModalComponent implements OnInit {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:update',
+      payload: {data: this.form.value}
+    });
+  }
+
+  acceptRequestOwnership() {
+    this.commonEventService.broadcast({
+      channel: 'my_account',
+      action: 'my_account:account:open_accept_request_ownership_modal',
       payload: {data: this.form.value}
     });
   }

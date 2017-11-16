@@ -17,11 +17,13 @@ declare var _: any;
 export class SubscriptionEditModalComponent implements OnInit {
   @Input() items: Array<any>;
   @ViewChild('modal') modal: ModalComponent;
-  subscription: any;
+
   mode: string = 'view';
   accountAction: string = 'add'; //'add' or 'delete'
   operatingItems: Array<any>;
-
+  subscription: any = {
+    accountAmount: 30
+  };
   constructor(private commonEventService: CommonEventService, private wthConfirmService: WthConfirmService) {
   }
 
@@ -39,7 +41,7 @@ export class SubscriptionEditModalComponent implements OnInit {
     this.accountAction = options.accountAction;
     this.items = options.accounts;
     this.operatingItems = options.data;
-    this.subscription = options.subscription;
+    // this.subscription = options.subscription;
     if (this.accountAction == 'delete') {
       // remove deleting items form
       _.remove(this.items, (item: any) => {
@@ -76,8 +78,9 @@ export class SubscriptionEditModalComponent implements OnInit {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:subscription:update',
-      payload: { accounts: this.operatingItems }
+      payload: { accounts: this.operatingItems, subscription: this.subscription }
     });
+    this.modal.close().then();
   }
 
   edit() {

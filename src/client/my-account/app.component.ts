@@ -11,13 +11,16 @@ import { Config } from '../core/shared/config/env.config';
 import {
   AccountListEditModalComponent,
   AccountEditModalComponent,
-  AccountDetailModalComponent
+  AccountDeleteModalComponent,
+  AccountRequestSendModalComponent,
+  AccountRequestAcceptModalComponent
 } from './shared/account/modal/index';
 import { SubscriptionEditModalComponent } from './shared/subscription/modal/subscription-edit-modal.component';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
 import { WthConfirmService } from '../core/shared/components/confirmation/wth-confirm.service';
 import { SubscriptionService } from './shared/subscription/subscription.service';
-import { Constants } from '../core/shared/config/constants';
+import { ToastsService } from '../core/shared/components/toast/toast-message.service';
+import { AccountService } from './shared/account/account.service';
 
 declare var $: any;
 
@@ -33,7 +36,9 @@ declare var $: any;
   entryComponents: [
     AccountListEditModalComponent,
     AccountEditModalComponent,
-    AccountDetailModalComponent,
+    AccountDeleteModalComponent,
+    AccountRequestSendModalComponent,
+    AccountRequestAcceptModalComponent,
     SubscriptionEditModalComponent
   ]
 })
@@ -48,7 +53,9 @@ export class AppComponent implements OnInit, OnDestroy, OnDestroy {
     private resolver: ComponentFactoryResolver,
     private commonEventService: CommonEventService,
     private wthConfirmService: WthConfirmService,
-    private subscriptionService: SubscriptionService
+    private accountService: AccountService,
+    private subscriptionService: SubscriptionService,
+    private toastsService: ToastsService
   ) {
     console.log('Environment config', Config);
     this.commonEventService.filter((event: any) => event.channel == 'my_account').subscribe((event: any) => {
@@ -79,38 +86,31 @@ export class AppComponent implements OnInit, OnDestroy, OnDestroy {
         this.loadModalComponent(AccountEditModalComponent);
         this.modal.open({...event.payload});
         break;
-      case 'my_account:account:open_account_detail_modal':
-        this.loadModalComponent(AccountDetailModalComponent);
-        this.modal.open();
-        break;
-      case 'my_account:account:open_account_delete_confirmation_modal':
-        this.wthConfirmService.confirm({
-          message: 'You are about Delete account.' +
-          'This action will change your current subscription' +
-          'Are you sure you want to delete this account?',
-          header: 'Delete account',
-          acceptLabel: 'Yes, Delete',
-          accept: () => {
-            this.loadModalComponent(SubscriptionEditModalComponent);
-            this.modal.open({...event.payload});
-          }
-        });
+      case 'my_account:account:open_delete_modal':
+        this.loadModalComponent(AccountDeleteModalComponent);
+        this.modal.open({...event.payload});
         break;
       case 'my_account:account:update':
-        // this.wthConfirmService.confirm({
-        //   message: 'You are about Update Subscription.' +
-        //   'This action will change your subscription and you will be charged $20/month' +
-        //   'Are you sure you want to update?',
-        //   header: 'Update subscription',
-        //   acceptLabel: 'Yes, Update',
-        //   accept: () => {
-        //    this.subscriptionService.update({subscription: {...event.payload}}).subscribe((response: any) => {
-        //      console.log(response.data);
-        //    });
-        //   }
-        // });
-        break;
+        this.accountService.update(event.payload.data).subscribe(
+          (response: any) => {
+            console.log('update_account:::', response.data);
+            this.toastsService.success('You have just update account successfully!')
+          });
 
+        break;
+      case 'my_account:account:send_request_ownership':
+        this.toastsService.success('You have just sent request ownership successfully!')
+        break;
+      case 'my_account:account:accept_request_ownership':
+        this.toastsService.success('You have just accept request ownership successfully!')
+        break;
+      case 'my_account:account:reject_request_ownership':
+        this.toastsService.success('You have just reject request ownership successfully!')
+        break;
+      case 'my_account:account:open_accept_request_ownership_modal':
+        this.loadModalComponent(AccountRequestAcceptModalComponent);
+        this.modal.open({...event.payload});
+        break;
       // Subscription
       case 'my_account:subscription:open_subscription_update_modal':
         this.loadModalComponent(SubscriptionEditModalComponent);
@@ -119,13 +119,14 @@ export class AppComponent implements OnInit, OnDestroy, OnDestroy {
       case 'my_account:subscription:update':
         this.wthConfirmService.confirm({
           message: 'You are about Update Subscription.' +
-          'This action will change your subscription and you will be charged $20/month' +
+          'This action will change your subscription and you will be charged $' +
+          // event.payload.subscription.accountAmount + '/month' +
           'Are you sure you want to update?',
           header: 'Update subscription',
           acceptLabel: 'Yes, Update',
           accept: () => {
             this.subscriptionService.update({id: 0, ...event.payload}).subscribe((response: any) => {
-              console.log(response.data);
+              this.toastsService.success('You have just changed your subscription successfully!')
             });
           }
         });
