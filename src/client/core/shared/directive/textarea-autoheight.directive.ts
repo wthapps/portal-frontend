@@ -28,8 +28,6 @@ export class TextAreaAutoHeightDirective implements AfterContentChecked {
     this.element.nativeElement.style.height = '34px';
     this.element.nativeElement.style.minHeight = '34px';
 
-    console.log(this.element.nativeElement.style.height);
-
     if (this.element.nativeElement.style.height == 'auto') {
       this.element.nativeElement.style.height = '34px';
     } else {
@@ -37,4 +35,3 @@ export class TextAreaAutoHeightDirective implements AfterContentChecked {
     }
   }
 }
-

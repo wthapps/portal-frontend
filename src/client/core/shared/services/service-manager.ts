@@ -8,18 +8,20 @@ import { StorageService } from './storage.service';
 import { ChatCommonService } from './chat.common.service';
 import { NotificationService } from './notification.service';
 import { CommonEventService } from './common-event/common-event.service';
+import { UrlService } from './url.service';
 
 @Injectable()
 export class ServiceManager {
 
-  constructor(private apiBaseService: ApiBaseService,
-              private fb: FormBuilder,
-              private route: ActivatedRoute,
-              private storageService: StorageService,
-              private router: Router,
-              private chatCommonService: ChatCommonService,
-              private commonEventService: CommonEventService,
-              private notificationService: NotificationService) {
+  constructor(public apiBaseService: ApiBaseService,
+              public fb: FormBuilder,
+              public route: ActivatedRoute,
+              public storageService: StorageService,
+              public router: Router,
+              public urlService: UrlService,
+              public chatCommonService: ChatCommonService,
+              public commonEventService: CommonEventService,
+              public notificationService: NotificationService) {
   }
 
   getApi() {
