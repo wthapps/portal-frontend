@@ -14,7 +14,7 @@ import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/toPromise';
 
-import { Editor } from 'primeng/components/editor/editor'
+import { Editor } from 'primeng/components/editor/editor';
 
 
 import * as fromRoot from '../../reducers/index';

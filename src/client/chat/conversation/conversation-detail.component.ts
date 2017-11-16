@@ -27,6 +27,7 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
   item: any;
   events: any;
+  loaded: boolean = false;
 
   commonEventSub: Subscription;
   tokens: any;
@@ -48,6 +49,7 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
           this.chatService.updateHistory(contact);
         }
       }
+      this.loaded = false;
     });
 
     this.commonEventSub = this.commonEventService.filter((event: CommonEvent) => event.channel == 'chatCommonEvent').subscribe((event: CommonEvent) => {

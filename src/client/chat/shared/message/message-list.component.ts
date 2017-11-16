@@ -1,4 +1,7 @@
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Input, Output,
+  EventEmitter
+} from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
 
@@ -14,6 +17,8 @@ declare var _: any;
 
 export class MessageListComponent implements OnInit {
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
+  @Input() loaded: boolean = false;
+  @Output() loadedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   item: any;
   contactItem: any;
@@ -31,6 +36,7 @@ export class MessageListComponent implements OnInit {
 
   onLoadMore() {
     this.chatService.loadMoreMessages();
+    this.loadedEvent.emit(true);
   }
 
   onAddContact(contact:any) {
