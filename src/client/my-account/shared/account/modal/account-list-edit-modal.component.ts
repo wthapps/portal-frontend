@@ -27,6 +27,7 @@ export class AccountListEditModalComponent implements OnInit {
   noOfCtrl: number = 4;
   userId: number = 0;
 
+  accounts: Array<any>;
   noOfMaster: number = 0;
   noOfSub: number = 0;
   // These are get value form subscription and plan
@@ -48,11 +49,10 @@ export class AccountListEditModalComponent implements OnInit {
   * @mode: add or edit or view. default is add
   * */
   open(options: any = {mode:'add', data: undefined}) {
-    if(options.mode == 'add') {
-      this.data = new Array<any>();
-    } else if(options.mode == 'edit') {
-      this.data = options.data;
-    }
+    this.noOfSub = 0;
+    this.noOfMaster = 0;
+    this.accounts = options.accounts;
+    this.data = options.data;
     this.initialize(this.data);
     this.modal.open(options).then();
   }
@@ -86,6 +86,7 @@ export class AccountListEditModalComponent implements OnInit {
     let creatorId = parentId == null ? 0 : null;
 
     if (item) {
+      this.countNoOfSubAndMaster(item);
       return this.fb.group({
         email: [item.email, Validators.compose([Validators.required, CustomValidator.emailFormat])],
         name: [item.name, Validators.compose([Validators.required])],
@@ -113,22 +114,37 @@ export class AccountListEditModalComponent implements OnInit {
   add(subAccount: boolean, item?: any) {
     let control = <FormArray>this.form.controls.items;
     if (item) {
-      control.push(this.create(subAccount, item));
+      let group = this.create(subAccount, item);
+      control.push(group);
+      this.changed(group.controls);
     } else {
       control.push(this.create(subAccount));
     }
   }
 
   continue() {
-    let data = this.form.value.items;
-    _.remove(data, (item: any) => {
+    this.data = this.form.value.items;
+    _.remove(this.data, (item: any) => {
       return item.email == '' || item.name == '';
+    });
+    // status to current object
+    _.forEach(this.data, (item: any, index: number) => {
+      this.data[index] = {...item, status: 'new'};
     });
     this.modal.close(null).then();
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:subscription:open_subscription_update_modal',
-      payload: {data: data, accountAction: 'add'}
+      payload: {mode: 'edit',
+        data: this.data,
+        accountAction: 'add',
+        accounts: this.accounts,
+        subscription: {
+          accountCount: this.noOfSub + this.noOfMaster,
+          accountAmount: this.noOfSub*4.99 + this.noOfMaster*9.99,
+          billingDate: moment().calendar()
+        }
+      }
     });
   }
 
@@ -139,6 +155,9 @@ export class AccountListEditModalComponent implements OnInit {
 
   remove(i: number, item: any) {
     let control = <FormArray>this.form.controls[this.type];
+
+    this.changed(item, true);
+
     control.removeAt(i);
     if (item && item.id && item.id.value) {
       _.forEach(this.data, (data: any) => {
@@ -161,10 +180,6 @@ export class AccountListEditModalComponent implements OnInit {
     return (<FormArray>this.form.get(this.type)).controls;
   }
 
-  validBirthday() {
-
-  }
-
   validItems(): boolean {
     let result = false;
     let items = this.form.value.items;
@@ -173,11 +188,41 @@ export class AccountListEditModalComponent implements OnInit {
     if(items.length == 1) {
       return this.form.valid;
     }
-    _.forEach(this.form.value.items, (item: any) => {
-      if(item.email != '' && item.name != '') {
+    _.forEach((<FormArray>this.form.get(this.type)).controls, (item: any) => {
+      if(item.controls.name.valid && item.controls.email.valid && item.controls.birthday.valid) {
         result = true;
+        // this.countNoOfSubAndMaster(item.value);
       }
     });
     return result;
   }
+
+  changed(item: any, countDown: boolean = false) {
+    if(item.name.valid && item.email.valid && item.birthday.valid) {
+      this.countNoOfSubAndMaster(item.parent_id.value, countDown);
+    }
+  }
+
+  private countNoOfSubAndMaster(parent_id: any, countDown: boolean = false) {
+
+    if(parent_id == null) {
+      if(countDown)
+        this.noOfMaster--;
+      else
+        this.noOfMaster++;
+    }
+    if(parent_id == 0) {
+      if(countDown)
+        this.noOfSub--;
+      else
+        this.noOfSub++;
+    }
+
+    if(this.noOfSub < 0)
+      this.noOfSub = 0;
+
+    if(this.noOfMaster < 0)
+      this.noOfMaster = 0;
+  }
+
 }

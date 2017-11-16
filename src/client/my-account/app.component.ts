@@ -99,7 +99,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           acceptLabel: 'Yes, Delete',
           accept: () => {
             this.loadModalComponent(SubscriptionEditModalComponent);
-            this.modal.open({data: event.payload.data, mode: 'edit', accountAction: 'delete'});
+            this.modal.open({...event.payload});
           }
         });
         break;

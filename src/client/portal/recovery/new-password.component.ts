@@ -80,6 +80,7 @@ export class NewPasswordComponent implements OnInit {
             if (result.data === null) {
               this.toastsService.danger(result.message);
             } else {
+              this.toastsService.success('You set new password successfully!');
               this.router.navigate(['/login']);
             }
           },

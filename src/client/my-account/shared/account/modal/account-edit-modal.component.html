@@ -5,9 +5,17 @@
          [animation]="false"
          [backdrop]="'static'" >
     <modal-header>
-      <button aria-label="Close" class="close" (click)="close()" type="button">
-        <span aria-hidden="true">×</span>
-      </button>
+      <div>
+        <button aria-label="Edit" class="btn btn-default" (click)="edit()">
+          <i class="fa fa-pencil"></i>
+        </button>
+        <button aria-label="Delete" class="btn btn-default" (click)="close()" >
+          <i class="fa fa-pencil"></i>
+        </button>
+        <button aria-label="Close" class="close" (click)="close()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
       <h4 class="modal-title">Edit Account</h4>
 
     </modal-header>
