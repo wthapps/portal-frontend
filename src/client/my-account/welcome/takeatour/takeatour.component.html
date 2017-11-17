@@ -1,10 +1,10 @@
 <section class="page-content bg-gray-light">
   <div class="container">
     <div class="page-takeatour">
-      <div class="box-content">
+      <div [ngClass]="{'hidden': step !=1 || isLoading }" class="box-content">
         <div class="clearfix">
           <div class="pull-right">
-            <a [routerLink]="['/profile']" class="text-faded" href="#">Skip all</a>
+            <a [routerLink]="['//settings/profile']" class="link-text text-fade" href="#">Skip all</a>
           </div>
           <h4>First, let’s set up your public profile.</h4>
         </div>
@@ -15,12 +15,110 @@
         </partials-basic-info>
 
         <div class="clearfix text-right">
-          <button (click)="test()" type="button" class="btn btn-primary">Save &amp; continue</button>
+          <button (click)="submitInfo()" type="button" class="btn btn-primary">Save &amp; continue</button>
         </div>
 
+        <div class="box-content-end clearfix">
+          <div class="pull-right">
+            <button (click)="skipTo(2)" type="button" class="btn btn-outline-default">
+              Skip this step <i class="fa fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div class="box-content">
+      <div [ngClass]="{'hidden': step !=2 || isLoading }" class="box-content">
+        <div class="clearfix">
+          <div class="pull-right">
+            <a [routerLink]="['//settings/profile']" class="link-text text-fade" href="#">Skip all</a>
+          </div>
+          <h4>Invite your friends to join in.</h4>
+        </div>
+        <p>Profile picture is always public. You can control the audiances of your other photos uploaded to WTH!Apps</p>
+
+        <form [formGroup]="formInvite" novalidate>
+          <div class="field-group">
+            <div class="field-group-content">
+              <div formArrayName="invites">
+                <div *ngFor="let add_invite of formInvite.controls.invites.controls; let i=index" class="media mt0">
+                  <div class="media-body" [formGroupName]="i">
+                    <div class="row row-10">
+                      <div class="col-sm-6">
+                        <label>Full name</label>
+                      </div>
+                      <div class="col-sm-6">
+                        <label>Email</label>
+                      </div>
+                    </div>
+                    <div class="row row-10">
+                      <div class="col-sm-6">
+                        <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!formInvite.controls.invites.controls[i].controls.full_name.valid
+                  && formInvite.controls.invites.controls[i].controls.full_name.touched),
+                  'has-success': (formInvite.controls.invites.controls[i].controls.full_name.valid
+                  && formInvite.controls.invites.controls[i].controls.full_name.touched
+                  && form.value.invites[i].full_name.length > 1)}">
+                          <input type="text" class="form-control" formControlName="full_name"
+                                 placeholder="Your friend fullname">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!formInvite.controls.invites.controls[i].controls.email.valid
+                  && formInvite.controls.invites.controls[i].controls.email.touched),
+                  'has-success': (formInvite.controls.invites.controls[i].controls.email.valid
+                  && formInvite.controls.invites.controls[i].controls.email.touched
+                  && form.value.invites[i].email.length > 1)}">
+                          <input type="text" class="form-control" formControlName="email" placeholder="Email address">
+                          <div
+                            *ngIf="!formInvite.controls.invites.controls[i].controls.email.valid && formInvite.controls.invites.controls[i].controls.email.touched">
+                      <span
+                        *ngIf="!formInvite.controls.invites.controls[i].controls.email.valid && formInvite.controls.invites.controls[i].controls.email.errors.emailFormat"
+                        class="help-block text-danger">
+                        Email is not valid
+                      </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="media-right">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn btn-outline-default" (click)="removeItem('invites', i)">
+                      <i class="fa fa-trash-o"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline-default" (click)="addItem('invites', null)">
+                <i class="fa fa-plus"></i> Add more
+              </button>
+            </div>
+          </div>
+
+          <div class="clearfix text-right">
+            <button (click)="saveFinish(formInvite.value)"
+                    type="submit" class="btn btn-primary">Save &amp; finish
+            </button>
+          </div>
+        </form>
+
+        <div class="box-content-end clearfix">
+          <div class="pull-left">
+            <button (click)="skipTo(1)" type="button" class="btn btn-outline-default">
+              <i class="fa fa-chevron-left"></i> Previous
+            </button>
+          </div>
+          <div class="pull-right">
+            <button (click)="skipTo(2)" type="button" class="btn btn-outline-default">
+              Skip this step <i class="fa fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngIf="isLoading" class="box-content">
         <h4>{{ loadingTitle }}</h4>
         <p>{{ loadingContent }}</p>
         <div class="pt50 text-center text-faded">

@@ -53,6 +53,9 @@ export class PartialsBasicInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.fb.group({
+      'company': [''],
+      'job_title': [''],
+
       'phones': this.fb.array([
         this.initItem('phones'),
       ]),
@@ -63,6 +66,9 @@ export class PartialsBasicInfoComponent implements OnInit, OnDestroy {
         this.initItem('addresses'),
       ])
     });
+
+    this.company = this.form.controls['company'];
+    this.job_title = this.form.controls['job_title'];
   }
 
   ngOnDestroy() {

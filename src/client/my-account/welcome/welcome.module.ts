@@ -4,6 +4,7 @@ import { WelcomeRoutingModule } from './welcome-routing.module';
 import { WelcomeComponent } from './welcome.component';
 import { TakeATourComponent } from './takeatour/takeatour.component';
 import { MySharedModule } from '../shared/shared.module';
+import { WelcomeDoneComponent } from './done/done.component';
 
 @NgModule({
   imports: [
@@ -12,11 +13,8 @@ import { MySharedModule } from '../shared/shared.module';
   ],
   declarations: [
     WelcomeComponent,
-    TakeATourComponent
-  ],
-  exports: [
-    WelcomeComponent,
-    TakeATourComponent
+    TakeATourComponent,
+    WelcomeDoneComponent
   ]
 })
 
