@@ -24,7 +24,7 @@ export class AccountListEditModalComponent implements OnInit {
   form: FormGroup;
   deleteObjects: any = [];
   type: string = 'items';
-  noOfCtrl: number = 4;
+  noOfCtrl: number = 2;
   userId: number = 0;
 
   accounts: Array<any>;
@@ -142,7 +142,7 @@ export class AccountListEditModalComponent implements OnInit {
         subscription: {
           accountCount: this.noOfSub + this.noOfMaster,
           accountAmount: this.noOfSub*4.99 + this.noOfMaster*9.99,
-          billingDate: moment().calendar()
+          billingDate: moment()
         }
       }
     });

@@ -17,6 +17,7 @@ export class ZNoteSharedHeaderComponent {
   constants: any;
   suggestions: any;
   show: boolean = false;
+  showAdvanced: boolean = false;
   search: string;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
@@ -35,23 +36,13 @@ export class ZNoteSharedHeaderComponent {
     }
     this.show = true;
     this.search = e.search;
-    this.serviceManager.getApi().get('zone/chat/search', {q: e.search}).subscribe((res: any) => {
+    this.serviceManager.getApi().get('note/search', {q: e.search}).subscribe((res: any) => {
       this.suggestions = res.data;
     });
   }
 
   setText(data: any) {
     this.show = false;
-    if (data.group_json.group_type == 'couple') {
-      this.textbox.search = data.display.name;
-    }
-    if (data.group_json.group_type == 'multiple') {
-      if (data.group_json.name) {
-        this.textbox.search = data.group_json.name;
-      } else {
-        this.textbox.search = data.group_json.users_name;
-      }
-    }
     this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: this.textbox.search}});
   }
 }

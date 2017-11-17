@@ -10,12 +10,13 @@ import { SubscriptionEditModalComponent } from './subscription/modal/subscriptio
 import {
   AccountListEditModalComponent,
   AccountEditModalComponent,
-  AccountDetailModalComponent
+  AccountDeleteModalComponent,
+  AccountRequestSendModalComponent,
+  AccountRequestAcceptModalComponent
 } from './account/modal/index';
 import { AccountService } from './account/account.service';
 import { SubscriptionService } from './subscription/subscription.service';
 
-import { TooltipModule } from 'primeng/primeng';
 import { CoreSharedModule } from '../../core/shared/shared.module';
 
 
@@ -32,7 +33,6 @@ import { CoreSharedModule } from '../../core/shared/shared.module';
     RouterModule,
 
     Ng2Bs3ModalModule,
-    // TooltipModule,
     CoreSharedModule.forRoot()
   ],
   declarations: [
@@ -40,7 +40,9 @@ import { CoreSharedModule } from '../../core/shared/shared.module';
 
     // modals
     AccountEditModalComponent,
-    AccountDetailModalComponent,
+    AccountDeleteModalComponent,
+    AccountRequestSendModalComponent,
+    AccountRequestAcceptModalComponent,
     AccountListEditModalComponent,
     SubscriptionEditModalComponent
   ],
@@ -49,7 +51,9 @@ import { CoreSharedModule } from '../../core/shared/shared.module';
 
     // modals
     AccountEditModalComponent,
-    AccountDetailModalComponent,
+    AccountDeleteModalComponent,
+    AccountRequestSendModalComponent,
+    AccountRequestAcceptModalComponent,
     AccountListEditModalComponent,
     SubscriptionEditModalComponent,
     CoreSharedModule

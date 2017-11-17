@@ -2,7 +2,7 @@
 
   <modal #modal
          id="modal-subscription-edit"
-         [cssClass]="'modal-lg modal-subscription-edit'"
+         [cssClass]="'modal-subscription-edit'"
          [keyboard]="false"
          [animation]="false"
          [backdrop]="'static'" >
@@ -19,33 +19,39 @@
         <div class="panel-body pt0 mt0 mb0">
           <h4>Pro plan</h4>
           <div class="row">
-            <div class="col-xs-3 text-right">
-              <div>Number of accounts:</div>
-            </div>
-            <div class="col-xs-9">
-              <div>{{ subscription.accountCount }}</div>
-            </div>
 
-            <div class="col-xs-3 text-right" >
-              <div>Cost:</div>
-            </div>
-            <div class="col-xs-9">
-              <div>${{ subscription.accountAmount}}</div>
-            </div>
+            <!--<div class="col-xs-3 text-right" >-->
+              <!--<div>Cost:</div>-->
+            <!--</div>-->
+            <!--<div class="col-xs-9">-->
+              <!--<div>${{ subscription.accountAmount}}</div>-->
+            <!--</div>-->
+            <!--<div class="col-xs-3 text-right">-->
+              <!--<div>Number of accounts:</div>-->
+            <!--</div>-->
+            <!--<div class="col-xs-9">-->
+              <!--<div>{{ subscription.accountCount }}</div>-->
+            <!--</div>-->
+            <!--<div class="col-xs-3 text-right">-->
+              <!--<div>Total billing amount:</div>-->
+            <!--</div>-->
+            <!--<div class="col-xs-9">-->
+              <!--<div>${{ subscription.accountAmount + 9.99 }}</div>-->
+            <!--</div>-->
 
-            <div class="col-xs-3 text-right">
-              <div>Total billing amount:</div>
-            </div>
-            <div class="col-xs-9">
-              <div>${{ subscription.accountAmount + 9.99 }}</div>
-            </div>
+            <!--<div class="col-xs-3 text-right">-->
+              <!--<div>Created date:</div>-->
+            <!--</div>-->
+            <!--<div class="col-xs-9">-->
+              <!--<div>{{ subscription.billingDate | date: 'yMMMd' }}</div>-->
+            <!--</div>-->
 
-            <div class="col-xs-3 text-right">
-              <div>Next billing date:</div>
-            </div>
-            <div class="col-xs-9">
-              <div>{{ subscription.billingDate }}</div>
-            </div>
+            <!--<div class="col-xs-3 text-right">-->
+              <!--<div>Billing circle:</div>-->
+            <!--</div>-->
+            <!--<div class="col-xs-9">-->
+              <!--<div> 1 month </div>-->
+            <!--</div>-->
 
           </div>
         </div>
