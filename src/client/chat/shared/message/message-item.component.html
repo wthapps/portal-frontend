@@ -40,6 +40,7 @@
                 Download
               </a>
             </li>
+            <li *ngIf="message.byMe"><a href="javascript:;" (click)="delete()">Remove</a></li>
           </ul>
 
           <!--sending message menu-->
@@ -58,6 +59,8 @@
                 Download
               </a>
             </li>
+            <li *ngIf="message.byMe"><a href="javascript:;" (click)="delete()">Remove</a></li>
+
           </ul>
 
         </div>
