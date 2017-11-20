@@ -291,6 +291,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   print() {
+    $('.ql-editor').attr('id', 'noteview');
     printJS({ printable: 'noteview', type: 'html', header: this.note.title});
   }
 
