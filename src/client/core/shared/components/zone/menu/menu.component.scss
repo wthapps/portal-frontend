@@ -130,6 +130,32 @@
       background-color: #e5e5e5;
     }
   }
+  &.has-action {
+    .menuleft-nav-sub-item {
+      @include flexbox();
+      @include align-items(flex-start);
+      > a {
+        @include flex(1);
+      }
+      .menuleft-nav-sub-action {
+        display: none;
+        span {
+          display: inline-block;
+          float: left;
+          margin: 0;
+          padding: 8px;
+          &:hover {
+            color: $color-inverse;
+          }
+        }
+      }
+      &:hover {
+        .menuleft-nav-sub-action {
+          display: block;
+        }
+      }
+    }
+  }
 }
 
 .menuleft-nav-sub-item {
@@ -143,12 +169,12 @@
       background-color: #e5e5e5;
     }
   }
+  &:hover {
+    background-color: #e5e5e5;
+  }
   &.active {
     a {
       color: $theme-color;
-      &:hover {
-        background-color: #e5e5e5;
-      }
     }
   }
 
