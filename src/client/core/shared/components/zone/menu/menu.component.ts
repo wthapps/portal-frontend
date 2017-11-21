@@ -23,13 +23,9 @@ declare var _: any;
   styleUrls: ['menu.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-
 export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() contactMenu: Array<any>;
   @Input() totalContactCount: number = 0;
-
-  noteFoldersTree: any[] = [];
-  noteFolders: Array<any>;
 
   /**public event for somewhere are able to subscribe*/
   event: Observable<any>;
@@ -43,7 +39,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   hostname: string = '';
   isProfileTab: boolean;
   currentLabel: string;
-
   commonEventSub: any;
   private destroySubject: Subject<any> = new Subject<any>();
 
