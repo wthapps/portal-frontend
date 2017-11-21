@@ -1,0 +1,39 @@
+<form novalidate>
+  <modal #modal
+         [cssClass]="'modal-account-edit'"
+         [keyboard]="false"
+         [animation]="false"
+         [backdrop]="'static'" >
+    <modal-header>
+        <button aria-label="Close" class="close" (click)="close()">
+          <span aria-hidden="true">×</span>
+        </button>
+      <h4 class="modal-title">Remove Account</h4>
+    </modal-header>
+    <modal-body>
+      <div class="padding10">
+        <div>
+          You are about to remove account list your list
+        </div>
+        <div>
+          This action can not be undo
+        </div>
+        <div>
+          *Your subscription will be updated at the end of your term.
+        </div>
+        <div>
+          *Removed user will be able to continue using the account until the end of them.
+        </div>
+      </div>
+
+    </modal-body>
+
+    <modal-footer>
+    <div>
+        <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
+        <button class="btn btn-outline-primary btn-min pull-right" (click)="delete()">Remove</button>
+      </div>
+    </modal-footer>
+  </modal>
+
+</form>

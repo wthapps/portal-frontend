@@ -58,25 +58,5 @@ export class NotificationChannelService extends CableService {
       });
     }).call(this, self);
   }
-
-  testing() {
-
-
-
-    // App.notifications = App.cable.subscriptions.create('NotificationsChannel', {
-    //
-    //   connected: function() {},
-    //   disconnected: function() {},
-    //   received: function(response: any) {
-    //     console.log('response', response);
-    //   },
-    //   sendMessage: function(chatroom_id: any, message: any) {
-    //     return this.perform('send_message', {
-    //       chatroom_id: chatroom_id,
-    //       body: message
-    //     });
-    //   }
-    // });
-  }
 }
 

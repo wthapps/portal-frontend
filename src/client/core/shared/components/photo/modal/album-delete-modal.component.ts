@@ -20,9 +20,6 @@ export class AlbumDeleteModalComponent implements AfterViewInit {
 
   checked: boolean = false;
 
-  constructor() {
-  }
-
   ngAfterViewInit() {
     $(document).on('hidden.bs.modal', '.modal', ()=> {
       if ($('.modal:visible').length) {

@@ -3,70 +3,90 @@
     <so-information>
       <div class="z-social-media-body">
         <div class="z-heading">
-          <div class="z-name">{{userInfo.name}}</div>
+          <div class="z-name">{{ userInfo.name }}</div>
         </div>
         <div class="z-shared-info">
           <ul>
-            <li>{{userInfo.nickname}}</li>
+            <li>{{ userInfo.nickname }}</li>
           </ul>
         </div>
         <div class="z-shared-description"></div>
       </div>
 
       <div class="hd-item-action-right-bottom" *ngIf="relationships">
-        <button class="btn btn-default" type="button"
-                (click)="onAddfriend()" *ngIf="relationships.status == 0">
-          <i class="fa fa-user-plus"></i> Add Friend
-        </button>
+        <div class="btn-group" role="group">
+          <ng-container *ngIf="relationships.status == FRIEND_STATUS.STRANGER">
+            <button class="btn btn-outline-default" type="button" (click)="onAddfriend()">
+              <i class="fa fa-user-plus"></i> Add Friend
+            </button>
+          </ng-container>
 
-        <div class="btn-group" *ngIf="relationships.status == 2">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-check"></i> Friend <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li>
-              <a href="javascript:;" (click)="toggleFavourite(userInfo, 'friend')">
-                <i class="fa fa-check" *ngIf="favourite?.uuid"></i> {{(!favourite?.uuid) ? 'Add to Favorites' : 'Remove from Favorites'}}
-              </a>
-            </li>
-            <li><a href="javascript:;" (click)="importToContacts(userInfo)">Import to Contacts</a></li>
-            <li class="divider"></li>
-            <li>
-              <a href="javascript:;" (click)="onUnfriend()">
-                <i class="fa fa-times"></i> Unfriend
-              </a>
-            </li>
-          </ul>
+          <ng-container *ngIf="relationships.status == FRIEND_STATUS.FRIEND">
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false" (click)="checkFavorite()">
+                Friend <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="javascript:;" (click)="onUnfriend()">
+                    <i class="fa fa-times"></i> Unfriend
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="relationships.status == FRIEND_STATUS.REQUEST_SENT">
+            <div class="btn-group">
+              <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                Friend Requested <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a href="javascript:;" (click)="onCancelRequest()">Cancel Request</a>
+                </li>
+              </ul>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="userInfo.uuid !== userService.profile.uuid">
+
+            <button type="button" class="btn btn-outline-default" *ngIf="!relationships?.follow"
+                    (click)="follow(userInfo.uuid)">
+              <i class="fa fa-share"></i> Follow
+            </button>
+
+            <ng-container *ngIf="relationships?.follow">
+              <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-check"></i> Following <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a href="javascript:;" (click)="unfollow(userInfo.uuid)">Unfollow</a>
+                </li>
+              </ul>
+            </ng-container>
+
+
+          </ng-container>
+
         </div>
-
-        <div class="btn-group" *ngIf="relationships.status == 1">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false">
-            Friend Requested <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li>
-              <a href="javascript:;" (click)="onCancelRequest()">Cancel Request</a>
-            </li>
-          </ul>
-        </div>
-
-
         <!--menu-->
         <div class="btn-group" *ngIf="userInfo.uuid !== userService.profile.uuid">
-          <button type="button" class="btn btn-default" *ngIf="!relationships?.follow" (click)="follow(userInfo.uuid)" >
-            Follow
-          </button>
-          <button type="button" class="btn btn-default" *ngIf="relationships?.follow">
-            <i class="fa fa-check"></i> Following
-          </button>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false">
+          <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
             <i class="fa fa-ellipsis-v"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="javascript:;" (click)="unfollow(userInfo.uuid)" *ngIf="relationships?.follow">Unfollow</a></li>
+            <!--<li><a href="javascript:;" (click)="unfollow(userInfo.uuid)" *ngIf="relationships?.follow">Unfollow</a></li>-->
+            <li *ngIf="relationships.status === FRIEND_STATUS.FRIEND" ><a href="javascript:;" (click)="toggleFavourite(userInfo, 'friend')">
+              <i class="fa fa-check" *ngIf="favourite?.uuid"></i>
+              {{ (!favourite?.uuid) ? 'Add to Favorites' : 'Remove from Favorites' }}
+            </a></li>
             <li><a href="javascript:;" (click)="onReport()">Report member</a></li>
           </ul>
         </div>

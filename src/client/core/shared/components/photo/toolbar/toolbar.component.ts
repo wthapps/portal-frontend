@@ -71,14 +71,12 @@ export class ZMediaToolbarComponent {
         if (this.type == 'photo') {
           this.zoneTagging.selectedItems = this.selectedPhotos;
           this.zoneTagging.items = this.photos;
-          this.zoneTagging.mediaType = this.type;
-          this.zoneTagging.open();
         } else {
           this.zoneTagging.selectedItems = this.selectedAlbums;
           this.zoneTagging.items = this.albums;
-          this.zoneTagging.mediaType = this.type;
-          this.zoneTagging.open();
         }
+        this.zoneTagging.mediaType = this.type;
+        this.zoneTagging.open();
         break;
       default:
         this.outEvent.emit(action);

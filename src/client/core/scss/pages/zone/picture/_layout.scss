@@ -1,7 +1,5 @@
 @import "../../../global";
 
-$photo-detail-info-width: 380px;
-
 .photo-box-detail {
   position: fixed;
   top: 0;
@@ -12,7 +10,7 @@ $photo-detail-info-width: 380px;
   z-index: -1;
   visibility: hidden;
   .photo-detail-top {
-    padding: 15px;
+    padding: 15px 25px 15px 15px;
     color: #ffffff;
     line-height: 34px;
     position: relative;
@@ -110,6 +108,10 @@ $photo-detail-info-width: 380px;
     bottom: 5%;
     z-index: 100;
     font-size: 0;
+    opacity: 0.5;
+    a {
+      display: inline-block;
+    }
     i {
       width: 60px;
       height: 60px;
@@ -157,30 +159,7 @@ $photo-detail-info-width: 380px;
           max-height: 100%;
         }
       }
-      .photo-detail-img-control {
-        @include center(false, true);
-        width: 60px;
-        height: 60px;
-        padding: 5px 0;
-        text-align: center;
-        background-color: rgba(#A4A4A4, 0.4);
-        cursor: pointer;
-        @include transition($transition-base);
-        &:hover {
-          background-color: rgba(#A4A4A4, 1);
-        }
-        i {
-          font-size: 50px;
-          line-height: 0.95;
-          color: #ffffff;
-        }
-        &.img-control-prev {
-          left: 15px;
-        }
-        &.img-control-next {
-          right: 15px;
-        }
-      }
+
     }
   }
 

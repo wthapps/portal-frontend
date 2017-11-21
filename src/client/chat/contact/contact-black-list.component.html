@@ -1,5 +1,5 @@
 <div class="page-body-control has-page-body-sidebar">
-  <z-chat-contact-navigation [tab]="'blacklist'"></z-chat-contact-navigation>
+  <z-chat-contact-navigation [tab]="'blacklist'" [count]="count"></z-chat-contact-navigation>
 </div>
 
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="blacklist">
@@ -11,7 +11,7 @@
           <div class="media-body">
             <!--<z-chat-share-user [data]="contact" [size]="'sm'"></z-chat-share-user>-->
             <z-chat-share-user-icon
-              [image]="user.profile_image"
+              [image]="user?.profile_image"
               [name]="user.name"
               [size]="'sm'"
               [groupType]="'couple'"
@@ -43,6 +43,3 @@
     No data
   </div>
 </div>
-
-
-

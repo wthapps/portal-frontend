@@ -1,5 +1,13 @@
 <div class="wrapper">
-  <wth-header></wth-header>
+  <wth-header-navbar class="header">
+    <div class="header-nav-left">
+      <a [routerLink]="['/']" class="navbar-brand" href="#">
+        <img src="/assets/images_new/logo.png" alt="WTHApps">
+      </a>
+
+      <media-shared-header></media-shared-header>
+    </div>
+  </wth-header-navbar>
   <main class="main">
     <div class="main-page-left">
       <aside class="main-page-left-in aside-menu">
@@ -8,59 +16,24 @@
     </div>
     <div class="main-page-body">
       <router-outlet></router-outlet>
+      <router-outlet name="modal"></router-outlet>
+      <router-outlet name="detail"></router-outlet>
     </div>
   </main>
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
-  <p-confirmDialog header="Confirmation" width="670" #cd>
-    <p-footer>
-      <button class="btn btn-default-inline" type="button" (click)="cd.reject()">Cancel</button>
-      <button class="btn btn-primary-inline" type="button" (click)="cd.accept()">Ok</button>
-    </p-footer>
-  </p-confirmDialog>
+  <!--<p-confirmDialog header="Confirmation" width="670" #cd>-->
+    <!--<p-footer>-->
+      <!--<button class="btn btn-outline-default btn-min" type="button" pButton icon=""-->
+              <!--label="{{ confirmDialog?.label?.reject ? confirmDialog?.label?.reject : 'Cancel' }}"-->
+              <!--(click)="cd.reject()"></button>-->
+      <!--<button class="btn btn-outline-primary btn-min" type="button" pButton icon=""-->
+              <!--label="{{ confirmDialog?.label?.accept ? confirmDialog?.label?.accept : 'Done' }}"-->
+              <!--(click)="cd.accept()"></button>-->
+    <!--</p-footer>-->
+  <!--</p-confirmDialog>-->
+  <wth-confirm></wth-confirm>
   <me-uploader #uploader (outEvent)="onAction($event)"></me-uploader>
-
-
-  <!--<wth-modal-dock #modalDock>
-    <wth-modal-dock-header [loading]="true">
-      Uploading
-    </wth-modal-dock-header>
-    <wth-modal-dock-body>
-      <div class="media">
-        <div class="media-left">
-          <div class="img-box" style="width: 100px;">
-            <img draggable="false" class="img-box-item" src="../assets/images/banner.jpg" alt="">
-          </div>
-        </div>
-        <div class="media-body">
-          <div>Uploading to Photo</div>
-          <p class="h3 m0 text-normal">3 of 8</p>
-        </div>
-      </div>
-      <div class="row row-10">
-        <div class="col-xs-12">
-          <div class="img-box">
-            <img draggable="false" class="img-box-item" src="../assets/images/banner.jpg" alt="">
-          </div>
-        </div>
-      </div>
-
-      <div class="row row-10">
-        <div class="col-xs-6">
-          <div class="img-box">
-            <img draggable="false" class="img-box-item" src="../assets/images/banner.jpg" alt="">
-          </div>
-        </div>
-        <div class="col-xs-6">
-          <div class="img-box">
-            <img draggable="false" class="img-box-item" src="../assets/images/banner.jpg" alt="">
-          </div>
-        </div>
-      </div>
-    </wth-modal-dock-body>
-    <wth-modal-dock-footer [inline]="false">
-      <button class="btn btn-text-link" type="button">STOP</button>
-    </wth-modal-dock-footer>
-  </wth-modal-dock>-->
-
 </div>
+<h-file-select></h-file-select>
+<h-file-select-crop></h-file-select-crop>

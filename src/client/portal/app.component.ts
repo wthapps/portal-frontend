@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-
 import { Subscription } from 'rxjs/Subscription';
 import './operators';
 import 'rxjs/add/operator/filter';
 
 import { Config } from '../core/shared/config/env.config';
+
+declare let $: any;
 
 /**
  * This class represents the main application component.
@@ -14,6 +15,8 @@ import { Config } from '../core/shared/config/env.config';
   moduleId: module.id,
   selector: 'sd-app',
   templateUrl: 'app.component.html',
+  styleUrls: ['app.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
@@ -27,6 +30,9 @@ export class AppComponent implements OnInit, OnDestroy {
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
+
+        // auto close menu on mobile
+        $('#wth-navbar-collapse-1').collapse('hide');
       });
   }
 

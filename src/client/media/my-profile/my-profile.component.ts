@@ -1,6 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, ViewChild, OnInit } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+
+import { UserService } from '../../core/shared/services/user.service';
+import { ApiBaseService } from '../../core/shared/services/apibase.service';
 
 @Component({
   moduleId: module.id,
@@ -10,12 +14,19 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 })
 export class ZMediaMyProfileComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
+  soUserProfile$: Observable<any>;
+  // data: any;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private userService: UserService,
+              private apiBaseService: ApiBaseService) {
+    this.soUserProfile$ = this.userService.soProfile$;
   }
 
   ngOnInit() {
-
+    this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`).toPromise().then((res: any) => {
+      // this.data = res.data;
+      this.userService.soUserProfile = res.data;
+    });
   }
 
   onOpen(user: any) {
@@ -23,6 +34,15 @@ export class ZMediaMyProfileComponent implements OnInit {
   }
 
   onClose() {
+    setTimeout(()=> {
+      console.log('adaafafaf');
+    }, 500);
+  }
 
+  doEvent(e: any) {
+    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, e).subscribe((res: any) => {
+      // this.data = res.data;
+      this.userService.soUserProfile = res.data;
+    });
   }
 }

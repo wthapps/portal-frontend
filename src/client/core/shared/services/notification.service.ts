@@ -1,9 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
+
 import { ApiBaseService } from '../services/apibase.service';
 import { Constants } from '../config/constants';
 import { NotificationChannelService } from '../channels/notification-channel.service';
 import { UserService } from './user.service';
-import { Observable } from 'rxjs';
 import { WTHNavigateService } from './wth-navigate.service';
 
 /**
@@ -23,6 +26,8 @@ export class NotificationService {
   nextLink: string;
   loadingDone: boolean = false;
   hasObjects: boolean;
+  outEvent: EventEmitter<any> = new EventEmitter();
+  inEvent: EventEmitter<any> = new EventEmitter();
 
   turnOffNotification(notification: any) {
     // TODO
@@ -40,7 +45,6 @@ export class NotificationService {
     ;
   }
 
-  // TODO: Navigate to page of another module. Ex: From social to to media module
   doAction(action: any, notif_id: string) {
     let link: string = action.link;
     let method = action.method;
@@ -64,10 +68,14 @@ export class NotificationService {
         break;
       case 'post':
         this.api.post(link, body)
-          .subscribe((result: any) => {
-              // Reload data
-              _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
-              console.log('result: ', result);
+          .toPromise().then((result: any) => {
+              this.notifications = _.map(this.notifications, (notif: any) => {
+                if(notif.id === this.currentNotifId)
+                  return Object.assign(notif, {actions: _.get(result, 'data.actions', []), response_actions: _.get(result, 'data.response_actions', [])});
+                else
+                  return notif;
+              });
+              console.debug('post - ', this.notifications);
             },
             (error: any) => {
               console.log('error', error);
@@ -76,7 +84,7 @@ export class NotificationService {
 
       case 'delete':
         this.api.delete(action.link)
-          .subscribe((result: any) => {
+          .toPromise().then((result: any) => {
             console.log('Notification service deleted');
             _.remove(this.notifications, {id: this.currentNotifId}); // Remove current notification
           },
@@ -90,9 +98,19 @@ export class NotificationService {
   }
 
 
-  markAsSeen() {
+  navigateTo(actions: any[], notif_id: string): void {
+    if(_.get(actions[0], 'name') == 'view') {
+      this.doAction(actions[0], notif_id);
+    };
+  }
 
-    console.log('markAsSeen', this.notifications.length);
+  navigateToSocial(urls: string[]) {
+    let link: string = urls.join('/');
+    this.navigateService.navigateOrRedirect(link, 'social');
+  }
+
+
+  markAsSeen() {
     // this.notificationService.markAsSeen(this.notifications)
     let notif_ids = _.map(this.notifications, (i: any) => i.id);
     let body = {'ids' : notif_ids};
@@ -103,8 +121,6 @@ export class NotificationService {
         (result: any) => {
           this.countNewNotifications();
           _.each(this.notifications, (i: any) => i.seen_state = Constants.seenStatus.seen);
-
-
         },
         (error: any) => {
           console.log('error', error);
@@ -113,20 +129,18 @@ export class NotificationService {
 
   addNewNofification(notification: any) {
     // Detect if this notification is new or an Undo notification
-    if (parseInt(_.get(JSON.parse(notification), 'id')) > this.latestNotifId) {
-      this.notifications.unshift(JSON.parse(notification));
+    if (parseInt(_.get(JSON.parse(notification.data), 'id')) > this.latestNotifId) {
+      this.notifications.unshift(JSON.parse(notification.data));
       this.newNotifCount++;
     }
   }
-
-
 
   toggleReadStatus(notification: any) {
     this.currentNotifId = notification.id;
     let body = {'ids' : this.currentNotifId};
     return this.api.post(`${Constants.urls.zoneSoNotifications}/toggle_read_status`, body)
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
-      .subscribe(
+      .toPromise().then(
         (result: any) => {
           _.each(this.notifications, (n: any) => { if(n.id == this.currentNotifId) n.is_read = !n.is_read;});
         },
@@ -141,24 +155,10 @@ export class NotificationService {
       this.toggleReadStatus(notification);
   }
 
-  // toggleAllReadStatus() {
-  //   this.api.post(`${Constants.urls.zoneSoNotifications}/toggle_all_read_status`, [])
-  //     .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
-  //     .subscribe(
-  //       (result: any) => {
-  //         let overallReadStatus = result.data;
-  //         _.each(this.notifications, (n: any) => {n.is_read = overallReadStatus ;});
-  //
-  //       },
-  //       (error: any) => {
-  //         console.log('error', error);
-  //       });
-  // }
-
   markAllAsRead() {
     this.api.post(`${Constants.urls.zoneSoNotifications}/mark_all_as_read`, [])
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
-      .subscribe(
+      .toPromise().then(
         (result: any) => {
           _.each(this.notifications, (n: any) => {n.is_read = true ;});
 
@@ -173,8 +173,7 @@ export class NotificationService {
       return; // Only load once at first time
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest`, {sort_name: 'created_at'})
       .filter((x: any) => this.userService.loggedIn) // Do not call this API if user is not logged in
-      .take(1)
-      .subscribe(
+      .toPromise().then(
         (result: any) => {
           _.remove(this.notifications); // Make sure this.notifications has no value before assigning
           this.notifications = result.data;
@@ -198,16 +197,19 @@ export class NotificationService {
         });
   }
 
+  isLoadingDone() {
+    return this.loadingDone ;
+  }
+
   getMoreNotifications() {
     // if(this.loadingDone) {
-    if(_.isEmpty(this.nextLink)) {
+    if(this.isLoadingDone() || this.nextLink === undefined) {
       console.debug('All notifications are loaded !');
       return;
     }
     this.api.get(this.nextLink)
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
-      .take(1)
-      .subscribe(
+      .toPromise().then(
         (result: any) => {
           this.notifications.push(...result.data);
           this.newNotifCount -= result.data.length;
@@ -228,8 +230,7 @@ export class NotificationService {
     // Only loading 1 time when refreshing pages or navigating from login pages
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_new_notifications/count`)
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
-      .take(1)
-      .subscribe(
+      .toPromise().then(
         (result: any) => {
           this.newNotifCount = result.data;
 
@@ -241,17 +242,10 @@ export class NotificationService {
         });
   }
 
-  getNewNotificationsCountObs(): Observable<any> {
-    // Only loading 1 time when refreshing pages or navigating from login pages
-    return this.api.get(`${Constants.urls.zoneSoNotifications}/get_new_notifications/count`)
-      .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
-      .take(1);
-  }
-
   hideNotification(notification: any) {
     this.currentNotifId = notification.id;
     this.api.delete(`${Constants.urls.zoneSoNotifications}/${this.currentNotifId}`)
-      .subscribe((result: any) => {
+      .toPromise().then((result: any) => {
           let idx = _.findIndex(this.notifications, ['id', notification.id]);
           console.log(`hideNotification: ${idx} `, notification);
           if (idx > -1)
@@ -291,7 +285,7 @@ export class NotificationService {
 
   startChannel(callback?: any) {
     // Work-around to fix loading performance issue by delaying following actions in 2s. Should be updated later
-    let timeoutId = setTimeout(() => {
+    setTimeout(() => {
       this.getNewNotificationsCount();
 
       this.notificationChannel.createSubscription();
@@ -305,7 +299,7 @@ export class NotificationService {
               this.addNewNofification(notification);
 
               if(callback) {
-                let to2 = setTimeout(callback(), 1000); // Delay 1s before subscribing to appearance channel
+                setTimeout(callback(), 1000); // Delay 1s before subscribing to appearance channel
 
               }
 

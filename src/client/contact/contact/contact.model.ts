@@ -6,6 +6,7 @@ import { Email } from './email.model';
 import { Phone } from './phone.model';
 
 export class Contact extends BaseEntity {
+  profile_image: string = '';
   name: string = '';
   company: string = '';
   job_title: string = '';
@@ -20,6 +21,7 @@ export class Contact extends BaseEntity {
   custom_fields: Array<CustomField>;
   user?: any;
   wthapps_user?: any;
+  labels: any;
 
   // constructor(options: any) {
   //   super(options);

@@ -1,20 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { Product } from '../../../core/shared/models/product.model';
-import { MenuItemBreadcrumb } from '../../../core/partials/breadcrumb/breadcrumb';
-
+import { MenuItemBreadcrumb } from '../../../core/shared/components/breadcrumb/breadcrumb';
 import { UserService } from '../../../core/shared/services/user.service';
-
-import { ACMyAppsService } from '../my-apps.service';
+import { MyMyAppsService } from '../my-apps.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-my-apps-detail',
+  selector: 'my-my-apps-detail',
   templateUrl: 'detail.component.html'
 })
 
-export class ACMyAppsDetailComponent implements OnInit, OnDestroy {
+export class MyMyAppsDetailComponent implements OnInit, OnDestroy {
   pageTitle: string = '';
   errorMessage: string;
 
@@ -29,9 +27,8 @@ export class ACMyAppsDetailComponent implements OnInit, OnDestroy {
   private sub: any;
 
   constructor(private route: ActivatedRoute,
-              private myAppsService: ACMyAppsService,
-              private userService: UserService,
-              private router: Router) {
+              private myAppsService: MyMyAppsService,
+              private userService: UserService) {
   }
 
   ngOnInit() {

@@ -1,15 +1,15 @@
 <div class="media media-no-hidden" *ngIf="data">
-  <div class="media-left">
+  <div class="media-left can-click" (click)="viewComDetail(data)">
     <span class="avatar-sm">
-      <img [src]="data.profile_image" alt="{{data.name}}">
+      <img [src]="data.profile_image" alt="{{ data.name }}">
     </span>
   </div>
   <div class="media-body">
     <h5 class="media-heading m0">
-      <a [routerLink]="['/' + communitiesUrl, data.uuid]" class="link-text">{{data.name}}</a>
+      <a [routerLink]="['/' + communitiesUrl, data.uuid]" class="link-text">{{ data.name }}</a>
     </h5>
     <div class="text-fade">
-      {{data.member_count}} {{data.member_count > 1 ? 'members': 'member'}}
+      {{ data.member_count }} {{ data.member_count > 1 ? 'members': 'member' }}
     </div>
   </div>
   <div class="media-right">
@@ -26,27 +26,42 @@
       <span class="btn-text" *ngIf="data.user_status == comUserStatus.member"><i class="fa fa-check"></i> Joined</span>
 
       <div class="btn-group" *ngIf="data?.user_status == comUserStatus.member || data?.user_role ">
-        <button class="btn btn-default-inline-border dropdown-toggle" type="button"
-                data-toggle="dropdown" (click)="getUserSettings(data?.uuid)">
+        <button class="btn btn-default dropdown-toggle" type="button"
+                data-toggle="dropdown" (click)="getUserSettings(data?.uuid)"
+                pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
-          <li><a href="javascript:;" (click)="toggleComNotification(data?.uuid)">
-            {{userSettings?.mute ? 'Enable' : 'Disable'}} notifications </a>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]">
+            <a href="javascript:;" (click)="onEdit()">Edit Information</a>
           </li>
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onPreferences()">Preferences</a></li>
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a [routerLink]="['/', communitiesUrl,data.uuid]" [queryParams]="{tab: 'members'}">Manage members</a></li>
+          <li>
+            <a href="javascript:;" (click)="toggleComNotification(data?.uuid)">
+              {{ userSettings?.mute ? 'Enable' : 'Disable' }} notifications
+            </a>
+          </li>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]">
+            <a href="javascript:;" (click)="onPreferences()">Preferences</a>
+          </li>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]">
+            <a [routerLink]="['/', communitiesUrl,data.uuid]" [queryParams]="{tab: 'members'}">Manage members</a>
+          </li>
           <li role="separator" class="divider"></li>
           <li>
             <a href="javascript:;" (click)="toggleFavourite(data.uuid)">
               Favourites <i class="fa pull-right" [ngClass]="userSettings?.favorite ? 'fa-star': 'fa-star-o'"></i>
             </a>
           </li>
-          <li><a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a></li>
-          <li *ngIf="data?.user_role === comUserRole.admin[0]"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
+          <li>
+            <a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a>
+          </li>
+          <li *ngIf="data?.user_role === comUserRole.admin[0]">
+            <a href="javascript:;" (click)="onDelete()">Delete community</a>
+          </li>
           <li class="divider"></li>
-          <li *ngIf="!data?.user_role"><a href="javascript:;" (click)="onReport(data.uuid)">Report community</a></li>
+          <li *ngIf="!data?.user_role">
+            <a href="javascript:;" (click)="onReport(data.uuid)">Report community</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -54,4 +69,4 @@
 </div>
 
 
-<template #modalContainer></template>
+<ng-template #modalContainer></ng-template>

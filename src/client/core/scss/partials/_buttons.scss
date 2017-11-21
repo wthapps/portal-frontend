@@ -1,204 +1,221 @@
-$brand-wth: #F54A59;
-$brand-wth-color: #fff !default;
-$brand-wth-bg: $brand-wth !default;
-$brand-wth-border: darken($brand-wth, 5%) !default;
+@import "hover/hover";
 
-@mixin button-variant-inline($color, $background, $border) {
+/*
+<button class="btn">btn</button>
+<button class="btn btn-default">btn-default</button>
+<button class="btn btn-primary">btn-primary</button>
+<button class="btn btn-success">btn-success</button>
+<button class="btn btn-warning">btn-warning</button>
+<button class="btn btn-info">btn-info</button>
+<button class="btn btn-danger">btn-info</button>
+<button class="btn btn-link">btn-btn-link</button>
+<button class="btn btn-outline">btn-outline</button>
+<button class="btn btn-outline-default">btn-outline-default</button>
+<button class="btn btn-outline-primary">btn-outline-primary</button>
+<button class="btn btn-outline-success">btn-outline-success</button>
+<button class="btn btn-outline-warning">btn-outline-warning</button>
+<button class="btn btn-outline-info">btn-outline-info</button>
+<button class="btn btn-outline-danger">btn-outline-info</button>
+<button class="btn btn-outline-link">btn-outline-link</button>
+<button class="btn btn-detail">btn-detail</button>
+*/
 
-  //@if $background == transparent {
-  //  $background: #FFF;
-  //}
+// Button variants
+//
+// Easily pump out default styles, as well as :hover, :focus, :active,
+// and disabled options for all buttons
 
+@mixin button-outline($color) {
   color: $color;
-  background-color: $background;
-  border-color: $border;
+  background-color: #FFFFFF;
+  border-color: $color;
 
   &:focus,
   &.focus {
-    color: $background;
-    background-color: darken($color, 10%);
-    border-color: darken($color, 25%);
-  }
-  &:hover {
-    color: $background;
-    background-color: darken($color, 10%);
-    border-color: darken($color, 12%);
-  }
-  &:active,
-  &.active,
-  .open > &.dropdown-toggle {
-    color: $background;
-    background-color: darken($color, 10%);
-    border-color: darken($color, 12%);
-
-    &:hover,
-    &:focus,
-    &.focus {
-      color: $background;
-      background-color: darken($color, 17%);
-      border-color: darken($color, 25%);
-    }
-  }
-  &:active,
-  &.active,
-  .open > &.dropdown-toggle {
-    background-image: none;
-  }
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
-    &:hover,
-    &:focus,
-    &.focus {
-      background-color: $color;
-      border-color: $color;
-    }
-  }
-
-  .badge {
     color: $color;
-    background-color: $background;
-  }
-}
-
-@mixin button-variant-style($color, $background, $border, $color_hover, $background_hover, $border_hover) {
-
-  color: $color;
-  background-color: $background;
-  border-color: $border;
-
-  &:focus,
-  &.focus {
-    color: $color_hover;
-    background-color: darken($background_hover, 0%);
-    border-color: darken($border_hover, 12%);
+    background-color: darken(#D8D8D8, 1%);
+    border-color: $color;
   }
   &:hover {
-    color: $color_hover;
-    background-color: $background_hover;
-    border-color: $border_hover;
+    color: $color;
+    background-color: #D8D8D8;
+    border-color: $color;
   }
   &:active,
   &.active,
   .open > &.dropdown-toggle {
-    color: $color_hover;
-    background-color: darken($background_hover, 0%);
-    border-color: darken($border_hover, 2%);
+    color: $color;
+    background-color: darken(#D8D8D8, 1%);
+    border-color: $color;
 
-    &:hover,
-    &:focus,
-    &.focus {
-      color: $color_hover;
-      background-color: darken($background_hover, 7%);
-      border-color: darken($border_hover, 15%);
-    }
-  }
-  &:active,
-  &.active,
-  .open > &.dropdown-toggle {
-    background-image: none;
-  }
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
     &:hover,
     &:focus,
     &.focus {
       color: $color;
-      background-color: $background;
-      border-color: $border;
+      background-color: darken(#D8D8D8, 1%);
+      border-color: $color;
     }
-  }
-
-  .badge {
-    color: $background;
-    background-color: $color;
-  }
-}
-
-@import "hover/hover";
-
-.btn-detail {
-  font-weight: normal;
-  @include shutter-out-horizontal();
-}
-
-.btn-default2 {
-  @extend .btn-default;
-  @include gradient-vertical(#FBFBFB, #DDDDDD, 0%, 100%);
-}
-
-.btn-primary-bg {
-  @include button-variant(#FFF, $btn-primary-color, darken($btn-primary-color, 10%));
-}
-
-.btn-wth {
-  @include button-variant(#FFF, $brand-wth, darken($brand-wth, 10%));
-}
-
-//
-//.btn-wth-default {
-//  @include button-variant($brand-wth, #FFF, $btn-default-border);
-//}
-
-.btn-wth-default {
-  @include button-variant-style(
-      $brand-wth, transparent, $brand-wth,
-      #FFF, $brand-wth, $brand-wth);
-}
-
-.btn-primary-inline {
-  @include button-variant-inline($brand-wth, #FFF, transparent);
-}
-
-.btn-default-inline {
-  @include button-variant-inline($btn-default-color, transparent, transparent);
-  &:focus,
-  &.focus {
-    color: $btn-default-color;
-    background-color: $line;
-    border-color: $line;
-  }
-  &:hover {
-    color: $btn-default-color;
-    background-color: $line;
-    border-color: $line;
   }
   &:active,
   &.active,
   .open > &.dropdown-toggle {
-    color: $btn-default-color;
-    background-color: $line;
-    border-color: $line;
-
+    background-image: none;
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
     &:hover,
     &:focus,
     &.focus {
-      color: $btn-default-color;
-      background-color: $line;
-      border-color: $line;
+      background-color: #FFFFFF;
+      color: $color;
+    }
+  }
+
+  .badge {
+    color: #FFFFFF;
+    background-color: $color;
+  }
+}
+
+.btn {
+  line-height: 20px;
+  font-weight: bold;
+  &.text-normal {
+    font-weight: normal;
+  }
+
+  &, &:hover, &:focus, &.focus {
+    outline: none;
+  }
+
+  &:active,
+  &.active {
+    &:hover,
+    &:focus,
+    &.focus {
+      outline: none;
     }
   }
 }
 
-.btn-default-inline-border {
-  @include button-variant-style(
-      $btn-default-color,
-      transparent,
-      transparent,
-      $btn-default-color,
-      transparent,
-      $btn-default-border);
+.btn-default {
+  background-color: transparent;
+  &, &:hover, &:focus, &.focus {
+    border-color: transparent;
+  }
+
+  &:active,
+  &.active {
+    &:hover,
+    &:focus,
+    &.focus {
+      border-color: transparent;
+    }
+  }
 }
 
-.btn-wth-default {
-  @include button-variant-style(
-      $brand-wth,
-      $brand-wth-color,
-      $brand-wth-border,
-      $brand-wth-color,
-      $brand-wth-bg,
-      $brand-wth-border);
+.btn-primary {
+}
+
+.btn-success {
+}
+
+.btn-info {
+}
+
+.btn-warning {
+}
+
+.btn-danger {
+}
+
+.btn-link {
+}
+
+.btn-outline {
+}
+
+.btn-text {
+  cursor: auto;
+  &, &:hover, &:focus {
+    background-color: transparent;
+    @include box-shadow(none);
+    padding: 6px 12px;
+    line-height: 20px;
+    font-weight: bold;
+    border:1px solid transparent;
+  }
+}
+
+.btn-outline-default {
+  @include button-outline($btn-default-color);
+  border-color: #9B9B9B;
+}
+
+.btn-outline-primary {
+  @include button-outline($brand-primary);
+}
+
+.btn-outline-success {
+  @include button-outline($brand-success);
+}
+
+.btn-outline-info {
+  @include button-outline($brand-info);
+}
+
+.btn-outline-warning {
+  @include button-outline($brand-warning);
+}
+
+.btn-outline-danger {
+  @include button-outline($brand-danger);
+}
+
+.btn-outline-link {
+  color: $link-color;
+  font-weight: normal;
+  border-radius: 0;
+
+  &,
+  &:active,
+  &.active,
+  &[disabled],
+  fieldset[disabled] & {
+    background-color: transparent;
+    @include box-shadow(none);
+  }
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: transparent;
+  }
+  &:hover,
+  &:focus {
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
+    background-color: transparent;
+  }
+  &[disabled],
+  fieldset[disabled] & {
+    &:hover,
+    &:focus {
+      color: $btn-link-disabled-color;
+      text-decoration: none;
+    }
+  }
+}
+
+.btn {
+  min-width: 34px;
+  &.btn-xs {
+    min-width: 24px;
+  }
+  &.btn-sm {
+    min-width: 32px;
+  }
 }
 
 .btn-min {
@@ -206,62 +223,16 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
   text-align: center;
 }
 
-.btn-inline {
-  min-width: initial;
-  color: inherit;
-}
-
 .btn-min-sm {
-  min-width: 160px;
-  text-align: center;
-}
-
-.btn {
-  &,
-  &:active,
-  &.active {
-    &:focus,
-    &.focus {
-      outline: 0 none;
-    }
-  }
-
-  &:hover,
-  &:focus,
-  &.focus {
-    outline: 0 none;
-  }
-
-  &:active,
-  &.active {
-    outline: 0 none;
-  }
-  font-weight: bold;
-}
-
-[class^="btn-"], [class*=" btn-"] {
-  min-width: 34px;
-  &.btn-inline {
-    min-width: initial;
-  }
-
-  &.btn-text-link {
-    color: $link-color;
-    padding: 0;
-    border-width: 0;
-    background-color: transparent;
-    min-width: initial;
-    &:hover, &:focus {
-      text-decoration: none;
-      outline: none;
-    }
+  @extend .btn-min;
+  @media (min-width: $screen-sm-min) {
+    min-width: 160px;
   }
 }
 
-.modal {
-  [class^="btn-"], [class*=" btn-"] {
-    min-width: 80px;
-  }
+.btn-detail {
+  font-weight: normal;
+  @include shutter-out-horizontal();
 }
 
 .btn-circle {
@@ -275,46 +246,7 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
   min-width: inherit;
 }
 
-.btn-text {
-  @extend .btn;
-  background-color: transparent;
-  min-width: initial;
-  border-width: 0;
-  text-decoration: none !important;
-  color: $text-color;
-  cursor: auto;
-  &,
-  &:active,
-  &.active {
-    &:focus,
-    &.focus {
-      outline: 0 none;
-      @include box-shadow(none);
-    }
-  }
-
-  &:hover,
-  &:focus,
-  &.focus {
-    outline: 0 none;
-    @include box-shadow(none);
-  }
-
-  &:active,
-  &.active {
-    outline: 0 none;
-    @include box-shadow(none);
-  }
-}
-
-.btn-link-inline {
-  text-decoration: none;
-  min-width: inherit;
-  &:hover, &:focus {
-    text-decoration: none;
-  }
-}
-
+/*
 .btn {
   .fa-circle {
     width: 12px;
@@ -337,8 +269,16 @@ $brand-wth-border: darken($brand-wth, 5%) !default;
       background-color: $user-offline;
     }
   }
+}*/
+
+.ui-dialog-footer, .modal-footer {
+  .btn-min + .btn-min {
+    margin-left: 10px;
+  }
 }
 
-.btn-default-no-border {
-  border: none;
+.input-group-btn {
+  .btn-outline-default {
+    border-color: #ccc;
+  }
 }

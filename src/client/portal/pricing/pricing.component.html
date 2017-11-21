@@ -1,21 +1,135 @@
-<section class="page-hero-header" style="background-image: url('assets/images/landing/hero-image.jpg');">
-  <h2 class="h1">Pricing</h2>
-</section>
-<section class="page-content pricing-content">
+<div class="header-intro">
   <div class="container">
-    <div class="row">
-      <div class="col-sm-9 col-sm-offset-1">
-        <h3 class="h1 text-normal">Choose the right plan for you</h3>
-        <p class="text-center">
-          <a href="#" class="btn btn-wth">Join Free for a Month</a>
-        </p>
+    <h2><span>Pricing</span></h2>
+    <p>
+      Try free for 30 days and share it with your family and friends.
+    </p>
+  </div>
+</div>
+<section class="page-content pricing-table bg-gray-light">
+  <div class="container">
+    <div class="box-pricing-list">
+      <div class="box-pricing-item pricing-pro">
+        <div class="box-card">
+          <div class="pricing-item-header">
+            Pro account
+          </div>
+          <div class="pricing-item-content">
+            <div class="price"><strong>&#36; 4.99</strong><span>per month*</span></div>
+            <div class="action">
+              <button type="button" class="btn btn-primary">Create an account for free</button>
+            </div>
+            <div class="info">
+              Full Account - access to all tools**
+            </div>
+            <ul class="list-styled">
+              <li>Full Access to all WTH!Zone apps and services</li>
+              <li>No Ads-ever</li>
+              <li>100% privacy</li>
+              <li>5 Gigabyte of free cloud space</li>
+              <li>And many more upcoming apps</li>
+            </ul>
+          </div>
+        </div>
       </div>
-
-      <div class="col-sm-12 col-md-9 col-md-offset-1">
-        <wth-table-pricing></wth-table-pricing>
+      <div class="box-pricing-item">
+        <div class="box-card">
+          <div class="pricing-item-header">
+            Add a member
+          </div>
+          <div class="pricing-item-content">
+            <div class="price"><strong>&#36; 2.99</strong><span>per month*</span></div>
+            <div class="action">
+              <button type="button" class="btn btn-primary">Create an account for free</button>
+            </div>
+            <div class="info">
+              Have a pro account and want to add a family or team member***
+            </div>
+            <ul class="list-styled">
+              <li>Full Access to all WTH!Zone apps and services</li>
+              <li>No Ads-ever</li>
+              <li>5 Gigabyte of free cloud space</li>
+              <li>And many more upcoming apps</li>
+            </ul>
+          </div>
+        </div>
       </div>
+      <div class="box-pricing-noted">
+        Price in USD <br>
+        *Monthly fee will be charged automatically<br>
+        **After 30 days free trial, without any upgrade, your account will be in accessibile. If you wsnt to continue
+        using WTH!Apps, simply enter a valid payment method in your account settings<br>
+        ***Account Administrator will have full access to those accounts - great for family and team member<br>
+        ***You can add/pay for another person’s Pro Account - where account has full privacy - cost $4.99/month - great
+        for family members<br>
+        <br>
+        If you have any questions that come in mind, please check our
+        <a [routerLink]="['/policies/terms']" href="#">Term of Service</a> or
+        <a [routerLink]="['/about']" href="#">drop us a message.</a>
+      </div>
+    </div>
 
+  </div>
+</section>
+<section class="page-content pricing-plans">
+  <div class="container">
+    <div class="text-center">
+      <h3>All Plans include</h3>
+    </div>
+    <div class="pricing-plans-list">
+      <div class="pricing-plans-item">
+        <figure>
+          <img src="../../assets/images_new/pricing/social.png" alt="">
+          <h4>WTH!Social Media</h4>
+        </figure>
+      </div>
+      <div class="pricing-plans-item">
+        <figure>
+          <img src="../../assets/images_new/pricing/chat.png" alt="">
+          <h4>WTH!Chat</h4>
+        </figure>
+      </div>
+      <div class="pricing-plans-item">
+        <figure>
+          <img src="../../assets/images_new/pricing/contact-book.png" alt="">
+          <h4>WTH!Contact Book</h4>
+        </figure>
+      </div>
+      <div class="pricing-plans-item">
+        <figure>
+          <img src="../../assets/images_new/pricing/picture.png" alt="">
+          <h4>WTH!Pictures</h4>
+        </figure>
+      </div>
+      <div class="pricing-plans-item">
+        <figure>
+          <img src="../../assets/images_new/pricing/note.png" alt="">
+          <h4>WTH!Notes</h4>
+        </figure>
+      </div>
     </div>
   </div>
 </section>
-<wth-footer-promotion></wth-footer-promotion>
+<section class="page-content coming-soon-content">
+  <div class="container">
+    <div class="text-center">
+      <h3>Coming soon</h3>
+    </div>
+    <ul class="list-styled">
+      <li>To Do list</li>
+      <li>Projects</li>
+      <li>Networking</li>
+      <li>eFax</li>
+      <li>Bookmarks</li>
+      <li>Dating</li>
+      <li>Live News Feed</li>
+      <li>Charts</li>
+      <li>Files</li>
+      <li>Jobs</li>
+      <li>DNS Service</li>
+      <li>and more…</li>
+    </ul>
+  </div>
+</section>
+
+<portal-shared-footer-promotion></portal-shared-footer-promotion>

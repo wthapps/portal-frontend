@@ -1,11 +1,11 @@
 <div class="row-img row-img-10 grid">
   <div *ngIf="photo||files" class="row-img-item">
-    <template [ngIf]="hasUploadingPhoto">
+    <ng-template [ngIf]="hasUploadingPhoto">
       <div class="photo-box">
         <div class="photo-box-action">
           <i class="fa fa-remove"
              (click)="onAction({action: 'cancelUpload', data: 'value of current file'})"
-             title="Cancel uploading">
+             pTooltip="{{ tooltip.cancelUploading }}" tooltipPosition="top">
           </i>
         </div>
         <div class="photo-box-figure">
@@ -14,14 +14,14 @@
           </figure>
         </div>
       </div>
-    </template>
+    </ng-template>
 
-    <template [ngIf]="!hasUploadingPhoto">
+    <ng-template [ngIf]="!hasUploadingPhoto">
       <div class="photo-box">
         <div class="photo-box-action">
           <i class="fa fa-remove"
              (click)="onAction({action: 'remove', data: photo})"
-             title="Remove this photo">
+             pTooltip="{{ tooltip.removeThisPhoto }}" tooltipPosition="top">
           </i>
         </div>
         <div class="photo-box-figure">
@@ -33,6 +33,6 @@
           </figure>
         </div>
       </div>
-    </template>
+    </ng-template>
   </div>
 </div>

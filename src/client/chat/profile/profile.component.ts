@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatShareRequestContactComponent } from '../shared/modal/request-contact.component';
+import { Constants } from '../../core/shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -10,6 +11,8 @@ import { ZChatShareRequestContactComponent } from '../shared/modal/request-conta
   styleUrls: ['profile.component.css']
 })
 export class ZChatProfileComponent implements OnInit {
+  tooltip: any = Constants.tooltip;
+
   profile: any;
   actions: any;
   contact: any;

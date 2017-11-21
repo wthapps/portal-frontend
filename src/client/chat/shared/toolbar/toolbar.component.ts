@@ -2,7 +2,8 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
-import { ConfirmationService } from 'primeng/components/common/api';
+import { Constants } from '../../../core/shared/config/constants';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 declare let $: any;
 declare let _: any;
@@ -25,7 +26,10 @@ export class ZChatToolbarComponent implements OnInit {
   showSendMessage: boolean = false;
   showBlacklist: boolean = false;
 
-  constructor(private chatService: ChatService, private confirmationService: ConfirmationService) {
+  tooltip: any = Constants.tooltip;
+
+  constructor(private chatService: ChatService,
+              private wthConfirmService: WthConfirmService) {
     this.profileUrl = this.chatService.constant.profileUrl;
   }
 
@@ -36,7 +40,7 @@ export class ZChatToolbarComponent implements OnInit {
 
   onAddContact() {
     this.addContact.type = 'addContact';
-    this.addContact.modal.open();
+    this.addContact.open();
   }
 
   onEditConversation() {
@@ -45,7 +49,7 @@ export class ZChatToolbarComponent implements OnInit {
 
   onAddMember() {
     this.addContact.type = 'addMember';
-    this.addContact.modal.open();
+    this.addContact.open();
   }
 
   onFavorite() {
@@ -62,7 +66,7 @@ export class ZChatToolbarComponent implements OnInit {
 
   sendContact() {
     this.addContact.type = 'shareContact';
-    this.addContact.modal.open();
+    this.addContact.open();
   }
 
   leaveConversation() {
@@ -80,13 +84,19 @@ export class ZChatToolbarComponent implements OnInit {
   showDropdownMenu(e: any) {
     let showDropdownMenu_ul = e.target.nextElementSibling;
     if (e.screenX + 240 > window.innerWidth) {
-      showDropdownMenu_ul.style.right = 0;
       showDropdownMenu_ul.style.left = 'auto';
     }
   }
 
   onDeleteConversation() {
-    this.chatService.deleteContact(this.item.value);
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Delete',
+      message: 'Are you sure you want to delete this conversation ?',
+      header: 'Delete Conversation',
+      accept: () => {
+        this.chatService.deleteContact(this.item.value);
+      }
+    });
   }
 
   onSelect(user: any) {
@@ -94,7 +104,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   checkSendMessage(user: any) {
-    let conversations: any = this.chatService.storage.find('chat_contacts').value;
+    let conversations: any = this.chatService.storage.find('chat_conversations').value;
     let contact: any = _.find(conversations.data, {'partner_id': user.id});
     if (contact) {
       this.showSendMessage = true;
@@ -104,7 +114,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   inContact(user: any) {
-    let conversations: any = this.chatService.storage.find('chat_contacts').value;
+    let conversations: any = this.chatService.storage.find('chat_conversations').value;
     let contact: any = _.find(conversations.data, {'partner_id': user.id});
     if (contact) {
       return true;
@@ -117,7 +127,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   onAddToBlackList(user: any) {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure you want to add this contact to black list ?',
       header: 'Add To Black List',
       accept: () => {

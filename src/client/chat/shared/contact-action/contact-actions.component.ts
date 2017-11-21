@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
 import { ZChatShareAddToConversationComponent } from '../modal/add-to-conversation.component';
-import { ConfirmationService } from 'primeng/components/common/api';
-import { ZoneReportService } from '../../../core/shared/form/report/report.service';
+import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
 declare let $: any;
 
@@ -27,8 +27,8 @@ export class ZChatContactActionsComponent implements OnInit {
 
   constructor(private router: Router,
               private chatService: ChatService,
-              private zoneReportService: ZoneReportService,
-              private confirmationService: ConfirmationService) {
+              private zoneReportService: ZSharedReportService,
+              private wthConfirmService: WthConfirmService) {
     this.conversationUrl = this.chatService.constant.conversationUrl;
     this.profileUrl = this.chatService.constant.profileUrl;
   }
@@ -53,7 +53,7 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   addBlackList() {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure you want to add this contact to black list ?',
       header: 'Add To Black List',
       accept: () => {
@@ -73,7 +73,8 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   deleteContact() {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Delete',
       message: 'Are you sure you want to delete this contact ?',
       header: 'Delete Contact',
       accept: () => {

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ChatSharedModule } from '../shared/shared.module';
-import { SharedModule } from '../../core/shared/shared.module';
+import { ZChatSharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZChatContactComponent } from './contact.component';
 import { ZChatContactRoutingModule } from './contact-routing.module';
 import { ZChatContactOnlineComponent } from './contact-online.component';
@@ -16,8 +16,8 @@ import { ZChatContactReceiveComponent } from './contact-receive.component';
   imports: [
     ReactiveFormsModule,
     ZChatContactRoutingModule,
-    SharedModule.forRoot(),
-    ChatSharedModule.forRoot()
+    ZChatSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZChatContactComponent,

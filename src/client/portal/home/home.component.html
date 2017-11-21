@@ -1,50 +1,197 @@
-<section class="homepage-hero">
-  <div class="homepage-hero-item" style="background-image: url('assets/images/landing/hero-image.jpg');">
-  </div>
-  <div class="homepage-hero-txt">
-    <h1>All convenience tools you need in one place</h1>
-    <p>Exclusive features for greater experience.</p>
-    <a [routerLink]="['/products']" class="btn btn-detail btn-lg btn-min-sm">Learn More</a>
-  </div>
-</section>
-<section class="section-about">
-  <div class="container">
-    <h2 class="h1">What is WTHapp?</h2>
-    <p>WTHapp is a collection of various services, add-on and applications, all are gathered in one place. <br>
-      Looking for the tools you need and manage your resources has never been this simple. </p>
+<section class="hero-banner">
+  <div class="container-fluid">
+    <div class="hero-banner-txt">
+      <h2>All the tools you need in one place.</h2>
+      <p>WTH!APPS gives you everything you need to connect, simplify and organize your digital life.</p>
+      <a [routerLink]="['/signup']" href="#" class="btn btn-primary">Get started for free</a>
+    </div>
+    <div class="hero-banner-img">
+      <img src="/assets/images_new/home/hero-banner-img.png" alt="">
+    </div>
   </div>
 </section>
-<section class="section-services gray-light">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="card-box">
-          <figure>
-            <img src="assets/images/landing/various.png" alt="">
-          </figure>
-          <h3 class="h1">Various Apps</h3>
-          <p>Enjoy the variant of service and tools as we keep on adding more.</p>
+<section class="section-container how-wrap bg-gray">
+  <div class="container-fluid">
+    <div class="section-title">
+      <h3>How it works!</h3>
+      <h5>WTH!ZONE is where you can access your WTH!APPS and other digital stuff.</h5>
+    </div>
+    <div class="how-list">
+
+      <div class="media">
+        <div class="media-left">
+          <img src="/assets/images_new/icons/search.png" alt="WTH! I can’t find my picture, bookmark or file!">
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">WTH! I can’t find my picture, bookmark or file!</h4>
+          <p>Our apps are all interconnected. As you chat and make social media posts, all your pictures, bookmarks and
+            files are automatically organized to make it easy to find anything.</p>
         </div>
       </div>
-      <div class="col-sm-4">
-        <div class="card-box">
-          <figure>
-            <img src="assets/images/landing/all.png" alt="">
-          </figure>
-          <h3 class="h1">All in one place</h3>
-          <p>Avoid switching between places to search for the tools you need as all are connected.</p>
+      <div class="media">
+        <div class="media-left">
+          <img src="/assets/images_new/icons/lock.png" alt="WTH! I can’t remember my password!">
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">WTH! I can’t remember my password!</h4>
+          <p>We made that easy, too. There’s one login for everything on WTH!Apps!</p>
         </div>
       </div>
-      <div class="col-sm-4">
-        <div class="card-box">
-          <figure>
-            <img src="assets/images/landing/price.png" alt="">
-          </figure>
-          <h3 class="h1">Competitive Price</h3>
-          <p>With only $9.99 per month, you can access to all difference tools.</p>
+      <div class="media">
+        <div class="media-left">
+          <img src="/assets/images_new/icons/ad.png" alt="WTH! The internet is now full of ads – I really hate ads!">
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">WTH! The internet is now full of ads – I really hate ads!</h4>
+          <p>All our apps are ad free! And your information is safe and secure. We will never sell it to advertisers or
+            anyone else.</p>
+        </div>
+      </div>
+      <div class="media">
+        <div class="media-left">
+          <img src="/assets/images_new/icons/plus.png" alt="WTH! I need to do more!">
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">WTH! I need to do more!</h4>
+          <p>We are working on adding a bunch more useful apps, including a to-do list, project manager, email, games
+            and eFax.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
-<wth-footer-promotion></wth-footer-promotion>
+<section class="section-container oneplace-wrap">
+  <div class="container-fluid">
+    <div class="section-title">
+      <h3>Do everything in one place</h3>
+      <h5>There’s no need to switch accounts or logins.</h5>
+    </div>
+    <div class="oneplace-list">
+      <div class="row">
+        <div class="col-sm-4">
+          <figure>
+            <img src="../../assets/images_new/logo-social.png" alt="">
+          </figure>
+          <p>Stay connected with your friends and family without worrying about ads or your privacy.</p>
+          <a (click)="gotoHashtag('products', 'product-social')" href="#" class="btn btn-outline-primary">Learn more</a>
+        </div>
+        <div class="col-sm-4">
+          <figure>
+            <img src="../../assets/images_new/logo-chat.png" alt="">
+          </figure>
+          <p>Chat with friend, family and communities with our simple, ad-free messenger app.</p>
+          <a  (click)="gotoHashtag('products', 'product-chat')" href="#" class="btn btn-outline-primary">Learn more</a>
+        </div>
+        <div class="col-sm-4">
+          <figure>
+            <img src="../../assets/images_new/logo-picture.png" alt="">
+          </figure>
+          <p>Keep all your pictures in one place to use with all your apps.</p>
+          <a  (click)="gotoHashtag('products', 'product-media')" href="#" class="btn btn-outline-primary">Learn more</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section-container started-wrap bg-dark">
+  <div class="container-fluid">
+    <div class="section-title">
+      <h3>Get started today</h3>
+      <h5>Try every feature, no credit card required.<br>
+        30 day free trial.</h5>
+    </div>
+    <div class="started-form">
+      <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+        <div class="row row-10">
+          <div class="col-sm-6">
+            <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched)}">
+              <label for="first_name">First Name</label>
+              <input [formControl]="first_name" type="text" class="form-control" id="first_name"
+                     placeholder="First Name">
+              <div *ngIf="!first_name.valid && first_name.touched">
+                <span *ngIf="!first_name.valid && first_name.errors.required"
+                      class="help-block">First name is required</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group" [ngClass]="{'has-error': (!last_name.valid && last_name.touched)}">
+              <label for="last_name">Last Name</label>
+              <input [formControl]="last_name" type="text" class="form-control" id="last_name"
+                     placeholder="Last Name">
+              <div *ngIf="!last_name.valid && last_name.touched">
+                    <span *ngIf="!last_name.valid && last_name.errors.required"
+                          class="help-block">Last name is required</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
+          <label for="email">Email</label>
+          <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
+          <div *ngIf="!email.valid && email.touched">
+            <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
+            <span *ngIf="!email.errors.required && email.errors.emailFormat"
+                  class="help-block">Email is not valid. eg. example@wthapps.com</span>
+          </div>
+        </div>
+        <div class="form-group has-password"
+             [ngClass]="{'has-error': (!password.valid && password.touched)}">
+          <label for="password">Password</label>
+
+          <show-hide-password>
+            <input #showhidepassword [formControl]="password" type="password" class="form-control" id="password"
+                   placeholder="Password">
+          </show-hide-password>
+
+          <div *ngIf="!password.valid && password.touched">
+            <p class="mt10 mb0">Password must:</p>
+            <ul
+              [ngClass]="{'text-danger': (!password.valid && password.touched), 'text-success': (password.valid && password.touched)}">
+
+              <ng-template [ngIf]="!password.valid">
+                <ng-template [ngIf]="password.errors.required">
+                  <li>Contain at least 8 characters or more</li>
+                </ng-template>
+                <ng-template [ngIf]="password.errors.minlength">
+                  <li class="text-danger">Contain at least 8 characters or more</li>
+                </ng-template>
+                <ng-template [ngIf]="!password.errors.required && !password.errors.minlength">
+                  <li class="text-success">Contain at least 8 characters or more</li>
+                </ng-template>
+                <li [ngClass]="{'text-success': (!password.errors.lowercaseUppercase)}">Contain both uppercase and
+                  lowercase characters
+                </li>
+                <li [ngClass]="{'text-success': (!password.errors.specialSymbolOrNumber)}">Contain at least one number
+                  or symbol
+                </li>
+
+              </ng-template>
+              <ng-template [ngIf]="password.valid">
+                <li>Contain at least 8 characters or more</li>
+                <li>Contain both uppercase and lowercase characters</li>
+                <li>Contain at least one number or symbol</li>
+              </ng-template>
+            </ul>
+          </div>
+        </div>
+
+        <div class="form-group">
+          By clicking Create Account, I agree to the
+          <a class="link-underline" [routerLink]="['/policies/terms']" href="#">Terms of Service</a>,
+          <a class="link-underline" [routerLink]="['/policies/privacy']" href="#">Privacy & Cookies Policy</a>.
+        </div>
+        <div class="form-group">
+          <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-primary">
+            Create an account for free
+          </button>
+        </div>
+
+        <div class="form-group text-center">
+          Already have an account? <a class="link-text" [routerLink]="['/login']" href="#">Sign in</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,14 +1,13 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { WthAppsBaseModal } from '../../core/shared/interfaces/wthapps-base-modal';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import 'rxjs/add/operator/toPromise';
+
+import { WthAppsBaseModal } from '../../core/shared/interfaces/wthapps-base-modal';
 import { Label } from './label.model';
 import { LabelService } from './label.service';
-import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
 
-// import { CommonEvent } from '../../core/shared/services/common-event/common-event';
-// import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
-// import { Subscription } from 'rxjs/Subscription';
 
 
 declare var $: any;
@@ -32,8 +31,7 @@ export class LabelEditModalComponent implements OnInit, WthAppsBaseModal {
   form: FormGroup;
   name: AbstractControl;
 
-  constructor(private fb: FormBuilder, private commonEventService: CommonEventService)  {
-
+  constructor(private fb: FormBuilder, private labelService: LabelService) {
 
 
   }
@@ -51,9 +49,9 @@ export class LabelEditModalComponent implements OnInit, WthAppsBaseModal {
 
   submit() {
     if (this.mode == 'edit') {
-      this.commonEventService.broadcast({action: 'contact:label:update', payload: { label: this.form.value }})
+      this.labelService.update(this.form.value).toPromise();
     } else {
-     this.commonEventService.broadcast({action: 'contact:label:create', payload: { label: this.form.value }});
+      this.labelService.create(this.form.value).toPromise();
     }
     this.modal.close().then();
   }
@@ -66,6 +64,7 @@ export class LabelEditModalComponent implements OnInit, WthAppsBaseModal {
 
     this.modal.open(options).then();
   }
+
   close(options?: any) {
     this.modal.close(options).then();
   }

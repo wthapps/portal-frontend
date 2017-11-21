@@ -7,7 +7,7 @@ import { PhotoDetailComponent } from './photo-detail.component';
   imports: [
     RouterModule.forChild([
       {path: 'photos', component: ZMediaPhotoListComponent},
-      {path: 'photos/:id', component: PhotoDetailComponent},
+      {path: 'photos/:id', component: PhotoDetailComponent, outlet: 'modal'},
     ])
   ],
   exports: [RouterModule]

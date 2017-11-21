@@ -84,9 +84,9 @@ $prefix-for-spec: true !default;
   font-size: calculateRem($size);
 }
 
-/*p {
-  @include font-size(14px)
-}*/
+//p {
+//  @include font-size(14px)
+//}
 
 
 // =============================================================================
@@ -133,58 +133,56 @@ $prefix-for-spec: true !default;
     src: $src;
   }
 }
+//
+//Create a font face rule. Embedded OpenType, WOFF2, WOFF, TrueType, and SVG files are automatically sourced.
+//
+//@include font-face(Samplino, fonts/Samplino);
+//Rendered as CSS:
+//
+//@font-face {
+//  font-family: "Samplino";
+//  src: url("fonts/Samplino.eot?") format("eot"),
+//  url("fonts/Samplino.woff2") format("woff2"),
+//  url("fonts/Samplino.woff") format("woff"),
+//  url("fonts/Samplino.ttf") format("truetype"),
+//  url("fonts/Samplino.svg#Samplino") format("svg");
+//}
+//
+//
+//
+//@include font-face("Samplina Neue", fonts/SamplinaNeue, bold, italic);
+//@font-face {
+//    font-family: "Samplina Neue";
+//    font-style: italic;
+//    font-weight: bold;
+//    src: url("fonts/SamplinaNeue.eot?") format("eot"),
+//         url("fonts/SamplinaNeue.woff2") format("woff2"),
+//         url("fonts/SamplinaNeue.woff") format("woff"),
+//         url("fonts/SamplinaNeue.ttf") format("truetype"),
+//         url("fonts/SamplinaNeue.svg#Samplina_Neue") format("svg");
+//}
+//
+//
+//
+//
+//@include font-face(Samplinoff, fonts/Samplinoff, null, null, woff);
+//@font-face {
+//    font-family: "Samplinoff";
+//    src: url("fonts/Samplinoff.woff") format("woff");
+//}
+//
+//
+//@include font-face(Samplinal, fonts/Samplinal, 500, normal, eot woff2 woff);
+//@font-face {
+//    font-family: "Samplinal";
+//    font-style: normal;
+//    font-weight: 500;
+//    src: url("fonts/Samplinal.eot?") format("eot"),
+//         url("fonts/Samplinal.woff2") format("woff2"),
+//         url("fonts/Samplinal.woff") format("woff");
+//}
+//
 
-/*
-Create a font face rule. Embedded OpenType, WOFF2, WOFF, TrueType, and SVG files are automatically sourced.
-
-@include font-face(Samplino, fonts/Samplino);
-Rendered as CSS:
-
-@font-face {
-  font-family: "Samplino";
-  src: url("fonts/Samplino.eot?") format("eot"),
-  url("fonts/Samplino.woff2") format("woff2"),
-  url("fonts/Samplino.woff") format("woff"),
-  url("fonts/Samplino.ttf") format("truetype"),
-  url("fonts/Samplino.svg#Samplino") format("svg");
-}
-
-
-
-@include font-face("Samplina Neue", fonts/SamplinaNeue, bold, italic);
-@font-face {
-    font-family: "Samplina Neue";
-    font-style: italic;
-    font-weight: bold;
-    src: url("fonts/SamplinaNeue.eot?") format("eot"),
-         url("fonts/SamplinaNeue.woff2") format("woff2"),
-         url("fonts/SamplinaNeue.woff") format("woff"),
-         url("fonts/SamplinaNeue.ttf") format("truetype"),
-         url("fonts/SamplinaNeue.svg#Samplina_Neue") format("svg");
-}
-
-
-
-
-@include font-face(Samplinoff, fonts/Samplinoff, null, null, woff);
-@font-face {
-    font-family: "Samplinoff";
-    src: url("fonts/Samplinoff.woff") format("woff");
-}
-
-
-@include font-face(Samplinal, fonts/Samplinal, 500, normal, eot woff2 woff);
-@font-face {
-    font-family: "Samplinal";
-    font-style: normal;
-    font-weight: 500;
-    src: url("fonts/Samplinal.eot?") format("eot"),
-         url("fonts/Samplinal.woff2") format("woff2"),
-         url("fonts/Samplinal.woff") format("woff");
-}
-
-
-*/
 
 //
 //SVG background images with PNG and retina fallback
@@ -206,9 +204,9 @@ $retina-suffix: '@2x';
   }
 }
 
-/*body {
-  @include background-image('pattern');
-}*/
+//body {
+//  @include background-image('pattern');
+//}
 
 //
 //Animations and keyframes
@@ -240,18 +238,17 @@ $retina-suffix: '@2x';
   animation: #{$str};
 }
 
-/*
-@include keyframes(slide-down) {
-  0% { opacity: 1; }
-  90% { opacity: 0; }
-}
-
-.element {
-  width: 100px;
-  height: 100px;
-  background: black;
-  @include animation('slide-down 5s 3');
-}*/
+//@include keyframes(slide-down) {
+//  0% { opacity: 1; }
+//  90% { opacity: 0; }
+//}
+//
+//.element {
+//  width: 100px;
+//  height: 100px;
+//  background: black;
+//  @include animation('slide-down 5s 3');
+//}
 
 //
 //Cross browser opacity
@@ -263,11 +260,9 @@ $retina-suffix: '@2x';
   filter: alpha(opacity=$opacity-ie); //IE8
 }
 
-/*
-.faded-text {
-  @include opacity(0.8);
-}
-*/
+//.faded-text {
+//  @include opacity(0.8);
+//}
 
 //
 // Centering Mixin
@@ -291,23 +286,23 @@ $retina-suffix: '@2x';
 }
 
 
-/*.parent {
-  position: relative;
-}
-
-.child {
-  &.both {
-    @include center;
-  }
-
-  &.horizontal {
-    @include center(true, false);
-  }
-
-  &.vertical {
-    @include center(false, true);
-  }
-}*/
+//.parent {
+//  position: relative;
+//}
+//
+//.child {
+//  &.both {
+//    @include center;
+//  }
+//
+//  &.horizontal {
+//    @include center(true, false);
+//  }
+//
+//  &.vertical {
+//    @include center(false, true);
+//  }
+//}
 
 
 

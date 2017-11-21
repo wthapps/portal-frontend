@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatShareAddContactComponent } from '../shared/modal/add-contact.component';
+import { ApiBaseService } from '../../core/shared/services/apibase.service';
 
 @Component({
   moduleId: module.id,
@@ -10,18 +11,20 @@ import { ZChatShareAddContactComponent } from '../shared/modal/add-contact.compo
 export class ZChatContactComponent implements OnInit {
   contactItem:any;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
+  count: any;
 
-  constructor(private chatService: ChatService) {
+  constructor(private chatService: ChatService, public apiBaseService: ApiBaseService) {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getContacts();
-
-    console.log(this.contactItem);
+    this.contactItem = this.chatService.storage.find('chat_conversations');
+    this.apiBaseService.post('zone/chat/contact/contact_tab_count').subscribe((res: any) => {
+      this.count = res.data;
+    });
   }
 
   newContact() {
     this.addContact.type = 'addContact';
-    this.addContact.modal.open();
+    this.addContact.open();
   }
 }

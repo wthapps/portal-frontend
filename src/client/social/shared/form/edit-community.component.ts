@@ -7,7 +7,9 @@ import {
   FormArray, FormControl
 } from '@angular/forms';
 
+import 'rxjs/add/operator/toPromise';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+
 import { CustomValidator } from '../../../core/shared/validator/custom.validator';
 import { SoCommunityService } from '../services/community.service';
 
@@ -114,7 +116,7 @@ export class ZSocialShareCommunityFormEditComponent {
   }
 
   additionalLinkControls() {
-    return (<FormGroup>(<FormGroup>this.form).controls.additional_links).controls;;
+    return (<FormGroup>(<FormGroup>this.form).controls.additional_links).controls;
   }
 
 
@@ -134,12 +136,12 @@ export class ZSocialShareCommunityFormEditComponent {
     });
 
     if (this.action == 'update') {
-      this.communityService.updateCommunity(this.data.uuid, body).subscribe((res: any) => {
+      this.communityService.updateCommunity(this.data.uuid, body).toPromise().then((res: any) => {
         this.setupDataUpdated.emit(res.data);
         this.modal.close();
       });
     } else {
-      this.communityService.createCommunity(body).subscribe((res: any) => {
+      this.communityService.createCommunity(body).toPromise().then((res: any) => {
         this.setupDataUpdated.emit(res.data);
         this.modal.close();
       });

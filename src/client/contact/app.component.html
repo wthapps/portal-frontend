@@ -1,9 +1,16 @@
 <div class="wrapper">
-  <wth-header></wth-header>
+  <wth-header-navbar class="header">
+    <div class="header-nav-left">
+      <a [routerLink]="['/']" class="navbar-brand" href="#">
+        <img src="/assets/images_new/logo.png" alt="WTHApps">
+      </a>
+      <contact-shared-header></contact-shared-header>
+    </div>
+  </wth-header-navbar>
   <main class="main">
     <div class="main-page-left">
       <aside class="main-page-left-in aside-menu">
-        <z-shared-menu [contactMenu]="contactMenu"></z-shared-menu>
+        <z-shared-menu [contactMenu]="labels" [totalContactCount]="(contactService.contacts).length"></z-shared-menu>
       </aside>
     </div>
     <div class="main-page-body">
@@ -13,15 +20,20 @@
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
   <z-contact-share-import-progress></z-contact-share-import-progress>
-  <p-confirmDialog header="Confirmation" width="670" #cd>
-    <p-footer>
-      <button class="btn btn-default-inline" type="button" (click)="cd.reject()">Cancel</button>
-      <button class="btn btn-primary-inline" type="button" (click)="cd.accept()">Done</button>
-    </p-footer>
-  </p-confirmDialog>
 
-  <z-contact-share-add-contact></z-contact-share-add-contact>
+  <!--<h-confirmDialog header="Confirmation" width="670" #cd>-->
+    <!--<p-footer>-->
+      <!--<button class="btn btn-outline-default btn-min" type="button" pButton icon=""-->
+              <!--label="{{cd.rejectLabel}}"-->
+              <!--(click)="cd.reject()"></button>-->
+      <!--<button class="btn btn-outline-primary btn-min" type="button" pButton icon=""-->
+              <!--label="{{cd.acceptLabel}}"-->
+              <!--(click)="cd.accept()"></button>-->
+    <!--</p-footer>-->
+  <!--</h-confirmDialog>-->
+  <wth-confirm></wth-confirm>
 </div>
 
-<template #modalContainer></template>
-
+<ng-template #modalContainer></ng-template>
+<h-file-select></h-file-select>
+<h-file-select-crop></h-file-select-crop>

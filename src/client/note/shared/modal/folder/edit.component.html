@@ -1,0 +1,31 @@
+<modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-note-edit'" [backdrop]="'static'">
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">{{ titleModal }}</h4>
+    </modal-header>
+    <modal-body>
+      <div class="form-group no-label" [ngClass]="{'has-error': (!name.valid && name.touched)}">
+        <input autofocus [formControl]="name" type="text" class="form-control" id="note_form_name"
+               placeholder="Name">
+      </div>
+      <!--<p>Choose the location for your folder </p>
+      <div class="well-folder-tree-root">
+        <a [ngClass]="{'active': folder.parent_id == null}" href="javascript:;"
+           (click)="setDestinationFolder({name: 'My notes', parent_id: null})">
+          My Notes
+        </a>
+      </div>
+      <div class="well-folder-tree">
+        <p-panelMenu [model]="menuItems"></p-panelMenu>
+      </div>-->
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
+      <button type="submit" [disabled]="!form.valid" class="btn btn-outline-primary btn-min">Done
+      </button>
+    </modal-footer>
+
+  </form>
+</modal>
+

@@ -1,8 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ZContactService } from '../../shared/services/contact.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+
 import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { Constants } from '../../../core/shared/config/constants';
+import { Label } from '../../label/label.model';
+import { _contact } from '../../shared/utils/contact.functions';
+import { LabelService } from '../../label/label.service';
+declare let _: any;
 
 @Component({
   moduleId: module.id,
@@ -14,7 +20,17 @@ export class ZContactDetailComponent implements OnInit {
   contactId: number;
   data: any;
 
-  constructor(private contactService: ZContactService, private route: ActivatedRoute, private apiBaseService: ApiBaseService) {
+  phoneCategories: any = Constants.phoneCategories;
+  emailCategories: any = Constants.emailCategories;
+  addressCategories: any = Constants.addressCategories;
+  mediaCategories: any = Constants.mediaCategories;
+  _contact: any = _contact;
+
+  constructor(private contactService: ZContactService,
+              private route: ActivatedRoute,
+              private apiBaseService: ApiBaseService,
+              private labelService: LabelService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -26,15 +42,53 @@ export class ZContactDetailComponent implements OnInit {
     });
   }
 
-  doEvent(e: any) {
-    console.log(e);
-    this.contactService.update(this.data).subscribe((res: any) => {
+  deleteContact() {
+    this.contactService.confirmDeleteContact(this.data);
+  }
+
+  toggleLabel(name: string) {
+    let label = _.find(this.labelService.getAllLabelSyn(), (label: any) => {
+      return label.name == name;
+    });
+
+    if (_contact.isContactsHasLabelName([this.data], name)) {
+      _contact.removeLabelContactsByName([this.data], name);
+    } else {
+      _contact.addLabelContacts([this.data], label);
+    }
+    this.contactService.update([this.data]).subscribe((res: any) => {
       this.data = res.data;
     });
   }
 
-  deleteContact() {
-    this.contactService.confirmDeleteContact(this.data);
+  doActionsToolbar(event: any) {
+    if (event.action == 'favourite') {
+      this.toggleLabel('favourite');
+    }
+
+    if (event.action == 'blacklist') {
+      this.toggleLabel('blacklist');
+    }
+
+    if (event.action == 'delete') {
+      this.contactService.confirmDeleteContacts([this.data]);
+    }
+
+    if (event.action == 'social') {
+      if (this.data && this.data.wthapps_user && this.data.wthapps_user.uuid) {
+        window.location.href = _contact.getSocialLink(this.data.wthapps_user.uuid);
+      }
+    }
+
+    if (event.action == 'chat') {
+      if (this.data && this.data.wthapps_user && this.data.wthapps_user.uuid) {
+        window.location.href = _contact.getChatLink(this.data.wthapps_user.uuid);
+      }
+    }
+
+    if (event.action == 'edit_contact') {
+      this.router.navigate(['contacts/', this.data.id, {mode: 'edit'}]).then();
+    }
   }
 
 

@@ -111,7 +111,7 @@
                   <div class="form-group mb0 no-label">
                     <select name="country" class="form-control" formControlName="country">
                       <option value="">Select your country</option>
-                      <option *ngFor="let c of countriesCode" value="{{c.code}}">{{c.name}}</option>
+                      <option *ngFor="let c of countriesCode" value="{{ c.code }}">{{ c.name }}</option>
                     </select>
                   </div>
                 </div>
@@ -132,8 +132,10 @@
       </div>
     </modal-body>
     <modal-footer>
-      <button [disabled]="!form.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">Done</button>
-      <button type="button" class="btn btn-default btn-min" (click)="onHideModal()">Cancel</button>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
+              (click)="onSubmit(form.value)">Done
+      </button>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="onHideModal()">Cancel</button>
     </modal-footer>
   </modal>
 </form>

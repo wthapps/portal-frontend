@@ -8,10 +8,11 @@ import {
   Validators
 } from '@angular/forms';
 
-import { ToastsService } from '../../core/partials/toast/toast-message.service';
-import { LoadingService } from '../../core/partials/loading/loading.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
+import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
+import { Constants } from '../../core/shared/config/constants';
 
 declare var $: any;
 
@@ -25,6 +26,8 @@ export class NewPasswordComponent implements OnInit {
   form: FormGroup;
   password: AbstractControl;
   submitted: boolean = false;
+
+  tooltip: any = Constants.tooltip;
 
   private selectedId: number;
   private selectedReset_code: string;
@@ -77,6 +80,7 @@ export class NewPasswordComponent implements OnInit {
             if (result.data === null) {
               this.toastsService.danger(result.message);
             } else {
+              this.toastsService.success('You set new password successfully!');
               this.router.navigate(['/login']);
             }
           },
@@ -86,18 +90,6 @@ export class NewPasswordComponent implements OnInit {
             this.toastsService.danger(error);
             console.log('error:', error);
           });
-    }
-  }
-
-  hideShowPassword(event: any): void {
-    var target = event.target || event.srcElement || event.currentTarget;
-    let inputPass = $(target).prev();
-    if (inputPass.attr('type') == 'password') {
-      inputPass.attr('type', 'text');
-      $(target).addClass('active');
-    } else {
-      inputPass.attr('type', 'password');
-      $(target).removeClass('active');
     }
   }
 }

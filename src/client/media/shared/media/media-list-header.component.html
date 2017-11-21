@@ -1,14 +1,14 @@
 <div *ngIf="viewOption == 'grid'">
   <div class="sortbar-wrap clearfix">
-    <button class="btn btn-default-inline pull-right ml10" type="button" (click)="toggleSort(); doSort();">
+    <button class="btn btn-outline-default pull-right ml10" type="button" (click)="toggleSort(); doSort();">
       <i class="fa" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
     </button>
 
     <div class="dropdown pull-right">
-      <button class="btn btn-default-inline dropdown-toggle" type="button" data-toggle="dropdown">
-        {{sortName}}
+      <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown">
+        {{ sortName }}
       </button>
-      <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+      <ul class="dropdown-menu dropdown-menu-right">
         <li><a (click)="setSortName('Date'); doSort();" href="javascript:;"> Date</a></li>
         <li><a (click)="setSortName('Name'); doSort();" href="javascript:;"> Name</a></li>
       </ul>
@@ -50,15 +50,15 @@
 
 <div *ngIf="viewOption == 'timeline'">
   <div class="sortbar-wrap clearfix">
-    <button class="btn btn-default-inline pull-right ml10" type="button" (click)="toggleSort(); doSort();">
+    <button class="btn btn-outline-default pull-right ml10" type="button" (click)="toggleSort(); doSort();">
       <i class="fa can-click" [ngClass]="{'fa-arrow-up': (sort == 'asc'), 'fa-arrow-down': (sort == 'desc')}"></i>
     </button>
     <div class="dropdown pull-right">
-      <button aria-expanded="false" aria-haspopup="true" class="btn btn-default-inline dropdown-toggle"
+      <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-default dropdown-toggle"
               data-toggle="dropdown" type="button">
-        {{sortName}}
+        {{ sortName }}
       </button>
-      <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+      <ul class="dropdown-menu dropdown-menu-right">
         <li><a (click)="setSortName('Date'); group('date');" href="javascript:;"> Date</a></li>
         <li><a (click)="setSortName('Month'); group('month');" href="javascript:;"> Month</a></li>
         <li><a (click)="setSortName('Year'); group('year');" href="javascript:;"> Year</a></li>

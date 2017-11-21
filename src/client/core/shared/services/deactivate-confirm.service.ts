@@ -1,11 +1,10 @@
 import { Injectable }    from '@angular/core';
-import { ConfirmationService } from 'primeng/components/common/api';
 
 declare var _: any;
 
 @Injectable()
 export class DeactivateConfirmService {
-  constructor(private confirmationService: ConfirmationService) {
+  constructor() {
   }
 
   activate(x: any, y: any): any {
@@ -15,7 +14,7 @@ export class DeactivateConfirmService {
     }
     let decides: any = null;
     // let decides = new Promise<boolean>(resolve => {
-    //   this.confirmationService.confirm({
+    //   this.wthConfirmService.confirm({
     //     message: 'Leaving this page will lose your changes. Are you sure?',
     //     header: 'Discard changes?',
     //     accept: () => {

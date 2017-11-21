@@ -1,5 +1,5 @@
 <div class="page-body-control has-page-body-sidebar">
-  <z-chat-contact-navigation [tab]="'online'"></z-chat-contact-navigation>
+  <z-chat-contact-navigation [tab]="'online'" [count]="count"></z-chat-contact-navigation>
 </div>
 
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value">
@@ -12,10 +12,10 @@
             <z-chat-share-user [data]="contact" [size]="'sm'"></z-chat-share-user>
           </div>
           <div class="media-right no-wrap">
-            <button class="btn btn-default-inline" type="button" (click)="chatContactActions.onSelect(contact)">
+            <button class="btn btn-outline-default" type="button" (click)="chatContactActions.onSelect(contact)">
               <i class="fa fa-comment"></i>
             </button>
-            <button type="button" class="btn btn-default-inline" (click)="chatContactActions.onFavorite()">
+            <button type="button" class="btn btn-outline-default" (click)="chatContactActions.onFavorite()">
               <i class="fa" [ngClass]="contact.favourite? 'fa-star': 'fa-star-o'"></i>
             </button>
             <z-chat-contact-actions #chatContactActions [contact]="contact"></z-chat-contact-actions>
@@ -35,9 +35,9 @@
   </div>
 </div>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem.value && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatUserOnline:usersOnlineItem:usersOnlineItem.value.length).length == 0 ">
+<div class="page-body-content has-page-body-control has-page-body-sidebar"
+     *ngIf="contactItem.value && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatUserOnline:usersOnlineItem:usersOnlineItem.value.length).length == 0 ">
   <div class="page-body-content-in">
     No data
   </div>
 </div>
-

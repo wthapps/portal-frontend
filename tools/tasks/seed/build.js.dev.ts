@@ -68,8 +68,14 @@ export =
         //      sourceRoot: (file: any) =>
         //        relative(file.path, Config.PROJECT_ROOT + '/' + Config.APP_SRC).replace(sep, '/') + '/' + Config.APP_SRC
         //    }))
-        .pipe(plugins.template(new TemplateLocalsBuilder().withStringifiedSystemConfigDev().build()))
-        .pipe(gulp.dest(Config.APP_DEST));
-      }
+        .pipe(
+          plugins.template(
+            new TemplateLocalsBuilder().withStringifiedSystemConfigDev().build(),
+            Config.TEMPLATE_CONFIG
+          )
+        )
+        .pipe(gulp.dest(Config.APP_DEST)
+      );
+    }
   };
 

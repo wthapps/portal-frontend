@@ -1,14 +1,15 @@
 import { ServiceManager } from '../../services/service-manager';
+import { Processable } from './processable';
 
 declare let _:any;
 
-export class ChatSendMessage {
-  constructor(private data:any, private serviceManager:ServiceManager) {
+export class ChatSendMessage implements Processable {
+  constructor(private serviceManager:ServiceManager) {
 
   }
 
-  process() {
-    this.serviceManager.getChatCommonService().addMessage(this.data.group, this.data);
+  process(data: any) {
+    this.serviceManager.getChatCommonService().addMessage(data.data.group, data.data);
   }
 }
 

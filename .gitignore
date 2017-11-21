@@ -14,6 +14,9 @@ lib-cov
 coverage
 coverage_js
 
+# Directory for source-map-explorer reports
+sme
+
 # ignore documentation
 documentation
 
@@ -40,14 +43,13 @@ ts-node
 *.iml
 
 /tools/**/*.js
-/src/client/**/**/**/*.js
-/src/client/**/**/*.js
 dist
 dev
 docs
 lib
 test
 tmp
+*.lock
 
 gulpfile.js
 gulpfile.js.map
@@ -65,5 +67,10 @@ bower_components
 /deploy-*.sh
 /src/client/assets/.tmp/
 
+*.js
+
+
 *_BAK*
 /src/html/
+ts-node*
+firefox_root

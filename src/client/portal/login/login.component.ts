@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -7,13 +7,13 @@ import {
   AbstractControl
 } from '@angular/forms';
 
-import { ToastsService } from '../../core/partials/toast/toast-message.service';
-import { LoadingService } from '../../core/partials/loading/loading.service';
 import { AppearancesChannelService } from '../../core/shared/channels/appearances-channel.service';
 import { UserService } from '../../core/shared/services/user.service';
 import { AuthService } from '../../core/shared/services/auth.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
 import { Constants } from '../../core/shared/config/constants';
+import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
 
 
 declare var $: any;
@@ -24,7 +24,8 @@ declare var $: any;
 @Component({
   moduleId: module.id,
   selector: 'page-login',
-  templateUrl: 'login.component.html'
+  templateUrl: 'login.component.html',
+  styleUrls: ['login.component.css']
 })
 export class LoginComponent implements OnInit {
   form: FormGroup;
@@ -33,6 +34,8 @@ export class LoginComponent implements OnInit {
   submitted: boolean = false;
 
   flagsRelease: boolean = Constants.flagsRelease;
+
+  tooltip: any = Constants.tooltip;
 
   private returnUrl: string;
 
@@ -108,18 +111,6 @@ export class LoginComponent implements OnInit {
             //console.log('login error:', error);
           }
         );
-    }
-  }
-
-  hideShowPassword(event: any): void {
-    var target = event.target || event.srcElement || event.currentTarget;
-    let inputPass = $(target).prev();
-    if (inputPass.attr('type') == 'password') {
-      inputPass.attr('type', 'text');
-      $(target).addClass('active');
-    } else {
-      inputPass.attr('type', 'password');
-      $(target).removeClass('active');
     }
   }
 }

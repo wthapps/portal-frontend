@@ -1,0 +1,17 @@
+@import '../../../../scss/global';
+
+.cropper-wrap {
+  width: 200px;
+  height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  //img {
+  //  width: 100%;
+  //  height: auto;
+  //}
+}
+
+.selectcrop-control {
+  text-align: center;
+  margin-top: 10px;
+}

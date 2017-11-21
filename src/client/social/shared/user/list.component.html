@@ -1,10 +1,10 @@
-<template [ngIf]="data">
-  <div class="{{class}}" *ngFor="let item of data">
-    <template [ngIf]="(type == 'members' || type == 'member')">
-      <z-social-share-profile-member [data]="item"></z-social-share-profile-member>
-    </template>
-    <template [ngIf]="(type == 'communities' || type == 'community')">
+<ng-template [ngIf]="data">
+  <div class="{{ class }}" *ngFor="let item of data">
+    <ng-template [ngIf]="(type == 'members' || type == 'member')">
+      <z-social-share-profile-member [data]="item" (outEvent)="onAction($event)"></z-social-share-profile-member>
+    </ng-template>
+    <ng-template [ngIf]="(type == 'communities' || type == 'community')">
       <z-social-share-profile-community [data]="item" (actionFromItem)="onAction($event)"></z-social-share-profile-community>
-    </template>
+    </ng-template>
   </div>
-</template>
+</ng-template>

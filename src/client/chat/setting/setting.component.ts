@@ -6,8 +6,8 @@ import {
   AbstractControl,
   FormBuilder
 } from '@angular/forms';
-import { ConfirmationService } from 'primeng/components/common/api';
 import { ChatService } from '../shared/services/chat.service';
+import { WthConfirmService } from '../../core/shared/components/confirmation/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -20,17 +20,18 @@ export class ZChatSettingComponent implements OnInit {
   import_information: AbstractControl;
   online: AbstractControl;
   time_to_history: AbstractControl;
-  privacy:string;
-  setting:any;
+  privacy: string;
+  setting: any;
 
   constructor(private fb: FormBuilder,
               private location: Location,
               private chatService: ChatService,
-              private confirmationService: ConfirmationService) {}
+              private wthConfirmService: WthConfirmService) {
+  }
 
   ngOnInit() {
     this.chatService.getSetting().subscribe(
-      (res:any) => {
+      (res: any) => {
         this.setting = res.data;
         this.form = this.fb.group({
           'import_information': this.setting.import_information,
@@ -50,7 +51,7 @@ export class ZChatSettingComponent implements OnInit {
   onSubmit(value: any) {
     value.privacy = this.privacy;
     this.chatService.updateSetting(value).subscribe(
-      (res:any) => {
+      (res: any) => {
         this.setting = res.data;
       }
     );
@@ -58,7 +59,8 @@ export class ZChatSettingComponent implements OnInit {
 
 
   onDeleteChat() {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Delete',
       message: 'Are you sure to delete conversation?',
       header: 'Delete',
       accept: () => {
@@ -68,12 +70,13 @@ export class ZChatSettingComponent implements OnInit {
   }
 
   resetSettings() {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Reset',
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {
         this.chatService.restoreSetting().subscribe(
-          (res:any) => {
+          (res: any) => {
             this.setting = res.data;
             this.import_information.setValue(this.setting.import_information);
             this.online.setValue(this.setting.online);

@@ -3,11 +3,13 @@ import {
   Http, Headers, RequestOptions, RequestOptionsArgs, Response, RequestMethod,
   ResponseContentType
 } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
-import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/observable/throw';
 
+import { CookieService } from 'ngx-cookie';
 import { Constants } from '../config/constants';
 
 @Injectable()
@@ -89,11 +91,14 @@ export class ApiBaseService {
   }
 
   download(path: string, body: any=''): Observable<Response> {
+    if (typeof body == 'object') {
+      body = JSON.stringify(body);
+    }
     return this.http.post(this._baseUrl + path, body, {
       method: RequestMethod.Post,
       responseType: ResponseContentType.Blob,
       headers: this._headers
-    });
+    }).take(1);
   }
 
   paramsToString(params: any): string {
@@ -123,6 +128,8 @@ export class ApiBaseService {
 
   // TODO refactor
   private handleError(error: Response | any): any {
+    return Observable.throw(error);
+
     // redirect to login page if there is not a user logged in
     // if (error.status === 401 && error.statusText == 'Unauthorized') {
     //   this.router.navigate(['/login']);

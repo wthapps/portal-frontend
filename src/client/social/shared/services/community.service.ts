@@ -1,13 +1,15 @@
 import { Injectable, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
 
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Constants } from '../../../core/shared/config/constants';
-import { ConfirmationService } from 'primeng/components/common/api';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { UserService } from '../../../core/shared/services/user.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 
 declare let _: any;
 /**
@@ -32,7 +34,7 @@ export class SoCommunityService  {
               private userService: UserService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
-              private confirmationService: ConfirmationService  ) {
+              private wthConfirmService: WthConfirmService ) {
   }
 
 
@@ -55,7 +57,7 @@ export class SoCommunityService  {
     let pickAnotherAdmin = _.find(community.admins, (a: any) => a.id == this.userService.profile.id) != undefined  && !enoughAdmins;
 
     return new Promise<any>((resolve, reject) => {
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: pickAnotherAdmin ?
           `Hi there, you need to pick another admin for the community ${community.name} before leaving.` :
           `Are you sure to leave the community ${community.name}?`,
@@ -84,7 +86,7 @@ export class SoCommunityService  {
 
   confirmDeleteCommunity(community: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: `Are you sure to delete the community ${community.name}`,
         header: 'Delete Community',
         accept: () => {

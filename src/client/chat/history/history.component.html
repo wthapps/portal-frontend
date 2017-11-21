@@ -1,11 +1,12 @@
 <div class="page-body-content has-page-body-sidebar">
   <div class="page-body-content-in" *ngIf="contactItem.value">
-    <div *ngFor="let contact of contactItem.value | chatGroupHistory" class="media media-middle media-user-list media-user-list-history">
+    <div *ngFor="let contact of contactItem.value | chatGroupHistory"
+         class="media media-middle media-user-list media-user-list-history">
       <div class="media-left">
         <z-chat-share-user [data]="contact" [size]="'xs'"></z-chat-share-user>
       </div>
       <div class="media-left">
-        <span class="text-fade">{{contact.group_json.updated_at | timeFormat }}</span>
+        <span class="text-fade">{{ contact.group_json.updated_at | timeFormat }}</span>
       </div>
       <div class="media-body">
         <p class="no-wrap">

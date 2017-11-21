@@ -4,6 +4,8 @@ import { GoogleApiService } from '../services/google-api.service';
 import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
 import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
+import { Constants } from '../../../core/shared/config/constants';
+import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oauth.component';
 
 declare var _: any;
 
@@ -16,11 +18,15 @@ declare var _: any;
 export class ZContactSharedToolbarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
   @ViewChild('importContactSelect') importContactSelect: ZContactShareImportContactComponent;
+  @ViewChild('iCloudOAuthModal') iCloudOAuthModal: ICloudOAuthComponent;
+
   @Input() pageTitle: string = ''; // TODO will be removed
+  @Input() hasBack: boolean = false;
   selectedContact: string;
 
-  constructor(private contactService: ZContactService
-  ) {
+  tooltip: any = Constants.tooltip;
+
+  constructor(private contactService: ZContactService, private commonEventService: CommonEventService) {
   }
 
   ngOnInit() {
@@ -28,31 +34,30 @@ export class ZContactSharedToolbarComponent implements OnInit {
   }
 
   openAddModal() {
-    console.log("openAddModal");
-    this.contactService.contactAddContactService.sendIn({action: "open"});
+    console.log('openAddModal');
   }
+
 
   openImportContactModal(options?: any) {
     this.importContactSelect.modal.open(options);
   }
 
   onImportOptionSelected(event: any) {
-    console.debug('onImportOptionSelected: event - ', event);
 
-    switch (event.name) {
+    switch (event.provider) {
       case 'google':
-        console.log('google import contact');
-        this.contactService.importContactDataService.sendIn({action: 'contact:contact:open_import_progress:google'});
-
-        break;
-      case 'yahoo':
-        break;
-      case 'outlook':
-        break;
-      case 'others':
+      case 'apple':
+      case 'microsoft':
+      case 'linkedin':
+      case 'import_from_file':
+        this.commonEventService.broadcast({
+          channel: 'contact:contact:actions',
+          action: 'contact:contact:import_contact',
+          payload: event
+        });
         break;
       default:
-        console.error('Unhandled import option: ', event.name);
+        console.error('Unhandled import option: ', event.provider);
         break;
     }
   }

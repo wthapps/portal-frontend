@@ -1,5 +1,6 @@
 <wth-modal-dock #modalDock>
-  <wth-modal-dock-header [loading]="(importStatus==IMPORT_STATUS.importing)">
+  <wth-modal-dock-header [loading]="(importStatus==IMPORT_STATUS.importing)" [failed]="(importStatus==IMPORT_STATUS.cancelled || importStatus==IMPORT_STATUS.error)"
+                         [done]="(importStatus==IMPORT_STATUS.done)">
     <span *ngIf="importStatus==IMPORT_STATUS.importing">Importing</span>
     <span *ngIf="importStatus==IMPORT_STATUS.done">Imported</span>
     <span *ngIf="importStatus==IMPORT_STATUS.cancelled">Import cancelled</span>
@@ -21,7 +22,7 @@
       </div>
       <div class="media-body">
         <div *ngIf="importStatus==IMPORT_STATUS.importing">Importing {{ gapi.totalImporting > 0 ? 'total ' + gapi.totalImporting + ' contacts' : '' }}  ...</div>
-        <div *ngIf="importStatus==IMPORT_STATUS.done">{{ gapi.totalImporting }} contacts imported</div>
+        <div *ngIf="importStatus==IMPORT_STATUS.done">{{ successfulNum }} contacts imported</div>
         <div *ngIf="importStatus==IMPORT_STATUS.cancelled">{{ gapi.totalImporting }} contacts cancelled</div>
       </div>
     </div>
@@ -29,6 +30,9 @@
     <div class="media" *ngIf="importStatus==IMPORT_STATUS.error">
       <div class="media-body">
         <p class="h3 m0 text-normal">Oops, something's wrong happened</p>
+        <a href="javascript:;" (click)="retry($event)">
+          Retry
+        </a>
       </div>
     </div>
 
@@ -44,3 +48,4 @@
     </div>
   </wth-modal-dock-footer>
 </wth-modal-dock>
+<contact-add-label-modal #addLabel ></contact-add-label-modal>

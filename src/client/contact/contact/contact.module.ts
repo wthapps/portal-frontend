@@ -1,59 +1,42 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ZContactSharedModule } from '../shared/shared.module';
-import { ZContactHomeModule } from '../home/home.module';
-// import { ZNewContactModule } from './new/new-contact.module';
-// import { ZContactDetailModule } from './contact-detail/contact-detail.module';
-import { ZContactListComponent } from './contact-list/contact-list.component';
-import { ZContactListModule } from './contact-list/contact-list.module';
-import { ContactRoutingModule } from './contact-routing.module';
-// import { ZNewContactComponent } from './new/new-contact.component';
-// import { ZContactDetailComponent } from './contact-detail/contact-detail.component';
 
-import {
-  ContactEditPageComponent,
-  ContactEditComponent
-} from './index';
-import { FormsModule } from '@angular/forms';
+import { ZContactSharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
+import { ZContactRoutingModule } from './contact-routing.module';
+
+import { ZContactListComponent } from './contact-list/contact-list.component';
+import { ZContactEditPageComponent } from './contact-edit/contact-edit-page.component';
 import { ZContactDetailComponent } from './contact-detail/contact-detail.component';
-import { SharedModule } from '../../core/shared/shared.module';
+import { ZContactEditComponent } from './contact-edit/contact-edit.component';
+import { InvitationModule } from '../../core/shared/components/invitation/invitation.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    ContactRoutingModule,
+    InvitationModule,
+    ZContactRoutingModule,
+
     ZContactSharedModule.forRoot(),
-
-    SharedModule.forRoot(),
-
-    ZContactHomeModule,
-    // ZContactListModule,
-    // ZNewContactComponent,
-    // ZContactDetailComponent,
-    // ContactEditPageComponent
-    ZContactHomeModule,
-    // ZContactListModule,
-    // ZNewContactModule,
-    // ZContactDetailModule
-
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZContactListComponent,
-    ContactEditPageComponent,
+    ZContactEditPageComponent,
     ZContactDetailComponent,
 
     //components
-    ContactEditComponent,
+    ZContactEditComponent,
   ],
   exports: [
     ZContactListComponent,
-    ContactEditPageComponent,
+    ZContactEditPageComponent,
     ZContactDetailComponent,
 
     //components
-    ContactEditComponent
+    ZContactEditComponent
   ],
   providers: []
 })
-export class ContactModule {
+export class ZContactModule {
 }

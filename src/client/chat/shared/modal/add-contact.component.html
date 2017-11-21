@@ -1,43 +1,46 @@
-<form *ngIf="contactsItem.value">
+<form>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title"> <i class="fa fa-plus"></i> Add To Conversation</h4>
+      <h4 class="modal-title"><i class="fa fa-weixin"></i> {{ title }}</h4>
     </modal-header>
     <modal-body>
       <div class="form-group">
         <input type="text" name="name" class="form-control" placeholder="Name" [(ngModel)]="filter">
       </div>
       <div class="content-overflow" style="max-height: 300px;">
-        <div class="row media-user-list-group" *ngIf="contactsItem">
+        <div class="row media-user-list-group" *ngIf="contacts">
           <div class="col-sm-12"
-               *ngFor="let contact of contactsItem.value.data | chatGroupCouple | wthFilterBy:'display.name':filter">
+               *ngFor="let contact of contacts | wthFilterBy:'name':filter">
             <div class="media media-user-list media-middle">
               <div class="media-body">
-                <z-chat-share-user-icon [image]="contact.display.image"
-                                        [name]="contact.display.name"
+                <z-chat-share-user-icon [image]="contact?.profile_image"
+                                        [name]="contact.name"
                                         [size]="'xs'"
-                                        [groupType]="contact.group_json.group_type"
-                                        [userId]="contact.display.id">
+                                        [groupType]="'couple'"
+                                        [userId]="contact.id">
                 </z-chat-share-user-icon>
               </div>
               <div class="media-right no-wrap">
-                <input class="new-contact" name="friend" type="checkbox" [(ngModel)]="contact.checked">
+                <input [disabled]="contact.inConversation" class="new-contact" name="friend" type="checkbox" [checked]="contact.checked" (click)="checkBox(contact)">
               </div>
             </div>
           </div>
         </div>
 
-        <div *ngIf="(contactsItem.value.data | chatGroupCouple | wthFilterBy:'display.name':filter | arrayLength) == 0" class="text-center">
+        <div *ngIf="contacts && (contacts | wthFilterBy:'name':filter | arrayLength) == 0"
+             class="text-center">
           <p>There is no contact</p>
           <p>You can find more people through search</p>
-          <button type="button" class="btn btn-default btn-min" data-dismiss="modal" (click)="search()"> <i class="fa fa-plus"></i> Add New Contact</button>
+          <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="search()"><i
+            class="fa fa-plus"></i> Add New Contact
+          </button>
         </div>
 
       </div>
     </modal-body>
     <modal-footer>
-      <button type="submit" class="btn btn-wth-default btn-min mr10" (click)="add()">Done</button>
-      <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      <button type="submit" class="btn btn-outline-primary btn-min" (click)="add()">Done</button>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
     </modal-footer>
   </modal>
 </form>

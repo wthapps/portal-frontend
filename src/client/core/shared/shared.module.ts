@@ -1,66 +1,79 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ConfirmDialogModule, ConfirmationService, ChipsModule } from 'primeng/primeng';
-import { InputSwitchModule } from 'primeng/primeng';
-import { AutoCompleteModule } from 'primeng/primeng';
-import { SliderModule } from 'primeng/primeng';
-import { CalendarModule } from 'primeng/primeng';
-import { CheckboxModule } from 'primeng/primeng';
-import { RadioButtonModule } from 'primeng/primeng';
-import { InputTextareaModule } from 'primeng/primeng';
-
-import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { CookieModule, CookieService } from 'ngx-cookie';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+
+import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
+import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
+import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
+import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
+import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
+import { CalendarModule } from 'primeng/components/calendar/calendar';
+import { TooltipModule } from 'primeng/components/tooltip/tooltip';
+import { EditorModule } from 'primeng/components/editor/editor';
 
 import { ApiBaseService } from './services/apibase.service';
-
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { NameListService } from './name-list/name-list.service';
-import { PartialsModule } from '../partials/partials.module';
+import { ServiceManager } from './services/service-manager';
 import { UserService } from './services/user.service';
 import { StorageService } from './services/storage.service';
 import { HandlerService } from './services/handler.service';
-
-//Pipe
-import { GroupByMonthYearPipe } from './pipe/groupby-month-year.pipe';
-import { GroupByPipe } from './pipe/groupby.pipe';
-import { NewlinePipe } from './pipe/newline.pipe';
-import { UrlTransformPipe } from './pipe/url.pipe';
-import { ShowLengthTransformPipe } from './pipe/show-length.pipe';
-import { ConvertByPatternPipe } from './pipe/convert.pipe';
-import { ScrollToBottomDirective } from './directive/scroll-to-bottom.directive';
+import { WTHNavigateService } from './services/wth-navigate.service';
 import { NotificationService } from './services/notification.service';
 import { NotificationChannelService } from './channels/notification-channel.service';
 import { AppearancesChannelService } from './channels/appearances-channel.service';
-import { ReadMoreComponent } from '../partials/read-more/read-more.component';
+import { ChannelService } from './channels/channel.service';
 import { PhotoModalDataService } from './services/photo-modal-data.service';
 import { PhotoUploadService } from './services/photo-upload.service';
-import { WthFilterByPipe } from './pipe/wthFilterBy.pipe';
-import { ArrayLengthPipe } from './pipe/array-length.pipe';
-import { GroupByObjectTypePipe } from './pipe/groupby-object-type.pipe';
-import { ServiceManager } from './services/service-manager';
-import { AutofocusDirective } from './directive/autofocus.directive';
-import { ImgFullDirective } from './directive/img-full.directive';
-import { WTHNavigateService } from './services/wth-navigate.service';
-import { PhotoService } from './services/photo.service';
-import { PhotoItemPreviewComponent } from './components/photo/photo-item-preview.component';
-import { TextAreaAutoHeightDirective } from './directive/textarea-autoheight.directive';
 import { UrlService } from './services/url.service';
 import { DateService } from './services/date.service';
-import { ChannelService } from './channels/channel.service';
+import { ZSharedReportService } from './components/zone/report/report.service';
 import { ChatCommonService } from './services/chat.common.service';
-import { ZoneReportService } from './form/report/report.service';
-import { ZoneReportComponent } from './form/report/report.component';
+import { PhotoService } from './services/photo.service';
+import { CountryService } from './components/countries/countries.service';
+import { SuggestionService } from './services/suggestion.service';
 import { CommonEventService } from './services/common-event/common-event.service';
-import { DisplayAsHtmlDirective } from './directive/display-as-html.directive';
+
 import { PipeModule } from './pipe/pipe.module';
-import { PartialsPhotoModule } from '../shared/components/photo/photo.module';
-// import { Communication } from './models/communication.model';
+
+import { LoadingModule } from './components/loading/loading.module';
+import { FooterModule } from './components/footer/footer.module';
+import { HeaderModule } from './components/header/header.module';
+import { HeaderNavbarModule } from './components/navbar/navbar.module';
+import { PartialsNotificationsModule } from './components/notifications/notifications.module';
+import { TablePricingModule } from './components/table-pricing/table-pricing.module';
+import { ToastsModule } from './components/toast/toast-message.module';
+import { CoreChatSupportModule } from './components/chat-support/chat-support.module';
+import { UploadCropImageModule } from './components/upload-crop-image/upload-crop-image.module';
+import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
+import { ZSharedMenuModule } from './components/zone/menu/menu.module';
+import { FileModule } from './components/file/file.module';
+import { DisplayLinkModule } from './components/link/display-link.module';
+import { ZSharedReportModule } from './components/zone/report/report.module';
+import { PartialsProfileModule } from './components/profile/profile.module';
+import { PartialsPhotoModule } from './components/photo/photo.module';
+import { ModalDockModule } from './components/modal/dock.module';
+import { EntitySelectModule } from './components/entity-select/entity-select.module';
+import { ReadMoreModule } from './components/read-more/read-more.module';
+import { CoverProfileModule } from './components/cover-profile/cover-profile.module';
+import { ZChatEmojiModule } from './emoji/emoji.module';
+
+
+import { AuthGuard } from './services/auth-guard.service';
+import { AuthService } from './services/auth.service';
+import { GenericFileService } from './services/generic-file.service';
+import { ShowHidePasswordModule } from './components/show-hide-password/show-hide-password.module';
+import { InvitationModule } from './components/invitation/invitation.module';
+import { WthConfirmModule } from './components/confirmation/wth-confirm.module';
+import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
+import { BoxLoadingModule } from './components/box-loading/box-loading.module';
+import { BoxNoDataModule } from './components/box-no-data/box-no-data.module';
+import { DirectiveModule } from './directive/directive.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -68,109 +81,78 @@ import { PartialsPhotoModule } from '../shared/components/photo/photo.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    PartialsModule,
-    ConfirmDialogModule,
-    ChipsModule,
-    Ng2Bs3ModalModule,
-    InputSwitchModule,
-    AutoCompleteModule,
-    InfiniteScrollModule,
-    SliderModule,
-    CalendarModule,
-    CheckboxModule,
-    RadioButtonModule,
-    InputTextareaModule,
-    PipeModule,
-    PartialsPhotoModule
-  ],
-  declarations: [
-    ToolbarComponent,
-    NavbarComponent,
-    ReadMoreComponent,
-    PhotoItemPreviewComponent,
-    ZoneReportComponent,
+    BrowserAnimationsModule,
+    CookieModule.forRoot(),
 
-    // Pipe
-    GroupByObjectTypePipe,
-    GroupByPipe,
-    NewlinePipe,
-    ConvertByPatternPipe,
-    // TimeFormatPipe,
-    // TitleCase,
-    UrlTransformPipe,
-    ShowLengthTransformPipe,
-    WthFilterByPipe,
-    ArrayLengthPipe,
-
-    //Directive
-    ScrollToBottomDirective,
-    AutofocusDirective,
-    ImgFullDirective,
-    TextAreaAutoHeightDirective,
-    DisplayAsHtmlDirective
+    InfiniteScrollModule
   ],
+  declarations: [],
   exports: [
     CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    PartialsModule,
-    ConfirmDialogModule,
-    ChipsModule,
+    BrowserAnimationsModule,
     Ng2Bs3ModalModule,
-    InputSwitchModule,
-    AutoCompleteModule,
+
+    LoadingModule,
+    ToastsModule,
+    ConfirmDialogModule,
     InfiniteScrollModule,
-    SliderModule,
-    CalendarModule,
+    InputSwitchModule,
     CheckboxModule,
     RadioButtonModule,
-    InputTextareaModule,
-    PipeModule,
+    AutoCompleteModule,
+    CalendarModule,
+    TooltipModule,
+    EditorModule,
+    PanelMenuModule,
+
+    WthConfirmModule,
+    BoxLoadingModule,
+    BoxNoDataModule,
+
+    FooterModule,
+    HeaderModule,
+    HeaderNavbarModule,
+    PartialsNotificationsModule,
+    TablePricingModule,
+    CoreChatSupportModule,
+    UploadCropImageModule,
+    BreadcrumbModule,
+    ZSharedMenuModule,
+    ZSharedMenuModule,
+    FileModule,
+    DisplayLinkModule,
+    ZSharedReportModule,
+    PartialsProfileModule,
     PartialsPhotoModule,
-
-    // Component
-    ToolbarComponent,
-    NavbarComponent,
-    ReadMoreComponent,
-    PhotoItemPreviewComponent,
-    ZoneReportComponent,
-
+    ModalDockModule,
+    EntitySelectModule,
+    ReadMoreModule,
+    CoverProfileModule,
+    ZChatEmojiModule,
+    ShowHidePasswordModule,
+    InvitationModule,
 
     // Pipe
-    GroupByObjectTypePipe,
-    WthFilterByPipe,
-    ArrayLengthPipe,
-    GroupByPipe,
-    NewlinePipe,
-    // Communication,
-    // TimeFormatPipe,
-    // TitleCase,
-    UrlTransformPipe,
-    ShowLengthTransformPipe,
-    ConvertByPatternPipe,
+    PipeModule,
 
     //Directive
-    ScrollToBottomDirective,
-    AutofocusDirective,
-    ImgFullDirective,
-    TextAreaAutoHeightDirective,
-    DisplayAsHtmlDirective
+    DirectiveModule
   ]
 })
-export class SharedModule {
+export class CoreSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: SharedModule,
+      ngModule: CoreSharedModule,
       providers: [
         ApiBaseService,
         ServiceManager,
         UserService,
-        NameListService,
+        AuthGuard,
+        AuthService,
+        CountryService,
         ConfirmationService,
         CookieService,
         StorageService,
@@ -184,10 +166,12 @@ export class SharedModule {
         PhotoUploadService,
         UrlService,
         DateService,
-        ZoneReportService,
+        ZSharedReportService,
         ChatCommonService,
         PhotoService,
-        CommonEventService
+        SuggestionService,
+        CommonEventService,
+        GenericFileService
       ]
     };
   }

@@ -16,6 +16,7 @@ export class TextAreaAutoHeightDirective implements AfterContentChecked {
   }
 
   constructor(public element: ElementRef) {
+
   }
 
   ngAfterContentChecked(): void {
@@ -24,8 +25,13 @@ export class TextAreaAutoHeightDirective implements AfterContentChecked {
 
   adjust(): void {
     this.element.nativeElement.style.overflow = 'hidden';
-    this.element.nativeElement.style.height = 'auto';
-    this.element.nativeElement.style.height = this.element.nativeElement.scrollHeight + 'px';
+    this.element.nativeElement.style.height = '34px';
+    this.element.nativeElement.style.minHeight = '34px';
+
+    if (this.element.nativeElement.style.height == 'auto') {
+      this.element.nativeElement.style.height = '34px';
+    } else {
+      this.element.nativeElement.style.height = this.element.nativeElement.scrollHeight + 'px';
+    }
   }
 }
-

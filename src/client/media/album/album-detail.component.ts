@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+
+import 'rxjs/add/operator/toPromise';
+
 import { ZMediaAlbumService } from './album.service';
 
 @Component({
@@ -25,7 +28,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
       .switchMap((params: Params) => {
         this.params = params;
         this.showDetail = params['showDetail'] || false;
-        return this.albumService.getAlbum(params['id']); }).take(1)
+        return this.albumService.getAlbum(params['id']); })
         .subscribe((res: any)=> {
           this.album = res.data;
       });

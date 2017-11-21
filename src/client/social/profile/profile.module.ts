@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SharedModule } from '../../core/shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZSocialSharedModule } from '../shared/shared.module';
 
-import { ZSocialProfileRoutingModule } from './profile-routing.module';
 import { ZSocialProfileComponent } from './profile.component';
 import { ZSocialProfileAboutComponent } from './about/about.component';
 import { ZSocialProfileCoverComponent } from './cover/cover.component';
@@ -16,13 +15,11 @@ import { ZSocialProfileFormInterestComponent } from './form/interest.component';
 import { ZSocialProfilePostComponent } from './post/post.component';
 import { ZSocialProfileFriendComponent } from './friend/friend.component';
 import { ZSocialProfileDataService } from './profile-data.service';
-import { CoverProfileModule } from '../../core/partials/cover-profile/cover-profile.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    ZSocialProfileRoutingModule,
-    SharedModule.forRoot(),
+    CoreSharedModule.forRoot(),
     ZSocialSharedModule.forRoot(),
   ],
   declarations: [

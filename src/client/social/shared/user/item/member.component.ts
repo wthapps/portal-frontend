@@ -1,6 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+
+import 'rxjs/add/operator/toPromise';
+
 import { Constants } from '../../../../core/shared/config/constants';
 import { SocialService } from '../../services/social.service';
+import { SocialFavoriteService } from '../../services/social-favorites.service';
+import * as fromMember from '../../../shared/actions/member';
 
 declare var _: any;
 
@@ -9,29 +15,29 @@ declare var _: any;
   selector: 'z-social-share-profile-member',
   templateUrl: 'member.component.html'
 })
-export class ZSocialShareProfileMemberComponent implements OnInit {
+export class ZSocialShareProfileMemberComponent {
   @Input() data: any;
+  @Output() outEvent: EventEmitter<any> = new EventEmitter();
 
   favourite: any; // toggle favourites status for members, communities
 
   friendStatus = Constants.friendStatus;
+  tooltip: any = Constants.tooltip;
 
-  constructor(private socialService: SocialService) {
-  }
-
-  ngOnInit() {
+  constructor(private socialService: SocialService,
+              private router: Router,
+              private favoriteService: SocialFavoriteService) {
   }
 
   toggleFavourite(item: any, group: string) {
-    this.socialService.user.toggleFavourites(item.uuid, group).subscribe(
-      (res: any) => {
+    this.favoriteService.addFavourite(item.uuid, group)
+      .then((res: any) => {
         if (!_.isEmpty(this.favourite)) {
           this.favourite = undefined;
         } else {
           this.favourite = res.data;
         }
-      }
-    );
+      });
   }
 
   /*
@@ -40,54 +46,57 @@ export class ZSocialShareProfileMemberComponent implements OnInit {
    group: community / members
    */
   getFavourite(item: any, group: string) {
-    this.socialService.user.getFavourite(item.uuid, group).subscribe(
+    this.socialService.user.getFavourite(item.uuid, group).toPromise().then(
       (res: any) => {
         this.favourite = res.data;
       }
     );
   }
 
-  toggleFollow(item: any) {
-
+  viewProfile(item: any) {
+    this.router.navigate(['/profile', item.uuid]);
   }
-
 
   // TODO:
   importToContacts(item: any) {
-
+    console.log('inside importToContacts');
   }
 
   addFriend(user: any) {
 
-    this.socialService.user.addFriend(user.uuid).subscribe(
+    this.socialService.user.addFriend(user.uuid).toPromise().then(
       (res: any) => {
         user.friend_status = Constants.friendStatus.pending;
+        this.outEvent.emit({action: fromMember.ACTIONS.ADD_FRIEND});
       }
     );
   }
 
   unfriend(user: any) {
-    this.socialService.user.unfriend(user.uuid).subscribe(
+    this.socialService.user.unfriend(user.uuid).toPromise().then(
       (res: any) => {
         // Currently not support unfriend status. May be updated later
         user.friend_status = Constants.friendStatus.stranger;
+        this.outEvent.emit({action: fromMember.ACTIONS.UNFRIEND});
       },
     );
   }
 
   unfollow(friend: any) {
-    this.socialService.user.unfollow(friend.uuid).subscribe(
+    this.socialService.user.unfollow(friend.uuid).toPromise().then(
       (res: any) => {
         friend.is_following = false;
+        this.outEvent.emit({action: fromMember.ACTIONS.UNFOLLOW});
       },
     );
   }
 
   follow(friend: any) {
-    this.socialService.user.follow(friend.uuid).subscribe(
+    this.socialService.user.follow(friend.uuid).toPromise().then(
       (res: any) => {
         // this.getUser();
         friend.is_following = true;
+        this.outEvent.emit({action: fromMember.ACTIONS.FOLLOW});
       },
     );
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
@@ -10,7 +10,7 @@ declare var _: any;
   templateUrl: 'request-contact.component.html'
 })
 
-export class ZChatShareRequestContactComponent implements OnInit {
+export class ZChatShareRequestContactComponent {
 
   contact: any;
   message: string = 'Hello, please accept my request';
@@ -21,12 +21,8 @@ export class ZChatShareRequestContactComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-
-  }
-
   send() {
-    this.chatService.addContact([this.contact.id], this.message);
+    this.chatService.chatContactService.addContact([this.contact.id], this.message);
     this.modal.close();
     this.onClose.emit();
   }

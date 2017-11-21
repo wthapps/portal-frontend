@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { isNumberFinite, isPositive, isInteger, toDecimal } from '../utils/utils';
+import { _wu } from '../utils/utils';
 
 export type ByteUnit = 'Byte' | 'KB' | 'MB' | 'GB' | 'TB';
 
@@ -21,11 +21,10 @@ export class BytesPipe implements PipeTransform {
   transform(input_x: any, decimal: number = 0, from: ByteUnit = 'Byte'): any {
     let input:number = parseInt(input_x);
 
-
-    if (!(isNumberFinite(input) &&
-      isNumberFinite(decimal) &&
-      isInteger(decimal) &&
-      isPositive(decimal))) {
+    if (!(_wu.isNumberFinite(input) &&
+      _wu.isNumberFinite(decimal) &&
+      _wu.isInteger(decimal) &&
+      _wu.isPositive(decimal))) {
       return input;
     }
 
@@ -43,8 +42,8 @@ export class BytesPipe implements PipeTransform {
         const prev = BytesPipe.formats[format.prev];
 
         const result = prev ?
-          toDecimal(bytes / prev.max, decimal) :
-          toDecimal(bytes, decimal);
+          _wu.toDecimal(bytes / prev.max, decimal) :
+          _wu.toDecimal(bytes, decimal);
 
         return (result > 1 && key == 'Byte') ? `${result} Bytes` : `${result} ${key}`;
       }

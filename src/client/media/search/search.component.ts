@@ -1,6 +1,5 @@
-import { Component, OnInit, HostListener, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { ServiceManager } from '../../core/shared/services/service-manager';
-import { MediaViewContainerComponent } from '../shared/container/media-view-container.comoponent';
+import { Component, ViewChild } from '@angular/core';
+import { MediaViewContainerComponent } from '../shared/container/media-view-container.component';
 
 declare var $: any;
 declare var _: any;
@@ -10,14 +9,7 @@ declare var _: any;
   selector: 'z-media-search',
   templateUrl: 'search.component.html'
 })
-export class ZMediaSearchComponent implements OnInit {
+export class ZMediaSearchComponent {
   @ViewChild('container') container: MediaViewContainerComponent;
-  firtTime: boolean = true;
   sub:any;
-
-  constructor() {}
-
-  ngOnInit() {
-  //
-  }
 }

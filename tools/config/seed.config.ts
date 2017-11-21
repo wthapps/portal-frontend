@@ -2,7 +2,12 @@ import { join } from 'path';
 import * as slash from 'slash';
 import { argv } from 'yargs';
 
-import { BuildType, ExtendPackages, InjectableDependency } from './seed.config.interfaces';
+import {
+  BuildType,
+  ExtendPackages,
+  InjectableDependency,
+  SourceMapExplorerOutputFormat
+} from './seed.config.interfaces';
 
 /************************* DO NOT CHANGE ************************
  *
@@ -27,6 +32,16 @@ import { BuildType, ExtendPackages, InjectableDependency } from './seed.config.i
 export const BUILD_TYPES: BuildType = {
   DEVELOPMENT: 'dev',
   PRODUCTION: 'prod'
+};
+
+/**
+ * The enumeration of available source-map-explorer output formats.
+ * @type {SourceMapExplorerOutputFormats}
+ */
+export const SME_OUTPUT_FORMATS: SourceMapExplorerOutputFormat = {
+  HTML: 'html',
+  JSON: 'json',
+  TSV: 'tsv'
 };
 
 /**
@@ -62,6 +77,23 @@ export class SeedConfig {
   BUILD_TYPE = getBuildType();
 
   /**
+   * The flag to determine preserving source maps on build or not.
+   * The default value is `false`, which can be overriden by the `--preserve-source-maps` flag when running `npm start`.
+   */
+  PRESERVE_SOURCE_MAPS = argv['preserve-source-maps'] || false;
+
+  /**
+   * The current source-map-explorer output format.
+   * The default value is `html`, which can be overriden by the `--sme-out-format html|json|tsv` flag when running `npm run sme`.
+   */
+  SME_OUT_FORMAT = getSmeOutFormat();
+
+  /**
+   * The current source-map-explorer output folder.
+   */
+  SME_DIR = 'sme';
+
+  /**
    * The flag for the debug option of the application.
    * The default value is `false`, which can be overriden by the `--debug` flag when running `npm start`.
    * @type {boolean}
@@ -83,9 +115,9 @@ export class SeedConfig {
   COVERAGE_PORT = argv['coverage-port'] || 4004;
 
   /**
-   * The path to the coverage output
-   * NB: this must match what is configured in ./karma.conf.js
-   */
+  * The path to the coverage output
+  * NB: this must match what is configured in ./karma.conf.js
+  */
   COVERAGE_DIR = 'coverage_js';
   COVERAGE_TS_DIR = 'coverage';
 
@@ -119,7 +151,7 @@ export class SeedConfig {
    * The default directory is `app`.
    * @type {string}
    */
-  BOOTSTRAP_DIR = argv['app'] || 'app';
+  BOOTSTRAP_DIR = argv['app'] || 'portal';
 
   /**
    * The directory where the client files are located.
@@ -201,14 +233,24 @@ export class SeedConfig {
   /**
    * Seed tasks which are composition of other tasks.
    */
-  SEED_COMPOSITE_TASKS = join(process.cwd(), this.TOOLS_DIR, 'config', 'seed.tasks.json');
+  SEED_COMPOSITE_TASKS = join(
+    process.cwd(),
+    this.TOOLS_DIR,
+    'config',
+    'seed.tasks.json'
+  );
 
   /**
    * Project tasks which are composition of other tasks
    * and aim to override the tasks defined in
    * SEED_COMPOSITE_TASKS.
    */
-  PROJECT_COMPOSITE_TASKS = join(process.cwd(), this.TOOLS_DIR, 'config', 'project.tasks.json');
+  PROJECT_COMPOSITE_TASKS = join(
+    process.cwd(),
+    this.TOOLS_DIR,
+    'config',
+    'project.tasks.json'
+  );
 
   /**
    * The destination folder for the generated documentation.
@@ -241,6 +283,12 @@ export class SeedConfig {
   E2E_DEST = `${this.DIST_DIR}/e2e`;
 
   /**
+   * The folder for the built translation file.
+   * @type {string}
+   */
+  LOCALE_DEST = `${this.DIST_DIR}/locale`;
+
+  /**
    * The folder for temporary files.
    * @type {string}
    */
@@ -250,7 +298,9 @@ export class SeedConfig {
    * The folder for the built files, corresponding to the current environment.
    * @type {string}
    */
-  APP_DEST = this.BUILD_TYPE === BUILD_TYPES.DEVELOPMENT ? this.DEV_DEST : this.PROD_DEST;
+  APP_DEST = this.BUILD_TYPE === BUILD_TYPES.DEVELOPMENT
+    ? this.DEV_DEST
+    : this.PROD_DEST;
 
   /**
    * The folder for the built CSS files.
@@ -304,7 +354,10 @@ export class SeedConfig {
    * Set ENABLE_SCSS environment variable to 'true' or '1'
    * @type {boolean}
    */
-  ENABLE_SCSS = ['true', '1'].indexOf(`${process.env.ENABLE_SCSS}`.toLowerCase()) !== -1 || argv['scss'] || false;
+  ENABLE_SCSS = ['true', '1'].indexOf(
+    `${process.env.ENABLE_SCSS}`.toLowerCase()) !== -1 ||
+    argv['scss'] ||
+    false;
 
   /**
    * Enable tslint emit error by setting env variable FORCE_TSLINT_EMIT_ERROR
@@ -317,6 +370,43 @@ export class SeedConfig {
    * @type {string[]}
    */
   EXTRA_WATCH_PATHS: string[] = [];
+
+  /**
+   * Defines the template config.
+   */
+  TEMPLATE_CONFIG = {
+    /**
+     * Used to detect `data` property values to be HTML-escaped.
+     *
+     * @memberOf _.templateSettings
+     * @type {RegExp}
+     */
+    escape: /<%-([\s\S]+?)%>/g,
+
+    /**
+     * Used to detect code to be evaluated.
+     *
+     * @memberOf _.templateSettings
+     * @type {RegExp}
+     */
+    evaluate: /<%([\s\S]+?)%>/g,
+
+    /**
+     * Used to detect `data` property values to inject.
+     *
+     * @memberOf _.templateSettings
+     * @type {RegExp}
+     */
+    interpolate: /<%=([\s\S]+?)%>/g,
+
+    /**
+     * Used to reference the data object in the template text.
+     *
+     * @memberOf _.templateSettings
+     * @type {string}
+     */
+    variable: ''
+  };
 
   /**
    * The list of NPM dependcies to be injected in the `index.html`.
@@ -339,17 +429,6 @@ export class SeedConfig {
   APP_ASSETS: InjectableDependency[] = [];
 
   /**
-   * Returns the array of injectable dependencies (the list of local files to be injected in the `index.html`).
-   * @return {InjectableDependency[]}
-   */
-  private get _APP_ASSETS(): InjectableDependency[] {
-    return [
-      { src: `${this.CSS_SRC}/${this.CSS_BUNDLE_NAME}.${this.getInjectableStyleExtension()}`, inject: true, vendor: false },
-      ...this.APP_ASSETS,
-    ];
-  }
-
-  /**
    * The list of editor temporary files to ignore in watcher and asset builder.
    * @type {string[]}
    */
@@ -357,6 +436,19 @@ export class SeedConfig {
     '**/*___jb_tmp___',
     '**/*~',
   ];
+
+  /**
+   * List of directories to include in commonjs
+   * @type {string[]}
+   */
+  ROLLUP_INCLUDE_DIR: string[] = ['node_modules/**'];
+
+ /**
+  * List of named export Object key value pairs
+  * key: dependencie file
+  * value: exported Objects
+  */
+  ROLLUP_NAMED_EXPORTS: any[] = [];
 
   /**
    * Returns the array of injectable dependencies (npm dependencies and assets).
@@ -372,10 +464,12 @@ export class SeedConfig {
    * @type {any}
    */
   SYSTEM_CONFIG_DEV: any = {
-    defaultJSExtensions: true,
     paths: {
       [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
+      '@angular/animations': 'node_modules/@angular/animations/bundles/animations.umd.js',
+      '@angular/platform-browser/animations': 'node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
       '@angular/common': 'node_modules/@angular/common/bundles/common.umd.js',
+      '@angular/common/http': 'node_modules/@angular/common/bundles/common-http.umd.js',
       '@angular/compiler': 'node_modules/@angular/compiler/bundles/compiler.umd.js',
       '@angular/core': 'node_modules/@angular/core/bundles/core.umd.js',
       '@angular/forms': 'node_modules/@angular/forms/bundles/forms.umd.js',
@@ -383,6 +477,8 @@ export class SeedConfig {
       '@angular/platform-browser': 'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
       '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
       '@angular/router': 'node_modules/@angular/router/bundles/router.umd.js',
+      '@angular/animations/browser': 'node_modules/@angular/animations/bundles/animations-browser.umd.js',
+      'tslib': 'node_modules/tslib/tslib.js',
 
       '@angular/common/testing': 'node_modules/@angular/common/bundles/common-testing.umd.js',
       '@angular/compiler/testing': 'node_modules/@angular/compiler/bundles/compiler-testing.umd.js',
@@ -394,12 +490,18 @@ export class SeedConfig {
         'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
       '@angular/router/testing': 'node_modules/@angular/router/bundles/router-testing.umd.js',
 
-      'app/*': '/app/*',
+      'app/': `${this.APP_BASE}app/`,
       // For test config
-      'dist/dev/*': '/base/dist/dev/*',
-      '*': 'node_modules/*'
+      'dist/dev/': '/base/dist/dev/',
+      '': 'node_modules/'
     },
     packages: {
+      [this.BOOTSTRAP_DIR]: {
+        defaultExtension: 'js'
+      },
+      ['core']: {
+        defaultExtension: 'js'
+      }
     }
   };
 
@@ -420,70 +522,76 @@ export class SeedConfig {
     packageConfigPaths: [
       join('node_modules', '*', 'package.json'),
       join('node_modules', '@angular', '*', 'package.json')
+      // for other modules like @ngx-translate the package.json path needs to updated here
+      // otherwise npm run build.prod would fail
+      // join('node_modules', '@ngx-translate', '*', 'package.json')
     ],
     paths: {
       // Note that for multiple apps this configuration need to be updated
       // You will have to include entries for each individual application in
       // `src/client`.
       [join(this.TMP_DIR, this.BOOTSTRAP_DIR, '*')]: `${this.TMP_DIR}/${this.BOOTSTRAP_DIR}/*`,
+      '@angular/platform-browser/animations':
+        'node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
+      '@angular/animations/browser':
+        'node_modules/@angular/animations/bundles/animations-browser.umd.js',
+      '@angular/common/http':
+        'node_modules/@angular/common/bundles/common-http.umd.js',
+      'tslib': 'node_modules/tslib/tslib.js',
       'dist/tmp/node_modules/*': 'dist/tmp/node_modules/*',
-      'dist/tmp/core/*': `dist/tmp/core/*`,
+      'dist/tmp/core/*': 'dist/tmp/core/*',
       'node_modules/*': 'node_modules/*',
       '*': 'node_modules/*'
     },
     packages: {
+      '@angular/animations': {
+        main: 'bundles/animations.umd.js',
+        defaultExtension: 'js'
+      },
       '@angular/common': {
-        main: 'index.js',
+        main: 'bundles/common.umd.js',
         defaultExtension: 'js'
       },
       '@angular/compiler': {
-        main: 'index.js',
+        main: 'bundles/compiler.umd.js',
         defaultExtension: 'js'
       },
       '@angular/core/testing': {
-        main: 'index.js',
+        main: 'bundles/core-testing.umd.js',
         defaultExtension: 'js'
       },
       '@angular/core': {
-        main: 'index.js',
+        main: 'bundles/core.umd.js',
         defaultExtension: 'js'
       },
       '@angular/forms': {
-        main: 'index.js',
+        main: 'bundles/forms.umd.js',
         defaultExtension: 'js'
       },
       '@angular/http': {
-        main: 'index.js',
+        main: 'bundles/http.umd.js',
         defaultExtension: 'js'
       },
       '@angular/platform-browser': {
-        main: 'index.js',
+        main: 'bundles/platform-browser.umd.js',
         defaultExtension: 'js'
       },
       '@angular/platform-browser-dynamic': {
-        main: 'index.js',
+        main: 'bundles/platform-browser-dynamic.umd.js',
         defaultExtension: 'js'
       },
       '@angular/router': {
-        main: 'index.js',
+        main: 'bundles/router.umd.js',
         defaultExtension: 'js'
       },
-      'rxjs': {
+      '@angular/service-worker': {
+        main: 'bundles/service-worker.umd.js',
+        defaultExtension: 'js'
+      },
+      rxjs: {
         main: 'Rx.js',
         defaultExtension: 'js'
-      }/*,
-      'ng2-tag-input': {
-        main: 'dist/ng2-tag-input.bundle.js',
-        format: 'cjs'
-      },
-      'ng2-material-dropdown': {
-        defaultExtension: 'js',
-        main: 'dist/ng2-dropdown.bundle.js',
-        format: 'cjs'
-      },
-      'ng2-tag-input/modules/components/tag-input.template.html': {
-        defaultJSExtension: false
-      }*/
+      }
     }
   };
 
@@ -511,9 +619,9 @@ export class SeedConfig {
   ];
 
   /**
-   * Browser-sync middleware configurations array.
-   * @type {Array}
-   */
+  * Browser-sync middleware configurations array.
+  * @type {Array}
+  */
   PROXY_MIDDLEWARE: any[] = [];
 
   /**
@@ -521,6 +629,24 @@ export class SeedConfig {
    * @type {any}
    */
   PLUGIN_CONFIGS: any = {};
+
+  /**
+   * Generates the query string which should be appended to the end of the URLs in dev mode.
+   */
+  QUERY_STRING_GENERATOR = () => {
+    return Date.now().toString();
+  }
+
+  /**
+   * Returns the array of injectable dependencies (the list of local files to be injected in the `index.html`).
+   * @return {InjectableDependency[]}
+   */
+  private get _APP_ASSETS(): InjectableDependency[] {
+    return [
+      ...this.APP_ASSETS,
+      { src: `${this.CSS_SRC}/${this.CSS_BUNDLE_NAME}.${this.getInjectableStyleExtension()}`, inject: true, vendor: false },
+    ];
+  }
 
   /**
    * Returns the configuration object for NPM module configurations.
@@ -605,7 +731,7 @@ export class SeedConfig {
         }
       }
     };
-  };
+  }
 
   /**
    * Recursively merge source onto target.
@@ -653,6 +779,16 @@ export class SeedConfig {
 
   }
 
+/**
+ * Convert named rollup array to object
+ */
+  getRollupNamedExports() {
+    let namedExports = {};
+    this.ROLLUP_NAMED_EXPORTS.map(namedExport => {
+      namedExports = Object.assign(namedExports, namedExport);
+    });
+    return namedExports;
+  }
 }
 
 /**
@@ -699,10 +835,17 @@ function appVersion(): number | string {
 function getBuildType() {
   let type = (argv['build-type'] || argv['env'] || '').toLowerCase();
   let base: string[] = argv['_'];
-  let prodKeyword = !!base.filter(o => o.indexOf(BUILD_TYPES.PRODUCTION) >= 0).pop();
+  let prodKeyword = !!base
+    .filter(o => o.indexOf(BUILD_TYPES.PRODUCTION) >= 0)
+    .pop();
   if ((base && prodKeyword) || type === BUILD_TYPES.PRODUCTION) {
     return BUILD_TYPES.PRODUCTION;
   } else {
     return BUILD_TYPES.DEVELOPMENT;
   }
+}
+
+function getSmeOutFormat() {
+  let format = (argv['sme-out-format'] || '').toUpperCase();
+  return SME_OUTPUT_FORMATS[format] || SME_OUTPUT_FORMATS.HTML;
 }

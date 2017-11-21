@@ -1,5 +1,5 @@
 <div class="page-body-control has-page-body-sidebar">
-  <z-chat-contact-navigation [tab]="'receive'"></z-chat-contact-navigation>
+  <z-chat-contact-navigation [tab]="'receive'" [count]="count"></z-chat-contact-navigation>
 </div>
 
 <div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="users">
@@ -9,7 +9,7 @@
         <div class="media media-user-list">
           <div class="media-body">
             <z-chat-share-user-icon
-              [image]="user.profile_image"
+              [image]="user?.profile_image"
               [name]="user.name"
               [size]="'sm'"
               [groupType]="'couple'"
@@ -17,12 +17,13 @@
             </z-chat-share-user-icon>
           </div>
           <div class="media-right no-wrap">
-            <button class="btn btn-wth-default" type="button" (click)="onAddToContact(user)">
+            <button class="btn btn-outline-primary" type="button" (click)="onAddToContact(user)"
+                    pTooltip="{{ tooltip.addPeople }}" tooltipPosition="top">
               <i class="fa fa-user-plus"></i>
             </button>
 
             <div class="btn-group">
-              <button class="btn btn-default-inline dropdown-toggle" data-toggle="dropdown" type="button">
+              <button class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" type="button">
                 <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">

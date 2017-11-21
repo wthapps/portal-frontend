@@ -7,11 +7,12 @@ import { SupportBillingComponent } from './billing/billing.component';
 import { SupportLegalComponent } from './legal/legal.component';
 import { SupportSecurityComponent } from './security/security.component';
 import { SupportRoutingModule } from './support-routing.module';
+import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    SupportRoutingModule
+    SupportRoutingModule,
+    PortalSharedModule.forRoot()
   ],
   declarations: [
     SupportComponent,

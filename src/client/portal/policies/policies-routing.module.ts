@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PrivacyComponent } from './privacy.component';
 import { TermsComponent } from './terms.component';
-import { CookiesComponent } from './cookies.component';
 import { PoliciesComponent } from './policies.component';
 
 @NgModule({
@@ -14,7 +13,6 @@ import { PoliciesComponent } from './policies.component';
         children: [
           {path: 'privacy', component: PrivacyComponent},
           {path: 'terms', component: TermsComponent},
-          {path: 'cookies', component: CookiesComponent},
           {path: '', component: PrivacyComponent},
           {path: '*', component: PrivacyComponent}
         ]

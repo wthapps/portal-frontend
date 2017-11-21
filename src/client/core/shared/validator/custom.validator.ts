@@ -94,4 +94,15 @@ export class CustomValidator {
   public static isPresent(obj: any): boolean {
     return obj !== undefined && obj !== null;
   }
+
+  static requiredOptional(controls: any) {
+    // console.log('controls::::', controls);
+  }
+
+  static requiredMinAge(c: AbstractControl) {
+    // let currentDate = Date.now();
+    //
+    console.log('controls::::', c.value);
+    return true;
+  }
 }

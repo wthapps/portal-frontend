@@ -16,14 +16,14 @@
             <z-chat-share-user [data]="contact"></z-chat-share-user>
           </div>
           <div class="media-right">
-            <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{contact.notification_count}}</span>
+            <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
           </div>
         </div>
       </div>
     </modal-body>
     <modal-footer>
-      <button type="submit" class="btn btn-wth-default btn-min mr10" (click)="add()">Done</button>
-      <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      <button type="submit" class="btn btn-outline-primary btn-min" (click)="add()">Done</button>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
     </modal-footer>
   </modal>
 </form>

@@ -83,7 +83,7 @@ body {
       }
     }
     &.boxes-tabs-2 {
-      background-image: url(../images/too-many-apps.jpg);
+      background-image: url(/assets/images/too-many-apps.jpg);
       -webkit-background-size: cover;
       background-size: cover;
       background-position: center center;
@@ -94,7 +94,7 @@ body {
       }
     }
     &.boxes-tabs-4 {
-      background-image: url(../images/no-commitments.jpg);
+      background-image: url(/assets/images/no-commitments.jpg);
       -webkit-background-size: cover;
       background-size: cover;
       background-position: center center;
@@ -112,46 +112,6 @@ body {
   text-align: center;
   margin-top: 40px;
   font-size: 18px;
-}
-
-.box-panel {
-  .box-panel-title {
-    font-weight: bold;
-    font-size: 24px;
-    border-bottom: 1px solid #4A4A4A;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    margin-top: 0;
-    line-height: 30px;
-  }
-
-  .box-panel-subtitle {
-    margin-bottom: 20px;
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 24px;
-  }
-
-  .box-panel-top {
-    @include clearfix;
-    padding-bottom: 10px;
-    border-bottom: 1px solid $light-slate;
-    margin: $grid-gutter-width/2 0;
-    h3 {
-      line-height: 30px;
-      font-weight: bold;
-      margin: 0;
-      display: inline-block;
-    }
-    > .view-more {
-      line-height: 30px;
-      float: right;
-    }
-  }
-
-  .list-group-item-heading {
-    @extend .box-panel-subtitle;
-  }
 }
 
 // Style for plan
@@ -238,24 +198,6 @@ $footer-height: 222px;
     }
   }
 
-}
-
-.page-content {
-  padding: 90px 0;
-  @media (max-width: $screen-xs-max) {
-    padding: 20px 0;
-  }
-  .h1 {
-    text-align: center;
-    margin: 0 0 20px;
-  }
-}
-
-.page-container {
-  padding: 30px 0;
-  @media (max-width: $screen-xs-max) {
-    padding: 15px 0;
-  }
 }
 
 /*.main-page-body {
@@ -528,10 +470,10 @@ body.drag-active {
 .read-more-trigger {
   cursor: pointer;
   display: inline-block;
-  padding: 0 .5em;
-  color: #666;
-  font-size: .9em;
-  line-height: 2;
-  border: 1px solid #ddd;
-  border-radius: .25em;
+  padding: 5px 0;
+  color: $link-color;
+  font-weight: normal;
+  &:hover {
+    text-decoration: underline;
+  }
 }

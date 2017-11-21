@@ -1,10 +1,10 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">{{pageTitle}}</h3>
+    <h3 class="panel-title">{{ pageTitle }}</h3>
   </div>
   <div class="panel-body">
     <div id="printOut" style="width: 600px;margin:0 auto;">
-      <h2 class="receipt">Transaction {{trans_id}}</h2>
+      <h2 class="receipt">Transaction {{ trans_id }}</h2>
 
       <table class="table" style="font-size: 14px; font-family: sans-serif, Verdana, Arial;color:#363636; vertical-align: top;"
              cellspacing="0" cellpadding="8" border="0"
@@ -25,7 +25,7 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : {{transaction.created_at | date:'yMMMd'}} {{transaction.created_at | date:'H:mm:ss'}}
+              : {{ transaction.created_at | date:'yMMMd' }} {{ transaction.created_at | date:'H:mm:ss' }}
             </div>
           </td>
         </tr>
@@ -37,7 +37,7 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : {{transaction.amount}} {{transaction.currency_iso_code}}
+              : {{ transaction.amount }} {{ transaction.currency_iso_code }}
             </div>
           </td>
         </tr>
@@ -49,7 +49,7 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : {{transaction.merchant_account_id}}
+              : {{ transaction.merchant_account_id }}
             </div>
           </td>
         </tr>
@@ -73,7 +73,7 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : {{transaction.status}}
+              : {{ transaction.status }}
             </div>
           </td>
         </tr> -->
@@ -94,7 +94,7 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : {{transaction.payment_instrument_type.replace('_', ' ')}}
+              : {{ transaction.payment_instrument_type.replace('_', ' ') }}
             </div>
           </td>
         </tr>
@@ -106,7 +106,7 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : {{transaction.credit_card.card_type}}
+              : {{ transaction.credit_card.card_type }}
             </div>
           </td>
         </tr>
@@ -118,7 +118,7 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : {{transaction.credit_card.cardholder_name}}
+              : {{ transaction.credit_card.cardholder_name }}
             </div>
           </td>
         </tr>
@@ -130,7 +130,7 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : **** **** **** {{transaction.credit_card.last_4}}
+              : **** **** **** {{ transaction.credit_card.last_4 }}
             </div>
           </td>
         </tr>
@@ -151,7 +151,7 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : {{transaction.customer.first_name}} {{transaction.customer.last_name}}
+              : {{ transaction.customer.first_name }} {{ transaction.customer.last_name }}
             </div>
           </td>
         </tr>
@@ -163,7 +163,7 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : <a href="mailto:{{transaction.customer.email}}">{{transaction.customer.email}}</a>
+              : <a href="mailto:{{ transaction.customer.email }}">{{ transaction.customer.email }}</a>
             </div>
           </td>
         </tr>
@@ -175,9 +175,9 @@
           </td>
           <td style="word-wrap:break-word;border-bottom: 1px solid #ddd;">
             <div style="max-width:445px;word-wrap:break-word;">
-              : {{transaction.billing_address.street_address}}
-              <br>&nbsp;, {{transaction.billing_address.postal_code}} {{transaction.billing_address.region}}
-              <br>&nbsp;{{transaction.billing_address.country_name}}
+              : {{ transaction.billing_address.street_address }}
+              <br>&nbsp;, {{ transaction.billing_address.postal_code }} {{ transaction.billing_address.region }}
+              <br>&nbsp;{{ transaction.billing_address.country_name }}
             </div>
           </td>
         </tr>
@@ -187,7 +187,7 @@
     </div>
   </div>
   <div class="panel-body">
-    <a class="btn btn-wth-default" (click)="viewReceipt($event)">Receipt</a>
+    <a class="btn btn-outline-primary" (click)="viewReceipt($event)">Receipt</a>
   </div>
 
 </div>

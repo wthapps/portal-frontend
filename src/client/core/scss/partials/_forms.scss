@@ -79,6 +79,7 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       content: "\f06e";
+      color: $input-color;
     }
     &.active {
       &:before {
@@ -117,6 +118,7 @@
   }
 }
 
+/*
 .navbar-searchTop {
   position: relative;
   .input-group {
@@ -193,7 +195,7 @@
     }
 
   }
-}
+}*/
 
 .textarea-autoheight {
   overflow: hidden;
@@ -204,6 +206,13 @@
 
 textarea {
   resize: vertical;
+}
+
+.form-control-autoheight {
+  @extend .form-control;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 16px;
 }
 
 .form-control-phone-country {

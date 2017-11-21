@@ -3,7 +3,7 @@
     <h4 class="modal-title"> Add to album</h4>
   </modal-header>
   <modal-body>
-    <a class="btn btn-wth-default" data-toggle="dropdown" href="#" (click)="onCreateNewAlbum()">
+    <a class="btn btn-outline-primary" data-toggle="dropdown" href="#" (click)="onCreateNewAlbum()">
       <i class="fa fa-plus"></i> Create New Album
     </a>
     <hr>
@@ -11,7 +11,7 @@
       <div class="pl30 pr30">
         <div class="row-img list" *ngIf="dataAlbums">
           <div class="row-img-item" *ngFor="let data of dataAlbums; let i = index;">
-            <div class="photo-box can-click" id="photo-box-img-{{data.id}}" (click)="addToAlbum(data, i)">
+            <div class="photo-box can-click" id="photo-box-img-{{ data.id }}" (click)="addToAlbum(data, i)">
               <div class="photo-box-figure">
                 <figure class="img-center-dv">
                   <div class="photo-box-figure-in">
@@ -20,12 +20,12 @@
                 </figure>
                 <div class="photo-box-name">
                   <span>
-                    {{data.name}}
+                    {{ data.name }}
                   </span>
                 </div>
                 <div class="photo-box-size no-wrap">
-                  <span *ngIf="data.photo_number>1">{{data.photo_number}} photos</span>
-                  <span *ngIf="data.photo_number<=1">{{data.photo_number}} photo</span>
+                  <span *ngIf="data.photo_number>1">{{ data.photo_number }} photos</span>
+                  <span *ngIf="data.photo_number<=1">{{ data.photo_number }} photo</span>
                 </div>
               </div>
             </div>
@@ -36,8 +36,8 @@
       </div>
     </div>
     <div class="text-center p20">
-      <button class="btn btn-primary-inline" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">Load
-        more
+      <button class="btn btn-outline-primary" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">
+        Load more
       </button>
     </div>
   </modal-body>
@@ -54,8 +54,8 @@
     <div class="toast-wrap-bottom-content">
       <div class="media">
         <div class="media-body">
-          <p>{{selectedPhotos?.length}} item{{(selectedPhotos?.length>1)?'s':''}} are added to
-            {{selectedAlbum?.name}}</p>
+          <p>{{ selectedPhotos?.length }} item{{ (selectedPhotos?.length>1)?'s':'' }} are added to
+            {{ selectedAlbum?.name }}</p>
           <div class="text-right">
             <a [routerLink]="['/' + urls.album, selectedAlbum.id]">View</a>
           </div>

@@ -4,6 +4,7 @@ export class Label extends BaseEntity {
   system: boolean;
   user_id?: number;
   user?: any;
+  order?: number;
   contact_count?: number;
 
   convertToMenuItem(): any {
@@ -12,7 +13,7 @@ export class Label extends BaseEntity {
       testing: 'abcdeeee'
       // id: this.id,
       // name: this.name,
-      // icon: 'all contact' ? 'fa-address-book-o'
+      // icon: 'all contacts' ? 'fa-address-book-o'
       //       : this.name == 'favourite' ? 'fa fa-star'
       //         : this.name == 'labels' ? 'fa fa-tags'
       //           : this.name == 'blacklist' ? 'fa fa-ban'

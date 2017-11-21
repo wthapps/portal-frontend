@@ -5,31 +5,34 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { ZMediaHomeModule } from './home/home.module';
-import { SharedModule } from '../core/shared/shared.module';
+import { ZMediaSharedModule } from './shared/shared.module';
+import { CoreSharedModule } from '../core/shared/shared.module';
 
-import { ZMediaPhotoModule } from './photo/photo.module';
+import { ZMediaHomeModule } from './home/home.module';
 import { ZMediaAlbumModule } from './album/album.module';
+import { ZMediaPhotoModule } from './photo/photo.module';
 import { ZMediaFavoriteModule } from './favourites/favourites.module';
 import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZMediaSearchModule } from './search/search.module';
 import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
-import { MediaUploaderDataService } from './shared/uploader/media-uploader-data.service';
+import { ZMediaSharedByMeModule } from './shared-by-me/shared-by-me.module';
+
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpModule,
-    SharedModule.forRoot(),
-
     AppRoutingModule,
     ZMediaHomeModule,
-    ZMediaPhotoModule,
     ZMediaAlbumModule,
+    ZMediaPhotoModule,
     ZMediaFavoriteModule,
-    ZMediaSearchModule,
     ZMediaSharedWithMeModule,
+    ZMediaSharedByMeModule,
+    ZMediaSearchModule,
     ZMediaMyProfileModule,
+    ZMediaSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [AppComponent],
   providers: [{
@@ -39,5 +42,4 @@ import { MediaUploaderDataService } from './shared/uploader/media-uploader-data.
   bootstrap: [AppComponent]
 
 })
-export class AppModule {
-}
+export class AppModule { }

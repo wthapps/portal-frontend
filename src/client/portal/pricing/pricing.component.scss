@@ -1,0 +1,124 @@
+@import "../../core/scss/global";
+
+.box-pricing-list {
+  @include clearfix;
+  max-width: 840px;
+  margin-left: auto;
+  margin-right: auto;
+  .box-pricing-item {
+    margin-bottom: 30px;
+    @media (min-width: $screen-sm-min) {
+      float: left;
+      width: 50%;
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+  }
+  .box-card {
+    border-radius: 4px;
+    background-color: #ffffff;
+    overflow: hidden;
+    border: 1px solid #D8D8D8;
+    @include box-shadow(0 2px 4px 0 rgba(74, 74, 74, 0.40));
+    text-align: center;
+  }
+}
+
+.pricing-item-header {
+  background-color: #9B9B9B;
+  color: #ffffff;
+  @include border-top-radius(3px);
+  font-size: 24px;
+  font-weight: bold;
+  padding: 8px 0;
+  text-transform: uppercase;
+}
+
+.pricing-pro {
+  .pricing-item-header {
+    background-color: #434A54;
+  }
+}
+
+.pricing-item-content {
+  .price {
+    margin: 20px 0;
+    font-size: 18px;
+    strong {
+      display: block;
+      font-size: 64px;
+    }
+  }
+  .action {
+    margin-bottom: 30px;
+  }
+  .info {
+    height: 70px;
+    display: table-cell;
+    width: 500px;
+    vertical-align: middle;
+    background-color: #F7F7F7;
+    padding: 0 10px;
+  }
+  .list-styled {
+    text-align: left;
+    margin: 20px;
+    @media (min-width: $screen-sm-min) {
+      min-height: 155px;
+    }
+  }
+}
+
+.box-pricing-noted {
+  clear: both;
+  @media (min-width: $screen-sm-min) {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
+.pricing-plans {
+  padding-bottom: 0;
+  h3 {
+    margin-bottom: 20px;
+    @media (min-width: $screen-sm-min) {
+      margin-bottom: 40px;
+    }
+  }
+  .pricing-plans-list {
+    @include clearfix;
+
+    .pricing-plans-item {
+      float: left;
+      width: 50%;
+      text-align: center;
+      @media (min-width: $screen-sm-min) {
+        width: 20%;
+      }
+      @media (max-width: $screen-xs-max) {
+        &:nth-child(2n+1) {
+          clear: both;
+        }
+      }
+    }
+  }
+}
+
+.coming-soon-content {
+  h3 {
+    margin-bottom: 20px;
+    @media (min-width: $screen-sm-min) {
+      margin-bottom: 40px;
+    }
+  }
+  .list-styled {
+    @include clearfix;
+    > li {
+      float: left;
+      width: 50%;
+      @media (min-width: $screen-sm-min) {
+        width: 25%;
+      }
+    }
+  }
+}

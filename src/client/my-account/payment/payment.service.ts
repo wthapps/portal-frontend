@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 
 @Injectable()
-export class ACPaymentService {
+export class MyPaymentService {
 
   constructor(private api: ApiBaseService) {
 

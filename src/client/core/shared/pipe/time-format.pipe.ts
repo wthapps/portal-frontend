@@ -40,6 +40,6 @@ export class TimeFormatPipe implements PipeTransform {
   }
 
   timeOnly(value: any) {
-    return moment(value).format("h:mm a");
+    return moment(value).format('h:mm a');
   }
 }

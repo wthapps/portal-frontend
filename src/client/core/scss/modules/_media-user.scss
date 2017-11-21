@@ -50,6 +50,16 @@ dl.media-user-list-group {
   }
 }
 
+.media-user-row-group {
+  &.row {
+    .media-user-list {
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom:1px solid $line;
+    }
+  }
+}
+
 .page-body-control {
   .media-user-list {
     overflow: visible;

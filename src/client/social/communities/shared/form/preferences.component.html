@@ -1,11 +1,11 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
-  <hd-modal #modal [keyboard]="false" [backdrop]="'static'">
-    <hd-modal-header [showClose]="true">
+  <modal #modal [keyboard]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
       <h4 class="modal-title"> Preferences</h4>
-    </hd-modal-header>
-    <hd-modal-body>
+    </modal-header>
+    <modal-body>
       <div *ngIf="data">
-        <template [ngIf]="isAdmin">
+        <ng-template [ngIf]="isAdmin">
           <div class="mb20">Q
             <label>Privacy Settings</label>
             <div class="radio">
@@ -95,7 +95,7 @@
             </div>
           </div>
           <!--end Post Settings-->
-        </template>
+        </ng-template>
 
         <div class="mb20">
           <label>Notification</label>
@@ -113,14 +113,14 @@
           </div>
         </div>
       </div>
-    </hd-modal-body>
-    <hd-modal-footer>
+    </modal-body>
+    <modal-footer>
       <button type="button" class="btn btn-link btn-min pull-left" (click)="resetSettings()">Reset Default</button>
 
       <button [disabled]="!form.valid || (!hasChange && form.valid)"
-              type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit()">Done
+              type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit()">Done
       </button>
-    </hd-modal-footer>
+    </modal-footer>
 
-  </hd-modal>
+  </modal>
 </form>

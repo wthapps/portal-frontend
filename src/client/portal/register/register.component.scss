@@ -1,0 +1,9 @@
+@import '../../core/scss/global';
+
+.page-content {
+  &.bg-gray-light {
+    @media (max-width: $screen-xs-max) {
+      background-color: #ffffff;
+    }
+  }
+}

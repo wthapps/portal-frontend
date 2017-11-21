@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
+import 'rxjs/add/operator/toPromise';
+
 import { ZMediaFavoriteService } from './favourites.service';
 import { PhotoService } from '../../core/shared/services/photo.service';
 
@@ -30,26 +33,15 @@ export class ZMediaFavoriteListComponent implements OnInit {
 
   ngOnInit() {
     // this.getFavorite();
+    return;
   }
 
   getFavorite(body:any = {}) {
-    // this.favoriteService.list(body).subscribe((res: any)=> {
-    //   this.data = res.data;
-    //   if (res.data.albums.length == 0 && res.data.photos.length == 0) {
-    //     this.favouriteIsEmpty = true;
-    //   }
-    //   // this.nextLink = res.page_metadata.links.next;
-    // });
+    return;
   }
 
   onLoadMore(event: any) {
-    // event.preventDefault();
-    // this.favoriteService.loadMore(this.nextLink).subscribe((res: any)=> {
-    //   _.map(res.data, (v: any)=> {
-    //     this.data.push(v);
-    //   });
-    //   // this.nextLink = res.page_metadata.links.next;
-    // });
+    return;
   }
 
 
@@ -108,14 +100,11 @@ export class ZMediaFavoriteListComponent implements OnInit {
   }
 
   private onPreviewAll(item: any) {
-    // this.photoDetail.selectedPhotos = this.photoDetail.allPhotos;
-    // this.photoDetail.index = _.findIndex(this.photoDetail.allPhotos, ['id', item.id]);
-    // this.photoDetail.open({show: true});
   }
 
   private onOneFavourite(item: any) {
     let findItemFavourite = _.findIndex(this.data.albums, ['id', item.id]);
-    this.photoService.actionOneFavourite(item).subscribe((res: any)=> {
+    this.photoService.actionOneFavourite(item).toPromise().then((res: any)=> {
       if (res.message === 'success') {
         this.data.albums[findItemFavourite].favorite = (this.data.albums[findItemFavourite].favorite) ? false : true;
       }

@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ConfirmationService } from 'primeng/components/common/api';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
+
+import { Record } from './record';
+import { MyDNSService } from './dns.service';
 
 import { Constants } from '../../../core/shared/config/constants';
 import { UserService } from '../../../core/shared/services/user.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
 
-import { Record } from './record';
-import { ACDNSService } from './dns.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 
 declare var _: any;
 
@@ -19,7 +20,7 @@ declare var _: any;
   templateUrl: 'dns.component.html'
 })
 
-export class ACDNSComponent implements OnInit {
+export class MyDNSComponent implements OnInit {
 
   inValidPlan: boolean = false;
   records: Array<Record> = [];
@@ -30,10 +31,10 @@ export class ACDNSComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private userService: UserService,
-              private confirmationService: ConfirmationService,
+              private wthConfirmService: WthConfirmService,
               private loadingService: LoadingService,
               private toastsService: ToastsService,
-              private dnsService: ACDNSService,
+              private dnsService: MyDNSService,
               private router: Router) {
   }
 
@@ -93,7 +94,7 @@ export class ACDNSComponent implements OnInit {
     } else {
       let record_item = _.find(this.records, {'id': id});
       let hostname = record_item.name + '.' + 'wthdns.com';
-      this.confirmationService.confirm({
+      this.wthConfirmService.confirm({
         message: 'Are you sure to delete ' + hostname + ' ?',
         header: 'My Hosts',
         accept: () => {
@@ -115,7 +116,7 @@ export class ACDNSComponent implements OnInit {
   }
 
   showUpgrading(): void {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Upgrading your accounts to continue?',
       header: 'My Hosts',
       accept: () => {

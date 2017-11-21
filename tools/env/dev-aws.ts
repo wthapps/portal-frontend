@@ -10,7 +10,8 @@ const DevConfig: EnvConfig = {
     MEDIA: 'https://localhost:3010',
     SOCIAL: 'https://localhost:3015',
     CHAT: 'https://localhost:3020',
-    CONTACT: 'https://localhost:3025'
+    CONTACT: 'https://localhost:3025',
+    NOTE: 'https://localhost:3030',
   },
   RES: 'https://s3-ap-southeast-1.amazonaws.com/env-staging'
 };

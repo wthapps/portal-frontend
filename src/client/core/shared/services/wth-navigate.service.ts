@@ -31,14 +31,26 @@ export class WTHNavigateService {
         case 'my':
           this.redirectIfNeed(path, Constants.baseUrls.myAccount, queryParams);
           break;
+        case 'contact':
+          this.redirectIfNeed(path, Constants.baseUrls.contact, queryParams);
+          break;
+        case 'note':
+          this.redirectIfNeed(path, Constants.baseUrls.note, queryParams);
+          break;
         default:
           break;
       }
     }
 
     // Do not allow redirect to root path
-    if (!_.isEmpty(path))
-      this.router.navigate(['/' + path], {queryParams: queryParams});
+    if (!_.isEmpty(path)) {
+      if(path.indexOf('posts') > -1) {
+        let urls: string[] = path.split('/');
+        this.router.navigate([{outlets: {detail: [...urls]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
+      } else {
+        this.router.navigate([path, {outlets: {modal: null, detail: null}}], {queryParams: queryParams});
+      }
+    }
 
 
     // $(event.target.nextElementSibling).toggleClass('hidden');
@@ -49,7 +61,7 @@ export class WTHNavigateService {
     if(!this.inSameModule(baseUrl)) {
       window.location.href = this.buildUrl(baseUrl, path, queryParams);
       return;
-    };
+    }
   }
 
   private buildUrl(url: string, path: string, body?: any) {

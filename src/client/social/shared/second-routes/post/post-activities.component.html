@@ -1,0 +1,109 @@
+<modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'" [animation]="false">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title text-left"><i class="fa fa-share-alt"></i> Share Activities</h4>
+  </modal-header>
+  <modal-body>
+    <ul class="list-unstyled social-list-user">
+      <li *ngFor="let item of shares">
+        <div class="z-social-media">
+          <div class="z-social-media-left">
+            <div class="avatar-xs">
+              <img alt="" [src]="item.owner.profile_image">
+            </div>
+          </div>
+          <div class="z-social-media-body">
+            <div class="z-heading">
+              <div class="z-name">
+                {{ item.owner.name }}
+              </div>
+              <div class="z-shared-with dropdown">
+                <a data-toggle="dropdown" href="#"><i class="fa fa-globe"></i> {{ item.privacy }}</a>
+                <!--<ul class="dropdown-menu dropdown-menu-check">-->
+                <!--<li><a href="#"><i class="fa fa-globe"></i> Public <i-->
+                <!--class="dropdown-menu-check-item fa fa-check"></i></a>-->
+                <!--</li>-->
+                <!--<li><a href="#"><i class="fa fa-users"></i> Friends</a></li>-->
+                <!--<li><a href="#"><i class="fa fa-lock"></i> Private</a></li>-->
+                <!--<li class="divider" role="separator"></li>-->
+                <!--<li><a href="#">Custom</a></li>-->
+                <!--</ul>-->
+              </div>
+              <!--<div class="z-shared-with">-->
+              <!--<a data-toggle="modal" href="#modal-social-myshare"><i class="fa fa-lock"></i> Private</a>-->
+              <!--</div>-->
+            </div>
+            <div class="z-shared-info">
+              <!--<ul>-->
+              <!--<li class="z-time">-->
+              <!--Jul 16 2016-->
+              <!--</li>-->
+              <!--<li>-->
+              <!--Adult Content-->
+              <!--</li>-->
+              <!--<li>-->
+              <!--Muted-->
+              <!--</li>-->
+              <!--</ul>-->
+            </div>
+          </div>
+          <div class="z-social-media-right">
+            <div class="dropdown pull-right">
+              <button aria-expanded="true" aria-haspopup="true" class="btn btn-default dropdown-toggle"
+                      data-toggle="dropdown" type="button" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <!--<ul class="dropdown-menu">-->
+              <!--<li><a href="#"><i class="fa fa-square-o pull-right"></i> Adult content</a></li>-->
+              <!--<li><a href="#"><i class="fa fa-check pull-right"></i> Adult content</a></li>-->
+              <!--<li class="divider" role="separator"></li>-->
+              <!--<li><a href="#">Edit Post</a></li>-->
+              <!--<li><a href="#">Delete</a></li>-->
+              <!--<li class="divider" role="separator"></li>-->
+              <!--<li><a href="#">Disable comments</a></li>-->
+              <!--<li><a href="#">Disable Reshare</a></li>-->
+              <!--<li><a href="#">Mute</a></li>-->
+              <!--</ul>-->
+            </div>
+
+            <div class="dropdown pull-right">
+              <a class="btn btn-default" data-toggle="collapse" href="#social-activities-2{{ item.uuid }}">
+                <i class="fa fa-angle-down"></i>
+              </a>
+            </div>
+
+          </div>
+        </div>
+        <div class="collapse" id="social-activities-2{{ item.uuid }}">
+          <div class="z-social-post">
+            <div class="z-social-post-content">
+              <div class="z-social-post-txt">
+                <div class="z-social-post-txt-in">
+                  {{ item.description }}
+                </div>
+                <!--<div class="z-social-post-txt-more">-->
+                <!--<a href="#">READ MORE</a>-->
+                <!--</div>-->
+              </div>
+              <div class="z-social-post-tag">
+                <a *ngFor="let tag of item.tags">
+                  {{ tag.name }}
+                </a>
+              </div>
+              <div class="form-group">
+                Shared from <a href="#">{{ item.parent_post.owner.name }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn btn-outline-primary btn-min">Done</button>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.dismiss()">
+      Cancel
+    </button>
+  </modal-footer>
+</modal>
+
+

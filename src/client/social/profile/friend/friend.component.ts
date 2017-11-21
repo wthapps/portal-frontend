@@ -1,11 +1,11 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PostListComponent } from '../../shared/post/post-list.component';
-import { PostNewComponent } from '../../shared/post/post-new.component';
+
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+
 import { SocialService } from '../../shared/services/social.service';
-import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { UserService } from '../../../core/shared/services/user.service';
-import { ZSocialProfileDataService } from '../profile-data.service';
+
 
 
 
@@ -15,29 +15,30 @@ import { ZSocialProfileDataService } from '../profile-data.service';
   templateUrl: 'friend.component.html'
 })
 
-export class ZSocialProfileFriendComponent implements OnInit {
+export class ZSocialProfileFriendComponent implements OnInit, OnDestroy {
   userInfo:any;
   list:any;
+  private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private socialService: SocialService,
-              private route: ActivatedRoute,
-              private profileDataService: ZSocialProfileDataService,
-              private router: Router) {}
-
-  ngOnInit() {
-
-    this.profileDataService.profileData$.subscribe((res: any) => {
-      this.userInfo = res.data;
-    });
-
+              private route: ActivatedRoute) {
     this.route.params
       .switchMap((params: any) => this.socialService.user.getFriends(params['id']))
+      .takeUntil(this.destroySubject.asObservable())
       .subscribe(
         (res: any) => {
           console.log(res);
           this.list = res.data;
           // this.userInfo = res.data;
         });
+  }
+
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
+  }
+
+  ngOnInit() {
   }
 
   onLoadMore() {

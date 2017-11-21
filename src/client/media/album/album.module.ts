@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { ZMediaSharedModule } from '../shared/shared.module';
-import { ZMediaPhotoModule } from '../photo/photo.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 
 import { ZMediaAlbumService } from './album.service';
 import { ZMediaAlbumComponent } from './album.component';
@@ -12,9 +12,9 @@ import { AlbumDetailInfoComponent } from './album-detail-info.component';
 
 @NgModule({
   imports: [
-    ZMediaPhotoModule,
     ZMediaAlbumRoutingModule,
-    ZMediaSharedModule.forRoot()
+    ZMediaSharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     ZMediaAlbumComponent,

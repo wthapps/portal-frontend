@@ -1,4 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Input, Output,
+  EventEmitter
+} from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
 
@@ -7,32 +10,36 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'message-list',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'message-list.component.html',
   styleUrls: ['message-list.component.css']
 })
 
 export class MessageListComponent implements OnInit {
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
+  @Input() loaded: boolean = false;
+  @Output() loadedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   item: any;
   contactItem: any;
   prevMessage: any;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService, private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.item = this.chatService.getCurrentMessages();
-
-    this.contactItem = this.chatService.getContactSelect();
-    // this.chatService.subscribeChanel();
+    setInterval(() => {
+      this.item = this.chatService.getCurrentMessages();
+      this.contactItem = this.chatService.getContactSelect();
+      this.ref.markForCheck();
+    }, 200);
   }
 
   onLoadMore() {
     this.chatService.loadMoreMessages();
+    this.loadedEvent.emit(true);
   }
 
   onAddContact(contact:any) {
-    console.log(contact);
     this.requestModal.contact = contact;
     this.requestModal.modal.open();
   }
@@ -40,11 +47,11 @@ export class MessageListComponent implements OnInit {
   doEvent(event: any) {
     switch(event.action) {
       case 'CONTACT_REQUEST_CREATE':
-        this.requestModal.contact = event.data;
+        this.requestModal.contact = event.data.receiver;
         this.requestModal.modal.open();
         break;
       case 'CONTACT_REQUEST_CANCEL':
-        this.chatService.cancelContact(event.data);
+        this.chatService.chatContactService.cancelContactRequest(event.data);
         break;
     }
   }

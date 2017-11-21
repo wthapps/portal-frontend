@@ -18,15 +18,29 @@ export class BaseEntityService<T> {
     return this.api.get(`${this.url}/${id}`);
   }
 
-  create(body: any): Observable<any> {
-    return this.api.post(this.url, body);
+  create(body: any, multiple: boolean=false): Observable<any> {
+    if(multiple) {
+      // this case body MUST be an array
+      let payload = {payload: body, multiple: true};
+      return this.api.post(this.url, payload);
+    } else {
+      return this.api.post(this.url, body);
+    }
   }
 
-  update(body: any): Observable<any> {
-    return this.api.put(`${this.url}/${body.id}`, body);
+  update(body: any, multiple: boolean=false): Observable<any> {
+    if(multiple) {
+      return this.api.put(`${this.url}/multiple`, body);
+    } else {
+      return this.api.put(`${this.url}/${body.id}`, body);
+    }
   }
 
-  delete(id: any): Observable<any> {
-    return this.api.delete(`${this.url}/${id}`);
+  delete(id: any, payload?: any): Observable<any> {
+    if(id == 0) {
+      return this.api.post(`${this.url}/0`, {multiple: true, payload: payload});
+    } else {
+      return this.api.delete(`${this.url}/${id}`);
+    }
   }
 }

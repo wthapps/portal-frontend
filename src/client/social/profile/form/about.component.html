@@ -48,7 +48,7 @@
       </div>
 
       <div class="form-group">
-        <div class="pull-right text-fade"><span>{{tag_line.value | showLength}}</span>/150 characters</div>
+        <div class="pull-right text-fade"><span>{{ tag_line.value | showLength }}</span>/150 characters</div>
         <label>Tag Line</label>
         <textarea [formControl]="tag_line" maxlength="150" rows="3" class="form-control" id="tag_line"
                   placeholder="Tag Line">
@@ -284,7 +284,7 @@
               <div class="media-body">
                 <select name="nationality" class="form-control" id="phone_prefix" [formControl]="nationality">
                   <option value="">Select your country</option>
-                  <option *ngFor="let c of countriesCode" value="{{c.code}}">{{c.name}}</option>
+                  <option *ngFor="let c of countriesCode" value="{{ c.code }}">{{ c.name }}</option>
                 </select>
               </div>
             </div>
@@ -304,7 +304,7 @@
             <div class="media-body" [formGroupName]="i">
 
               <!--<pre>-->
-              <!--{{form.value.additional_links[i].name|json}}-->
+              <!--{{ form.value.additional_links[i].name|json }}-->
               <!--</pre>-->
 
               <div class="row row-10">
@@ -363,8 +363,10 @@
       </div>
     </modal-body>
     <modal-footer>
-      <button [disabled]="!first_name.valid" type="submit" class="btn btn-wth-default btn-min mr10" (click)="onSubmit(form.value)">Done</button>
-      <button type="button" class="btn btn-default btn-min" (click)="onHideModal()">Cancel</button>
+      <button [disabled]="!first_name.valid" type="submit" class="btn btn-outline-primary btn-min"
+              (click)="onSubmit(form.value)">Done
+      </button>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="onHideModal()">Cancel</button>
     </modal-footer>
   </modal>
 </form>

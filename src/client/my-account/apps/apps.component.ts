@@ -2,9 +2,9 @@ import { Component }                from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-apps',
+  selector: 'my-apps',
   templateUrl: 'apps.component.html'
 })
 
-export class ACAppsComponent {
+export class MyAppsComponent {
 }

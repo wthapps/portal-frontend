@@ -10,11 +10,11 @@
 
   <div class="page-body-content-in">
 
-    <me-list-header *ngIf="objects.length > 0" [data]="objects" [viewOption]="viewOption"
+    <me-list-header *ngIf="objects?.length > 0" [data]="objects" [viewOption]="viewOption"
                     (outEvent)="actionSortbar($event)"></me-list-header>
 
 
-    <div *ngIf="!hasObjects && objects.length == 0" class="zone-no-photo text-center">
+    <div *ngIf="!hasObjects && objects?.length == 0" class="zone-no-photo text-center">
       <div *ngIf="page == 'search' ">
         <h3>Data not matched</h3>
         <h4>Please change your search criteria!</h4>
@@ -25,8 +25,8 @@
         <h3>There is no album!</h3>
         <h4>Try to create an album.</h4>
         <p>
-          <button class="btn btn-wth-default"
-                  (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal'}})">
+          <button class="btn btn-outline-primary"
+                  (click)="onAction({action: 'openModal', params: {modalName: 'createAlbumModal' }})">
             <i class="fa fa-plus-circle"></i> Create album
           </button>
         </p>
@@ -37,7 +37,7 @@
         <h3>There is no photo!</h3>
         <h4>There is no photo. Try to upload a file.</h4>
         <p>
-          <button class="btn btn-wth-default" (click)="uploader.browseFiles($event)">
+          <button class="btn btn-outline-primary" (click)="onAction({action: 'openUploadModal'})">
             <i class="fa fa-cloud-upload"></i> Upload File
           </button>
         </p>
@@ -53,31 +53,41 @@
         <h3>There is no shared photo or album!</h3>
         <h4>Photo and album are shared by your connected contact.</h4>
         <p>
-          <button class="btn btn-default" (click)="uploader.browseFiles($event)">
+          <button class="btn btn-default">
+            Learn More
+          </button>
+        </p>
+      </div>
+      <div *ngIf="page == 'shared-by-me'">
+        <h2><i class="fa fa-share-alt"></i></h2>
+        <h3>There is no sharing!</h3>
+        <h4>Media are shared by you.</h4>
+        <p>
+          <button class="btn btn-default">
             Learn More
           </button>
         </p>
       </div>
     </div>
 
-    <div id="list-photo" class="row-img row-img-{{sliderViewNumber}}" *ngIf="objects" (dragenter)="onDragenter($event)"
+    <div id="list-photo" class="row-img row-img-{{ sliderViewNumber }}" *ngIf="objects" (dragenter)="onDragenter($event)"
          [ngClass]="viewOption" (dragleave)="onDragleave($event)">
-      <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects.length">
+      <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">
         <h4 class="photo-box-heading" *ngIf="group.key && ( viewOption != 'grid' || MIX_SCREEN.indexOf(currentPath) > -1 )">
-          {{group.key | titleCase}}
+          {{ group.key | titleCase }}
         </h4>
         <div *ngIf="group.value" class="clearfix">
-          <me-item *ngFor="let item of group.value" [type]="item.object_type" [object]="item"
+          <me-item *ngFor="let item of group.value;" [type]="item.object_type" [object]="item"
                    (events)="onAction($event)"></me-item>
         </div>
         <me-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"
                  (events)="onAction($event)"></me-item>
         <div class="text-center p20" *ngIf="viewOption == 'grid' && MIX_SCREEN.indexOf(currentPath) > -1">
-          <a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-primary-inline"
+          <a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"
              *ngIf="group.key == 'album'">
             View all
           </a>
-          <a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-primary-inline"
+          <a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"
              *ngIf="group.key == 'photo'">
             View all
           </a>
@@ -90,4 +100,4 @@
   <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
 </div>
 
-<!--<template #modalContainer></template>-->
+<!--<ng-template #modalContainer></ng-template>-->

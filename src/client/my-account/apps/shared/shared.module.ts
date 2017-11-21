@@ -1,9 +1,11 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ACAppsSharedCardComponent } from './card/card.component';
-import { ACAppsSharedCardPlatformComponent } from './card/platform/platform.component';
-import { ACAppsSharedSliderComponent } from './slider/slider.component';
+import { FormsModule } from '@angular/forms';
+
+import { MyAppsSharedCardComponent } from './card/card.component';
+import { MyAppsSharedCardPlatformComponent } from './card/platform/platform.component';
+import { MyAppsSharedSliderComponent } from './slider/slider.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -12,24 +14,24 @@ import { ACAppsSharedSliderComponent } from './slider/slider.component';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ],
   declarations: [
-    ACAppsSharedCardComponent,
-    ACAppsSharedCardPlatformComponent,
-    ACAppsSharedSliderComponent
+    MyAppsSharedCardComponent,
+    MyAppsSharedCardPlatformComponent,
+    MyAppsSharedSliderComponent
   ],
   exports: [
-    CommonModule,
-    ACAppsSharedCardComponent,
-    ACAppsSharedCardPlatformComponent,
-    ACAppsSharedSliderComponent
+    MyAppsSharedCardComponent,
+    MyAppsSharedCardPlatformComponent,
+    MyAppsSharedSliderComponent
   ]
 })
-export class ACAppsSharedModule {
+export class MyAppsSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: ACAppsSharedModule,
+      ngModule: MyAppsSharedModule,
       providers: []
     };
   }

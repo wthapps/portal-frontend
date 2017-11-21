@@ -4,10 +4,10 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: '', redirectTo: '/photos', pathMatch: 'full' }
+      {path: '', redirectTo: '/photos', pathMatch: 'full'}
     ])
   ],
   exports: [RouterModule]
 })
-export class HomeRoutingModule {
+export class ZMediaHomeRoutingModule {
 }

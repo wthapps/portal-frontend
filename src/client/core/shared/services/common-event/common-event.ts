@@ -1,5 +1,5 @@
 export interface CommonEvent {
-  module?: string;
-  action: string;
+  channel?: string;
+  action?: string;
   payload?: any;
 }

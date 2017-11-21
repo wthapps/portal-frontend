@@ -5,6 +5,7 @@ import { WthAppsBaseModal } from '../../../../core/shared/interfaces/wthapps-bas
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
 import { Label } from '../../../label/label.model';
 import { LabelService } from '../../../label/label.service';
+import { Constants } from '../../../../core/shared/config/constants';
 
 declare var $: any;
 declare var _: any;
@@ -18,7 +19,7 @@ declare var _: any;
 
 export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   @Input() mode: string;
-  @Input() contact: any;
+  @Input() contacts: any;
 
   @ViewChild('modal') modal: ModalComponent;
   event: any;
@@ -34,47 +35,35 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService,
    private labelService: LabelService)  {
 
-
-
   }
 
   ngOnInit() {
-
     this.form = this.fb.group({
       'labels': [this.selectedLabels],
     });
     this.labelsCtrl = this.form.controls['labels'];
-
-
-
-    // this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
-    // this.titleName = this.mode == 'edit' ? 'Edit Label' : 'New Label';
-    //
-    // this.form = this.fb.group({
-    //   id: [this.item.id],
-    //   'name': [this.item.name, Validators.compose([Validators.required])]
-    // });
-    // this.name = this.form.controls['name'];
   }
 
   submit() {
-    if (this.mode =='edit') {
-      // find selectedLabels and push to label array
-      // _.forEach(this.selectedLabels, (label: any) => {
-      //   this.contact.labels.push(_.find(this.originalLabels, {name: label.value}))
-      // });
-      this.contact = _.pick(this.contact, ['id', 'labels']);
+    if (this.contacts.length > 1) {
+      _.forEach(this.contacts, (contact: any) => {
+        // contact.labels = _.unionBy(_.concat(contact.labels, this.getSelectedLabels()), 'id');
+        contact.labels = _.unionBy(this.getSelectedLabels(), 'id');
+      });
+    } else {
+      this.contacts[0].labels = _.unionBy(this.getSelectedLabels(), 'id');
     }
     this.commonEventService.broadcast({
+      channel: Constants.contactEvents.common,
       action: 'contact:contact:update',
-      payload: { labels: this.getSelectedLabels(), contact: this.contact }}
+      payload: {selectedObjects: this.contacts}}
     );
     this.modal.close().then();
   }
 
   open(options?: any) {
     this.mode = options.mode || 'add';
-    this.contact = options.contact || null;
+    this.contacts = options.contacts || null;
     this.inputLabels = options.labels || [];
     this.selectedLabels = [];
     _.forEach(this.inputLabels, (label: any) => {
@@ -94,7 +83,7 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
 
   validData(): boolean {
     let result: boolean = true;
-    if (this.selectedLabels.length == 0 && this.inputLabels.length == 0){
+    if (this.selectedLabels.length == 0 && this.inputLabels.length == 0) {
       return false;
     }
 
@@ -105,15 +94,18 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
             result = false;
             return;
           }
-        })
+        });
       });
     }
     return result;
   }
 
-  removeTag(event: any) {}
+  removeTag(event: any) {
+    console.log('inside removeTag');
+  }
 
-  addTag(event: any) {}
+  addTag(event: any) {
+    console.log('inside addTag');}
 
   private getSelectedLabels(): Array<any> {
     let result: Array<any> = new Array<any>();

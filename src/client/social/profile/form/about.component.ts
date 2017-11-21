@@ -8,8 +8,8 @@ import {
   FormArray
 } from '@angular/forms';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
-import { CountryService } from '../../../core/partials/countries/countries.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import { CountryService } from '../../../core/shared/components/countries/countries.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { CustomValidator } from '../../../core/shared/validator/custom.validator';

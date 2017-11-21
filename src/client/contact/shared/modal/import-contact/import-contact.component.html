@@ -9,28 +9,57 @@
       <div class="content-overflow" style="max-height: 300px;">
         <div class="pl30 pr30">
           <div class="row-img list">
-            <div class="row-img-item" *ngFor="let data of OAUTH_LIST; let i = index;">
-              <div class="photo-box can-click" (click)="onOptionSelected({name: data?.name})">
+            <div class="row-img-item" *ngFor="let p of PROVIDERS; let i = index;">
+              <div class="photo-box can-click"
+                   (click)="selectProvider({name: p?.name, provider: p?.provider, type: p?.type})">
                 <div class="photo-box-figure">
                   <figure class="img-center-dv">
-                    <div class="photo-box-figure-in">
-                      <img [alt]="data.name" class="img-center" draggable="false" [src]="data.image">
+                    <div class="">
+                      <i [ngClass]="p.class" style="font-size: 24px;"></i>
                     </div>
                   </figure>
                   <div class="photo-box-name">
                   <span>
-                    {{data.text}}
+                    {{ p.text }}
                   </span>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="row-img-item">
+              <div class="photo-box can-click">
+                <div class="photo-box-figure">
+                  <figure class="img-center-dv">
+                    <div >
+                      <!--<i class="fa fa-download"></i>-->
+                      <!--<input #fileBrowse type="file" hFileSelect-->
+                             <!--style="font-size: 200px; position: absolute; top: -20px; left: -30px;"-->
+                             <!--(uploadOutput)="selectedFiles($event)"-->
+                             <!--autofocus="true">-->
+                      <!--<span>   Import from file (.vcf, csv)</span>-->
+
+                      <h-file-upload #fileUpload styleClass="h-ui-file-upload"
+                                    customUpload="true"
+                                    mode="basic"
+                                    accept=".vcf,.csv,.xls,.xlsx"
+                                    [icon]="'fa-download'"
+                                    [chooseLabel]="'Import from file'"
+                                    (onSelect)="selectProvider({name: 'import_from_file', provider: 'import_from_file', event: $event}); fileUpload.clear();">
+                      </h-file-upload>
+                      <div class="file-extensions" style="padding-left: 50px;">vcard, csv, excel</div>
+                    </div>
+                  </figure>
+                </div>
+              </div>
+            </div>
+
+
           </div>
         </div>
       </div>
     </modal-body>
     <modal-footer>
-      <button type="button" class="btn btn-default btn-min" data-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
     </modal-footer>
   </modal>
 </form>

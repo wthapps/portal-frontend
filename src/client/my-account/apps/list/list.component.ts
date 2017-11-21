@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Product } from '../../../core/shared/models/product.model';
-import { ACAppsService } from '../apps.service';
+import { MyAppsService } from '../apps.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-apps-list',
+  selector: 'my-apps-list',
   templateUrl: 'list.component.html'
 })
 
-export class ACAppsListComponent implements OnInit {
+export class MyAppsListComponent implements OnInit {
   pageTitle: string = '';
   services: any = [];
   errorMessage: string = 'errorMessage';
@@ -27,7 +27,7 @@ export class ACAppsListComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private appsService: ACAppsService) {
+              private appsService: MyAppsService) {
   }
 
   ngOnInit(): void {

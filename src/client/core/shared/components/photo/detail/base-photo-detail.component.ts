@@ -1,11 +1,15 @@
-import {
-  Component, OnDestroy, OnInit, HostListener
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
+
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/map';
+
 import { Photo } from '../../../models/photo.model';
-import { PhotoService } from "../../../services/photo.service";
-import { ConfirmationService } from 'primeng/primeng';
-import { LoadingService } from '../../../../partials/loading/loading.service';
+import { PhotoService } from '../../../services/photo.service';
+import { LoadingService } from '../../loading/loading.service';
+import { ZMediaSharingService } from '../modal/sharing/sharing.service';
+import { WthConfirmService } from '../../confirmation/wth-confirm.service';
 
 declare let _: any;
 declare let saveAs: any;
@@ -13,9 +17,8 @@ declare let saveAs: any;
 @Component({
   moduleId: module.id,
   selector: 'base-photo-detail',
-  templateUrl: `<div>base photo details</div>`,
-  entryComponents: [
-  ]
+  template: `<div>base photo details</div>`,
+  entryComponents: []
 })
 
 export class BasePhotoDetailComponent implements OnInit, OnDestroy {
@@ -23,73 +26,91 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   module: string = 'media';
   photo: Photo;
   id: number;
-  ids: Array<number>;
+  ids: Array<number> = [];
+  post_uuid: any;
   prevUrl: string;
   loading: boolean;
   mode: number;
   showDetail: boolean;
-  private routeSub: any;
+  recipients: Array<any> = [];
+
+  // private routeSub: any;
+  private destroySubject: Subject<any> = new Subject<any>();
+
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ev: KeyboardEvent) {
     // Back to prevUrl after pressing ESC key
-    if (ev.which === 27) this.router.navigateByUrl(this.prevUrl);
+    if (ev.which === 27) this.goBack();
   }
 
-  constructor(
-    protected route: ActivatedRoute,
-    protected router: Router,
-    protected photoService: PhotoService,
-    protected confirmationService: ConfirmationService,
-    protected loadingService: LoadingService
-
+  constructor(protected route: ActivatedRoute,
+              protected router: Router,
+              protected wthConfirmService: WthConfirmService,
+              protected loadingService: LoadingService,
+              protected photoService: PhotoService,
+              protected sharingService?: ZMediaSharingService
   ) {
-    this.router = router;
-    this.route = route;
-    this.photoService = photoService;
-
+    // this.router = router;
+    // this.route = route;
+    // this.photoService = photoService;
   }
 
   ngOnInit() {
-    this.routeSub = this.route.params
-      .subscribe((params: any) => {
-        this.id = params['id'];
+    this.route.params
+      .takeUntil(this.destroySubject.asObservable())
+      .map((params: any) => {
+        console.debug('base-photo-detail route params: ', params);
+        this.id = +params['id'];
         this.prevUrl = params['prevUrl'];
-        this.ids = params['ids'].split(',').map(Number) || [];
+        if(params['ids']) {
+          this.ids = params['ids'].split(',').map(Number) || [];
+        }
+        if(params['post_uuid'])
+          this.post_uuid = params['post_uuid'];
         this.module = params['module'] || this.module;
         this.mode = params['mode'] || 0;
         this.showDetail = params['showDetail'] || false;
-        this.loadItem(this.id);
-      });
+        // this.loadItem(this.id);
+        return params['id'];
+      })
+      .switchMap((id: any ) => {
+        this.loading = true;
+        return this.photoService.getPhoto(id);
+      })
+      .subscribe((response: any) => {
+          this.photo = response.data;
+          this.loading = false;
+        },
+        (error: any) => {
+          this.loading = false;
+          console.error('Error when loading photo ', error);
+        });
   }
 
   doEvent(payload: any) {
     switch (payload.action) {
       case 'goBack':
-        this.router.navigateByUrl(this.prevUrl);
+        this.goBack();
+        // this.router.navigateByUrl(this.prevUrl);
         break;
       case 'changeMode':
         this.mode = 1; // editable mode
         break;
       case 'loadItem':
         const tree: UrlTree = this.router.parseUrl(this.router.url);
-        tree.root.children.primary.segments[1].path = payload.id;
+        if(tree.root.children.modal)
+          tree.root.children.modal.segments[1].path = payload.id;
+        else
+          tree.root.children.primary.segments[1].path = payload.id;
         this.router.navigateByUrl(tree);
         break;
-      case 'update':
-        this.confirmationService.confirm({
-          message: 'Do you want to save editing item',
-          header: 'Save Photo',
-          accept: () => {
-            this.photoService.create({
-              name: this.photo.name + `.${this.photo.extension}`,
-              type: this.photo.content_type,
-              file: payload.editedData
-            }).subscribe((res:any) => {
-            });
-          }
-        });
-
+      // case 'confirmUpdate':
+      //   this.confirmUpdate(payload);
+      //
+      //   break;
+      case 'photoUpdated':
+        this.refreshUpdatedPhoto(payload.payload);
         break;
       case 'favourite':
         this.favourite();
@@ -101,71 +122,64 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
             saveAs(blob, this.photo.name);
           },
           (error: any) => {
-
+            console.log(error);
           }
         );
         break;
-      case 'delete':
-
-          // Ask for user confirmation before deleting selected PHOTOS
-          this.confirmationService.confirm({
-            message: `Are you sure to delete photo ${this.photo.name}`,
-            accept: () => {
-              this.loadingService.start();
-              let body = JSON.stringify({ids: [this.photo.id]});
-              this.loadingService.start();
-              this.photoService.deletePhoto(body).subscribe((res: any)=> {
-
-                // considering remove item in ids array and back to preUrl
-                this.router.navigateByUrl(this.prevUrl);
-                // _.remove(this.ids, ['id', this.photo.id]);
-                this.loadingService.stop();
-              });
-            },
-            reject: () => {
-              // Ask for user confirmation before deleting selected ALBUMS
-            }
-          });
-
-
+      case 'confirmDelete':
+        console.debug('base-photo-detail: confirmDelete', payload);
+        this.confirmDelete(payload);
         break;
     }
   }
 
-  // confirmDeleteMedia(params: any) {
-  //   // Ask for user confirmation before delete media items
-  //   let photos = _.filter(params.selectedObjects, (o: any) => o.object_type == 'photo');
-  //   let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
-  //   let photos_count = photos.length  + (photos.length > 1 ? ' photos?' : ' photo?');
-  //
-  //   if( photos.length > 0 ) {
-  //     // Ask for user confirmation before deleting selected PHOTOS
-  //     this.confirmationService.confirm({
-  //       message: 'Are you sure to delete ' + photos_count,
-  //       accept: () => {
-  //         this.loadingService.start();
-  //         this.apiBaseService.post('media/media/delete', {objects: photos, child_destroy: params.child_destroy}).subscribe(
-  //           (res: any) => {
-  //             _.map(photos, (obj: any)=> {
-  //               _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
-  //             });
-  //             this.loadingService.stop();
-  //             this.deleteAndChangeImg();
-  //           },
-  //           (error: any) => this.loadingService.stop());
-  //       },
-  //       reject: () => {
-  //         // Ask for user confirmation before deleting selected ALBUMS
-  //       }
-  //     });
-  //   }
-  // }
+  goBack() {
+    this.router.navigate([{outlets: {modal: null}}]);
+    this.photoService.closePreviewModal();
+  }
 
-  private favourite() {
-    this.photoService.actionOneFavourite(this.photo).subscribe((res: any)=> {
-      if (res.message === 'success') {
-        this.photo.favorite = !this.photo.favorite;
-      }
+  confirmUpdate(payload: any): Promise<any> {
+    return this.photoService.confirmUpdate(this.photo, payload)
+      .then((data: any) => {
+        this.photo = data;
+        this.photoService.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
+        return this.photo;
+      });
+  }
+
+  refreshUpdatedPhoto(payload: any) {
+    console.debug('refresh Photo: ', payload);
+    this.photo = payload;
+    this.photoService.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
+  }
+
+  refreshDeletedPhoto(payload: any) {
+
+  }
+
+  confirmDelete(payload: any): Promise<any> {
+    // Ask for user confirmation before deleting selected PHOTOS
+    return new Promise<any>((resolve: any) => {
+      this.wthConfirmService.confirm({
+        message: `Are you sure to delete photo ${this.photo.name}`,
+        accept: () => {
+          this.loadingService.start();
+          let body = JSON.stringify({ids: [this.photo.id]});
+          this.photoService.deletePhoto(body).toPromise().then((res: any)=> {
+
+            // considering remove item in ids array and back to preUrl
+            // this.router.navigateByUrl(this.prevUrl);
+            this.goBack();
+            this.photoService.setModifiedPhotos({action: 'delete', payload: {post_uuid: this.post_uuid, photo: this.photo}});
+
+            this.loadingService.stop();
+            resolve(this.photo);
+          });
+        },
+        reject: () => {
+          // Ask for user confirmation before deleting selected ALBUMS
+        }
+      });
     });
   }
 
@@ -179,20 +193,18 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
     //   this.imgNext();
   }
 
-  loadItem(id: number) {
-    this.loading = true;
-    return this.photoService.getPhoto(id)
-      .subscribe((response: any) => {
-          this.photo = response.data;
-          this.loading = false;
-        },
-        (error: any) => {
-          console.error('Error when loading photo ', error);
-      });
+  ngOnDestroy() {
+    // this.routeSub.unsubscribe();
+    this.destroySubject.next('');
+    this.destroySubject.unsubscribe();
   }
 
-  ngOnDestroy() {
-    this.routeSub.unsubscribe();
+  private favourite() {
+    this.photoService.actionOneFavourite(this.photo).subscribe((res: any)=> {
+      this.photo.favorite = res.data.favorite;
+    });
   }
+
 
 }
+

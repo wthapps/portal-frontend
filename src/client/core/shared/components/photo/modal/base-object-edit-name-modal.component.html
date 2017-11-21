@@ -5,7 +5,7 @@
     </modal-header>
     <modal-body>
       <div class="form-group" [ngClass]="{'has-error': (!name.valid && name.touched)}">
-        <p>Please enter a new name for the {{objectType}}:</p>
+        <p>Please enter a new name for the {{ objectType }}:</p>
         <label for="edit-photo-album-name" class="sr-only">name</label>
         <input [formControl]="name" value="selectedPhotos.name" type="text" id="edit-photo-album-name"
                class="form-control" placeholder="">
@@ -15,10 +15,10 @@
       </div>
     </modal-body>
     <modal-footer>
-      <button [disabled]="!form.valid" (click)="onSubmit(form.value)" type="submit" class="btn btn-primary-inline">
-        Save
+      <button [disabled]="!form.valid" (click)="onSubmit(form.value)" type="submit"
+              class="btn btn-outline-primary btn-min">Done
       </button>
-      <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
     </modal-footer>
   </modal>
 </form>

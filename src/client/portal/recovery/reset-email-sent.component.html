@@ -1,20 +1,19 @@
-<section class="page-hero">
-  <div class="page-hero-item" style="background-image: url('assets/images/landing/hero-image.jpg');">
-  </div>
-  <div class="page-hero-content">
-    <div class="page-hero-txt">
-      <div class="page-hero-tt">
+<div class="page-content bg-gray-light">
+  <div class="container">
+    <div class="form-box-sm">
+      <div class="text-center">
         <h2 class="h1">Check your email</h2>
-        <p>We've sent an email. Click the link in the email to reset your password.
-          If you don't see the email, check other places it might be, like your junk, spam, social, or other
-          folders.</p>
       </div>
-      <div class="page-hero-body">
-        <div class="form-group text-center">
-          <a [routerLink]="['/account/recovery/forgottenpassword']">I didn't receive the email</a>
-        </div>
+      <p>We've sent an email. Click the link in the email to reset your password.
+        If you don't see the email, check other places it might be, like your junk, spam, social, or other
+        folders.</p>
+      <div class="form-group text-center">
+        <a class="btn btn-outline-primary" [routerLink]="['/recovery/forgottenpassword']" href="javascript:void(0);">
+          I didn't receive the email
+        </a>
       </div>
+
     </div>
   </div>
-</section>
+</div>
 

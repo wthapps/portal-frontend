@@ -1,0 +1,58 @@
+<div class="z-social-media">
+  <div class="z-social-media-left">
+    <a [routerLink]="['/profile/', parent?.owner?.uuid]" class="media-object">
+      <span class="avatar-xs">
+        <img [src]="(user$ | async )?.profile_image" alt="">
+      </span>
+    </a>
+  </div>
+  <div class="z-social-media-body">
+    <form [formGroup]="commentEditorForm" novalidate>
+
+      <div class="z-social-media-inputpost">
+        <span class="z-social-media-inputpost-icon">
+          <button class="btn btn-default" (click)="onOpenPhotoSelect()" pTooltip="{{ tooltip.addPhoto }}"
+                  tooltipPosition="top">
+            <i class="fa fa-camera"></i>
+          </button>
+          <div class="btn-group dropup">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    pTooltip="{{ tooltip.emoticons }}"
+                    tooltipPosition="top">
+              <i class="fa fa-smile-o"></i>
+            </button>
+            <ul class="dropdown-menu wth-emoji-dropdown content-overflow p5">
+              <li>
+                <i *ngFor="let emoji of emojiData" class="wth-emoji wth-emoji-{{emoji | wthEmojisClass}}"
+                   (click)="onEmojiClick(emoji)"></i>
+              </li>
+            </ul>
+          </div>
+        </span>
+
+        <textarea #commentContent class="form-control comment-editor-input" placeholder="Add a comment"
+                  textAreaAutoHeight
+                  [formControl]="contentCtrl"
+                  (keyup)="onKey($event)"
+                  [(ngModel)]="comment.content"></textarea>
+      </div>
+
+      <photo-item-preview [photo]="comment?.photo"
+                          [files]="files"
+                          [hasUploadingPhoto]="hasUploadingPhoto" (events)="doEvents($event)"></photo-item-preview>
+
+      <div class="clearfix text-right comment-editor-button-region"
+           *ngIf="(hasChanged() && mode == 0) || (mode != 0)">
+        <button class="btn btn-sm btn-outline-default" (click)="cancel()"
+                href="javascript:;">Cancel
+        </button>
+
+        <button class="btn btn-sm btn-outline-default" href="javascript:;" (click)="post(commentEditorForm.value)"
+                [disabled]="!hasUpdatedContent || !hasChanged()">Post
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+

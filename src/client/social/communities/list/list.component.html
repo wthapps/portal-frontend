@@ -4,7 +4,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="pull-right">
-            <button type="button" (click)="onCreate()" class="btn btn-wth-default">
+            <button type="button" (click)="onCreate()" class="btn btn-outline-primary">
               <i class="fa fa-plus"></i> New Community
             </button>
           </div>
@@ -17,14 +17,14 @@
             </h3>
           </div>
 
-          <template [ngIf]="myList.length>0">
+          <ng-template [ngIf]="myList.length>0">
             <z-social-share-profile-list
               [layout]="'row'"
               [class]="'col-xs-12 col-md-6 col-lg-4'"
               [data]="myList"
               [type]="'community'">
             </z-social-share-profile-list>
-          </template>
+          </ng-template>
 
         </div>
       </div>
@@ -41,14 +41,14 @@
             </h3>
           </div>
 
-          <template [ngIf]="list.length>0">
+          <ng-template [ngIf]="list.length>0">
             <z-social-share-profile-list
               [layout]="'row'"
               [class]="'col-xs-12 col-md-6 col-lg-4'"
               [data]="list"
               [type]="'community'">
             </z-social-share-profile-list>
-          </template>
+          </ng-template>
         </div>
       </div>
     </div>

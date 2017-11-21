@@ -2,8 +2,8 @@
   <div class="row">
     <div class="col-sm-12 col-md-8 col-md-offset-2">
       <div class="box-panel pt30-sm">
-        <h3 class="box-panel-title">{{pageTitle}}
-          <button class="btn btn-wth-default btn-sm pull-right" (click)="add()"><i class="fa fa-plus"></i> Add Apps</button>
+        <h3 class="box-panel-title">{{ pageTitle }}
+          <button class="btn btn-outline-primary btn-sm pull-right" (click)="add()"><i class="fa fa-plus"></i> Add Apps</button>
         </h3>
         <div class="panel panel-default">
           <ul class="list-group">
@@ -15,8 +15,8 @@
                   </figure>
                 </div>
                 <div class="media-body">
-                  <p class="name">{{app.display_name}}</p>
-                  <p class="cat">{{app.category.name}}</p>
+                  <p class="name">{{ app.display_name }}</p>
+                  <p class="cat">{{ app.category.name }}</p>
                 </div>
                 <div class="media-right">
                   <button class="btn btn-default btn-sm btn-min" (click)="manage(app.id)"><i class="fa fa-cogs"></i> Manage</button>

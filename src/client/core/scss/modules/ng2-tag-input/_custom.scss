@@ -5,8 +5,8 @@ body {
     list-style-type: none;
     margin: 0;
     overflow: hidden;
-    padding: 5px 12px !important;
-    min-height: 38px !important;
+    padding: 3px 12px !important;
+    min-height: 34px !important;
 
     background: #ffffff;
     border: 1px solid $input-border !important;
@@ -18,22 +18,42 @@ body {
     font-size: 1em;
     color: #55595c;
     line-height: 1.25;
+
     &.ng2-tag-input--focused {
-      border-color: #66afe9 !important;
+
+      $color-rgba: rgba(red($input-border-focus), green($input-border-focus), blue($input-border-focus), .6);
+      border-color: $input-border-focus !important;
+      outline: 0;
+      @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px $color-rgba);
     }
 
     .ng2-tag-input__text-input {
-      height: 34px;
-      line-height: 34px;
+      height: 20px;
+      line-height: 20px;
+      font-size: 14px;
       padding: 0;
       margin: 3px 0;
+      font-family: inherit;
+      @include placeholder;
+    }
+    .progress-bar {
+      display: none !important;
+      visibility: hidden;
     }
   }
 
   .ng2-dropdown-menu {
     z-index: 1050 !important;
+    padding: 0 !important;
+    border: 1px solid #c7c7c7;
+    margin-top: -9px;
+    margin-left: -8px;
+    -webkit-border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
+    border-radius: 0.25em;
+    @include box-shadow(0 1px 2px 0 rgba(0, 0, 0, 0.3));
     .ng2-menu-item {
-      font: $font-base;
+      font-family: $font-base;
       padding: 5px;
       background: #fff;
       color: $text-color;
@@ -48,6 +68,16 @@ body {
       line-height: inherit;
       overflow: hidden !important;
       text-align: left;
+    }
+  }
+  .ng2-tags-container tag > div > .tag-wrapper {
+    font-size: 12px;
+    line-height: 20px;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 20px;
+    span {
+      font-size: 14px;
     }
   }
 }

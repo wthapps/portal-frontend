@@ -1,13 +1,14 @@
 import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { Observable } from 'rxjs/Observable';
+
 import { ZMediaTaggingService } from './tagging/tagging.service';
 import { TaggingElComponent } from './tagging/tagging-el.component';
 import { ApiBaseService } from '../../../services/apibase.service';
-import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
 
 
 declare var $: any;
@@ -89,38 +90,28 @@ export class AlbumCreateModalComponent implements OnInit {
     }
     let album:any = {name: albumName, description: albumDes, photos: selectedPhotosId, tags_name: tagsName};
     // Only subscribe to this observable once
-    // this.albumService.create(album)
-    //   .take(1)
-    //   .subscribe((res: any) => {
-    //     this.album = new Album(res.data);
-    //     this.doneFormModal.emit(this.album);
-    //
-    //     let retPhotos = _.get(res, 'data.photo_number', 0);
-    //     // if(retPhotos > 0) {
-    //       // let albumPhotos = new AlbumPhoto({album: this.album, photos: retPhotos});
-    //       // this.doneFormModal.emit(albumPhotos);
-    //     // }
-    //     console.log('A new album is created: ', this.album);
-    //
-    //     // this.onAction('showNewAlbum', this.album);
-    //     this.viewAlbumDetail(this.album.id );
-    //
-    //     this.modal.close().then((res: any) => console.log('Album create modal should close now'));
-    //
-    //
-    //   });
+    this.api.post(`media/albums`, album)
+      .subscribe((res: any) => {
+        this.album = res.data;
+        this.doneFormModal.emit(this.album);
+
+        let retPhotos = _.get(res, 'data.photo_number', 0);
+        this.viewAlbumDetail(this.album.id );
+
+        this.modal.close().then((res: any) => console.log('Album create modal should close now'));
+      });
   }
 
-  public viewAlbumDetail(albumId: number) {
-    this.router.navigate([`/albums`, albumId]);
+  viewAlbumDetail(albumId: number) {
+    this.router.navigate(['./', {outlets: {detail: [`albums`, albumId]}}], { queryParams: {r: 1}});
   }
 
-  public onAction(action: string, data: any) {
+  onAction(action: string, data: any) {
     let options = {action: action, data: data};
     this.event.emit(options);
   }
 
-  public autoCompleteTags = (text: string): Observable<Response> => {
+  autoCompleteTags = (text: string): Observable<Response> => {
     return this.tagService.getTags(text)
       // .map(data => { console.log('autocompleteTags: ', data.json()); return data.json().map((t: any) => t.name)})
       .map(data => data.json().map((item: any) => item.name))

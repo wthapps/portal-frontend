@@ -31,6 +31,7 @@
 // --------------------------------------------------
 @import "partials/colors";
 @import "partials/grid";
+@import "partials/flex";
 @import "partials/typography";
 @import "partials/forms";
 @import "partials/buttons";
@@ -48,11 +49,13 @@
 @import "partials/media";
 @import "partials/list-group";
 @import "partials/dropdowns";
+@import "partials/w_panels";
 //
 // =Third party
 // --------------------------------------------------
 @import "../../../../node_modules/slick-carousel/slick/slick.scss";
 @import "modules/slick-carousel/slick-carousel";
+@import "modules/editor/quill.snow";
 //
 // =Layout
 // --------------------------------------------------
@@ -66,6 +69,7 @@
 //
 // =modules
 // --------------------------------------------------
+@import "modules/card";
 @import "modules/list";
 @import "modules/breadcrumb";
 @import "modules/nav-menuleft";
@@ -91,6 +95,9 @@
 @import "modules/avatar";
 @import "modules/media-user";
 @import "modules/field-group";
+@import "modules/component-listbox";
+@import "modules/attachment";
+@import "modules/no-data";
 //
 // =Content
 // --------------------------------------------------

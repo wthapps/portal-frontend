@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from '../../../core/shared/services/user.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
 
-import { ACTransactionService } from '../shared/transaction.service';
+import { MyTransactionService } from '../shared/transaction.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'ac-transaction-details',
+  selector: 'my-transaction-details',
   templateUrl: 'details.component.html'
 })
 
-export class ACTransactionDetailsComponent implements OnInit {
+export class MyTransactionDetailsComponent implements OnInit {
   pageTitle: string = 'Transaction Details';
   transaction: any = {
     amount: 0,
@@ -46,7 +46,7 @@ export class ACTransactionDetailsComponent implements OnInit {
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
-              private transactionService: ACTransactionService,
+              private transactionService: MyTransactionService,
               private loadingService: LoadingService,
               private router: Router) {
   }

@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
+
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/takeUntil';
+
 import { ApiBaseService } from './apibase.service';
+import { WthConfirmService } from '../components/confirmation/wth-confirm.service';
+import { Photo } from '../models/photo.model';
 
 declare var _: any;
 
@@ -8,14 +16,35 @@ export class PhotoService {
 
   url = 'media/photos';
 
-  constructor(private apiBaseService: ApiBaseService) {
+  closePreview$: Observable<any>;
+  modifiedPhotos$: Observable<any>;
+  private closePreviewSubject: Subject<any> = new Subject();
+  private modifiedPhotosSubject: BehaviorSubject<any> = new BehaviorSubject({action: null, payload: {}}); // including UPDATED and DELETED photos
+
+  constructor(private apiBaseService: ApiBaseService,
+              private wthConfirmService: WthConfirmService) {
+    this.closePreview$ = this.closePreviewSubject.asObservable();
+    this.modifiedPhotos$ = this.modifiedPhotosSubject.asObservable();
+  }
+
+  closePreviewModal() {
+    this.closePreviewSubject.next('');
+  }
+
+  setModifiedPhotos(options: any = {action: null, payload: {post_id: null, photo: null}}) {
+    console.debug('photo service - setModifiedPhotos: ', options);
+    this.modifiedPhotosSubject.next(options);
+  }
+
+  getModifiedPhotos() {
+    return this.modifiedPhotosSubject.getValue();
   }
 
   listPhoto(body: any = {}): any {
     return this.apiBaseService.get(this.url, body);
   }
 
-  getPhoto(id: any): any {
+  getPhoto(id: any): Observable<any> {
     return this.apiBaseService.get(`${this.url}/${id}`);
   }
 
@@ -24,7 +53,7 @@ export class PhotoService {
   }
 
   update(body: any) {
-    return this.apiBaseService.post(`${this.url}`, body);
+    return this.apiBaseService.put(`${this.url}/${body.id}`, body);
   }
 
   download(body: any) {
@@ -32,10 +61,6 @@ export class PhotoService {
   }
 
   actionOneFavourite(item: any) {
-    // let body = JSON.stringify({
-    //   ids: [item.id],
-    //   setFavourite: (item.favorite) ? false : true
-    // });
     let body = {
       ids: [item.id],
       setFavourite: (item.favorite) ? false : true
@@ -63,5 +88,47 @@ export class PhotoService {
   loadMore(next: string): any {
     return this.apiBaseService.get(next);
   }
+
+  confirmUpdate(photo: Photo, payload: any): Promise<any> {
+    return new Promise<any>((resolve: any) => {
+      this.wthConfirmService.confirm({
+        message: 'Are you sure to save the photo?\nThis photo will replace current photo!',
+        header: 'Save Photo',
+        accept: () => {
+          return this.update({
+            id: photo.id,
+            name: photo.name + `.${photo.extension}`,
+            type: photo.content_type,
+            file: payload
+          }).toPromise()
+            .then((response: any) => {
+              // this.photo = response.data;
+              // this.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
+              resolve(response.data);
+            });
+        }
+      });
+    });
+  }
+
+  confirmDelete(photo: Photo, payload: any): Promise<any> {
+    // Ask for user confirmation before deleting selected PHOTOS
+    return new Promise<any>((resolve: any) => {
+      this.wthConfirmService.confirm({
+        message: `Are you sure to delete photo ${photo.name}`,
+        accept: () => {
+          let body = JSON.stringify({ids: [photo.id]});
+          this.deletePhoto(body).toPromise().then((res: any)=> {
+
+            resolve(photo);
+          });
+        },
+        reject: () => {
+          // Ask for user confirmation before deleting selected ALBUMS
+        }
+      });
+    });
+  }
+
 
 }

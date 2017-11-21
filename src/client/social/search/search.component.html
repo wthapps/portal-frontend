@@ -4,10 +4,11 @@
       <div class="panel panel-default" *ngFor="let group of groups">
         <div class="panel-heading">
           <h3 class="panel-title">
-             <a class="link-text"
-                [routerLink]="['/search', group=='members'?'member':group=='communities'?'community':'post']" >
-               {{group | titleCase}}
-             </a>
+            <a class="link-text"
+               [routerLink]="['/search', group=='members'?'member':group=='communities'?'community':'post']"
+               [queryParams]="{q:params}">
+              {{ group | titleCase }}
+            </a>
           </h3>
         </div>
         <div class="panel-body" *ngIf="result[group] && result[group].length == 0">
@@ -20,13 +21,13 @@
 
         <so-post-list *ngIf="group == 'posts'" #posts [items]="result[group]" [type]="'search'"></so-post-list>
         <div *ngIf="group == 'posts' && show_more_posts" class="panel-footer">
-          <a [routerLink]="[show_more_posts.link]" [queryParams]="{q:params}">{{show_more_posts.text}}</a>
+          <a [routerLink]="[show_more_posts.link]" [queryParams]="{q:params}">{{ show_more_posts.text }}</a>
         </div>
         <div *ngIf="group == 'communities' && show_more_communities" class="panel-footer">
-          <a [routerLink]="[show_more_communities.link]" [queryParams]="{q:params}">{{show_more_communities.text}}</a>
+          <a [routerLink]="[show_more_communities.link]" [queryParams]="{q:params}">{{ show_more_communities.text }}</a>
         </div>
         <div *ngIf="group == 'members' && show_more_members" class="panel-footer">
-          <a [routerLink]="[show_more_members.link]" [queryParams]="{q:params}">{{show_more_members.text}}</a>
+          <a [routerLink]="[show_more_members.link]" [queryParams]="{q:params}">{{ show_more_members.text }}</a>
         </div>
       </div>
 

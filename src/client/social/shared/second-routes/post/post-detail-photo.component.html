@@ -1,0 +1,62 @@
+<div *ngIf="item" id="social-photo-detail" class="photo-box-detail zone-social-photo-detail active">
+  <div class="photo-detail-top">
+    <ul class="action navbar-left">
+      <li>
+        <a href="javascript:;" (click)="onBack()"><i class="fa fa-arrow-left"></i></a>
+      </li>
+    </ul>
+    <ul class="action navbar-right">
+      <li class="active">
+        <i class="fa fa-thumbs-o-up"></i> {{ itemDisplay.reactions_like.length }}
+      </li>
+      <li>
+        <i class="fa fa-thumbs-o-down"></i> {{ itemDisplay.reactions_dislike.length }}
+      </li>
+      <li>
+        <i class="fa fa-share-alt"></i> {{ itemDisplay.reactions_share.length }}
+      </li>
+      <li>
+        <a href="javascript:;" (click)="onShowInfo()"><i class="fa fa-comments"></i></a>
+      </li>
+      <li class="dropdown">
+        <a href="javascript:;" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+          <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="#" (click)="update($event)">
+            <i class="fa fa-check" *ngIf="item.adult"></i>
+            Adult content</a>
+          </li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#" (click)="delete($event)">Delete</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="photo-detail-content" *ngIf="commentIndex == null">
+    <div class="photo-detail-img">
+      <figure>
+        <img [src]="item.photos[index].url" alt="">
+      </figure>
+      <span *ngIf="item.photos.length > 1" (click)="imgPrev()" class="photo-detail-img-control img-control-prev">
+        <i class="fa fa-angle-left"></i>
+      </span>
+      <span *ngIf="item.photos.length > 1" (click)="imgNext()" class="photo-detail-img-control img-control-next">
+        <i class="fa fa-angle-right"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="photo-detail-content" *ngIf="commentIndex != null">
+    <div class="photo-detail-img">
+      <figure>
+        <img *ngIf="replyIndex == null" [src]="item.comments[commentIndex].photo.url" alt="">
+        <img *ngIf="replyIndex != null" [src]="item.comments[commentIndex].comments[replyIndex].photo.url" alt="">
+      </figure>
+    </div>
+  </div>
+
+  <div class="photo-detail-info">
+    <so-post [item]="item" [type]="'info'"></so-post>
+  </div>
+</div>

@@ -1,11 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ServiceManager } from '../../core/shared/services/service-manager';
 import { Constants } from '../../core/shared/config/constants';
 import { SocialService } from '../shared/services/social.service';
-import { ConfirmationService } from 'primeng/components/common/api';
-import { LoadingService } from '../../core/partials/loading/loading.service';
-import { subscribeOn } from 'rxjs/operator/subscribeOn';
 import { UrlService } from '../../core/shared/services/url.service';
 
 declare var _: any;
@@ -16,7 +13,7 @@ declare var _: any;
   templateUrl: 'search-detail.component.html'
 })
 
-export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
+export class ZSocialSearchDetailComponent implements OnDestroy {
   show: boolean = false;
   type: string = '';
   result: any;
@@ -27,35 +24,29 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
 
   searchPostedBy: string = '';
   searchDate: string = '';
-  events:any;
-  show_more_posts:any;
-  q:any;
-  filter:any;
-  filterDate:any;
-  nextLink:any;
+  events: any;
+  show_more_posts: any;
+  q: any;
+  filter: any;
+  filterDate: any;
+  nextLink: any;
 
   readonly comUserStatus = Constants.soCommunityUserStatus;
   readonly friendStatus = Constants.friendStatus;
 
   constructor(private router: Router,
               public serviceManager: ServiceManager,
-              private loadingService: LoadingService,
-              private confirmationService: ConfirmationService,
               private urlService: UrlService,
               private socialService: SocialService) {
-
-  }
-
-  ngOnInit() {
     this.events = this.router.events
-      .filter((event:any) => event instanceof NavigationEnd)
-      .subscribe((event:NavigationEnd) => {
+      .filter((event: any) => event instanceof NavigationEnd)
+      .subscribe((event: NavigationEnd) => {
         this.group = this.urlService.getId();
         this.q = this.urlService.getQuery()['q'];
         this.filter = this.urlService.getQuery()['filter_post'];
         this.filterDate = this.urlService.getQuery()['filter_date'];
         if (this.q) {
-          let query:any = {q : this.q};
+          let query: any = {q: this.q};
           if (this.filter) {
             query.filter = this.filter;
           }
@@ -79,7 +70,7 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
   toggleFavourite(item: any, group: string) {
     this.socialService.user.toggleFavourites(item.uuid, group).subscribe(
       (res: any) => {
-        if(!_.isEmpty(this.favourite)) {
+        if (!_.isEmpty(this.favourite)) {
           this.favourite = undefined;
         } else {
           this.favourite = res.data;
@@ -89,9 +80,9 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
   }
 
   /*
-    Params format:
-    item: community / member object
-    group: community / members
+   Params format:
+   item: community / member object
+   group: community / members
    */
   getFavourite(item: any, group: string) {
     this.socialService.user.getFavourite(item.uuid, group).subscribe(
@@ -102,20 +93,18 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
   }
 
   toggleFollow(item: any) {
-
+    console.log('toggleFollow');
   }
 
 
   // TODO:
   importToContacts(item: any) {
-
+    console.log('importToContacts');
   }
 
   sendJoinRequest(community: any) {
     this.socialService.community.askToJoin(community.uuid)
       .subscribe((result: any) => {
-          // TODO: Update status of community
-          // this.invitationId = result.data.id;
           community.user_status = Constants.soCommunityUserStatus.joinRequestSent;
         },
         (error: any) => {
@@ -124,16 +113,9 @@ export class ZSocialSearchDetailComponent implements OnInit, OnDestroy {
   }
 
   confirmLeaveCommunity(community: any) {
-    this.socialService.community.confirmLeaveCommunity(community).then((res:any) => community.user_status = this.comUserStatus.stranger);
+    this.socialService.community.confirmLeaveCommunity(community).then((res: any) => community.user_status = this.comUserStatus.stranger);
   }
 
-  // leaveCommunity(community: any) {
-  //   this.socialService.community.leaveCommunity(community.uuid)
-  //     .subscribe((response: any) => {
-  //         community.user_status = this.comUserStatus.stranger;
-  //       }
-  //     );
-  // }
 
   addFriend(user: any) {
 

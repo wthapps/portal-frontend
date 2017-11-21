@@ -3,15 +3,14 @@ import { Router }         from '@angular/router';
 
 import { Http, Response } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
-
-import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { CookieService, CookieOptions } from 'ngx-cookie';
 
 import { Constants } from '../config/constants';
 
 import { ApiBaseService } from './apibase.service';
 import { User }           from '../models/user.model';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { UserInfo } from '../models/user/user-info.model';
 
 @Injectable()
 export class UserService extends ApiBaseService {
@@ -20,16 +19,19 @@ export class UserService extends ApiBaseService {
   profile: User = null;
   defaultPayment: any;
 
-  public cookieOptionsArgs: CookieOptionsArgs = Constants.cookieOptionsArgs;
+  public cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;
 
   public readonly profile$: Observable<any>;
+  public readonly soProfile$: Observable<any>;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  private _soProfile: BehaviorSubject<any> = new BehaviorSubject<any>(new UserInfo());
   constructor(http: Http, router: Router,
               public cookieService: CookieService) {
     super(http, router, cookieService);
     this.readUserInfo();
 
     this.profile$ = this._profile.asObservable();
+    this.soProfile$ = this._soProfile.asObservable();
   }
 
   login(path: string, body: string, useJwt: boolean = true): Observable<Response> {
@@ -43,10 +45,6 @@ export class UserService extends ApiBaseService {
       });
   }
 
-  // get() {
-  //   return super.post('users/get_user', '')
-  //     .map(res => res.json())
-  // }
 
   logout(path: string): Observable<Response> {
     // public logout(path: string) {
@@ -155,10 +153,14 @@ export class UserService extends ApiBaseService {
     return this.profile != null ? this.profile.uuid : '';
   }
 
+  set soUserProfile(data: any) {
+    this._soProfile.next(data);
+  }
 
-  updateProfile(profile: Object) {
+  updateProfile(profile: any) {
     this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
     this.setProfile(profile);
+    this.soUserProfile = {...this._soProfile.getValue(), profile_image: profile.profile_image};
   }
 
   private storeDefaultPayment(response: any) {

@@ -1,12 +1,17 @@
 import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
-import { ZoneReportService } from '../../../core/shared/form/report/report.service';
-import { Subject } from 'rxjs';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
+import { ZSharedReportService } from '../../../core/shared/components/zone/report/report.service';
 
+import { Constants } from '../../../core/shared/config/constants';
+import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
+import { ZSocialProfileDataService } from '../profile-data.service';
 
 declare var _: any;
 
@@ -16,7 +21,7 @@ declare var _: any;
   templateUrl: 'cover.component.html'
 })
 
-export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestroy {
+export class ZSocialProfileCoverComponent implements OnInit {
 
   @Input() data: any;
 
@@ -30,49 +35,42 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
 
   favourite: any; // toggle favourites status for members, communities
 
-  constructor(private apiBaseService: ApiBaseService,
-              private socialService: SocialService,
+  tooltip: any = Constants.tooltip;
+  readonly FRIEND_STATUS: any = {
+    STRANGER: 0,
+    REQUEST_SENT: 1,
+    FRIEND: 2
+  };
+
+  constructor(private socialService: SocialService,
               public userService: UserService,
-              private zoneReportService: ZoneReportService,
+              private zoneReportService: ZSharedReportService,
+              private favoriteService: SocialFavoriteService,
               private toastsService: ToastsService,
+              private profileDataService: ZSocialProfileDataService,
               private route: ActivatedRoute) {
   }
 
-  ngOnChanges(data: any) {
-    if (this.data) {
-
-      this.userInfo = this.data;
-
-      // Only user can change his own profile / cover image
-      if (this.userService.profile.uuid == this.userInfo.uuid) {
-        this.userInfo.canEdit = true;
-        // this.userInfo = Object.assign({}, this.userInfo, {canEdit: true});
-      }
-
-    }
-    if (this.userInfo && this.userService.profile.uuid != this.userInfo.uuid) {
-      this.showFriends = this.userInfo.settings.show_friends.value;
-    }
-  }
-
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.uuid = params['id'] ? params['id'] : this.userService.getProfileUuid();
 
-      if (this.userService.profile.uuid != params['id']) {
-        this.socialService.user.getRelationShips(params['id'])
-          .toPromise()
-          .then((res: any) => {
-              this.relationships = res.data
-            },
-          );
-      } else {
-        this.relationships = undefined;
+    this.profileDataService.profileData$
+      .subscribe((res: any) => { console.debug('profileData in cover: ', res);
+      this.userInfo = res.userInfo;
+      this.uuid = res.userInfo.uuid;
+      this.relationships = res.relationships;
+
+      if (this.userInfo && this.userService.profile.uuid != this.userInfo.uuid) {
+        this.showFriends = _.get(this.userInfo, 'settings.show_friends.value', false);
       }
     });
   }
 
-  ngOnDestroy() {
+  checkFavorite() {
+    // Check favourite status
+    _.each(this.favoriteService.favorites, (f: any) => { if( f.friend && f.friend.uuid === this.uuid)
+      this.favourite = f.friend;
+    });
+    console.debug('this.favoriteService.favorites: ', this.favoriteService.favorites, this.favourite);
   }
 
   follow(uuid: string) {
@@ -91,7 +89,7 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
       this.socialService.user.update(event.body)
         .subscribe((result: any) => {
           console.log('update profile sucess: ', result);
-          let toastMsg = '';
+          let toastMsg:string = '';
           if (_.has(event.body, 'profile_image')) {
             toastMsg = 'You have updated profile image successfully';
             // Update user profile
@@ -100,11 +98,11 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
               Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
               this.userService.updateProfile(this.userService.profile);
             }
-          }
-          else if (_.has(event.body, 'cover_image'))
-            toastMsg = 'You have updated cover image of this community successfully';
-          else
+          } else if (_.has(event.body, 'cover_image')) {
+                toastMsg = 'You have updated cover image of this community successfully';
+          } else {
             toastMsg = result.message;
+          }
 
           this.toastsService.success(toastMsg);
         });
@@ -149,7 +147,9 @@ export class ZSocialProfileCoverComponent implements OnInit, OnChanges, OnDestro
   }
 
   toggleFavourite(item: any, group: string) {
-    this.socialService.user.toggleFavourites(item.uuid, group).toPromise().then(
+    // this.socialService.user.toggleFavourites(item.uuid, group).toPromise().then(
+    this.favoriteService.addFavourite(item.uuid, group)
+      .then(
       (res: any) => {
         console.log(res);
         if (!_.isEmpty(this.favourite)) {

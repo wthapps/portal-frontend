@@ -1,11 +1,5 @@
-import {
-  Component, Input, EventEmitter, Output, ViewChild, OnInit, AfterViewInit, SimpleChanges,
-  OnChanges, ViewContainerRef
-} from '@angular/core';
-import { Location } from '@angular/common';
-import { ViewOptions } from './view-options.constant';
-import { Observable, Observer } from 'rxjs';
-import { MediaUploaderComponent } from '../uploader/media-uploader.component';
+import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare let _: any;
 
@@ -16,11 +10,9 @@ declare let _: any;
   styleUrls: ['media-toolbar-list.component.css']
 })
 
-export class MediaToolbarListComponent implements OnInit, AfterViewInit {
+export class MediaToolbarListComponent implements OnInit {
   @Input() currentPage: string; //photo_list, albumlist, object_list, photo_detail, album_detail, object_detail
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
-
-  @ViewChild('uploader') uploader: MediaUploaderComponent;
 
   selectedObjects: Array<any> = new Array<any>();
   object: any;
@@ -41,20 +33,17 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
   hasMultiObjects: boolean = false;
   favouriteTooltip: string = 'Add to favourites';
 
-  displayCreateButtons: boolean = true;
+  displayCreateButtons: boolean;
   displayBackButton: boolean = false;
 
+  tooltip: any = Constants.tooltip;
 
   constructor() {
-
   }
 
-  ngOnInit(): void {
-    this.displayCreateButtons = (this.page == 'search' || this.page == 'album_detail' ? false : true);
-    this.displayBackButton = (this.page == 'search' || this.page == 'album_detail' ? true : false);
-  }
-
-  ngAfterViewInit(): void {
+  ngOnInit() {
+    this.displayBackButton = (this.page == 'search' || this.page == 'album_detail' || this.page == 'sharing_detail' ? true : false);
+    this.displayCreateButtons = !this.displayBackButton;
   }
 
   initProperties(properties: any) {
@@ -62,30 +51,30 @@ export class MediaToolbarListComponent implements OnInit, AfterViewInit {
     this.currentPath = properties.currentPath;
     this.currentPage = properties.currentPage;
     this.page = properties.page;
+    this.object = properties.object;
   }
 
 
   onAction(options: any) {
-    if(_.get(options, 'action', '') == 'changeView') {
+    if (_.get(options, 'action', '') == 'changeView') {
       this.viewOption = options.params.viewOption;
     }
     // toggle favourite action
     if (options.action == 'favourite') {
       this.isFavourited = !this.isFavourited;
       this.favouriteTooltip = this.isFavourited ? 'Remove from favourites' : 'Add to favourites';
-
     }
     this.events.emit(options);
   }
 
   updateProperties(properties: any) {
-    if(properties.hasOwnProperty('selectedObjects')) {
+    if (properties.hasOwnProperty('selectedObjects')) {
       this.selectedObjects = properties.selectedObjects;
     }
     if (properties.hasOwnProperty('object')) {
       this.object = properties.object;
     }
-    this.noSelectedObjects = this.selectedObjects.length > 0 ? false: true;
+    this.noSelectedObjects = this.selectedObjects.length > 0 ? false : true;
 
     this.isFavourited = !_.some(this.selectedObjects, ['favorite', false]);
     this.hasMultiObjects = this.selectedObjects.length > 1 ? true : false;

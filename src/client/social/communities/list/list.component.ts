@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 
-import { LoadingService } from '../../../core/partials/loading/loading.service';
+import 'rxjs/add/operator/toPromise';
+
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
 import { SocialService } from '../../shared/services/social.service';
 import { UserService } from '../../../core/shared/services/user.service';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { Constants } from '../../../core/shared/config/constants';
 import { ZSocialShareCommunityFormEditComponent } from '../../shared/form/edit-community.component';
-import { Subject } from 'rxjs/Subject';
 
 declare var _: any;
 

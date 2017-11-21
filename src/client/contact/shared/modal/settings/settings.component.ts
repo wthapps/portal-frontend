@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
-import { CountryService } from "../../../../core/partials/countries/countries.service";
+import { CountryService } from '../../../../core/shared/components/countries/countries.service';
 
 declare var _: any;
 
@@ -52,7 +52,7 @@ export class ZContactSharedSettingsComponent implements OnInit {
 
   submit() {
     this.apiBaseService.post(`contact/contacts/update_settings`, {contact_setting_attributes: this.form.value}).subscribe((res: any) => {
-
+      console.log('settings', res);
     });
     this.modal.close();
   }

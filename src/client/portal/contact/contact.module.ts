@@ -1,22 +1,17 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 import { ReCaptchaModule } from 'angular2-recaptcha';
-
-import { PartialsModule } from '../../core/partials/partials.module';
 
 import { ContactComponent } from './contact.component';
 import { ContactRoutingModule } from './contact-routing.module';
 import { ContactService } from './contact.service';
 
+import { PortalSharedModule } from '../shared/shared.module';
+
 @NgModule({
   imports: [
-    CommonModule,
     ContactRoutingModule,
-    PartialsModule,
-    FormsModule,
-    ReactiveFormsModule,
+    PortalSharedModule.forRoot(),
     ReCaptchaModule
   ],
   declarations: [

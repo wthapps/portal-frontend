@@ -34,9 +34,7 @@ export class ChannelService extends CableService {
             let action = factory.create(data, thisCopy.serviceManager);
             if (action) {
               if(action.process) {
-                action.process();
-              } else {
-                action.update(data);
+                action.process(data);
               }
             }
           }
@@ -46,7 +44,8 @@ export class ChannelService extends CableService {
   }
 
   unsubscribe() {
-    App.channel.unsubscribe();
+    if(App.channel)
+      App.channel.unsubscribe();
   }
 }
 

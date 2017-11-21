@@ -29,7 +29,7 @@ export class UserContact extends BaseModel {
   use_diagnosis: boolean;
   supporter: boolean;
   online: boolean;
-  profile_image: string = 'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/common-images/avartart/default.png';
+  profile_image: string;
 
   constructor(obj?: any) {
     super();

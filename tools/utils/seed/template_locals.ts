@@ -28,15 +28,17 @@ export class TemplateLocalsBuilder {
     const configPath = Config.getPluginConfig('environment-config');
     const envOnlyConfig = this.getConfig(configPath, configEnvName);
     const baseConfig = this.getConfig(configPath, 'base');
+    const packageJSON = require('../../../package.json');
+    const versionJSON = { VERSION : packageJSON.version };
 
     if (!envOnlyConfig) {
       throw new Error(configEnvName + ' is an invalid configuration name');
     }
 
-    const envConfig = Object.assign({}, baseConfig, envOnlyConfig);
+    const envConfig = Object.assign({}, baseConfig, envOnlyConfig, versionJSON);
     let locals = Object.assign({},
-        Config,
-        { ENV_CONFIG: this.stringifyEnvConfig ? JSON.stringify(envConfig) : envConfig }
+      Config,
+      { ENV_CONFIG: this.stringifyEnvConfig ? JSON.stringify(envConfig) : envConfig }
     );
     if (this.stringifySystemConfigDev) {
       Object.assign(locals, {SYSTEM_CONFIG_DEV: JSON.stringify(Config.SYSTEM_CONFIG_DEV)});
@@ -55,5 +57,5 @@ export class TemplateLocalsBuilder {
     }
 
     return config;
-  };
+  }
 }

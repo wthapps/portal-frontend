@@ -1,7 +1,7 @@
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title"><i class="fa fa-cog"></i> Setttings</h4>
+      <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
     </modal-header>
 
     <modal-body>
@@ -13,10 +13,10 @@
                             [suggestions]="filteredCountriesCode"
                             (completeMethod)="filterCountriesCode($event)" [size]="30"
                             [minLength]="1" placeholder="Select your country" [dropdown]="true"
-                            (onDropdownClick)="handleDropdownClick($event)">
-              <template ngFor let-code let-i="index" pTemplate="item">
+                            (onDropdownClick)="handleDropdownClick()">
+              <ng-template ngFor let-code let-i="index" pTemplate="item">
                 <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
-              </template>
+              </ng-template>
             </p-autoComplete>
           </div>
         </div>
@@ -25,20 +25,22 @@
       <p class="bold">List sort by</p>
       <div class="row">
         <div class="col-xs-12">
-          <p-radioButton name="contacts_sort_by" value="first_name" label="First Name" formControlName="contacts_sort_by"></p-radioButton>
+          <p-radioButton name="contacts_sort_by" value="first_name" label="First Name"
+                         formControlName="contacts_sort_by"></p-radioButton>
         </div>
         <div class="col-xs-12">
-          <p-radioButton name="contacts_sort_by" value="last_name" label="Last Name" formControlName="contacts_sort_by"></p-radioButton>
+          <p-radioButton name="contacts_sort_by" value="last_name" label="Last Name"
+                         formControlName="contacts_sort_by"></p-radioButton>
         </div>
       </div>
 
     </modal-body>
 
     <modal-footer>
-      <button type="button" (click)="submit()" [disabled]="!form.valid || form.pristine" class="btn btn-primary-inline">
-        Done
+      <button type="button" (click)="submit()" [disabled]="!form.valid || form.pristine"
+              class="btn btn-outline-primary btn-min">Done
       </button>
-      <button type="button" class="btn btn-default-inline" (click)="modal.close()">Cancel</button>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
     </modal-footer>
   </modal>
 </form>

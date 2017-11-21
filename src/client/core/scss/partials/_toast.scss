@@ -1,13 +1,14 @@
 .toast-message {
   .ui-growl {
+    @include center();
+    width: 570px;
+    max-width: 100%;
+    right: auto;
     top: 50px;
-    left: 0;
-    right: 0;
-    width: auto;
+
     .ui-growl-item-container {
       margin-left: auto;
       margin-right: auto;
-      width: 570px;
       max-width: 100%;
       word-break: break-all;
       background-color: #ffffff;
@@ -61,6 +62,10 @@
           content: "\f058";
         }
       }
+    }
+    span.ui-growl-image {
+      top: 50%;
+      margin-top: -10px;
     }
     .ui-growl-message {
       float: none;

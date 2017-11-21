@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
+import 'rxjs/add/operator/toPromise';
+
 import { SocialService } from '../shared/services/social.service';
 import { SoUser } from '../../core/shared/models/social_network/so-user.model';
-import { ConfirmationService } from 'primeng/components/common/api';
+
+import { WthConfirmService } from '../../core/shared/components/confirmation/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -13,7 +17,7 @@ export class ZSocialSettingComponent implements OnInit {
   user: SoUser = new SoUser();
 
   constructor(private socialService: SocialService,
-              private confirmationService: ConfirmationService) {
+              private wthConfirmService: WthConfirmService) {
   //
   }
 
@@ -32,11 +36,14 @@ export class ZSocialSettingComponent implements OnInit {
   }
 
   resetSettings() {
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Reset',
+      rejectLabel: 'Cancel',
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {
-        this.socialService.user.reset_setting().subscribe((res: any) => {
+        this.socialService.user.reset_setting()
+          .toPromise().then((res: any) => {
             this.user = new SoUser().from(res.data);
           },
         );

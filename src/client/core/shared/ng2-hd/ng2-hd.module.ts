@@ -4,7 +4,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HdModalModule } from './modal/hd-modal.module';
 import { HdMultiSelectListModule } from './list/hd-list.module';
-import { HdTagInputModule } from './tag-input/tag-input.module';
+import { UploaderModule } from './components/uploader/uploader.module';
+import { HConfirmationService } from './services/confirmation.service';
+import { ChipModule } from './components/chip/chip.module';
+import { EditorModule } from './components/editor/editor.component';
+// import { ConfirmDialogModule } from './components/confirmdialog/confirmdialog';
 
 
 @NgModule({
@@ -12,14 +16,23 @@ import { HdTagInputModule } from './tag-input/tag-input.module';
     CommonModule,
     HdModalModule,
     HdMultiSelectListModule,
-    HdTagInputModule
+    UploaderModule,
+    ChipModule,
+    EditorModule
+    // ConfirmDialogModule
   ],
-  declarations: [],
+  declarations: [
+  ],
   exports: [
     HdModalModule,
     HdMultiSelectListModule,
-    HdTagInputModule
-  ]
+    UploaderModule,
+    ChipModule,
+    EditorModule
+    // ConfirmDialogModule
+  ],
+  providers: [HConfirmationService]
 })
 export class Ng2HdModule {
+
 }

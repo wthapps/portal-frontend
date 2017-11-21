@@ -1,27 +1,27 @@
 import { Component, OnInit }            from '@angular/core';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { CookieOptionsArgs } from 'angular2-cookie/services/cookie-options-args.model';
 
-import { UserService } from '../../../core/shared/services/user.service';
-import { LoadingService } from '../../../core/partials/loading/loading.service';
-import { ConfirmationService } from 'primeng/components/common/api';
-import { ToastsService } from '../../../core/partials/toast/toast-message.service';
+import { CookieService, CookieOptions } from 'ngx-cookie';
 
 import { CreditCard } from '../../../core/shared/models/credit-card.model';
 import { BillingAddress } from '../../../core/shared/models/billing-address.model';
 import { Constants } from '../../../core/shared/config/constants';
 
+import { UserService } from '../../../core/shared/services/user.service';
+import { LoadingService } from '../../../core/shared/components/loading/loading.service';
+import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
+import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
+
 @Component({
   moduleId: module.id,
-  selector: 'ac-billing-details',
+  selector: 'my-billing-details',
   templateUrl: 'details.component.html'
 })
 
-export class ACBillingDetailsComponent implements OnInit {
+export class MyBillingDetailsComponent implements OnInit {
   pageTitle: string = 'Billing Details';
   credit_card: CreditCard;
 
-  private cookieOptionsArgs: CookieOptionsArgs = {
+  private cookieOptionsArgs: CookieOptions = {
     path: '/',
     domain: Constants.baseUrls.domain,
     expires: new Date('2030-07-19')
@@ -29,7 +29,7 @@ export class ACBillingDetailsComponent implements OnInit {
 
   constructor(public userService: UserService,
               private loadingService: LoadingService,
-              private confirmationService: ConfirmationService,
+              private wthConfirmService: WthConfirmService,
               private toastsService: ToastsService,
               private cookieService: CookieService) {
     //console.log(this.userService);
@@ -53,7 +53,7 @@ export class ACBillingDetailsComponent implements OnInit {
   onDelete(event: any): void {
     event.preventDefault();
 
-    this.confirmationService.confirm({
+    this.wthConfirmService.confirm({
       message: 'Are you sure to delete Billing details?',
       header: 'Delete billing details',
       accept: () => {

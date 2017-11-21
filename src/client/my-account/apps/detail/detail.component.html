@@ -1,13 +1,13 @@
 <div class="main-content">
   <div class="container">
     <wth-breadcrumb [model]="breadcrumbs"></wth-breadcrumb>
-    <div class="page-app-detail">
+    <div class="page-app-detail" *ngIf="item">
       <div class="row">
         <div class="col-sm-3 col-md-2">
           <figure class="page-app-icon"><img class="img-full" [src]="item.img_src" [alt]="item.name"></figure>
           <div class="page-app-action">
             <p>
-              <a target="_blank" href="{{item.download_link}}" class="btn btn-info btn-block">
+              <a target="_blank" href="{{ item.download_link }}" class="btn btn-info btn-block">
                 <i class="fa fa-download"></i> Download</a>
             </p>
             <p *ngIf="!added">
@@ -23,9 +23,9 @@
         </div>
         <div class="col-sm-9 col-md-10">
           <div class="page-app-info">
-            <h2 class="page-app-info-tt">{{item.name}}</h2>
-            <p class="cat">{{item.category.name}}</p>
-            <ac-apps-shared-platform [data]="item.platforms"></ac-apps-shared-platform>
+            <h2 class="page-app-info-tt">{{ item.name }}</h2>
+            <p class="cat">{{ item.category.name }}</p>
+            <my-apps-shared-platform [data]="item.platforms"></my-apps-shared-platform>
           </div>
           <div class="row page-app-content">
             <div class="col-sm-8">
@@ -37,7 +37,7 @@
                   <div class="article-content mb20">
                     <div [innerHTML]="descriptionContent"></div>
                   </div>
-                  <ac-apps-shared-slider [data]="item.screenshots"></ac-apps-shared-slider>
+                  <my-apps-shared-slider [data]="item.screenshots"></my-apps-shared-slider>
                 </div>
               </div>
             </div>
@@ -49,9 +49,9 @@
                 </div>
                 <div class="box-panel-body">
                   <ul class="list-info-app">
-                    <li><span>Version:</span> {{item.version}}</li>
-                    <li><span>Updated:</span> {{item.updated_at | date:'MMM-dd-yyyy'}}</li>
-                    <li><span>Size:</span> {{item.size}}</li>
+                    <li><span>Version:</span> {{ item.version }}</li>
+                    <li><span>Updated:</span> {{ item.updated_at | date:'MMM-dd-yyyy' }}</li>
+                    <li><span>Size:</span> {{ item.size }}</li>
                   </ul>
                 </div>
               </div>

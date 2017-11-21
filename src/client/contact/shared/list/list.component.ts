@@ -1,5 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+
 import { ZContactService } from '../services/contact.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -9,33 +13,35 @@ declare var _: any;
   templateUrl: 'list.component.html',
   styleUrls: ['list.component.css']
 })
-export class ZContactSharedListComponent implements OnInit {
+export class ZContactSharedListComponent {
   @Input() data: any;
 
-  descending: boolean = false;
+  // descending: boolean = false;
+  desc$: Observable<boolean>;
   currentSort: string = 'name';
 
+  tooltip: any = Constants.tooltip;
+
   constructor(public contactService: ZContactService) {
-  }
-
-  ngOnInit() {
-
+    this.desc$ = this.contactService.orderDesc$;
   }
 
   onSort(event: any) {
     if (this.currentSort == event) {
-      this.descending = !this.descending;
+      // this.descending = !this.descending;
+      this.contactService.changeSortOption();
     } else {
-      this.descending = false;
+      this.contactService.changeSortOption('asc');
       this.currentSort = event;
     }
-    this.data = _.orderBy(this.data, [this.currentSort], [(this.descending ? 'desc' : 'asc')]);
+    // this.data = _.orderBy(this.data, [this.currentSort], [(this.descending ? 'desc' : 'asc')]);
+
 
     return false;
   }
 
   onSelectedAll() {
-    if (this.contactService.selectedObjects.length == this.data.length) {
+    if (this.contactService.isSelectAll()) {
       this.contactService.sendListToItem(false);
       this.contactService.selectedObjects.length = 0;
     } else {

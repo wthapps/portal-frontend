@@ -1,0 +1,22 @@
+<div class="media">
+  <div class="media-left">
+    <span class="avatar-xs">
+      <img [src]="avatar" alt="">
+    </span>
+  </div>
+  <div class="media-body">
+    <a href="{{ url }}" class="bold"><h5 class="media-heading" style="margin-bottom:0px">{{ name }}</h5></a>
+    <small class="text-fade">{{ status }}</small>
+  </div>
+  <div class="media-right">
+    <div style="width:150px;">
+      <button *ngFor="let action of actions" class="btn"
+              [ngClass]="action.btnClass?  action.btnClass : 'btn-outline-primary'"
+              style="margin-right: 10px"
+              (click)="emitEvent({action: action.id, data: data})">
+        <i *ngIf="action.class" [ngClass]="action.class"></i>
+        {{ action.text }}
+      </button>
+    </div>
+  </div>
+</div>

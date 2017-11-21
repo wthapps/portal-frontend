@@ -18,7 +18,7 @@
     <div class="modal-body-collapse" *ngIf="sharedContacts?.length">
       <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
          aria-controls="collapseExample">
-        Shared with {{sharedContacts?.length}} Contacts
+        Shared with {{ sharedContacts?.length }} Contacts
       </a>
       <div class="collapse in pre-scrollable" id="collapseContact">
         <div class="modal-body-collapse-in">
@@ -26,15 +26,15 @@
             <div class="media" [ngClass]="isDeletedItem(contact.id) ? 'remove': ''">
               <div class="media-left">
                 <figure>
-                  <img src="assets/images/zone/img-group.png" alt="">
+                  <img [src]="contact.profile_image" alt="">
                 </figure>
               </div>
               <div class="media-body">
-                {{contact.name}}
+                {{ contact.name }}
               </div>
               <div class="media-right">
-                <a href="#" (click)="toggleRemoving($event, contact.id)">{{isDeletedItem(contact.id) ? 'Cancel':
-                  'Remove'}}</a>
+                <a href="#" (click)="toggleRemoving($event, contact.id)">{{ isDeletedItem(contact.id) ? 'Cancel':
+                  'Remove' }}</a>
               </div>
             </div>
           </div>
@@ -43,8 +43,11 @@
     </div>
   </modal-body>
   <modal-footer>
-    <p *ngIf="hasDeletedItems" class="text-left text-danger">You have made changes that you need to save!</p>
-    <button type="button"  [ngClass]="{'text-disable': noSelectedContacts && !hasDeletedItems && !hasUpdatedItems}" [disabled]="noSelectedContacts && !hasDeletedItems && !hasUpdatedItems" (click)="save()" class="btn btn-primary-inline">Save</button>
-    <button type="button" class="btn btn-default-inline" data-dismiss="modal">Cancel</button>
+    <p *ngIf="hasChanged" class="text-left text-danger">You have made changes that you need to save!</p>
+    <button type="button" [ngClass]="{'text-disable': !hasChanged}"
+            [disabled]="!hasChanged" (click)="save()"
+            class="btn btn-outline-primary btn-min">Done
+    </button>
+    <button type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
   </modal-footer>
 </modal>

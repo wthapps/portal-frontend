@@ -1,19 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 
-import { PartialsModule } from '../../core/partials/partials.module';
 import { RecoveryRoutingModule } from './recovery-routing.module';
 import { ForgottenPasswordComponent } from './forgotten-password.component';
 import { NewPasswordComponent } from './new-password.component';
 import { ResetEmailSentComponent } from './reset-email-sent.component';
+import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
     RecoveryRoutingModule,
-    PartialsModule,
-    ReactiveFormsModule
+    PortalSharedModule.forRoot()
   ],
   declarations: [
     ForgottenPasswordComponent,

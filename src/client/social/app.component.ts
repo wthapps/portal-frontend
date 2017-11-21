@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { Config } from '../core/shared/config/env.config';
-
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import './operators';
 import 'rxjs/add/operator/filter';
-import { SocialDataService } from './shared/services/social-data.service';
+import 'rxjs/add/operator/do';
 
-declare let $ : any;
-declare let _ : any;
+import { Config } from '../core/shared/config/env.config';
+
+
 /**
  * This class represents the main application component.
  */
@@ -17,12 +17,15 @@ declare let _ : any;
   moduleId: module.id,
   selector: 'sd-app',
   templateUrl: 'app.component.html',
+  styleUrls: ['app.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
-  constructor(private router: Router,
-              private socialDataService: SocialDataService) {
+  // confirmInfo$: Observable<ConfirmInfo>;
+
+  constructor(private router: Router) {
     console.log('Environment config', Config);
   }
 

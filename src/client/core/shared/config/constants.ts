@@ -24,7 +24,8 @@ export let Constants = {
     media: Config.SUB_DOMAIN.MEDIA,
     social: Config.SUB_DOMAIN.SOCIAL,
     chat: Config.SUB_DOMAIN.CHAT,
-    contact: Config.SUB_DOMAIN.CONTACT
+    contact: Config.SUB_DOMAIN.CONTACT,
+    note: Config.SUB_DOMAIN.NOTE,
   },
 
   flagsRelease: false,
@@ -78,23 +79,45 @@ export let Constants = {
     logoWhite: '/assets/images/logo-white.png',
     logoZone: '/assets/images/logo-zone.png',
     logoZoneWhite: '/assets/images/logo-zone-white.png',
+    default: '/assets/images/thumbnail/image_default.png',
   },
   windows: {
     scrollBarWidth: getBarwidth()
   },
 
-  contactMenuItems: [
-    {name: 'All Contact', link: '/list', icon: 'fa fa-address-book-o', hasMenu: false},
-    {name: '', link: '', icon: ''},
-    {name: 'Labels', link: '/list/labels', icon: 'fa fa-tags'},
-    {name: 'Favourites (2)', link: '/list/favourites', icon: 'fa fa-star'},
-    {name: 'Social (5)', link: '/list/social', icon: 'fa fa-globe'},
-    {name: 'Chat (2)', link: '/list/chat', icon: 'fa fa-comments-o'},
-    {name: 'Custom label 01 (1)', link: '/list/custom-label-01', icon: 'fa fa-folder-o visibility-hidden'},
-    {name: 'Custom label 01 (2)', link: '/list/custom-label-02', icon: 'fa fa-folder-o visibility-hidden'},
-    {name: 'Blacklist', link: '/list/blacklist', icon: 'fa fa-ban'},
-    {name: 'New label', link: '#', icon: 'fa fa-plus', action: 'contact:label:create'}
+  noteMenuItems: [
+    {name: 'My Notes', value: 'My notes', link: '/my-note', icon: 'fa fa-sticky-note'},
+    {name: 'Shared With Me', value: 'shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'},
+    {name: 'Trash', value: 'Trash', link: '/trash', icon: 'fa fa-trash-o'},
+    // {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},
   ],
+
+
+  notePageType:{
+    MY_NOTE: 'MY_NOTE',
+    TRASH: 'TRASH',
+    SHARED_WITH_ME: 'SHARED_WITH_ME',
+    MY_SHARINGS: 'MY_SHARINGS'
+  },
+
+  contactMenuItems: [
+    {name: 'All Contacts', value: 'all contacts', link: '/list', icon: 'fa fa-address-book-o', hasMenu: false},
+    {name: '', value: '', link: '', icon: ''},
+    {name: 'Labels', value: 'labels', link: '/list/labels', icon: 'fa fa-tags'},
+    {name: 'Favourites (2)', value: 'favourites', link: '/list/favourites', icon: 'fa fa-star'},
+    {name: 'Social (5)', value: 'social', link: '/list/social', icon: 'fa fa-globe'},
+    {name: 'Chat (2)', value: 'chat', link: '/list/chat', icon: 'fa fa-comments-o'},
+    {name: 'Custom label 01 (1)', value: '', link: '/list/custom-label-01', icon: 'fa fa-folder-o visibility-hidden'},
+    {name: 'Custom label 01 (2)', value: '', link: '/list/custom-label-02', icon: 'fa fa-folder-o visibility-hidden'},
+    {name: 'Blacklist', value: 'blacklist', link: '/list/blacklist', icon: 'fa fa-ban'},
+    {name: 'New label', value: 'new label', link: '#', icon: 'fa fa-plus', action: 'contact:label:create'}
+  ],
+
+  contactEvents: {
+    common: 'contactCommonEvent',
+    actionsToolbar: 'contactActionsToolbarEvent',
+    googleImport: 'contactGoogleImportEvent'
+  },
 
   chatMenuItems: [
     {name: 'Conversations', link: '/conversations', icon: 'fa fa-comments-o'},
@@ -107,7 +130,8 @@ export let Constants = {
     {name: 'Photos', link: '/photos', icon: 'fa fa-photo'},
     {name: 'Albums', link: '/albums', icon: 'fa fa-file-photo-o'},
     {name: 'Favourites', link: '/favourites', icon: 'fa fa-star'},
-    {name: 'Shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'},
+    {name: 'Shared with me', link: '/shared-with-me', icon: 'wthico-shared-with-me'},
+    {name: 'Shared by me', link: '/shared-by-me', icon: 'fa fa-share-alt'},
     {name: 'Search', link: '/search', icon: 'fa fa-search'}
   ],
 
@@ -275,8 +299,121 @@ export let Constants = {
       category: 'other',
       name: 'Other'
     },
-  ]
+  ],
+  phoneCategories: [
+    {value: 'mobile', text: 'Mobile'},
+    {value: 'home', text: 'Home'},
+    {value: 'work', text: 'Work'},
+    {value: 'main', text: 'Main'},
+    {value: 'fax', text: 'Fax'},
+    {value: 'other', text: 'Other'}
+  ],
+  emailCategories: [
+    {value: 'work', text: 'Work'},
+    {value: 'home', text: 'Home'},
+    {value: 'other', text: 'Other'}
+  ],
+  addressCategories: [
+    {value: 'work', text: 'Work'},
+    {value: 'home', text: 'Home'},
+    {value: 'other', text: 'Other'}
+  ],
+  mediaCategories: [
+    {value: 'wthapps', text: 'WTHApps'},
+    {value: 'facebook', text: 'Facebook'},
+    {value: 'googleplus', text: 'Google Plus'},
+    {value: 'twitter', text: 'Twitter'},
+    {value: 'other', text: 'Other'}
+  ],
+
+  tooltip: {
+    add: 'Add',
+    addLabel: 'Add label',
+    addPeople: 'Add people',
+    addPhoto: 'Add photo',
+    addTag: 'Add Tag',
+    addToAlbum: 'Add to album',
+    addToBlacklist: 'Add to blacklist',
+    addToFavorites: 'Add to favorites',
+    addAttachments: 'Add attachments',
+    back: 'Back',
+    cancelUploading: 'Cancel uploading',
+    changeView: 'Change view',
+    close: 'Close',
+    create: 'Create',
+    crop: 'Crop',
+    delete: 'Delete',
+    download: 'Download',
+    edit: 'Edit',
+    emoticons: 'Emoticons',
+    favourite: 'Favourite',
+    goToChat: 'Go to chat',
+    goToSocial: 'Go to social',
+    gridView: 'Grid view',
+    hide: 'Hide',
+    info: 'Info',
+    information: 'Information',
+    listView: 'List view',
+    markAsRead: 'Mark as read',
+    markAsUnread: 'Mark as unread',
+    moreAction: 'More action',
+    new: 'New',
+    next: 'Next',
+    notification: 'Notification',
+    notifications: 'Notifications',
+    preview: 'Preview',
+    previous: 'Previous',
+    rangeSliderView: 'Range slider view',
+    remove: 'Remove',
+    removeFromBlacklist: 'Remove from blacklist',
+    removeFromFavourites: 'Remove from favorites',
+    removeThisPhoto: 'Remove this photo',
+    reverseSortDirection: 'Reverse sort direction',
+    search: 'Search',
+    searchOptions: 'Search options',
+    send: 'Send',
+    sendFile: 'Send file',
+    sendFileAndMedia: 'Send file and media',
+    sendMedia: 'Send media',
+    setting: 'Setting',
+    settings: 'Settings',
+    share: 'Share',
+    show: 'Show',
+    showActions: 'Show actions',
+    showPassword: 'Show password',
+    tag: 'Tag',
+    tags: 'Tags',
+    resetZoom: 'Reset zoom',
+    rotateLeft: 'Rotate left',
+    rotateRight: 'Rotate right',
+    update: 'Update',
+    viewDetail: 'View detail',
+    viewInfo: 'View info',
+    wthApps: 'WTHApps',
+    zoom: 'Zoom',
+    zoomIn: 'Zoom in',
+    zoomOut: 'Zoom out',
+    restore: 'Restore',
+    permanentDelete: 'Permanent Delete'
+  },
+
+  confirmDialog: {
+    label: {
+      accept: 'DONE',
+      reject: 'CANCEL'
+    }
+  },
+
+  modal: {
+    edit: 'edit',
+    add: 'add'
+  }
 };
+
+export let PhotoAction = {
+  update: 'update',
+  delete: 'delete'
+}
 
 export let MediaType = {
   photo: 'photo',
@@ -287,4 +424,3 @@ export let MediaType = {
   favourites: 'favourites',
   sharedWithMe: 'sharedWithMe'
 };
-

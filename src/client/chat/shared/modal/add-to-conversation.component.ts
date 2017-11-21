@@ -21,7 +21,7 @@ export class ZChatShareAddToConversationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getContacts();
+    this.contactItem = this.chatService.getConversations();
   }
 
   add() {

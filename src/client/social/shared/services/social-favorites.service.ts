@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject, Observable } from 'rxjs';
+
+import 'rxjs/add/operator/toPromise';
+
 import { SocialService } from './social.service';
+
 declare let _ : any;
 
 @Injectable()
 // This Data service is created for store Favorites data between components
 export class SocialFavoriteService {
-  // public favoritesObs: any;
-  // public favorites: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public favorites: Array<any>;
   private loaded: boolean = false;
 
@@ -21,13 +21,24 @@ export class SocialFavoriteService {
   getFavourites() {
     this.socialService.user.getFavourites()
       .filter(() => !this.loaded) // Only load data once
-      .take(1).subscribe(
+      .toPromise()
+      .then(
       (res: any) => {
         this.favorites = res.data;
         this.loaded = true;
       }
     );
+  }
 
+  updateFavorite(item: any, type: any) {
+    console.log('inside updateFavorite: ', item, type);
+    if(type !== 'community')
+      return;
+    this.favorites = _.map(this.favorites, (f: any) => { if(f[type] && f[type]['uuid'] === item.uuid)
+      return Object.assign(item, {'community': item});
+    else
+      return f;
+    });
   }
 
 
@@ -39,6 +50,7 @@ export class SocialFavoriteService {
         } else {
           this.addFavorite(res.data);
         }
+        return res;
       })
       .toPromise()
       .catch((err: any) => {
@@ -55,7 +67,7 @@ export class SocialFavoriteService {
 
   unfavourite(favourite: any) {
     this.socialService.unfavourite(favourite.uuid).take(1)
-      .subscribe((response: any) => {
+      .toPromise().then((response: any) => {
         // _.remove(this.favourites.getValue(), (f: any) => f.uuid == favourite.uuid);
         this.removeFavorite(favourite);
       });
@@ -67,7 +79,7 @@ export class SocialFavoriteService {
   }
 
   unfriend(friend: any) {
-    this.socialService.user.unfriend(friend.uuid).subscribe(
+    this.socialService.user.unfriend(friend.uuid).toPromise().then(
       (res: any) => {
         _.remove(this.favorites, (f: any) => _.get(f, 'friend.uuid', '') == friend.uuid);
       },

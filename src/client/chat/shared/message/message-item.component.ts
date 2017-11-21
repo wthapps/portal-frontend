@@ -6,6 +6,7 @@ import { Config } from '../../../core/shared/config/env.config';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { CHAT_ACTIONS } from '../../../core/shared/constant/chat-constant';
+import { Constants } from '../../../core/shared/config/constants';
 
 declare var _: any;
 
@@ -17,10 +18,12 @@ declare var _: any;
 })
 export class MessageItemComponent implements OnInit {
   @Input() message: any;
-  @Input() prevMessage: any = null;
+  @Input() prevMessage: any;
+  @Input() contactItem: any;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
+  tooltip:any = Constants.tooltip;
 
   actions = CHAT_ACTIONS;
 
@@ -36,14 +39,19 @@ export class MessageItemComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.contactItem = this.chatService.getContactSelect();
     // ByMe
     if (this.message.display && this.message.display.id) {
       this.message.byMe = this.chatService.user.profile.id == this.message.display.id;
     } else {
       this.message.file_json = {};
-      this.message.file_json.thumbnail_url = Config.RES + '/portal-frontend/common-images/file/file_upload/filethumb.png';
+      this.message.file_json.thumbnail_url = 'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/thumbnails/generic_files_upload_default.png';
     }
 
+  }
+
+  onPreviewPhoto(message: any) {
+    this.router.navigate([{outlets: {modal: ['photos', message.file_json.id, {ids: [message.file_json.id], message: message.id, prevUrl: '/conversations'}]}}]);
   }
 
   doAction(event: CommonEvent) {
@@ -53,34 +61,47 @@ export class MessageItemComponent implements OnInit {
   }
 
   copy() {
-    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_COPY, payload: this.message});
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_COPY, payload: this.message});
   }
 
   quote() {
-    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_QUOTE, payload: this.message});
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_QUOTE, payload: this.message});
   }
 
   edit() {
-    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_EDIT, payload: this.message});
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_EDIT, payload: this.message});
   }
 
   delete() {
-    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_DELETE, payload: this.message});
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_DELETE, payload: this.message});
   }
 
   download() {
-    this.doAction({action: CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD, payload: this.message});
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD, payload: this.message});
+  }
+
+  cancle() {
+    this.doAction({channel: 'chatCommonEvent', action: CHAT_ACTIONS.CHAT_MESSAGE_CANCEL, payload: this.message});
   }
 
   doEvent(event: any) {
-    this.event.emit(event);
+    this.event.emit({channel: 'chatCommonEvent', action: event.action, data: this.message});
   }
 
-  onAdd(contact: any) {
-    this.onAddContact.emit(contact);
+  onAdd(data: any) {
+    this.onAddContact.emit(this.message.display.share_contact);
   }
 
-  cancelContact(contact: any) {
+  onShareContact(data: any) {
+    if (data.action == 'cancel') {
+      this.delete();
+    }
+    if (data.action == 'resend') {
+      this.chatService.shareContact([this.message.display.share_contact.id]);
+    }
+  }
+
+  cancelContactRequest(contact: any) {
 
   }
 

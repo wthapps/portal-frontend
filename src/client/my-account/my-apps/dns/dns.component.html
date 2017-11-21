@@ -5,7 +5,7 @@
     <th>IP Version</th>
     <th>Last Update</th>
     <th class="text-right">
-      <button (click)="addHost($event)" class="btn btn-sm btn-wth-default"><i class="fa fa-plus"></i> Add Host</button>
+      <button (click)="addHost($event)" class="btn btn-sm btn-outline-primary"><i class="fa fa-plus"></i> Add Host</button>
     </th>
   </tr>
   <tr *ngIf="records.length == 0">
@@ -13,11 +13,11 @@
   </tr>
   <tr *ngFor="let record of records">
     <td>
-      {{record.name}}.wthdns.com
+      {{ record.name }}.wthdns.com
     </td>
-    <td>{{record.content}}</td>
-    <td>{{record.record_type == 'A' ? 'IPv4' : 'IPv6'}}</td>
-    <td>{{record.updated_at | date:'yMMMd'}} {{record.updated_at | date:'H:mm:ss'}}</td>
+    <td>{{ record.content }}</td>
+    <td>{{ record.record_type == 'A' ? 'IPv4' : 'IPv6' }}</td>
+    <td>{{ record.updated_at | date:'yMMMd' }} {{ record.updated_at | date:'H:mm:ss' }}</td>
     <td width="160" class="text-right">
       <button class="btn btn-sm btn-default" (click)="editHost($event,record.id)"><i class="fa fa-pencil"></i> Edit
       </button>

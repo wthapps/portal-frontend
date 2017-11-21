@@ -4,7 +4,7 @@ import { FormArray, FormGroup } from '@angular/forms';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 
-declare let _:any;
+declare let _: any;
 
 export class ProfileFormMixin {
   @Input() data: any;
@@ -18,15 +18,19 @@ export class ProfileFormMixin {
     this.data[this.type] = _.concat(this.deleteObjects, values[this.type]);
     this.eventOut.emit(this.data);
     this.modal.close();
-  };
+  }
 
-  removeItem(i: number) {
+  removeItem(i: number, item: any) {
     const control = <FormArray>this.form.controls[this.type];
-    if (this.data[this.type][i]) {
-      this.data[this.type][i]._destroy = true;
-      this.deleteObjects.push(this.data[this.type][i]);
-    }
     control.removeAt(i);
+    if (item && item.id && item.id.value) {
+      _.forEach(this.data[this.type], (data: any) => {
+        if (data.id == item.id.value) {
+          data._destroy = true;
+          this.deleteObjects.push(data);
+        }
+      });
+    }
   }
 
   removeAll() {

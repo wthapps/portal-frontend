@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { UserService } from '../../core/shared/services/user.service';
-import { ToastsService } from '../../core/partials/toast/toast-message.service';
-import { LoadingService } from '../../core/partials/loading/loading.service';
 import { CustomValidator } from '../../core/shared/validator/custom.validator';
+import { ToastsService } from '../../core/shared/components/toast/toast-message.service';
+import { LoadingService } from '../../core/shared/components/loading/loading.service';
+import { Constants } from '../../core/shared/config/constants';
 
 declare var $: any;
 
@@ -15,11 +16,14 @@ declare var $: any;
 @Component({
   moduleId: module.id,
   selector: 'page-register',
-  templateUrl: 'register.component.html'
+  templateUrl: 'register.component.html',
+  styleUrls: ['register.component.css']
 })
 export class RegisterComponent {
   errorMessage: string = '';
   sex: number = 0;
+
+  tooltip: any = Constants.tooltip;
 
   form: FormGroup;
   first_name: AbstractControl;
@@ -33,9 +37,11 @@ export class RegisterComponent {
   accepted: AbstractControl;
 
   submitted: boolean = false;
+  invitationUuid: string;
 
   constructor(private fb: FormBuilder,
               private router: Router,
+              private route: ActivatedRoute,
               private userService: UserService,
               private toastsService: ToastsService,
               private loadingService: LoadingService) {
@@ -75,6 +81,10 @@ export class RegisterComponent {
     this.birthday_month = this.form.controls['birthday_month'];
     this.birthday_year = this.form.controls['birthday_year'];
     this.accepted = this.form.controls['accepted'];
+
+    this.route.queryParams.subscribe((queryParam: any) => {
+      this.invitationUuid = queryParam['invitation'];
+    });
   }
 
   onSubmit(values: any): void {
@@ -94,6 +104,7 @@ export class RegisterComponent {
         birthday_month: values.birthday_month,
         birthday_year: values.birthday_year,
         sex: values.sex,
+        invitation_uuid: this.invitationUuid,
         accepted_policies: values.accepted === true ? true : false
       });
 
@@ -109,7 +120,7 @@ export class RegisterComponent {
             console.log('error:', error);
             let err = error;
 
-            this.errorMessage = err;
+            this.errorMessage = err.error;
             //TODO refactoring code check signup
             if (error.status === 422) {
               this.errorMessage = 'Email has already been taken';
@@ -117,18 +128,6 @@ export class RegisterComponent {
             this.toastsService.danger(this.errorMessage);
 
           });
-    }
-  }
-
-  hideShowPassword(event: any): void {
-    var target = event.target || event.srcElement || event.currentTarget;
-    let inputPass = $(target).prev();
-    if (inputPass.attr('type') == 'password') {
-      inputPass.attr('type', 'text');
-      $(target).addClass('active');
-    } else {
-      inputPass.attr('type', 'password');
-      $(target).removeClass('active');
     }
   }
 }

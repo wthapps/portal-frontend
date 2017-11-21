@@ -9,11 +9,11 @@ export class SearchInputAccessor implements ControlValueAccessor {
 
   private _onChangeCallback: (items: Array<any>) => void;
 
-  public get items(): Array<any> {
+  get items(): Array<any> {
     return this._items;
-  };
+  }
 
-  public set items(items: Array<any>) {
+  set items(items: Array<any>) {
     this._items = items;
     // this._onChangeCallback(items);
   }

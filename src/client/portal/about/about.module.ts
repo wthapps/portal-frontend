@@ -1,23 +1,20 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { PartialsModule } from '../../core/partials/partials.module';
+import { ReCaptchaModule } from 'angular2-recaptcha';
 
 import { AboutComponent } from './about.component';
 import { AboutRoutingModule } from './about-routing.module';
+import { AboutService } from './about.service';
+import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
     AboutRoutingModule,
-    PartialsModule
+    PortalSharedModule.forRoot(),
+    ReCaptchaModule
   ],
-  declarations: [
-    AboutComponent
-  ],
-  exports: [
-    AboutComponent
-  ]
+  declarations: [AboutComponent],
+  exports: [AboutComponent],
+  providers: [AboutService]
 })
 export class AboutModule {
 }

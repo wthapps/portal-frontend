@@ -1,45 +1,42 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-
-import { SharedModule } from '../../core/shared/shared.module';
-import { TagInputModule } from 'ng2-tag-input';
 import { MediaUploaderComponent } from './uploader/media-uploader.component';
-import { ZMediaAlbumService } from '../album/album.service';
+import { MediaViewContainerComponent } from './container/media-view-container.component';
 import { MediaToolbarListComponent } from './media/media-toolbar-list.component';
 import { MediaListComponent } from './media/media-list.component';
-import { MediaViewContainerComponent } from './container/media-view-container.comoponent';
 import { MediaItemComponent } from './media/media-item.component';
-
+import { ZMediaAlbumService } from '../album/album.service';
 import { MediaUploaderDataService } from './uploader/media-uploader-data.service';
+
 import { ZMediaSharingService } from '../../core/shared/components/photo/modal/sharing/sharing.service';
 import { ZMediaTaggingService } from '../../core/shared/components/photo/modal/tagging/tagging.service';
+import { ZMediaStore } from './store/media.store';
+import { CoreSharedModule } from '../../core/shared/shared.module';
+import { ZMediaSharedHeaderComponent } from './header/header.component';
+
+
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
   imports: [
-    SharedModule,
-    TagInputModule
-    // HdTagInputModule
+    CoreSharedModule.forRoot()
   ],
   declarations: [
     MediaUploaderComponent,
     MediaViewContainerComponent,
     MediaToolbarListComponent,
     MediaListComponent,
-    MediaItemComponent
+    MediaItemComponent,
+    ZMediaSharedHeaderComponent
   ],
   exports: [
     MediaUploaderComponent,
-
     MediaViewContainerComponent,
     MediaToolbarListComponent,
     MediaListComponent,
     MediaItemComponent,
-
-    SharedModule,
-    // HdTagInputModule,
-    TagInputModule
+    ZMediaSharedHeaderComponent
   ]
 })
 export class ZMediaSharedModule {
@@ -50,6 +47,7 @@ export class ZMediaSharedModule {
         ZMediaAlbumService,
         ZMediaSharingService,
         ZMediaTaggingService,
+        ZMediaStore,
         MediaUploaderDataService
       ]
     };

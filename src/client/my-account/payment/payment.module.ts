@@ -1,32 +1,31 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 
-import { PartialsModule } from '../../core/partials/partials.module';
-import { ACPaymentRoutingModule } from './payment-routing.module';
-import { ACPaymentService } from './payment.service';
-import { ACPaymentComponent } from './payment.component';
-import { ACPaymentConfirmComponent } from './payment-confirm.component';
+import { MyPaymentRoutingModule } from './payment-routing.module';
+import { MyPaymentService } from './payment.service';
+import { MyPaymentComponent } from './payment.component';
+import { MyPaymentConfirmComponent } from './payment-confirm.component';
+
+import { MySharedModule } from '../shared/shared.module';
+import { CoreSharedModule } from '../../core/shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    ACPaymentRoutingModule,
-    ReactiveFormsModule,
-    PartialsModule
+    MyPaymentRoutingModule,
+    MySharedModule.forRoot(),
+    CoreSharedModule.forRoot()
   ],
   declarations: [
-    ACPaymentComponent,
-    ACPaymentConfirmComponent
+    MyPaymentComponent,
+    MyPaymentConfirmComponent
   ],
   exports: [
-    ACPaymentComponent,
-    ACPaymentConfirmComponent
+    MyPaymentComponent,
+    MyPaymentConfirmComponent
   ],
   providers: [
-    ACPaymentService
+    MyPaymentService
   ]
 })
 
-export class ACPaymentModule {
+export class MyPaymentModule {
 }

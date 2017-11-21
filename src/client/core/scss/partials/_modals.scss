@@ -21,11 +21,21 @@
     height: 34px;
     line-height: 34px;
   }
-  .btn-wth-default {
+  .btn-outline-primary {
     position: absolute;
     top: 15px;
     left: auto;
     right: 15px;
     margin: 0;
+  }
+}
+
+.modal {
+  .modal-title-action {
+    float: right;
+  }
+  .divider {
+    margin-left: -$modal-inner-padding;
+    margin-right: -$modal-inner-padding;
   }
 }
