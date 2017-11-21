@@ -49,6 +49,8 @@ export class WTHNavigateService {
         this.router.navigate([{outlets: {detail: [...urls]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
       } else {
         this.router.navigate([path, {outlets: {modal: null, detail: null}}], {queryParams: queryParams});
+        if(path === '/')
+          this.router.navigate(['']);
       }
     }
 
