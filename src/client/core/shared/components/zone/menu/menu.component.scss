@@ -106,6 +106,9 @@
 
 .menuleft-nav-sub {
   display: none;
+  &.active{
+    display: block;
+  }
 }
 
 .menuleft-nav-item {
@@ -155,6 +158,9 @@
         }
       }
     }
+  }
+  &.show {
+  display: block
   }
 }
 

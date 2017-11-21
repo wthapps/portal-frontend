@@ -1,7 +1,6 @@
 <nav class="page-menuleft" draggable="false">
   <div class="menuleft-nav">
-
-    <div class="menuleft-nav-item has-sub" [ngClass]="{'active': urls.social == hostname}">
+    <div class="menuleft-nav-item has-sub" [ngClass]="{'active': urls.social == hostname && !isProfileTab, 'show': urls.social == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('social')">
         Social Network
       </a>
@@ -70,14 +69,14 @@
     <ng-content></ng-content>
 
     <div class="menuleft-nav-item has-sub has-action"
-         [ngClass]="{'active': urls.contact == hostname && !isProfileTab, 'show': urls.contact == hostname}">
+         [ngClass]="{'active': urls.contact === hostname && !isProfileTab, 'show': urls.contact === hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('contact')">
         Contacts
       </a>
-      <div [ngClass]="{'active': urls.contact == hostname}"
+      <div [ngClass]="{'active': urls.contact === hostname, 'show': urls.contact === hostname}"
            class="menuleft-nav-sub"
            [routerLinkActive]="['active']">
-        <div class="menuleft-nav-sub-item" [ngClass]="(currentLabel === 'all contacts') ? 'active' : ''">
+        <div class="menuleft-nav-sub-item" [ngClass]="{'active' : (urls.contact === hostname && currentLabel === 'all contacts')}">
           <a draggable="false" href="javascript:;" [routerLink]="['contacts', {label: 'all contacts'}]"
              (click)="doEvent({action: 'contacts', event: $event})">
             <i class="fa fa-address-book-o"></i> All Contacts ({{ totalContactCount }})
