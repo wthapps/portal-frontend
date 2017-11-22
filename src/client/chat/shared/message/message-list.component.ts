@@ -23,6 +23,7 @@ export class MessageListComponent implements OnInit {
   item: any;
   contactItem: any;
   prevMessage: any;
+  scrollDistance: number = 1000;
 
   constructor(private chatService: ChatService, private ref: ChangeDetectorRef) {}
 
@@ -35,8 +36,16 @@ export class MessageListComponent implements OnInit {
   }
 
   onLoadMore() {
-    this.chatService.loadMoreMessages();
-    this.loadedEvent.emit(true);
+    let currentLength = this.item.value.data.length;
+    this.chatService.loadMoreMessages(() => {
+      if(this.chatService.getCurrentMessages().value.data.length > currentLength) {
+        this.loadedEvent.emit(true);
+      }
+    });
+  }
+
+  scrollDown() {
+    this.loadedEvent.emit(false);
   }
 
   onAddContact(contact:any) {

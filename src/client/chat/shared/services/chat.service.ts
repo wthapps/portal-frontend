@@ -228,7 +228,7 @@ export class ChatService {
     return this.storage.find('users_online');
   }
 
-  loadMoreMessages() {
+  loadMoreMessages(callback: any) {
     let currentMessages: any = this.storage.find('current_chat_messages').value.data;
     let page: any = parseInt(this.storage.find('current_chat_messages').value.page_metadata.page) + 1;
     let body: any = {page: page};
@@ -238,6 +238,7 @@ export class ChatService {
         res.data = _chat.combineMessages(currentMessages, res.data);
         this.storage.save('chat_messages_group_' + groupId, res);
         this.storage.save('current_chat_messages', res);
+        if(callback) callback();
       }
     );
   }

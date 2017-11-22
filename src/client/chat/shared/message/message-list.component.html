@@ -1,11 +1,12 @@
 <div *ngIf="contactItem && contactItem.value">
   <div #list *ngIf="contactItem.value.active"
-       [scrollTop]="loaded ? list.scrollHeight / 3 : list.scrollHeight"
+       [scrollTop]="loaded ? scrollDistance : list.scrollHeight"
        class="page-body-chat-content-in"
        infiniteScrollUpDistance="20"
        infiniteScrollThrottle="2000"
        infiniteScroll
        [scrollWindow]="false"
+       (scrolled)="scrollDown()"
        (scrolledUp)="onLoadMore()">
     <div class="message-item-wrapper" *ngIf="item && item.value">
       <div class="message-item-dv" *ngFor="let message of item.value.data; trackBy: message?.id">
