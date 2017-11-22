@@ -111,7 +111,8 @@ export class RegisterComponent {
       this.userService.signup('users', body)
         .subscribe((result) => {
             this.loadingService.stop();
-            this.router.navigateByUrl('/welcome');
+            // this.router.navigateByUrl('/welcome');
+            window.location.href = Constants.baseUrls.myAccount;
           },
           error => {
             // stop loading
