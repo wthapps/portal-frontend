@@ -69,6 +69,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   private editMode: string = Constants.modal.add;
   private parentId: string;
   private noSave$: Observable<any>;
+  private defaultImg: string = Constants.img.default;
 
   constructor(private fb: FormBuilder,
               private noteService: ZNoteService,
@@ -139,6 +140,74 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     DividerBlot.blotName = 'divider';
     DividerBlot.tagName = 'hr';
     Quill.register(DividerBlot);
+
+    this.registerImageBlot();
+  }
+
+  registerImageBlot() {
+    let BlockEmbed = Quill.import('blots/block/embed');
+
+    class ImageBlot extends BlockEmbed {
+      static create(value: any) {
+        let node = super.create();
+        node.setAttribute('alt', value.alt);
+        node.setAttribute('src', value.url);
+        node.setAttribute('id', value.id);
+        return node;
+      }
+
+      static value(node: any) {
+        return {
+          alt: node.getAttribute('alt'),
+          url: node.getAttribute('src'),
+          id: node.getAttribute('id')
+        };
+      }
+    }
+    ImageBlot.blotName = 'image';
+    ImageBlot.tagName = 'img';
+    Quill.register(ImageBlot);
+    var toolbar = this.customEditor.getModule('toolbar');
+    toolbar.addHandler('image', () => this.selectLocalImage());
+  }
+
+  insertFakeImage(id: any) {
+    const range = this.customEditor.getSelection(true);
+    this.customEditor.insertText(range.index, '\n', Quill.sources.USER);
+    this.customEditor.insertEmbed(range.index + 1, 'image', {
+      alt: 'WTH! No Image',
+      url: this.defaultImg,
+      id: id
+    }, Quill.sources.USER);
+    this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
+  }
+
+  selectLocalImage() {
+    const randId = `img_${new Date().getTime()}`;
+    const fileInput = document.createElement('input');
+    fileInput.setAttribute('type', 'file');
+    fileInput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
+    fileInput.classList.add('ql-image');
+    fileInput.click();
+    fileInput.addEventListener('change', () => {
+      this.insertFakeImage(randId);
+      const file = fileInput.files[0];
+
+      // file type is only image.
+      if (/^image\//.test(file.type)) {
+        this.photoUploadService.uploadPhotos([file])
+          .subscribe((res: any) => {
+            // const range = this.customEditor.getSelection(true);
+            // this.customEditor.insertEmbed(range.index, 'image', res.data.url);
+            $(`#${randId}`).attr('src', res.data.url);
+          }, (err: any) => {
+            $(`#${randId}`).remove();
+            console.log('Error when uploading files ', err);
+          });
+      } else {
+        console.warn('You could only upload images.');
+      }
+    });
   }
 
   open(options: any = {mode: Constants.modal.add, note: undefined, parent_id: undefined}) {
@@ -291,6 +360,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   print() {
+    $('.ql-editor').attr('id', 'noteview');
     printJS({ printable: 'noteview', type: 'html', header: this.note.title});
   }
 
@@ -313,9 +383,6 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
       // update current message and broadcast on server
       this.fileService.create(genericFile)
         .subscribe((response: any) => {
-          console.log('Upload file successfully', response);
-
-          // this.note.attachments.push(response.data);
           let index = _.indexOf(this.note.attachments, file);
           this.note.attachments[index] = {object_type: 'file',...response.data};
           this.form.controls['attachments'].setValue(this.note.attachments);

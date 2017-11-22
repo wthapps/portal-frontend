@@ -1,12 +1,11 @@
 <nav class="page-menuleft" draggable="false">
   <div class="menuleft-nav">
-
-    <div class="menuleft-nav-item has-sub" [ngClass]="{'active': urls.social == hostname}">
+    <div class="menuleft-nav-item has-sub" [ngClass]="{'active': urls.social == hostname && !isProfileTab, 'show': urls.social == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('social')">
         Social Network
       </a>
 
-      <div class="menuleft-nav-sub">
+      <div [ngClass]="{'active': urls.chat == hostname, 'show': urls.social == hostname}" class="menuleft-nav-sub">
         <ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">
           <div *ngIf="social.name != ''" [routerLinkActive]="['active']" (click)="clearOutlets()"
                [ngClass]="{'hidden': social.link == '/search'}" class="menuleft-nav-sub-item">
@@ -60,24 +59,25 @@
 
 
     <div class="menuleft-nav-item has-sub has-action"
-         *ngIf="urls.note != hostname"
          [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('note')">
         Notes
       </a>
+      <div class="menuleft-nav-sub" *ngIf="urls.note === hostname " [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
+        <ng-content></ng-content>
+      </div>
     </div>
 
-    <ng-content></ng-content>
 
     <div class="menuleft-nav-item has-sub has-action"
-         [ngClass]="{'active': urls.contact == hostname && !isProfileTab, 'show': urls.contact == hostname}">
+         [ngClass]="{'active': urls.contact === hostname && !isProfileTab, 'show': urls.contact === hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('contact')">
         Contacts
       </a>
-      <div [ngClass]="{'active': urls.contact == hostname}"
+      <div [ngClass]="{'active': urls.contact === hostname, 'show': urls.contact === hostname}"
            class="menuleft-nav-sub"
            [routerLinkActive]="['active']">
-        <div class="menuleft-nav-sub-item" [ngClass]="(currentLabel === 'all contacts') ? 'active' : ''">
+        <div class="menuleft-nav-sub-item" [ngClass]="{'active' : (urls.contact === hostname && currentLabel === 'all contacts')}">
           <a draggable="false" href="javascript:;" [routerLink]="['contacts', {label: 'all contacts'}]"
              (click)="doEvent({action: 'contacts', event: $event})">
             <i class="fa fa-address-book-o"></i> All Contacts ({{ totalContactCount }})

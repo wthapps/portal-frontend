@@ -20,7 +20,7 @@ export class WelcomeComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.userService.profile);
     if (this.userService.profile.took_a_tour) {
-      this.router.navigate(['/my-profile'])
+      this.router.navigate(['/settings/profile'])
     }
   }
 }

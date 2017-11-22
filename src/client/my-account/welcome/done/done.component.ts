@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { UserService } from '../../../core/shared/services/user.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -10,19 +10,24 @@ import { UserService } from '../../../core/shared/services/user.service';
 })
 
 export class WelcomeDoneComponent implements OnInit {
-  constructor(private userService: UserService,
-              private apiBaseService: ApiBaseService) {
+  navigateUrl: string = Constants.baseUrls.social + '/my-profile';
 
+  constructor(private userService: UserService) {
   }
 
   ngOnInit(): void {
     if (!this.userService.profile.took_a_tour) {
-      this.apiBaseService
-        .put(`zone/social_network/users/${this.userService.profile.uuid}`, {'took_a_tour': true})
-        .subscribe(
-          (res: any) => {
-            console.log(res);
-          });
+      console.log('took_a_tour took_a_tour');
+
+      let body = JSON.stringify({
+        took_a_tour: true
+      });
+
+      this.userService.update(`users/${this.userService.profile.id}`, body).subscribe(
+        (res: any) => {
+          console.log(res);
+        });
+
     }
   }
 }
