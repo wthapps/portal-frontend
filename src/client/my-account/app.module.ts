@@ -17,6 +17,7 @@ import { MySettingModule } from './settings/setting.module';
 import { MyPlansModule } from './plans/plans.module';
 import { MyAdminModule } from './admin/admin.module';
 import { WelcomeModule } from './welcome/welcome.module';
+import { MyAccountMyProfileModule } from './my-profile/my-profile.module';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { WelcomeModule } from './welcome/welcome.module';
     MyPlansModule,
     MySettingModule,
     MyAdminModule,
+    MyAccountMyProfileModule,
     WelcomeModule,
 
     MySharedModule.forRoot(),

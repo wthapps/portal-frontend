@@ -1,7 +1,6 @@
-import { Component, AfterViewInit } from '@angular/core';
-
-declare var $: any;
-declare var Shepherd: any;
+import { Component, OnInit } from '@angular/core';
+import { ApiBaseService } from '../../../core/shared/services/apibase.service';
+import { UserService } from '../../../core/shared/services/user.service';
 
 @Component({
   moduleId: module.id,
@@ -10,32 +9,20 @@ declare var Shepherd: any;
   styleUrls: ['done.component.css']
 })
 
-export class WelcomeDoneComponent implements AfterViewInit {
-  pageTitle: string = 'Welcome Page';
-
-  ngAfterViewInit() {
+export class WelcomeDoneComponent implements OnInit {
+  constructor(private userService: UserService,
+              private apiBaseService: ApiBaseService) {
 
   }
 
-  // ngAfterViewInit(): any {
-  //   $('.welcome-slide-in').slick({
-  //     dots: true,
-  //     arrows: false
-  //   });
-  //
-  //   let tour = new Shepherd.Tour({
-  //     defaults: {
-  //       classes: 'shepherd-theme-arrows'
-  //     }
-  //   });
-  //
-  //   tour.addStep('example', {
-  //     title: 'Example Shepherd',
-  //     text: 'Creating a Shepherd is easy too! Just create ...',
-  //     attachTo: '.header-nav-apps bottom',
-  //     advanceOn: '.docs-link click'
-  //   });
-  //
-  //   tour.start();
-  // }
+  ngOnInit(): void {
+    if (!this.userService.profile.took_a_tour) {
+      this.apiBaseService
+        .put(`zone/social_network/users/${this.userService.profile.uuid}`, {'took_a_tour': true})
+        .subscribe(
+          (res: any) => {
+            console.log(res);
+          });
+    }
+  }
 }

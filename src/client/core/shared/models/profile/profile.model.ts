@@ -38,6 +38,7 @@ export class SocialModel extends BaseEntity {
 export class InviteModel extends BaseEntity {
   full_name: string = '';
   email: string = '';
+  value: string = '';
 }
 
 export class ProfileModel extends BaseEntity {

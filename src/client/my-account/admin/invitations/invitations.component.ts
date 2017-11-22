@@ -73,6 +73,7 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
     switch (event.action) {
       case 'invitation:send_to_recipients':
 
+        console.log(event);
         this.invitationService.create({recipients: event.payload}).subscribe((response: any) => {
             this.items = _.uniqBy([...this.items, ...response.data], 'recipient_email');
             this.loadingService.stop('#loading');

@@ -28,11 +28,12 @@ export class User {
   auto_update: boolean;
   use_diagnosis: boolean;
   supporter: boolean;
+  took_a_tour: boolean;
   online: boolean;
 
   constructor(fields: {
-    id: number,
-    uuid: string,
+    id?: number,
+    uuid?: string,
     first_name?: string,
     last_name?: string,
     email?: string,
@@ -55,8 +56,9 @@ export class User {
     subscribed?: boolean,
     auto_update?: boolean,
     use_diagnosis?: boolean,
-    supporter: boolean,
-    online: boolean
+    supporter?: boolean,
+    took_a_tour?: boolean,
+    online?: boolean
   }) {
     if (fields) Object.assign(this, fields);
   }

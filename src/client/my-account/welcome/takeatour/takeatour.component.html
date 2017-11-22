@@ -40,8 +40,8 @@
           <div class="field-group">
             <div class="field-group-content">
               <div formArrayName="invites">
-                <div *ngFor="let add_invite of formInvite.controls.invites.controls; let i=index" class="media mt0">
-                  <div class="media-body" [formGroupName]="i">
+                <div class="media mt0">
+                  <div class="media-body">
                     <div class="row row-10">
                       <div class="col-sm-6">
                         <label>Full name</label>
@@ -50,30 +50,39 @@
                         <label>Email</label>
                       </div>
                     </div>
+                  </div>
+                  <div class="media-right">
+                    <button type="button" class="btn invisible btn-outline-default">
+                      <i class="fa fa-trash-o"></i>
+                    </button>
+                  </div>
+                </div>
+                <div *ngFor="let add_invite of formInvite.controls.invites.controls; let i=index" class="media mt0">
+                  <div class="media-body" [formGroupName]="i">
                     <div class="row row-10">
                       <div class="col-sm-6">
                         <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!formInvite.controls.invites.controls[i].controls.full_name.valid
-                  && formInvite.controls.invites.controls[i].controls.full_name.touched),
-                  'has-success': (formInvite.controls.invites.controls[i].controls.full_name.valid
-                  && formInvite.controls.invites.controls[i].controls.full_name.touched
-                  && form.value.invites[i].full_name.length > 1)}">
-                          <input type="text" class="form-control" formControlName="full_name"
+                  'has-error': (!add_invite.controls.fullName.valid
+                  && add_invite.controls.fullName.touched),
+                  'has-success': (add_invite.controls.fullName.valid
+                  && add_invite.controls.fullName.touched
+                  && formInvite.value.invites[i].fullName.length > 1)}">
+                          <input type="text" class="form-control" formControlName="fullName"
                                  placeholder="Your friend fullname">
                         </div>
                       </div>
                       <div class="col-sm-6">
                         <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!formInvite.controls.invites.controls[i].controls.email.valid
-                  && formInvite.controls.invites.controls[i].controls.email.touched),
-                  'has-success': (formInvite.controls.invites.controls[i].controls.email.valid
-                  && formInvite.controls.invites.controls[i].controls.email.touched
-                  && form.value.invites[i].email.length > 1)}">
+                  'has-error': (!add_invite.controls.email.valid
+                  && add_invite.controls.email.touched),
+                  'has-success': (add_invite.controls.email.valid
+                  && add_invite.controls.email.touched
+                  && formInvite.value.invites[i].email.length > 1)}">
                           <input type="text" class="form-control" formControlName="email" placeholder="Email address">
                           <div
-                            *ngIf="!formInvite.controls.invites.controls[i].controls.email.valid && formInvite.controls.invites.controls[i].controls.email.touched">
+                            *ngIf="!add_invite.controls.email.valid && add_invite.controls.email.touched">
                       <span
-                        *ngIf="!formInvite.controls.invites.controls[i].controls.email.valid && formInvite.controls.invites.controls[i].controls.email.errors.emailFormat"
+                        *ngIf="!add_invite.controls.email.valid && add_invite.controls.email.errors.emailFormat"
                         class="help-block text-danger">
                         Email is not valid
                       </span>
@@ -83,7 +92,6 @@
                     </div>
                   </div>
                   <div class="media-right">
-                    <label>&nbsp;</label>
                     <button type="button" class="btn btn-outline-default" (click)="removeItem('invites', i)">
                       <i class="fa fa-trash-o"></i>
                     </button>

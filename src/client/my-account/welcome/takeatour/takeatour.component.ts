@@ -66,7 +66,7 @@ export class TakeATourComponent implements OnInit {
       case 'invites':
         data = item ? item : new InviteModel();
         fbGroup = this.fb.group({
-          full_name: [data.full_name, Validators.compose([Validators.required])],
+          fullName: [data.fullName, Validators.compose([Validators.required])],
           email: [data.email, Validators.compose([CustomValidator.emailFormat])]
         });
         break;
@@ -110,13 +110,13 @@ export class TakeATourComponent implements OnInit {
 
 
   saveFinish(value: any) {
-    console.log(value);
+    console.log(value.invites);
 
     this.isLoading = true;
     this.loadingTitle = 'Sending invitation';
     this.loadingContent = 'Your public profile will be ready in a few second.';
 
-    this.invitationService.create({recipients: value}).subscribe(
+    this.invitationService.create({recipients: value.invites}).subscribe(
       (res: any) => {
         console.log(res);
         this.isLoading = false;
