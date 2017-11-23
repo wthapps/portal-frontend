@@ -1,31 +1,40 @@
 @import "../../core/scss/global";
+//@import url('~tether-shepherd/dist/css/shepherd-theme-arrows.css');
+//@import "~tether-shepherd/src/css/shepherd-theme-arrows.sass";
+@import "../../../../node_modules/tether-shepherd/dist/css/shepherd-theme-arrows.css";
 
-.chat-profile {
-  position: relative;
-  padding-left: 120px;
-  .chat-profile-img {
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-  .chat-profile-content {
-    h3 {
-      &:first-child {
-        margin-top: 0;
+.zone-social {
+  .chat-profile {
+    position: relative;
+    padding-left: 120px;
+    .chat-profile-img {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .chat-profile-content {
+      h3 {
+        &:first-child {
+          margin-top: 0;
+        }
       }
     }
-  }
-  .dl-horizontal {
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid $line;
-  }
-
-  @media (min-width: $screen-sm-min) {
     .dl-horizontal {
-      dd {
-        margin-bottom: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid $line;
+    }
+
+    @media (min-width: $screen-sm-min) {
+      .dl-horizontal {
+        dd {
+          margin-bottom: 10px;
+        }
       }
     }
   }
+}
+
+.shepherd-element {
+  z-index: 1000;
 }
