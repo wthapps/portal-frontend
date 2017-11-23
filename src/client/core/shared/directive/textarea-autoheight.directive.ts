@@ -1,9 +1,9 @@
-import { AfterViewInit, Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { AfterContentChecked, AfterViewInit, Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
   selector: '[textAreaAutoHeight]'
 })
-export class TextAreaAutoHeightDirective implements AfterViewInit {
+export class TextAreaAutoHeightDirective implements AfterViewInit, AfterContentChecked {
   private el: HTMLElement;
   private _minHeight: string;
   private _maxHeight: string;
@@ -36,7 +36,6 @@ export class TextAreaAutoHeightDirective implements AfterViewInit {
     if (this.el.clientWidth === this._clientWidth) {
       return
     }
-    ;
     this._clientWidth = this.element.nativeElement.clientWidth;
     this.adjust();
   }
@@ -49,6 +48,10 @@ export class TextAreaAutoHeightDirective implements AfterViewInit {
   constructor(public element: ElementRef) {
     this.el = element.nativeElement;
     this._clientWidth = this.el.clientWidth;
+  }
+
+  ngAfterContentChecked(): void {
+    this.adjust();
   }
 
   ngAfterViewInit(): void {
