@@ -103,7 +103,7 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
     }
   }
 
-  nextFolder(item: any, setFolder: true) {
+  nextFolder(item: any, setFolder: boolean = true) {
     if(setFolder) {
       if(this.selectedObjects[0].parent_id == item.id) {
         this.folder = null;
