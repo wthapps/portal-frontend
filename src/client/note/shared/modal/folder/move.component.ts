@@ -104,7 +104,6 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   }
 
   nextFolder(item: any, setFolder: true) {
-    if(item.child_count == 0) return;
     if(setFolder) {
       if(this.selectedObjects[0].parent_id == item.id) {
         this.folder = null;
@@ -125,14 +124,15 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
     } else {
       this.folder = item;
     }
+
     if (item.parent_id) {
       this.apiBaseService.get(`note/folders/${item.parent_id}`).subscribe(
         (res: any) => {
-          console.log('prevFolder:', res);
           this.rootFolder = res.parent;
           this.listFolder = res.data;
         });
     } else {
+      this.folder = {id: null}; // my notes
       this.initialMenu();
     }
   }
