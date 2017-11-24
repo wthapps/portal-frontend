@@ -1,5 +1,5 @@
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'" [backdrop]="'static'">
+  <modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-note-edit'" [backdrop]="'static'">
     <modal-header [show-close]="true">
       <h4 class="modal-title">{{ titleModal }}</h4>
     </modal-header>
@@ -19,9 +19,9 @@
           <div class="well-folder-move-content">
             <ul class="list-unstyled">
               <li *ngFor="let item of listFolder" [ngClass]="{'disabled': isCurrent(item)}">
-                <span class="can-click" (click)="nextFolder(item)"><i class="fa fa-chevron-right"></i></span>
+                <span *ngIf="item.child_count > 0" class="can-click" (click)="nextFolder(item)"><i class="fa fa-chevron-right"></i></span>
                 <div class="can-click"
-                     [ngClass]="{'active': item.id == folder?.parent_id }"
+                     [ngClass]="{'active': item.id == folder?.id }"
                      (click)="chooseFolder(item)"
                      (dblclick)="nextFolder(item)">
                   <i class="fa fa-folder-o" aria-hidden="true"></i> {{ item.name }}
@@ -34,7 +34,7 @@
     </modal-body>
     <modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-      <button type="button" (click)="onMove()" class="btn btn-outline-primary btn-min">Move
+      <button type="button" [disabled]="!folder" (click)="onMove()" class="btn btn-outline-primary btn-min">Move
       </button>
     </modal-footer>
   </modal>
