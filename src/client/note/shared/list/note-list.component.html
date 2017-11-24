@@ -27,18 +27,6 @@
     </div>
   </div>
 
-  <!--<h4 class="ml10" *ngIf="items?.length > 0 && viewOption == 'grid'">Folders</h4>-->
-  <!--<ng-container *ngFor="let item of items">-->
-  <!--<folder-item [data]="item" *ngIf="item.object_type == 'folder'" class="component-listbox-body"></folder-item>-->
-  <!--</ng-container>-->
-
-  <!--<div class="clearfix"></div>-->
-
-  <!--<h4 class="ml10" *ngIf="items?.length > 0 && viewOption == 'grid'">Notes</h4>-->
-  <!--<ng-container *ngFor="let item of items">-->
-  <!--<note-item [data]="item" *ngIf="item.object_type == 'note'" class="component-listbox-body"></note-item>-->
-  <!--</ng-container>-->
-
   <ng-container *ngIf="!(loading$ | async); else loadingBlock">
     <h4 class="ml10" *ngIf="folderItems?.length > 0 && viewOption == VIEW_MODE.GRID">Folders</h4>
     <ng-container *ngFor="let item of folderItems">
