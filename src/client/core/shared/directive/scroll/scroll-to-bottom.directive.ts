@@ -21,6 +21,8 @@ export class ScrollToBottomDirective implements AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit(): void {
+    this.nativeElement.scrollTop = this.nativeElement.scrollHeight;
+
     this.mutationObserver = new MutationObserver(() => {
       if (!this.isLocked) {
         this.nativeElement.scrollTop = this.nativeElement.scrollHeight;

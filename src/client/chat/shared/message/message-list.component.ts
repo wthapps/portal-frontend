@@ -17,8 +17,6 @@ declare var _: any;
 
 export class MessageListComponent implements OnInit {
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
-  @Input() loaded: boolean = false;
-  @Output() loadedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   item: any;
   contactItem: any;
@@ -37,15 +35,11 @@ export class MessageListComponent implements OnInit {
 
   onLoadMore() {
     let currentLength = this.item.value.data.length;
-    this.chatService.loadMoreMessages(() => {
-      if(this.chatService.getCurrentMessages().value.data.length > currentLength) {
-        this.loadedEvent.emit(true);
-      }
-    });
+    this.chatService.loadMoreMessages();
   }
 
   scrollDown() {
-    this.loadedEvent.emit(false);
+    this.chatService.markAsRead(this.contactItem.value.group_id);
   }
 
   onAddContact(contact:any) {

@@ -228,7 +228,7 @@ export class ChatService {
     return this.storage.find('users_online');
   }
 
-  loadMoreMessages(callback: any) {
+  loadMoreMessages(callback: any = null) {
     let currentMessages: any = this.storage.find('current_chat_messages').value.data;
     let page: any = parseInt(this.storage.find('current_chat_messages').value.page_metadata.page) + 1;
     let body: any = {page: page};
