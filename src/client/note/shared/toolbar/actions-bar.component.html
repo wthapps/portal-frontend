@@ -1,4 +1,4 @@
-<ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0  && page == 'MY_NOTE'">
+<ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0  && (!page || page == 'MY_NOTE')">
   <li *ngIf="selectedObjects.length <= 1">
     <a href="javascript:;" class="btn btn-default" (click)="edit()"
        pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom">

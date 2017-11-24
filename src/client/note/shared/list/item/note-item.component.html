@@ -16,7 +16,9 @@
   <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
     {{ data.created_at | timeFormat }}
   </div>
+
   <div class="component-listbox-action" >
+
     <z-note-shared-actions-bar *ngIf="page !== PAGE_TYPE.TRASH" class="action" [page]="page"
                                [data]="data" [selectedObjects]="[data]"></z-note-shared-actions-bar>
     <z-note-shared-trash-actions-bar [selectedObjects]="[data]" *ngIf="page === PAGE_TYPE.TRASH"></z-note-shared-trash-actions-bar>

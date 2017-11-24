@@ -16,7 +16,6 @@
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
 
-
   <ng-container *ngIf="!(loading$ | async); else loadingBlock">
     <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
       <note-list [noteItems]="noteItems$ | async"
