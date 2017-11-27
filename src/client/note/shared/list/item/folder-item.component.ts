@@ -80,6 +80,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
       this.store.dispatch(new note.Select({
         id: this.data.id,
         object_type: this.data.object_type,
+        permission: this.data.permission,
         name: this.data.name,
         parent_id: this.data.parent_id
       }));
@@ -89,6 +90,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
         payload: {
           id: this.data.id,
           object_type: this.data.object_type,
+          permission: this.data.permission,
           name: this.data.name,
           parent_id: this.data.parent_id
         }
@@ -101,6 +103,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
       id: this.data.id,
       object_type: this.data.object_type,
       name: this.data.name,
+      permission: this.data.permission,
       parent_id: this.data.parent_id
     }));
   }

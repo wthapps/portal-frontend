@@ -114,13 +114,13 @@ export class ChatService {
     return this.storage.find('conversation_select');
   }
 
-  getMessages(groupId: number) {
+  getMessages(groupId: number, options: any = {}) {
     let item: any = this.storage.find('chat_messages_group_' + groupId);
     if (item && item.value) {
       this.storage.save('current_chat_messages', item.value);
     } else {
       //
-      this.apiBaseService.get('zone/chat/message/' + groupId).subscribe(
+      this.apiBaseService.get('zone/chat/message/' + groupId, options).subscribe(
         (res: any) => {
           this.storage.save('chat_messages_group_' + groupId, res);
           this.storage.save('current_chat_messages', res);
