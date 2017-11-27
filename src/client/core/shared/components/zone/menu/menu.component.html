@@ -1,7 +1,8 @@
 <nav class="page-menuleft" draggable="false">
   <div class="menuleft-nav">
-    <div class="menuleft-nav-item has-sub" [ngClass]="{'active': urls.social == hostname && !isProfileTab, 'show': urls.social == hostname}">
-      <a draggable="false" href="javascript:;" (click)="onMenu('social')">
+    <div class="menuleft-nav-item has-sub"
+         [ngClass]="{'active': urls.social == hostname && !isProfileTab, 'show': urls.social == hostname}">
+      <a id="menuleft-nav-intro-1" draggable="false" href="javascript:;" (click)="onMenu('social')">
         Social Network
       </a>
 
@@ -63,7 +64,8 @@
       <a draggable="false" href="javascript:;" (click)="onMenu('note')">
         Notes
       </a>
-      <div class="menuleft-nav-sub" *ngIf="urls.note === hostname " [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
+      <div class="menuleft-nav-sub" *ngIf="urls.note === hostname "
+           [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
         <ng-content></ng-content>
       </div>
     </div>
@@ -76,9 +78,10 @@
       </a>
       <ng-container *ngIf="urls.contact === hostname">
         <div [ngClass]="{'active': urls.contact === hostname, 'show': urls.contact === hostname}"
-          class="menuleft-nav-sub"
-          [routerLinkActive]="['active']">
-          <div class="menuleft-nav-sub-item" [ngClass]="{'active' : (urls.contact === hostname && currentLabel === 'all contacts')}">
+             class="menuleft-nav-sub"
+             [routerLinkActive]="['active']">
+          <div class="menuleft-nav-sub-item"
+               [ngClass]="{'active' : (urls.contact === hostname && currentLabel === 'all contacts')}">
             <a draggable="false" href="javascript:;" [routerLink]="['contacts', {label: 'all contacts'}]"
                (click)="doEvent({action: 'contacts', event: $event})">
               <i class="fa fa-address-book-o"></i> All Contacts ({{ totalContactCount }})

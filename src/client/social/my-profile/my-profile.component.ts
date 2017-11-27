@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -8,16 +8,17 @@ import 'rxjs/add/operator/take';
 import { UserService } from '../../core/shared/services/user.service';
 import { ApiBaseService } from '../../core/shared/services/apibase.service';
 
-
 @Component({
   moduleId: module.id,
   selector: 'z-social-my-profile',
   templateUrl: 'my-profile.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['my-profile.component.css']
 })
 export class ZSocialMyProfileComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   soUserProfile$: Observable<any>;
+
   // data: any;
 
   constructor(private route: ActivatedRoute,
@@ -38,7 +39,7 @@ export class ZSocialMyProfileComponent implements OnInit {
   }
 
   onClose() {
-    setTimeout(()=> {
+    setTimeout(() => {
       console.log('adaafafaf');
     }, 500);
   }

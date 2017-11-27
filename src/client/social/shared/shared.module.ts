@@ -29,6 +29,7 @@ import { SocialDataService } from './services/social-data.service';
 import { SoUserService } from './services/social-user.service';
 import { SoPostService } from './services/social-post.service';
 import { ZSocialSharedHeaderComponent } from './header/header.component';
+import { StepByStepGuideModule } from './step-by-step-guide/step-by-step-guide.module';
 
 
 /**
@@ -79,6 +80,9 @@ import { ZSocialSharedHeaderComponent } from './header/header.component';
     Ng2HdModule,
     PostModule,
     ZSocialShareProfileModule,
+
+    StepByStepGuideModule,
+
     // Community
     ZSocialShareCommunityFormEditComponent,
     ZSocialShareCommunityFormPreferenceComponent,
