@@ -99,7 +99,8 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
     case note.NOTE_UPDATED: {
       let hNote: any = {};
       hNote[action.payload.id] = action.payload;
-      let notes4: any = state.listPermission.canAdd ? {...state.notes, ...hNote}: {...state.notes};
+      let existed: boolean = state.notes[action.payload.id] != undefined;
+      let notes4: any = (state.listPermission.canAdd && existed) ? {...state.notes, ...hNote}: {...state.notes};
 
       // let noteStack: Note[] = [...state.noteHistory.stack];
       let noteStack: Note[] = state.noteHistory.stack.slice(state.noteHistory.stackId);
