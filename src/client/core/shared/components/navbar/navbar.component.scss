@@ -34,10 +34,9 @@ wth-header-navbar {
   .btn-group {
     margin-top: 8px;
     margin-bottom: 8px;
-    & + .btn-group {
-      @media (min-width: $screen-sm-min) {
-        margin-left: 5px;
-      }
+    @media (min-width: $screen-sm-min) {
+      padding-left: 5px;
+      padding-right: 5px;
     }
     > .btn {
       position: relative;

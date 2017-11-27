@@ -16,6 +16,7 @@ export const DESELECT_ALL = '[Folder] Deselect All';
 export const CHANGE_SORT_ORDER = '[Folder] Change Sort Order';
 export const SET_CURRENT_FOLDER = '[Folder] Set Current Folder';
 export const SET_FOLDER_PATH = '[Folder] Set Folder Path';
+export const UPDATE_FOLDER_PATH = '[Folder] Update Folder Path';
 export const UPDATE_CURRENT = '[Folder] Update Current Folder';
 
 // Actions
@@ -127,6 +128,14 @@ export class SetCurrentFolderPath implements Action {
   }
 }
 
+export class UpdateFolderPath implements Action {
+  readonly type = UPDATE_FOLDER_PATH;
+
+  constructor(public payload: Folder) {
+
+  }
+}
+
 // TODO: Add RouterState | Activated Route
 export type Actions = Add | Update | FoldersUpdated | FolderUpdated | FolderAdded | Delete | MultiDelete | FoldersDeleted | LoadAll | LoadSuccess | ChangeSortOrder
-  | Select | DeselectAll | SetCurrentFolder | SetCurrentFolderPath | UpdateCurrentFolder;
+  | Select | DeselectAll | SetCurrentFolder | SetCurrentFolderPath | UpdateCurrentFolder | UpdateFolderPath;

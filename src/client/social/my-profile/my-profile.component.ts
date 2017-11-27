@@ -19,6 +19,8 @@ export class ZSocialMyProfileComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   soUserProfile$: Observable<any>;
 
+  showIntro: boolean = false;
+
   // data: any;
 
   constructor(private route: ActivatedRoute,
@@ -31,6 +33,10 @@ export class ZSocialMyProfileComponent implements OnInit {
     this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`).take(1).subscribe((res: any) => {
       // this.data = res.data;
       this.userService.soUserProfile = res.data;
+    });
+
+    this.route.params.subscribe(params => {
+      this.showIntro = (params['intro']);
     });
   }
 

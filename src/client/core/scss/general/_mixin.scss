@@ -314,7 +314,7 @@ $retina-suffix: '@2x';
 // $size: px or em
 // @example
 // .element{
-//     @include make-arrow(top, #000, 50px);
+//     @include make-arrow(top, #000, 50px, 50px);
 // }
 @mixin make-arrow($direction, $color, $size-w, $size-h) {
   display: block;

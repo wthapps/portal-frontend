@@ -21,14 +21,15 @@ export class StepByStepGuideComponent implements OnInit, AfterContentInit {
     let shepherd;
     shepherd = new Shepherd.Tour({
       defaults: {
-        classes: 'shepherd-theme-arrows',
-        showCancelLink: true
+        classes: 'shepherd-element shepherd-open shepherd-theme-arrows',
+        showCancelLink: false
       }
     });
     shepherd.addStep('main-menu', {
       title: 'Main menu',
       text: 'Collection of available applications and tools in WTH!Zone. <br> Can switch between them easily.',
-      attachTo: {element: '#menuleft-nav-intro-1', on: 'bottom right'},
+      attachTo: {element: '#menuleft-nav-intro-1', on: 'right'},
+      classes: 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text',
       buttons: [
         {
           text: 'Skip all',
@@ -44,19 +45,39 @@ export class StepByStepGuideComponent implements OnInit, AfterContentInit {
     shepherd.addStep('app-list', {
       title: 'App list',
       text: 'Allow you to quickly switch between WTH!App services.',
-      attachTo: {element: '.header-nav-apps', on: 'bottom left'},
+      attachTo: {element: '.header-nav-apps', on: 'bottom right'},
       buttons: [
         {
           text: 'Skip all',
           classes: 'shepherd-close-text',
           action: shepherd.cancel
         }, {
-          text: 'Back',
+          text: 'Previous',
           action: shepherd.back,
           classes: 'btn btn-outline-default'
         }, {
           text: 'Next',
           action: shepherd.next,
+          classes: 'btn btn-primary'
+        }
+      ]
+    });
+    shepherd.addStep('account-preferences', {
+      title: 'Account preferences',
+      text: 'Edit your privacy information, personal references and subscription.',
+      attachTo: {element: '.header-nav-profile', on: 'bottom right'},
+      buttons: [
+        {
+          text: 'Skip all',
+          classes: 'shepherd-close-text',
+          action: shepherd.cancel
+        }, {
+          text: 'Previous',
+          action: shepherd.back,
+          classes: 'btn btn-outline-default'
+        }, {
+          text: 'Complete',
+          action: shepherd.cancel,
           classes: 'btn btn-primary'
         }
       ]
