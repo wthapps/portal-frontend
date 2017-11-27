@@ -72,7 +72,7 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
       `,
       header: 'Empty Trash',
       accept: () => {
-        this.store.dispatch({type: note.PERMANENT_DELETE, payload: this.selectedObjects});
+        this.store.dispatch({type: note.EMPTY_ALL});
       }
     });
   }

@@ -95,7 +95,7 @@ export class NoteEffects {
     .ofType(note.RESTORE)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-      return this.apiBaseService.post(`note/trash/restore`, {objects: payload} )
+      return this.apiBaseService.post(`note/trashs/restore`, {objects: payload} )
         .map((res: any) => ({type: note.NOTES_DELETED, payload: res.data}))
         .catch(() => of({type: note.NOTES_DELETED, payload: []}));
     });
@@ -104,15 +104,15 @@ export class NoteEffects {
     .ofType(note.PERMANENT_DELETE)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-      return this.apiBaseService.post(`note/trash/permanent_delete`, {objects: payload})
+      return this.apiBaseService.post(`note/trashs/permanent_delete`, {objects: payload})
         .map((res: any) => ({type: note.NOTES_DELETED, payload: res.data}))
         .catch(() => of({type: note.NOTES_DELETED, payload: []}));
     });
 
   @Effect() emptyAll = this.actions
     .ofType(note.EMPTY_ALL)
-    .switchMap((payload: any) => {
-      return this.apiBaseService.post(`note/trash/empty_all`)
+    .switchMap(() => {
+      return this.apiBaseService.post(`note/trashs/empty_all`)
         .map((res: any) => ({type: note.ALL_DELETED}))
         .catch(() => empty());
     });

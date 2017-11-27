@@ -27,11 +27,10 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   rootFolder: Note;
   listFolder: Note[] = new Array<Note>();
 
-  hasCreateFolder: boolean = false;
-
   form: FormGroup;
   name: AbstractControl;
-  folder: any = {};
+  folder: any = null;
+  currentFolder: any = null;
   selectedObjects: any = [];
 
   constructor(private fb: FormBuilder,
@@ -63,18 +62,17 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
 
     this.store.select(fromRoot.getCurrentFolder).subscribe(
       res => {
-        console.log('getCurrentFolder:', res);
         if (res) {
-          this.nextFolder(res);
+          this.nextFolder(res, false);
         } else {
           this.initialMenu();
         }
       }
     );
-
   }
 
   open() {
+    this.folder = null;
     this.modal.open();
   }
 
@@ -97,7 +95,7 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
         });
       }
     } else {
-      this.folder.parent_id = event.item.id;
+      this.folder = event.item;
       event.item.expanded = !event.item.expanded;
 
       $(htmlTarget).closest('.well-folder-tree').find('a').removeClass('active');
@@ -105,28 +103,36 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
     }
   }
 
-  nextFolder(item: any) {
-    this.folder = item;
-
+  nextFolder(item: any, setFolder: boolean = true) {
+    if(setFolder) {
+      if(this.selectedObjects[0].parent_id == item.id) {
+        this.folder = null;
+      } else {
+        this.folder = item;
+      }
+    }
     this.apiBaseService.get(`note/folders/${item.id}`).subscribe(
       (res: any) => {
-        console.log('nextFolder:', res);
         this.rootFolder = res.parent;
         this.listFolder = res.data;
       });
   }
 
   prevFolder(item: any) {
+    if(this.selectedObjects[0].parent_id == item.id) {
+      this.folder = null;
+    } else {
+      this.folder = item;
+    }
 
     if (item.parent_id) {
       this.apiBaseService.get(`note/folders/${item.parent_id}`).subscribe(
         (res: any) => {
-          console.log('prevFolder:', res);
           this.rootFolder = res.parent;
-          this.folder = res.parent;
           this.listFolder = res.data;
         });
     } else {
+      this.folder = {id: null}; // my notes
       this.initialMenu();
     }
   }
@@ -134,49 +140,34 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   initialMenu() {
     this.apiBaseService.get(`note/folders`).subscribe(
       (res: any) => {
-        console.log(res);
         this.rootFolder = null;
         this.listFolder = res.data;
       });
   }
 
   chooseFolder(item: any) {
-    this.folder.parent_id = item.id;
+    if(this.selectedObjects[0].parent_id == item.id) {
+      this.folder = null;
+    } else {
+      this.folder = item;
+    }
   }
 
   isCurrent(item: any) {
     return _.some(this.selectedObjects, { 'id': item.id });
   }
 
-
-  onSubmit(value: any) {
-    this.folder.name = value.name;
-    if (this.folder.id) {
-      this.apiBaseService.put('note/folders/' + this.folder.id, this.folder).subscribe((res: any) => {
-        // this.modal.close();
-      });
-    } else {
-      this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
-        // this.modal.close();
-      });
-    }
-  }
-
-  setDestinationFolder(folder: any) {
-    this.folder = folder;
-    $('.well-folder-tree-root + .well-folder-tree .ui-panelmenu-panel a').removeClass('active');
-  }
-
   onMove() {
     _.forEach(this.selectedObjects, (item: any) => {
       item.parent_old_id = item.parent_id;
-      item.parent_id = this.folder.parent_id;
+      item.parent_id = this.folder.id;
     });
     this.commonEventService.broadcast({
       channel: 'noteActionsBar',
       action: 'note:mixed_entity:move_to_folder',
       payload: this.selectedObjects
     });
+    this.folder = null;
     this.modal.close();
   }
 }

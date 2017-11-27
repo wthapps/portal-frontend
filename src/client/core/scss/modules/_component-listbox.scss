@@ -67,7 +67,7 @@
     .component-listbox-row {
       overflow: hidden;
       .component-listbox-input {
-        i{
+        i {
           cursor: pointer;
           position: absolute;
           z-index: 100;
@@ -80,9 +80,7 @@
           text-align: center;
           line-height: 24px;
           color: #fff;
-          &:before{
-            visibility: hidden;
-          }
+          visibility: hidden;
         }
       }
 
@@ -94,9 +92,7 @@
             display: block;
             background-color: $theme-color;
             border-color: $theme-color;
-            &:before{
-              visibility: visible;
-            }
+            visibility: visible;
           }
         }
         &:hover {

@@ -11,7 +11,6 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/do';
 
-import { HdModalComponent } from '../../../../core/shared/ng2-hd/modal/components/modal';
 import { UserService } from '../../../../core/shared/services/user.service';
 import { SoPost } from '../../../../core/shared/models/social_network/so-post.model';
 import { Constants } from '../../../../core/shared/config/constants';
@@ -19,6 +18,7 @@ import { SocialService } from '../../services/social.service';
 import { PhotoModalDataService } from '../../../../core/shared/services/photo-modal-data.service';
 import { PhotoUploadService } from '../../../../core/shared/services/photo-upload.service';
 import { EntitySelectComponent } from '../../../../core/shared/components/entity-select/entity-select.component';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 declare var _: any;
 declare var $: any;
@@ -32,7 +32,7 @@ declare var $: any;
 
 export class PostEditComponent implements OnInit, OnDestroy {
 
-  @ViewChild('modal') modal: HdModalComponent;
+  @ViewChild('modal') modal: ModalComponent;
   @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
 
 
@@ -164,8 +164,11 @@ export class PostEditComponent implements OnInit, OnDestroy {
     };
     console.log('adding................', options);
     this.saved.emit(options);
-    $('.modal-backdrop').remove();
     this.photoSelectDataService.close();
+
+    this.modal.close();
+    // this.textarea.nativeElement.style.heigth = '50px';
+    // console.log(this.textarea.nativeElement.style.heigth);
   }
 
   uploadFiles(files: Array<any>) {
