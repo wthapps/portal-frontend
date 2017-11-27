@@ -42,6 +42,14 @@ export function reducer(state = initialState, action: folder.Actions): State {
 
       return {...state, currentFolder: action.payload.currentFolder};
     }
+    case folder.UPDATE_FOLDER_PATH: {
+      let folderPath: any = [...state.currentFolderPath];
+      folderPath.forEach((val: any, idx: any) => {
+        if(val.id == action.payload.id)
+          folderPath[idx] = action.payload;
+      });
+      return {...state, currentFolderPath: folderPath};
+    }
     case folder.LOAD_SUCCESS: {
       return {...state, folders: action['payload']};
     }

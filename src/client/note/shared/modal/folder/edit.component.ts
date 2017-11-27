@@ -6,6 +6,7 @@ import { CommonEventService } from '../../../../core/shared/services/common-even
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
 import { Store } from '@ngrx/store';
 import * as note from '../../actions/note';
+import * as folder from '../../actions/folder';
 
 declare var $: any;
 declare var _: any;
@@ -59,7 +60,7 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
     if (this.folder.id) {
       this.apiBaseService.put('note/folders/' + this.folder.id, this.folder).subscribe((res: any) => {
         this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: [res.data]});
-        this.store.dispatch(new note.MultiNotesAdded([res.data]));
+        [new note.NoteUpdated(res.data), new folder.UpdateFolderPath(res.data)].forEach((a: any) => this.store.dispatch(a));
         this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [res.data]});
         this.modal.close();
       });
