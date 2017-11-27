@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { UserService } from '../../../core/shared/services/user.service';
 import { Constants } from '../../../core/shared/config/constants';
 
@@ -12,13 +14,12 @@ import { Constants } from '../../../core/shared/config/constants';
 export class WelcomeDoneComponent implements OnInit {
   navigateUrl: string = Constants.baseUrls.social + '/my-profile';
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
     if (!this.userService.profile.took_a_tour) {
-      console.log('took_a_tour took_a_tour');
-
       let body = JSON.stringify({
         took_a_tour: true
       });
@@ -28,6 +29,8 @@ export class WelcomeDoneComponent implements OnInit {
           console.log(res);
         });
 
+    } else {
+      this.router.navigate(['/settings/profile']);
     }
   }
 }
