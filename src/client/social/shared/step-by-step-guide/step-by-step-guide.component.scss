@@ -1,0 +1,127 @@
+@import '../../../core/scss/global';
+@import "../../../../../node_modules/tether-shepherd/dist/css/shepherd-theme-arrows.css";
+
+body {
+  .shepherd-element {
+    z-index: 2000;
+    &.shepherd-theme-arrows {
+      &.shepherd-has-title {
+        .shepherd-content {
+          header {
+            background-color: #ffffff;
+            border-bottom: 1px solid $line;
+            h3 {
+              font-weight: bold;
+            }
+            .shepherd-cancel-link {
+              display: none;
+            }
+          }
+        }
+      }
+
+      &.shepherd-element-attached-left {
+        &.shepherd-element-attached-middle {
+          margin-top: 60px;
+          .shepherd-content {
+            &:before {
+              border-width: 12px;
+              top: 0;
+              margin-top: 10px;
+            }
+          }
+        }
+      }
+
+      &.shepherd-element-attached-top {
+        &.shepherd-element-attached-center {
+
+        }
+      }
+
+      .shepherd-content {
+        footer {
+          .shepherd-buttons {
+            li {
+              .shepherd-button {
+                @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+                &.btn-primary {
+                  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+                }
+                &.shepherd-close-text {
+                  background-color: transparent;
+                  margin: 0;
+                  padding: 0;
+                  line-height: 2;
+                  position: absolute;
+                  top: 1em;
+                  right: 1em;
+                  text-transform: inherit;
+                  color: $text-color-light;
+                  &:hover {
+                    color: $text-color;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.shepherd-active {
+    .shepherd-element {
+      & + div[data-tether-id] {
+        background-color: rgba(#000, 0.7);
+        height: 100%;
+        width: 100%;
+        z-index: 1900;
+      }
+    }
+
+    &[data-shepherd-step="main-menu"] {
+      .main .main-page-left {
+        z-index: 1991;
+      }
+    }
+  }
+}
+
+/**
+shepherd-step
+shepherd
+shepherd-open
+shepherd-theme-arrows
+shepherd-transparent-text
+shepherd-has-cancel-link
+shepherd-element
+shepherd-element-attached-top
+shepherd-element-attached-center
+shepherd-target-attached-bottom
+shepherd-target-attached-center
+shepherd-enabled
+
+
+
+shepherd-step
+shepherd-theme-arrows
+shepherd-has-title
+shepherd-has-cancel-link
+shepherd-element
+shepherd-element-attached-top
+shepherd-target-attached-bottom
+shepherd-pinned
+shepherd-pinned-right
+shepherd-open
+shepherd-enabled
+ */
+
+/**
+ */
+
+.shepherd-element.shepherd-theme-arrows.shepherd-element-attached-top.shepherd-element-attached-center {
+  .shepherd-content:before {
+
+  }
+}

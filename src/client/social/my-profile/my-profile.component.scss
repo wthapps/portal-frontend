@@ -1,7 +1,4 @@
 @import "../../core/scss/global";
-//@import url('~tether-shepherd/dist/css/shepherd-theme-arrows.css');
-//@import "~tether-shepherd/src/css/shepherd-theme-arrows.sass";
-@import "../../../../node_modules/tether-shepherd/dist/css/shepherd-theme-arrows.css";
 
 .zone-social {
   .chat-profile {
@@ -33,8 +30,4 @@
       }
     }
   }
-}
-
-.shepherd-element {
-  z-index: 1000;
 }
