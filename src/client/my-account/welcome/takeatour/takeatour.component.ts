@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
 import { UserService } from '../../../core/shared/services/user.service';
@@ -67,7 +67,7 @@ export class TakeATourComponent implements OnInit {
         data = item ? item : new InviteModel();
         fbGroup = this.fb.group({
           fullName: [data.fullName, Validators.compose([Validators.required])],
-          email: [data.email, Validators.compose([CustomValidator.emailFormat])]
+          email: [data.email, Validators.compose([Validators.required, CustomValidator.emailFormat])]
         });
         break;
       default:
@@ -111,17 +111,24 @@ export class TakeATourComponent implements OnInit {
 
   saveFinish(value: any) {
     console.log(value.invites);
+    console.log(this.formInvite.controls.invites.valid);
 
-    this.isLoading = true;
-    this.loadingTitle = 'Sending invitation';
-    this.loadingContent = 'Your public profile will be ready in a few second.';
+    if (value.invites) {
+      this.isLoading = true;
+      this.loadingTitle = 'Sending invitation';
+      this.loadingContent = 'Your public profile will be ready in a few second.';
 
-    this.invitationService.create({recipients: value.invites}).subscribe(
-      (res: any) => {
-        console.log(res);
-        this.isLoading = false;
-        this.router.navigate(['/welcome/done']);
-      }
-    );
+      this.invitationService.create({recipients: value.invites}).subscribe(
+        (res: any) => {
+          console.log(res);
+          this.isLoading = false;
+          this.router.navigate(['/welcome/done']);
+        }
+      );
+    } else {
+      this.router.navigate(['/welcome/done']);
+    }
+
+
   }
 }
