@@ -160,3 +160,27 @@ body .ui-widget-header {
     cursor: pointer;
   }
 }
+
+
+@media screen {
+  .printable {
+    /*visibility: hidden;*/
+    display: none;
+  }
+}
+
+@media print {
+  body {
+    //visibility: hidden;
+    display: none;
+  }
+  .printable {
+    //visibility: visible;
+    //display: block;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}

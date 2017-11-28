@@ -36,7 +36,7 @@ declare var _: any;
 declare var $: any;
 declare var Quill: any;
 declare let saveAs: any;
-declare let printJS: any;
+// declare let printJS: any;
 
 @Component({
   moduleId: module.id,
@@ -360,8 +360,20 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   print() {
-    $('.ql-editor').attr('id', 'noteview');
-    printJS({ printable: 'noteview', type: 'html', header: this.note.title});
+    // $('.ql-editor').attr('id', 'noteview');
+    // printJS({ printable: 'noteview', type: 'html', header: this.note.title});
+
+
+    let editor: any = document.querySelector('div.ql-editor');
+
+    if(!document.querySelector('.printable')) {
+      $('body').after('<div class="printable ql-container ql-snow"><div class="ql-editor"></div><div/>');
+    }
+    document.querySelector('.printable > .ql-editor').innerHTML = editor.innerHTML;
+    let printable: any = document.querySelector('.printable > .ql-editor');
+    printable.innerHTML = editor.innerHTML;
+    window.print();
+
   }
 
   downloadAttachments() {
@@ -406,7 +418,6 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
       this.uploadPhotos(files);
     });
   }
-
 
   private uploadPhotos(files: Array<any>) {
 
