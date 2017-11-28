@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 
 declare var _: any;
 declare let saveAs: any;
-declare let printJS: any;
+// declare let printJS: any;
 
 @Component({
   moduleId: module.id,
@@ -123,8 +123,8 @@ export class ZNoteSharedActionBarComponent implements OnInit {
   }
 
   print() {
-    let note = this.selectedObjects[0];
-    printJS({ printable: 'noteview', type: 'html', header: note.title});
+    // let note = this.selectedObjects[0];
+    // printJS({ printable: 'noteview', type: 'html', header: note.title});
   }
 
   removeShares() {

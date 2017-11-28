@@ -36,7 +36,7 @@ declare var _: any;
 declare var $: any;
 declare var Quill: any;
 declare let saveAs: any;
-declare let printJS: any;
+// declare let printJS: any;
 
 @Component({
   moduleId: module.id,
