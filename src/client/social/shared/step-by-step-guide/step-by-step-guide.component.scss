@@ -136,6 +136,23 @@ body {
       }
     }
 
+    &[data-shepherd-step="header-nav-notification"] {
+      .header {
+        &, .header-nav {
+          z-index: auto;
+        }
+      }
+      .header-nav-notification {
+        z-index: 1991;
+        background-color: #ffffff;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        height: 60px;
+      }
+    }
+
     &[data-shepherd-step="account-preferences"] {
       .header {
         &, .header-nav {

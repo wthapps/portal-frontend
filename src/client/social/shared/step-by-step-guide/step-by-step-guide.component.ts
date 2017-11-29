@@ -62,6 +62,27 @@ export class StepByStepGuideComponent implements OnInit, AfterContentInit {
         }
       ]
     });
+
+    shepherd.addStep('header-nav-notification', {
+      title: 'Notification',
+      text: 'Recieve apps and service notification or request from other users.',
+      attachTo: {element: '.header-nav-notification.hidden-xs', on: 'bottom right'},
+      buttons: [
+        {
+          text: 'Skip all',
+          classes: 'shepherd-close-text',
+          action: shepherd.cancel
+        }, {
+          text: 'Previous',
+          action: shepherd.back,
+          classes: 'btn btn-outline-default'
+        }, {
+          text: 'Next',
+          action: shepherd.next,
+          classes: 'btn btn-primary'
+        }
+      ]
+    });
     shepherd.addStep('account-preferences', {
       title: 'Account preferences',
       text: 'Edit your privacy information, personal references and subscription.',
