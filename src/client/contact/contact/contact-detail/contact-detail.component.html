@@ -8,8 +8,8 @@
         [showSocial]="data | isContactInternal"
         [showChat]="data | isContactInternal"
         [showInvitation]="data.wthapps_user == null"
-        [toggleFavourite]="_contact.isContactsHasLabelName([data], 'favourite')"
-        [toggleBlacklist]="_contact.isContactsHasLabelName([data], 'blacklist')"
+        [toggleFavourite]="_contact.isContactsHasGroupName([data], 'favourite')"
+        [toggleBlacklist]="_contact.isContactsHasGroupName([data], 'blacklist')"
         (eventOut)="doActionsToolbar($event)"
       ></z-contact-shared-actions-bar>
     </div>
@@ -27,8 +27,8 @@
                 <p>
                   <small>{{ data.job_title }}</small>
                 </p>
-                <p *ngIf="data.labels.length > 0">
-                  <span *ngFor="let label of data.labels" class="label label-default mr10">{{ label.name }}</span>
+                <p *ngIf="data.groups.length > 0">
+                  <span *ngFor="let group of data.groups" class="group group-default mr10">{{ group.name }}</span>
                 </p>
               </div>
             </div>
@@ -124,4 +124,4 @@
   </div>
 </div>
 
-<contact-add-label-modal #modal></contact-add-label-modal>
+<contact-add-group-modal #modal></contact-add-group-modal>

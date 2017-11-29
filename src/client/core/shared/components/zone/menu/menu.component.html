@@ -78,8 +78,8 @@
         <div [ngClass]="{'active': urls.contact === hostname, 'show': urls.contact === hostname}"
           class="menuleft-nav-sub"
           [routerLinkActive]="['active']">
-          <div class="menuleft-nav-sub-item" [ngClass]="{'active' : (urls.contact === hostname && currentLabel === 'all contacts')}">
-            <a draggable="false" href="javascript:;" [routerLink]="['contacts', {label: 'all contacts'}]"
+          <div class="menuleft-nav-sub-item" [ngClass]="{'active' : (urls.contact === hostname && currentgroup === 'all contacts')}">
+            <a draggable="false" href="javascript:;" [routerLink]="['contacts', {group: 'all contacts'}]"
                (click)="doEvent({action: 'contacts', event: $event})">
               <i class="fa fa-address-book-o"></i> All Contacts ({{ totalContactCount }})
             </a>
@@ -87,28 +87,28 @@
           <div class="divider"></div>
           <div class="menuleft-nav-sub-item">
             <a draggable="false" href="javascript:;">
-              <i class="fa fa-tag"></i> Labels
+              <i class="fa fa-users"></i> Groups
             </a>
           </div>
-          <ng-template ngFor let-label [ngForOf]="contactMenu" let-i="index">
-            <div class="menuleft-nav-sub-item text-capitalize" *ngIf="label.name != ''"
-                 [ngClass]="(currentLabel === label?.name) ? 'active' : ''">
-              <a *ngIf="label.name !='labels'" draggable="false" [routerLink]="['contacts', {label: label.name}]"
-                 (click)="doEvent({action: label?.action, event: $event})">
-                <i class="{{ label.icon }}"></i> {{ label.name }} ({{ label?.count }})
+          <ng-template ngFor let-group [ngForOf]="contactMenu" let-i="index">
+            <div class="menuleft-nav-sub-item text-capitalize" *ngIf="group.name != ''"
+                 [ngClass]="(currentgroup === group?.name) ? 'active' : ''">
+              <a *ngIf="group.name !='groups'" draggable="false" [routerLink]="['contacts', {group: group.name}]"
+                 (click)="doEvent({action: group?.action, event: $event})">
+                <i class="{{ group.icon }}"></i> {{ group.name }} ({{ group?.count }})
               </a>
 
-              <a *ngIf="label.name =='labels'" draggable="false" href="javascript:;">
-                <i class="{{ label.icon }}"></i> {{ label.name }}
+              <a *ngIf="group.name =='groups'" draggable="false" href="javascript:;">
+                <i class="{{ group.icon }}"></i> {{ group.name }}
               </a>
 
-              <div *ngIf="label.hasSubMenu" class="menuleft-nav-sub-action">
+              <div *ngIf="group.hasSubMenu" class="menuleft-nav-sub-action">
               <span class="can-click"
-                    (click)="doEvent({action:'contact:label:open_modal_edit', payload: {mode: 'edit', selectedItem: label.name}})"
-                    title="edit label name">
+                    (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
+                    title="edit group name">
                 <i class="fa fa-pencil"></i>
               </span>
-                <span class="can-click" (click)="deleteLabel(label)" title="delete label">
+                <span class="can-click" (click)="deleteGroup(group)" title="delete group">
                 <i class="fa fa-trash"></i>
               </span>
               </div>
@@ -117,8 +117,8 @@
           </ng-template>
           <div class="menuleft-nav-sub-item">
             <a draggable="false" href="javascript:;"
-               (click)="doEvent({action: 'contact:label:open_modal_edit', payload:{mode: 'add'}, event: $event})">
-              <i class="fa fa-plus"></i> New label
+               (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})">
+              <i class="fa fa-plus"></i> New Group
             </a>
           </div>
           <div class="divider"></div>

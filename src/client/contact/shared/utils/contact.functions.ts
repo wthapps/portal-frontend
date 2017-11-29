@@ -6,22 +6,22 @@ declare let _: any;
 
 export module _contact {
 
-  export function isContactsHasLabelName(contacts: Object[], name: string): boolean {
+  export function isContactsHasGroupName(contacts: Object[], name: string): boolean {
     return _wu.every(contacts, (contact: any) => {
-      return _.some(contact.labels, ['name', name]);
+      return _.some(contact.groups, ['name', name]);
     });
   }
 
-  export function removeLabelContactsByName(contacts: Object[], name: string) {
+  export function removeGroupContactsByName(contacts: Object[], name: string) {
     _.forEach(contacts, (contact: any) => {
-      _.remove(contact.labels, (label: any) => label.name === name);
+      _.remove(contact.groups, (group: any) => group.name === name);
     });
   }
 
-  export function addLabelContacts(contacts: Object[], label: any) {
+  export function addGroupContacts(contacts: Object[], group: any) {
     _.forEach(contacts, (contact: any) => {
-      contact.labels.push(label);
-      contact.labels = _.unionBy(contact.labels, 'id');
+      contact.groups.push(group);
+      contact.groups = _.unionBy(contact.groups, 'id');
     });
   }
 
@@ -44,14 +44,14 @@ export module _contact {
   export function getSameLables(contacts: any): any {
     if (_.isArray(contacts) && contacts.length > 1) {
       let arr: any = [];
-      let tmp = contacts[0].labels;
+      let tmp = contacts[0].groups;
       for (let i = 1; i < contacts.length; i++) {
-        if (contacts[i].labels.length == 0) return [];
-        _.forEach(tmp, (label: any) => {
-          let res = _.filter(contacts[i].labels, ['name', label.name]);
+        if (contacts[i].groups.length == 0) return [];
+        _.forEach(tmp, (group: any) => {
+          let res = _.filter(contacts[i].groups, ['name', group.name]);
           if (!res || res.length == 0) {
             _.remove(arr, (item: any) => {
-              return item.name == label.name;
+              return item.name == group.name;
             });
           }
           arr = _.concat(res, arr);

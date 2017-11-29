@@ -11,7 +11,7 @@ import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
 import { GoogleApiService } from './services/google-api.service';
 import { TagInputModule } from 'ngx-chips';
 
-import { ContactAddLabelModalComponent } from './modal/contact-add-label/contact-add-label-modal.component';
+import { ContactAddGroupModalComponent } from './modal/contact-add-group/contact-add-group-modal.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ZContactShareImportContactComponent } from './modal/import-contact/import-contact.component';
@@ -57,7 +57,7 @@ import { ZContactSharedHeaderComponent } from './header/header.component';
     ZContactSharedHeaderComponent,
 
     //modal here
-    ContactAddLabelModalComponent,
+    ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,
     ICloudOAuthComponent
   ],
@@ -83,7 +83,7 @@ import { ZContactSharedHeaderComponent } from './header/header.component';
     ZContactSharedHeaderComponent,
 
     // modal here
-    ContactAddLabelModalComponent,
+    ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,
     ICloudOAuthComponent,
 

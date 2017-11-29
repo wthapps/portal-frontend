@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { ZContactHomeModule } from './home/home.module';
 import { ZContactModule } from './contact/contact.module';
-import { ZContactLabelModule } from './label/label.module';
+import { ZContactGroupModule } from './group/group.module';
 import { ZContactMyProfileModule } from './my-profile/my-profile.module';
 import { ZContactSettingsModule } from './settings/contact-settings.module';
 
@@ -24,7 +24,7 @@ import { ZContactSettingsModule } from './settings/contact-settings.module';
     ZContactHomeModule,
     ZContactModule,
     ZContactMyProfileModule,
-    ZContactLabelModule,
+    ZContactGroupModule,
     ZContactSettingsModule,
 
     ZContactSharedModule.forRoot(),

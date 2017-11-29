@@ -5,8 +5,8 @@ import { ZContactSharedModule } from '../shared/shared.module';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { LabelEditModalComponent } from './label-edit-modal.component';
-import { LabelService } from './label.service';
+import { GroupEditModalComponent } from './group-edit-modal.component';
+import { GroupService } from './group.service';
 
 @NgModule({
   imports: [
@@ -17,14 +17,14 @@ import { LabelService } from './label.service';
     ZContactSharedModule.forRoot()
   ],
   declarations: [
-    LabelEditModalComponent
+    GroupEditModalComponent
   ],
   exports: [
-    LabelEditModalComponent
+    GroupEditModalComponent
   ],
   providers: [
-    LabelService
+    GroupService
   ]
 })
-export class ZContactLabelModule {
+export class ZContactGroupModule {
 }

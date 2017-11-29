@@ -1,11 +1,12 @@
-import { Directive, ElementRef, HostListener, AfterContentInit, Input, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, HostListener, AfterContentInit, Input, OnDestroy, OnChanges } from '@angular/core';
 
 @Directive({
   selector: '[scrollToBottom]'
 })
-export class ScrollToBottomDirective implements AfterContentInit, OnDestroy {
+export class ScrollToBottomDirective implements AfterContentInit, OnDestroy, OnChanges {
   @Input() lockYOffset: number = 10;
   @Input() observeAttributes: string = 'false';
+  @Input() detectChange: any;
   nativeElement: HTMLElement;
   private isLocked = false;
   private mutationObserver: MutationObserver;
@@ -20,8 +21,18 @@ export class ScrollToBottomDirective implements AfterContentInit, OnDestroy {
     this.nativeElement = element.nativeElement;
   }
 
+  ngOnChanges(changed: any) {
+    this.scroll();
+  }
+
+  scroll() {
+    setTimeout(() => {
+      this.nativeElement.scrollTop = this.nativeElement.scrollHeight + 99999;
+    }, 200);
+  }
+
   ngAfterContentInit(): void {
-    this.nativeElement.scrollTop = this.nativeElement.scrollHeight;
+    this.scroll();
 
     this.mutationObserver = new MutationObserver(() => {
       if (!this.isLocked) {

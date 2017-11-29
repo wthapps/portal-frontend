@@ -1,6 +1,6 @@
 <div *ngIf="contactItem && contactItem.value">
   <div #list *ngIf="contactItem.value.active"
-       scrollToBottom
+       scrollToBottom [detectChange]="contactItem.value.group_id"
        class="page-body-chat-content-in"
        infiniteScrollDistance="1"
        infiniteScrollUpDistance="2"

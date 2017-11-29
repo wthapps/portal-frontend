@@ -6,7 +6,7 @@
     <figure class="avatar-xs media-user">
       <img [src]="data.profile_image" alt="">
 
-      <i class="media-user-status" [ngClass]="{'blacklist fa fa-ban': data | contactHasLabel:'blacklist'}"></i>
+      <i class="media-user-status" [ngClass]="{'blacklist fa fa-ban': data | contactHasGroup:'blacklist'}"></i>
     </figure>
     <span class="name">{{ data.name }}</span>
   </a>
@@ -29,7 +29,7 @@
     </li>
   </ul>
 </div>
-<!-- {{data | wthFilterBy:'labels' | json}} -->
+<!-- {{data | wthFilterBy:'groups' | json}} -->
 <z-contact-shared-actions-bar
   class="contact-listbox-action"
   [data]="data"
@@ -38,7 +38,7 @@
   [showSocial]="data | isContactInternal"
   [showChat]="data | isContactInternal"
   [showInvitation]="data.wthapps_user == null"
-  [toggleFavourite]="data | contactHasLabel:'favourite'"
-  [toggleBlacklist]="data | contactHasLabel:'blacklist'"
+  [toggleFavourite]="data | contactHasGroup:'favourite'"
+  [toggleBlacklist]="data | contactHasGroup:'blacklist'"
   (eventOut)="doActionsToolbar($event)">
 </z-contact-shared-actions-bar>
