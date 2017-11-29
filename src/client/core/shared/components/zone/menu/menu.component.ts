@@ -97,7 +97,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubMenu(link: string) {
-    console.debug('onSubMenu:', link);
     this.navigateService.navigateOrRedirect(link);
   }
 
@@ -113,14 +112,14 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.commonEventService.broadcast({channel: 'menuCommonEvent', action: event.action, payload: event.payload});
   }
 
-  deleteLabel(label: any) {
+  deleteGroup(group: any) {
     this.wthConfirmService.confirm({
-      message: 'Are you sure you want to delete this label ?',
-      header: 'Delete label',
+      message: 'Are you sure you want to delete this group ?',
+      header: 'Delete group',
       accept: () => {
-        this.apiBaseService.delete(`contact/labels/${label.id}`).subscribe((res: any) => {
-          _.remove(this.contactMenu, (label: any) => {
-            return label.id == res.data.id;
+        this.apiBaseService.delete(`contact/groups/${group.id}`).subscribe((res: any) => {
+          _.remove(this.contactMenu, (group: any) => {
+            return group.id == res.data.id;
           });
         });
       }

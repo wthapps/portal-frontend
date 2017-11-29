@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { GoogleApiService } from '../services/google-api.service';
 import { ModalDockComponent } from '../../../core/shared/components/modal/dock.component';
 import { LoadingService } from '../../../core/shared/components/loading/loading.service';
-import { ContactAddLabelModalComponent } from '../modal/contact-add-label/contact-add-label-modal.component';
+import { ContactAddGroupModalComponent } from '../modal/contact-add-group/contact-add-group-modal.component';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { Constants } from '../../../core/shared/config/constants';
@@ -19,7 +19,7 @@ import { FileUploadHelper } from '../../../core/shared/helpers/file/file-upload.
 
 export class ZContactShareImportProgressComponent implements OnDestroy {
   @ViewChild('modalDock') modalDock: ModalDockComponent;
-  @ViewChild('addLabel') addLabel: ContactAddLabelModalComponent;
+  @ViewChild('addGroup') addGroup: ContactAddGroupModalComponent;
 
   IMPORT_STATUS: any = {
     importing: 1,
@@ -146,11 +146,11 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
     this.modalDock.close();
   }
 
-  addToLabel(event?: any) {
+  addToGroup(event?: any) {
     this.modalDock.close();
 
-    // this.addLabel.contacts = this.importedContacts;
-    this.addLabel.open({contacts: this.importedContacts});
+    // this.addGroup.contacts = this.importedContacts;
+    this.addGroup.open({contacts: this.importedContacts});
   }
 
   stop(event?: any) {

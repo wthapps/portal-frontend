@@ -12,7 +12,7 @@ import { BaseEntityService } from '../../../core/shared/services/base-entity-ser
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { SuggestionService } from '../../../core/shared/services/suggestion.service';
-import { LabelService } from '../../label/label.service';
+import { GroupService } from '../../group/group.service';
 import { Router } from '@angular/router';
 import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
 
@@ -49,7 +49,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   constructor(protected apiBaseService: ApiBaseService,
               public importContactDataService: ContactImportContactDataService,
-              public labelService: LabelService,
+              public groupService: GroupService,
               private suggestService: SuggestionService,
               private toastsService: ToastsService,
               public router: Router,
@@ -124,8 +124,8 @@ export class ZContactService extends BaseEntityService<any> {
     return new Promise((resolve) => {
 
       this.wthConfirmService.confirm({
-        acceptLabel: 'Delete',
-        rejectLabel: 'Cancel',
+        acceptGroup: 'Delete',
+        rejectGroup: 'Cancel',
         message: `Are you sure to delete following ${contact_length} contact(s)? ${contact_names}`,
         header: 'Delete Contacts',
         accept: () => {
@@ -227,20 +227,20 @@ export class ZContactService extends BaseEntityService<any> {
 
   filter(options: any) {
     this.resetPageNumber();
-    let label = _.get(options, 'label', 'undefined');
-    this.filterOption = {'label': label};
+    let group = _.get(options, 'group', 'undefined');
+    this.filterOption = {'group': group};
 
     this.notifyContactsObservers();
   }
 
-  filterByLabel(label?: string) {
+  filterByGroup(group?: string) {
     let contacts: any[] = [];
-    if (label === undefined || label === 'undefined')
+    if (group === undefined || group === 'undefined')
       contacts = this.contacts;
     else {
       contacts = _.filter(this.contacts, (contact: any)=> {
-        let clabels = _.map(contact.labels, 'name');
-        if (_.indexOf(clabels, label) > -1)
+        let cgroups = _.map(contact.groups, 'name');
+        if (_.indexOf(cgroups, group) > -1)
           return contact;
       });
     }
@@ -265,12 +265,12 @@ export class ZContactService extends BaseEntityService<any> {
 
   notifyContactsObservers(): void {
     let contacts: any[] = [];
-    this.labelService.updateLabelCount(this.contacts);
+    this.groupService.updateGroupCount(this.contacts);
 
     if (_.has(this.filterOption, 'search')) {
       contacts = this.searchContact(this.filterOption.search);
-    } else if (_.has(this.filterOption, 'label')) {
-      contacts = this.filterByLabel(this.filterOption.label);
+    } else if (_.has(this.filterOption, 'group')) {
+      contacts = this.filterByGroup(this.filterOption.group);
     } else {
       contacts = this.contacts;
     }
@@ -304,7 +304,7 @@ export class ZContactService extends BaseEntityService<any> {
       }
       console.log('merge duplicate contacts, updated: ', this.contacts, updated_contacts, delete_ids);
       this.notifyContactsObservers();
-      this.labelService.updateLabelCount(this.contacts);
+      this.groupService.updateGroupCount(this.contacts);
       });
   }
 

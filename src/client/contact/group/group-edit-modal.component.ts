@@ -5,8 +5,8 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import 'rxjs/add/operator/toPromise';
 
 import { WthAppsBaseModal } from '../../core/shared/interfaces/wthapps-base-modal';
-import { Label } from './label.model';
-import { LabelService } from './label.service';
+import { Group } from './group.model';
+import { GroupService } from './group.service';
 
 
 
@@ -14,14 +14,14 @@ declare var $: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'label-edit-modal',
-  templateUrl: 'label-edit-modal.component.html',
-  styleUrls: ['label-edit-modal.component.css']
+  selector: 'group-edit-modal',
+  templateUrl: 'group-edit-modal.component.html',
+  styleUrls: ['group-edit-modal.component.css']
 })
 
-export class LabelEditModalComponent implements OnInit, WthAppsBaseModal {
+export class GroupEditModalComponent implements OnInit, WthAppsBaseModal {
   @Input() mode: string;
-  @Input() item: Label;
+  @Input() item: Group;
 
   @ViewChild('modal') modal: ModalComponent;
   event: any;
@@ -31,14 +31,14 @@ export class LabelEditModalComponent implements OnInit, WthAppsBaseModal {
   form: FormGroup;
   name: AbstractControl;
 
-  constructor(private fb: FormBuilder, private labelService: LabelService) {
+  constructor(private fb: FormBuilder, private groupService: GroupService) {
 
 
   }
 
   ngOnInit() {
     this.titleIcon = this.mode == 'edit' ? 'fa-edit' : 'fa-plus';
-    this.titleName = this.mode == 'edit' ? 'Edit Label' : 'New Label';
+    this.titleName = this.mode == 'edit' ? 'Edit Group' : 'New Group';
 
     this.form = this.fb.group({
       id: [this.item.id],
@@ -49,18 +49,18 @@ export class LabelEditModalComponent implements OnInit, WthAppsBaseModal {
 
   submit() {
     if (this.mode == 'edit') {
-      this.labelService.update(this.form.value).toPromise();
+      this.groupService.update(this.form.value).toPromise();
     } else {
-      this.labelService.create(this.form.value).toPromise();
+      this.groupService.create(this.form.value).toPromise();
     }
     this.modal.close().then();
   }
 
   open(options?: any) {
     this.mode = options.mode || 'add';
-    this.item = options.item || new Label();
+    this.item = options.item || new Group();
 
-    console.log('labellll', this.item);
+    console.log('grouplll', this.item);
 
     this.modal.open(options).then();
   }

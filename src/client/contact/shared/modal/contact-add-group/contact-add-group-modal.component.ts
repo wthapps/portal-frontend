@@ -3,8 +3,8 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WthAppsBaseModal } from '../../../../core/shared/interfaces/wthapps-base-modal';
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
-import { Label } from '../../../label/label.model';
-import { LabelService } from '../../../label/label.service';
+import { Group } from '../../../group/group.model';
+import { GroupService } from '../../../group/group.service';
 import { Constants } from '../../../../core/shared/config/constants';
 
 declare var $: any;
@@ -12,12 +12,12 @@ declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'contact-add-label-modal',
-  templateUrl: 'contact-add-label-modal.component.html',
-  styleUrls: ['contact-add-label-modal.component.css']
+  selector: 'contact-add-group-modal',
+  templateUrl: 'contact-add-group-modal.component.html',
+  styleUrls: ['contact-add-group-modal.component.css']
 })
 
-export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
+export class ContactAddGroupModalComponent implements OnInit, WthAppsBaseModal {
   @Input() mode: string;
   @Input() contacts: any;
 
@@ -26,32 +26,32 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   titleIcon: string;
 
   form: FormGroup;
-  labelsCtrl: AbstractControl;
-  labels: Array<string> = new Array<string>();
-  originalLabels: Array<any> = new Array<any>();
-  selectedLabels: Array<any> = [];
-  inputLabels: Array<any> = [];
+  groupsCtrl: AbstractControl;
+  groups: Array<string> = new Array<string>();
+  originalGroups: Array<any> = new Array<any>();
+  selectedGroups: Array<any> = [];
+  inputGroups: Array<any> = [];
 
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService,
-   private labelService: LabelService)  {
+   private groupService: GroupService)  {
 
   }
 
   ngOnInit() {
     this.form = this.fb.group({
-      'labels': [this.selectedLabels],
+      'groups': [this.selectedGroups],
     });
-    this.labelsCtrl = this.form.controls['labels'];
+    this.groupsCtrl = this.form.controls['groups'];
   }
 
   submit() {
     if (this.contacts.length > 1) {
       _.forEach(this.contacts, (contact: any) => {
-        // contact.labels = _.unionBy(_.concat(contact.labels, this.getSelectedLabels()), 'id');
-        contact.labels = _.unionBy(this.getSelectedLabels(), 'id');
+        // contact.groups = _.unionBy(_.concat(contact.groups, this.getSelectedGroups()), 'id');
+        contact.groups = _.unionBy(this.getSelectedGroups(), 'id');
       });
     } else {
-      this.contacts[0].labels = _.unionBy(this.getSelectedLabels(), 'id');
+      this.contacts[0].groups = _.unionBy(this.getSelectedGroups(), 'id');
     }
     this.commonEventService.broadcast({
       channel: Constants.contactEvents.common,
@@ -64,15 +64,15 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   open(options?: any) {
     this.mode = options.mode || 'add';
     this.contacts = options.contacts || null;
-    this.inputLabels = options.labels || [];
-    this.selectedLabels = [];
-    _.forEach(this.inputLabels, (label: any) => {
-      this.selectedLabels.push({value: label.name, display: label.name});
+    this.inputGroups = options.groups || [];
+    this.selectedGroups = [];
+    _.forEach(this.inputGroups, (group: any) => {
+      this.selectedGroups.push({value: group.name, display: group.name});
     });
     this.modal.open(options).then(() => {
-      this.labelService.getAllLabels().then((labels: any[]) => {
-        this.originalLabels = labels;
-        this.labels = _.map(this.originalLabels, 'name');
+      this.groupService.getAllGroups().then((groups: any[]) => {
+        this.originalGroups = groups;
+        this.groups = _.map(this.originalGroups, 'name');
       });
     });
   }
@@ -83,13 +83,13 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
 
   validData(): boolean {
     let result: boolean = true;
-    if (this.selectedLabels.length == 0 && this.inputLabels.length == 0) {
+    if (this.selectedGroups.length == 0 && this.inputGroups.length == 0) {
       return false;
     }
 
-    if(this.selectedLabels.length == this.inputLabels.length) {
-      _.forEach(this.inputLabels, (l: any) => {
-        _.forEach(this.selectedLabels, (sl: any) => {
+    if(this.selectedGroups.length == this.inputGroups.length) {
+      _.forEach(this.inputGroups, (l: any) => {
+        _.forEach(this.selectedGroups, (sl: any) => {
           if (sl.value !== l.name) {
             result = false;
             return;
@@ -107,11 +107,11 @@ export class ContactAddLabelModalComponent implements OnInit, WthAppsBaseModal {
   addTag(event: any) {
     console.log('inside addTag');}
 
-  private getSelectedLabels(): Array<any> {
+  private getSelectedGroups(): Array<any> {
     let result: Array<any> = new Array<any>();
 
-    _.forEach(this.selectedLabels, (label: any) => {
-      result.push(_.find(this.originalLabels, {name: label.value}));
+    _.forEach(this.selectedGroups, (group: any) => {
+      result.push(_.find(this.originalGroups, {name: group.value}));
     });
     return result;
   }

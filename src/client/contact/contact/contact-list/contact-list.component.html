@@ -10,8 +10,8 @@
         [showEdit]="false"
         [showInvitation]="contactService.selectedObjects && contactService.selectedObjects.length > 0"
         [number]="contactService.selectedObjects.length"
-        [toggleFavourite]="_contact.isContactsHasLabelName(contactService.selectedObjects, 'favourite')"
-        [toggleBlacklist]="_contact.isContactsHasLabelName(contactService.selectedObjects, 'blacklist')"
+        [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')"
+        [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'blacklist')"
         (eventOut)="doActionsToolbar($event)"
       ></z-contact-shared-actions-bar>
     </div>
@@ -31,6 +31,6 @@
     </div>
   </div>
 </div>
-<contact-add-label-modal #modal></contact-add-label-modal>
+<contact-add-group-modal #modal></contact-add-group-modal>
 <invitation-create-modal #invitationModal (event)="doEvent($event)"></invitation-create-modal>
 <!-- && contactService.selectedObjects.length==1 -->

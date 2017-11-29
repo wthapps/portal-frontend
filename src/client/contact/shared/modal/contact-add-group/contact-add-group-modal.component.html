@@ -1,6 +1,6 @@
 <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <modal-header [show-close]="true">
-    <h4 class="modal-title"><i class="fa" [ngClass]="titleIcon"></i> Add Label</h4>
+    <h4 class="modal-title"><i class="fa" [ngClass]="titleIcon"></i> Add Group</h4>
   </modal-header>
 
   <form [formGroup]="form" novalidate>
@@ -8,15 +8,15 @@
       <div class="row ng2-tags-container-wrapper">
         <div class="col-sm-12">
           <div class="form-group">
-            <!--<label for="tag"></label>-->
-            <!--selectedLabels-->
+            <!--<group for="tag"></group>-->
+            <!--selectedGroups-->
             <tag-input [maxItems]='100'
-                       [placeholder]="'Select a label'"
-                       [(ngModel)]="selectedLabels"
+                       [placeholder]="'Select a group'"
+                       [(ngModel)]="selectedGroups"
                        (onRemove)="removeTag($event)"
                        (onAdd)="addTag($event)"
-                       [formControl]="labelsCtrl">
-              <tag-input-dropdown [autocompleteItems]="labels">
+                       [formControl]="groupsCtrl">
+              <tag-input-dropdown [autocompleteItems]="groups">
               </tag-input-dropdown>
             </tag-input>
 

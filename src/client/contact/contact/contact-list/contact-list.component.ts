@@ -13,12 +13,12 @@ import { LoadingService } from '../../../core/shared/components/loading/loading.
 import { ZContactService } from '../../shared/services/contact.service';
 import { CommonEventService } from '../../../core/shared/services/common-event/common-event.service';
 import { CommonEventAction } from '../../../core/shared/services/common-event/common-event-action';
-import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
+import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
 import { CommonEvent } from '../../../core/shared/services/common-event/common-event';
 import { Constants } from '../../../core/shared/config/constants';
 import { _wu } from '../../../core/shared/utils/utils';
 import { _contact } from '../../shared/utils/contact.functions';
-import { LabelService } from '../../label/label.service';
+import { GroupService } from '../../group/group.service';
 import { InvitationCreateModalComponent } from '../../../core/shared/components/invitation/invitation-create-modal.component';
 import { Recipient } from '../../../core/shared/components/invitation/recipient.model';
 import { InvitationService } from '../../../core/shared/components/invitation/invitation.service';
@@ -32,7 +32,7 @@ declare var _: any;
   templateUrl: 'contact-list.component.html'
 })
 export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
-  @ViewChild('modal') modal: ContactAddLabelModalComponent;
+  @ViewChild('modal') modal: ContactAddGroupModalComponent;
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
 
 
@@ -59,7 +59,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     private cdr: ChangeDetectorRef,
     private router: Router,
     private wthConfirmService: WthConfirmService,
-    private labelService: LabelService,
+    private groupService: GroupService,
     private loadingService: LoadingService,
     private commonEventService: CommonEventService,
     private invitationService: InvitationService,
@@ -87,13 +87,13 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
       if (params['search']) {
         this.contactService.search({search_value: params['search']});
       } else {
-        switch (params['label']) {
+        switch (params['group']) {
           case 'all contacts':
           case 'undefined':
-            this.contactService.filter({label: undefined});
+            this.contactService.filter({group: undefined});
             break;
           default:
-            this.contactService.filter({label: params['label']});
+            this.contactService.filter({group: params['group']});
             break;
         }
       }
@@ -143,19 +143,19 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   doEvent(event: any) {
     switch (event.action) {
-      case 'open_add_label_modal':
-        let labels: any[] = [];
+      case 'open_add_group_modal':
+        let groups: any[] = [];
         if (this.contactService.selectedObjects.length > 1) {
-          labels = _contact.getSameLables(this.contactService.selectedObjects);
+          groups = _contact.getSameLables(this.contactService.selectedObjects);
         } else if (this.contactService.selectedObjects.length == 1) {
-          labels = this.contactService.selectedObjects[0].labels;
+          groups = this.contactService.selectedObjects[0].groups;
           event.mode = 'edit';
         }
 
-        this.modal.open({mode: event.mode, labels: labels, contacts: this.contactService.selectedObjects});
+        this.modal.open({mode: event.mode, groups: groups, contacts: this.contactService.selectedObjects});
         break;
 
-      // this will handle all cases as: favourite, add to label
+      // this will handle all cases as: favourite, add to group
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
         let selectedObjects = (event.payload && event.payload.selectedObjects) ? event.payload.selectedObjects : this.contactService.selectedObjects;
@@ -173,14 +173,14 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     }
   }
 
-  toggleLabel(name: string) {
-    let label = _.find(this.labelService.getAllLabelSyn(), (label: any) => {
-      return label.name == name;
+  toggleGroup(name: string) {
+    let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
+      return group.name == name;
     });
-    if (_contact.isContactsHasLabelName(this.contactService.selectedObjects, name)) {
-      _contact.removeLabelContactsByName(this.contactService.selectedObjects, name);
+    if (_contact.isContactsHasGroupName(this.contactService.selectedObjects, name)) {
+      _contact.removeGroupContactsByName(this.contactService.selectedObjects, name);
     } else {
-      _contact.addLabelContacts(this.contactService.selectedObjects, label);
+      _contact.addGroupContacts(this.contactService.selectedObjects, group);
     }
     this.contactService.update(this.contactService.selectedObjects).subscribe((res: any) => {
       console.log(res);
@@ -189,16 +189,16 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   doActionsToolbar(event: any) {
     if (event.action == 'favourite') {
-      // this.toggleLabelB(this.contactService.selectedObjects, 'favourite');
-      this.toggleLabel('favourite');
+      // this.toggleGroupB(this.contactService.selectedObjects, 'favourite');
+      this.toggleGroup('favourite');
     }
 
     if (event.action == 'blacklist') {
-      this.toggleLabel('blacklist');
+      this.toggleGroup('blacklist');
     }
 
     if (event.action == 'tag') {
-      this.doEvent({action: 'open_add_label_modal'});
+      this.doEvent({action: 'open_add_group_modal'});
     }
 
     if (event.action == 'delete') {
