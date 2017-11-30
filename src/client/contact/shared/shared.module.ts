@@ -24,6 +24,7 @@ import { ZContactPipeModule } from './pipe/pipe.module';
 import { ICloudOAuthComponent } from './modal/import-contact/icloud/icloud-oauth.component';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZContactSharedHeaderComponent } from './header/header.component';
+import { ZContactShareIcloudIndicateComponent } from './modal/import-contact/icloud-indicate/icloud-indicate.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -59,6 +60,7 @@ import { ZContactSharedHeaderComponent } from './header/header.component';
     //modal here
     ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,
+    ZContactShareIcloudIndicateComponent,
     ICloudOAuthComponent
   ],
   exports: [
@@ -85,6 +87,7 @@ import { ZContactSharedHeaderComponent } from './header/header.component';
     // modal here
     ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,
+    ZContactShareIcloudIndicateComponent,
     ICloudOAuthComponent,
 
 

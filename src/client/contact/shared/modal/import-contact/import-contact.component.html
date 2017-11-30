@@ -19,9 +19,10 @@
                     </div>
                   </figure>
                   <div class="photo-box-name">
-                  <span>
-                    {{ p.text }}
-                  </span>
+                    <span>
+                      {{ p.text }}
+                    </span>
+                    <i *ngIf="p.name == 'apple'" class="pull-right fa fa-question-circle" style="font-size: 24px;" (click)="iCloudIntroduce($event)"></i>
                   </div>
                 </div>
               </div>
@@ -63,3 +64,5 @@
     </modal-footer>
   </modal>
 </form>
+
+<z-contact-share-icloud-indicate #icloud></z-contact-share-icloud-indicate>
