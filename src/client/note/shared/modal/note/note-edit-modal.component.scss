@@ -71,7 +71,7 @@ body .ui-widget-header {
 }
 
 /* Set dropdown font-families */
-[quill-editor-toolbar] .ql-font span[data-label="Lato"]::before {
+[quill-editor-toolbar] .ql-font span[data-label="Lato"]:before {
   font-family: "Lato";
 }
 
@@ -114,23 +114,41 @@ body .ui-widget-header {
 
 .ql-editor {
   min-height: 320px;
+  ol, ul {
+    padding-left: 0;
+    ol, ul {
+      padding-left: 20px;
+    }
+  }
+
+  ul li:not(.ql-direction-rtl) {
+    padding-left: 14px;
+  }
+
   ul[data-checked=false], ul[data-checked=true] {
-    > li::before {
-      @include fa-icon;
-      font-size: 24px;
-      position: relative;
-      top: 5px;
+    padding-left: 16px;
+
+    > li {
+      &:before {
+        @include fa-icon;
+        font-size: 24px;
+        position: relative;
+        top: 5px;
+      }
     }
   }
   ul[data-checked=false] {
-    > li::before {
+    > li:before {
       content: $fa-var-square-o;
     }
   }
   ul[data-checked=true] {
-    > li::before {
-      content: $fa-var-check-square;
-      color: $color-success;
+    > li {
+      text-decoration: line-through;
+      &:before {
+        content: $fa-var-check-square;
+        color: $color-success;
+      }
     }
   }
 }
