@@ -38,7 +38,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   noteMenu = Constants.noteMenuItems;
   hostname: string = '';
   isProfileTab: boolean;
-  currentLabel: string;
+  currentGroup: string;
   commonEventSub: any;
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -68,7 +68,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.isProfileTab = false;
         }
-        this.currentLabel = this.extractLabel(event.url);
+        this.currentGroup = this.extractLabel(event.url);
       });
 
   }
@@ -77,7 +77,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   extractLabel(url: string) {
-    let regExp = /label=([\w ]*)/;
+    let regExp = /group=([\w ]*)/;
     let match = decodeURI(url).match(regExp);
 
     if (match && match[1]) {
