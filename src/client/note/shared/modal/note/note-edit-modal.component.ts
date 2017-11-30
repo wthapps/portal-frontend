@@ -1,10 +1,9 @@
-import { Component, Input, ViewChild, AfterViewInit, ViewEncapsulation, OnDestroy, HostListener } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/takeUntil';
@@ -29,13 +28,15 @@ import { GenericFile } from '../../../../core/shared/models/generic-file.model';
 import { GenericFileService } from '../../../../core/shared/services/generic-file.service';
 import { Router } from '@angular/router';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { ClientDetectorService } from '../../../../core/shared/services/client-detector.service';
 
 const DEBOUNCE_MS = 2500;
 
-declare var _: any;
-declare var $: any;
-declare var Quill: any;
+declare let _: any;
+declare let $: any;
+declare let Quill: any;
 declare let saveAs: any;
+
 // declare let printJS: any;
 
 @Component({
@@ -55,6 +56,8 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   tooltip: any = Constants.tooltip;
 
   titleModal: string = 'New Note';
+
+  buttonControl: string = '';
 
   form: FormGroup;
   title: AbstractControl;
@@ -78,9 +81,15 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
               private photoSelectDataService: PhotoModalDataService,
               private fileService: GenericFileService,
               private apiBaseService: ApiBaseService,
-              private photoUploadService: PhotoUploadService) {
+              private photoUploadService: PhotoUploadService,
+              private clientDetectorService: ClientDetectorService) {
     this.noSave$ = this.noSaveSubject.asObservable().merge(this.destroySubject, this.closeSubject);
     this.fileUploadHelper = new FileUploadHelper();
+
+    // console.log(this.clientDetectorService.getOs());
+
+    let getOs: any = this.clientDetectorService.getOs();
+    this.buttonControl = (getOs.name == 7) ? '⌘' : 'ctrl'
   }
 
   ngOnDestroy() {
@@ -113,6 +122,8 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
       }
     });
 
+    $('.ql-editor').attr('tabindex', 1);
+
 
     this.customEditor = this.editor.quill;
 
@@ -144,6 +155,12 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     this.registerImageBlot();
   }
 
+  onToEditor(e: any) {
+    if (e.keyCode == 13) { // enter
+      $('.ql-editor').focus();
+    }
+  }
+
   registerImageBlot() {
     let BlockEmbed = Quill.import('blots/block/embed');
 
@@ -164,6 +181,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
         };
       }
     }
+
     ImageBlot.blotName = 'image';
     ImageBlot.tagName = 'img';
     Quill.register(ImageBlot);
@@ -338,14 +356,17 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   download(file: any) {
-    this.apiBaseService.download('common/files/download', {id: file.id, object_type: file.object_type}).subscribe((res: any) => {
+    this.apiBaseService.download('common/files/download', {
+      id: file.id,
+      object_type: file.object_type
+    }).subscribe((res: any) => {
       var blob = new Blob([res.blob()], {type: file.content_type});
       saveAs(blob, file.name);
     });
   }
 
   fileAttachmentClick(file: any) {
-    if(file.object_type == 'photo') {
+    if (file.object_type == 'photo') {
       $('#modal-note-edit').css('z-index', '0');
       $('.modal-backdrop').css('z-index', '0');
       this.router.navigate([{outlets: {modal: ['photos', file.id, {ids: [file.id]}]}}]);
@@ -366,7 +387,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
     let editor: any = document.querySelector('div.ql-editor');
 
-    if(!document.querySelector('.printable')) {
+    if (!document.querySelector('.printable')) {
       $('body').after('<div class="printable ql-container ql-snow"><div class="ql-editor"></div><div/>');
     }
     document.querySelector('.printable > .ql-editor').innerHTML = editor.innerHTML;
@@ -377,8 +398,8 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   downloadAttachments() {
-    if(this.note.attachments) {
-      for(let att of this.note.attachments) {
+    if (this.note.attachments) {
+      for (let att of this.note.attachments) {
         this.download(att);
       }
     }
@@ -396,7 +417,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
       this.fileService.create(genericFile)
         .subscribe((response: any) => {
           let index = _.indexOf(this.note.attachments, file);
-          this.note.attachments[index] = {object_type: 'file',...response.data};
+          this.note.attachments[index] = {object_type: 'file', ...response.data};
           this.form.controls['attachments'].setValue(this.note.attachments);
         });
     });

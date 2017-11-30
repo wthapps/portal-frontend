@@ -74,6 +74,7 @@ import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
 import { BoxLoadingModule } from './components/box-loading/box-loading.module';
 import { BoxNoDataModule } from './components/box-no-data/box-no-data.module';
 import { DirectiveModule } from './directive/directive.module';
+import { ClientDetectorService } from './services/client-detector.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -156,6 +157,7 @@ export class CoreSharedModule {
         ConfirmationService,
         CookieService,
         StorageService,
+        ClientDetectorService,
         HandlerService,
         WTHNavigateService,
         NotificationService,

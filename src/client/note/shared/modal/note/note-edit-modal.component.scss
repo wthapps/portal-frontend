@@ -20,21 +20,11 @@ body .ui-widget-header {
     .ql-formats {
       margin-right: 3px;
 
-      button {
-        > i {
-          position: relative;
-          top: -2px;
-        }
-      }
-
-      button, .ql-picker {
-        border: 1px solid $btn-default-border;
-        background-color: #ffffff;
-        &:hover {
-          background-color: #F6F6F6;
-        }
-
-        & + button {
+      > button, .ql-picker {
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        & + button, & + .ql-picker {
           margin-left: -1px;
         }
         &:first-child {
@@ -45,8 +35,27 @@ body .ui-widget-header {
         }
       }
       .ql-picker {
-        @include border-left-radius(4px);
-        @include border-right-radius(4px);
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+      }
+
+      button {
+        > i {
+          position: relative;
+          top: -2px;
+        }
+      }
+      .ql-font {
+        min-width: 140px;
+      }
+
+      button, .ql-picker {
+        border: 1px solid $btn-default-border;
+        background-color: #ffffff;
+        &:hover {
+          background-color: #F6F6F6;
+        }
       }
     }
   }
@@ -145,12 +154,11 @@ body .ui-widget-header {
   }
 }
 
-
-.fileinput-button{
+.fileinput-button {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  input{
+  input {
     position: absolute;
     top: 0;
     right: 0;
@@ -160,7 +168,6 @@ body .ui-widget-header {
     cursor: pointer;
   }
 }
-
 
 @media screen {
   .printable {
