@@ -154,6 +154,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     DividerBlot.tagName = 'hr';
     Quill.register(DividerBlot);
 
+    this.registerIconBlot();
     this.registerImageBlot();
     this.listenImageChanges();
     this.registerImageClickEvent();
@@ -180,6 +181,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
           'data-id': node.getAttribute('data-id')
         };
       }
+
     }
     ImageBlot.blotName = 'image';
     ImageBlot.tagName = 'img';
@@ -188,16 +190,39 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     toolbar.addHandler('image', () => this.selectInlinePhotos4Note());
   }
 
+  registerIconBlot() {
+    let BlockEmbed = Quill.import('blots/block/embed');
+
+    class IconBlot extends BlockEmbed {
+      static create(value: any) {
+        let node = super.create();
+        node.setAttribute('class', value.class);
+        node.setAttribute('id', value.id);
+        return node;
+      }
+
+      static value(node: any) {
+        return {
+          class: node.getAttribute('class'),
+          id: node.getAttribute('id')
+        };
+      }
+    }
+    IconBlot.blotName = 'i';
+    IconBlot.tagName = 'i';
+    Quill.register(IconBlot);
+
+  }
+
   insertFakeImage(id: any) {
-    // const range = this.customEditor.getSelection(true);
-    // this.customEditor.insertText(range.index, '\n', Quill.sources.USER);
-    // this.customEditor.insertEmbed(range.index + 1, 'image', {
-    //   alt: 'WTH! No Image',
-    //   url: this.defaultImg,
-    //   id: id
-    // }, Quill.sources.USER);
-    // this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
-    this.insertInlineImage(id);
+    const range = this.customEditor.getSelection(true);
+    this.customEditor.insertText(range.index, '\n', Quill.sources.USER);
+    this.customEditor.insertEmbed(range.index + 1, 'i', {
+      class: 'fa fa-spinner fa-spin big-icon',
+      id: id
+    }, Quill.sources.USER);
+    this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
+    // this.insertInlineImage(id);
   }
 
   // id: placeholder when fake images
@@ -236,8 +261,10 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
       .subscribe((res: any) => {
         console.debug('inline photo upload: ', res);
         const randId = ids.shift();
-        $(`#${randId}`).attr('src', res.data.url);
-        $(`#${randId}`).attr('data-id', res.data.id);
+        $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
+        $(`i#${randId}`).remove();
+        // $(`#${randId}`).attr('src', res.data.url);
+        // $(`#${randId}`).attr('data-id', res.data.id);
         this.registerImageClickEvent();
       });
   }
