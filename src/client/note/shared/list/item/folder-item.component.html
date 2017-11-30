@@ -16,7 +16,7 @@
     {{ data.description }}
   </div>
   <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
-    {{ data.created_at | date: 'MM/dd/yyyy' }}
+    {{ data.created_at | date: 'MMM dd yyyy' }}
   </div>
 
   <div class="component-listbox-action">
