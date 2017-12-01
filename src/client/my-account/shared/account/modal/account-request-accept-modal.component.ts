@@ -1,4 +1,4 @@
-import { Component, ViewChild} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CommonEventService } from '../../../../core/shared/services/common-event/common-event.service';
