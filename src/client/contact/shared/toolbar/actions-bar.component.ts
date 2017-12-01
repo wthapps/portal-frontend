@@ -13,7 +13,6 @@ declare var _: any;
   templateUrl: 'actions-bar.component.html',
   styleUrls: ['actions-bar.component.css']
 })
-
 export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   // Show or not
   @Input() showSocial: boolean = true;
