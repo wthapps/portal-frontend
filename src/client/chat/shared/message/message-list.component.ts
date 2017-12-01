@@ -6,6 +6,7 @@ import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
 
 declare var _: any;
+declare var $: any;
 
 @Component({
   moduleId: module.id,
@@ -39,7 +40,7 @@ export class MessageListComponent implements OnInit {
   }
 
   scrollDown() {
-    this.chatService.markAsRead(this.contactItem.value.group_id);
+    if($('#chat-message-text').is(":focus")) this.chatService.markAsRead(this.contactItem.value.group_id);
   }
 
   onAddContact(contact:any) {
