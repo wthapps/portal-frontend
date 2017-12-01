@@ -19,11 +19,11 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   }
 })
 export class ContentEditableDirective implements ControlValueAccessor {
-  public onTouchedCallback: () => void = noop;
-  private onChangeCallback: (_: any) => void = noop;
-
   @Input()
   public multiline: false;
+
+  public onTouchedCallback: () => void = noop;
+  private onChangeCallback: (_: any) => void = noop;
 
   constructor(private elRef: ElementRef) {
   }
