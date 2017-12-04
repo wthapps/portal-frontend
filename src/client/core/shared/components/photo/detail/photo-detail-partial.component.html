@@ -77,7 +77,7 @@
     </div>
   </div>
 
-  <div *ngIf="mode == 0" class="photo-detail-bottom-action">
+  <div class="photo-detail-bottom-action">
     <a draggable="false" href="javascript:;" (click)="zoomCropper(-0.1)"
        pTooltip="{{ tooltip.zoomOut }}" tooltipPosition="top"><i class="fa fa-minus"></i></a>
     <a draggable="false" href="javascript:;" (click)="zoomCropper(0)"
@@ -101,7 +101,9 @@
 
   <!--<div class="photo-view-wrap" [ngClass]="{'no-display': loading}">-->
   <div class="photo-view-wrap">
-    <img *ngIf="!loading; else loadingBlock" class="img-zoom-{{ imgZoomClass }} cropper-drag-box lazyload" draggable="false" id="photo-detail-image"
+    <!--<img *ngIf="!loading; else loadingBlock" class="img-zoom-{{ imgZoomClass }} cropper-center lazyload" draggable="false" id="photo-detail-image"-->
+         <!--[attr.data-src]="photo?.url" alt="">-->
+    <img *ngIf="!loading; else loadingBlock" imgFull class="img-zoom-{{ imgZoomClass }} preview-photo-img-center" draggable="false" [src]="photo?.url"  id="photo-detail-image"
          [attr.data-src]="photo?.url" alt="">
 
     <ng-template #loadingBlock>

@@ -28,7 +28,6 @@
       .cropper-drag-box, .box-loading{
         @include center();
       }
-
     }
 
     .photo-detail-img-control {
@@ -97,3 +96,6 @@
   }
 }
 
+.preview-photo-img-center{
+  @include center();
+}

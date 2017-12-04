@@ -259,7 +259,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   }
 
   selectInlinePhotos4Note() {
-    this.photoSelectDataService.open({return: true});
+    this.photoSelectDataService.open({return: true, multipleSelect: false});
 
     this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any[]) => {
       console.debug('inline photo next: ', photos);
@@ -280,8 +280,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         const randId = ids.shift();
         $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
         $(`i#${randId}`).remove();
-        // $(`#${randId}`).attr('src', res.data.url);
-        // $(`#${randId}`).attr('data-id', res.data.id);
         this.registerImageClickEvent();
       });
   }
