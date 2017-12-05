@@ -24,6 +24,7 @@ import { Recipient } from '../../../core/shared/components/invitation/recipient.
 import { InvitationService } from '../../../core/shared/components/invitation/invitation.service';
 import { ToastsService } from '../../../core/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '../../../core/shared/components/confirmation/wth-confirm.service';
+import { UserService } from '../../../core/shared/services/user.service';
 
 declare var _: any;
 @Component({
@@ -34,7 +35,7 @@ declare var _: any;
 export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
-
+  @ViewChild('introModal') introModal: any;
 
   ITEM_PER_PAGE: number = 20;
   page: number = 1;
@@ -46,6 +47,13 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   tokensActionsBar: any;
   contact$: Observable<any>;
   originalContacts: any = [];
+  data: any = [
+  {
+    title: 'Welcome to WTH!Contact',
+    icon: '../../assets/images_new/pricing/contact-book.png',
+    content: "WTH!Contact help you organize your acquaintance's contacts infomations",
+  }
+  ];
 
   linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
   linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
@@ -59,6 +67,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     private cdr: ChangeDetectorRef,
     private router: Router,
     private wthConfirmService: WthConfirmService,
+    private userService: UserService,
     private groupService: GroupService,
     private loadingService: LoadingService,
     private commonEventService: CommonEventService,
@@ -105,6 +114,8 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
         this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
         this.loadingService.stop();
       });
+
+    if(!this.userService.profile.introduction.contact) this.introModal.open();
   }
 
   ngAfterViewInit() {

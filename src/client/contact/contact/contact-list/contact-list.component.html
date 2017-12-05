@@ -33,4 +33,8 @@
 </div>
 <contact-add-group-modal #modal></contact-add-group-modal>
 <invitation-create-modal #invitationModal (event)="doEvent($event)"></invitation-create-modal>
-<!-- && contactService.selectedObjects.length==1 -->
+<!--  -->
+<introduction-modal #introModal
+  [after]="{contact: true}"
+  [data]="data">
+</introduction-modal>

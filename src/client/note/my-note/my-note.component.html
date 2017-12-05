@@ -43,3 +43,14 @@
   </ng-template>
 
 </div>
+
+<introduction-modal #introModal
+  [after]="{note: true}"
+  [data]="[
+  {
+    title: 'Welcome to WTH!Note',
+    icon: '../../assets/images_new/pricing/note.png',
+    content: 'WTH!Photo help you organize all your notes in an easy-to-use filing system.'
+  }
+  ]">
+</introduction-modal>

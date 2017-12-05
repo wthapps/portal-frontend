@@ -83,6 +83,9 @@ export class ApiBaseService {
    * Performs a request with `patch` http method.
    */
   public patch(path: string, body: any = ''): Observable<Response> {
+    if (typeof body == 'object') {
+      body = JSON.stringify(body);
+    }
     this.buildOptions();
     return this.http.patch(this._baseUrl + path, body, this._options)
       .take(1)

@@ -75,6 +75,7 @@ import { BoxLoadingModule } from './components/box-loading/box-loading.module';
 import { BoxNoDataModule } from './components/box-no-data/box-no-data.module';
 import { DirectiveModule } from './directive/directive.module';
 import { ClientDetectorService } from './services/client-detector.service';
+import { ModalsSharedModule } from './modals/modals.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -84,6 +85,7 @@ import { ClientDetectorService } from './services/client-detector.service';
   imports: [
     BrowserAnimationsModule,
     CookieModule.forRoot(),
+    ModalsSharedModule,
 
     InfiniteScrollModule
   ],
@@ -95,7 +97,7 @@ import { ClientDetectorService } from './services/client-detector.service';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     Ng2Bs3ModalModule,
-
+    ModalsSharedModule,
     LoadingModule,
     ToastsModule,
     ConfirmDialogModule,

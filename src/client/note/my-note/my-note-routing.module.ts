@@ -18,7 +18,6 @@ import { ZNoteEditComponent } from './notes/note-edit.component';
       {path: 'my-note/notes/:id/edit', component: ZNoteEditComponent},
       {path: 'my-note/notes/:id/detail', component: ZNoteEditComponent}
 
-
     ])
   ],
   exports: [RouterModule]
