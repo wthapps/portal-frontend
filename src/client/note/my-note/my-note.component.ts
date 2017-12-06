@@ -53,7 +53,7 @@ export class ZNoteMyNoteComponent implements OnInit {
 
     this.store.dispatch({type: folder.UPDATE_CURRENT, payload: {parent_id: null}});
 
-    if(!this.userService.profile.introduction.note) this.introModal.open();
+    if(!_.get(this.userService.profile, 'introduction.note')) this.introModal.open();
   }
 
   onNewNote() {

@@ -240,7 +240,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         let image = document.getElementById('photo-detail-image');
         this.cropper = new Cropper(image, {
           dragMode: 'none',
-          // autoCrop: true,
+          // autoCrop: false,
           // autoCropArea: 0,
           // viewMode: 2,
           modal: false,
@@ -288,8 +288,9 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
       this.cropper.setDragMode('crop');
       this.editing = true;
     }
-    this.cropping = !this.cropping;
+    $('.cropper-crop-box').show();
 
+    this.cropping = !this.cropping;
   }
 
   zoomCropper(ratio: any) {
@@ -312,12 +313,14 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     this.cropper.setDragMode('none');
     this.cropping = false;
     this.editing = false;
+
+    $('.cropper-crop-box').hide();
+    $('.cropper-face').hide();
   }
 
   cancel(noReset: boolean = false) {
-    if(this.cropping) {
-      $('.cropper-crop-box').hide();
-    }
+    $('.cropper-crop-box').hide();
+    $('.cropper-face').hide();
     this.editing = false;
     if(!noReset)
       this.cropper.reset();
