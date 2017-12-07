@@ -1,5 +1,14 @@
 <nav class="header-nav" role="navigation">
+  <div class="alert-danger updated-message clearfix" *ngIf="showUpdatedVersion">
+    <span><i class="fa fa-exclamation-circle" style="color: red"></i></span>
+    <a href="javascript:;" target="_blank" [href]="constants.baseUrls.app + '/policies/terms'"> Term of Service </a>
+    and
+    <a href="javascript:;" target="_blank" [href]="constants.baseUrls.app + '/policies/privacy'"> Privacy & Cookies Policy </a>
+    are updated
+    <span class="pull-right" (click)="gotIt()"><a class="btn btn-outline-primary" href="javascript:;" style="height: 30px; font-size: 12px"> I got it </a></span>
+  </div>
   <div class="container-fluid">
+    <!-- alert alert-danger -->
     <ng-content></ng-content>
 
     <div class="header-nav-right">

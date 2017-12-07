@@ -4,6 +4,8 @@ import { Constants } from '../../config/constants';
 import { WTHNavigateService } from '../../services/wth-navigate.service';
 import { ChannelService } from '../../channels/channel.service';
 import { NotificationService } from '../../services/notification.service';
+import { ApiBaseService } from '../../services/apibase.service';
+
 
 declare var $: any;
 declare var _: any;
@@ -22,15 +24,24 @@ declare let App: any; //This App stands for ActionCable
 export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   tooltip: any = Constants.tooltip;
   defaultAvatar: string = Constants.img.avatar;
+  showUpdatedVersion: boolean = false;
+  newVersion: string;
+  constants: any;
 
   constructor(public userService: UserService,
               private navigateService: WTHNavigateService,
+              private apiBaseService: ApiBaseService,
               private channelService: ChannelService,
               public notificationService: NotificationService) {
+    this.constants = Constants;
   }
 
   ngOnInit(): void {
     this.channelService.subscribe();
+    this.apiBaseService.get('common/versions/get_term_policy').subscribe((res: any) => {
+      this.newVersion = res.data.version;
+      if (res.data.version !== this.userService.profile.term_policy_version) this.showUpdatedVersion = true;
+    })
   }
 
   ngOnDestroy(): void {
@@ -142,5 +153,12 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   markAllAsRead() {
     this.notificationService.markAllAsRead();
+  }
+  
+  gotIt() {
+    this.userService.update('users/update', {term_policy_version: this.newVersion}).subscribe((res: any) => {
+      console.log(this.userService.profile);
+      this.showUpdatedVersion = false;
+    })
   }
 }

@@ -31,6 +31,7 @@ export class User {
   supporter: boolean;
   took_a_tour: boolean;
   online: boolean;
+  term_policy_version: string;
 
   constructor(fields: {
     id?: number,

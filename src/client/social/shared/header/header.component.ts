@@ -35,13 +35,6 @@ export class ZSocialSharedHeaderComponent implements OnInit {
 
   onEnter(e: any) {
     this.show = false;
-    this.route.params.forEach((params: any) => {
-      console.log('params meter', params['category']);
-      });
-    this.router.events.subscribe((event: any) => {
-      console.log('current path::::', event.url.toString().split('?')[0]);
-
-    });
     this.router.navigate(['search','all'], {queryParams: {q: e.search}});
   }
 
