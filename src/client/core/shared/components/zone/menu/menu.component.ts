@@ -40,6 +40,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   isProfileTab: boolean;
   currentGroup: string;
   commonEventSub: any;
+  constants: any;
   private destroySubject: Subject<any> = new Subject<any>();
 
   private currentFolderTree: any;
@@ -55,6 +56,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
     this.uuid = this.userService.getProfileUuid();
     this.urls = Constants.baseUrls;
+    this.constants = Constants;
   }
 
   ngOnInit() {
@@ -130,5 +132,13 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.commonEventSub.unsubscribe();
     this.destroySubject.unsubscribe();
+  }
+
+  redirect(key: any) {
+    if(key == 'term') {
+      window.location.href = Constants.baseUrls.app + "/policies/terms"
+    } else {
+      window.location.href = Constants.baseUrls.app + "/policies/privacy"
+    }
   }
 }
