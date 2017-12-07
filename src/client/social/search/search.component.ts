@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   moduleId: module.id,
   selector: 'z-social-search',
   templateUrl: 'search.component.html',
-  styleUrls: ['search.component.css']
+  styleUrls: ['search.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
@@ -18,9 +19,7 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub =  this.route.queryParams.subscribe((params: any) => {
-      console.log(params);
       this.param = params['q'];
-      console.log(this.param, 'this.param');
     });
   }
 

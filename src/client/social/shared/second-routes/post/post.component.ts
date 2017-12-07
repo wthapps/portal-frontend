@@ -57,6 +57,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
+  @Input() showComments: boolean = true;
   @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDeleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
@@ -70,7 +71,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   itemDisplay: any;
   typeLikeDislike: any;
   dataLikeDislike: any;
-  showComments: boolean = true;
   modal: any;
 
   private destroySubject: Subject<any> = new Subject<any>();

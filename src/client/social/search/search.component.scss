@@ -1,3 +1,22 @@
-.nav-tabs-wrap {
-  padding-left: 45px;
+
+.page-body-content-search {
+  .nav-tabs-wrap {
+    padding-left: 45px;
+  }
+  #post-list-component {
+    .panel {
+      border-width: 0;
+      position: relative;
+      &:after {
+        position: absolute;
+        left: 15px;
+        right: 15px;
+        bottom: 0;
+        height: 1px;
+        content: '';
+        background-color: #ddd;
+      }
+    }
+  }
 }
+

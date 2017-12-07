@@ -6,6 +6,8 @@ import { ZSocialSharedModule } from '../shared/shared.module';
 import { ZSocialSearchResultAllComponent } from './all/search-all.component';
 import { ZSocialSearchResultDetailComponent } from './detail/search-detail.component';
 import { ZSocialSearchResultComponent } from './search.component';
+import { ZSocialPostByFilterComponent } from './components/post-by.component';
+import { ZSocialPostDateFilterComponent } from './components/post-date.component';
 
 
 @NgModule({
@@ -17,12 +19,16 @@ import { ZSocialSearchResultComponent } from './search.component';
   declarations: [
     ZSocialSearchResultComponent,
     ZSocialSearchResultAllComponent,
-    ZSocialSearchResultDetailComponent
+    ZSocialSearchResultDetailComponent,
+    ZSocialPostByFilterComponent,
+    ZSocialPostDateFilterComponent
   ],
   exports: [
     ZSocialSearchResultComponent,
     ZSocialSearchResultAllComponent,
-    ZSocialSearchResultDetailComponent
+    ZSocialSearchResultDetailComponent,
+    ZSocialPostByFilterComponent,
+    ZSocialPostDateFilterComponent
   ],
   providers: []
 })

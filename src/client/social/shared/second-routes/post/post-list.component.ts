@@ -37,6 +37,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   @Input() type: string = undefined;
   @Input() community: any = undefined;
   @Input() canCreatePost: boolean = true;
+  @Input() showComments: boolean = true;
 
   @Input() items: Array<SoPost>;
   uuid: string;

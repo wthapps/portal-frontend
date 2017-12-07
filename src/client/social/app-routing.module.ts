@@ -34,7 +34,7 @@ export const routes: Routes = [
       {path: 'member', component: ZSocialSearchResultDetailComponent},
       {path: 'community', component: ZSocialSearchResultDetailComponent},
       {path: 'post', component: ZSocialSearchResultDetailComponent},
-      {path: '', component: ZSocialSearchResultAllComponent}
+      {path: 'all', component: ZSocialSearchResultAllComponent}
     ]
   },
 

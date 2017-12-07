@@ -31,6 +31,7 @@
   <div class="panel panel-default mb15" *ngFor="let item of items;">
     <div class="panel-body">
       <so-post [item]="item"
+               [showComments]="showComments"
                (onDeleted)="deletedPost($event, item)"
                (onUpdated)="updatedPost($event)"
                (modalOpened)="openEditModal($event)"
@@ -47,7 +48,7 @@
     </p>
   </div>
 </div>
-<div id="post-list-loading" class="pt20 pb20"></div>
+<!--<div id="post-list-loading" class="pt20 pb20"></div>-->
 
 <div class="view-all" *ngIf="nextLink != undefined">
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>
