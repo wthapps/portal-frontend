@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { ServiceManager } from '../../core/shared/services/service-manager';
 import { Constants } from '../../core/shared/config/constants';
 import { SocialService } from '../shared/services/social.service';
+import { UrlService } from '../../core/shared/services/url.service';
 
 declare var _: any;
 
@@ -35,16 +36,16 @@ export class ZSocialSearchResultComponent implements OnDestroy {
 
   constructor(private router: Router,
               public serviceManager: ServiceManager,
+              public urlService: UrlService,
               private socialService: SocialService) {
 
     this.events = this.router.events
       .filter((event: any) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
-        let paths = event.url.toString().split('/')[1].split('?');
-        if (paths[1]) {
-          this.params = paths[1].substring(2, paths[1].length);
+        this.params = this.urlService.getQuery();
+        if (this.params['q']) {
           this.serviceManager.getApi().post(`zone/social_network/search`, {
-            q: this.params,
+            q: this.params['q'],
             types: ['member', 'community', 'post']
           }).subscribe(
             (res: any) => {

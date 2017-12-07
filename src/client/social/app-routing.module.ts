@@ -22,7 +22,7 @@ export const routes: Routes = [
   {path: 'friends', component: ZSocialMembersComponent},
   {path: 'notifications', component: ZSocialNotificationsComponent},
   {path: 'my-profile', component: ZSocialMyProfileComponent},
-  {path: 'search', component: ZSocialSearchResultComponent},
+  {path: 'search/all', component: ZSocialSearchResultComponent},
   {path: 'search/member', component: ZSocialSearchDetailComponent},
   {path: 'search/community', component: ZSocialSearchDetailComponent},
   {path: 'search/post', component: ZSocialSearchDetailComponent},
