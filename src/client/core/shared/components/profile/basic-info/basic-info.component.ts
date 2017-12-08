@@ -147,7 +147,7 @@ export class PartialsBasicInfoComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'SELECT_CROP_EVENT',
       action: 'SELECT_CROP:OPEN',
-      payload: this.userService.profile.profile_image
+      payload: {editCurrentMode: false, currentImage: this.userService.profile.profile_image}
     });
     this.handleSelectCropEvent();
   }

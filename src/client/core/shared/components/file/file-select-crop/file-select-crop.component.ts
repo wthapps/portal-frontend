@@ -61,12 +61,12 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     console.debug('inside file-select-crop doEvent: ', event);
     switch (event.action) {
       case 'SELECT_CROP:OPEN':
-        console.debug('inside doEvent - SELECT_CROP:OPEN', event);
-        this.currentImage = event.payload;
-        this.openPhotoSelect();
+        this.currentImage = event.payload.currentImage;
+        let edit: any = true
+        if(event.payload.editCurrentMode == false) edit = event.payload.editCurrentMode
+        this.openPhotoSelect(edit);
         break;
       case 'SELECT_CROP:EDIT_CURRENT':
-        console.debug('inside doEvent - SELECT_CROP:EDIT_CURRENT', event);
         this.editCurrentImage();
         break;
       default:
@@ -78,8 +78,8 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({...event, channel: 'SELECT_CROP_EVENT'});
   }
 
-  openPhotoSelect() {
-    this.photoSelectDataService.open({editCurrentMode: true});
+  openPhotoSelect(editCurrentMode: any) {
+    this.photoSelectDataService.open({editCurrentMode: editCurrentMode});
     this.subscribePhotoSelectEvents();
   }
 
@@ -114,7 +114,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   }
 
   onChangeImage() {
-    this.openPhotoSelect();
+    this.openPhotoSelect(true);
   }
 
   onDone(image: string) {
@@ -134,4 +134,3 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   }
 
 }
-

@@ -124,7 +124,7 @@
                   aria-haspopup="true"
                   aria-expanded="false">
             <span class="avatar-xxs">
-              <img alt="" width="30" [src]="defaultAvatar" [attr.data-src]="userService.profile.profile_image" class="lazyload">
+              <img alt="" width="30" [src]="(userService?.profile$ | async)?.profile_image || defaultAvatar" class="lazyload">
             </span>
             <i class="fa fa-caret-down ml10 hidden-xs"></i>
           </button>
