@@ -26,7 +26,7 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
   searchDate: string = '';
   events: any;
   show_more_posts: any;
-  q: any;
+  params: any;
   filter: any;
   filterDate: any;
   nextLink: any;
@@ -41,11 +41,11 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
       .filter((event: any) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
         this.group = this.urlService.getId();
-        this.q = this.urlService.getQuery()['q'];
+        this.params = this.urlService.getQuery()['q'];
         this.filter = this.urlService.getQuery()['filter_post'];
         this.filterDate = this.urlService.getQuery()['filter_date'];
-        if (this.q) {
-          let query: any = {q: this.q};
+        if (this.params) {
+          let query: any = {q: this.params};
           if (this.filter) {
             query.filter = this.filter;
           }

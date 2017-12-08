@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 
 export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
 
-  param: string;
+  params: string;
   sub: any;
 
   constructor(private route: ActivatedRoute) {
@@ -19,7 +19,7 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub =  this.route.queryParams.subscribe((params: any) => {
-      this.param = params['q'];
+      this.params = params['q'];
     });
   }
 

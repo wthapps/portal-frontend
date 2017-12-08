@@ -1,35 +1,29 @@
-<div class="page-body-content gray-light page-body-content-search">
-  <div class="nav-tabs-wrap">
-    <ul class="nav nav-tabs" role="tablist" [routerLinkActive]="['active']">
-      <li [routerLink]="['/search/all']"
-          [queryParams]="{q:param}"
-          [routerLinkActive]="['active']"
-          [routerLinkActiveOptions]="{exact:true}">
-        <a href="javascript:;">All</a>
-      </li>
-      <li [routerLink]="['/search/member']"
-          [queryParams]="{q:param}"
-          [routerLinkActive]="['active']"
-          [routerLinkActiveOptions]="{exact:true}">
-        <a href="javascript:;">Members</a>
-      </li>
-      <li [routerLink]="['/search/community']"
-          [queryParams]="{q:param}"
-          [routerLinkActive]="['active']"
-          [routerLinkActiveOptions]="{exact:true}">
-        <a href="javascript:;">Communities</a>
-      </li>
-      <li [routerLink]="['/search/post']"
-          [queryParams]="{q:param}"
-          [routerLinkActive]="['active']"
-          [routerLinkActiveOptions]="{exact:true}">
-        <a href="javascript:;">Post</a>
-      </li>
-    </ul>
-  </div>
-  <div class="page-body-content-in zone-social">
-    <div class="zone-social-in">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+<div class="nav-tabs-wrap nav-tabs-wrap-search">
+  <ul class="nav nav-tabs" role="tablist" [routerLinkActive]="['active']">
+    <li [routerLink]="['/search/all']"
+        [queryParams]="{q:params}"
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact:true}">
+      <a href="javascript:;">All</a>
+    </li>
+    <li [routerLink]="['/search/member']"
+        [queryParams]="{q:params}"
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact:true}">
+      <a href="javascript:;">Members</a>
+    </li>
+    <li [routerLink]="['/search/community']"
+        [queryParams]="{q:params}"
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact:true}">
+      <a href="javascript:;">Communities</a>
+    </li>
+    <li [routerLink]="['/search/post']"
+        [queryParams]="{q:params}"
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact:true}">
+      <a href="javascript:;">Post</a>
+    </li>
+  </ul>
 </div>
+<router-outlet></router-outlet>
