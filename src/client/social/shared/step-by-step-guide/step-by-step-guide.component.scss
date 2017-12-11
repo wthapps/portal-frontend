@@ -116,6 +116,7 @@ body {
     &[data-shepherd-step="main-menu"] {
       .main .main-page-left {
         z-index: 1991;
+        pointer-events: none;
       }
     }
 
@@ -133,6 +134,7 @@ body {
         padding-top: 8px;
         padding-bottom: 8px;
         height: 60px;
+        pointer-events: none;
       }
     }
 
@@ -150,6 +152,7 @@ body {
         padding-top: 8px;
         padding-bottom: 8px;
         height: 60px;
+        pointer-events: none;
       }
     }
 
@@ -167,6 +170,7 @@ body {
         padding-top: 8px;
         padding-bottom: 8px;
         height: 60px;
+        pointer-events: none;
       }
     }
   }
