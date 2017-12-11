@@ -43,7 +43,7 @@
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> About</h4>
+      <h4 class="modal-title text-left">About</h4>
     </modal-header>
     <modal-body>
       <div class="form-group">
@@ -283,8 +283,9 @@
 
     </modal-body>
     <modal-footer>
-      <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit(form.value)">Done</button>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+      <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit(form.value)">Done</button>
+
     </modal-footer>
   </modal>
 </form>

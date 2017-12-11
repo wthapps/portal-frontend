@@ -10,7 +10,7 @@ import { WthConfirmService } from '@shared/shared/components/confirmation/wth-co
 declare var _: any;
 
 const DEFAULT_SETTING: any = {
-  'phone_default_code': 'Albania (+355)',
+  'phone_default_code': 'Canada (+1)',
   'contacts_sort_by': 'first_name'
 };
 
@@ -18,7 +18,7 @@ const DEFAULT_SETTING: any = {
   selector: 'z-contact-setting',
   templateUrl: 'contact-settings.component.html'
 })
-export class ZContactSettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit {
   item: any;
   form: FormGroup;
 
@@ -62,7 +62,9 @@ export class ZContactSettingsComponent implements OnInit {
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {
-        this.apiBaseService.post(`contact/contacts/update_settings`, {contact_setting_attributes: Object.assign({}, this.form.value, DEFAULT_SETTING) })
+        this.apiBaseService.post(`contact/contacts/update_settings`, {
+          contact_setting_attributes: Object.assign({}, this.form.value, DEFAULT_SETTING)
+        })
           .toPromise().then((res: any) => this.setSettingForm(res.data));
       }
     });

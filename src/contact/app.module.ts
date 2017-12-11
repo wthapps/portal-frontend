@@ -7,7 +7,7 @@ import { HomeModule } from '../contact/home/home.module';
 import { ContactModule } from './contact/contact.module';
 import { MyProfileModule } from './my-profile/my-profile.module';
 import { GroupModule } from './group/group.module';
-// import { SettingsModule } from './settings/contact-settings.module';
+import { SettingsModule } from './settings/contact-settings.module';
 import { ContactSharedModule } from './shared/shared.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
@@ -31,7 +31,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ContactModule,
     MyProfileModule,
     GroupModule,
-    // SettingsModule,
+    SettingsModule,
     ContactSharedModule.forRoot(),
 
     // WTHApps modules

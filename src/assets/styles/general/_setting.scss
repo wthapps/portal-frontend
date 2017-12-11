@@ -100,12 +100,10 @@ $i_marginpadding: 50;
 }
 
 .row-16 {
-  // TODO fix
-  //@include make-row(16px);
+  @include make-row(16px);
   @include make-grid-columns_custom(16px);
 }
 .row-10 {
-  // TODO fix
-  //@include make-row(10px);
+  @include make-row(10px);
   @include make-grid-columns_custom(10px);
 }

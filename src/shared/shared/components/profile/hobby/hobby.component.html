@@ -35,7 +35,7 @@
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title"><i class="fa fa-pencil"></i> Hobby &amp; Interest</h4>
+      <h4 class="modal-title">Hobby &amp; Interest</h4>
     </modal-header>
     <modal-body>
       <div class="form-group">
@@ -73,10 +73,10 @@
       </div>
     </modal-body>
     <modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
       <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
               (click)="onCustomSubmit(form.value)">Done
       </button>
-      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
     </modal-footer>
   </modal>
 </form>

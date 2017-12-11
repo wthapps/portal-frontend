@@ -96,8 +96,10 @@
       "test": "contact/test.ts",
       "tsconfig": "contact/tsconfig.app.json",
       "testTsconfig": "contact/tsconfig.spec.json",
-      "prefix": "contact",
+      "prefix": "",
       "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../node_modules/font-awesome/css/font-awesome.min.css",
         "../node_modules/primeng/resources/themes/omega/theme.css",
         "../node_modules/primeng/resources/primeng.min.css",
         "contact/styles/contact.scss"

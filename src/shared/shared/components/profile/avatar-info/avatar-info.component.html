@@ -26,7 +26,7 @@
 <form [formGroup]="form" novalidate>
   <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <modal-header [show-close]="true">
-      <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> Information</h4>
+      <h4 class="modal-title text-left">Information</h4>
     </modal-header>
     <modal-body>
       <div *ngFor="let question of questions" class="form-row">
@@ -34,10 +34,10 @@
       </div>
     </modal-body>
     <modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
       <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
               (click)="onSubmit(form.value)">Done
       </button>
-      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
     </modal-footer>
   </modal>
 </form>

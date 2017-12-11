@@ -37,7 +37,7 @@ export class WthConfirmService {
   // }
 
   confirm(option: any) {
-    let moreOption = Object.assign({}, initConfirmInfo, option);
+    const moreOption = Object.assign({}, initConfirmInfo, option);
 
     this.confirmDialogSubject.next(moreOption);
     this.confirmationService.confirm(option);

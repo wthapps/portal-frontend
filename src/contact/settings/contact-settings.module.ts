@@ -1,24 +1,25 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ZContactSettingsComponent } from './contact-settings.component';
+import { SettingsComponent } from './contact-settings.component';
 import { ZContactSettingsRoutingModule } from './contact-settings-routing.module';
 
-// import { CoreModule } from '../../core/core.module';
 import { SharedModule } from '@shared/shared.module';
-
+import { AutoCompleteModule, RadioButtonModule } from 'primeng/primeng';
 
 @NgModule({
   imports: [
     ReactiveFormsModule,
     ZContactSettingsRoutingModule,
+    RadioButtonModule,
+    AutoCompleteModule,
     // CoreModule.forRoot(),
     SharedModule.forRoot()
   ],
   declarations: [
-    ZContactSettingsComponent
+    SettingsComponent
   ],
   exports: [
-    ZContactSettingsComponent
+    SettingsComponent
   ],
   providers: []
 })

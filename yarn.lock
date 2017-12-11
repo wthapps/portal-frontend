@@ -144,6 +144,13 @@
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-5.1.0.tgz#0cdd1a9d6056f1567bfe3c016352bc2e9d20cb84"
 
+"@angular/material @5.0.0":
+  name "@angular/material"
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-5.0.0.tgz#2ae8610f36cd6aa5bfe58155ffd96bf44d965162"
+  dependencies:
+    tslib "^1.7.1"
+
 "@angular/platform-browser-dynamic@5.1.0":
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-5.1.0.tgz#60566728dd949c442e064bf8247aa51672411f2b"
@@ -243,10 +250,6 @@
 "@types/q@^0.0.32":
   version "0.0.32"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-0.0.32.tgz#bd284e57c84f1325da702babfc82a5328190c0c5"
-
-"@types/quill@^1.3.3":
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/@types/quill/-/quill-1.3.3.tgz#06e08fb017d9493e3708c5c13fbb8bf33ad03d9e"
 
 "@types/selenium-webdriver@^2.53.35", "@types/selenium-webdriver@~2.53.39":
   version "2.53.43"
@@ -3815,13 +3818,6 @@ ngx-infinite-scroll@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-0.5.1.tgz#dd9452c602ff7c3222f0ca168481aa14140286b7"
 
-ngx-quill@1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-1.5.1.tgz#865fd255e7d404d2f2579fe9ea47fe088a1d1d02"
-  dependencies:
-    "@types/quill" "^1.3.3"
-    quill "^1.3.2"
-
 no-case@^2.2.0:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/no-case/-/no-case-2.3.2.tgz#60b813396be39b3f1288a4c1ed5d1e7d28b464ac"
@@ -4621,9 +4617,9 @@ pretty-error@^2.0.2:
     renderkid "^2.0.1"
     utila "~0.4"
 
-primeng@4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/primeng/-/primeng-4.3.0.tgz#687ecd1e1a158cf0e8742efc7da9b9338cd470c3"
+primeng@5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/primeng/-/primeng-5.0.2.tgz#05c4a4502efd4c3bc5d506aa01ae8eb30f9764db"
 
 process-nextick-args@~1.0.6:
   version "1.0.7"
@@ -4777,7 +4773,7 @@ quill-delta@^3.6.2:
     extend "^3.0.1"
     fast-diff "1.1.2"
 
-quill@1.3.2, quill@^1.3.2:
+quill@1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/quill/-/quill-1.3.2.tgz#fe396b4fa1d1439d76956ff92218a0cb90c09f3f"
   dependencies:
