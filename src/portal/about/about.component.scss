@@ -1,0 +1,68 @@
+@import "../../shared/scss/global";
+
+.header-intro {
+  p {
+    max-width: 770px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.page-content-img {
+  margin-bottom: 20px;
+  img {
+    max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media (min-width: $screen-sm-min) {
+    margin-bottom: 0;
+    float: right;
+  }
+}
+
+.page-content-txt {
+  @media (min-width: $screen-sm-min) {
+    overflow: hidden;
+    padding-right: 80px;
+  }
+}
+
+.about-intro {
+  h3 {
+    margin-top: 0;
+  }
+  @media (min-width: $screen-sm-min) {
+    h3 {
+      font-size: 36px;
+    }
+  }
+}
+
+.about-mission {
+  h3 {
+    margin: 0 0 20px;
+  }
+  @media (min-width: $screen-sm-min) {
+    h3 {
+      font-size: 30px;
+    }
+  }
+  @media (max-width: $screen-xs-max) {
+    .col-sm-6 + .col-sm-6 {
+      margin-top: 20px;
+    }
+  }
+}
+
+.about-contact {
+  @media (min-width: $screen-sm-min) {
+    h3 {
+      font-size: 36px;
+    }
+  }
+  .about-row-form {
+    margin-top: 30px;
+  }
+}

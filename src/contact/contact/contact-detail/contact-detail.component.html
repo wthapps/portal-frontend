@@ -1,0 +1,127 @@
+<div *ngIf="data" class="media-page-detail-left">
+  <z-contact-shared-toolbar>
+    <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
+      <z-contact-shared-actions-bar
+        [showViewDetail]="false"
+        [showNumber]="false"
+        [showTag]="false"
+        [showSocial]="data | isContactInternal"
+        [showChat]="data | isContactInternal"
+        [showInvitation]="false"
+        [toggleFavourite]="_contact.isContactsHasGroupName([data], 'favourite')"
+        [toggleBlacklist]="_contact.isContactsHasGroupName([data], 'blacklist')"
+        (eventOut)="doActionsToolbar($event)"
+      ></z-contact-shared-actions-bar>
+    </div>
+  </z-contact-shared-toolbar>
+  <div class="page-body-content has-page-body-control">
+    <div class="page-body-content-in zone-social">
+      <div class="zone-social-in" *ngIf="data">
+        <div class="field-group">
+          <div class="field-group-content">
+            <div class="media">
+              <div class="media-left"><span class="avatar-md"><img [src]="data.profile_image" alt=""></span>
+              </div>
+              <div class="media-body">
+                <h4 class="bold">{{ data.name }}</h4>
+                <p>
+                  <small>{{ data.job_title }}</small>
+                </p>
+                <p *ngIf="data.groups.length > 0">
+                  <span *ngFor="let group of data.groups" class="group group-default mr10">{{ group.name }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-group-title">
+            <h3>Phone</h3>
+          </div>
+          <div class="field-group-content">
+            <dl class="dl-horizontal" *ngIf="data.phones.length > 0">
+              <ng-template ngFor let-item [ngForOf]="data.phones">
+                <dt>{{ item.category | keyToValue:phoneCategories:'value':'text' }}</dt>
+                <dd>
+                  <p>
+                    {{ item.value }}
+                  </p>
+                </dd>
+              </ng-template>
+            </dl>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-group-title">
+            <h3>Email</h3>
+          </div>
+          <div class="field-group-content">
+            <dl class="dl-horizontal" *ngIf="data.emails.length > 0">
+              <ng-template ngFor let-item [ngForOf]="data.emails">
+                <dt>{{ item.category | keyToValue:emailCategories:'value':'text' }}</dt>
+                <dd>
+                  <p>
+                    {{ item.value }}
+                  </p>
+                </dd>
+              </ng-template>
+            </dl>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-group-title">
+            <h3>Address</h3>
+          </div>
+          <div class="field-group-content">
+            <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
+              <ng-template ngFor let-item [ngForOf]="data.addresses">
+                <dt>{{ item.category | keyToValue:addressCategories:'value':'text' }}</dt>
+                <dd>
+                  <p>
+                    {{ item.address_line1 }} <br>
+                    {{ item.address_line2 }} <br>
+                    {{ item.city }} {{ item.province }} {{ item.postcode }} <br>
+                    {{ item.country }} <br>
+                  </p>
+                </dd>
+              </ng-template>
+            </dl>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-group-title">
+            <h3>Media</h3>
+          </div>
+          <div class="field-group-content">
+            <dl class="dl-horizontal" *ngIf="data.media.length > 0">
+              <ng-template ngFor let-item [ngForOf]="data.media">
+                <dt>{{ item.category | keyToValue:mediaCategories:'value':'text' }}</dt>
+                <dd>
+                  <p>
+                    <a href="{{ item.value }}" target="_blank">{{ item.value }}</a>
+                  </p>
+                </dd>
+              </ng-template>
+            </dl>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field-group-title">
+            <h3>Note</h3>
+          </div>
+          <div class="field-group-content">
+            {{ data.notes }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<contact-add-group-modal #modal></contact-add-group-modal>

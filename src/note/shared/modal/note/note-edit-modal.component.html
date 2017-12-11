@@ -1,0 +1,272 @@
+<form [formGroup]="form" novalidate>
+  <modal id="modal-note-edit" #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'"
+         [backdrop]="'static'">
+
+    <modal-body>
+      <div class="form-group no-label">
+        <input tabindex="1" autofocus (keypress)="onToEditor($event)" [formControl]="title" type="text" class="form-control" id="note_form_title"
+               placeholder="Title">
+      </div>
+      <div class="form-group">
+        <p-editor #editor formControlName="content">
+          <p-header>
+            <div class="ql-format-group">
+              <div class="ql-formats">
+                <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()"><i
+                  class="fa fa-reply"></i></button>
+                <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()"><i
+                  class="fa fa-share"></i></button>
+              </div>
+              <div pTooltip="Font Family" tooltipPosition="bottom" class="ql-formats">
+                <!-- Add font family dropdown -->
+                <select class="ql-font">
+                  <option value="gotham" selected="">Gotham</option>
+                  <option value="georgia">Georgia</option>
+                  <option value="helvetica">Helvetica</option>
+                  <option value="courier-new">Courier New</option>
+                  <option value="times-new-roman">Times New Roman</option>
+                  <option value="trebuchet">Trebuchet</option>
+                  <option value="verdana">Verdana</option>
+                </select>
+              </div>
+              <div pTooltip="Font Size" tooltipPosition="bottom" class="ql-formats">
+                <!-- Add font size dropdown -->
+                <select class="ql-size ql-size-sm">
+                  <option value="8px">8</option>
+                  <option value="10px">10</option>
+                  <option value="12px">12</option>
+                  <option selected value="14px">14</option>
+                  <option value="18px">18</option>
+                  <option value="24px">24</option>
+                  <option value="36px">36</option>
+                </select>
+              </div>
+              <div pTooltip="Text Color" tooltipPosition="bottom" class="ql-formats">
+                <!-- Add colors -->
+                <select class="ql-color" title="Colour">
+                  <option value="#ffffff"></option>
+                  <option value="#facccc"></option>
+                  <option value="#ffebcc"></option>
+                  <option value="#ffffcc"></option>
+                  <option value="#cce8cc"></option>
+                  <option value="#cce0f5"></option>
+                  <option value="#ebd6ff"></option>
+                  <option value="#bbbbbb"></option>
+                  <option value="#f06666"></option>
+                  <option value="#ffc266"></option>
+                  <option value="#ffff66"></option>
+                  <option value="#66b966"></option>
+                  <option value="#66a3e0"></option>
+                  <option value="#c285ff"></option>
+                  <option value="#888888"></option>
+                  <option value="#a10000"></option>
+                  <option value="#b26b00"></option>
+                  <option value="#b2b200"></option>
+                  <option value="#006100"></option>
+                  <option value="#0047b2"></option>
+                  <option value="#6b24b2"></option>
+                  <option value="#444444"></option>
+                  <option value="#5c0000"></option>
+                  <option value="#663d00"></option>
+                  <option value="#666600"></option>
+                  <option value="#003700"></option>
+                  <option value="#002966"></option>
+                  <option value="#3d1466"></option>
+                  <option value="#000000"></option>
+                  <option value="#e60000"></option>
+                  <option value="#ff9900"></option>
+                  <option value="#ffff00"></option>
+                  <option value="#008a00"></option>
+                  <option value="#0066cc"></option>
+                  <option value="#9933ff"></option>
+                </select>
+              </div>
+              <div pTooltip="Background Color" tooltipPosition="bottom" class="ql-formats">
+                <!-- Add background -->
+                <select class="ql-background" title="Background">
+                  <option value="#ffffff"></option>
+                  <option value="#facccc"></option>
+                  <option value="#ffebcc"></option>
+                  <option value="#ffffcc"></option>
+                  <option value="#cce8cc"></option>
+                  <option value="#cce0f5"></option>
+                  <option value="#ebd6ff"></option>
+                  <option value="#bbbbbb"></option>
+                  <option value="#f06666"></option>
+                  <option value="#ffc266"></option>
+                  <option value="#ffff66"></option>
+                  <option value="#66b966"></option>
+                  <option value="#66a3e0"></option>
+                  <option value="#c285ff"></option>
+                  <option value="#888888"></option>
+                  <option value="#a10000"></option>
+                  <option value="#b26b00"></option>
+                  <option value="#b2b200"></option>
+                  <option value="#006100"></option>
+                  <option value="#0047b2"></option>
+                  <option value="#6b24b2"></option>
+                  <option value="#444444"></option>
+                  <option value="#5c0000"></option>
+                  <option value="#663d00"></option>
+                  <option value="#666600"></option>
+                  <option value="#003700"></option>
+                  <option value="#002966"></option>
+                  <option value="#3d1466"></option>
+                  <option value="#000000"></option>
+                  <option value="#e60000"></option>
+                  <option value="#ff9900"></option>
+                  <option value="#ffff00"></option>
+                  <option value="#008a00"></option>
+                  <option value="#0066cc"></option>
+                  <option value="#9933ff"></option>
+                </select>
+              </div>
+              <div class="ql-formats">
+                <!-- Add subscript and superscript buttons -->
+                <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
+                <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
+              </div>
+              <div class="ql-formats">
+                <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold" aria-label="Bold"></button>
+                <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic" aria-label="Italic"></button>
+                <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom" class="ql-underline"
+                        aria-label="Underline"></button>
+                <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike"
+                        aria-label="Strikethrough"></button>
+              </div>
+              <div pTooltip="Alignment" tooltipPosition="bottom" class="ql-formats">
+                <select class="ql-align">
+                  <option selected></option>
+                  <option value="center"></option>
+                  <option value="right"></option>
+                  <option value="justify"></option>
+                </select>
+              </div>
+              <div class="ql-formats">
+                <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
+                <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list" value="ordered"></button>
+                <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list" value="bullet"></button>
+              </div>
+
+              <div pTooltip="Divider line" tooltipPosition="bottom" class="ql-formats">
+                <button type="button" (click)="divider()">
+                  <i>&mdash;</i>
+                </button>
+              </div>
+
+              <div class="ql-formats">
+                <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom" class="ql-link"></button>
+                <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
+                <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
+                <!--<button class="ql-video"></button>-->
+                <!--<button class="ql-formula"></button>-->
+              </div>
+              <!--<div class="ql-formats">
+                <button class="ql-clean"></button>
+              </div>-->
+            </div>
+
+          </p-header>
+        </p-editor>
+      </div>
+
+      <hr class="divider">
+
+      <div class="form-group">
+        <button class="btn btn-outline-default mr10" (click)="selectPhotos()">
+          <i class="fa fa-plus"></i> Photo
+        </button>
+        <!--<button class="btn btn-outline-default mr10" (click)="selectFiles()">-->
+        <!--<i class="fa fa-paperclip"></i> Attachment-->
+        <!--</button>-->
+
+        <span class="btn btn-outline-default mr10 btn-style-1 fileinput-button"
+              pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top">
+            <i class="fa fa-paperclip"></i> Attachment
+            <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';"
+                   (change)="selectFiles($event)"/>
+
+          </span>
+
+        <button class="btn btn-outline-default mr10" (click)="downloadAttachments()">
+          <i class="fa fa-download"></i> Download all
+        </button>
+      </div>
+
+      <div class="attachment-list" *ngIf="note.attachments">
+        <div class="attachment-item" *ngFor="let att of note.attachments">
+          <div class="attachment-item-action">
+            <button class="btn btn-sm btn-outline-default" type="button" (click)="download(att)">
+              <i class="fa fa-download"></i>
+            </button>
+            <button (click)="cancelUpload(att)" class="btn btn-sm btn-outline-default" type="button">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+          <div ngClass="{can-click: att.object_type == 'photo'}" (click)="fileAttachmentClick(att)">
+            <div class="attachment-item-thumb">
+              <!--<i class="fa fa-file-zip-o"></i>-->
+              <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
+              <i *ngIf="att.thumbnail_url && att.object_type !== 'photo'" class="fa fa-file"></i>
+              <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+            </div>
+            <p>{{ att.name }}</p>
+            <span *ngIf="att.thumbnail_url" class="text-fade">{{ att.size | bytes:3 }}</span>
+            <span *ngIf="!att.thumbnail_url" class="text-fade">Uploading</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label for="note_form_tags" class="col-sm-2 col-md-1 control-label">Labels</label>
+          <div class="col-sm-10 col-md-11">
+            <input [formControl]="tags" type="text" class="form-control" id="note_form_tags"
+                   placeholder="Tags">
+          </div>
+        </div>
+      </div>
+
+      <!--<hr class="divider">-->
+      <!--<div class="form-horizontal">-->
+      <!--<div class="form-group">-->
+      <!--<label class="col-sm-2 col-md-1 control-label">Labels</label>-->
+      <!--<div class="col-sm-10 col-md-11">-->
+      <!--&lt;!&ndash;<h-chip [tags]="note?.tags"></h-chip>&ndash;&gt;-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+    </modal-body>
+
+    <modal-footer>
+      <div class="modal-title-action pull-left">
+        <button class="btn btn-sm btn-default"><i class="fa fa-share-alt"></i></button>
+        <button class="btn btn-sm btn-default"><i class="fa fa-trash-o"></i></button>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                  data-toggle="dropdown">
+            <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-top dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation">
+              <a role="menuitem" tabindex="-1" href="#">Make a copy</a>
+            </li>
+            <li role="presentation">
+              <a role="menuitem" tabindex="-1" href="#">Move to folder</a>
+            </li>
+            <li role="presentation"><a href="javascript:;" (click)="print()"> Print</a></li>
+            <li role="presentation"><a href="javascript:;" (click)="pdfDownload()"> Export as PDF</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!--<button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>-->
+      <button type="button" (click)="onSubmit(form.value)" [disabled]="!form.valid"
+              class="btn btn-outline-primary btn-min">Done
+      </button>
+    </modal-footer>
+  </modal>
+</form>

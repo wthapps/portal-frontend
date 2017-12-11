@@ -1,0 +1,159 @@
+.app-card {
+  border: 1px solid $light-grey;
+  margin-bottom: $grid-gutter-width/2;
+  position: relative;
+  @include border-bottom-radius($border-radius-base);
+  @include transition($transition-base);
+  @include clearfix;
+  &:hover {
+    @include box-shadow($box-shadow-bottom);
+  }
+  .cat {
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: $light-slate;
+  }
+  .platform {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+  a {
+    &, &:hover {
+      text-decoration: none;
+      display: block;
+      color: $text-color;
+    }
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+      background-color: transparent;
+    }
+  }
+
+  // type
+  &.app-card-md {
+    .app-card-cover {
+      padding: 25px;
+      text-align: center;
+      @include gradient-vertical(#F54A59, #CC3340, 0%, 100%);
+      img {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+      }
+    }
+    .app-card-content {
+      padding: 15px;
+    }
+    .name {
+      white-space: nowrap;
+      overflow: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      margin: 0;
+    }
+  }
+  &.app-card-sm {
+    .app-card-cover {
+      float: left;
+      padding: 10px;
+      img {
+        width: 80px;
+        height: 80px;
+        float: left;
+      }
+    }
+    .app-card-content {
+      overflow: hidden;
+      padding: 10px;
+    }
+    .name {
+      overflow: hidden;
+      line-height: 16px;
+      max-height: 32px;
+      margin: 0 0 5px;
+    }
+    .cat {
+      white-space: nowrap;
+      overflow: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.media-app-card {
+  .name {
+    overflow: hidden;
+    line-height: 16px;
+    max-height: 32px;
+    margin: 0 0 5px;
+  }
+  .cat {
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: $light-slate;
+  }
+  .platform {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+  .media-left {
+    padding-right: 15px;
+    img {
+      width: 60px;
+      height: auto;
+    }
+  }
+  .media-body, .media-right {
+    vertical-align: middle;
+  }
+}
+
+.lib-feature {
+  .row {
+    > [class^="col-"] {
+      &:first-child {
+        .app-card-md {
+          .app-card-cover {
+            @include gradient-vertical(#F54A59, #CC3340, 0%, 100%);
+          }
+        }
+      }
+      &:nth-child(2) {
+        .app-card-md {
+          .app-card-cover {
+            @include gradient-vertical(#F5CD4A, #D1A51F, 0%, 100%);
+          }
+        }
+      }
+      &:nth-child(3) {
+        .app-card-md {
+          .app-card-cover {
+            @include gradient-vertical(#6EC8F5, #2996CC, 0%, 100%);
+          }
+        }
+      }
+    }
+  }
+}

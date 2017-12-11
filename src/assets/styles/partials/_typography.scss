@@ -1,0 +1,239 @@
+body {
+  font-family: $font-base;
+}
+
+.ml-a {
+  margin-left: auto;
+}
+
+.mr-a {
+  margin-right: auto;
+}
+
+.img-full {
+  width: 100%;
+  height: auto;
+}
+
+.img-bg {
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+}
+
+.img-box {
+  position: relative;
+  display: block;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  padding-bottom: 75%;
+  .img-box-item {
+    @include center();
+    width: 100%;
+    height: auto;
+  }
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.d-block {
+  display: block;
+}
+
+.can-click {
+  cursor: pointer;
+}
+
+[contenteditable=true]:empty:before {
+  content: attr(placeholder);
+  display: block; /* For Firefox */
+}
+
+.word-break {
+  word-break: break-all;
+}
+
+.text-line-btn {
+  line-height: 34px;
+}
+
+.text-fade {
+  @include opacity(0.6);
+}
+
+.text-link {
+  color: $link-color;
+  padding: 0;
+  border-width: 0;
+  background-color: transparent;
+  &:hover, &:focus {
+    text-decoration: none;
+    outline: none;
+  }
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-bigger {
+  font-size: 120%;
+}
+
+.link-text {
+  color: inherit;
+  padding: 0;
+  border-width: 0;
+  background-color: transparent;
+  &:hover, &:focus {
+    text-decoration: none;
+    outline: none;
+  }
+}
+
+.link-underline {
+  text-decoration: underline;
+  color: inherit;
+  &:hover, &:focus {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.text-disable {
+  &, * {
+    cursor: not-allowed;
+    @include opacity(0.8);
+  }
+}
+
+.no-user-selected {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.no-resize {
+  resize: none;
+}
+
+.visibility-hidden {
+  visibility: hidden;
+}
+
+.text-normal {
+  font-weight: normal;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-inherit {
+  color: inherit;
+  text-align: center;
+}
+
+.content-overflow {
+  overflow: auto;
+  margin-right: -15px;
+  padding-right: 15px;
+}
+
+.content-overflow-x {
+  overflow-x: auto;
+  margin-right: -15px;
+  padding-right: 15px;
+}
+
+.content-overflow-y {
+  overflow-y: auto;
+  margin-right: -10px;
+}
+
+.content-overflow-visible {
+  overflow: visible;
+}
+
+.content-overflow-fixed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: $font-style;
+  line-height: 1.3;
+  font-weight: bold;
+  &.text-normal {
+    font-weight: normal;
+  }
+}
+
+.title-wrap {
+  margin-bottom: 30px;
+  .title {
+    text-align: center;
+    font-weight: bold;
+    font-size: $font-size-h1;
+    &.text-normal {
+      font-weight: normal;
+    }
+  }
+
+  .title-sub {
+    text-align: center;
+  }
+}
+
+.wth-scrollable {
+  overflow: auto;
+}
+
+.hr-darken {
+  border-color: #cdcdcd;
+}
+
+.bg-gray {
+  background-color: $light-grey;
+}
+
+.bg-gray-light {
+  background-color: #F7F7F7;
+}
+
+.bg-dark {
+  background-color: $bg-dark;
+  color: #ffffff;
+}
+
+.list-styled {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  > li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 15px;
+    &:before {
+      position: absolute;
+      color: $theme-color;
+      left: 5px;
+      top: 3px;
+      @extend .fa;
+      @extend .fa-chevron-right;
+    }
+  }
+}

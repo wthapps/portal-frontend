@@ -1,0 +1,203 @@
+<form [formGroup]="form" novalidate>
+  <div class="field-group">
+    <div class="field-group-content">
+
+      <div class="media content-overflow-visible">
+        <div class="media-left">
+          <div class="avatar-md" (click)="changeProfileImage()">
+            <img *ngIf="(userService?.profile$ | async)?.profile_image" [src]="(userService?.profile$ | async)?.profile_image" class="no-user-selected">
+            <img *ngIf="!(userService?.profile$ | async)?.profile_image" [src]="avatarDefault" class="no-user-selected">
+            <span><i class="fa fa-camera"></i></span>
+          </div>
+        </div>
+        <div class="media-body content-overflow-visible">
+          <div class="form-group">
+            <input [formControl]="company" type="text" class="form-control" placeholder="Company or organization">
+          </div>
+          <div class="form-group">
+            <input [formControl]="job_title" type="text" class="form-control" placeholder="Job title">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <div class="field-group-title">
+      <h3>Phone</h3>
+    </div>
+    <div class="field-group-content">
+      <div formArrayName="phones">
+        <div *ngFor="let add_phone of form['controls'].phones.controls; let i=index" class="media mt0">
+          <div class="media-body" [formGroupName]="i">
+            <div class="row row-10">
+              <div class="col-sm-3">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!form.controls.phones.controls[i].controls.category.valid
+                  && form.controls.phones.controls[i].controls.category.touched),
+                  'has-success': (form.controls.phones.controls[i].controls.category.valid
+                  && form.controls.phones.controls[i].controls.category.touched
+                  && form.value.phones[i].category.length > 1)}">
+                  <select class="form-control" name="phoneCategory" formControlName="category">
+                    <option *ngFor="let et of phoneCategories" value="{{ et.value }}">{{ et.text }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-9">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!form.controls.phones.controls[i].controls.value.valid
+                  && form.controls.phones.controls[i].controls.value.touched),
+                  'has-success': (form.controls.phones.controls[i].controls.value.valid
+                  && form.controls.phones.controls[i].controls.value.touched
+                  && form.value.phones[i].value.length > 1)}">
+                  <input type="text" class="form-control" formControlName="value" placeholder="">
+                  <div
+                    *ngIf="!form.controls.phones.controls[i].controls.value.valid && form.controls.phones.controls[i].controls.value.touched">
+                      <span
+                        *ngIf="!form.controls.phones.controls[i].controls.value.valid && form.controls.phones.controls[i].controls.value.errors.phoneFormat"
+                        class="help-block text-danger">
+                        Phone is not valid
+                      </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="media-right">
+            <button type="button" class="btn btn-outline-default" (click)="removeItem('phones', i)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline-default" (click)="addItem('phones', null)">
+        <i class="fa fa-plus"></i> Add more
+      </button>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <div class="field-group-title">
+      <h3>Email</h3>
+    </div>
+    <div class="field-group-content">
+      <div formArrayName="emails">
+        <div *ngFor="let add_email of form.controls.emails.controls; let i=index" class="media mt0">
+          <div class="media-body" [formGroupName]="i">
+            <div class="row row-10">
+              <div class="col-sm-3">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!form.controls.emails.controls[i].controls.category.valid
+                  && form.controls.emails.controls[i].controls.category.touched),
+                  'has-success': (form.controls.emails.controls[i].controls.category.valid
+                  && form.controls.emails.controls[i].controls.category.touched
+                  && form.value.emails[i].category.length > 1)}">
+                  <select class="form-control" name="emailCategory" formControlName="category">
+                    <option *ngFor="let et of emailCategories" value="{{ et.value }}">{{ et.text }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-9">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!form.controls.emails.controls[i].controls.value.valid
+                  && form.controls.emails.controls[i].controls.value.touched),
+                  'has-success': (form.controls.emails.controls[i].controls.value.valid
+                  && form.controls.emails.controls[i].controls.value.touched
+                  && form.value.emails[i].value.length > 1)}">
+                  <input type="text" class="form-control" formControlName="value" placeholder="">
+                  <div
+                    *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.touched">
+                      <span
+                        *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.errors.emailFormat"
+                        class="help-block text-danger">
+                        Email is not valid
+                      </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="media-right">
+            <button type="button" class="btn btn-outline-default" (click)="removeItem('emails', i)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline-default" (click)="addItem('emails', null)">
+        <i class="fa fa-plus"></i> Add more
+      </button>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <div class="field-group-title">
+      <h3>Address</h3>
+    </div>
+    <div class="field-group-content">
+      <div formArrayName="addresses">
+        <div *ngFor="let add_address of form.controls.addresses.controls; let i=index" class="media mt0">
+          <div class="media-body" [formGroupName]="i">
+            <div class="row row-10">
+              <div class="col-sm-3">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!form.controls.addresses.controls[i].controls.category.valid
+                  && form.controls.addresses.controls[i].controls.category.touched),
+                  'has-success': (form.controls.addresses.controls[i].controls.category.valid
+                  && form.controls.addresses.controls[i].controls.category.touched
+                  && form.value.addresses[i].category.length > 1)}">
+                  <select class="form-control" name="addressCategory" formControlName="category">
+                    <option *ngFor="let et of addressCategories" value="{{ et.value }}">{{ et.text }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-9">
+                <div class="row row-10">
+                  <div class="col-sm-12">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="address_line1" placeholder="Address">
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="po_box" placeholder="PO Box">
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="city" placeholder="City">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="province" placeholder="State/Provine">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="postcode" placeholder="Postal Code">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="country" placeholder="Country">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="media-right">
+            <button type="button" class="btn btn-outline-default" (click)="removeItem('addresses', i)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline-default" (click)="addItem('addresses', null)">
+        <i class="fa fa-plus"></i> Add more
+      </button>
+    </div>
+  </div>
+
+</form>

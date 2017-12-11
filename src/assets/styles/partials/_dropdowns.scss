@@ -1,0 +1,53 @@
+.caret {
+  background-image: none !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.dropdown-menu {
+  > li {
+    > a {
+      padding: 10px 15px;
+      position: relative;
+    }
+  }
+  &.dropdown-menu-sm {
+    > li {
+      > a {
+        padding: 5px 15px;
+        position: relative;
+      }
+    }
+  }
+}
+
+.dropdown-menu-min-width {
+  > li {
+    > a {
+      min-width: 240px;
+    }
+  }
+}
+
+.dropdown-menu-check {
+  > a {
+    padding-right: 30px;
+  }
+  .dropdown-menu-check-item {
+    @include center(false, true);
+    right: 15px;
+  }
+}
+
+.dropdown-menu {
+  .fa {
+    &.pull-right {
+      margin-top: 3px;
+      margin-right: -2px;
+    }
+  }
+}
+
+.dropdown-submenu {
+  position: relative;
+}

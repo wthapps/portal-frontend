@@ -1,0 +1,30 @@
+<ul class="page-body-control-menu" >
+  <ng-container *ngIf="selectedObjects.length > 0">
+    <li>
+      <a href="javascript:;" class="btn btn-default" (click)="restore()"
+         pTooltip="{{ tooltip.restore }}" tooltipPosition="bottom">
+        <i class="fa fa-history"></i>
+      </a>
+    </li>
+    <li>
+      <a href="javascript:;" class="btn btn-default" (click)="permanentDelete()"
+         pTooltip="{{ tooltip.permanentDelete }}" tooltipPosition="bottom">
+        <i class="fa fa-trash-o"></i>
+      </a>
+    </li>
+  </ng-container>
+
+  <li class="dropdown action" *ngIf="toolbarOnly">
+    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+            pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
+      <i class="fa fa-ellipsis-v"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right text-right">
+      <li role="presentation" >
+        <a role="menuitem" tabindex="-1" href="javascript:void(0);"
+           (click)="emptyAll()">Empty Trash</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+

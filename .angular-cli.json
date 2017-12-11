@@ -1,0 +1,177 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "contact-frontend"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist/app",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [
+        "styles.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "name": "portal",
+      "root": "src",
+      "outDir": "dist/portal",
+      "assets": [
+        "assets"
+      ],
+      "index": "portal/index.html",
+      "main": "portal/main.ts",
+      "polyfills": "portal/polyfills.ts",
+      "test": "portal/test.ts",
+      "tsconfig": "portal/tsconfig.app.json",
+      "testTsconfig": "portal/tsconfig.spec.json",
+      "prefix": "",
+      "styles": [
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "../node_modules/cropperjs/dist/cropper.min.css",
+        "portal/styles/portal.scss"
+      ],
+      "scripts": [
+        "../node_modules/cropperjs/dist/cropper.min.js"
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "name": "my-account",
+      "root": "src",
+      "outDir": "dist/my-account",
+      "assets": [
+        "assets"
+      ],
+      "index": "my-account/index.html",
+      "main": "my-account/main.ts",
+      "polyfills": "my-account/polyfills.ts",
+      "test": "my-account/test.ts",
+      "tsconfig": "my-account/tsconfig.app.json",
+      "testTsconfig": "my-account/tsconfig.spec.json",
+      "prefix": "",
+      "styles": [
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "my-account/styles/my-account.scss"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "name": "contact",
+      "root": "src",
+      "outDir": "dist/contact",
+      "assets": [
+        "assets"
+      ],
+      "index": "contact/index.html",
+      "main": "contact/main.ts",
+      "polyfills": "contact/polyfills.ts",
+      "test": "contact/test.ts",
+      "tsconfig": "contact/tsconfig.app.json",
+      "testTsconfig": "contact/tsconfig.spec.json",
+      "prefix": "contact",
+      "styles": [
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "contact/styles/contact.scss"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts",
+        "stag": "environments/environment.stag.ts"
+      }
+    },
+    {
+      "name": "note",
+      "root": "src",
+      "outDir": "dist/note",
+      "assets": [
+        "assets"
+      ],
+      "index": "note/index.html",
+      "main": "note/main.ts",
+      "polyfills": "note/polyfills.ts",
+      "test": "note/test.ts",
+      "tsconfig": "note/tsconfig.app.json",
+      "testTsconfig": "note/tsconfig.spec.json",
+      "prefix": "note",
+      "styles": [
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "../node_modules/font-awesome/scss/font-awesome.scss",
+        { "input": "../node_modules/quill/dist/quill.core.css", "lazy": false },
+        { "input": "../node_modules/quill/dist/quill.snow.css", "lazy": false },
+        "note/styles/note.scss"
+      ],
+      "scripts": [
+        { "input": "../node_modules/quill/dist/quill.js", "lazy": false },
+        { "input": "../node_modules/file-saver/FileSaver.js", "lazy": true },
+        { "input": "../node_modules/moment/moment.js", "lazy": false }
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts",
+        "stag": "environments/environment.stag.ts"
+      }
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "src/tsconfig.spec.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json",
+      "exclude": "**/node_modules/**"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "scss",
+    "component": {
+    }
+  }
+}

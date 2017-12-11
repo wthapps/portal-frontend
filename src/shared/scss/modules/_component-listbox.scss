@@ -1,0 +1,125 @@
+.component-listbox-list {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #ffffff;
+  .component-listbox-header {
+    display: table-header-group;
+    .component-listbox-row {
+      > div {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+    }
+  }
+  .component-listbox-body {
+    display: table-row-group;
+  }
+  .component-listbox-row {
+    display: table-row;
+    border-bottom: 1px solid $line;
+    > div {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 9px 10px;
+      min-height: 54px;
+      &:first-child, .first {
+        padding-left: 30px;
+      }
+      &:last-child, .last {
+        padding-right: 30px;
+      }
+    }
+    &.active, &:hover {
+      background-color: #F9F9F9;
+    }
+  }
+  .component-listbox-input {
+    width: 60px;
+    text-align: left;
+    .fa-check {
+      border: 1px solid $text-color;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      cursor: pointer;
+      &:before {
+        visibility: hidden;
+      }
+    }
+  }
+  .component-listbox-row {
+    &.active {
+      .component-listbox-input {
+        .fa-check {
+          color: $theme-color;
+          &:before {
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+}
+
+.component-listbox-grid {
+  .component-listbox-body {
+    .component-listbox-row {
+      overflow: hidden;
+      .component-listbox-input {
+        i {
+          cursor: pointer;
+          position: absolute;
+          z-index: 100;
+          left: 5px;
+          top: 5px;
+          width: 27px;
+          height: 27px;
+          border: 2px solid #ffffff;
+          border-radius: 50%;
+          text-align: center;
+          line-height: 24px;
+          color: #fff;
+          visibility: hidden;
+        }
+      }
+
+      &.active {
+        border-color: $theme-color;
+        border-width: 2px;
+        .component-listbox-input {
+          i {
+            display: block;
+            background-color: $theme-color;
+            border-color: $theme-color;
+            visibility: visible;
+          }
+        }
+        &:hover {
+          &:before {
+            display: none;
+          }
+        }
+      }
+      &:hover {
+        &:before {
+          content: '';
+          position: absolute;
+          height: 75px;
+          top: 0;
+          left: 0;
+          right: 0;
+          opacity: 0.29;
+          background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.00) 0%, #000000 100%);
+        }
+        .component-listbox-input {
+          i {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+
+

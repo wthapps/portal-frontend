@@ -1,0 +1,430 @@
+@import "primeng";
+@import "primeng-theme";
+@import "../global";
+
+body {
+  .ui-inputtext {
+    line-height: 1.3;
+  }
+  .ui-inputswitch {
+    overflow: visible;
+    background-color: #F6F6F6;
+    border: 1px solid #D8D8D8;
+
+    &.ui-corner-all {
+      -webkit-border-radius: 12px;
+      -moz-border-radius: 12px;
+      border-radius: 12px;
+    }
+    .ui-inputswitch-on,
+    .ui-inputswitch-off {
+      span {
+        visibility: hidden;
+      }
+    }
+    .ui-inputswitch-handle {
+      &,
+      &.ui-state-focus,
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        background-image: none;
+        position: relative;
+        outline: none 0 !important;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+      &:after {
+        content: "";
+        width: 26px;
+        height: 26px;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        border: 1px solid #D8D8D8;
+        @include center(false, true);
+        left: -2px;
+        margin-top: -1px;
+
+        background: #F6F6F6;
+        -webkit-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.50);
+        -moz-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.50);
+        box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.50);
+      }
+    }
+    &.ui-inputswitch-checked {
+      background-color: $color-success;
+      .ui-inputswitch-handle {
+        &:after {
+          right: 0;
+          left: auto;
+          border: 1px solid $color-success;
+        }
+      }
+    }
+  }
+
+  .ui-calendar-w-btn {
+    position: relative;
+    .ui-inputtext {
+      display: block;
+      width: 100%;
+      -webkit-border-radius: $border-radius-base;
+      -moz-border-radius: $border-radius-base;
+      border-radius: $border-radius-base;
+    }
+    .ui-button {
+      background-color: transparent;
+      color: $text-color;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      margin: 0;
+      &,
+      &.ui-state-focus,
+      &:hover,
+      &:focus {
+        border-width: 0;
+        background-color: transparent;
+        outline: none 0 !important;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+    }
+  }
+  p-radiobutton {
+    margin-bottom: 5px;
+    display: block;
+    cursor: pointer;
+  }
+  .ui-radiobutton {
+    .ui-radiobutton-box {
+      &.ui-state-active {
+        position: relative;
+        border: 1px solid $input-color-active;
+        background-color: $input-color-active;
+
+        .ui-radiobutton-icon.fa-circle {
+          margin: 0;
+          padding: 0;
+          width: 8px;
+          height: 8px;
+          background-color: #ffffff;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          border-radius: 50%;
+          @include center();
+        }
+      }
+    }
+  }
+
+  .ui-radiobutton-label {
+    font-weight: normal;
+    margin: 0;
+  }
+
+  .ui-slider {
+    .ui-slider-handle {
+      background-color: #F6F6F6;
+      @include box-shadow(0px 0px 4px 0px rgba(0, 0, 0, 0.50));
+      cursor: hand;
+      &:hover,
+      &:focus {
+        background-color: $color-inverse;
+        cursor: grabbing;
+        cursor: -moz-grabbing;
+        cursor: -webkit-grabbing;
+      }
+    }
+  }
+
+  .ui-chkbox {
+    .ui-chkbox-box {
+      &.ui-state-active,
+      &.ui-state-focus {
+        background-color: transparent;
+        color: $text-color;
+      }
+    }
+  }
+  .ui-chkbox-label {
+    margin: 0;
+    font-weight: normal;
+  }
+
+  .ui-dialog-footer {
+    &.ui-widget-content {
+      border-width: 1px 0 0 0;
+      .ui-button-text {
+        padding: 0;
+      }
+      .ui-button {
+        @extend .btn;
+        @extend .btn-outline-default;
+        @extend .btn-min;
+      }
+      .btn-outline-primary {
+        @extend .btn-outline-primary;
+      }
+    }
+  }
+
+  .ui-autocomplete {
+    &, &.ui-autocomplete-multiple {
+      display: block;
+      width: 100%;
+      .ui-inputtext {
+        display: block;
+        padding: 3px $padding-base-horizontal;
+        line-height: 1.4;
+
+        &.ui-state-focus {
+          $color-rgba: rgba(red($input-border-focus), green($input-border-focus), blue($input-border-focus), .6);
+          border-color: $input-border-focus;
+          outline: 0;
+          @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px $color-rgba);
+        }
+        .ui-state-highlight {
+          background-color: #D8D8D8;
+          color: $text-color;
+          margin-right: 10px;
+          .ui-autocomplete-token-icon {
+            @include opacity(0.6);
+          }
+        }
+      }
+      .ui-autocomplete-list-item {
+        &.ui-state-highlight {
+          background-color: #D8D8D8;
+          color: $text-color;
+        }
+      }
+    }
+  }
+  .ui-tooltip {
+    z-index: 1090 !important;
+    .ui-tooltip-text {
+      //background-color: rgba(#000, 0.6);
+      font-size: 10px;
+      line-height: 22px;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+      @include box-shadow(none);
+    }
+    &.ui-tooltip-top .ui-tooltip-arrow {
+      //border-top-color: rgba(#000, 0.6);
+    }
+    &.ui-tooltip-bottom .ui-tooltip-arrow {
+      //border-bottom-color: rgba(#000, 0.6);
+    }
+    &.ui-tooltip-left {
+      //border-left-color: rgba(#000, 0.6);
+    }
+    &.ui-tooltip-right {
+      //border-right-color: rgba(#000, 0.6);
+    }
+  }
+
+  .well-folder-tree-root {
+    background-color: #f7f7f7 !important;
+    padding: 15px 15px 0;
+    a, span {
+      display: block;
+      color: #373a3c;
+      padding: 5px 0;
+      &:hover, &.active {
+        text-decoration: none;
+      }
+      &.active {
+        color: $theme-color !important;
+        span {
+          color: $theme-color !important;
+        }
+      }
+    }
+    & + .well-folder-tree {
+      padding-left: 30px;
+      padding-top: 0;
+    }
+  }
+  .well-folder-tree {
+    background-color: #f7f7f7 !important;
+    padding: 15px;
+    .ui-panelmenu {
+      .ui-panelmenu-header {
+        margin-left: -15px;
+        background-color: transparent;
+        &:not(.ui-state-active):hover {
+          background-color: transparent;
+        }
+        &.ui-state-active {
+          a, span {
+            //color: $theme-color;
+            color: #373a3c;
+          }
+        }
+        a {
+          text-decoration: none !important;
+        }
+
+        & + .ui-panelmenu-content-wrapper {
+
+        }
+      }
+      .ui-panelmenu-panel {
+        border-width: 0;
+      }
+
+      .ui-panelmenu-content {
+        padding: 0;
+        margin-bottom: 0;
+        .ui-menuitem-link {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          display: block;
+        }
+      }
+    }
+
+    .ui-widget-content {
+      background-color: transparent;
+      border-width: 0;
+    }
+
+    .fa-caret-right {
+      &:before {
+        content: '\f054';
+      }
+    }
+
+    .fa-caret-down {
+      &:before {
+        content: '\f078';
+      }
+    }
+    /*.fa-caret-down, .fa-caret-down ~ span, .fa-caret-down ~ .ui-menuitem-text {
+      color: $theme-color;
+    }*/
+    .ui-menuitem-text, .ui-menuitem-link, .ui-panelmenu-headerlink-hasicon {
+      white-space: nowrap;
+      overflow: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+
+      &.active {
+        color: $theme-color !important;
+        span {
+          color: $theme-color !important;
+        }
+      }
+    }
+  }
+}
+
+body {
+  .well-folder-tree-left {
+    padding-right: 0 !important;
+    &:hover {
+      background-color: transparent !important;
+    }
+    .well-folder-tree {
+      padding: 0;
+      &:hover {
+        background-color: transparent !important;
+      }
+      .ui-panelmenu {
+        .ui-panelmenu-header {
+          margin-left: 0;
+          margin-right: 0;
+          .ui-panelmenu-headerlink-hasicon {
+            margin: 0;
+            padding: 10px 15px 10px 45px;
+            line-height: 1.2;
+            &:hover {
+              //background-color: lighten(#d8d8d8, 5%);
+            }
+          }
+        }
+
+        .ui-panelmenu-content {
+          margin: 0;
+          padding: 0;
+
+          .ui-menuitem-link {
+            padding: 9px 15px 9px 30px;
+            line-height: 1;
+            &:hover {
+              //background-color: lighten(#d8d8d8, 5%);
+            }
+          }
+
+          ul {
+            margin: 0;
+            padding: 0;
+            li {
+              margin: 0;
+              padding: 0;
+            }
+          }
+
+          .ui-menuitem {
+            .ui-menuitem-link {
+              padding-left: 60px;
+            }
+            .ui-menuitem {
+              .ui-menuitem-link {
+                padding-left: 75px;
+              }
+              .ui-menuitem {
+                .ui-menuitem-link {
+                  padding-left: 90px;
+                }
+                .ui-menuitem {
+                  .ui-menuitem-link {
+                    padding-left: 105px;
+                  }
+                  .ui-menuitem {
+                    .ui-menuitem-link {
+                      padding-left: 120px;
+                    }
+                    .ui-menuitem {
+                      .ui-menuitem-link {
+                        padding-left: 135px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+        }
+      }
+
+      .fa-trash-o, .fa-pencil {
+        position: absolute;
+        right: 0;
+        top: 0;
+        line-height: 35px;
+        width: 30px;
+        height: 35px;
+        text-align: center;
+        &:hover {
+          background-color: #9B9B9B;
+          &:before {
+            color: $theme-color !important;
+          }
+        }
+      }
+      .fa-pencil {
+        right: 30px;
+      }
+    }
+  }
+}

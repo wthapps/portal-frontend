@@ -1,0 +1,49 @@
+<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title"> Create New Album</h4>
+  </modal-header>
+  <modal-body>
+    <form [formGroup]="form" novalidate>
+    <div class="form-group">
+      <label for="album-name">Name</label>
+      <input id="album-name" type="text" class="form-control" placeholder="Untitled Album">
+    </div>
+    <div class="form-group">
+      <label for="album-description">Description</label>
+      <input id="album-description" type="text" class="form-control" placeholder="Description">
+    </div>
+
+    <div class="form-group">
+      <label>Add Tags</label>
+      <tagging-el #tag></tagging-el>
+    </div>
+    <div class="form-group">
+
+      <div class="row-img row-img-10 grid" *ngIf="selectedPhotos != undefined">
+        <div *ngFor="let p of selectedPhotos" class="row-img-item">
+            <div class="photo-box">
+              <div class="photo-box-action">
+                <i class="fa fa-remove" (click)="removePhoto(p,$event)"></i>
+              </div>
+              <div class="photo-box-figure">
+                <figure class="img-center-dv">
+                  <div class="photo-box-figure-in">
+                    <img class="img-center" draggable="false" [src]="p['thumbnail_url']" alt="">
+                  </div>
+                </figure>
+              </div>
+            </div>
+        </div>
+      </div>
+
+
+    </div>
+    </form>
+  </modal-body>
+  <modal-footer>
+    <button type="submit" class="btn btn-outline-primary btn-min" (click)="createAlbum()">
+      Done
+    </button>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
+  </modal-footer>
+</modal>

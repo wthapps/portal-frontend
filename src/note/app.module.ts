@@ -1,0 +1,76 @@
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { APP_BASE_HREF } from '@angular/common';
+import { HttpModule } from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+
+import { ZNoteHomeModule } from './home/home.module';
+import { ZNoteFoldersModule } from './folders/folders.module';
+import { ZNoteSharedModule } from './shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
+import { ZNoteSettingsModule } from './settings/settings.module';
+import { ZNoteMyNoteModule } from './my-note/my-note.module';
+import { ZNoteMySharingModule } from './my-sharing/my-sharing.module';
+import { ZNoteSearchModule } from './search/search.module';
+import { ZNoteSharedWithMeModule } from './shared-with-me/shared-with-me.module';
+import { ZNoteMyProfileModule } from './my-profile/my-profile.module';
+
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
+import { AppEffects, AppStore } from './shared/app-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { ZNoteTrashModule } from './trash/trash.module';
+import { ZNotePhotoModule } from './photo/photo.module';
+import { environment } from '@env/environment';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpModule,
+
+    AppRoutingModule,
+    ZNoteHomeModule,
+    ZNoteFoldersModule,
+    ZNoteMyNoteModule,
+    ZNoteMySharingModule,
+    ZNoteSearchModule,
+    ZNoteSharedWithMeModule,
+    // ZNoteMyProfileModule,
+    ZNoteSettingsModule,
+    ZNoteTrashModule,
+    ZNotePhotoModule,
+    ZNoteSharedModule.forRoot(),
+
+    StoreModule.forRoot(AppStore),
+
+
+    // StoreDevtoolsModule.instrument({ maxAge: 50 }),
+
+    EffectsModule.forRoot(AppEffects),
+
+    // StoreDevtoolsModule.instrumentOnlyWithExtension(),
+
+    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
+
+    // SharedModule.forRoot(),
+  ],
+  declarations: [AppComponent],
+  providers: [
+    {
+      provide: APP_BASE_HREF,
+      useValue: '/'
+    }
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: WthInterceptor,
+    //   multi: true
+    // }
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }

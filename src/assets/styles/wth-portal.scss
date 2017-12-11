@@ -1,0 +1,109 @@
+@import 'variables';
+
+@import '../../../node_modules/font-awesome/scss/font-awesome';
+// bootstrap 3
+@import '../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
+// bootstrap 4
+//@import '../../../node_modules/bootstrap/scss/bootstrap';
+
+
+@import "general/mixin";
+@import "general/setting";
+@import "partials/constants";
+
+//
+// =Fonts
+// --------------------------------------------------
+//@import "partials/fonts";
+//
+// =Partials
+// --------------------------------------------------
+@import "partials/colors";
+@import "partials/grid";
+@import "partials/flex";
+@import "partials/typography";
+@import "partials/forms";
+@import "partials/buttons";
+@import "partials/type";
+@import "partials/table";
+@import "partials/modals";
+@import "partials/panel";
+@import "partials/field-group";
+@import "partials/toast";
+@import "partials/loading";
+@import "partials/confirm-dialog";
+@import "partials/lines";
+@import "partials/badges";
+@import "partials/navs";
+@import "partials/media";
+@import "partials/list-group";
+@import "partials/dropdowns";
+@import "partials/w_panels";
+//
+// =Third party
+// --------------------------------------------------
+//@import "../../../node_modules/slick-carousel/slick/slick.scss";
+//@import "modules/slick-carousel/slick-carousel";
+//@import "modules/editor/quill.snow";
+//
+// =Layout
+// --------------------------------------------------
+@import "layout/layout";
+@import "layout/header";
+@import "layout/footer";
+@import "layout/content";
+@import "layout/aside-left";
+@import "layout/aside-menu";
+@import "layout/aside-chat";
+//
+// =modules
+// --------------------------------------------------
+@import "modules/card";
+@import "modules/list";
+@import "modules/breadcrumb";
+@import "modules/nav-menuleft";
+@import "modules/panel-creditcard";
+@import "modules/braintree-form";
+@import "modules/loading";
+@import "modules/IconHoverEffects";
+@import "modules/app-card";
+@import "modules/pre-loaders";
+@import "modules/dropzone/basic";
+@import "modules/dropzone/dropzone";
+@import "modules/dropzone/custom";
+@import "modules/cropper/cropper";
+@import "modules/cropper/custom";
+@import "modules/article-content";
+@import "modules/scrollbar-measure";
+@import "modules/ng2-dropdown";
+//@import "modules/primeng/custom_primeng";
+@import "third-parties/custom_primeng";
+@import "modules/chat/emoji";
+@import "modules/chat/chat-support";
+@import "modules/selectables/selectables";
+@import "modules/ng2-tag-input/custom";
+@import "modules/avatar";
+@import "modules/media-user";
+@import "modules/field-group";
+@import "modules/component-listbox";
+@import "modules/attachment";
+@import "modules/no-data";
+//
+// =Content
+// --------------------------------------------------
+@import "account/services-list";
+//
+// =Pages
+// --------------------------------------------------
+@import "pages/landing";
+@import "pages/welcome";
+@import "pages/about";
+@import "pages/app-detail";
+@import "pages/payment";
+@import "pages/products";
+@import "pages/pricing";
+
+
+// zone
+@import "pages/zone";
+
