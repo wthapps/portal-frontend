@@ -11,18 +11,16 @@ import { ZContactService } from '../../shared/services/contact.service';
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
 import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
-import { CommonEventAction } from '../../../shared/services/common-event/common-event-action';
 import { InvitationCreateModalComponent } from '../../../shared/shared/components/invitation/invitation-create-modal.component';
 import { WthConfirmService } from '../../../shared/shared/components/confirmation/wth-confirm.service';
 import { LoadingService } from '../../../shared/shared/components/loading/loading.service';
-import { CommonEventService } from "../../../shared/services/common-event/common-event.service";
 import { InvitationService } from '../../../shared/shared/components/invitation/invitation.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
-import { CommonEvent } from "../../../shared/services/common-event/common-event";
 import { Recipient } from '../../../shared/shared/components/invitation/recipient.model';
 
 import { Config } from '../../../shared/constant/config/env.config';
 import { Constants } from '../../../shared/constant/config/constants';
+import { CommonEvent, CommonEventAction, CommonEventService } from '@wth/shared/services';
 
 declare var _: any;
 @Component({

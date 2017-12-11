@@ -10,20 +10,18 @@ import 'rxjs/add/operator/last';
 import { ConfirmDialogModel } from '../shared/shared/models/confirm-dialog.model';
 import { Constants } from '../shared/constant/config/constants';
 
-import { CommonEvent } from '../shared/services/common-event/common-event';
-import { CommonEventAction } from '../shared/services/common-event/common-event-action';
-import { CommonEventService } from '../shared/services/common-event/common-event.service';
 
 
-import { ZContactService } from "./shared/services/contact.service";
+import { ZContactService } from './shared/services/contact.service';
 import { Group } from './group/group.model';
 import { GroupService } from './group/group.service';
 import { GroupEditModalComponent } from './group/group-edit-modal.component';
 import { GoogleApiService } from './shared/services/google-api.service';
-import { WthConfirmService } from "../shared/shared/components/confirmation/wth-confirm.service";
 import { Config } from '../shared/constant/config/env.config';
 
 import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
+import { CommonEvent, CommonEventAction, CommonEventService } from '@wth/shared/services';
+import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 @Component({
   selector: 'app-root',
