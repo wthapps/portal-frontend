@@ -1,7 +1,7 @@
 import { Component, OnInit }   from '@angular/core';
 import { Router }                from '@angular/router';
 
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { MyTransactionService } from '../shared/transaction.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 

@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { MenuItemBreadcrumb } from '@wth/shared/shared/components/breadcrumb/breadcrumb';
 import { MyDNSService } from './dns.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';

@@ -4,9 +4,9 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../../services/notification.service';
 import { UndoNotificationComponent } from '../undo-notification.component';
-import { ApiBaseService } from '../../../services/apibase.service';
+import { ApiBaseService } from '../../../../services/apibase.service';
 
 declare let _: any;
 

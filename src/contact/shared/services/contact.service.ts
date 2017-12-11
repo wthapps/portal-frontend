@@ -9,9 +9,9 @@ import 'rxjs/add/operator/toPromise';
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 import { GroupService } from '../../group/group.service';
 import { Router } from '@angular/router';
-import { BaseEntityService } from '../../../shared/shared/services/base-entity-service';
-import { ApiBaseService } from '../../../shared/shared/services/apibase.service';
-import { SuggestionService } from '../../../shared/shared/services/suggestion.service';
+import { BaseEntityService } from '../../../shared/services/base-entity-service';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
+import { SuggestionService } from '../../../shared/services/suggestion.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '../../../shared/shared/components/confirmation/wth-confirm.service';
 

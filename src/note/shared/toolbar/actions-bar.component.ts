@@ -4,10 +4,10 @@ import 'rxjs/add/operator/take';
 
 import { Constants } from '@shared/constant/config/constants';
 import { ZNoteService } from '../services/note.service';
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import * as note from '../actions/note';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
 
 declare var _: any;

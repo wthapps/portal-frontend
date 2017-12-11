@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { GenericFileService } from '../../../../shared/shared/services/generic-file.service';
+import { GenericFileService } from '../../../../shared/services/generic-file.service';
 import { FileUploadHelper } from '../../../../shared/shared/helpers/file/file-upload.helper';
 import { GenericFile } from '../../../../shared/shared/models/generic-file.model';
 

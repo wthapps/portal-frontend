@@ -5,8 +5,8 @@ import { GoogleApiService } from '../services/google-api.service';
 import { ModalDockComponent } from '../../../shared/shared/components/modal/dock.component';
 import { LoadingService } from '../../../shared/shared/components/loading/loading.service';
 import { ContactAddGroupModalComponent } from '../modal/contact-add-group/contact-add-group-modal.component';
-import { CommonEventService } from '../../../shared/shared/services/common-event/common-event.service';
-import { CommonEvent } from '../../../shared/shared/services/common-event/common-event';
+import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
+import { CommonEvent } from '../../../shared/services/common-event/common-event';
 import { GenericFile } from '../../../shared/shared/models/generic-file.model';
 import { FileUploadHelper } from '../../../shared/shared/helpers/file/file-upload.helper';
 

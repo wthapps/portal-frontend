@@ -3,8 +3,8 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
-import { UserService } from '@wth/shared/shared/services/user.service';
-import { ApiBaseService } from '@wth/shared/shared/services/apibase.service';
+import { UserService } from '@wth/shared/services/user.service';
+import { ApiBaseService } from '@wth/shared/services/apibase.service';
 
 @Component({
   moduleId: module.id,

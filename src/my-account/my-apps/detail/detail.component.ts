@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Product } from '@wth/shared/shared/models/product.model';
 import { MenuItemBreadcrumb } from '@wth/shared/shared/components/breadcrumb/breadcrumb';
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { MyMyAppsService } from '../my-apps.service';
 
 @Component({

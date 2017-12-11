@@ -8,7 +8,7 @@ import {
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '../../../validator/custom.validator';
-import { ApiBaseService } from '../../../services/apibase.service';
+import { ApiBaseService } from '../../../../services/apibase.service';
 import { Constants } from '../../../../constant/config/constants';
 import { QuestionBase } from '../../form/base/question-base';
 import { TextboxQuestion } from '../../form/categories/textbox-question';

@@ -2,8 +2,8 @@ import { Component, ViewChild, ViewEncapsulation, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
 import * as note from '../../actions/note';
 import * as folder from '../../actions/folder';

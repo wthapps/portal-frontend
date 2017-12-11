@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService } from '../../services/apibase.service';
-import { UserService } from '../../services/user.service';
+import { ApiBaseService } from '../../../services/apibase.service';
+import { UserService } from '../../../services/user.service';
 import { Communication } from '../../models/communication.model';
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService } from '../../../services/apibase.service';
+import { ApiBaseService } from '../../../../services/apibase.service';
 
 @Injectable()
 export class ZSharedReportService {

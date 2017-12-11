@@ -1,5 +1,5 @@
-import { ServiceManager } from '../../services/service-manager';
-import { CHAT_ACTIONS } from '../../../constant/chat-constant';
+import { ServiceManager } from '@wth/shared/services';
+import { CHAT_ACTIONS } from '@wth/shared/constant';
 
 export class ChatActions {
   constructor(private serviceManager: ServiceManager) {

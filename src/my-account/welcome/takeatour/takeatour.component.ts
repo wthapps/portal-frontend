@@ -2,11 +2,11 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { PartialsBasicInfoComponent } from '@wth/shared/shared/components/profile/basic-info/basic-info.component';
 import { InviteModel } from '@wth/shared/shared/models/profile/profile.model';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
-import { ApiBaseService } from '@wth/shared/shared/services/apibase.service';
+import { ApiBaseService } from '@wth/shared/services/apibase.service';
 import { InvitationService } from '@wth/shared/shared/components/invitation/invitation.service';
 import { Router } from '@angular/router';
 

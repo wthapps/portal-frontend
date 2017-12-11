@@ -5,8 +5,8 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { Constants } from '@shared/constant/config/constants';
 import { ZMediaSharingService } from '@shared/shared/components/photo/modal/sharing/sharing.service';
 import { Store } from '@ngrx/store';

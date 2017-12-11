@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { MyTransactionService } from '../shared/transaction.service';
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 
 declare var $: any;

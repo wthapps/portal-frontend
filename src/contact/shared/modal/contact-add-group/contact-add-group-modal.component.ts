@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { WthAppsBaseModal } from '../../../../shared/shared/interfaces/wthapps-base-modal';
-import { CommonEventService } from '../../../../shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '../../../../shared/services/common-event/common-event.service';
 import { GroupService } from '../../../group/group.service';
 import { Constants } from '../../../../shared/constant/config/constants';
 

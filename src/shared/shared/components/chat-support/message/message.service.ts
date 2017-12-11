@@ -6,7 +6,7 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ApiBaseService } from '../../../services/apibase.service';
+import { ApiBaseService } from '../../../../services/apibase.service';
 
 declare var _: any;
 

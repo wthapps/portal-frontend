@@ -4,8 +4,8 @@ import { Subject } from 'rxjs/Subject';
 
 import { Constants } from '../../../../constant/config/constants';
 import { CustomValidator } from '../../../validator/custom.validator';
-import { UserService } from '../../../services/user.service';
-import { CommonEventService } from '../../../services/common-event/common-event.service';
+import { UserService } from '../../../../services/user.service';
+import { CommonEventService } from '../../../../services/common-event/common-event.service';
 import { LoadingService } from '../../loading/loading.service';
 import { ToastsService } from '../../toast/toast-message.service';
 import { AddressModel, EmailModel, PhoneModel, ProfileModel } from '../../../models/profile/profile.model';

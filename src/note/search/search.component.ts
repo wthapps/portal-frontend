@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { ServiceManager } from '@shared/shared/services/service-manager';
-import { UrlService } from '@shared/shared/services/url.service';
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { ServiceManager } from '@shared/services/service-manager';
+import { UrlService } from '@shared/services/url.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { Observable } from 'rxjs/Observable';
 import { Note } from '@shared/shared/models/note.model';
 import { Folder } from '../shared/reducers/folder';

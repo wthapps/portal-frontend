@@ -5,8 +5,8 @@ import { ChatSupportBaseComponent } from '../chat-support-base.component';
 
 import { ChatSupportChannel } from '../shared/channel/chat-support.channel';
 import { AppearanceChannel } from '../shared/channel/appearance.channel';
-import { ApiBaseService } from '../../../services/apibase.service';
-import { UserService } from '../../../services/user.service';
+import { ApiBaseService } from '../../../../services/apibase.service';
+import { UserService } from '../../../../services/user.service';
 
 
 declare var $: any;

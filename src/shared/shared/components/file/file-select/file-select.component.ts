@@ -3,9 +3,9 @@ import { Component, ViewChild, OnInit, Input, Output, EventEmitter, OnDestroy } 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Subscription } from 'rxjs/Subscription';
 
-import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
+import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
 import { FileSelectListComponent } from '../file-select-list/file-select-list.component';
-import { CommonEventService } from '../../../services/common-event/common-event.service';
+import { CommonEventService } from '../../../../services/common-event/common-event.service';
 
 declare var _: any;
 

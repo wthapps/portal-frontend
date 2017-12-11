@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 
 import 'rxjs/add/operator/toPromise';
 
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 

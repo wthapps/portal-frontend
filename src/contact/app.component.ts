@@ -10,9 +10,9 @@ import 'rxjs/add/operator/last';
 import { ConfirmDialogModel } from '../shared/shared/models/confirm-dialog.model';
 import { Constants } from '../shared/constant/config/constants';
 
-import { CommonEvent } from '../shared/shared/services/common-event/common-event';
-import { CommonEventAction } from '../shared/shared/services/common-event/common-event-action';
-import { CommonEventService } from '../shared/shared/services/common-event/common-event.service';
+import { CommonEvent } from '../shared/services/common-event/common-event';
+import { CommonEventAction } from '../shared/services/common-event/common-event-action';
+import { CommonEventService } from '../shared/services/common-event/common-event.service';
 
 
 import { ZContactService } from "./shared/services/contact.service";

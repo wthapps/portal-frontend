@@ -9,7 +9,7 @@ import * as fromRoot from '../../reducers/index';
 import { Constants } from '@shared/constant/config/constants';
 import { ZNoteService } from '../../services/note.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
 
 declare var _: any;
 

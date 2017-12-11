@@ -14,7 +14,7 @@ import {
   AccountRequestAcceptModalComponent
 } from './shared/account/modal/index';
 import { SubscriptionEditModalComponent } from './shared/subscription/modal/subscription-edit-modal.component';
-import { CommonEventService } from '../shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '../shared/services/common-event/common-event.service';
 import { WthConfirmService } from '../shared/shared/components/confirmation/wth-confirm.service';
 import { SubscriptionService } from './shared/subscription/subscription.service';
 import { ToastsService } from '../shared/shared/components/toast/toast-message.service';

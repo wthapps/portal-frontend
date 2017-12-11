@@ -1,8 +1,8 @@
 import { Component, ElementRef, ViewChild, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { LoadingService } from '../../loading/loading.service';
-import { ApiBaseService } from '../../../services/apibase.service';
+import { ApiBaseService } from '../../../../services/apibase.service';
 import 'rxjs/add/operator/take';
-import { CommonEventService } from '../../../services/common-event/common-event.service';
+import { CommonEventService } from '../../../../services/common-event/common-event.service';
 
 declare var _: any;
 declare var $: any;

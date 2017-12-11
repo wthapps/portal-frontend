@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ZNoteService } from '../../shared/services/note.service';
 import { Folder } from '../../shared/reducers/folder';
 import { Note } from '@shared/shared/models/note.model';

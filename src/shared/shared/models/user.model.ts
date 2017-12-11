@@ -13,6 +13,7 @@ export class User {
   birthday_day: string;
   birthday_month: string;
   birthday_year: string;
+  introduction: any;
   sex: number;
   accepted: boolean;
   has_payment_info: boolean;
@@ -30,6 +31,7 @@ export class User {
   supporter: boolean;
   took_a_tour: boolean;
   online: boolean;
+  term_policy_version: string;
 
   constructor(fields: {
     id?: number,

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
 import { CableService } from './cable.service';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../services/user.service';
 import { ApiConfig } from '../../constant/config/api.config';
 
 declare let App: any;

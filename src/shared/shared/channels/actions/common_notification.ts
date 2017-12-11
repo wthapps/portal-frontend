@@ -1,5 +1,5 @@
 import { Processable } from './processable';
-import { ServiceManager } from '../../services/service-manager';
+import { ServiceManager } from '@wth/shared/services';
 
 declare let _:any;
 

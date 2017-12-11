@@ -18,26 +18,26 @@ import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { EditorModule } from 'primeng/components/editor/editor';
 
-import { ApiBaseService } from './shared/services/apibase.service';
-import { ServiceManager } from './shared/services/service-manager';
-import { UserService } from './shared/services/user.service';
-import { StorageService } from './shared/services/storage.service';
-import { HandlerService } from './shared/services/handler.service';
-import { WTHNavigateService } from './shared/services/wth-navigate.service';
-import { NotificationService } from './shared/services/notification.service';
+import { ApiBaseService } from './services/apibase.service';
+import { ServiceManager } from './services/service-manager';
+import { UserService } from './services/user.service';
+import { StorageService } from './services/storage.service';
+import { HandlerService } from './services/handler.service';
+import { WTHNavigateService } from './services/wth-navigate.service';
+import { NotificationService } from './services/notification.service';
 import { NotificationChannelService } from './shared/channels/notification-channel.service';
 import { AppearancesChannelService } from './shared/channels/appearances-channel.service';
 import { ChannelService } from './shared/channels/channel.service';
-import { PhotoModalDataService } from './shared/services/photo-modal-data.service';
-import { PhotoUploadService } from './shared/services/photo-upload.service';
-import { UrlService } from './shared/services/url.service';
-import { DateService } from './shared/services/date.service';
+import { PhotoModalDataService } from './services/photo-modal-data.service';
+import { PhotoUploadService } from './services/photo-upload.service';
+import { UrlService } from './services/url.service';
+import { DateService } from './services/date.service';
 import { ZSharedReportService } from './shared/components/zone/report/report.service';
-import { ChatCommonService } from './shared/services/chat.common.service';
-import { PhotoService } from './shared/services/photo.service';
+import { ChatCommonService } from './services/chat.common.service';
+import { PhotoService } from './services/photo.service';
 import { CountryService } from './shared/components/countries/countries.service';
-import { SuggestionService } from './shared/services/suggestion.service';
-import { CommonEventService } from './shared/services/common-event/common-event.service';
+import { SuggestionService } from './services/suggestion.service';
+import { CommonEventService } from './services/common-event/common-event.service';
 
 import { PipeModule } from './shared/pipe/pipe.module';
 
@@ -64,9 +64,9 @@ import { CoverProfileModule } from './shared/components/cover-profile/cover-prof
 import { ZChatEmojiModule } from './shared/emoji/emoji.module';
 
 
-import { AuthGuard } from './shared/services/auth-guard.service';
-import { AuthService } from './shared/services/auth.service';
-import { GenericFileService } from './shared/services/generic-file.service';
+import { AuthGuard } from './services/auth-guard.service';
+import { AuthService } from './services/auth.service';
+import { GenericFileService } from './services/generic-file.service';
 import { ShowHidePasswordModule } from './shared/components/show-hide-password/show-hide-password.module';
 import { InvitationModule } from './shared/components/invitation/invitation.module';
 import { WthConfirmModule } from './shared/components/confirmation/wth-confirm.module';
@@ -78,7 +78,7 @@ import { HttpClientModule } from '@angular/common/http';
 // import { BrowserModule } from '@angular/platform-browser';
 import { WthInterceptor } from './services/wth-interceptor';
 import { ClientDetectorService } from './services/client-detector.service';
-import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { WthConfirmService } from './shared/components/confirmation/wth-confirm.service';
 
 
 /**
@@ -159,7 +159,7 @@ export * from './shared/components/navbar/navbar.module';
     // Pipe
     PipeModule,
 
-    //Directive
+    // Directive
     DirectiveModule
   ]
 })

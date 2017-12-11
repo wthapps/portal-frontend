@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
-import { CommonEventService } from '@wth/shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 
 declare var _: any;
 declare let moment:any;

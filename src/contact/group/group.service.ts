@@ -5,8 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 
 import { Group } from './group.model';
-import { BaseEntityService } from '../../shared/shared/services/base-entity-service';
-import { ApiBaseService } from '../../shared/shared/services/apibase.service';
+import { BaseEntityService } from '../../shared/services/base-entity-service';
+import { ApiBaseService } from '../../shared/services/apibase.service';
 
 declare let _: any;
 @Injectable()

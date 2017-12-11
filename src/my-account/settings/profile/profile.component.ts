@@ -10,14 +10,14 @@ import {
 } from '@angular/forms';
 
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { CountryService } from '@wth/shared/shared/components/countries/countries.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { UploadCropImageComponent } from '@wth/shared/shared/components/upload-crop-image/upload-crop-image.component';
-import { PhotoModalDataService } from '@wth/shared/shared/services/photo-modal-data.service';
-import { PhotoUploadService } from '@wth/shared/shared/services/photo-upload.service';
-import { CommonEventService } from '@wth/shared/shared/services/common-event/common-event.service';
+import { PhotoModalDataService } from '@wth/shared/services/photo-modal-data.service';
+import { PhotoUploadService } from '@wth/shared/services/photo-upload.service';
+import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 import { Constants } from '@wth/shared/constant/config/constants';
 
 declare var $: any;

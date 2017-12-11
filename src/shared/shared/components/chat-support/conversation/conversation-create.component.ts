@@ -7,7 +7,7 @@ import { ConversationService } from './conversation.service';
 
 import { NotificationChannel } from '../shared/channel/notification.channel';
 import { MessageListComponent } from '../message/message-list.component';
-import { UserService } from '../../../services/user.service';
+import { UserService } from '../../../../services/user.service';
 
 declare var _: any;
 declare var App: any;

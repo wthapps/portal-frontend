@@ -6,9 +6,9 @@ import * as fromRoot from '../reducers/index';
 import { Store } from '@ngrx/store';
 
 import * as note from '../actions/note';
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { Router } from '@angular/router';
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import * as folder from '../actions/folder';
 import { Folder } from '../reducers/folder';
 

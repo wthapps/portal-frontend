@@ -8,7 +8,7 @@ import { PhotoEditModalComponent } from '../modal/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
 import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
 import { Constants } from '../../../../constant/config/constants';
-import { PhotoService } from '../../../services/photo.service';
+import { PhotoService } from '../../../../services/photo.service';
 import * as Cropper  from 'cropperjs';
 
 declare let $: any;

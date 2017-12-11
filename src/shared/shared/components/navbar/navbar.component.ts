@@ -1,9 +1,9 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../../services/user.service';
 import { Constants } from '../../../constant/config/constants';
-import { WTHNavigateService } from '../../services/wth-navigate.service';
+import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { ChannelService } from '../../channels/channel.service';
-import { NotificationService } from '../../services/notification.service';
+import { NotificationService } from '../../../services/notification.service';
 import { Router } from '@angular/router';
 
 declare var $: any;

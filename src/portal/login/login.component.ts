@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 
 import { AppearancesChannelService } from '../../shared/shared/channels/appearances-channel.service';
-import { UserService } from '../../shared/shared/services/user.service';
-import { AuthService } from '../../shared/shared/services/auth.service';
+import { UserService } from '../../shared/services/user.service';
+import { AuthService } from '../../shared/services/auth.service';
 import { CustomValidator } from '../../shared/shared/validator/custom.validator';
 import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';

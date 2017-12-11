@@ -2,7 +2,7 @@ import {
   Component,
   Input
 } from '@angular/core';
-import { NotificationService } from '../../services/notification.service';
+import { NotificationService } from '../../../services/notification.service';
 
 
 declare var $: any;

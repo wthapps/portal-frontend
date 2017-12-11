@@ -17,12 +17,12 @@ import { QuestionControlService } from '../../form/base/question-control.service
 import { TextboxQuestion } from '../../form/categories/textbox-question';
 import { UserInfo } from '../../../models/user/user-info.model';
 import { LoadingService } from '../../loading/loading.service';
-import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
-import { PhotoUploadService } from '../../../services/photo-upload.service';
-import { UserService } from '../../../services/user.service';
+import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
+import { PhotoUploadService } from '../../../../services/photo-upload.service';
+import { UserService } from '../../../../services/user.service';
 import { ToastsService } from '../../toast/toast-message.service';
-import { ApiBaseService } from '../../../services/apibase.service';
-import { CommonEventService } from '../../../services/common-event/common-event.service';
+import { ApiBaseService } from '../../../../services/apibase.service';
+import { CommonEventService } from '../../../../services/common-event/common-event.service';
 
 declare let _: any;
 declare let $: any;

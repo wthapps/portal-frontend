@@ -1,8 +1,8 @@
-import { ServiceManager } from '../../services/service-manager';
 import { Processable } from './processable';
+import { ServiceManager } from '@wth/shared/services';
 
 export class AppearanceAllUsersOnline implements Processable {
-  constructor(private serviceManager:ServiceManager) {
+  constructor(private serviceManager: ServiceManager) {
 
   }
 

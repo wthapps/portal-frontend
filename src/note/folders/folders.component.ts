@@ -11,7 +11,7 @@ import * as folder from '../shared/actions/folder';
 import { Observable } from 'rxjs/Observable';
 import { Folder } from '../shared/reducers/folder';
 import { Note } from '@shared/shared/models/note.model';
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { NoteBreadcrumb } from '../shared/breadcrumb/breadcrumb';
 
 declare var _: any;

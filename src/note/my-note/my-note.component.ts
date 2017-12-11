@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ZNoteService } from '../shared/services/note.service';
 // import { ApiBaseService } from '@shared/shared/services/apibase.service';
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../shared/reducers/index';
@@ -12,7 +12,7 @@ import { Folder } from '../shared/reducers/folder';
 import { Note } from '@shared/shared/models/note.model';
 import { AppStore } from '../shared/app-store';
 import { MixedEntityAction } from '../shared/mixed-enity/mixed-entity.action';
-import { UserService } from '@shared/shared/services/user.service';
+import { UserService } from '@shared/services/user.service';
 
 declare var _: any;
 

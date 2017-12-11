@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { MyAppsService } from '../apps.service';
 
 import { Product } from '@wth/shared/shared/models/product.model';
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { MenuItemBreadcrumb } from '@wth/shared/shared/components/breadcrumb/breadcrumb';
 
 @Component({

@@ -4,9 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/do';
 
-import { BaseEntityService } from '@shared/shared/services/base-entity-service';
+import { BaseEntityService } from '@shared/services/base-entity-service';
 import { Note } from '@shared/shared/models/note.model';
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 
 declare var _: any;
 

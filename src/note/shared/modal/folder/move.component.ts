@@ -5,8 +5,8 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers/index';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { Note } from '@shared/shared/models/note.model';
 
 declare var $: any;

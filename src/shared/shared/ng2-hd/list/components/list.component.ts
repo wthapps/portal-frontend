@@ -42,7 +42,7 @@ import { getAction } from './helpers/keypress-actions';
 import { SearchFormComponent } from './search-form/search-form.component';
 
 import 'rxjs/add/operator/debounceTime';
-import { ApiBaseService } from '../../../services/apibase.service';
+import { ApiBaseService } from '../../../../services/apibase.service';
 
 declare var _: any;
 

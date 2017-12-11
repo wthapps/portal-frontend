@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService } from '@wth/shared/shared/services/apibase.service';
+import { ApiBaseService } from '@wth/shared/services/apibase.service';
 
 @Injectable()
 export class MyMyAppsService {

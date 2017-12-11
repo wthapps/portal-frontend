@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiBaseService } from '../../shared/shared/services/apibase.service';
+import { ApiBaseService } from '../../shared/services/apibase.service';
 
 
 @Component({

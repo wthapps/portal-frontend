@@ -1,10 +1,10 @@
-import { ServiceManager } from '../../services/service-manager';
 import { Processable } from './processable';
+import { ServiceManager } from '@wth/shared/services';
 
 declare let _:any;
 
 export class AppearanceNewUserOffline implements Processable {
-  constructor(private serviceManager:ServiceManager) {
+  constructor(private serviceManager: ServiceManager) {
     if (!this.serviceManager.getStorageService().find('users_online')) {
       this.serviceManager.getStorageService().save('users_online', null);
     }

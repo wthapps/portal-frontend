@@ -4,7 +4,7 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 
 import { fadeInAnimation } from '../../shared/shared/animations/route.animation';
 import { Errors } from '../../shared/shared/models/errors.model';
-import { UserService } from '../../shared/shared/services/user.service';
+import { UserService } from '../../shared/services/user.service';
 import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
 import { CustomValidator } from '../../shared/shared/validator/custom.validator';

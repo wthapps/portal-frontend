@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import { CommonEventService } from '@wth/shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 declare var _: any;

@@ -4,10 +4,10 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
-import { ApiBaseService } from '../../shared/shared/services/apibase.service';
-import { UserService } from '../../shared/shared/services/user.service';
+import { ApiBaseService } from '../../shared/services/apibase.service';
+import { UserService } from '../../shared/services/user.service';
 import { UserInfo } from '../../shared/shared/models/user/user-info.model';
-import { CommonEventService } from '../../shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '../../shared/services/common-event/common-event.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
 import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
 

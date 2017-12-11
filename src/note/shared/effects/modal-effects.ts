@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Action, Store } from '@ngrx/store';
 import { Actions, Effect, toPayload } from '@ngrx/effects';
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { of } from 'rxjs/observable/of';
 import { empty } from 'rxjs/observable/empty';
 import { ActivatedRouteSnapshot, Params } from '@angular/router';
@@ -17,7 +17,7 @@ import 'rxjs/add/operator/map';
 
 import * as modal from '../actions/modal';
 import * as fromRoot from '../reducers/index';
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
 
 
 @Injectable()

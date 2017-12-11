@@ -9,9 +9,9 @@ import {
 
 import { CookieService, CookieOptions } from 'ngx-cookie';
 import { CreditCard } from '@wth/shared/shared/models/credit-card.model';
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { MyPaymentService } from './payment.service';
-import { ApiBaseService } from '@wth/shared/shared/services/apibase.service';
+import { ApiBaseService } from '@wth/shared/services/apibase.service';
 import { CountryService } from '@wth/shared/shared/components/countries/countries.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';

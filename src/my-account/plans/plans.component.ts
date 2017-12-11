@@ -5,7 +5,7 @@ import { CookieService, CookieOptions } from 'ngx-cookie';
 
 import { Product } from '@wth/shared/shared/models/product.model';
 import { Plan } from '@wth/shared/shared/models/plan.model';
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { MyPlansService } from './plans.service';
 import { Constants } from '@wth/shared/constant/config/constants';

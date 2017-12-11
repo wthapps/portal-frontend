@@ -6,8 +6,8 @@ import 'rxjs/add/observable/merge';
 
 import { LoadingService } from '../../loading/loading.service';
 
-import { PhotoModalDataService } from '../../../services/photo-modal-data.service';
-import { PhotoUploadService } from '../../../services/photo-upload.service';
+import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
+import { PhotoUploadService } from '../../../../services/photo-upload.service';
 
 @Component({
     selector: 'cover-profile',

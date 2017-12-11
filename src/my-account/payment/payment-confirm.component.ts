@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { CreditCard } from '@wth/shared/shared/models/credit-card.model';
 import { BillingAddress } from '@wth/shared/shared/models/billing-address.model';
 

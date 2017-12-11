@@ -6,7 +6,7 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/map';
 
 import { Photo } from '../../../models/photo.model';
-import { PhotoService } from '../../../services/photo.service';
+import { PhotoService } from '../../../../services/photo.service';
 import { LoadingService } from '../../loading/loading.service';
 import { ZMediaSharingService } from '../modal/sharing/sharing.service';
 import { WthConfirmService } from '../../confirmation/wth-confirm.service';

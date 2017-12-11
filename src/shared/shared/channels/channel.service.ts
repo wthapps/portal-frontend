@@ -1,8 +1,8 @@
 import { Injectable }     from '@angular/core';
 import { CableService } from './cable.service';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../services/user.service';
 import { ChannelActionFactoryService } from './factory/channel_action_factory.service';
-import { ServiceManager } from '../services/service-manager';
+import { ServiceManager } from '../../services/service-manager';
 
 declare let ActionCable: any;
 declare let App: any;

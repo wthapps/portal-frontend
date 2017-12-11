@@ -16,8 +16,8 @@ import 'rxjs/add/operator/filter';
 import { Subject } from 'rxjs/Subject';
 
 import { ZNoteService } from './shared/services/note.service';
-import { CommonEventService } from '@shared/shared/services/common-event/common-event.service';
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { NoteEditModalComponent } from './shared/modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './shared/modal/note/view.component';

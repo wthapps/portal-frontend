@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { Router } from '@angular/router';
 import { Constants } from '@wth/shared/constant/config/constants';
 

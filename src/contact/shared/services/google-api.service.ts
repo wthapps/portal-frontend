@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { ZContactService } from './contact.service';
-import { ApiBaseService } from '../../../shared/shared/services/apibase.service';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 declare var _: any;
 declare var gapi: any;

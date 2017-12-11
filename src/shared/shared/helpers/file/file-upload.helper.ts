@@ -1,4 +1,4 @@
-import { ApiBaseService } from '../../services/apibase.service';
+import { ApiBaseService } from '../../../services/apibase.service';
 
 export class FileUploadHelper {
   apiBaseService: ApiBaseService;

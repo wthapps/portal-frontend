@@ -27,7 +27,7 @@ import { ZMediaShareListComponent } from './list/list.component';
 import { MediaListHeaderComponent } from './list/media-list-header.component';
 import { ZMediaShareItemComponent } from './list/item/item.component';
 
-import { PhotoService } from '../../services/photo.service';
+import { PhotoService } from '../../../services/photo.service';
 
 import { PartialsPhotoSharingModule } from './modal/sharing/sharing.module';
 import { SliderModule } from 'primeng/components/slider/slider';

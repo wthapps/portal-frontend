@@ -3,7 +3,7 @@ import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
-import { ApiBaseService } from '../../../shared/shared/services/apibase.service';
+import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { Constants } from '../../../shared/constant/config/constants';
 import { Group } from '../../group/group.model';
 import { _contact } from '../../shared/utils/contact.functions';

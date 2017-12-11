@@ -5,8 +5,8 @@ import { CookieService, CookieOptions } from 'ngx-cookie';
 
 import { LoadingService } from '../loading/loading.service';
 import { Constants } from '../../../constant/config/constants';
-import { UserService } from '../../services/user.service';
-import { ApiBaseService } from '../../services/apibase.service';
+import { UserService } from '../../../services/user.service';
+import { ApiBaseService } from '../../../services/apibase.service';
 import { Plan } from '../../models/plan.model';
 
 @Component({

@@ -6,7 +6,7 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { Record } from './record';
 import { MyDNSService } from './dns.service';
 
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { Constants } from '@wth/shared/constant/config/constants';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BaseEntityService } from '@shared/shared/services/base-entity-service';
-import { ApiBaseService } from '@shared/shared/services/apibase.service';
+import { BaseEntityService } from '@shared/services/base-entity-service';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { MixedEntity } from './mixed-entity.model';
 
 @Injectable()

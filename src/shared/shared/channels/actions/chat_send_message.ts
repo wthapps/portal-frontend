@@ -1,10 +1,10 @@
-import { ServiceManager } from '../../services/service-manager';
 import { Processable } from './processable';
+import { ServiceManager } from '@wth/shared/services';
 
 declare let _:any;
 
 export class ChatSendMessage implements Processable {
-  constructor(private serviceManager:ServiceManager) {
+  constructor(private serviceManager: ServiceManager) {
 
   }
 

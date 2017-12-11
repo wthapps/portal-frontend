@@ -26,7 +26,7 @@ import { ChatSupportDirective } from './chat-support.directive';
 import { AppearanceChannel } from './shared/channel/appearance.channel';
 import { ChatSupportChannel } from './shared/channel/chat-support.channel';
 import { NotificationChannel } from './shared/channel/notification.channel';
-import { ApiBaseService } from '../../services/apibase.service';
+import { ApiBaseService } from '../../../services/apibase.service';
 import { Constants } from '../../../constant/config/constants';
 
 const ChatSupportView = {

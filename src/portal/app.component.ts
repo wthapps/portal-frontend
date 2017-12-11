@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 
-import { UserService } from '../shared/shared/services/user.service';
+import { UserService } from '../shared/services/user.service';
 import { Config } from '../shared/constant/config/env.config';
 
 declare let $: any;

@@ -5,7 +5,7 @@ import { ChatSupportBaseComponent } from './chat-support-base.component';
 import { MessageService } from './message/message.service';
 import { ConversationService } from './conversation/conversation.service';
 import { ChatSupportChannel } from './shared/channel/chat-support.channel';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../../services/user.service';
 
 
 declare var _: any;

@@ -9,8 +9,8 @@ import { Observer } from 'rxjs/Observer';
 import { CookieService } from 'ngx-cookie';
 
 import { CableService } from '../../../../channels/cable.service';
-import { UserService } from '../../../../services/user.service';
-import { ApiBaseService } from '../../../../services/apibase.service';
+import { UserService } from '../../../../../services/user.service';
+import { ApiBaseService } from '../../../../../services/apibase.service';
 import { Constants } from '../../../../../constant/config/constants';
 import { ApiConfig } from '../../../../../constant/config/api.config';
 

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ZMediaTaggingService } from './tagging/tagging.service';
 import { TaggingElComponent } from './tagging/tagging-el.component';
-import { ApiBaseService } from '../../../services/apibase.service';
+import { ApiBaseService } from '../../../../services/apibase.service';
 
 
 declare var $: any;

@@ -7,10 +7,10 @@ import 'rxjs/add/operator/switchMap';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ZMediaSharingService } from './sharing.service';
 import { Constants } from '../../../../../constant/config/constants';
-import { ApiBaseService } from '../../../../services/apibase.service';
+import { ApiBaseService } from '../../../../../services/apibase.service';
 import { Router } from '@angular/router';
 import { WthConfirmService } from '../../../confirmation/wth-confirm.service';
-import { CommonEventService } from '../../../../services/common-event/common-event.service';
+import { CommonEventService } from '../../../../../services/common-event/common-event.service';
 
 declare var $: any;
 declare var _: any;

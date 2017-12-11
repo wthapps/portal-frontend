@@ -84,6 +84,35 @@
       }
     },
     {
+      "name": "media",
+      "root": "src",
+      "outDir": "dist/media",
+      "assets": [
+        "assets"
+      ],
+      "index": "media/index.html",
+      "main": "media/main.ts",
+      "polyfills": "media/polyfills.ts",
+      "test": "media/test.ts",
+      "tsconfig": "media/tsconfig.app.json",
+      "testTsconfig": "media/tsconfig.spec.json",
+      "prefix": "",
+      "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../node_modules/font-awesome/css/font-awesome.min.css",
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "media/styles/media.scss"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts",
+        "stag": "environments/environment.stag.ts"
+      }
+    },
+    {
       "name": "contact",
       "root": "src",
       "outDir": "dist/contact",

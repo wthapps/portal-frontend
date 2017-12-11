@@ -6,7 +6,7 @@ import 'rxjs/add/operator/debounceTime';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ListComponent } from '../../ng2-hd/list/components/list.component';
-import { ApiBaseService } from '../../services/apibase.service';
+import { ApiBaseService } from '../../../services/apibase.service';
 
 
 declare var _: any;

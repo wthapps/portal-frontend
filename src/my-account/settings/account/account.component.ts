@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 
 
-import { UserService } from '@wth/shared/shared/services/user.service';
+import { UserService } from '@wth/shared/services/user.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';

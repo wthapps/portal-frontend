@@ -2,7 +2,7 @@ import { Component, OnInit, HostBinding, ViewChild, Input } from '@angular/core'
 import { ZContactService } from '../services/contact.service';
 import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
 import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oauth.component';
-import { CommonEventService } from '../../../shared/shared/services/common-event/common-event.service';
+import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 
 import { Constants } from '../../../shared/constant/config/constants';
 
