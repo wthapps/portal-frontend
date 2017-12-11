@@ -4,7 +4,6 @@ import { UserService } from '../../services/user.service';
 
 
 @Component({
-  moduleId: module.id,
   selector: 'introduction-modal',
   styleUrls: ['introduction.component.css'],
   templateUrl: 'introduction.component.html'

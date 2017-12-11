@@ -30,9 +30,9 @@ import { Router } from '@angular/router';
 import { ApiBaseService } from '@shared/shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/shared/services/photo.service';
+import * as Delta from 'quill-delta/lib/delta';
 
 const DEBOUNCE_MS = 2500;
-
 
 @Component({
   selector: 'note-edit-modal',
@@ -131,10 +131,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
     $('.ql-editor').attr('tabindex', 1);
 
-
-    this.customEditor = this.editor.quill;
-
-    this.customEditor.options.readOnly = true;
+    // this.customEditor = this.editor.quill;
 
     // Add custom to whitelist
     let Font = Quill.import('formats/font');
@@ -157,11 +154,73 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     DividerBlot.tagName = 'hr';
     Quill.register(DividerBlot);
 
+    this.extendClipboard();
+    this.customEditor = new Quill('#editor', {
+      modules: {
+        toolbar: {
+          container: '#toolbar'
+        }
+      },
+      placeholder: 'Say something ...',
+      readOnly: false,
+      theme: 'snow',
+    });
+
+    this.customEditor.options.readOnly = true;
+
     this.registerIconBlot();
     this.registerImageBlot();
+    this.customizeKeyboardBindings();
+
     this.listenImageChanges();
     this.registerImageClickEvent();
+
+    console.debug('current clipboard: ', this.customEditor);
   }
+
+  extendClipboard() {
+    var Clipboard = Quill.import('modules/clipboard');
+
+    class PlainClipboard extends Clipboard {
+
+      onPaste(e: any) {
+        console.debug('inside onPaste. Do nothing now');
+      }
+    }
+
+    Quill.register('modules/clipboard', PlainClipboard, true);
+  }
+
+  customizeKeyboardBindings() {
+    console.debug('inside customizeKeyboardBindings: ');
+
+    // Remove default binding for spacebar key
+    delete this.customEditor.keyboard.bindings[32];
+
+    // Auto detect hyperlink context when typing
+    this.customEditor.keyboard.addBinding({
+      key: ' ',
+      collapsed: true,
+      prefix: / (www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)$/,
+      handler: function(range, context) {
+
+        let [line, offset] = this.customEditor.getLine(range.index);
+        let link = context.prefix.split(' ').pop();
+        console.debug('range ', range, context, link);
+        console.debug('Delta ', this.delta, line, offset);
+        let fullUrl = link.includes('http') ? link : `https://${link}`;
+
+        this.customEditor.updateContents(new Delta().retain(range.index - link.length)
+          .insert(link, {link: fullUrl})
+          .delete(link.length)
+          .insert(' '));
+        this.customEditor.setSelection(range.index + 1);
+        this.customEditor.format('link', true, Quill.sources.USER);
+      }.bind(this)
+    });
+
+
+  };
 
   onToEditor(e: any) {
     if (e.keyCode == 13) { // enter
@@ -280,11 +339,9 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
   listenImageChanges() {
     this.photoService.modifiedPhotos$
-    // .filter((object: any) => _.get(object, 'payload.post_uuid', -99) == this.item.uuid || _.get(object, 'payload.post_uuid', -99) == _.get(this.item, 'parentItem.uuid'))
       .takeUntil(this.destroySubject.asObservable())
       .subscribe((object: any) => {
         console.debug('modifiedPhotos - note: ', object);
-        // let post: SoPost = _.get(object, 'payload.post');
         switch (object.action) {
           case 'update':
             let updatedPhoto = object.payload.photo;
@@ -347,13 +404,11 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.store.select(fromRoot.getCurrentNote)
       .takeUntil(Observable.merge(this.closeSubject, this.destroySubject))
       .subscribe((note: Note) => {
-        console.debug('update form value: ', note);
         this.updateFormValue(note);
       });
   }
 
   assignFormValue(data: Note) {
-    console.debug('assignFormValue: note - ', data);
     this.form = this.fb.group({
       'title': [_.get(data, 'title', '')],
       'content': [_.get(data, 'content', ''), Validators.compose([Validators.required])],

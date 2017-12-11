@@ -15,7 +15,6 @@ const DEFAULT_SETTING: any = {
 };
 
 @Component({
-  moduleId: module.id,
   selector: 'z-contact-setting',
   templateUrl: 'contact-settings.component.html'
 })

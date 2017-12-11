@@ -342,10 +342,14 @@ body {
         .ui-panelmenu-header {
           margin-left: 0;
           margin-right: 0;
+          border-color: transparent;
           .ui-panelmenu-headerlink-hasicon {
             margin: 0;
             padding: 10px 15px 10px 45px;
             line-height: 1.2;
+            background-color: transparent;
+            border-color: transparent;
+            color: $text-color;
             &:hover {
               //background-color: lighten(#d8d8d8, 5%);
             }

@@ -78,6 +78,7 @@ import { HttpClientModule } from '@angular/common/http';
 // import { BrowserModule } from '@angular/platform-browser';
 import { WthInterceptor } from './services/wth-interceptor';
 import { ClientDetectorService } from './services/client-detector.service';
+import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 
 /**
@@ -176,6 +177,7 @@ export class SharedModule {
         WthInterceptor,
         CountryService,
         ConfirmationService,
+        WthConfirmService,
         CookieService,
         StorageService,
         HandlerService,

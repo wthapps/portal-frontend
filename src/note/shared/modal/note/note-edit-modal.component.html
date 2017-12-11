@@ -8,9 +8,10 @@
                placeholder="Title">
       </div>
       <div class="form-group">
-        <p-editor #editor formControlName="content">
-          <p-header>
-            <div class="ql-format-group">
+        <!--<p-editor #editor formControlName="content">-->
+          <!--<p-header>-->
+        <div class="ui-editor-toolbar ui-widget-header ui-corner-top ql-toolbar ql-snow" id="toolbar">
+            <div class="ql-format-group" >
               <div class="ql-formats">
                 <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()"><i
                   class="fa fa-reply"></i></button>
@@ -165,10 +166,12 @@
                 <button class="ql-clean"></button>
               </div>-->
             </div>
+            <div id="editor" class="ql-editor"></div>
+        </div>
+        </div>
 
-          </p-header>
-        </p-editor>
-      </div>
+        <!--</p-header>-->
+        <!--</p-editor>-->
 
       <hr class="divider">
 
