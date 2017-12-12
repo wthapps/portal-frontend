@@ -40,7 +40,7 @@ import { environment } from '@env/environment';
     ZNoteMySharingModule,
     ZNoteSearchModule,
     ZNoteSharedWithMeModule,
-    // ZNoteMyProfileModule,
+    ZNoteMyProfileModule,
     ZNoteSettingsModule,
     ZNoteTrashModule,
     ZNotePhotoModule,

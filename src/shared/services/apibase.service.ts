@@ -8,6 +8,7 @@ import 'rxjs/add/observable/throw';
 import { CookieService } from 'ngx-cookie';
 import { Constants } from '../constant/config/constants';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { RequestMethod, ResponseContentType } from '@angular/http';
 
 
 
@@ -92,17 +93,17 @@ export class ApiBaseService {
       .catch(this.handleError);
   }
 
-  download(path: string, body: any=''): Observable<HttpResponse<any>> {
+  download(path: string, body: any=''): Observable<any> {
     if (typeof body == 'object') {
       body = JSON.stringify(body);
     }
+    this.buildOptions();
     // TODO fix
-    return null;
-    // return this.http.post(this.baseUrl + path, body, {
-    //   method: RequestMethod.Post,
-    //   responseType: ResponseContentType.Blob,
-    //   headers: this.headers
-    // }).take(1);
+    // return null;
+    return this.http.post(this.baseUrl + path, body, {
+      responseType: 'blob',
+      headers: this.headers
+    }).take(1);
   }
 
   paramsToString(params: any): string {

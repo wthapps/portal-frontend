@@ -40,7 +40,7 @@ export class ZNoteSharedModalNoteViewComponent implements AfterViewInit {
 
   pdfDownload() {
     this.api.download('note/notes/pdf_download/' + this.data.id).subscribe((res: any) => {
-      var blob = new Blob([res.blob()], {type: 'application/pdf'});
+      var blob = new Blob([res], {type: 'application/pdf'});
       saveAs(blob, this.data.title + '.pdf');
     })
   }

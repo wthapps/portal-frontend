@@ -60,6 +60,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   attachments: AbstractControl;
   files: Array<any> = new Array<any>();
 
+  private contentChange$: Observable<any>;
   private closeObs$: Observable<any>;
   private closeSubject: Subject<any> = new Subject<any>();
   private noSaveSubject: Subject<any> = new Subject<any>();
@@ -68,6 +69,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   private parentId: string;
   private noSave$: Observable<any>;
   private defaultImg: string = Constants.img.default;
+  private editorElement: any;
 
   constructor(private fb: FormBuilder,
               private noteService: ZNoteService,
@@ -105,12 +107,15 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
   registerAutoSave() {
     // Auto save
-    this.form.valueChanges
-      .takeUntil(this.noSave$)
+    console.debug('inside auto save');
+    Observable.merge(
+      this.form.valueChanges,
+      Observable.fromEvent(this.customEditor, 'text-change'))
+      .takeUntil(Observable.merge(this.noSave$, this.closeSubject))
       .debounceTime(DEBOUNCE_MS)
-      .takeUntil(this.noSave$)
+      .takeUntil(Observable.merge(this.noSave$, this.closeSubject))
       .subscribe(() => {
-        if (this.editMode == Constants.modal.add) {
+        if (this.editMode == Constants.modal.add && !this.note.id) {
           this.onFirstSave();
         } else {
           this.updateNote();
@@ -125,8 +130,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
       }
     });
 
-    // Reset content of elemenet div.ql-editor to prevent HTML data loss
-    document.querySelector('.ql-editor').innerHTML = this.note.content;
     // this.updateFormValue(this.note);
 
     $('.ql-editor').attr('tabindex', 1);
@@ -167,6 +170,10 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     });
 
     this.customEditor.options.readOnly = true;
+    this.editorElement = document.querySelector('div.ql-editor');
+    // Reset content of elemenet div.ql-editor to prevent HTML data loss
+    document.querySelector('.ql-editor').innerHTML = this.note.content;
+
 
     this.registerIconBlot();
     this.registerImageBlot();
@@ -175,6 +182,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.listenImageChanges();
     this.registerImageClickEvent();
 
+    this.registerAutoSave();
     console.debug('current clipboard: ', this.customEditor);
   }
 
@@ -394,10 +402,11 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.assignFormValue(this.note);
     this.parentId = _.get(options, 'parent_id');
     this.modal.open();
+    this.noSaveSubject.next('');
     this.editMode = options.mode;
 
     this.updateCurrentNote();
-    this.registerAutoSave();
+    // this.registerAutoSave();
   }
 
   updateCurrentNote(): void {
@@ -411,13 +420,13 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   assignFormValue(data: Note) {
     this.form = this.fb.group({
       'title': [_.get(data, 'title', '')],
-      'content': [_.get(data, 'content', ''), Validators.compose([Validators.required])],
+      // 'content': [_.get(data, 'content', ''), Validators.compose([Validators.required])],
       'tags': [_.get(data, 'tags', [])],
       'attachments': [_.get(data, 'attachments', [])]
     });
 
     this.title = this.form.controls['title'];
-    this.content = this.form.get('content');
+    // this.content = this.form.get('content');
     this.tags = this.form.controls['tags'];
     this.attachments = this.form.controls['attachments'];
     this.note = Object.assign({}, new Note(), data);
@@ -425,30 +434,34 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
   updateFormValue(data: Note) {
     this.form.controls['title'].setValue(_.get(data, 'title', ''));
-    this.form.controls['content'].setValue(_.get(data, 'title', ''));
+    // this.form.controls['content'].setValue(_.get(data, 'title', ''));
     this.form.controls['tags'].setValue(_.get(data, 'tags', []));
     this.form.controls['attachments'].setValue(_.get(data, 'attachments', []));
 
     this.title = this.form.controls['title'];
-    this.content = this.form.get('content');
+    // this.content = this.form.get('content');
     this.tags = this.form.controls['tags'];
     this.attachments = this.form.controls['attachments'];
     this.note = Object.assign({}, new Note(), data);
   }
 
   undo() {
-    this.store.dispatch(new note.Undo());
+    // this.store.dispatch(new note.Undo());
+    //
+    // // Stop and restart auto-save feature
+    // this.noSaveSubject.next('');
+    // this.registerAutoSave();
 
-    // Stop and restart auto-save feature
-    this.noSaveSubject.next('');
-    this.registerAutoSave();
+    this.customEditor.undo();
   }
 
   redo() {
-    this.store.dispatch(new note.Redo());
+    // this.store.dispatch(new note.Redo());
+    //
+    // this.noSaveSubject.next('');
+    // this.registerAutoSave();
 
-    this.noSaveSubject.next('');
-    this.registerAutoSave();
+    this.customEditor.redo();
   }
 
   divider() {
@@ -489,10 +502,10 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
   onSubmit(value: any) {
     if (this.editMode == Constants.modal.add) {
-      this.store.dispatch(new note.Add({...value, parent_id: this.parentId}));
+      this.store.dispatch(new note.Add({...value, parent_id: this.parentId, content: this.editorElement.innerHTML}));
     }
     else {
-      this.store.dispatch(new note.Update({...value, id: this.note.id}));
+      this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
     }
     this.modal.close()
       .then(() => {
@@ -505,7 +518,8 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
    */
   onFirstSave() {
     if (this.editMode == Constants.modal.add) {
-      this.noteService.create({...this.form.value, parent_id: this.parentId}).toPromise()
+
+      this.noteService.create({...this.form.value, content: this.editorElement.innerHTML, parent_id: this.parentId}).toPromise()
         .then((res: any) => {
           this.note = res.data;
           this.editMode = Constants.modal.edit;
@@ -534,7 +548,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
   pdfDownload() {
     this.apiBaseService.download('note/notes/pdf_download/' + this.note.id).subscribe((res: any) => {
-      var blob = new Blob([res.blob()], {type: 'application/pdf'});
+      var blob = new Blob([res], {type: 'application/pdf'});
       saveAs(blob, this.note.title + '.pdf');
     })
   }
@@ -599,7 +613,9 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   }
 
   private updateNote() {
-    let noteObj: any = Object.assign({}, this.note, this.form.value);
+    if(!this.note.id)
+      return;
+    let noteObj: any = Object.assign({}, this.note, this.form.value, {content: this.editorElement.innerHTML});
     this.store.dispatch(new note.Update(noteObj));
   }
 }

@@ -5,7 +5,7 @@ import { ZNoteMyProfileComponent } from './my-profile.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: '', component: ZNoteMyProfileComponent}
+      {path: 'my-profile', component: ZNoteMyProfileComponent}
     ])
   ],
   exports: [RouterModule]
