@@ -1,6 +1,6 @@
 <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <modal-header [show-close]="true">
-    <h4 class="modal-title"> Create New Album</h4>
+    <h4 class="modal-title"> Create Album</h4>
   </modal-header>
   <modal-body>
     <form [formGroup]="form" novalidate>
@@ -41,9 +41,9 @@
     </form>
   </modal-body>
   <modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
     <button type="submit" class="btn btn-outline-primary btn-min" (click)="createAlbum()">
       Done
     </button>
-    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
   </modal-footer>
 </modal>

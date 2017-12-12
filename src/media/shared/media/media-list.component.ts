@@ -12,7 +12,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Router, UrlTree } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -73,7 +73,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   currentGroupByTime: string = 'date';
   groupBy: string;
 
-  //this is used in list pages
+  // this is used in list pages
   objects: Array<any> = new Array<any>();
   hasObjects: boolean = true;
 
@@ -85,7 +85,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   photos: any = [];
 
 
-  currentPath: string; //photos, albums, videos, playlist, share-with-me, favourites
+  currentPath: string; // photos, albums, videos, playlist, share-with-me, favourites
   nextLink: string;
 
   private pressingCtrlKey: boolean = false;

@@ -8,11 +8,14 @@ import { PhotoDetailComponent } from './photo-detail.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { PhotoService } from '@wth/shared/services';
+import { ModalModule } from '@wth/shared/modals/modals.module';
 
 @NgModule({
   imports: [
     ZMediaPhotoRoutingModule,
+
     ZMediaSharedModule.forRoot(),
+    ModalModule,
     SharedModule.forRoot(),
     CoreModule.forRoot()
 

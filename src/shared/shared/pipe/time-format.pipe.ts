@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import * as moment from 'moment';
 
-declare let moment:any;
 
 @Pipe({name: 'timeFormat'})
 export class TimeFormatPipe implements PipeTransform {

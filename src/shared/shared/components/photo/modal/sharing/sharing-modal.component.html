@@ -1,6 +1,6 @@
 <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <modal-header [show-close]="true">
-    <h4 class="modal-title"><i class="fa fa-share-alt"></i> Sharing</h4>
+    <h4 class="modal-title">Sharing</h4>
   </modal-header>
   <modal-body>
     <p>Contact</p>
@@ -44,10 +44,11 @@
   </modal-body>
   <modal-footer>
     <p *ngIf="hasChanged" class="text-left text-danger">You have made changes that you need to save!</p>
+
+    <button type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
     <button type="button" [ngClass]="{'text-disable': !hasChanged}"
             [disabled]="!hasChanged" (click)="save()"
             class="btn btn-outline-primary btn-min">Done
     </button>
-    <button type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
   </modal-footer>
 </modal>

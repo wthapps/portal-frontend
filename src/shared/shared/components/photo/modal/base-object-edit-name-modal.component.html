@@ -15,10 +15,11 @@
       </div>
     </modal-body>
     <modal-footer>
+
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
       <button [disabled]="!form.valid" (click)="onSubmit(form.value)" type="submit"
               class="btn btn-outline-primary btn-min">Done
       </button>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
     </modal-footer>
   </modal>
 </form>

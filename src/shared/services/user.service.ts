@@ -73,7 +73,7 @@ export class UserService extends ApiBaseService {
    * update user info
    * is_patch: You decide updating whole resource or a part of. Default value is false
    */
-  update(path: string, body: string): Observable<Response> {
+  update(path: string, body: any): Observable<Response> {
     // if(is_patch){
     return super.patch(path, body)
       .map((res: any) => {

@@ -66,7 +66,7 @@
     "katex": "^0.8.3",
     "lazysizes": "^4.0.1",
     "linkifyjs": "2.1.4",
-    "moment": "2.18.1",
+    "moment": "2.19.4",
     "ng2-bs3-modal": "0.10.4",
     "ng2-cable": "1.0.5",
     "ngx-chips": "1.5.9",

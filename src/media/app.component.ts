@@ -7,7 +7,6 @@ import { Constants, Config } from '@wth/shared/constant';
 import { ConfirmDialogModel } from '@wth/shared/shared/models/confirm-dialog.model';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
-
 /**
  * This class represents the main application component.
  */
@@ -22,9 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
 
-  constructor(private router: Router,
-              private wthConfirmService: WthConfirmService) {
-    console.log('Environment config', Config);
+  constructor(private router: Router, private wthConfirmService: WthConfirmService) {
 
     this.wthConfirmService.confirmDialog$.subscribe(
       (res: any) => {
