@@ -47,28 +47,22 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   };
 
   tabData: any = [
-    {
-      key: 'post',
+    {key: 'post',
       value: 'Post'
     },
-    {
-      key: 'about',
+    {key: 'about',
       value: 'About'
     },
-    {
-      key: 'members',
+    {key: 'members',
       value: 'Members'
     },
-    {
-      key: 'invitations',
+    {key: 'invitations',
       value: 'Invitations'
     },
-    {
-      key: 'join_requests',
+    {key: 'join_requests',
       value: 'Join Requests'
     }/*,
-    {
-      key: 'blacklist',
+    {key: 'blacklist',
       value: 'Blacklist'
     }*/
   ];

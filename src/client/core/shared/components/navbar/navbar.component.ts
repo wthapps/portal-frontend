@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Constants } from '../../config/constants';
 import { WTHNavigateService } from '../../services/wth-navigate.service';
@@ -25,8 +25,14 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   tooltip: any = Constants.tooltip;
   defaultAvatar: string = Constants.img.avatar;
   showUpdatedVersion: boolean = false;
+  showSearchMobile: boolean = false;
   newVersion: string;
   constants: any;
+
+  @HostListener('document:click', ['$event']) clickedOutside($event: any) {
+    // here you can hide your menu
+    this.showSearchMobile = false
+  }
 
   constructor(public userService: UserService,
               private navigateService: WTHNavigateService,
@@ -71,6 +77,18 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       e.stopPropagation();
       $(this).next('ul').toggle();
     });
+  }
+
+  clickedInside($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();  // <- that will stop propagation on lower layers
+    console.log('CLICKED INSIDE');
+  }
+
+  onShowSearchMobile($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    this.showSearchMobile = true;
   }
 
   logout() {
@@ -154,7 +172,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   markAllAsRead() {
     this.notificationService.markAllAsRead();
   }
-  
+
   gotIt() {
     this.userService.update('users/update', {term_policy_version: this.newVersion}).subscribe((res: any) => {
       console.log(this.userService.profile);

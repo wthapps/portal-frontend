@@ -4,7 +4,7 @@ import { FormGroup, AbstractControl } from '@angular/forms';
 import { TextBoxSearchComponent } from '../../../core/shared/components/header/search/components/textbox-search.component';
 import { ServiceManager } from '../../../core/shared/services/service-manager';
 
-declare var _:any;
+declare var _: any;
 
 /**
  * This class represents the navigation bar component.
@@ -22,14 +22,30 @@ export class ZMediaSharedHeaderComponent {
   search: string;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
+  searchDataDate: any = [
+    {key: 'anytime', value: 'Anytime'},
+    {key: 'today', value: 'Today'},
+    {key: 'yesterday', value: 'Yesterday'},
+    {key: 'last_week', value: 'Last week'},
+    {key: 'last_month', value: 'Last month'},
+    {key: 'custom', value: 'Custom...'}
+  ];
+  searchDataOwner: any = [
+    {key: 'anyone', value: 'Anyone'},
+    {key: 'me', value: 'Me'},
+    {key: 'not_m', value: 'Not me'},
+    {key: 'specific_person', value: 'Specific person'}
+  ];
+
   form: FormGroup;
+  searchDate: AbstractControl;
   searchFrom: AbstractControl;
   searchTo: AbstractControl;
   searchFileType: AbstractControl;
-  searchTags: AbstractControl;
+  searchExcludeWord: AbstractControl;
+  searchLabels: AbstractControl;
   searchOwner: AbstractControl;
-  searchGroup: AbstractControl;
-  searchContact: AbstractControl;
+  searchOwnerName: AbstractControl;
   searchAdvanced: boolean = false;
 
   constructor(public serviceManager: ServiceManager) {
@@ -43,6 +59,7 @@ export class ZMediaSharedHeaderComponent {
 
   onEscape(e?: any) {
     console.log('inside onEscape', e);
+    this.show = false;
   }
 
   onKey(e: any) {
@@ -75,22 +92,24 @@ export class ZMediaSharedHeaderComponent {
 
   createForm() {
     this.form = this.serviceManager.getFormBuilder().group({
+      'searchDate': [this.searchDataDate[0].key],
       'searchFrom': [''],
       'searchTo': [''],
       'searchFileType': [''],
-      'searchTags': [''],
-      'searchOwner': [''],
-      'searchGroup': [''],
-      'searchContact': ['']
+      'searchExcludeWord': [''],
+      'searchLabels': [''],
+      'searchOwner': [this.searchDataOwner[0].key],
+      'searchOwnerName': [''],
     });
 
+    this.searchDate = this.form.controls['searchDate'];
     this.searchFrom = this.form.controls['searchFrom'];
     this.searchTo = this.form.controls['searchTo'];
     this.searchFileType = this.form.controls['searchFileType'];
-    this.searchTags = this.form.controls['searchTags'];
+    this.searchExcludeWord = this.form.controls['searchExcludeWord'];
+    this.searchLabels = this.form.controls['searchLabels'];
     this.searchOwner = this.form.controls['searchOwner'];
-    this.searchGroup = this.form.controls['searchGroup'];
-    this.searchContact = this.form.controls['searchContact'];
+    this.searchOwnerName = this.form.controls['searchOwnerName'];
   }
 
   onSubmit(values: any) {

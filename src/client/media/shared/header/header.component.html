@@ -1,75 +1,99 @@
-<div class="navbar-form navbar-left">
-  <div class="navbar-searchTop">
+<div class="header-nav-left">
+  <a [routerLink]="['/']" class="navbar-brand" href="#">
+    <img src="/assets/images_new/logo.png" alt="WTHApps">
+  </a>
 
-    <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)"
-                    (onKeyUpEvent)="onKey($event)"
-                    [placeholder]="'Search something'" [showSearchAdvanced]="true"
-                    (onSearchAdvancedEvent)="onSearchAdvanced($event)">
+  <div class="navbar-form navbar-left hidden-xs navbar-form-search">
+    <div class="navbar-searchTop">
+      <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)"
+                      (onKeyUpEvent)="onKey($event)"
+                      [placeholder]="'Search something'" [showSearchAdvanced]="true"
+                      (onSearchAdvancedEvent)="onSearchAdvanced($event)">
 
-      <div class="input-group-suggestions" *ngIf="show">
-        <div class="list-group">
-          <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item" (click)="onNavigation(data)">
-            {{ data }}
-          </a>
+        <div class="input-group-suggestions" *ngIf="show">
+          <div class="list-group">
+            <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item" (click)="onNavigation(data)">
+              <i class="fa fa-picture-o"></i> {{ data }}
+            </a>
+          </div>
+          <div class="list-group-footer">
+            <a class="d-block" href="javascript:;" (click)="onEnter($event)">
+              Show more result
+            </a>
+          </div>
         </div>
-        <div class="list-group-footer">
-          <a class="d-block" href="javascript:;" (click)="onEnter($event)">
-            Show all result
-          </a>
+
+        <div class="input-group-suggestions navbar-searchTop-advanced" *ngIf="searchAdvanced">
+          <h4> Advance Search </h4>
+          <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate class="form-horizontal pt0">
+
+
+            <div class="form-group">
+              <label for="date_modified" class="col-sm-3 control-label">Date modified</label>
+              <div class="col-sm-9">
+                <select [formControl]="searchDate" name="date_modified" id="date_modified" class="form-control">
+                  <option *ngFor="let dataDate of searchDataDate" [value]="dataDate.key">{{ dataDate.value }}</option>
+                </select>
+              </div>
+            </div>
+            <div *ngIf="form.value.searchDate == 'custom'" class="form-group">
+              <label class="col-sm-3 control-label">&nbsp;</label>
+              <div class="col-sm-9">
+                <div class="row row-10">
+                  <div class="col-xs-6">
+                    <p-calendar [showIcon]="true" class="form-control-block" formControlName="searchFrom"></p-calendar>
+                  </div>
+                  <div class="col-xs-6">
+                    <p-calendar [showIcon]="true" formControlName="searchTo"></p-calendar>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">File Type</label>
+              <div class="col-sm-9">
+                <input [formControl]="searchFileType" type="text" class="form-control" placeholder="png, jpg,...">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Exclude word</label>
+              <div class="col-sm-9">
+                <input [formControl]="searchExcludeWord" type="text" class="form-control" placeholder="png, jpg,...">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Labels</label>
+              <div class="col-sm-9">
+                <input [formControl]="searchLabels" type="text" class="form-control" placeholder="dog, cat,...">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="searchOwner" class="col-sm-3 control-label">Owner</label>
+              <div class="col-sm-9">
+                <select [formControl]="searchOwner" name="searchOwner" id="searchOwner" class="form-control">
+                  <option *ngFor="let dataOwner of searchDataOwner" [value]="dataOwner.key">{{ dataOwner.value }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div *ngIf="form.value.searchOwner == 'specific_person'" class="form-group">
+              <label for="searchOwnerName" class="col-sm-3 control-label">&nbsp;</label>
+              <div class="col-sm-9">
+                <input [formControl]="searchOwnerName" name="searchOwnerName" id="searchOwnerName" type="text"
+                       class="form-control" placeholder="Enter name or email">
+              </div>
+            </div>
+
+            <div class="clearfix text-right">
+              <button type="reset" class="btn btn-outline-default mr10">Reset</button>
+              <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+          </form>
         </div>
-      </div>
 
-      <div class="input-group-suggestions navbar-searchTop-advanced" *ngIf="searchAdvanced">
-        <h5> Advance Search </h5>
-        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate class="form-horizontal pt0">
-          <div class="form-group">
-            <label class="col-sm-3 control-label">From</label>
-            <div class="col-sm-4">
-              <p-calendar [showIcon]="true" class="form-control-block" formControlName="searchFrom"></p-calendar>
-            </div>
-            <label class="col-sm-1 control-label">To</label>
-            <div class="col-sm-4">
-              <p-calendar [showIcon]="true" formControlName="searchTo"></p-calendar>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-3 control-label">File Type</label>
-            <div class="col-sm-9">
-              <input [formControl]="searchFileType" type="text" class="form-control" placeholder="png, jpg,...">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Tags</label>
-            <div class="col-sm-9">
-              <input [formControl]="searchTags" type="text" class="form-control" placeholder="dog, cat,...">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Owner</label>
-            <div class="col-sm-9">
-              <input [formControl]="searchOwner" type="text" class="form-control" placeholder="">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Group Share</label>
-            <div class="col-sm-9">
-              <input [formControl]="searchGroup" type="text" class="form-control" placeholder="">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Contact Share</label>
-            <div class="col-sm-9">
-              <input [formControl]="searchContact" type="text" class="form-control" placeholder="">
-            </div>
-          </div>
-
-          <div class="clearfix">
-            <button type="submit" class="btn btn-primary mr10">SEARCH</button>
-            <button type="reset" class="btn btn-outline-default">RESET</button>
-          </div>
-        </form>
-      </div>
-
-    </textbox-search>
+      </textbox-search>
+    </div>
   </div>
 </div>

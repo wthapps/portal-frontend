@@ -1,15 +1,26 @@
-<div class="input-group-wrap">
-  <div class="input-group">
+<div class="input-group-wrap input-group-search-header">
+  <form class="input-group">
+    <span class="input-group-btn input-group-left">
+        <button class="btn btn-default" type="button" (click)="onEnter()" pTooltip="{{ tooltip.search }}"
+                tooltipPosition="bottom">
+          <i class="fa fa-search"></i>
+        </button>
+      </span>
+
     <input #input type="text" name="search" class="form-control" [(ngModel)]="search" placeholder="{{ placeholder }}">
     <span class="input-group-btn">
-    <button *ngIf="showSearchAdvanced" class="btn btn-default" type="button" (click)="onShowSearchAdvanced()"
-            pTooltip="{{ tooltip.searchOptions }}" tooltipPosition="bottom">
-      <i class="fa fa-caret-down" [ngClass]="{'fa-caret-up': searchAdvanced, 'fa-caret-down': !searchAdvanced}"></i>
-    </button>
-    <button class="btn btn-default" type="button" (click)="onEnter()"
-            pTooltip="{{ tooltip.search }}" tooltipPosition="bottom"><i class="fa fa-search"></i></button>
-  </span>
-  </div>
+        <button *ngIf="search != ''" (click)="onEscape()" class="btn btn-default" type="reset" pTooltip="{{ tooltip.reset }}"
+                tooltipPosition="bottom">
+          <i class="fa fa-times"></i>
+        </button>
+
+        <button *ngIf="showSearchAdvanced" class="btn btn-default" type="button" (click)="onShowSearchAdvanced()"
+                pTooltip="{{ tooltip.searchOptions }}" tooltipPosition="bottom">
+          <i class="fa fa-sliders" aria-hidden="true"></i>
+          <!--<i class="fa fa-caret-down" [ngClass]="{'fa-caret-up': searchAdvanced, 'fa-caret-down': !searchAdvanced}"></i>-->
+        </button>
+     </span>
+  </form>
   <ng-content>
     <!--<div class="input-group-suggestions"></div>-->
   </ng-content>

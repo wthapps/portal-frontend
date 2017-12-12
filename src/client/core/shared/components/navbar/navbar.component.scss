@@ -124,6 +124,28 @@ wth-header-navbar {
     }
 
   }
+
+  &.header-nav-xs-show-search {
+    .navbar-form-search {
+      display: block !important;
+      .navbar-searchTop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1010;
+        background-color: #ffffff;
+        padding: 13px 15px;
+      }
+      .input-group-search-header {
+        .input-group {
+          .input-group-btn {
+            width: auto;
+          }
+        }
+      }
+    }
+  }
 }
 
 .header-nav-link {
