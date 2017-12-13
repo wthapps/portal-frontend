@@ -112,8 +112,8 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       //   noteStack.unshift(action['payload']);
       // }
 
-      return Object.assign({}, state, {notes: notes4,
-        // noteHistory: {stack: noteStack, stackId: 0}}
+      return Object.assign({}, state, {notes: notes4}
+        // , noteHistory: {stack: noteStack, stackId: 0}}
         );
     }
     case note.EDIT: {
