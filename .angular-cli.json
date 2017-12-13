@@ -116,6 +116,38 @@
       }
     },
     {
+      "name": "social",
+      "root": "src",
+      "outDir": "dist/social",
+      "assets": [
+        "assets"
+      ],
+      "index": "social/index.html",
+      "main": "social/main.ts",
+      "polyfills": "social/polyfills.ts",
+      "test": "social/test.ts",
+      "tsconfig": "social/tsconfig.app.json",
+      "testTsconfig": "social/tsconfig.spec.json",
+      "prefix": "",
+      "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../node_modules/font-awesome/css/font-awesome.min.css",
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "social/styles/social.scss"
+      ],
+      "scripts": [
+        "../node_modules/moment/min/moment.min.js",
+        "../node_modules/file-saver/FileSaver.js"
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts",
+        "stag": "environments/environment.stag.ts"
+      }
+    },
+    {
       "name": "contact",
       "root": "src",
       "outDir": "dist/contact",
