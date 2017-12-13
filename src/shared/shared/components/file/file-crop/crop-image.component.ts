@@ -74,6 +74,7 @@ export class CropImageComponent implements AfterViewInit {
       this.cropper.destroy();
       this.cropper = null;
     }
+    // $('.cropper-container').remove();
   }
 
   done() {

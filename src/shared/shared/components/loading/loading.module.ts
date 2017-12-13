@@ -13,7 +13,7 @@ import { LoadingService } from './loading.service';
   ],
   declarations: [LoadingComponent],
   exports: [LoadingComponent],
-  providers: [LoadingService]
+  providers: []
 })
 
 export class LoadingModule {

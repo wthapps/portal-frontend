@@ -9,7 +9,7 @@ import { ZNotePhotoRoutingModule } from './photo-routing.module';
   imports: [
     ReactiveFormsModule,
     ZNotePhotoRoutingModule,
-    SharedModule.forRoot()
+    SharedModule
   ],
   declarations: [
     NotePhotoDetailComponent

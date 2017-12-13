@@ -8,7 +8,7 @@ import { ZNoteSettingsRoutingModule } from './settings-routing.module';
 @NgModule({
   imports: [
     ZNoteSettingsRoutingModule,
-    ZNoteSharedModule.forRoot()
+    ZNoteSharedModule
   ],
   declarations: [
     ZNoteSettingsComponent

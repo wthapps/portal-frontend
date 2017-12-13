@@ -8,7 +8,7 @@ import { ZNoteMySharingRoutingModule } from './my-sharing-routing.module';
 @NgModule({
   imports: [
     ZNoteMySharingRoutingModule,
-    ZNoteSharedModule.forRoot()
+    ZNoteSharedModule
   ],
   declarations: [
     ZNoteMySharingComponent

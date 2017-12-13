@@ -35,7 +35,7 @@ import { ModalModule } from '@shared/modals/modals.module';
     Ng2HdModule,
     CommonModule,
     ModalModule,
-    SharedModule.forRoot()
+    SharedModule
   ],
   declarations: [
     ZNoteSharedToolBarComponent,

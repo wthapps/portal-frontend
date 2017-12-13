@@ -14,7 +14,7 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
   imports: [
     ModalModule,
     ZNoteMyNoteRoutingModule,
-    ZNoteSharedModule.forRoot(),
+    ZNoteSharedModule,
   ],
   declarations: [
     ZNoteMyNoteComponent,

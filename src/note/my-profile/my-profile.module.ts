@@ -10,8 +10,8 @@ import { SharedModule } from '@shared/shared.module';
 @NgModule({
   imports: [
     ZNoteMyProfileRoutingModule,
-    SharedModule.forRoot(),
-    ZNoteSharedModule.forRoot()
+    SharedModule,
+    ZNoteSharedModule
   ],
   declarations: [
     ZNoteMyProfileComponent

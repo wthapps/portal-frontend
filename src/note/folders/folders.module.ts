@@ -8,7 +8,7 @@ import { ZNoteFoldersRoutingModule } from './folders-routing.module';
 @NgModule({
   imports: [
     ZNoteFoldersRoutingModule,
-    ZNoteSharedModule.forRoot(),
+    ZNoteSharedModule,
   ],
   declarations: [
     ZNoteFoldersComponent

@@ -79,6 +79,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { WthInterceptor } from './services/wth-interceptor';
 import { ClientDetectorService } from './services/client-detector.service';
 import { WthConfirmService } from './shared/components/confirmation/wth-confirm.service';
+import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
+// import { MessageService } from '../client/chat/shared/message/message.service';
+import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 
 /**
@@ -170,6 +174,7 @@ export class SharedModule {
       providers: [
         ApiBaseService,
         ClientDetectorService,
+        LoadingService,
         ServiceManager,
         UserService,
         AuthGuard,
@@ -195,7 +200,9 @@ export class SharedModule {
         PhotoService,
         SuggestionService,
         CommonEventService,
-        GenericFileService
+        GenericFileService,
+        ToastsService,
+        MessageService
       ]
     };
   }

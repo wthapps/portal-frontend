@@ -5,7 +5,7 @@ import { ZNoteSharedModule } from '../shared/shared.module';
 @NgModule({
   imports: [
     BaseHomeRoutingModule,
-    ZNoteSharedModule.forRoot()
+    ZNoteSharedModule
   ],
   declarations: [
   ],

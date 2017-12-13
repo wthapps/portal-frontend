@@ -40,10 +40,11 @@ import { environment } from '@env/environment';
     ZNoteMySharingModule,
     ZNoteSearchModule,
     ZNoteSharedWithMeModule,
-    ZNoteMyProfileModule,
+    // ZNoteMyProfileModule,
     ZNoteSettingsModule,
     ZNoteTrashModule,
     ZNotePhotoModule,
+    SharedModule.forRoot(),
     ZNoteSharedModule.forRoot(),
 
     StoreModule.forRoot(AppStore),

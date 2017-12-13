@@ -21,7 +21,7 @@ import { LoadingService } from './loading.service';
 declare var $: any;
 
 @Component({
-    selector: 'wth-loading',
+  selector: 'wth-loading',
   templateUrl: 'loading.component.html',
   styleUrls: ['loading.component.scss']
 })
@@ -44,6 +44,7 @@ export class LoadingComponent implements OnInit {
   }
 
   private show(action: boolean, el: string) {
+    console.debug('inside loading show: ', action, el);
     if (el && $(el).length) {
       if (action) {
         $(el).wrap('<div class="inside-loading"></div>');

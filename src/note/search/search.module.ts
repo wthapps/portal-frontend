@@ -8,7 +8,7 @@ import { ZNoteSearchRoutingModule } from './search-routing.module';
 @NgModule({
   imports: [
     ZNoteSearchRoutingModule,
-    ZNoteSharedModule.forRoot()
+    ZNoteSharedModule
   ],
   declarations: [
     ZNoteSearchComponent

@@ -8,7 +8,7 @@ import { ZNoteTrashComponent } from './trash.component';
 @NgModule({
   imports: [
     ZNoteTrashRoutingModule,
-    ZNoteSharedModule.forRoot()
+    ZNoteSharedModule
   ],
   declarations: [
     ZNoteTrashComponent

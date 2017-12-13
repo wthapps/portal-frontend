@@ -15,8 +15,6 @@ import { MessageService } from 'primeng/components/common/messageservice';
   declarations: [ToastsComponent],
   exports: [ToastsComponent],
   providers: [
-    ToastsService,
-    MessageService
   ]
 })
 
