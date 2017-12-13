@@ -1,13 +1,24 @@
+//
+//.#{$fw-css-prefix}, [class^='#{$fw-css-prefix}-'], [class*=' #{$fw-css-prefix}'] {
+//  font-family: 'wthapps' !important;
+//  speak: none;
+//  font-style: normal;
+//  font-weight: normal;
+//  font-variant: normal;
+//  text-transform: none;
+//  line-height: 1;
+//  /* Better Font Rendering =========== */
+//  -webkit-font-smoothing: antialiased;
+//  -moz-osx-font-smoothing: grayscale;
+//}
 
-.#{$fw-css-prefix}, [class^='#{$fw-css-prefix}-'], [class*=' #{$fw-css-prefix}'] {
-  font-family: 'wthapps' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  /* Better Font Rendering =========== */
+
+.#{$fw-css-prefix} {
+  display: inline-block;
+  font: normal normal normal #{$fa-font-size-base}/#{$fa-line-height-base} wthapps; // shortening font declaration
+  font-size: inherit; // can't have font-size inherit on line above, so need to override
+  text-rendering: auto; // optimizelegibility throws things off #1094
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }

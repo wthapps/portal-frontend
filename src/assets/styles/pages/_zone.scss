@@ -20,9 +20,10 @@
   h2 {
     margin: 0;
     padding: 0;
-    .fa {
-      font-size: 144px;
+    .fa, [class*='fw-'] {
+      font-size: 144px !important;
     }
+
   }
   h3 {
     font-size: 36px;

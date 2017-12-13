@@ -90,7 +90,7 @@ export let Constants = {
 
   noteMenuItems: [
     {name: 'My Notes', value: 'My notes', link: '/my-note', icon: 'fa fa-sticky-note'},
-    {name: 'Shared With Me', value: 'shared with me', link: '/shared-with-me', icon: 'fa fa-share-alt'},
+    {name: 'Shared With Me', value: 'shared with me', link: '/shared-with-me', icon: 'fw fw-shared-with-me'},
     {name: 'Trash', value: 'Trash', link: '/trash', icon: 'fa fa-trash-o'},
     // {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},
   ],
@@ -133,7 +133,7 @@ export let Constants = {
     {name: 'Photos', link: '/photos', icon: 'fa fa-photo'},
     {name: 'Albums', link: '/albums', icon: 'fa fa-file-photo-o'},
     {name: 'Favourites', link: '/favourites', icon: 'fa fa-star'},
-    {name: 'Shared with me', link: '/shared-with-me', icon: 'wthico-shared-with-me'},
+    {name: 'Shared with me', link: '/shared-with-me', icon: 'fw fw-shared-with-me'},
     {name: 'Shared by me', link: '/shared-by-me', icon: 'fa fa-share-alt'},
     {name: 'Search', link: '/search', icon: 'fa fa-search'}
   ],
