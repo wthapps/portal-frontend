@@ -29,8 +29,8 @@ import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/mod
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
-
-declare var saveAs: any;
+import { saveAs } from 'file-saver';
+// declare var saveAs: any;
 
 declare var $: any;
 declare var _: any;
@@ -399,8 +399,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     _.each(files, (file: any) => {
       this.mediaObjectService.download({id: file.id}).toPromise().then(
         (response: any) => {
-          var blob = new Blob([response.blob()], {type: file.content_type});
-          saveAs(blob, file.name);
+          var blob = new Blob([response], {type: file.content_type});
+          saveAs(blob, file.name + '.' + file.extension);
         },
         (error: any) => {
 

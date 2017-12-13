@@ -93,8 +93,8 @@ export class ApiBaseService {
       .catch(this.handleError);
   }
 
-  download(path: string, body: any=''): Observable<any> {
-    if (typeof body == 'object') {
+  download(path: string, body: any = ''): Observable<any> {
+    if (typeof body === 'object') {
       body = JSON.stringify(body);
     }
     this.buildOptions();

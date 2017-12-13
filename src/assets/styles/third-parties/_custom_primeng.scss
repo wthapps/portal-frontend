@@ -129,17 +129,26 @@ body {
 
   .ui-slider {
     .ui-slider-handle {
+      background-image: none !important;
       background-color: #F6F6F6;
       @include box-shadow(0px 0px 4px 0px rgba(0, 0, 0, 0.50));
       cursor: hand;
-      &:hover,
-      &:focus {
-        background-color: $color-inverse;
+      width: 1.2em !important;
+      height: 1.2em !important;
+      margin-top: -1px;
+    }
+    &:hover,
+    &:focus {
+      .ui-slider-handle {
+        width: 1.2em !important;
+        height: 1.2em !important;
+        background-image: none !important;
+        background-color: $color-inverse !important;
+        @include box-shadow(0px 0px 4px 0px rgba(0, 0, 0, 0.50) !important);
         cursor: grabbing;
         cursor: -moz-grabbing;
         cursor: -webkit-grabbing;
-      }
-    }
+      }}
   }
 
   .ui-chkbox {
