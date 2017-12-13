@@ -37,7 +37,7 @@
       <a class="btn btn-outline-primary btn-min" (click)="addRecipients(modal)">
         <i class="fa fa-envelope-open-o"></i> Invite new members</a>
 
-    <button class="btn btn-outline-secondary"
+    <button class="btn btn-outline-secondary" *ngIf="currentTab == TAB.PENDING.value"
             (click)="onResend()" [disabled]="selectedItems.length === 0"><i class="fa fa-envelope-open-o" aria-hidden="true" ></i> Resend</button>
     <button class="btn btn-outline-secondary"
             (click)="onRemove()" [disabled]="selectedItems.length === 0"><i class="fa fa-trash" aria-hidden="true" ></i> Remove</button>
@@ -51,7 +51,7 @@
     <tr>
       <th>
         <div>
-          <p-checkbox value="" label=""
+          <p-checkbox [value]="isSelectAll" label=""
                       [(ngModel)]="isSelectAll" binary="true" (onChange)="onSelectAll($event)"></p-checkbox>
         </div>
       </th>
@@ -76,13 +76,14 @@
       </th>
       <td><a rel="nofollow" target="_top"
              href="mailto:{{ item.recipient_email }}">{{ item.recipient_email }}</a></td>
-      <ng-container *ngIf="(currentTab == TAB.PENDING.value) && item; then pending_content else accepted_content"></ng-container>
+        <td *ngIf="currentTab === TAB.PENDING.value">{{ item.created_at | date:'y MMM d' }} {{ item.created_at | date:'H:mm:ss' }}</td>
+        <td *ngIf="currentTab === TAB.ACCEPTED.value">{{ item?.accepted_at | date: 'y MMM d' }} {{ item?.accepted_at | date:'H:mm:ss' }}</td>
       <td>
         <div>
           <button *ngIf="currentTab == TAB.PENDING.value" class="btn btn-outline-secondary"
                   (click)="onResend(item)"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Resend</button>
           <button class="btn btn-outline-secondary"
-                  (click)="onRemove(item)"><i class="fa fa-trash" aria-hidden="true"></i> Cancel</button>
+                  (click)="onRemove(item)"><i class="fa fa-trash" aria-hidden="true"></i> Remove</button>
         </div>
       </td>
     </tr>
@@ -93,12 +94,4 @@
 
 <ng-template #accepted_title>
   <th>Accepted date</th>
-</ng-template>
-
-<ng-template #pending_content let-item>
-  <td>{{ item.created_at | date:'yMMMd' }} {{ item.created_at | date:'H:mm:ss' }}</td>
-  <!--<td>{{ item.sent_count }}</td>-->
-</ng-template>
-<ng-template #accepted_content let-item>
-  <td>{{ item?.accepted_at | date: 'yMMMd' }} {{ item?.accepted_at | date:'H:mm:ss' }}</td>
 </ng-template>

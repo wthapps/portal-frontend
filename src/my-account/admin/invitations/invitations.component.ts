@@ -11,7 +11,6 @@ import { LoadingService } from '@wth/shared/shared/components/loading/loading.se
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'my-invitations',
   templateUrl: 'invitations.component.html',
   providers: [InvitationService]
@@ -49,6 +48,7 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
       this.currentTab = queryParam['tab'] || this.TAB.PENDING.value;
       this.currentTabTitle = _.find(this.TAB, ['value', this.currentTab]);
       this.selectedItems.length = 0;
+      this.isSelectAll = false;
       return queryParam;
     }).switchMap(() => {
       return this.invitationService.getByStatus({status: this.currentTab});

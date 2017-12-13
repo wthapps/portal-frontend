@@ -33,8 +33,8 @@ export class CropImageComponent implements AfterViewInit {
     , highlight: false
     , cropBoxMovable: true
     , cropBoxResizable: true
-    , minCropBoxWidth: 200
-    , minCropBoxHeight: 200
+    , minContainerWidth: 200
+    , minContainerHeight: 200
   };
 
   ngAfterViewInit(): void {
