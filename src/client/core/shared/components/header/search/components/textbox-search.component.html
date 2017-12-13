@@ -8,8 +8,8 @@
       </span>
 
     <input #input type="text" name="search" class="form-control" [(ngModel)]="search" placeholder="{{ placeholder }}">
-    <span class="input-group-btn">
-        <button *ngIf="search != ''" (click)="onEscape()" class="btn btn-default" type="reset" pTooltip="{{ tooltip.reset }}"
+    <span *ngIf="search && search.length > 0" class="input-group-btn">
+        <button (click)="onEscape()" class="btn btn-default" type="reset" pTooltip="{{ tooltip.reset }}"
                 tooltipPosition="bottom">
           <i class="fa fa-times"></i>
         </button>
