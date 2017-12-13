@@ -23,6 +23,7 @@ import { ZNoteSharedTrashActionBarComponent } from './toolbar/trash/trash-action
 import { ZNoteSharedBreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { ZNoteSharedLeftMenuComponent } from './toolbar/left-menu.component';
 import { ZNoteSharedHeaderComponent } from './header/header.component';
+import { ModalModule } from '@shared/modals/modals.module';
 
 
 /**
@@ -33,6 +34,7 @@ import { ZNoteSharedHeaderComponent } from './header/header.component';
   imports: [
     Ng2HdModule,
     CommonModule,
+    ModalModule,
     SharedModule.forRoot()
   ],
   declarations: [
@@ -54,6 +56,7 @@ import { ZNoteSharedHeaderComponent } from './header/header.component';
   ],
   exports: [
     SharedModule,
+    ModalModule,
     ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
     NoteListComponent,
