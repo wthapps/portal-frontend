@@ -103,17 +103,17 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let notes4: any = (state.listPermission.canAdd && existed) ? {...state.notes, ...hNote}: {...state.notes};
 
       // let noteStack: Note[] = [...state.noteHistory.stack];
-      let noteStack: Note[] = state.noteHistory.stack.slice(state.noteHistory.stackId);
-
-      if(noteStack.length >= UNDO_STACK_SIZE) {
-        noteStack.pop();
-        noteStack.unshift(action['payload']);
-      } else {
-        noteStack.unshift(action['payload']);
-      }
+      // let noteStack: Note[] = state.noteHistory.stack.slice(state.noteHistory.stackId);
+      //
+      // if(noteStack.length >= UNDO_STACK_SIZE) {
+      //   noteStack.pop();
+      //   noteStack.unshift(action['payload']);
+      // } else {
+      //   noteStack.unshift(action['payload']);
+      // }
 
       return Object.assign({}, state, {notes: notes4,
-        noteHistory: {stack: noteStack, stackId: 0}}
+        // noteHistory: {stack: noteStack, stackId: 0}}
         );
     }
     case note.EDIT: {
@@ -124,18 +124,18 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
     case note.RESET_CURRENT_NOTE: {
       return {...state, currentNote: new Note(), noteHistory: {id: null, stackId: 0, stack: []}};
     }
-    case note.UNDO: {
-      let stackId =  (state.noteHistory.stackId + 1 < state.noteHistory.stack.length ) ? state.noteHistory.stackId + 1 : state.noteHistory.stackId;
-      let currentNote = state.noteHistory.stack[stackId];
-      let noteHistory = {...state.noteHistory, stackId: stackId};
-      return {...state, currentNote: currentNote, noteHistory: noteHistory};
-    }
-    case note.REDO: {
-      let stackId = state.noteHistory.stackId > 0 ? state.noteHistory.stackId - 1 : 0;
-      let currentNote = state.noteHistory.stack[stackId];
-      let noteHistory = {...state.noteHistory, stackId: stackId};
-      return {...state, currentNote: currentNote, noteHistory: noteHistory};
-    }
+    // case note.UNDO: {
+    //   let stackId =  (state.noteHistory.stackId + 1 < state.noteHistory.stack.length ) ? state.noteHistory.stackId + 1 : state.noteHistory.stackId;
+    //   let currentNote = state.noteHistory.stack[stackId];
+    //   let noteHistory = {...state.noteHistory, stackId: stackId};
+    //   return {...state, currentNote: currentNote, noteHistory: noteHistory};
+    // }
+    // case note.REDO: {
+    //   let stackId = state.noteHistory.stackId > 0 ? state.noteHistory.stackId - 1 : 0;
+    //   let currentNote = state.noteHistory.stack[stackId];
+    //   let noteHistory = {...state.noteHistory, stackId: stackId};
+    //   return {...state, currentNote: currentNote, noteHistory: noteHistory};
+    // }
     case note.LOAD: {
       return {...state, loading: true};
     }

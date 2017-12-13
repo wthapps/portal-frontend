@@ -452,7 +452,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     // this.noSaveSubject.next('');
     // this.registerAutoSave();
 
-    this.customEditor.undo();
+    this.customEditor.history.undo();
   }
 
   redo() {
@@ -461,7 +461,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     // this.noSaveSubject.next('');
     // this.registerAutoSave();
 
-    this.customEditor.redo();
+    this.customEditor.history.redo();
   }
 
   divider() {
