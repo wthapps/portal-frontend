@@ -55,7 +55,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private subscriptionService: SubscriptionService,
     private toastsService: ToastsService
   ) {
-    console.log('Environment config', Config);
     this.commonEventService.filter((event: any) => event.channel == 'my_account').subscribe((event: any) => {
       this.doEvent(event);
     });

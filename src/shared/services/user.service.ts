@@ -201,7 +201,6 @@ export class UserService extends ApiBaseService {
   private setProfile(profile: any) {
     this.profile = profile;
     this._profile.next(Object.assign(this._profile.getValue(), profile));
-    console.debug('inside setProfile: ', this._profile);
   }
 }
 

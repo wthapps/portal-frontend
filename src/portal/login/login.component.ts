@@ -7,13 +7,14 @@ import {
   AbstractControl
 } from '@angular/forms';
 
-import { AppearancesChannelService } from '../../shared/shared/channels/appearances-channel.service';
+import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { CustomValidator } from '../../shared/shared/validator/custom.validator';
 import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
 import { Constants } from '../../shared/constant/config/constants';
+import { Ng2Cable } from 'ng2-cable';
 
 
 declare var $: any;
@@ -46,6 +47,7 @@ export class LoginComponent implements OnInit {
               private toastsService: ToastsService,
               private loadingService: LoadingService,
               private appearancesChannelService: AppearancesChannelService,
+              private ng2Cable: Ng2Cable,
               private authService: AuthService) {
     // if (this.userService.loggedIn) {
     //   this.router.navigate(['/account/setting/profile']);

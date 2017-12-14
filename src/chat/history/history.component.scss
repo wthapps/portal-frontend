@@ -1,0 +1,30 @@
+@import "../../assets/styles/global";
+
+.media-user-list-history {
+  .media-left {
+    .media-user {
+      width: 180px;
+    }
+    span.text-fade {
+      width: 110px;
+      display: block;
+      padding: 0 10px;
+    }
+  }
+  .media-body {
+    position: relative;
+    p {
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      line-height: 34px;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { AuthService } from '../../shared/services/auth.service';
-import { AppearancesChannelService } from '../../shared/shared/channels/appearances-channel.service';
+import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
 
 import { LoginComponent } from './login.component';
 import { LoginRoutingModule } from './login-routing.module';

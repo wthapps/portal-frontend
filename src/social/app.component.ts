@@ -23,7 +23,6 @@ export class AppComponent implements OnInit, OnDestroy {
   // confirmInfo$: Observable<ConfirmInfo>;
 
   constructor(private router: Router) {
-    console.log('Environment config', Config);
   }
 
   ngOnInit() {

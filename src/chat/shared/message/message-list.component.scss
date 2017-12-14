@@ -1,0 +1,19 @@
+@import "../../../assets/styles/partials/colors";
+
+.message-item-wrapper {
+  max-width: 730px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+  .message-item-dv {
+    .dropdown-menu {
+      background-color: red;
+    }
+
+    //& + .message-item-dv {
+    //  margin-top: 0px;
+    //}
+
+  }
+}
+

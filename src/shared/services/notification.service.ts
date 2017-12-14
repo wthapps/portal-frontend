@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../constant/config/constants';
-import { NotificationChannelService } from '../shared/channels/notification-channel.service';
+import { NotificationChannelService } from '../channels/notification-channel.service';
 import { UserService } from './user.service';
 import { WTHNavigateService } from './wth-navigate.service';
 

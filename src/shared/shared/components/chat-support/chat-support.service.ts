@@ -5,7 +5,7 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiBaseService } from '../../../services/apibase.service';
-import { NotificationChannelService } from '../../channels/notification-channel.service';
+import { NotificationChannelService } from '../../../channels/notification-channel.service';
 import { Constants } from '../../../constant/config/constants';
 
 declare var _: any;

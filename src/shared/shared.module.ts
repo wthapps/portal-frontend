@@ -25,9 +25,9 @@ import { StorageService } from './services/storage.service';
 import { HandlerService } from './services/handler.service';
 import { WTHNavigateService } from './services/wth-navigate.service';
 import { NotificationService } from './services/notification.service';
-import { NotificationChannelService } from './shared/channels/notification-channel.service';
-import { AppearancesChannelService } from './shared/channels/appearances-channel.service';
-import { ChannelService } from './shared/channels/channel.service';
+import { NotificationChannelService } from './channels/notification-channel.service';
+import { AppearancesChannelService } from './channels/appearances-channel.service';
+import { ChannelService } from './channels/channel.service';
 import { PhotoModalDataService } from './services/photo-modal-data.service';
 import { PhotoUploadService } from './services/photo-upload.service';
 import { UrlService } from './services/url.service';
@@ -81,6 +81,7 @@ import { WthConfirmService } from './shared/components/confirmation/wth-confirm.
 import { LoadingService } from './shared/components/loading/loading.service';
 import { MessageService } from 'primeng/components/common/messageservice';
 import { ToastsService } from './shared/components/toast/toast-message.service';
+import { Ng2CableModule } from 'ng2-cable';
 
 
 /**
@@ -98,8 +99,8 @@ export * from './shared/components/navbar/navbar.module';
     HttpClientModule,
     // BrowserAnimationsModule,
     CookieModule.forRoot(),
-
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    Ng2CableModule,
   ],
   declarations: [
 
@@ -114,6 +115,7 @@ export * from './shared/components/navbar/navbar.module';
 
     // Third parties modules
     Ng2Bs3ModalModule,
+    Ng2CableModule,
 
     // WTHApps modules
     LoadingModule,
