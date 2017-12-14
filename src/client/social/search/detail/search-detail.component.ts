@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { ServiceManager } from '../../../core/shared/services/service-manager';
 import { SocialService } from '../../shared/services/social.service';
@@ -10,7 +10,8 @@ declare let _: any;
   moduleId: module.id,
   selector: 'z-social-search-detail',
   templateUrl: 'search-detail.component.html',
-  styleUrls: ['search-detail.component.css']
+  styleUrls: ['../search.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class ZSocialSearchResultDetailComponent implements OnDestroy {
@@ -30,6 +31,8 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
   filter: any;
   filterDate: any;
   nextLink: any;
+
+  showNavSearch:boolean = true;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -60,6 +63,13 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
           );
         }
       });
+
+
+    this.route.fragment.subscribe((f: any) => {
+      console.debug('search fragment: ', f);
+      this.showNavSearch = !(f=='detail');
+    });
+
   }
 
   ngOnDestroy() {

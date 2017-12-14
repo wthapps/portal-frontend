@@ -29,7 +29,7 @@ export const routes: Routes = [
   // {path: 'search/post', component: ZSocialSearchDetailComponent},
 
   {
-    path: 'search', component: ZSocialSearchResultComponent,
+    path: 'search',
     children: [
       {path: 'member', component: ZSocialSearchResultDetailComponent},
       {path: 'community', component: ZSocialSearchResultDetailComponent},

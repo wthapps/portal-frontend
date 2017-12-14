@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceManager } from '../../../core/shared/services/service-manager';
 
@@ -6,7 +6,8 @@ import { ServiceManager } from '../../../core/shared/services/service-manager';
   moduleId: module.id,
   selector: 'z-social-search-all',
   templateUrl: 'search-all.component.html',
-  styleUrls: ['search-all.component.css']
+  styleUrls: ['../search.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class ZSocialSearchResultAllComponent implements OnDestroy {
