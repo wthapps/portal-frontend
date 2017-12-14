@@ -75,14 +75,12 @@ import { BoxLoadingModule } from './shared/components/box-loading/box-loading.mo
 import { BoxNoDataModule } from './shared/components/box-no-data/box-no-data.module';
 import { DirectiveModule } from './shared/directive/directive.module';
 import { HttpClientModule } from '@angular/common/http';
-// import { BrowserModule } from '@angular/platform-browser';
 import { WthInterceptor } from './services/wth-interceptor';
 import { ClientDetectorService } from './services/client-detector.service';
 import { WthConfirmService } from './shared/components/confirmation/wth-confirm.service';
-import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
-// import { MessageService } from '../client/chat/shared/message/message.service';
-import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
+import { LoadingService } from './shared/components/loading/loading.service';
 import { MessageService } from 'primeng/components/common/messageservice';
+import { ToastsService } from './shared/components/toast/toast-message.service';
 
 
 /**
