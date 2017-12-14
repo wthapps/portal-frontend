@@ -31,6 +31,7 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
+import { ResizeImage } from "@shared/shared/utils/resize-image";
 
 const DEBOUNCE_MS = 2500;
 
@@ -70,6 +71,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   private noSave$: Observable<any>;
   private defaultImg: string = Constants.img.default;
   private editorElement: any;
+  resize: any;
 
   constructor(private fb: FormBuilder,
               private noteService: ZNoteService,
@@ -124,6 +126,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   }
 
   ngAfterViewInit(): void {
+    this.resize = new ResizeImage('modal-note-edit');
     $(document).on('hidden.bs.modal', '.modal', () => {
       if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
@@ -210,8 +213,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
         let [line, offset] = this.customEditor.getLine(range.index);
         let link = context.prefix.split(' ').pop();
-        console.debug('range ', range, context, link);
-        console.debug('Delta ', this.delta, line, offset);
         let fullUrl = link.includes('http') ? link : `https://${link}`;
 
         this.customEditor.updateContents(new Delta().retain(range.index - link.length)
@@ -367,31 +368,29 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   registerImageClickEvent() {
     let imgItems = Array.from(document.querySelector('.ql-editor').getElementsByTagName('img'));
     let photoIds = imgItems.map(item => item.dataset.id);
-    console.debug('register image click event: imgIds - ', photoIds);
 
-    imgItems.forEach(i => {
-        if (!i.onclick)
-          i.onclick = function (event: any) {
-            console.debug('event: ', event, event.srcElement.getAttribute('data-id'));
-            let photoId: string = event.srcElement.getAttribute('data-id');
-            if (photoId && photoId !== 'null') {
-              $('#modal-note-edit').css('z-index', '0');
-              $('.modal-backdrop').css('z-index', '0');
-              this.router.navigate([{
-                outlets: {
-                  modal: ['photos', photoId, {
-                    module: 'note',
-                    ids: photoIds
-                  }]
-                }
-              }], {queryParamsHandling: 'preserve', preserveFragment: true});
+    imgItems.forEach((i: any) => {
+      i.addEventListener("click", (event: any) => {
+        this.resize.edit(event.target);
+      });
+      i.addEventListener("dblclick", (event: any) => {
+        let photoId: string = event.srcElement.getAttribute('data-id');
+        if (photoId && photoId !== 'null') {
+          $('#modal-note-edit').css('z-index', '0');
+          $('.modal-backdrop').css('z-index', '0');
+          this.router.navigate([{
+            outlets: {
+              modal: ['photos', photoId, {
+                module: 'note',
+                ids: photoIds
+              }]
             }
-            else
-              console.warn('no photo id for this image: ', event.srcElement);
-          }.bind(this);
-      }
-    );
-
+          }], {queryParamsHandling: 'preserve', preserveFragment: true});
+        }
+        else
+          console.warn('no photo id for this image: ', event.srcElement);
+      });
+    });
   }
 
   open(options: any = {mode: Constants.modal.add, note: undefined, parent_id: undefined}) {
