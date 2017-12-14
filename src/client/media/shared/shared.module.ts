@@ -12,7 +12,13 @@ import { ZMediaTaggingService } from '../../core/shared/components/photo/modal/t
 import { ZMediaStore } from './store/media.store';
 import { CoreSharedModule } from '../../core/shared/shared.module';
 import { ZMediaSharedHeaderComponent } from './header/header.component';
+import { TagInputModule } from 'ngx-chips';
 
+TagInputModule.withDefaults({
+  tagInput: {
+    placeholder: '',
+  }
+});
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -20,6 +26,7 @@ import { ZMediaSharedHeaderComponent } from './header/header.component';
 
 @NgModule({
   imports: [
+    TagInputModule,
     CoreSharedModule.forRoot()
   ],
   declarations: [

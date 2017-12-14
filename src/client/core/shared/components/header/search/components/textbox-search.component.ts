@@ -64,7 +64,7 @@ export class TextBoxSearchComponent implements OnInit {
   }
 
   onShowSearchAdvanced() {
-    this.searchAdvanced = !this.searchAdvanced;
+    this.searchAdvanced = true;
     this.onSearchAdvancedEvent.emit({
       search: this.search,
       searchAdvanced: this.searchAdvanced

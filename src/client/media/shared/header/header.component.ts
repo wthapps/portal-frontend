@@ -41,7 +41,7 @@ export class ZMediaSharedHeaderComponent {
   searchDate: AbstractControl;
   searchFrom: AbstractControl;
   searchTo: AbstractControl;
-  searchFileType: AbstractControl;
+  searchFileTypes: AbstractControl;
   searchExcludeWord: AbstractControl;
   searchLabels: AbstractControl;
   searchOwner: AbstractControl;
@@ -95,7 +95,7 @@ export class ZMediaSharedHeaderComponent {
       'searchDate': [this.searchDataDate[0].key],
       'searchFrom': [''],
       'searchTo': [''],
-      'searchFileType': [''],
+      'searchFileTypes': [''],
       'searchExcludeWord': [''],
       'searchLabels': [''],
       'searchOwner': [this.searchDataOwner[0].key],
@@ -105,7 +105,7 @@ export class ZMediaSharedHeaderComponent {
     this.searchDate = this.form.controls['searchDate'];
     this.searchFrom = this.form.controls['searchFrom'];
     this.searchTo = this.form.controls['searchTo'];
-    this.searchFileType = this.form.controls['searchFileType'];
+    this.searchFileTypes = this.form.controls['searchFileTypes'];
     this.searchExcludeWord = this.form.controls['searchExcludeWord'];
     this.searchLabels = this.form.controls['searchLabels'];
     this.searchOwner = this.form.controls['searchOwner'];

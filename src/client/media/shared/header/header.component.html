@@ -10,9 +10,10 @@
                       [placeholder]="'Search something'" [showSearchAdvanced]="true"
                       (onSearchAdvancedEvent)="onSearchAdvanced($event)">
 
-        <div class="input-group-suggestions" *ngIf="show">
+        <div class="input-group-suggestions" *ngIf="show && !searchAdvanced">
           <div class="list-group">
-            <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item" (click)="onNavigation(data)">
+            <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item"
+               (click)="onNavigation(data)">
               <i class="fa fa-picture-o"></i> {{ data }}
             </a>
           </div>
@@ -24,7 +25,11 @@
         </div>
 
         <div class="input-group-suggestions navbar-searchTop-advanced" *ngIf="searchAdvanced">
-          <h4> Advance Search </h4>
+          <h4> Advance Search
+            <span (click)="searchAdvanced = false" class="pull-right text-fade can-click">
+              <i class="fa fa-times"></i>
+            </span>
+          </h4>
           <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate class="form-horizontal pt0">
 
 
@@ -51,29 +56,34 @@
             </div>
 
             <div class="form-group">
-              <label class="col-sm-3 control-label">File Type</label>
+              <label class="col-sm-3 control-label">Exclude word</label>
               <div class="col-sm-9">
-                <input [formControl]="searchFileType" type="text" class="form-control" placeholder="png, jpg,...">
+                <input [formControl]="searchExcludeWord" type="text" class="form-control"
+                       placeholder="Enter words that are excluded from result">
               </div>
             </div>
 
             <div class="form-group">
-              <label class="col-sm-3 control-label">Exclude word</label>
+              <label class="col-sm-3 control-label">File Type</label>
               <div class="col-sm-9">
-                <input [formControl]="searchExcludeWord" type="text" class="form-control" placeholder="png, jpg,...">
+                <tag-input formControlName="searchFileTypes" placeholder="png, jpg,..."></tag-input>
+                <!--<input [formControl]="searchFileType" type="text" class="form-control" placeholder="png, jpg,...">-->
               </div>
             </div>
+
             <div class="form-group">
               <label class="col-sm-3 control-label">Labels</label>
               <div class="col-sm-9">
-                <input [formControl]="searchLabels" type="text" class="form-control" placeholder="dog, cat,...">
+                <tag-input formControlName="searchLabels" placeholder="flower, sunny,..."></tag-input>
+                <!--<input [formControl]="searchLabels" type="text" class="form-control" placeholder="dog, cat,...">-->
               </div>
             </div>
             <div class="form-group">
               <label for="searchOwner" class="col-sm-3 control-label">Owner</label>
               <div class="col-sm-9">
                 <select [formControl]="searchOwner" name="searchOwner" id="searchOwner" class="form-control">
-                  <option *ngFor="let dataOwner of searchDataOwner" [value]="dataOwner.key">{{ dataOwner.value }}</option>
+                  <option *ngFor="let dataOwner of searchDataOwner" [value]="dataOwner.key">{{ dataOwner.value }}
+                  </option>
                 </select>
               </div>
             </div>
