@@ -13,8 +13,8 @@ import { SharedModule } from '@wth/shared/shared.module';
 @NgModule({
   imports: [
     CommonModule,
-    ZSocialSharedModule.forRoot(),
-    SharedModule.forRoot()
+    ZSocialSharedModule,
+    SharedModule
   ],
   declarations: [
     ZSocialSearchResultComponent,

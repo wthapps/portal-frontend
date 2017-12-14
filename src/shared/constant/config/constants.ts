@@ -35,8 +35,7 @@ export let Constants = {
 
   cookieOptionsArgs: {
     path: '/',
-    domain: Config.DOMAIN,
-    expires: new Date('2030-07-19')
+    domain: Config.DOMAIN
   },
   cookieKeys: {
     chatSupportId: 'wthapps-cs-id',

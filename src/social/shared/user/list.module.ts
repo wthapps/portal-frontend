@@ -7,7 +7,7 @@ import { SharedModule } from '@wth/shared/shared.module';
 
 @NgModule({
   imports: [
-    SharedModule.forRoot()
+    SharedModule
   ],
   declarations: [
     ZSocialShareProfileListComponent,

@@ -20,13 +20,14 @@ import { AuthGuard } from '@wth/shared/services';
 export const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full', canActivate: [AuthGuard]},
   {path: 'home', component: ZSocialHomeComponent, canActivate: [AuthGuard]},
-  {path: 'friends', component: ZSocialMembersComponent},
-  {path: 'notifications', component: ZSocialNotificationsComponent},
-  {path: 'my-profile', component: ZSocialMyProfileComponent},
-  // {path: 'search', component: ZSocialSearchResultComponent},
-  // {path: 'search/member', component: ZSocialSearchDetailComponent},
-  // {path: 'search/community', component: ZSocialSearchDetailComponent},
-  // {path: 'search/post', component: ZSocialSearchDetailComponent},
+  {path: '', canActivate: [AuthGuard], children: [
+    {path: 'friends', component: ZSocialMembersComponent},
+    {path: 'notifications', component: ZSocialNotificationsComponent},
+    {path: 'my-profile', component: ZSocialMyProfileComponent},
+    // {path: 'search', component: ZSocialSearchResultComponent},
+    // {path: 'search/member', component: ZSocialSearchDetailComponent},
+    // {path: 'search/community', component: ZSocialSearchDetailComponent},
+    // {path: 'search/post', component: ZSocialSearchDetailComponent},
 
   {
     path: 'search',
@@ -38,19 +39,20 @@ export const routes: Routes = [
     ]
   },
 
-  {
-    path: 'profile/:id', component: ZSocialProfileComponent,
-    children: [
-      {path: 'about', component: ZSocialProfileAboutComponent},
-      {path: 'post', component: ZSocialProfilePostComponent},
-      {path: 'friends', component: ZSocialProfileFriendComponent},
-      {path: '', redirectTo: 'post', pathMatch: 'full', canActivate: [AuthGuard]}
-    ]
-  },
-  {path: 'communities/:id', component: ZSocialCommunityDetailComponent},
-  {path: 'settings', component: ZSocialSettingComponent},
-  {path: 'communities', component: ZSocialCommunityListComponent},
-  {path: 'posts/:id', component: PostDetailComponent, outlet: 'detail'}
+    {
+      path: 'profile/:id', component: ZSocialProfileComponent,
+      children: [
+        {path: 'about', component: ZSocialProfileAboutComponent},
+        {path: 'post', component: ZSocialProfilePostComponent},
+        {path: 'friends', component: ZSocialProfileFriendComponent},
+        {path: '', redirectTo: 'post', pathMatch: 'full', canActivate: [AuthGuard]}
+      ]
+    },
+    {path: 'communities/:id', component: ZSocialCommunityDetailComponent},
+    {path: 'settings', component: ZSocialSettingComponent},
+    {path: 'communities', component: ZSocialCommunityListComponent},
+    {path: 'posts/:id', component: PostDetailComponent, outlet: 'detail'}
+  ]},
 ];
 
 @NgModule({

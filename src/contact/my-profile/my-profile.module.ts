@@ -12,8 +12,8 @@ import { SharedModule } from '../../shared/shared.module';
   imports: [
     ReactiveFormsModule,
     ZContactMyProfileRoutingModule,
-    CoreModule.forRoot(),
-    SharedModule.forRoot()
+    CoreModule,
+    SharedModule
   ],
   declarations: [
     ZContactMyProfileComponent

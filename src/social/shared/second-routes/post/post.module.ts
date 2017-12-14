@@ -24,7 +24,7 @@ import { PostService } from './shared/post.service';
     FormsModule,
     ReactiveFormsModule,
     Ng2HdModule,
-    SharedModule.forRoot(),
+    SharedModule,
     TagInputModule,
     BrowserAnimationsModule,
     InputTextareaModule

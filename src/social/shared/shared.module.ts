@@ -42,7 +42,7 @@ import { PostFooterComponent } from './second-routes/post/components/post-footer
     CoverProfileModule,
     PostModule,
     ZSocialShareProfileModule,
-    SharedModule.forRoot()
+    SharedModule
   ],
   declarations: [
     ZSocialFavoritesComponent,

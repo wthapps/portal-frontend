@@ -12,8 +12,8 @@ import { AutoCompleteModule, RadioButtonModule } from 'primeng/primeng';
     ZContactSettingsRoutingModule,
     RadioButtonModule,
     AutoCompleteModule,
-    // CoreModule.forRoot(),
-    SharedModule.forRoot()
+    // CoreModule,
+    SharedModule
   ],
   declarations: [
     SettingsComponent

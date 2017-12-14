@@ -10,9 +10,9 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
 @NgModule({
   imports: [
     CommonModule,
-    ZSocialSharedModule.forRoot(),
+    ZSocialSharedModule,
     ModalModule,
-    SharedModule.forRoot()
+    SharedModule
   ],
   declarations: [ZSocialHomeComponent],
   exports: [ZSocialHomeComponent],

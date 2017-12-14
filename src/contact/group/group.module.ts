@@ -14,7 +14,7 @@ import { GroupService } from './group.service';
     FormsModule,
     ReactiveFormsModule,
     Ng2Bs3ModalModule,
-    ContactSharedModule.forRoot()
+    ContactSharedModule
   ],
   declarations: [
     GroupEditModalComponent

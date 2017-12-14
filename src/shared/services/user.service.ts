@@ -24,6 +24,7 @@ export class UserService extends ApiBaseService {
 
   public readonly profile$: Observable<any>;
   public readonly soProfile$: Observable<any>;
+  private readonly EXP_TIME_MS = 24*60*60*365*1000;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
   private _soProfile: BehaviorSubject<any> = new BehaviorSubject<any>(new UserInfo());
   constructor(http: HttpClient, router: Router,
@@ -177,11 +178,13 @@ export class UserService extends ApiBaseService {
       response.data.profile_image = Constants.img.avatar;
     }
 
+    let cookieOptionsArgs = {...this.cookieOptionsArgs, expires: new Date( new Date().getTime() + this.EXP_TIME_MS)};
+
     // TODO move string constants to config file
-    this.cookieService.put('jwt', response.token, this.cookieOptionsArgs);
-    this.cookieService.put('profile', JSON.stringify(response.data), this.cookieOptionsArgs);
-    this.cookieService.put('logged_in', 'true', this.cookieOptionsArgs);
-    this.cookieService.put(Constants.cookieKeys.chatSupportId,  response.data.uuid, this.cookieOptionsArgs);
+    this.cookieService.put('jwt', response.token, cookieOptionsArgs);
+    this.cookieService.put('profile', JSON.stringify(response.data), cookieOptionsArgs);
+    this.cookieService.put('logged_in', 'true', cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.chatSupportId,  response.data.uuid, cookieOptionsArgs);
 
     this.loggedIn = true;
     this.profile = response.data;

@@ -19,10 +19,10 @@ import { InvitationModule } from '../../shared/shared/components/invitation/invi
     InvitationModule,
     ZContactRoutingModule,
 
-    ContactSharedModule.forRoot(),
+    ContactSharedModule,
 
-    CoreModule.forRoot(),
-    SharedModule.forRoot()
+    CoreModule,
+    SharedModule
   ],
   declarations: [
     ZContactListComponent,

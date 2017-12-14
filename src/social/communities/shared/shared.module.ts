@@ -5,8 +5,8 @@ import { SharedModule } from '@wth/shared/shared.module';
 
 @NgModule({
   imports: [
-    ZSocialSharedModule.forRoot(),
-    SharedModule.forRoot()
+    ZSocialSharedModule,
+    SharedModule
   ],
   // declarations: [
   //   ZSocialCommunityFormEditComponent,

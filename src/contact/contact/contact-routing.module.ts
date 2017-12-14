@@ -3,14 +3,16 @@ import { RouterModule } from '@angular/router';
 import { ZContactListComponent } from './contact-list/contact-list.component';
 import { ZContactEditPageComponent } from './contact-edit/contact-edit-page.component';
 import { ZContactDetailComponent } from './contact-detail/contact-detail.component';
+import { AuthGuard } from '@wth/shared/services';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'contacts', component: ZContactListComponent },
-      { path: 'contacts/:id', component: ZContactEditPageComponent },
-      { path: 'contacts/new', component: ZContactEditPageComponent },
-      { path: 'contacts/detail/:id', component: ZContactDetailComponent }
+      { path: 'contacts', component: ZContactListComponent, canActivate: [AuthGuard], children: [
+        { path: ':id', component: ZContactEditPageComponent },
+        { path: 'new', component: ZContactEditPageComponent },
+        { path: 'detail/:id', component: ZContactDetailComponent }
+      ] }
     ])
   ],
   exports: [RouterModule]

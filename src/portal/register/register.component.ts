@@ -14,7 +14,6 @@ declare var $: any;
  * This class represents the lazy loaded RegisterComponent.
  */
 @Component({
-  moduleId: module.id,
   selector: 'page-register',
   templateUrl: 'register.component.html',
   styleUrls: ['register.component.scss']

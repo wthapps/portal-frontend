@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     FormsModule,
     HttpClientModule,
-    SharedModule.forRoot(),
+    SharedModule,
   ],
   declarations: [
     ZSocialSettingComponent

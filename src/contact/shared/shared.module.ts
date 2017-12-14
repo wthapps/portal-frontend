@@ -47,8 +47,8 @@ import { SharedModule } from '../../shared/shared.module';
     TagInputModule,
     // BrowserAnimationsModule,
 
-    CoreModule.forRoot(),
-    SharedModule.forRoot()
+    CoreModule,
+    SharedModule
   ],
   declarations: [
     ZContactSharedListComponent,

@@ -12,8 +12,8 @@ import { SharedModule } from '@wth/shared/shared.module';
   imports: [
     CommonModule,
     ZSocialPhotoRoutingModule,
-    ZSocialSharedModule.forRoot(),
-    SharedModule.forRoot()
+    ZSocialSharedModule,
+    SharedModule
   ],
   declarations: [
     ZSocialPhotoComponent,

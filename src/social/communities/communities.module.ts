@@ -19,10 +19,10 @@ import { CoreModule } from '@wth/core/core.module';
     CommonModule,
     PostModule,
     Ng2HdModule,
-    ZSocialSharedModule.forRoot(),
-    ZSocialCommunitySharedModule.forRoot(),
-    SharedModule.forRoot(),
-    CoreModule.forRoot()
+    ZSocialSharedModule,
+    ZSocialCommunitySharedModule,
+    SharedModule,
+    CoreModule
 
   ],
   declarations: [
