@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { AuthGuard } from '@shared/services';
 import { ZChatSettingComponent } from './setting.component';
 
 @NgModule({
@@ -8,7 +9,8 @@ import { ZChatSettingComponent } from './setting.component';
     RouterModule.forChild([
       {
         path: 'setting',
-        component: ZChatSettingComponent
+        component: ZChatSettingComponent,
+        canActivate: [AuthGuard]
       }
     ])
   ],

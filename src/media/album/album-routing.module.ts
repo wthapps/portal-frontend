@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { ZMediaAlbumComponent } from './album.component';
 import { ZMediaAlbumListComponent } from './album-list.component';
 import { ZMediaAlbumDetailComponent } from './album-detail.component';
+import { AuthGuard } from '@wth/shared/services';
 
 @NgModule({
   imports: [
@@ -10,6 +11,7 @@ import { ZMediaAlbumDetailComponent } from './album-detail.component';
       {
         path: 'albums',
         component: ZMediaAlbumComponent,
+        canActivate: [AuthGuard],
         children: [
           {path: '', component: ZMediaAlbumListComponent},
           {path: '*', component: ZMediaAlbumListComponent}

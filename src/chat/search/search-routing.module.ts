@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '@shared/services';
 import { ZChatSearchComponent } from './search.component';
 
 @NgModule({
@@ -7,7 +8,8 @@ import { ZChatSearchComponent } from './search.component';
     RouterModule.forChild([
       {
         path: 'search',
-        component: ZChatSearchComponent
+        component: ZChatSearchComponent,
+        canActivate: [AuthGuard]
       }
     ])
   ],

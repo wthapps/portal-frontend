@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '@shared/services';
 import { ZChatContactSearchComponent } from './contact-search.component';
 
 @NgModule({
@@ -7,7 +8,8 @@ import { ZChatContactSearchComponent } from './contact-search.component';
     RouterModule.forChild([
       {
         path: 'search_new_contacts',
-        component: ZChatContactSearchComponent
+        component: ZChatContactSearchComponent,
+        canActivate: [AuthGuard]
       }
     ])
   ],

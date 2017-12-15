@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ZMediaMyProfileComponent } from './my-profile.component';
+import { AuthGuard } from '@wth/shared/services';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'my-profile', component: ZMediaMyProfileComponent}
+      {path: 'my-profile', component: ZMediaMyProfileComponent, canActivate: [AuthGuard]}
     ])
   ],
   exports: [RouterModule]

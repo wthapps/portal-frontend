@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '@shared/services';
 import { ZChatHistoryComponent } from './history.component';
 
 @NgModule({
@@ -7,7 +8,8 @@ import { ZChatHistoryComponent } from './history.component';
     RouterModule.forChild([
       {
         path: 'history',
-        component: ZChatHistoryComponent
+        component: ZChatHistoryComponent,
+        canActivate: [AuthGuard]
       }
     ])
   ],

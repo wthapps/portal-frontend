@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '@wth/shared/services';
 import { ZChatContactComponent } from './contact.component';
 import { ZChatContactOnlineComponent } from './contact-online.component';
 import { ZChatContactBlackListComponent } from './contact-black-list.component';
@@ -12,27 +13,30 @@ import { ZChatContactReceiveComponent } from './contact-receive.component';
     RouterModule.forChild([
       {
         path: 'contacts',
-        component: ZChatContactComponent
-      },
-      {
-        path: 'contacts/online',
-        component: ZChatContactOnlineComponent
-      },
-      {
-        path: 'contacts/blacklist',
-        component: ZChatContactBlackListComponent
-      },
-      {
-        path: 'contacts/sent_request',
-        component: ZChatContactSentRequestComponent
-      },
-      {
-        path: 'contacts/pending',
-        component: ZChatContactPendingComponent
-      },
-      {
-        path: 'contacts/receive',
-        component: ZChatContactReceiveComponent
+        component: ZChatContactComponent,
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: 'online',
+            component: ZChatContactOnlineComponent
+          },
+          {
+            path: 'blacklist',
+            component: ZChatContactBlackListComponent
+          },
+          {
+            path: 'sent_request',
+            component: ZChatContactSentRequestComponent
+          },
+          {
+            path: 'pending',
+            component: ZChatContactPendingComponent
+          },
+          {
+            path: 'receive',
+            component: ZChatContactReceiveComponent
+          }
+        ]
       },
     ])
   ],
