@@ -137,6 +137,7 @@
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.css",
         "../node_modules/font-awesome/css/font-awesome.min.css",
+        "../node_modules/primeng/resources/themes/omega/theme.css",
         "../node_modules/primeng/resources/primeng.min.css",
         "social/styles/social.scss"
       ],
@@ -240,7 +241,8 @@
       "scripts": [
         { "input": "../node_modules/quill/dist/quill.js", "lazy": false },
         { "input": "../node_modules/file-saver/FileSaver.js", "lazy": false },
-        { "input": "../node_modules/moment/moment.js", "lazy": false }
+        { "input": "../node_modules/moment/moment.js", "lazy": false },
+        "../src/shared/channels/common.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
