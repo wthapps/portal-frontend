@@ -17,6 +17,7 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
   type: string = '';
   result: any;
   group: any;
+  groups: any;
   showMore: boolean = false;
   sub: any;
   favourite: any; // toggle favourites status for members, communities
@@ -56,6 +57,7 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
           this.serviceManager.getApi().get(`zone/social_network/search/${this.group}`, query).subscribe(
             (res: any) => {
               this.result = res.data;
+              this.groups = Object.keys(this.result);
               this.nextLink = res.page_metadata.links.next;
             }
           );
