@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { AuthGuard } from '@wth/shared/services';
 import { MySettingComponent } from './setting.component';
-
 import { MyProfileComponent } from './profile/profile.component';
 import { MyAccountComponent } from './account/account.component';
 import { MyPreferencesComponent } from './preferences/preferences.component';
@@ -13,6 +13,7 @@ import { MyPreferencesComponent } from './preferences/preferences.component';
       {
         path: 'settings',
         component: MySettingComponent,
+        canActivate: [AuthGuard],
         children: [
           {path: 'preferences', component: MyPreferencesComponent},
           {path: 'account', component: MyAccountComponent},
