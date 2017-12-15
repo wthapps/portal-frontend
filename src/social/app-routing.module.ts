@@ -51,8 +51,8 @@ export const routes: Routes = [
     {path: 'communities/:id', component: ZSocialCommunityDetailComponent},
     {path: 'settings', component: ZSocialSettingComponent},
     {path: 'communities', component: ZSocialCommunityListComponent},
-    {path: 'posts/:id', component: PostDetailComponent, outlet: 'detail'}
   ]},
+  {path: 'posts/:id', component: PostDetailComponent, outlet: 'detail', canActivate: [AuthGuard]}
 ];
 
 @NgModule({
