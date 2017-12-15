@@ -133,6 +133,9 @@ body {
       cursor: hand;
       width: 1.2em !important;
       height: 1.2em !important;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
       margin-top: -1px;
     }
     &:hover,

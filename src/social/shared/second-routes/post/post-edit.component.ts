@@ -140,6 +140,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   close() {
     this.modal.close();
     this.photoSelectDataService.close();
+    $('.modal-backdrop').remove();
   }
 
   done(item: any) {
@@ -166,6 +167,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.photoSelectDataService.close();
 
     this.modal.close();
+
     // this.textarea.nativeElement.style.heigth = '50px';
     // console.log(this.textarea.nativeElement.style.heigth);
   }
