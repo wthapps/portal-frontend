@@ -9,8 +9,8 @@ import { Constants } from '../../../constant/config/constants';
 import { UserService } from '../../../services/user.service';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { ApiBaseService } from '../../../services/apibase.service';
-import { CommonEventService } from "../../../services/common-event/common-event.service";
 import { WthConfirmService } from '../confirmation/wth-confirm.service';
+import { CommonEventService } from '../../../../shared/services';
 
 
 declare var $: any;
@@ -39,6 +39,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   isProfileTab: boolean;
   currentGroup: string;
   commonEventSub: any;
+  constants: any;
   private destroySubject: Subject<any> = new Subject<any>();
 
   private currentFolderTree: any;
@@ -54,6 +55,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
     this.uuid = this.userService.getProfileUuid();
     this.urls = Constants.baseUrls;
+    this.constants = Constants;
   }
 
   ngOnInit() {
@@ -129,5 +131,13 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.commonEventSub.unsubscribe();
     this.destroySubject.unsubscribe();
+  }
+
+  redirect(key: any) {
+    if(key == 'term') {
+      window.location.href = Constants.baseUrls.app + "/policies/terms"
+    } else {
+      window.location.href = Constants.baseUrls.app + "/policies/privacy"
+    }
   }
 }

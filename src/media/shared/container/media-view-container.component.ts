@@ -504,11 +504,22 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
       case 'previewDetailsModal':
         let ids: any[] = _.map(this.selectedObjects, 'id');
-        this.router.navigate([
-          `${this.selectedObjects[0].object_type}s`,
-          this.selectedObjects[0].id,
-          {ids: ids, mode: 0, showDetail: true}, {queryParamsHandling: 'preserve', preserveFragment: true}
-        ]);
+        if (this.selectedObjects[0].object_type == 'album') {
+          this.router.navigate([{outlets: {detail: [
+              `${this.selectedObjects[0].object_type}s`,
+              this.selectedObjects[0].id,
+              {ids: ids, mode: 0, showDetail: true}
+            ]}}], {preserveQueryParams: true, preserveFragment: true}
+          );
+        } else {
+          this.router.navigate([{outlets: {modal: [
+              `${this.selectedObjects[0].object_type}s`,
+              this.selectedObjects[0].id,
+              {ids: ids, mode: 0, showDetail: true}
+            ]}}], {preserveQueryParams: true, preserveFragment: true}
+          );
+        }
+
 
         break;
       //  Add uploaded photos to album detail
@@ -517,7 +528,6 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         options = {};
         break;
     }
-    console.debug('OPENING modal', this.modal, options);
     if (this.modal) {
       this.modal.open(options);
     }

@@ -10,7 +10,6 @@ declare var _:any;
  * This class represents the navigation bar component.
  */
 @Component({
-  moduleId: module.id,
   selector: 'social-shared-header',
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.scss'],
