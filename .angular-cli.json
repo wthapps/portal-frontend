@@ -143,7 +143,7 @@
       "scripts": [
         "../node_modules/moment/min/moment.min.js",
         "../node_modules/file-saver/FileSaver.js",
-        "../src/shared/scripts/common.js"
+        "../src/shared/channels/common.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
@@ -175,7 +175,7 @@
       "scripts": [
         "../node_modules/moment/min/moment.min.js",
         "../node_modules/file-saver/FileSaver.js",
-        "../src/shared/scripts/common.js"
+        "../src/shared/channels/common.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
@@ -206,7 +206,7 @@
         "contact/styles/contact.scss"
       ],
       "scripts": [
-        "../src/shared/scripts/common.js"
+        "../src/shared/channels/common.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
