@@ -18,10 +18,10 @@
           <div class="btn-group dropup">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                     pTooltip="{{ tooltip.emoticons }}"
-                    tooltipPosition="top">
+                    tooltipPosition="top" (click)="showEmoji = true">
               <i class="fa fa-smile-o"></i>
             </button>
-            <ul class="dropdown-menu wth-emoji-dropdown content-overflow p5">
+            <ul class="dropdown-menu wth-emoji-dropdown content-overflow p5" *ngIf="showEmoji">
               <li>
                 <i *ngFor="let emoji of emojiData" class="wth-emoji wth-emoji-{{emoji | wthEmojisClass}}"
                    (click)="onEmojiClick(emoji)"></i>

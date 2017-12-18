@@ -52,6 +52,7 @@ export class CommentItemEditorComponent implements OnInit {
   files: any;
   emojiData: any[];
   user$: Observable<User>;
+  showEmoji: boolean;
 
   commentEditorForm: FormGroup;
   contentCtrl: AbstractControl;
@@ -103,6 +104,7 @@ export class CommentItemEditorComponent implements OnInit {
       return;
     }
 
+    this.showEmoji = false;
     this.hasUpdatedContent = true;
   }
 

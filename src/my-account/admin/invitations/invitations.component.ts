@@ -13,6 +13,7 @@ declare let _: any;
 @Component({
   selector: 'my-invitations',
   templateUrl: 'invitations.component.html',
+  styleUrls: ['invitations.component.scss'],
   providers: [InvitationService]
 })
 
@@ -48,11 +49,11 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
       this.currentTab = queryParam['tab'] || this.TAB.PENDING.value;
       this.currentTabTitle = _.find(this.TAB, ['value', this.currentTab]);
       this.selectedItems.length = 0;
-      this.isSelectAll = false;
       return queryParam;
     }).switchMap(() => {
       return this.invitationService.getByStatus({status: this.currentTab});
     }).subscribe((response: any) => {
+      this.isSelectAll = false;
       this.items = response.data;
     });
   }
@@ -75,7 +76,8 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
 
         console.log(event);
         this.invitationService.create({recipients: event.payload}).subscribe((response: any) => {
-            this.items = _.uniqBy([...this.items, ...response.data], 'recipient_email');
+            if(this.currentTab == this.TAB.PENDING.value)
+              this.items = _.uniqBy([...this.items, ...response.data], 'recipient_email');
             this.loadingService.stop('#loading');
             this.toaster.success('You have just sent invitation(s) successfully!');
           },
@@ -91,6 +93,7 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
 
   onSelect(item: any) {
     let selectedItem = _.find(this.selectedItems, (i: any) => i.uuid === item.uuid);
+
     if(!selectedItem) {
       this.selectedItems.push(item);
       item = Object.assign({},item, {selected: true});
@@ -104,6 +107,9 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
   }
 
   onSelectAll() {
+    if(this.items.length === 0) {
+      return;
+    }
     if(this.selectedItems.length !== this.items.length) {
       this.selectedItems = [...this.items];
       this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: true}));

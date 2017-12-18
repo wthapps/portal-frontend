@@ -51,16 +51,16 @@
     <tr>
       <th>
         <div>
-          <p-checkbox [value]="isSelectAll" label=""
-                      [(ngModel)]="isSelectAll" binary="true" (onChange)="onSelectAll($event)"></p-checkbox>
+          <p-checkbox [(ngModel)]="isSelectAll" binary="true" (onChange)="onSelectAll($event)"></p-checkbox>
         </div>
       </th>
-      <th>Email</th>
-      <ng-container *ngIf="currentTab == TAB.PENDING.value; else accepted_title">
-        <th>Sent date</th>
-        <!--<th>Number of sent</th>-->
-      </ng-container>
-      <th>Action</th>
+      <th class="email">Email</th>
+      <th class="date">{{ (currentTab == TAB.PENDING.value) ? 'Sent date' : 'Accepted date'}}</th>
+      <!--<ng-container *ngIf="currentTab == TAB.PENDING.value; else accepted_title">-->
+        <!--<th>Sent date</th>-->
+        <!--&lt;!&ndash;<th>Number of sent</th>&ndash;&gt;-->
+      <!--</ng-container>-->
+      <th class="action">Action</th>
 
     </tr>
     </thead>

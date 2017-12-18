@@ -13,6 +13,6 @@ export class AuthService {
   }
 
   loggedIn() {
-    return this.userService.loggedIn && this.cookieService.get('jwt') ;
+    return this.userService.loggedIn && this.cookieService.get('jwt') && this.cookieService.get('profile');
   }
 }

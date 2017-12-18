@@ -46,6 +46,9 @@ export class InvitationCreateModalComponent implements OnInit {
   }
 
   initialize() {
+    const control = <FormArray>this.form.get(this.type);
+    for ( let i = 0; i < control.controls.length; i++ )
+      control.removeAt(0);
     for (let i = 0; i < this.noOfCtrl; i++) {
       this.add();
     }

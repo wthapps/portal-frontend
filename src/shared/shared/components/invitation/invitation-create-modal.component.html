@@ -28,14 +28,14 @@
 
                 <div class="col-sm-4">
                   <div class="form-group no-label" [ngClass]="{
-                    'has-error': (!item['controls'].fullName.valid
-                                && item['controls'].fullName.touched),
-                    'has-success': (item['controls'].fullName.valid
-                                && item['controls'].fullName.touched
-                                && form.value.items[i].fullName.length > 0)}">
+                    'has-error': (!item['controls']?.fullName.valid
+                                && item['controls']?.fullName.touched),
+                    'has-success': (item['controls']?.fullName.valid
+                                && item['controls']?.fullName.touched
+                                && form.value.items[i]?.fullName.length > 0)}">
                     <input type="text" class="form-control" formControlName="fullName" placeholder="First name">
-                    <div *ngIf="!item['controls'].fullName.valid && item['controls'].fullName.touched">
-                      <span class="help-block text-danger" *ngIf="item['controls'].fullName.errors.required">
+                    <div *ngIf="!item['controls']?.fullName.valid && item['controls']?.fullName.touched">
+                      <span class="help-block text-danger" *ngIf="item['controls']?.fullName.errors.required">
                         First name is required
                       </span>
                     </div>
@@ -43,19 +43,18 @@
                 </div>
 
                 <div class="col-sm-8">
-
                   <div class="form-group no-label"
                        [ngClass]="{
-                    'has-error': (!item['controls'].email.valid
-                                && item['controls'].email.touched),
-                    'has-success': (item['controls'].email.valid
-                                && item['controls'].email.touched
+                    'has-error': (!item?.email?.valid
+                                && item?.email?.touched),
+                    'has-success': (item?.email?.valid
+                                && item?.email?.touched
                                 && form.value.items[i].email.length > 0)}">
                     <input type="email" email class="form-control" formControlName="email" placeholder="recipient-name@example.com">
                     <div
-                      *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
+                      *ngIf="!item?.email?.valid && item?.email?.touched">
                       <span
-                        *ngIf="!item['controls'].email.valid && item['controls'].email.errors.emailFormat"
+                        *ngIf="!item?.email?.valid && item?.email?.errors.emailFormat"
                         class="help-block text-danger">
                         Email is not valid
                       </span>

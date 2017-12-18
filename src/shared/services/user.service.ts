@@ -192,7 +192,8 @@ export class UserService extends ApiBaseService {
 
   private readUserInfo() {
     if (this.cookieService.get('logged_in')) {
-      this.setProfile(JSON.parse(this.cookieService.get('profile')));
+      if (this.cookieService.get('profile'))
+        this.setProfile(JSON.parse(this.cookieService.get('profile')));
 
       this.loggedIn = Boolean(this.cookieService.get('logged_in'));
     }
