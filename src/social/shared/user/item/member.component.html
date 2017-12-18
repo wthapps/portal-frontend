@@ -13,7 +13,7 @@
       {{ data.friend_count }} friends - {{ data.follower_count }} followers - {{ data.following_count }} following
     </div>
   </div>
-  <div class="media-right" style="min-width: 250px;">
+  <div class="media-right" style="min-width: 275px;">
     <div class="pull-right no-wrap">
       <div class="btn-group" role="group" aria-label="">
         <ng-template [ngIf]="data.friend_status == friendStatus.stranger">
@@ -22,9 +22,17 @@
           </button>
         </ng-template>
         <ng-template [ngIf]="data.friend_status == friendStatus.pending">
-          <button class="btn btn-outline-default" type="button">
-            <i class="fa fa-user-plus"></i> Friend Request Sent
-          </button>
+          <div class="btn-group">
+            <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+              Friend Requested <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li>
+                <a href="javascript:;" (click)="onCancelRequest(data)">Cancel Request</a>
+              </li>
+            </ul>
+          </div>
         </ng-template>
 
         <div class="btn-group" role="group" *ngIf="data.friend_status == friendStatus.accepted">
@@ -42,17 +50,19 @@
           </button>
         </ng-template>
 
-        <div class="btn-group" role="group" *ngIf="data.is_following">
-          <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-check"></i> Following <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li>
-              <a href="javascript:;" (click)="unfollow(data)">Unfollow</a>
-            </li>
-          </ul>
-        </div>
+        <ng-template [ngIf]="data.is_following">
+          <div class="btn-group">
+            <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-check"></i> Following <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li>
+                <a href="javascript:;" (click)="unfollow(data)">Unfollow</a>
+              </li>
+            </ul>
+          </div>
+        </ng-template>
       </div>
 
       <!--menu-->

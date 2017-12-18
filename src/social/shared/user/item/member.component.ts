@@ -62,7 +62,19 @@ export class ZSocialShareProfileMemberComponent {
     console.log('inside importToContacts');
   }
 
+  onCancelRequest(user: any) {
+    console.log('onCancelRequest:', user);
+
+    this.socialService.user.cancelFriendRequest(user.uuid).subscribe(
+      (res: any) => {
+        this.data.friend_status = 99;
+        console.log('res:', res);
+      },
+    );
+  }
+
   addFriend(user: any) {
+    console.log(user);
 
     this.socialService.user.addFriend(user.uuid).toPromise().then(
       (res: any) => {
