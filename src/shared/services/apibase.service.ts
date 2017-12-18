@@ -136,7 +136,12 @@ export class ApiBaseService {
 
   // TODO refactor
   private handleError(error: any | any): any {
+    if (error.status === 401 && error.statusText == 'Unauthorized') {
+      this.cookieService.put('logged_in', 'false');
+    }
+
     return Observable.throw(error);
+
 
     // redirect to login page if there is not a user logged in
     // if (error.status === 401 && error.statusText == 'Unauthorized') {

@@ -103,6 +103,9 @@ export class UserService extends ApiBaseService {
     // }
   }
 
+  validateSession(): Observable<any> {
+    return super.post('users/get_user').map(() => { return {valid: true}});
+  }
   /*
    * change current password
    */
