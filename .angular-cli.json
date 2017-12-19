@@ -97,35 +97,39 @@
     },
     {
       "name": "media",
-      "root": "src",
+      "root": "src/media",
       "outDir": "dist/media",
       "assets": [
-        "assets"
-      ],
-      "index": "media/index.html",
-      "main": "media/main.ts",
-      "polyfills": "media/polyfills.ts",
-      "test": "media/test.ts",
-      "tsconfig": "media/tsconfig.app.json",
-      "testTsconfig": "media/tsconfig.spec.json",
+      {
+        "glob": "**/*",
+        "input": "../assets/",
+        "output": "./assets/",
+        "allowOutsideOutDir": true
+      }],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
       "styles": [
-        "../node_modules/bootstrap/dist/css/bootstrap.css",
-        "../node_modules/font-awesome/css/font-awesome.min.css",
-        "../node_modules/primeng/resources/themes/omega/theme.css",
-        "../node_modules/primeng/resources/primeng.min.css",
-        "media/styles/media.scss"
+        "../../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../../node_modules/font-awesome/css/font-awesome.min.css",
+        "../../node_modules/primeng/resources/themes/omega/theme.css",
+        "../../node_modules/primeng/resources/primeng.min.css",
+        "styles/media.scss"
       ],
       "scripts": [
-        "../node_modules/moment/min/moment.min.js",
-        "../node_modules/file-saver/FileSaver.js",
-        "../src/shared/channels/common.js"
+        "../../node_modules/moment/min/moment.min.js",
+        "../../node_modules/file-saver/FileSaver.js",
+        "../../src/shared/channels/common.js"
       ],
-      "environmentSource": "environments/environment.ts",
+      "environmentSource": "../environments/environment.ts",
       "environments": {
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts",
-        "stag": "environments/environment.stag.ts"
+        "dev": "../environments/environment.ts",
+        "prod": "../environments/environment.prod.ts",
+        "stag": "../environments/environment.stag.ts"
       }
     },
     {
@@ -163,34 +167,38 @@
     },
     {
       "name": "chat",
-      "root": "src",
+      "root": "src/chat",
       "outDir": "dist/chat",
-      "assets": [
-        "assets"
-      ],
-      "index": "chat/index.html",
-      "main": "chat/main.ts",
-      "polyfills": "chat/polyfills.ts",
-      "test": "chat/test.ts",
-      "tsconfig": "chat/tsconfig.app.json",
-      "testTsconfig": "chat/tsconfig.spec.json",
+      "assets": [{
+        "glob": "**/*",
+        "input": "../assets/",
+        "output": "./assets/",
+        "allowOutsideOutDir": true
+      }],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
       "styles": [
-        "../node_modules/bootstrap/dist/css/bootstrap.css",
-        "../node_modules/font-awesome/css/font-awesome.min.css",
-        "../node_modules/primeng/resources/primeng.min.css",
-        "chat/styles/chat.scss"
+        "../../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../../node_modules/font-awesome/css/font-awesome.min.css",
+        "../../node_modules/primeng/resources/themes/omega/theme.css",
+        "../../node_modules/primeng/resources/primeng.min.css",
+        "styles/chat.scss"
       ],
       "scripts": [
-        "../node_modules/moment/min/moment.min.js",
-        "../node_modules/file-saver/FileSaver.js",
-        "../src/shared/channels/common.js"
+        "../../node_modules/moment/min/moment.min.js",
+        "../../node_modules/file-saver/FileSaver.js",
+        "../../src/shared/channels/common.js"
       ],
-      "environmentSource": "environments/environment.ts",
+      "environmentSource": "../environments/environment.ts",
       "environments": {
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts",
-        "stag": "environments/environment.stag.ts"
+        "dev": "../environments/environment.ts",
+        "prod": "../environments/environment.prod.ts",
+        "stag": "../environments/environment.stag.ts"
       }
     },
     {
