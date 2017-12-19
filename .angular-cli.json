@@ -79,7 +79,8 @@
         "my-account/styles/my-account.scss"
       ],
       "scripts": [
-        "../src/shared/channels/common.js"
+        "../src/shared/channels/common.js",
+        "../node_modules/moment/min/moment.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

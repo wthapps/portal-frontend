@@ -98,6 +98,7 @@ export class AccountEditModalComponent implements OnInit {
 
 
   save() {
+    this.mode = 'view';
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:update',
