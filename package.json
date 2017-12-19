@@ -13,7 +13,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "start-my": "ng serve --app my-account --port 3005",
-    "start-social": "ng serve --app social --port 3015"
+    "start-social": "ng serve --app social --port 3015",
     "start-media": "ng serve --app media --port 3010",
     "start-social": "ng serve --app social --port 3015",
     "start-chat": "ng serve --app chat --port 3020",
