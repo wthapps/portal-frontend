@@ -134,33 +134,30 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     });
     // this.customEditor = this.editor.quill;
 
-    // Add custom to whitelist
-    let Font = Quill.import('formats/font');
-    Font.whitelist = ['gotham', 'georgia', 'helvetica', 'courier-new', 'times-new-roman', 'trebuchet', 'verdana'];
-    Quill.register(Font, true);
+    var bindings = {
+      "enter": {
+        key: 13,
+        collapsed: true,
+        prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b/,
+        handler: function h(range, context) {
+          console.debug('inside enter bindings: ', range, context);
+          this.addHyperLink(range, context);
+          return true;
+        }.bind(this)
+      }
+    };
 
-    let Size = Quill.import('attributors/style/size');
-    Size.whitelist = [
-      '8px', '10px', '12px', '14px', '18px', '24px', '36px'
-    ];
-    Quill.register(Size, true);
-
-
-    let BlockEmbed = Quill.import('blots/block/embed');
-
-    class DividerBlot extends BlockEmbed {
-    }
-
-    DividerBlot.blotName = 'divider';
-    DividerBlot.tagName = 'hr';
-    Quill.register(DividerBlot);
-
+    this.registerFontSizeBlot();
+    this.registerDividerBlot();
     this.extendClipboard();
-    this.customEditor = new Quill('#editor', {
+    this.customEditor = new Quill('#quill-editor', {
       modules: {
         toolbar: {
-          container: '#toolbar'
-        }
+          container: '#quill-toolbar'
+        },
+        keyboard: {
+          bindings: bindings
+        },
       },
       placeholder: 'Say something ...',
       readOnly: false,
@@ -198,6 +195,32 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     Quill.register('modules/clipboard', PlainClipboard, true);
   }
 
+  registerFontSizeBlot() {
+    // Add custom to whitelist
+    let Font = Quill.import('formats/font');
+    Font.whitelist = ['gotham', 'georgia', 'helvetica', 'courier-new', 'times-new-roman', 'trebuchet', 'verdana'];
+    Quill.register(Font, true);
+
+    let Size = Quill.import('attributors/style/size');
+    Size.whitelist = [
+      '8px', '10px', '12px', '14px', '18px', '24px', '36px'
+    ];
+    Quill.register(Size, true);
+
+  }
+
+  registerDividerBlot() {
+
+    let BlockEmbed = Quill.import('blots/block/embed');
+
+    class DividerBlot extends BlockEmbed {
+    }
+
+    DividerBlot.blotName = 'divider';
+    DividerBlot.tagName = 'hr';
+    Quill.register(DividerBlot);
+  }
+
   customizeKeyboardBindings() {
     console.debug('inside customizeKeyboardBindings: ');
 
@@ -208,24 +231,39 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.customEditor.keyboard.addBinding({
       key: ' ',
       collapsed: true,
-      prefix: / (www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)$/,
+      prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b$/,
       handler: function(range, context) {
+        this.addHyperLink(range, context);
 
-        let [line, offset] = this.customEditor.getLine(range.index);
-        let link = context.prefix.split(' ').pop();
-        let fullUrl = link.includes('http') ? link : `https://${link}`;
-
-        this.customEditor.updateContents(new Delta().retain(range.index - link.length)
-          .insert(link, {link: fullUrl})
-          .delete(link.length)
-          .insert(' '));
-        this.customEditor.setSelection(range.index + 1);
-        this.customEditor.format('link', true, Quill.sources.USER);
+        // let [line, offset] = this.customEditor.getLine(range.index);
+        // let link = context.prefix.split(' ').pop();
+        // let fullUrl = link.includes('http') ? link : `https://${link}`;
+        //
+        // this.customEditor.updateContents(new Delta().retain(range.index - link.length)
+        //   .insert(link, {link: fullUrl})
+        //   .delete(link.length)
+        //   .insert(' '));
+        // this.customEditor.setSelection(range.index + 1);
+        // this.customEditor.format('link', true, Quill.sources.USER);
       }.bind(this)
     });
-
-
   };
+
+  addHyperLink(range, context) {
+    console.debug('Delta: ', new Delta());
+
+    let [line, offset] = this.customEditor.getLine(range.index);
+    let link = context.prefix.split(' ').pop();
+    console.debug('range ', range, context, link);
+    let fullUrl = link.includes('http') ? link : `https://${link}`;
+
+    this.customEditor.updateContents(new Delta().retain(range.index - link.length)
+      .delete(link.length)
+      .insert(link, {link: fullUrl})
+      .insert(' '));
+    this.customEditor.history.cutoff();
+    this.customEditor.setSelection(range.index + 1, Quill.sources.SILENT);
+  }
 
   onToEditor(e: any) {
     if (e.keyCode == 13) { // enter
@@ -370,10 +408,13 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     let photoIds = imgItems.map(item => item.dataset.id);
 
     imgItems.forEach((i: any) => {
-      i.addEventListener("click", (event: any) => {
+      // i.addEventListener("click", (event: any) => {
+      i.onclick = (event: any) => {
         this.resize.edit(event.target);
-      });
-      i.addEventListener("dblclick", (event: any) => {
+      };
+
+      // i.addEventListener("dblclick", (event: any) => {
+      i.ondblclick = (event: any) => {
         let photoId: string = event.srcElement.getAttribute('data-id');
         if (photoId && photoId !== 'null') {
           $('#modal-note-edit').css('z-index', '0');
@@ -387,9 +428,10 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
             }
           }], {queryParamsHandling: 'preserve', preserveFragment: true});
         }
-        else
+        else {
           console.warn('no photo id for this image: ', event.srcElement);
-      });
+        }
+      };
     });
   }
 

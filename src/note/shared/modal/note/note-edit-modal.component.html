@@ -9,7 +9,7 @@
       </div>
         <!--<p-editor #editor formControlName="content">-->
           <!--<p-header>-->
-        <div class="ui-editor-toolbar ui-widget-header ui-corner-top ql-toolbar ql-snow" id="toolbar">
+      <div id="quill-toolbar">
             <div class="ql-format-group" >
               <div class="ql-formats">
                 <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()"><i
@@ -165,9 +165,8 @@
                 <button class="ql-clean"></button>
               </div>-->
             </div>
-            <div id="editor"></div>
-        </div>
-
+      </div>
+      <div id="quill-editor"></div>
         <!--</p-header>-->
         <!--</p-editor>-->
 
