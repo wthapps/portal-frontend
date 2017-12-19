@@ -30,33 +30,39 @@
     },
     {
       "name": "portal",
-      "root": "src",
+      "root": "src/portal",
+      "appRoot": ".",
       "outDir": "dist/portal",
       "assets": [
-        "assets"
-      ],
-      "index": "portal/index.html",
-      "main": "portal/main.ts",
-      "polyfills": "portal/polyfills.ts",
-      "test": "portal/test.ts",
-      "tsconfig": "portal/tsconfig.app.json",
-      "testTsconfig": "portal/tsconfig.spec.json",
+        {
+          "glob": "**/*",
+          "input": "../assets/",
+          "output": "./assets/",
+          "allowOutsideOutDir": true
+        }],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
       "styles": [
-        "../node_modules/primeng/resources/themes/omega/theme.css",
-        "../node_modules/primeng/resources/primeng.min.css",
-        "../node_modules/cropperjs/dist/cropper.min.css",
-        "portal/styles/portal.scss"
+        "../../node_modules/primeng/resources/themes/omega/theme.css",
+        "../../node_modules/primeng/resources/primeng.min.css",
+        "../../node_modules/cropperjs/dist/cropper.min.css",
+        "styles/portal.scss"
       ],
       "scripts": [
-        "../node_modules/cropperjs/dist/cropper.min.js",
-        "../src/shared/channels/common.js"
+        "../../node_modules/cropperjs/dist/cropper.min.js",
+        "../../src/shared/channels/common.js"
 
       ],
-      "environmentSource": "environments/environment.ts",
+      "environmentSource": "../environments/environment.ts",
       "environments": {
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "dev": "../environments/environment.ts",
+        "prod": "../environments/environment.prod.ts",
+        "stag": "../environments/environment.stag.ts"
       }
     },
     {
@@ -85,7 +91,8 @@
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "prod": "environments/environment.prod.ts",
+        "stag": "environments/environment.stag.ts"
       }
     },
     {
