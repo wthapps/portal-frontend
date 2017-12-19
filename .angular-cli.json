@@ -226,37 +226,41 @@
     },
     {
       "name": "note",
-      "root": "src",
+      "root": "src/note",
       "outDir": "dist/note",
       "assets": [
-        "assets"
-      ],
-      "index": "note/index.html",
-      "main": "note/main.ts",
-      "polyfills": "note/polyfills.ts",
-      "test": "note/test.ts",
-      "tsconfig": "note/tsconfig.app.json",
-      "testTsconfig": "note/tsconfig.spec.json",
+        {
+          "glob": "**/*",
+          "input": "../assets/",
+          "output": "./assets/",
+          "allowOutsideOutDir": true
+        }],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
       "prefix": "note",
       "styles": [
-        "../node_modules/primeng/resources/themes/omega/theme.css",
-        "../node_modules/primeng/resources/primeng.min.css",
-        "../node_modules/font-awesome/scss/font-awesome.scss",
-        { "input": "../node_modules/quill/dist/quill.core.css", "lazy": false },
-        { "input": "../node_modules/quill/dist/quill.snow.css", "lazy": false },
-        "note/styles/note.scss"
+        "../../node_modules/primeng/resources/themes/omega/theme.css",
+        "../../node_modules/primeng/resources/primeng.min.css",
+        "../../node_modules/font-awesome/scss/font-awesome.scss",
+        { "input": "../../node_modules/quill/dist/quill.core.css", "lazy": false },
+        { "input": "../../node_modules/quill/dist/quill.snow.css", "lazy": false },
+        "styles/note.scss"
       ],
       "scripts": [
-        { "input": "../node_modules/quill/dist/quill.js", "lazy": false },
-        { "input": "../node_modules/file-saver/FileSaver.js", "lazy": false },
-        { "input": "../node_modules/moment/moment.js", "lazy": false },
-        "../src/shared/channels/common.js"
+        { "input": "../../node_modules/quill/dist/quill.js", "lazy": false },
+        { "input": "../../node_modules/file-saver/FileSaver.js", "lazy": false },
+        { "input": "../../node_modules/moment/moment.js", "lazy": false },
+        "../../src/shared/channels/common.js"
       ],
-      "environmentSource": "environments/environment.ts",
+      "environmentSource": "../environments/environment.ts",
       "environments": {
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts",
-        "stag": "environments/environment.stag.ts"
+        "dev": "../environments/environment.ts",
+        "prod": "../environments/environment.prod.ts",
+        "stag": "../environments/environment.stag.ts"
       }
     }
   ],
