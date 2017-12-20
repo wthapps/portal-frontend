@@ -9,9 +9,12 @@ import { ConversationDetailComponent } from './conversation-detail.component';
     RouterModule.forChild([
       {
         path: 'conversations',
-        component: ConversationListComponent,
         canActivate: [AuthGuard],
         children: [
+          {
+            path: '',
+            component: ConversationListComponent,
+          },
           {
             path: ':id',
             component: ConversationDetailComponent

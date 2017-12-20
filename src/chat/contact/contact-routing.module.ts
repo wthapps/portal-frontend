@@ -13,9 +13,12 @@ import { ZChatContactReceiveComponent } from './contact-receive.component';
     RouterModule.forChild([
       {
         path: 'contacts',
-        component: ZChatContactComponent,
         canActivate: [AuthGuard],
         children: [
+          {
+            path: '',
+            component: ZChatContactComponent
+          },
           {
             path: 'online',
             component: ZChatContactOnlineComponent
