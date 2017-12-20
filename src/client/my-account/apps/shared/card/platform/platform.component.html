@@ -1,9 +1,0 @@
-<ul class="platform">
-  <li *ngFor="let c of platforms">
-    <i class="fa fa-windows" [ngClass]="{
-              'fa-windows': (c.name == 'windows' || c.name == 'windowsphone'),
-              'fa-apple': (c.name == 'macos' || c.name == 'ios'),
-              'fa-android': (c.name == 'android'),
-              'fa-desktop': (c.name == 'browser')}"></i>
-  </li>
-</ul>

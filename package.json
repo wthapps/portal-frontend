@@ -17,7 +17,8 @@
     "start-social": "ng serve --app social --port 3015",
     "start-chat": "ng serve --app chat --port 3020",
     "start-contact": "ng serve --app contact --port 3025",
-    "start-note": "ng serve --app note --port 3030"
+    "start-note": "ng serve --app note --port 3030",
+    "ng build all": "build --prod --build-optimizer --aot --app portal && build --prod --build-optimizer --aot --app my-account && build --prod --build-optimizer --aot --app media && build --prod --build-optimizer --aot --app social && build --prod --build-optimizer --aot --app contact && build --prod --build-optimizer --aot --app note"
   },
   "private": true,
   "devDependencies": {

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_BASE_HREF } from '@angular/common';
-import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
@@ -26,12 +25,13 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ZNoteTrashModule } from './trash/trash.module';
 import { ZNotePhotoModule } from './photo/photo.module';
 import { environment } from '@env/environment';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpModule,
+    HttpClientModule,
 
     AppRoutingModule,
     ZNoteHomeModule,
