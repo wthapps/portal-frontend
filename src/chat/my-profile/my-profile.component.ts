@@ -41,7 +41,7 @@ export class ZChatMyProfileComponent implements OnInit {
 
   doEvent(e: any) {
     console.debug('chat my-profile: doEvent - e: ', e);
-    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, e).subscribe((res: any) => {
+    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, e.data).subscribe((res: any) => {
       // this.data = res.data;
       this.userService.soUserProfile = res.data;
     });

@@ -40,7 +40,7 @@ export class MyAccountMyProfileComponent implements OnInit {
   }
 
   doEvent(e: any) {
-    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, e).subscribe((res: any) => {
+    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, e.data).subscribe((res: any) => {
       // this.data = res.data;
       this.userService.soUserProfile = res.data;
     });

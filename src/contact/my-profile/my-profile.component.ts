@@ -22,7 +22,7 @@ declare let $: any;
 })
 export class ZContactMyProfileComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
-  data: any = new UserInfo();
+  // data: any = new UserInfo();
   soUserProfile: Observable<any> ;
 
   constructor(private route: ActivatedRoute,
@@ -42,8 +42,8 @@ export class ZContactMyProfileComponent implements OnInit {
   }
 
   doEvent(e: any) {
-    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, this.data).subscribe((res: any) => {
-      this.data = res.data;
+    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, e.data).subscribe((res: any) => {
+      this.userService.soUserProfile = res.data;
     });
   }
 

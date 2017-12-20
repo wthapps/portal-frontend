@@ -5,7 +5,7 @@ import { UserContact } from '../../models/user/user-contact.model';
 declare var _: any;
 
 @Component({
-    selector: 'partials-profile',
+  selector: 'partials-profile',
   templateUrl: 'profile.component.html'
 })
 

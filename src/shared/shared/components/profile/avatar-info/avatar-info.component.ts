@@ -28,7 +28,7 @@ declare let _: any;
 declare let $: any;
 
 @Component({
-    selector: 'partials-profile-avatar-info',
+  selector: 'partials-profile-avatar-info',
   templateUrl: 'avatar-info.component.html',
   styleUrls: ['avatar-info.component.scss'],
   encapsulation: ViewEncapsulation.None
