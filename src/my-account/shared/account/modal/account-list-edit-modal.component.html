@@ -32,7 +32,7 @@
 
         <div formArrayName="items">
 
-          <div *ngFor="let item of form.get('items').controls; let i=index;" class="mt0">
+          <div *ngFor="let item of form.get('items')['controls']; let i=index;" class="mt0">
             <div *ngIf="item['controls'].parent_id.value == null" [formGroupName]="i">
 
               <div class="row row-12">
@@ -151,7 +151,7 @@
 
       <div formArrayName="items">
 
-        <div *ngFor="let item of form.get('items').controls; let i=index;" class="mt0">
+        <div *ngFor="let item of form.get('items')['controls']; let i=index;" class="mt0">
           <div *ngIf="item['controls'].parent_id.value == 0" [formGroupName]="i">
 
             <div class="row row-12">

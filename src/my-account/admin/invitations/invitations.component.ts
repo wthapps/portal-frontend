@@ -26,7 +26,7 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
   totalPending: number;
   totalAccepted: number;
   currentTab: string;
-  currentTabTitle: string;
+  currentTabTitle: any;
 
   readonly TAB: any = {
     PENDING: { value: 'pending', name: 'Pending'},

@@ -42,7 +42,7 @@ import { CommonEventService } from './services/common-event/common-event.service
 import { PipeModule } from './shared/pipe/pipe.module';
 
 import { LoadingModule } from './shared/components/loading/loading.module';
-import { FooterModule } from './shared/components/footer/footer.module';
+import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './shared/components/header/header.module';
 import { HeaderNavbarModule } from './shared/components/navbar/navbar.module';
 import { PartialsNotificationsModule } from './shared/components/notifications/notifications.module';
@@ -156,9 +156,6 @@ export * from './shared/components/navbar/navbar.module';
     ZChatEmojiModule,
     ShowHidePasswordModule,
     InvitationModule,
-
-
-
 
     // Pipe
     PipeModule,

@@ -20,6 +20,7 @@ import { MyPlansModule } from './plans/plans.module';
 import { MyAdminModule } from './admin/admin.module';
 import { WelcomeModule } from './welcome/welcome.module';
 import { MyAccountMyProfileModule } from './my-profile/my-profile.module';
+import { FooterModule } from '@wth/shared/components/footer/footer.module';
 
 
 
@@ -40,6 +41,7 @@ import { MyAccountMyProfileModule } from './my-profile/my-profile.module';
     MyAccountMyProfileModule,
     WelcomeModule,
 
+    FooterModule,
     MySharedModule.forRoot(),
     SharedModule.forRoot(),
     CoreModule.forRoot(),  ],

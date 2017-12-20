@@ -57,7 +57,7 @@
                     </button>
                   </div>
                 </div>
-                <div *ngFor="let add_invite of formInvite.controls.invites.controls; let i=index" class="media mt0">
+                <div *ngFor="let add_invite of formInvite['controls'].invites['controls']; let i=index" class="media mt0">
                   <div class="media-body" [formGroupName]="i">
                     <div class="row row-10">
                       <div class="col-sm-6">

@@ -3,47 +3,41 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-3">
+          <h5>Around the Site</h5>
           <ul class="footer-menu">
             <li>
-              <a [routerLink]="['/products']">Products</a>
+              <a [attr.href]="portalDomain + '/products'">Apps</a>
             </li>
             <li>
-              <a [routerLink]="['/pricing']">Pricing</a>
+              <a [attr.href]="portalDomain + '/pricing'">Pricing</a>
+            </li>
+            <li>
+              <a [attr.href]="portalDomain + '/about'">About Us</a>
             </li>
           </ul>
         </div>
         <div class="col-sm-3">
+          <h5>Support</h5>
           <ul class="footer-menu">
             <li>
-              <a [routerLink]="['/about']">About Us</a>
+              <a [attr.href]="portalDomain + '/policies/terms'">Term of Service</a>
             </li>
             <li>
-              <a [routerLink]="['/contact']">Contact us</a>
+              <a [attr.href]="portalDomain + '/policies/privacy'">Privacy &amp; Cookies Policy</a>
             </li>
-            <li>
-              <a [routerLink]="['/support']">Support</a>
-            </li>
+          </ul>
+        </div>
+        <div class="col-sm-3">
+          <h5>Account</h5>
+          <ul class="footer-menu">
+            <li><a [attr.href]="portalDomain + '/signup'">Sign up</a></li>
+            <li><a [attr.href]="portalDomain + '/login'">Log in</a></li>
+          </ul>
 
-          </ul>
         </div>
         <div class="col-sm-3">
-          <ul class="footer-menu">
-            <li>
-              <a [routerLink]="['/policies/privacy']">Privacy Policy</a>
-            </li>
-            <li>
-              <a [routerLink]="['/policies/terms']">Term of Service</a>
-            </li>
-            <li>
-              <a [routerLink]="['/policies/cookies']">Cookies</a>
-            </li>
-          </ul>
-        </div>
-        <div class="col-sm-3">
+          <h5>Follow Us On</h5>
           <ul>
-            <li>
-              <p>Follow Us On:</p>
-            </li>
             <li>
               <div class="social-dv">
                 <a target="_blank" href="https://www.facebook.com/"><i class="fa fa-facebook-square"></i></a>
@@ -58,9 +52,6 @@
   </div>
   <div class="footer-end">
     <div class="container">
-      <a [routerLink]="['/']" class="footer-logo">
-        <img src="assets/images/logo.png" alt="WTHApps">
-      </a>
       <p>&copy; 2017 WTHApps. All rights reserved</p>
     </div>
   </div>

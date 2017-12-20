@@ -7,7 +7,6 @@ import { ContactRoutingModule } from './contact-routing.module';
 import { ContactService } from './contact.service';
 
 import { PortalSharedModule } from '../shared/shared.module';
-import { FooterModule } from '../../shared/shared/components/footer/footer.module';
 
 @NgModule({
   imports: [

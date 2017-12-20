@@ -12,6 +12,7 @@ import { MyInvitationsComponent } from './invitations/invitations.component';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AccountCreatePartialComponent } from './accounts/account-create-partial.component';
 // import { MatInputModule, MatNativeDateModule } from '@angular/material';
 
 
@@ -34,14 +35,16 @@ import { CommonModule } from '@angular/common';
     MyInvitationsComponent,
 
     // Account
-    AccountListComponent
+    AccountListComponent,
+    AccountCreatePartialComponent
   ],
   exports: [
     MyAdminComponent,
     MyInvitationsComponent,
 
     // Account
-    AccountListComponent
+    AccountListComponent,
+    AccountCreatePartialComponent
   ],
   providers: []
 })
