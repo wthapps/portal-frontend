@@ -13,7 +13,6 @@ export class UrlService {
     let hash:any;
     let hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
     // reset some functions default of array
-    // vars["filter"] = "";
     for(var i = 0; i < hashes.length; i++) {
       hash = hashes[i].split('=');
       vars.push(hash[0]);
@@ -30,5 +29,20 @@ export class UrlService {
 
   getPatch() {
     return window.location.pathname;
+  }
+
+  parse(href?: any) {
+    if(!href) {
+      href = window.location.href;
+    }
+    let link = document.createElement("a");
+    link.href = href;
+    let hashes: any = {};
+    hashes.hostname = link.hostname;
+    hashes.pathname = link.pathname;
+    hashes.paths = link.pathname.split('/');
+    hashes.paths.shift();
+    hashes.id = hashes.paths[hashes.paths.length -1];
+    return hashes;
   }
 }

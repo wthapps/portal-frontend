@@ -49,7 +49,6 @@ export class FolderItemComponent implements OnInit, OnDestroy {
     }
   }
 
-
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               private wthConfirm: WthConfirmService,
@@ -73,8 +72,6 @@ export class FolderItemComponent implements OnInit, OnDestroy {
 
   onClick() {
     this.selected = !this.selected;
-    console.log(this.data);
-
     if (this.pressingCtrlKey) {
       this.store.dispatch(new note.Select({
         id: this.data.id,
@@ -108,9 +105,11 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   }
 
   onView() {
-    if(!this.data.deleted_at)
-      this.router.navigate([`/folders`, this.data.id]);
-    else {
+    if(!this.data.deleted_at) {
+      if (this.page == 'SHARED_BY_ME') {this.router.navigate([`my-sharing/folders`, this.data.id]); return;}
+      if (this.page == 'SHARED_WITH_ME') {this.router.navigate([`shared-with-me/folders`, this.data.id]); return;}
+      this.router.navigate([`folders`, this.data.id]);
+    } else {
       this.wthConfirm.confirm({
         acceptLabel: 'Restore',
         rejectLabel: 'Cancel',

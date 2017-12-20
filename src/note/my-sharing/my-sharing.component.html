@@ -1,4 +1,4 @@
-<z-note-shared-toolbar>
+<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="'SHARED_BY_ME'">
   <div class="btn-group">
     <button type="button" class="btn btn-primary btn-min dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
@@ -11,17 +11,22 @@
   </div>
 
   <span class="btn-text ml15">
-    My sharing
+    Shared by me
   </span>
-
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
-  <note-list [noteItems]="noteItems$ | async"
-             [folderItems]="folderItems$ | async"
-             [viewOption]="(viewMode$ | async)"
-             [sortOption]="sortOption$ | async"
-             [isSelectAll]="(selectAll$ | async)">
-  </note-list>
+
+  <ng-container *ngIf="!(loading$ | async); else loadingBlock">
+    <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
+      <note-list [noteItems]="noteItems$ | async"
+        [folderItems]="folderItems$ | async"
+        [viewOption]="(nodeState$ | async)?.viewMode"
+        [sortOption]="sortOption$ | async"
+        [page]="'SHARED_BY_ME'"
+        [isSelectAll]="isSelectAll$ | async">
+      </note-list>
+    </ng-container>
+  </ng-container>
 
   <ng-template #loadingBlock>
     <box-loading></box-loading>

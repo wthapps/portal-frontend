@@ -13,6 +13,7 @@ import { Folder } from '../shared/reducers/folder';
 import { Note } from '@shared/shared/models/note.model';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { NoteBreadcrumb } from '../shared/breadcrumb/breadcrumb';
+import { UrlService } from "@shared/services";
 
 declare var _: any;
 
@@ -31,6 +32,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   currentFolderPath$: Observable<any[]>;
   loading$: Observable<boolean>;
   currentFolder: any;
+  page: any;
 
   items: Observable<any>;
 
@@ -44,6 +46,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               private route: ActivatedRoute,
+              private urlService: UrlService,
               private commonEventService: CommonEventService) {
     this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
@@ -57,10 +60,18 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
+      let urlData = this.urlService.parse();
+      switch(urlData.paths[0]) {
+        case 'my-sharing':
+          this.page = 'SHARED_BY_ME';
+          break;
+        case 'shared-with-me':
+          this.page = 'SHARED_WITH_ME';
+          break;
+        default:
+          this.page = 'MY_NOTE';
+      }
       let id = +params['id'];
-
-      // this.store.dispatch(new note.Load({parent_id: id}));
-      // this.store.dispatch(new folder.SetCurrentFolder(id));
       this.store.dispatch({type: note.LOAD, payload: {parent_id: id}});
       this.store.dispatch({type: folder.SET_CURRENT_FOLDER, payload: id});
 

@@ -11,6 +11,7 @@ import * as fromNote from '../shared/actions/note';
 
 import { Note } from '@shared/shared/models/note.model';
 import { Folder } from '../shared/reducers/folder';
+import { CommonEventService } from "@shared/services";
 
 @Component({
   selector: 'z-note-my-sharing',
@@ -27,11 +28,14 @@ export class ZNoteMySharingComponent implements OnInit, OnDestroy {
   currentFolderPath$: Observable<any[]>;
   viewMode$: Observable<any>;
   loading$: Observable<boolean>;
+  isSelectAll$: Observable<boolean>;
+  sub: any;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private router: Router,
               private route: ActivatedRoute,
+              private commonEventService: CommonEventService,
               private store: Store<fromRoot.State>,
               private noteService: ZNoteService
   ) {
@@ -40,6 +44,7 @@ export class ZNoteMySharingComponent implements OnInit, OnDestroy {
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
     this.sortOption$ = this.store.select(fromRoot.getSortOption);
     this.viewMode$ = this.store.select(fromRoot.getViewMode);
+    this.nodeState$ = this.store.select(fromRoot.getNotesState);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.currentFolderPath$ = this.store.select(fromRoot.getCurrentFolderPath);
     this.selectAll$ = this.store.select(fromRoot.getSelectAll);
@@ -49,9 +54,15 @@ export class ZNoteMySharingComponent implements OnInit, OnDestroy {
       .takeUntil(this.destroySubject)
       .switchMap((params: any) => this.noteService.getAll())
       .subscribe((res: any) => {
-      console.debug('inside my-sharing: ', res);
-      this.store.dispatch(new fromNote.LoadSuccess(res.data));
+        this.sub = this.route.params.subscribe((params: any) => {
+          this.store.dispatch(new fromNote.Load({parent_id: null, shared_by_me: true}));
+        });
     });
+    this.commonEventService.filter((event: any) => event.action == 'note:mixed_entity:move_to_folder_done' && event.channel == 'noteActionsBar')
+      .takeUntil(this.destroySubject)
+      .subscribe((event: any) => {
+        this.store.dispatch(new fromNote.Load({parent_id: null, shared_by_me: true}));
+      });
   }
 
   ngOnInit() {

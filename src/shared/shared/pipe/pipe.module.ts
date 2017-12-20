@@ -19,6 +19,7 @@ import { SafeHtmlPipe } from './safeHtml.pipe';
 import { TimeFormatPipe } from './time-format.pipe';
 import { LinkifyPipe } from './linkify.pipe';
 import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe, PhoneCodeToDisplayCodePipe } from './phone-to-flag.pipe';
+import { MapToIterablePipe } from "@shared/shared/pipe/map-to-iterable.pipe";
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe, PhoneCodeToDisplayCodePipe }
     LinkifyPipe,
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
+    MapToIterablePipe,
     PhoneCodeToDisplayCodePipe
   ],
   exports: [
@@ -66,6 +68,7 @@ import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe, PhoneCodeToDisplayCodePipe }
     LinkifyPipe,
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
+    MapToIterablePipe,
     PhoneCodeToDisplayCodePipe
   ],
   providers: []

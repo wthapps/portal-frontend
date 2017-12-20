@@ -1,107 +1,25 @@
-<!-- Toolbar on top -->
-<div *ngIf="!data">
-  <!-- full permission -->
-  <ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0  && (!selectedObjects[0].permission || selectedObjects[0].permission == 'edit')">
-    <li *ngIf="selectedObjects.length <= 1">
-      <a href="javascript:;" class="btn btn-default" (click)="edit()"
-         pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom">
-        <i class="fa fa-pencil"></i>
+<ul class="page-body-control-menu" *ngIf="show">
+  <ng-template ngFor let-menu [ngForOf]="actionsMenu | mapToIterable">
+    <li *ngIf="menu.val.show && !menu.val.inDropDown">
+      <a href="javascript:;" class="{{menu.val.class}}" (click)="menu.val.action()"
+         pTooltip="{{menu.val.tooltip}}" tooltipPosition="{{menu.val.tooltipPosition}}">
+        <i class="{{menu.val.iconClass}}"></i>
       </a>
     </li>
-    <li>
-      <a href="javascript:;" class="btn btn-default" (click)="share()"
-         pTooltip="{{ tooltip.share }}" tooltipPosition="bottom">
-        <i class="fa fa-share-alt"></i>
-      </a>
-    </li>
-    <li>
-      <a href="javascript:;" class="btn btn-default" (click)="delete()"
-         pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
-        <i class="fa fa-trash-o"></i>
-      </a>
-    </li>
-    <li class="dropdown action">
-      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-              pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
-        <i class="fa fa-ellipsis-v"></i>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right text-right">
-        <li role="presentation" *ngIf="isOnlyNote()">
-          <a role="menuitem" tabindex="-1" href="javascript:void(0);"
-          (click)="makeACopy(data)">Make copy</a>
-        </li>
-        <li role="presentation">
-          <a (click)="moveToFolder(data)" role="menuitem" tabindex="-1" href="javascript:void(0);">Move to folder</a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-  <!-- view permission -->
-  <ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0  && (selectedObjects[0].permission && selectedObjects[0].permission == 'view')">
-    <li class="dropdown action">
-      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-              pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
-        <i class="fa fa-ellipsis-v"></i>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right text-right">
-        <li role="presentation">
-          <a (click)="removeShares()" role="menuitem" tabindex="-1" href="javascript:;">Remove</a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</div>
+  </ng-template>
 
-<!-- toolbar on row -->
-<div *ngIf="data">
-  <!-- full permission -->
-  <ul class="page-body-control-menu" *ngIf="!data.permission || data.permission == 'edit'">
-    <li *ngIf="selectedObjects.length <= 1">
-      <a href="javascript:;" class="btn btn-default" (click)="edit()"
-         pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom">
-        <i class="fa fa-pencil"></i>
-      </a>
-    </li>
-    <li>
-      <a href="javascript:;" class="btn btn-default" (click)="share()"
-         pTooltip="{{ tooltip.share }}" tooltipPosition="bottom">
-        <i class="fa fa-share-alt"></i>
-      </a>
-    </li>
-    <li>
-      <a href="javascript:;" class="btn btn-default" (click)="delete()"
-         pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
-        <i class="fa fa-trash-o"></i>
-      </a>
-    </li>
-    <li class="dropdown action">
-      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-              pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
-        <i class="fa fa-ellipsis-v"></i>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right text-right">
-        <li role="presentation" *ngIf="isOnlyNote()">
-          <a role="menuitem" tabindex="-1" href="javascript:void(0);"
-          (click)="makeACopy(data)">Make copy</a>
+  <li class="dropdown action">
+    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+            pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
+      <i class="fa fa-ellipsis-v"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right text-right">
+      <ng-template ngFor let-menu [ngForOf]="actionsMenu | mapToIterable">
+        <li *ngIf="menu.val.show && menu.val.inDropDown">
+          <a tabindex="-1" href="javascript:;"
+          (click)="menu.val.action()">{{menu.val.title}}</a>
         </li>
-        <li role="presentation">
-          <a (click)="moveToFolder(data)" role="menuitem" tabindex="-1" href="javascript:void(0);">Move to folder</a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-  <!-- view permission -->
-  <ul class="page-body-control-menu" *ngIf="data.permission || data.permission == 'view'">
-    <li class="dropdown action">
-      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-              pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
-        <i class="fa fa-ellipsis-v"></i>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right text-right">
-        <li role="presentation">
-          <a (click)="removeShares()" role="menuitem" tabindex="-1" href="javascript:;">Remove</a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</div>
+      </ng-template>
+    </ul>
+  </li>
+</ul>

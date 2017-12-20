@@ -140,7 +140,7 @@ export class AppComponent implements OnInit, OnDestroy {
               item.parent_id = item.parent_old_id;
             });
             this.commonEventService.broadcast({action: 'destroy', channel: 'noteLeftMenu', payload: event.payload});
-
+            this.commonEventService.broadcast({action: 'note:mixed_entity:move_to_folder_done', channel: 'noteActionsBar', payload: event.payload});
           });
         break;
       case 'note:mixed_entity:make_a_copy':

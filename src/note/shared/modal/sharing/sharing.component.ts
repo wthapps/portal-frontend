@@ -68,6 +68,8 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
       .distinctUntilChanged()
       .switchMap((term: any) => this.mediaSharingService.getContacts(term.query))
       .subscribe((res: any) => {
+          console.log(res)
+
           this.filteredContacts = [];
           for(let i in res.data) {
             if(res.data[i].wthapps_user) {

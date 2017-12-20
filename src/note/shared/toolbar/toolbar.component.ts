@@ -27,9 +27,6 @@ export class ZNoteSharedToolBarComponent implements OnInit {
   readonly PAGE_TYPE: any = Constants.notePageType;
 
   constructor(private noteService: ZNoteService, private store: Store<fromRoot.State>) {
-    // this.noteService.viewOption$.subscribe((viewOption: any)=> {
-    //   this.viewOption = viewOption;
-    // });
     this.viewMode$ = this.store.select(fromRoot.getViewMode);
   }
 

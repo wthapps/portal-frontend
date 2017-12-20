@@ -1,5 +1,5 @@
 <div class="page-body-control-nav page-body-control-nav-right">
-  <z-note-shared-actions-bar [page]="page" [selectedObjects]="selectedObjects" *ngIf="page === PAGE_TYPE.MY_NOTE || page === PAGE_TYPE.SHARED_WITH_ME"></z-note-shared-actions-bar>
+  <z-note-shared-actions-bar [page]="page" [selectedObjects]="selectedObjects" *ngIf="page !== PAGE_TYPE.TRASH"></z-note-shared-actions-bar>
   <z-note-shared-trash-actions-bar [selectedObjects]="selectedObjects" [toolbarOnly]="true" *ngIf="page === PAGE_TYPE.TRASH"></z-note-shared-trash-actions-bar>
   <ul class="page-body-control-menu">
     <li class="dropdown action">
