@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ZNoteService } from '../shared/services/note.service';
 // import { ApiBaseService } from '../../core/shared/services/apibase.service';
 import { CommonEventService } from '../../core/shared/services/common-event/common-event.service';
@@ -12,6 +12,7 @@ import { Folder } from '../shared/reducers/folder';
 import { Note } from '../../core/shared/models/note.model';
 import { AppStore } from '../shared/app-store';
 import { MixedEntityAction } from '../shared/mixed-enity/mixed-entity.action';
+import { UserService } from '../../core/shared/services/user.service';
 
 declare var _: any;
 
@@ -21,7 +22,8 @@ declare var _: any;
   templateUrl: 'my-note.component.html'
 })
 export class ZNoteMyNoteComponent implements OnInit {
-  // data: Array<any> = new Array<any>();
+  @ViewChild('introModal') introModal: any;
+
   viewOption: string = 'grid';
   noteItems$: Observable<Note[]>;
   folderItems$: Observable<Folder[]>;
@@ -32,7 +34,10 @@ export class ZNoteMyNoteComponent implements OnInit {
   loading$: Observable<boolean>;
   items: Observable<any>;
 
-  constructor(private noteService: ZNoteService, private commonEventService: CommonEventService, private store: Store<fromRoot.State>) {
+  constructor(private noteService: ZNoteService,
+     private commonEventService: CommonEventService,
+     private userService: UserService,
+     private store: Store<fromRoot.State>) {
     this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
     this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
     this.sortOption$ = this.store.select(fromRoot.getSortOption);
@@ -45,8 +50,10 @@ export class ZNoteMyNoteComponent implements OnInit {
   ngOnInit() {
     // this.store.dispatch(new note.Load({parent_id: null}));
     this.store.dispatch({type: note.LOAD, payload: {parent_id: null}});
-    
+
     this.store.dispatch({type: folder.UPDATE_CURRENT, payload: {parent_id: null}});
+
+    if(!_.get(this.userService.profile, 'introduction.note')) this.introModal.open();
   }
 
   onNewNote() {

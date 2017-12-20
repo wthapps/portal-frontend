@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit, OnChanges, AfterViewInit, ViewEnca
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd, Params } from '@angular/router';
 
-
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/do';
@@ -24,18 +23,12 @@ declare var _: any;
   styleUrls: ['menu.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-
 export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() contactMenu: Array<any>;
   @Input() totalContactCount: number = 0;
 
-  noteFoldersTree: any[] = [];
-
-  noteFolders: Array<any>;
-
   /**public event for somewhere are able to subscribe*/
   event: Observable<any>;
-
 
   uuid: string;
   urls: any;
@@ -45,12 +38,10 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   noteMenu = Constants.noteMenuItems;
   hostname: string = '';
   isProfileTab: boolean;
-  currentLabel: string;
-
-  // labels: Array<any>;
+  currentGroup: string;
   commonEventSub: any;
+  constants: any;
   private destroySubject: Subject<any> = new Subject<any>();
-
 
   private currentFolderTree: any;
 
@@ -62,10 +53,10 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
               private apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService,
               private commonEventService: CommonEventService
-              // private labelService: LabelService
   ) {
     this.uuid = this.userService.getProfileUuid();
     this.urls = Constants.baseUrls;
+    this.constants = Constants;
   }
 
   ngOnInit() {
@@ -79,84 +70,16 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.isProfileTab = false;
         }
-        this.currentLabel = this.extractLabel(event.url);
+        this.currentGroup = this.extractLabel(event.url);
       });
 
-    // this.commonEventService.filter((event: any) => event.channel == 'noteFolderEvent').subscribe((event: any) => {
-    //   switch (event.action) {
-    //     case 'updateFolders':
-    //       for (let folder of event.payload) {
-    //         if (!folder.parent_id) {
-    //           folder.label = folder.name;
-    //           folder.icon = 'fa-folder-o';
-    //           folder.styleClass = `js-note-folders-tree-${folder.id}`;
-    //           folder.items = [];
-    //           folder.command = (eventClick: any)=> this.loadMenu(eventClick);
-    //           this.noteFoldersTree.push(folder);
-    //           this.noteFoldersTree = _.uniqBy(this.noteFoldersTree, 'id');
-    //         }
-    //       }
-    //       break;
-    //     case 'updateFoldersTree':
-    //       if (event.payload) {
-    //         console.log('event------', event);
-    //
-    //         $('[class^=\'js-note-folders-tree-\']').remove('active');
-    //         $('.js-note-folders-tree-' + event.payload.id + ' > a').addClass('active');
-    //
-    //         // push menus to noteFoldersTree
-    //         if (event.payload.parent_id) {
-    //           let currentFolder = this.findAll(event.payload.parent_id, this.noteFoldersTree);
-    //         }
-    //       }
-    //       break;
-    //     case 'note:folder:delete_success':
-    //       _.forEach(event.payload, (deletedItem: any) => {
-    //         _.remove(this.noteFoldersTree, {id: deletedItem.id});
-    //       });
-    //       break;
-    //   }
-    //
-    // });
   }
 
-  // findAll(id: any, items: any): any {
-  //   let found: any, result: any = [];
-  //
-  //   for (let i: number = 0; i < items.length; i++) {
-  //     if (items[i].id === id) {
-  //       result.push(items[i]);
-  //     } else if (_.isArray(items[i].items)) {
-  //       found = this.findAll(id, items[i].items);
-  //       if (found.length) {
-  //         result = result.concat(found);
-  //       }
-  //     }
-  //   }
-  //
-  //   return result;
-  // }
-
   ngAfterViewInit() {
-    /*let html_append = '<i class="fa fa-pencil"></i> <i class="fa fa-trash-o"></i>';
-
-     $('body').on({
-     mouseenter: (e: any)=> {
-     console.log(e.target);
-     if ($(e.target).closest('div').find('i').length == 0) {
-     $(e.target).append(html_append);
-     }
-     },
-     mouseleave: (e: any)=> {
-     console.log(e.target);
-     $(e.target).closest('div').find('i').remove();
-     }
-     }, '.well-folder-tree-left .ui-panelmenu-headerlink-hasicon, .well-folder-tree-left .ui-menuitem-link');*/
-
   }
 
   extractLabel(url: string) {
-    let regExp = /label=([\w ]*)/;
+    let regExp = /group=([\w ]*)/;
     let match = decodeURI(url).match(regExp);
 
     if (match && match[1]) {
@@ -176,7 +99,6 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubMenu(link: string) {
-    console.debug('onSubMenu:', link);
     this.navigateService.navigateOrRedirect(link);
   }
 
@@ -192,14 +114,14 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     this.commonEventService.broadcast({channel: 'menuCommonEvent', action: event.action, payload: event.payload});
   }
 
-  deleteLabel(label: any) {
+  deleteGroup(group: any) {
     this.wthConfirmService.confirm({
-      message: 'Are you sure you want to delete this label ?',
-      header: 'Delete label',
+      message: 'Are you sure you want to delete this group ?',
+      header: 'Delete group',
       accept: () => {
-        this.apiBaseService.delete(`contact/labels/${label.id}`).subscribe((res: any) => {
-          _.remove(this.contactMenu, (label: any) => {
-            return label.id == res.data.id;
+        this.apiBaseService.delete(`contact/groups/${group.id}`).subscribe((res: any) => {
+          _.remove(this.contactMenu, (group: any) => {
+            return group.id == res.data.id;
           });
         });
       }
@@ -210,5 +132,13 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.commonEventSub.unsubscribe();
     this.destroySubject.unsubscribe();
+  }
+
+  redirect(key: any) {
+    if(key == 'term') {
+      window.location.href = Constants.baseUrls.app + "/policies/terms"
+    } else {
+      window.location.href = Constants.baseUrls.app + "/policies/privacy"
+    }
   }
 }

@@ -93,6 +93,7 @@
 //}
 
 .page-menuleft {
+  height: 95%;
   a {
     display: block;
     color: inherit;
@@ -106,6 +107,9 @@
 
 .menuleft-nav-sub {
   display: none;
+  &.active{
+    display: block;
+  }
 }
 
 .menuleft-nav-item {
@@ -156,6 +160,9 @@
       }
     }
   }
+  &.show {
+    display: block;
+  }
 }
 
 .menuleft-nav-sub-item {
@@ -184,4 +191,3 @@
     }
   }
 }
-

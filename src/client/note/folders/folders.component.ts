@@ -99,7 +99,8 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   onBreadcrumbAction(event: any) {
     this.noteService.modalEvent({
       action: event.action,
-      payload: event.payload
+      payload: event.payload,
+      breadcrumb: true
     });
   }
 }

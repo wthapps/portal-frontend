@@ -1,0 +1,8 @@
+.about-intro {
+  .h1 {
+    font-weight: normal;
+    @media (max-width: $screen-xs-max) {
+      font-size: 18px;
+    }
+  }
+}

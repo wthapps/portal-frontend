@@ -1,0 +1,21 @@
+.article-slide-wrap {
+  .slider-nav {
+    margin-top: 10px;
+    .slick-list {
+      padding: 0 !important;
+    }
+    .slick-slide {
+      cursor: pointer;
+      outline: 0 none !important;
+      padding: 10px;
+      border: 1px solid transparent;
+      &.slick-current {
+        border-color: $color-inverse;
+      }
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+}

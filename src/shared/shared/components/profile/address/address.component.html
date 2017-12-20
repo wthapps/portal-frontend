@@ -1,0 +1,127 @@
+<div *ngIf="data">
+  <div class="field-group">
+    <div class="field-group-title">
+      <h3 class="pull-left">Address</h3>
+      <div class="pull-right">
+        <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
+          <i class="fa fa-pencil"></i>
+        </button>
+      </div>
+    </div>
+    <div class="field-group-content">
+      <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
+        <ng-template ngFor let-item [ngForOf]="data.addresses">
+          <dt>{{ item.category | keyToValue:addressType:'category':'name' }}</dt>
+          <dd>
+            <p>
+              {{ item.address_line1 }} <br>
+              {{ item.address_line2 }} <br>
+              {{ item.city }} {{ item.province }} {{ item.postcode }} <br>
+              {{ item.country }} <br>
+            </p>
+          </dd>
+        </ng-template>
+      </dl>
+      <div *ngIf="data.addresses && data.addresses.length == 0 && editable">
+        <p class="text-fade">
+          Tell us more about your address
+        </p>
+        <button type="button" class="btn btn-default" (click)="onOpenModal()">
+          <i class="fa fa-plus"></i> Add detail
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">Address</h4>
+    </modal-header>
+    <modal-body>
+      <div formArrayName="addresses">
+        <div *ngFor="let add_address of getFormControls(); let i=index" class="media mt0">
+          <div class="media-body" [formGroupName]="i">
+            <div class="row row-10">
+              <div class="col-sm-3">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!add_address.controls.category.valid
+                  && add_address.controls.category.touched),
+                  'has-success': (add_address.controls.category.valid
+                  && add_address.controls.category.touched
+                  && form.value.addresses[i].category.length>1)}">
+                  <select class="form-control" name="name" formControlName="category">
+                    <option *ngFor="let et of addressType" value="{{ et.category }}">{{ et.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-9">
+                <div class="row row-10">
+                  <div class="col-sm-12">
+                    <div class="form-group no-label" [ngClass]="{
+                      'has-error': (!add_address.controls.address_line1.valid
+                      && add_address.controls.address_line1.touched),
+                      'has-success': (add_address.controls.address_line1.valid
+                      && add_address.controls.address_line1.touched
+                      && form.value.addresses[i].address_line1.length>1)}">
+                      <input type="text" class="form-control" formControlName="address_line1" placeholder="">
+                      <div
+                        *ngIf="!add_address.controls.address_line1.valid && add_address.controls.address_line1.touched">
+                        <span
+                          *ngIf="!add_address.controls.address_line1.valid && add_address.controls.address_line1.errors.url"
+                          class="help-block text-danger">
+                          Address is not valid
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="po_box" placeholder="PO Box">
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="city" placeholder="City">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="province" placeholder="State/Provine">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="postcode" placeholder="Postal Code">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group no-label">
+                      <input type="text" class="form-control" formControlName="country" placeholder="Country">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="media-right">
+            <button type="button" class="btn btn-outline-default" (click)="removeItem(i, add_address.controls)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-default" (click)="addItem()">
+        <i class="fa fa-plus"></i> Add more
+      </button>
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
+              (click)="onSubmit(form.value)">Done
+      </button>
+    </modal-footer>
+  </modal>
+</form>

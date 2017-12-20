@@ -1,0 +1,46 @@
+@import "zone/picture/list";
+@import "zone/picture/layout";
+@import "zone/picture/sortbar";
+@import "zone/picture/media-detail";
+@import "zone/chat/body-chat";
+@import "zone/social/layout";
+
+//
+//.zone-no-photo {
+//  padding-top: 220px;
+//  background-image: url('../assets/images/zone/no-photo.png');
+//  background-repeat: no-repeat;
+//  background-position: center center;
+//  text-align: center;
+//}
+
+.zone-no-photo {
+  color: #9b9b9b;
+  padding-top: 50px;
+  h2 {
+    margin: 0;
+    padding: 0;
+    .fa, [class*='fw-'] {
+      font-size: 144px !important;
+    }
+
+  }
+  h3 {
+    font-size: 36px;
+  }
+  h4 {
+    font-size: 24px;
+    margin: 0 0 30px;
+    font-weight: normal;
+  }
+  .icon-album {
+    background-image: url('/assets/images/icons/album.png');
+    width: 144px;
+    height: 144px;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-background-size: contain;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}

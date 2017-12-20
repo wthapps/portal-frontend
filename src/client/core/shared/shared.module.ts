@@ -74,6 +74,8 @@ import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
 import { BoxLoadingModule } from './components/box-loading/box-loading.module';
 import { BoxNoDataModule } from './components/box-no-data/box-no-data.module';
 import { DirectiveModule } from './directive/directive.module';
+import { ClientDetectorService } from './services/client-detector.service';
+import { ModalsSharedModule } from './modals/modals.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -83,6 +85,7 @@ import { DirectiveModule } from './directive/directive.module';
   imports: [
     BrowserAnimationsModule,
     CookieModule.forRoot(),
+    ModalsSharedModule,
 
     InfiniteScrollModule
   ],
@@ -94,7 +97,7 @@ import { DirectiveModule } from './directive/directive.module';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     Ng2Bs3ModalModule,
-
+    ModalsSharedModule,
     LoadingModule,
     ToastsModule,
     ConfirmDialogModule,
@@ -156,6 +159,7 @@ export class CoreSharedModule {
         ConfirmationService,
         CookieService,
         StorageService,
+        ClientDetectorService,
         HandlerService,
         WTHNavigateService,
         NotificationService,

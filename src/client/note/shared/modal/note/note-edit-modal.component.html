@@ -1,9 +1,10 @@
 <form [formGroup]="form" novalidate>
-  <modal id="modal-note-edit" #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'" [backdrop]="'static'">
+  <modal id="modal-note-edit" #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-lg modal-note-edit'"
+         [backdrop]="'static'">
 
-    <modal-body >
+    <modal-body>
       <div class="form-group no-label">
-        <input autofocus [formControl]="title" type="text" class="form-control" id="note_form_title"
+        <input tabindex="1" autofocus (keypress)="onToEditor($event)" [formControl]="title" type="text" class="form-control" id="note_form_title"
                placeholder="Title">
       </div>
       <div class="form-group">
@@ -11,10 +12,12 @@
           <p-header>
             <div class="ql-format-group">
               <div class="ql-formats">
-                <button type="button" (click)="undo()"><i class="fa fa-reply"></i></button>
-                <button type="button" (click)="redo()"><i class="fa fa-share"></i></button>
+                <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()"><i
+                  class="fa fa-reply"></i></button>
+                <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()"><i
+                  class="fa fa-share"></i></button>
               </div>
-              <div class="ql-formats">
+              <div pTooltip="Font Family" tooltipPosition="bottom" class="ql-formats">
                 <!-- Add font family dropdown -->
                 <select class="ql-font">
                   <option value="gotham" selected="">Gotham</option>
@@ -26,7 +29,7 @@
                   <option value="verdana">Verdana</option>
                 </select>
               </div>
-              <div class="ql-formats">
+              <div pTooltip="Font Size" tooltipPosition="bottom" class="ql-formats">
                 <!-- Add font size dropdown -->
                 <select class="ql-size ql-size-sm">
                   <option value="8px">8</option>
@@ -38,7 +41,7 @@
                   <option value="36px">36</option>
                 </select>
               </div>
-              <div class="ql-formats">
+              <div pTooltip="Text Color" tooltipPosition="bottom" class="ql-formats">
                 <!-- Add colors -->
                 <select class="ql-color" title="Colour">
                   <option value="#ffffff"></option>
@@ -77,6 +80,8 @@
                   <option value="#0066cc"></option>
                   <option value="#9933ff"></option>
                 </select>
+              </div>
+              <div pTooltip="Background Color" tooltipPosition="bottom" class="ql-formats">
                 <!-- Add background -->
                 <select class="ql-background" title="Background">
                   <option value="#ffffff"></option>
@@ -118,16 +123,18 @@
               </div>
               <div class="ql-formats">
                 <!-- Add subscript and superscript buttons -->
-                <button class="ql-script" value="sub"></button>
-                <button class="ql-script" value="super"></button>
+                <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
+                <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
               </div>
               <div class="ql-formats">
-                <button class="ql-bold" aria-label="Bold"></button>
-                <button class="ql-italic" aria-label="Italic"></button>
-                <button class="ql-underline" aria-label="Underline"></button>
-                <button class="ql-strike" aria-label="Strikethrough"></button>
+                <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold" aria-label="Bold"></button>
+                <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic" aria-label="Italic"></button>
+                <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom" class="ql-underline"
+                        aria-label="Underline"></button>
+                <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike"
+                        aria-label="Strikethrough"></button>
               </div>
-              <div class="ql-formats">
+              <div pTooltip="Alignment" tooltipPosition="bottom" class="ql-formats">
                 <select class="ql-align">
                   <option selected></option>
                   <option value="center"></option>
@@ -136,21 +143,21 @@
                 </select>
               </div>
               <div class="ql-formats">
-                <button class="ql-list" value="check"></button>
-                <button class="ql-list" value="ordered"></button>
-                <button class="ql-list" value="bullet"></button>
+                <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
+                <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list" value="ordered"></button>
+                <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list" value="bullet"></button>
               </div>
 
-              <div class="ql-formats">
+              <div pTooltip="Divider line" tooltipPosition="bottom" class="ql-formats">
                 <button type="button" (click)="divider()">
                   <i>&mdash;</i>
                 </button>
               </div>
 
               <div class="ql-formats">
-                <button class="ql-link"></button>
-                <button class="ql-image"></button>
-                <button class="ql-code-block"></button>
+                <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom" class="ql-link"></button>
+                <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
+                <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
                 <!--<button class="ql-video"></button>-->
                 <!--<button class="ql-formula"></button>-->
               </div>
@@ -170,13 +177,14 @@
           <i class="fa fa-plus"></i> Photo
         </button>
         <!--<button class="btn btn-outline-default mr10" (click)="selectFiles()">-->
-          <!--<i class="fa fa-paperclip"></i> Attachment-->
+        <!--<i class="fa fa-paperclip"></i> Attachment-->
         <!--</button>-->
 
         <span class="btn btn-outline-default mr10 btn-style-1 fileinput-button"
               pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top">
             <i class="fa fa-paperclip"></i> Attachment
-            <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';" (change)="selectFiles($event)" />
+            <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';"
+                   (change)="selectFiles($event)"/>
 
           </span>
 
@@ -241,7 +249,7 @@
                   data-toggle="dropdown">
             <i class="fa fa-ellipsis-v"></i>
           </button>
-          <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+          <ul class="dropdown-menu dropdown-menu-top dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
             <li role="presentation">
               <a role="menuitem" tabindex="-1" href="#">Make a copy</a>
             </li>

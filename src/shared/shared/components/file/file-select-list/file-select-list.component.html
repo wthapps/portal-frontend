@@ -1,0 +1,29 @@
+<div *ngIf="photos" class="row-img photo-grid-list no-user-selected" (click)="clickParent($event)">
+  <div class="photo-box-img z-upload-item" *ngIf="showUpload">
+    <a href="#" (click)="fileSelection.open($event)">
+      <div>
+        <i class="fa fa-cloud-upload"></i>
+        <span>Upload Photo</span>
+      </div>
+    </a>
+    <file-browse #filesSelection [multipleSelect]="multipleSelect" (onFilesChanged)="changeFiles($event)"></file-browse>
+  </div>
+  <div class="photo-box-img z-upload-item" *ngIf="editCurrentMode">
+    <a href="javascript:;" (click)="editCurrentImage()">
+      <div>
+        <i class="fa fa-pencil"></i>
+        <span>Edit current</span>
+      </div>
+    </a>
+  </div>
+  <div *ngFor="let p of photos" class="photo-box-img item-selectable">
+    <div class="photo-box-img-action" *ngIf="showFavourite">
+      <i (click)="addFavourite($event, p)" class="fa" [ngClass]="p.favorite ? 'fa-star': 'fa-star-o'"></i>
+    </div>
+    <figure (click)="toggleSelectedItem($event, p)" class="img-center-dv">
+      <span class="photo-box-img-figure-in">
+        <img draggable="false" class="img-center" [src]="p['thumbnail_url']" alt="">
+      </span>
+    </figure>
+  </div>
+</div>

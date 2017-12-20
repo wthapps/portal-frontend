@@ -13,10 +13,10 @@ import 'rxjs/add/operator/last';
 import { CommonEventAction } from '../core/shared/services/common-event/common-event-action';
 import { CommonEvent } from '../core/shared/services/common-event/common-event';
 import { CommonEventService } from '../core/shared/services/common-event/common-event.service';
-import { LabelEditModalComponent } from './label/label-edit-modal.component';
-import { LabelService } from './label/label.service';
+import { GroupEditModalComponent } from './group/group-edit-modal.component';
+import { GroupService } from './group/group.service';
 import { Subject } from 'rxjs/Subject';
-import { Label } from './label/label.model';
+import { Group } from './group/group.model';
 import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
 import { ZContactService } from './shared/services/contact.service';
 import { Constants } from '../core/shared/config/constants';
@@ -35,7 +35,7 @@ declare var _: any;
   selector: 'sd-app',
   templateUrl: 'app.component.html',
   entryComponents: [
-    LabelEditModalComponent,
+    GroupEditModalComponent,
     ZContactSharedSettingsComponent
   ]
 })
@@ -44,8 +44,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
-  labels: Label[] = [];
-  labels$: Observable<any[]>;
+  groups: Group[] = [];
+  groups$: Observable<any[]>;
   contactMenu: Array<any> = new Array<any>();
   contactEvents: any = Constants.contactEvents;
 
@@ -58,17 +58,17 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               public contactService: ZContactService,
-              private labelService: LabelService,
+              private groupService: GroupService,
               private googleApiService: GoogleApiService,
               private wthConfirmService: WthConfirmService) {
     console.log('Environment config', Config, this.confirmDialog);
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common).takeUntil(this.destroySubject).subscribe((event: CommonEvent) => {
       this.doEvent(event);
     });
-    this.labelService.labels$
+    this.groupService.groups$
       .takeUntil(this.destroySubject)
-      .subscribe((labels: any[]) => {
-        this.labels = labels;
+      .subscribe((groups: any[]) => {
+        this.groups = groups;
       });
   }
 
@@ -80,8 +80,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         document.body.scrollTop = 0;
       });
 
-    this.labelService.getAllLabels()
-      .then((labels: any[]) => console.debug('getAllLabels: ', labels))
+    this.groupService.getAllGroups()
+      .then((groups: any[]) => console.debug('getAllGroups: ', groups))
       .then(() => this.contactService.initialLoad())
       .then(() => this.googleApiService.handleClientLoad());
   }
@@ -94,20 +94,20 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   doEvent(event: CommonEvent) {
     console.log('doEvent inside app component', event);
     switch (event.action) {
-      case 'contact:label:open_modal_edit':
-        this.loadModalComponent(LabelEditModalComponent);
+      case 'contact:group:open_modal_edit':
+        this.loadModalComponent(GroupEditModalComponent);
         this.modal.open({
           mode: event.payload.mode,
-          item: this.getLabel(event.payload.selectedItem) || new Label()
+          item: this.getGroup(event.payload.selectedItem) || new Group()
         });
         break;
-      case 'contact:label:open_modal_setting':
+      case 'contact:group:open_modal_setting':
         this.loadModalComponent(ZContactSharedSettingsComponent);
         this.modal.open();
         break;
-      case 'contact:label:delete':
-        let label = this.getLabel(event.payload.selectedItem);
-        this.labelService.delete(label.id).subscribe(
+      case 'contact:group:delete':
+        let group = this.getGroup(event.payload.selectedItem);
+        this.groupService.delete(group.id).subscribe(
           (res: any) => {
             console.log(res);
           });
@@ -115,8 +115,8 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
     }
   }
 
-  private getLabel(name: string): Label {
-    return this.labelService.getLabelByName(name);
+  private getGroup(name: string): Group {
+    return this.groupService.getGroupByName(name);
   }
 
   private loadModalComponent(component: any) {

@@ -1,0 +1,39 @@
+@mixin avatar-mixin($w) {
+  width: $w;
+  height: $w;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  img {
+    width: auto;
+    height: 100%;
+    @include center();
+  }
+}
+
+.avatar-lg {
+  @include avatar-mixin($avatar-lg);
+}
+
+.avatar-md {
+  @include avatar-mixin($avatar-md);
+}
+
+.avatar-sm {
+  @include avatar-mixin($avatar-sm);
+}
+
+.avatar-xsm {
+  @include avatar-mixin($avatar-xsm);
+}
+
+.avatar-xs {
+  @include avatar-mixin($avatar-xs);
+}
+
+.avatar-xxs {
+  @include avatar-mixin($avatar-xxs);
+}

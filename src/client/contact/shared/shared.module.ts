@@ -11,7 +11,7 @@ import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
 import { GoogleApiService } from './services/google-api.service';
 import { TagInputModule } from 'ngx-chips';
 
-import { ContactAddLabelModalComponent } from './modal/contact-add-label/contact-add-label-modal.component';
+import { ContactAddGroupModalComponent } from './modal/contact-add-group/contact-add-group-modal.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ZContactShareImportContactComponent } from './modal/import-contact/import-contact.component';
@@ -24,6 +24,7 @@ import { ZContactPipeModule } from './pipe/pipe.module';
 import { ICloudOAuthComponent } from './modal/import-contact/icloud/icloud-oauth.component';
 import { Ng2HdModule } from '../../core/shared/ng2-hd/ng2-hd.module';
 import { ZContactSharedHeaderComponent } from './header/header.component';
+import { ZContactShareIcloudIndicateComponent } from './modal/import-contact/icloud-indicate/icloud-indicate.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -57,8 +58,9 @@ import { ZContactSharedHeaderComponent } from './header/header.component';
     ZContactSharedHeaderComponent,
 
     //modal here
-    ContactAddLabelModalComponent,
+    ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,
+    ZContactShareIcloudIndicateComponent,
     ICloudOAuthComponent
   ],
   exports: [
@@ -83,8 +85,9 @@ import { ZContactSharedHeaderComponent } from './header/header.component';
     ZContactSharedHeaderComponent,
 
     // modal here
-    ContactAddLabelModalComponent,
+    ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,
+    ZContactShareIcloudIndicateComponent,
     ICloudOAuthComponent,
 
 

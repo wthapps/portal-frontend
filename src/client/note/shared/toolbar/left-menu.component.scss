@@ -1,10 +1,16 @@
 @import '../../../core/scss/global';
 
-:host{
+:host {
   display: block;
-  li > a{
+  li > a {
     display: block;
     padding: 8px 15px;
     font-weight: bold;
+  }
+}
+
+.well-folder-tree-left-wrap {
+  &, &:hover {
+    background-color: transparent;
   }
 }

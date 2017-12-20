@@ -23,7 +23,8 @@ export class UrlService {
   }
 
   getId() {
-    let urls = window.location.href.split('/');
+    let urls = window.location.href.split('(');
+    urls = urls[0].split('/');
     urls = urls[urls.length - 1].split('?');
     return urls[0];
   }

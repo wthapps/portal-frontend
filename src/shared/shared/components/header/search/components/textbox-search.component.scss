@@ -1,0 +1,162 @@
+@import '../../../../../scss/global';
+
+:host {
+  display: block;
+
+  & /deep/ {
+    .input-group-wrap {
+      position: relative;
+    }
+
+    .input-group-suggestions {
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      right: 0;
+      margin: 2px 0 0; // override default ul
+      list-style: none;
+      font-size: $font-size-base;
+      text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
+      background-color: $dropdown-bg;
+      border: 1px solid $dropdown-fallback-border; // IE8 fallback
+      border: 1px solid $dropdown-border;
+      border-radius: $border-radius-base;
+      @include box-shadow(0 6px 12px rgba(0, 0, 0, .175));
+      background-clip: padding-box;
+      h5 {
+        margin: 10px;
+      }
+      .list-group {
+        margin: 0;
+        max-height: 250px;
+        overflow: auto;
+        .list-group-item {
+          -webkit-border-radius: 0;
+          -moz-border-radius: 0;
+          border-radius: 0;
+          border-left-width: 0;
+          border-right-width: 0;
+          padding: 10px;
+          overflow: hidden;
+          line-height: 30px;
+          white-space: nowrap;
+          -ms-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+          .avatar-xxs, .avatar-xs {
+            float: left;
+            margin-right: 10px;
+          }
+        }
+        &:first-child {
+          > .list-group-item {
+            &:first-child {
+              border-top-width: 0;
+              @include border-top-radius($border-radius-base);
+            }
+          }
+        }
+      }
+      .list-group-footer {
+        padding: 10px;
+        border-top: 1px solid $dropdown-border;
+        margin-top: -1px;
+        position: relative;
+        z-index: 2;
+      }
+
+    }
+
+    .navbar-searchTop-advanced {
+      z-index: 1;
+      .form-horizontal {
+        padding: 15px;
+      }
+      .form-group {
+        display: block;
+        margin-bottom: 15px;
+        .form-control {
+          display: block;
+          width: 100%;
+        }
+        .control-label {
+          white-space: nowrap;
+        }
+        .ui-calendar {
+          .ui-inputtext {
+            font-size: 12px;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+
+    .input-group {
+      width: 100%;
+      .form-control {
+        position: relative;
+        z-index: 1;
+        -webkit-border-radius: $border-radius-base;
+        -moz-border-radius: $border-radius-base;
+        border-radius: $border-radius-base;
+      }
+      .input-group-btn {
+        position: absolute;
+        right: 1px;
+        top: 1px;
+        z-index: 2;
+        .btn {
+          padding-top: $padding-base-vertical - 1;
+          padding-bottom: $padding-base-vertical - 1;
+          border-color: transparent;
+          -webkit-border-radius: $border-radius-base;
+          -moz-border-radius: $border-radius-base;
+          border-radius: $border-radius-base;
+          &,
+          &:active,
+          &.active {
+            &:focus,
+            &.focus {
+              background-color: transparent;
+              @include box-shadow(none);
+            }
+          }
+
+          &:hover,
+          &:focus,
+          &.focus {
+            background-color: transparent;
+            @include box-shadow(none);
+            color: $color-inverse;
+          }
+
+          &:active,
+          &.active {
+            background-color: transparent;
+            @include box-shadow(0 0 0 none);
+            color: $color-inverse;
+          }
+        }
+      }
+    }
+
+    .ui-autocomplete-panel {
+      .ui-autocomplete-items {
+        .ui-autocomplete-list-item {
+          border-bottom: 1px solid $line;
+          .can-click {
+            display: block;
+            overflow: hidden;
+            -ms-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            line-height: 30px;
+            span {
+              float: left;
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

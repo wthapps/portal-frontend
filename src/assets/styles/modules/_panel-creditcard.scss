@@ -1,0 +1,65 @@
+.panel-creditcard {
+  .nav-tabs {
+    border-width: 0;
+    margin-bottom: 20px;
+    > li {
+      margin: 0;
+      padding: 0;
+      > a {
+        position: relative;
+        padding-right: 50px;
+        &, &:hover, &:focus, &:active {
+          margin: 0;
+          border-width: 0;
+          background-color: transparent;
+        }
+        span {
+          text-indent: -9999px;
+        }
+        &:before {
+          content: "";
+          width: 22px;
+          height: 22px;
+          display: inline-block;
+          background-image: url("/assets/images/icons/radio_tick.png");
+
+          float: left;
+          margin-right: 10px;
+          margin-top: 5px;
+        }
+        &.active:before {
+          background-position: 0px -22px;
+        }
+      }
+      &:first-child {
+        > a {
+          span {
+            background-image: url("/assets/images/card/credit_card.png");
+            width: 306px;
+            height: 32px;
+            display: inline-block;
+          }
+        }
+      }
+      &:nth-child(2) {
+        > a {
+          span {
+            background-image: url("/assets/images/card/paypal_icon.png");
+            width: 102px;
+            height: 32px;
+            line-height: 32px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}
+
+.card-box {
+  padding: 20px;
+  border: 1px solid $line;
+  border-radius: 5px;
+}

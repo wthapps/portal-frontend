@@ -1,0 +1,306 @@
+<form [formGroup]="form" novalidate>
+
+  <modal #modal
+         [cssClass]="'modal-lg modal-account-list-edit'"
+         [keyboard]="false"
+         [animation]="false"
+         [backdrop]="'static'" >
+    <modal-header>
+      <button aria-label="Close" class="close" (click)="close()" type="button">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title">Add account</h4>
+
+    </modal-header>
+    <modal-body>
+<div>
+
+</div>
+        <div class="pb5 bold">
+          <div class="row row-12">
+            <div class="col-sm-4">
+              Full name
+            </div>
+            <div class="col-sm-4 ml5 pl0">
+              Email address
+            </div>
+            <div class="col-sm-3 pl0">
+              Birthday
+            </div>
+          </div>
+        </div>
+
+        <div formArrayName="items">
+
+          <div *ngFor="let item of form.get('items')['controls']; let i=index;" class="mt0">
+            <div *ngIf="item['controls'].parent_id.value == null" [formGroupName]="i">
+
+              <div class="row row-12">
+
+                <div class="col-sm-4 pr0">
+                  <div class="form-group no-label" [ngClass]="{
+                    'has-error': (!item['controls'].name.valid
+                                && item['controls'].name.touched),
+                    'has-success': (item['controls'].name.valid
+                                && item['controls'].name.touched
+                                && form.value.items[i].name.length > 0)}">
+                    <input type="text" class="form-control" formControlName="name"
+                           (change)="changed(item.controls)"
+                           placeholder="Full name">
+                    <div *ngIf="!item['controls'].name.valid && item['controls'].name.touched">
+                      <span class="help-block text-danger" *ngIf="item['controls'].name.errors.required">
+                        Full name is required
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-4 pl5 pr0">
+                  <div class="form-group no-label"
+                       [ngClass]="{
+                    'has-error': (!item['controls'].email.valid
+                                && item['controls'].email.touched),
+                    'has-success': (item['controls'].email.valid
+                                && item['controls'].email.touched
+                                && form.value.items[i].email.length > 0)}">
+                    <input type="email" email class="form-control" formControlName="email"
+                           (change)="changed(item.controls)"
+                           placeholder="account-email@example.com">
+                    <div
+                      *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
+                      <span
+                        *ngIf="!item['controls'].email.valid && item['controls'].email.errors.emailFormat"
+                        class="help-block text-danger">
+                        Email is not valid
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-3 pl5 pr0">
+                  <div class="form-group no-label"
+                       [ngClass]="{
+                    'has-error': (!item['controls'].birthday.valid
+                                && item['controls'].birthday.touched),
+                    'has-success': (item['controls'].birthday.valid
+                                && item['controls'].birthday.touched
+                                && form.value.items[i].birthday.length > 0)}">
+                    <p-calendar class="input-block"
+                                inputStyleClass="input-birthday"
+                                [maxDate]="maxDate" require="true"
+                                [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2004"
+                                formControlName="birthday"></p-calendar>
+
+                    <div *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.touched">
+                      <span
+                        *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.errors.required"
+                        class="help-block text-danger">
+                        Birthday is required
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <!--<div class="col-sm-2 pl5">-->
+                  <!--<div class="form-group no-label">-->
+                    <!--<select class="form-control">-->
+                      <!--<option value="family">Family</option>-->
+                      <!--<option value="student">Student</option>-->
+                    <!--</select>-->
+                  <!--</div>-->
+                <!--</div>-->
+
+                <div class="col-sm-1">
+                  <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == null"
+                          type="button"
+                          class="btn btn-default"
+                          (click)="remove(i, item.controls)">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="mb10">
+          <button type="button" class="btn btn-outline-default btn-min" (click)="add(false)">
+            <i class="fa fa-plus"></i> Add Full Account
+          </button>
+          <div class="pull-right pr20">
+            <div>
+              {{ noOfMaster }} full accounts x ${{ masterPrice }} = $ {{ noOfMaster*masterPrice }}
+            </div>
+          </div>
+        </div>
+
+
+      <div class="pb5 bold">
+        <div class="row row-12">
+          <div class="col-sm-4">
+            Full name
+          </div>
+          <div class="col-sm-4 ml5 pl0">
+            Email address
+          </div>
+          <div class="col-sm-3 pl0">
+            Birthday
+          </div>
+
+        </div>
+      </div>
+
+      <div formArrayName="items">
+
+        <div *ngFor="let item of form.get('items')['controls']; let i=index;" class="mt0">
+          <div *ngIf="item['controls'].parent_id.value == 0" [formGroupName]="i">
+
+            <div class="row row-12">
+
+              <div class="col-sm-4 pr0">
+                <div class="form-group no-label" [ngClass]="{
+                    'has-error': (!item['controls'].name.valid
+                                && item['controls'].name.touched),
+                    'has-success': (item['controls'].name.valid
+                                && item['controls'].name.touched
+                                && form.value.items[i].name.length > 0)}">
+                  <input type="text" class="form-control" formControlName="name"
+                         (change)="changed(item.controls)" placeholder="Full name">
+                  <div *ngIf="!item['controls'].name.valid && item['controls'].name.touched">
+                      <span class="help-block text-danger" *ngIf="item['controls'].name.errors.required">
+                        Full name is required
+                      </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4 pl5 pr0">
+
+                <div class="form-group no-label"
+                     [ngClass]="{
+                    'has-error': (!item['controls'].email.valid
+                                && item['controls'].email.touched),
+                    'has-success': (item['controls'].email.valid
+                                && item['controls'].email.touched
+                                && form.value.items[i].email.length > 0)}">
+                  <input type="email" email class="form-control" formControlName="email"
+                         (change)="changed(item.controls)"
+                         placeholder="account-email@example.com">
+                  <div *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
+                      <span
+                        *ngIf="!item['controls'].email.valid && item['controls'].email.errors.emailFormat"
+                        class="help-block text-danger">
+                        Email is not valid
+                      </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3 pl5 pr0">
+
+                <div class="form-group no-label"
+                     [ngClass]="{
+                    'has-error': (!item['controls'].birthday.valid
+                                && item['controls'].birthday.touched),
+                    'has-success': (item['controls'].birthday.valid
+                                && item['controls'].birthday.touched
+                                && form.value.items[i].birthday.length > 0)}">
+                  <p-calendar class="input-block"
+                              inputStyleClass="input-birthday"
+                              [maxDate]="maxDate" required="true"
+                              [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2004"
+                              formControlName="birthday"></p-calendar>
+
+                  <div *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.touched">
+                      <span
+                        *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.errors.required"
+                        class="help-block text-danger">
+                        Birthday is required
+                      </span>
+                  </div>
+                </div>
+              </div>
+
+              <!--<div class="col-sm-2 pl5">-->
+                <!--<div class="form-group no-label">-->
+                  <!--<select class="form-control">-->
+                    <!--<option value="family">Family</option>-->
+                    <!--<option value="student">Student</option>-->
+                  <!--</select>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <div class="col-sm-1">
+                <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == 0"
+                        type="button"
+                        class="btn btn-default"
+                        (click)="remove(i, item.controls)">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="mb10">
+        <button type="button" class="btn btn-outline-default btn-min" (click)="add(true)">
+          <i class="fa fa-plus"></i> Add Sub Account
+        </button>
+        <div class="pull-right pr20">
+          <div>
+            {{ noOfSub }} sub accounts x ${{ subPrice }} = ${{ noOfSub*subPrice }}
+          </div>
+        </div>
+      </div>
+
+      <div> *Account needs to be at least 13 years old</div>
+
+
+      <div class="panel panel-default mb0">
+        <div class="row row-12 panel-body text-right">
+          <div class="col-sm-10">
+            <div>New full accounts:</div>
+          </div>
+          <div class="col-sm-2">
+            <div>${{ noOfMaster*masterPrice }}</div>
+          </div>
+
+          <div class="col-sm-10" >
+            <div>New sub accounts:</div>
+          </div>
+          <div class="col-sm-2">
+            <div>${{ noOfSub*subPrice }}</div>
+          </div>
+
+          <div class="col-sm-10">
+            <div>Current accounts:</div>
+          </div>
+          <div class="col-sm-2">
+            <div>${{ masterPrice }}</div>
+          </div>
+
+          <div class="col-sm-10">
+            <div class="bold">Total:</div>
+          </div>
+          <div class="col-sm-2 bold">
+            <div>${{ noOfSub*subPrice + noOfMaster*masterPrice + masterPrice }}</div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </modal-body>
+
+    <modal-footer>
+      <div>
+        <button type="button" class="btn btn-outline-default btn-min"
+                (click)="close()">Cancel</button>
+
+        <button [disabled]="!validItems()" type="submit" class="btn btn-outline-primary btn-min pull-right"
+                (click)="continue()">Continue
+        </button>
+      </div>
+    </modal-footer>
+  </modal>
+
+</form>

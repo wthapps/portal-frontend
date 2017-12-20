@@ -1,4 +1,7 @@
-import { Component, ViewChild, ViewEncapsulation, Input, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import {
+  Component, ViewChild, ViewEncapsulation, Input, ElementRef, ViewChildren, QueryList,
+  AfterViewInit
+} from '@angular/core';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Note } from '../../../../core/shared/models/note.model';
@@ -8,7 +11,8 @@ import { ApiBaseService } from '../../../../core/shared/services/apibase.service
 declare let $: any;
 declare let jsPDF: any;
 declare let saveAs: any;
-declare let printJS: any;
+// declare let printJS: any;
+
 
 @Component({
   moduleId: module.id,
@@ -18,13 +22,17 @@ declare let printJS: any;
   encapsulation: ViewEncapsulation.None
 })
 
-export class ZNoteSharedModalNoteViewComponent {
+export class ZNoteSharedModalNoteViewComponent implements AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
   @ViewChildren('pModal') pModals: QueryList<any>;
   @Input() data: Note;
 
   constructor( private noteService: ZNoteService,
               private api: ApiBaseService) {
+  }
+
+  ngAfterViewInit() {
+    document.querySelector('.ql-editor').innerHTML = this.data.content;
   }
 
   open() {
@@ -39,6 +47,17 @@ export class ZNoteSharedModalNoteViewComponent {
   }
 
   print() {
-    printJS({ printable: 'noteview', type: 'html', header: this.data.title});
+    // printJS({ printable: 'noteview', type: 'html', header: this.data.title});
+
+    let editor: any = document.querySelector('div.ql-editor');
+
+    if(!document.querySelector('.printable')) {
+      $('body').after('<div class="printable ql-container ql-snow"><div class="ql-editor"></div><div/>');
+    }
+    document.querySelector('.printable > .ql-editor').innerHTML = editor.innerHTML;
+    let printable: any = document.querySelector('.printable > .ql-editor');
+    printable.innerHTML = editor.innerHTML;
+    window.print();
+
   }
 }

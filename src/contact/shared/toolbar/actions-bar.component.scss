@@ -1,0 +1,10 @@
+@import '../../../shared/scss/global';
+
+:host {
+  li {
+    min-width: 40px;
+  }
+  .disabled {
+    opacity: 0.3;
+  }
+}

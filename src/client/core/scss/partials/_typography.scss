@@ -62,6 +62,11 @@ body {
 
 .text-fade {
   @include opacity(0.6);
+  &.can-click {
+    &:hover {
+      @include opacity(1);
+    }
+  }
 }
 
 .text-link {

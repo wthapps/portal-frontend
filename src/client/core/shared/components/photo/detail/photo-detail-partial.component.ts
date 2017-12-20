@@ -172,6 +172,9 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   // false --> pre
   move(direction: boolean = true): void {
     let index = 0;
+    this.clearCropper();
+    $('.cropper-container').remove();
+
 
     if (direction) {
       index = this.currentIndex < (this.ids.length - 1) ? this.currentIndex + 1 : 0;
@@ -212,10 +215,11 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
 
   ////////////////////////////////////////////////////CROPPER/////////////////////////////////////
 
-  editPhoto() {
-    this.initCropper();
-    this.setMode(1);
-    this.event.emit({action: 'editPhoto'});
+  editPhoto(): Promise<any> {
+    return this.initCropper().then(() => {
+      this.setMode(1);
+      this.event.emit({action: 'editPhoto'});
+    });
   }
 
   setMode(mode: number) {
@@ -227,28 +231,40 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     this.mode = mode;
   }
 
-  initCropper() {
-    this.clearCropper();
-    console.debug('after clear cropper: ', this.cropper);
-    if (this.cropper == null) {
-      console.debug('init cropper ...');
-      let image = document.getElementById('photo-detail-image');
-      this.cropper = new Cropper(image, {
-        dragMode: 'none',
-        // autoCrop: true,
-        // autoCropArea: 0,
-        // viewMode: 2,
-        modal: false,
-        ready: () => {
-          // hide crop area on view mode
-          $('.cropper-crop-box').hide();
-        },
-        cropstart: () => {
-          $('.cropper-crop-box').show();
-        }
-      });
-    }
-    this.cropper.replace(this.photo.url);
+  initCropper(): Promise<any> {
+    return new Promise<any>((resolve: any) => {
+      this.clearCropper();
+      console.debug('after clear cropper: ', this.cropper);
+      if (this.cropper == null) {
+        console.debug('init cropper ...');
+        let image = document.getElementById('photo-detail-image');
+        this.cropper = new Cropper(image, {
+          dragMode: 'none',
+          // autoCrop: false,
+          // autoCropArea: 0,
+          // viewMode: 2,
+          modal: false,
+          ready: () => {
+            // hide crop area on view mode
+            $('.cropper-crop-box').hide();
+            resolve();
+          },
+          cropstart: () => {
+            $('.cropper-crop-box').show();
+          }
+        });
+      }
+      this.cropper.replace(this.photo.url);
+    });
+  }
+
+  initCropperOnce(): Promise<any> {
+    this.setMode(1);
+    this.event.emit({action: 'editPhoto'});
+    if(this.cropper == null) {
+      return this.editPhoto();
+    } else
+      return Promise.resolve();
   }
 
   clearCropper() {
@@ -272,19 +288,24 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
       this.cropper.setDragMode('crop');
       this.editing = true;
     }
-    this.cropping = !this.cropping;
+    $('.cropper-crop-box').show();
 
+    this.cropping = !this.cropping;
   }
 
   zoomCropper(ratio: any) {
-    this.editing = ratio != 0 ? true : false;
-    if (ratio == 0) {
-      this.cropper.reset();
-    } else if (ratio == 0.1) {
-      this.cropper.zoom(0.1);
-    } else {
-      this.cropper.zoom(-0.1);
-    }
+    this.initCropperOnce().then(() => {
+
+      this.editing = ratio != 0 ? true : false;
+      if (ratio == 0) {
+        this.cropper.reset();
+      } else if (ratio == 0.1) {
+        this.cropper.zoom(0.1);
+      } else {
+        this.cropper.zoom(-0.1);
+      }
+    });
+
   }
 
   reset () {
@@ -292,18 +313,21 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     this.cropper.setDragMode('none');
     this.cropping = false;
     this.editing = false;
+
+    $('.cropper-crop-box').hide();
+    $('.cropper-face').hide();
   }
 
   cancel(noReset: boolean = false) {
-    if(this.cropping) {
-      $('.cropper-crop-box').hide();
-    }
+    $('.cropper-crop-box').hide();
+    $('.cropper-face').hide();
     this.editing = false;
     if(!noReset)
       this.cropper.reset();
     this.cropper.setDragMode('none');
     this.setMode(0);
   }
+
 
   cropperSave() {
     // get cropped image data
@@ -343,7 +367,6 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         break;
     }
     this.modal.open(options);
-
   }
 
   private loadModalComponent(component: any) {

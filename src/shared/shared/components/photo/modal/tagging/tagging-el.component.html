@@ -1,0 +1,7 @@
+<tag-input [(ngModel)]="addedTags">
+  <tag-input-dropdown [autocompleteObservable]='requestAutocompleteItems'>
+    <ng-template let-item="item" let-index="index">
+      {{ item.display }}
+    </ng-template>
+  </tag-input-dropdown>
+</tag-input>

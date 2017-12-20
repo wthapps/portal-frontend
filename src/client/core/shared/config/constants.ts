@@ -383,6 +383,7 @@ export let Constants = {
     showPassword: 'Show password',
     tag: 'Tag',
     tags: 'Tags',
+    reset: 'Reset',
     resetZoom: 'Reset zoom',
     rotateLeft: 'Rotate left',
     rotateRight: 'Rotate right',

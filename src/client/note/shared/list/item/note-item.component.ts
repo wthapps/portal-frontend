@@ -76,12 +76,17 @@ export class NoteItemComponent implements OnInit, OnDestroy {
       this.store.dispatch(new note.Select({
         id: this.data.id,
         object_type: this.data.object_type,
+        permission: this.data.permission,
         parent_id: this.data.parent_id
       }));
     } else {
       this.store.dispatch({
         type: note.SELECT_ONE,
-        payload: {id: this.data.id, object_type: this.data.object_type, parent_id: this.data.parent_id}
+        payload: {
+          id: this.data.id,
+          object_type: this.data.object_type,
+          permission: this.data.permission,
+          parent_id: this.data.parent_id}
       });
     }
   }
@@ -94,6 +99,7 @@ export class NoteItemComponent implements OnInit, OnDestroy {
     this.store.dispatch(new note.Select({
       id: this.data.id,
       object_type: this.data.object_type,
+      permission: this.data.permission,
       parent_id: this.data.parent_id
     }));
   }

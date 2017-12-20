@@ -72,7 +72,7 @@ export class UserService extends ApiBaseService {
    * update user info
    * is_patch: You decide updating whole resource or a part of. Default value is false
    */
-  update(path: string, body: string): Observable<Response> {
+  update(path: string, body: any): Observable<Response> {
     // if(is_patch){
     return super.patch(path, body)
       .map((res: any) => {
@@ -126,11 +126,9 @@ export class UserService extends ApiBaseService {
   }
 
   deleteUserInfo() {
-    //2 Cookie.delete('jwt', '/');
-    //2 Cookie.delete('logged_in', '/');
-    //2 Cookie.delete('profile', '/');
-
-    this.cookieService.removeAll();
+    this.cookieService.remove('jwt', this.cookieOptionsArgs);
+    this.cookieService.remove('logged_in', this.cookieOptionsArgs);
+    this.cookieService.remove('profile', this.cookieOptionsArgs);
 
     this.loggedIn = false;
     this.profile = null;
@@ -202,5 +200,3 @@ export class UserService extends ApiBaseService {
     console.debug('inside setProfile: ', this._profile);
   }
 }
-
-

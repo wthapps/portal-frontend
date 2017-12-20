@@ -1,7 +1,8 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-declare var $: any;
-declare var Shepherd: any;
+import { UserService } from '../../../core/shared/services/user.service';
+import { Constants } from '../../../core/shared/config/constants';
 
 @Component({
   moduleId: module.id,
@@ -10,32 +11,26 @@ declare var Shepherd: any;
   styleUrls: ['done.component.css']
 })
 
-export class WelcomeDoneComponent implements AfterViewInit {
-  pageTitle: string = 'Welcome Page';
+export class WelcomeDoneComponent implements OnInit {
+  navigateUrl: string = Constants.baseUrls.social + '/my-profile';
 
-  ngAfterViewInit() {
-
+  constructor(private userService: UserService,
+              private router: Router) {
   }
 
-  // ngAfterViewInit(): any {
-  //   $('.welcome-slide-in').slick({
-  //     dots: true,
-  //     arrows: false
-  //   });
-  //
-  //   let tour = new Shepherd.Tour({
-  //     defaults: {
-  //       classes: 'shepherd-theme-arrows'
-  //     }
-  //   });
-  //
-  //   tour.addStep('example', {
-  //     title: 'Example Shepherd',
-  //     text: 'Creating a Shepherd is easy too! Just create ...',
-  //     attachTo: '.header-nav-apps bottom',
-  //     advanceOn: '.docs-link click'
-  //   });
-  //
-  //   tour.start();
-  // }
+  ngOnInit(): void {
+    if (!this.userService.profile.took_a_tour) {
+      let body = JSON.stringify({
+        took_a_tour: true
+      });
+
+      this.userService.update(`users/${this.userService.profile.id}`, body).subscribe(
+        (res: any) => {
+          console.log(res);
+        });
+
+    } else {
+      this.router.navigate(['/settings/profile']);
+    }
+  }
 }

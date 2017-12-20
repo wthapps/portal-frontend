@@ -271,6 +271,10 @@ body {
         a {
           text-decoration: none !important;
         }
+
+        & + .ui-panelmenu-content-wrapper {
+
+        }
       }
       .ui-panelmenu-panel {
         border-width: 0;
@@ -341,7 +345,7 @@ body {
           .ui-panelmenu-headerlink-hasicon {
             margin: 0;
             padding: 10px 15px 10px 45px;
-            line-height: 1;
+            line-height: 1.2;
             &:hover {
               background-color: lighten(#d8d8d8, 5%);
             }
@@ -354,7 +358,7 @@ body {
 
           .ui-menuitem-link {
             padding: 9px 15px 9px 30px;
-            line-height: 1;
+            line-height: 1.2;
             &:hover {
               background-color: lighten(#d8d8d8, 5%);
             }
@@ -371,27 +375,27 @@ body {
 
           .ui-menuitem {
             .ui-menuitem-link {
-              padding-left: 45px;
+              padding-left: 60px;
             }
             .ui-menuitem {
               .ui-menuitem-link {
-                padding-left: 60px;
+                padding-left: 75px;
               }
               .ui-menuitem {
                 .ui-menuitem-link {
-                  padding-left: 75px;
+                  padding-left: 90px;
                 }
                 .ui-menuitem {
                   .ui-menuitem-link {
-                    padding-left: 90px;
+                    padding-left: 105px;
                   }
                   .ui-menuitem {
                     .ui-menuitem-link {
-                      padding-left: 105px;
+                      padding-left: 120px;
                     }
                     .ui-menuitem {
                       .ui-menuitem-link {
-                        padding-left: 120px;
+                        padding-left: 135px;
                       }
                     }
                   }

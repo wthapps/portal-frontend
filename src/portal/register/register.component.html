@@ -1,0 +1,95 @@
+<div class="page-content bg-gray-light">
+  <div class="container">
+    <div class="form-box-sm">
+      <div class="text-center">
+        <h2 class="h1">Sign Up</h2>
+        <p class="h4">Welcome to WTHApps!</p>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched)}">
+              <label for="first_name">First Name</label>
+              <input [formControl]="first_name" type="text" class="form-control" id="first_name"
+                     placeholder="First Name">
+              <div *ngIf="!first_name.valid && first_name.touched">
+                <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">First name is required</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group" [ngClass]="{'has-error': (!last_name.valid && last_name.touched)}">
+              <label for="last_name">Last Name</label>
+              <input [formControl]="last_name" type="text" class="form-control" id="last_name"
+                     placeholder="Last Name">
+              <div *ngIf="!last_name.valid && last_name.touched">
+                    <span *ngIf="!last_name.valid && last_name.errors.required"
+                          class="help-block">Last name is required</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
+          <label for="email">Email</label>
+          <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
+          <div *ngIf="!email.valid && email.touched">
+            <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
+            <span *ngIf="!email.errors.required && email.errors.emailFormat"
+                  class="help-block">Email is not valid. eg. example@wthapps.com</span>
+          </div>
+        </div>
+        <div class="form-group has-password"
+             [ngClass]="{'has-error': (!password.valid && password.touched)}">
+          <label for="password">Password</label>
+          <show-hide-password>
+            <input #showhidepassword [formControl]="password" type="password" class="form-control" id="password"
+                   placeholder="Password">
+          </show-hide-password>
+          <p class="mt10 mb0">New password must:</p>
+          <ul
+            [ngClass]="{'text-danger': (!password.valid && password.touched), 'text-success': (password.valid && password.touched)}">
+
+            <ng-template [ngIf]="!password.valid">
+              <ng-template [ngIf]="password.errors.required">
+                <li>Contain at least 8 characters or more</li>
+              </ng-template>
+              <ng-template [ngIf]="password.errors.minlength">
+                <li class="text-danger">Contain at least 8 characters or more</li>
+              </ng-template>
+              <ng-template [ngIf]="!password.errors.required && !password.errors.minlength">
+                <li class="text-success">Contain at least 8 characters or more</li>
+              </ng-template>
+              <li [ngClass]="{'text-success': (!password.errors.lowercaseUppercase)}">Contain both uppercase and
+                lowercase characters
+              </li>
+              <li [ngClass]="{'text-success': (!password.errors.specialSymbolOrNumber)}">Contain at least one number
+                or symbol
+              </li>
+
+            </ng-template>
+            <ng-template [ngIf]="password.valid">
+              <li>Contain at least 8 characters or more</li>
+              <li>Contain both uppercase and lowercase characters</li>
+              <li>Contain at least one number or symbol</li>
+            </ng-template>
+          </ul>
+        </div>
+        <div class="form-group">
+          By signing up, you agree to the
+          <a [routerLink]="['/policies/terms']" target="_blank">Terms of Service</a>,
+          <a [routerLink]="['/policies/privacy']" target="_blank">Privacy &amp; Cookies Policy</a>
+        </div>
+        <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-primary">Sign Up</button>
+      </form>
+      <hr role="separator" class="divider">
+      <div class="text-center">
+        <p class="h4">Already has an account?</p>
+        <div class="form-group">
+          <a [routerLink]="['/login']" class="btn btn-block btn-outline-primary">Log in</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

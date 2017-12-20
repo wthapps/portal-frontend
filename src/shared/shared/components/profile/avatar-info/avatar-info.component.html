@@ -1,0 +1,43 @@
+<div class="panel panel-default" *ngIf="data">
+  <div class="panel-body">
+    <div class="media-left">
+      <div class="zone-social-cover zone-social-cover-in user">
+        <div class="zone-social-cover-info">
+          <div class="z-social-media z-social-media-md">
+            <so-profile #profile [item]="data" [editable]="editable" (outEvent)="changeProfileImage($event)"></so-profile>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="media-body">
+      <div class="media-heading">{{ data.name }}</div>
+      <p>{{ data.nickname }}</p>
+    </div>
+
+    <div class="media-right">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<form [formGroup]="form" novalidate>
+  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title text-left">Information</h4>
+    </modal-header>
+    <modal-body>
+      <div *ngFor="let question of questions" class="form-row">
+        <df-question [question]="question" [form]="form"></df-question>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
+              (click)="onSubmit(form.value)">Done
+      </button>
+    </modal-footer>
+  </modal>
+</form>

@@ -1,10 +1,9 @@
-import { Component, Input, ViewChild, AfterViewInit, ViewEncapsulation, OnDestroy, HostListener } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit, ViewEncapsulation, OnDestroy, OnChanges } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/takeUntil';
@@ -29,14 +28,17 @@ import { GenericFile } from '../../../../core/shared/models/generic-file.model';
 import { GenericFileService } from '../../../../core/shared/services/generic-file.service';
 import { Router } from '@angular/router';
 import { ApiBaseService } from '../../../../core/shared/services/apibase.service';
+import { ClientDetectorService } from '../../../../core/shared/services/client-detector.service';
+import { PhotoService } from '../../../../core/shared/services/photo.service';
 
 const DEBOUNCE_MS = 2500;
 
-declare var _: any;
-declare var $: any;
-declare var Quill: any;
+declare let _: any;
+declare let $: any;
+declare let Quill: any;
 declare let saveAs: any;
-declare let printJS: any;
+
+// declare let printJS: any;
 
 @Component({
   moduleId: module.id,
@@ -45,7 +47,7 @@ declare let printJS: any;
   styleUrls: ['note-edit-modal.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
+export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewInit {
   @ViewChild('modal') modal: ModalComponent;
   @ViewChild('editor') editor: Editor;
   @Input() note: Note = new Note();
@@ -56,6 +58,8 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
   titleModal: string = 'New Note';
 
+  buttonControl: string = '';
+
   form: FormGroup;
   title: AbstractControl;
   content: AbstractControl;
@@ -63,6 +67,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   attachments: AbstractControl;
   files: Array<any> = new Array<any>();
 
+  private closeObs$: Observable<any>;
   private closeSubject: Subject<any> = new Subject<any>();
   private noSaveSubject: Subject<any> = new Subject<any>();
   private destroySubject: Subject<any> = new Subject<any>();
@@ -78,9 +83,20 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
               private photoSelectDataService: PhotoModalDataService,
               private fileService: GenericFileService,
               private apiBaseService: ApiBaseService,
+              private clientDetectorService: ClientDetectorService,
+              private photoService: PhotoService,
               private photoUploadService: PhotoUploadService) {
     this.noSave$ = this.noSaveSubject.asObservable().merge(this.destroySubject, this.closeSubject);
+    this.closeObs$ = this.photoSelectDataService.closeObs$.merge(
+      this.photoSelectDataService.openObs$,
+      this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable()
+    );
     this.fileUploadHelper = new FileUploadHelper();
+
+    // console.log(this.clientDetectorService.getOs());
+
+    let getOs: any = this.clientDetectorService.getOs();
+    this.buttonControl = (getOs.name == 7) ? '⌘' : 'ctrl';
   }
 
   ngOnDestroy() {
@@ -88,6 +104,9 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     this.closeSubject.unsubscribe();
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
+  }
+
+  ngOnChanges() {
   }
 
   registerAutoSave() {
@@ -100,8 +119,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
         if (this.editMode == Constants.modal.add) {
           this.onFirstSave();
         } else {
-          let noteObj: any = Object.assign({}, this.note, this.form.value);
-          this.store.dispatch(new note.Update(noteObj));
+          this.updateNote();
         }
       });
   }
@@ -113,12 +131,16 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
       }
     });
 
+    // Reset content of elemenet div.ql-editor to prevent HTML data loss
+    document.querySelector('.ql-editor').innerHTML = this.note.content;
+    // this.updateFormValue(this.note);
+
+    $('.ql-editor').attr('tabindex', 1);
+
 
     this.customEditor = this.editor.quill;
 
     this.customEditor.options.readOnly = true;
-    // console.log(this.customEditor.options.readOnly);
-    console.log(this.customEditor.options.readOnly);
 
     // Add custom to whitelist
     let Font = Quill.import('formats/font');
@@ -141,7 +163,16 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
     DividerBlot.tagName = 'hr';
     Quill.register(DividerBlot);
 
+    this.registerIconBlot();
     this.registerImageBlot();
+    this.listenImageChanges();
+    this.registerImageClickEvent();
+  }
+
+  onToEditor(e: any) {
+    if (e.keyCode == 13) { // enter
+      $('.ql-editor').focus();
+    }
   }
 
   registerImageBlot() {
@@ -153,6 +184,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
         node.setAttribute('alt', value.alt);
         node.setAttribute('src', value.url);
         node.setAttribute('id', value.id);
+        node.setAttribute('data-id', value['data-id']);
         return node;
       }
 
@@ -160,54 +192,151 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
         return {
           alt: node.getAttribute('alt'),
           url: node.getAttribute('src'),
-          id: node.getAttribute('id')
+          id: node.getAttribute('id'),
+          'data-id': node.getAttribute('data-id')
         };
       }
+
     }
+
     ImageBlot.blotName = 'image';
     ImageBlot.tagName = 'img';
     Quill.register(ImageBlot);
     var toolbar = this.customEditor.getModule('toolbar');
-    toolbar.addHandler('image', () => this.selectLocalImage());
+    toolbar.addHandler('image', () => this.selectInlinePhotos4Note());
+  }
+
+  registerIconBlot() {
+    let BlockEmbed = Quill.import('blots/block/embed');
+
+    class IconBlot extends BlockEmbed {
+      static create(value: any) {
+        let node = super.create();
+        node.setAttribute('class', value.class);
+        node.setAttribute('id', value.id);
+        return node;
+      }
+
+      static value(node: any) {
+        return {
+          class: node.getAttribute('class'),
+          id: node.getAttribute('id')
+        };
+      }
+    }
+
+    IconBlot.blotName = 'i';
+    IconBlot.tagName = 'i';
+    Quill.register(IconBlot);
+
   }
 
   insertFakeImage(id: any) {
     const range = this.customEditor.getSelection(true);
     this.customEditor.insertText(range.index, '\n', Quill.sources.USER);
-    this.customEditor.insertEmbed(range.index + 1, 'image', {
-      alt: 'WTH! No Image',
-      url: this.defaultImg,
+    this.customEditor.insertEmbed(range.index + 1, 'i', {
+      class: 'fa fa-spinner fa-spin big-icon',
       id: id
     }, Quill.sources.USER);
     this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
+    // this.insertInlineImage(id);
   }
 
-  selectLocalImage() {
-    const randId = `img_${new Date().getTime()}`;
-    const fileInput = document.createElement('input');
-    fileInput.setAttribute('type', 'file');
-    fileInput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
-    fileInput.classList.add('ql-image');
-    fileInput.click();
-    fileInput.addEventListener('change', () => {
-      this.insertFakeImage(randId);
-      const file = fileInput.files[0];
+  // id: placeholder when fake images
+  // data-id: real WTH photo id for editing
+  insertInlineImage(id: any, url: string = this.defaultImg, dataId: string = null) {
+    const range = this.customEditor.getSelection(true);
+    this.customEditor.insertText(range.index, '\n', Quill.sources.USER);
+    this.customEditor.insertEmbed(range.index + 1, 'image', {
+      alt: 'WTH! No Image',
+      url: url,
+      id: id,
+      'data-id': dataId
+    }, Quill.sources.USER);
+    this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
 
-      // file type is only image.
-      if (/^image\//.test(file.type)) {
-        this.photoUploadService.uploadPhotos([file])
-          .subscribe((res: any) => {
-            // const range = this.customEditor.getSelection(true);
-            // this.customEditor.insertEmbed(range.index, 'image', res.data.url);
-            $(`#${randId}`).attr('src', res.data.url);
-          }, (err: any) => {
-            $(`#${randId}`).remove();
-            console.log('Error when uploading files ', err);
-          });
-      } else {
-        console.warn('You could only upload images.');
-      }
+    $(`img[data-id=${dataId}]`).wrap('<p></p>');
+  }
+
+  selectInlinePhotos4Note() {
+    this.photoSelectDataService.open({return: true, multipleSelect: false});
+
+    this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any[]) => {
+      console.debug('inline photo next: ', photos);
+      photos.forEach((photo: any) => this.insertInlineImage(null, photo.url, photo.id));
+      this.registerImageClickEvent();
     });
+
+    let ids: string[] = [];
+    this.photoSelectDataService.uploadObs$.takeUntil(this.closeObs$)
+      .mergeMap((files: any) => {
+        const randId = `img_${new Date().getTime()}`;
+        this.insertFakeImage(randId);
+        ids.push(randId);
+        return this.photoUploadService.uploadPhotos(files);
+      })
+      .subscribe((res: any) => {
+        console.debug('inline photo upload: ', res);
+        const randId = ids.shift();
+        $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
+        $(`i#${randId}`).remove();
+        this.registerImageClickEvent();
+      });
+  }
+
+  listenImageChanges() {
+    this.photoService.modifiedPhotos$
+    // .filter((object: any) => _.get(object, 'payload.post_uuid', -99) == this.item.uuid || _.get(object, 'payload.post_uuid', -99) == _.get(this.item, 'parentItem.uuid'))
+      .takeUntil(this.destroySubject.asObservable())
+      .subscribe((object: any) => {
+        console.debug('modifiedPhotos - note: ', object);
+        // let post: SoPost = _.get(object, 'payload.post');
+        switch (object.action) {
+          case 'update':
+            let updatedPhoto = object.payload.photo;
+            $(`img[data-id=${updatedPhoto.id}]`).attr('src', updatedPhoto.url);
+            break;
+          case 'delete':
+            console.debug('unimplemented DELETE photo in post: ', object);
+            let photoId = object.payload.photo.id;
+            $(`p > img[data-id=${photoId}]`).remove();
+            break;
+          default:
+            console.warn('unhandle event in photoService modifiedPhotos$: ', object);
+        }
+
+        this.updateNote();
+      });
+  }
+
+  registerImageClickEvent() {
+    let imgItems = Array.from(document.querySelector('.ql-editor').getElementsByTagName('img'));
+    let photoIds = imgItems.map(item => item.dataset.id);
+    console.debug('register image click event: imgIds - ', photoIds);
+
+    imgItems.forEach(i => {
+        if (!i.onclick)
+          i.onclick = function (event: any) {
+            console.debug('event: ', event, event.srcElement.getAttribute('data-id'));
+            let photoId: string = event.srcElement.getAttribute('data-id');
+            if (photoId && photoId !== 'null') {
+              $('#modal-note-edit').css('z-index', '0');
+              $('.modal-backdrop').css('z-index', '0');
+              this.router.navigate([{
+                outlets: {
+                  modal: ['photos', photoId, {
+                    module: 'note',
+                    ids: photoIds
+                  }]
+                }
+              }], {queryParamsHandling: 'preserve', preserveFragment: true});
+            }
+            else
+              console.warn('no photo id for this image: ', event.srcElement);
+          }.bind(this);
+      }
+    );
+
   }
 
   open(options: any = {mode: Constants.modal.add, note: undefined, parent_id: undefined}) {
@@ -230,6 +359,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   assignFormValue(data: Note) {
+    console.debug('assignFormValue: note - ', data);
     this.form = this.fb.group({
       'title': [_.get(data, 'title', '')],
       'content': [_.get(data, 'content', ''), Validators.compose([Validators.required])],
@@ -246,7 +376,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
   updateFormValue(data: Note) {
     this.form.controls['title'].setValue(_.get(data, 'title', ''));
-    this.form.controls['content'].setValue(_.get(data, 'content', ''));
+    this.form.controls['content'].setValue(_.get(data, 'title', ''));
     this.form.controls['tags'].setValue(_.get(data, 'tags', []));
     this.form.controls['attachments'].setValue(_.get(data, 'attachments', []));
 
@@ -258,7 +388,6 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   undo() {
-    console.debug('Perform UNDO');
     this.store.dispatch(new note.Undo());
 
     // Stop and restart auto-save feature
@@ -267,7 +396,6 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   redo() {
-    console.debug('Perform REDO');
     this.store.dispatch(new note.Redo());
 
     this.noSaveSubject.next('');
@@ -307,7 +435,7 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
 
   selectPhotos() {
     this.photoSelectDataService.open({return: true});
-    this.subscribePhotoSelectEvents();
+    this.selectPhotos4Attachments();
   }
 
   onSubmit(value: any) {
@@ -338,14 +466,17 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   download(file: any) {
-    this.apiBaseService.download('common/files/download', {id: file.id, object_type: file.object_type}).subscribe((res: any) => {
+    this.apiBaseService.download('common/files/download', {
+      id: file.id,
+      object_type: file.object_type
+    }).subscribe((res: any) => {
       var blob = new Blob([res.blob()], {type: file.content_type});
       saveAs(blob, file.name);
     });
   }
 
   fileAttachmentClick(file: any) {
-    if(file.object_type == 'photo') {
+    if (file.object_type == 'photo') {
       $('#modal-note-edit').css('z-index', '0');
       $('.modal-backdrop').css('z-index', '0');
       this.router.navigate([{outlets: {modal: ['photos', file.id, {ids: [file.id]}]}}]);
@@ -360,13 +491,20 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
   }
 
   print() {
-    $('.ql-editor').attr('id', 'noteview');
-    printJS({ printable: 'noteview', type: 'html', header: this.note.title});
+    let editor: any = document.querySelector('div.ql-editor');
+
+    if (!document.querySelector('.printable')) {
+      $('body').after('<div class="printable ql-container ql-snow"><div class="ql-editor"></div><div/>');
+    }
+    document.querySelector('.printable > .ql-editor').innerHTML = editor.innerHTML;
+    let printable: any = document.querySelector('.printable > .ql-editor');
+    printable.innerHTML = editor.innerHTML;
+    window.print();
   }
 
   downloadAttachments() {
-    if(this.note.attachments) {
-      for(let att of this.note.attachments) {
+    if (this.note.attachments) {
+      for (let att of this.note.attachments) {
         this.download(att);
       }
     }
@@ -384,42 +522,35 @@ export class NoteEditModalComponent implements OnDestroy, AfterViewInit {
       this.fileService.create(genericFile)
         .subscribe((response: any) => {
           let index = _.indexOf(this.note.attachments, file);
-          this.note.attachments[index] = {object_type: 'file',...response.data};
+          this.note.attachments[index] = {object_type: 'file', ...response.data};
           this.form.controls['attachments'].setValue(this.note.attachments);
         });
     });
   }
 
-  private subscribePhotoSelectEvents() {
-    let closeObs$ = this.photoSelectDataService.closeObs$.merge(
-      this.photoSelectDataService.openObs$,
-      this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable()
-    );
-
-    this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos: any) => {
+  private selectPhotos4Attachments() {
+    this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any) => {
       this.note.attachments.push(...photos);
       this.form.controls['attachments'].setValue(this.note.attachments);
     });
 
-    this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe((files: any) => {
+    this.photoSelectDataService.uploadObs$.takeUntil(this.closeObs$).subscribe((files: any) => {
       this.note.attachments.push(...files);
-      this.uploadPhotos(files);
+      _.forEach(files, (file: any) => {
+        this.photoUploadService.uploadPhotos(files)
+          .subscribe((response: any) => {
+            let index = _.indexOf(this.note.attachments, file);
+            this.note.attachments[index] = response.data;
+            this.form.controls['attachments'].setValue(this.note.attachments);
+          }, (err: any) => {
+            console.log('Error when uploading files ', err);
+          });
+      });
     });
   }
 
-
-  private uploadPhotos(files: Array<any>) {
-
-    _.forEach(files, (file: any) => {
-      this.photoUploadService.uploadPhotos([file])
-        .subscribe((response: any) => {
-          let index = _.indexOf(this.note.attachments, file);
-          this.note.attachments[index] = response.data;
-          this.form.controls['attachments'].setValue(this.note.attachments);
-        }, (err: any) => {
-          console.log('Error when uploading files ', err);
-        });
-    });
+  private updateNote() {
+    let noteObj: any = Object.assign({}, this.note, this.form.value);
+    this.store.dispatch(new note.Update(noteObj));
   }
-
 }

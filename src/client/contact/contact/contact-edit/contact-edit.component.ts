@@ -5,7 +5,7 @@ import { CustomValidator } from '../../../core/shared/validator/custom.validator
 
 import { Contact } from '../contact.model';
 import { Constants } from '../../../core/shared/config/constants';
-import { LabelService } from '../../label/label.service';
+import { GroupService } from '../../group/group.service';
 declare let _: any;
 
 @Component({
@@ -50,19 +50,19 @@ export class ZContactEditComponent implements OnChanges {
   form: FormGroup;
   name: AbstractControl;
   company: AbstractControl;
-  labels: AbstractControl;
+  groups: AbstractControl;
   job_title: AbstractControl;
   notes: AbstractControl;
 
-  filteredLabelsMultiple: any = [];
-  originalLabels: Object[];
+  filteredGroupsMultiple: any = [];
+  originalGroups: Object[];
   disableEdit: boolean = true;
 
-  constructor(private fb: FormBuilder, private labelService: LabelService) {
-    this.labelService.getAllLabels().then((res: any)=> {
-      this.originalLabels = res;
+  constructor(private fb: FormBuilder, private groupService: GroupService) {
+    this.groupService.getAllGroups().then((res: any)=> {
+      this.originalGroups = res;
       _.map(res, (v: any)=> {
-        this.filteredLabelsMultiple.push({value: v.name, display: v.name});
+        this.filteredGroupsMultiple.push({value: v.name, display: v.name});
       });
     });
     this.deleteObjects['emails'] = [];
@@ -99,7 +99,7 @@ export class ZContactEditComponent implements OnChanges {
       (<FormControl>this.company).setValue(this.contact.company);
       (<FormControl>this.job_title).setValue(this.contact.job_title);
       (<FormControl>this.notes).setValue(this.contact.notes);
-      (<FormControl>this.labels).setValue(_.map(this.contact.labels, 'name'));
+      (<FormControl>this.groups).setValue(_.map(this.contact.groups, 'name'));
     }
   }
 
@@ -111,14 +111,14 @@ export class ZContactEditComponent implements OnChanges {
       'media': this.fb.array([this.initItem('media')]),
       'name': ['', Validators.compose([Validators.required])],
       'company': [''],
-      'labels': [''],
+      'groups': [''],
       'job_title': [''],
       'notes': ['']
     });
 
     this.name = this.form.controls['name'];
     this.company = this.form.controls['company'];
-    this.labels = this.form.controls['labels'];
+    this.groups = this.form.controls['groups'];
     this.job_title = this.form.controls['job_title'];
     this.notes = this.form.controls['notes'];
     setTimeout(() => { this.form.valueChanges.subscribe((data: any) => this.disableEdit = false); }, 400);
@@ -260,16 +260,16 @@ export class ZContactEditComponent implements OnChanges {
     this.contact.media = _.concat(values.media, this.deleteObjects['media']);
     this.contact.addresses = _.concat(values.addresses, this.deleteObjects['addresses']);
 
-    if (values.labels && values.labels.length > 0) {
-      let labels: any = [];
-      _.forEach(values.labels, (label: any) => {
-        if (_.isObject(label)) {
-          labels.push(_.filter(this.originalLabels, ['name', label.value])[0]);
+    if (values.groups && values.groups.length > 0) {
+      let groups: any = [];
+      _.forEach(values.groups, (group: any) => {
+        if (_.isObject(group)) {
+          groups.push(_.filter(this.originalGroups, ['name', group.value])[0]);
         } else {
-          labels.push(_.filter(this.originalLabels, ['name', label])[0]);
+          groups.push(_.filter(this.originalGroups, ['name', group])[0]);
         }
       });
-      this.contact.labels = labels;
+      this.contact.groups = groups;
     }
 
     this.contact.notes = values.notes;

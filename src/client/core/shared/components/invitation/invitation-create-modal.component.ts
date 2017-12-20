@@ -85,7 +85,6 @@ export class InvitationCreateModalComponent implements OnInit {
     }
   }
 
-
   doEvent(options: any) {
     let data = this.form.value.items;
     switch (options.action) {
@@ -100,10 +99,11 @@ export class InvitationCreateModalComponent implements OnInit {
         options['payload'] = data;
         this.modal.close();
         this.event.emit(options);
+        this.removeAll();
         break;
       case 'cancel':
-        this.modal.close(null).then();
         this.removeAll();
+        this.modal.close(null).then();
         break;
       default:
         break;

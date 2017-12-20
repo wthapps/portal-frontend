@@ -161,7 +161,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
     // Ask for user confirmation before deleting selected PHOTOS
     return new Promise<any>((resolve: any) => {
       this.wthConfirmService.confirm({
-        message: `Are you sure to delete photo ${this.photo.name}`,
+        message: `Are you sure to delete photo ${this.photo.name} ?`,
         accept: () => {
           this.loadingService.start();
           let body = JSON.stringify({ids: [this.photo.id]});

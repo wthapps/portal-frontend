@@ -1,0 +1,54 @@
+<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title">Sharing</h4>
+  </modal-header>
+  <modal-body>
+    <p>Contact</p>
+    <div class="form-group">
+      <p-autoComplete [(ngModel)]="textContacts"
+                      [suggestions]="filteredContacts"
+                      [multiple]="true"
+                      [minLength]="1"
+                      field="name"
+                      (onSelect)="selectContact($event)"
+                      (onUnselect)="unSelectContact($event)"
+                      (completeMethod)="contactTerm$.next($event)">
+      </p-autoComplete>
+    </div>
+    <div class="modal-body-collapse" *ngIf="sharedContacts?.length">
+      <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
+         aria-controls="collapseExample">
+        Shared with {{ sharedContacts?.length }} Contacts
+      </a>
+      <div class="collapse in pre-scrollable" id="collapseContact">
+        <div class="modal-body-collapse-in">
+          <div class="media-list-item" *ngFor="let contact of sharedContacts">
+            <div class="media" [ngClass]="isDeletedItem(contact.id) ? 'remove': ''">
+              <div class="media-left">
+                <figure>
+                  <img [src]="contact.profile_image" alt="">
+                </figure>
+              </div>
+              <div class="media-body">
+                {{ contact.name }}
+              </div>
+              <div class="media-right">
+                <a href="#" (click)="toggleRemoving($event, contact.id)">{{ isDeletedItem(contact.id) ? 'Cancel':
+                  'Remove' }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <p *ngIf="hasChanged" class="text-left text-danger">You have made changes that you need to save!</p>
+
+    <button type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
+    <button type="button" [ngClass]="{'text-disable': !hasChanged}"
+            [disabled]="!hasChanged" (click)="save()"
+            class="btn btn-outline-primary btn-min">Done
+    </button>
+  </modal-footer>
+</modal>

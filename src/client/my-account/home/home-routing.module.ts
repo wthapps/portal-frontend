@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: '', redirectTo: '/settings/profile', pathMatch: 'full'}
+      {path: '', redirectTo: '/welcome', pathMatch: 'full'}
     ])
   ],
   exports: [RouterModule]

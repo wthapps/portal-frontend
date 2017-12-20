@@ -143,7 +143,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
   changeProfileImage(event: any): void {
     event.preventDefault();
     // this.uploadProfile.modal.open();
-    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: this.userService.profile.profile_image });
+    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.profile.profile_image} });
     this.handleSelectCropEvent();
   }
 

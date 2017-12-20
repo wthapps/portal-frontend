@@ -19,6 +19,11 @@
       }
     }
   }
+  &.dropdown-menu-top {
+    bottom: 100%;
+    top: auto;
+    margin-bottom: 2px;
+  }
 }
 
 .dropdown-menu-min-width {

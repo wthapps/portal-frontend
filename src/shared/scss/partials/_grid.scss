@@ -1,0 +1,31 @@
+/*.container {
+  max-width: $screen-lg-min;
+
+  @media (min-width: $screen-sm-min) {
+    width: auto;
+  }
+  @media (min-width: $screen-md-min) {
+    width: auto;
+  }
+  @media (min-width: $screen-lg-min) {
+    width: auto;
+  }
+}*/
+
+.container-fluid {
+  max-width: $screen-lg-min;
+}
+
+.row {
+  display: block;
+}
+
+.row-striped {
+  > div {
+    .media {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid $line;
+    }
+  }
+}

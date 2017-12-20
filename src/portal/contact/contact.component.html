@@ -1,0 +1,92 @@
+<section class="page-hero-header" style="background-image: url('assets/images/landing/hero-image.jpg');">
+  <h2 class="h1">Contact us</h2>
+</section>
+<section class="page-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 text-center col-sm-offset-2">
+        <h3 class="h1">Get connected</h3>
+        <p>Keep you up to date by following us on our social media platform:</p>
+        <div class="social">
+          <div class="hi-icon-wrap hi-icon-effect-3 hi-icon-effect-3b">
+            <a href="https://www.facebook.com/" target="_blank" class="hi-icon wthico-facebook-f"></a>
+            <a href="https://twitter.com/" target="_blank" class="hi-icon wthico-twitter"></a>
+            <a href="https://plus.google.com/" target="_blank" class="hi-icon wthico-google-plus"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="page-content gray-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <h3 class="h1">Anything comes in mind?</h3>
+        <p>If you are interested in our business or having any issue idea that you want to share, feel free to drop us
+          a message.</p>
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched)}">
+                <label for="first_name">First Name</label>
+                <input [formControl]="first_name" type="text" class="form-control" id="first_name"
+                       placeholder="First Name">
+                <div *ngIf="!first_name.valid && first_name.touched">
+                  <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">First name is required</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group" [ngClass]="{'has-error': (!last_name.valid && last_name.touched)}">
+                <label for="last_name">Last Name</label>
+                <input [formControl]="last_name" type="text" class="form-control" id="last_name"
+                       placeholder="Last Name">
+                <div *ngIf="!last_name.valid && last_name.touched">
+                    <span *ngIf="!last_name.valid && last_name.errors.required"
+                          class="help-block">Last name is required</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
+            <label for="email">Email address</label>
+            <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email address">
+            <div *ngIf="!email.valid && email.touched">
+              <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
+              <span *ngIf="!email.errors.required && email.errors.emailFormat"
+                    class="help-block">Email is not valid</span>
+            </div>
+
+          </div>
+          <div class="form-group" [ngClass]="{'has-error': (!subject.valid && subject.touched)}">
+            <label for="subject">Title</label>
+            <input [formControl]="subject" type="text" class="form-control" id="subject" placeholder="Message title">
+            <div *ngIf="!subject.valid && subject.touched">
+              <span *ngIf="!subject.valid && subject.errors.required" class="help-block">A subject is required</span>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': (!body.valid && body.touched)}">
+            <label for="body">Message</label>
+            <textarea rows="3" [formControl]="body" type="text" class="form-control" id="body"
+                      placeholder="Your message goes here"></textarea>
+            <div *ngIf="!body.valid && body.touched">
+              <span *ngIf="!body.valid && body.errors.required" class="help-block">A body is required</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <re-captcha #ReCaptchaComponent (captchaResponse)="handleCorrectCaptcha($event)" site_key="siteKey"></re-captcha>
+          </div>
+
+          <button [disabled]="!form.valid || !recaptchaState" type="submit" class="btn btn-outline-primary btn-min mr20">
+            Send
+          </button>
+          <a [routerLink]="['/']" class="btn btn-default btn-min">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<wth-footer-promotion></wth-footer-promotion>

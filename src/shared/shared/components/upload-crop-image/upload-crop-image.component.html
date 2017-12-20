@@ -1,0 +1,25 @@
+<modal #modal [keyboard]="false" [backdrop]="'static'">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title">Profile Picture</h4>
+  </modal-header>
+  <modal-body>
+    <p>Selecte a photo as your profile picture so people can quickly recognize you</p>
+    <div class="dropzone dropzonecrop-wrap" id="dropzone-wrap"></div>
+    <div class="dropzonecrop-previews" id="dropzone-previews"></div>
+    <div class="dropzonecrop-cropper" id="cropper-wrap"></div>
+    <div class="dropzonecrop-control">
+      <button id="cropper-rotate-left" class="btn btn-default">
+        <i class="fa fa-undo"></i>
+      </button>
+      <button id="cropper-rotate-right" class="btn btn-default">
+        <i class="fa fa-repeat"></i>
+      </button>
+      <button id="cropper-remove" class="btn btn-default">
+        Change Picture
+      </button>
+      <button id="cropper-upload" class="btn btn-outline-primary">
+        Done
+      </button>
+    </div>
+  </modal-body>
+</modal>

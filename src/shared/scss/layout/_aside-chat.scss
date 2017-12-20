@@ -1,0 +1,12 @@
+.aside-chat {
+  padding: 15px;
+  .media-user-list-group {
+    .media-user-list {
+      &, & + .media-user-list {
+        padding: 5px 15px;
+        margin: 0 -15px;
+        border-width: 0;
+      }
+    }
+  }
+}

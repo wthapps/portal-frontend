@@ -12,6 +12,11 @@ wth-header-navbar {
   }
 }
 
+.updated-message {
+  padding: 10px;
+  color: black;
+}
+
 .header-nav {
   position: relative;
   z-index: 1000;
@@ -34,10 +39,9 @@ wth-header-navbar {
   .btn-group {
     margin-top: 8px;
     margin-bottom: 8px;
-    & + .btn-group {
-      @media (min-width: $screen-sm-min) {
-        margin-left: 5px;
-      }
+    @media (min-width: $screen-sm-min) {
+      padding-left: 5px;
+      padding-right: 5px;
     }
     > .btn {
       position: relative;
@@ -119,6 +123,28 @@ wth-header-navbar {
       }
     }
 
+  }
+
+  &.header-nav-xs-show-search {
+    .navbar-form-search {
+      display: block !important;
+      .navbar-searchTop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1010;
+        background-color: #ffffff;
+        padding: 13px 15px;
+      }
+      .input-group-search-header {
+        .input-group {
+          .input-group-btn {
+            width: auto;
+          }
+        }
+      }
+    }
   }
 }
 

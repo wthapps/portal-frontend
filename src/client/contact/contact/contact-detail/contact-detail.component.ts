@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { ContactAddLabelModalComponent } from '../../shared/modal/contact-add-label/contact-add-label-modal.component';
+import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
 import { ApiBaseService } from '../../../core/shared/services/apibase.service';
 import { Constants } from '../../../core/shared/config/constants';
-import { Label } from '../../label/label.model';
+import { Group } from '../../group/group.model';
 import { _contact } from '../../shared/utils/contact.functions';
-import { LabelService } from '../../label/label.service';
+import { GroupService } from '../../group/group.service';
 declare let _: any;
 
 @Component({
@@ -16,7 +16,7 @@ declare let _: any;
   templateUrl: 'contact-detail.component.html'
 })
 export class ZContactDetailComponent implements OnInit {
-  @ViewChild('modal') modal: ContactAddLabelModalComponent;
+  @ViewChild('modal') modal: ContactAddGroupModalComponent;
   contactId: number;
   data: any;
 
@@ -29,7 +29,7 @@ export class ZContactDetailComponent implements OnInit {
   constructor(private contactService: ZContactService,
               private route: ActivatedRoute,
               private apiBaseService: ApiBaseService,
-              private labelService: LabelService,
+              private groupService: GroupService,
               private router: Router) {
   }
 
@@ -46,15 +46,15 @@ export class ZContactDetailComponent implements OnInit {
     this.contactService.confirmDeleteContact(this.data);
   }
 
-  toggleLabel(name: string) {
-    let label = _.find(this.labelService.getAllLabelSyn(), (label: any) => {
-      return label.name == name;
+  toggleGroup(name: string) {
+    let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
+      return group.name == name;
     });
 
-    if (_contact.isContactsHasLabelName([this.data], name)) {
-      _contact.removeLabelContactsByName([this.data], name);
+    if (_contact.isContactsHasGroupName([this.data], name)) {
+      _contact.removeGroupContactsByName([this.data], name);
     } else {
-      _contact.addLabelContacts([this.data], label);
+      _contact.addGroupContacts([this.data], group);
     }
     this.contactService.update([this.data]).subscribe((res: any) => {
       this.data = res.data;
@@ -63,11 +63,11 @@ export class ZContactDetailComponent implements OnInit {
 
   doActionsToolbar(event: any) {
     if (event.action == 'favourite') {
-      this.toggleLabel('favourite');
+      this.toggleGroup('favourite');
     }
 
     if (event.action == 'blacklist') {
-      this.toggleLabel('blacklist');
+      this.toggleGroup('blacklist');
     }
 
     if (event.action == 'delete') {

@@ -1,5 +1,14 @@
-<nav class="header-nav" role="navigation">
+<nav (click)="clickedInside($event)" class="header-nav" [ngClass]="{'header-nav-xs-show-search': showSearchMobile}" role="navigation">
+  <div class="alert-danger updated-message clearfix" *ngIf="showUpdatedVersion">
+    <span><i class="fa fa-exclamation-circle" style="color: red"></i></span>
+    <a href="javascript:;" target="_blank" [href]="constants.baseUrls.app + '/policies/terms'"> Term of Service </a>
+    and
+    <a href="javascript:;" target="_blank" [href]="constants.baseUrls.app + '/policies/privacy'"> Privacy & Cookies Policy </a>
+    are updated
+    <span class="pull-right" (click)="gotIt()"><a class="btn btn-outline-primary" href="javascript:;" style="height: 30px; font-size: 12px"> I got it </a></span>
+  </div>
   <div class="container-fluid">
+    <!-- alert alert-danger -->
     <ng-content></ng-content>
 
     <div class="header-nav-right">
@@ -14,6 +23,11 @@
         </div>
       </ng-template>
       <ng-template [ngIf]="userService.loggedIn">
+        <div class="btn-group header-nav-search-btn">
+          <button (click)="onShowSearchMobile($event)" type="button" class="btn btn-default">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
         <div class="btn-group header-nav-apps">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                   aria-haspopup="true"
@@ -54,7 +68,6 @@
             </li>
           </ul>
         </div>
-
         <div class="btn-group header-nav-notification visible-xs-inline-block">
           <button (click)="viewAllNotifications()" type="button" class="btn btn-default dropdown-toggle"
                   pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
@@ -64,7 +77,6 @@
             </span>
           </button>
         </div>
-
         <div class="btn-group header-nav-notification hidden-xs">
           <button (click)="toggleViewNotifications()" type="button" class="btn btn-default dropdown-toggle"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -115,7 +127,7 @@
                   aria-haspopup="true"
                   aria-expanded="false">
             <span class="avatar-xxs">
-              <img alt="" width="30" [src]="defaultAvatar" [attr.data-src]="userService.profile.profile_image" class="lazyload">
+              <img alt="" width="30" [src]="(userService?.profile$ | async)?.profile_image || defaultAvatar" class="lazyload">
             </span>
             <i class="fa fa-caret-down ml10 hidden-xs"></i>
           </button>

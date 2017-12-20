@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output, ViewContainerRef, OnDestroy } from '@angular/core';
 import { ZContactService } from '../../services/contact.service';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { HConfirmationService } from '../../../../core/shared/ng2-hd/services/confirmation.service';
@@ -12,8 +12,9 @@ import { GenericFile } from '../../../../core/shared/models/generic-file.model';
   templateUrl: 'import-contact.component.html'
 })
 
-export class ZContactShareImportContactComponent {
+export class ZContactShareImportContactComponent implements OnInit, OnDestroy{
   @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('icloud') icloud: any;
   @Output() optionSelected: EventEmitter<any> = new EventEmitter<any>();
 
   readonly PROVIDERS: any = [
@@ -28,16 +29,27 @@ export class ZContactShareImportContactComponent {
   uploadInput: EventEmitter<any>;
   humanizeBytes: Function;
   dragOver: boolean;
+  sub: any;
   private fileUploadHelper: FileUploadHelper;
 
   constructor(private fileService: GenericFileService) {
       this.fileUploadHelper = new FileUploadHelper();
   }
 
+  ngOnInit() {
+    this.sub = this.icloud.event.subscribe(() => {
+      this.modal.open();
+    })
+  }
+
+  ngOnDestroy() {
+    if (this.sub) this.sub.unsubscribe();
+  }
+
   // Format: { name }
   selectProvider(options: any) {
     this.optionSelected.emit(options);
-    if(options.provider == 'import_file') return;
+    if(options.provider == 'import_file' || options.provider == 'apple') return;
     this.modal.close().then();
   }
 
@@ -81,5 +93,10 @@ export class ZContactShareImportContactComponent {
           console.log('send file successfully', response);
         });
     });
+  }
+
+  iCloudIntroduce() {
+    this.modal.close();
+    this.icloud.open();
   }
 }

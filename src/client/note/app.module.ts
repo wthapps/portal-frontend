@@ -55,13 +55,13 @@ import { ZNotePhotoModule } from './photo/photo.module';
     // }}),
 
 
-    StoreDevtoolsModule.instrument({ maxAge: 50 }),
+    // StoreDevtoolsModule.instrument({ maxAge: 50 }),
 
     EffectsModule.forRoot(AppEffects),
 
     // StoreDevtoolsModule.instrumentOnlyWithExtension(),
 
-    // !(String('<%= BUILD_TYPE %>') === 'prod') ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
+    !(String('<%= BUILD_TYPE %>') === 'prod') ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
 
     CoreSharedModule.forRoot(),
   ],

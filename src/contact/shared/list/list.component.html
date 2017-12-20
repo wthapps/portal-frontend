@@ -1,0 +1,27 @@
+<div class="contact-listbox-wrap">
+  <div class="contact-listbox-header contact-listbox-row">
+    <div class="contact-listbox-input" [ngClass]="{'active': (contactService.isSelectAll$ | async)}">
+      <i (click)="onSelectedAll()" class="fa fa-check"></i>
+    </div>
+    <div class="contact-listbox-name">
+      <a href="#" class="contact-listbox-block-link" (click)="onSort('name')"
+         pTooltip="{{ tooltip.reverseSortDirection }}" tooltipPosition="top">Name
+        <i class="fa" [ngClass]="{'fa-arrow-up': (desc$ | async), 'fa-arrow-down': !(desc$ | async)}"></i> </a>
+    </div>
+    <div class="contact-listbox-email">
+      Email
+    </div>
+    <div class="contact-listbox-phone">
+      Phone Number
+    </div>
+    <div class="contact-listbox-action">&nbsp;</div>
+  </div>
+  <z-contact-shared-item *ngFor="let item of data; trackBy: trackItem" [data]="item">
+  </z-contact-shared-item>
+
+</div>
+
+<!--<p *ngFor="let contact of contactService.selectedObjects">-->
+  <!--{{ contact.name }}-->
+<!--</p>-->
+

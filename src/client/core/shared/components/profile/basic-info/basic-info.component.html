@@ -1,11 +1,12 @@
 <form [formGroup]="form" novalidate>
   <div class="field-group">
     <div class="field-group-content">
+
       <div class="media content-overflow-visible">
         <div class="media-left">
           <div class="avatar-md" (click)="changeProfileImage()">
-            <img *ngIf="data?.profile_image" [src]="data?.profile_image" class="no-user-selected">
-            <img *ngIf="!data?.profile_image" [src]="avatarDefault" class="no-user-selected">
+            <img *ngIf="(userService?.profile$ | async)?.profile_image" [src]="(userService?.profile$ | async)?.profile_image" class="no-user-selected">
+            <img *ngIf="!(userService?.profile$ | async)?.profile_image" [src]="avatarDefault" class="no-user-selected">
             <span><i class="fa fa-camera"></i></span>
           </div>
         </div>

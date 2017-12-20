@@ -115,7 +115,7 @@ export class PhotoService {
     // Ask for user confirmation before deleting selected PHOTOS
     return new Promise<any>((resolve: any) => {
       this.wthConfirmService.confirm({
-        message: `Are you sure to delete photo ${photo.name}`,
+        message: `Are you sure to delete photo ${photo.name} ?`,
         accept: () => {
           let body = JSON.stringify({ids: [photo.id]});
           this.deletePhoto(body).toPromise().then((res: any)=> {

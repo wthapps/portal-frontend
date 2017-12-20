@@ -1,0 +1,62 @@
+
+.#{$fw-css-prefix}-shared-with-me:before {
+  content: "\e901";
+}
+.#{$fw-css-prefix}-album:before {
+  content: "\e900";
+  color: #4a4a4a;
+}
+.#{$fw-css-prefix}-user:before {
+  content: "\f007";
+}
+.#{$fw-css-prefix}-arrow-circle-o-down:before {
+  content: "\f01a";
+}
+.#{$fw-css-prefix}-arrow-circle-o-up:before {
+  content: "\f01b";
+}
+.#{$fw-css-prefix}-phone:before {
+  content: "\f095";
+}
+.#{$fw-css-prefix}-twitter:before {
+  content: "\f099";
+}
+.#{$fw-css-prefix}-facebook:before {
+  content: "\f09a";
+}
+.#{$fw-css-prefix}-facebook-f:before {
+  content: "\f09a";
+}
+.#{$fw-css-prefix}-arrow-circle-left:before {
+  content: "\f0a8";
+}
+.#{$fw-css-prefix}-arrow-circle-right:before {
+  content: "\f0a9";
+}
+.#{$fw-css-prefix}-arrow-circle-up:before {
+  content: "\f0aa";
+}
+.#{$fw-css-prefix}-arrow-circle-down:before {
+  content: "\f0ab";
+}
+.#{$fw-css-prefix}-google-plus:before {
+  content: "\f0d5";
+}
+.#{$fw-css-prefix}-linkedin:before {
+  content: "\f0e1";
+}
+.#{$fw-css-prefix}-location-arrow:before {
+  content: "\f124";
+}
+.#{$fw-css-prefix}-youtube:before {
+  content: "\f167";
+}
+.#{$fw-css-prefix}-arrow-circle-o-right:before {
+  content: "\f18e";
+}
+.#{$fw-css-prefix}-arrow-circle-o-left:before {
+  content: "\f190";
+}
+.#{$fw-css-prefix}-pinterest-p:before {
+  content: "\f231";
+}

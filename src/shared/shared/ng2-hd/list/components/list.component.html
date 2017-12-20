@@ -1,0 +1,101 @@
+<div class="form-group" *ngIf="objectName != undefined">
+  <label>{{ objectName }}</label>
+
+</div>
+<!-- input tag container -->
+<div ngClass="hd-list {{ theme }}"
+     (click)="focus(true)"
+     [attr.tabindex]="-1"
+     [class.hd-list--invalid]="hasErrors()"
+     [class.hd-list--focused]="isInputFocused()">
+
+  <!--tags [custom]-->
+  <div #template class="hd-list-container--custom">
+    <ng-content></ng-content>
+
+    <search-form
+      *ngIf="hasCustomTemplate()"
+      (onSubmit)="addItem()"
+      (onBlur)="blur()"
+      (onFocus)="focus()"
+      (onKeydown)="fireEvents('keydown', $event)"
+      (onKeyup)="fireEvents('keyup', $event)"
+      (onKeypress)="handleKeyPress()"
+      [validators]="validators"
+      [hidden]="readonly || maxItemsReached()"
+      [placeholder]="itemsSearching?.length ? placeholder : secondaryPlaceholder"
+      [inputClass]="inputClass"
+      [inputId]="inputId"
+    ></search-form>
+  </div>
+
+  <!-- tags [default] -->
+  <div class="wth-scrollable mb20" style="max-height: 100px;">
+    <div class="hd-list-container hd-list-container--default" *ngIf="hasCustomTemplate() === false">
+      <div *ngFor="let item of selectedItems"
+           (click)="selectItem(item);$event.stopPropagation();"
+           (keydown)="handleKeydown($event, item)"
+           [attr.tabindex]="readonly ? -1 : 0"
+           class="hd-list-selected-item"
+           [class.hd-list--readonly]="readonly"
+           [attr.aria-label]="item">
+
+        <img alt="" [src]="item?.profile_image" title="" width="30">
+        <!-- tag name -->
+        <span class="hd-list__name"> {{ item?.name }} </span>
+
+        <!-- remove 'x' button -->
+        <delete-icon class="hd-list__remove-button"
+                     aria-label="Remove item"
+                     (click)="removeItem(item)"
+                     *ngIf="!readonly">
+        </delete-icon>
+      </div>
+
+      <search-form
+        (onSubmit)="addItem()"
+        (onBlur)="blur()"
+        (onFocus)="focus()"
+        (onKeydown)="fireEvents('keydown', $event)"
+        (onKeyup)="fireEvents('keyup', $event)"
+        [validators]="validators"
+        [hidden]="readonly || maxItemsReached()"
+        [placeholder]="itemsSearching?.length ? placeholder : secondaryPlaceholder"
+        [inputClass]="inputClass"
+        [inputId]="inputId"
+      ></search-form>
+    </div>
+  </div>
+
+
+  <div *ngIf="searchable">
+    <ul class="list-unstyled social-list-user wth-scrollable">
+      <li *ngFor="let item of itemsSearching">
+        <!--<li *ngFor="let item of items">-->
+        <span class="social-list-user-action">
+              <input type="checkbox" (click)="toggleSelectItem(item, $event)" [(ngModel)]="item.selected"
+                     [checked]="item.selected">
+            </span>
+        <img alt="" [src]="item.profile_image" title="" width="30">
+        <span>{{ item.name }}</span>
+      </li>
+    </ul>
+    <!--<ng2-dropdown>-->
+    <!--<ng2-dropdown-menu [focusFirstElement]="false"-->
+    <!--(keydown)="escapeDropdown($event)"-->
+    <!--offset="50 0">-->
+    <!--<ng2-menu-item *ngFor="let item of itemsSearching" [value]="item">-->
+    <!--<span [innerHTML]="item | highlight : inputForm.value.value"></span>-->
+    <!--</ng2-menu-item>-->
+    <!--</ng2-dropdown-menu>-->
+    <!--</ng2-dropdown>-->
+  </div>
+</div>
+
+<!-- ERRORS -->
+<div class="hd-list__errors-container" *ngIf="hasErrors()">
+  <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)"
+     class="hd-list__error-message">
+    <span>{{ error }}</span>
+  </p>
+</div>

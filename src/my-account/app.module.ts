@@ -1,0 +1,58 @@
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { APP_BASE_HREF } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+
+import { MySharedModule } from './shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
+import { CoreModule } from '@core/core.module';
+
+import { MyHomeModule } from './home/home.module';
+import { MyAppsModule } from './apps/apps.module';
+import { MyBillingModule } from './billing/billing.module';
+import { MyMyAppsModule } from './my-apps/my-apps.module';
+import { MyPaymentModule } from './payment/payment.module';
+import { MySettingModule } from './settings/setting.module';
+import { MyPlansModule } from './plans/plans.module';
+import { MyAdminModule } from './admin/admin.module';
+import { WelcomeModule } from './welcome/welcome.module';
+import { MyAccountMyProfileModule } from './my-profile/my-profile.module';
+import { FooterModule } from '@wth/shared/components/footer/footer.module';
+
+
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+
+    AppRoutingModule,
+    MyHomeModule,
+    MyAppsModule,
+    MyBillingModule,
+    MyMyAppsModule,
+    MyPaymentModule,
+    MyPlansModule,
+    MySettingModule,
+    MyAdminModule,
+    MyAccountMyProfileModule,
+    WelcomeModule,
+
+    FooterModule,
+    MySharedModule.forRoot(),
+    SharedModule.forRoot(),
+    CoreModule.forRoot(),  ],
+  declarations: [AppComponent],
+  providers: [
+    {
+      provide: APP_BASE_HREF,
+      useValue: '/'
+    }
+  ],
+  bootstrap: [AppComponent]
+
+})
+export class AppModule { }

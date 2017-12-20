@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { PipeModule } from '../../../core/shared/pipe/pipe.module';
-import { ZContactHasLabel } from './has-label.pipe';
+import { ZContactHasGroup } from './has-group.pipe';
 import { ZContactInternalUser } from './internal-user.pipe';
 
 @NgModule({
@@ -9,11 +9,11 @@ import { ZContactInternalUser } from './internal-user.pipe';
     PipeModule
   ],
   declarations: [
-    ZContactHasLabel,
+    ZContactHasGroup,
     ZContactInternalUser
   ],
   exports: [
-    ZContactHasLabel,
+    ZContactHasGroup,
     ZContactInternalUser
   ]
 })

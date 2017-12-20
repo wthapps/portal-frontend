@@ -1,0 +1,128 @@
+import { Component, Input, OnChanges } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
+
+import { SocialService } from '../../../services/social.service';
+import { SoPost } from '@wth/shared/shared/models';
+import { UserService } from '@wth/shared/services';
+import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
+import { Constants } from '@wth/shared/constant';
+import { PostComponent } from '../post.component';
+
+declare var _: any;
+
+@Component({
+  moduleId: module.id,
+  selector: 'so-post-header',
+  templateUrl: 'post-header.component.html'
+})
+
+export class PostHeaderComponent implements OnChanges {
+  @Input() item: SoPost;
+  @Input() type: string;
+
+  tooltip: any = Constants.tooltip;
+
+  showInfo: boolean = false;
+  showDetail: boolean = false;
+  settings: any;
+  // user: User;
+  readonly postUrl: string = Constants.urls.posts;
+  readonly profileUrl: string = Constants.urls.profile;
+  profile$: Observable<any>;
+
+
+  constructor(private postItem: PostComponent,
+              private socialService: SocialService,
+              private router: Router,
+              public userService: UserService,
+              private zoneReportService: ZSharedReportService) {
+    // this.user = this.socialService.user.profile;
+    this.profile$ = this.userService.profile$;
+  }
+
+  ngOnChanges(data: any) {
+    if (this.type == 'info') {
+      this.showInfo = true;
+    } else if (this.type == 'detail') {
+      this.showDetail = true;
+    }
+  }
+
+  viewPostDetail(uuid: string) {
+    this.router.navigate([], {fragment: 'detail', preserveQueryParams: true}).then(() => {
+      this.router.navigate([{outlets: {detail: [this.postUrl, uuid]}}], {preserveQueryParams: true, preserveFragment: true});
+    });
+  }
+
+  update(attr: any = {}, event: any) {
+    event.preventDefault();
+    this.postItem.update(attr);
+  }
+
+  togglePostNotitification(uuid: string, event: any) {
+    event.preventDefault();
+    console.log('Toggle post notification: ', event);
+
+    this.socialService.post.togglePostNotification(uuid).toPromise().then((res: any) => {
+      this.settings = res.data;
+    });
+  }
+
+  edit(event: any) {
+    event.preventDefault();
+    this.postItem.edit();
+  }
+
+  delete(event: any) {
+    event.preventDefault();
+    this.postItem.delete();
+  }
+
+  privacyName(post: any): string {
+    return post.privacy.replace('_', ' ');
+  }
+
+  privacyClassIcon(post: any): string {
+    switch (post.privacy) {
+      case Constants.soPostPrivacy.friends.data:
+        return 'fa-users';
+      case  Constants.soPostPrivacy.public.data:
+        return 'fa-globe';
+      case  Constants.soPostPrivacy.personal.data:
+        return 'fa-lock';
+      case  Constants.soPostPrivacy.customFriend.data:
+        return 'fa-user-times';
+      case  Constants.soPostPrivacy.customCommunity.data:
+        return 'fa-group';
+    }
+    return '';
+  }
+
+  getSettings(e: any) {
+    e.preventDefault();
+
+    this.socialService.post.getSettings(this.item.uuid).toPromise().then(
+      (res: any) => {
+        this.settings = res.data.settings;
+      });
+  }
+
+  onReport() {
+    this.zoneReportService.post(this.item.uuid);
+    return false;
+  }
+
+  onShowInfo() {
+    console.log('inside onShowInfo');
+  }
+
+  viewPrivacyCustom(post: any, modal: any) {
+    if (post.privacy == Constants.soPostPrivacy.customFriend.data || post.privacy == Constants.soPostPrivacy.customCommunity.data) {
+      modal.open();
+    }
+  }
+
+}

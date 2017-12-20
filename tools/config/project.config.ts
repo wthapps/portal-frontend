@@ -198,6 +198,10 @@ export class ProjectConfig extends SeedConfig {
         path: 'node_modules/@angular/cdk/bundles/cdk-stepper.umd.js'
       },
       {
+        name: 'quill-delta',
+        path: 'node_modules/quill-delta/lib/delta.js'
+      },
+      {
         name: '@angular/cdk/table',
         path: 'node_modules/@angular/cdk/bundles/cdk-table.umd.js'
       }

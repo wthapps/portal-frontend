@@ -1,0 +1,29 @@
+<div class="wrapper">
+  <wth-header-navbar class="header">
+    <div class="header-nav-left">
+      <a [routerLink]="['/']" class="navbar-brand" href="#">
+        <img src="/assets/images/logo-zone-small.png" alt="WTHApps">
+      </a>
+      <note-shared-header></note-shared-header>
+    </div>
+  </wth-header-navbar>
+  <main class="main">
+    <div class="main-page-left">
+      <aside class="main-page-left-in aside-menu">
+        <z-shared-menu>
+          <z-note-shared-left-menu></z-note-shared-left-menu>
+        </z-shared-menu>
+      </aside>
+    </div>
+    <div class="main-page-body">
+      <ng-template #modalContainer></ng-template>
+      <router-outlet name="modal"></router-outlet>
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+  <wth-toast></wth-toast>
+  <wth-loading></wth-loading>
+  <wth-confirm></wth-confirm>
+  <h-file-select></h-file-select>
+  <h-file-select-crop></h-file-select-crop>
+</div>
