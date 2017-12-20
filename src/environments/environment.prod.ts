@@ -1,4 +1,5 @@
 import { EnvConfig } from './env-config.interface';
+
 export const environment = {
   production: true
 };
@@ -6,14 +7,14 @@ export const environment = {
 console.log('environment:::', environment);
 
 // var hostname = '192.168.0.108';
-var protocol = 'https';
-var domain = 'wthapps.com';
-var subdomain = ``;
-var fullDomain = `${subdomain}.${domain}`;
+const protocol = 'https';
+const domain = 'wthapps.com';
+const subdomain = ``;
+const fullDomain = `${subdomain}.${domain}`;
 
 export const ConfigByEnv: EnvConfig = {
   CDN: `${protocol}://cdn-apps.${domain}`,
-  API:`${protocol}://api${fullDomain}`,
+  API: `${protocol}://api${fullDomain}`,
   ENV: 'PROD',
   DOMAIN: `${domain}`,
   SUB_DOMAIN: {
