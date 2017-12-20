@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
 import { Constants } from '../../../../../constant/config/constants';
@@ -8,7 +8,8 @@ declare let _: any;
 @Component({
     selector: 'textbox-search',
   templateUrl: 'textbox-search.component.html',
-  styleUrls: ['textbox-search.component.scss']
+  styleUrls: ['textbox-search.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class TextBoxSearchComponent implements OnInit {
@@ -59,7 +60,7 @@ export class TextBoxSearchComponent implements OnInit {
   }
 
   onShowSearchAdvanced() {
-    this.searchAdvanced = !this.searchAdvanced;
+    this.searchAdvanced = true;
     this.onSearchAdvancedEvent.emit({
       search: this.search,
       searchAdvanced: this.searchAdvanced

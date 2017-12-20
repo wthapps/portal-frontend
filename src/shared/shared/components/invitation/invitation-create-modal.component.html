@@ -33,10 +33,10 @@
                     'has-success': (item['controls']?.fullName.valid
                                 && item['controls']?.fullName.touched
                                 && form.value.items[i]?.fullName.length > 0)}">
-                    <input type="text" class="form-control" formControlName="fullName" placeholder="First name">
+                    <input type="text" class="form-control" formControlName="fullName" placeholder="Full name">
                     <div *ngIf="!item['controls']?.fullName.valid && item['controls']?.fullName.touched">
                       <span class="help-block text-danger" *ngIf="item['controls']?.fullName.errors.required">
-                        First name is required
+                        Full name is required
                       </span>
                     </div>
                   </div>

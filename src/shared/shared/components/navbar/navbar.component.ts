@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { Constants } from '../../../constant/config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
@@ -22,7 +22,15 @@ declare let App: any; //This App stands for ActionCable
 export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   tooltip: any = Constants.tooltip;
   defaultAvatar: string = Constants.img.avatar;
+  showUpdatedVersion: boolean = false;
+  showSearchMobile: boolean = false;
+  newVersion: string;
+  constants: any;
 
+  @HostListener('document:click', ['$event']) clickedOutside($event: any) {
+    // here you can hide your menu
+    this.showSearchMobile = false
+  }
   constructor(public userService: UserService,
               private navigateService: WTHNavigateService,
               private channelService: ChannelService,
@@ -62,7 +70,19 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  logout() {
+  clickedInside($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();  // <- that will stop propagation on lower layers
+    console.log('CLICKED INSIDE');
+  }
+
+  onShowSearchMobile($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    this.showSearchMobile = true;
+  }
+
+    logout() {
     this.userService.logout('users/sign_out')
       .take(1)
       .subscribe(
