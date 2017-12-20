@@ -26,11 +26,13 @@ import { ZNoteTrashModule } from './trash/trash.module';
 import { ZNotePhotoModule } from './photo/photo.module';
 import { environment } from '@env/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpModule,
     HttpClientModule,
 
     AppRoutingModule,
