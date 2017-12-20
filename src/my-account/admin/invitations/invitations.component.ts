@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil, map } from 'rxjs/operators';
 
 import { InvitationService } from '@wth/shared/shared/components/invitation/invitation.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
@@ -45,14 +45,18 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.currentTab = this.TAB.PENDING.value;
-    this.route.queryParams.takeUntil(this.destroySubject.asObservable()).map((queryParam: any) => {
+    this.route.queryParams.pipe(
+      takeUntil(this.destroySubject.asObservable()),
+      map((queryParam: any) => {
       this.currentTab = queryParam['tab'] || this.TAB.PENDING.value;
       this.currentTabTitle = _.find(this.TAB, ['value', this.currentTab]);
       this.selectedItems.length = 0;
       return queryParam;
-    }).switchMap(() => {
+    }),
+      switchMap(() => {
       return this.invitationService.getByStatus({status: this.currentTab});
-    }).subscribe((response: any) => {
+    })
+    ).subscribe((response: any) => {
       this.isSelectAll = false;
       this.items = response.data;
     });
