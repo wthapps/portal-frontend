@@ -12,6 +12,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "start-portal": "ng serve --app portal --port 3000",
     "start-my": "ng serve --app my-account --port 3005",
     "start-media": "ng serve --app media --port 3010",
     "start-social": "ng serve --app social --port 3015",

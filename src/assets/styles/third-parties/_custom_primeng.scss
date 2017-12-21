@@ -149,7 +149,8 @@ body {
         cursor: grabbing;
         cursor: -moz-grabbing;
         cursor: -webkit-grabbing;
-      }}
+      }
+    }
   }
 
   .ui-chkbox {
@@ -438,6 +439,28 @@ body {
       }
       .fa-pencil {
         right: 30px;
+      }
+    }
+  }
+}
+
+body {
+  .ui-datatable {
+    .ui-datatable-thead > tr > th,
+    .ui-datatable-tfoot > tr > td,
+    .ui-datatable-data > tr > td, .ui-widget-content {
+      border-width: 0;
+    }
+    .ui-datatable-thead:not(:first-child) > tr > th,
+    .ui-datatable-tfoot:not(:first-child) > tr > td,
+    .ui-datatable-data:not(:first-child) > tr > td, .ui-widget-content {
+      border-top: 1px solid $line;
+    }
+
+    th {
+      &.ui-state-default {
+        background-color: #ffffff;
+        text-align: left;
       }
     }
   }

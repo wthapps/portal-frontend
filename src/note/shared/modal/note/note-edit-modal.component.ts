@@ -1,5 +1,14 @@
-import { Component, Input, ViewChild, AfterViewInit, ViewEncapsulation, OnDestroy, OnChanges } from '@angular/core';
-import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  Component,
+  Input,
+  ViewChild,
+  AfterViewInit,
+  ViewEncapsulation,
+  OnDestroy,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
+import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Observable } from 'rxjs/Observable';
@@ -34,17 +43,23 @@ import * as Delta from 'quill-delta/lib/delta';
 import { ResizeImage } from "@shared/shared/utils/resize-image";
 
 const DEBOUNCE_MS = 2500;
+declare let _: any;
 
 @Component({
   selector: 'note-edit-modal',
   templateUrl: 'note-edit-modal.component.html',
-  styleUrls: ['note-edit-modal.component.scss'],
+  styleUrls: ['note-edit-modal.component.scss', 'quill-style.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewInit {
+
   @ViewChild(ModalComponent) modal: ModalComponent;
   @ViewChild('editor') editor: Editor;
   @Input() note: Note = new Note();
+
+  currentTab: any = 'note';
+  orderDesc: boolean = false;
+  hasSortBy: boolean = false;
 
   customEditor: any;
   public fileUploadHelper: FileUploadHelper;
@@ -99,14 +114,15 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.buttonControl = (getOs.name == 7) ? '⌘' : 'ctrl';
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('ngOnChanges:', changes);
+  }
+
   ngOnDestroy() {
     this.closeSubject.next('');
     this.closeSubject.unsubscribe();
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
-  }
-
-  ngOnChanges() {
   }
 
   registerAutoSave() {
@@ -185,6 +201,13 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     console.debug('current clipboard: ', this.customEditor);
   }
 
+  onSort(name: any) {
+    // console.log('name:', name, this.note.attachments);
+    this.note.attachments = this.orderDesc ? _.sortBy(this.note.attachments, [name]) : _.sortBy(this.note.attachments, [name]).reverse();
+    this.orderDesc = !this.orderDesc;
+    this.hasSortBy = true;
+  }
+
   extendClipboard() {
     var Clipboard = Quill.import('modules/clipboard');
 
@@ -234,8 +257,13 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.customEditor.keyboard.addBinding({
       key: ' ',
       collapsed: true,
+<<<<<<< Updated upstream
       prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b\/?$/,
       handler: function(range, context) {
+=======
+      prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b$/,
+      handler: function (range, context) {
+>>>>>>> Stashed changes
         this.addHyperLink(range, context);
       }.bind(this)
     });
@@ -568,7 +596,11 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   onFirstSave() {
     if (this.editMode == Constants.modal.add) {
 
-      this.noteService.create({...this.form.value, content: this.editorElement.innerHTML, parent_id: this.parentId}).toPromise()
+      this.noteService.create({
+        ...this.form.value,
+        content: this.editorElement.innerHTML,
+        parent_id: this.parentId
+      }).toPromise()
         .then((res: any) => {
           this.note = res.data;
           this.editMode = Constants.modal.edit;
@@ -662,7 +694,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   }
 
   private updateNote() {
-    if(!this.note.id)
+    if (!this.note.id)
       return;
     let noteObj: any = Object.assign({}, this.note, this.form.value, {content: this.editorElement.innerHTML});
     this.store.dispatch(new note.Update(noteObj));

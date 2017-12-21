@@ -82,6 +82,7 @@ import { LoadingService } from './shared/components/loading/loading.service';
 import { MessageService } from 'primeng/components/common/messageservice';
 import { ToastsService } from './shared/components/toast/toast-message.service';
 import { Ng2CableModule } from 'ng2-cable';
+import { DataTableModule } from 'primeng/components/datatable/datatable';
 
 
 /**
@@ -130,6 +131,7 @@ export * from './shared/components/navbar/navbar.module';
     TooltipModule,
     EditorModule,
     PanelMenuModule,
+    DataTableModule,
 
     WthConfirmModule,
     BoxLoadingModule,

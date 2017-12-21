@@ -1,6 +1,6 @@
 .nav-tabs-wrap {
   //border-top: 1px solid $line;
-  padding: 15px;
+  padding: 0 15px;
   .nav-tabs {
     border-width: 0;
     margin: 0;
@@ -47,14 +47,11 @@
             position: absolute;
             left: 0;
             right: 0;
-            bottom: -15px;
-            color:#000000;
+            bottom: 0;
+            color: #000000;
             font-weight: bold;
             background-color: rgb(245, 74, 89);
             height: 3px;
-            @media (max-width: $screen-md-max) and (min-width: $screen-sm-min) {
-              bottom: -5px;
-            }
           }
         }
       }
@@ -84,6 +81,40 @@
             float: right;
             margin-left: 3px;
             margin-top: 3px;
+          }
+        }
+      }
+    }
+  }
+  &.nav-tabs-wrap-sm {
+    .nav-tabs {
+      > li {
+        > a {
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+      }
+    }
+  }
+  &.nav-tabs-wrap-md {
+    .nav-tabs {
+      > li {
+        > a {
+          @media (min-width: $screen-md-min) {
+            padding-top: 10px;
+            padding-bottom: 10px;
+          }
+        }
+      }
+    }
+  }
+  &.nav-tabs-wrap-lg {
+    .nav-tabs {
+      > li {
+        > a {
+          @media (min-width: $screen-lg-min) {
+            padding-top: 15px;
+            padding-bottom: 15px;
           }
         }
       }
