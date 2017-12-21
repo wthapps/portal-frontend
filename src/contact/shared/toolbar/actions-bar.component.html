@@ -9,6 +9,13 @@
       <i class="fa fa-envelope-o" aria-hidden="true"></i> Invite
     </a>
   </li>
+  <li *ngIf="number > 1">
+    <a href="javascript:;" class="btn btn-default" (click)="mergeDuplicate()"
+       pTooltip="{{ tooltip.mergeContacts }}" tooltipPosition="bottom">
+      <!--<img alt="" width="30" src="assets/images/icons/merge_icon.svg">-->
+      <i class="fa fa-compress" aria-hidden="true"></i>
+    </a>
+  </li>
   <li>
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite'})"
        pTooltip="{{ tooltip.favourite }}" tooltipPosition="bottom">
@@ -48,9 +55,6 @@
         <a href="javascript:;" (click)="emitEvent({action: 'edit_contact'})">
           <i class="fa fa-pencil"></i> Edit Contact
         </a>
-      </li>
-      <li *ngIf="contactService.selectedObjects.length > 1">
-        <a href="javascript:;" (click)="mergeDuplicate()"><img alt="" width="30" src="assets/images/icons/merge_icon.svg">Merge duplicate contacts</a>
       </li>
       <li>
         <a href="javascript:;" (click)="emitEvent({action: 'delete'})"><i class="fa fa-trash"></i> Delete</a>

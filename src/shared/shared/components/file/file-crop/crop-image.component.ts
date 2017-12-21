@@ -75,7 +75,8 @@ export class CropImageComponent implements AfterViewInit {
       this.cropper.destroy();
       this.cropper = null;
     }
-    $('.cropper-container').remove();
+    // $('.cropper-container').remove();
+    this.removeElement(document.querySelector('.cropper-container'));
   }
 
   done() {
@@ -90,4 +91,10 @@ export class CropImageComponent implements AfterViewInit {
     this.clearCropper();
     this.modal.close();
   }
+
+  private removeElement(ele: any) {
+    if(ele)
+      ele.parentNode.removeChild(ele);
+  }
+
 }
