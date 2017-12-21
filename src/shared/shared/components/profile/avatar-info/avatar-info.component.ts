@@ -61,6 +61,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
               private photoUploadService: PhotoUploadService) {
     this.closeObs$ = Observable.merge(
       this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
+    this.handleSelectCropEvent();
   }
 
   ngOnInit() {
@@ -145,7 +146,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
     event.preventDefault();
     // this.uploadProfile.modal.open();
     this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.profile.profile_image} });
-    this.handleSelectCropEvent();
+
   }
 
   handleSelectCropEvent() {

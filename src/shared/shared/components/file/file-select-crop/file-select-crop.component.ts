@@ -10,6 +10,7 @@ import { UploadCropImageComponent } from '../../upload-crop-image/upload-crop-im
 import { CommonEventService } from '../../../../services/common-event/common-event.service';
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { Subject } from 'rxjs/Subject';
+import { CropImageComponent } from '@wth/shared/shared/components/file/file-crop/crop-image.component';
 
 
 declare let $: any;
@@ -21,7 +22,7 @@ declare let _: any;
 })
 
 export class FileSelectCropComponent implements OnInit, OnDestroy {
-  @ViewChild('cropImage') cropImage: UploadCropImageComponent;
+  @ViewChild('cropImage') cropImage: CropImageComponent;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   currentImage: string;

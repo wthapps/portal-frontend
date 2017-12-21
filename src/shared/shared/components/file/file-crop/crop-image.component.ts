@@ -70,11 +70,12 @@ export class CropImageComponent implements AfterViewInit {
   }
 
   clearCropper() {
+    console.debug('... inside clearCropper: ');
     if(this.cropper !== null) {
       this.cropper.destroy();
       this.cropper = null;
     }
-    // $('.cropper-container').remove();
+    $('.cropper-container').remove();
   }
 
   done() {
