@@ -167,7 +167,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
     this.registerFontSizeBlot();
     this.registerDividerBlot();
-    this.extendClipboard();
+    this.extendClipboard(this);
     this.customEditor = new Quill('#quill-editor', {
       modules: {
         toolbar: {
@@ -208,13 +208,79 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.hasSortBy = true;
   }
 
-  extendClipboard() {
+  extendClipboard(self: any) {
     var Clipboard = Quill.import('modules/clipboard');
 
     class PlainClipboard extends Clipboard {
 
       onPaste(e: any) {
         console.debug('inside onPaste. Do nothing now');
+
+        var dataClipboard1 = e.clipboardData.types;
+
+        if (dataClipboard1[0].match('Files'))
+        {
+          if (e.clipboardData.items[0].type.match("image/*"))
+          {
+            var fileClipboard = e.clipboardData.items[0].getAsFile();
+          }
+        }
+
+        if (e.defaultPrevented || !this.quill.isEnabled()) return;
+        var range = this.quill.getSelection();
+        var delta = new Delta();
+        var scrollTop = this.quill.scrollingContainer.scrollTop;
+        this.container.focus();
+        // this.quill.selection.update(_quill2.default.sources.SILENT);
+        // setTimeout(function () {
+          if (dataClipboard1[0].match('text/*'))
+          {
+            delta = delta.concat(this.convert()).delete(range.length);
+            this.quill.updateContents(delta, Quill.sources.USER);
+            // range.length contributes to delta.length()
+            this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
+            // this.quill.scrollingContainer.scrollTop = scrollTop;
+            this.quill.focus();
+          }
+          else
+          {
+            if (fileClipboard.type.match('image/*'))
+            {
+              var reader = new FileReader();
+              reader.onload = (e: any) => {
+                let ids = [];
+                const randId = `img_${new Date().getTime()}`;
+                self.insertFakeImage(randId);
+                ids.push(randId);
+                let file = e.target['result'];
+                fileClipboard['name'] = 'new name';
+                let files = [fileClipboard            ];
+                self.photoUploadService.uploadPhotos(files).subscribe((res: any) => {
+                  const randId = ids.shift();
+                  $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
+                  $(`i#${randId}`).remove();
+                  self.registerImageClickEvent();
+                });
+
+                // const range = self.quill.getSelection(true);
+                // self.quill.updateContents(
+                //   new Delta()
+                //     .retain(range.index)
+                //     .delete(range.length)
+                //     .insert({ image: e.target.result })
+                //     );
+                // // this.customEditor.history.cutoff();
+                // self.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+                //
+                // // self.quill.updateContents(new Delta.default().retain(range.index).delete(range.length).insert(
+                // //   { image: e.target.result }), Quill.default.sources.USER);
+                // // self.quill.setSelection(range.index + 1, Quill.default.sources.SILENT);
+                fileClipboard.value = '';
+              };
+              reader.readAsDataURL(fileClipboard);
+            }
+          }
+        // }, 1);
       }
     }
 
