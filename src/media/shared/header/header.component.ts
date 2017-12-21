@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, HostListener } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { TextBoxSearchComponent } from '@wth/shared/shared/components/header/search/components/textbox-search.component';
 import { ServiceManager } from '@wth/shared/services';
@@ -48,8 +48,19 @@ export class ZMediaSharedHeaderComponent {
   searchOwnerName: AbstractControl;
   searchAdvanced: boolean = false;
 
+  @HostListener('document:click', ['$event']) clickedOutside($event: any) {
+    // here you can hide your menu
+    this.searchAdvanced = false;
+  }
+
   constructor(public serviceManager: ServiceManager) {
     this.createForm();
+  }
+
+  clickedInside($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();  // <- that will stop propagation on lower layers
+    console.log('CLICKED INSIDE');
   }
 
   onEnter(e: any) {
