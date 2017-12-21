@@ -29,6 +29,10 @@ wth-header-navbar {
   .navbar-form {
     margin-top: 5px;
     margin-bottom: 5px;
+    @media (min-width: $screen-sm-min) {
+      position: absolute;
+      left: 32%;
+    }
   }
 
   .btn-group {
@@ -273,7 +277,7 @@ wth-header-navbar {
 
 .navbar-brand {
   height: 44px;
-  padding: 7px 0;
+  padding: 2px 0;
   margin-right: 15px;
   @media (max-width: $screen-xs-max) {
     padding: 10px 0;

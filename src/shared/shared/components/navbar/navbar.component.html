@@ -1,4 +1,4 @@
-<nav (click)="clickedInside($event)" class="header-nav" [ngClass]="{'header-nav-xs-show-search': showSearchMobile}" role="navigation">
+<nav class="header-nav" [ngClass]="{'header-nav-xs-show-search': showSearchMobile}" role="navigation">
   <div class="container-fluid">
     <ng-content></ng-content>
 
@@ -14,7 +14,7 @@
         </div>
       </ng-template>
       <ng-template [ngIf]="userService.loggedIn">
-        <div class="btn-group header-nav-search-btn">
+        <div class="btn-group header-nav-search-btn visible-xs-inline-block">
           <button (click)="onShowSearchMobile($event)" type="button" class="btn btn-default">
             <i class="fa fa-search"></i>
           </button>

@@ -29,7 +29,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @HostListener('document:click', ['$event']) clickedOutside($event: any) {
     // here you can hide your menu
-    this.showSearchMobile = false
+    this.showSearchMobile = false;
   }
   constructor(public userService: UserService,
               private navigateService: WTHNavigateService,
