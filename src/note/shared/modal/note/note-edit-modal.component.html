@@ -3,156 +3,6 @@
          data-backdrop="static">
 
     <modal-body>
-<<<<<<< Updated upstream
-      <div class="form-group no-label">
-        <input tabindex="1" autofocus (keypress)="onToEditor($event)" [formControl]="title" type="text" class="form-control" id="note_form_title"
-               placeholder="Title">
-      </div>
-        <!--<p-editor #editor formControlName="content">-->
-          <!--<p-header>-->
-      <div id="quill-toolbar">
-            <div class="ql-format-group" >
-              <div class="ql-formats">
-                <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()"><i
-                  class="fa fa-reply"></i></button>
-                <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()"><i
-                  class="fa fa-share"></i></button>
-                <button type="button" (click)="copyFormat()"><i class="fa fa-paint-brush" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div pTooltip="Font Family" tooltipPosition="bottom" class="ql-formats">
-                <!-- Add font family dropdown -->
-                <select class="ql-font">
-                  <option value="gotham" selected="">Gotham</option>
-                  <option value="georgia">Georgia</option>
-                  <option value="helvetica">Helvetica</option>
-                  <option value="courier-new">Courier New</option>
-                  <option value="times-new-roman">Times New Roman</option>
-                  <option value="trebuchet">Trebuchet</option>
-                  <option value="verdana">Verdana</option>
-                </select>
-              </div>
-              <div pTooltip="Font Size" tooltipPosition="bottom" class="ql-formats">
-                <!-- Add font size dropdown -->
-                <select class="ql-size ql-size-sm">
-                  <option value="8px">8</option>
-                  <option value="10px">10</option>
-                  <option value="12px">12</option>
-                  <option selected value="14px">14</option>
-                  <option value="18px">18</option>
-                  <option value="24px">24</option>
-                  <option value="36px">36</option>
-                </select>
-              </div>
-              <div pTooltip="Text Color" tooltipPosition="bottom" class="ql-formats">
-                <!-- Add colors -->
-                <select class="ql-color" title="Colour">
-                  <option value="#ffffff"></option>
-                  <option value="#facccc"></option>
-                  <option value="#ffebcc"></option>
-                  <option value="#ffffcc"></option>
-                  <option value="#cce8cc"></option>
-                  <option value="#cce0f5"></option>
-                  <option value="#ebd6ff"></option>
-                  <option value="#bbbbbb"></option>
-                  <option value="#f06666"></option>
-                  <option value="#ffc266"></option>
-                  <option value="#ffff66"></option>
-                  <option value="#66b966"></option>
-                  <option value="#66a3e0"></option>
-                  <option value="#c285ff"></option>
-                  <option value="#888888"></option>
-                  <option value="#a10000"></option>
-                  <option value="#b26b00"></option>
-                  <option value="#b2b200"></option>
-                  <option value="#006100"></option>
-                  <option value="#0047b2"></option>
-                  <option value="#6b24b2"></option>
-                  <option value="#444444"></option>
-                  <option value="#5c0000"></option>
-                  <option value="#663d00"></option>
-                  <option value="#666600"></option>
-                  <option value="#003700"></option>
-                  <option value="#002966"></option>
-                  <option value="#3d1466"></option>
-                  <option value="#000000"></option>
-                  <option value="#e60000"></option>
-                  <option value="#ff9900"></option>
-                  <option value="#ffff00"></option>
-                  <option value="#008a00"></option>
-                  <option value="#0066cc"></option>
-                  <option value="#9933ff"></option>
-                </select>
-              </div>
-              <div pTooltip="Background Color" tooltipPosition="bottom" class="ql-formats">
-                <!-- Add background -->
-                <select class="ql-background" title="Background">
-                  <option value="#ffffff"></option>
-                  <option value="#facccc"></option>
-                  <option value="#ffebcc"></option>
-                  <option value="#ffffcc"></option>
-                  <option value="#cce8cc"></option>
-                  <option value="#cce0f5"></option>
-                  <option value="#ebd6ff"></option>
-                  <option value="#bbbbbb"></option>
-                  <option value="#f06666"></option>
-                  <option value="#ffc266"></option>
-                  <option value="#ffff66"></option>
-                  <option value="#66b966"></option>
-                  <option value="#66a3e0"></option>
-                  <option value="#c285ff"></option>
-                  <option value="#888888"></option>
-                  <option value="#a10000"></option>
-                  <option value="#b26b00"></option>
-                  <option value="#b2b200"></option>
-                  <option value="#006100"></option>
-                  <option value="#0047b2"></option>
-                  <option value="#6b24b2"></option>
-                  <option value="#444444"></option>
-                  <option value="#5c0000"></option>
-                  <option value="#663d00"></option>
-                  <option value="#666600"></option>
-                  <option value="#003700"></option>
-                  <option value="#002966"></option>
-                  <option value="#3d1466"></option>
-                  <option value="#000000"></option>
-                  <option value="#e60000"></option>
-                  <option value="#ff9900"></option>
-                  <option value="#ffff00"></option>
-                  <option value="#008a00"></option>
-                  <option value="#0066cc"></option>
-                  <option value="#9933ff"></option>
-                </select>
-              </div>
-              <div class="ql-formats">
-                <!-- Add subscript and superscript buttons -->
-                <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
-                <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
-              </div>
-              <div class="ql-formats">
-                <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold" aria-label="Bold"></button>
-                <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic" aria-label="Italic"></button>
-                <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom" class="ql-underline"
-                        aria-label="Underline"></button>
-                <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike"
-                        aria-label="Strikethrough"></button>
-              </div>
-              <div pTooltip="Alignment" tooltipPosition="bottom" class="ql-formats">
-                <select class="ql-align">
-                  <option selected></option>
-                  <option value="center"></option>
-                  <option value="right"></option>
-                  <option value="justify"></option>
-                </select>
-              </div>
-              <div class="ql-formats">
-                <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
-                <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list" value="ordered"></button>
-                <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list" value="bullet"></button>
-              </div>
-=======
->>>>>>> Stashed changes
-
       <div class="quill-toolbar-wrap">
         <div class="quill-toolbar-header">
           <div class="quill-toolbar-action">
@@ -414,7 +264,7 @@
                   {{ att.name }}
                 </td>
                 <td>{{ att.size | bytes:3 }}</td>
-                <td>{{ att.created_at | date: 'MMM dd yyyy' }}</td>
+                <td>{{ (att.updated_at || att.created_at) | date: 'MMM dd yyyy' }}</td>
                 <td class="text-right">
                   <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
                     <i class="fa fa-download"></i>
@@ -429,7 +279,6 @@
           </div>
         </div>
       </div>
-
     </modal-body>
   </modal>
 </form>

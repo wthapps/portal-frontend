@@ -8,7 +8,7 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
+import { FormGroup, AbstractControl, FormBuilder, Validator } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Observable } from 'rxjs/Observable';
@@ -257,13 +257,8 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.customEditor.keyboard.addBinding({
       key: ' ',
       collapsed: true,
-<<<<<<< Updated upstream
       prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b\/?$/,
       handler: function(range, context) {
-=======
-      prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b$/,
-      handler: function (range, context) {
->>>>>>> Stashed changes
         this.addHyperLink(range, context);
       }.bind(this)
     });
