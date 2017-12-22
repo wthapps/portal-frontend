@@ -58,7 +58,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   @Input() note: Note = new Note();
 
   currentTab: any = 'note';
-  hasShowComment: boolean = false;
   orderDesc: boolean = false;
   hasSortBy: boolean = false;
 
@@ -215,8 +214,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     class PlainClipboard extends Clipboard {
 
       onPaste(e: any) {
-        console.debug('inside onPaste. Do nothing now');
-
+        // super.onPaste(e);
         var dataClipboard1 = e.clipboardData.types;
 
         if (dataClipboard1[0].match('Files')) {
@@ -226,29 +224,26 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         }
 
         if (e.defaultPrevented || !this.quill.isEnabled()) return;
-        var range = this.quill.getSelection();
-        var delta = new Delta();
-        var scrollTop = this.quill.scrollingContainer.scrollTop;
-        this.container.focus();
-
-        if (dataClipboard1[0].match('text/*')) {
-          delta = delta.concat(this.convert()).delete(range.length);
-          this.quill.updateContents(delta, Quill.sources.USER);
-          // range.length contributes to delta.length()
-          this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
-          // this.quill.scrollingContainer.scrollTop = scrollTop;
-          this.quill.focus();
-        }
-        else {
-          if (fileClipboard.type.match('image/*')) {
-            var reader = new FileReader();
-            reader.onload = (e: any) => {
+        let range = this.quill.getSelection();
+        let delta = new Delta().retain(range.index);
+        this.container.focus(); // comment out to prevent scroll to top
+        this.quill.selection.update(Quill.sources.SILENT);
+        setTimeout(() => {
+          if (dataClipboard1[0].match('text/*')) {
+            delta = delta.concat(this.convert()).delete(range.length);
+            this.quill.updateContents(delta, Quill.sources.USER);
+            this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
+            this.quill.focus();
+          }
+          else {
+            if (fileClipboard.type.match('image/*')) {
+              // var reader = new FileReader();
+              // reader.onload = (e: any) => {
               let ids = [];
               const randId = `img_${new Date().getTime()}`;
               self.insertFakeImage(randId);
               ids.push(randId);
-              let file = e.target['result'];
-              fileClipboard['name'] = 'new name';
+              // let file = e.target['result'];
               let files = [fileClipboard];
               self.photoUploadService.uploadPhotos(files).subscribe((res: any) => {
                 const randId = ids.shift();
@@ -258,10 +253,8 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
               });
               fileClipboard.value = '';
             };
-            reader.readAsDataURL(fileClipboard);
           }
-        }
-        // }, 1);
+        }, 1);
       }
     }
 
