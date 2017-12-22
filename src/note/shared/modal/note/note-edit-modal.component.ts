@@ -478,7 +478,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
           sIndex = range.index;
           sLength = range.length;
         }
-
+        this.customEditor.removeFormat(sIndex, sLength);
         this.customEditor.formatText(sIndex, sLength, this.copiedFormat);
         this.customEditor.formatLine(sIndex, sLength, this.copiedFormat);
         this.copiedFormat = {};
