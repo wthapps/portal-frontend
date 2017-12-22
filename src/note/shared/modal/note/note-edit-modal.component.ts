@@ -8,7 +8,7 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { FormGroup, AbstractControl, FormBuilder, Validator } from '@angular/forms';
+import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { Observable } from 'rxjs/Observable';
@@ -194,7 +194,9 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.customizeKeyboardBindings();
 
     this.listenImageChanges();
-    setInterval(() => {this.registerImageClickEvent();}, 500);
+    setInterval(() => {
+      this.registerImageClickEvent();
+    }, 500);
     this.registerSelectionChange();
     this.registerAutoSave();
     console.debug('current clipboard: ', this.customEditor);
@@ -217,10 +219,8 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
         var dataClipboard1 = e.clipboardData.types;
 
-        if (dataClipboard1[0].match('Files'))
-        {
-          if (e.clipboardData.items[0].type.match("image/*"))
-          {
+        if (dataClipboard1[0].match('Files')) {
+          if (e.clipboardData.items[0].type.match("image/*")) {
             var fileClipboard = e.clipboardData.items[0].getAsFile();
           }
         }
@@ -231,39 +231,36 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         var scrollTop = this.quill.scrollingContainer.scrollTop;
         this.container.focus();
 
-          if (dataClipboard1[0].match('text/*'))
-          {
-            delta = delta.concat(this.convert()).delete(range.length);
-            this.quill.updateContents(delta, Quill.sources.USER);
-            // range.length contributes to delta.length()
-            this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
-            // this.quill.scrollingContainer.scrollTop = scrollTop;
-            this.quill.focus();
+        if (dataClipboard1[0].match('text/*')) {
+          delta = delta.concat(this.convert()).delete(range.length);
+          this.quill.updateContents(delta, Quill.sources.USER);
+          // range.length contributes to delta.length()
+          this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
+          // this.quill.scrollingContainer.scrollTop = scrollTop;
+          this.quill.focus();
+        }
+        else {
+          if (fileClipboard.type.match('image/*')) {
+            var reader = new FileReader();
+            reader.onload = (e: any) => {
+              let ids = [];
+              const randId = `img_${new Date().getTime()}`;
+              self.insertFakeImage(randId);
+              ids.push(randId);
+              let file = e.target['result'];
+              fileClipboard['name'] = 'new name';
+              let files = [fileClipboard];
+              self.photoUploadService.uploadPhotos(files).subscribe((res: any) => {
+                const randId = ids.shift();
+                $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
+                $(`i#${randId}`).remove();
+                self.registerImageClickEvent();
+              });
+              fileClipboard.value = '';
+            };
+            reader.readAsDataURL(fileClipboard);
           }
-          else
-          {
-            if (fileClipboard.type.match('image/*'))
-            {
-              var reader = new FileReader();
-              reader.onload = (e: any) => {
-                let ids = [];
-                const randId = `img_${new Date().getTime()}`;
-                self.insertFakeImage(randId);
-                ids.push(randId);
-                let file = e.target['result'];
-                fileClipboard['name'] = 'new name';
-                let files = [fileClipboard            ];
-                self.photoUploadService.uploadPhotos(files).subscribe((res: any) => {
-                  const randId = ids.shift();
-                  $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
-                  $(`i#${randId}`).remove();
-                  self.registerImageClickEvent();
-                });
-                fileClipboard.value = '';
-              };
-              reader.readAsDataURL(fileClipboard);
-            }
-          }
+        }
         // }, 1);
       }
     }
@@ -308,7 +305,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
       key: ' ',
       collapsed: true,
       prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b\/?$/,
-      handler: function(range, context) {
+      handler: function (range, context) {
         this.addHyperLink(range, context);
       }.bind(this)
     });
@@ -443,8 +440,10 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   }
 
   copyFormat() {
-    let formats =  this.customEditor.getFormat(this.customEditor.selection.savedRange.index, this.customEditor.selection.savedRange.length);
-    this.EXCLUDE_FORMATS.forEach(f => { delete formats[f] });
+    let formats = this.customEditor.getFormat(this.customEditor.selection.savedRange.index, this.customEditor.selection.savedRange.length);
+    this.EXCLUDE_FORMATS.forEach(f => {
+      delete formats[f]
+    });
     this.copiedFormat = formats;
     console.debug('copyFormat: ', formats, this.customEditor.selection);
   }
@@ -626,6 +625,11 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     else {
       this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
     }
+
+    this.onModalClose();
+  }
+
+  onModalClose() {
     this.modal.close()
       .then(() => {
         this.closeSubject.next('');

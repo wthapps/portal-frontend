@@ -7,7 +7,7 @@
       <div class="note-editor-header">
         <div class="note-editor-header-content">
           <div class="note-editor-header-action">
-            <button class="btn btn-default">
+            <button (click)="onModalClose()" type="button" class="btn btn-default">
               <i class="fa fa-arrow-left"></i>
             </button>
           </div>
@@ -32,7 +32,7 @@
               </ul>
             </div>
             <button type="button" (click)="onSubmit(form.value)" [disabled]="!form.valid"
-                    class="btn btn-outline-primary">Done
+                    class="btn btn-outline-primary btn-min">Done
             </button>
           </div>
           <div class="note-editor-header-input">
