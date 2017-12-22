@@ -88,6 +88,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   private defaultImg: string = Constants.img.default;
   private editorElement: any;
   private copiedFormat: any = {};
+  private timeInterval: any;
   private EXCLUDE_FORMATS: string[] = ['link'];
   resize: any;
 
@@ -124,6 +125,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.closeSubject.unsubscribe();
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
+    if(this.timeInterval) clearInterval(this.timeInterval);
   }
 
   registerAutoSave() {
@@ -194,9 +196,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.customizeKeyboardBindings();
 
     this.listenImageChanges();
-    setInterval(() => {
-      this.registerImageClickEvent();
-    }, 500);
+    this.timeInterval = setInterval(() => {this.registerImageClickEvent();}, 500);
     this.registerSelectionChange();
     this.registerAutoSave();
     console.debug('current clipboard: ', this.customEditor);

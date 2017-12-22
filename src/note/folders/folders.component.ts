@@ -80,7 +80,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
       }
       let id = +params['id'];
       this.store.dispatch({type: note.LOAD, payload: {parent_id: id}});
-      this.store.dispatch({type: folder.SET_CURRENT_FOLDER, payload: id});
+      this.store.dispatch({type: folder.SET_CURRENT_FOLDER, payload: {id: id, page: this.page}});
 
       this.sub3 = this.store.select(fromRoot.getCurrentFolderPath).subscribe((res: any)=> {
         this.breadcrumbs.length = 0;
