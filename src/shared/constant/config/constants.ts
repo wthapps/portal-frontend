@@ -359,6 +359,7 @@ export let Constants = {
     listView: 'List view',
     markAsRead: 'Mark as read',
     markAsUnread: 'Mark as unread',
+    mergeContacts: 'Merge duplicate contacts',
     moreAction: 'More action',
     new: 'New',
     next: 'Next',

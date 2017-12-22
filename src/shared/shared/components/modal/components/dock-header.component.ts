@@ -13,7 +13,7 @@ import { Constants } from '../../../../constant/config/constants';
                 <ng-content> </ng-content>
               </div>
               <div class="modal-dock-header-action">
-                <i class="fa fa-times" (click)="modalDock.close()"
+                <i *ngIf="hasCloseIcon" class="fa fa-times" (click)="modalDock.close()"
                 pTooltip="{{tooltip.close}}" tooltipPosition="top"></i>
               </div>
             </div>`,
@@ -24,6 +24,7 @@ export class ModalDockHeaderComponent {
   @Input() loading: boolean = false;
   @Input() done: boolean = false;
   @Input() failed: boolean = false;
+  @Input() hasCloseIcon: boolean = true;
 
   tooltip: any = Constants.tooltip;
 

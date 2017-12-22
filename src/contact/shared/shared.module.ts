@@ -27,6 +27,7 @@ import { ZContactShareIcloudIndicateComponent } from './modal/import-contact/icl
 
 import { CoreModule } from '../../core/core.module';
 import { SharedModule } from '../../shared/shared.module';
+import { ZContactShareMergeProgressComponent } from './progress/merge-progress.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -56,6 +57,7 @@ import { SharedModule } from '../../shared/shared.module';
     ZContactSharedToolbarComponent,
     ZContactShareImportProgressComponent,
     ZContactShareImportContactComponent,
+    ZContactShareMergeProgressComponent,
     ZContactSharedToolbarComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
@@ -83,6 +85,7 @@ import { SharedModule } from '../../shared/shared.module';
     ZContactSharedToolbarComponent,
     ZContactShareImportProgressComponent,
     ZContactShareImportContactComponent,
+    ZContactShareMergeProgressComponent,
     ZContactSharedToolbarComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
