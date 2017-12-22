@@ -58,6 +58,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   @Input() note: Note = new Note();
 
   currentTab: any = 'note';
+  hasShowComment: boolean = false;
   orderDesc: boolean = false;
   hasSortBy: boolean = false;
 
@@ -127,7 +128,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
   registerAutoSave() {
     // Auto save
-    console.debug('inside auto save');
     Observable.merge(
       this.form.valueChanges,
       Observable.fromEvent(this.customEditor, 'text-change'))
@@ -144,7 +144,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   }
 
   ngAfterViewInit(): void {
-    this.resize = new ResizeImage('modal-note-edit');
+    this.resize = new ResizeImage('quill-content-body');
     $(document).on('hidden.bs.modal', '.modal', () => {
       if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
@@ -167,7 +167,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
     this.registerFontSizeBlot();
     this.registerDividerBlot();
-    this.extendClipboard();
+    this.extendClipboard(this);
     this.customEditor = new Quill('#quill-editor', {
       modules: {
         toolbar: {
@@ -194,8 +194,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.customizeKeyboardBindings();
 
     this.listenImageChanges();
-    this.registerImageClickEvent();
-
+    setInterval(() => {this.registerImageClickEvent();}, 500);
     this.registerSelectionChange();
     this.registerAutoSave();
     console.debug('current clipboard: ', this.customEditor);
@@ -208,13 +207,64 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.hasSortBy = true;
   }
 
-  extendClipboard() {
+  extendClipboard(self: any) {
     var Clipboard = Quill.import('modules/clipboard');
 
     class PlainClipboard extends Clipboard {
 
       onPaste(e: any) {
         console.debug('inside onPaste. Do nothing now');
+
+        var dataClipboard1 = e.clipboardData.types;
+
+        if (dataClipboard1[0].match('Files'))
+        {
+          if (e.clipboardData.items[0].type.match("image/*"))
+          {
+            var fileClipboard = e.clipboardData.items[0].getAsFile();
+          }
+        }
+
+        if (e.defaultPrevented || !this.quill.isEnabled()) return;
+        var range = this.quill.getSelection();
+        var delta = new Delta();
+        var scrollTop = this.quill.scrollingContainer.scrollTop;
+        this.container.focus();
+
+          if (dataClipboard1[0].match('text/*'))
+          {
+            delta = delta.concat(this.convert()).delete(range.length);
+            this.quill.updateContents(delta, Quill.sources.USER);
+            // range.length contributes to delta.length()
+            this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
+            // this.quill.scrollingContainer.scrollTop = scrollTop;
+            this.quill.focus();
+          }
+          else
+          {
+            if (fileClipboard.type.match('image/*'))
+            {
+              var reader = new FileReader();
+              reader.onload = (e: any) => {
+                let ids = [];
+                const randId = `img_${new Date().getTime()}`;
+                self.insertFakeImage(randId);
+                ids.push(randId);
+                let file = e.target['result'];
+                fileClipboard['name'] = 'new name';
+                let files = [fileClipboard            ];
+                self.photoUploadService.uploadPhotos(files).subscribe((res: any) => {
+                  const randId = ids.shift();
+                  $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
+                  $(`i#${randId}`).remove();
+                  self.registerImageClickEvent();
+                });
+                fileClipboard.value = '';
+              };
+              reader.readAsDataURL(fileClipboard);
+            }
+          }
+        // }, 1);
       }
     }
 
@@ -365,15 +415,12 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
       'data-id': dataId
     }, Quill.sources.USER);
     this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
-
-    $(`img[data-id=${dataId}]`).wrap('<p></p>');
   }
 
   selectInlinePhotos4Note() {
     this.photoSelectDataService.open({return: true, multipleSelect: false});
 
     this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any[]) => {
-      console.debug('inline photo next: ', photos);
       photos.forEach((photo: any) => this.insertInlineImage(null, photo.url, photo.id));
       this.registerImageClickEvent();
     });
@@ -454,30 +501,30 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     let photoIds = imgItems.map(item => item.dataset.id);
 
     imgItems.forEach((i: any) => {
-      // i.addEventListener("click", (event: any) => {
-      i.onclick = (event: any) => {
-        this.resize.edit(event.target);
-      };
+      if (!i.onclick && !i.ondblclick) {
+        i.onclick = (event: any) => {
+          this.resize.edit(event.target);
+        };
 
-      // i.addEventListener("dblclick", (event: any) => {
-      i.ondblclick = (event: any) => {
-        let photoId: string = event.srcElement.getAttribute('data-id');
-        if (photoId && photoId !== 'null') {
-          $('#modal-note-edit').css('z-index', '0');
-          $('.modal-backdrop').css('z-index', '0');
-          this.router.navigate([{
-            outlets: {
-              modal: ['photos', photoId, {
-                module: 'note',
-                ids: photoIds
-              }]
-            }
-          }], {queryParamsHandling: 'preserve', preserveFragment: true});
-        }
-        else {
-          console.warn('no photo id for this image: ', event.srcElement);
-        }
-      };
+        i.ondblclick = (event: any) => {
+          let photoId: string = event.srcElement.getAttribute('data-id');
+          if (photoId && photoId !== 'null') {
+            $('#modal-note-edit').css('z-index', '0');
+            $('.modal-backdrop').css('z-index', '0');
+            this.router.navigate([{
+              outlets: {
+                modal: ['photos', photoId, {
+                  module: 'note',
+                  ids: photoIds
+                }]
+              }
+            }], {queryParamsHandling: 'preserve', preserveFragment: true});
+          }
+          else {
+            console.warn('no photo id for this image: ', event.srcElement);
+          }
+        };
+      }
     });
   }
 

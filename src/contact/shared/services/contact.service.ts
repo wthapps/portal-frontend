@@ -22,6 +22,7 @@ declare var _: any;
 export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
   contacts: Array<any> = new Array<any>();
+  mergingObjects: any[] = [];
   page: number = 1;
 
   confirmDialog: any;
@@ -48,7 +49,6 @@ export class ZContactService extends BaseEntityService<any> {
 
 
   constructor(protected apiBaseService: ApiBaseService,
-              public importContactDataService: ContactImportContactDataService,
               public groupService: GroupService,
               private suggestService: SuggestionService,
               private toastsService: ToastsService,
@@ -217,6 +217,7 @@ export class ZContactService extends BaseEntityService<any> {
     return this.api.post(`${this.url}/import`, payload);
   }
 
+
   addContact(data: any): Promise<any> {
     return this.apiBaseService.post(`${this.url}`, data).toPromise().then((res: any) => this.createCallback(res.data));
   }
@@ -290,6 +291,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   mergeDuplicateContacts(contacts: any[] = this.selectedObjects): Promise<any> {
     let ids: any[] = _.map(contacts, 'id');
+    this.mergingObjects = contacts;
     return this.apiBaseService.post(`${this.url}/merge_duplicate`, {ids: ids}).toPromise()
       .then((res: any) => {
         let delete_ids: any[] = res.delete_ids;
@@ -305,6 +307,14 @@ export class ZContactService extends BaseEntityService<any> {
       console.log('merge duplicate contacts, updated: ', this.contacts, updated_contacts, delete_ids);
       this.notifyContactsObservers();
       this.groupService.updateGroupCount(this.contacts);
+      });
+  }
+
+
+  undoMerge(contacts: any[] = this.mergingObjects): Promise<any> {
+    return this.apiBaseService.post(`${this.url}/undo_merge`, {contacts: contacts}).toPromise()
+      .then((res: any) => {
+        console.debug('undoMerge: ', res);
       });
   }
 

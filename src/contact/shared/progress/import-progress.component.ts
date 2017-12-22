@@ -11,7 +11,6 @@ import { GenericFile } from '../../../shared/shared/models/generic-file.model';
 import { FileUploadHelper } from '../../../shared/shared/helpers/file/file-upload.helper';
 
 @Component({
-  moduleId: module.id,
   selector: 'z-contact-share-import-progress',
   templateUrl: 'import-progress.component.html'
 })
@@ -138,7 +137,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
         this.close();
         break;
       default:
-        console.error('Unhandled event action type: ', event.action);
+        console.warn('Unhandled event action type: ', event.action);
     }
   }
   close(options?: any) {

@@ -41,6 +41,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   sub3: Subscription;
 
   breadcrumbs: NoteBreadcrumb[] = [];
+  initRoute: string = '/';
   breadcrumbsInit: any = {id: null, name: null, label: 'My notes', routerLink: '/'};
 
   constructor(private noteService: ZNoteService,
@@ -64,12 +65,18 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
       switch(urlData.paths[0]) {
         case 'my-sharing':
           this.page = 'SHARED_BY_ME';
+          this.initRoute = '/my-sharing';
+          this.breadcrumbsInit = {id: null, name: null, label: 'Shared by me', routerLink: '/my-sharing'};
           break;
         case 'shared-with-me':
           this.page = 'SHARED_WITH_ME';
+          this.initRoute = '/shared-with-me';
+          this.breadcrumbsInit = {id: null, name: null, label: 'Shared with me', routerLink: '/shared-with-me'};
           break;
         default:
           this.page = 'MY_NOTE';
+          this.initRoute = '';
+          this.breadcrumbsInit = {id: null, name: null, label: 'My notes', routerLink: '/'};
       }
       let id = +params['id'];
       this.store.dispatch({type: note.LOAD, payload: {parent_id: id}});
@@ -79,7 +86,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
         this.breadcrumbs.length = 0;
         this.breadcrumbs.push(this.breadcrumbsInit);
         _.map(res, (v: any)=> {
-          this.breadcrumbs.push({id: v.id, name: v.name, object_type: v.object_type, parent_id: v.parent_id, label: v.name, routerLink: '/folders/' + v.id});
+          this.breadcrumbs.push({id: v.id, name: v.name, object_type: v.object_type, parent_id: v.parent_id, label: v.name, routerLink: this.initRoute + '/folders/' + v.id});
         });
       });
 
