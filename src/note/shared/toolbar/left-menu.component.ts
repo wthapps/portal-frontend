@@ -82,6 +82,8 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
 
   onNoteClick(event: any) {
     $(event.target).closest('ul').find('.well-folder-tree a').removeClass('active');
+    $('.ui-menuitem-link').removeClass('active');
+    $('.ui-panelmenu-headerlink-hasicon').removeClass('active');
   }
 
   update(target: any, folders: any) {
