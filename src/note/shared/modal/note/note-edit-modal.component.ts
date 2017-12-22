@@ -127,7 +127,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
   registerAutoSave() {
     // Auto save
-    console.debug('inside auto save');
     Observable.merge(
       this.form.valueChanges,
       Observable.fromEvent(this.customEditor, 'text-change'))
@@ -144,7 +143,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   }
 
   ngAfterViewInit(): void {
-    this.resize = new ResizeImage('modal-note-edit');
+    this.resize = new ResizeImage('quill-content-body');
     $(document).on('hidden.bs.modal', '.modal', () => {
       if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
@@ -194,8 +193,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.customizeKeyboardBindings();
 
     this.listenImageChanges();
-    this.registerImageClickEvent();
-
+    setInterval(() => {this.registerImageClickEvent();}, 500);
     this.registerSelectionChange();
     this.registerAutoSave();
     console.debug('current clipboard: ', this.customEditor);
@@ -231,8 +229,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         var delta = new Delta();
         var scrollTop = this.quill.scrollingContainer.scrollTop;
         this.container.focus();
-        // this.quill.selection.update(_quill2.default.sources.SILENT);
-        // setTimeout(function () {
+
           if (dataClipboard1[0].match('text/*'))
           {
             delta = delta.concat(this.convert()).delete(range.length);
@@ -261,20 +258,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
                   $(`i#${randId}`).remove();
                   self.registerImageClickEvent();
                 });
-
-                // const range = self.quill.getSelection(true);
-                // self.quill.updateContents(
-                //   new Delta()
-                //     .retain(range.index)
-                //     .delete(range.length)
-                //     .insert({ image: e.target.result })
-                //     );
-                // // this.customEditor.history.cutoff();
-                // self.quill.setSelection(range.index + 1, Quill.sources.SILENT);
-                //
-                // // self.quill.updateContents(new Delta.default().retain(range.index).delete(range.length).insert(
-                // //   { image: e.target.result }), Quill.default.sources.USER);
-                // // self.quill.setSelection(range.index + 1, Quill.default.sources.SILENT);
                 fileClipboard.value = '';
               };
               reader.readAsDataURL(fileClipboard);
@@ -431,15 +414,12 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
       'data-id': dataId
     }, Quill.sources.USER);
     this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
-
-    $(`img[data-id=${dataId}]`).wrap('<p></p>');
   }
 
   selectInlinePhotos4Note() {
     this.photoSelectDataService.open({return: true, multipleSelect: false});
 
     this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any[]) => {
-      console.debug('inline photo next: ', photos);
       photos.forEach((photo: any) => this.insertInlineImage(null, photo.url, photo.id));
       this.registerImageClickEvent();
     });
@@ -520,30 +500,30 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     let photoIds = imgItems.map(item => item.dataset.id);
 
     imgItems.forEach((i: any) => {
-      // i.addEventListener("click", (event: any) => {
-      i.onclick = (event: any) => {
-        this.resize.edit(event.target);
-      };
+      if (!i.onclick && !i.ondblclick) {
+        i.onclick = (event: any) => {
+          this.resize.edit(event.target);
+        };
 
-      // i.addEventListener("dblclick", (event: any) => {
-      i.ondblclick = (event: any) => {
-        let photoId: string = event.srcElement.getAttribute('data-id');
-        if (photoId && photoId !== 'null') {
-          $('#modal-note-edit').css('z-index', '0');
-          $('.modal-backdrop').css('z-index', '0');
-          this.router.navigate([{
-            outlets: {
-              modal: ['photos', photoId, {
-                module: 'note',
-                ids: photoIds
-              }]
-            }
-          }], {queryParamsHandling: 'preserve', preserveFragment: true});
-        }
-        else {
-          console.warn('no photo id for this image: ', event.srcElement);
-        }
-      };
+        i.ondblclick = (event: any) => {
+          let photoId: string = event.srcElement.getAttribute('data-id');
+          if (photoId && photoId !== 'null') {
+            $('#modal-note-edit').css('z-index', '0');
+            $('.modal-backdrop').css('z-index', '0');
+            this.router.navigate([{
+              outlets: {
+                modal: ['photos', photoId, {
+                  module: 'note',
+                  ids: photoIds
+                }]
+              }
+            }], {queryParamsHandling: 'preserve', preserveFragment: true});
+          }
+          else {
+            console.warn('no photo id for this image: ', event.srcElement);
+          }
+        };
+      }
     });
   }
 
