@@ -455,7 +455,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
           case 'delete':
             console.debug('unimplemented DELETE photo in post: ', object);
             let photoId = object.payload.photo.id;
-            $(`p > img[data-id=${photoId}]`).remove();
+            $(`img[data-id=${photoId}]`).remove();
             break;
           default:
             console.warn('unhandle event in photoService modifiedPhotos$: ', object);
