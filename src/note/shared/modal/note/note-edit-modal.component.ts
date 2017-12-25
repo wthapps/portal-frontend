@@ -87,6 +87,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   private defaultImg: string = Constants.img.default;
   private editorElement: any;
   private copiedFormat: any = {};
+  private isCopied: boolean;
   private timeInterval: any;
   private EXCLUDE_FORMATS: string[] = ['link'];
   resize: any;
@@ -438,6 +439,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
       delete formats[f]
     });
     this.copiedFormat = formats;
+    this.isCopied = true;
     console.debug('copyFormat: ', formats, this.customEditor.selection);
   }
 
@@ -467,7 +469,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
   registerSelectionChange() {
     this.customEditor.on('selection-change', (range, oldRange, source) => {
-      if (!_.isEmpty(this.copiedFormat) && range) {
+      if (this.isCopied && range) {
         let sIndex, sLength;
         if (range.length == 0) {
           var prefix = this.customEditor.getText(0, range.index).split(/\W/).pop();
@@ -482,8 +484,9 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         this.customEditor.formatText(sIndex, sLength, this.copiedFormat);
         this.customEditor.formatLine(sIndex, sLength, this.copiedFormat);
         this.copiedFormat = {};
+        this.isCopied = false;
       } else {
-        console.log('Cursor not in the editor');
+        console.warn('Cursor not in the editor');
       }
     });
   }
