@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import * as note from '../actions/note';
 import * as fromRoot from '../reducers/index';
+import * as context from '../reducers/context';
 import { Constants } from '@shared/constant/config/constants';
 import { ZNoteService } from '../services/note.service';
 
@@ -35,7 +36,6 @@ export class ZNoteSharedToolBarComponent implements OnInit {
   }
 
   onChangeView(view: string) {
-    // this.noteService.changeModeView(view);
-    this.store.dispatch(new note.ChangeViewMode(view));
+    this.store.dispatch({type: context.SET_CONTEXT, payload: { viewMode: view }});
   }
 }

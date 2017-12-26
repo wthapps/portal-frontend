@@ -8,6 +8,7 @@ import {
 
 import * as fromNote from './note';
 import * as fromFolder from './folder';
+import * as context from './context';
 import * as fromMixedEntity from '../mixed-enity/mixed-entity.reducer';
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -42,9 +43,9 @@ export const getNotesState = (state: State) => state.notes;
 export const getNotesEntities = createSelector(getNotesState, fromNote.getNotes);
 export const getOrderDesc = createSelector(getNotesState, fromNote.getOrderDesc);
 export const getSortOption = createSelector(getNotesState, fromNote.getSortOption);
-export const getSortedNotes = createSelector(getNotesState, fromNote.getSortedNotes);
+// export const getSortedNotes = createSelector(getNotesState, fromNote.getSortedNotes);
 export const getFolderEntities = createSelector(getNotesState, fromNote.getFolders);
-export const getSortedFolders = createSelector(getNotesState, fromNote.getSortedFolders);
+// export const getSortedFolders = createSelector(getNotesState, fromNote.getSortedFolders);
 export const getSelectAll = createSelector(getNotesState, fromNote.getSelectAll);
 export const getSelectedObjects = createSelector(getNotesState, fromNote.getSelectedObjects);
 export const getCurrentNote = createSelector(getNotesState, fromNote.getCurrentNote);

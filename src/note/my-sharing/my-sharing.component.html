@@ -15,15 +15,15 @@
   </span>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
-
-  <ng-container *ngIf="!(loading$ | async); else loadingBlock">
+  <ng-container *ngIf="!(context$ | async)?.loading; else loadingBlock">
     <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
       <note-list [noteItems]="noteItems$ | async"
-        [folderItems]="folderItems$ | async"
-        [viewOption]="(nodeState$ | async)?.viewMode"
-        [sortOption]="sortOption$ | async"
-        [page]="'SHARED_BY_ME'"
-        [isSelectAll]="isSelectAll$ | async">
+                 [folderItems]="folderItems$ | async"
+                 [viewOption]="(context$ | async)?.viewMode"
+                 [sortOption]="(context$ | async)?.sort"
+                 [page]="'SHARED_BY_ME'"
+                 [isSelectAll]="isSelectAll$ | async">
+
       </note-list>
     </ng-container>
   </ng-container>

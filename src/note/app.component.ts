@@ -27,6 +27,7 @@ import { ZNoteSharedModalSharingComponent } from './shared/modal/sharing/sharing
 import * as fromRoot from './shared/reducers/index';
 import { Folder } from './shared/reducers/folder';
 import * as note from './shared/actions/note';
+import * as context from './shared/reducers/context';
 import { MixedEntityService } from './shared/mixed-enity/mixed-entity.service';
 
 
@@ -68,8 +69,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent' || event.channel == 'noteActionsBar').subscribe((event: any) => {
       this.doEvent(event);
     });
-    this.noteService.modalEvent$.subscribe((event: any) => this.doEvent(event));
-    this.folder$ = this.store.select(fromRoot.getCurrentFolder).subscribe((folder: any) => {
+    this.noteService.modalEvent$.takeUntil(this.destroySubject).subscribe((event: any) => this.doEvent(event));
+    this.store.select(fromRoot.getCurrentFolder).takeUntil(this.destroySubject).subscribe((folder: any) => {
       this.currentFolder = folder;
     });
   }

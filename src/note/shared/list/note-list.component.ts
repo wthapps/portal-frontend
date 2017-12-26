@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { Note } from '@shared/shared/models/note.model';
 import { ZNoteService } from '../services/note.service';
 import * as fromRoot from '../reducers/index';
+import * as context from '../reducers/context';
 import * as note from '../actions/note';
 import { Folder } from '../reducers/folder';
 
@@ -38,8 +39,7 @@ export class NoteListComponent implements OnInit {
 
   @HostListener('document:keyup', ['$event'])
   onKeyUp(ke: KeyboardEvent) {
-
-    //if0 pressing ESC key
+    //if pressing ESC key
     if (ke.keyCode == 27) {
       this.deSelectObjects();
     }
@@ -53,7 +53,7 @@ export class NoteListComponent implements OnInit {
   }
 
   onSort(name: any) {
-    this.store.dispatch(new note.ChangeSortOrder(name));
+    this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {field: name, desc: !this.sortOption.desc}}});
   }
 
   onSelectedAll() {

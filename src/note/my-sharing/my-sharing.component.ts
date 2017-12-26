@@ -8,10 +8,13 @@ import { Observable } from 'rxjs/Observable';
 import { ZNoteService } from '../shared/services/note.service';
 import * as fromRoot from '../shared/reducers/index';
 import * as fromNote from '../shared/actions/note';
+import * as listReducer from '../shared/reducers/features/list-mixed-entities';
 
 import { Note } from '@shared/shared/models/note.model';
 import { Folder } from '../shared/reducers/folder';
 import { CommonEventService } from "@shared/services";
+import * as context from '../shared/reducers/context';
+import { noteConstants, NoteConstants } from "note/shared/config/constants";
 
 @Component({
   selector: 'z-note-my-sharing',
@@ -29,6 +32,7 @@ export class ZNoteMySharingComponent implements OnInit, OnDestroy {
   viewMode$: Observable<any>;
   loading$: Observable<boolean>;
   isSelectAll$: Observable<boolean>;
+  context$: Observable<any>;
   sub: any;
 
   private destroySubject: Subject<any> = new Subject<any>();
@@ -40,8 +44,8 @@ export class ZNoteMySharingComponent implements OnInit, OnDestroy {
               private noteService: ZNoteService
   ) {
 
-    this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
-    this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
+    this.noteItems$ = this.store.select(listReducer.getNotes);
+    this.folderItems$ = this.store.select(listReducer.getFolders);
     this.sortOption$ = this.store.select(fromRoot.getSortOption);
     this.viewMode$ = this.store.select(fromRoot.getViewMode);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
@@ -49,6 +53,7 @@ export class ZNoteMySharingComponent implements OnInit, OnDestroy {
     this.currentFolderPath$ = this.store.select(fromRoot.getCurrentFolderPath);
     this.selectAll$ = this.store.select(fromRoot.getSelectAll);
     this.loading$ = this.store.select(fromRoot.getLoading);
+    this.context$ = this.store.select(context.getContext);
 
     this.route.params
       .takeUntil(this.destroySubject)
@@ -66,7 +71,7 @@ export class ZNoteMySharingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    this.store.dispatch({type: context.SET_CONTEXT, payload: { page: noteConstants.PAGE_SHARED_BY_ME}});
   }
 
   ngOnDestroy() {

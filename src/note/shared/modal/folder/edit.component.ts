@@ -58,7 +58,6 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
     this.folder.name = value.name;
     if (this.folder.id) {
       this.apiBaseService.put('note/folders/' + this.folder.id, this.folder).subscribe((res: any) => {
-        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: [res.data]});
         [new note.NoteUpdated(res.data), new folder.UpdateFolderPath(res.data)].forEach((a: any) => this.store.dispatch(a));
         this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [res.data]});
         this.modal.close();
@@ -68,7 +67,6 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
         this.folder.parent_id = this.currentFolder.id;
       }
       this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
-        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: [res.data]});
         this.store.dispatch(new note.MultiNotesAdded([res.data]));
         this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [res.data]});
         this.modal.close();

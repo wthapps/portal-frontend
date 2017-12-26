@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs/Subscription';
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
 import * as folder from '../shared/actions/folder';
+import * as listReducer from '../shared/reducers/features/list-mixed-entities';
+import * as context from '../shared/reducers/context';
 import { Observable } from 'rxjs/Observable';
 import { Folder } from '../shared/reducers/folder';
 import { Note } from '@shared/shared/models/note.model';
@@ -31,6 +33,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
   selectAll$: Observable<boolean>;
   currentFolderPath$: Observable<any[]>;
   loading$: Observable<boolean>;
+  context$: Observable<any>;
   currentFolder: any;
   page: any;
 
@@ -49,14 +52,15 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private urlService: UrlService,
               private commonEventService: CommonEventService) {
-    this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
-    this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
+    this.noteItems$ = this.store.select(listReducer.getNotes);
+    this.folderItems$ = this.store.select(listReducer.getFolders);
     this.sortOption$ = this.store.select(fromRoot.getSortOption);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.currentFolderPath$ = this.store.select(fromRoot.getCurrentFolderPath);
     this.selectAll$ = this.store.select(fromRoot.getSelectAll);
     this.loading$ = this.store.select(fromRoot.getLoading);
+    this.context$ = this.store.select(context.getContext);
   }
 
   ngOnInit() {

@@ -1,22 +1,6 @@
 import { Config } from './env.config';
-
-let getBarwidth = function () {
-  // Create the measurement node
-  let scrollDiv = document.createElement('div');
-  scrollDiv.className = 'scrollbar-measure';
-  document.body.appendChild(scrollDiv);
-
-  // Get the scrollbar width
-  let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-  //console.warn(scrollbarWidth); // Mac:  15
-
-  // Delete the DIV
-  document.body.removeChild(scrollDiv);
-  return scrollbarWidth;
-};
-
-export let Constants = {
-  baseUrls: {
+export class ConstantsBase {
+  baseUrls: any = {
     apiBaseService: Config.API + '/',
     domain: Config.DOMAIN,
     app: Config.SUB_DOMAIN.APP,
@@ -27,38 +11,36 @@ export let Constants = {
     contact: Config.SUB_DOMAIN.CONTACT,
     note: Config.SUB_DOMAIN.NOTE,
     cdn: Config.CDN,
-  },
+  };
+  cdn: any = Config.CDN;
+  flagsRelease: any = false;
 
-  cdn: Config.CDN,
-
-  flagsRelease: false,
-
-  cookieOptionsArgs: {
+  cookieOptionsArgs: any = {
     path: '/',
     domain: Config.DOMAIN
-  },
-  cookieKeys: {
+  };
+  cookieKeys: any = {
     chatSupportId: 'wthapps-cs-id',
     chatSupportMemId: 'wthapps-cs-mem-id',
     chatSupportCurrentWindow: 'wthapps-cs-cw',
     clientToken: 'wthapps-ct',
     profile: 'wthapps-pro',
     payment: 'wthapps-pm'
-  },
-  operations: {
+  };
+  operations: any = {
     update: 'update',
     edit: 'edit',
     delete: 'delete',
     create: 'create',
     continue: 'continue'
-  },
-  params: {
+  };
+  params: any = {
     next: 'next'
-  },
-  string: {
+  };
+  string: any = {
     next: 'next'
-  },
-  HttpStatusCode: {
+  };
+  HttpStatusCode: any = {
     OK: 200,
     NotFound: 404,
     InternalServerError: 200,
@@ -66,15 +48,15 @@ export let Constants = {
     Conflict: 409,
     ExpectationFailed: 417,
     PaymentRequired: 402
-  },
-  errorMessage: {
+  };
+  errorMessage: any = {
     default: 'Internal Server Error'
-  },
-  patterns: {
+  };
+  patterns: any = {
     slash: '/',
     space: '%20'
-  },
-  img: {
+  };
+  img: any = {
     app: '/assets/images/apps/default.png',
     avatar: '/assets/images/avatar/default.png',
     logo: '/assets/images/logo.png',
@@ -82,28 +64,39 @@ export let Constants = {
     logoZone: '/assets/images/logo-zone.png',
     logoZoneWhite: '/assets/images/logo-zone-white.png',
     default: '/assets/images/thumbnail/image_default.png',
-  },
-  windows: {
-    scrollBarWidth: getBarwidth()
-  },
+  };
+  windows: any = {
+    scrollBarWidth: () => {
+      // Create the measurement node
+      let scrollDiv = document.createElement('div');
+      scrollDiv.className = 'scrollbar-measure';
+      document.body.appendChild(scrollDiv);
 
-  noteMenuItems: [
+      // Get the scrollbar width
+      let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+      //console.warn(scrollbarWidth); // Mac:  15
+
+      // Delete the DIV
+      document.body.removeChild(scrollDiv);
+      return scrollbarWidth;
+    }
+  };
+
+  noteMenuItems: any = [
     {name: 'My Notes', value: 'My notes', link: '/my-note', icon: 'fa fa-sticky-note'},
     {name: 'Shared With Me', value: 'shared with me', link: '/shared-with-me', icon: 'fw fw-shared-with-me'},
     {name: 'Shared By Me', value: 'shared by me', link: '/my-sharing', icon: 'fa fa-share-alt'},
     {name: 'Trash', value: 'Trash', link: '/trash', icon: 'fa fa-trash-o'},
     // {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},
-  ],
-
-
-  notePageType:{
+  ];
+  notePageType: any = {
     MY_NOTE: 'MY_NOTE',
     TRASH: 'TRASH',
     SHARED_WITH_ME: 'SHARED_WITH_ME',
     MY_SHARINGS: 'MY_SHARINGS'
-  },
+  };
 
-  contactMenuItems: [
+  contactMenuItems: any = [
     {name: 'All Contacts', value: 'all contacts', link: '/list', icon: 'fa fa-address-book-o', hasMenu: false},
     {name: '', value: '', link: '', icon: ''},
     {name: 'Labels', value: 'labels', link: '/list/labels', icon: 'fa fa-tags'},
@@ -114,31 +107,31 @@ export let Constants = {
     {name: 'Custom label 01 (2)', value: '', link: '/list/custom-label-02', icon: 'fa fa-folder-o visibility-hidden'},
     {name: 'Blacklist', value: 'blacklist', link: '/list/blacklist', icon: 'fa fa-ban'},
     {name: 'New label', value: 'new label', link: '#', icon: 'fa fa-plus', action: 'contact:label:create'}
-  ],
+  ];
 
-  contactEvents: {
+  contactEvents: any = {
     common: 'contactCommonEvent',
     actionsToolbar: 'contactActionsToolbarEvent',
     googleImport: 'contactGoogleImportEvent'
-  },
+  };
 
-  chatMenuItems: [
+  chatMenuItems: any = [
     {name: 'Conversations', link: '/conversations', icon: 'fa fa-comments-o'},
     {name: 'Contacts', link: '/contacts', icon: 'fa fa-address-book-o'},
     {name: '', link: '', icon: ''},
     {name: 'Settings', link: '/setting', icon: 'fa fa-cog'}
-  ],
+  ];
 
-  pictureMenuItems: [
+  pictureMenuItems: any = [
     {name: 'Photos', link: '/photos', icon: 'fa fa-photo'},
     {name: 'Albums', link: '/albums', icon: 'fa fa-file-photo-o'},
     {name: 'Favourites', link: '/favourites', icon: 'fa fa-star'},
     {name: 'Shared with me', link: '/shared-with-me', icon: 'fw fw-shared-with-me'},
     {name: 'Shared by me', link: '/shared-by-me', icon: 'fa fa-share-alt'},
     {name: 'Search', link: '/search', icon: 'fa fa-search'}
-  ],
+  ];
 
-  socialMenuItems: [
+  socialMenuItems: any = [
     {name: 'Home', link: '/home', icon: 'fa fa-home'},
     {name: 'Communities', link: '/communities', icon: 'fa fa-users'},
     {name: 'Notifications', link: '/notifications', icon: 'fa fa-bell-o'},
@@ -147,24 +140,24 @@ export let Constants = {
     {name: '', link: '', icon: ''},
     {name: 'Settings', link: '/settings', icon: 'fa fa-cog'},
     {name: 'Search', link: '/search', icon: 'fa fa-search'}
-  ],
+  ];
 
-  pictureMenuActions: {
+  pictureMenuActions:  any = {
     preview: true,
     share: true,
     addFavourite: true,
     tag: true,
     delete: true,
     other: true,
-  },
+  };
 
-  mediaSliderViewNumber: {
+  mediaSliderViewNumber: any = {
     min: 2,
     default: 8,
     max: 12
-  },
+  };
 
-  urls: {
+  urls: any =  {
     afterLogin: Config.SUB_DOMAIN.SOCIAL,
     zoneSoPosts: 'zone/social_network/posts',
     zoneSoComments: 'zone/social_network/comments',
@@ -189,20 +182,20 @@ export let Constants = {
     photo: 'photo',
     chatConversation: 'conversations',
     contacts: 'contact/contacts'
-  },
-  sex: ['', 'Male', 'Female', 'Other'],
-  communityRole: {
+  };
+  sex:  any =  ['', 'Male', 'Female', 'Other'];
+  communityRole: any = {
     admin: [1, 'Admin'],
     member: [2, 'Member']
-  },
-  notificationSetting: {
+  };
+  notificationSetting: any = {
     limit: 10
-  },
+  };
   seenStatus: {
     new: 'new',
     seen: 'seen',
     seen_and_took_action: 'seen_and_took_action'
-  },
+  };
   soPostPrivacy: {
     public: {css: 'fa fa-globe', text: 'Public', data: 'public'},
     personal: {css: 'fa fa-lock', text: 'personal', data: 'personal'},
@@ -211,7 +204,7 @@ export let Constants = {
     customFriend: {css: 'fa fa-user-times', text: 'Custom Friends', data: 'custom_friend'},
     customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'custom_community'},
     unknown: {css: '', text: '', data: ''}
-  },
+  };
   soPostListType: {
     userOnly: 'user_only',
     strangeUser: 'strange_user',
@@ -220,20 +213,20 @@ export let Constants = {
     userAndFriend: 'user_and_friend',
     randomUser: 'random_user',
     public: 'public'
-  },
+  };
   soCommunityPrivacy: {
     open: {name: 'open'},
     close: {name: 'close'}
-  },
+  };
   soCommunityReportEntity: {
     user: 1,
     community: 2
-  },
+  };
   soCommunityUserStatus: {
     member: 1,
     joinRequestSent: 2,
     stranger: 3
-  },
+  };
 
   friendStatus: {
     pending: 1,
@@ -242,12 +235,12 @@ export let Constants = {
     unfriend: 4,
     blocked: 5,
     stranger: 99
-  },
+  };
 
-  soPostLimit: 10,
-  soCommentLimit: 20,
+  soPostLimit: any = 10;
+  soCommentLimit: any = 20;
 
-  searchDebounceTime: 250,
+  searchDebounceTime: any = 250;
 
 
   search: {
@@ -258,14 +251,14 @@ export let Constants = {
       chatActive: true,
       contactActive: true,
     }
-  },
+  };
 
   mediaListDetailTypeMapping: {
     'photos': 'photo',
     'albums': 'album',
     'favorites': 'mix',
     'shared-with-me': 'mix'
-  },
+  };
   mediaPageType: {
     photos: 'photos',
     search: 'search',
@@ -273,9 +266,9 @@ export let Constants = {
     favorites: 'favorites',
     albums: 'albums',
     album_detail: 'album_detail'
-  },
+  };
 
-  emailType: [
+  emailType: any = [
     {
       category: 'work',
       name: 'Work'
@@ -287,9 +280,9 @@ export let Constants = {
     {
       category: 'other',
       name: 'Other'
-    },
-  ],
-  phoneType: [
+    }
+  ];
+  phoneType: any = [
     {
       category: 'mobile',
       name: 'Mobile'
@@ -301,35 +294,35 @@ export let Constants = {
     {
       category: 'other',
       name: 'Other'
-    },
-  ],
-  phoneCategories: [
+    }
+  ];
+  phoneCategories: any = [
     {value: 'mobile', text: 'Mobile'},
     {value: 'home', text: 'Home'},
     {value: 'work', text: 'Work'},
     {value: 'main', text: 'Main'},
     {value: 'fax', text: 'Fax'},
     {value: 'other', text: 'Other'}
-  ],
-  emailCategories: [
+  ];
+  emailCategories: any = [
     {value: 'work', text: 'Work'},
     {value: 'home', text: 'Home'},
     {value: 'other', text: 'Other'}
-  ],
-  addressCategories: [
+  ];
+  addressCategories: any = [
     {value: 'work', text: 'Work'},
     {value: 'home', text: 'Home'},
     {value: 'other', text: 'Other'}
-  ],
-  mediaCategories: [
+  ];
+  mediaCategories: any = [
     {value: 'wthapps', text: 'WTHApps'},
     {value: 'facebook', text: 'Facebook'},
     {value: 'googleplus', text: 'Google Plus'},
     {value: 'twitter', text: 'Twitter'},
     {value: 'other', text: 'Other'}
-  ],
+  ];
 
-  tooltip: {
+  tooltip: any = {
     add: 'Add',
     addLabel: 'Add label',
     addPeople: 'Add people',
@@ -400,20 +393,22 @@ export let Constants = {
     zoomOut: 'Zoom out',
     restore: 'Restore',
     permanentDelete: 'Permanent Delete'
-  },
+  };
 
-  confirmDialog: {
+  confirmDialog: any = {
     label: {
       accept: 'DONE',
       reject: 'CANCEL'
     }
-  },
+  };
 
-  modal: {
+  modal: any = {
     edit: 'edit',
     add: 'add'
   }
-};
+}
+let Constants = new ConstantsBase();
+export {Constants};
 
 export let PhotoAction = {
   update: 'update',

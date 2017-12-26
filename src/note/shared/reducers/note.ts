@@ -191,7 +191,7 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
     }
     case note.CHANGE_SORT_ORDER: {
       let sortOption: any = {...state.sortOption};
-      if(sortOption.field == action['payload']) {
+      if(sortOption.field == action['payload'].name) {
         sortOption.desc = !sortOption.desc;
       } else {
         sortOption = {field: action['payload'], desc: noteInitialState.sortOption.desc};
@@ -304,32 +304,32 @@ export const getFirstSelectedObject = (state: State) => {
   }
 }
 
-export const getSortedNotes = createSelector(getNotes, getSortOption, (notes, sortOption) => {
-  // Convert original HASH notes to an sorted ARRAY notes
-  let cloneNotes: any[] = [];
-  Object.keys(notes).forEach((idx: any) => cloneNotes.push(notes[idx]));
-  let sortField = ['name', 'title'].includes(sortOption.field) ? 'title' : sortOption.field;
-  if(!sortOption.field)
-    return cloneNotes;
-  return cloneNotes.sort((a: Note, b: Note) => compareBy(a, b, sortOption.desc, sortField));
-});
-
-export const getSortedFolders = createSelector(getFolders, getSortOption, (folders, sortOption) => {
-  // Convert original HASH folders to an sorted ARRAY folders
-  let cloneFolders: any[] = [];
-  let sortField = ['name', 'title'].includes(sortOption.field) ? 'name' : sortOption.field;
-  Object.keys(folders).forEach((idx: any) => cloneFolders.push(folders[idx]));
-  if(!sortOption.field)
-    return cloneFolders;
-  return cloneFolders.sort((a: Folder, b: Folder) => compareBy(a, b, sortOption.desc, sortField));
-});
-
-export function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'title'): number {
-  let o = orderDesc ? 1 : -1;
-  if(objA[field] > objB[field])
-    return 1*o;
-  if(objA[field] < objB[field])
-    return -1*o;
-
-  return 0;
-}
+// export const getSortedNotes = createSelector(getNotes, getSortOption, (notes, sortOption) => {
+//   // Convert original HASH notes to an sorted ARRAY notes
+//   let cloneNotes: any[] = [];
+//   Object.keys(notes).forEach((idx: any) => cloneNotes.push(notes[idx]));
+//   let sortField = ['name', 'title'].includes(sortOption.field) ? 'title' : sortOption.field;
+//   if(!sortOption.field)
+//     return cloneNotes;
+//   return cloneNotes.sort((a: Note, b: Note) => compareBy(a, b, sortOption.desc, sortField));
+// });
+//
+// export const getSortedFolders = createSelector(getFolders, getSortOption, (folders, sortOption) => {
+//   // Convert original HASH folders to an sorted ARRAY folders
+//   let cloneFolders: any[] = [];
+//   let sortField = ['name', 'title'].includes(sortOption.field) ? 'name' : sortOption.field;
+//   Object.keys(folders).forEach((idx: any) => cloneFolders.push(folders[idx]));
+//   if(!sortOption.field)
+//     return cloneFolders;
+//   return cloneFolders.sort((a: Folder, b: Folder) => compareBy(a, b, sortOption.desc, sortField));
+// });
+//
+// export function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'title'): number {
+//   let o = orderDesc ? 1 : -1;
+//   if(objA[field] > objB[field])
+//     return 1*o;
+//   if(objA[field] < objB[field])
+//     return -1*o;
+//
+//   return 0;
+// }

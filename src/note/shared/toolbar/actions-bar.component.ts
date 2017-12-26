@@ -6,6 +6,7 @@ import { Constants } from '@shared/constant/config/constants';
 import { ZNoteService } from '../services/note.service';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import * as note from '../actions/note';
+import * as context from '../reducers/context';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';

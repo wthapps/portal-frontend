@@ -37,7 +37,7 @@ export class ResizeImage {
     this.id = id;
     document.addEventListener('DOMContentLoaded', this.onReady.bind(this));
     window.addEventListener('load', this.onReady.bind(this));
-    setTimeout(() => {this.onReady(), 1000});
+    setTimeout(() => {this.onReady(), 2000});
   }
 
   onReady() {

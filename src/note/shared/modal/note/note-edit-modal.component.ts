@@ -62,6 +62,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   hasShowComment: boolean = false;
   orderDesc: boolean = false;
   hasSortBy: boolean = false;
+  hasShowComment: boolean = false;
 
   customEditor: any;
   public fileUploadHelper: FileUploadHelper;
