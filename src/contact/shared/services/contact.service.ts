@@ -291,7 +291,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   mergeDuplicateContacts(contacts: any[] = this.selectedObjects): Promise<any> {
     let ids: any[] = _.map(contacts, 'id');
-    this.mergingObjects = contacts;
+    this.mergingObjects = [...contacts];
     return this.apiBaseService.post(`${this.url}/merge_duplicate`, {ids: ids}).toPromise()
       .then((res: any) => {
         let delete_ids: any[] = res.delete_ids;
@@ -314,7 +314,11 @@ export class ZContactService extends BaseEntityService<any> {
   undoMerge(contacts: any[] = this.mergingObjects): Promise<any> {
     return this.apiBaseService.post(`${this.url}/undo_merge`, {contacts: contacts}).toPromise()
       .then((res: any) => {
-        console.debug('undoMerge: ', res);
+        let restoreContacts: any[] = res.data;
+        let ids = _.map(restoreContacts, 'id');
+        let contacts = this.contacts.filter(c => !ids.includes(c.id));
+        this.contacts = [ ...contacts, ...restoreContacts];
+        this.notifyContactsObservers();
       });
   }
 
@@ -325,7 +329,6 @@ export class ZContactService extends BaseEntityService<any> {
     }
     return this.getAll().toPromise()
       .then((res: any) => {
-        // this.contacts.push(...res.data);
         this.contacts = res.data;
         this.notifyContactsObservers();
         this.initLoadSubject.next(true);

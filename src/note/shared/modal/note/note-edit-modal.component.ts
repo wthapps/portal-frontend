@@ -77,6 +77,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   tags: AbstractControl;
   attachments: AbstractControl;
   files: Array<any> = new Array<any>();
+  hasShowComment: boolean;
 
   private contentChange$: Observable<any>;
   private closeObs$: Observable<any>;

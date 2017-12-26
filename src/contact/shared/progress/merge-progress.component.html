@@ -5,6 +5,7 @@
     <span *ngIf="status==STATUS.undoed">Undoed {{ contactService.mergingObjects?.length }} merged contacts</span>
     <span *ngIf="status==STATUS.done">{{ contactService.mergingObjects?.length }} contacts merged </span>
     <span *ngIf="status==STATUS.cancelled">Merge cancelled</span>
+    <span *ngIf="status==STATUS.error">Oops, something's wrong !</span>
   </wth-modal-dock-header>
   <wth-modal-dock-body *ngIf="status==STATUS.done">
     <a class="merge-contact-undo" href="javascript:;" (click)="undo()">Undo</a>
