@@ -9,6 +9,8 @@ import { Folder } from '../shared/reducers/folder';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../shared/reducers/index';
 import * as fromNote from '../shared/actions/note';
+import * as listReducer from '../shared/reducers/features/list-mixed-entities';
+
 
 @Component({
   selector: 'z-note-search',
@@ -32,8 +34,8 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
     private urlService: UrlService,
     private store: Store<any>,
     private apiBaseService: ApiBaseService) {
-    this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
-    this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
+    this.noteItems$ = this.store.select(listReducer.getNotes);
+    this.folderItems$ = this.store.select(listReducer.getFolders);
     this.sortOption$ = this.store.select(fromRoot.getSortOption);
     this.viewMode$ = this.store.select(fromRoot.getViewMode);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);

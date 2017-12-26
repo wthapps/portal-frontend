@@ -10,6 +10,8 @@ import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
+import * as listReducer from '../shared/reducers/features/list-mixed-entities';
+
 
 @Component({
   selector: 'z-note-trash',
@@ -36,8 +38,8 @@ export class ZNoteTrashComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
-    this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
+    this.noteItems$ = this.store.select(listReducer.getNotes);
+    this.folderItems$ = this.store.select(listReducer.getFolders);
     this.sortOption$ = this.store.select(fromRoot.getSortOption);
     this.nodeState$ = this.store.select(fromRoot.getNotesState);
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);

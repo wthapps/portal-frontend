@@ -62,8 +62,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   hasShowComment: boolean = false;
   orderDesc: boolean = false;
   hasSortBy: boolean = false;
-  hasShowComment: boolean = false;
-
   customEditor: any;
   public fileUploadHelper: FileUploadHelper;
   tooltip: any = Constants.tooltip;
@@ -78,7 +76,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   tags: AbstractControl;
   attachments: AbstractControl;
   files: Array<any> = new Array<any>();
-  hasShowComment: boolean;
 
   private contentChange$: Observable<any>;
   private closeObs$: Observable<any>;
