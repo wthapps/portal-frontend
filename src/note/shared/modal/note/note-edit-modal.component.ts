@@ -674,12 +674,13 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   }
 
   download(file: any) {
+    console.log('downloading:::');
     this.apiBaseService.download('common/files/download', {
       id: file.id,
       object_type: file.object_type
     }).subscribe((res: any) => {
       var blob = new Blob([res], {type: file.content_type});
-      saveAs(blob, file.name);
+      saveAs(blob, `${file.name}.${file.extension}`);
     });
   }
 
