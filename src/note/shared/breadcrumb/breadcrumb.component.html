@@ -29,12 +29,14 @@
             </a>
           </li>
           <li>
-            <a (click)="onMenu({action: 'note:folder:sharing', payload: [item]})" href="javascript:;">
+            <a (click)="onMenu({action: 'note:mixed_entity:open_sharing_modal', payload: [item]})"
+               href="javascript:void(0);">
               <i class="fa fa-share-alt"></i> Sharing
             </a>
           </li>
           <li>
-            <a (click)="onMenu({action: 'note:mixed_entity:delete', payload: [item]}); onClick(model[model.length-2])" href="javascript:;">
+            <a (click)="onMenu({action: 'note:mixed_entity:delete', payload: [item]})"
+               href="javascript:void(0);">
               <i class="fa fa-trash-o"></i> Delete</a>
           </li>
           <li role="separator" class="divider"></li>

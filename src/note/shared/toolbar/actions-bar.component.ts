@@ -209,8 +209,11 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   share() {
     // TODO: Share multiple folders and notes
     if (this.selectedObjects.length > 0) {
-      let data = this.selectedObjects;
-      this.commonEventService.broadcast({channel: 'noteActionsBar', action: 'note:folder:sharing', payload: data});
+      this.commonEventService.broadcast({
+        channel: 'noteActionsBar',
+        action: 'note:mixed_entity:open_sharing_modal',
+        payload: this.selectedObjects
+      });
     }
   }
 
@@ -251,7 +254,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   pdfDownload() {
     let note = this.selectedObjects[0];
     this.api.download('note/notes/pdf_download/' + note.id).subscribe((res: any) => {
-      var blob = new Blob([res.blob()], {type: 'application/pdf'});
+      var blob = new Blob([res], {type: 'application/pdf'});
       saveAs(blob, note.title + '.pdf');
     })
   }

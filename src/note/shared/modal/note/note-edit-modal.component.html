@@ -12,8 +12,8 @@
             </button>
           </div>
           <div class="note-editor-header-action note-editor-header-action-right">
-            <button class="btn btn-default"><i class="fa fa-share-alt"></i></button>
-            <button class="btn btn-default"><i class="fa fa-trash-o"></i></button>
+            <button class="btn btn-default" (click)="share()"><i class="fa fa-share-alt"></i></button>
+            <button class="btn btn-default" (click)="delete()"><i class="fa fa-trash-o"></i></button>
             <div class="btn-group">
               <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
                       data-toggle="dropdown">
@@ -22,10 +22,10 @@
               <ul class="dropdown-menu dropdown-menu-top dropdown-menu-right" role="menu"
                   aria-labelledby="dropdownMenu1">
                 <li role="presentation">
-                  <a role="menuitem" tabindex="-1" href="#">Make a copy</a>
+                  <a role="menuitem" tabindex="-1" href="javascript:void(0);" (click)="makeACopy()">Make a copy</a>
                 </li>
                 <li role="presentation">
-                  <a role="menuitem" tabindex="-1" href="#">Move to folder</a>
+                  <a role="menuitem" tabindex="-1" href="javascript:void(0);" (click)="moveToFolder()">Move to folder</a>
                 </li>
                 <li role="presentation"><a href="javascript:;" (click)="print()"> Print</a></li>
                 <li role="presentation"><a href="javascript:;" (click)="pdfDownload()"> Export as PDF</a></li>

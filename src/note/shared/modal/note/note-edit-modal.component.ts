@@ -41,6 +41,7 @@ import { ClientDetectorService } from '@shared/services/client-detector.service'
 import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
 import { ResizeImage } from "@shared/shared/utils/resize-image";
+import { CommonEventService } from '@wth/shared/services';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -58,6 +59,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   @Input() note: Note = new Note();
 
   currentTab: any = 'note';
+  hasShowComment: boolean = false;
   orderDesc: boolean = false;
   hasSortBy: boolean = false;
 
@@ -92,16 +94,19 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   private EXCLUDE_FORMATS: string[] = ['link'];
   resize: any;
 
-  constructor(private fb: FormBuilder,
-              private noteService: ZNoteService,
-              protected router: Router,
-              private store: Store<fromRoot.State>,
-              private photoSelectDataService: PhotoModalDataService,
-              private fileService: GenericFileService,
-              private apiBaseService: ApiBaseService,
-              private clientDetectorService: ClientDetectorService,
-              private photoService: PhotoService,
-              private photoUploadService: PhotoUploadService) {
+  constructor(
+    private fb: FormBuilder,
+    private noteService: ZNoteService,
+    protected router: Router,
+    private store: Store<fromRoot.State>,
+    private photoSelectDataService: PhotoModalDataService,
+    private fileService: GenericFileService,
+    private apiBaseService: ApiBaseService,
+    private clientDetectorService: ClientDetectorService,
+    private photoService: PhotoService,
+    private photoUploadService: PhotoUploadService,
+    private commonEventService: CommonEventService
+  ) {
     this.noSave$ = Observable.merge(this.noSaveSubject.asObservable(), this.destroySubject, this.closeSubject);
     this.closeObs$ = Observable.merge(
       this.photoSelectDataService.closeObs$,
@@ -651,13 +656,45 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     }
   }
 
+  makeACopy() {
+    this.commonEventService.broadcast({
+      channel: 'noteActionsBar',
+      action: 'note:mixed_entity:make_a_copy',
+      payload: [this.note]
+    });
+  }
+
+  moveToFolder() {
+    this.commonEventService.broadcast({
+      channel: 'noteActionsBar',
+      action: 'note:mixed_entity:open_move_to_folder_modal',
+      payload: [this.note]
+    });
+  }
+
   download(file: any) {
     this.apiBaseService.download('common/files/download', {
       id: file.id,
       object_type: file.object_type
     }).subscribe((res: any) => {
-      var blob = new Blob([res.blob()], {type: file.content_type});
+      var blob = new Blob([res], {type: file.content_type});
       saveAs(blob, file.name);
+    });
+  }
+
+  share() {
+    this.commonEventService.broadcast({
+      channel: 'noteActionsBar',
+      action: 'note:mixed_entity:open_sharing_modal',
+      payload: [this.note]
+    });
+  }
+
+  delete() {
+    this.commonEventService.broadcast({
+      channel: 'noteActionsBar',
+      action: 'note:mixed_entity:delete',
+      payload: [this.note]
     });
   }
 

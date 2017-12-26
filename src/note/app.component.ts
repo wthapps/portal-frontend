@@ -118,7 +118,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);
         this.modal.open({mode: 'edit', folder: event.payload, breadcrumb: event.breadcrumb});
         break;
-      case 'note:folder:sharing':
+      case 'note:mixed_entity:open_sharing_modal':
         this.loadModalComponent(ZNoteSharedModalSharingComponent);
         this.modal.sharedObjects = event.payload;
         this.modal.open();
@@ -139,8 +139,16 @@ export class AppComponent implements OnInit, OnDestroy {
             _.forEach(event.payload, (item: any) => {
               item.parent_id = item.parent_old_id;
             });
-            this.commonEventService.broadcast({action: 'destroy', channel: 'noteLeftMenu', payload: event.payload});
-            this.commonEventService.broadcast({action: 'note:mixed_entity:move_to_folder_done', channel: 'noteActionsBar', payload: event.payload});
+            this.commonEventService.broadcast({
+              action: 'destroy',
+              channel: 'noteLeftMenu',
+              payload: event.payload
+            });
+            this.commonEventService.broadcast({
+              action: 'note:mixed_entity:move_to_folder_done',
+              channel: 'noteActionsBar',
+              payload: event.payload
+            });
           });
         break;
       case 'note:mixed_entity:make_a_copy':
@@ -150,12 +158,17 @@ export class AppComponent implements OnInit, OnDestroy {
           });
         break;
       case 'note:mixed_entity:delete':
-        this.mixedEntityService.delete(0, event.payload)
-          .subscribe((res: any) => {
-            this.store.dispatch(new note.NotesDeleted(event.payload));
-            this.commonEventService.broadcast({action: 'destroy', channel: 'noteLeftMenu', payload: event.payload});
-          });
-
+        this.wthConfirmService.confirm({
+          message: 'Are you sure you want to delete selected items(s)?',
+          header: 'Delete Item(s)',
+          accept: () => {
+            this.mixedEntityService.delete(0, event.payload)
+              .subscribe((res: any) => {
+                this.store.dispatch(new note.NotesDeleted(event.payload));
+                this.commonEventService.broadcast({action: 'destroy', channel: 'noteLeftMenu', payload: event.payload});
+            });
+          }
+        });
         break;
       case 'note:folder:delete':
         this.wthConfirmService.confirm({
@@ -167,7 +180,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 channel: 'noteFolderEvent',
                 action: 'updateFolders',
                 payload: res.data
-              })
+              });
             });
           }
         });
