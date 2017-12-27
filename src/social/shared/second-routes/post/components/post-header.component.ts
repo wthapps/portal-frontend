@@ -31,8 +31,9 @@ export class PostHeaderComponent implements OnChanges {
   // user: User;
   readonly postUrl: string = Constants.urls.posts;
   readonly profileUrl: string = Constants.urls.profile;
+  privacyName: string;
+  privacyClassIcon: string;
   profile$: Observable<any>;
-
 
   constructor(private postItem: PostComponent,
               private socialService: SocialService,
@@ -49,6 +50,8 @@ export class PostHeaderComponent implements OnChanges {
     } else if (this.type == 'detail') {
       this.showDetail = true;
     }
+    this.privacyName = this.getPrivacyName(this.item);
+    this.privacyClassIcon = this.getPrivacyClassIcon(this.item);
   }
 
   viewPostDetail(uuid: string) {
@@ -81,25 +84,7 @@ export class PostHeaderComponent implements OnChanges {
     this.postItem.delete();
   }
 
-  privacyName(post: any): string {
-    return post.privacy.replace('_', ' ');
-  }
-
-  privacyClassIcon(post: any): string {
-    switch (post.privacy) {
-      case Constants.soPostPrivacy.friends.data:
-        return 'fa-users';
-      case  Constants.soPostPrivacy.public.data:
-        return 'fa-globe';
-      case  Constants.soPostPrivacy.personal.data:
-        return 'fa-lock';
-      case  Constants.soPostPrivacy.customFriend.data:
-        return 'fa-user-times';
-      case  Constants.soPostPrivacy.customCommunity.data:
-        return 'fa-group';
-    }
-    return '';
-  }
+  private
 
   getSettings(e: any) {
     e.preventDefault();
@@ -124,5 +109,25 @@ export class PostHeaderComponent implements OnChanges {
       modal.open();
     }
   }
+  private getPrivacyName(post: any): string {
+    if(post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
+      return post.custom_objects[0].name;
+    return post.privacy.replace('_', ' ');
+  }
 
+  private getPrivacyClassIcon(post: any): string {
+    switch (post.privacy) {
+      case Constants.soPostPrivacy.friends.data:
+        return 'fa-users';
+      case  Constants.soPostPrivacy.public.data:
+        return 'fa-globe';
+      case  Constants.soPostPrivacy.personal.data:
+        return 'fa-lock';
+      case  Constants.soPostPrivacy.customFriend.data:
+        return 'fa-user-times';
+      case  Constants.soPostPrivacy.customCommunity.data:
+        return 'fa-group';
+    }
+    return '';
+  }
 }

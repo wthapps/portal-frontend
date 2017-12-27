@@ -52,6 +52,7 @@ export const routes: Routes = [
     {path: 'settings', component: ZSocialSettingComponent},
     {path: 'communities', component: ZSocialCommunityListComponent},
   ]},
+  {path: 'posts/:id', redirectTo: '/home(detail:posts/:id)' , canActivate: [AuthGuard]},
   {path: 'posts/:id', component: PostDetailComponent, outlet: 'detail', canActivate: [AuthGuard]}
 ];
 

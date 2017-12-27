@@ -17,12 +17,12 @@
       </a>
       <div class="z-shared-with dropdown">
         <a class="text-capitalize" href="#" (click)="viewPrivacyCustom(item, modal)" data-toggle="dropdown">
-          <i class="fa {{ privacyClassIcon(item)}}">
-          </i> {{ privacyName(item) }}</a>
+          <i class="fa {{ privacyClassIcon}}">
+          </i> {{ privacyName }}</a>
 
         <modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
           <modal-header cssClass="modal-social-head">
-            <h4 class="modal-title text-left text-capitalize"> {{ privacyName(item) }}</h4>
+            <h4 class="modal-title text-left text-capitalize"> {{ privacyName }}</h4>
             <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
