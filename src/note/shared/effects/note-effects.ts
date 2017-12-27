@@ -24,14 +24,24 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 @Injectable()
 export class NoteEffects {
 
+  constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
+              private toastsService: ToastsService,
+              private store: Store<fromRoot.State>) {
+  }
+
   @Effect() addNote = this.actions
     .ofType(note.ADD)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-    return this.noteService.create(payload)
-      .map((res: any) => ({type: note.MULTI_NOTES_ADDED, payload: [res['data']]}))
-      .catch(() => of({type: note.MULTI_NOTES_ADDED, payload: []}))
-      ;
+      return this.noteService.create(payload)
+        .withLatestFrom(this.store, (res: any, state: any) => {
+          if(state.context.permissions.edit) {
+            return ({type: note.MULTI_NOTES_ADDED, payload: [res['data']]});
+          } else {
+            return ({type: note.MULTI_NOTES_ADDED, payload: []});
+          }
+        })
+        .catch(() => of({type: note.MULTI_NOTES_ADDED, payload: []}));
     });
 
   @Effect() updateNote = this.actions
@@ -125,9 +135,4 @@ export class NoteEffects {
           .map((res: any) => ({type: note.REMOVED_SHARE_WITH_ME, payload: res.data}))
           .catch(() => empty());
       });
-
-  constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
-              private toastsService: ToastsService,
-              private store: Store<fromRoot.State>) {
-  }
 }

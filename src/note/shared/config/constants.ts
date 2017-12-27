@@ -15,7 +15,7 @@ export class NoteConstants extends ConstantsBase {
       enableEdit: true,
     },
     SHARED_BY_ME: {
-      edit: true,
+      edit: false,
       enableEdit: true,
     }
   }

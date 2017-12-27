@@ -21,15 +21,22 @@ import { ZFolderService } from '../services/folder.service';
 
 @Injectable()
 export class FolderEffects {
+  constructor(private actions: Actions, public folderService: ZFolderService, private store: Store<any>) {
+  }
+
   @Effect({ dispatch: false }) addFolder = this.actions
     .ofType(folder.ADD)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-    console.debug('folder effects - add: ', payload);
     return this.folderService.create(payload)
-      .map((res: any) => new folder.FolderAdded(res['data']))
-      .catch(() => empty())
-      ;
+      .withLatestFrom(this.store, (res: any, state: any) => {
+        if(state.context.permissions.edit) {
+          return ({type: folder.FolderAdded, payload: [res['data']]});
+        } else {
+          return empty();
+        }
+      })
+      .catch(() => empty());
     });
 
   @Effect() init$: Observable<any> = defer(() => {
@@ -61,7 +68,4 @@ export class FolderEffects {
         .map((res: any) => new folder.SetCurrentFolderPath(res['data']))
         .catch(() => empty());
     });
-
-  constructor(private actions: Actions, public folderService: ZFolderService) {
-  }
 }

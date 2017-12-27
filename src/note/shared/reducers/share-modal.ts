@@ -7,6 +7,7 @@ export const REMOVE_SHARED_CONTACT = '[NOTE] SHARE_MODAL_REMOVE_SHARED_CONTACT';
 export const REMOVE_SELECTED_CONTACT = '[NOTE] SHARE_MODAL_REMOVE_SELECTED_CONTACT';
 export const CANCEL_REMOVE_SHARED_CONTACT = '[NOTE] SHARE_MODAL_CANCEL_REMOVE_SHARED_CONTACT';
 export const CANCEL_ACTIONS = '[NOTE] SHARE_MODAL_CANCEL_ACTIONS';
+export const UPDATE_CONTACT = '[NOTE] UPDATE_CONTACT';
 export const SAVE = '[NOTE] SHARE_MODAL_SAVE';
 
 declare let _: any;
@@ -65,6 +66,16 @@ export function reducer(state: any = {
         if (stateClone.current.sharedContacts[i].id == action.payload.id) {
           let clone = _.clone(stateClone.current.sharedContacts[i]);
           clone._destroy = null;
+          stateClone.current.sharedContacts[i] = clone;
+        }
+      }
+      return stateClone;
+    case UPDATE_CONTACT:
+      stateClone.changed = true;
+      stateClone.showCancelButton = true;
+      for (let i in stateClone.current.sharedContacts) {
+        if (stateClone.current.sharedContacts[i].id == action.payload.id) {
+          let clone = _.clone(stateClone.current.sharedContacts[i]);
           stateClone.current.sharedContacts[i] = clone;
         }
       }

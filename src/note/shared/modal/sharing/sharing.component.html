@@ -33,20 +33,18 @@
               <div class="media-body">
                 Shared users
               </div>
-              <div class="media-right">
+              <!-- <div class="media-right">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-default dropdown-toggle" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
                     View only <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="#"><i class="fa fa-check"></i> View only</a></li>
-                    <!-- <li><a href="#">Can re-share</a></li>
-                    <li><a href="#">Can edit &amp; re-share</a></li> -->
+                    <li><a href="javascript:;"><i class="fa fa-check"></i> View only</a></li>
+                    <li><a href="javascript:;"><i class="fa fa-check"></i> Edit </a></li>
                   </ul>
                 </div>
-
-              </div>
+              </div> -->
             </div>
           </div>
           <!--Loop-->
@@ -65,12 +63,11 @@
                 <div class="btn-group" *ngIf="!user._destroy">
                   <button type="button" class="btn btn-sm btn-outline-default dropdown-toggle" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
-                    View only <span class="caret"></span>
+                    {{(!user.permission || user.permission == 'view')? 'View Only': 'Edit'}} <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="javascript:;"><i class="fa fa-check"></i> View only</a></li>
-                    <!-- <li><a href="#">Can re-share</a></li>
-                    <li><a href="#">Can edit &amp; re-share</a></li> -->
+                    <li><a href="javascript:;" (click)="changePermission(user, 'view')"><i [ngClass]="{'fa fa-check': (!user.permission || user.permission == 'view')}"></i> View only</a></li>
+                    <li><a href="javascript:;" (click)="changePermission(user, 'edit')"><i [ngClass]="{'fa fa-check': (user.permission == 'edit')}"></i> Edit </a></li>
                   </ul>
                 </div>
 

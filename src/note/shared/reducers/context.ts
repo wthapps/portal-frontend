@@ -7,7 +7,7 @@ declare let _: any;
 let empty: any = function (): any {
   return new NoteContext();
 };
-export function reducer(state: NoteContext = empty(), action: any) {
+export function reducer(state: any = empty(), action: any) {
   let stateClone: NoteContext = new NoteContext();
   stateClone.setContext(state);
   switch (action.type) {

@@ -66,11 +66,17 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
       if (this.currentFolder) {
         this.folder.parent_id = this.currentFolder.id;
       }
-      this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
-        this.store.dispatch(new note.MultiNotesAdded([res.data]));
-        this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [res.data]});
-        this.modal.close();
-      });
+      this.apiBaseService.post('note/folders', this.folder)
+        .withLatestFrom(this.store, (res: any, state: any) => {
+          return {res: res, state: state.context}
+        })
+        .subscribe((combine: any) => {
+          if(combine.state.permissions.edit) {
+            this.store.dispatch(new note.MultiNotesAdded([combine.res.data]));
+          }
+          this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [combine.res.data]});
+          this.modal.close();
+        });
     }
   }
 }

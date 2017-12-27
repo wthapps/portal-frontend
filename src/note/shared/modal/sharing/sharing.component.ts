@@ -128,6 +128,11 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
     this.store.dispatch({type: fromShareModal.CANCEL_REMOVE_SHARED_CONTACT, payload: contact});
   }
 
+  changePermission(contact: any, permission: any) {
+    contact.permission = permission;
+    this.store.dispatch({type: fromShareModal.UPDATE_CONTACT, payload: contact});
+  }
+
   save() {
     if(this.mode == 'create') {
       this.store.dispatch({type: fromShareModal.SAVE});
