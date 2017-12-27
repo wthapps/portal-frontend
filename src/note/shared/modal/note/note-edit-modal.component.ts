@@ -186,24 +186,23 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
       placeholder: 'Say something ...',
       readOnly: false,
       theme: 'snow',
-    });
+      scrollingContainer: '#scrolling-container'
+  });
 
-    this.customEditor.options.readOnly = true;
     this.editorElement = document.querySelector('div.ql-editor');
     // Reset content of elemenet div.ql-editor to prevent HTML data loss
     document.querySelector('.ql-editor').innerHTML = this.note.content;
 
-    $('.ql-editor').attr('tabindex', 1);
+    // $('.ql-editor').attr('tabindex', 1);
 
     this.registerIconBlot();
     this.registerImageBlot();
     this.customizeKeyboardBindings();
 
     this.listenImageChanges();
-    this.timeInterval = setInterval(() => {this.registerImageClickEvent();}, 500);
+    this.timeInterval = setInterval(() => { this.registerImageClickEvent(); }, 500);
     this.registerSelectionChange();
     this.registerAutoSave();
-    console.debug('current clipboard: ', this.customEditor);
   }
 
   onSort(name: any) {
@@ -223,7 +222,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         var dataClipboard1 = e.clipboardData.types;
 
         if (dataClipboard1[0].match('Files')) {
-          if (e.clipboardData.items[0].type.match("image/*")) {
+          if (e.clipboardData.items[0].type.match('image/*')) {
             var fileClipboard = e.clipboardData.items[0].getAsFile();
           }
         }
@@ -231,6 +230,8 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         if (e.defaultPrevented || !this.quill.isEnabled()) return;
         let range = this.quill.getSelection();
         let delta = new Delta().retain(range.index);
+        // let scrollTop = this.quill.scrollingContainer.scrollTop;
+        // this.scrollTop = scrollTop;
         this.container.focus(); // comment out to prevent scroll to top
         this.quill.selection.update(Quill.sources.SILENT);
         setTimeout(() => {
@@ -239,6 +240,9 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
             this.quill.updateContents(delta, Quill.sources.USER);
             this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
             this.quill.focus();
+            // this.quill.scrollingContainer.scrollTop = scrollTop;
+            // this.scrollTop = null;
+            // this.quill.selection.scrollIntoView();
           }
           else {
             if (fileClipboard.type.match('image/*')) {
@@ -257,7 +261,10 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
                 self.registerImageClickEvent();
               });
               fileClipboard.value = '';
+              this.quill.focus();
+
             };
+
           }
         }, 1);
       }

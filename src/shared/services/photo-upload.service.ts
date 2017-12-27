@@ -107,8 +107,14 @@ export class PhotoUploadService {
     return Observable.from(photos)
       .mergeMap((photo: any) => this.readFile(photo),
         (photo: any, data: any) => {
+          // below code handles rename when pasting on Notes
+          // worked around for this case
+          let name = photo.name;
+          if ('image' === photo.name.split('.')[0]) {
+            name = name.replace('image', `image_${new Date().getTime()}`);
+          }
           return {
-            name: photo.name,
+            name: name,
             type: photo.type,
             file: data
           };
