@@ -7,17 +7,37 @@ export class NoteConstants extends ConstantsBase {
 
   PAGE_PERMISSIONS: any = {
     MY_NOTE: {
-      canAdd: true,
+      edit: true,
+      enableEdit: true,
     },
     SHARED_WITH_ME: {
-      canAdd: false,
+      edit: false,
+      enableEdit: true,
     },
     SHARED_BY_ME: {
-      canAdd: true,
+      edit: true,
+      enableEdit: true,
     }
   }
 
+  NO_DATA: any = {
+    MY_NOTE: {
+      icon: 'fa fa-sticky-note',
+      title: 'There is no note!',
+      subTitle: 'Try to create one',
+      newNode: true,
+    },
+    SHARED_WITH_ME: {
+      icon: 'wthico-shared-with-me',
+      title: 'There is no note shared with you!',
+      subTitle: 'Note can be shared by your connected contact',
+    },
+    SHARED_BY_ME: {
+      icon: 'fa fa-share-alt',
+      title: 'There is no note shared by you!',
+      subTitle: 'Note can be shared to your connected contact',
+    }
+  }
 }
-
 let noteConstants:any = new NoteConstants();
 export {noteConstants};

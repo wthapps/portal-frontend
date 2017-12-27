@@ -67,10 +67,10 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
       let urlData = this.urlService.parse();
       switch(urlData.paths[0]) {
-        case 'my-sharing':
+        case 'shared-by-me':
           this.page = 'SHARED_BY_ME';
-          this.initRoute = '/my-sharing';
-          this.breadcrumbsInit = {id: null, name: null, label: 'Shared by me', routerLink: '/my-sharing'};
+          this.initRoute = '/shared-by-me';
+          this.breadcrumbsInit = {id: null, name: null, label: 'Shared by me', routerLink: '/shared-by-me'};
           break;
         case 'shared-with-me':
           this.page = 'SHARED_WITH_ME';

@@ -24,6 +24,7 @@ import { ZNoteSharedBreadcrumbComponent } from './breadcrumb/breadcrumb.componen
 import { ZNoteSharedLeftMenuComponent } from './toolbar/left-menu.component';
 import { ZNoteSharedHeaderComponent } from './header/header.component';
 import { ModalModule } from '@shared/modals/modals.module';
+import { ZNoteContainerComponent } from "note/shared/containers/note-container.component";
 
 
 /**
@@ -43,6 +44,7 @@ import { ModalModule } from '@shared/modals/modals.module';
     NoteListComponent,
     NoteItemComponent,
     FolderItemComponent,
+    ZNoteContainerComponent,
 
     NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
@@ -63,6 +65,7 @@ import { ModalModule } from '@shared/modals/modals.module';
     NoteItemComponent,
     FolderItemComponent,
     ZNoteSharedHeaderComponent,
+    ZNoteContainerComponent,
 
     NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,

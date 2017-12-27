@@ -1,4 +1,4 @@
-<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="'SHARED_BY_ME'">
+<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="'MY_NOTE'">
   <div class="btn-group">
     <button type="button" class="btn btn-primary btn-min dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
@@ -11,7 +11,7 @@
   </div>
 
   <span class="btn-text ml15">
-    Shared by me
+    {{(context$ | async).pathTitle}}
   </span>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
@@ -21,7 +21,7 @@
                  [folderItems]="folderItems$ | async"
                  [viewOption]="(context$ | async)?.viewMode"
                  [sortOption]="(context$ | async)?.sort"
-                 [page]="'SHARED_BY_ME'"
+                 [page]="(context$ | async).page"
                  [isSelectAll]="isSelectAll$ | async">
 
       </note-list>
@@ -32,10 +32,26 @@
     <box-loading></box-loading>
   </ng-template>
   <ng-template #noDataBlock>
-    <box-no-data
-      [icon]="'fa fa-share-alt'"
-      [title]="'There is no note shared by you!'"
-      [subTitle]="'Note can be shared to your connected contact'">
+    <box-no-data [icon]="(context$ | async).noData.icon"
+                 [title]="(context$ | async).noData.title"
+                 [subTitle]="(context$ | async).noData.subTitle">
+      <a *ngIf="(context$ | async).noData.newNode" class="btn btn-outline-primary" (click)="onNewNote()" href="javascript:;">
+        <i class="fa fa-plus" aria-hidden="true"></i> New note
+      </a>
     </box-no-data>
   </ng-template>
+  <pre>
+  {{(context$ | async | json)}}
+  </pre>
 </div>
+
+<introduction-modal #introModal
+  [after]="{note: true}"
+  [data]="[
+  {
+    title: 'Welcome to WTH!Note',
+    icon: '../../assets/images_new/pricing/note.png',
+    content: 'WTH!Photo help you organize all your notes in an easy-to-use filing system.'
+  }
+  ]">
+</introduction-modal>

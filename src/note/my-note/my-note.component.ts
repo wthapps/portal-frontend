@@ -24,49 +24,16 @@ declare var _: any;
   templateUrl: 'my-note.component.html'
 })
 export class ZNoteMyNoteComponent implements OnInit {
-  @ViewChild('introModal') introModal: any;
-
-  viewOption: string = 'grid';
-  noteItems$: Observable<Note[]>;
-  folderItems$: Observable<Folder[]>;
-  sortOption$: Observable<any>;
-  nodeState$: Observable<any>;
-  selectedObjects$: Observable<any[]>;
-  isSelectAll$: Observable<boolean>;
-  loading$: Observable<boolean>;
-  items: Observable<any>;
-  context$: Observable<any>;
   noteConstants: NoteConstants = noteConstants;
 
-  constructor(private noteService: ZNoteService,
-     private commonEventService: CommonEventService,
-     private userService: UserService,
-     private store: Store<any>) {
-    this.noteItems$ = this.store.select(listReducer.getNotes);
-    this.folderItems$ = this.store.select(listReducer.getFolders);
-    // this.sortOption$ = this.store.select(fromRoot.getSortOption);
-    // this.nodeState$ = this.store.select(fromRoot.getNotesState);
-    this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
-    this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
-    // this.loading$ = this.store.select(fromRoot.getLoading);
-    this.context$ = this.store.select(context.getContext);
-  }
-
+  constructor(private store: Store<any>) {}
   ngOnInit() {
     this.store.dispatch({type: note.LOAD, payload: {parent_id: null}});
-    this.store.dispatch({type: folder.UPDATE_CURRENT, payload: {parent_id: null}});
-    this.store.dispatch({type: context.SET_CONTEXT, payload: { page: this.noteConstants.PAGE_MY_NOTE }});
-
-    if(!_.get(this.userService.profile, 'introduction.note')) this.introModal.open();
-  }
-
-  onNewNote() {
-    this.noteService.modalEvent({action: 'note:open_note_add_modal'});
-  }
-
-  onFolder() {
-    this.noteService.modalEvent({
-      action: 'note:folder:create'
-    });
+    this.store.dispatch({type: context.SET_CONTEXT, payload: {
+      page: this.noteConstants.PAGE_MY_NOTE,
+      pathTitle: 'My notes',
+      permissions: this.noteConstants.PAGE_PERMISSIONS.MY_NOTE,
+      noData: this.noteConstants.NO_DATA.MY_NOTE
+    }});
   }
 }

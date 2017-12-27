@@ -12,7 +12,6 @@ import { ZNoteSharedModule } from './shared/shared.module';
 import { SharedModule } from '@shared/shared.module';
 import { ZNoteSettingsModule } from './settings/settings.module';
 import { ZNoteMyNoteModule } from './my-note/my-note.module';
-import { ZNoteMySharingModule } from './my-sharing/my-sharing.module';
 import { ZNoteSearchModule } from './search/search.module';
 import { ZNoteSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZNoteMyProfileModule } from './my-profile/my-profile.module';
@@ -27,6 +26,7 @@ import { ZNotePhotoModule } from './photo/photo.module';
 import { environment } from '@env/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+import { ZNoteSharedByMeModule } from "note/shared-by-me/shared-by-me.module";
 
 @NgModule({
   imports: [
@@ -39,7 +39,7 @@ import { HttpModule } from '@angular/http';
     ZNoteHomeModule,
     ZNoteFoldersModule,
     ZNoteMyNoteModule,
-    ZNoteMySharingModule,
+    ZNoteSharedByMeModule,
     ZNoteSearchModule,
     ZNoteSharedWithMeModule,
     // ZNoteMyProfileModule,

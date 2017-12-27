@@ -85,7 +85,7 @@ export class ConstantsBase {
   noteMenuItems: any = [
     {name: 'My Notes', value: 'My notes', link: '/my-note', icon: 'fa fa-sticky-note'},
     {name: 'Shared With Me', value: 'shared with me', link: '/shared-with-me', icon: 'fw fw-shared-with-me'},
-    {name: 'Shared By Me', value: 'shared by me', link: '/my-sharing', icon: 'fa fa-share-alt'},
+    {name: 'Shared By Me', value: 'shared by me', link: '/shared-by-me', icon: 'fa fa-share-alt'},
     {name: 'Trash', value: 'Trash', link: '/trash', icon: 'fa fa-trash-o'},
     // {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},
   ];
@@ -191,12 +191,12 @@ export class ConstantsBase {
   notificationSetting: any = {
     limit: 10
   };
-  seenStatus: {
+  seenStatus: any = {
     new: 'new',
     seen: 'seen',
     seen_and_took_action: 'seen_and_took_action'
   };
-  soPostPrivacy: {
+  soPostPrivacy: any = {
     public: {css: 'fa fa-globe', text: 'Public', data: 'public'},
     personal: {css: 'fa fa-lock', text: 'personal', data: 'personal'},
     private: {css: 'fa fa-lock', text: 'private', data: 'private'},
@@ -205,7 +205,7 @@ export class ConstantsBase {
     customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'custom_community'},
     unknown: {css: '', text: '', data: ''}
   };
-  soPostListType: {
+  soPostListType: any = {
     userOnly: 'user_only',
     strangeUser: 'strange_user',
     friend: 'friend',
@@ -214,21 +214,21 @@ export class ConstantsBase {
     randomUser: 'random_user',
     public: 'public'
   };
-  soCommunityPrivacy: {
+  soCommunityPrivacy: any = {
     open: {name: 'open'},
     close: {name: 'close'}
   };
-  soCommunityReportEntity: {
+  soCommunityReportEntity: any = {
     user: 1,
     community: 2
   };
-  soCommunityUserStatus: {
+  soCommunityUserStatus: any = {
     member: 1,
     joinRequestSent: 2,
     stranger: 3
   };
 
-  friendStatus: {
+  friendStatus: any = {
     pending: 1,
     accepted: 2,
     rejected: 3,
@@ -243,7 +243,7 @@ export class ConstantsBase {
   searchDebounceTime: any = 250;
 
 
-  search: {
+  search: any = {
     config: {
       globalActive: true,
       photoActive: true,
@@ -253,13 +253,13 @@ export class ConstantsBase {
     }
   };
 
-  mediaListDetailTypeMapping: {
+  mediaListDetailTypeMapping: any = {
     'photos': 'photo',
     'albums': 'album',
     'favorites': 'mix',
     'shared-with-me': 'mix'
   };
-  mediaPageType: {
+  mediaPageType: any = {
     photos: 'photos',
     search: 'search',
     sharedWithMe: 'shared-with-me',
