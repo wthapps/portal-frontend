@@ -7,7 +7,7 @@ import { SoUser } from '@wth/shared/shared/models';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-setting',
   templateUrl: 'setting.component.html'
 })

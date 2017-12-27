@@ -15,6 +15,7 @@ import { SoComment, User } from '@wth/shared/shared/models';
 import { UserService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { Constants } from '@wth/shared/constant';
+import { Router } from '@angular/router';
 
 
 export enum CommentEditorMode {
@@ -29,7 +30,6 @@ declare let _: any;
 declare let document: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'comment-item-editor',
   templateUrl: 'comment-item-editor.component.html',
   styleUrls: ['comment-item-editor.component.scss']
@@ -63,6 +63,7 @@ export class CommentItemEditorComponent implements OnInit {
   textContent = 'Let\'s try 1st sample';
 
   constructor(private fb: FormBuilder,
+              private router: Router,
               public userService: UserService) {
     this.user$ = this.userService.profile$;
 
@@ -84,6 +85,10 @@ export class CommentItemEditorComponent implements OnInit {
     this.photosCtrl = this.commentEditorForm.controls['photo'];
   }
 
+  viewProfile(uuid: string) {
+    this.router.navigate([{outlets: {detail: null}}], {preserveQueryParams: true, preserveFragment: true})
+      .then(() => this.router.navigate(['profile', uuid]));
+  }
 
   onKey(e: any) {
     // Create, Update, Reply

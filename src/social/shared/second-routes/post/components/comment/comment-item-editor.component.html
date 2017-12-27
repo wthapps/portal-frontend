@@ -1,6 +1,6 @@
 <div class="z-social-media">
   <div class="z-social-media-left">
-    <a [routerLink]="['/profile/', parent?.owner?.uuid]" class="media-object">
+    <a href="javascript:;" (click)="viewProfile(parent?.owner?.uuid)" class="media-object">
       <span class="avatar-xs">
         <img [src]="(user$ | async )?.profile_image" alt="">
       </span>

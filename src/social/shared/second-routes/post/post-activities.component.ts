@@ -6,10 +6,10 @@ import { HdModalComponent } from '@wth/shared/shared/ng2-hd';
 import { ApiBaseService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'post-activities',
   templateUrl: 'post-activities.component.html'
 })

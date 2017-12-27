@@ -7,15 +7,15 @@ import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { ApiBaseService, PhotoService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 
-declare var $: any;
-declare var _: any;
+
+
 const KEY_ESC = 27;
 
 /**
  * This class represents the lazy loaded HomeComponent.
  */
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-photo-detail',
   templateUrl: 'photo.component.html',
   styleUrls: ['photo.component.scss']

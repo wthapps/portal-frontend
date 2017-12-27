@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ZSocialProfileDataService } from './profile-data.service';
 import { UserService } from '@wth/shared/services';
 
-declare var _: any;
+
 export let PROFILE_TAB = {
   posts: 'posts',
   about: 'about',
@@ -18,7 +18,7 @@ export let PROFILE_TAB = {
 };
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-profile',
   templateUrl: 'profile.component.html'
 })

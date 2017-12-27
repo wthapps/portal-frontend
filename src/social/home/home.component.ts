@@ -6,14 +6,14 @@ import { SocialFavoriteService } from '../shared/services/social-favorites.servi
 import { UserService } from '@wth/shared/services';
 
 
-declare var $: any;
-declare var _: any;
+
+
 
 /**
  * This class represents the lazy loaded HomeComponent.
  */
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-home',
   templateUrl: 'home.component.html'
 })

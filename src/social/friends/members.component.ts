@@ -12,8 +12,8 @@ import { LoadingService } from '@wth/shared/shared/components/loading/loading.se
 import { SoUser } from '@wth/shared/shared/models';
 import { Constants } from '@wth/shared/constant';
 
-declare var $: any;
-declare var _: any;
+
+
 
 export let FRIEND_TABS: any = {
   friends: 'friends',
@@ -24,7 +24,7 @@ export let FRIEND_TABS: any = {
 
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-members',
   templateUrl: 'members.component.html',
   styleUrls: ['members.component.scss']

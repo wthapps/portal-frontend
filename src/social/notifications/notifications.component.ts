@@ -4,10 +4,10 @@ import { NotificationService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-notifications',
   templateUrl: 'notifications.component.html'
 })

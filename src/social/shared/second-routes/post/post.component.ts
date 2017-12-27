@@ -38,11 +38,11 @@ import { BaseEvent } from '@shared/shared/event/base-event';
 import { PostActivitiesComponent } from './post-activities.component';
 
 
-declare var $: any;
-declare var _: any;
+
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'so-post',
   templateUrl: 'post.component.html'
 })

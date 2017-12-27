@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DateService, UrlService } from '@wth/shared/services';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-post-date',
   templateUrl: 'post-date.component.html'
 })

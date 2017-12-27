@@ -6,7 +6,7 @@ import { UserService } from '@wth/shared/services';
 
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-profile-post',
   templateUrl: 'post.component.html'
 })

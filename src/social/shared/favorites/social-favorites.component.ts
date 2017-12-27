@@ -11,7 +11,7 @@ import { Constants } from '@wth/shared/constant';
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-favorites',
   templateUrl: 'social-favorites.component.html'
 })

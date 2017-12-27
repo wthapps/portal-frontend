@@ -5,10 +5,10 @@ import { HdModalComponent, ListComponent } from '@wth/shared/shared/ng2-hd';
 import { ApiBaseService, UserService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'post-privacy-custom',
   templateUrl: 'post-privacy-custom.component.html'
 })

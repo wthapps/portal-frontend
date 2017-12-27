@@ -7,10 +7,10 @@ import { Constants } from '@wth/shared/constant';
 import { SoPost } from '@wth/shared/shared/models';
 
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'so-post-body',
   templateUrl: 'post-body.component.html'
 })

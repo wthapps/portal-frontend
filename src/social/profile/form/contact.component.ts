@@ -13,11 +13,11 @@ import { CountryService } from '@wth/shared/shared/components/countries/countrie
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 
-declare var $: any;
-declare var _: any;
+
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-profile-form-contact',
   templateUrl: 'contact.component.html'
 })

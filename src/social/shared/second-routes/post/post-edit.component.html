@@ -2,7 +2,7 @@
   <modal-body>
     <div class="z-social-media mb15">
       <div class="z-social-media-left pointer">
-        <a [routerLink]="['/profile', (profile$ | async)?.uuid]">
+        <a href="javascript:;" (click)="viewProfile()">
         <div class="avatar-xs">
           <img [src]="(profile$ | async)?.profile_image" alt="">
         </div>
@@ -15,7 +15,7 @@
           <div class="z-shared-with dropdown">
             <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
                aria-haspopup="true" aria-expanded="true">
-              <i class="fa" [ngClass]="privacyClassIcon(post)"></i> {{ privacyName(post) }} </a>
+              <i class="fa" [ngClass]="privacyClassIcon"></i> {{ privacyName }} </a>
             <ul class="dropdown-menu">
               <li><a href="#" (click)="update({privacy: soPostPrivacy.public.data}, $event)">
                 <i class="fa fa-globe"></i> Public</a></li>
@@ -145,7 +145,7 @@
         </div>
       </div>
       <div class="form-group" *ngIf="parent != null">
-        Shared from <a [routerLink]="['/profile/', parent.owner.uuid, 'about']">{{ parent.owner.name }}</a>
+        Shared from <a href="javascript:;" (click)="viewProfile(parent.owner.uuid)" >{{ parent.owner.name }}</a>
       </div>
       <div class="clearfix text-right">
         <button type="button" class="btn btn-outline-default pull-left" *ngIf="parent == null" (click)="addMorePhoto($event)">

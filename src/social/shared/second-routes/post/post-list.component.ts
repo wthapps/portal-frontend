@@ -20,11 +20,11 @@ import { LoadingService } from '@shared/shared/components/loading/loading.servic
 import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { PostService } from './shared/post.service';
 
-declare var _: any;
-declare var $: any;
+
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'so-post-list',
   templateUrl: 'post-list.component.html'
 })
@@ -112,6 +112,11 @@ export class PostListComponent implements OnInit, OnDestroy {
   stopLoading() {
     if(this.showLoading)
       this.loadingService.stop('#post-list-loading');
+  }
+
+  viewProfile(uuid: string = this.userService.getProfileUuid()) {
+    this.router.navigate([{outlets: {detail: null}}], {preserveQueryParams: true, preserveFragment: true})
+      .then(() => this.router.navigate(['profile', uuid]));
   }
 
   ngOnDestroy() {

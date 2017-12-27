@@ -6,7 +6,7 @@ import { ServiceManager, UrlService } from '@wth/shared/services';
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-search-detail',
   templateUrl: 'search-detail.component.html',
   styleUrls: ['../search.component.scss'],

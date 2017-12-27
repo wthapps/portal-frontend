@@ -3,10 +3,10 @@ import { Router, NavigationEnd } from '@angular/router';
 import { ApiBaseService, UrlService, UserService } from '@wth/shared/services';
 
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-post-by',
   templateUrl: 'post-by.component.html'
 })

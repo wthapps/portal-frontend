@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-search',
   templateUrl: 'search.component.html',
   styleUrls: ['search.component.scss'],

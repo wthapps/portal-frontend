@@ -8,7 +8,6 @@ import { ApiBaseService, UserService } from '@wth/shared/services';
 
 
 @Component({
-  moduleId: module.id,
   selector: 'z-social-my-profile',
   templateUrl: 'my-profile.component.html',
   encapsulation: ViewEncapsulation.None,

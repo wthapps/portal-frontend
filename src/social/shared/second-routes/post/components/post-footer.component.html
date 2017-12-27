@@ -17,7 +17,7 @@
 
       <div *ngIf="!comment?.isEditting">
         <div class="media-left">
-          <a [routerLink]="['/profile/', comment.owner.uuid]">
+          <a href="javascript:;" (click)="viewProfile(comment.owner.uuid)">
             <span class="avatar-xs">
               <img
                 [src]="(comment.owner.uuid == (user$ | async)?.uuid ? (user$ | async)?.profile_image : comment.owner.profile_image) "
@@ -27,7 +27,7 @@
           </a>
         </div>
         <div class="media-body">
-          <h4 class="media-heading"><a [routerLink]="['/profile', comment.owner.uuid]">{{ comment.owner.name }}</a>
+          <h4 class="media-heading"><a  href="javascript:;" (click)="viewProfile(comment.owner.uuid)" >{{ comment.owner.name }}</a>
             <span class="media-heading-time">{{ comment.created_at | timeFormat }}</span>
           </h4>
           <span [innerHtml]="comment.content | wthEmojis |linkify | safeHtml"></span>
@@ -98,7 +98,7 @@
         </ng-container>
         <div *ngIf="!reply?.isEditting">
           <div class="media-left">
-            <a [routerLink]="['/profile/', reply.owner.uuid]" class="media-object">
+            <a  href="javascript:;" (click)="viewProfile(reply.owner.uuid)" class="media-object">
               <span class="avatar-xs">
                 <img
                   [src]="(reply.owner.uuid == (user$ | async)?.uuid ? (user$ | async)?.profile_image : reply.owner.profile_image)"
@@ -107,7 +107,7 @@
             </a>
           </div>
           <div class="media-body">
-            <h4 class="media-heading"><a [routerLink]="['/profile', reply.owner.uuid]">{{ reply.owner.name }}</a>
+            <h4 class="media-heading"><a  href="javascript:;" (click)="viewProfile(reply.owner.uuid)">{{ reply.owner.name }}</a>
               <span class="media-heading-time">{{ reply.created_at | timeFormat }}</span>
               <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == reply.owner.uuid">
                 <button class="btn btn-sm btn-default" data-toggle="dropdown" pTooltip="{{  tooltip.edit  }}"

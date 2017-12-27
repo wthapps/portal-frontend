@@ -15,11 +15,11 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { UserService } from '@wth/shared/services';
 
 
-declare var $: any;
-declare var _: any;
+
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-community-form-preference',
   templateUrl: 'preferences.component.html'
 })

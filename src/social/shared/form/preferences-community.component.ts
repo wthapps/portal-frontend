@@ -15,7 +15,7 @@ import { UserService } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-share-community-form-preferences',
   templateUrl: 'preferences-community.component.html'
 })

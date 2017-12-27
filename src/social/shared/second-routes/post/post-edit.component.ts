@@ -18,19 +18,15 @@ import { EntitySelectComponent } from '@wth/shared/shared/components/entity-sele
 import { SoPost } from '@shared/shared/models';
 import { Constants } from '@wth/shared/constant';
 import { PhotoModalDataService, PhotoUploadService, UserService } from '@wth/shared/services';
-
-declare var _: any;
-declare var $: any;
+import { Router } from '@angular/router';
 
 @Component({
-  moduleId: module.id,
   selector: 'so-post-edit',
   templateUrl: 'post-edit.component.html',
   styleUrls: ['post-edit.component.scss']
 })
 
 export class PostEditComponent implements OnInit, OnDestroy {
-
   @ViewChild('modal') modal: ModalComponent;
   @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
 
@@ -42,7 +38,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
   @ViewChild('textarea') textarea: ElementRef;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
   @Output() saved: EventEmitter<any> = new EventEmitter<any>();
   @Output() dismissed: EventEmitter<any> = new EventEmitter<any>();
@@ -52,7 +47,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
   post: SoPost;
   files: Array<any> = new Array<any>();
   tags: Array<string> = new Array<string>();
-  objTags: Array<any> = new Array<any>();
   originalTags: Array<any> = new Array<any>();
   custom_objects: Array<any> = new Array<any>();
 
@@ -65,12 +59,15 @@ export class PostEditComponent implements OnInit, OnDestroy {
   uploadedPhotos: Array<any> = new Array<any>();
 
   parent: any = null;
+  privacyClassIcon: string;
+  privacyName: string;
   profile$: Observable<any>;
   readonly soPostPrivacy : any = Constants.soPostPrivacy;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private fb: FormBuilder,
+              private router: Router,
               private socialService: SocialService,
               private photoSelectDataService : PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
@@ -90,6 +87,16 @@ export class PostEditComponent implements OnInit, OnDestroy {
     // this.currentUser = this.userService.profile;
     this.profile$ = this.userService.profile$;
 
+  }
+
+  ngOnChanges() {
+    this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
+    this.privacyName = this.getPrivacyName(this.post);
+  }
+
+  viewProfile(uuid: string = this.userService.getProfileUuid()) {
+    this.router.navigate([{outlets: {detail: null}}], {preserveQueryParams: true, preserveFragment: true})
+      .then(() => this.router.navigate(['profile', uuid]));
   }
 
   ngOnDestroy() {
@@ -162,7 +169,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
       },
       isShare: this.isShare
     };
-    console.log('adding................', options);
     this.saved.emit(options);
     this.photoSelectDataService.close();
 
@@ -189,21 +195,12 @@ export class PostEditComponent implements OnInit, OnDestroy {
     _.pull(this.files, file);
   }
 
-  validPost(): boolean {
-    if (this.post.description == '' && this.photos.length <= 0) {
-      return false;
-    }
-    return true;
-  }
-
   removePhoto(photo: any, event: any) {
-    console.log('removing........');
     this.backupPhotos = this.post.photos;
     this.post.photos = _.pull(this.post.photos, photo);
   }
 
   next(selectedPhotos: any) {
-    console.log('on next ...........:', selectedPhotos);
     // Create union of selected photos and add to post
     this.post.photos = _.uniqBy(_.flatten([this.post.photos, selectedPhotos]), 'id');
     this.photoSelectDataService.close();
@@ -236,10 +233,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.uploadFiles(this.files);
   }
 
-  closeSelectPhoto(event: any) {
-    console.log('closing.........');
-  }
-
   customPrivacy(type: string, event: any) {
     event.preventDefault();
     let mode: string = 'edit';
@@ -252,27 +245,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
   selectedItems(response: any) {
     this.update({privacy: response.type, custom_objects: response.items}, null);
     // this.custom_objects = response.items;
-  }
-
-  privacyName(post: any): string {
-    return post.privacy.replace('_', ' ');
-  }
-
-  privacyClassIcon(post: any): string {
-    switch (post.privacy) {
-      case Constants.soPostPrivacy.friends.data:
-        return 'fa-users';
-      case  Constants.soPostPrivacy.public.data:
-        return 'fa-globe';
-      case  Constants.soPostPrivacy.personal.data:
-        return 'fa-lock';
-      case  Constants.soPostPrivacy.customFriend.data:
-        return 'fa-user-times';
-      case  Constants.soPostPrivacy.customCommunity.data:
-        return 'fa-group';
-    }
-    return '';
-    // return `Constants.soPostPrivacy.${post.privacy}.class`;
   }
 
   /**
@@ -304,6 +276,29 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.post = _.assignIn(this.post, attr);
       // this.onUpdated.emit(attr);
     }
+  }
+
+  private getPrivacyClassIcon(post: any): string {
+    switch (post.privacy) {
+      case Constants.soPostPrivacy.friends.data:
+        return 'fa-users';
+      case  Constants.soPostPrivacy.public.data:
+        return 'fa-globe';
+      case  Constants.soPostPrivacy.personal.data:
+        return 'fa-lock';
+      case  Constants.soPostPrivacy.customFriend.data:
+        return 'fa-user-times';
+      case  Constants.soPostPrivacy.customCommunity.data:
+        return 'fa-group';
+    }
+    return '';
+    // return `Constants.soPostPrivacy.${post.privacy}.class`;
+  }
+
+  private getPrivacyName(post: any): string {
+    if(post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
+      return post.custom_objects[0].name;
+    return post.privacy.replace('_', ' ');
   }
 
   private subscribePhotoSelectEvents() {

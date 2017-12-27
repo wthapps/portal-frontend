@@ -12,7 +12,7 @@ import { Constants } from '@wth/shared/constant';
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-profile-about',
   templateUrl: 'about.component.html'
 })

@@ -10,11 +10,11 @@ import { Constants } from '@wth/shared/constant';
 
 
 
-declare var $: any;
-declare var _: any;
+
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'so-post-detail-photo',
   templateUrl: 'post-detail-photo.component.html'
 })

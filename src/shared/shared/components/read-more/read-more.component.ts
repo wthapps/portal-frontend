@@ -5,9 +5,6 @@
 
 import { Component, Input, OnChanges } from '@angular/core';
 
-declare var $: any;
-declare var _: any;
-
 @Component({
   selector: 'read-more',
   templateUrl: 'read-more.component.html',
@@ -24,8 +21,8 @@ export class ReadMoreComponent implements OnChanges {
   showMore: boolean = false;
 
   ngOnChanges(data: any): void {
-    if(this.content)
-      return;
+    // if(this.content)
+    //   return;
     this.content = this.content.replace(/(\r\n|\n\r|\r|\n)/g, ' <br> ');
     let value = this.content;
     let limit = this.limit;

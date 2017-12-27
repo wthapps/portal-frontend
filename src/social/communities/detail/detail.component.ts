@@ -26,7 +26,7 @@ declare let _: any;
 declare let $: any;
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-community-detail',
   templateUrl: 'detail.component.html'
 })

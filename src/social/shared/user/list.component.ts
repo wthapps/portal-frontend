@@ -2,10 +2,10 @@ import { Component, OnInit, HostBinding, Input, OnChanges, EventEmitter, Output 
 import * as fromMember from '../../shared/actions/member';
 
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-share-profile-list',
   templateUrl: 'list.component.html'
 })

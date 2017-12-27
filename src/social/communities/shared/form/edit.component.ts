@@ -14,14 +14,8 @@ import { LoadingService } from '@wth/shared/shared/components/loading/loading.se
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 import { Constants } from '@wth/shared/constant';
 
-
-
-
-declare var $: any;
-declare var _: any;
-
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-community-form-edit',
   templateUrl: 'edit.component.html'
 })

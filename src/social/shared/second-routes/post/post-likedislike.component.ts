@@ -4,10 +4,10 @@ import { HdModalComponent } from '@wth/shared/shared/ng2-hd';
 
 
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'post-likedislike',
   templateUrl: 'post-likedislike.component.html'
 })

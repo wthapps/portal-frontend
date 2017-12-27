@@ -11,10 +11,9 @@ import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/
 import { Constants } from '@wth/shared/constant';
 import { PostComponent } from '../post.component';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
   selector: 'so-post-header',
   templateUrl: 'post-header.component.html'
 })
@@ -58,6 +57,11 @@ export class PostHeaderComponent implements OnChanges {
     this.router.navigate([], {fragment: 'detail', preserveQueryParams: true}).then(() => {
       this.router.navigate([{outlets: {detail: [this.postUrl, uuid]}}], {preserveQueryParams: true, preserveFragment: true});
     });
+  }
+
+  viewProfile(uuid: string) {
+    this.router.navigate([{outlets: {detail: null}}], {preserveQueryParams: true, preserveFragment: true})
+      .then(() => this.router.navigate([this.profileUrl, uuid]));
   }
 
   update(attr: any = {}, event: any) {

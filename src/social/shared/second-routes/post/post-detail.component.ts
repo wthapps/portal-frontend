@@ -10,10 +10,10 @@ import { SoPost } from '@wth/shared/shared/models';
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './shared/post.service';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'so-post-detail',
   templateUrl: 'post-detail.component.html'
 })

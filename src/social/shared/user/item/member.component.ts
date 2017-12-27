@@ -8,10 +8,10 @@ import { SocialFavoriteService } from '../../services/social-favorites.service';
 import * as fromMember from '../../../shared/actions/member';
 import { Constants } from '@wth/shared/constant';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-share-profile-member',
   templateUrl: 'member.component.html'
 })

@@ -10,7 +10,7 @@ import { SocialService } from '../../shared/services/social.service';
 
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-profile-friend',
   templateUrl: 'friend.component.html'
 })

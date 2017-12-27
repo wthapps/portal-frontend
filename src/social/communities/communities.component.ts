@@ -5,7 +5,6 @@ declare let $: any;
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'z-social-community',
   templateUrl: 'communities.component.html'
 })

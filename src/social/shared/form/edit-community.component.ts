@@ -13,10 +13,10 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { SoCommunityService } from '../services/community.service';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-share-community-form-edit',
   templateUrl: 'edit-community.component.html'
 })

@@ -9,10 +9,8 @@ import { LoadingService } from '@wth/shared/shared/components/loading/loading.se
 import { UserService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 
-declare var _: any;
-
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-community-list',
   templateUrl: 'list.component.html'
 })

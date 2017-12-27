@@ -13,10 +13,10 @@ import { ServiceManager } from '@wth/shared/services';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { Constants } from '@wth/shared/constant';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-share-profile-community',
   templateUrl: 'community.component.html',
   styleUrls: ['community.component.scss'],

@@ -13,10 +13,10 @@ import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { Constants } from '@wth/shared/constant';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-profile-cover',
   templateUrl: 'cover.component.html'
 })

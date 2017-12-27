@@ -4,10 +4,10 @@ import { UserService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { PostEditComponent } from './post-edit.component';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'post-new',
   templateUrl: 'post-new.component.html'
 })

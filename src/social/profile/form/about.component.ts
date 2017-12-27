@@ -16,11 +16,11 @@ import { LoadingService } from '@shared/shared/components/loading/loading.servic
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 
 
-declare var $: any;
-declare var _: any;
+
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-profile-form-about',
   templateUrl: 'about.component.html'
 })

@@ -10,11 +10,11 @@ import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ApiBaseService, UserService } from '@wth/shared/services';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 
-declare var $: any;
-declare var _: any;
+
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-profile-form-workedu',
   templateUrl: 'work-edu.component.html'
 })

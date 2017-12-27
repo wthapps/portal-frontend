@@ -24,11 +24,7 @@ import { SoComment, SoPost } from '@wth/shared/shared/models';
 import { PhotoService, UserService } from '@shared/services';
 import { Constants } from '@wth/shared/constant';
 
-declare var _: any;
-declare var $: any;
-
 @Component({
-  moduleId: module.id,
   selector: 'so-post-footer',
   templateUrl: 'post-footer.component.html',
 })
@@ -49,10 +45,7 @@ export class PostFooterComponent implements OnChanges {
     onShowPhotoDetail: 7
   };
 
-  // hasLike: boolean = false;
-  // hasDislike: boolean = false;
   showInfo: boolean = false;
-  // showComments: boolean = false;
   totalComment: number = 1;
   commentPageIndex: number = 0;
   loadingDone: boolean = false;
@@ -73,9 +66,13 @@ export class PostFooterComponent implements OnChanges {
     if (this.type == 'info') {
       this.showInfo = true;
     }
-    this.totalComment = this.item.comment_count;
-    if (this.totalComment === 0 || this.totalComment <= this.item.comments.length)
-      this.loadingDone = true;
+    this.totalComment = +this.item.comment_count;
+    this.loadingDone = (this.totalComment === 0 ) || (this.totalComment <= this.item.comments.length);
+  }
+
+  viewProfile(uuid: string) {
+    this.router.navigate([{outlets: {detail: null}}], {preserveQueryParams: true, preserveFragment: true})
+      .then(() => this.router.navigate(['profile', uuid]));
   }
 
   hasLike(comment: any) {
@@ -97,9 +94,6 @@ export class PostFooterComponent implements OnChanges {
       case this.actions.onEditComment:
         let currentComment = data;
         let commentType = type;
-
-        console.log('editing..........:', data);
-
         currentComment.isEditting = true;
         break;
       case this.actions.onDeleteReply:
@@ -108,9 +102,6 @@ export class PostFooterComponent implements OnChanges {
       case this.actions.onCreateComment:
         let parent = params.parent;
         let parentType = params.parentType;
-
-        console.log('replying..........:', parent);
-
         _.set(parent, 'isCreatingNewReply', true);
         break;
       case this.actions.openLikeDislike:
@@ -138,10 +129,6 @@ export class PostFooterComponent implements OnChanges {
     // this.viewAllComments();
   }
 
-  notAllCommentsLoaded() {
-    return ( this.totalComment > 0 && !this.loadingDone);
-  }
-
   mapComment(comment: any) {
     return new SoComment().from(comment);
   }
@@ -154,7 +141,6 @@ export class PostFooterComponent implements OnChanges {
     let body = {'post_uuid': this.item.uuid, 'page_index': this.commentPageIndex, 'limit': this.commentLimit};
     this.postService.loadComments(body)
       .toPromise().then((result: any) => {
-          console.log('Get more comments successfully');
           if (this.commentPageIndex == 0) {
             // this.item.comments.length = 0; // Clear comments data in the first loading
             this.item.comments = _.map(result.data.comments, this.mapComment);

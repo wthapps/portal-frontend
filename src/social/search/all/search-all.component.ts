@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ServiceManager } from '@wth/shared/services';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-search-all',
   templateUrl: 'search-all.component.html',
   styleUrls: ['../search.component.scss'],

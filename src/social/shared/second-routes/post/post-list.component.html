@@ -3,7 +3,7 @@
   <div class="panel-body">
     <div class="z-social-media">
       <div class="z-social-media-left">
-        <a [routerLink]="['/profile', (profile$ | async )?.uuid]">
+        <a href="javascript:;" (click)="viewProfile()">
         <div class="avatar-xs">
           <img [src]="(profile$ | async)?.profile_image" alt="Avatar Image">
         </div>

@@ -3,7 +3,7 @@ import { Component, OnInit, AfterContentInit, ViewEncapsulation } from '@angular
 declare let Shepherd: any;
 
 @Component({
-  moduleId: module.id,
+
   selector: 'step-by-step-guide',
   templateUrl: 'step-by-step-guide.component.html',
   styleUrls: ['step-by-step-guide.component.scss'],
