@@ -80,9 +80,18 @@
                     <i class="fa fa-paint-brush"></i>
                   </button>
                 </div>
-                <div pTooltip="Font Family" tooltipPosition="bottom" class="ql-formats">
-                  <!-- Add font family dropdown -->
-                  <select class="ql-font">
+                <div class="ql-formats no-right-margin">
+                  <select class="ql-header left-border-radius" pTooltip="Styles">
+                    <option value="0">Normal</option>
+                    <option value="1" selected="">Heading 1</option>
+                    <option value="2">Heading 2</option>
+                    <option value="3">Heading 3</option>
+                    <option value="4">Heading 4</option>
+                    <option value="5">Heading 5</option>
+                    <option value="6">Heading 6</option>
+                  </select>
+
+                  <select class="ql-font no-border-radius" title="Font">
                     <option value="gotham" selected="">Gotham</option>
                     <option value="georgia">Georgia</option>
                     <option value="helvetica">Helvetica</option>
@@ -91,10 +100,8 @@
                     <option value="trebuchet">Trebuchet</option>
                     <option value="verdana">Verdana</option>
                   </select>
-                </div>
-                <div pTooltip="Font Size" tooltipPosition="bottom" class="ql-formats">
-                  <!-- Add font size dropdown -->
-                  <select class="ql-size ql-size-sm">
+
+                  <select class="ql-size ql-size-sm no-border-radius" title="Font size">
                     <option value="8px">8</option>
                     <option value="10px">10</option>
                     <option value="12px">12</option>
@@ -103,10 +110,8 @@
                     <option value="24px">24</option>
                     <option value="36px">36</option>
                   </select>
-                </div>
-                <div pTooltip="Text Color" tooltipPosition="bottom" class="ql-formats">
-                  <!-- Add colors -->
-                  <select class="ql-color" title="Colour">
+
+                  <select class="ql-color no-border-radius" title="Text color">
                     <option value="#ffffff"></option>
                     <option value="#facccc"></option>
                     <option value="#ffebcc"></option>
@@ -143,10 +148,9 @@
                     <option value="#0066cc"></option>
                     <option value="#9933ff"></option>
                   </select>
-                </div>
-                <div pTooltip="Background Color" tooltipPosition="bottom" class="ql-formats">
+
                   <!-- Add background -->
-                  <select class="ql-background" title="Background">
+                  <select class="ql-background right-border-radius" title="Background">
                     <option value="#ffffff"></option>
                     <option value="#facccc"></option>
                     <option value="#ffebcc"></option>
@@ -184,11 +188,7 @@
                     <option value="#9933ff"></option>
                   </select>
                 </div>
-                <div class="ql-formats">
-                  <!-- Add subscript and superscript buttons -->
-                  <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
-                  <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
-                </div>
+
                 <div class="ql-formats">
                   <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold"
                           aria-label="Bold"></button>
@@ -216,6 +216,9 @@
                   <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
                   <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list" value="ordered"></button>
                   <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list" value="bullet"></button>
+
+                  <button pTooltip="Decrease indent" tooltipPosition="bottom" class="ql-indent" value="-1"></button>
+                  <button pTooltip="Increase indent" tooltipPosition="bottom" class="ql-indent" value="+1"></button>
                 </div>
 
                 <div pTooltip="Divider line" tooltipPosition="bottom" class="ql-formats">
@@ -235,6 +238,14 @@
                 <!--<div class="ql-formats">
                   <button class="ql-clean"></button>
                 </div>-->
+                <div class="ql-formats">
+                  <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
+
+                  <!-- Add subscript and superscript buttons -->
+                  <!--<button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>-->
+                  <!--<button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>-->
+                </div>
+
               </div>
             </div>
             <div [ngClass]="{'hidden': currentTab !== 'attachment'}" class="quill-toolbar-attachment">

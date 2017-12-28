@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
@@ -20,8 +20,11 @@ declare let $: any;
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
-  constructor(private router: Router,
-              private userService: UserService) {
+  constructor(
+    private router: Router,
+    private userService: UserService
+  ) {
+
   }
 
   ngOnInit() {
@@ -37,6 +40,14 @@ export class AppComponent implements OnInit, OnDestroy {
         // auto close menu on mobile
         $('#wth-navbar-collapse-1').collapse('hide');
       });
+
+    // fix scroll to top after changing route
+    // this.router.events.subscribe((evt) => {
+    //   if (!(evt instanceof NavigationEnd)) {
+    //     return;
+    //   }
+    //   window.scrollTo(0, 0);
+    // });
   }
 
   ngOnDestroy() {

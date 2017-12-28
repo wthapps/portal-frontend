@@ -117,8 +117,8 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
       case 'download':
         this.photoService.download({id: this.photo.id}).subscribe(
           (response: any) => {
-            var blob = new Blob([response.blob()], {type: this.photo.content_type});
-            saveAs(blob, this.photo.name);
+            var blob = new Blob([response], {type: this.photo.content_type});
+            saveAs(blob, `${this.photo.name}.${this.photo.extension}`);
           },
           (error: any) => {
             console.log(error);

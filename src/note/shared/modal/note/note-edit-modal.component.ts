@@ -193,7 +193,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     // Reset content of elemenet div.ql-editor to prevent HTML data loss
     document.querySelector('.ql-editor').innerHTML = this.note.content;
 
-    // $('.ql-editor').attr('tabindex', 1);
+    $('.ql-editor').attr('tabindex', 1);
 
     this.registerIconBlot();
     this.registerImageBlot();
