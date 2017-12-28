@@ -348,6 +348,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         node.setAttribute('src', value.url);
         node.setAttribute('id', value.id);
         node.setAttribute('data-id', value['data-id']);
+        node.setAttribute('style', value.style);
         return node;
       }
 
@@ -356,7 +357,8 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
           alt: node.getAttribute('alt'),
           url: node.getAttribute('src'),
           id: node.getAttribute('id'),
-          'data-id': node.getAttribute('data-id')
+          'data-id': node.getAttribute('data-id'),
+          style: node.getAttribute('style')
         };
       }
 
@@ -542,7 +544,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.editMode = options.mode;
 
     this.updateCurrentNote();
-    // this.registerAutoSave();
   }
 
   updateCurrentNote(): void {
@@ -632,7 +633,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     else {
       this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
     }
-
     this.onModalClose();
   }
 
