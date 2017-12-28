@@ -21,13 +21,13 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.userService.profile);
-    if (this.userService.profile.took_a_tour) {
+    if (this.userService.profile && this.userService.profile.took_a_tour) {
       this.router.navigate(['/settings/profile'])
     }
   }
 
   onNoThanks() {
-    if (!this.userService.profile.took_a_tour) {
+    if (this.userService.profile && !this.userService.profile.took_a_tour) {
       let body = JSON.stringify({
         took_a_tour: true
       });

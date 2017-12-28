@@ -60,28 +60,28 @@ export class MyPlansComponent implements OnInit {
       });
   }
 
-  plan_has_product(products: any, product_name: string): boolean {
-    for (let p of products) {
-      if (p.name === product_name) return true;
-    }
-    return false;
-  }
+  // plan_has_product(products: any, product_name: string): boolean {
+  //   for (let p of products) {
+  //     if (p.name === product_name) return true;
+  //   }
+  //   return false;
+  // }
 
-  getStarted(plan: Plan): void {
-
-    var p = JSON.stringify({
-      id: plan.id,
-      name: plan.name,
-      is_trial: plan.is_trial,
-      price: plan.price
-    });
-    // Cookie.delete('selected_plan');
-    this.cookieService.put('selected_plan', p, this.cookieOptionsArgs);
-    if (this.userService.profile.has_payment_info) {
-      this.router.navigateByUrl('payment/confirm');
-    } else {
-      this.router.navigateByUrl('payment');
-    }
-
-  }
+  // getStarted(plan: Plan): void {
+  //
+  //   var p = JSON.stringify({
+  //     id: plan.id,
+  //     name: plan.name,
+  //     is_trial: plan.is_trial,
+  //     price: plan.price
+  //   });
+  //   // Cookie.delete('selected_plan');
+  //   this.cookieService.put('selected_plan', p, this.cookieOptionsArgs);
+  //   if (this.userService.profile.has_payment_info) {
+  //     this.router.navigateByUrl('payment/confirm');
+  //   } else {
+  //     this.router.navigateByUrl('payment');
+  //   }
+  //
+  // }
 }

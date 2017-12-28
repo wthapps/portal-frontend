@@ -115,6 +115,8 @@ export class NotificationService {
     let notif_ids = _.map(this.notifications, (i: any) => i.id);
     let body = {'ids' : notif_ids};
 
+    if (!(this.userService.loggedIn && this.userService.profile))
+      return;
     return this.api.post(`${Constants.urls.zoneSoNotifications}/mark_as_seen`, body)
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
       .subscribe(
@@ -169,10 +171,9 @@ export class NotificationService {
   }
 
   getLatestNotifications() {
-    if (this.loadingDone)
+    if (this.loadingDone && this.userService.loggedIn && this.userService.profile)
       return; // Only load once at first time
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest`, {sort_name: 'created_at'})
-      .filter((x: any) => this.userService.loggedIn) // Do not call this API if user is not logged in
       .toPromise().then(
         (result: any) => {
           _.remove(this.notifications); // Make sure this.notifications has no value before assigning
@@ -207,8 +208,9 @@ export class NotificationService {
       console.debug('All notifications are loaded !');
       return;
     }
+    if (this.userService.loggedIn && this.userService.profile)
+      return;
     this.api.get(this.nextLink)
-      .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
       .toPromise().then(
         (result: any) => {
           this.notifications.push(...result.data);
@@ -227,9 +229,10 @@ export class NotificationService {
   }
 
   getNewNotificationsCount(callback?: any) {
+    if (this.userService.loggedIn && this.userService.profile)
+      return;
     // Only loading 1 time when refreshing pages or navigating from login pages
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_new_notifications/count`)
-      .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
       .toPromise().then(
         (result: any) => {
           this.newNotifCount = result.data;

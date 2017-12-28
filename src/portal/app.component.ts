@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.userService.loggedIn && !this.userService.profile.took_a_tour) {
+    if (this.userService.loggedIn && this.userService.profile && !this.userService.profile.took_a_tour) {
       // window.location.href = Constants.baseUrls.myAccount;
     }
 

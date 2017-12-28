@@ -14,7 +14,7 @@ export class AppearancesChannelService extends CableService {
   }
 
   subscribe() {
-    if(this.userService.loggedIn) {
+    if(this.userService.loggedIn && this.userService.profile) {
       this.createConnectionInstance(this.userService.profile.uuid);
       let thisCopy = this;
       App.personal_appearances = App.cable.subscriptions.create(

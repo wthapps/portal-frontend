@@ -52,7 +52,7 @@ export class StorageService {
   }
 
   resetIfNeed() {
-    if (this.storageId && this.storageId != this.userService.profile.id && this.reset) {
+    if (this.storageId && this.userService.profile && this.storageId != this.userService.profile.id && this.reset) {
       for (let item of this.listItem) {
         item.value = null;
       }
