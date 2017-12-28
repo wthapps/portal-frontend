@@ -83,6 +83,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
 import { ToastsService } from './shared/components/toast/toast-message.service';
 import { Ng2CableModule } from 'ng2-cable';
 import { DataTableModule } from 'primeng/components/datatable/datatable';
+import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
 
 
 /**
@@ -158,6 +159,7 @@ export * from './shared/components/navbar/navbar.module';
     ZChatEmojiModule,
     ShowHidePasswordModule,
     InvitationModule,
+    ImageCropperModule,
 
     // Pipe
     PipeModule,

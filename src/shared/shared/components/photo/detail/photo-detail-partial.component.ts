@@ -1,23 +1,35 @@
 import {
-  Component, AfterViewInit, Input, EventEmitter, Output, ViewChild,
-  ViewContainerRef, ComponentFactoryResolver, OnInit, OnChanges, SimpleChanges, OnDestroy
+  Component,
+  AfterViewInit,
+  Input,
+  EventEmitter,
+  Output,
+  ViewChild,
+  ViewContainerRef,
+  ComponentFactoryResolver,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
 import { PhotoEditModalComponent } from '../modal/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
 import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
-import { Constants } from '../../../../constant/config/constants';
-import { PhotoService } from '../../../../services/photo.service';
-import * as Cropper  from 'cropperjs';
+import { Constants } from '@shared/constant';
+import { PhotoService } from '@shared/services';
+import * as Cropper from 'cropperjs';
 
 declare let $: any;
 declare let _: any;
 
 @Component({
-    selector: 'photo-detail-partial',
+  selector: 'photo-detail-partial',
   templateUrl: 'photo-detail-partial.component.html',
   styleUrls: ['photo-detail-partial.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   entryComponents: [
     SharingModalComponent,
     PhotoEditModalComponent,
@@ -37,30 +49,17 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
-
   tooltip: any = Constants.tooltip;
+  menus: any = [];
 
   modalComponent: any;
   modal: any;
-  cropper: any = null;
-  menus: Array<any>;
+
+  hasEditPhoto: boolean = false;
   currentIndex: number = 0;
-  editingData: any = null;
-
-  imgZoomClass: number = 0;
-  imgZoomMin: number = -10;
-  imgZoomMax: number = 24;
-
-  editing: boolean = false;
-  cropping: boolean;
-  readonly DEFAULT_IMAGE: string = Constants.img.default;
-  private cropperDefaultOptions: any = {
-    viewMode: 2,
-    dragMode: 'none',
-    autoCropArea: 1,
-    autoCrop: false,
-    center: true
-  };
+  cropper: any;
+  image: any;
+  loadingImg: boolean = true;
 
   constructor(private resolver: ComponentFactoryResolver,
               private photoService: PhotoService) {
@@ -71,23 +70,14 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.loading) {
-      console.log(this.loading);
-    } else {
+    if (this.photo && changes.photo) {
       this.currentIndex = _.indexOf(this.ids, this.photo.id);
-      // this.initCropper();
+      this.stop();
     }
   }
 
   ngAfterViewInit() {
-    let self = this;
-    $('body').on('click', '#photo-box-detail figure', () => self.goBack());
 
-    $('body').on('click',
-      '#photo-box-detail figure #photo-detail-img, .photo-detail-img-control, .cropper-container, #photo-detail-image'
-      , (e: any) => {
-        e.stopPropagation();
-      });
   }
 
   ngOnDestroy() {
@@ -156,8 +146,8 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
       }
     ];
 
-    if (canDelete)
-      this.menus.splice(4,0,
+    if (canDelete) {
+      this.menus.splice(4, 0,
         {
           text: 'Delete',
           toolTip: Constants.tooltip.delete,
@@ -165,158 +155,8 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
           action: 'confirmDelete',
           params: {}
         });
-  }
-
-  // true --> next
-  // false --> pre
-  move(direction: boolean = true): void {
-    let index = 0;
-
-    if (direction) {
-      index = this.currentIndex < (this.ids.length - 1) ? this.currentIndex + 1 : 0;
-    } else {
-      index = this.currentIndex > 0 ? this.currentIndex - 1 : this.ids.length - 1;
-    }
-    this.event.emit({action: 'loadItem', id: this.ids[index]});
-  }
-
-  doAction(event: any) {
-    switch (event.action) {
-      case 'openModal':
-        this.openModal(event.params.modalName);
-        break;
-      case 'viewInfo':
-        this.onShowInfo();
-        break;
-      case 'editPhoto':
-        this.editPhoto();
-        break;
-      default:
-        this.event.emit(event);
-        break;
-    }
-    return false;
-  }
-
-  goBack() {
-    this.event.emit({action: 'goBack'});
-  }
-
-  onShowInfo() {
-    this.showDetail = !this.showDetail;
-    if(this.recipients.length == 0 && this.showDetail == true) {
-      this.event.emit({action: 'media:photo:load_sharing_info'});
     }
   }
-
-  ////////////////////////////////////////////////////CROPPER/////////////////////////////////////
-
-  editPhoto() {
-    this.initCropper();
-    this.setMode(1);
-    this.event.emit({action: 'editPhoto'});
-  }
-
-  setMode(mode: number) {
-    // if (mode == 1) {
-    //   $('.cropper-crop-box').show();
-    // } else {
-    //   $('.cropper-crop-box').hide();
-    // }
-    this.mode = mode;
-  }
-
-  initCropper() {
-    this.clearCropper();
-    console.debug('after clear cropper: ', this.cropper);
-    if (this.cropper == null) {
-      console.debug('init cropper ...');
-      let image = document.getElementById('photo-detail-image');
-      this.cropper = new Cropper(image, {
-        dragMode: 'none',
-        // autoCrop: true,
-        // autoCropArea: 0,
-        // viewMode: 2,
-        modal: false,
-        ready: () => {
-          // hide crop area on view mode
-          $('.cropper-crop-box').hide();
-        },
-        cropstart: () => {
-          $('.cropper-crop-box').show();
-        }
-      });
-    }
-    this.cropper.replace(this.photo.url);
-  }
-
-  clearCropper() {
-    console.debug('Clear cropper ...');
-    if(this.cropper !== null) {
-      this.cropper.clear();
-      this.cropper = null;
-    }
-  }
-
-  rotateCropper(leftDirect: boolean) {
-    this.editing = leftDirect == undefined ? false : true;
-    this.cropper.rotate(leftDirect ? -90 : 90);
-  }
-
-  cropCropper() {
-    if (this.cropping) {
-      this.cropper.setDragMode('none');
-      this.editing = false;
-    } else {
-      this.cropper.setDragMode('crop');
-      this.editing = true;
-    }
-    this.cropping = !this.cropping;
-
-  }
-
-  zoomCropper(ratio: any) {
-    this.editing = ratio != 0 ? true : false;
-    if (ratio == 0) {
-      this.cropper.reset();
-    } else if (ratio == 0.1) {
-      this.cropper.zoom(0.1);
-    } else {
-      this.cropper.zoom(-0.1);
-    }
-  }
-
-  reset () {
-    this.cropper.reset();
-    this.cropper.setDragMode('none');
-    this.cropping = false;
-    this.editing = false;
-  }
-
-  cancel(noReset: boolean = false) {
-    if(this.cropping) {
-      $('.cropper-crop-box').hide();
-    }
-    this.editing = false;
-    if(!noReset)
-      this.cropper.reset();
-    this.cropper.setDragMode('none');
-    this.setMode(0);
-  }
-
-  cropperSave() {
-    // get cropped image data
-    let editedData = this.cropper.getCroppedCanvas().toDataURL(this.photo.content_type);
-    this.photoService.confirmUpdate(this.photo, editedData)
-      .then((data: any) => {
-          this.event.emit({action: 'photoUpdated', payload: data});
-          this.cancel(true);
-        }
-      );
-    // this.event.emit({action: 'confirmUpdate', editedData: editedData});
-    // this.cancel();
-  }
-  /////////////////////////////////////////END-CROPPER/////////////////////////////////////
 
   openModal(modalName: string) {
     let options: any;
@@ -345,8 +185,114 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
 
   }
 
+
+  // New code
+
+
+  goBack() {
+    this.event.emit({action: 'goBack'});
+  }
+
+  doAction(event: any) {
+    console.log('event:', event);
+    switch (event.action) {
+      case 'openModal':
+        this.openModal(event.params.modalName);
+        break;
+      case 'viewInfo':
+        this.showInfo();
+        break;
+      case 'editPhoto':
+        this.editPhoto();
+        break;
+      case 'cancelEdit':
+        this.hasEditPhoto = false;
+        break;
+      case 'savePhoto':
+        this.savePhoto(event.data);
+        break;
+      default:
+        this.event.emit(event);
+        break;
+    }
+    return false;
+  }
+
+  /**
+   * true --> next
+   * false --> pre
+   * @param {boolean} direction
+   */
+  onMove(direction: boolean = true): void {
+    let index = 0;
+
+    if (direction) {
+      index = this.currentIndex < (this.ids.length - 1) ? this.currentIndex + 1 : 0;
+    } else {
+      index = this.currentIndex > 0 ? this.currentIndex - 1 : this.ids.length - 1;
+    }
+    this.event.emit({action: 'loadItem', id: this.ids[index]});
+  }
+
+  onZoomIn() {
+    this.cropper.zoom(0.1);
+  }
+
+  onZoomOut() {
+    this.cropper.zoom(-0.1);
+  }
+
+  onRefresh() {
+    this.cropper.reset();
+  }
+
+  onStart(event?: any) {
+    this.image = event ? event.path[0] : document.getElementById('image-viewer');
+    this.cropper = new Cropper(this.image, {
+      autoCrop: false,
+      dragMode: 'move',
+      background: false,
+      viewMode: 1, // restrict the crop box to not exceed the size of the canvas.
+      // viewMode: 2, // restrict the minimum canvas size to fit within the container.
+      ready: () => {
+        setTimeout(() => {
+          this.loadingImg = false;
+        }, 200);
+      }
+    });
+  }
+
+  private stop() {
+    if (this.cropper) {
+      this.loadingImg = true;
+      this.cropper.destroy();
+      this.cropper = null;
+    }
+  }
+
+  private editPhoto() {
+    this.hasEditPhoto = true;
+    // this.event.emit({action: 'editPhoto'});
+  }
+
+  private savePhoto(dataImg: any) {
+    this.photoService.confirmUpdate(this.photo, dataImg)
+      .then((data: any) => {
+          this.event.emit({action: 'photoUpdated', payload: data});
+          this.hasEditPhoto = false;
+        }
+      );
+  }
+
+  private showInfo() {
+    this.showDetail = !this.showDetail;
+    if (this.recipients.length == 0 && this.showDetail == true) {
+      this.event.emit({action: 'media:photo:load_sharing_info'});
+    }
+  }
+
   private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    const modalComponentFactory = this.resolver.resolveComponentFactory(component);
     this.modalContainer.clear();
     this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
     this.modal = this.modalComponent.instance;

@@ -35,6 +35,7 @@ import { PhotoItemPreviewComponent } from './photo-item-preview.component';
 import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
 import { BasePhotoDetailComponent } from './detail/base-photo-detail.component';
 import { BoxLoadingModule } from '../box-loading/box-loading.module';
+import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { BoxLoadingModule } from '../box-loading/box-loading.module';
     PipeModule,
     BoxLoadingModule,
     PartialsPhotoSharingModule,
-    PartialsPhotoTaggingModule
+    PartialsPhotoTaggingModule,
+    ImageCropperModule
   ],
   declarations: [
     PhotoDetailPartialComponent,

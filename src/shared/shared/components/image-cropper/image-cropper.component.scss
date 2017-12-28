@@ -1,0 +1,64 @@
+@import "../../../../assets/styles/global";
+
+.image-cropper-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100vh;
+  max-height: 100vh;
+  z-index: 1002;
+  background-color: #242424;
+  @include flexbox;
+  @include flex-direction(column);
+
+  img {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+  }
+
+  .image-cropper-content {
+    @include flex(1);
+    position: relative;
+  }
+  .image-cropper-content-fixed {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .image-cropper-header {
+    @include flexbox;
+    @include justify-content(space-between);
+    background-color: #292929;
+    padding: $grid-gutter-width/2;
+    .btn {
+      color: #ffffff;
+      &:hover, &:focus {
+        &:not(.btn-text) {
+          background-color: rgba(#ffffff, 0.3);
+        }
+      }
+    }
+  }
+
+  .box-loading {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #000;
+    @include flexbox;
+    @include align-items(center);
+    i {
+      @include align-self(center);
+      margin: auto;
+    }
+  }
+}
