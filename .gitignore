@@ -50,6 +50,7 @@ lib
 test
 tmp
 package-lock.json
+yarn.lock
 
 gulpfile.js
 gulpfile.js.map
