@@ -33,7 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     // ZSocialProfileModule,
     ZSocialPhotoModule,
     // ZSocialSearchModule,
-    ZSocialMyProfileModule,
+    // ZSocialMyProfileModule,
     ZSocialSharedModule.forRoot(),
     SharedModule.forRoot(),
     CoreModule.forRoot(),

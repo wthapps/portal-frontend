@@ -10,6 +10,7 @@ import { PhotoService } from '../../../../services/photo.service';
 import { LoadingService } from '../../loading/loading.service';
 import { ZMediaSharingService } from '../modal/sharing/sharing.service';
 import { WthConfirmService } from '../../confirmation/wth-confirm.service';
+import { UserService } from '@wth/shared/services';
 
 declare let _: any;
 declare let saveAs: any;
@@ -31,6 +32,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   loading: boolean;
   mode: number;
   showDetail: boolean;
+  isOwner: boolean;
   recipients: Array<any> = [];
 
   // private routeSub: any;
@@ -48,6 +50,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
               protected wthConfirmService: WthConfirmService,
               protected loadingService: LoadingService,
               protected photoService: PhotoService,
+              protected userService: UserService,
               protected sharingService?: ZMediaSharingService
   ) {
     // this.router = router;
@@ -79,6 +82,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
       })
       .subscribe((response: any) => {
           this.photo = response.data;
+          this.isOwner = (response.data.owner.id == this.userService.profile.id);
           this.loading = false;
         },
         (error: any) => {

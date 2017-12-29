@@ -22,9 +22,6 @@ import { Constants } from '@shared/constant';
 import { PhotoService } from '@shared/services';
 import * as Cropper from 'cropperjs';
 
-declare let $: any;
-declare let _: any;
-
 @Component({
   selector: 'photo-detail-partial',
   templateUrl: 'photo-detail-partial.component.html',
@@ -45,6 +42,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   @Input() ids: Array<number>;
   @Input() mode: number;
   @Input() showDetail: boolean;
+  @Input() isOwner: boolean;
   @Input() recipients: Array<any> = [];
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
@@ -74,6 +72,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
       this.currentIndex = _.indexOf(this.ids, this.photo.id);
       this.stop();
     }
+    this.loadMenu();
   }
 
   ngAfterViewInit() {
@@ -109,12 +108,13 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         action: 'openModal',
         params: {modalName: 'taggingModal'}
       },
-      {
-        text: 'Edit',
-        toolTip: Constants.tooltip.edit,
-        iconClass: 'fa fa-edit',
-        action: 'editPhoto'
-      },
+      // {
+      //   text: 'Edit',
+      //   toolTip: Constants.tooltip.edit,
+      //   iconClass: 'fa fa-edit',
+      //   action: 'editPhoto',
+      //   canEdit: this.canEdit
+      // },
       {
         text: 'More',
         toolTip: Constants.tooltip.moreAction,
@@ -145,6 +145,16 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         ]
       }
     ];
+
+    if(this.isOwner) {
+      this.menus.splice(3, 0,
+      {
+        text: 'Edit',
+        toolTip: Constants.tooltip.edit,
+        iconClass: 'fa fa-edit',
+        action: 'editPhoto'
+      });
+    }
 
     if (canDelete) {
       this.menus.splice(4, 0,
