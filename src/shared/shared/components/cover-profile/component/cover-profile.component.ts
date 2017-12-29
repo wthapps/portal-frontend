@@ -10,7 +10,7 @@ import { PhotoModalDataService } from '../../../../services/photo-modal-data.ser
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 
 @Component({
-    selector: 'cover-profile',
+  selector: 'cover-profile',
   templateUrl: 'cover-profile.component.html'
 })
 export class CoverProfileComponent {

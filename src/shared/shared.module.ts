@@ -203,7 +203,7 @@ export class SharedModule {
         CommonEventService,
         GenericFileService,
         ToastsService,
-        MessageService
+        MessageService,
       ]
     };
   }

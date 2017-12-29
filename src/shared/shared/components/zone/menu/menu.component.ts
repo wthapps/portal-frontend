@@ -83,8 +83,9 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  clearOutlets() {
-    this.router.navigate([{outlets: {modal: null, detail: null}}]);
+  clearOutlets(): Promise<any> {
+    console.debug('ClearOutlets ......');
+    return this.router.navigate([{outlets: {modal: null, detail: null}}]);
   }
 
   onMenu(event: string) {
@@ -93,7 +94,10 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubMenu(link: string) {
-    this.navigateService.navigateOrRedirect(link);
+    if(this.urls.social == this.hostname)
+      this.clearOutlets().then(() => this.navigateService.navigateOrRedirect(link));
+    else
+      this.navigateService.navigateOrRedirect(link);
   }
 
   trackMenu(index: any, item: any) {

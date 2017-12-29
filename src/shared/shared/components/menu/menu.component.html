@@ -7,12 +7,12 @@
 
       <div [ngClass]="{'active': urls.social == hostname, 'show': urls.social == hostname}" class="menuleft-nav-sub">
         <ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">
-          <div *ngIf="social.name != ''" [routerLinkActive]="['active']" (click)="clearOutlets()"
+          <div *ngIf="social.name != ''" [routerLinkActive]="['active']"
                [ngClass]="{'hidden': social.link == '/search'}" class="menuleft-nav-sub-item">
-            <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]">
+            <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]" href="javascript:;" (click)="onSubMenu('/profile/' + uuid)">
               <i class="{{ social.icon }}"></i> {{ social.name }}
             </a>
-            <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]">
+            <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]" href="javascript:;" (click)="onSubMenu(social.link)">
               <i class="{{ social.icon }}"></i> {{ social.name }}
             </a>
           </div>
@@ -132,8 +132,8 @@
       </ng-container>
     </div>
 
-    <div class="menuleft-nav-item" [routerLinkActive]="['active']" (click)="clearOutlets()">
-      <a draggable="false" [routerLink]="['/my-profile']">Profile</a>
+    <div class="menuleft-nav-item" [routerLinkActive]="['active']">
+      <a draggable="false" [routerLink]="['/my-profile']" (click)="onSubMenu('/my-profile')">Profile</a>
     </div>
   </div>
   <div class="menuleft-bottom">

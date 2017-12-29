@@ -16,7 +16,6 @@ import { Constants } from '@wth/shared/constant';
 
 
 @Component({
-
   selector: 'z-social-profile-cover',
   templateUrl: 'cover.component.html'
 })
