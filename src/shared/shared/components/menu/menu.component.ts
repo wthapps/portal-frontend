@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnInit, OnChanges, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute, NavigationEnd, Params } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -17,7 +17,7 @@ declare var $: any;
 declare var _: any;
 
 @Component({
-    selector: 'z-shared-menu',
+  selector: 'z-shared-menu',
   templateUrl: 'menu.component.html',
   styleUrls: ['menu.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -51,8 +51,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
               private location: Location,
               private apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService,
-              private commonEventService: CommonEventService
-  ) {
+              private commonEventService: CommonEventService) {
     this.uuid = this.userService.getProfileUuid();
     this.urls = Constants.baseUrls;
     this.constants = Constants;
@@ -134,10 +133,10 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   redirect(key: any) {
-    if(key == 'term') {
-      window.location.href = Constants.baseUrls.app + "/policies/terms"
+    if (key == 'term') {
+      window.location.href = Constants.baseUrls.app + '/policies/terms';
     } else {
-      window.location.href = Constants.baseUrls.app + "/policies/privacy"
+      window.location.href = Constants.baseUrls.app + '/policies/privacy';
     }
   }
 }

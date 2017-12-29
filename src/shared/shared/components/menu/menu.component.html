@@ -136,12 +136,13 @@
       <a draggable="false" [routerLink]="['/my-profile']">Profile</a>
     </div>
   </div>
-
+  <div class="menuleft-bottom">
+    <div>
+      <a target="_blank" [href]="constants.baseUrls.app + '/policies/terms'"> Term of service</a>
+      &bull;
+      <a target="_blank" [href]="constants.baseUrls.app + '/policies/privacy'">Policy &amp; policies</a>
+    </div>
+    <span>&copy; 2017 WTHApps</span>
+  </div>
 </nav>
-<div class="bottom-menu" style="font-size: 12px; padding: 7px; position: absolute; bottom: 0;">
-  <a href="javascript:;" target="_blank" [href]="constants.baseUrls.app + '/policies/terms'"> Term of service</a>
-  <span><i class="fa fa-circle" style="font-size: 6px; color: gray"></i></span>
-  <a href="javascript:;" target="_blank" [href]="constants.baseUrls.app + '/policies/privacy'">Policy & policies</a>
-  <br/>
-  <span>&copy; 2017 WTHApps</span>
-</div>
+
