@@ -12,17 +12,19 @@ import { ZSocialCommunityFormPreferenceComponent } from './shared/form/preferenc
 import { PostModule } from '../shared/second-routes/post/post.module';
 import { Ng2HdModule } from '@wth/shared/shared/ng2-hd';
 import { SharedModule } from '@wth/shared/shared.module';
-import { CoreModule } from '@wth/core/core.module';
+// import { CoreModule } from '@wth/core/core.module';
+import { CommunityRoutingModule } from './community-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
     PostModule,
     Ng2HdModule,
+    CommunityRoutingModule,
     ZSocialSharedModule,
     ZSocialCommunitySharedModule,
     SharedModule,
-    CoreModule
+    // CoreModule
 
   ],
   declarations: [

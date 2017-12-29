@@ -9,10 +9,10 @@ import { AppComponent } from './app.component';
 import { ZSocialSharedModule } from './shared/shared.module';
 
 import { ZSocialHomeModule } from './home/home.module';
-import { ZSocialCommunityModule } from './communities/communities.module';
+// import { ZSocialCommunityModule } from './communities/communities.module';
 import { SocialSettingsModule } from './settings/setting.module';
-import { ZSocialProfileModule } from './profile/profile.module';
-import { ZSocialSearchModule } from './search/search.module';
+// import { ZSocialProfileModule } from './profile/profile.module';
+// import { ZSocialSearchModule } from './search/search.module';
 import { ZSocialMyProfileModule } from './my-profile/my-profile.module';
 import { ZSocialPhotoModule } from './shared/second-routes/photo/photo.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -28,11 +28,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
     AppRoutingModule,
     ZSocialHomeModule,
-    ZSocialCommunityModule,
+    // ZSocialCommunityModule,
     SocialSettingsModule,
-    ZSocialProfileModule,
+    // ZSocialProfileModule,
     ZSocialPhotoModule,
-    ZSocialSearchModule,
+    // ZSocialSearchModule,
     ZSocialMyProfileModule,
     ZSocialSharedModule.forRoot(),
     SharedModule.forRoot(),

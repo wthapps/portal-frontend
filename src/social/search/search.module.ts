@@ -8,12 +8,14 @@ import { ZSocialSearchResultComponent } from './search.component';
 import { ZSocialPostByFilterComponent } from './components/post-by.component';
 import { ZSocialPostDateFilterComponent } from './components/post-date.component';
 import { SharedModule } from '@wth/shared/shared.module';
+import { SearchRoutingModule } from './search-routing.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
     ZSocialSharedModule,
+    SearchRoutingModule,
     SharedModule
   ],
   declarations: [

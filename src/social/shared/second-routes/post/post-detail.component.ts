@@ -58,7 +58,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   }
 
   goBack() {
-    this.router.navigate([{outlets: {detail: null}}], {preserveQueryParams: true}).then(() => {
+    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' }).then(() => {
 
     });
   }

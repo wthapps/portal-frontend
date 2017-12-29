@@ -95,7 +95,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   viewProfile(uuid: string = this.userService.getProfileUuid()) {
-    this.router.navigate([{outlets: {detail: null}}], {preserveQueryParams: true, preserveFragment: true})
+    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
       .then(() => this.router.navigate(['profile', uuid]));
   }
 
@@ -108,11 +108,14 @@ export class PostEditComponent implements OnInit, OnDestroy {
   open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
 
     this.post = new SoPost();
+    console.debug('post daata: ', this.post);
     if(this.socialService.community.currentCommunity) {
       this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
       this.post.custom_objects.length = 0;
       this.post.custom_objects.push(this.socialService.community.currentCommunity); // Default share new post to current community
     }
+    this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
+    this.privacyName = this.getPrivacyName(this.post);
 
     this.mode = options.mode;
     this.isShare = options.isShare;
@@ -279,7 +282,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   private getPrivacyClassIcon(post: any): string {
-    switch (post.privacy) {
+    let privacy = ( post.privacy == '' ) ? 'public' : post.privacy;
+    switch (privacy) {
       case Constants.soPostPrivacy.friends.data:
         return 'fa-users';
       case  Constants.soPostPrivacy.public.data:
@@ -296,9 +300,11 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   private getPrivacyName(post: any): string {
-    if(post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
+    console.debug('getPrivacyName: ', post.privacy);
+    let privacy = ( post.privacy == '' ) ? 'public' : post.privacy;
+    if(privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
       return post.custom_objects[0].name;
-    return post.privacy.replace('_', ' ');
+    return privacy.replace('_', ' ');
   }
 
   private subscribePhotoSelectEvents() {

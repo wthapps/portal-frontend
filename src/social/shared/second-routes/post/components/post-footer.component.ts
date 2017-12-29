@@ -71,7 +71,7 @@ export class PostFooterComponent implements OnChanges {
   }
 
   viewProfile(uuid: string) {
-    this.router.navigate([{outlets: {detail: null}}], {preserveQueryParams: true, preserveFragment: true})
+    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
       .then(() => this.router.navigate(['profile', uuid]));
   }
 

@@ -6,11 +6,9 @@ import { UserService } from '@wth/shared/services';
 
 
 @Component({
-
   selector: 'z-social-profile-post',
   templateUrl: 'post.component.html'
 })
-
 export class ZSocialProfilePostComponent implements OnInit {
   @ViewChild('posts') posts: PostListComponent;
   @ViewChild('postNew') postNew: PostNewComponent;
@@ -18,6 +16,7 @@ export class ZSocialProfilePostComponent implements OnInit {
   uuid: any;
   userInfo: any;
   relationships: any;
+  canCreate: boolean;
 
   constructor(private profileDataService: ZSocialProfileDataService,
               private userService: UserService) {
@@ -25,7 +24,8 @@ export class ZSocialProfilePostComponent implements OnInit {
 
   ngOnInit() {
     this.profileDataService.profileData$.subscribe((res: any) => {
-      this.userInfo = res.data;
+      this.userInfo = res.userInfo;
+      this.canCreate = (this.userInfo && this.userService.profile && this.userInfo.uuid == this.userService.profile.uuid);
       this.relationships = res.relationships;
     });
   }

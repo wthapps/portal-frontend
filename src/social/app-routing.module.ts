@@ -29,31 +29,34 @@ export const routes: Routes = [
     // {path: 'search/community', component: ZSocialSearchDetailComponent},
     // {path: 'search/post', component: ZSocialSearchDetailComponent},
 
-  {
-    path: 'search',
-    children: [
-      {path: 'member', component: ZSocialSearchResultDetailComponent},
-      {path: 'community', component: ZSocialSearchResultDetailComponent},
-      {path: 'post', component: ZSocialSearchResultDetailComponent},
-      {path: 'all', component: ZSocialSearchResultAllComponent}
-    ]
-  },
+  // {
+  //   path: 'search',
+  //   children: [
+  //     {path: 'member', component: ZSocialSearchResultDetailComponent},
+  //     {path: 'community', component: ZSocialSearchResultDetailComponent},
+  //     {path: 'post', component: ZSocialSearchResultDetailComponent},
+  //     {path: 'all', component: ZSocialSearchResultAllComponent}
+  //   ]
+  // },
 
-    {
-      path: 'profile/:id', component: ZSocialProfileComponent,
-      children: [
-        {path: 'about', component: ZSocialProfileAboutComponent},
-        {path: 'post', component: ZSocialProfilePostComponent},
-        {path: 'friends', component: ZSocialProfileFriendComponent},
-        {path: '', redirectTo: 'post', pathMatch: 'full', canActivate: [AuthGuard]}
-      ]
-    },
-    {path: 'communities/:id', component: ZSocialCommunityDetailComponent},
+    // {
+    //   path: 'profile/:id', component: ZSocialProfileComponent,
+    //   children: [
+    //     {path: 'about', component: ZSocialProfileAboutComponent},
+    //     {path: 'post', component: ZSocialProfilePostComponent},
+    //     {path: 'friends', component: ZSocialProfileFriendComponent},
+    //     {path: '', redirectTo: 'post', pathMatch: 'full', canActivate: [AuthGuard]}
+    //   ]
+    // },
+    // {path: 'communities/:id', component: ZSocialCommunityDetailComponent},
+    // {path: 'communities', component: ZSocialCommunityListComponent},
     {path: 'settings', component: ZSocialSettingComponent},
-    {path: 'communities', component: ZSocialCommunityListComponent},
   ]},
-  {path: 'posts/:id', redirectTo: '/home(detail:posts/:id)' , canActivate: [AuthGuard]},
-  {path: 'posts/:id', component: PostDetailComponent, outlet: 'detail', canActivate: [AuthGuard]}
+  { path: 'posts/:id', redirectTo: '/home(detail:posts/:id)' , canActivate: [AuthGuard]},
+  { path: 'posts/:id', component: PostDetailComponent, outlet: 'detail', canActivate: [AuthGuard]},
+  { path: 'search', loadChildren: './search/search.module#ZSocialSearchModule', canActivate: [AuthGuard] },
+  { path: 'profile', loadChildren: './profile/profile.module#ZSocialProfileModule', canActivate: [AuthGuard] },
+  { path: 'communities', loadChildren: './communities/communities.module#ZSocialCommunityModule', canActivate: [AuthGuard]},
 ];
 
 @NgModule({

@@ -132,7 +132,7 @@
       </ng-container>
     </div>
 
-    <div class="menuleft-nav-item" [routerLinkActive]="['active']">
+    <div class="menuleft-nav-item" [routerLinkActive]="['active']" (click)="clearOutlets()">
       <a draggable="false" [routerLink]="['/my-profile']">Profile</a>
     </div>
   </div>

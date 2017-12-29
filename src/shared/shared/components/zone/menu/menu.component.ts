@@ -4,7 +4,6 @@ import { Router, ActivatedRoute, NavigationEnd, Params } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/do';
 
 import { UserService } from '../../../../services/user.service';
 import { Constants } from '../../../../constant/config/constants';
@@ -13,11 +12,9 @@ import { CommonEventService } from '../../../../services/common-event/common-eve
 import { ApiBaseService } from '../../../../services/apibase.service';
 import { WthConfirmService } from '../../confirmation/wth-confirm.service';
 
-declare var $: any;
-declare var _: any;
 
 @Component({
-    selector: 'z-shared-menu',
+  selector: 'z-shared-menu',
   templateUrl: 'menu.component.html',
   styleUrls: ['menu.component.scss'],
   encapsulation: ViewEncapsulation.None

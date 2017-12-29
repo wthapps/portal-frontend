@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/withLatestFrom';
+import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/finally';
 import 'rxjs/add/operator/toPromise';
@@ -24,7 +25,6 @@ import { PostService } from './shared/post.service';
 
 
 @Component({
-
   selector: 'so-post-list',
   templateUrl: 'post-list.component.html'
 })
@@ -115,7 +115,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   viewProfile(uuid: string = this.userService.getProfileUuid()) {
-    this.router.navigate([{outlets: {detail: null}}], {preserveQueryParams: true, preserveFragment: true})
+    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
       .then(() => this.router.navigate(['profile', uuid]));
   }
 
