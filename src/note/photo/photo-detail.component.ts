@@ -9,6 +9,7 @@ import { BasePhotoDetailComponent } from '@shared/shared/components/photo/detail
 import { CommonEvent } from '@shared/services/common-event/common-event';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
+import { UserService } from '@wth/shared/services';
 
 declare let _: any;
 declare let $: any;
@@ -26,9 +27,10 @@ export class NotePhotoDetailComponent extends BasePhotoDetailComponent implement
     protected wthConfirmService: WthConfirmService,
     protected loadingService: LoadingService,
     protected commonEventService: CommonEventService,
+    protected userService: UserService,
     protected photoService: PhotoService
   ) {
-    super(route, router, wthConfirmService, loadingService, photoService);
+    super(route, router, wthConfirmService, loadingService, photoService, userService);
   }
 
   ngOnInit() {

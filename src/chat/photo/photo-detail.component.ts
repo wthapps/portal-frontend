@@ -8,7 +8,7 @@ import { ConversationService } from '../conversation/conversation.service';
 import { BasePhotoDetailComponent } from '@wth/shared/shared/components/photo/detail/base-photo-detail.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
-import { CommonEvent, CommonEventService, PhotoService } from '@wth/shared/services';
+import { CommonEvent, CommonEventService, PhotoService, UserService } from '@wth/shared/services';
 
 declare let _: any;
 
@@ -28,9 +28,10 @@ export class ChatPhotoDetailComponent extends BasePhotoDetailComponent implement
     protected chatService: ChatService,
     protected pubSubEventService: CommonEventService,
     protected conversationService: ConversationService,
+    protected userService: UserService,
     protected photoService: PhotoService
   ) {
-    super(route, router, wthConfirmService, loadingService, photoService);
+    super(route, router, wthConfirmService, loadingService, photoService, userService);
   }
 
   ngOnInit() {

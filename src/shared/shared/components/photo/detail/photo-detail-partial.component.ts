@@ -22,6 +22,9 @@ import { Constants } from '@shared/constant';
 import { PhotoService } from '@shared/services';
 import * as Cropper from 'cropperjs';
 
+declare let $: any;
+declare let _: any;
+
 @Component({
   selector: 'photo-detail-partial',
   templateUrl: 'photo-detail-partial.component.html',
