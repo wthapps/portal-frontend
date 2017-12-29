@@ -244,13 +244,15 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
 
   onRefresh() {
     this.cropper.reset();
+    this.cropper.setDragMode('none');
   }
 
   onStart(event?: any) {
     this.image = event ? event.path[0] : document.getElementById('image-viewer');
     this.cropper = new Cropper(this.image, {
       autoCrop: false,
-      dragMode: 'move',
+      // dragMode: 'move',
+      dragMode: 'none',
       background: false,
       viewMode: 1, // restrict the crop box to not exceed the size of the canvas.
       // viewMode: 2, // restrict the minimum canvas size to fit within the container.
@@ -258,6 +260,11 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         setTimeout(() => {
           this.loadingImg = false;
         }, 200);
+      },
+      zoom: (e: any) => {
+        if (e.detail.ratio !== e.detail.oldRatio) {
+          this.cropper.setDragMode('move');
+        }
       }
     });
   }
