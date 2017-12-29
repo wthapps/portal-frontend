@@ -27,8 +27,8 @@
       </div>
     </div>
     <div class="photo-box-owner">{{ object.owner.name }}</div>
-    <div class="photo-box-date">{{ object.created_at | timeFormat }}</div>
-    <div class="photo-box-size">{{ object.size | bytes:3 }}</div>
+    <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
+    <div class="photo-box-size">{{ object.size | bytes:0 }}</div>
   </div>
 
   <!--type == 'album'-->
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="photo-box-owner">{{ object.owner.name }}</div>
-    <div class="photo-box-date">{{ object.created_at | timeFormat }}</div>
+    <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
     <div class="photo-box-size">{{ object.photo_number }}</div>
   </div>
 </div>

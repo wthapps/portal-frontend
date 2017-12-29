@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 
 import { UserService } from '../shared/services/user.service';
-import { Config } from '../shared/constant/config/env.config';
 
 declare let $: any;
 
@@ -42,12 +41,12 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     // fix scroll to top after changing route
-    // this.router.events.subscribe((evt) => {
-    //   if (!(evt instanceof NavigationEnd)) {
-    //     return;
-    //   }
-    //   window.scrollTo(0, 0);
-    // });
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      window.scrollTo(0, 0);
+    });
   }
 
   ngOnDestroy() {
