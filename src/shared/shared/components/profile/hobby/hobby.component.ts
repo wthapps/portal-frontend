@@ -16,7 +16,7 @@ declare var _: any;
 
 @Mixin([ProfileFormMixin, ProfileFormCustomSubmitMixin])
 @Component({
-    selector: 'partials-profile-hobby',
+  selector: 'partials-profile-hobby',
   templateUrl: 'hobby.component.html'
 })
 

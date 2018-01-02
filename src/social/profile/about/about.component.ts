@@ -42,4 +42,8 @@ export class ZSocialProfileAboutComponent implements OnInit {
       this.actions = res.actions;
     });
   }
+
+  onUpdateProfile(event: any) {
+    this.profileDataService.updateData({userInfo: event});
+  }
 }

@@ -19,6 +19,11 @@ export class ZSocialProfileDataService {
     this.profileDataSubject.next(data);
   }
 
+  updateData(updData: any) {
+    let currentData = this.profileDataSubject.getValue();
+    this.profileDataSubject.next({...currentData, ...updData});
+  }
+
   getData() {
     return this.profileDataSubject.getValue();
   }

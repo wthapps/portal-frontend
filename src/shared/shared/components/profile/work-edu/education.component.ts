@@ -16,7 +16,7 @@ declare var _: any;
 
 @Mixin([ProfileFormMixin, ProfileFormCustomSubmitMixin])
 @Component({
-    selector: 'partials-profile-edu',
+  selector: 'partials-profile-edu',
   templateUrl: 'education.component.html'
 })
 

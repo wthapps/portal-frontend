@@ -1,5 +1,5 @@
 <div *ngIf="data">
-  <partials-profile-about [data]="data" [editable]="actions.update"></partials-profile-about>
+  <partials-profile-about [data]="data" [editable]="actions.update" (outEvent)="onUpdateProfile($event)"></partials-profile-about>
   <partials-profile-contact [data]="data" [editable]="actions.update"></partials-profile-contact>
   <partials-profile-work [data]="data" [editable]="actions.update"></partials-profile-work>
   <partials-profile-edu [data]="data" [editable]="actions.update"></partials-profile-edu>
