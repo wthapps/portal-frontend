@@ -9,7 +9,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-// import * as Cropper from 'cropperjs';
+
 import * as Cropper from 'cropperjs';
 
 @Component({
@@ -39,6 +39,7 @@ export class ImageCropperComponent implements OnInit, OnChanges, AfterViewInit {
     cropping: false,
     edited: false,
     zoom: 0,
+    rotate: 0,
   };
 
   constructor() {
@@ -62,23 +63,33 @@ export class ImageCropperComponent implements OnInit, OnChanges, AfterViewInit {
 
   onStart(event?: any) {
     this.image = event ? event.path[0] : document.getElementById('image-cropper');
-    console.log('this.image:', this.image);
+    // console.log('this.image:', this.image);
 
     this.cropper = new Cropper(this.image, {
       autoCrop: false,
-      dragMode: 'move',
+      // dragMode: 'move',
+      dragMode: 'none',
       background: false,
       viewMode: 1, // restrict the crop box to not exceed the size of the canvas.
       // viewMode: 2, // restrict the minimum canvas size to fit within the container.
       ready: () => {
-        console.log('ready: this.image2: ', this.image);
+        // console.log('ready: this.image: ', this.image);
         setTimeout(() => {
           this.loading = false;
         }, 200);
       },
-      crop: (img) => {
-        if (img.detail.width > 0 && img.detail.height > 0 && !this.editor.cropping) {
+      crop: (e: any) => {
+        // console.log('crop:', e);
+        if (e.detail.width > 0 && e.detail.height > 0 && !this.editor.cropping) {
           this.editor.cropping = true;
+        }
+
+        this.editor.rotate = e.detail.rotate;
+      },
+      zoom: (e: any) => {
+        // console.log('zoom:', e);
+        if (e.detail.ratio !== e.detail.oldRatio) {
+          this.cropper.setDragMode('move');
         }
       },
     });
@@ -99,12 +110,13 @@ export class ImageCropperComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onRotateLeft() {
-    this.cropper.rotate(-90);
+    this.rotateImage(-90);
     this.editor.edited = true;
+
   }
 
   onRotateRight() {
-    this.cropper.rotate(90);
+    this.rotateImage(90);
     this.editor.edited = true;
   }
 
@@ -117,19 +129,8 @@ export class ImageCropperComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  /*onSave() {
-    this.data.imageData = this.cropper.getCroppedCanvas(this.data.type === 'png' ? null : {
-      fillColor: '#fff',
-    }).toDataURL(this.data.type);
-    this.editor.edited = true;
-    this.stop();
-    this.onCompleteMethod.emit({action: 'savePhoto', data: this.data.imageData});
-  }*/
-
   onSave() {
-    const imageData = this.cropper.getCroppedCanvas(this.data.type === 'png' ? null : {
-      fillColor: '#fff',
-    }).toDataURL(this.data.type);
+    const imageData = this.getImageData();
     this.onCompleteMethod.emit({action: 'savePhoto', data: imageData});
   }
 
@@ -146,11 +147,70 @@ export class ImageCropperComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onCropDone() {
-    this.data.imageData = this.cropper.getCroppedCanvas(this.data.type === 'png' ? null : {
-      fillColor: '#fff',
-    }).toDataURL(this.data.type);
+    this.data.imageData = this.getImageData();
     this.editor.edited = true;
     this.stop();
+  }
+
+  private rotateImage(rotate) {
+    // get data
+    const cropBoxDataNew = this.cropper.getCropBoxData();
+    const containerData = this.cropper.getContainerData();
+
+    // get canvas data
+    const canvasData = this.cropper.getCanvasData();
+
+    // set data of cropbox to avoid unwanted behavior due to strict mode
+    cropBoxDataNew.width = 2;
+    cropBoxDataNew.height = 2;
+    cropBoxDataNew.top = 0;
+    const cropBoxleftNew = (containerData.width / 2) - 1;
+    cropBoxDataNew.left = cropBoxleftNew;
+    this.cropper.setCropBoxData(cropBoxDataNew);
+
+    // rotate
+    this.cropper.rotate(rotate);
+
+    let heightNew = 0;
+    let widthNew = 0;
+    let topNew = 0;
+    let leftNew = 0;
+
+    const canvasRatioHorizontal = canvasData.width / canvasData.height;
+    const canvasRatioVertical = canvasData.height / canvasData.width;
+
+    if (canvasRatioHorizontal >= 1) {
+      heightNew = containerData.height;
+      widthNew = heightNew * canvasRatioVertical;
+      topNew = 0;
+      leftNew = (containerData.width - widthNew) / 2;
+    } else {
+      widthNew = containerData.width;
+      heightNew = widthNew * canvasRatioHorizontal;
+      topNew = (containerData.height - heightNew) / 2;
+      leftNew = 0;
+    }
+
+    canvasData.height = heightNew;
+    canvasData.width = widthNew;
+    canvasData.top = topNew;
+    canvasData.left = leftNew;
+
+    this.cropper.setCanvasData(canvasData);
+
+    // and now set cropper "back" to full crop
+    cropBoxDataNew.left = 0;
+    cropBoxDataNew.top = 0;
+    cropBoxDataNew.width = canvasData.width;
+    cropBoxDataNew.height = canvasData.height;
+    this.cropper.setCropBoxData(cropBoxDataNew);
+  }
+
+  private getImageData() {
+    const imageData = this.cropper.getCroppedCanvas(this.data.type === 'png' ? null : {
+      fillColor: '#fff',
+    }).toDataURL(this.data.type);
+    return imageData;
   }
 
   private stop() {
