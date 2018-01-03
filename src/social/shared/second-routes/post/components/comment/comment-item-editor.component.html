@@ -37,7 +37,8 @@
                   <!--[(ngModel)]="comment.content"></textarea>-->
 
         <div contenteditable="true" #commentContent placeholder="Add a comment"
-                  [formControl]="contentCtrl"
+             class="form-control comment-editor-input"
+             [formControl]="contentCtrl"
                   (keyup)="onKey($event)"
                   [(ngModel)]="comment.content"></div>
       </div>
