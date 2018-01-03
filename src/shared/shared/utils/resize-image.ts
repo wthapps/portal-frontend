@@ -24,6 +24,7 @@ export class ResizeImage {
   ];
   img: any;
   change: any;
+  changing: boolean = false;
   currentX: any;
   currentY: any;
   x: any;
@@ -80,9 +81,11 @@ export class ResizeImage {
           let bound = this.img.getBoundingClientRect();
           let deltaX = e.offsetX - bound.x;
           let deltaY = e.offsetY - (bound.y + this.area.scrollTop);
-          if (!$(this.resizeBorder).is(e.target) && $(this.resizeBorder).has(e.target).length == 0)
+          if (!$(this.resizeBorder).is(e.target) && $(this.resizeBorder).has(e.target).length == 0 && !this.changing)
           {
               this.close();
+          } else {
+            this.changing = false
           }
         }
     });
@@ -101,6 +104,7 @@ export class ResizeImage {
     this.timeInterval = setInterval(() => {this.resize(el)}, 3);
     this.currentX = this.x;
     this.currentY = this.y;
+    this.changing = true;
   }
 
   resize(el: any) {

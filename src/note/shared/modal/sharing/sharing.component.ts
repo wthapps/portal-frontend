@@ -112,8 +112,9 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
     this.store.dispatch({type: fromShareModal.ADD_SELECTED_CONTACT, payload: contact});
   }
 
-  remove(contact: any) {
-    this.store.dispatch({type: fromShareModal.REMOVE_SHARED_SHARING, payload: contact});
+  remove(sharing: any) {
+    sharing = {...sharing, _destroy: true};
+    this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: sharing});
   }
 
   removeSelected(contact: any) {
@@ -124,13 +125,14 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
     this.store.dispatch({type: fromShareModal.CANCEL_ACTIONS});
   }
 
-  cancelRemove(contact: any) {
-    this.store.dispatch({type: fromShareModal.CANCEL_REMOVE_SHARED_SHARING, payload: contact});
+  cancelRemove(sharing: any) {
+    sharing = {...sharing, _destroy: null};
+    this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: sharing});
   }
 
-  changePermission(contact: any, permission: any) {
-    contact.permission = permission;
-    this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: contact});
+  changePermission(sharing: any, permission: any) {
+    sharing = {...sharing, permission: permission};
+    this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: sharing});
   }
 
   save() {

@@ -3,9 +3,7 @@ import { BaseModel } from '@shared/shared/models/base.model';
 
 export const ADD_SELECTED_CONTACT = '[NOTE] SHARE_MODAL_ADD_SELECTED_CONTACT';
 export const SET_SHARED_SHARINGS = '[NOTE] SHARE_MODAL_SET_SHARED_SHARINGS';
-export const REMOVE_SHARED_SHARING = '[NOTE] SHARE_MODAL_REMOVE_SHARED_SHARING';
 export const REMOVE_SELECTED_CONTACT = '[NOTE] SHARE_MODAL_REMOVE_SELECTED_CONTACT';
-export const CANCEL_REMOVE_SHARED_SHARING = '[NOTE] SHARE_MODAL_CANCEL_REMOVE_SHARED_SHARING';
 export const CANCEL_ACTIONS = '[NOTE] SHARE_MODAL_CANCEL_ACTIONS';
 export const UPDATE_SHARING = '[NOTE] UPDATE_SHARING';
 export const SAVE = '[NOTE] SHARE_MODAL_SAVE';
@@ -51,33 +49,12 @@ export function reducer(state: any = {
       stateClone.current.sharedSharings = _.clone(action.payload);
       stateClone.saved.sharedSharings = _.clone(action.payload);
       return stateClone;
-    case REMOVE_SHARED_SHARING:
-      stateClone.changed = true;
-      stateClone.showCancelButton = true;
-      for (let i in stateClone.current.sharedSharings) {
-        if (stateClone.current.sharedSharings[i].id == action.payload.id) {
-          let clone = _.clone(stateClone.current.sharedSharings[i]);
-          clone._destroy = true;
-          stateClone.current.sharedSharings[i] = clone;
-        }
-      }
-      return stateClone;
-    case CANCEL_REMOVE_SHARED_SHARING:
-      for (let i in stateClone.current.sharedSharings) {
-        if (stateClone.current.sharedSharings[i].id == action.payload.id) {
-          let clone = _.clone(stateClone.current.sharedSharings[i]);
-          clone._destroy = null;
-          stateClone.current.sharedSharings[i] = clone;
-        }
-      }
-      return stateClone;
     case UPDATE_SHARING:
       stateClone.changed = true;
       stateClone.showCancelButton = true;
       for (let i in stateClone.current.sharedSharings) {
         if (stateClone.current.sharedSharings[i].id == action.payload.id) {
-          let clone = _.clone(stateClone.current.sharedSharings[i]);
-          stateClone.current.sharedSharings[i] = clone;
+          stateClone.current.sharedSharings[i] = action.payload;
         }
       }
       return stateClone;
