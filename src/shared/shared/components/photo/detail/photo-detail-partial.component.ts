@@ -11,7 +11,7 @@ import {
   OnChanges,
   SimpleChanges,
   OnDestroy,
-  ViewEncapsulation
+  ViewEncapsulation, ElementRef
 } from '@angular/core';
 
 import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
@@ -261,7 +261,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   }
 
   onStart(event?: any) {
-    this.image = event ? event.path[0] : document.getElementById('image-viewer');
+    this.image = (event && event.path) ? event.path[0] : document.getElementById('image-viewer');
     this.cropper = new Cropper(this.image, {
       autoCrop: false,
       // dragMode: 'move',

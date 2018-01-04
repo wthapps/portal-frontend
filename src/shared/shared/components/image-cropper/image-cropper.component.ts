@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   Input,
   Output,
-  EventEmitter
+  EventEmitter, ElementRef
 } from '@angular/core';
 
 import * as Cropper from 'cropperjs';
@@ -62,7 +62,7 @@ export class ImageCropperComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onStart(event?: any) {
-    this.image = event ? event.path[0] : document.getElementById('image-cropper');
+    this.image = (event && event.path) ? event.path[0] : document.getElementById('image-cropper');
     // console.log('this.image:', this.image);
 
     this.cropper = new Cropper(this.image, {
