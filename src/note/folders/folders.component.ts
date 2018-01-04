@@ -16,6 +16,8 @@ import { Note } from '@shared/shared/models/note.model';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { NoteBreadcrumb } from '../shared/breadcrumb/breadcrumb';
 import { UrlService } from "@shared/services";
+import { noteConstants, NoteConstants } from "note/shared/config/constants";
+
 
 declare var _: any;
 
@@ -24,24 +26,10 @@ declare var _: any;
   templateUrl: 'folders.component.html'
 })
 export class ZNoteFoldersComponent implements OnInit, OnDestroy {
-  viewOption: string = 'grid';
-  noteItems$: Observable<Note[]>;
-  folderItems$: Observable<Folder[]>;
-  sortOption$: Observable<any>;
-  nodeState$: Observable<any>;
-  selectedObjects$: Observable<any[]>;
-  selectAll$: Observable<boolean>;
-  currentFolderPath$: Observable<any[]>;
-  loading$: Observable<boolean>;
-  context$: Observable<any>;
-  currentFolder: any;
-  page: any;
-
-  items: Observable<any>;
+  currentPath: any;
 
   sub: Subscription;
   sub2: Subscription;
-  sub3: Subscription;
 
   breadcrumbs: NoteBreadcrumb[] = [];
   initRoute: string = '/';
@@ -52,15 +40,6 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private urlService: UrlService,
               private commonEventService: CommonEventService) {
-    this.noteItems$ = this.store.select(listReducer.getNotes);
-    this.folderItems$ = this.store.select(listReducer.getFolders);
-    this.sortOption$ = this.store.select(fromRoot.getSortOption);
-    this.nodeState$ = this.store.select(fromRoot.getNotesState);
-    this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
-    this.currentFolderPath$ = this.store.select(fromRoot.getCurrentFolderPath);
-    this.selectAll$ = this.store.select(fromRoot.getSelectAll);
-    this.loading$ = this.store.select(fromRoot.getLoading);
-    this.context$ = this.store.select(context.getContext);
   }
 
   ngOnInit() {
@@ -68,25 +47,30 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
       let urlData = this.urlService.parse();
       switch(urlData.paths[0]) {
         case 'shared-by-me':
-          this.page = 'SHARED_BY_ME';
+          this.currentPath = noteConstants.PAGE_SHARED_BY_ME;
           this.initRoute = '/shared-by-me';
           this.breadcrumbsInit = {id: null, name: null, label: 'Shared by me', routerLink: '/shared-by-me'};
           break;
         case 'shared-with-me':
-          this.page = 'SHARED_WITH_ME';
+          this.currentPath = noteConstants.PAGE_SHARED_WITH_ME;
           this.initRoute = '/shared-with-me';
           this.breadcrumbsInit = {id: null, name: null, label: 'Shared with me', routerLink: '/shared-with-me'};
           break;
         default:
-          this.page = 'MY_NOTE';
+          this.currentPath = noteConstants.PAGE_MY_NOTE;
           this.initRoute = '';
           this.breadcrumbsInit = {id: null, name: null, label: 'My notes', routerLink: '/'};
       }
       let id = +params['id'];
       this.store.dispatch({type: note.LOAD, payload: {parent_id: id}});
-      this.store.dispatch({type: folder.SET_CURRENT_FOLDER, payload: {id: id, page: this.page}});
-
-      this.sub3 = this.store.select(fromRoot.getCurrentFolderPath).subscribe((res: any)=> {
+      this.store.dispatch({type: folder.SET_CURRENT_FOLDER, payload: {id: id, page: this.currentPath}});
+      this.store.dispatch({type: context.SET_CONTEXT, payload: {
+        page: noteConstants.PAGE_INSIDE_FOLDER,
+        pathTitle: '',
+        permissions: {},
+        noData: noteConstants.NO_DATA.MY_NOTE
+      }});
+      this.sub2 = this.store.select(fromRoot.getCurrentFolderPath).subscribe((res: any)=> {
         this.breadcrumbs.length = 0;
         this.breadcrumbs.push(this.breadcrumbsInit);
         _.map(res, (v: any)=> {
@@ -99,31 +83,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.store.dispatch({type: folder.SET_CURRENT_FOLDER, payload: {id: null}});
-
     this.sub.unsubscribe();
-    // this.sub2.unsubscribe();
-    this.sub3.unsubscribe();
-  }
-
-  onNewNote() {
-    this.noteService.modalEvent({
-      action: 'note:open_note_add_modal',
-      payload: {parent_id: +this.route.snapshot.params['id']}
-    });
-  }
-
-  onFolder() {
-    this.noteService.modalEvent({
-      action: 'note:folder:create',
-      payload: {parent_id: +this.route.snapshot.params['id']}
-    });
-  }
-
-  onBreadcrumbAction(event: any) {
-    this.noteService.modalEvent({
-      action: event.action,
-      payload: event.payload,
-      breadcrumb: true
-    });
+    this.sub2.unsubscribe();
   }
 }

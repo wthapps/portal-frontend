@@ -1,7 +1,7 @@
 <z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="'MY_NOTE'">
   <div class="btn-group">
     <button type="button" class="btn btn-primary btn-min dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
+            aria-expanded="false" [disabled]="!(context$ | async).permissions.enableEdit">
       New
     </button>
     <ul class="dropdown-menu dropdown-menu-sm">
@@ -13,6 +13,9 @@
   <span class="btn-text ml15">
     {{(context$ | async).pathTitle}}
   </span>
+  <z-note-shared-breadcrumb class="note-breadcrumb" [model]="breadcrumbs" [permissions]="(context$ | async).permissions"
+                            (onBreadcrumbAction)="onBreadcrumbAction($event)">
+  </z-note-shared-breadcrumb>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
   <ng-container *ngIf="!(context$ | async)?.loading; else loadingBlock">

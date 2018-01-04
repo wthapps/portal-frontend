@@ -15,6 +15,7 @@ import * as fromRoot from '../../reducers/index';
 import * as note from '../../actions/note';
 import { Subscription } from 'rxjs';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
+import { UrlService } from "@shared/services";
 
 declare var _: any;
 
@@ -32,6 +33,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   selected: boolean = false;
   sub: Subscription;
   pressingCtrlKey: boolean;
+  urls: any;
 
   readonly PAGE_TYPE: any = Constants.notePageType;
 
@@ -52,6 +54,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   constructor(private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               private wthConfirm: WthConfirmService,
+              private urlService: UrlService,
               private router: Router) {
   }
 
@@ -63,7 +66,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
       }
       this.selected = sel;
     });
-
+    this.urls = this.urlService.parse();
   }
 
   ngOnDestroy() {
@@ -106,8 +109,8 @@ export class FolderItemComponent implements OnInit, OnDestroy {
 
   onView() {
     if(!this.data.deleted_at) {
-      if (this.page == 'SHARED_BY_ME') {this.router.navigate([`shared-by-me/folders`, this.data.id]); return;}
-      if (this.page == 'SHARED_WITH_ME') {this.router.navigate([`shared-with-me/folders`, this.data.id]); return;}
+      if (this.urls.paths[0] == 'shared-by-me') {this.router.navigate([`shared-by-me/folders`, this.data.id]); return;}
+      if (this.urls.paths[0] == 'shared-with-me') {this.router.navigate([`shared-with-me/folders`, this.data.id]); return;}
       this.router.navigate([`folders`, this.data.id]);
     } else {
       this.wthConfirm.confirm({

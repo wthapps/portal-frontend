@@ -2,6 +2,7 @@ import { ActionReducer, Action } from '@ngrx/store';
 import { NoteContext } from "note/shared/models/context.model";
 
 export const SET_CONTEXT = '[NOTE] SET_CONTEXT';
+export const SET_CONTEXT_BY_FOLDER_PATHS = '[NOTE] SET_CONTEXT_BY_FOLDER_PATHS';
 
 declare let _: any;
 let empty: any = function (): any {
@@ -13,6 +14,18 @@ export function reducer(state: any = empty(), action: any) {
   switch (action.type) {
     case SET_CONTEXT:
       stateClone.setContext(action.payload);
+      return stateClone;
+    case SET_CONTEXT_BY_FOLDER_PATHS:
+      stateClone.setContext(action.payload);
+      if (!action.payload || action.payload.length == 0) {
+        return state;
+      }
+      let folder = action.payload[action.payload.length -1]
+      let permissions = {
+        edit: folder.permission == 'edit',
+        enableEdit: folder.permission == 'edit',
+      };
+      stateClone.setContext({permissions: permissions});
       return stateClone;
     default:
       return state;

@@ -4,10 +4,9 @@
       <button *ngIf="!last" type="button" class="btn btn-default dropdown-toggle" (click)="onClick(item)">
         {{ item.label }}
       </button>
-
       <div *ngIf="last" class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
+                aria-expanded="false" [disabled]="!permissions.enableEdit">
           {{ item.label }} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">

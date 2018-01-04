@@ -16,6 +16,7 @@ import 'rxjs/add/operator/map';
 
 
 import * as folder from '../actions/folder';
+import * as context from '../reducers/context';
 import { ZFolderService } from '../services/folder.service';
 
 
@@ -65,7 +66,11 @@ export class FolderEffects {
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
       return this.folderService.getFolderPath(payload)
-        .map((res: any) => new folder.SetCurrentFolderPath(res['data']))
+        // .map((res: any) => new folder.SetCurrentFolderPathAndUpdateCurrent(res['data']))
+        .mergeMap((res: any) => { return [
+            new folder.SetCurrentFolderPathAndUpdateCurrent(res['data']),
+            {type: context.SET_CONTEXT_BY_FOLDER_PATHS, payload : res.data}
+          ]})
         .catch(() => empty());
     });
 }

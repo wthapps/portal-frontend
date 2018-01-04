@@ -27,9 +27,9 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   @Input() data: any;
   @Input() page: any;
   @Input() selectedObjects: any[] = [];
+  @Input() permission: any = 'edit';
 
   readonly tooltip: any = Constants.tooltip;
-  permission: any = 'edit';
   show: boolean = true;
   toolbarPosition: any = 'top'; // 2 positions: top and inline
   destroySubject: Subject<any> = new Subject<any>();
@@ -104,7 +104,16 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   }
 
   ngOnInit() {
-    //
+    // Update toolbar inline
+    if (this.data) {
+      for (let key in this.actionsMenu) {
+          if (this.actionsMenu[key].permission == 'edit' && this.data.permission == 'edit') {
+            this.actionsMenu[key].show = true;
+          } else {
+            this.actionsMenu[key].show = false;
+          }
+        }
+    }
   }
 
   ngOnDestroy() {
@@ -137,7 +146,6 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   toolbarActionsSetup(e: any) {
     // turn on off action by permission for action
     if(this.selectedObjects[0] && this.selectedObjects[0].permission && this.selectedObjects[0].permission == 'view') {
-      this.permission = 'view';
       for (let key in this.actionsMenu) {
         if (this.actionsMenu[key].permission == 'view') {
           this.actionsMenu[key].show = true;
@@ -158,10 +166,8 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     // show edit?: actions toolbar on top only
     if(this.selectedObjects.length > 1) {
       this.actionsMenu.edit.show = false;
-    } else {
-      this.actionsMenu.edit.show = true;
     }
-
+    //
     // show make a copy?
     let changed: boolean = false;
     _.forEach(this.selectedObjects, (item: any) => {

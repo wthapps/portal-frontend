@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ZNoteService } from '../services/note.service';
 // import { ApiBaseService } from '@shared/services/apibase.service';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
@@ -25,6 +25,7 @@ declare var _: any;
 })
 export class ZNoteContainerComponent implements OnInit {
   @ViewChild('introModal') introModal: any;
+  @Input() breadcrumbs: any;
 
   viewOption: string = 'grid';
   noteItems$: Observable<Note[]>;
@@ -34,6 +35,7 @@ export class ZNoteContainerComponent implements OnInit {
   loading$: Observable<boolean>;
   items: Observable<any>;
   context$: Observable<any>;
+  currentFolder$: Observable<any>;
   noteConstants: NoteConstants = noteConstants;
 
   constructor(private noteService: ZNoteService,
@@ -45,6 +47,7 @@ export class ZNoteContainerComponent implements OnInit {
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.context$ = this.store.select(context.getContext);
+    this.currentFolder$ = this.store.select(fromRoot.getCurrentFolder);
   }
 
   ngOnInit() {
@@ -58,6 +61,14 @@ export class ZNoteContainerComponent implements OnInit {
   onFolder() {
     this.noteService.modalEvent({
       action: 'note:folder:create'
+    });
+  }
+
+  onBreadcrumbAction(event: any) {
+    this.noteService.modalEvent({
+      action: event.action,
+      payload: event.payload,
+      breadcrumb: true
     });
   }
 }
