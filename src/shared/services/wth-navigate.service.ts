@@ -58,9 +58,13 @@ export class WTHNavigateService {
     // $(event.target.nextElementSibling).toggleClass('hidden');
   }
 
+  inSameModule(moduleNames: string[]) {
+    return moduleNames.includes(window.location.origin);
+  }
+
   // Redirect if page is in another module
   private redirectIfNeed( path: string, baseUrl: string, queryParams: any) {
-    if(!this.inSameModule(baseUrl)) {
+    if(!this.inSameModule([baseUrl])) {
       window.location.href = this.buildUrl(baseUrl, path, queryParams);
       return;
     }
@@ -78,9 +82,7 @@ export class WTHNavigateService {
     return fullUrl;
   }
 
-  private inSameModule(moduleFullName: string) {
-    return window.location.origin === moduleFullName;
-  }
+
 
   private paramsToString(params: any): string {
     let str: string = '';

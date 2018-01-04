@@ -164,7 +164,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         collapsed: true,
         prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b\/?/,
         handler: function h(range, context) {
-          console.debug('inside enter bindings: ', range, context);
           this.addHyperLink(range, context);
           return true;
         }.bind(this)
@@ -515,7 +514,9 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         };
 
         i.ondblclick = (event: any) => {
-          let photoId: string = event.srcElement.getAttribute('data-id');
+          console.debug('event.srcElement: ', event);
+          // let photoId: string = event.srcElement.getAttribute('data-id');
+          let photoId: string = i.dataset.id;
           if (photoId && photoId !== 'null') {
             $('#modal-note-edit').css('z-index', '0');
             $('.modal-backdrop').css('z-index', '0');
@@ -550,7 +551,8 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.store.select(fromRoot.getCurrentNote)
       .takeUntil(Observable.merge(this.closeSubject, this.destroySubject))
       .subscribe((note: Note) => {
-        this.updateFormValue(note);
+        if(note != undefined)
+          this.updateFormValue(note);
       });
   }
 

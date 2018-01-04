@@ -51,7 +51,7 @@
               </li>
               <li [ngClass]="{'active': currentTab == 'attachment'}">
                 <a (click)="currentTab = 'attachment'" href="javascript:;"><i class="fa fa-paperclip"></i> Attachment
-                  ({{ note?.attachments.length || 0 }})</a>
+                  ({{ note?.attachments?.length || 0 }})</a>
               </li>
               <li class="pull-right">
                 <a (click)="hasShowComment = !hasShowComment" href="javascript:;">

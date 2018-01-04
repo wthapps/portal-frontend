@@ -4,6 +4,7 @@ import { Constants } from '../../../constant/config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { ChannelService } from '../../../channels/channel.service';
 import { NotificationService } from '../../../services/notification.service';
+import { Router } from '@angular/router';
 
 declare var $: any;
 declare var _: any;
@@ -25,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(public userService: UserService,
               private navigateService: WTHNavigateService,
               private channelService: ChannelService,
+              private router: Router,
               public notificationService: NotificationService) {
   }
 
@@ -116,7 +118,11 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     $('.navbar-nav-notification').removeClass('open');
 
     // Navigate to notification page of social module
-    this.navigateService.navigateOrRedirect('notifications', 'social');
+    // TODO: Replace by navigate to method to all modules
+    if(this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social]))
+      this.router.navigate(['/notifications']);
+    else
+      this.navigateService.navigateOrRedirect('notifications', 'social');
   }
 
   getMoreNotifications() {

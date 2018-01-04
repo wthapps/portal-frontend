@@ -34,6 +34,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(public userService: UserService,
               private navigateService: WTHNavigateService,
               private channelService: ChannelService,
+              private router: Router,
               public notificationService: NotificationService) {
   }
 
@@ -137,7 +138,10 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     $('.navbar-nav-notification').removeClass('open');
 
     // Navigate to notification page of social module
-    this.navigateService.navigateOrRedirect('notifications', 'social');
+    if(this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social]))
+      this.router.navigate(['/notifications']);
+    else
+      this.navigateService.navigateOrRedirect('notifications', 'social');
   }
 
   getMoreNotifications() {
