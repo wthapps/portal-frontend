@@ -113,7 +113,7 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'note:open_note_add_modal':
         this.loadModalComponent(NoteEditModalComponent);
         this.store.dispatch(new note.ResetCurrentNote());
-        this.modal.open({mode: 'add', parent_id: _.get(event, 'payload.parent_id')});
+        this.modal.open({mode: 'add', parent_id: this.currentFolder.id});
         break;
       case 'note:folder:edit':
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);

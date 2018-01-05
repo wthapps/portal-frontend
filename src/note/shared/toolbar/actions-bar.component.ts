@@ -11,6 +11,7 @@ import { WthConfirmService } from '@shared/shared/components/confirmation/wth-co
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
 import { Subject } from "rxjs";
+import { UrlService } from "@shared/services";
 
 declare var _: any;
 declare let saveAs: any;
@@ -33,11 +34,12 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   show: boolean = true;
   toolbarPosition: any = 'top'; // 2 positions: top and inline
   destroySubject: Subject<any> = new Subject<any>();
+  urls: any;
 
   actionsMenu: any = {
     edit: {
       show: true,
-      permission: 'edit',
+      needPermission: 'edit',
       inDropDown: false, // Outside dropdown list
       action: this.edit.bind(this),
       class: 'btn btn-default',
@@ -47,7 +49,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     },
     share: {
       show: true,
-      permission: 'edit',
+      needPermission: 'edit',
       inDropDown: false, // Outside dropdown list
       action: this.share.bind(this),
       class: 'btn btn-default',
@@ -57,7 +59,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     },
     delete: {
       show: true,
-      permission: 'edit',
+      needPermission: 'edit',
       inDropDown: false, // Outside dropdown list
       action: this.delete.bind(this),
       class: 'btn btn-default',
@@ -67,28 +69,28 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     },
     copy: {
       show: true,
-      permission: 'edit',
+      needPermission: 'edit',
       inDropDown: true, // Inside dropdown list
       action: this.makeACopy.bind(this),
       title: 'Make copy'
     },
     moveToFolder: {
       show: true,
-      permission: 'edit',
+      needPermission: 'edit',
       inDropDown: true, // Inside dropdown list
       action: this.moveToFolder.bind(this),
       title: 'Move to folder'
     },
     removeSharedWithMe: {
       show: true,
-      permission: 'view',
+      needPermission: 'view',
       inDropDown: true, // Inside dropdown list
       action: this.removeShares.bind(this),
       title: 'Remove Share'
     },
     stopSharing: {
       show: true,
-      permission: 'edit',
+      needPermission: 'edit',
       inDropDown: true, // Inside dropdown list
       action: this.stopSharing.bind(this),
       title: 'Stop Sharing'
@@ -97,6 +99,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
 
   constructor(public noteService: ZNoteService,
               private wthConfirm: WthConfirmService,
+              private urlService: UrlService,
               private store: Store<any>,
               private api: ApiBaseService,
               public commonEventService: CommonEventService) {
@@ -104,16 +107,60 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   }
 
   ngOnInit() {
-    // Update toolbar inline
+    // Inline toolbar only
     if (this.data) {
-      for (let key in this.actionsMenu) {
-          if (this.actionsMenu[key].permission == 'edit' && this.data.permission == 'edit') {
-            this.actionsMenu[key].show = true;
-          } else {
-            this.actionsMenu[key].show = false;
-          }
-        }
+      this.validatePermission([this.data]);
     }
+  }
+
+  validatePermission(objects) {
+    this.urls = this.urlService.parse();
+
+    /*====================================
+    [Permission] validate 
+    ====================================*/
+    let permissonValidateOneObject = (action, permissiOnObject) => {
+      // if permission is view turn off all acions edit
+      if(permissiOnObject == 'view' && action.needPermission == 'edit') {
+        action.show = false;
+      }
+    }
+    let permissonValidateObjects = (action, objects) => {
+      // check permission in each objects
+      objects.map((object: any) => permissonValidateOneObject(action, object.permission))
+    }
+    Object.keys(this.actionsMenu).map((action: any) => permissonValidateObjects(this.actionsMenu[action], objects));
+
+    /*====================================
+    [Path] validate (shared-with-me, shared-by-me)
+    ====================================*/
+    let pathValidate = (action, currentPath) => {
+      if(currentPath != 'shared-with-me' && action.title == 'Remove Share') {
+        action.show = false;
+      }
+      if(currentPath != 'shared-by-me' && action.title == 'Stop Sharing') {
+        action.show = false;
+      }
+    }
+    Object.keys(this.actionsMenu).map((action: any) => pathValidate(this.actionsMenu[action], this.urls.paths[0]));
+
+    /*====================================
+    [Objects_Number] validate
+    ====================================*/
+    if (objects.length > 1) {
+      this.actionsMenu.edit.show = false;
+    }
+
+    /*====================================
+    [Objects_Type] validate
+    ====================================*/
+    let objectTypeValidateOneObject = (action, object) => {
+      if (object.object_type == 'folder' && action.title == 'Make copy') action.show = false;
+    }
+    let objectTypeValidateObjects = (action, objects) => {
+      objects.map((object: any) => objectTypeValidateOneObject(action, object))
+    }
+    Object.keys(this.actionsMenu).map((action: any) => objectTypeValidateObjects(this.actionsMenu[action], objects));
   }
 
   ngOnDestroy() {
@@ -144,53 +191,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   }
 
   toolbarActionsSetup(e: any) {
-    // turn on off action by permission for action
-    if(this.selectedObjects[0] && this.selectedObjects[0].permission && this.selectedObjects[0].permission == 'view') {
-      for (let key in this.actionsMenu) {
-        if (this.actionsMenu[key].permission == 'view') {
-          this.actionsMenu[key].show = true;
-        } else {
-          this.actionsMenu[key].show = false;
-        }
-      }
-    } else {
-      for (let key in this.actionsMenu) {
-        if (this.actionsMenu[key].permission == 'edit') {
-          this.actionsMenu[key].show = true;
-        } else {
-          this.actionsMenu[key].show = false;
-        }
-      }
-    }
-
-    // show edit?: actions toolbar on top only
-    if(this.selectedObjects.length > 1) {
-      this.actionsMenu.edit.show = false;
-    }
-    //
-    // show make a copy?
-    let changed: boolean = false;
-    _.forEach(this.selectedObjects, (item: any) => {
-      if (item.object_type == 'folder') {
-        this.actionsMenu.copy.show = false;
-        changed = true;
-      }
-    });
-    if(!changed) this.actionsMenu.copy.show = true;
-
-    // show stop sharing?
-    if(this.page == 'SHARED_BY_ME') {
-      this.actionsMenu.stopSharing.show = true;
-    } else {
-      this.actionsMenu.stopSharing.show = false;
-    }
-
-    // show remove share?
-    if(this.page == 'SHARED_WITH_ME') {
-      this.actionsMenu.removeSharedWithMe.show = true;
-    } else {
-      this.actionsMenu.removeSharedWithMe.show = false;
-    }
+    this.validatePermission(this.selectedObjects);
   }
 
   stopSharing() {

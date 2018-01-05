@@ -38,9 +38,10 @@
     <box-no-data [icon]="(context$ | async).noData.icon"
                  [title]="(context$ | async).noData.title"
                  [subTitle]="(context$ | async).noData.subTitle">
-      <a *ngIf="(context$ | async).noData.newNode" class="btn btn-outline-primary" (click)="onNewNote()" href="javascript:;">
+
+      <button *ngIf="(context$ | async).noData.newNode" class="btn btn-outline-primary" (click)="onNewNote()" href="javascript:;" [disabled]="!(context$ | async).permissions.enableEdit">
         <i class="fa fa-plus" aria-hidden="true"></i> New note
-      </a>
+      </button>
     </box-no-data>
   </ng-template>
   <!-- <pre>
