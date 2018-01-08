@@ -11,8 +11,6 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { RequestMethod, ResponseContentType } from '@angular/http';
 
 
-
-
 @Injectable()
 export class ApiBaseService {
   urls = Constants.urls;
@@ -38,24 +36,18 @@ export class ApiBaseService {
   /**
    * Performs a request with `get` http method.
    */
-  get(path: string, body: any = ''): Observable<any> {
-    if (typeof body == 'object') {
-      body = '?' + this.paramsToString(body);
-    }
-    this.buildOptions();
-    return this.http.get(this.baseUrl + path + body, this.options)
+  get(path: string, body: any = '', options:any = {}): Observable<any> {
+    this.buildOptions(options);
+    return this.http.get(this.baseUrl + path + this.paramsToString(body), this.options)
       .catch(this.handleError);
   }
 
   /**
    * Performs a request with `post` http method.
    */
-  post(path: string, body: any = ''): Observable<any> {
-    if (typeof body == 'object') {
-      body = JSON.stringify(body);
-    }
-    this.buildOptions();
-    return this.http.post(this.baseUrl + path, body, this.options)
+  post(path: string, body: any = '', options:any = {}): Observable<any> {
+    this.buildOptions(options);
+    return this.http.post(this.baseUrl + path, this.stringify(body), this.options)
       .take(1)
       .catch(this.handleError);
   }
@@ -63,12 +55,9 @@ export class ApiBaseService {
   /**
    * Performs a request with `put` http method.
    */
-  put(path: string, body: any = ''): Observable<any> {
-    if (typeof body == 'object') {
-      body = JSON.stringify(body);
-    }
-    this.buildOptions();
-    return this.http.put(this.baseUrl + path, body, this.options)
+  put(path: string, body: any = '', options:any = {}): Observable<any> {
+    this.buildOptions(options);
+    return this.http.put(this.baseUrl + path, this.stringify(body), this.options)
       .take(1)
       .catch(this.handleError);
   }
@@ -76,96 +65,70 @@ export class ApiBaseService {
   /**
    * Performs a request with `delete` http method.
    */
-  delete(path: string): Observable<any> {
-    this.buildOptions();
-    return this.http.delete(this.baseUrl + path, this.options)
-      .take(1)
+  delete(path: string, body: any = '', options:any = {}): Observable<any> {
+    this.buildOptions(options);
+    return this.http.delete(this.baseUrl + path + this.paramsToString(body), this.options)
       .catch(this.handleError);
   }
 
   /**
    * Performs a request with `patch` http method.
    */
-  patch(path: string, body: any = ''): Observable<any> {
-    this.buildOptions();
-    return this.http.patch(this.baseUrl + path, body, this.options)
+  patch(path: string, body: any = '', options:any = {}): Observable<any> {
+    this.buildOptions(options);
+    return this.http.patch(this.baseUrl + path, this.stringify(body), this.options)
       .take(1)
       .catch(this.handleError);
   }
 
-  download(path: string, body: any = ''): Observable<any> {
-    if (typeof body === 'object') {
-      body = JSON.stringify(body);
-    }
-    this.buildOptions();
-    // TODO fix
-    // return null;
-    return this.http.post(this.baseUrl + path, body, {
+  download(path: string, body: any = '', options:any = {}): Observable<any> {
+    this.buildOptions(options);
+    return this.http.post(this.baseUrl + path, this.stringify(body), {
       responseType: 'blob',
       headers: this.headers
     }).take(1);
   }
 
-  paramsToString(params: any): string {
-    let str: string = '';
-    for (let param in params) {
-      str += param + '=' + params[param] + '&';
+  stringify(body: any) {
+    if (typeof body == 'object') {
+      body = JSON.stringify(body);
     }
-    str = str.slice(0, -1);
-    return str;
+    return body;
   }
 
-  private buildOptions() {
+  paramsToString(body: any): string {
+    if (typeof body == 'object') {
+      let str: string = '';
+      for (let param in body) {
+        str += param + '=' + body[param] + '&';
+      }
+      str = str.slice(0, -1);
+      return '?' + str;
+    } else {
+      return body;
+    }
+  }
+
+  private buildOptions(options: any = {}) {
     // Json web token
-    // let jwt = localStorage.getCommunity('jwt');
-    // let profile = JSON.parse(localStorage.getCommunity('profile'));
-
-    let jwt = this.cookieService.get('jwt');
-
-    //let profile = JSON.parse(Cookie.get('profile'));
-
-    this.headers = this.headers.delete('Authorization');
-    if (jwt) {
-      this.headers = this.headers.set('Authorization', 'Bearer ' + jwt);
+    if (!options.unauthen) {
+      let jwt = this.cookieService.get('jwt');
+      this.headers = this.headers.delete('Authorization');
+      if (jwt) {
+        this.headers = this.headers.set('Authorization', 'Bearer ' + jwt);
+      }
     }
     this.options = {
       headers: this.headers,
-      responseType: 'json'
     };
+    if(!options.unjson) this.options.responseType = 'json';
   }
 
-  // TODO refactor
   private handleError(error: any | any): any {
-    if (error.status === 401 && error.statusText == 'Unauthorized') {
-      this.cookieService.put('logged_in', 'false');
+    if (error.status == 401 && error.statusText == 'Unauthorized') {
+      window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${window.location['href']}`;
     }
 
     return Observable.throw(error);
-
-
-    // redirect to login page if there is not a user logged in
-    // if (error.status === 401 && error.statusText == 'Unauthorized') {
-    //   this.router.navigate(['/login']);
-    //   // return;
-    // }
-    //
-    // // In a real world app, we might use a remote logging infrastructure
-    // let errMsg: string;
-    // if (error instanceof Response) {
-    //   console.log('errro', error);
-    //   const body = error.json() || '';
-    //   const err = body.error || JSON.stringify(body);
-    //   errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-    // } else {
-    //   errMsg = error.message ? error.message : error.toString();
-    // }
-    // console.error('handle error', errMsg);
-
-    // return Observable.throw(errMsg);
-
-    // if (error.status === 401 && error.statusText == 'Unauthorized') {
-    //   let _route = this.router;
-    //   _route.navigate(['/login']);
-    // }
   }
 }

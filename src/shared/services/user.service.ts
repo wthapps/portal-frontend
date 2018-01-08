@@ -14,7 +14,7 @@ import { UserInfo } from '../shared/models/user/user-info.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
-export class UserService extends ApiBaseService {
+export class UserService {
 
   loggedIn: boolean = false;
   profile: User = null;
@@ -27,18 +27,18 @@ export class UserService extends ApiBaseService {
   private readonly EXP_TIME_MS = 24*60*60*365*1000;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
   private _soProfile: BehaviorSubject<any> = new BehaviorSubject<any>(new UserInfo());
-  constructor(http: HttpClient, router: Router,
+  constructor(private http: HttpClient,
+              private router: Router,
+              private apiBaseService: ApiBaseService,
               public cookieService: CookieService) {
-    super(http, router, cookieService);
     this.readUserInfo();
-
     this.profile$ = this._profile.asObservable();
     this.soProfile$ = this._soProfile.asObservable();
   }
 
   login(path: string, body: string, useJwt: boolean = true): Observable<Response> {
     // public login(path: string, body: string, useJwt?: boolean = true) {
-    return super.post(path, body)
+    return this.apiBaseService.post(path, body, {unauthen: true})
       .map((res) => {
         if (res) {
           this.storeUserInfo(res);
@@ -50,7 +50,7 @@ export class UserService extends ApiBaseService {
 
   logout(path: string): Observable<Response> {
     // public logout(path: string) {
-    return super.delete(path)
+    return this.apiBaseService.delete(path)
       .map((res) => {
         this.deleteUserInfo();
         return res;
@@ -61,7 +61,7 @@ export class UserService extends ApiBaseService {
    * `sign up` new an account.
    */
   signup(path: string, body: string): Observable<Response> {
-    return super.post(path, body)
+    return this.apiBaseService.post(path, body, {unauthen: true})
       .map((res) => {
         if (res) {
           this.storeUserInfo(res);
@@ -76,41 +76,24 @@ export class UserService extends ApiBaseService {
    */
   update(path: string, body: any): Observable<Response> {
     // if(is_patch){
-    return super.patch(path, body)
+    return this.apiBaseService.patch(path, body)
       .map((res: any) => {
         if (res) {
-          // update credit card into to profile
-          // this.profile.credit_cards = res.credit_cards;
-          // this.profile.billing_address = res.billing_address;
-          /*console.log(res, this.profile);
-           Cookie.set('profile', JSON.stringify(this.profile));*/
-          // this.updateProfile(res.data);
-          // this.readUserInfo();
           this.updateProfile(res.data);
           this.readUserInfo();
         }
         return res;
       });
-    // }else{
-    //   return super.put(path, body)
-    //     .map(res => res.json())
-    //     .map((res) => {
-    //       if(res){
-
-    //       }
-    //       return res;
-    //     });
-    // }
   }
 
   validateSession(): Observable<any> {
-    return super.post('users/get_user').map(() => { return {valid: true}});
+    return this.apiBaseService.post('users/get_user').map(() => { return {valid: true}});
   }
   /*
    * change current password
    */
   changePassword(path: string, body: string): Observable<Response> {
-    return super.patch(path, body)
+    return this.apiBaseService.patch(path, body)
       .map((res) => {
         if (res) {
           console.log('changePassword:', res);
@@ -120,7 +103,7 @@ export class UserService extends ApiBaseService {
   }
 
   choosePlan(path: string, body: string): Observable<Response> {
-    return super.put(path, body)
+    return this.apiBaseService.put(path, body)
       .map((res: any) => {
         if (res) {
           this.updateProfile(res.data);
@@ -143,7 +126,7 @@ export class UserService extends ApiBaseService {
     let userId = 1;
     let path = 'users/' + userId + '/payments';
 
-    return super.post(path, [])
+    return this.apiBaseService.post(path, [])
       .map((res: any) => {
         if (res) {
           this.storeDefaultPayment(res);
@@ -207,5 +190,3 @@ export class UserService extends ApiBaseService {
     this._profile.next(Object.assign(this._profile.getValue(), profile));
   }
 }
-
-
