@@ -75,7 +75,6 @@
     &.has-action {
       .menuleft-nav-sub-item {
         @include flexbox();
-        @include align-items(flex-start);
         > a {
           @include flex(1);
         }
@@ -130,4 +129,94 @@
     }
   }
 
+}
+
+.well-folder-tree-left-wrap {
+  .well-folder-tree {
+    @include flex(1);
+  }
+}
+
+.well-folder-tree {
+  .ui-panelmenu {
+    .ui-panelmenu-header, .ui-panelmenu-content {
+      &, &.ui-state-active {
+        margin: 0;
+        padding: 0;
+        border-width: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        background-color: transparent;
+        a {
+          background-color: transparent;
+          color: $text-color;
+          &.active {
+            color: $theme-color;
+          }
+        }
+      }
+    }
+    .ui-panelmenu-header {
+      a {
+        padding-left: 45px;
+      }
+    }
+
+    .ui-menuitem {
+      .ui-menuitem-link {
+        padding-left: 60px;
+      }
+      .ui-menuitem {
+        .ui-menuitem-link {
+          padding-left: 75px;
+        }
+        .ui-menuitem {
+          .ui-menuitem-link {
+            padding-left: 90px;
+          }
+          .ui-menuitem {
+            .ui-menuitem-link {
+              padding-left: 105px;
+            }
+            .ui-menuitem {
+              .ui-menuitem-link {
+                padding-left: 120px;
+              }
+              .ui-menuitem {
+                .ui-menuitem-link {
+                  padding-left: 135px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .fa-caret-right {
+      &:before {
+        content: '\f054';
+      }
+    }
+
+    .fa-caret-down {
+      &:before {
+        content: '\f078';
+      }
+    }
+    .ui-menuitem-text, .ui-menuitem-link, .ui-panelmenu-headerlink-hasicon {
+      white-space: nowrap;
+      overflow: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+
+      &.active {
+        color: $theme-color !important;
+        span {
+          color: $theme-color !important;
+        }
+      }
+    }
+  }
 }
