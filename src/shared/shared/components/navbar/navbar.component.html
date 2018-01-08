@@ -79,48 +79,49 @@
               {{ notificationService.newNotifCount }}
             </span>
           </button>
-          <ul id="nav-notification-list" class="dropdown-menu dropdown-menu-right">
-            <li class="dropdown-menu-bar">
-              <div class="pull-left">
-                <span class="bold">Notifications</span>
+          <div id="nav-notification-list" class="nav-notification-list dropdown-menu dropdown-menu-right">
+            <div class="nav-notification-list-header">
+              <nav class="nav-tabs-wrap pl10 pr10 clearfix">
+                <ul class="nav nav-tabs pull-left list-unstyled clearfix visible-md-block visible-lg-block">
+                  <li [ngClass]="selectedTab==undefined || selectedTab == 'update' ? 'active': ''">
+                    <a (click)="onSelectedTab('update')" href="javascript:;">
+                      Update <span class="badge active">0</span>
+                    </a>
+                  </li>
+                  <li [ngClass]="selectedTab=='connection'? 'active': ''">
+                    <a (click)="onSelectedTab('connection')" href="javascript:;">
+                      Connection <span class="badge active">0</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="nav-notification-list-content"
+                 lockYOffset="30"
+                 observeAttributes="true"
+                 infinite-scroll
+                 [scrollWindow]="false"
+                 (scrolled)="getMoreNotifications()">
+              <app-partials-notification-list *ngIf="notificationService.notifications.length > 0"
+              [size]="'xs'" [type]="selectedTab">
+              </app-partials-notification-list>
+
+              <div *ngIf="notificationService.notifications.length == 0" class="p10">
+                Currently you have no notifications
               </div>
-              <div class="pull-right">
-                <a href="javascript:;" (click)="markAllAsRead()">Mark All as Read</a>
-                <a href="javascript:;">Settings</a>
-              </div>
-            </li>
-            <li>
-              <ul class="list-unstyled" id="notification-items"
-                  lockYOffset="30"
-                  observeAttributes="true"
-                  infinite-scroll
-                  [scrollWindow]="false"
-                  (scrolled)="getMoreNotifications()">
-                <li class="navbar-nav-notification-item"
-                    *ngFor="let notification of notificationService.notifications"
-                    [ngClass]="{'unread-notification': !notification?.is_read }">
-                  <div class="media" data-id="notification_{{ notification.id }}">
-                    <notification-item [notification]="notification"></notification-item>
-                  </div>
-                </li>
-                <li *ngIf="notificationService.notifications.length == 0">
-                  <div class="p10">
-                    Currently you have no notifications
-                  </div>
-                </li>
-              </ul>
-            </li>
-            <li class="view-all">
-              <a href="javascript:;" (click)="viewAllNotifications()">View All</a>
-            </li>
-          </ul>
+            </div>
+            <div class="nav-notification-list-footer">
+              <a href="#">View all notification</a>
+            </div>
+          </div>
         </div>
         <div class="btn-group header-nav-profile">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false">
             <span class="avatar-xxs">
-              <img alt="" width="30" [src]="(userService?.profile$ | async)?.profile_image || defaultAvatar" class="lazyload">
+              <img alt="" width="30" [src]="(userService?.profile$ | async)?.profile_image || defaultAvatar"
+                   class="lazyload">
             </span>
             <i class="fa fa-caret-down ml10 hidden-xs"></i>
           </button>

@@ -2,7 +2,7 @@
   <div class="menuleft-nav">
     <div class="menuleft-nav-item has-sub" [ngClass]="{'active': urls.social == hostname && !isProfileTab, 'show': urls.social == hostname}">
       <a id="menuleft-nav-intro-1" draggable="false" href="javascript:;" (click)="onMenu('social')">
-        Social Network
+        <i class="icon-zone-social"></i> Social Network <span class="sp-has-noti"></span>
       </a>
 
       <div [ngClass]="{'active': urls.social == hostname, 'show': urls.social == hostname}" class="menuleft-nav-sub">
@@ -24,7 +24,7 @@
     <div class="menuleft-nav-item has-sub"
          [ngClass]="{'active': urls.chat == hostname && !isProfileTab, 'show': urls.chat == hostname}">
       <a draggable="false" [routerLink]="[chatMenu[0].link]" (click)="onMenu('chat')">
-        Chat
+        <i class="icon-zone-chat"></i> Chat
       </a>
       <div [ngClass]="{'active': urls.chat == hostname}" class="menuleft-nav-sub">
         <ng-template ngFor let-chat [ngForOf]="chatMenu" let-i="index">
@@ -41,7 +41,7 @@
     <div class="menuleft-nav-item has-sub"
          [ngClass]="{'active': urls.media == hostname && !isProfileTab, 'show': urls.media == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('media')">
-        Pictures
+        <i class="icon-zone-media"></i> Pictures
       </a>
       <div [ngClass]="{'active': urls.media == hostname}" class="menuleft-nav-sub">
         <ng-template ngFor let-media [ngForOf]="mediaMenu" let-i="index">
@@ -61,7 +61,7 @@
     <div class="menuleft-nav-item has-sub has-action"
          [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('note')">
-        Notes
+        <i class="icon-zone-note"></i> Notes
       </a>
       <div class="menuleft-nav-sub" *ngIf="urls.note === hostname " [ngClass]="{'active': urls.note == hostname && !isProfileTab, 'show': urls.note == hostname}">
         <ng-content></ng-content>
@@ -72,7 +72,7 @@
     <div class="menuleft-nav-item has-sub has-action"
          [ngClass]="{'active': urls.contact === hostname && !isProfileTab, 'show': urls.contact === hostname}">
       <a draggable="false" href="javascript:;" (click)="onMenu('contact')">
-        Contacts
+        <i class="icon-zone-contact"></i> Contacts
       </a>
       <ng-container *ngIf="urls.contact === hostname">
         <div [ngClass]="{'active': urls.contact === hostname, 'show': urls.contact === hostname}"
@@ -133,7 +133,9 @@
     </div>
 
     <div class="menuleft-nav-item" [routerLinkActive]="['active']">
-      <a draggable="false" [routerLink]="['/my-profile']" (click)="onSubMenu('/my-profile')">Profile</a>
+      <a draggable="false" [routerLink]="['/my-profile']" (click)="onSubMenu('/my-profile')">
+        <i class="icon-zone-profile"></i> Profile
+      </a>
     </div>
   </div>
   <div class="menuleft-bottom">

@@ -8,22 +8,30 @@
 
     <div class="zone-social-in">
       <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title pull-left">Notifications</h3>
-          <div class="pull-right">
-            <button type="button" class="btn btn-default" (click)="notifications.open()"><i class="fa fa-cog"></i> Settings</button>
+        <div class="panel-heading p0">
+          <div class="pull-right p10">
+            <button class="btn btn-sm btn-outline-default" type="button"><i class="fa fa-cog"></i> Settings</button>
           </div>
+          <nav class="nav-tabs-wrap pl10 pr10 nav-tabs-wrap-md clearfix">
+            <ul class="nav nav-tabs pull-left list-unstyled clearfix">
+              <li [ngClass]="type==undefined || type == 'update' ? 'active': ''">
+                <a (click)="onSelectedTab('update')" href="javascript:;">Update <span class="badge active">0</span></a>
+              </li>
+              <li [ngClass]="type=='connection'? 'active': ''">
+                <a (click)="onSelectedTab('connection')" href="javascript:;">Connection <span class="badge">0</span></a>
+              </li>
+            </ul>
+          </nav>
         </div>
-
-        <partials-notifications #notifications></partials-notifications>
-
+        <div class="panel-body p0">
+          <app-partials-notification-list #notifications [type]="type"></app-partials-notification-list>
+        </div>
         <div class="panel-footer text-center">
-          <a href="javascript:;" class="bold text-bigger" (click)="getMoreNotifications()" *ngIf="!isLoadingDone()">View more</a>
+          <a href="javascript:;" class="bold text-bigger" (click)="getMoreNotifications()" *ngIf="!isLoadingDone()">
+            View more
+          </a>
         </div>
       </div>
-
-
     </div>
   </div>
 </div>
-

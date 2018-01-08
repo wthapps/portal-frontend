@@ -7,10 +7,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { PartialsNotificationsModule } from '../notifications/notifications.module';
 import { HeaderNavbarComponent } from './navbar.component';
-import { ServiceManager } from '../../../services/service-manager';
-import { ApiBaseService } from '../../../services/apibase.service';
-import { StorageService } from '../../../services/storage.service';
-import { UserService } from '../../../services/user.service';
+import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
 
 @NgModule({
   imports: [
@@ -18,7 +15,8 @@ import { UserService } from '../../../services/user.service';
     RouterModule,
     TooltipModule,
     InfiniteScrollModule,
-    PartialsNotificationsModule
+    PartialsNotificationsModule,
+    NotificationListModule
   ],
   declarations: [
     HeaderNavbarComponent
@@ -26,8 +24,7 @@ import { UserService } from '../../../services/user.service';
   exports: [
     HeaderNavbarComponent
   ],
-  providers: [
-  ]
+  providers: []
 })
 
 export class HeaderNavbarModule {

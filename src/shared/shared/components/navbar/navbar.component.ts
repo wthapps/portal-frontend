@@ -27,10 +27,13 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   newVersion: string;
   constants: any;
 
+  selectedTab: string = 'update'; // update , connection
+
   @HostListener('document:click', ['$event']) clickedOutside($event: any) {
     // here you can hide your menu
     this.showSearchMobile = false;
   }
+
   constructor(public userService: UserService,
               private navigateService: WTHNavigateService,
               private channelService: ChannelService,
@@ -83,7 +86,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showSearchMobile = true;
   }
 
-    logout() {
+  logout() {
     this.userService.logout('users/sign_out')
       .take(1)
       .subscribe(
@@ -138,7 +141,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     $('.navbar-nav-notification').removeClass('open');
 
     // Navigate to notification page of social module
-    if(this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social]))
+    if (this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social]))
       this.router.navigate(['/notifications']);
     else
       this.navigateService.navigateOrRedirect('notifications', 'social');
@@ -166,5 +169,15 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   markAllAsRead() {
     this.notificationService.markAllAsRead();
+  }
+
+  onSelectedTab(tab: string) {
+    this.selectedTab = tab;
+    switch (tab) {
+      case 'update':
+        break;
+      case 'connection':
+        break;
+    }
   }
 }

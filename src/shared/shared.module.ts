@@ -2,8 +2,6 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { CookieModule, CookieService } from 'ngx-cookie';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -84,6 +82,10 @@ import { ToastsService } from './shared/components/toast/toast-message.service';
 import { Ng2CableModule } from 'ng2-cable';
 import { DataTableModule } from 'primeng/components/datatable/datatable';
 import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
+import { DomService } from '@shared/services/dom.service';
+import { MenuContainerModule } from '@shared/shared/components/menu-container/menu-container.module';
+import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 /**
@@ -104,9 +106,7 @@ export * from './shared/components/navbar/navbar.module';
     InfiniteScrollModule,
     Ng2CableModule,
   ],
-  declarations: [
-
-  ],
+  declarations: [],
   exports: [
     // Angular modules
     CommonModule,
@@ -160,6 +160,8 @@ export * from './shared/components/navbar/navbar.module';
     ShowHidePasswordModule,
     InvitationModule,
     ImageCropperModule,
+    MenuContainerModule,
+    NotificationListModule,
 
     // Pipe
     PipeModule,
@@ -204,6 +206,7 @@ export class SharedModule {
         GenericFileService,
         ToastsService,
         MessageService,
+        DomService,
       ]
     };
   }

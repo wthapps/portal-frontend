@@ -33,7 +33,7 @@
         &:hover {
           color: $text-color;
         }
-        span {
+        span:not(.badge) {
           //font-size: 80%;
           font-weight: normal;
           color: #89919c;
@@ -52,35 +52,6 @@
             font-weight: bold;
             background-color: rgb(245, 74, 89);
             height: 3px;
-          }
-        }
-      }
-    }
-
-    &.nav-tabs-sm {
-      > li {
-        > a {
-          padding-left: 8px;
-          padding-right: 8px;
-          &,
-          &:hover,
-          &:focus {
-            font-size: 14px;
-          }
-          span {
-            font-size: 14px;
-            display: inline-block;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            min-width: 28px;
-            background-color: #D8D8D8;
-            line-height: 28px;
-            text-align: center;
-            padding: 0 2px;
-            float: right;
-            margin-left: 3px;
-            margin-top: 3px;
           }
         }
       }

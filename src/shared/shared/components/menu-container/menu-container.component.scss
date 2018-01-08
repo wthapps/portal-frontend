@@ -40,16 +40,11 @@
     }
     &.active {
       background-color: #f6f6f6;
-      position: relative;
-      &:before {
-        content: '';
-        width: 4px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        z-index: 1;
-        background-color: $theme-color;
+      > a {
+        &, &:hover, &:focus {
+          background-color: $theme-color;
+          color: #ffffff;
+        }
       }
       .menuleft-nav-sub {
         display: block;
@@ -59,17 +54,6 @@
       &:hover {
         color: $theme-color;
         background-color: #e5e5e5;
-      }
-      .sp-has-noti {
-        width: 10px;
-        height: 10px;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
-        background-color: $theme-color;
-        float: right;
-        margin-right: -5px;
-        margin-top: 5px;
       }
     }
     &.has-action {

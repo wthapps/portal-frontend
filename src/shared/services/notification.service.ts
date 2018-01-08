@@ -1,6 +1,4 @@
 import { Injectable, EventEmitter } from '@angular/core';
-
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 
 import { ApiBaseService } from './apibase.service';
@@ -20,7 +18,7 @@ export class NotificationService {
   notifications: Array<any> = new Array<any>();
   trashNotifications: Array<any> = new Array<any>();
   latestNotifId: number = 0;
-  newNotifCount: number = 0 ;
+  newNotifCount: number = 0;
   currentNotifId: any;
   readonly notifLimit: number = Constants.notificationSetting.limit;
   nextLink: string;
@@ -42,7 +40,7 @@ export class NotificationService {
   get() {
     return this.api.get(`${Constants.urls.zoneSoNotifications}`)
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
-    ;
+      ;
   }
 
   doAction(action: any, notif_id: string) {
@@ -51,7 +49,8 @@ export class NotificationService {
     let params = action.params;
     let method_name = action.name;
     let module = action.module; // media, social, chat ...
-    let body = { url: link,
+    let body = {
+      url: link,
       // method: method
     };
     Object.assign(body, params);
@@ -69,17 +68,20 @@ export class NotificationService {
       case 'post':
         this.api.post(link, body)
           .toPromise().then((result: any) => {
-              this.notifications = _.map(this.notifications, (notif: any) => {
-                if(notif.id === this.currentNotifId)
-                  return Object.assign(notif, {actions: _.get(result, 'data.actions', []), response_actions: _.get(result, 'data.response_actions', [])});
-                else
-                  return notif;
-              });
-              console.debug('post - ', this.notifications);
-            },
-            (error: any) => {
-              console.log('error', error);
+            this.notifications = _.map(this.notifications, (notif: any) => {
+              if (notif.id === this.currentNotifId)
+                return Object.assign(notif, {
+                  actions: _.get(result, 'data.actions', []),
+                  response_actions: _.get(result, 'data.response_actions', [])
+                });
+              else
+                return notif;
             });
+            console.debug('post - ', this.notifications);
+          },
+          (error: any) => {
+            console.log('error', error);
+          });
         break;
 
       case 'delete':
@@ -99,9 +101,10 @@ export class NotificationService {
 
 
   navigateTo(actions: any[], notif_id: string): void {
-    if(_.get(actions[0], 'name') == 'view') {
+    if (_.get(actions[0], 'name') == 'view') {
       this.doAction(actions[0], notif_id);
-    };
+    }
+    ;
   }
 
   navigateToSocial(urls: string[]) {
@@ -113,7 +116,7 @@ export class NotificationService {
   markAsSeen() {
     // this.notificationService.markAsSeen(this.notifications)
     let notif_ids = _.map(this.notifications, (i: any) => i.id);
-    let body = {'ids' : notif_ids};
+    let body = {'ids': notif_ids};
 
     if (!(this.userService.loggedIn && this.userService.profile))
       return;
@@ -139,12 +142,14 @@ export class NotificationService {
 
   toggleReadStatus(notification: any) {
     this.currentNotifId = notification.id;
-    let body = {'ids' : this.currentNotifId};
+    let body = {'ids': this.currentNotifId};
     return this.api.post(`${Constants.urls.zoneSoNotifications}/toggle_read_status`, body)
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
       .toPromise().then(
         (result: any) => {
-          _.each(this.notifications, (n: any) => { if(n.id == this.currentNotifId) n.is_read = !n.is_read;});
+          _.each(this.notifications, (n: any) => {
+            if (n.id == this.currentNotifId) n.is_read = !n.is_read;
+          });
         },
         (error: any) => {
           console.log('error', error);
@@ -153,7 +158,7 @@ export class NotificationService {
 
   markAsRead(notification: any) {
     // Mark this notification as read
-    if ( !notification.is_read )
+    if (!notification.is_read)
       this.toggleReadStatus(notification);
   }
 
@@ -161,13 +166,15 @@ export class NotificationService {
     this.api.post(`${Constants.urls.zoneSoNotifications}/mark_all_as_read`, [])
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
       .toPromise().then(
-        (result: any) => {
-          _.each(this.notifications, (n: any) => {n.is_read = true ;});
-
-        },
-        (error: any) => {
-          console.log('error', error);
+      (result: any) => {
+        _.each(this.notifications, (n: any) => {
+          n.is_read = true;
         });
+
+      },
+      (error: any) => {
+        console.log('error', error);
+      });
   }
 
   getLatestNotifications() {
@@ -175,36 +182,36 @@ export class NotificationService {
       return; // Only load once at first time
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_latest`, {sort_name: 'created_at'})
       .toPromise().then(
-        (result: any) => {
-          _.remove(this.notifications); // Make sure this.notifications has no value before assigning
-          this.notifications = result.data;
-          this.nextLink = result.page_metadata.links.next;
-          if (_.isEmpty(this.nextLink))
-            this.loadingDone = true;
+      (result: any) => {
+        _.remove(this.notifications); // Make sure this.notifications has no value before assigning
+        this.notifications = result.data;
+        this.nextLink = result.page_metadata.links.next;
+        if (_.isEmpty(this.nextLink))
+          this.loadingDone = true;
 
-          // Get latest notification id
-          if (this.notifications.length != 0)
-            this.latestNotifId = Math.max(..._.map(this.notifications, (n: any) => n.id));
-          else
-            this.latestNotifId = -99;
+        // Get latest notification id
+        if (this.notifications.length != 0)
+          this.latestNotifId = Math.max(..._.map(this.notifications, (n: any) => n.id));
+        else
+          this.latestNotifId = -99;
 
-          console.log('latest Notif Id: ', this.latestNotifId);
-          if (result.data.length==0) {
-            this.hasObjects = false;
-          }
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
+        console.log('latest Notif Id: ', this.latestNotifId);
+        if (result.data.length == 0) {
+          this.hasObjects = false;
+        }
+      },
+      (error: any) => {
+        console.log('error', error);
+      });
   }
 
   isLoadingDone() {
-    return this.loadingDone ;
+    return this.loadingDone;
   }
 
   getMoreNotifications() {
     // if(this.loadingDone) {
-    if(this.isLoadingDone() || this.nextLink === undefined) {
+    if (this.isLoadingDone() || this.nextLink === undefined) {
       console.debug('All notifications are loaded !');
       return;
     }
@@ -212,20 +219,20 @@ export class NotificationService {
       return;
     this.api.get(this.nextLink)
       .toPromise().then(
-        (result: any) => {
-          this.notifications.push(...result.data);
-          this.newNotifCount -= result.data.length;
-          this.newNotifCount = (this.newNotifCount < 0 ) ? 0 : this.newNotifCount ;
+      (result: any) => {
+        this.notifications.push(...result.data);
+        this.newNotifCount -= result.data.length;
+        this.newNotifCount = (this.newNotifCount < 0) ? 0 : this.newNotifCount;
 
-          this.nextLink = result.page_metadata.links.next;
-          if (result.data.length==0) {
-            this.hasObjects = false;
-          }
-          this.markAsSeen();
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
+        this.nextLink = result.page_metadata.links.next;
+        if (result.data.length == 0) {
+          this.hasObjects = false;
+        }
+        this.markAsSeen();
+      },
+      (error: any) => {
+        console.log('error', error);
+      });
   }
 
   getNewNotificationsCount(callback?: any) {
@@ -234,29 +241,43 @@ export class NotificationService {
     // Only loading 1 time when refreshing pages or navigating from login pages
     this.api.get(`${Constants.urls.zoneSoNotifications}/get_new_notifications/count`)
       .toPromise().then(
-        (result: any) => {
-          this.newNotifCount = result.data;
+      (result: any) => {
+        this.newNotifCount = result.data;
 
-          if(callback)
-            callback();
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
+        if (callback)
+          callback();
+      },
+      (error: any) => {
+        console.log('error', error);
+      });
+  }
+
+  hideNotificationById(id: any) {
+    this.api.delete(`${Constants.urls.zoneSoNotifications}/${id}`)
+      .toPromise().then((result: any) => {
+        const idx = _.findIndex(this.notifications, ['id', id]);
+        console.log(`hideNotification: ${idx} `, id);
+        if (idx > -1) {
+          this.notifications[idx].isHidden = true;
+        }
+      },
+      (error: any) => {
+        console.log('error', error);
+      });
   }
 
   hideNotification(notification: any) {
     this.currentNotifId = notification.id;
     this.api.delete(`${Constants.urls.zoneSoNotifications}/${this.currentNotifId}`)
       .toPromise().then((result: any) => {
-          let idx = _.findIndex(this.notifications, ['id', notification.id]);
-          console.log(`hideNotification: ${idx} `, notification);
-          if (idx > -1)
-            this.notifications[idx].isHidden = true;
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
+        let idx = _.findIndex(this.notifications, ['id', notification.id]);
+        console.log(`hideNotification: ${idx} `, notification);
+        if (idx > -1)
+          this.notifications[idx].isHidden = true;
+      },
+      (error: any) => {
+        console.log('error', error);
+      });
   }
 
   moveToTrash(notification: any) {
@@ -266,7 +287,7 @@ export class NotificationService {
   // Remove notification that exists in TrashNotifications
   removeNotifications() {
     _.pullAll(this.notifications, this.trashNotifications);
-    this.trashNotifications.length = 0 ;
+    this.trashNotifications.length = 0;
   }
 
   countNewNotifications() {
@@ -279,10 +300,10 @@ export class NotificationService {
   undoNotification(notification: any) {
     this.api.post(`${Constants.urls.zoneSoNotifications}/restore`, notification).toPromise()
       .then(() => {
-      let idx = _.findIndex(this.notifications, ['id', notification.id]);
-      if (idx > -1)
-        this.notifications[idx].isHidden = false;
-    });
+        let idx = _.findIndex(this.notifications, ['id', notification.id]);
+        if (idx > -1)
+          this.notifications[idx].isHidden = false;
+      });
   }
 
 
@@ -293,7 +314,7 @@ export class NotificationService {
 
       this.notificationChannel.createSubscription();
 
-      if( this.notificationChannel.notificationUpdated) {
+      if (this.notificationChannel.notificationUpdated) {
         this.notificationChannel.notificationUpdated
           .subscribe(
             (notification: any) => {
@@ -301,13 +322,14 @@ export class NotificationService {
               // this.newNotifCount++;
               this.addNewNofification(notification);
 
-              if(callback) {
+              if (callback) {
                 setTimeout(callback(), 1000); // Delay 1s before subscribing to appearance channel
 
               }
 
             });
-      }}, 2000);
+      }
+    }, 2000);
 
   }
 }
