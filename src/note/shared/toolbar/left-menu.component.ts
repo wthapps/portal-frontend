@@ -40,6 +40,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       event.payload = event.payload.filter((i: any) => {return i.object_type == 'folder'});
 
       switch(event.action) {
+        // Update and create
         case 'update': {
           for(let folder of event.payload) {
             this.update(folder, this.noteFoldersTree);
@@ -103,6 +104,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       } else {
         folders.unshift(target);
       }
+      this.sort(folders);
       return;
     }
     for(let folder of folders) {
@@ -122,6 +124,21 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
         }
       }
     }
+    this.sort(folders);
+  }
+
+  sort(folders: any) {
+    folders.sort(function(a, b) {
+      var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+      var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   destroy(target: any, folders: any) {
