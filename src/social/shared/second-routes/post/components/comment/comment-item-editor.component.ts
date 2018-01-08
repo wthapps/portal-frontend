@@ -93,7 +93,7 @@ export class CommentItemEditorComponent implements OnInit {
   onKey(e: any) {
     // Create, Update, Reply
     if (e.keyCode == 13 && !e.shiftKey) {
-
+      e.preventDefault();
       if (this.checkValidForm()) {
         // this.comment.content = this.commentEditorForm.value;
         this.post(this.commentEditorForm.value);
@@ -102,7 +102,6 @@ export class CommentItemEditorComponent implements OnInit {
       }
       return;
     } else if (e.keyCode == 13 && e.shiftKey) {
-      e.preventDefault();
       return;
     } else if (e.keyCode == 27) {
       this.cancel();
