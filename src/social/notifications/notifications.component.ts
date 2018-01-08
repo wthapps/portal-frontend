@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotificationService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
@@ -27,7 +27,6 @@ export class ZSocialNotificationsComponent implements OnInit {
 
   onSelectedTab(type: string) {
     this.type = type;
-    console.log(this.notificationListComponent);
   }
 
   getMoreNotifications() {
@@ -38,4 +37,8 @@ export class ZSocialNotificationsComponent implements OnInit {
     return this.notificationService.isLoadingDone();
   }
 
+
+  onSettingModal() {
+    this.notificationListComponent.settingModal.open();
+  }
 }

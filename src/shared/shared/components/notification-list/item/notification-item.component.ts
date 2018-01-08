@@ -14,8 +14,6 @@ import { NotificationUndoComponent } from '@shared/shared/components/notificatio
 import { Router } from '@angular/router';
 import { NotificationService, ApiBaseService } from '@shared/services';
 
-declare let $: any;
-
 @Component({
   selector: 'app-partials-notification-item',
   templateUrl: 'notification-item.component.html',

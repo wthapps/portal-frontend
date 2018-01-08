@@ -1,5 +1,8 @@
-import { Component, OnInit, Input, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, AfterViewInit, ViewChild } from '@angular/core';
 import { NotificationService } from '@shared/services';
+import { NotificationSettingModalComponent } from '@shared/shared/components/notification-list/modal/modal.component';
+
+declare let $: any;
 
 @Component({
   selector: 'app-partials-notification-list',
@@ -11,6 +14,8 @@ import { NotificationService } from '@shared/services';
 export class NotificationListComponent implements OnInit, AfterViewInit {
   @Input() type: string = 'update'; // update, connection
   @Input() size: string = 'sm'; // xs, sm, md, lg
+
+  @ViewChild('settingModal') settingModal: NotificationSettingModalComponent;
 
   constructor(public notificationService: NotificationService) {
   }

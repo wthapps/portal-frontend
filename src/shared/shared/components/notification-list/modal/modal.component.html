@@ -1,0 +1,30 @@
+<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
+  </modal-header>
+  <modal-body>
+    <p class="text-faded">Allow notifications from</p>
+    <div class="form-group">
+      <div class="inputSwitch-wrap">
+        <p-inputSwitch [(ngModel)]="social"></p-inputSwitch>
+        <span>Social Network</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="inputSwitch-wrap">
+        <p-inputSwitch [(ngModel)]="chat"></p-inputSwitch>
+        <span>Chat</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="inputSwitch-wrap">
+        <p-inputSwitch [(ngModel)]="note"></p-inputSwitch>
+        <span>Note</span>
+      </div>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" (click)="onSave()" class="btn btn-outline-primary btn-min" data-dismiss="modal">Done</button>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
+  </modal-footer>
+</modal>
