@@ -171,6 +171,7 @@ export class ConstantsBase {
     zoneSoInvitations: 'zone/social_network/invitations',
     zoneSoFavourites: 'zone/social_network/favourites',
     zoneSoNotifications: 'zone/social_network/notifications',
+    zoneSoConnections: 'zone/social_network/connections',
     zoneSoReportList: 'zone/social_network/report_list',
     zoneSoProfile: 'zone/social_network/profile',
     zoneSoPhotos: 'zone/social_network/photos',
@@ -188,8 +189,9 @@ export class ConstantsBase {
     admin: [1, 'Admin'],
     member: [2, 'Member']
   };
-  notificationSetting: any = {
-    limit: 10
+  notificationType: any = {
+    connection: 1,
+    update: 2,
   };
   seenStatus: any = {
     new: 'new',
@@ -405,6 +407,16 @@ export class ConstantsBase {
   modal: any = {
     edit: 'edit',
     add: 'add'
+  };
+
+  moduleMap: any = {
+    social: '1',
+    chat: '2',
+    media: '3',
+    portal: '4',
+    contact: '5',
+    note: '6',
+    myAccount: '7',
   }
 }
 let Constants = new ConstantsBase();

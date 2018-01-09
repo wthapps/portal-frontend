@@ -13,9 +13,10 @@ import {
 import { NotificationUndoComponent } from '@shared/shared/components/notification-list/undo/notification-undo.component';
 import { Router } from '@angular/router';
 import { NotificationService, ApiBaseService } from '@shared/services';
+import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 
 @Component({
-  selector: 'app-partials-notification-item',
+  selector: 'notification-item',
   templateUrl: 'notification-item.component.html',
   styleUrls: ['notification-item.component.scss'],
   encapsulation: ViewEncapsulation.None,
@@ -43,6 +44,7 @@ export class NotificationItemComponent implements OnInit {
   }
 
   constructor(public notificationService: NotificationService,
+              public connectionService: ConnectionNotificationService,
               private router: Router,
               private apiBaseService: ApiBaseService,
               private elementRef: ElementRef,
@@ -71,7 +73,98 @@ export class NotificationItemComponent implements OnInit {
     this.renderer.setStyle(tmp, 'left', event.clientX + 'px');
   }
 
+  // navigateTo(actions: any[], notif_id: string): void {
+  //   this.notificationService.navigateTo(actions, notif_id);
+  // }
+
+  confirmHideNotification(notification: any) {
+    this.hideNotification(notification);
+  }
+
+  getMoreNotifications() {
+    if(this.type === 'connection')
+      this.connectionService.getMoreNotifications();
+    else
+      this.notificationService.getMoreNotifications();
+  }
+
+  hideNotification(notification: any) {
+    if(this.type === 'connection')
+      this.connectionService.hideNotification(notification);
+    else
+      this.notificationService.hideNotification(notification);
+  }
+
+  viewProfile(user: any) {
+    this.router.navigate(['/profile', user.uuid]);
+  }
+
+  // TODO:
+  toggleNotification() {
+    switch (this.notification.object_type) {
+      case 'SocialNetwork::Post':
+        if(_.get(this.notification, 'object.uuid')) {
+          this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/toggle_post_notification`, {uuid: _.get(this.notification, 'object.uuid')})
+            .toPromise()
+            .then((res: any) => {
+              this.itemSettings = res.data;
+            });
+        } else {
+          console.error('No uuid found in notification: ', this.notification);
+        }
+        break;
+      case 'SocialNetwork::Comment':
+        // TODO
+        break;
+      default:
+        console.log('toggleNotification  - unhandle object type');
+    }
+  }
+
+  getItemSettings() {
+    switch (this.notification.object_type) {
+      case 'SocialNetwork::Post':
+        console.debug('getItemSettings - object uuid: ', this.notification.object.uuid);
+        this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${this.notification.object.uuid}`)
+          .toPromise().then(
+          (res: any) => {
+            this.itemSettings = res.data.settings;
+          });
+        break;
+      case 'SocialNetwork::Comment':
+        // TODO
+        break;
+      default:
+        console.log('getItemSettings  - unhandle object type');
+    }
+  }
+
+
+  toggleReadStatus(notification: any) {
+    if(this.type === 'connection')
+      this.connectionService.toggleReadStatus(notification);
+    else
+      this.notificationService.toggleReadStatus(notification);
+  }
+
+  doAction(action: any, notif_id: string) {
+    if(this.type === 'connection')
+      this.connectionService.doAction(action, notif_id);
+    else
+      this.notificationService.doAction(action, notif_id);
+  }
+
   navigateTo(actions: any[], notif_id: string): void {
-    this.notificationService.navigateTo(actions, notif_id);
+    if(this.type === 'connection')
+      this.connectionService.navigateTo(actions, notif_id);
+    else
+      this.notificationService.navigateTo(actions, notif_id);
+  }
+
+  navigateToSocial(urls: string[]) {
+    if(this.type === 'connection')
+      this.connectionService.navigateToSocial(urls);
+    else
+      this.notificationService.navigateToSocial(urls);
   }
 }

@@ -9,7 +9,7 @@ import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 
 import { PipeModule } from '../../pipe/pipe.module';
 
-import { PartialsNotificationsComponent } from './notifications.component';
+import { PartialsNotificationsComponent } from './partials/notifications.component';
 import { NotificationItemComponent } from './item/notification-item.component';
 import { UndoNotificationComponent } from './undo-notification.component';
 

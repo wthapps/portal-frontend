@@ -83,14 +83,14 @@
             <div class="nav-notification-list-header">
               <nav class="nav-tabs-wrap pl10 pr10 clearfix">
                 <ul class="nav nav-tabs pull-left list-unstyled clearfix visible-md-block visible-lg-block">
-                  <li [ngClass]="selectedTab==undefined || selectedTab == 'update' ? 'active': ''">
+                  <li [ngClass]="type==undefined || type == 'update' ? 'active': ''">
                     <a (click)="onSelectedTab('update')" href="javascript:;">
-                      Update <span class="badge active">0</span>
+                      Update <span class="badge" [ngClass]="{'active': (notificationService.newNotifCount > 0)}"> {{ notificationService.newNotifCount }}</span>
                     </a>
                   </li>
-                  <li [ngClass]="selectedTab=='connection'? 'active': ''">
+                  <li [ngClass]="type=='connection'? 'active': ''">
                     <a (click)="onSelectedTab('connection')" href="javascript:;">
-                      Connection <span class="badge active">0</span>
+                      Connection <span class="badge" [ngClass]="{'active': (connectionService.newNotifCount > 0)}"> {{ connectionService.newNotifCount }}</span>
                     </a>
                   </li>
                 </ul>
@@ -102,16 +102,20 @@
                  infinite-scroll
                  [scrollWindow]="false"
                  (scrolled)="getMoreNotifications()">
-              <app-partials-notification-list *ngIf="notificationService.notifications.length > 0"
-              [size]="'xs'" [type]="selectedTab">
-              </app-partials-notification-list>
+              <!--<app-partials-notification-list *ngIf="notificationService.notifications.length > 0"-->
+              <!--[size]="'xs'" [type]="selectedTab">-->
+              <!--</app-partials-notification-list>-->
+
+
+              <app-partials-notification-list *ngIf="type=='update'" [notifications]="notificationService.notifications" [size]="'xs'" [type]="type"></app-partials-notification-list>
+              <app-partials-notification-list *ngIf="type=='connection'" [notifications]="connectionService.notifications" [size]="'xs'" [type]="type"></app-partials-notification-list>
 
               <div *ngIf="notificationService.notifications.length == 0" class="p10">
                 Currently you have no notifications
               </div>
             </div>
             <div class="nav-notification-list-footer">
-              <a href="#">View all notification</a>
+              <a href="javascript:;" (click)="viewAllNotifications()">View all notification</a>
             </div>
           </div>
         </div>

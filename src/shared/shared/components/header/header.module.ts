@@ -9,8 +9,8 @@ import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 
 import { TextBoxSearchComponent } from './search/components/textbox-search.component';
-import { PartialsNotificationsModule } from '../notifications/notifications.module';
 import { HeaderComponent } from './header.component';
+import { NotificationListModule } from '@wth/shared/shared/components/notification-list/notification-list.module';
 
 @NgModule({
   imports: [
@@ -22,9 +22,8 @@ import { HeaderComponent } from './header.component';
     InfiniteScrollModule,
     AutoCompleteModule,
     CalendarModule,
+    NotificationListModule,
     TooltipModule,
-
-    PartialsNotificationsModule
   ],
   declarations: [
     HeaderComponent,

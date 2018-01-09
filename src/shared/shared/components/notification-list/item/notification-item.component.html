@@ -55,15 +55,15 @@
 
 <!--Connection-->
 <ng-container *ngIf="type == 'connection' && notification?.actions.length>0">
-  <div class="noti-item" *ngIf="!notification?.isHidden && notification?.actions[0]?.name != 'view'">
+  <div class="noti-item" *ngIf="!notification?.isHidden">
     <div class="noti-item-avatar can-click" [routerLink]="['/profile', notification?.actor.uuid]">
       <span class="avatar-xs">
         <img [src]="notification?.actor.profile_image" alt="{{ notification?.actor?.name }}">
       </span>
     </div>
-    <div class="noti-item-content can-click" (click)="navigateTo(notification?.actions, notification?.id)">
+    <div class="noti-item-content">
       <div>
-      <span class="bold" [routerLink]="['/profile', notification?.actor.uuid]">
+      <span class="bold can-click" [routerLink]="['/profile', notification?.actor.uuid]">
         {{ notification?.actor?.name }}</span>
         <span [innerHTML]="notification?.text"></span>
         <span class="bold" href="javascript:;"
@@ -73,7 +73,7 @@
         <small class="help-block text-fade">
           {{ notification?.created_at | timeFormat }}
         </small>
-        <div class="mt5">
+        <div class="mt5" *ngIf="notification?.actions[0]?.name !== 'view'">
           <button *ngFor="let action of notification?.actions"
                   class="btn btn-xs mr5 text-capitalize" type="button"
                   [ngClass]="{'btn-outline-primary': action?.name == 'accept', 'btn-outline-default': (action.name == 'cancel' || action.name == 'reject')}"

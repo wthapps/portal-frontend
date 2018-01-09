@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
-import { NotificationService } from '../../../services/notification.service';
-import { Constants } from '../../../constant/config/constants';
-import { ApiBaseService } from '../../../services/apibase.service';
+import { NotificationService } from '../../../../services/notification.service';
+import { Constants } from '../../../../constant/config/constants';
+import { ApiBaseService } from '../../../../services/apibase.service';
 
 @Component({
     selector: 'partials-notifications',

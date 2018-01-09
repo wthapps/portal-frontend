@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewEncapsulation, AfterViewInit, ViewChild } from '@angular/core';
 import { NotificationService } from '@shared/services';
+import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 import { NotificationSettingModalComponent } from '@shared/shared/components/notification-list/modal/modal.component';
 
 declare let $: any;
@@ -14,8 +15,12 @@ declare let $: any;
 export class NotificationListComponent implements OnInit, AfterViewInit {
   @Input() type: string = 'update'; // update, connection
   @Input() size: string = 'sm'; // xs, sm, md, lg
-
+  @Input() notifications: any[] = [];
   @ViewChild('settingModal') settingModal: NotificationSettingModalComponent;
+
+
+  constructor(public notificationService: NotificationService,
+              public connectionService: ConnectionNotificationService) {
 
   constructor(public notificationService: NotificationService) {
   }
@@ -36,7 +41,10 @@ export class NotificationListComponent implements OnInit, AfterViewInit {
   }
 
   hideNotificationById(id: any) {
-    this.notificationService.hideNotificationById(id);
+    if(this.type === 'connection')
+      this.connectionService.hideNotificationById(id);
+    else
+      this.notificationService.hideNotificationById(id);
   }
 
   toggleNotificationById(id) {

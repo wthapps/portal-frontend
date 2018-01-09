@@ -5,6 +5,7 @@ import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { ChannelService } from '../../../channels/channel.service';
 import { NotificationService } from '../../../services/notification.service';
 import { Router } from '@angular/router';
+import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 
 declare var $: any;
 declare var _: any;
@@ -27,7 +28,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   newVersion: string;
   constants: any;
 
-  selectedTab: string = 'update'; // update , connection
+  type: string = 'update'; // update , connection
 
   @HostListener('document:click', ['$event']) clickedOutside($event: any) {
     // here you can hide your menu
@@ -38,6 +39,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
               private navigateService: WTHNavigateService,
               private channelService: ChannelService,
               private router: Router,
+              public connectionService: ConnectionNotificationService,
               public notificationService: NotificationService) {
   }
 
@@ -72,12 +74,6 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       e.stopPropagation();
       $(this).next('ul').toggle();
     });
-  }
-
-  clickedInside($event: Event) {
-    $event.preventDefault();
-    $event.stopPropagation();  // <- that will stop propagation on lower layers
-    console.log('CLICKED INSIDE');
   }
 
   onShowSearchMobile($event: Event) {
@@ -142,21 +138,34 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Navigate to notification page of social module
     if (this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social]))
-      this.router.navigate(['/notifications']);
+      this.navigateService.navigateTo(['/notifications']);
     else
       this.navigateService.navigateOrRedirect('notifications', 'social');
   }
 
   getMoreNotifications() {
-    this.notificationService.getMoreNotifications();
+    if(this.type == 'connection')
+      this.connectionService.getMoreNotifications();
+    else
+      this.notificationService.getMoreNotifications();
   }
 
   doAction(action: any, notif_id: string) {
-    this.notificationService.doAction(action, notif_id);
+    if(this.type == 'connection')
+      this.connectionService.doAction(action, notif_id);
+    else
+      this.notificationService.doAction(action, notif_id);
+  }
+
+  getLatestNotifications() {
+    if(this.type == 'connection')
+      this.connectionService.getLatestNotifications();
+    else
+      this.notificationService.getLatestNotifications();
   }
 
   toggleViewNotifications() {
-    this.notificationService.getLatestNotifications(); // Load latest notifications in the first click
+    this.getLatestNotifications(); // Load latest notifications in the first click
     if (this.notificationService.notifications.length <= 0) {
       this.getMoreNotifications();
     }
@@ -164,20 +173,27 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   markAsSeen() {
-    this.notificationService.markAsSeen();
+    if(this.type == 'connection')
+      this.connectionService.markAsSeen();
+    else
+      this.notificationService.markAsSeen();
   }
 
-  markAllAsRead() {
-    this.notificationService.markAllAsRead();
-  }
+  // markAllAsRead() {
+  //   if(this.type == 'connection')
+  //     this.connectionService.markAllAsRead();
+  //   else
+  //     this.notificationService.markAllAsRead();
+  // }
 
   onSelectedTab(tab: string) {
-    this.selectedTab = tab;
-    switch (tab) {
-      case 'update':
-        break;
-      case 'connection':
-        break;
-    }
+    this.type = tab;
+    this.getLatestNotifications();
+    // switch (tab) {
+    //   case 'update':
+    //     break;
+    //   case 'connection':
+    //     break;
+    // }
   }
 }

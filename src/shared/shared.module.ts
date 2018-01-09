@@ -43,7 +43,6 @@ import { LoadingModule } from './shared/components/loading/loading.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './shared/components/header/header.module';
 import { HeaderNavbarModule } from './shared/components/navbar/navbar.module';
-import { PartialsNotificationsModule } from './shared/components/notifications/notifications.module';
 import { TablePricingModule } from './shared/components/table-pricing/table-pricing.module';
 import { ToastsModule } from './shared/components/toast/toast-message.module';
 import { CoreChatSupportModule } from './shared/components/chat-support/chat-support.module';
@@ -85,6 +84,8 @@ import { ImageCropperModule } from '@shared/shared/components/image-cropper/imag
 import { DomService } from '@shared/services/dom.service';
 import { MenuContainerModule } from '@shared/shared/components/menu-container/menu-container.module';
 import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
+import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
+import { CommonNotificationInterface } from '@wth/shared/services/common-notification.service';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -141,7 +142,6 @@ export * from './shared/components/navbar/navbar.module';
     FooterModule,
     HeaderModule,
     HeaderNavbarModule,
-    PartialsNotificationsModule,
     TablePricingModule,
     CoreChatSupportModule,
     UploadCropImageModule,
@@ -192,6 +192,8 @@ export class SharedModule {
         WTHNavigateService,
         NotificationService,
         NotificationChannelService,
+        // CommonNotificationInterface, // To be removed
+        ConnectionNotificationService,
         AppearancesChannelService,
         ChannelService,
         PhotoModalDataService,

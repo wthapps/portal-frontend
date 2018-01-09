@@ -16,25 +16,31 @@ export class WTHNavigateService {
   constructor(private router: Router) {
   }
 
-  navigateOrRedirect(path: string, module?: string, queryParams: any = {}) {
-    if(!_.isEmpty(module)) {
-      switch (module) {
+  navigateOrRedirect(path: string, wModule: string = '', queryParams: any = {}) {
+    if(!_.isEmpty(wModule.toString())) {
+      switch (wModule.toString()) {
         case 'media':
+        case Constants.moduleMap.media:
           this.redirectIfNeed(path, Constants.baseUrls.media, queryParams);
           break;
         case 'social':
+        case Constants.moduleMap.social:
           this.redirectIfNeed(path, Constants.baseUrls.social, queryParams);
           break;
         case 'chat':
+        case Constants.moduleMap.chat:
           this.redirectIfNeed(path, Constants.baseUrls.chat, queryParams);
           break;
         case 'my':
+        case Constants.moduleMap.myAccount:
           this.redirectIfNeed(path, Constants.baseUrls.myAccount, queryParams);
           break;
         case 'contact':
+        case Constants.moduleMap.contact:
           this.redirectIfNeed(path, Constants.baseUrls.contact, queryParams);
           break;
         case 'note':
+        case Constants.moduleMap.note:
           this.redirectIfNeed(path, Constants.baseUrls.note, queryParams);
           break;
         default:
@@ -56,6 +62,11 @@ export class WTHNavigateService {
 
 
     // $(event.target.nextElementSibling).toggleClass('hidden');
+  }
+
+  navigateTo(path: string[], queryParams: any = {}) {
+    this.router.navigate([{outlets: {modal: null, detail: null}}], {queryParams: queryParams});
+    this.router.navigate(path);
   }
 
   inSameModule(moduleNames: string[]) {

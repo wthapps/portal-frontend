@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
-import { PartialsNotificationsModule } from '../notifications/notifications.module';
 import { HeaderNavbarComponent } from './navbar.component';
 import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
 
@@ -15,7 +14,6 @@ import { NotificationListModule } from '@shared/shared/components/notification-l
     RouterModule,
     TooltipModule,
     InfiniteScrollModule,
-    PartialsNotificationsModule,
     NotificationListModule
   ],
   declarations: [
