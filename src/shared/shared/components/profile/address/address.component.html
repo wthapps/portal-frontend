@@ -8,7 +8,7 @@
         </button>
       </div>
     </div>
-    <div class="field-group-content">
+    <div *ngIf="data.addresses" class="field-group-content">
       <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
         <ng-template ngFor let-item [ngForOf]="data.addresses">
           <dt>{{ item.category | keyToValue:addressType:'category':'name' }}</dt>

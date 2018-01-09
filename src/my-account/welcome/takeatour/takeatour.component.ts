@@ -21,7 +21,6 @@ declare let _: any;
 
 export class TakeATourComponent implements OnInit {
   @ViewChild('basicInfo') basicInfo: PartialsBasicInfoComponent;
-  soUserProfile: Observable<any>;
 
   isLoading: boolean = false;
 
@@ -37,7 +36,6 @@ export class TakeATourComponent implements OnInit {
               private invitationService: InvitationService,
               private router: Router,
               private fb: FormBuilder) {
-    this.soUserProfile = this.userService.soProfile$;
   }
 
   ngOnInit() {

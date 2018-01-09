@@ -17,27 +17,27 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
 
   loggedIn: boolean = false;
+  // Please use profile$ instead of profile
   profile: User = null;
   defaultPayment: any;
 
   public cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;
 
   public readonly profile$: Observable<any>;
-  public readonly soProfile$: Observable<any>;
+  // public readonly soProfile$: Observable<any>;
   private readonly EXP_TIME_MS = 24*60*60*365*1000;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  private _soProfile: BehaviorSubject<any> = new BehaviorSubject<any>(new UserInfo());
+  // private _soProfile: BehaviorSubject<any> = new BehaviorSubject<any>(new UserInfo());
   constructor(private http: HttpClient,
               private router: Router,
               private apiBaseService: ApiBaseService,
               public cookieService: CookieService) {
     this.readUserInfo();
     this.profile$ = this._profile.asObservable();
-    this.soProfile$ = this._soProfile.asObservable();
+    // this.soProfile$ = this._soProfile.asObservable();
   }
 
-  login(path: string, body: string, useJwt: boolean = true): Observable<Response> {
-    // public login(path: string, body: string, useJwt?: boolean = true) {
+  login(path: string, body: string): Observable<Response> {
     return this.apiBaseService.post(path, body, {unauthen: true})
       .map((res) => {
         if (res) {
@@ -139,14 +139,14 @@ export class UserService {
     return this.profile != null ? this.profile.uuid : '';
   }
 
-  set soUserProfile(data: any) {
-    this._soProfile.next(data);
-  }
+  // set soUserProfile(data: any) {
+  //   this._soProfile.next(data);
+  // }
 
   updateProfile(profile: any) {
     this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
     this.setProfile(profile);
-    this.soUserProfile = {...this._soProfile.getValue(), profile_image: profile.profile_image};
+    // this.soUserProfile = {...this._soProfile.getValue(), profile_image: profile.profile_image};
   }
 
   private storeDefaultPayment(response: any) {
@@ -174,6 +174,7 @@ export class UserService {
 
     this.loggedIn = true;
     this.profile = response.data;
+    this._profile.next(Object.assign(this._profile.getValue(), response.data));
   }
 
   private readUserInfo() {
@@ -188,5 +189,11 @@ export class UserService {
   private setProfile(profile: any) {
     this.profile = profile;
     this._profile.next(Object.assign(this._profile.getValue(), profile));
+  }
+
+  setProfileByKey(key: any, data: any) {
+    this.profile = this._profile.getValue()
+    this.profile[key] = data;
+    this._profile.next(Object.assign(this.profile));
   }
 }

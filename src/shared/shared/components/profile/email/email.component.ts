@@ -26,7 +26,7 @@ declare var _: any;
 })
 
 export class PartialsProfileEmailComponent implements OnInit, ProfileFormMixin {
-  @Input('data') data: any;
+  @Input() data: any;
   @ViewChild('modal') modal: ModalComponent;
   @Input() editable: boolean;
 

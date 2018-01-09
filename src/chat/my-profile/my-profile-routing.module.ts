@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AuthGuard } from '@shared/services';
-import { ZChatMyProfileComponent } from './my-profile.component';
+import { ZMyProfileComponent } from "@shared/shared/components/profile/my-profile/my-profile.component";
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: 'my-profile',
-        component: ZChatMyProfileComponent,
+        component: ZMyProfileComponent,
         canActivate: [AuthGuard]
       }
     ])

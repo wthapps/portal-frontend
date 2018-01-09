@@ -5,7 +5,6 @@ import { SharedModule } from '@wth/shared/shared.module';
 
 import { MySharedModule } from '../shared/shared.module';
 import { MyAccountMyProfileRoutingModule } from './my-profile-routing.module';
-import { MyAccountMyProfileComponent } from './my-profile.component';
 
 
 @NgModule({
@@ -16,10 +15,8 @@ import { MyAccountMyProfileComponent } from './my-profile.component';
     MyAccountMyProfileRoutingModule
   ],
   declarations: [
-    MyAccountMyProfileComponent
   ],
   exports: [
-    MyAccountMyProfileComponent
   ],
   providers: []
 })

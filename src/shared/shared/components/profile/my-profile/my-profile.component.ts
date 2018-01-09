@@ -3,29 +3,28 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
-import { UserService } from '@wth/shared/services/user.service';
-import { ApiBaseService } from '@wth/shared/services/apibase.service';
+import { UserService } from '@shared/services/user.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
+
 
 @Component({
-  moduleId: module.id,
-  selector: 'z-my-account-my-profile',
+  selector: 'z-my-profile',
   templateUrl: 'my-profile.component.html',
   styleUrls: ['my-profile.component.scss']
 })
-export class MyAccountMyProfileComponent implements OnInit {
+export class ZMyProfileComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
-  soUserProfile$: Observable<any>;
+  profile$: Observable<any>;
   // data: any;
 
   constructor(private userService: UserService,
               private apiBaseService: ApiBaseService) {
-    this.soUserProfile$ = this.userService.soProfile$;
+    this.profile$ = this.userService.profile$;
   }
 
   ngOnInit() {
     this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`).toPromise().then((res: any) => {
-      // this.data = res.data;
-      this.userService.soUserProfile = res.data;
+      this.userService.setProfileByKey('so_user', res.data);
     });
   }
 
@@ -40,9 +39,8 @@ export class MyAccountMyProfileComponent implements OnInit {
   }
 
   doEvent(e: any) {
-    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, e.data).subscribe((res: any) => {
-      // this.data = res.data;
-      this.userService.soUserProfile = res.data;
+    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, e).subscribe((res: any) => {
+      this.userService.setProfileByKey('so_user', res.data);
     });
   }
 }

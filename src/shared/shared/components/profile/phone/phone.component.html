@@ -7,7 +7,7 @@
       </button>
     </div>
   </div>
-  <div class="field-group-content">
+  <div *ngIf="data.phones" class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.phones.length > 0">
       <ng-template ngFor let-item [ngForOf]="data.phones" let-i="index" [ngForTrackBy]="trackByFn">
         <dt>{{ item.category | keyToValue:phoneType:'category':'name' }}</dt>
