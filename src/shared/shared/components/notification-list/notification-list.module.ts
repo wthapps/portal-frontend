@@ -15,6 +15,8 @@ import { NotificationItemComponent } from '@shared/shared/components/notificatio
 import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
 import { NotificationUndoComponent } from '@shared/shared/components/notification-list/undo/notification-undo.component';
 import { NotificationSettingModalComponent } from '@shared/shared/components/notification-list/modal/modal.component';
+import { CommonNotificationsComponent } from '@wth/shared/shared/components/notification-list/notifications.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 @NgModule({
@@ -27,6 +29,7 @@ import { NotificationSettingModalComponent } from '@shared/shared/components/not
     CheckboxModule,
     TooltipModule,
     InputSwitchModule,
+    InfiniteScrollModule,
 
     PipeModule,
   ],
@@ -34,13 +37,15 @@ import { NotificationSettingModalComponent } from '@shared/shared/components/not
     NotificationListComponent,
     NotificationItemComponent,
     NotificationUndoComponent,
-    NotificationSettingModalComponent
+    NotificationSettingModalComponent,
+    CommonNotificationsComponent,
   ],
   exports: [
     NotificationListComponent,
     NotificationItemComponent,
     NotificationUndoComponent,
-    NotificationSettingModalComponent
+    NotificationSettingModalComponent,
+    CommonNotificationsComponent,
   ],
   providers: []
 })

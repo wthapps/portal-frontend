@@ -137,7 +137,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     $('.navbar-nav-notification').removeClass('open');
 
     // Navigate to notification page of social module
-    if (this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social]))
+    if (this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social, Constants.baseUrls.media]))
       this.navigateService.navigateTo(['/notifications']);
     else
       this.navigateService.navigateOrRedirect('notifications', 'social');

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
+
 
 import { Group } from './group.model';
 import { BaseEntityService } from '../../shared/services/base-entity-service';

@@ -2,7 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
+
 
 import { SocialService } from '../../../services/social.service';
 import { SoPost } from '@wth/shared/shared/models';

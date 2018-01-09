@@ -20,7 +20,7 @@ import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/toPromise';
+
 
 import { Editor } from 'primeng/components/editor/editor';
 

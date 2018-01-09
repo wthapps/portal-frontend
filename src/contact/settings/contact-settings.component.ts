@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { CountryService } from '@shared/shared/components/countries/countries.service';

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, Input, AfterViewInit } from '@angular/core';
 import { NotificationService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
@@ -7,12 +7,12 @@ import { ConnectionNotificationService } from '@wth/shared/services/connection-n
 
 
 @Component({
-  selector: 'z-social-notifications',
+  selector: 'common-notifications',
   templateUrl: 'notifications.component.html',
   styleUrls: ['notifications.component.scss'],
 })
 
-export class ZSocialNotificationsComponent {
+export class CommonNotificationsComponent implements OnInit, AfterViewInit{
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
   readonly profileUrl: string = '/' + Constants.urls.profile;
 
@@ -27,6 +27,31 @@ export class ZSocialNotificationsComponent {
 
   ngOnInit() {
     this.notificationService.getLatestNotifications();
+  }
+
+  ngAfterViewInit() {
+    const _this = this;
+
+    $('body').on('click', (e: any) => {
+      console.debug($('#notiItemMenuEl'));
+      console.debug('click .js-confirmHideNotification');
+      _this.hideNotificationById(e.currentTarget.id);
+    });
+
+    $('body').on('click', '#notiItemMenuEl .js-toggleNotification', (e: any) => {
+      _this.toggleNotificationById(e.currentTarget.id);
+    });
+  }
+
+  hideNotificationById(id: any) {
+    if(this.type === 'connection')
+      this.connectionService.hideNotificationById(id);
+    else
+      this.notificationService.hideNotificationById(id);
+  }
+
+  toggleNotificationById(id) {
+    console.log(id);
   }
 
   onSelectedTab(type: string) {
@@ -52,4 +77,8 @@ export class ZSocialNotificationsComponent {
       return this.notificationService.isLoadingDone();
   }
 
+
+  onSettingModal() {
+    this.notificationListComponent.settingModal.open();
+  }
 }

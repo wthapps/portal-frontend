@@ -10,7 +10,6 @@ import { PostModule } from './second-routes/post/post.module';
 import { PostDetailComponent } from './second-routes/post/post-detail.component';
 import { PostDetailPhotoComponent } from './second-routes/post/post-detail-photo.component';
 import { PostListComponent } from './second-routes/post/post-list.component';
-import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { ZSocialMembersComponent } from '../friends/members.component';
 import { ZSocialProfileService } from '../profile/profile.service';
 import { SocialFavoriteService } from './services/social-favorites.service';
@@ -57,8 +56,6 @@ import { PostFooterComponent } from './second-routes/post/components/post-footer
     PostDetailComponent,
     PostDetailPhotoComponent,
 
-    // Notifications
-    ZSocialNotificationsComponent,
 
     // Search
     // ZSocialSearchResultComponent,
@@ -74,7 +71,6 @@ import { PostFooterComponent } from './second-routes/post/components/post-footer
     ZSocialFavoritesComponent,
     PostListComponent,
     PostComponent,
-    ZSocialNotificationsComponent,
 
     Ng2HdModule,
     PostModule,

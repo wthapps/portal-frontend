@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { PhotoService } from '@shared/services/photo.service';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';

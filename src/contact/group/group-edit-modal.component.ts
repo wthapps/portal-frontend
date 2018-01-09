@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
-import 'rxjs/add/operator/toPromise';
+
 
 import { WthAppsBaseModal } from '../../shared/shared/interfaces/wthapps-base-modal';
 import { Group } from './group.model';

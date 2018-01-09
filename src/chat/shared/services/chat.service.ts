@@ -2,7 +2,7 @@ import { Injectable }     from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
+
 
 
 import { ChatContactService } from './chat-contact.service';

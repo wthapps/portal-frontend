@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/toPromise';
+
 
 import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 import { GroupService } from '../../group/group.service';

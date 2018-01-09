@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { ZMediaFavoriteService } from './favourites.service';
 import { PhotoService } from '@wth/shared/services';

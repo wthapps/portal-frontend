@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 
-import 'rxjs/add/operator/toPromise';
+
 import 'rxjs/add/observable/forkJoin';
 
 import { SocialService } from '../shared/services/social.service';

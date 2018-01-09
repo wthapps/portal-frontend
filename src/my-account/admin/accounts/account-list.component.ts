@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/toPromise';
+
 
 import { InvitationService } from '@wth/shared/shared/components/invitation/invitation.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';

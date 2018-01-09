@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ZSocialHomeComponent } from './home/home.component';
 import { ZSocialMembersComponent } from './friends/members.component';
-import { ZSocialNotificationsComponent } from './notifications/notifications.component';
 import { PostDetailComponent } from './shared/second-routes/post/post-detail.component';
 import { ZSocialSettingComponent } from './settings/setting.component';
 import { AuthGuard } from '@wth/shared/services';
@@ -12,7 +11,7 @@ export const routes: Routes = [
   {path: 'home', component: ZSocialHomeComponent, canActivate: [AuthGuard]},
   {path: '', canActivate: [AuthGuard], children: [
     {path: 'friends', component: ZSocialMembersComponent},
-    {path: 'notifications', component: ZSocialNotificationsComponent},
+    {path: 'notifications', loadChildren: './notifications/notifications.module#ZSocialNotificationModule'},
     {path: 'my-profile', loadChildren: './my-profile/my-profile.module#ZSocialMyProfileModule'},
     {path: 'settings', component: ZSocialSettingComponent},
   ]},

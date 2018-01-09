@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/toPromise';
+
 import 'rxjs/add/operator/withLatestFrom';
 
 import { MediaToolbarListComponent } from '../media/media-toolbar-list.component';

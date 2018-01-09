@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
 
 import { ChatService } from '../shared/services/chat.service';
 import { ApiBaseService } from '@wth/shared/services';

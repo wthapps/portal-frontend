@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { ChatService } from '../shared/services/chat.service';
 import { ConversationService } from '../conversation/conversation.service';

@@ -16,7 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/toPromise';
+
 
 import { MediaObjectService } from '../container/media-object.service';
 import { ZMediaAlbumService } from '../../album/album.service';

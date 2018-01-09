@@ -9,7 +9,7 @@ import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/finally';
-import 'rxjs/add/operator/toPromise';
+
 
 import { PostEditComponent } from './post-edit.component';
 import { SocialService } from '../../services/social.service';

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { SocialService } from '../../shared/services/social.service';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';

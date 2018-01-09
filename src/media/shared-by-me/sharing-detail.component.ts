@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
+
 import { ApiBaseService, CommonEventService } from '@shared/services';
 
 

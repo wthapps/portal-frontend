@@ -85,7 +85,6 @@ import { DomService } from '@shared/services/dom.service';
 import { MenuContainerModule } from '@shared/shared/components/menu-container/menu-container.module';
 import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
-import { CommonNotificationInterface } from '@wth/shared/services/common-notification.service';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 

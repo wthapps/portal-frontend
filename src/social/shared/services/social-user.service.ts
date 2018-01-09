@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/toPromise';
+
 import { ApiBaseService } from '@wth/shared/services';
 import { UserService } from '@shared/services/user.service';
 import { NotificationService } from '@shared/services/notification.service';

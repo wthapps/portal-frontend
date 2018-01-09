@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { BaseZoneSocialItem } from '../../../shared/base/base-social-item';
 import { SoPost } from '@wth/shared/shared/models';

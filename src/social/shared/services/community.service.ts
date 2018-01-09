@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
+
 import { ApiBaseService, UserService } from '@wth/shared/services';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';

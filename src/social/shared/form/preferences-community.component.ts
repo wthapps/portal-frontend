@@ -6,7 +6,7 @@ import {
   FormBuilder
 } from '@angular/forms';
 
-import 'rxjs/add/operator/toPromise';
+
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 
 import { SoCommunityService } from '../services/community.service';

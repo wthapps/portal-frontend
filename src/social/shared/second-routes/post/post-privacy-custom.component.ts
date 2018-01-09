@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
 
-import 'rxjs/add/operator/toPromise';
+
 import { HdModalComponent, ListComponent } from '@wth/shared/shared/ng2-hd';
 import { ApiBaseService, UserService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';

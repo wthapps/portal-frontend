@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { SocialService } from '../../services/social.service';
 import { SocialFavoriteService } from '../../services/social-favorites.service';

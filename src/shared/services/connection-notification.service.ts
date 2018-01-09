@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import 'rxjs/add/operator/toPromise';
+
 
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../constant/config/constants';

@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { ZMediaFavoriteService } from './favourites.service';
 

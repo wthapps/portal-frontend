@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { PhotoService, UserService } from '@wth/shared/services';
 import { BasePhotoDetailComponent } from '@wth/shared/shared/components/photo/detail/base-photo-detail.component';

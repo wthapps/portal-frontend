@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { SocialService } from '../shared/services/social.service';
 import { SoUser } from '@wth/shared/shared/models';

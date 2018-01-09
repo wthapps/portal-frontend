@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import 'rxjs/add/operator/toPromise';
+
 import { WthAppsBaseModal } from '@wth/shared/shared/interfaces/wthapps-base-modal';
 import { HdModalComponent } from '@wth/shared/shared/ng2-hd';
 import { ApiBaseService } from '@wth/shared/services';

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import 'rxjs/add/operator/toPromise';
+
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { ApiBaseService, PhotoService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
