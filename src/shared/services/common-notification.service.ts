@@ -155,7 +155,7 @@ export class CommonNotificationInterface {
 
   markAsRead(notification: any) {
     // Mark this notification as read
-    if (!notification.is_read)
+    if (notification && !notification.is_read)
       this.toggleReadStatus(notification);
   }
 
@@ -188,7 +188,7 @@ export class CommonNotificationInterface {
 
         // Get latest notification id
         if (this.notifications.length != 0)
-          this.latestNotifId = Math.max(..._.map(this.notifications, (n: any) => n.id));
+          this.latestNotifId = Math.max(..._.map(this.notifications, (n: any) => +n.id));
         else
           this.latestNotifId = -99;
 
@@ -236,9 +236,10 @@ export class CommonNotificationInterface {
   hideNotificationById(id: any) {
     this.api.delete(`${this.url}/${id}`)
       .toPromise().then((result: any) => {
-        const idx = _.findIndex(this.notifications, ['id', id]);
-        console.log(`hideNotification: ${idx} `, id);
+        const idx = _.findIndex(this.notifications, ['id', +id]);
+        console.log(`hideNotification: ${idx} `, id, this.notifications);
         if (idx > -1) {
+          this.notifications = [...this.notifications];
           this.notifications[idx].isHidden = true;
         }
       },
@@ -249,16 +250,16 @@ export class CommonNotificationInterface {
 
   hideNotification(notification: any) {
     this.currentNotifId = notification.id;
-    this.api.delete(`${this.url}/${this.currentNotifId}`)
-      .toPromise().then((result: any) => {
-        let idx = _.findIndex(this.notifications, ['id', notification.id]);
-        console.log(`hideNotification: ${idx} `, notification);
-        if (idx > -1)
-          this.notifications[idx].isHidden = true;
-      },
-      (error: any) => {
-        console.log('error', error);
-      });
+    // this.api.delete(`${this.url}/${this.currentNotifId}`)
+    //   .toPromise().then((result: any) => {
+    //     let idx = _.findIndex(this.notifications, ['id', notification.id]);
+    //     console.log(`hideNotification: ${idx} `, notification);
+    //     if (idx > -1)
+    //       this.notifications[idx].isHidden = true;
+    //   },
+    //   (error: any) => {
+    //     console.log('error', error);
+    //   });
   }
 
   countNewNotifications() {
@@ -271,7 +272,7 @@ export class CommonNotificationInterface {
   undoNotification(notification: any) {
     this.api.post(`${this.url}/restore`, notification).toPromise()
       .then(() => {
-        let idx = _.findIndex(this.notifications, ['id', notification.id]);
+        let idx = _.findIndex(this.notifications, ['id', +notification.id]);
         if (idx > -1)
           this.notifications[idx].isHidden = false;
       });

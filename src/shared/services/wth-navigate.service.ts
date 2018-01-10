@@ -66,7 +66,7 @@ export class WTHNavigateService {
 
   navigateTo(path: string[], queryParams: any = {}) {
     this.router.navigate([{outlets: {modal: null, detail: null}}], {queryParams: queryParams});
-    this.router.navigate(path);
+    this.router.navigate(path, {queryParams: queryParams});
   }
 
   inSameModule(moduleNames: string[]) {

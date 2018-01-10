@@ -12,7 +12,7 @@ declare let $: any;
   encapsulation: ViewEncapsulation.None
 })
 
-export class NotificationListComponent implements OnInit, AfterViewInit {
+export class NotificationListComponent {
   @Input() type: string = 'update'; // update, connection
   @Input() size: string = 'sm'; // xs, sm, md, lg
   @Input() notifications: any[] = [];
@@ -21,33 +21,5 @@ export class NotificationListComponent implements OnInit, AfterViewInit {
 
   constructor(public notificationService: NotificationService,
               public connectionService: ConnectionNotificationService) {
-
-  constructor(public notificationService: NotificationService) {
-  }
-
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit() {
-    const _this = this;
-
-    $('body').on('click', '.js-confirmHideNotification', (e: any) => {
-      _this.hideNotificationById(e.currentTarget.id);
-    });
-
-    $('body').on('click', '.js-toggleNotification', (e: any) => {
-      _this.toggleNotificationById(e.currentTarget.id);
-    });
-  }
-
-  hideNotificationById(id: any) {
-    if(this.type === 'connection')
-      this.connectionService.hideNotificationById(id);
-    else
-      this.notificationService.hideNotificationById(id);
-  }
-
-  toggleNotificationById(id) {
-    console.log(id);
   }
 }

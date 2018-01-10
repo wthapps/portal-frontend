@@ -24,8 +24,7 @@
           </nav>
         </div>
         <div class="panel-body p0">
-          <app-partials-notification-list #notifications *ngIf="type=='update'" [type]="type" [notifications]="notificationService.notifications"></app-partials-notification-list>
-          <app-partials-notification-list #notifications *ngIf="type=='connection'" [type]="type" [notifications]="connectionService.notifications"></app-partials-notification-list>
+          <app-partials-notification-list #notifications [type]="type"></app-partials-notification-list>
         </div>
         <div class="panel-footer text-center">
           <a href="javascript:;" class="bold text-bigger" (click)="getMoreNotifications()" *ngIf="!isLoadingDone()">

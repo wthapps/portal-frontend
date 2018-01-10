@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild, ViewEncapsulation, Input, AfterViewInit }
 import { NotificationService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'common-notifications',
@@ -12,46 +11,24 @@ import { ConnectionNotificationService } from '@wth/shared/services/connection-n
   styleUrls: ['notifications.component.scss'],
 })
 
-export class CommonNotificationsComponent implements OnInit, AfterViewInit{
-  readonly communitiesUrl: string = '/' + Constants.urls.communities;
+export class CommonNotificationsComponent implements OnInit {
   readonly profileUrl: string = '/' + Constants.urls.profile;
 
   @Input() type: string = 'update'; // update, connection
 
   @ViewChild('notifications') notificationListComponent: NotificationListComponent;
-  @ViewChild('settings') settingsModal: ModalComponent;
 
   constructor(public notificationService: NotificationService,
-              public connectionService: ConnectionNotificationService) {
+              public connectionService: ConnectionNotificationService,
+              private route: ActivatedRoute) {
+    route.queryParamMap.subscribe((queryParamMap: any) => {
+      if(queryParamMap.get('type'))
+        this.type = queryParamMap.get('type');
+    });
   }
 
   ngOnInit() {
     this.notificationService.getLatestNotifications();
-  }
-
-  ngAfterViewInit() {
-    const _this = this;
-
-    $('body').on('click', (e: any) => {
-      console.debug($('#notiItemMenuEl'));
-      console.debug('click .js-confirmHideNotification');
-      _this.hideNotificationById(e.currentTarget.id);
-    });
-
-    $('body').on('click', '#notiItemMenuEl .js-toggleNotification', (e: any) => {
-      _this.toggleNotificationById(e.currentTarget.id);
-    });
-  }
-
-  hideNotificationById(id: any) {
-    if(this.type === 'connection')
-      this.connectionService.hideNotificationById(id);
-    else
-      this.notificationService.hideNotificationById(id);
-  }
-
-  toggleNotificationById(id) {
-    console.log(id);
   }
 
   onSelectedTab(type: string) {

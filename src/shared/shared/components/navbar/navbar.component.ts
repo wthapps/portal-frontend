@@ -138,7 +138,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Navigate to notification page of social module
     if (this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social, Constants.baseUrls.media]))
-      this.navigateService.navigateTo(['/notifications']);
+      this.navigateService.navigateTo(['/notifications'], {type: this.type});
     else
       this.navigateService.navigateOrRedirect('notifications', 'social');
   }
@@ -189,6 +189,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   onSelectedTab(tab: string) {
     this.type = tab;
     this.getLatestNotifications();
+    this.markAsSeen();
     // switch (tab) {
     //   case 'update':
     //     break;

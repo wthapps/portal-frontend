@@ -68,6 +68,30 @@ export class NotificationItemComponent implements OnInit {
     const tmp = document.createElement('div');
     tmp.setAttribute('id', 'notiItemMenuEl');
     tmp.appendChild(el);
+    if(tmp.querySelector('.js-confirmHideNotification') !== null) {
+      tmp.querySelector('.js-confirmHideNotification').addEventListener('click', (e: any) => {
+        console.debug('.js-confirmHideNotification LCICKED', e);
+        this.hideNotificationById(e.currentTarget.id);
+      });
+    }
+
+    if(tmp.querySelector('.js-toggleNotification') !== null) {
+      tmp.querySelector('.js-toggleNotification').addEventListener('click', (e: any) => {
+        console.debug('.js-toggleNotification CICKED', e);
+        this.toggleNotificationById(e.currentTarget.id);
+      });
+    }
+
+    // $('body').on('click', '#notiItemMenuEl .js-confirmHideNotification', (e: any) => {
+    //   console.debug('_this.hideNotificationById');
+    //   // _this.hideNotificationById(e.currentTarget.id);
+    // });
+    //
+    // $('body').on('click', '#notiItemMenuEl .js-toggleNotification', (e: any) => {
+    //   _this.toggleNotificationById(e.currentTarget.id);
+    // });
+
+
     this.renderer.appendChild(document.body, tmp);
     this.renderer.setStyle(tmp, 'top', event.clientY + 'px');
     this.renderer.setStyle(tmp, 'left', event.clientX + 'px');
@@ -77,22 +101,27 @@ export class NotificationItemComponent implements OnInit {
   //   this.notificationService.navigateTo(actions, notif_id);
   // }
 
-  confirmHideNotification(notification: any) {
-    this.hideNotification(notification);
+
+  hideNotificationById(id: any) {
+    if(this.type === 'connection')
+      this.connectionService.hideNotificationById(id);
+    else
+      this.notificationService.hideNotificationById(id);
   }
 
-  getMoreNotifications() {
-    if(this.type === 'connection')
-      this.connectionService.getMoreNotifications();
-    else
-      this.notificationService.getMoreNotifications();
+  toggleNotificationById(id) {
+    console.log(id);
+  }
+
+  confirmHideNotification(notification: any) {
+    // this.hideNotification(notification);
   }
 
   hideNotification(notification: any) {
-    if(this.type === 'connection')
-      this.connectionService.hideNotification(notification);
-    else
-      this.notificationService.hideNotification(notification);
+    // if(this.type === 'connection')
+    //   this.connectionService.hideNotification(notification);
+    // else
+    //   this.notificationService.hideNotification(notification);
   }
 
   viewProfile(user: any) {

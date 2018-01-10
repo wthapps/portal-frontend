@@ -9,6 +9,7 @@ import { ChatCommonService } from './chat.common.service';
 import { NotificationService } from './notification.service';
 import { CommonEventService } from './common-event/common-event.service';
 import { UrlService } from './url.service';
+import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 
 @Injectable()
 export class ServiceManager {
@@ -21,6 +22,7 @@ export class ServiceManager {
               public urlService: UrlService,
               public chatCommonService: ChatCommonService,
               public commonEventService: CommonEventService,
+              public connectionService: ConnectionNotificationService,
               public notificationService: NotificationService) {
   }
 
@@ -58,6 +60,10 @@ export class ServiceManager {
 
   getCommonNotificationService() {
     return this.notificationService;
+  }
+
+  getConnetionNotificationService() {
+    return this.connectionService;
   }
 
   getCommonEventService() {
