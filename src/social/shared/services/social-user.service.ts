@@ -132,17 +132,17 @@ export class SoUserService {
   }
 
   // ================= Friend ======================
-  getFriends(uuid: string = this.user.profile.uuid) {
+  getFriends(uuid: string = this.userService.getSyncProfile().uuid) {
     return this.apiBaseService.get(`${soFriendUrl}/${uuid}`);
   }
 
   // ================= Follower ======================
-  getFollowerList(uuid: string = this.user.profile.uuid ) {
+  getFollowerList(uuid: string = this.userService.getSyncProfile().uuid ) {
     return this.apiBaseService.get(`${soUsersUrl}/followers/${uuid}`);
   }
 
   // ================= Following ======================
-  getFollowingList(uuid: string = this.user.profile.uuid ) {
+  getFollowingList(uuid: string = this.userService.getSyncProfile().uuid ) {
     return this.apiBaseService.get(`${soUsersUrl}/followings/${uuid}`);
   }
 }

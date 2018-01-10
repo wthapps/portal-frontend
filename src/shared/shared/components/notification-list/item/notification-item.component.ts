@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import { NotificationService, ApiBaseService } from '@shared/services';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 
+declare let _: any;
+
 @Component({
   selector: 'notification-item',
   templateUrl: 'notification-item.component.html',
