@@ -64,7 +64,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
 
     if (this.data.admin) {
       // check if admin
-      this.isAdmin = (this.data.admin.uuid == this.userService.profile.uuid) ? true : false;
+      this.isAdmin = (this.data.admin.uuid == this.userService.getSyncProfile().uuid) ? true : false;
     }
 
     /*(<FormControl>this.setting_notification_posts).setValue(this.data.setting_notification_posts);*/

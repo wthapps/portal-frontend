@@ -80,7 +80,7 @@ export class MyAccountComponent implements OnInit {
         old_password: old_password,
         password: password
       });
-      this.userService.changePassword(`users/${this.userService.profile.id}`, body)
+      this.userService.changePassword(`users/${this.userService.getSyncProfile().id}`, body)
         .subscribe((result: any) => {
             // stop loading
             this.loadingService.stop();
@@ -119,7 +119,7 @@ export class MyAccountComponent implements OnInit {
     //2
     let body: string = JSON.stringify({plan_id: 1});
     let bodyText = `If you decide to leave WTHapp, it’s OK. You can keep on using WTHpictures. <br>
-     We will send you a cancellation confirmation email to <span class="bold">${this.userService.profile.email}</span>. <br>
+     We will send you a cancellation confirmation email to <span class="bold">${this.userService.getSyncProfile().email}</span>. <br>
      We are sorry to see you leave - but we will be here if you wish to rejoin. <br>`;
 
     this.wthConfirmService.confirm({
@@ -127,7 +127,7 @@ export class MyAccountComponent implements OnInit {
       header: 'Cancel Membership',
       accept: () => {
         this.loadingService.start();
-        this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
+        this.userService.choosePlan(`users/${this.userService.getSyncProfile().id}`, body)
           .subscribe((response: any) => {
               this.toastsService.success(response.message);
               this.loadingService.stop();
@@ -153,7 +153,7 @@ export class MyAccountComponent implements OnInit {
       header: 'Delete Account',
       accept: () => {
         this.loadingService.start();
-        this.userService.update(`users/${this.userService.profile.id}`, body)
+        this.userService.update(body)
           .subscribe((response: any) => {
               this.toastsService.success(response.message);
               this.loadingService.stop();

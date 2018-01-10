@@ -120,7 +120,7 @@
           </a>
         </li>
 
-        <li *ngIf="item.owner.uuid != userService.profile.uuid">
+        <li *ngIf="item.owner.uuid != userService.getSyncProfile().uuid">
           <a href="javascript:;" (click)="onReport()">Report post</a>
         </li>
 

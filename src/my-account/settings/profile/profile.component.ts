@@ -73,34 +73,34 @@ export class MyProfileComponent implements OnInit, OnDestroy {
               private commonEventService: CommonEventService,
               private loadingService: LoadingService) {
 
-    this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
+    this.sex = this.userService.getSyncProfile().sex === null ? 0 : this.userService.getSyncProfile().sex;
     this.validDays = this.range(1, 31);
     this.validYears = this.range(2016, 1905);
 
-    if (!this.userService.profile.profile_image) {
-      this.userService.profile.profile_image = Constants.img.avatar;
+    if (!this.userService.getSyncProfile().profile_image) {
+      this.userService.getSyncProfile().profile_image = Constants.img.avatar;
     }
 
-    if (this.userService.profile.birthday !== null) {
-      let birthday = new Date(this.userService.profile.birthday);
+    if (this.userService.getSyncProfile().birthday !== null) {
+      let birthday = new Date(this.userService.getSyncProfile().birthday);
       this.birthdayDate.day = birthday.getDate();
       this.birthdayDate.month = birthday.getMonth() + 1;
       this.birthdayDate.year = birthday.getUTCFullYear();
     }
 
     this.form = fb.group({
-      'first_name': [this.userService.profile.first_name,
+      'first_name': [this.userService.getSyncProfile().first_name,
         Validators.compose([Validators.required])
       ],
-      'last_name': [this.userService.profile.last_name,
+      'last_name': [this.userService.getSyncProfile().last_name,
         Validators.compose([Validators.required])
       ],
       'email': [
-        {value: this.userService.profile.email, disabled: true},
+        {value: this.userService.getSyncProfile().email, disabled: true},
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'phone_prefix': [this.userService.profile.nationality],
-      'phone_number': [this.userService.profile.phone_number],
+      'phone_prefix': [this.userService.getSyncProfile().nationality],
+      'phone_number': [this.userService.getSyncProfile().phone_number],
       'birthday_day': [this.birthdayDate.day],
       'birthday_month': [this.birthdayDate.month],
       'birthday_year': [this.birthdayDate.year]
@@ -120,7 +120,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     // Set value before updating form (checking user leave this page)
     this.formValue = this.form.value;
 
-    this.profile_image = this.userService.profile.profile_image;
+    this.profile_image = this.userService.getSyncProfile().profile_image;
     this.countryService.getCountries().subscribe(
       (data: any) => this.countriesCode = data,
       (error: any) => this.errorMessage = <any>error);
@@ -156,7 +156,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
       //console.log(body);
 
-      this.userService.update(`users/${this.userService.profile.id}`, body)
+      this.userService.update(body)
         .subscribe((result: any) => {
             // stop loading
             this.loadingService.stop();
@@ -175,7 +175,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   uploadImage(event: any): void {
     event.preventDefault();
     // this.uploadProfile.modal.open();
-    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.profile.profile_image} });
+    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.getSyncProfile().profile_image} });
     this.handleSelectCropEvent();
   }
 
@@ -206,7 +206,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
 
   private updateUser(body: string): void {
-    this.userService.update(`users/${this.userService.profile.id}`, body)
+    this.userService.update(body)
       .subscribe((result: any) => {
           // stop loading
           this.loadingService.stop();

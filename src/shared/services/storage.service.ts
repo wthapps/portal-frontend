@@ -10,8 +10,8 @@ export class StorageService {
   reset: boolean = true;
 
   constructor(public userService: UserService) {
-    if (userService && userService.profile) {
-      this.storageId = userService.profile.id;
+    if (userService && userService.getSyncProfile()) {
+      this.storageId = userService.getSyncProfile().id;
     }
   }
 
@@ -52,11 +52,11 @@ export class StorageService {
   }
 
   resetIfNeed() {
-    if (this.storageId && this.userService.profile && this.storageId != this.userService.profile.id && this.reset) {
+    if (this.storageId && this.userService.getSyncProfile() && this.storageId != this.userService.getSyncProfile().id && this.reset) {
       for (let item of this.listItem) {
         item.value = null;
       }
-      this.storageId = this.userService.profile.id;
+      this.storageId = this.userService.getSyncProfile().id;
     }
   }
 

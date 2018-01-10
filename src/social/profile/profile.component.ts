@@ -49,7 +49,7 @@ export class ZSocialProfileComponent implements OnInit {
     )
     .subscribe((res: any) => {
       this.userInfo = res[0].data;
-      this.userInfo.canEdit = (this.userInfo.uuid === this.userService.profile.uuid);
+      this.userInfo.canEdit = (this.userInfo.uuid === this.userService.getSyncProfile().uuid);
 
       this.actions = _.get(res[0], 'actions', []);
       this.relationships = res[1].relationships;
@@ -59,7 +59,7 @@ export class ZSocialProfileComponent implements OnInit {
   }
 
   getRelationship(uuid: any): Promise<any> {
-      if (this.userService.profile.uuid != uuid) {
+      if (this.userService.getSyncProfile().uuid != uuid) {
         return this.socialService.user.getRelationShips(uuid)
           .toPromise()
           .then((res: any) => {

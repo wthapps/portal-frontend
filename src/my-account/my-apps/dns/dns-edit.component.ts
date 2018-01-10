@@ -119,7 +119,7 @@ export class MyDNSEditComponent implements OnInit {
 
       this.loadingService.start();
       if (this.submittedAdd) { // add new host
-        this.dnsService.addNewHost(body, this.userService.profile.id).subscribe(
+        this.dnsService.addNewHost(body, this.userService.getSyncProfile().id).subscribe(
           result => {
             this.loadingService.stop();
             this.router.navigateByUrl(`/my-apps/${this.app_id}`);
@@ -137,7 +137,7 @@ export class MyDNSEditComponent implements OnInit {
           }
         );
       } else {
-        this.dnsService.updateHost(this.dns_id, body, this.userService.profile.id).subscribe(
+        this.dnsService.updateHost(this.dns_id, body, this.userService.getSyncProfile().id).subscribe(
           result => {
             this.loadingService.stop();
             this.router.navigateByUrl(`/account/my-apps/${this.app_id}`);
@@ -159,7 +159,7 @@ export class MyDNSEditComponent implements OnInit {
   }
 
   getHost(id: number): void {
-    this.dnsService.getHost(id, this.userService.profile.id).subscribe(
+    this.dnsService.getHost(id, this.userService.getSyncProfile().id).subscribe(
       (result: any) => {
         //console.log(result);
         (<FormControl>this.host).setValue(result.data.name);

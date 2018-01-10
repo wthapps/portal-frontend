@@ -58,7 +58,7 @@ export class MyReceiptComponent implements OnInit {
     );
 
     this.loadingService.start();
-    this.transactionService.detail(this.trans_id, this.userService.profile.id).subscribe(
+    this.transactionService.detail(this.trans_id, this.userService.getSyncProfile().id).subscribe(
       (response: any) => {
         this.transaction = response.data;
         this.transaction.created_at = new Date(response.data.created_at);

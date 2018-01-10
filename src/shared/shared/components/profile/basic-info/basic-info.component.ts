@@ -146,7 +146,7 @@ export class PartialsBasicInfoComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'SELECT_CROP_EVENT',
       action: 'SELECT_CROP:OPEN',
-      payload: {editCurrentMode: false, currentImage: this.userService.profile.profile_image}
+      payload: {editCurrentMode: false, currentImage: this.userService.getSyncProfile().profile_image}
     });
     this.handleSelectCropEvent();
   }
@@ -179,7 +179,7 @@ export class PartialsBasicInfoComponent implements OnInit, OnDestroy {
 
   private updateUser(body: string): void {
     // this.apiBaseService.put('zone/social_network/users/update', body)
-    this.userService.update(`users/${this.userService.profile.id}`, body)
+    this.userService.update(body)
       .subscribe((result: any) => {
           // stop loading
           this.loadingService.stop();

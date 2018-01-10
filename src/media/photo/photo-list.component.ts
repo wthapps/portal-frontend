@@ -14,6 +14,6 @@ export class ZMediaPhotoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.userService.profile.introduction.media) this.introModal.open();
+    if (!this.userService.getSyncProfile().introduction.media) this.introModal.open();
   }
 }

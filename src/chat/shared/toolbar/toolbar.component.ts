@@ -119,7 +119,7 @@ export class ZChatToolbarComponent implements OnInit {
     if (contact) {
       return true;
     } else {
-      if (this.chatService.user.profile.id == user.id) {
+      if (this.chatService.userService.getSyncProfile().id == user.id) {
         return true;
       }
       return false;
@@ -137,7 +137,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   checkBlacklist(user: any) {
-    if (this.chatService.user.profile.id == user.id) {
+    if (this.chatService.userService.getSyncProfile().id == user.id) {
       this.showBlacklist = false;
     } else {
       this.showBlacklist = true;

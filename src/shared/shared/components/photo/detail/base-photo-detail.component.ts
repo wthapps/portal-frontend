@@ -82,7 +82,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
       })
       .subscribe((response: any) => {
           this.photo = response.data;
-          this.isOwner = (response.data.owner.id == this.userService.profile.id);
+          this.isOwner = (response.data.owner.id == this.userService.getSyncProfile().id);
           this.loading = false;
         },
         (error: any) => {

@@ -36,8 +36,8 @@ export class MyBillingDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.userService.profile.has_payment_info) {
-      this.credit_card = this.userService.profile.credit_cards[0];
+    if (this.userService.getSyncProfile().has_payment_info) {
+      this.credit_card = this.userService.getSyncProfile().credit_cards[0];
     } else {
       this.credit_card = new CreditCard({billing_address: new BillingAddress});
     }
@@ -58,14 +58,14 @@ export class MyBillingDetailsComponent implements OnInit {
       header: 'Delete billing details',
       accept: () => {
         this.loadingService.start();
-        this.userService.delete(`/users/${this.userService.profile.id}/payments/1`).subscribe(
+        this.userService.update(`/users/${this.userService.getSyncProfile().id}/payments/1`).subscribe(
           response => {
             this.loadingService.stop();
             this.toastsService.success('The billing details has been deleted.');
-            this.userService.profile.has_payment_info = false;
-            this.userService.profile.credit_cards = null;
+            this.userService.getSyncProfile().has_payment_info = false;
+            this.userService.getSyncProfile().credit_cards = null;
             // Cookie.delete('profile');
-            this.cookieService.put('profile', JSON.stringify(this.userService.profile), this.cookieOptionsArgs);
+            this.cookieService.put('profile', JSON.stringify(this.userService.getSyncProfile()), this.cookieOptionsArgs);
           },
           error => {
             this.loadingService.stop();

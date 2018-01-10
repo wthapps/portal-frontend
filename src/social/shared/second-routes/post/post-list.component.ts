@@ -71,7 +71,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUser = this.socialService.user.profile;
-    this.profile$ = this.userService.profile$;
+    this.profile$ = this.userService.getAsyncProfile();
     // Support get route params from parent route as well as current route. Ex: Profile post page
     let parentRouteParams = this.route.parent.params;
     this.showLoading = document.getElementById('post-list-loading') !== null;
@@ -114,7 +114,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.loadingService.stop('#post-list-loading');
   }
 
-  viewProfile(uuid: string = this.userService.getProfileUuid()) {
+  viewProfile(uuid: string = this.userService.getSyncProfile().uuid) {
     this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
       .then(() => this.router.navigate(['profile', uuid]));
   }

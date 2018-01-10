@@ -97,7 +97,7 @@ export class TakeATourComponent implements OnInit {
     this.loadingContent = 'Your friends will receive your invitation shortly';
 
     this.apiBaseService
-      .put(`zone/social_network/users/${this.userService.profile.uuid}`, this.basicInfo.form.value)
+      .put(`zone/social_network/users/${this.userService.getSyncProfile().uuid}`, this.basicInfo.form.value)
       .subscribe(
         (res: any) => {
           console.log(res);

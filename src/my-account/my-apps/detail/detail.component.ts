@@ -40,7 +40,7 @@ export class MyMyAppsDetailComponent implements OnInit, OnDestroy {
         this.app_id = +params['id'];
 
         // verify this app_id is added or not
-        this.myAppsService.checkAdded(this.app_id, this.userService.profile.id).subscribe(
+        this.myAppsService.checkAdded(this.app_id, this.userService.getSyncProfile().id).subscribe(
           (response: any) => {
             this.added = response.added;
           },

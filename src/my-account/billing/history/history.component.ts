@@ -23,7 +23,7 @@ export class MyBillingHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.start();
-    this.transactionService.list(this.userService.profile.id)
+    this.transactionService.list(this.userService.getSyncProfile().id)
       .subscribe((response: any) => {
           this.transactions = response.data;
           this.transactions.map((t) => {

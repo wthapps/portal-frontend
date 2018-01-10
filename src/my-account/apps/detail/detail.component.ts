@@ -39,7 +39,7 @@ export class MyAppsDetailComponent implements OnInit {
       this.app_id = +params['id']; // (+) converts string 'id' to a number
 
       // verify this app_id is added or not
-      this.appsService.checkAdded(this.app_id, this.userService.profile.id).subscribe(
+      this.appsService.checkAdded(this.app_id, this.userService.getSyncProfile().id).subscribe(
         (response: any) => {
           this.added = response.added;
         },
@@ -66,7 +66,7 @@ export class MyAppsDetailComponent implements OnInit {
 
   add(event: any): void {
     event.preventDefault();
-    this.appsService.add(this.app_id, this.userService.profile.id).subscribe(
+    this.appsService.add(this.app_id, this.userService.getSyncProfile().id).subscribe(
       (response: any) => {
         //console.log(this.app_id, response);
         let data: any = response.data;

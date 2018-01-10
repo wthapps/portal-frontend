@@ -114,7 +114,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
     // All subscriptions to photo select modal should be closed when 1 of following events are emitted
     this.closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
-    this.profile$ = this.userService.profile$;
+    this.profile$ = this.userService.getAsyncProfile();
   }
 
   ngOnInit() {

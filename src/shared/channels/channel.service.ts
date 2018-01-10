@@ -18,8 +18,8 @@ export class ChannelService extends CableService {
   subscribe() {
     // TODO fix replace this by ng2cable
     // console.log('channel service:::', App);
-    if(this.userService.loggedIn && this.userService.profile) {
-      this.createConnectionInstance(this.userService.profile.uuid);
+    if(this.userService.loggedIn && this.userService.getSyncProfile()) {
+      this.createConnectionInstance(this.userService.getSyncProfile().uuid);
       let thisCopy = this;
       App.channel = App.cable.subscriptions.create(
         {channel: 'Channel'},

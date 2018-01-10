@@ -69,7 +69,7 @@ export class PostPrivacyCustomComponent implements OnInit {
   }
 
   loadData(): void {
-    this.apiService.get(`zone/social_network/users/${this.userService.profile.uuid}`)
+    this.apiService.get(`zone/social_network/users/${this.userService.getSyncProfile().uuid}`)
       .toPromise().then((result: any) => {
           if (this.isCustomFriend()) {
             this.items = result['data']['friends'];

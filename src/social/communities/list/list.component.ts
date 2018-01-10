@@ -43,7 +43,7 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   getList() {
     this.loadingService.start('#communites-list');
 
-    let myuuid = this.userService.profile.uuid;
+    let myuuid = this.userService.getSyncProfile().uuid;
     // var _this_community = this;
 
     this.socialService.community.getCommunitiesList().toPromise()

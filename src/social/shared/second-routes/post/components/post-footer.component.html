@@ -47,7 +47,7 @@
               </li>
             </ul>
           </div>
-          <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == comment.owner.uuid">
+          <div class="media-body-action dropdown pull-right" *ngIf="userService.getSyncProfile().uuid == comment.owner.uuid">
             <button class="btn btn-sm btn-default" data-toggle="dropdown" pTooltip="{{  tooltip.edit  }}"
                     tooltipPosition="top">
               <i class="fa fa-pencil"></i>
@@ -109,7 +109,7 @@
           <div class="media-body">
             <h4 class="media-heading"><a  href="javascript:;" (click)="viewProfile(reply.owner.uuid)">{{ reply.owner.name }}</a>
               <span class="media-heading-time">{{ reply.created_at | timeFormat }}</span>
-              <div class="media-body-action dropdown pull-right" *ngIf="userService.profile.uuid == reply.owner.uuid">
+              <div class="media-body-action dropdown pull-right" *ngIf="userService.getSyncProfile().uuid == reply.owner.uuid">
                 <button class="btn btn-sm btn-default" data-toggle="dropdown" pTooltip="{{  tooltip.edit  }}"
                         tooltipPosition="top">
                   <i class="fa fa-pencil"></i>

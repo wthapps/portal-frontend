@@ -38,10 +38,10 @@ export class IntroductionModalComponent implements OnDestroy {
   }
 
   update() {
-    if(!this.userService.profile)
+    if(!this.userService.getSyncProfile())
       return;
-    let introduction: any = {...this.userService.profile.introduction, ...this.after};
-    this.userService.update(`users/${this.userService.profile.id}`, {introduction: introduction}).subscribe((result: any) => {
+    let introduction: any = {...this.userService.getSyncProfile().introduction, ...this.after};
+    this.userService.update({introduction: introduction}).subscribe((result: any) => {
 
     });
   }

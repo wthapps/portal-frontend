@@ -145,7 +145,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
   changeProfileImage(event: any): void {
     event.preventDefault();
     // this.uploadProfile.modal.open();
-    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.profile.profile_image} });
+    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.getSyncProfile().profile_image} });
 
   }
 
@@ -177,7 +177,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
 
   private updateUser(body: string): void {
     // this.apiBaseService.put('zone/social_network/users/update', body)
-    this.userService.update(`users/${this.userService.profile.id}`, body)
+    this.userService.update(body)
       .subscribe((result: any) => {
           // stop loading
           this.loadingService.stop();
@@ -246,10 +246,10 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
   //         if (_.has(event.body, 'profile_image')) {
   //           toastMsg = 'You have updated profile image successfully';
   //           // Update user profile
-  //           if (this.userService.profile.uuid === _.get(result, 'data.uuid')) {
-  //             Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
-  //             Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
-  //             this.userService.updateProfile(this.userService.profile);
+  //           if (this.userService.getSyncProfile().uuid === _.get(result, 'data.uuid')) {
+  //             Object.assign(this.userService.getSyncProfile(), {'profile_image': result.data.profile_image});
+  //             Object.assign(this.userService.getSyncProfile(), {'profile_image': result.data.profile_image});
+  //             this.userService.updateProfile(this.userService.getSyncProfile());
   //           }
   //         } else if (_.has(event.body, 'cover_image')) {
   //               toastMsg = 'You have updated cover image of this community successfully';

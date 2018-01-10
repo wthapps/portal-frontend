@@ -7,10 +7,11 @@ import {
 }                           from '@angular/router';
 import { AuthService }      from './auth.service';
 import { Constants } from '../constant/config/constants';
+import { UserService } from "./user.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
@@ -23,14 +24,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   checkLogin(url: string): Promise<boolean> {
-    return this.authService.loggedIn().then((res: any) => {
-      if(res)
-        return Promise.resolve(true);
-      else {
-        window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${url}`;
-        return Promise.resolve(false);
-      }
-    });
+    if (this.userService.loggedIn) return Promise.resolve(true);
+    return Promise.resolve(false);
   }
 }
-

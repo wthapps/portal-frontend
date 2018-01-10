@@ -13,7 +13,6 @@ import { WTHNavigateService } from './wth-navigate.service';
 
 declare var _: any;
 
-@Injectable()
 export class CommonNotificationInterface {
   notifications: Array<any> = new Array<any>();
   latestNotifId: number = 0;
@@ -115,7 +114,7 @@ export class CommonNotificationInterface {
     let notif_ids = _.map(this.notifications, (i: any) => i.id);
     let body = {'ids': notif_ids};
 
-    if (!(this.userService.loggedIn && this.userService.profile))
+    if (!(this.userService.loggedIn && this.userService.getSyncProfile()))
       return;
     return this.api.post(`${this.url}/mark_as_seen`, body)
       .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
@@ -175,7 +174,7 @@ export class CommonNotificationInterface {
   }
 
   getLatestNotifications() {
-    if (this.initLoad && this.loadingDone && this.userService.loggedIn && this.userService.profile)
+    if (this.initLoad && this.loadingDone && this.userService.loggedIn && this.userService.getSyncProfile())
       return; // Only load once at first time
     this.api.get(`${this.url}/get_latest`, {sort_name: 'created_at'})
       .toPromise().then(
@@ -213,7 +212,7 @@ export class CommonNotificationInterface {
       console.debug('All notifications are loaded !');
       return;
     }
-    if (this.userService.loggedIn && this.userService.profile)
+    if (this.userService.loggedIn && this.userService.getSyncProfile())
       return;
     this.api.get(this.nextLink)
       .toPromise().then(

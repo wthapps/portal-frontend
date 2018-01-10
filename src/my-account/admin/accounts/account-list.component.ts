@@ -42,7 +42,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentUser = this.userService.profile;
+    this.currentUser = this.userService.getSyncProfile();
     this.accountService.getAll().subscribe((response: any) => {
       this.items = response.data;
     });

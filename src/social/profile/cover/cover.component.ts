@@ -58,7 +58,7 @@ export class ZSocialProfileCoverComponent implements OnInit {
       this.uuid = res.userInfo.uuid;
       this.relationships = res.relationships;
 
-      if (this.userInfo && this.userService.profile.uuid != this.userInfo.uuid) {
+      if (this.userInfo && this.userService.getSyncProfile().uuid != this.userInfo.uuid) {
         this.showFriends = _.get(this.userInfo, 'settings.show_friends.value', false);
       }
     });
@@ -94,8 +94,8 @@ export class ZSocialProfileCoverComponent implements OnInit {
             // Update user profile
             if (this.socialService.user.profile.uuid === _.get(result, 'data.uuid')) {
               Object.assign(this.socialService.user.profile, {'profile_image': result.data.profile_image});
-              Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
-              this.userService.updateProfile(this.userService.profile);
+              Object.assign(this.userService.getSyncProfile(), {'profile_image': result.data.profile_image});
+              this.userService.updateProfile(this.userService.getSyncProfile());
             }
           } else if (_.has(event.body, 'cover_image')) {
                 toastMsg = 'You have updated cover image of this community successfully';

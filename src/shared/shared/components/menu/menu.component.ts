@@ -52,7 +52,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
               private apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService,
               private commonEventService: CommonEventService) {
-    this.uuid = this.userService.getProfileUuid();
+    this.uuid = this.userService.getSyncProfile().uuid;
     this.urls = Constants.baseUrls;
     this.constants = Constants;
   }

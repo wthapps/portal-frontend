@@ -77,7 +77,7 @@ export class MyPlansComponent implements OnInit {
   //   });
   //   // Cookie.delete('selected_plan');
   //   this.cookieService.put('selected_plan', p, this.cookieOptionsArgs);
-  //   if (this.userService.profile.has_payment_info) {
+  //   if (this.userService.getSyncProfile().has_payment_info) {
   //     this.router.navigateByUrl('payment/confirm');
   //   } else {
   //     this.router.navigateByUrl('payment');

@@ -52,7 +52,7 @@
             </div>
           </ng-container>
 
-          <ng-container *ngIf="userInfo.uuid !== userService.profile.uuid">
+          <ng-container *ngIf="userInfo.uuid !== userService.getSyncProfile().uuid">
 
             <button type="button" class="btn btn-outline-default" *ngIf="!relationships?.follow"
                     (click)="follow(userInfo.uuid)">
@@ -76,7 +76,7 @@
 
         </div>
         <!--menu-->
-        <div class="btn-group" *ngIf="userInfo.uuid !== userService.profile.uuid">
+        <div class="btn-group" *ngIf="userInfo.uuid !== userService.getSyncProfile().uuid">
           <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
             <i class="fa fa-ellipsis-v"></i>

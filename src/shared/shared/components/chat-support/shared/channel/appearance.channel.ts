@@ -35,8 +35,8 @@ export class AppearanceChannel extends CableService {
     if (this.userService.loggedIn && type === 'cs') {
       this.createConnectionInstance(this.cookie.get(Constants.cookieKeys.chatSupportId), 'cs');
     } else {
-      if (this.userService.profile)
-        this.createConnectionInstance(this.userService.profile.uuid);
+      if (this.userService.getSyncProfile())
+        this.createConnectionInstance(this.userService.getSyncProfile().uuid);
     }
 
 

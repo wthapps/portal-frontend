@@ -22,11 +22,11 @@ export let soFriendUrl: any = Constants.urls.soFriendUrl;
 @Injectable()
 export class SoPostService {
   constructor(private apiBaseService: ApiBaseService,
-              private user: UserService,
+              private userService: UserService,
               private  router: Router) {
   }
 
-  getList(uuid: string = this.user.profile.uuid, type?: string) {
+  getList(uuid: string = this.userService.getSyncProfile().uuid, type?: string) {
     return this.getListSocialPosts(uuid, type);
   }
 

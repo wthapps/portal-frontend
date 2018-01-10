@@ -57,8 +57,8 @@ export class PostBodyComponent implements OnChanges {
       this.parentItem = Object.assign(parentItem, {remainPhotos: remainPhotos});
     }
 
-    this.hasLike = _.findIndex(this.item.likes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
-    this.hasDislike = _.findIndex(this.item.dislikes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
+    this.hasLike = _.findIndex(this.item.likes, ['owner.uuid', this.userService.getSyncProfile().uuid] ) > -1;
+    this.hasDislike = _.findIndex(this.item.dislikes, ['owner.uuid', this.userService.getSyncProfile().uuid] ) > -1;
   }
 
 

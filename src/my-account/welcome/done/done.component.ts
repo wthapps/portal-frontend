@@ -19,12 +19,12 @@ export class WelcomeDoneComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.userService.profile && !this.userService.profile.took_a_tour) {
+    if (this.userService.getSyncProfile() && !this.userService.getSyncProfile().took_a_tour) {
       let body = JSON.stringify({
         took_a_tour: true
       });
 
-      this.userService.update(`users/${this.userService.profile.id}`, body).subscribe(
+      this.userService.update(body).subscribe(
         (res: any) => {
           console.log(res);
         });

@@ -6,11 +6,11 @@
         <p-radioButton name="searchPostedBy" value="anyone" label="Anyone" [(ngModel)]="searchPostedBy" (click)="filter('id:*'); disable(true);"></p-radioButton>
       </li>
       <li>
-        <p-radioButton name="searchPostedBy" value="you" label="You" [(ngModel)]="searchPostedBy" (click)="filter('owner_id:' + userService.profile.id); disable(true);"></p-radioButton>
+        <p-radioButton name="searchPostedBy" value="you" label="You" [(ngModel)]="searchPostedBy" (click)="filter('owner_id:' + userService.getSyncProfile().id); disable(true);"></p-radioButton>
       </li>
       <li>
         <p-radioButton name="searchPostedBy" value="yourFriends" label="Your friends"
-                       [(ngModel)]="searchPostedBy" (click)="filter('owner_id:!' + userService.profile.id); disable(true);"></p-radioButton>
+                       [(ngModel)]="searchPostedBy" (click)="filter('owner_id:!' + userService.getSyncProfile().id); disable(true);"></p-radioButton>
       </li>
       <li>
         <p-radioButton name="searchPostedBy" value="frinedOfFriend" label="Communites"

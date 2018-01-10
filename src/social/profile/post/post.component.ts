@@ -25,7 +25,7 @@ export class ZSocialProfilePostComponent implements OnInit {
   ngOnInit() {
     this.profileDataService.profileData$.subscribe((res: any) => {
       this.userInfo = res.userInfo;
-      this.canCreate = (this.userInfo && this.userService.profile && this.userInfo.uuid == this.userService.profile.uuid);
+      this.canCreate = (this.userInfo && this.userService.getSyncProfile() && this.userInfo.uuid == this.userService.getSyncProfile().uuid);
       this.relationships = res.relationships;
     });
   }

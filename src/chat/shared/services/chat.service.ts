@@ -27,7 +27,7 @@ export class ChatService {
 
   constructor(public storage: StorageService,
               public apiBaseService: ApiBaseService,
-              public user: UserService,
+              public userService: UserService,
               public chatContactService: ChatContactService,
               public chatCommonService: ChatCommonService,
               public photoUploadService: PhotoUploadService,
@@ -416,7 +416,7 @@ export class ChatService {
   }
 
   getOwnUserProfile() {
-    return this.user.profile;
+    return this.userService.getSyncProfile();
   }
 
   updatePhotoMessage(messageId: any, groupId: any, fileJson: any): Promise<any> {

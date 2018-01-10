@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit {
               } else {
                 // Redirect to previous url
                 if (this.returnUrl == undefined) {
-                  this.returnUrl = (this.userService.profile && this.userService.profile.took_a_tour) ? '' : Constants.baseUrls.myAccount;
+                  this.returnUrl = (this.userService.getSyncProfile() && this.userService.getSyncProfile().took_a_tour) ? '' : Constants.baseUrls.myAccount;
                 }
                 window.location.href = this.returnUrl;
 

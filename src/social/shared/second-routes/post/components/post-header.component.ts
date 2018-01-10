@@ -40,7 +40,7 @@ export class PostHeaderComponent implements OnChanges {
               public userService: UserService,
               private zoneReportService: ZSharedReportService) {
     // this.user = this.socialService.user.profile;
-    this.profile$ = this.userService.profile$;
+    this.profile$ = this.userService.getAsyncProfile();
   }
 
   ngOnChanges(data: any) {

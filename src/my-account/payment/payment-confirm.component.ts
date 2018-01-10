@@ -33,8 +33,8 @@ export class MyPaymentConfirmComponent implements OnInit {
   ngOnInit(): void {
     this.selected_plan = JSON.parse(this.cookieService.get('selected_plan'));
 
-    if (this.userService.profile.has_payment_info) {
-      // this.card = this.userService.profile.credit_cards[0];
+    if (this.userService.getSyncProfile().has_payment_info) {
+      // this.card = this.userService.getSyncProfile().credit_cards[0];
       if (this.userService.defaultPayment.payment_type == 'creditcard') {
         this.card = this.userService.defaultPayment;
       } else {
@@ -58,7 +58,7 @@ export class MyPaymentConfirmComponent implements OnInit {
       header: 'Update Plan',
       accept: () => {
         this.loadingService.start();
-        this.userService.choosePlan(`users/${this.userService.profile.id}`, body)
+        this.userService.choosePlan(`users/${this.userService.getSyncProfile().id}`, body)
           .subscribe((response: any) => {
               this.upgraded = true;
               this.toastsService.success(response.message);

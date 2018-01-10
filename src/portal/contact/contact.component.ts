@@ -50,9 +50,9 @@ export class ContactComponent implements OnInit {
               private toastsService: ToastsService) {
 
     // if (this.userService.loggedIn) {
-    //   this.emailInput = this.userService.profile.email;
-    //   this.first_nameInput = this.userService.profile.first_name;
-    //   this.last_nameInput = this.userService.profile.last_name;
+    //   this.emailInput = this.userService.getSyncProfile().email;
+    //   this.first_nameInput = this.userService.getSyncProfile().first_name;
+    //   this.last_nameInput = this.userService.getSyncProfile().last_name;
     // }
 
     this.form = fb.group({

@@ -15,16 +15,16 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 export class ZMyProfileComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   profile$: Observable<any>;
-  // data: any;
+  data: any;
 
   constructor(private userService: UserService,
               private apiBaseService: ApiBaseService) {
-    this.profile$ = this.userService.profile$;
+    this.profile$ = this.userService.getAsyncProfile();
   }
 
   ngOnInit() {
-    this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`).toPromise().then((res: any) => {
-      this.userService.setProfileByKey('so_user', res.data);
+    this.apiBaseService.get(`zone/social_network/users/${this.userService.getSyncProfile().uuid}`).toPromise().then((res: any) => {
+      this.data = res.data;
     });
   }
 
@@ -32,15 +32,15 @@ export class ZMyProfileComponent implements OnInit {
     this.modal.open();
   }
 
-  onClose() {
-    setTimeout(()=> {
-      console.log('adaafafaf');
-    }, 500);
+  updateUser(e: any) {
+    this.userService.update(e.data).subscribe((res: any) => {
+      
+    })
   }
 
   doEvent(e: any) {
-    this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, e).subscribe((res: any) => {
-      this.userService.setProfileByKey('so_user', res.data);
+    this.apiBaseService.put(`zone/social_network/users/${this.userService.getSyncProfile().uuid}`, e).subscribe((res: any) => {
+      this.data = res.data;
     });
   }
 }

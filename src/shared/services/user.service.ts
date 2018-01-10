@@ -17,24 +17,22 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
 
   loggedIn: boolean = false;
-  // Please use profile$ instead of profile
-  profile: User = null;
+
   defaultPayment: any;
 
   public cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;
-
-  public readonly profile$: Observable<any>;
-  // public readonly soProfile$: Observable<any>;
+  // Please use getSyncProfile
+  private profile: User = null;
+  // Please use getAsyncProfile
+  private readonly profile$: Observable<any>;
   private readonly EXP_TIME_MS = 24*60*60*365*1000;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  // private _soProfile: BehaviorSubject<any> = new BehaviorSubject<any>(new UserInfo());
   constructor(private http: HttpClient,
               private router: Router,
               private apiBaseService: ApiBaseService,
               public cookieService: CookieService) {
     this.readUserInfo();
     this.profile$ = this._profile.asObservable();
-    // this.soProfile$ = this._soProfile.asObservable();
   }
 
   login(path: string, body: string): Observable<Response> {
@@ -74,9 +72,8 @@ export class UserService {
    * update user info
    * is_patch: You decide updating whole resource or a part of. Default value is false
    */
-  update(path: string, body: any): Observable<Response> {
-    // if(is_patch){
-    return this.apiBaseService.patch(path, body)
+  update(body: any): Observable<Response> {
+    return this.apiBaseService.patch(`users/${this.getSyncProfile().id}`, body)
       .map((res: any) => {
         if (res) {
           this.updateProfile(res.data);
@@ -135,13 +132,17 @@ export class UserService {
       });
   }
 
-  getProfileUuid(): string {
-    return this.profile != null ? this.profile.uuid : '';
+  getSyncProfile() {
+    let sub = this.profile$.subscribe((profile: any) => {
+      this.profile = profile
+    })
+    sub.unsubscribe();
+    return this.profile;
   }
 
-  // set soUserProfile(data: any) {
-  //   this._soProfile.next(data);
-  // }
+  getAsyncProfile() {
+    return this.profile$;
+  }
 
   updateProfile(profile: any) {
     this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
@@ -186,7 +187,7 @@ export class UserService {
     }
   }
 
-  private setProfile(profile: any) {
+  setProfile(profile: any) {
     this.profile = profile;
     this._profile.next(Object.assign(this._profile.getValue(), profile));
   }

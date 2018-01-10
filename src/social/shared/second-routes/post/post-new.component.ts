@@ -23,7 +23,7 @@ export class PostNewComponent {
   tooltip:any = Constants.tooltip;
 
   constructor(public userService: UserService) {
-    this.user$ =  this.userService.profile$;
+    this.user$ =  this.userService.getAsyncProfile();
   }
 
   open(event: any, choosePhotos?: boolean) {

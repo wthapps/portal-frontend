@@ -84,8 +84,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.descCtrl = this.form.controls['description'];
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
-    // this.currentUser = this.userService.profile;
-    this.profile$ = this.userService.profile$;
+    // this.currentUser = this.userService.getSyncProfile();
+    this.profile$ = this.userService.getAsyncProfile();
 
   }
 
@@ -94,7 +94,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.privacyName = this.getPrivacyName(this.post);
   }
 
-  viewProfile(uuid: string = this.userService.getProfileUuid()) {
+  viewProfile(uuid: string = this.userService.getSyncProfile().uuid) {
     this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
       .then(() => this.router.navigate(['profile', uuid]));
   }

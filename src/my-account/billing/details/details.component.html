@@ -1,7 +1,7 @@
 <div class="box-panel">
   <h3 class="box-panel-title">{{ pageTitle }}</h3>
   <div class="panel panel-default">
-    <ul class="list-group" *ngIf="userService.profile.has_payment_info">
+    <ul class="list-group" *ngIf="userService.getSyncProfile().has_payment_info">
       <li class="list-group-item">
         <h4 class="list-group-item-heading">Payment Method</h4>
         <dl class="dl-horizontal dl-horizontal-billing">
@@ -41,7 +41,7 @@
         </div>
       </li>
     </ul>
-    <div class="panel-body" *ngIf="!userService.profile.has_payment_info">
+    <div class="panel-body" *ngIf="!userService.getSyncProfile().has_payment_info">
       Not billing details data in your account
       <div class="clearfix mt40">
         <a [routerLink]="['/payment']" class="btn btn-success">Add</a>

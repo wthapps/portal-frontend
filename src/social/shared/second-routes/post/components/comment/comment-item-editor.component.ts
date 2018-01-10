@@ -65,7 +65,7 @@ export class CommentItemEditorComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private router: Router,
               public userService: UserService) {
-    this.user$ = this.userService.profile$;
+    this.user$ = this.userService.getAsyncProfile();
 
     this.emojiData = ZChatEmojiService.emojis;
   }

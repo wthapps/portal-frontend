@@ -59,7 +59,7 @@ export class PostFooterComponent implements OnChanges {
               public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
-    this.user$ = this.userService.profile$;
+    this.user$ = this.userService.getAsyncProfile();
   }
 
   ngOnChanges(data: any) {
@@ -76,11 +76,11 @@ export class PostFooterComponent implements OnChanges {
   }
 
   hasLike(comment: any) {
-    return _.findIndex(comment.likes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
+    return _.findIndex(comment.likes, ['owner.uuid', this.userService.getSyncProfile().uuid] ) > -1;
   }
 
   hasDislike(comment: any) {
-    return _.findIndex(comment.dislikes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
+    return _.findIndex(comment.dislikes, ['owner.uuid', this.userService.getSyncProfile().uuid] ) > -1;
   }
 
   onActions(action: any, params?: any) {

@@ -91,8 +91,8 @@ export class MyPaymentComponent implements AfterViewInit, OnInit {
       data => this.countriesCode = data,
       error => this.errorMessage = <any>error);
 
-    if ((this.userService.profile.credit_cards != null) && (this.userService.profile.credit_cards.length > 0)) {
-      this.credit_card = this.userService.profile.credit_cards[0];
+    if ((this.userService.getSyncProfile().credit_cards != null) && (this.userService.getSyncProfile().credit_cards.length > 0)) {
+      this.credit_card = this.userService.getSyncProfile().credit_cards[0];
     } else {
       this.credit_card = new CreditCard({
         cardholder_name: '',
@@ -356,18 +356,19 @@ export class MyPaymentComponent implements AfterViewInit, OnInit {
   private create(_thisPayment: any, body: string) {
     _thisPayment.loadingService.start();
 
-    _thisPayment.paymentService.create(`users/${_thisPayment.userService.profile.id}/payments`, body)
-    // _thisPayment._userService.signup(`users/${_thisPayment._userService.profile.id,}/payments`, body)
+    _thisPayment.paymentService.create(`users/${_thisPayment.userService.getSyncProfile().id}/payments`, body)
+    // _thisPayment._userService.signup(`users/${_thisPayment._userService.getSyncProfile().id,}/payments`, body)
       .subscribe((response: any) => {
           _thisPayment.loadingService.stop();
           if (response.success) { // TODO refactor this code in server
-            _thisPayment.userService.profile.has_payment_info = true;
-            // _thisPayment.userService.profile.credit_cards = response.data.credit_cards;
+            _thisPayment.userService.getSyncProfile().has_payment_info = true;
+            // _thisPayment.userService.getSyncProfile().credit_cards = response.data.credit_cards;
             _thisPayment.userService.defaultPayment = response.user.default_payment;
 
             // Cookie.delete('profile');
-            this.cookieService.put('profile', JSON.stringify(_thisPayment.userService.profile), this.cookieOptionsArgs);
-            _thisPayment.userService.profile = JSON.parse(this.cookieService.get('profile'));
+            this.cookieService.put('profile', JSON.stringify(_thisPayment.userService.getSyncProfile()), this.cookieOptionsArgs);
+            // _thisPayment.userService.getSyncProfile() = JSON.parse(this.cookieService.get('profile'));
+            _thisPayment.userService.setProfile(JSON.parse(this.cookieService.get('profile')));
             // make sure onInit method on PlansComponent will work
             _thisPayment.zone.run(() => {
               _thisPayment.router.navigate(['/account/payment/confirm']);
@@ -386,15 +387,15 @@ export class MyPaymentComponent implements AfterViewInit, OnInit {
 
 
   private update(_thisPayment: any, body: string) {
-    _thisPayment.paymentService.update(`users/${_thisPayment.userService.profile.id}/payments/1`, body)
+    _thisPayment.paymentService.update(`users/${_thisPayment.userService.getSyncProfile().id}/payments/1`, body)
       .subscribe((response: any) => {
           _thisPayment.loadingService.stop();
           if (response.success) {
-            _thisPayment.userService.profile.has_payment_info = true;
-            _thisPayment.userService.profile.credit_cards = response.data.credit_cards;
+            _thisPayment.userService.getSyncProfile().has_payment_info = true;
+            _thisPayment.userService.getSyncProfile().credit_cards = response.data.credit_cards;
             // Cookie.delete('profile');
-            this.cookieService.put('profile', JSON.stringify(_thisPayment.userService.profile), this.cookieOptionsArgs);
-            _thisPayment.userService.profile = JSON.parse(this.cookieService.get('profile'));
+            this.cookieService.put('profile', JSON.stringify(_thisPayment.userService.getSyncProfile()), this.cookieOptionsArgs);
+            _thisPayment.userService.setProfile(JSON.parse(this.cookieService.get('profile')))
             _thisPayment.toastsService.success(response.message);
             return;
           }
@@ -410,6 +411,3 @@ export class MyPaymentComponent implements AfterViewInit, OnInit {
 
 
 }
-
-
-

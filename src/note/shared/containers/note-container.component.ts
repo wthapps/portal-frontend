@@ -51,7 +51,7 @@ export class ZNoteContainerComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(!_.get(this.userService.profile, 'introduction.note')) this.introModal.open();
+    if(!_.get(this.userService.getSyncProfile(), 'introduction.note')) this.introModal.open();
   }
 
   onNewNote() {

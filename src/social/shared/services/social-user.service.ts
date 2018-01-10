@@ -36,11 +36,11 @@ export class SoUserService {
   };
 
 
-  constructor(private apiBaseService: ApiBaseService, private user: UserService, private notificationService: NotificationService) {
-    this.profile = user.profile;
+  constructor(private apiBaseService: ApiBaseService, private userService: UserService, private notificationService: NotificationService) {
+    this.profile = this.userService.getSyncProfile();
   }
 
-  get(uuid: string = this.user.profile.uuid) {
+  get(uuid: string = this.userService.getSyncProfile().uuid) {
     return this.apiBaseService.get(`${soUsersUrl}/${uuid}`);
   }
 

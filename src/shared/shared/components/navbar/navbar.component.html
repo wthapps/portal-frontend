@@ -128,16 +128,16 @@
               <div class="media p10">
                 <div class="media-left">
                   <div class="avatar-md">
-                    <img alt="" [src]="userService.profile?.profile_image">
+                    <img alt="" [src]="userService.getSyncProfile()?.profile_image">
                   </div>
                 </div>
                 <div class="media-body">
-                  <p class="media-heading bold mb0">{{ userService.profile?.first_name }}
-                    {{ userService.profile?.last_name }}</p>
-                  <small class="text-fade">{{ userService.profile?.email }}</small>
+                  <p class="media-heading bold mb0">{{ userService.getSyncProfile()?.first_name }}
+                    {{ userService.getSyncProfile()?.last_name }}</p>
+                  <small class="text-fade">{{ userService.getSyncProfile()?.email }}</small>
                   <div class="navbar-nav-plan m">
-                    <p class="media-heading bold">{{ userService.profile?.plan.name }}</p>
-                    <button class="btn btn-primary" *ngIf="userService.profile?.plan?.is_trial"
+                    <p class="media-heading bold">{{ userService.getSyncProfile()?.plan.name }}</p>
+                    <button class="btn btn-primary" *ngIf="userService.getSyncProfile()?.plan?.is_trial"
                             (click)="redirectTo('my', 'plans', $event)">
                       <i class="fa fa-arrow-circle-up"></i> Upgrade
                     </button>
