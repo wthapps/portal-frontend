@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -16,7 +16,6 @@ import { Constants } from '@wth/shared/constant';
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
@@ -38,7 +37,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.chatService.subscribeNotification();
 
-    this.routerSubscription = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: any) => {
+    this.routerSubscription = this.router.events.filter(event => event instanceof NavigationEnd)
+    .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
   }
