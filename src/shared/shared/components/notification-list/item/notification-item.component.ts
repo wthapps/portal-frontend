@@ -14,6 +14,7 @@ import { NotificationUndoComponent } from '@shared/shared/components/notificatio
 import { Router } from '@angular/router';
 import { NotificationService, ApiBaseService } from '@shared/services';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
+import { Constants } from '@wth/shared/constant';
 
 declare let _: any;
 
@@ -32,10 +33,10 @@ export class NotificationItemComponent implements OnInit {
   @Input() type: string = 'update';
 
   @HostBinding('class') classes: string = 'notification-item';
-  selectedNotifications: string[] = ['social'];
-  communitiesUrl: string;
   itemSettings: any = {};
   showToggle: boolean;
+  modules: string[] = ['', 'social', 'chat', 'media', 'portal', 'contact', 'note', 'profile']; // Should be consistent with Constants.moduleMap
+
 
   @HostListener('document:click', ['$event']) clickedOutside(event: Event) {
     // here you can hide your menu
@@ -51,6 +52,7 @@ export class NotificationItemComponent implements OnInit {
               private apiBaseService: ApiBaseService,
               private elementRef: ElementRef,
               private renderer: Renderer2) {
+
   }
 
   ngOnInit(): void {
