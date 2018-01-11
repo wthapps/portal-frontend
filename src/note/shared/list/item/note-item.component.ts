@@ -1,11 +1,7 @@
-import {
-  Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, OnDestroy,
-  HostListener
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
@@ -85,7 +81,8 @@ export class NoteItemComponent implements OnInit, OnDestroy {
           id: this.data.id,
           object_type: this.data.object_type,
           permission: this.data.permission,
-          parent_id: this.data.parent_id}
+          parent_id: this.data.parent_id
+        }
       });
     }
   }
@@ -104,11 +101,12 @@ export class NoteItemComponent implements OnInit, OnDestroy {
   }
 
   onView() {
-    if (this.data['permission'] == 'view') {
+    /*if (this.data['permission'] === 'view') {
       this.noteService.modalEvent({action: 'note:open_note_view_modal', payload: this.data});
     } else {
       this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
-    }
+    }*/
+    this.router.navigate(['notes', this.data.id]);
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {

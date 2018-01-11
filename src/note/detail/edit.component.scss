@@ -1,0 +1,160 @@
+@import '../../assets/styles/global';
+@import "../../assets/styles/variables";
+@import "../../assets/fonts/font-awesome/scss/custom-variables";
+@import "../../assets/fonts/font-awesome/scss/font-awesome";
+
+$note-editor-aside-w: 400px;
+
+.note-editor-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: #FFF;
+  @include flexbox;
+  @include flex-direction(column);
+
+  #quill-container {
+    &:after, &:before {
+      content: none;
+    }
+    @include flexbox;
+    #quill-content-body {
+      @include flex(1);
+      width: 100%;
+    }
+  }
+}
+
+.note-editor-header {
+  padding: $grid-gutter-width/2;
+
+  .note-editor-header-content {
+    @include flexbox;
+  }
+  .note-editor-header-action-right {
+    @include order(1);
+  }
+  .note-editor-header-input {
+    @include flex(1);
+    padding: 0 $grid-gutter-width/2;
+  }
+}
+
+.note-editor-nav {
+  @include box-shadow($box-shadow-bottom-sm);
+  position: relative;
+  z-index: 2;
+}
+
+.note-editor-content {
+  @include flex(1);
+  @include flexbox;
+  @include flex-direction(column);
+
+  position: relative;
+  background-color: #f6f6f6;
+
+  .note-editor-toolbar {
+    background-color: #fbfbfb;
+    padding: 1px 0;
+    border-top: 1px solid $line;
+    border-bottom: 1px solid $line;
+    .ql-toolbar.ql-snow {
+      border-width: 0;
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+    }
+    .quill-toolbar-attachment {
+      padding: 8px 0;
+    }
+  }
+  .note-editor-body {
+    @include flex(1);
+    overflow: auto;
+    padding-top: $grid-gutter-width/2;
+  }
+  .note-editor-aside {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    bottom: 0;
+    right: -$note-editor-aside-w;
+    width: $note-editor-aside-w;
+    background-color: #fff;
+    border: 1px solid $line;
+    overflow: auto;
+    @include transition($transition-base);
+  }
+  &.show-aside {
+    padding-right: $note-editor-aside-w;
+    .note-editor-aside {
+      right: 0;
+    }
+    .container {
+      width: auto;
+    }
+  }
+}
+
+.note-editor-wrap {
+  .note-read-only {
+    img {
+      max-width: 100% !important;
+      height: auto !important;
+    }
+  }
+
+  .fileinput-button {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    input {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      @include opacity(0);
+      cursor: pointer;
+    }
+  }
+
+  @media all {
+    p > img {
+      text-align: center;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      cursor: move !important;
+    }
+
+    .big-icon {
+      font-size: 200px;
+    }
+  }
+
+  @media screen {
+    .printable {
+      /*visibility: hidden;*/
+      display: none;
+    }
+  }
+
+  @media print {
+    body {
+      //visibility: hidden;
+      display: none;
+    }
+    .printable {
+      //visibility: visible;
+      //display: block;
+    }
+
+  }
+}
