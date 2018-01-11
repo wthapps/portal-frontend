@@ -10,7 +10,6 @@ declare var $: any;
 declare var _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'contact-add-group-modal',
   templateUrl: 'contact-add-group-modal.component.html',
   styleUrls: ['contact-add-group-modal.component.scss']

@@ -12,8 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class CommonNotificationsComponent implements OnInit {
+  selectedNotifications: string[] = ['social', 'chat', 'note'];
   readonly profileUrl: string = '/' + Constants.urls.profile;
-
   @Input() type: string = 'update'; // update, connection
 
   @ViewChild('notifications') notificationListComponent: NotificationListComponent;
