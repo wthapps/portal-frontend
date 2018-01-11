@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormArray, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
 
 import { Constants } from '../../../../constant/config/constants';
@@ -10,10 +10,12 @@ import { LoadingService } from '../../loading/loading.service';
 import { ToastsService } from '../../toast/toast-message.service';
 import { AddressModel, EmailModel, PhoneModel, ProfileModel } from '../../../models/profile/profile.model';
 
+``
+
 declare let _: any;
 
 @Component({
-    selector: 'partials-basic-info',
+  selector: 'partials-basic-info',
   templateUrl: 'basic-info.component.html',
   styleUrls: ['basic-info.component.scss']
 })
@@ -43,11 +45,14 @@ export class PartialsBasicInfoComponent implements OnInit, OnDestroy {
   originalLabels: Object[];
   disableEdit: boolean = true;
 
+  profile$: any;
+
   constructor(private fb: FormBuilder,
               private commonEventService: CommonEventService,
               public userService: UserService,
               private loadingService: LoadingService,
               private toastsService: ToastsService) {
+    this.profile$ = this.userService.profile$;
   }
 
   ngOnInit() {

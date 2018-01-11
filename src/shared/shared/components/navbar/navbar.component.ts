@@ -66,7 +66,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       lastScrollTop = currentScrollTop;
     });
 
-    documentElem.on('click', '#nav-notification-list', function (e: any) {
+    documentElem.on('click', '#nav-notification-list, #notiItemMenuEl', function (e: any) {
       e.stopPropagation();
     });
 

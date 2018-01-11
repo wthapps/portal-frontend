@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { CookieService, CookieOptions } from 'ngx-cookie';
@@ -10,7 +10,6 @@ import { Constants } from '../constant/config/constants';
 
 import { ApiBaseService } from './apibase.service';
 import { User } from '../shared/models/user.model';
-import { UserInfo } from '../shared/models/user/user-info.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -19,14 +18,16 @@ export class UserService {
   loggedIn: boolean = false;
 
   defaultPayment: any;
+  profile$: Observable<any>;
 
   public cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;
   // Please use getSyncProfile
   private profile: User = null;
   // Please use getAsyncProfile
-  private readonly profile$: Observable<any>;
-  private readonly EXP_TIME_MS = 24*60*60*365*1000;
+
+  private readonly EXP_TIME_MS = 24 * 60 * 60 * 365 * 1000;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
+
   constructor(private http: HttpClient,
               private router: Router,
               private apiBaseService: ApiBaseService,
@@ -84,8 +85,11 @@ export class UserService {
   }
 
   validateSession(): Observable<any> {
-    return this.apiBaseService.post('users/get_user').map(() => { return {valid: true}});
+    return this.apiBaseService.post('users/get_user').map(() => {
+      return {valid: true}
+    });
   }
+
   /*
    * change current password
    */
@@ -165,13 +169,13 @@ export class UserService {
       response.data.profile_image = Constants.img.avatar;
     }
 
-    let cookieOptionsArgs = {...this.cookieOptionsArgs, expires: new Date( new Date().getTime() + this.EXP_TIME_MS)};
+    let cookieOptionsArgs = {...this.cookieOptionsArgs, expires: new Date(new Date().getTime() + this.EXP_TIME_MS)};
 
     // TODO move string constants to config file
     this.cookieService.put('jwt', response.token, cookieOptionsArgs);
     this.cookieService.put('profile', JSON.stringify(response.data), cookieOptionsArgs);
     this.cookieService.put('logged_in', 'true', cookieOptionsArgs);
-    this.cookieService.put(Constants.cookieKeys.chatSupportId,  response.data.uuid, cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.chatSupportId, response.data.uuid, cookieOptionsArgs);
 
     this.loggedIn = true;
     this.profile = response.data;
