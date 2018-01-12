@@ -1,35 +1,14 @@
 <form [formGroup]="form" novalidate class="note-editor-wrap">
   <div class="note-editor-header">
     <div class="note-editor-header-content">
-      <!--<div class="note-editor-header-action">
-        <button (click)="onModalClose()" type="button" class="btn btn-default">
-          <i class="fa fa-arrow-left"></i>
-        </button>
-      </div>-->
-      <div class="note-editor-header-action note-editor-header-action-right">
-        <button class="btn btn-default" (click)="share()"><i class="fa fa-share-alt"></i></button>
-        <button class="btn btn-default" (click)="delete()"><i class="fa fa-trash-o"></i></button>
-        <div class="btn-group">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                  data-toggle="dropdown">
-            <i class="fa fa-ellipsis-v"></i>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-top dropdown-menu-right" role="menu"
-              aria-labelledby="dropdownMenu1">
-            <li role="presentation">
-              <a role="menuitem" tabindex="-1" href="javascript:void(0);" (click)="makeACopy()">Make a copy</a>
-            </li>
-            <li role="presentation">
-              <a role="menuitem" tabindex="-1" href="javascript:void(0);" (click)="moveToFolder()">Move to folder</a>
-            </li>
-            <li role="presentation"><a href="javascript:;" (click)="print()"> Print</a></li>
-            <li role="presentation"><a href="javascript:;" (click)="pdfDownload()"> Export as PDF</a></li>
-          </ul>
-        </div>
+      <div class="note-editor-header-action note-editor-header-action-right component-listbox-action">
+        <z-note-shared-actions-bar class="action" [data]="note" [subPage]="subPage"
+                                   [selectedObjects]="[note]"></z-note-shared-actions-bar>
         <button type="button" (click)="onSubmit(form.value)" [disabled]="!form.valid"
                 class="btn btn-outline-primary btn-min">Done
         </button>
       </div>
+
       <div class="note-editor-header-input">
         <input tabindex="1" autofocus (keypress)="onToEditor($event)" [formControl]="title" type="text"
                class="form-control fz18" id="note_form_title"
@@ -243,15 +222,15 @@
         </div>
         <div [ngClass]="{'hidden': currentTab !== 'attachment'}" class="quill-toolbar-attachment">
           <div class="btn-group">
-            <button type="button" class="btn btn-outline-default" (click)="selectPhotos()">
+            <button type="button" class="btn btn-outline-default" (click)="selectPhotos()" [disabled]="note.permission == 'view'">
               <i class="fa fa-plus"></i> Photo
             </button>
-            <span class="btn btn-outline-default can-click btn-style-1 fileinput-button"
-                  pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top">
+            <button class="btn btn-outline-default can-click btn-style-1 fileinput-button"
+                  pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top" [disabled]="note.permission == 'view'">
                   <i class="fa fa-paperclip"></i> Attachment
                   <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';"
                          (change)="selectFiles($event)"/>
-                </span>
+            </button>
           </div>
 
           <div class="btn-group ml10">
@@ -300,7 +279,7 @@
                   <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
                     <i class="fa fa-download"></i>
                   </button>
-                  <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button">
+                  <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button" [disabled]="note.permission == 'view'">
                     <i class="fa fa-trash-o"></i>
                   </button>
                 </td>

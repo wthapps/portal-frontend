@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, SimpleChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewChild, SimpleChanges, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -18,6 +18,7 @@ import { ImageResize } from 'quill-image-resize-module';
 
 
 import * as fromRoot from '../shared/reducers/index';
+import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
@@ -36,6 +37,7 @@ import { ZNoteService } from '../shared/services/note.service';
 import { ResizeImage } from '@shared/shared/utils/resize-image';
 import { takeUntil, switchMap, combineLatest } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
+import { noteConstants } from "note/shared/config/constants";
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -47,7 +49,7 @@ declare let _: any;
   encapsulation: ViewEncapsulation.None
 })
 
-export class ZNoteDetailEditComponent implements OnInit {
+export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   @ViewChild(ModalComponent) modal: ModalComponent;
 
   note: Note = new Note();
@@ -60,6 +62,7 @@ export class ZNoteDetailEditComponent implements OnInit {
   tooltip: any = Constants.tooltip;
 
   titleModal: string = 'New Note';
+  subPage: string = noteConstants.PAGE_NOTE_EDIT;
 
   buttonControl: string = '';
 
@@ -85,12 +88,13 @@ export class ZNoteDetailEditComponent implements OnInit {
   private timeInterval: any;
   private EXCLUDE_FORMATS: string[] = ['link'];
   resize: any;
+  context$: any;
 
   constructor(private fb: FormBuilder,
               private noteService: ZNoteService,
               protected router: Router,
               private route: ActivatedRoute,
-              private store: Store<fromRoot.State>,
+              private store: Store<any>,
               private photoSelectDataService: PhotoModalDataService,
               private fileService: GenericFileService,
               private apiBaseService: ApiBaseService,
@@ -114,6 +118,21 @@ export class ZNoteDetailEditComponent implements OnInit {
 
   ngOnInit() {
     this.assignFormValue(null);
+    this.context$ = this.store.select('context');
+    this.commonEventService.filter((e: any) => e.channel == 'noteActionsBar').take(1).subscribe((e: any) => {
+
+      switch(e.action) {
+        case 'note:note_edit:close':
+          this.router.navigate([{outlets: {detail: null}}]);
+          break;
+        case 'note:note_edit:print':
+          this.print();
+          break;
+        case 'note:note_edit:export_pdf':
+          this.pdfDownload();
+          break;
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -659,13 +678,11 @@ export class ZNoteDetailEditComponent implements OnInit {
   }
 
   selectFiles(event: any) {
-    console.debug('inside SelectFiles: ', event);
     let files = event.target.files;
     if (files.length == 0) {
       return;
     }
     this.fileUploadHelper.allowUpload(files, (filesAllowed: any[], filesNotAllowed: any[]) => {
-      console.debug('file allowed: ', filesAllowed, ' - file NOT allowed: ', filesNotAllowed);
       this.note.attachments = [...this.note.attachments, ...filesAllowed];
       // this.form.controls['attachments'].setValue(this.note.attachments);
 
@@ -718,22 +735,6 @@ export class ZNoteDetailEditComponent implements OnInit {
     }
   }
 
-  makeACopy() {
-    this.commonEventService.broadcast({
-      channel: 'noteActionsBar',
-      action: 'note:mixed_entity:make_a_copy',
-      payload: [this.note]
-    });
-  }
-
-  moveToFolder() {
-    this.commonEventService.broadcast({
-      channel: 'noteActionsBar',
-      action: 'note:mixed_entity:open_move_to_folder_modal',
-      payload: [this.note]
-    });
-  }
-
   download(file: any) {
     console.log('downloading:::');
     this.apiBaseService.download('common/files/download', {
@@ -742,22 +743,6 @@ export class ZNoteDetailEditComponent implements OnInit {
     }).subscribe((res: any) => {
       var blob = new Blob([res], {type: file.content_type});
       saveAs(blob, `${file.name}.${file.extension}`);
-    });
-  }
-
-  share() {
-    this.commonEventService.broadcast({
-      channel: 'noteActionsBar',
-      action: 'note:mixed_entity:open_sharing_modal',
-      payload: [this.note]
-    });
-  }
-
-  delete() {
-    this.commonEventService.broadcast({
-      channel: 'noteActionsBar',
-      action: 'note:mixed_entity:delete',
-      payload: [this.note]
     });
   }
 

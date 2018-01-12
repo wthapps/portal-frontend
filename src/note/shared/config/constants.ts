@@ -5,6 +5,7 @@ export class NoteConstants extends ConstantsBase {
   PAGE_SHARED_WITH_ME: any = 'SHARED_WITH_ME';
   PAGE_SHARED_BY_ME: any = 'SHARED_BY_ME';
   PAGE_INSIDE_FOLDER: any = 'INSIDE_FOLDER';
+  PAGE_NOTE_EDIT: any = 'NOTE_EDIT';
 
   PAGE_PERMISSIONS: any = {
     MY_NOTE: {
