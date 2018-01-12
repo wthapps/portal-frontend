@@ -241,31 +241,14 @@ export class ZNoteDetailEditComponent implements OnInit {
     )
       .subscribe(([note, currentFolder]: any) => {
         this.note = note;
-        this.parentId = currentFolder.id;
+        if(currentFolder)
+          this.parentId = currentFolder.id;
 
         this.updateFormValue(this.note);
         // Reset content of elemenet div.ql-editor to prevent HTML data loss
         document.querySelector('.ql-editor').innerHTML = this.note.content;
         this.registerAutoSave();
       });
-    //
-    // this.store.select(fromRoot.getNotesEntities).pipe(
-    //   withLatestFrom(this.route.paramMap),
-    //   map((paramsPair: any) => {
-    //     let notes = paramsPair[0];
-    //     let noteId = paramsPair[1].get('id')
-    //     console.debug('paramsMap: ', paramsPair);
-    //     this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
-    //     return noteId ? notes[noteId] : new Note();
-    //   }),
-    //   takeUntil(this.destroySubject)
-    // ).subscribe((note: any) => {
-    //   this.note = note;
-    //   this.updateFormValue(this.note);
-    //   // Reset content of elemenet div.ql-editor to prevent HTML data loss
-    //   document.querySelector('.ql-editor').innerHTML = this.note.content;
-    //   console.debug('note: ', note);
-    // });
   }
 
   onSort(name: any) {
