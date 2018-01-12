@@ -31,7 +31,7 @@ import * as Delta from 'quill-delta/lib/delta';
 import { CommonEventService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
 import { ResizeImage } from '@shared/shared/utils/resize-image';
-import { takeUntil, switchMap } from 'rxjs/operators';
+import { takeUntil, switchMap, combineLatest } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
 const DEBOUNCE_MS = 2500;
@@ -151,7 +151,6 @@ export class ZNoteDetailEditComponent implements OnInit {
         $(document.body).addClass('modal-open');
       }
     });
-    // this.customEditor = this.editor.quill;
 
     var bindings = {
       "enter": {
@@ -208,14 +207,16 @@ export class ZNoteDetailEditComponent implements OnInit {
         else
           return of(new Note());
       }),
+      combineLatest(this.store.select(fromRoot.getCurrentFolder)),
       takeUntil(this.destroySubject)
     )
-      .subscribe((note: any) => {
+      .subscribe(([note, currentFolder]: any) => {
         this.note = note;
+        this.parentId = currentFolder.id;
+
         this.updateFormValue(this.note);
         // Reset content of elemenet div.ql-editor to prevent HTML data loss
         document.querySelector('.ql-editor').innerHTML = this.note.content;
-        console.debug('note: ', note);
         this.registerAutoSave();
       });
     //
