@@ -12,6 +12,7 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
 import { Subject } from "rxjs";
 import { UrlService } from "@shared/services";
+import { NoteConstants, noteConstants } from "note/shared/config/constants";
 
 declare var _: any;
 declare let saveAs: any;
@@ -117,7 +118,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     this.urls = this.urlService.parse();
 
     /*====================================
-    [Permission] validate 
+    [Permission] validate
     ====================================*/
     let permissonValidateOneObject = (action, permissiOnObject) => {
       // if permission is view turn off all acions edit
@@ -138,7 +139,12 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       if(currentPath != 'shared-with-me' && action.title == 'Remove Share') {
         action.show = false;
       }
+      // ==================
       if(currentPath != 'shared-by-me' && action.title == 'Stop Sharing') {
+        action.show = false;
+      }
+
+      if(currentPath == 'shared-by-me' && this.page == noteConstants.PAGE_SHARED_BY_ME && action.title == 'Make copy') {
         action.show = false;
       }
     }

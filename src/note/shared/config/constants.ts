@@ -40,5 +40,5 @@ export class NoteConstants extends ConstantsBase {
     }
   }
 }
-let noteConstants:any = new NoteConstants();
+let noteConstants: NoteConstants = new NoteConstants();
 export {noteConstants};
