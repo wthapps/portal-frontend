@@ -23,6 +23,8 @@ import 'rxjs/add/operator/take';
 
 
 import { Editor } from 'primeng/components/editor/editor';
+import { ImageResize } from 'quill-image-resize-module';
+
 
 
 import * as fromRoot from '../../reducers/index';
@@ -40,7 +42,6 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
-import { ResizeImage } from "@shared/shared/utils/resize-image";
 import { CommonEventService } from '@wth/shared/services';
 
 const DEBOUNCE_MS = 2500;
@@ -150,7 +151,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   }
 
   ngAfterViewInit(): void {
-    this.resize = new ResizeImage('quill-content-body');
     $(document).on('hidden.bs.modal', '.modal', () => {
       if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
@@ -181,6 +181,31 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         keyboard: {
           bindings: bindings
         },
+        imageResize: {
+          modules: [ 'Resize', 'Toolbar' ],
+          handleStyles: {
+            backgroundColor: '#F54A59',
+            border: '1px',
+            color: 'white'
+            // other camelCase styles for size display
+          },
+          overlayStyles: {
+            position: 'absolute',
+            boxSizing: 'border-box',
+            border: '1px solid #F54A59',
+          },
+          toolbarStyles: {
+            position: 'absolute',
+            top: '-30px',
+            height: '0',
+            minWidth: '100px',
+            font: '12px/1.0 Arial, Helvetica, sans-serif',
+            textAlign: 'center',
+            color: '#333',
+            boxSizing: 'border-box',
+            cursor: 'default',
+          },
+        }
       },
       placeholder: 'Say something ...',
       readOnly: false,
@@ -198,7 +223,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     this.registerImageBlot();
     this.customizeKeyboardBindings();
 
-    this.listenImageChanges();
+    this.listenImageChanges(this.customEditor.ImageResize);
     this.timeInterval = setInterval(() => { this.registerImageClickEvent(); }, 500);
     this.registerSelectionChange();
     this.registerAutoSave();
@@ -437,7 +462,6 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         return this.photoUploadService.uploadPhotos(files);
       })
       .subscribe((res: any) => {
-        console.debug('inline photo upload: ', res);
         const randId = ids.shift();
         $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
         $(`i#${randId}`).remove();
@@ -452,27 +476,25 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
     });
     this.copiedFormat = formats;
     this.isCopied = true;
-    console.debug('copyFormat: ', formats, this.customEditor.selection);
   }
 
 
-  listenImageChanges() {
+  listenImageChanges(quill: any) {
+    let self = quill;
     this.photoService.modifiedPhotos$
       .takeUntil(this.destroySubject.asObservable())
       .subscribe((object: any) => {
-        console.debug('modifiedPhotos - note: ', object);
         switch (object.action) {
           case 'update':
             let updatedPhoto = object.payload.photo;
             $(`img[data-id=${updatedPhoto.id}]`).attr('src', updatedPhoto.url);
+            // TODO need to update selection region size after edit image
             break;
           case 'delete':
-            console.debug('unimplemented DELETE photo in post: ', object);
             let photoId = object.payload.photo.id;
             $(`img[data-id=${photoId}]`).remove();
             break;
           default:
-            console.warn('unhandle event in photoService modifiedPhotos$: ', object);
         }
 
         this.updateNote();
@@ -498,24 +520,17 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
         this.copiedFormat = {};
         this.isCopied = false;
       } else {
-        console.warn('Cursor not in the editor');
+        console.log('Cursor not in the editor');
       }
     });
   }
 
   registerImageClickEvent() {
     let imgItems = Array.from(document.querySelector('.ql-editor').getElementsByTagName('img'));
-    let photoIds = imgItems.map(item => item.dataset.id);
 
     imgItems.forEach((i: any) => {
-      if (!i.onclick && !i.ondblclick) {
-        i.onclick = (event: any) => {
-          this.resize.edit(event.target);
-        };
-
+      if (!i.ondblclick) {
         i.ondblclick = (event: any) => {
-          console.debug('event.srcElement: ', event);
-          // let photoId: string = event.srcElement.getAttribute('data-id');
           let photoId: string = i.dataset.id;
           if (photoId && photoId !== 'null') {
             $('#modal-note-edit').css('z-index', '0');
@@ -524,7 +539,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
               outlets: {
                 modal: ['photos', photoId, {
                   module: 'note',
-                  ids: photoIds
+                  ids: [photoId]
                 }]
               }
             }], {queryParamsHandling: 'preserve', preserveFragment: true});

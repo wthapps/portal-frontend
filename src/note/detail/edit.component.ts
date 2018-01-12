@@ -12,7 +12,10 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/take';
 
-import { Editor } from 'primeng/components/editor/editor';
+import { ImageResize } from 'quill-image-resize-module';
+// import { CustomImageResize } from '@shared/shared/utils/custom-image-resize';
+// import { CustomResize } from '@shared/shared/utils/custom-resize';
+
 
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
@@ -46,7 +49,6 @@ declare let _: any;
 
 export class ZNoteDetailEditComponent implements OnInit {
   @ViewChild(ModalComponent) modal: ModalComponent;
-  @ViewChild('editor') editor: Editor;
 
   note: Note = new Note();
   currentTab: any = 'note';
@@ -127,7 +129,6 @@ export class ZNoteDetailEditComponent implements OnInit {
   }
 
   registerAutoSave() {
-    console.debug('registerAutoSave yo');
     // Auto save
     Observable.merge(
       this.form.valueChanges,
@@ -167,6 +168,9 @@ export class ZNoteDetailEditComponent implements OnInit {
     this.registerFontSizeBlot();
     this.registerDividerBlot();
     this.extendClipboard(this);
+
+    // Quill.registerModule('customImageResize', CustomImageResize);
+
     this.customEditor = new Quill('#quill-editor', {
       modules: {
         toolbar: {
@@ -175,6 +179,31 @@ export class ZNoteDetailEditComponent implements OnInit {
         keyboard: {
           bindings: bindings
         },
+        imageResize: {
+          modules: [ 'Resize', 'Toolbar' ],
+          handleStyles: {
+            backgroundColor: '#F54A59',
+            border: '1px',
+            color: 'white'
+            // other camelCase styles for size display
+          },
+          overlayStyles: {
+            position: 'absolute',
+            boxSizing: 'border-box',
+            border: '1px solid #F54A59',
+          },
+          toolbarStyles: {
+            position: 'absolute',
+            top: '-30px',
+            height: '0',
+            minWidth: '100px',
+            font: '12px/1.0 Arial, Helvetica, sans-serif',
+            textAlign: 'center',
+            color: '#333',
+            boxSizing: 'border-box',
+            cursor: 'default',
+          },
+        }
       },
       placeholder: 'Say something ...',
       readOnly: false,
@@ -544,10 +573,11 @@ export class ZNoteDetailEditComponent implements OnInit {
     let photoIds = imgItems.map(item => item.dataset.id);
 
     imgItems.forEach((i: any) => {
-      if (!i.onclick && !i.ondblclick) {
-        i.onclick = (event: any) => {
-          this.resize.edit(event.target);
-        };
+      if (!i.ondblclick) {
+      //   if (!i.onclick && !i.ondblclick) {
+      //   i.onclick = (event: any) => {
+      //     this.resize.edit(event.target);
+      //   };
 
         i.ondblclick = (event: any) => {
           console.debug('event.srcElement: ', event);

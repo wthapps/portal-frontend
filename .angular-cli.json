@@ -250,6 +250,7 @@
         { "input": "../../node_modules/quill/dist/quill.js", "lazy": false },
         { "input": "../../node_modules/file-saver/FileSaver.js", "lazy": false },
         { "input": "../../node_modules/moment/moment.js", "lazy": false },
+        { "input": "../../node_modules/quill-image-resize-module/image-resize.min.js", "lazy": false },
         "../../src/shared/channels/common.js"
       ],
       "environmentSource": "../environments/environment.ts",
