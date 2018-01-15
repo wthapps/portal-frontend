@@ -5,7 +5,7 @@ import { TextBoxSearchComponent } from '../../../shared/shared/components/header
 import { ServiceManager } from '../../../shared/services/service-manager';
 import { SuggestionService } from '../../../shared/services/suggestion.service';
 
-declare var _:any;
+declare var _: any;
 
 /**
  * This class represents the navigation bar component.
@@ -33,22 +33,22 @@ export class ZContactSharedHeaderComponent {
     });
   }
 
-  onEnter(e: any) {
-    // e.preventDefault();
-
-    this.show = false;
-    this.serviceManager.getRouter().navigate(['/contacts', {search: this.search}]);
-
-    // this.serviceManager.getCommonEventService().broadcast({
-    //   channel:  Constants.contactEvents.common,
-    //   action: 'contact:contact:search',
-    //   payload: {search_value: this.search}
-    // });
+  clickedInside($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();  // <- that will stop propagation on lower layers
+    console.log('CLICKED INSIDE');
   }
 
-  onEscape(e: any) {
+  onEscape(e?: any) {
+    console.log('inside onEscape', e);
+    this.show = false;
     this.search = '';
     this.onEnter(e);
+  }
+
+  onEnter(e: any) {
+    this.show = false;
+    this.serviceManager.getRouter().navigate(['/contacts', {search: this.search}]);
   }
 
   onKey(e: any) {
@@ -73,10 +73,5 @@ export class ZContactSharedHeaderComponent {
     this.show = false;
 
     this.serviceManager.getRouter().navigate([`/contacts/detail/${data.id}`]);
-  }
-
-  showAllResults(event?: any) {
-    // this.serviceManager.getRouter().navigate(['/contacts', {search: this.search}]);
-    this.onEnter(event);
   }
 }

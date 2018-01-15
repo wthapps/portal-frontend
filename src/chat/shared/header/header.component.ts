@@ -22,6 +22,17 @@ export class ZChatSharedHeaderComponent {
   constructor(public serviceManager: ServiceManager) {
   }
 
+  clickedInside($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();  // <- that will stop propagation on lower layers
+    console.log('CLICKED INSIDE');
+  }
+
+  onEscape(e?: any) {
+    console.log('inside onEscape', e);
+    this.show = false;
+  }
+
   onEnter(e: any) {
     this.show = false;
     this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: e.search}});

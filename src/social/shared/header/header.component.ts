@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { TextBoxSearchComponent } from '@wth/shared/shared/components/header/search/components/textbox-search.component';
 import { ServiceManager } from '@wth/shared/services';
 
-declare var _:any;
+declare var _: any;
 
 /**
  * This class represents the navigation bar component.
@@ -22,19 +22,28 @@ export class ZSocialSharedHeaderComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private location: Location,
               public serviceManager: ServiceManager) {
-
   }
 
   ngOnInit() {
-
     this.route.queryParams.subscribe((params: Params) => {
       this.search = params['q'];
     });
   }
 
+  clickedInside($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();  // <- that will stop propagation on lower layers
+    console.log('CLICKED INSIDE');
+  }
+
+  onEscape(e?: any) {
+    console.log('inside onEscape', e);
+    this.show = false;
+  }
+
   onEnter(e: any) {
     this.show = false;
-    this.router.navigate(['search','all'], {queryParams: {q: e.search}});
+    this.router.navigate(['search', 'all'], {queryParams: {q: e.search}});
   }
 
   onKey(e: any) {
