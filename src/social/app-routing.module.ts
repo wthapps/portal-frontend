@@ -20,6 +20,7 @@ export const routes: Routes = [
   { path: 'search', loadChildren: './search/search.module#ZSocialSearchModule', canActivate: [AuthGuard] },
   { path: 'profile', loadChildren: './profile/profile.module#ZSocialProfileModule', canActivate: [AuthGuard] },
   { path: 'communities', loadChildren: './communities/communities.module#ZSocialCommunityModule', canActivate: [AuthGuard]},
+  { path: 'news', loadChildren: './news/news.module#ZSocialNewsModule', canActivate: [AuthGuard]},
 ];
 
 @NgModule({

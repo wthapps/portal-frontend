@@ -1,0 +1,79 @@
+<div class="panel panel-default social-news-feeds">
+  <div class="panel-heading">
+    <div class="panel-heading-action">
+      <button (click)="openModal()" class="btn btn-link" type="button">
+        <small>News settings</small>
+      </button>
+    </div>
+    <h3 class="panel-title">News feeds</h3>
+  </div>
+  <div class="panel-body">
+    <p><i class="fa fa-newspaper-o"></i> All news</p>
+
+    <div class="accordion-menu">
+      <p-accordion [multiple]="true">
+        <p-accordionTab header="News">
+          <ul class="list-unstyled">
+            <li>
+              <a href="javascript:;"><img src="/assets/images_new/icons/news.png" alt=""> <span>New source</span></a>
+            </li>
+            <li>
+              <a href="javascript:;"><img src="/assets/images_new/icons/news.png" alt=""> <span>New source</span></a>
+            </li>
+          </ul>
+        </p-accordionTab>
+        <p-accordionTab header="Technology">
+          <ul class="list-unstyled">
+            <li>
+              <a href="javascript:;"><img src="/assets/images_new/icons/news.png" alt=""> <span>New source</span></a>
+            </li>
+          </ul>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+
+  </div>
+</div>
+
+<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title">News Settings</h4>
+  </modal-header>
+  <modal-body>
+    <p>Choose which channel you want to keep update with. Unchecked channel will be hidden from your newsfeed</p>
+    <div class="social-news-feeds-setting">
+      <div class="accordion-menu">
+        <p-accordion [multiple]="true">
+          <p-accordionTab header="News">
+            <ul class="list-unstyled">
+              <li>
+                <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+                <img src="/assets/images_new/icons/news.png" alt=""> <span>New source</span>
+              </li>
+              <li>
+                <p-checkbox name="groupname" value="val2" [(ngModel)]="selectedValues"></p-checkbox>
+                <img src="/assets/images_new/icons/news.png" alt=""> <span>New source</span>
+              </li>
+            </ul>
+          </p-accordionTab>
+          <p-accordionTab header="Technology">
+            <ul class="list-unstyled">
+              <li>
+                <p-checkbox name="groupname" value="val3" [(ngModel)]="selectedValues"></p-checkbox>
+                <img src="/assets/images_new/icons/news.png" alt=""> <span>New source</span>
+              </li>
+              <li>
+                <p-checkbox name="groupname" value="val4" [(ngModel)]="selectedValues"></p-checkbox>
+                <img src="/assets/images_new/icons/news.png" alt=""> <span>New source</span>
+              </li>
+            </ul>
+          </p-accordionTab>
+        </p-accordion>
+      </div>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+    <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSave()">Done</button>
+  </modal-footer>
+</modal>

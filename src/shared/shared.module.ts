@@ -85,6 +85,7 @@ import { DomService } from '@shared/services/dom.service';
 import { MenuContainerModule } from '@shared/shared/components/menu-container/menu-container.module';
 import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
+import { AccordionModule } from 'primeng/primeng';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -133,6 +134,7 @@ export * from './shared/components/navbar/navbar.module';
     EditorModule,
     PanelMenuModule,
     DataTableModule,
+    AccordionModule,
 
     WthConfirmModule,
     BoxLoadingModule,

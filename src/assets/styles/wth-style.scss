@@ -45,12 +45,11 @@
 @import "partials/dropdowns";
 @import "partials/w_panels";
 @import "partials/icons";
+@import "partials/accordions";
 //
-// =Third party
+// =Third parties
 // --------------------------------------------------
-//@import "../../../node_modules/slick-carousel/slick/slick.scss";
-//@import "modules/slick-carousel/slick-carousel";
-//@import "modules/editor/quill.snow";
+@import "third-parties/custom_primeng";
 //
 // =Layout
 // --------------------------------------------------
@@ -82,7 +81,6 @@
 @import "modules/article-content";
 @import "modules/scrollbar-measure";
 @import "modules/ng2-dropdown";
-@import "third-parties/custom_primeng";
 @import "modules/chat/emoji";
 @import "modules/chat/chat-support";
 @import "modules/selectables/selectables";

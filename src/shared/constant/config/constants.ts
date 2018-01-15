@@ -136,6 +136,7 @@ export class ConstantsBase {
     {name: 'Communities', link: '/communities', icon: 'fa fa-users'},
     {name: 'Notifications', link: '/notifications', icon: 'fa fa-bell-o'},
     {name: 'Friends', link: '/friends', icon: 'fa fa-user-plus'},
+    {name: 'News', link: '/news', icon: 'fa fa-newspaper-o'},
     {name: 'My Page', link: '/profile', icon: 'fa fa-user-circle'},
     {name: '', link: '', icon: ''},
     {name: 'Settings', link: '/settings', icon: 'fa fa-cog'},

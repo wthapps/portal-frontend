@@ -28,6 +28,7 @@ import { PostComponent } from './second-routes/post/post.component';
 import { PostHeaderComponent } from './second-routes/post/components/post-header.component';
 import { PostBodyComponent } from './second-routes/post/components/post-body.component';
 import { PostFooterComponent } from './second-routes/post/components/post-footer.component';
+import { ZSocialSharedNewsFeedComponent } from './news-feed/news-feed.component';
 
 
 /**
@@ -64,7 +65,8 @@ import { PostFooterComponent } from './second-routes/post/components/post-footer
     ZSocialShareCommunityFormEditComponent,
     ZSocialShareCommunityFormPreferenceComponent,
 
-    ZSocialSharedHeaderComponent
+    ZSocialSharedHeaderComponent,
+    ZSocialSharedNewsFeedComponent
 
   ],
   exports: [
@@ -82,7 +84,8 @@ import { PostFooterComponent } from './second-routes/post/components/post-footer
     ZSocialShareCommunityFormEditComponent,
     ZSocialShareCommunityFormPreferenceComponent,
 
-    ZSocialSharedHeaderComponent
+    ZSocialSharedHeaderComponent,
+    ZSocialSharedNewsFeedComponent
   ]
 })
 export class ZSocialSharedModule {

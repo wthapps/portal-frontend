@@ -1,3 +1,7 @@
+.ui-widget {
+  font-family: inherit;
+}
+
 // inputswitch
 
 $ui-inputswitch-w: 24px;
@@ -72,7 +76,7 @@ $ui-inputswitch-w: 24px;
 
 .ui-chkbox-box,
 .ui-radiobutton-box {
-  &.ui-state-active {
+  &.ui-state-active, &.ui-state-focus, &.ui-state-active.ui-state-focus {
     background-color: $color-success;
     border-color: $color-success;
   }
