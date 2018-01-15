@@ -197,6 +197,11 @@ wth-header-navbar {
     }
   }
 
+  .nav-notification-list-content{
+    max-height: 400px;
+    overflow: auto;
+  }
+
   .badge {
     font-size: 11px;
     width: 20px;
@@ -282,4 +287,3 @@ wth-header-navbar {
     }
   }
 }
-

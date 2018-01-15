@@ -12,6 +12,7 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
 import { Subject } from "rxjs";
 import { UrlService } from "@shared/services";
+import { NoteConstants, noteConstants } from "note/shared/config/constants";
 
 declare var _: any;
 declare let saveAs: any;
@@ -27,6 +28,7 @@ declare let saveAs: any;
 export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() data: any;
   @Input() page: any;
+  @Input() subPage: any;
   @Input() selectedObjects: any[] = [];
   @Input() permission: any = 'edit';
 
@@ -45,6 +47,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       class: 'btn btn-default',
       tooltip: this.tooltip.edit,
       tooltipPosition: 'bottom',
+      title: 'Edit',
       iconClass: 'fa fa-pencil'
     },
     share: {
@@ -65,6 +68,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       class: 'btn btn-default',
       tooltip: this.tooltip.delete,
       tooltipPosition: 'bottom',
+      title: 'Delete',
       iconClass: 'fa fa-trash-o'
     },
     copy: {
@@ -87,6 +91,20 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       inDropDown: true, // Inside dropdown list
       action: this.removeShares.bind(this),
       title: 'Remove Share'
+    },
+    print: {
+      show: true,
+      needPermission: 'view',
+      inDropDown: true, // Inside dropdown list
+      action: this.print.bind(this),
+      title: 'Print'
+    },
+    exportPdf: {
+      show: true,
+      needPermission: 'view',
+      inDropDown: true, // Inside dropdown list
+      action: this.exportPdf.bind(this),
+      title: 'Export as PDF'
     },
     stopSharing: {
       show: true,
@@ -117,7 +135,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     this.urls = this.urlService.parse();
 
     /*====================================
-    [Permission] validate 
+    [Permission] validate
     ====================================*/
     let permissonValidateOneObject = (action, permissiOnObject) => {
       // if permission is view turn off all acions edit
@@ -132,13 +150,24 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     Object.keys(this.actionsMenu).map((action: any) => permissonValidateObjects(this.actionsMenu[action], objects));
 
     /*====================================
-    [Path] validate (shared-with-me, shared-by-me)
+    [Path And Page] validate (shared-with-me, shared-by-me)
     ====================================*/
     let pathValidate = (action, currentPath) => {
       if(currentPath != 'shared-with-me' && action.title == 'Remove Share') {
         action.show = false;
       }
+      // ==================
       if(currentPath != 'shared-by-me' && action.title == 'Stop Sharing') {
+        action.show = false;
+      }
+      if(currentPath == 'shared-by-me' && this.page == noteConstants.PAGE_SHARED_BY_ME && action.title == 'Make copy') {
+        action.show = false;
+      }
+      // ==================
+      if(this.subPage == noteConstants.PAGE_NOTE_EDIT && (action.title == 'Edit')) {
+        action.show = false;
+      }
+      if(this.subPage !== noteConstants.PAGE_NOTE_EDIT && (action.title == 'Print' || action.title == 'Export as PDF')) {
         action.show = false;
       }
     }
@@ -205,7 +234,12 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   }
 
   delete() {
-    if (this.selectedObjects.length >= 1) {
+    if (this.selectedObjects.length > 0) {
+      this.commonEventService.broadcast({
+        channel: 'noteActionsBar',
+        action: 'note:note_edit:close',
+        payload: this.selectedObjects
+      });
       this.commonEventService.broadcast({
         channel: 'noteActionsBar',
         action: 'note:mixed_entity:delete',
@@ -215,11 +249,30 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   }
 
   share() {
-    // TODO: Share multiple folders and notes
     if (this.selectedObjects.length > 0) {
       this.commonEventService.broadcast({
         channel: 'noteActionsBar',
         action: 'note:mixed_entity:open_sharing_modal',
+        payload: this.selectedObjects
+      });
+    }
+  }
+
+  print() {
+    if (this.selectedObjects.length > 0) {
+      this.commonEventService.broadcast({
+        channel: 'noteActionsBar',
+        action: 'note:note_edit:print',
+        payload: this.selectedObjects
+      });
+    }
+  }
+
+  exportPdf() {
+    if (this.selectedObjects.length > 0) {
+      this.commonEventService.broadcast({
+        channel: 'noteActionsBar',
+        action: 'note:note_edit:export_pdf',
         payload: this.selectedObjects
       });
     }
@@ -257,19 +310,6 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       action: 'note:mixed_entity:make_a_copy',
       payload: this.selectedObjects
     });
-  }
-
-  pdfDownload() {
-    let note = this.selectedObjects[0];
-    this.api.download('note/notes/pdf_download/' + note.id).subscribe((res: any) => {
-      var blob = new Blob([res], {type: 'application/pdf'});
-      saveAs(blob, note.title + '.pdf');
-    })
-  }
-
-  print() {
-    // let note = this.selectedObjects[0];
-    // printJS({ printable: 'noteview', type: 'html', header: note.title});
   }
 
   removeShares() {

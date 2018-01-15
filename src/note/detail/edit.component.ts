@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, SimpleChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewChild, SimpleChanges, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
 import { ModalComponent } from 'ng2-bs3-modal/components/modal';
@@ -12,9 +12,13 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/take';
 
-import { Editor } from 'primeng/components/editor/editor';
+import { ImageResize } from 'quill-image-resize-module';
+// import { CustomImageResize } from '@shared/shared/utils/custom-image-resize';
+// import { CustomResize } from '@shared/shared/utils/custom-resize';
+
 
 import * as fromRoot from '../shared/reducers/index';
+import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
@@ -23,7 +27,7 @@ import { PhotoUploadService } from '@shared/services/photo-upload.service';
 import { FileUploadHelper } from '@shared/shared/helpers/file/file-upload.helper';
 import { GenericFile } from '@shared/shared/models/generic-file.model';
 import { GenericFileService } from '@shared/services/generic-file.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
@@ -31,6 +35,9 @@ import * as Delta from 'quill-delta/lib/delta';
 import { CommonEventService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
 import { ResizeImage } from '@shared/shared/utils/resize-image';
+import { takeUntil, switchMap, combineLatest } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+import { noteConstants } from "note/shared/config/constants";
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -42,11 +49,10 @@ declare let _: any;
   encapsulation: ViewEncapsulation.None
 })
 
-export class ZNoteDetailEditComponent implements OnInit {
+export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   @ViewChild(ModalComponent) modal: ModalComponent;
-  @ViewChild('editor') editor: Editor;
-  @Input() note: Note = new Note();
 
+  note: Note = new Note();
   currentTab: any = 'note';
   hasShowComment: boolean = false;
   orderDesc: boolean = false;
@@ -56,6 +62,7 @@ export class ZNoteDetailEditComponent implements OnInit {
   tooltip: any = Constants.tooltip;
 
   titleModal: string = 'New Note';
+  subPage: string = noteConstants.PAGE_NOTE_EDIT;
 
   buttonControl: string = '';
 
@@ -81,11 +88,13 @@ export class ZNoteDetailEditComponent implements OnInit {
   private timeInterval: any;
   private EXCLUDE_FORMATS: string[] = ['link'];
   resize: any;
+  context$: any;
 
   constructor(private fb: FormBuilder,
               private noteService: ZNoteService,
               protected router: Router,
-              private store: Store<fromRoot.State>,
+              private route: ActivatedRoute,
+              private store: Store<any>,
               private photoSelectDataService: PhotoModalDataService,
               private fileService: GenericFileService,
               private apiBaseService: ApiBaseService,
@@ -99,9 +108,9 @@ export class ZNoteDetailEditComponent implements OnInit {
       this.photoSelectDataService.openObs$,
       this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable()
     );
-    this.fileUploadHelper = new FileUploadHelper();
 
-    // console.log(this.clientDetectorService.getOs());
+
+    this.fileUploadHelper = new FileUploadHelper();
 
     let getOs: any = this.clientDetectorService.getOs();
     this.buttonControl = (getOs.name == 7) ? '⌘' : 'ctrl';
@@ -109,6 +118,21 @@ export class ZNoteDetailEditComponent implements OnInit {
 
   ngOnInit() {
     this.assignFormValue(null);
+    this.context$ = this.store.select('context');
+    this.commonEventService.filter((e: any) => e.channel == 'noteActionsBar').take(1).subscribe((e: any) => {
+
+      switch(e.action) {
+        case 'note:note_edit:close':
+          this.router.navigate([{outlets: {detail: null}}]);
+          break;
+        case 'note:note_edit:print':
+          this.print();
+          break;
+        case 'note:note_edit:export_pdf':
+          this.pdfDownload();
+          break;
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -147,7 +171,6 @@ export class ZNoteDetailEditComponent implements OnInit {
         $(document.body).addClass('modal-open');
       }
     });
-    // this.customEditor = this.editor.quill;
 
     var bindings = {
       "enter": {
@@ -164,6 +187,9 @@ export class ZNoteDetailEditComponent implements OnInit {
     this.registerFontSizeBlot();
     this.registerDividerBlot();
     this.extendClipboard(this);
+
+    // Quill.registerModule('customImageResize', CustomImageResize);
+
     this.customEditor = new Quill('#quill-editor', {
       modules: {
         toolbar: {
@@ -172,6 +198,31 @@ export class ZNoteDetailEditComponent implements OnInit {
         keyboard: {
           bindings: bindings
         },
+        imageResize: {
+          modules: [ 'Resize', 'Toolbar' ],
+          handleStyles: {
+            backgroundColor: '#F54A59',
+            border: '1px',
+            color: 'white'
+            // other camelCase styles for size display
+          },
+          overlayStyles: {
+            position: 'absolute',
+            boxSizing: 'border-box',
+            border: '1px solid #F54A59',
+          },
+          toolbarStyles: {
+            position: 'absolute',
+            top: '-30px',
+            height: '0',
+            minWidth: '100px',
+            font: '12px/1.0 Arial, Helvetica, sans-serif',
+            textAlign: 'center',
+            color: '#333',
+            boxSizing: 'border-box',
+            cursor: 'default',
+          },
+        }
       },
       placeholder: 'Say something ...',
       readOnly: false,
@@ -180,8 +231,6 @@ export class ZNoteDetailEditComponent implements OnInit {
     });
 
     this.editorElement = document.querySelector('div.ql-editor');
-    // Reset content of elemenet div.ql-editor to prevent HTML data loss
-    document.querySelector('.ql-editor').innerHTML = this.note.content;
 
     $('.ql-editor').attr('tabindex', 1);
 
@@ -194,7 +243,31 @@ export class ZNoteDetailEditComponent implements OnInit {
       this.registerImageClickEvent();
     }, 500);
     this.registerSelectionChange();
-    this.registerAutoSave();
+
+    // Merge with get current folder - this.store.select(fromRoot.getCurrentFolder)
+    this.route.paramMap.pipe(
+      switchMap((paramMap: any) => {
+        let noteId = paramMap.get('id');
+        this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
+        console.debug('noteId: ', noteId);
+        if(!!noteId)
+          return this.noteService.get(noteId).map(res => res.data);
+        else
+          return of(new Note());
+      }),
+      combineLatest(this.store.select(fromRoot.getCurrentFolder)),
+      takeUntil(this.destroySubject)
+    )
+      .subscribe(([note, currentFolder]: any) => {
+        this.note = note;
+        if(currentFolder)
+          this.parentId = currentFolder.id;
+
+        this.updateFormValue(this.note);
+        // Reset content of elemenet div.ql-editor to prevent HTML data loss
+        document.querySelector('.ql-editor').innerHTML = this.note.content;
+        this.registerAutoSave();
+      });
   }
 
   onSort(name: any) {
@@ -502,10 +575,11 @@ export class ZNoteDetailEditComponent implements OnInit {
     let photoIds = imgItems.map(item => item.dataset.id);
 
     imgItems.forEach((i: any) => {
-      if (!i.onclick && !i.ondblclick) {
-        i.onclick = (event: any) => {
-          this.resize.edit(event.target);
-        };
+      if (!i.ondblclick) {
+      //   if (!i.onclick && !i.ondblclick) {
+      //   i.onclick = (event: any) => {
+      //     this.resize.edit(event.target);
+      //   };
 
         i.ondblclick = (event: any) => {
           console.debug('event.srcElement: ', event);
@@ -604,13 +678,11 @@ export class ZNoteDetailEditComponent implements OnInit {
   }
 
   selectFiles(event: any) {
-    console.debug('inside SelectFiles: ', event);
     let files = event.target.files;
     if (files.length == 0) {
       return;
     }
     this.fileUploadHelper.allowUpload(files, (filesAllowed: any[], filesNotAllowed: any[]) => {
-      console.debug('file allowed: ', filesAllowed, ' - file NOT allowed: ', filesNotAllowed);
       this.note.attachments = [...this.note.attachments, ...filesAllowed];
       // this.form.controls['attachments'].setValue(this.note.attachments);
 
@@ -634,10 +706,13 @@ export class ZNoteDetailEditComponent implements OnInit {
   }
 
   onModalClose() {
-    this.modal.close()
-      .then(() => {
-        this.closeSubject.next('');
-      });
+    // this.modal.close()
+    //   .then(() => {
+    //     this.closeSubject.next('');
+    //   });
+
+    this.router.navigate([{outlets: {detail: null}}]);
+    this.closeSubject.next('');
   }
 
   /**
@@ -655,24 +730,9 @@ export class ZNoteDetailEditComponent implements OnInit {
           this.note = res.data;
           this.editMode = Constants.modal.edit;
           this.store.dispatch(new note.MultiNotesAdded([res['data']]));
+          this.router.navigate([{outlets: {detail: ['notes', this.note.id]}}]);
         })
     }
-  }
-
-  makeACopy() {
-    this.commonEventService.broadcast({
-      channel: 'noteActionsBar',
-      action: 'note:mixed_entity:make_a_copy',
-      payload: [this.note]
-    });
-  }
-
-  moveToFolder() {
-    this.commonEventService.broadcast({
-      channel: 'noteActionsBar',
-      action: 'note:mixed_entity:open_move_to_folder_modal',
-      payload: [this.note]
-    });
   }
 
   download(file: any) {
@@ -683,22 +743,6 @@ export class ZNoteDetailEditComponent implements OnInit {
     }).subscribe((res: any) => {
       var blob = new Blob([res], {type: file.content_type});
       saveAs(blob, `${file.name}.${file.extension}`);
-    });
-  }
-
-  share() {
-    this.commonEventService.broadcast({
-      channel: 'noteActionsBar',
-      action: 'note:mixed_entity:open_sharing_modal',
-      payload: [this.note]
-    });
-  }
-
-  delete() {
-    this.commonEventService.broadcast({
-      channel: 'noteActionsBar',
-      action: 'note:mixed_entity:delete',
-      payload: [this.note]
     });
   }
 

@@ -100,24 +100,30 @@ export class AppComponent implements OnInit, OnDestroy {
         this.modal.open({mode: 'add'});
         break;
       case 'note:open_note_edit_modal':
-        this.loadModalComponent(NoteEditModalComponent);
         this.store.dispatch(new note.Edit(event.payload));
-        this.modal.note = event.payload;
-        this.modal.open({mode: 'edit', parent_id: _.get(event, 'payload.parent_id')});
+        this.router.navigate([{outlets: {detail: ['notes', event.payload.id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
+        // this.loadModalComponent(NoteEditModalComponent);
+        // this.store.dispatch(new note.Edit(event.payload));
+        // this.modal.note = event.payload;
+        // this.modal.open({mode: 'edit', parent_id: _.get(event, 'payload.parent_id')});
         break;
       case 'note:open_note_view_modal':
-        this.loadModalComponent(ZNoteSharedModalNoteViewComponent);
-        this.modal.note = event.payload;
-        this.modal.open();
+        this.router.navigate([{outlets: {detail: ['notes', event.payload.id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
+        // this.loadModalComponent(ZNoteSharedModalNoteViewComponent);
+        // this.modal.note = event.payload;
+        // this.modal.open();
         break;
       case 'note:open_note_add_modal':
-        this.loadModalComponent(NoteEditModalComponent);
+        // TODO:
         this.store.dispatch(new note.ResetCurrentNote());
-        if (this.currentFolder) {
-          this.modal.open({mode: 'add', parent_id: this.currentFolder.id});
-        } else {
-          this.modal.open({mode: 'add'});
-        }
+        this.router.navigate([{outlets: {detail: ['new_note']}}], {queryParamsHandling: 'preserve', preserveFragment: true});
+        // this.loadModalComponent(NoteEditModalComponent);
+        // this.store.dispatch(new note.ResetCurrentNote());
+        // if (this.currentFolder) {
+        //   this.modal.open({mode: 'add', parent_id: this.currentFolder.id});
+        // } else {
+        //   this.modal.open({mode: 'add'});
+        // }
         break;
       case 'note:folder:edit':
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);

@@ -106,7 +106,8 @@ export class NoteItemComponent implements OnInit, OnDestroy {
     } else {
       this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
     }*/
-    this.router.navigate(['notes', this.data.id]);
+    // this.router.navigate(['notes', this.data.id]);
+    this.router.navigate([{outlets: {detail: ['notes', this.data.id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {

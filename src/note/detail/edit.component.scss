@@ -139,22 +139,42 @@ $note-editor-aside-w: 400px;
     }
   }
 
-  @media screen {
-    .printable {
-      /*visibility: hidden;*/
-      display: none;
-    }
+  //@media screen {
+  //  .printable {
+  //    /*visibility: hidden;*/
+  //    display: none;
+  //  }
+  //}
+  //
+  //@media print {
+  //  body {
+  //    //visibility: hidden;
+  //    display: none;
+  //  }
+  //  .printable {
+  //    //visibility: visible;
+  //    //display: block;
+  //  }
+  //
+  //}
+}
+
+
+@media screen {
+  .printable {
+    /*visibility: hidden;*/
+    display: none;
+  }
+}
+
+@media print {
+  body {
+    //visibility: hidden;
+    display: none;
+  }
+  .printable {
+    //visibility: visible;
+    display: block;
   }
 
-  @media print {
-    body {
-      //visibility: hidden;
-      display: none;
-    }
-    .printable {
-      //visibility: visible;
-      //display: block;
-    }
-
-  }
 }

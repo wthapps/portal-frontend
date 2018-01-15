@@ -18,6 +18,7 @@ import 'rxjs/add/operator/map';
 
 import * as note from '../actions/note';
 import * as fromRoot from '../reducers/index';
+import * as context from '../reducers/context';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 
@@ -83,9 +84,11 @@ export class NoteEffects {
     .ofType(note.LOAD)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
+    this.store.dispatch({type: context.SET_CONTEXT, payload: {loading: true}})
     return this.apiBaseService.get(`note/mixed_entities`, payload)
       .mergeMap((res: any) => { return [
           {type: note.LOAD_SUCCESS, payload: res.data},
+          {type: context.SET_CONTEXT, payload: {loading: false}},
           {type: note.SET_LIST_PERMISSION, payload: {canAdd: true}}]; })
       .catch(() => of({type: note.LOAD_SUCCESS, payload: []}));
     });
