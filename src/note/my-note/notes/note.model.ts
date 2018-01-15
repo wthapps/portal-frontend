@@ -9,6 +9,7 @@ class Note extends BaseEntity {
   user_id: number;
   folder: any;
   folder_id: number;
+  permission: string;
 
 
   constructor(attributes: any={}) {

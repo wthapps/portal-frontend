@@ -10,9 +10,10 @@
       </div>
 
       <div class="note-editor-header-input">
-        <input tabindex="1" autofocus (keypress)="onToEditor($event)" [formControl]="title" type="text"
+        <input *ngIf="note.permission !== 'view'" tabindex="1" autofocus (keypress)="onToEditor($event)" [formControl]="title" type="text"
                class="form-control fz18" id="note_form_title"
                placeholder="Title">
+        <h4 *ngIf="note.permission == 'view'">{{note.title}}</h4>
       </div>
     </div>
   </div>
@@ -37,7 +38,7 @@
     </nav>
   </div>
   <div class="note-editor-content" [ngClass]="{'show-aside': hasShowComment}">
-    <div class="note-editor-toolbar">
+    <div class="note-editor-toolbar" *ngIf="note.permission !== 'view'">
       <div class="container">
         <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-toolbar">
           <div class="ql-format-group">

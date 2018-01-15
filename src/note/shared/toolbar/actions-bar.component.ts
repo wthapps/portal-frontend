@@ -62,7 +62,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     },
     delete: {
       show: true,
-      needPermission: 'edit',
+      needPermission: 'owner',
       inDropDown: false, // Outside dropdown list
       action: this.delete.bind(this),
       class: 'btn btn-default',
@@ -139,7 +139,10 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     ====================================*/
     let permissonValidateOneObject = (action, permissiOnObject) => {
       // if permission is view turn off all acions edit
-      if(permissiOnObject == 'view' && action.needPermission == 'edit') {
+      if(permissiOnObject == 'view' && (action.needPermission == 'edit' || action.needPermission == 'owner')) {
+        action.show = false;
+      }
+      if(permissiOnObject == 'edit' && action.needPermission == 'owner') {
         action.show = false;
       }
     }
@@ -220,6 +223,8 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   }
 
   toolbarActionsSetup(e: any) {
+    // Turn on action before validate
+    Object.keys(this.actionsMenu).map((action: any) => this.actionsMenu[action].show = true);
     this.validatePermission(this.selectedObjects);
   }
 

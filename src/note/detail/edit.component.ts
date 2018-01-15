@@ -87,7 +87,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   private isCopied: boolean;
   private timeInterval: any;
   private EXCLUDE_FORMATS: string[] = ['link'];
-  resize: any;
   context$: any;
 
   constructor(private fb: FormBuilder,
@@ -133,6 +132,30 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
           break;
       }
     })
+
+    // Merge with get current folder - this.store.select(fromRoot.getCurrentFolder)
+    this.route.paramMap.pipe(
+      switchMap((paramMap: any) => {
+        let noteId = paramMap.get('id');
+        this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
+        if(!!noteId)
+          return this.noteService.get(noteId).map(res => res.data);
+        else
+          return of(new Note());
+      }),
+      combineLatest(this.store.select(fromRoot.getCurrentFolder)),
+      takeUntil(this.destroySubject)
+    )
+      .subscribe(([note, currentFolder]: any) => {
+        this.note = note;
+        this.initQuill();
+        if(currentFolder)
+          this.parentId = currentFolder.id;
+        this.updateFormValue(this.note);
+        // Reset content of elemenet div.ql-editor to prevent HTML data loss
+        document.querySelector('.ql-editor').innerHTML = this.note.content;
+        this.registerAutoSave();
+      });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -164,8 +187,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       });
   }
 
-  ngAfterViewInit(): void {
-    this.resize = new ResizeImage('quill-content-body');
+  initQuill() {
     $(document).on('hidden.bs.modal', '.modal', () => {
       if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
@@ -187,10 +209,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.registerFontSizeBlot();
     this.registerDividerBlot();
     this.extendClipboard(this);
-
-    // Quill.registerModule('customImageResize', CustomImageResize);
-
-    this.customEditor = new Quill('#quill-editor', {
+    let modules: any = {
       modules: {
         toolbar: {
           container: '#quill-toolbar'
@@ -228,7 +247,10 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       readOnly: false,
       theme: 'snow',
       scrollingContainer: '#scrolling-container'
-    });
+    }
+    if (this.note.permission == 'view') modules.modules.imageResize = null
+    this.customEditor = new Quill('#quill-editor', modules);
+    if (this.note.permission == 'view') this.customEditor.disable();
 
     this.editorElement = document.querySelector('div.ql-editor');
 
@@ -239,35 +261,11 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.customizeKeyboardBindings();
 
     this.listenImageChanges();
-    this.timeInterval = setInterval(() => {
-      this.registerImageClickEvent();
-    }, 500);
     this.registerSelectionChange();
+  }
 
-    // Merge with get current folder - this.store.select(fromRoot.getCurrentFolder)
-    this.route.paramMap.pipe(
-      switchMap((paramMap: any) => {
-        let noteId = paramMap.get('id');
-        this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
-        console.debug('noteId: ', noteId);
-        if(!!noteId)
-          return this.noteService.get(noteId).map(res => res.data);
-        else
-          return of(new Note());
-      }),
-      combineLatest(this.store.select(fromRoot.getCurrentFolder)),
-      takeUntil(this.destroySubject)
-    )
-      .subscribe(([note, currentFolder]: any) => {
-        this.note = note;
-        if(currentFolder)
-          this.parentId = currentFolder.id;
-
-        this.updateFormValue(this.note);
-        // Reset content of elemenet div.ql-editor to prevent HTML data loss
-        document.querySelector('.ql-editor').innerHTML = this.note.content;
-        this.registerAutoSave();
-      });
+  ngAfterViewInit(): void {
+  //
   }
 
   onSort(name: any) {
@@ -700,7 +698,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       this.store.dispatch(new note.Add({...value, parent_id: this.parentId, content: this.editorElement.innerHTML}));
     }
     else {
-      this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
+      if (this.note.permission != 'view') this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
     }
     this.onModalClose();
   }

@@ -11,10 +11,9 @@ export class Note extends BaseEntity {
   folder: any;
   parent_id: number = null;
   object_type: string = 'note';
+  permission: string;
 
   constructor(attributes: any={}) {
     super(attributes);
   }
 }
-
-
