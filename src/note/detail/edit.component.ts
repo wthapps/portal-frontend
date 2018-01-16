@@ -252,7 +252,10 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       theme: 'snow',
       scrollingContainer: '#scrolling-container'
     }
-    if (this.note.permission == 'view') modules.modules.imageResize = null
+    if (this.note.permission == 'view') {
+      modules.modules.imageResize = null;
+      modules.placeholder = '';
+    }
     this.customEditor = new Quill('#quill-editor', modules);
     if (this.note.permission == 'view') this.customEditor.disable();
 
