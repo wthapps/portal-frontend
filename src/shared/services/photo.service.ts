@@ -19,7 +19,7 @@ export class PhotoService {
   closePreview$: Observable<any>;
   modifiedPhotos$: Observable<any>;
   private closePreviewSubject: Subject<any> = new Subject();
-  private modifiedPhotosSubject: BehaviorSubject<any> = new BehaviorSubject({action: null, payload: {}}); // including UPDATED and DELETED photos
+  private modifiedPhotosSubject: Subject<any> = new Subject(); // including UPDATED and DELETED photos
 
   constructor(private apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService) {
@@ -34,10 +34,6 @@ export class PhotoService {
   setModifiedPhotos(options: any = {action: null, payload: {post_id: null, photo: null}}) {
     console.debug('photo service - setModifiedPhotos: ', options);
     this.modifiedPhotosSubject.next(options);
-  }
-
-  getModifiedPhotos() {
-    return this.modifiedPhotosSubject.getValue();
   }
 
   listPhoto(body: any = {}): any {

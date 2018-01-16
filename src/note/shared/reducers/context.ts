@@ -22,8 +22,8 @@ export function reducer(state: any = empty(), action: any) {
       }
       let folder = action.payload[action.payload.length -1]
       let permissions = {
-        edit: folder.permission == 'edit',
-        enableEdit: folder.permission == 'edit',
+        edit: folder.permission !== 'view',
+        enableEdit: folder.permission !== 'view',
       };
       stateClone.setContext({permissions: permissions});
       return stateClone;

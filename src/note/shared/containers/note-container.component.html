@@ -13,7 +13,7 @@
     </ul>
   </div>
 
-  <span class="btn-text ml15">
+  <span *ngIf="(context$ | async).pathTitle !== ''" class="btn-text ml15">
     {{(context$ | async).pathTitle}}
   </span>
   <z-note-shared-breadcrumb class="note-breadcrumb" [model]="breadcrumbs" [permissions]="(context$ | async).permissions"

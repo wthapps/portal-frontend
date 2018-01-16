@@ -101,8 +101,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
               private photoService: PhotoService,
               private photoUploadService: PhotoUploadService,
               private commonEventService: CommonEventService) {
-    this.noSave$ = Observable.merge(this.noSaveSubject.asObservable(), this.destroySubject, this.closeSubject);
-    this.closeObs$ = Observable.merge(
+      this.noSave$ = Observable.merge(this.noSaveSubject.asObservable(), this.destroySubject, this.closeSubject);
+      this.closeObs$ = Observable.merge(
       this.photoSelectDataService.closeObs$,
       this.photoSelectDataService.openObs$,
       this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable()
@@ -133,6 +133,10 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       }
     })
 
+
+  }
+
+  ngAfterViewInit() {
     // Merge with get current folder - this.store.select(fromRoot.getCurrentFolder)
     this.route.paramMap.pipe(
       switchMap((paramMap: any) => {
@@ -154,7 +158,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         this.updateFormValue(this.note);
         // Reset content of elemenet div.ql-editor to prevent HTML data loss
         document.querySelector('.ql-editor').innerHTML = this.note.content;
-        this.registerAutoSave();
+        if (this.note.permission !== 'view') this.registerAutoSave();
       });
   }
 
@@ -262,10 +266,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
     this.listenImageChanges();
     this.registerSelectionChange();
-  }
-
-  ngAfterViewInit(): void {
-  //
   }
 
   onSort(name: any) {
@@ -695,10 +695,10 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
   onSubmit(value: any) {
     if (this.editMode == Constants.modal.add) {
-      this.store.dispatch(new note.Add({...value, parent_id: this.parentId, content: this.editorElement.innerHTML}));
+      if (this.note.permission !== 'view') this.store.dispatch(new note.Add({...value, parent_id: this.parentId, content: this.editorElement.innerHTML}));
     }
     else {
-      if (this.note.permission != 'view') this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
+      if (this.note.permission !== 'view') this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
     }
     this.onModalClose();
   }
