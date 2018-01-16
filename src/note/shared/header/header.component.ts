@@ -17,6 +17,7 @@ export class ZNoteSharedHeaderComponent {
   suggestions: any;
   show: boolean = false;
   showAdvanced: boolean = false;
+  searchAdvanced: boolean;
   search: string;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
@@ -54,5 +55,9 @@ export class ZNoteSharedHeaderComponent {
   setText(data: any) {
     this.show = false;
     this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: this.textbox.search}});
+  }
+
+  onSearchAdvanced(e: any) {
+
   }
 }
