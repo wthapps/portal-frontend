@@ -2,13 +2,14 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, HostListener
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import { ZNoteService } from '../../services/note.service';
 import * as fromRoot from '../../reducers/index';
 import * as note from '../../actions/note';
-import { Subscription } from 'rxjs';
+import { NoteConstants, noteConstants } from "../../config/constants";
 
 declare var _: any;
 
@@ -24,6 +25,7 @@ export class NoteItemComponent implements OnInit, OnDestroy {
 
   readonly tooltip: any = Constants.tooltip;
   readonly PAGE_TYPE: any = Constants.notePageType;
+  readonly noteConstants: NoteConstants = noteConstants;
   selected: boolean = false;
   sub: Subscription;
   pressingCtrlKey: boolean;

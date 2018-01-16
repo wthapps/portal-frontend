@@ -5,6 +5,7 @@ import {
 import * as fromNote from './../note';
 import * as fromFolder from './../folder';
 import * as context from './../context';
+import { noteConstants, NoteConstants } from "note/shared/config/constants";
 import { AppState } from "note/shared/reducers/state";
 
 export const getNotesState = (state: AppState) => state.notes;
@@ -13,17 +14,20 @@ export const getFoldersState = (state: AppState) => state.folders;
 export const getNotesEntities = createSelector(getNotesState, fromNote.getNotes);
 export const getFolderEntities = createSelector(getNotesState, fromNote.getFolders);
 
-export const getNotes = createSelector(getNotesEntities, context.getSortOptionContext, (notes: any, sort: any) => {
+export const getNotes = createSelector(getNotesEntities, context.getSortOptionContext,
+  (notes: any, sort: any) => {
   let cloneNotes: any[] = [];
   Object.keys(notes).forEach((idx: any) => cloneNotes.push(notes[idx]));
   let sortField = ['name', 'title'].includes(sort.field) ? 'title' : sort.field;
   return cloneNotes.sort((a: any, b: any) => compareBy(a, b, sort.desc, sortField));
 });
 
-export const getFolders = createSelector(getFolderEntities, context.getSortOptionContext, (notes: any, sort: any) => {
+export const getFolders = createSelector(getFolderEntities, context.getSortOptionContext,
+  (notes: any, sort: any) => {
   let cloneNotes: any[] = [];
   Object.keys(notes).forEach((idx: any) => cloneNotes.push(notes[idx]));
-  return cloneNotes.sort((a: any, b: any) => compareBy(a, b, sort.desc, 'name'));
+  let sortField = ['name', 'title'].includes(sort.field) ? 'title' : sort.field;
+  return cloneNotes.sort((a: any, b: any) => compareBy(a, b, sort.desc, sortField));
 });
 
 

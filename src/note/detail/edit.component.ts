@@ -57,6 +57,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   hasShowComment: boolean = false;
   orderDesc: boolean = false;
   hasSortBy: boolean = false;
+  noteChanged: boolean = false;
   customEditor: any;
   public fileUploadHelper: FileUploadHelper;
   tooltip: any = Constants.tooltip;
@@ -87,6 +88,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   private isCopied: boolean;
   private timeInterval: any;
   private EXCLUDE_FORMATS: string[] = ['link'];
+  resize: any;
   context$: any;
 
   constructor(private fb: FormBuilder,
@@ -177,8 +179,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   registerAutoSave() {
     // Auto save
     Observable.merge(
-      this.form.valueChanges,
-      Observable.fromEvent(this.customEditor, 'text-change'))
+      this.form.valueChanges.do(() => console.debug('valueChanges...')),
+      Observable.fromEvent(this.customEditor, 'text-change').do(() => console.debug('text=change')))
+      .do(() => this.noteChanged = true)
       .takeUntil(Observable.merge(this.noSave$, this.closeSubject))
       .debounceTime(DEBOUNCE_MS)
       .takeUntil(Observable.merge(this.noSave$, this.closeSubject))
@@ -701,7 +704,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       if (this.note.permission !== 'view') this.store.dispatch(new note.Add({...value, parent_id: this.parentId, content: this.editorElement.innerHTML}));
     }
     else {
-      if (this.note.permission !== 'view') this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
+      if (this.note.permission != 'view' && this.noteChanged)
+        this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
     }
     this.onModalClose();
   }

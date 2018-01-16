@@ -4,9 +4,14 @@ export class NoteConstants extends ConstantsBase {
   PAGE_MY_NOTE: any = 'MY_NOTE';
   PAGE_SHARED_WITH_ME: any = 'SHARED_WITH_ME';
   PAGE_SHARED_BY_ME: any = 'SHARED_BY_ME';
+  PAGE_RECENT: any = 'RECENT';
   PAGE_INSIDE_FOLDER: any = 'INSIDE_FOLDER';
   PAGE_NOTE_EDIT: any = 'NOTE_EDIT';
 
+  /*
+    edit: Can add new items to current list
+    enableEdit: Enable 'New' / 'New note' / 'New folder' buttons
+   */
   PAGE_PERMISSIONS: any = {
     MY_NOTE: {
       edit: true,
@@ -17,6 +22,10 @@ export class NoteConstants extends ConstantsBase {
       enableEdit: true,
     },
     SHARED_BY_ME: {
+      edit: false,
+      enableEdit: true,
+    },
+    RECENT: {
       edit: false,
       enableEdit: true,
     }
@@ -38,7 +47,19 @@ export class NoteConstants extends ConstantsBase {
       icon: 'fa fa-share-alt',
       title: 'There is no note shared by you!',
       subTitle: 'Note can be shared to your connected contact',
+    },
+    RECENT: {
+      icon: 'fa fa-clock-o',
+      title: 'There is no recent note accessed by you!',
+      subTitle: 'Try to create one',
+      newNode: true,
     }
+  }
+
+  ACCESS_NAME: any = {
+    1: ' Opened by me',
+    2: ' Modified by me',
+    3: ' Uploaded'
   }
 }
 let noteConstants: NoteConstants = new NoteConstants();

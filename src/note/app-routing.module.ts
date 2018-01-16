@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
        */
       { path: 'my-profile', loadChildren: './my-profile/my-profile.module#ZNoteMyProfileModule'},
       { path: 'notifications', loadChildren: './notifications/notifications.module#NoteNotificationModule'},
-
+      { path: 'recent', loadChildren: './recent/recent.module#ZNoteRecentModule'}
       // { path: 'photos', loadChildren: './photo/photo.module#ZNotePhotoModule#ZNotePhotoModule'}
     ])
   ],

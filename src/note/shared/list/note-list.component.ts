@@ -9,6 +9,7 @@ import * as fromRoot from '../reducers/index';
 import * as context from '../reducers/context';
 import * as note from '../actions/note';
 import { Folder } from '../reducers/folder';
+import { noteConstants, NoteConstants } from "../config/constants";
 
 declare var _: any;
 
@@ -30,6 +31,7 @@ export class NoteListComponent implements OnInit {
   @Input() isSelectAll: boolean;
   @Input() page: string;
 
+  noteConstants: NoteConstants = noteConstants;
   loading$: Observable<boolean>;
 
   readonly VIEW_MODE = {
@@ -53,7 +55,8 @@ export class NoteListComponent implements OnInit {
   }
 
   onSort(name: any) {
-    this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {field: name, desc: !this.sortOption.desc}}});
+    if (this.page !== this.noteConstants.PAGE_RECENT)
+      this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {field: name, desc: !this.sortOption.desc}}});
   }
 
   onSelectedAll() {

@@ -6,7 +6,7 @@ import {
   ViewEncapsulation,
   OnDestroy,
   OnChanges,
-  SimpleChanges
+  SimpleChanges, OnInit
 } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
@@ -53,7 +53,7 @@ declare let _: any;
   styleUrls: ['note-edit-modal.component.scss', 'quill-style.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewInit {
+export class NoteEditModalComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit {
 
   @ViewChild(ModalComponent) modal: ModalComponent;
   @ViewChild('editor') editor: Editor;
@@ -123,6 +123,10 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
 
   ngOnChanges(changes: SimpleChanges) {
     console.log('ngOnChanges:', changes);
+  }
+
+  ngOnInit() {
+    this.registerImageClickEvent();
   }
 
   ngOnDestroy() {
@@ -526,9 +530,11 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, AfterViewIn
   }
 
   registerImageClickEvent() {
+    console.debug('OOOOOOOOOOOOOOOOHA - inside registerImageClickEvent ...');
     let imgItems = Array.from(document.querySelector('.ql-editor').getElementsByTagName('img'));
 
     imgItems.forEach((i: any) => {
+      console.debug('registerImageClickEvent: i - ', i);
       if (!i.ondblclick) {
         i.ondblclick = (event: any) => {
           let photoId: string = i.dataset.id;

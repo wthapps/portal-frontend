@@ -92,6 +92,13 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       action: this.removeShares.bind(this),
       title: 'Remove Share'
     },
+    removeMixing: {
+      show: true,
+      needPermission: 'view',
+      inDropDown: true, // Inside dropdown list
+      action: this.removeMixing.bind(this),
+      title: 'Remove'
+    },
     print: {
       show: true,
       needPermission: 'view',
@@ -171,6 +178,9 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
         action.show = false;
       }
       if(this.subPage !== noteConstants.PAGE_NOTE_EDIT && (action.title == 'Print' || action.title == 'Export as PDF')) {
+        action.show = false;
+      }
+      if(this.page !== noteConstants.PAGE_RECENT && action.title == 'Remove') {
         action.show = false;
       }
     }
@@ -325,6 +335,9 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
         this.store.dispatch({type: note.REMOVE_SHARE_WITH_ME, payload: this.selectedObjects})
       }
     })
+  }
+
+  removeMixing() {
 
   }
 }

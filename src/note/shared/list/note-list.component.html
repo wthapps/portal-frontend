@@ -6,8 +6,8 @@
         <i (click)="onSelectedAll()" class="fa fa-check"></i>
       </div>
       <div class="component-listbox-name">
-        <span class="can-click" (click)="onSort('name')">
-          Name <i *ngIf="sortOption?.field == 'name'" class="fa"
+        <span [ngClass]="{'can-click': page !== noteConstants.PAGE_RECENT}" (click)="onSort('name')">
+          Name <i *ngIf="page !== noteConstants.PAGE_RECENT && sortOption?.field == 'name'" class="fa"
                   [ngClass]="{'fa-arrow-up': !sortOption?.desc, 'fa-arrow-down': sortOption?.desc }"></i>
         </span>
       </div>
@@ -17,10 +17,15 @@
       <div class="component-listbox-description">
         Description
       </div>
-      <div class="component-listbox-date">
-        <span class="can-click" (click)="onSort('created_at')">
-          Created Date <i *ngIf="sortOption?.field == 'created_at'" class="fa"
+      <div class="component-listbox-date" *ngIf="page !== noteConstants.PAGE_RECENT">
+        <span [ngClass]="{'can-click': page !== noteConstants.PAGE_RECENT}" (click)="onSort('created_at')">
+          Created Date <i *ngIf="page !== noteConstants.PAGE_RECENT && sortOption?.field == 'created_at'" class="fa"
                           [ngClass]="{'fa-arrow-up': !sortOption?.desc, 'fa-arrow-down': sortOption?.desc}"></i>
+        </span>
+      </div>
+      <div class="component-listbox-date" *ngIf="page === noteConstants.PAGE_RECENT">
+        <span>
+          Accessed Date
         </span>
       </div>
       <div class="component-listbox-action">&nbsp;</div>
