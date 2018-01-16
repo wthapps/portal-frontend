@@ -16,8 +16,7 @@ export class ZNoteSharedHeaderComponent {
   constants: any;
   suggestions: any;
   show: boolean = false;
-  showAdvanced: boolean = false;
-  searchAdvanced: boolean;
+  searchAdvanced: boolean = false;
   search: string;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
@@ -58,6 +57,7 @@ export class ZNoteSharedHeaderComponent {
   }
 
   onSearchAdvanced(e: any) {
-
+    console.log(e);
+    this.searchAdvanced = e.searchAdvanced;
   }
 }

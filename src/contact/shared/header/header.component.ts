@@ -21,6 +21,7 @@ export class ZContactSharedHeaderComponent {
   suggestions: any[] = [];
   show: boolean = false;
   search: string;
+  searchAdvanced: boolean = false;
   suggest$: Observable<any>;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
@@ -73,5 +74,10 @@ export class ZContactSharedHeaderComponent {
     this.show = false;
 
     this.serviceManager.getRouter().navigate([`/contacts/detail/${data.id}`]);
+  }
+
+  onSearchAdvanced(e: any) {
+    console.log(e);
+    this.searchAdvanced = e.searchAdvanced;
   }
 }

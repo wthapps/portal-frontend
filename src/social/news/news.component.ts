@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ZSocialNewsShareComponent } from './modal/share.component';
 
 @Component({
   selector: 'app-social-news',
@@ -7,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class ZSocialNewsComponent implements OnInit {
+  @ViewChild('modalShare') modalShare: ZSocialNewsShareComponent;
+
   article: any = {
     uri: 'https://i-kinhdoanh.vnecdn.net/2018/01/10/biencam1-3203-1515575867_140x84.jpg'
   };
@@ -15,5 +18,9 @@ export class ZSocialNewsComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  openModalShare() {
+    this.modalShare.open();
   }
 }

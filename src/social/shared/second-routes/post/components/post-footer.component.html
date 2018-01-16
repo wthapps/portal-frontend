@@ -30,7 +30,7 @@
           <h4 class="media-heading"><a  href="javascript:;" (click)="viewProfile(comment.owner.uuid)" >{{ comment.owner.name }}</a>
             <span class="media-heading-time">{{ comment.created_at | timeFormat }}</span>
           </h4>
-          <span [innerHtml]="comment.content | wthEmojis |linkify | safeHtml"></span>
+          <div class="comment-editor-view" [innerHtml]="comment.content | wthEmojis |linkify | safeHtml"></div>
           <div *ngIf="comment.links && comment.links.length > 0">
             <div *ngIf="comment.links[0].image && comment.links[0].title" class="message-item-content-main">
               <display-link [data]="comment.links[0]"></display-link>

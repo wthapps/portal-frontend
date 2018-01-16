@@ -17,6 +17,8 @@ export class ZChatSharedHeaderComponent {
   suggestions: any;
   show: boolean = false;
   search: string;
+  searchAdvanced: boolean = false;
+
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
   constructor(public serviceManager: ServiceManager) {
@@ -63,5 +65,10 @@ export class ZChatSharedHeaderComponent {
       }
     }
     this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: this.textbox.search}});
+  }
+
+  onSearchAdvanced(e: any) {
+    console.log(e);
+    this.searchAdvanced = e.searchAdvanced;
   }
 }

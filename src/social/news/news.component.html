@@ -9,7 +9,7 @@
               <span>New source</span> • <span>2h</span>
             </div>
             <div class="news-item-action">
-              <button class="btn btn-default"><i class="fa fa-share-alt"></i></button>
+              <button (click)="openModalShare()" class="btn btn-default"><i class="fa fa-share-alt"></i></button>
             </div>
           </div>
           <div class="news-item-content">
@@ -36,7 +36,7 @@
               <img src="/assets/images_new/icons/news.png" alt=""> <span>New source</span> • <span>2h</span>
             </div>
             <div class="news-item-action">
-              <button class="btn btn-default"><i class="fa fa-share-alt"></i></button>
+              <button (click)="openModalShare()" class="btn btn-default"><i class="fa fa-share-alt"></i></button>
             </div>
           </div>
           <div class="news-item-content">
@@ -59,3 +59,5 @@
     </div>
   </div>
 </div>
+
+<app-social-news-share #modalShare></app-social-news-share>

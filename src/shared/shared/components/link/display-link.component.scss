@@ -25,6 +25,8 @@
     a {
       color: $text-color;
       text-decoration: none;
+      -ms-word-break: break-word;
+      word-break: break-word;
       &:after {
         content: '';
         position: absolute;
