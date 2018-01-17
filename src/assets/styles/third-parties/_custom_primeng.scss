@@ -344,6 +344,7 @@ $ui-inputswitch-w: 24px;
 }
 
 .ql-editor {
+  overflow: hidden;
   min-height: 320px;
   ol, ul {
     padding-left: 0;

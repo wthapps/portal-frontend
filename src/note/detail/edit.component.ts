@@ -137,8 +137,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
           break;
       }
     })
-
-
   }
 
   ngAfterViewInit() {
@@ -165,6 +163,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         document.querySelector('.ql-editor').innerHTML = this.note.content;
         if (this.note.permission !== 'view') this.registerAutoSave();
       });
+
+    $('body').on('dblclick', '.ql-editor img', this.doubleClickImage.bind(this));
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -339,7 +339,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
                 const randId = ids.shift();
                 $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
                 $(`i#${randId}`).remove();
-                self.registerImageClickEvent();
               });
               fileClipboard.value = '';
               this.quill.focus();
@@ -486,7 +485,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       id: id
     }, Quill.sources.USER);
     this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
-    // this.insertInlineImage(id);
   }
 
   // id: placeholder when fake images
@@ -498,7 +496,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       alt: 'WTH! No Image',
       url: url,
       id: id,
-      'data-id': dataId
+      'data-id': dataId,
     }, Quill.sources.USER);
     this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
   }
@@ -508,7 +506,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
     this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any[]) => {
       photos.forEach((photo: any) => this.insertInlineImage(null, photo.url, photo.id));
-      this.registerImageClickEvent();
     });
 
     let ids: string[] = [];
@@ -524,7 +521,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         const randId = ids.shift();
         $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
         $(`i#${randId}`).remove();
-        this.registerImageClickEvent();
       });
   }
 
@@ -585,39 +581,24 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     });
   }
 
-  registerImageClickEvent() {
-    let imgItems = Array.from(document.querySelector('.ql-editor').getElementsByTagName('img'));
-    let photoIds = imgItems.map(item => item.dataset.id);
+  doubleClickImage(event: any) {
+    let photoId: string = event.target.dataset.id;
+    if (photoId && photoId !== 'null') {
+      // $('#modal-note-edit').css('z-index', '0');
+      // $('.modal-backdrop').css('z-index', '0');
+      this.router.navigate([{
+        outlets: {
+          modal: ['photos', photoId, {
+            module: 'note',
+            ids: [photoId]
+          }]
+        }
+      }], {queryParamsHandling: 'preserve', preserveFragment: true});
+    }
+    else {
+      console.warn('no photo id for this image: ', event.srcElement);
+    }
 
-    imgItems.forEach((i: any) => {
-      if (!i.ondblclick) {
-        // if (!i.onclick && !i.ondblclick) {
-        // i.onclick = (event: any) => {
-        //   this.resize.edit(event.target);
-        // };
-
-        i.ondblclick = (event: any) => {
-          console.debug('event.srcElement: ', event);
-          // let photoId: string = event.srcElement.getAttribute('data-id');
-          let photoId: string = i.dataset.id;
-          if (photoId && photoId !== 'null') {
-            $('#modal-note-edit').css('z-index', '0');
-            $('.modal-backdrop').css('z-index', '0');
-            this.router.navigate([{
-              outlets: {
-                modal: ['photos', photoId, {
-                  module: 'note',
-                  ids: photoIds
-                }]
-              }
-            }], {queryParamsHandling: 'preserve', preserveFragment: true});
-          }
-          else {
-            console.warn('no photo id for this image: ', event.srcElement);
-          }
-        };
-      }
-    });
   }
 
   open(options: any = {mode: Constants.modal.add, note: undefined, parent_id: undefined}) {

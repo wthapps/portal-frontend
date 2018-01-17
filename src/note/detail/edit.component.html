@@ -248,8 +248,8 @@
 
     </div>
     <div class="note-editor-body" id="scrolling-container">
-      <div class="container ql-container ql-bubble" id="quill-container">
-        <div id="quill-content-body" style="position: relative; padding: 0">
+      <div class="container" id="quill-container-wrapper">
+        <!--<div id="quill-content-body" style="position: relative; padding: 0">-->
           <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-editor"></div>
           <div [ngClass]="{'hidden': currentTab !== 'attachment'}" class="attachment-list-wrap">
 
@@ -288,7 +288,7 @@
               </tbody>
             </table>
           </div>
-        </div>
+        <!--</div>-->
       </div>
     </div>
 

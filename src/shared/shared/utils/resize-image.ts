@@ -56,7 +56,7 @@ export class ResizeImage {
     this.resizeFrame = document.createElement('div');
     this.resizeFrame.setAttribute('id', 'ri-frame');
     this.area.appendChild(this.resizeFrame);
-    this.setStyle(this.area, {'user-select': 'none'})
+    // this.setStyle(this.area, {'user-select': 'none'})
     this.resizeFrame.style.display = 'none';
     // Add handlers
     for(let handle of this.handlers) {

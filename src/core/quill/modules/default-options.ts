@@ -17,8 +17,8 @@ export let DefaultOptions = {
     },
     handleStyles: {
         position: 'absolute',
-        height: '12px',
-        width: '12px',
+        height: '8px',
+        width: '8px',
         backgroundColor: 'white',
         border: '1px solid #777',
         boxSizing: 'border-box',

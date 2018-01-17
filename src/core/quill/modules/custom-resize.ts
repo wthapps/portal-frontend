@@ -35,6 +35,7 @@ export class CustomResize extends BaseModule {
   onCreate(resizer: any) {
     this.options = resizer.options;
     this.overlay = resizer.overlay;
+    this.overlayWrapper = resizer.overlayWrapper;
     this.img = resizer.img;
     this.resizer = resizer;
     this.requestUpdate = resizer.onUpdate();
@@ -55,10 +56,11 @@ export class CustomResize extends BaseModule {
   positionBoxes() {
     // const handleXOffset = `${-parseFloat(this.options.handleStyles.width) / 2}px`;
     // const handleYOffset = `${-parseFloat(this.options.handleStyles.height) / 2}px`;
-    const handleXOffset = `${parseInt(this.overlay.style.left, 10) - 6}px`;
-    const handleYOffset = `${parseInt(this.overlay.style.top, 10) - 6}px`;
-    const handleHeight = `${parseInt(this.overlay.style.top, 10) - 6 + this.overlay.offsetHeight}px`;
-    const handleWidth = `${parseInt(this.overlay.style.left, 10) - 6 + this.overlay.offsetWidth}px`;
+    let haflSize = parseInt(this.options.handleStyles.width) / 2;
+    const handleXOffset = `${parseInt(this.overlayWrapper.style.left, 10) - haflSize}px`;
+    const handleYOffset = `${parseInt(this.overlayWrapper.style.top, 10) - haflSize}px`;
+    const handleHeight = `${parseInt(this.overlayWrapper.style.top, 10) - haflSize + this.overlayWrapper.offsetHeight}px`;
+    const handleWidth = `${parseInt(this.overlayWrapper.style.left, 10) - haflSize + this.overlayWrapper.offsetWidth}px`;
 
     // set the top and left for each drag handle
     [

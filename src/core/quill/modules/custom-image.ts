@@ -135,6 +135,7 @@ export class CustomImage extends BaseModule {
 
     // Create and add the overlay
     this.overlay = document.createElement('div');
+    this.overlay.setAttribute('class', 'ql-selection');
 
     // Create and add the overlay wrapper
     this.overlayWrapper = document.createElement('div');
@@ -145,6 +146,8 @@ export class CustomImage extends BaseModule {
     Object.assign(this.overlay.style, this.options.overlayStyles);
 
     this.quill.root.parentNode.appendChild(this.overlay);
+    // this.quill.root.appendChild(this.overlay);
+
 
     this.repositionElements();
   }
@@ -177,10 +180,11 @@ export class CustomImage extends BaseModule {
     const containerRect = parent.getBoundingClientRect();
 
     Object.assign(this.overlay.style, {
-      left: `${imgRect.left - containerRect.left - 1 + parent.scrollLeft}px`,
-      top: `${imgRect.top - containerRect.top + parent.scrollTop}px`,
-      width: `${imgRect.width}px`,
-      height: `${imgRect.height}px`,
+      // left: `${imgRect.left - containerRect.left - 1 + parent.scrollLeft}px`,
+      // top: `${imgRect.top - containerRect.top + parent.scrollTop}px`,
+      // width: `${imgRect.width}px`,
+      // height: `${imgRect.height}px`,
+      display: 'block'
     });
 
     Object.assign(this.overlayWrapper.style, {
