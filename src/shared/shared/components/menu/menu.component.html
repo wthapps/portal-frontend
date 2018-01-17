@@ -5,20 +5,21 @@
         <i class="icon-zone-social"></i> Social Network <span class="sp-has-noti"></span>
       </a>
 
-      <div [ngClass]="{'active': urls.social == hostname, 'show': urls.social == hostname}" class="menuleft-nav-sub">
-        <ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">
-          <div *ngIf="social.name != ''" [routerLinkActive]="['active']"
-               [ngClass]="{'hidden': social.link == '/search'}" class="menuleft-nav-sub-item">
-            <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]" href="javascript:;" (click)="onSubMenu('/profile/' + uuid)">
-              <i class="{{ social.icon }}"></i> {{ social.name }}
-            </a>
-            <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]" href="javascript:;" (click)="onSubMenu(social.link)">
-              <i class="{{ social.icon }}"></i> {{ social.name }}
-            </a>
-          </div>
-          <div class="divider" *ngIf="social.name == ''"></div>
-        </ng-template>
-      </div>
+      <!--<div [ngClass]="{'active': urls.social == hostname, 'show': urls.social == hostname}" class="menuleft-nav-sub">-->
+        <!--<ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">-->
+          <!--<div *ngIf="social.name != ''" [routerLinkActive]="['active']"-->
+               <!--[ngClass]="{'hidden': social.link == '/search'}" class="menuleft-nav-sub-item">-->
+            <!--<a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]" href="javascript:;" (click)="onSubMenu('/profile/' + uuid)">-->
+              <!--<i class="{{ social.icon }}"></i> {{ social.name }}-->
+            <!--</a>-->
+            <!--<a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]" href="javascript:;" (click)="onSubMenu(social.link)">-->
+              <!--<i class="{{ social.icon }}"></i> {{ social.name }}-->
+            <!--</a>-->
+          <!--</div>-->
+          <!--<div class="divider" *ngIf="social.name == ''"></div>-->
+        <!--</ng-template>-->
+      <!--</div>-->
+      <ng-content select="z-social-left-menu"></ng-content>
     </div>
 
     <div class="menuleft-nav-item has-sub"

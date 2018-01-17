@@ -1,0 +1,45 @@
+<div class="menuleft-nav-sub">
+  <div class="menuleft-nav-sub-item">
+    <a draggable="false" href="javascript:;">
+      <i class="fa fa-users"></i> Shortcuts
+    </a>
+  </div>
+  <ng-template ngFor let-group [ngForOf]="shortcutList" let-i="index">
+    <div class="menuleft-nav-sub-item text-capitalize" *ngIf="group.name != ''"
+         [ngClass]="(currentGroup === group?.name) ? 'active' : ''">
+      <a *ngIf="group.name !='groups'" draggable="false" [routerLink]="['contacts', {group: group.name}]"
+         (click)="doEvent({action: group?.action, event: $event})">
+        <i class="{{ group.icon }}"></i> {{ group.name }} ({{ group?.count }})
+      </a>
+
+      <a *ngIf="group.name =='groups'" draggable="false" href="javascript:;">
+        <i class="{{ group.icon }}"></i> {{ group.name }}
+      </a>
+
+      <div *ngIf="group.hasSubMenu" class="menuleft-nav-sub-action">
+              <span class="can-click"
+                    (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
+                    title="edit group name">
+                <i class="fa fa-pencil"></i>
+              </span>
+        <span class="can-click" (click)="deleteGroup(group)" title="delete group">
+                <i class="fa fa-trash"></i>
+              </span>
+      </div>
+    </div>
+
+  </ng-template>
+
+  <ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">
+    <div *ngIf="social.name != ''" [routerLinkActive]="['active']"
+         [ngClass]="{'hidden': social.link == '/search'}" class="menuleft-nav-sub-item">
+      <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]" href="javascript:;" (click)="onSubMenu('/profile/' + uuid)">
+        <i class="{{ social.icon }}"></i> {{ social.name }}
+      </a>
+      <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]" href="javascript:;" (click)="onSubMenu(social.link)">
+        <i class="{{ social.icon }}"></i> {{ social.name }}
+      </a>
+    </div>
+    <div class="divider" *ngIf="social.name == ''"></div>
+  </ng-template>
+</div>
