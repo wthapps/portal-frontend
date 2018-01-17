@@ -58,4 +58,8 @@ export class CommonNotificationsComponent implements OnInit {
   onSettingModal() {
     this.notificationListComponent.settingModal.open();
   }
+
+  save() {
+
+  }
 }

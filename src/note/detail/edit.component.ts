@@ -12,9 +12,10 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/take';
 
-import { ImageResize } from 'quill-image-resize-module';
-// import { CustomImageResize } from '@shared/shared/utils/custom-image-resize';
-// import { CustomResize } from '@shared/shared/utils/custom-resize';
+// import { Quill } from 'quill';
+// import { ImageResize } from 'quill-image-resize-module';
+import { CustomImageResize } from '@shared/shared/utils/custom-image-resize';
+import { CustomResize } from '@shared/shared/utils/custom-resize';
 
 
 import * as fromRoot from '../shared/reducers/index';
@@ -34,10 +35,12 @@ import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
 import { CommonEventService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
-import { ResizeImage } from '@shared/shared/utils/resize-image';
 import { takeUntil, switchMap, combineLatest } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { noteConstants } from "note/shared/config/constants";
+import { Counter } from '@wth/core/quill/modules/counter';
+import { CustomImage } from '@wth/core/quill/modules/custom-image';
+
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -216,6 +219,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.registerFontSizeBlot();
     this.registerDividerBlot();
     this.extendClipboard(this);
+    Quill.register('modules/counter', Counter, true);
+    Quill.register('modules/customImage', CustomImage, true);
+
     let modules: any = {
       modules: {
         toolbar: {
@@ -224,8 +230,12 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         keyboard: {
           bindings: bindings
         },
-        imageResize: {
-          modules: [ 'Resize', 'Toolbar' ],
+        counter: {
+          container: '#counter',
+          unit: 'word'
+        },
+        customImage: {
+          modules: [ 'CustomResize'],
           handleStyles: {
             backgroundColor: '#F54A59',
             border: '1px',
@@ -233,9 +243,10 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
             // other camelCase styles for size display
           },
           overlayStyles: {
-            position: 'absolute',
-            boxSizing: 'border-box',
-            border: '1px solid #F54A59',
+            // position: 'absolute',
+            // boxSizing: 'border-box',
+            // border: '1px solid #F54A59',
+            // display: 'none'
           },
           toolbarStyles: {
             position: 'absolute',
@@ -254,7 +265,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       readOnly: false,
       theme: 'snow',
       scrollingContainer: '#scrolling-container'
-    }
+    };
+
     if (this.note.permission == 'view') {
       modules.modules.imageResize = null;
       modules.placeholder = '';
@@ -569,7 +581,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         this.copiedFormat = {};
         this.isCopied = false;
       } else {
-        console.warn('Cursor not in the editor');
       }
     });
   }
@@ -580,10 +591,10 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
     imgItems.forEach((i: any) => {
       if (!i.ondblclick) {
-      //   if (!i.onclick && !i.ondblclick) {
-      //   i.onclick = (event: any) => {
-      //     this.resize.edit(event.target);
-      //   };
+        // if (!i.onclick && !i.ondblclick) {
+        // i.onclick = (event: any) => {
+        //   this.resize.edit(event.target);
+        // };
 
         i.ondblclick = (event: any) => {
           console.debug('event.srcElement: ', event);
