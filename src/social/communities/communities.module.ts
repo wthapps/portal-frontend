@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { ZSocialSharedModule } from '../shared/shared.module';
 
-import { ZSocialCommunityComponent } from './communities.component';
 import { ZSocialCommunityListComponent } from './list/list.component';
 import { ZSocialCommunityDetailComponent } from './detail/detail.component';
 import { ZSocialCommunitySharedModule } from './shared/shared.module';
@@ -28,7 +27,6 @@ import { CommunityRoutingModule } from './community-routing.module';
 
   ],
   declarations: [
-    ZSocialCommunityComponent,
     ZSocialCommunityListComponent,
     ZSocialCommunityDetailComponent,
     ZSocialCommunityFormEditComponent,
@@ -46,7 +44,6 @@ import { CommunityRoutingModule } from './community-routing.module';
   ],
   exports: [
     ZSocialSharedModule,
-    ZSocialCommunityComponent,
     ZSocialCommunityFormEditComponent,
     ZSocialCommunityDetailComponent,
     ZSocialCommunityFormPreferenceComponent

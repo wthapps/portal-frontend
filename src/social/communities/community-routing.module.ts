@@ -6,7 +6,8 @@ import { ZSocialCommunityDetailComponent } from './detail/detail.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: '', component: ZSocialCommunityListComponent},
+      {path: '', redirectTo: '/list', pathMatch: 'full'},
+      {path: 'list', component: ZSocialCommunityListComponent},
       {path: ':id', component: ZSocialCommunityDetailComponent},
     ])
   ],
