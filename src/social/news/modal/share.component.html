@@ -55,6 +55,10 @@
            [formControl]="descCtrl">
       </div>
     </form>
+    <div class="mt20">
+      <display-link [data]="article"></display-link>
+    </div>
+
   </modal-body>
   <modal-footer>
     <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>

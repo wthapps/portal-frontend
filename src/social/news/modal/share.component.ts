@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '@shared/services';
 import { Router } from '@angular/router';
 import { Constants } from '@shared/constant';
-import { FormGroup, AbstractControl } from '@angular/forms';
+import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-social-news-share',
@@ -15,6 +15,11 @@ import { FormGroup, AbstractControl } from '@angular/forms';
 export class ZSocialNewsShareComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
 
+  article: any = {
+    uri: 'https://i-kinhdoanh.vnecdn.net/2018/01/10/biencam1-3203-1515575867_140x84.jpg',
+    link: 'https://www.youtube.com/watch?v=9b8f5nVOOUo',
+  };
+
   profile$: Observable<any>;
   privacyClassIcon: string = 'fa-users';
   privacyName: string = 'public';
@@ -23,12 +28,17 @@ export class ZSocialNewsShareComponent implements OnInit {
   form: FormGroup;
   descCtrl: AbstractControl;
 
-  constructor(private router: Router, private userService: UserService) {
-
+  constructor(private fb: FormBuilder,
+              private router: Router, private userService: UserService) {
   }
 
   ngOnInit() {
     this.profile$ = this.userService.getAsyncProfile();
+    this.form = this.fb.group({
+      'description': ''
+    });
+
+    this.descCtrl = this.form.controls['description'];
   }
 
   viewProfile(uuid: string = this.userService.getSyncProfile().uuid) {

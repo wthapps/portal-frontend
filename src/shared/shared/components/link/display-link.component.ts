@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 @Component({
-    selector: 'display-link',
+  selector: 'display-link',
   templateUrl: 'display-link.component.html',
   styleUrls: ['display-link.component.scss'],
 })
@@ -12,15 +12,16 @@ export class DisplayLinkComponent implements OnInit {
   embedCode: any;
 
   ngOnInit() {
-    let id = this.getId(this.data.link);
+    const id = this.getId(this.data.link);
     if (id) {
       this.embedCode = '<iframe *ngIf="embedCode" width="560" height="315" src="//www.youtube.com/embed/' + id + '" frameborder="0" allowfullscreen></iframe>';
     }
   }
 
   getId(url: any) {
-    let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    let match = url.match(regExp);
+    console.log(url);
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
 
     if (match && match[2].length == 11) {
       return match[2];
