@@ -164,6 +164,9 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       if(currentPath == 'shared-by-me' && this.page == noteConstants.PAGE_SHARED_BY_ME && action.title == 'Make copy') {
         action.show = false;
       }
+      if(currentPath == 'shared-with-me' && this.page == noteConstants.PAGE_SHARED_WITH_ME && action.title == 'Make copy') {
+        action.show = false;
+      }
       // ==================
       if(this.subPage == noteConstants.PAGE_NOTE_EDIT && (action.title == 'Edit')) {
         action.show = false;
