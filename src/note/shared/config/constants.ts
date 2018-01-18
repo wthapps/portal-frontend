@@ -66,8 +66,8 @@ export class NoteConstants extends ConstantsBase {
   }
 
   ACCESS_NAME: any = {
-    1: ' Opened by me',
-    2: ' Modified by me',
+    1: ' Last Opened',
+    2: ' Last Modified',
     3: ' Uploaded'
   }
 }

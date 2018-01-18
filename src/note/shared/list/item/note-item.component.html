@@ -15,8 +15,8 @@
   </div>
   <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
     {{ ( page !== noteConstants.PAGE_RECENT
-    ? (data.created_at | date: 'MMM dd yyyy')
-    : ((data.accessed_date | date: 'MMM dd yyyy') + noteConstants.ACCESS_NAME[data?.accessed_date_type]))  }}
+    ? (data.created_at | timeFormat )
+    : ((data.accessed_date | timeFormat ) + ', ' + noteConstants.ACCESS_NAME[data?.accessed_date_type]))  }}
   </div>
 
   <div class="component-listbox-action" >

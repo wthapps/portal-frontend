@@ -22,7 +22,8 @@ export class TimeFormatPipe implements PipeTransform {
       sameDay: '[Today]',
       nextDay: '[Tomorrow]',
       lastDay: '[Yesterday]',
-      sameElse: 'MM DD YYYY'
+      lastWeek: 'll',
+      sameElse: 'll'
     });
   }
 
@@ -34,7 +35,8 @@ export class TimeFormatPipe implements PipeTransform {
         sameDay: '[Today]',
         nextDay: '[Tomorrow]',
         lastDay: '[Yesterday]',
-        sameElse: 'MM DD YYYY'
+        lastWeek: 'll',
+        sameElse: 'll'
       });
     }
   }
