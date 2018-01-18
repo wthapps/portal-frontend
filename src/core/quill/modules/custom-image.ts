@@ -218,6 +218,7 @@ export class CustomImage extends BaseModule {
     if (this.img) {
       if (evt.keyCode === 46 || evt.keyCode === 8) {
         Quill.find(this.img).deleteAt(0);
+        this.quill.focus();
       }
       this.hide();
     }
