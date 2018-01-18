@@ -193,7 +193,6 @@ export class SharedModule {
         WTHNavigateService,
         NotificationService,
         NotificationChannelService,
-        // CommonNotificationInterface, // To be removed
         ConnectionNotificationService,
         AppearancesChannelService,
         ChannelService,

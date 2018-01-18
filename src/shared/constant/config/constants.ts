@@ -176,7 +176,7 @@ export class ConstantsBase {
     zoneSoNotifications: 'zone/social_network/notifications',
     zoneSoConnections: 'zone/social_network/connections',
     zoneSoReportList: 'zone/social_network/report_list',
-    zoneSoShortcuts: 'zone/social_network/shortcut',
+    zoneSoShortcuts: 'zone/social_network/shortcuts',
     zoneSoProfile: 'zone/social_network/profile',
     zoneSoPhotos: 'zone/social_network/photos',
     soFriendUrl: 'zone/social_network/friends',

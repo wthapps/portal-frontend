@@ -1,31 +1,21 @@
-<div class="menuleft-nav-sub">
-  <div class="menuleft-nav-sub-item">
-    <a draggable="false" href="javascript:;">
-      <i class="fa fa-users"></i> Shortcuts
+<div class="menuleft-nav-sub-item text-capitalize" [routerLinkActive]="['active']" >
+    <a draggable="false" [routerLink]="[homeMenuItem.link]" >
+      <i class="{{ homeMenuItem.icon }}"></i> {{ homeMenuItem.name }}
     </a>
   </div>
-  <ng-template ngFor let-group [ngForOf]="shortcutList" let-i="index">
-    <div class="menuleft-nav-sub-item text-capitalize" *ngIf="group.name != ''"
-         [ngClass]="(currentGroup === group?.name) ? 'active' : ''">
-      <a *ngIf="group.name !='groups'" draggable="false" [routerLink]="['contacts', {group: group.name}]"
-         (click)="doEvent({action: group?.action, event: $event})">
-        <i class="{{ group.icon }}"></i> {{ group.name }} ({{ group?.count }})
+
+  <div class="menuleft-nav-sub-item">
+    <a draggable="false" href="javascript:;">
+      &nbsp; &nbsp; Shortcuts
+    </a>
+  </div>
+  <ng-template ngFor let-group [ngForOf]="shortcuts$ | async" let-i="index">
+    <div class="menuleft-nav-sub-item text-capitalize" [routerLinkActive]="['active']"
+         >
+      <a draggable="false" [routerLink]="[group.link]" >
+        <i class="{{ group.icon }}"></i> &nbsp; &nbsp; {{ group.name }}
       </a>
 
-      <a *ngIf="group.name =='groups'" draggable="false" href="javascript:;">
-        <i class="{{ group.icon }}"></i> {{ group.name }}
-      </a>
-
-      <div *ngIf="group.hasSubMenu" class="menuleft-nav-sub-action">
-              <span class="can-click"
-                    (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
-                    title="edit group name">
-                <i class="fa fa-pencil"></i>
-              </span>
-        <span class="can-click" (click)="deleteGroup(group)" title="delete group">
-                <i class="fa fa-trash"></i>
-              </span>
-      </div>
     </div>
 
   </ng-template>
@@ -42,4 +32,3 @@
     </div>
     <div class="divider" *ngIf="social.name == ''"></div>
   </ng-template>
-</div>

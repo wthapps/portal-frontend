@@ -30,6 +30,7 @@ import { PostBodyComponent } from './second-routes/post/components/post-body.com
 import { PostFooterComponent } from './second-routes/post/components/post-footer.component';
 import { ZSocialSharedNewsFeedComponent } from './news-feed/news-feed.component';
 import { ZSocialLeftMenuComponent } from './component/social-left-menu.component';
+import { SoShortcutService } from './services/shortcut.service';
 
 
 /**
@@ -106,7 +107,8 @@ export class ZSocialSharedModule {
         SoCommunityService,
         ZSocialProfileService,
         SocialFavoriteService,
-        SocialDataService
+        SocialDataService,
+        SoShortcutService
       ]
     };
   }

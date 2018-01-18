@@ -3,8 +3,10 @@ import { Constants } from '@wth/shared/constant';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WTHNavigateService, UserService, CommonEventService, ApiBaseService } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { Store } from '@ngrx/store';
 
-declare let _: any;
+import * as fromRoot from '../reducers/index';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'z-social-left-menu',
@@ -13,16 +15,21 @@ declare let _: any;
 
 export class ZSocialLeftMenuComponent {
   tooltip: any = Constants.tooltip;
+  homeMenuItem: any;
   socialMenu = Constants.socialMenuItems;
+  shortcuts$: Observable<any>;
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
               private router: Router,
               private navigateService: WTHNavigateService,
-              private apiBaseService: ApiBaseService,
+              private store: Store<any>,
               private wthConfirmService: WthConfirmService,
               private commonEventService: CommonEventService) {
-
+    this.homeMenuItem = Constants.socialMenuItems[0];
+    this.socialMenu = Constants.socialMenuItems.splice(1);
+    this.store.dispatch({type: fromRoot.SHORTCUT_LOAD});
+    this.shortcuts$ = this.store.select(fromRoot.getShortcuts);
   }
 
   onSubMenu(link: string) {
