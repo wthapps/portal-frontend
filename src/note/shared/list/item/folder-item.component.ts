@@ -15,7 +15,7 @@ import * as fromRoot from '../../reducers/index';
 import * as note from '../../actions/note';
 import { Subscription } from 'rxjs';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { UrlService } from "@shared/services";
+import { UrlService, UserService } from "@shared/services";
 
 declare var _: any;
 
@@ -51,7 +51,8 @@ export class FolderItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private noteService: ZNoteService,
+  constructor(public userService: UserService,
+              private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               private wthConfirm: WthConfirmService,
               private urlService: UrlService,

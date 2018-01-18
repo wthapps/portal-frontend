@@ -9,7 +9,7 @@
     </span>
   </div>
   <div class="component-listbox-owner can-click" (click)="onClick()" (dblclick)="onView()">
-    {{ data.user?.name }}
+    {{ ((userService.profile$ | async).uuid === data.user?.uuid) ? 'me' : data.user?.name }}
   </div>
   <div class="component-listbox-description can-click" (click)="onClick()" (dblclick)="onView()" [innerHTML]="data?.content">
   </div>

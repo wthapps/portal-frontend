@@ -10,13 +10,13 @@
     </span>
   </div>
   <div class="component-listbox-owner can-click" (click)="onClick()" (dblclick)="onView()">
-    {{ data.user?.name }}
+    {{ ((userService.profile$ | async).uuid === data.user?.uuid) ? 'me' : data.user?.name }}
   </div>
   <div class="component-listbox-description can-click" (click)="onClick()" (dblclick)="onView()">
     {{ data.description }}
   </div>
   <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
-    {{ data.created_at | date: 'MMM dd yyyy' }}
+    {{ data.created_at | date: timeFormat }}
   </div>
 
   <div class="component-listbox-action">

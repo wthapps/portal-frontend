@@ -10,6 +10,7 @@ import { ZNoteService } from '../../services/note.service';
 import * as fromRoot from '../../reducers/index';
 import * as note from '../../actions/note';
 import { NoteConstants, noteConstants } from "../../config/constants";
+import { UserService } from '@wth/shared/services';
 
 declare var _: any;
 
@@ -46,7 +47,8 @@ export class NoteItemComponent implements OnInit, OnDestroy {
   }
 
 
-  constructor(private noteService: ZNoteService,
+  constructor(public userService: UserService,
+              private noteService: ZNoteService,
               private store: Store<fromRoot.State>,
               private router: Router) {
   }
