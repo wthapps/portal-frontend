@@ -135,7 +135,7 @@ export class ConstantsBase {
 
   socialMenuItems: any = [
     {name: 'Home', link: '/home', icon: 'fa fa-home'},
-    {name: 'Communities', link: '/communities/list', icon: 'fa fa-users'},
+    {name: 'Communities', link: '/communities', icon: 'fa fa-users'},
     {name: 'Notifications', link: '/notifications', icon: 'fa fa-bell-o'},
     {name: 'Friends', link: '/friends', icon: 'fa fa-user-plus'},
     {name: 'News', link: '/news', icon: 'fa fa-newspaper-o'},

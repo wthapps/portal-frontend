@@ -26,7 +26,7 @@
       <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]" href="javascript:;" (click)="onSubMenu('/profile/' + uuid)">
         <i class="{{ social.icon }}"></i> {{ social.name }}
       </a>
-      <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]" href="javascript:;" (click)="onSubMenu(social.link)">
+      <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]" (click)="onSubMenu(social.link)">
         <i class="{{ social.icon }}"></i> {{ social.name }}
       </a>
     </div>

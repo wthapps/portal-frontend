@@ -33,7 +33,9 @@ export class ZSocialLeftMenuComponent {
   }
 
   onSubMenu(link: string) {
-    this.clearOutlets().then(() => this.navigateService.navigateOrRedirect(link));
+    if (this.router.url.indexOf('communities') == -1) {
+      this.clearOutlets().then(() => this.navigateService.navigateOrRedirect(link));
+    }
   }
 
   clearOutlets(): Promise<any> {
