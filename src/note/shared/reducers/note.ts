@@ -238,12 +238,10 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       let folders: any = {};
       if(state.selectedObjects.length !== Object.keys(state.folders).length + Object.keys(state.notes).length) {
         Object.keys(state.notes).forEach((idx: any) => {
-          selectedObjects.push({id: idx, object_type: ITEM_TYPE.NOTE});
-          // inotes[idx] = {...state.notes[idx], selected: true};
+          selectedObjects.push(state.notes[idx]);
         });
         Object.keys(state.folders).forEach((idx: any) => {
-          selectedObjects.push({id: idx, object_type: ITEM_TYPE.FOLDER});
-          // folders[idx] = {...state.folders[idx], selected: true};
+          selectedObjects.push(state.folders[idx]);
         });
         selectAll = true;
       }

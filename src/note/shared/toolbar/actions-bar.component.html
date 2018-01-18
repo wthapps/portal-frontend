@@ -10,7 +10,7 @@
 
   <li class="dropdown action">
     <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-            pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
+            pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom" [disabled]="disableDropDown">
       <i class="fa fa-ellipsis-v"></i>
     </button>
     <ul class="dropdown-menu dropdown-menu-right text-right">

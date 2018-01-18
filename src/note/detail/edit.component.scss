@@ -58,6 +58,7 @@ $note-editor-aside-w: 400px;
   background-color: #f6f6f6;
 
   .note-editor-toolbar {
+    display: none;
     background-color: #fbfbfb;
     padding: 1px 0;
     border-top: 1px solid $line;

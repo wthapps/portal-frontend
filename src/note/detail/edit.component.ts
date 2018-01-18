@@ -140,6 +140,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    // this.initQuill();
     // Merge with get current folder - this.store.select(fromRoot.getCurrentFolder)
     this.route.paramMap.pipe(
       switchMap((paramMap: any) => {
@@ -158,8 +159,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         this.initQuill();
         if(currentFolder)
           this.parentId = currentFolder.id;
+        $('.note-editor-toolbar').show();
         this.updateFormValue(this.note);
-        // Reset content of elemenet div.ql-editor to prevent HTML data loss
         document.querySelector('.ql-editor').innerHTML = this.note.content;
         if (this.note.permission !== 'view') this.registerAutoSave();
       });

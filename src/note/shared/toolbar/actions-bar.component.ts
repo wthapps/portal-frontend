@@ -37,6 +37,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   show: boolean = true;
   destroySubject: Subject<any> = new Subject<any>();
   urls: any;
+  disableDropDown: any = false;
 
   actionsMenu: any = {
     favourite: {
@@ -52,7 +53,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     },
     share: {
       show: true,
-      needPermission: 'edit',
+      needPermission: 'owner',
       inDropDown: false, // Outside dropdown list
       action: this.share.bind(this),
       class: 'btn btn-default',
@@ -62,13 +63,13 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     },
     delete: {
       show: true,
-      needPermission: 'owner',
+      needPermission: 'view',
       inDropDown: false, // Outside dropdown list
-      action: this.delete.bind(this),
+      action: this.deleteOrRemove.bind(this),
       class: 'btn btn-default',
-      tooltip: this.tooltip.delete,
+      tooltip: this.tooltip.remove,
       tooltipPosition: 'bottom',
-      title: 'Delete',
+      title: 'Remove',
       iconClass: 'fa fa-trash-o'
     },
     edit: {
@@ -87,24 +88,10 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     },
     moveToFolder: {
       show: true,
-      needPermission: 'edit',
+      needPermission: 'owner',
       inDropDown: true, // Inside dropdown list
       action: this.moveToFolder.bind(this),
       title: 'Move to folder'
-    },
-    removeSharedWithMe: {
-      show: true,
-      needPermission: 'view',
-      inDropDown: true, // Inside dropdown list
-      action: this.removeShares.bind(this),
-      title: 'Remove Share'
-    },
-    removeMixing: {
-      show: true,
-      needPermission: 'view',
-      inDropDown: true, // Inside dropdown list
-      action: this.removeMixing.bind(this),
-      title: 'Remove'
     },
     print: {
       show: true,
@@ -170,9 +157,6 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     [Path And Page] validate (shared-with-me, shared-by-me)
     ====================================*/
     let pathValidate = (action, currentPath) => {
-      if(currentPath != 'shared-with-me' && action.title == 'Remove Share') {
-        action.show = false;
-      }
       // ==================
       if(currentPath != 'shared-by-me' && action.title == 'Stop Sharing') {
         action.show = false;
@@ -185,9 +169,6 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
         action.show = false;
       }
       if(this.subPage !== noteConstants.PAGE_NOTE_EDIT && (action.title == 'Print' || action.title == 'Export as PDF')) {
-        action.show = false;
-      }
-      if(this.page !== noteConstants.PAGE_RECENT && action.title == 'Remove') {
         action.show = false;
       }
     }
@@ -224,8 +205,12 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       });
     }
     if (allFavorite) this.actionsMenu.favourite.iconClass = 'fa fa-star'
-
     Object.keys(this.actionsMenu).map((action: any) => permissonValidateFavourites(this.actionsMenu[action], objects));
+    // After All
+    this.disableDropDown = true;
+    for(let key of Object.keys(this.actionsMenu)) {
+      if (this.actionsMenu[key].inDropDown && this.actionsMenu[key].show) this.disableDropDown = false;
+    }
   }
 
   ngOnDestroy() {
@@ -265,18 +250,23 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     })
   }
 
-  delete() {
-    if (this.selectedObjects.length > 0) {
+  deleteOrRemove() {
+    let deleteObjects = this.selectedObjects.filter((object: any) => object.permission == 'owner');
+    let removeObjects = this.selectedObjects.filter((object: any) => object.permission !== 'owner');
+    if (deleteObjects.length > 0) {
       this.commonEventService.broadcast({
         channel: 'noteActionsBar',
         action: 'note:note_edit:close',
-        payload: this.selectedObjects
+        payload: deleteObjects
       });
       this.commonEventService.broadcast({
         channel: 'noteActionsBar',
         action: 'note:mixed_entity:delete',
-        payload: this.selectedObjects
+        payload: deleteObjects
       });
+    }
+    if (removeObjects.length > 0) {
+      this.store.dispatch({type: note.REMOVE_SHARE_WITH_ME, payload: removeObjects});
     }
   }
 
@@ -342,20 +332,6 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       action: 'note:mixed_entity:make_a_copy',
       payload: this.selectedObjects
     });
-  }
-
-  removeShares() {
-    this.wthConfirm.confirm({
-      message: 'Are you sure to remove selected item(s) from Share with me page. After pressing Remove, selected item(s) will disappear on this page.',
-      header: 'Remove',
-      accept: () => {
-        this.store.dispatch({type: note.REMOVE_SHARE_WITH_ME, payload: this.selectedObjects})
-      }
-    })
-  }
-
-  removeMixing() {
-
   }
 
   favourite() {
