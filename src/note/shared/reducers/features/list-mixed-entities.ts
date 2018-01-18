@@ -26,7 +26,7 @@ export const getFolders = createSelector(getFolderEntities, context.getSortOptio
   (notes: any, sort: any) => {
   let cloneNotes: any[] = [];
   Object.keys(notes).forEach((idx: any) => cloneNotes.push(notes[idx]));
-  let sortField = ['name', 'title'].includes(sort.field) ? 'title' : sort.field;
+  let sortField = ['name', 'title'].includes(sort.field) ? 'name' : sort.field;
   return cloneNotes.sort((a: any, b: any) => compareBy(a, b, sort.desc, sortField));
 });
 
