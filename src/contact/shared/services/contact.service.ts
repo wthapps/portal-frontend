@@ -214,7 +214,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   import(payload: any): Observable<any> {
-    return this.api.post(`${this.url}/import`, payload);
+    return this.apiBaseService.post(`${this.url}/import`, payload);
   }
 
 

@@ -29,7 +29,7 @@
               <li role="separator" class="divider"></li>
               <li><a href="#">Share with Friends</a>
               </li>
-              <li><a (click)="customPrivacy()" href="#">Share in Communities</a></li>
+              <li><a (click)="customPrivacy('', $event)" href="#">Share in Communities</a></li>
             </ul>
           </div>
         </div>
@@ -62,6 +62,6 @@
   </modal-body>
   <modal-footer>
     <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
-    <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSave()">Done</button>
+    <button type="submit" class="btn btn-outline-primary btn-min" (click)="done(null)">Done</button>
   </modal-footer>
 </modal>

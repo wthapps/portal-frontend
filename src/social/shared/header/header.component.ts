@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { TextBoxSearchComponent } from '@wth/shared/shared/components/header/search/components/textbox-search.component';
@@ -18,6 +18,8 @@ export class ZSocialSharedHeaderComponent implements OnInit {
   suggestions: any = [];
   show: boolean = false;
   search: string;
+  searchAdvanced: boolean = false;
+
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
   constructor(private router: Router, private route: ActivatedRoute, private location: Location,
@@ -28,6 +30,10 @@ export class ZSocialSharedHeaderComponent implements OnInit {
     this.route.queryParams.subscribe((params: Params) => {
       this.search = params['q'];
     });
+  }
+
+  onSearchAdvanced(e: any) {
+    this.searchAdvanced = e.searchAdvanced;
   }
 
   clickedInside($event: Event) {

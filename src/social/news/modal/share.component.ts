@@ -54,4 +54,8 @@ export class ZSocialNewsShareComponent implements OnInit {
   customPrivacy(type: string, event: any) {
     event.preventDefault();
   }
+
+  done(value: any) {
+
+  }
 }
