@@ -26,29 +26,29 @@ declare let saveAs: any;
 })
 
 export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() data: any;
   @Input() page: any;
   @Input() subPage: any;
   @Input() selectedObjects: any[] = [];
   @Input() permission: any = 'edit';
+  @Input() detectChange: boolean;
+  @Input() toolbarPosition: any = 'top';
 
   readonly tooltip: any = Constants.tooltip;
   show: boolean = true;
-  toolbarPosition: any = 'top'; // 2 positions: top and inline
   destroySubject: Subject<any> = new Subject<any>();
   urls: any;
 
   actionsMenu: any = {
-    edit: {
+    favourite: {
       show: true,
-      needPermission: 'edit',
+      needPermission: 'view',
       inDropDown: false, // Outside dropdown list
-      action: this.edit.bind(this),
+      action: this.favourite.bind(this),
       class: 'btn btn-default',
-      tooltip: this.tooltip.edit,
+      tooltip: this.tooltip.favourite,
       tooltipPosition: 'bottom',
-      title: 'Edit',
-      iconClass: 'fa fa-pencil'
+      title: 'Favourite',
+      iconClass: 'fa fa-star'
     },
     share: {
       show: true,
@@ -70,6 +70,13 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       tooltipPosition: 'bottom',
       title: 'Delete',
       iconClass: 'fa fa-trash-o'
+    },
+    edit: {
+      show: true,
+      needPermission: 'edit',
+      inDropDown: true, // Inside dropdown list
+      action: this.edit.bind(this),
+      title: 'Edit'
     },
     copy: {
       show: true,
@@ -133,9 +140,10 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
 
   ngOnInit() {
     // Inline toolbar only
-    if (this.data) {
-      this.validatePermission([this.data]);
-    }
+    this.validatePermission(this.selectedObjects);
+    this.commonEventService.filter((e: any) => e.channel == 'noteActionsBar' && this.toolbarPosition == 'top').subscribe((e: any) => {
+      if(e.action == 'note:toolbar_change') { this.validatePermission(this.selectedObjects); }
+    })
   }
 
   validatePermission(objects) {
@@ -144,18 +152,17 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     /*====================================
     [Permission] validate
     ====================================*/
-    let permissonValidateOneObject = (action, permissiOnObject) => {
-      // if permission is view turn off all acions edit
-      if(permissiOnObject == 'view' && (action.needPermission == 'edit' || action.needPermission == 'owner')) {
-        action.show = false;
-      }
-      if(permissiOnObject == 'edit' && action.needPermission == 'owner') {
-        action.show = false;
-      }
-    }
     let permissonValidateObjects = (action, objects) => {
       // check permission in each objects
-      objects.map((object: any) => permissonValidateOneObject(action, object.permission))
+      objects.map((object: any) => {
+        // if permission is view turn off all acions edit
+        if(object.permission == 'view' && (action.needPermission == 'edit' || action.needPermission == 'owner')) {
+          action.show = false;
+        }
+        if(object.permission == 'edit' && action.needPermission == 'owner') {
+          action.show = false;
+        }
+      })
     }
     Object.keys(this.actionsMenu).map((action: any) => permissonValidateObjects(this.actionsMenu[action], objects));
 
@@ -196,13 +203,29 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     /*====================================
     [Objects_Type] validate
     ====================================*/
-    let objectTypeValidateOneObject = (action, object) => {
-      if (object.object_type == 'folder' && action.title == 'Make copy') action.show = false;
-    }
     let objectTypeValidateObjects = (action, objects) => {
-      objects.map((object: any) => objectTypeValidateOneObject(action, object))
+      objects.map((object: any) => {if (object.object_type == 'folder' && action.title == 'Make copy') action.show = false;})
     }
     Object.keys(this.actionsMenu).map((action: any) => objectTypeValidateObjects(this.actionsMenu[action], objects));
+
+    /*====================================
+    [Favourite] validate
+    ====================================*/
+    let allFavorite: any = true;
+    let permissonValidateFavourites = (action, objects) => {
+      // check Favourite in each objects
+      objects.map((object: any) => {
+        if (action.title == 'Favourite') {
+          if (!object.favourite) {
+            action.iconClass = 'fa fa-star-o'
+            allFavorite = false;
+          }
+        }
+      });
+    }
+    if (allFavorite) this.actionsMenu.favourite.iconClass = 'fa fa-star'
+
+    Object.keys(this.actionsMenu).map((action: any) => permissonValidateFavourites(this.actionsMenu[action], objects));
   }
 
   ngOnDestroy() {
@@ -217,12 +240,6 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   }
 
   toolbarSetup(e: any) {
-    // set toolbar Position
-    if(this.data) {
-      this.toolbarPosition = 'inline';
-    } else {
-      this.toolbarPosition = 'top';
-    }
     // show toolbar or not, toolbar top only
     // console.log(e)
     if(this.selectedObjects.length < 1 && this.toolbarPosition == 'top') {
@@ -339,5 +356,14 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
 
   removeMixing() {
 
+  }
+
+  favourite() {
+    let cb: any = () => {this.validatePermission(this.selectedObjects)}
+    this.commonEventService.broadcast({
+      channel: 'noteActionsBar',
+      action: 'note:mixed_entity:favourite',
+      payload: {objects: this.selectedObjects, callback: cb}
+    });
   }
 }

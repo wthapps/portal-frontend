@@ -12,6 +12,7 @@ export class Note extends BaseEntity {
   parent_id: number = null;
   object_type: string = 'note';
   permission: string;
+  favourite: any;
 
   constructor(attributes: any={}) {
     super(attributes);

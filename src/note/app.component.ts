@@ -102,28 +102,14 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'note:open_note_edit_modal':
         this.store.dispatch(new note.Edit(event.payload));
         this.router.navigate([{outlets: {detail: ['notes', event.payload.id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
-        // this.loadModalComponent(NoteEditModalComponent);
-        // this.store.dispatch(new note.Edit(event.payload));
-        // this.modal.note = event.payload;
-        // this.modal.open({mode: 'edit', parent_id: _.get(event, 'payload.parent_id')});
         break;
       case 'note:open_note_view_modal':
         this.router.navigate([{outlets: {detail: ['notes', event.payload.id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
-        // this.loadModalComponent(ZNoteSharedModalNoteViewComponent);
-        // this.modal.note = event.payload;
-        // this.modal.open();
         break;
       case 'note:open_note_add_modal':
         // TODO:
         this.store.dispatch(new note.ResetCurrentNote());
         this.router.navigate([{outlets: {detail: ['new_note']}}], {queryParamsHandling: 'preserve', preserveFragment: true});
-        // this.loadModalComponent(NoteEditModalComponent);
-        // this.store.dispatch(new note.ResetCurrentNote());
-        // if (this.currentFolder) {
-        //   this.modal.open({mode: 'add', parent_id: this.currentFolder.id});
-        // } else {
-        //   this.modal.open({mode: 'add'});
-        // }
         break;
       case 'note:folder:edit':
         this.loadModalComponent(ZNoteSharedModalFolderEditComponent);
@@ -173,6 +159,13 @@ export class AppComponent implements OnInit, OnDestroy {
           .subscribe((res: any) => {
             this.store.dispatch(new note.NotesDeleted(event.payload));
             this.commonEventService.broadcast({action: 'destroy', channel: 'noteLeftMenu', payload: event.payload});
+        });
+        break;
+      case 'note:mixed_entity:favourite':
+        this.apiBaseService.post('note/mixed_entities/favourites', {objects: event.payload.objects}).subscribe((res: any) => {
+          this.store.dispatch(new note.MultiNotesUpdated(res.data));
+          // event.payload.callback();
+          this.commonEventService.broadcast({action: 'note:toolbar_change', channel: 'noteActionsBar'});
         });
         break;
       case 'note:folder:delete':

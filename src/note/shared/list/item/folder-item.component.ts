@@ -76,35 +76,17 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   onClick() {
     this.selected = !this.selected;
     if (this.pressingCtrlKey) {
-      this.store.dispatch(new note.Select({
-        id: this.data.id,
-        object_type: this.data.object_type,
-        permission: this.data.permission,
-        name: this.data.name,
-        parent_id: this.data.parent_id
-      }));
+      this.store.dispatch(new note.Select(this.data));
     } else {
       this.store.dispatch({
         type: note.SELECT_ONE,
-        payload: {
-          id: this.data.id,
-          object_type: this.data.object_type,
-          permission: this.data.permission,
-          name: this.data.name,
-          parent_id: this.data.parent_id
-        }
+        payload: this.data
       });
     }
   }
 
   onClickMulti() {
-    this.store.dispatch(new note.Select({
-      id: this.data.id,
-      object_type: this.data.object_type,
-      name: this.data.name,
-      permission: this.data.permission,
-      parent_id: this.data.parent_id
-    }));
+    this.store.dispatch(new note.Select(this.data));
   }
 
   onView() {

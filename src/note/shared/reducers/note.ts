@@ -79,10 +79,34 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       return Object.assign({}, state, {notes: notes, folders: folders});
     }
     case note.MULTI_NOTES_UPDATED: {
-      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {acc[item.id] = item; return acc;}, {});
-      let notes3: any = {...state.notes, ...hNotes};
-
-      return Object.assign({}, state, {notes: notes3});
+      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {
+        if (item.object_type == 'note') {
+          acc[item.id] = item;
+        }
+        return acc;
+      }, {});
+      let hFolders: any = action['payload'].reduce((acc: any, item: any) => {
+        if (item.object_type == 'folder') {
+          acc[item.id] = item;
+        }
+        return acc;
+      }, {});
+      let notes: any = {...state.notes, ...hNotes};
+      let folders: any = {...state.folders, ...hFolders};
+      // update selected objects
+      let items = []
+      for (let item of action['payload']) {
+        for (let object of state.selectedObjects) {
+          if (object.id == item.id) {
+            items.push(item)
+          }
+        }
+      }
+      for (let object of state.selectedObjects) {
+        items.push(object)
+      }
+      items = _.uniqBy(items, 'id');
+      return {...state, notes: notes, folders: folders, selectedObjects: items};
     }
     case note.SET_FOLDERS: {
       let hFolders: any = action['payload'].reduce((acc: any, item: any) => {

@@ -70,21 +70,11 @@ export class NoteItemComponent implements OnInit, OnDestroy {
     this.selected = !this.selected;
 
     if (this.pressingCtrlKey) {
-      this.store.dispatch(new note.Select({
-        id: this.data.id,
-        object_type: this.data.object_type,
-        permission: this.data.permission,
-        parent_id: this.data.parent_id
-      }));
+      this.store.dispatch(new note.Select(this.data));
     } else {
       this.store.dispatch({
         type: note.SELECT_ONE,
-        payload: {
-          id: this.data.id,
-          object_type: this.data.object_type,
-          permission: this.data.permission,
-          parent_id: this.data.parent_id
-        }
+        payload: this.data
       });
     }
   }
@@ -94,12 +84,7 @@ export class NoteItemComponent implements OnInit, OnDestroy {
   }
 
   onClickMulti() {
-    this.store.dispatch(new note.Select({
-      id: this.data.id,
-      object_type: this.data.object_type,
-      permission: this.data.permission,
-      parent_id: this.data.parent_id
-    }));
+    this.store.dispatch(new note.Select(this.data));
   }
 
   onView() {

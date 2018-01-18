@@ -7,6 +7,7 @@ export class NoteConstants extends ConstantsBase {
   PAGE_RECENT: any = 'RECENT';
   PAGE_INSIDE_FOLDER: any = 'INSIDE_FOLDER';
   PAGE_NOTE_EDIT: any = 'NOTE_EDIT';
+  PAGE_NOTE_FAVOURITE: any = 'NOTE_FAVOURITE';
 
   /*
     edit: Can add new items to current list
@@ -22,6 +23,10 @@ export class NoteConstants extends ConstantsBase {
       enableEdit: true,
     },
     SHARED_BY_ME: {
+      edit: false,
+      enableEdit: true,
+    },
+    FAVOURITE: {
       edit: false,
       enableEdit: true,
     },
@@ -48,11 +53,15 @@ export class NoteConstants extends ConstantsBase {
       title: 'There is no note shared by you!',
       subTitle: 'Note can be shared to your connected contact',
     },
+    FAVOURITE: {
+      icon: 'fa fa-share-alt',
+      title: 'There is no note favourite by you!',
+      subTitle: 'Favourite Note',
+    },
     RECENT: {
       icon: 'fa fa-clock-o',
       title: 'There is no recent note accessed by you!',
-      subTitle: 'Try to create one',
-      newNode: true,
+      subTitle: 'Recent Note',
     }
   }
 
