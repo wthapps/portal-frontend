@@ -79,20 +79,18 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       return Object.assign({}, state, {notes: notes, folders: folders});
     }
     case note.MULTI_NOTES_UPDATED: {
-      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {
+      let notes: any = {...state.notes};
+      let folders: any = {...state.folders};
+      action.payload.forEach((item: any) => {
         if (item.object_type == 'note') {
-          acc[item.id] = item;
+          notes[item.id] = {...notes[item.id], ...item};
         }
-        return acc;
-      }, {});
-      let hFolders: any = action['payload'].reduce((acc: any, item: any) => {
-        if (item.object_type == 'folder') {
-          acc[item.id] = item;
+        else if (item.object_type == 'folder') {
+          folders[item.id] = {...folders[item.id], ...item};
         }
-        return acc;
-      }, {});
-      let notes: any = {...state.notes, ...hNotes};
-      let folders: any = {...state.folders, ...hFolders};
+      });
+
+
       // update selected objects
       let items = []
       for (let item of action['payload']) {
@@ -119,13 +117,15 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       });
     }
     case note.NOTE_UPDATED: {
-      let hNote: any = {};
-      hNote[action.payload.id] = action.payload;
       let existed: boolean = state.notes[action.payload.id] != undefined;
+      let hNote: any = {};
+      // hNote[action.payload.id] = action.payload;
+      // let notes4: any = (existed) ? {...state.notes, ...hNote}: {...state.notes};
+
+      hNote[action.payload.id] = {...state.notes[action.payload.id], ...action.payload};
       let notes4: any = (existed) ? {...state.notes, ...hNote}: {...state.notes};
 
       return Object.assign({}, state, {notes: notes4}
-        // , noteHistory: {stack: noteStack, stackId: 0}}
         );
     }
     case note.EDIT: {

@@ -18,6 +18,7 @@ export class ZSocialLeftMenuComponent {
   homeMenuItem: any;
   socialMenu = Constants.socialMenuItems;
   shortcuts$: Observable<any>;
+  uuid: string;
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
@@ -30,6 +31,7 @@ export class ZSocialLeftMenuComponent {
     this.socialMenu = Constants.socialMenuItems.splice(1);
     this.store.dispatch({type: fromRoot.SHORTCUT_LOAD});
     this.shortcuts$ = this.store.select(fromRoot.getShortcuts);
+    this.uuid = this.userService.getSyncProfile().uuid;
   }
 
   onSubMenu(link: string) {

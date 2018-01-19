@@ -154,8 +154,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       combineLatest(this.store.select(fromRoot.getCurrentFolder)),
       takeUntil(this.destroySubject)
     )
-      .subscribe(([note, currentFolder]: any) => {
-        this.note = note;
+      .subscribe(([noteContent, currentFolder]: any) => {
+        this.note = noteContent;
+        this.store.dispatch(new note.NoteUpdated(this.note));
         this.initQuill();
         if(currentFolder)
           this.parentId = currentFolder.id;
