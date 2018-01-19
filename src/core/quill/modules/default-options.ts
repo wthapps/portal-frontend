@@ -1,13 +1,14 @@
 export let DefaultOptions = {
     modules: [
-        'DisplaySize',
-        'Toolbar',
-        'Resize',
+      'DisplaySize',
+      'Toolbar',
+      'Resize',
+      'CustomResize'
     ],
     overlayStyles: {
-        // position: 'absolute',
-        // boxSizing: 'border-box',
-        // border: '1px dashed #444',
+      position: 'absolute',
+      boxSizing: 'border-box',
+      border: '1px dashed #444',
     },
     overlayWrapperStyles: {
       position: 'absolute',

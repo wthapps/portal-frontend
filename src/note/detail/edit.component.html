@@ -39,7 +39,7 @@
   </div>
   <div class="note-editor-content" [ngClass]="{'show-aside': hasShowComment}">
     <div class="note-editor-toolbar" *ngIf="note.permission !== 'view'">
-      <div class="container">
+      <div class="container-fluid">
         <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-toolbar">
           <div class="ql-format-group">
             <div class="ql-formats">
@@ -173,17 +173,10 @@
                       aria-label="Strikethrough"></button>
             </div>
             <div tooltipPosition="bottom" class="ql-formats">
-              <button pTooltip="Left align" tooltipPosition="bottom" class="ql-align"></button>
+              <button pTooltip="Left align" tooltipPosition="bottom" class="ql-align" value=""></button>
               <button pTooltip="Center align" tooltipPosition="bottom" class="ql-align" value="center"></button>
               <button pTooltip="Right align" tooltipPosition="bottom" class="ql-align" value="right"></button>
               <button pTooltip="Justify" tooltipPosition="bottom" class="ql-align" value="justify"></button>
-
-              <!--<select class="ql-align">-->
-              <!--<option selected></option>-->
-              <!--<option value="center"></option>-->
-              <!--<option value="right"></option>-->
-              <!--<option value="justify"></option>-->
-              <!--</select>-->
             </div>
             <div class="ql-formats">
               <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
@@ -208,15 +201,13 @@
               <!--<button class="ql-video"></button>-->
               <!--<button class="ql-formula"></button>-->
             </div>
-            <!--<div class="ql-formats">
-              <button class="ql-clean"></button>
-            </div>-->
             <div class="ql-formats">
               <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
-
+            </div>
+            <div class="ql-formats">
               <!-- Add subscript and superscript buttons -->
-              <!--<button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>-->
-              <!--<button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>-->
+              <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
+              <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
             </div>
 
           </div>

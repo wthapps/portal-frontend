@@ -28,31 +28,31 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
             <li>
-              <a (click)="redirectTo('social', '', $event)" href="javascript:void(0);">
+              <a [href]="urls.social">
                 <i class="fa fa-globe"></i>
-                <span>Social</span>
+                <span>Social Network</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('chat', '', $event)" href="javascript:void(0);">
+              <a [href]="urls.chat">
                 <i class="fa fa-comments"></i>
                 <span>Chat</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('media', '', $event)" href="javascript:void(0);">
+              <a [href]="urls.media">
                 <i class="fa fa-picture-o"></i>
                 <span>Pictures</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('contacts', '', $event)" href="javascript:void(0);">
+              <a [href]="urls.contact">
                 <i class="fa fa-address-book"></i>
                 <span>Contacts</span>
               </a>
             </li>
             <li>
-              <a (click)="redirectTo('notes', '', $event)" href="javascript:void(0);">
+              <a [href]="urls.note">
                 <i class="fa fa-sticky-note"></i>
                 <span>Notes</span>
               </a>
@@ -146,9 +146,9 @@
               </div>
             </li>
             <li role="separator" class="divider"></li>
-            <li><a (click)="redirectTo('my', 'settings/profile', $event)" href="javascript:;">Account</a></li>
-            <li><a (click)="redirectTo('my', 'admin/invitations', $event)" href="javascript:;">Invitations</a></li>
-            <li><a (click)="logout()" href="javascript:;">Sign Out</a></li>
+            <li><a [href]="urls.myAccount + '/settings/profile'">Account</a></li>
+            <li><a [href]="urls.myAccount + '/admin/invitations'">Invitations</a></li>
+            <li><a (click)="logout()" href="javascript:void(0);">Sign Out</a></li>
           </ul>
         </div>
       </ng-template>

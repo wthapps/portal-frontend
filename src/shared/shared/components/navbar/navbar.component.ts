@@ -27,6 +27,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   showSearchMobile: boolean = false;
   newVersion: string;
   constants: any;
+  urls: any = Constants.baseUrls;
 
   type: string = 'update'; // update , connection
 

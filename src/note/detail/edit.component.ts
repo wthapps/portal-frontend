@@ -12,12 +12,6 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/take';
 
-// import { Quill } from 'quill';
-// import { ImageResize } from 'quill-image-resize-module';
-import { CustomImageResize } from '@shared/shared/utils/custom-image-resize';
-import { CustomResize } from '@shared/shared/utils/custom-resize';
-
-
 import * as fromRoot from '../shared/reducers/index';
 import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';
@@ -37,7 +31,7 @@ import { CommonEventService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
 import { takeUntil, switchMap, combineLatest } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
-import { noteConstants } from "note/shared/config/constants";
+import { noteConstants } from 'note/shared/config/constants';
 import { Counter } from '@wth/core/quill/modules/counter';
 import { CustomImage } from '@wth/core/quill/modules/custom-image';
 
@@ -140,7 +134,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // this.initQuill();
     // Merge with get current folder - this.store.select(fromRoot.getCurrentFolder)
     this.route.paramMap.pipe(
       switchMap((paramMap: any) => {
@@ -160,8 +153,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         this.initQuill();
         if(currentFolder)
           this.parentId = currentFolder.id;
-        $('.note-editor-toolbar').show();
         this.updateFormValue(this.note);
+        // Reset content of elemenet div.ql-editor to prevent HTML data loss
         document.querySelector('.ql-editor').innerHTML = this.note.content;
         if (this.note.permission !== 'view') this.registerAutoSave();
       });
@@ -237,18 +230,11 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
           unit: 'word'
         },
         customImage: {
-          modules: [ 'CustomResize'],
+          modules: ['CustomResize'],
           handleStyles: {
             backgroundColor: '#F54A59',
             border: '1px',
             color: 'white'
-            // other camelCase styles for size display
-          },
-          overlayStyles: {
-            // position: 'absolute',
-            // boxSizing: 'border-box',
-            // border: '1px solid #F54A59',
-            // display: 'none'
           },
           toolbarStyles: {
             position: 'absolute',
@@ -260,7 +246,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
             color: '#333',
             boxSizing: 'border-box',
             cursor: 'default',
-          },
+          }
         }
       },
       placeholder: 'Say something ...',
@@ -302,6 +288,10 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
       onPaste(e: any) {
         // super.onPaste(e);
+        // fix flash screen while paste into editor
+        this.container.style.position = 'fixed';
+        this.container.style.zIndex = '-1';
+
         var dataClipboard1 = e.clipboardData.types;
 
         if (dataClipboard1[0].match('Files')) {
@@ -344,10 +334,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
               });
               fileClipboard.value = '';
               this.quill.focus();
-
-            }
-            ;
-
+            };
           }
         }, 1);
       }

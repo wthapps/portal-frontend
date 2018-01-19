@@ -1,15 +1,11 @@
-// import { Module } from 'quill';
 import { BaseModule } from '@wth/core/quill/modules/base-module';
 
 export class Counter extends BaseModule {
-  // quill: any;
-  // options: any;
   container: any;
 
   constructor(quill, options) {
     super(quill, options);
-    // this.quill = quill;
-    // this.options = options;
+
     this.container = document.querySelector(options.container);
     quill.on('text-change', this.update.bind(this));
     this.update();  // Account for initial contents

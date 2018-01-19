@@ -23,7 +23,7 @@ export class CustomImage extends BaseModule {
 
   moduleClasses: any;
 
-  constructor(quill, options: any) {
+  constructor(quill, options) {
     super(quill, options);
     // save the quill reference and options
 
@@ -143,7 +143,7 @@ export class CustomImage extends BaseModule {
 
     this.overlay.appendChild(this.overlayWrapper);
 
-    Object.assign(this.overlay.style, this.options.overlayStyles);
+    // Object.assign(this.overlay.style, this.options.overlayStyles);
 
     this.quill.root.parentNode.appendChild(this.overlay);
     // this.quill.root.appendChild(this.overlay);
