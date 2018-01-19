@@ -36,6 +36,14 @@ $note-editor-aside-w: 400px;
   }
   .note-editor-header-action-right {
     @include order(1);
+    ul {
+      margin: 0 15px 0 0;
+      padding: 0;
+      list-style-type: none;
+      li {
+        float: left;
+      }
+    }
   }
   .note-editor-header-input {
     @include flex(1);
