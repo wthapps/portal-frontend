@@ -262,12 +262,14 @@ textarea {
   }
 }
 
-
 .textarea-editor-input {
   min-height: 34px;
   height: auto;
-  padding-right: 85px;
   word-break: break-word;
+}
+
+.commentContent-editor-input {
+  padding-right: 85px;
 }
 
 .textarea-editor-view {
