@@ -118,85 +118,6 @@
   }
 }
 
-/*
-.navbar-searchTop {
-  position: relative;
-  .input-group {
-    border: 1px solid $input-border;
-    border-radius: $border-radius-base;
-    .btn {
-      height: 34px;
-      padding-top: 0;
-      padding-bottom: 0;
-      line-height: 32px;
-      border-color: transparent !important;
-      &:hover,
-      &:focus,
-      &.focus {
-        background-color: transparent;
-        @include box-shadow(none);
-      }
-    }
-    .form-control {
-      border-color: transparent !important;
-      padding-left: 0;
-      padding-right: 0;
-      @media (min-width: $screen-lg) {
-        min-width: 400px;
-      }
-      &:hover,
-      &:focus,
-      &.focus {
-        background-color: transparent;
-        @include box-shadow(none);
-      }
-    }
-  }
-  p-autocomplete {
-    input {
-      border: none !important;
-      width: 250px;
-      @media (min-width: $screen-lg-min) {
-        width: 350px;
-      }
-    }
-  }
-
-  .navbar-searchTop-advanced {
-    position: absolute;
-    top: 34px;
-    left: 0;
-    right: 0;
-    z-index: 2;
-    padding: 15px;
-    border: 1px solid $input-border;
-    border-radius: $border-radius-base;
-    background-color: #ffffff;
-    @include box-shadow($box-shadow-bottom);
-    .form-group {
-      display: block;
-      margin-bottom: 20px;
-      .form-control {
-        display: block;
-        width: 100%;
-      }
-    }
-    .control-label {
-      font-weight: normal;
-      margin-right: -10px;
-    }
-    .ui-calendar {
-      display: block;
-    }
-  }
-  .social-list-user {
-    li {
-      margin-bottom: 0px;
-    }
-
-  }
-}*/
-
 .textarea-autoheight {
   overflow: hidden;
   word-wrap: break-word;
@@ -269,7 +190,15 @@ textarea {
 }
 
 .commentContent-editor-input {
-  padding-right: 85px;
+  &:before {
+    float: left;
+  }
+  &:after {
+    content: '';
+    height: 10px;
+    width: 85px;
+    display: inline-block;
+  }
 }
 
 .textarea-editor-view {

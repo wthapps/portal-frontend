@@ -40,7 +40,9 @@
              class="form-control textarea-editor-input commentContent-editor-input"
              [formControl]="contentCtrl"
                   (keyup)="onKey($event)"
-                  [(ngModel)]="comment.content"></div>
+                  [(ngModel)]="comment.content">
+          <span style="display: inline-block; width: 100px"></span>
+        </div>
       </div>
 
       <photo-item-preview [photo]="comment?.photo"
