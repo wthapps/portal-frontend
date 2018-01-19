@@ -63,7 +63,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
     this.sub = this.store.select(fromRoot.getSelectedObjects).subscribe((objects: any[]) => {
       let sel: boolean = false;
       for(let o of objects) {
-        if(o.object_type == 'folder' && o.id == this.data.id) sel = true;
+        if(o && o.object_type == 'folder' && o.id == this.data.id) sel = true;
       }
       this.selected = sel;
     });
@@ -71,7 +71,8 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    if(this.sub && !this.sub.closed)
+      this.sub.unsubscribe();
   }
 
   onClick() {

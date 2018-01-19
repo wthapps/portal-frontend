@@ -58,14 +58,15 @@ export class NoteItemComponent implements OnInit, OnDestroy {
     this.sub = this.store.select(fromRoot.getSelectedObjects).subscribe((objects: any[]) => {
       let sel: boolean = false;
       for (let o of objects) {
-        if (o.object_type == 'note' && o.id == this.data.id) sel = true;
+        if (o && o.object_type == 'note' && o.id == this.data.id) sel = true;
       }
       this.selected = sel;
     });
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    if(this.sub && !this.sub.closed)
+      this.sub.unsubscribe();
   }
 
   onSelected() {
