@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/merge';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/combineLatest';
 
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
@@ -26,7 +26,6 @@ declare let _: any;
 declare let $: any;
 
 @Component({
-
   selector: 'z-social-community-detail',
   templateUrl: 'detail.component.html'
 })
@@ -113,7 +112,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private socialService: SocialService) {
 
     // All subscriptions to photo select modal should be closed when 1 of following events are emitted
-    this.closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
+    this.closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
     this.profile$ = this.userService.getAsyncProfile();
   }
 

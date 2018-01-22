@@ -88,8 +88,6 @@ export class PostHeaderComponent implements OnChanges {
     this.postItem.delete();
   }
 
-  private
-
   getSettings(e: any) {
     e.preventDefault();
 

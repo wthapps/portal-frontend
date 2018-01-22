@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/combineLatest';
-import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/finally';
 
 
@@ -95,7 +95,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     // Subscribe photo select events
     this.photoSelectDataService.init('');
 
-    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$, this.destroySubject);
+    let closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.destroySubject);
 
     this.photoSelectDataService.nextObs$
       .takeUntil(closeObs$).subscribe(

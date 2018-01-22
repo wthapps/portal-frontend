@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/merge';
+import 'rxjs/add/observable/merge';
 
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
@@ -212,7 +212,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   private subscribePhotoEvents() {
 
-    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$);
+    let closeObs$ = Observable.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.closeObs$);
     // Subscribe actions corresponding with photo modal actions
 
     if (this.notAssignedSubscription(this.nextPhotoSubscription)) {

@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
@@ -37,12 +38,7 @@ import { Constants } from '@shared/constant';
 import { BaseEvent } from '@shared/shared/event/base-event';
 import { PostActivitiesComponent } from './post-activities.component';
 
-
-
-
-
 @Component({
-
   selector: 'so-post',
   templateUrl: 'post.component.html'
 })
@@ -54,7 +50,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
   @Input() showComments: boolean = true;
-  @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDeleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
 
@@ -62,11 +57,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   @Output() photoModalOpened: EventEmitter<any> = new EventEmitter<any>();
 
   commentEditor: CommentItemEditorComponent;
-  commentBoxType = CommentEditorMode;
 
   itemDisplay: any;
-  typeLikeDislike: any;
-  dataLikeDislike: any;
   modal: any;
 
   private destroySubject: Subject<any> = new Subject<any>();
@@ -228,13 +220,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   delete() {
-    // this.wthConfirmService.updateConfirmDialog({
-    //   label: {
-    //     accept: 'Delete',
-    //     reject: 'Cancel',
-    //   }
-    // });
-
     this.wthConfirmService.confirm({
       acceptLabel: 'Delete',
       rejectLabel: 'Cancel',
@@ -255,13 +240,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           );
       }
     });
-  }
-
-  editedPost(newPost: any) {
-    this.itemDisplay.description = newPost.description;
-    this.itemDisplay.tags = newPost.tags_json;
-    this.itemDisplay.photos = newPost.photos;
-    this.onUpdated.emit(newPost);
   }
 
   onActions(event: BaseEvent) {
@@ -367,26 +345,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     console.log('Synced comments', this.item);
   }
 
-  mapPost(post: any) {
-    return new SoPost().from(post);
-  }
-
-  mapComment(comment: any) {
-    return new SoComment().from(comment);
-  }
-
   openPhotoModal(data: any) {
     this.photoSelectDataService.open(data);
 
     this.subscribePhotoEvents();
-  }
-
-
-  onSelectPhotoComment(photos: any) {
-    if (this.commentEditor) {
-      this.commentEditor.commentAction(photos);
-    }
-    // this.photoModal.close();
   }
 
   openShare() {
@@ -494,7 +456,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   private subscribePhotoEvents() {
     // Subscribe actions corresponding with photo modal actions
-    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.openObs$, this.photoSelectDataService.closeObs$, this.destroySubject.asObservable());
+    let closeObs$ = Observable.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$, this.photoSelectDataService.closeObs$, this.destroySubject.asObservable());
 
     this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
         (photos: any) => {

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/merge';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/do';
 
 
@@ -114,8 +114,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.post.custom_objects.length = 0;
       this.post.custom_objects.push(this.socialService.community.currentCommunity); // Default share new post to current community
     }
-    this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
-    this.privacyName = this.getPrivacyName(this.post);
 
     this.mode = options.mode;
     this.isShare = options.isShare;
@@ -127,6 +125,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
     if (options.parent != null) {
       this.parent = options.parent;
     }
+    this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
+    this.privacyName = this.getPrivacyName(this.post);
 
 
     this.form = this.fb.group({
@@ -273,12 +273,16 @@ export class PostEditComponent implements OnInit, OnDestroy {
       event.preventDefault();
     }
 
-    if (this.mode == 'add') {
-      this.post = _.assignIn(this.post, attr);
-    } else {
-      this.post = _.assignIn(this.post, attr);
-      // this.onUpdated.emit(attr);
-    }
+    // console.debug('updateing ...', this.mode, this.post, attr);
+    // if (this.mode == 'add') {
+    //   // this.post = _.assignIn(this.post, attr);
+    // } else {
+    //   // this.post = _.assignIn(this.post, attr);
+    //
+    // }
+    this.post = {...this.post, ...attr};
+    this.privacyName = this.getPrivacyName(this.post);
+    console.debug('updating... ', this.post);
   }
 
   private getPrivacyClassIcon(post: any): string {
@@ -301,14 +305,14 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   private getPrivacyName(post: any): string {
     console.debug('getPrivacyName: ', post.privacy);
-    let privacy = ( post.privacy == '' ) ? 'public' : post.privacy;
+    let privacy = ( post && post.privacy == '' ) ? 'public' : post.privacy;
     if(privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
       return post.custom_objects[0].name;
     return privacy.replace('_', ' ');
   }
 
   private subscribePhotoSelectEvents() {
-    let closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.openObs$, this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable());
+    let closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$, this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable());
 
     this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos : any) => {
       this.next(photos);
