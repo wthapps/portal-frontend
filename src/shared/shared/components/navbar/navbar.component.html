@@ -82,6 +82,9 @@
           <div id="nav-notification-list" class="nav-notification-list dropdown-menu dropdown-menu-right">
             <div class="nav-notification-list-header">
               <nav class="nav-tabs-wrap pl10 pr10 clearfix">
+                <div class="pull-right">
+                  <button class="btn btn-default btn-default-no-border" type="button" (click)="onSettingModal()"><i class="fa fa-cog"></i></button>
+                </div>
                 <ul class="nav nav-tabs pull-left list-unstyled clearfix visible-md-block visible-lg-block">
                   <li [ngClass]="type==undefined || type == 'update' ? 'active': ''">
                     <a (click)="onSelectedTab('update')" href="javascript:;">
@@ -102,7 +105,7 @@
                  infinite-scroll
                  [scrollWindow]="false"
                  (scrolled)="getMoreNotifications()">
-              <app-partials-notification-list [size]="'xs'" [type]="type"></app-partials-notification-list>
+              <app-partials-notification-list #notifications [size]="'xs'" [type]="type"></app-partials-notification-list>
 
               <div *ngIf="notificationService.notifications.length == 0" class="p10">
                 Currently you have no notifications

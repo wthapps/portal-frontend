@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { Constants } from '../../../constant/config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
@@ -6,6 +6,7 @@ import { ChannelService } from '../../../channels/channel.service';
 import { NotificationService } from '../../../services/notification.service';
 import { Router } from '@angular/router';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
+import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
 
 declare var $: any;
 declare var _: any;
@@ -36,6 +37,8 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showSearchMobile = false;
   }
 
+  @ViewChild('notifications') notificationListComponent: NotificationListComponent;
+
   constructor(public userService: UserService,
               private navigateService: WTHNavigateService,
               private channelService: ChannelService,
@@ -58,7 +61,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     let lastScrollTop = 0;
 
     documentElem.on('scroll', function () {
-      var currentScrollTop = $(this).scrollTop();
+      let currentScrollTop = $(this).scrollTop();
       if (currentScrollTop < lastScrollTop && currentScrollTop != 0) {
         nav.addClass('active');
       } else {
@@ -67,9 +70,14 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       lastScrollTop = currentScrollTop;
     });
 
-    documentElem.on('click', '#nav-notification-list, #notiItemMenuEl', function (e: any) {
-      e.stopPropagation();
-    });
+    documentElem.on('click',
+      '#nav-notification-list, ' +
+      '#notiItemMenuEl, ' +
+      '.modal-backdrop.in, ' +
+      '.modal.in, ' +
+      '.modal-notification-list-setting', function (e: any) {
+        e.stopPropagation();
+      });
 
     documentElem.on('click', '#nav-notification-list .dropdown-toggle', function (e: any) {
       e.stopPropagation();
@@ -145,21 +153,21 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getMoreNotifications() {
-    if(this.type == 'connection')
+    if (this.type == 'connection')
       this.connectionService.getMoreNotifications();
     else
       this.notificationService.getMoreNotifications();
   }
 
   doAction(action: any, notif_id: string) {
-    if(this.type == 'connection')
+    if (this.type == 'connection')
       this.connectionService.doAction(action, notif_id);
     else
       this.notificationService.doAction(action, notif_id);
   }
 
   getLatestNotifications() {
-    if(this.type == 'connection')
+    if (this.type == 'connection')
       this.connectionService.getLatestNotifications();
     else
       this.notificationService.getLatestNotifications();
@@ -174,7 +182,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   markAsSeen() {
-    if(this.type == 'connection')
+    if (this.type == 'connection')
       this.connectionService.markAsSeen();
     else
       this.notificationService.markAsSeen();
@@ -197,5 +205,9 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     //   case 'connection':
     //     break;
     // }
+  }
+
+  onSettingModal() {
+    this.notificationListComponent.settingModal.open();
   }
 }
