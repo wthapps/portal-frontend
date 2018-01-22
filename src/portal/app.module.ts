@@ -23,6 +23,7 @@ import { RecoveryModule } from './recovery/recovery.module';
 import { RegisterModule } from './register/register.module';
 import { SubscribeModule } from './sub_unsub/subscribe.module';
 import { SupportModule } from './support/support.module';
+import { NotificationModule } from './notifications/notifications.module';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { SupportModule } from './support/support.module';
     RegisterModule,
     SubscribeModule,
     SupportModule,
+    NotificationModule,
 
     PortalSharedModule.forRoot(),
     CoreModule.forRoot(),

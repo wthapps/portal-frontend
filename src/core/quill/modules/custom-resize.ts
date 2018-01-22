@@ -133,8 +133,8 @@ export class CustomResize extends BaseModule {
       // right-side resize handler; dragging right enlarges image
       this.img.width = Math.round(this.preDragWidth + deltaX);
     }
-    this.positionBoxes();
     this.resizer.onUpdate();
+    this.positionBoxes();
   }
 
   setCursor(value) {
