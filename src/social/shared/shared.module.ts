@@ -31,6 +31,7 @@ import { PostFooterComponent } from './second-routes/post/components/post-footer
 import { ZSocialSharedNewsFeedComponent } from './news-feed/news-feed.component';
 import { ZSocialLeftMenuComponent } from './component/social-left-menu.component';
 import { SoShortcutService } from './services/shortcut.service';
+import { ZSocialShortcutSettingComponent } from 'social/shared/shortcut-setting/shortcut-setting.component';
 
 
 /**
@@ -69,7 +70,7 @@ import { SoShortcutService } from './services/shortcut.service';
 
     ZSocialSharedHeaderComponent,
     ZSocialSharedNewsFeedComponent,
-
+    ZSocialShortcutSettingComponent,
   //  Left menu
     ZSocialLeftMenuComponent
 
@@ -91,7 +92,7 @@ import { SoShortcutService } from './services/shortcut.service';
 
     ZSocialSharedHeaderComponent,
     ZSocialSharedNewsFeedComponent,
-
+    ZSocialShortcutSettingComponent,
   //  Left menu
     ZSocialLeftMenuComponent
   ]

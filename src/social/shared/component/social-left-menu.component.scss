@@ -1,0 +1,61 @@
+@import "../../../assets/styles/global";
+
+.menuleft-nav-sub-item-list {
+  max-height: (36*8)+px;
+  overflow: hidden;
+  &.expand {
+    max-height: none;
+  }
+  .menuleft-nav-sub-item {
+    > a {
+      padding-left: 45px;
+    }
+    .menuleft-nav-sub-action {
+      span {
+        display: inline-block;
+        @include opacity(1);
+      }
+    }
+  }
+}
+
+.menuleft-nav-shortcuts-more {
+  a {
+    padding-left: 45px;
+    &:hover {
+      color: $theme-color;
+    }
+  }
+}
+
+.menuleft-nav-sub-item {
+  @include flexbox;
+  width: 100%;
+  position: relative;
+  > a {
+    @include flex(1);
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    display: block;
+  }
+  .menuleft-nav-sub-action {
+    span {
+      padding: 8px;
+      color: $text-color-fade;
+      @include opacity(0.5);
+      display: none;
+    }
+  }
+  &:hover {
+    .menuleft-nav-sub-action {
+      span {
+        display: inline-block;
+        &:hover {
+          @include opacity(1);
+        }
+      }
+    }
+  }
+}

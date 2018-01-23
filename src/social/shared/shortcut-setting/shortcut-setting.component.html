@@ -1,0 +1,43 @@
+<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <modal-header [show-close]="true">
+    <h4 class="modal-title">Edit shortcuts</h4>
+  </modal-header>
+  <modal-body>
+    <p>Shortcuts allow quick access to some of your communities. Search your communities and click on toad them into
+      your shortcut list.</p>
+    <div class="form-group input-group-wrap input-group-search-header">
+      <form class="input-group" novalidate="">
+        <span class="input-group-btn input-group-left">
+          <button class="btn btn-default" type="button">
+            <i class="fa fa-search"></i>
+          </button>
+        </span>
+        <input autocomplete="off" class="form-control" name="search" type="text"
+               placeholder="Search your communities by name">
+      </form>
+    </div>
+
+    <hr>
+
+    <div class="form-group form-group-shortcuts">
+      <div *ngFor="let group of shortcuts$ | async" class="media media-user-list media-middle">
+        <div class="media-left">
+          <div class="media-user-avatar avatar-xs">
+            <img alt="" [src]="group.profile_image">
+          </div>
+        </div>
+        <div class="media-body">
+          {{ group.name }}
+        </div>
+        <div class="media-right">
+          <button class="btn btn-default" type="button">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </modal-body>
+  <modal-footer>
+    <button type="submit" class="btn btn-outline-primary btn-min" (click)="done(null)">Done</button>
+  </modal-footer>
+</modal>

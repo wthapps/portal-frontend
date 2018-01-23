@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WTHNavigateService, UserService, CommonEventService, ApiBaseService } from '@wth/shared/services';
@@ -6,11 +6,12 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../reducers/index';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'z-social-left-menu',
-  templateUrl: 'social-left-menu.component.html'
+  templateUrl: 'social-left-menu.component.html',
+  styleUrls: ['social-left-menu.component.scss']
 })
 
 export class ZSocialLeftMenuComponent {
@@ -19,6 +20,8 @@ export class ZSocialLeftMenuComponent {
   socialMenu = Constants.socialMenuItems;
   shortcuts$: Observable<any>;
   uuid: string;
+
+  shortcutsExpand: boolean = false;
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
