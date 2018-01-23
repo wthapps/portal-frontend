@@ -30,7 +30,7 @@ export class ZSocialHomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(!this.userService.getSyncProfile().introduction.social) this.introModal.open();
+    if(!_.get(this.userService.getSyncProfile(), 'introduction.social')) this.introModal.open();
   }
 
   onLoadMore() {

@@ -30,8 +30,7 @@ export class ZSocialLeftMenuComponent {
               private store: Store<any>,
               private wthConfirmService: WthConfirmService,
               private commonEventService: CommonEventService) {
-    this.homeMenuItem = Constants.socialMenuItems[0];
-    this.socialMenu = Constants.socialMenuItems.splice(1);
+    [this.homeMenuItem, ...this.socialMenu] = Constants.socialMenuItems;
     this.store.dispatch({type: fromRoot.SHORTCUT_LOAD});
     this.shortcuts$ = this.store.select(fromRoot.getShortcuts);
     this.uuid = this.userService.getSyncProfile().uuid;

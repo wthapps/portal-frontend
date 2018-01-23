@@ -137,11 +137,13 @@ export class UserService {
   }
 
   getSyncProfile() {
-    let sub = this.profile$.subscribe((profile: any) => {
-      this.profile = profile
-    })
-    sub.unsubscribe();
-    return this.profile;
+    // let sub = this.profile$.subscribe((profile: any) => {
+    //   this.profile = profile
+    // })
+    // sub.unsubscribe();
+    // return this.profile;
+
+    return this._profile.getValue();
   }
 
   getAsyncProfile() {

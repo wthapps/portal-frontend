@@ -28,6 +28,10 @@ $note-editor-aside-w: 400px;
   }
 }
 
+#quill-toolbar {
+  display: none;
+}
+
 .note-editor-header {
   padding: $grid-gutter-width/2;
 

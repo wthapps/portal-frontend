@@ -215,7 +215,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.registerDividerBlot();
     this.extendClipboard(this);
     Quill.register('modules/counter', Counter, true);
-    // Quill.register('modules/customImage', CustomImage, true);
+    Quill.register('modules/customImage', CustomImage, true);
 
     let modules: any = {
       modules: {
@@ -229,25 +229,25 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
           container: '#counter',
           unit: 'word'
         },
-        // customImage: {
-        //   modules: ['CustomResize'],
-        //   handleStyles: {
-        //     backgroundColor: '#F54A59',
-        //     border: '1px',
-        //     color: 'white'
-        //   },
-        //   toolbarStyles: {
-        //     position: 'absolute',
-        //     top: '-30px',
-        //     height: '0',
-        //     minWidth: '100px',
-        //     font: '12px/1.0 Arial, Helvetica, sans-serif',
-        //     textAlign: 'center',
-        //     color: '#333',
-        //     boxSizing: 'border-box',
-        //     cursor: 'default',
-        //   }
-        // }
+        customImage: {
+          modules: ['CustomResize'],
+          handleStyles: {
+            backgroundColor: '#F54A59',
+            border: '1px',
+            color: 'white'
+          },
+          toolbarStyles: {
+            position: 'absolute',
+            top: '-30px',
+            height: '0',
+            minWidth: '100px',
+            font: '12px/1.0 Arial, Helvetica, sans-serif',
+            textAlign: 'center',
+            color: '#333',
+            boxSizing: 'border-box',
+            cursor: 'default',
+          }
+        }
       },
       placeholder: 'Say something ...',
       readOnly: false,
@@ -261,6 +261,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     }
     this.customEditor = new Quill('#quill-editor', modules);
     if (this.note.permission == 'view') this.customEditor.disable();
+    if (!this.note.permission || this.note.permission != 'view') $('#quill-toolbar').show();
 
     this.editorElement = document.querySelector('div.ql-editor');
 

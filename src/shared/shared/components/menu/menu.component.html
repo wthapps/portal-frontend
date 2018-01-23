@@ -3,7 +3,7 @@
     <div class="menuleft-nav-item has-sub" [ngClass]="{'active': urls.social == hostname && !isProfileTab, 'show': urls.social == hostname}">
       <a id="menuleft-nav-intro-1" draggable="false" [href]="urls.social">
         <!--<i class="icon-zone-social"></i> Social Network <span class="sp-has-noti"></span>-->
-        <i class="icon-zone-social"></i> Social Network
+        <i class="icon-zone-social"></i> Social Media
       </a>
       <div class="menuleft-nav-sub" *ngIf="urls.social === hostname " [ngClass]="{'active': urls.social == hostname && !isProfileTab, 'show': urls.social == hostname}">
         <ng-content select="z-social-left-menu"></ng-content>

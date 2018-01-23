@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import * as Quill from 'quill';
 import { Toolbar, DisplaySize, Resize } from 'quill-image-resize-module';
 
 import { DefaultOptions } from './default-options';
@@ -214,7 +213,7 @@ export class CustomImage extends BaseModule {
     });
   }
 
-  checkImage(evt) {
+  checkImage(evt: any) {
     if (this.img) {
       if (evt.keyCode === 46 || evt.keyCode === 8) {
         Quill.find(this.img).deleteAt(0);
