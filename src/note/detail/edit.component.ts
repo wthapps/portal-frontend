@@ -261,6 +261,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     }
     this.customEditor = new Quill('#quill-editor', modules);
     if (this.note.permission == 'view') this.customEditor.disable();
+    if (!this.note.permission || this.note.permission != 'view') $('#quill-toolbar').show();
 
     this.editorElement = document.querySelector('div.ql-editor');
 
