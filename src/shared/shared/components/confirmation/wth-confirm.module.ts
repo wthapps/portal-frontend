@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   ],
   declarations: [WthConfirmComponent],
   exports: [WthConfirmComponent],
-  providers: [ConfirmationService, WthConfirmService]
+  providers: []
 })
 
 export class WthConfirmModule {

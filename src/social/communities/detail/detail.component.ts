@@ -279,7 +279,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.socialService.community.deleteMember(this.uuid, user.uuid).subscribe(
           (res: any)=> {
             this.toastsService.success('You deleted member successfully');
-            _.remove(this.tabItems, (item: any) => item.accepter.uuid === user.uuid);
+            _.remove(this.tabItems, (item: any) => item.user.uuid === user.uuid);
 
             // Update community member count
             this.community.member_count -= 1;
