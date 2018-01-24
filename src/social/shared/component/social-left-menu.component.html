@@ -17,13 +17,13 @@
 
 <div class="menuleft-nav-shortcuts">
   <div class="menuleft-nav-sub-item-list" [ngClass]="{'expand': shortcutsExpand}">
-    <div *ngFor="let group of shortcuts$ | async" class="menuleft-nav-sub-item">
-      <a draggable="false" [routerLink]="[group.link]" [routerLinkActive]="['active']"
+    <div *ngFor="let shortcut of shortcuts$ | async" class="menuleft-nav-sub-item" [routerLinkActive]="['active']">
+      <a draggable="false" [routerLink]="[shortcut.link]"
          href="#">
-        <i class="fa fa-users"></i> {{ group.name }}
+        <i class="fa fa-users"></i> {{ shortcut.name }}
       </a>
       <div class="menuleft-nav-sub-action">
-        <span>1</span>
+        <span>{{ shortcut?.updates_count  > 0 ? ( shortcut?.updates_count  < MAX_CNT ? shortcut?.updates_count : "${MAX_CNT}+" ) : '' }}</span>
       </div>
     </div>
   </div>

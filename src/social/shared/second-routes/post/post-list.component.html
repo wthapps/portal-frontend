@@ -56,5 +56,5 @@
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>
 </div>
 <!--Edit post modal. This modal will handle add new, edit post and share-->
-<so-post-edit #postEditModal (saved)="save($event)" (onUpdated)="update($event)"
+<so-post-edit #postEditModal [soProfile]="soProfile$ | async" (saved)="save($event)" (onUpdated)="update($event)"
               (dismissed)="dismiss($event)"></so-post-edit>

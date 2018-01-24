@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Action, Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-import { of } from 'rxjs/observable/of';
 import { empty } from 'rxjs/observable/empty';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/switchMap';
@@ -18,6 +17,7 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 
 import * as fromRoot from '../reducers/index';
 import { SoShortcutService } from '../services/shortcut.service';
+import { of } from 'rxjs/observable/of';
 
 
 @Injectable()
@@ -39,21 +39,35 @@ export class ShortcutEffects {
         })
         .catch(() => {
           this.toastsService.danger('Shortcuts loading FAIL, something\'s wrong happened');
-          return empty();
+          return of({type: fromRoot.SHORTCUT_LOAD_FAILED });
         });
     });
 
-  @Effect() updateShortcut = this.actions
-    .ofType(fromRoot.SHORTCUT_UPDATE)
+  // @Effect() updateShortcut = this.actions
+  //   .ofType(fromRoot.SHORTCUT_UPDATE)
+  //   .map((action: any) => action['payload'])
+  //   .switchMap((payload: any) => {
+  //     return this.shortcutService.update(payload)
+  //       .map((res: any) => {
+  //         return ({type: fromRoot.SHORTCUT_UPDATE_DONE, payload: res['data']});
+  //       })
+  //       .catch(() => {
+  //         this.toastsService.danger('Shortcuts update FAIL, something\'s wrong happened');
+  //         return ({type: fromRoot.SHORTCUT_UPDATE_FAILED });
+  //       });
+  //   });
+
+  @Effect() addShortcut = this.actions
+    .ofType(fromRoot.SHORTCUT_ADD)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-      return this.shortcutService.update(payload)
+      return this.shortcutService.create(payload)
         .map((res: any) => {
           return ({type: fromRoot.SHORTCUT_UPDATE_DONE, payload: res['data']});
         })
         .catch(() => {
           this.toastsService.danger('Shortcuts update FAIL, something\'s wrong happened');
-          return empty();
+          return of({type: fromRoot.SHORTCUT_UPDATE_FAILED });
         });
     });
 
@@ -67,7 +81,7 @@ export class ShortcutEffects {
         })
         .catch(() => {
           this.toastsService.danger('Shortcuts remove FAIL, something\'s wrong happened');
-          return empty();
+          return of({type: fromRoot.SHORTCUT_UPDATE_FAILED });
         });
     });
 }

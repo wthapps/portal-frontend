@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -13,16 +14,13 @@ import 'rxjs/add/operator/finally';
 
 import { PostEditComponent } from './post-edit.component';
 import { SocialService } from '../../services/social.service';
-import { SocialDataService } from '../../services/social-data.service';
 import { SoPost, User } from '@wth/shared/shared/models';
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, UserService } from '@wth/shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
 import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { PostService } from './shared/post.service';
-
-
-
+import { getSoProfile } from '../../reducers/index';
 
 @Component({
   selector: 'so-post-list',
@@ -44,14 +42,12 @@ export class PostListComponent implements OnInit, OnDestroy {
   page_index: number = 0;
   loading_done: boolean = false;
   nextLink: any;
-  readonly post_limit: number = Constants.soPostLimit;
-  // type: string = 'user';
 
   // Subscription
-  nextPhotoSubscription: Subscription;
   postIsEmpty: boolean = false;
   showLoading: boolean = true;
 
+  soProfile$: Observable<any>;
   profile$: Observable<any>;
 
   private destroySubject: Subject<any> = new Subject<any>();
@@ -64,9 +60,9 @@ export class PostListComponent implements OnInit, OnDestroy {
               private postService: PostService,
               private photoSelectDataService: PhotoModalDataService,
               private userService: UserService,
-              private socialDataService: SocialDataService
-              // private comDataService: CommunitiesDataService
+              private store: Store<any>
   ) {
+    this.soProfile$ = store.select(getSoProfile);
   }
 
   ngOnInit() {

@@ -116,12 +116,12 @@
                   class="fa fa-check"></i> {{ user.settings.viewable_post.value | titleCase }} <span
                   class="caret"></span></a>
                 <ul class="dropdown-menu dropdown-menu-check" aria-labelledby="dropdownMenu">
-                  <li><a href="javascript:;"
-                         (click)="user.settings.viewable_post.value = 'public'; updateSettings({viewable_post: user.settings.viewable_post})">
-                    <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'public'"></i> Public</a></li>
-                  <li><a href="javascript:;"
-                         (click)="user.settings.viewable_post.value = 'friends'; updateSettings({viewable_post: user.settings.viewable_post})">
-                    <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'friends'"></i> Friends</a></li>
+                  <li *ngFor="let pr of PRIVACIES"><a href="javascript:;"
+                         (click)="user.settings.viewable_post.value = pr; updateSettings({viewable_post: user.settings.viewable_post})">
+                    <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == pr"></i> {{ PRIVACY_NAMES[pr] }}</a></li>
+                  <!--<li><a href="javascript:;"-->
+                         <!--(click)="user.settings.viewable_post.value = 'friends'; updateSettings({viewable_post: user.settings.viewable_post})">-->
+                    <!--<i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'friends'"></i> Friends</a></li>-->
                 </ul>
               </div>
             </div>

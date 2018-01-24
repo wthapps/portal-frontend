@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
-import { ActivatedRoute, Router } from '@angular/router';
-import { WTHNavigateService, UserService, CommonEventService, ApiBaseService } from '@wth/shared/services';
-import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { Router } from '@angular/router';
+import { WTHNavigateService, UserService } from '@wth/shared/services';
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../reducers/index';
@@ -22,16 +21,15 @@ export class ZSocialLeftMenuComponent {
   uuid: string;
 
   shortcutsExpand: boolean = false;
+  MAX_CNT: number = 10;
 
   constructor(private userService: UserService,
-              private route: ActivatedRoute,
               private router: Router,
               private navigateService: WTHNavigateService,
-              private store: Store<any>,
-              private wthConfirmService: WthConfirmService,
-              private commonEventService: CommonEventService) {
+              private store: Store<any> ) {
     [this.homeMenuItem, ...this.socialMenu] = Constants.socialMenuItems;
     this.store.dispatch({type: fromRoot.SHORTCUT_LOAD});
+    this.store.dispatch({type: fromRoot.SO_PROFILE_LOAD});
     this.shortcuts$ = this.store.select(fromRoot.getShortcuts);
     this.uuid = this.userService.getSyncProfile().uuid;
   }

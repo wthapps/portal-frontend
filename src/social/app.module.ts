@@ -19,7 +19,8 @@ import { CoreModule } from '@wth/core/core.module';
 import { SharedModule } from '@wth/shared/shared.module';
 import { ShortcutEffects } from './shared/effects/shortcut-effects';
 import { environment } from '@env/environment';
-import { socialInitialState, appReducer } from './shared/reducers/index';
+import { appReducer } from './shared/reducers/index';
+import { SoProfileEffects } from './shared/effects/so-profile-effects';
 
 @NgModule({
   imports: [
@@ -36,7 +37,7 @@ import { socialInitialState, appReducer } from './shared/reducers/index';
     CoreModule.forRoot(),
 
     StoreModule.forRoot({app: appReducer}),
-    EffectsModule.forRoot([ShortcutEffects]),
+    EffectsModule.forRoot([ShortcutEffects, SoProfileEffects]),
     !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [],
 
   ],

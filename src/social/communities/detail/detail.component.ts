@@ -14,13 +14,14 @@ import { SocialFavoriteService } from '../../shared/services/social-favorites.se
 import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
 import { User } from '@wth/shared/shared/models';
 import { UserService } from '@shared/services';
-import { ApiBaseService } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { Constants } from '@wth/shared/constant';
+import { SHORTCUT_LOAD } from '../../shared/reducers/index';
+import { Store } from '@ngrx/store';
 
 declare let _: any;
 declare let $: any;
@@ -99,16 +100,16 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   private destroySubject: Subject<any> = new Subject<any>();
 
-  constructor(private apiBaseService: ApiBaseService,
+  constructor(
               private route: ActivatedRoute,
               private router: Router,
               private userService: UserService,
               private wthConfirmService: WthConfirmService,
-              private loadingService: LoadingService,
               private toastsService: ToastsService,
               private photoSelectDataService: PhotoModalDataService,
               private zoneReportService: ZSharedReportService,
               public favoriteService: SocialFavoriteService,
+              private store: Store<any>,
               private socialService: SocialService) {
 
     // All subscriptions to photo select modal should be closed when 1 of following events are emitted
@@ -131,6 +132,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       this.setTabVisibility();
       if (this.selectedTab !== undefined)
         this.getTabItems(this.uuid, this.selectedTab);
+
+    //   TODO: Update shorcut updates count
+      this.store.dispatch({type: SHORTCUT_LOAD});
     });
   }
 

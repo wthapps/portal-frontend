@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -18,7 +19,7 @@ import { EntitySelectComponent } from '@wth/shared/shared/components/entity-sele
 import { SoPost } from '@shared/shared/models';
 import { Constants } from '@wth/shared/constant';
 import { PhotoModalDataService, PhotoUploadService, UserService } from '@wth/shared/services';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'so-post-edit',
@@ -35,6 +36,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   isShare: boolean = false; // if we are creating a new share that means isShare's value is 'true'
   @Input() photos: Array<any> = new Array<any>();
   @Input() community: any;
+  @Input() soProfile: any;
   @ViewChild('textarea') textarea: ElementRef;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
@@ -106,13 +108,17 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
 
   open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
-
     this.post = new SoPost();
-    console.debug('post daata: ', this.post);
     if(this.socialService.community.currentCommunity) {
       this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
       this.post.custom_objects.length = 0;
       this.post.custom_objects.push(this.socialService.community.currentCommunity); // Default share new post to current community
+    } else {
+      let defaultPrivacy: string = _.get(this.soProfile, 'settings.viewable_post.value');
+      if(options.mode === 'add' && defaultPrivacy ) {
+        this.post.privacy = defaultPrivacy;
+      }
+
     }
 
     this.mode = options.mode;
@@ -273,20 +279,13 @@ export class PostEditComponent implements OnInit, OnDestroy {
       event.preventDefault();
     }
 
-    // console.debug('updateing ...', this.mode, this.post, attr);
-    // if (this.mode == 'add') {
-    //   // this.post = _.assignIn(this.post, attr);
-    // } else {
-    //   // this.post = _.assignIn(this.post, attr);
-    //
-    // }
     this.post = {...this.post, ...attr};
     this.privacyName = this.getPrivacyName(this.post);
     console.debug('updating... ', this.post);
   }
 
   private getPrivacyClassIcon(post: any): string {
-    let privacy = ( post.privacy == '' ) ? 'public' : post.privacy;
+    let privacy = ( !post || post.privacy == '' ) ? 'public' : post.privacy;
     switch (privacy) {
       case Constants.soPostPrivacy.friends.data:
         return 'fa-users';
@@ -304,8 +303,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   private getPrivacyName(post: any): string {
-    console.debug('getPrivacyName: ', post.privacy);
-    let privacy = ( post && post.privacy == '' ) ? 'public' : post.privacy;
+    let privacy = ( !post || post.privacy == '' ) ? 'public' : post.privacy;
     if(privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
       return post.custom_objects[0].name;
     return privacy.replace('_', ' ');

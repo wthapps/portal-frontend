@@ -42,7 +42,7 @@ export const MODE_TYPE: any = {
 export const DEBOUNCE_TIME: any = 250;
 
 @Component({
-    selector: 'entity-select',
+  selector: 'entity-select',
   templateUrl: 'entity-select.component.html',
   styleUrls: ['entity-select.component.scss']
 })
