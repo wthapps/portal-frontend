@@ -123,7 +123,7 @@
                 </ul>
               </div>
             </h4>
-            <span [innerHtml]="reply.content | linkify | safeHtml"></span>
+            <div class="textarea-editor-view" [innerHtml]="reply.content | linkify | safeHtml"></div>
             <div *ngIf="reply.links && reply.links.length > 0">
               <div *ngIf="reply.links[0].image && reply.links[0].title" class="message-item-content-main">
                 <display-link [data]="reply.links[0]"></display-link>
