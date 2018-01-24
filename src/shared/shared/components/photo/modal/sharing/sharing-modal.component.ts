@@ -16,7 +16,7 @@ declare var $: any;
 declare var _: any;
 
 @Component({
-    selector: 'sharing-modal',
+  selector: 'sharing-modal',
   templateUrl: 'sharing-modal.component.html',
   styleUrls: ['sharing-modal.component.scss']
 })

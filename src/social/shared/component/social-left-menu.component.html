@@ -18,9 +18,9 @@
 <div class="menuleft-nav-shortcuts">
   <div class="menuleft-nav-sub-item-list" [ngClass]="{'expand': shortcutsExpand}">
     <div *ngFor="let shortcut of shortcuts$ | async" class="menuleft-nav-sub-item" [routerLinkActive]="['active']">
-      <a draggable="false" [routerLink]="[shortcut.link]"
+      <a draggable="false" [routerLink]="[shortcut?.link]"
          href="#">
-        <i class="fa fa-users"></i> {{ shortcut.name }}
+        <i class="fa fa-users"></i> {{ shortcut?.name }}
       </a>
       <div class="menuleft-nav-sub-action">
         <span>{{ shortcut?.updates_count  > 0 ? ( shortcut?.updates_count  < MAX_CNT ? shortcut?.updates_count : "${MAX_CNT}+" ) : '' }}</span>

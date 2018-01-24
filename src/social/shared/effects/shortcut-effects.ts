@@ -43,45 +43,36 @@ export class ShortcutEffects {
         });
     });
 
-  // @Effect() updateShortcut = this.actions
-  //   .ofType(fromRoot.SHORTCUT_UPDATE)
-  //   .map((action: any) => action['payload'])
-  //   .switchMap((payload: any) => {
-  //     return this.shortcutService.update(payload)
-  //       .map((res: any) => {
-  //         return ({type: fromRoot.SHORTCUT_UPDATE_DONE, payload: res['data']});
-  //       })
-  //       .catch(() => {
-  //         this.toastsService.danger('Shortcuts update FAIL, something\'s wrong happened');
-  //         return ({type: fromRoot.SHORTCUT_UPDATE_FAILED });
-  //       });
-  //   });
 
-  @Effect() addShortcut = this.actions
-    .ofType(fromRoot.SHORTCUT_ADD)
+
+  @Effect() addShortcuts = this.actions
+    .ofType(fromRoot.SHORTCUT_ADD_MULTI)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
       return this.shortcutService.create(payload)
         .map((res: any) => {
-          return ({type: fromRoot.SHORTCUT_UPDATE_DONE, payload: res['data']});
+          this.toastsService.success('New shortcuts are added successfully');
+          return ({type: fromRoot.SHORTCUT_ADD_MULTI_DONE, payload: res['data']});
         })
         .catch(() => {
-          this.toastsService.danger('Shortcuts update FAIL, something\'s wrong happened');
-          return of({type: fromRoot.SHORTCUT_UPDATE_FAILED });
+          this.toastsService.danger('Shortcuts adding FAIL, something\'s wrong happened');
+          return of({type: fromRoot.COMMON_FAILED });
         });
     });
 
-  @Effect() removeShortcut = this.actions
-    .ofType(fromRoot.SHORTCUT_REMOVE)
+  @Effect() removeShortcuts = this.actions
+    .ofType(fromRoot.SHORTCUTS_REMOVE)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
-      return this.shortcutService.delete(payload.id)
-        .map((res: any) => {
-          return ({type: fromRoot.SHORTCUT_REMOVE_DONE, payload: res['data']});
+      console.debug('payload: ', payload);
+      return this.shortcutService.deleteMulti(payload['ids'])
+        .map((res) => {
+          this.toastsService.success('Shortcuts are removed successfully');
+          return ({type: fromRoot.SHORTCUTS_REMOVE_DONE, payload: res.ids});
         })
         .catch(() => {
           this.toastsService.danger('Shortcuts remove FAIL, something\'s wrong happened');
-          return of({type: fromRoot.SHORTCUT_UPDATE_FAILED });
+          return of({type: fromRoot.COMMON_FAILED });
         });
     });
 }

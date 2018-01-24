@@ -1,5 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 import { UserService, ApiBaseService, BaseEntityService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
@@ -21,5 +22,17 @@ export class SoShortcutService extends BaseEntityService<any> {
     this.url = this.soShortcutUrl;
   }
 
+  getSuggestions(query: any): Observable<any> {
+    return this.apiBaseService.post(`${this.url}/suggestions`, {query});
+  }
+
+  create(body: any, multiple: boolean=false): Observable<any> {
+    let ids: any[] = body.map(c => c.id);
+    return super.create({ids}, multiple);
+  }
+
+  deleteMulti(ids: any): Observable<any> {
+    return this.apiBaseService.post(`${this.url}/delete_multi`, {ids});
+  }
 }
 
