@@ -204,3 +204,20 @@ textarea {
 .textarea-editor-view {
   word-break: break-word;
 }
+
+.input-group-search-header {
+  .input-group-form {
+    p-autocomplete {
+      ul li {
+        display: block;
+      }
+      input[type="text"] {
+        padding-left: 28px;
+        width: 100%;
+        display: block;
+        margin: 0;
+      }
+    }
+  }
+}
+
