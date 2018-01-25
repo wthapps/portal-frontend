@@ -9,6 +9,7 @@ import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { PhotoService } from '@wth/shared/services';
 import { ModalModule } from '@wth/shared/modals/modals.module';
+// import { PhotoSandbox } from './photo.sandbox';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
     PhotoDetailComponent
   ],
   providers: [
-    PhotoService
+    PhotoService,
+    // PhotoSandbox
   ]
 })
 

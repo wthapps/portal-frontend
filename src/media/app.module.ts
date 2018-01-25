@@ -18,6 +18,13 @@ import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '@env/environment';
+import { StoreModule } from '@ngrx/store';
+
+import { EffectsModule } from '@ngrx/effects';
+import { PhotoEffects } from './shared/store/effects/photo.effect';
+import { mediaReducers } from './shared/store/index';
 
 
 @NgModule({
@@ -26,7 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     BrowserAnimationsModule,
 
-    AppRoutingModule,
+
     ZMediaHomeModule,
     ZMediaAlbumModule,
     ZMediaPhotoModule,
@@ -36,9 +43,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ZMediaSearchModule,
     ZMediaMyProfileModule,
 
+    AppRoutingModule,
+
     ZMediaSharedModule.forRoot(),
     CoreModule.forRoot(),
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    StoreModule.forRoot(mediaReducers),
+    EffectsModule.forRoot([
+      PhotoEffects
+    ]),
+    !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [],
+
   ],
   declarations: [AppComponent],
   providers: [{

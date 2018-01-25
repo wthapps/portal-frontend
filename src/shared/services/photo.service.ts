@@ -8,11 +8,12 @@ import 'rxjs/add/operator/takeUntil';
 import { ApiBaseService } from './apibase.service';
 import { WthConfirmService } from '../shared/components/confirmation/wth-confirm.service';
 import { Photo } from '../shared/models/photo.model';
+import { BaseEntityService } from '@wth/shared/services';
 
 declare var _: any;
 
 @Injectable()
-export class PhotoService {
+export class PhotoService extends BaseEntityService<any> {
 
   url = 'media/photos';
 
@@ -21,8 +22,9 @@ export class PhotoService {
   private closePreviewSubject: Subject<any> = new Subject();
   private modifiedPhotosSubject: Subject<any> = new Subject(); // including UPDATED and DELETED photos
 
-  constructor(private apiBaseService: ApiBaseService,
+  constructor(protected apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService) {
+    super(apiBaseService);
     this.closePreview$ = this.closePreviewSubject.asObservable();
     this.modifiedPhotos$ = this.modifiedPhotosSubject.asObservable();
   }
@@ -44,13 +46,13 @@ export class PhotoService {
     return this.apiBaseService.get(`${this.url}/${id}`);
   }
 
-  create(body: any) {
-    return this.apiBaseService.post(`${this.url}`, body);
-  }
-
-  update(body: any) {
-    return this.apiBaseService.put(`${this.url}/${body.id}`, body);
-  }
+  // create(body: any) {
+  //   return this.apiBaseService.post(`${this.url}`, body);
+  // }
+  //
+  // update(body: any) {
+  //   return this.apiBaseService.put(`${this.url}/${body.id}`, body);
+  // }
 
   download(body: any) {
     return this.apiBaseService.download(`media/files/download`, body);

@@ -6,6 +6,9 @@ import 'rxjs/add/operator/filter';
 import { Constants, Config } from '@wth/shared/constant';
 import { ConfirmDialogModel } from '@wth/shared/shared/models/confirm-dialog.model';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { AppSandbox } from './app.sandbox';
+import { State } from './shared/store/index';
+import { Store } from '@ngrx/store';
 
 /**
  * This class represents the main application component.
@@ -15,13 +18,18 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
+  providers: [AppSandbox]
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
 
-  constructor(private router: Router, private wthConfirmService: WthConfirmService) {
+  constructor(
+    private router: Router,
+    private wthConfirmService: WthConfirmService,
+    mediaStore: Store<State>
+  ) {
 
     this.wthConfirmService.confirmDialog$.subscribe(
       (res: any) => {
