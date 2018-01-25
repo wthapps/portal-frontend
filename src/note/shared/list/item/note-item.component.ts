@@ -12,7 +12,6 @@ import * as note from '../../actions/note';
 import { NoteConstants, noteConstants } from "../../config/constants";
 import { UserService } from '@wth/shared/services';
 
-declare var _: any;
 
 @Component({
   selector: 'note-item',
@@ -22,11 +21,13 @@ declare var _: any;
 export class NoteItemComponent implements OnInit, OnDestroy {
   @Input() data: Note = new Note();
   @Input() page: string = 'MY_NOTE';
+  @Input() sortOption: any;
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
 
   readonly tooltip: any = Constants.tooltip;
   readonly PAGE_TYPE: any = Constants.notePageType;
   readonly noteConstants: NoteConstants = noteConstants;
+  readonly DATE_MAP: any = noteConstants.DATE_MAP;
   selected: boolean = false;
   sub: Subscription;
   pressingCtrlKey: boolean;
@@ -90,14 +91,7 @@ export class NoteItemComponent implements OnInit, OnDestroy {
     this.store.dispatch(new note.Select(this.data));
   }
 
-  onView() {
-    /*if (this.data['permission'] === 'view') {
-      this.noteService.modalEvent({action: 'note:open_note_view_modal', payload: this.data});
-    } else {
-      this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: this.data});
-    }*/
-    // this.router.navigate(['notes', this.data.id]);
-    this.router.navigate([{outlets: {detail: ['notes', this.data.id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
+  onView() {this.router.navigate([{outlets: {detail: ['notes', this.data.id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {

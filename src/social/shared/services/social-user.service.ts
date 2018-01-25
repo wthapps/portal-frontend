@@ -14,27 +14,14 @@ import { User } from '@wth/shared/shared/models';
  */
 
 declare  let _: any;
-export let soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
 export let soUsersUrl: string = Constants.urls.zoneSoUsers;
 export let soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
 export let soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
-export let soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
-export let soReportUrl: string = Constants.urls.zoneSoReportList;
-export let soReportEntity: any = Constants.soCommunityReportEntity;
 export let soFriendUrl: any = Constants.urls.soFriendUrl;
 
 @Injectable()
 export class SoUserService {
   profile: User = null;
-
-  // Cached friends data of current user
-  private ownFriendInfo: any =  {
-    totalFriends: undefined,
-    totalFollowers: undefined,
-    totalFollowings: undefined,
-    totalBlacklist: undefined
-  };
-
 
   constructor(private apiBaseService: ApiBaseService, private userService: UserService, private notificationService: NotificationService) {
     this.profile = this.userService.getSyncProfile();
@@ -42,21 +29,6 @@ export class SoUserService {
 
   get(uuid: string = this.userService.getSyncProfile().uuid) {
     return this.apiBaseService.get(`${soUsersUrl}/${uuid}`);
-  }
-
-  getOwnFriendInfo(): Promise<any> {
-    console.debug('ownFriendInfo: ', this.ownFriendInfo);
-    if(this.ownFriendInfo.totalFriends && this.ownFriendInfo.totalFollowers && this.ownFriendInfo.totalFollowings && this.ownFriendInfo.totalBlacklists)
-      return Promise.resolve(this.ownFriendInfo);
-
-    return this.get().toPromise().then(
-      (res: any) => {
-        _.set(this.ownFriendInfo, 'totalFriends', res.data.total_friends);
-        _.set(this.ownFriendInfo, 'totalFollowers', res.data.total_followers);
-        _.set(this.ownFriendInfo, 'totalFollowings', res.data.total_followings);
-        _.set(this.ownFriendInfo, 'totalBlacklist', res.data.total_blacklists);
-        return this.ownFriendInfo;
-      });
   }
 
   update(body: any) {
@@ -95,7 +67,6 @@ export class SoUserService {
   }
 
   getFavourites() {
-    console.log('soFavouriteUrl: ' + soFavouritesUrl);
     return this.apiBaseService.get(`${soFavouritesUrl}`);
   }
 
@@ -105,30 +76,6 @@ export class SoUserService {
 
   toggleFavourites(uuid: any, type: string) {
     return this.apiBaseService.post(`${soFavouritesUrl}`, {uuid: uuid, type: type});
-  }
-
-  getNotifications() {
-    return this.apiBaseService.get(`${soNotificationsUrl}`);
-  }
-
-  checkedNotifications() {
-    return this.apiBaseService.post(`${soNotificationsUrl}/checked`);
-  }
-
-  reportUser(body: any) {
-  // required params: report_entity_id, entity_type, reason, reporter_id, community_id
-    _.merge(body, {entity_type : soReportEntity.user});
-    return this.apiBaseService.post(`${soReportUrl}`, body);
-  }
-
-  reportCommuntity(body: any) {
-    _.merge(body, {entity_type : soReportEntity.user});
-    return this.apiBaseService.post(`${soReportUrl}`, body);
-  }
-
-  getReportList(community: any) {
-    let body = {'community_id': community.id};
-    return this.apiBaseService.get(`${soReportUrl}`, body);
   }
 
   // ================= Friend ======================

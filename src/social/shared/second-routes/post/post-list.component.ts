@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
@@ -15,7 +14,6 @@ import 'rxjs/add/operator/finally';
 import { PostEditComponent } from './post-edit.component';
 import { SocialService } from '../../services/social.service';
 import { SoPost, User } from '@wth/shared/shared/models';
-import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, UserService } from '@wth/shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
 import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
@@ -69,17 +67,18 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.currentUser = this.socialService.user.profile;
     this.profile$ = this.userService.getAsyncProfile();
     // Support get route params from parent route as well as current route. Ex: Profile post page
-    let parentRouteParams = this.route.parent.params;
+    let parentRouteParams = this.route.parent.paramMap;
     this.showLoading = document.getElementById('post-list-loading') !== null;
 
-    this.route.params
+    this.route.paramMap
       .combineLatest(parentRouteParams)
       .takeUntil(this.destroySubject)
-      .map((paramsPair: any) => {
+      .map(([paramMap, parentParamMap]: any) => {
         this.startLoading();
-        return _.find(paramsPair, (params: any) => _.get(params, 'id') != undefined);})
-      .subscribe((params: any) => {
-        this.uuid = _.get(params, 'id');  // this can be user uuid or community uuid
+        return paramMap.get('id') || parentParamMap.get('id');
+    })
+      .subscribe((id: any) => {
+          this.uuid = id;
         // Load if items empty
         if (this.type != 'search') {
           this.loadPosts();
@@ -130,14 +129,12 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   loadPosts() {
-    console.debug('inside loadPosts');
     if (!this.type) {
       console.error('type params should be assigned: ', this.type);
       this.stopLoading();
       return;
     }
     this.socialService.post.getList(this.uuid, this.type)
-      // .finally(() => this.loadingService.stop('#post-list-loading'))
       .toPromise().then(
         (res: any) => {
           this.stopLoading();
@@ -163,13 +160,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   save(options: any = {mode: 'add', item: null, isShare: false}) {
-    // _.assign(options.item, {tags_json: options.item.tags, photos_json: options.item.photos});
     if (options.mode == 'add') {
       this.postService.add(options.item)
         .toPromise().then((response: any) => {
-            console.log('response', response);
             this.items.unshift(..._.map([response.data], this.mapPost)); // Adding new post at the beginning of posts array
-            // this.loadPosts();
             this.postEditModal.close();
             this.postIsEmpty = false;
           },
@@ -182,7 +176,6 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.postEditModal.close();
       this.postService.update(options.item)
         .toPromise().then((response: any) => {
-            // this.loadPosts();
             let editedItem = _.map([response.data], this.mapPostNoComments)[0];
             let idx = _.findIndex(this.items, (i: SoPost) => {
               return i.uuid == editedItem.uuid;
@@ -201,7 +194,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   dismiss(item: any) {
-    // this.postEditModal.dismiss(item);
     console.log('dismiss item...............', item);
   }
 
@@ -222,7 +214,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   updatedPost(event: any, post: any) {
-    // this.loadPosts();
     this.items = _.map(this.items, (item: any) => {
       if (item.id == post.id)
         return post;
@@ -232,22 +223,18 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   deletedPost(event: any, post: any) {
-    // this.loadPosts();
     _.remove(this.items, {id: post.id});
   }
 
 
   openPhotoModal(e: any) {
     this.commentBox = e;
-    // this.photoModal.open();
   }
 
   onSelectPhotoComment(photos: any) {
     if (this.commentBox) {
       this.commentBox.commentAction(photos);
     }
-    // this.photoModal.close();
-    // this.photoSelectDataService.close();
   }
 
   viewMorePosts() {
@@ -257,20 +244,8 @@ export class PostListComponent implements OnInit, OnDestroy {
         _.map(res.data, (v: any)=> {
           this.items.push(this.mapPost(v));
         });
-        // let items = _.map(res.data, this.mapPost);
-        // for(let i=0; i <items.length; i++) {
-        //   this.items.push(items[0]);
-        // }
         this.nextLink = res.page_metadata.links.next;
       });
     }
-  }
-
-  trackItems(index: any, item: any) {
-    return item ? item.id : undefined;
-  }
-
-  focusSearchFriends() {
-    $('#searchTopHeader').focus();
   }
 }

@@ -4,7 +4,7 @@ import { Constants } from '../../../../constant/config/constants';
 declare var _: any;
 
 @Component({
-    selector: 'me-list-header',
+  selector: 'me-list-header',
   templateUrl: 'media-list-header.component.html',
   styleUrls: ['media-list-header.component.scss']
 })

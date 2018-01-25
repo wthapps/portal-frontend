@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -20,10 +20,6 @@ export class SoCommunityService  {
   } ;
 
   readonly soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
-  readonly soUsersUrl: string = Constants.urls.zoneSoUsers;
-  readonly soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
-  readonly soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
-  readonly soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
   readonly soReportList: string = Constants.urls.zoneSoReportList;
   currentCommunity: any;
 
@@ -157,18 +153,8 @@ export class SoCommunityService  {
     return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}`).take(1);
   }
 
-
-
-  checkCurrentUser(uuid: string) {
-    return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/check_current_user/`);
-  }
-
   getTabItems(uuid: string, tabName: string) {
     return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/${tabName}`);
-  }
-
-  checkJoinRequestStatus(uuid: string) {
-    return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/join_request_status`);
   }
 
   createCommunity(body: any) {

@@ -13,11 +13,17 @@
   </div>
   <div class="component-listbox-description can-click" (click)="onClick()" (dblclick)="onView()" [innerHTML]="data?.content">
   </div>
-  <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
-    {{ ( page !== noteConstants.PAGE_RECENT
-    ? (data.created_at | timeFormat )
-    : ((data.accessed_date | timeFormat ) + ', ' + noteConstants.ACCESS_NAME[data?.accessed_date_type]))  }}
+  <ng-container *ngIf="page !== noteConstants.PAGE_RECENT">
+    <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
+      {{ (DATE_MAP[sortOption?.field] ? data[sortOption?.field] : data.created_at) | timeFormat }}
+    </div>
+
+  </ng-container>
+
+  <div class="component-listbox-date can-click" *ngIf="page === noteConstants.PAGE_RECENT" (click)="onClick()" (dblclick)="onView()">
+    {{ (data.accessed_date | timeFormat ) + ', ' + noteConstants.ACCESS_NAME[data?.accessed_date_type] }}
   </div>
+
 
   <div class="component-listbox-action" >
 

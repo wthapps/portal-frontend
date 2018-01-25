@@ -4,7 +4,8 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: '', redirectTo: '/photos', pathMatch: 'full'}
+      {path: '', redirectTo: '/photos', pathMatch: 'full'},
+      {path: 'home', redirectTo: '/photos', pathMatch: 'full'},
     ])
   ],
   exports: [RouterModule]

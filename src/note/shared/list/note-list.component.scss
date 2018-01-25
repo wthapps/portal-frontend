@@ -8,7 +8,7 @@
 $note-name: auto;
 $note-owner: 200px;
 $note-description: 200px;
-$note-date: 130px;
+$note-date: 200px;
 $note-action: 200px;
 
 .component-listbox-list {
@@ -44,6 +44,10 @@ $note-action: 200px;
       float: left;
     }
   }
+}
+
+.date-header {
+  text-align: left;
 }
 
 .component-listbox-list {

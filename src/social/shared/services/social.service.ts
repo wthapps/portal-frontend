@@ -12,14 +12,7 @@ import { Constants } from '@wth/shared/constant';
  */
 
 declare  let _: any;
-export let soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
-export let soUsersUrl: string = Constants.urls.zoneSoUsers;
-export let soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
 export let soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
-export let soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
-export let soReportUrl: string = Constants.urls.zoneSoReportList;
-export let soReportEntity: any = Constants.soCommunityReportEntity;
-export let soFriendUrl: any = Constants.urls.soFriendUrl;
 
 @Injectable()
 export class SocialService {

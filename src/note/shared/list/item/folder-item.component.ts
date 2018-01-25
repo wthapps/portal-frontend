@@ -1,13 +1,11 @@
 import {
-  Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, OnDestroy,
+  Component, OnInit, Input, Output, EventEmitter, OnDestroy,
   HostListener
 } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 
-import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import { ZNoteService } from '../../services/note.service';
 
@@ -16,6 +14,7 @@ import * as note from '../../actions/note';
 import { Subscription } from 'rxjs';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { UrlService, UserService } from "@shared/services";
+import { noteConstants } from '../../config/constants';
 
 declare var _: any;
 
@@ -27,6 +26,7 @@ declare var _: any;
 export class FolderItemComponent implements OnInit, OnDestroy {
   @Input() data: any;
   @Input() page: string = 'MY_NOTE';
+  @Input() sortOption: any;
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
 
   tooltip: any = Constants.tooltip;
@@ -36,6 +36,8 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   urls: any;
 
   readonly PAGE_TYPE: any = Constants.notePageType;
+  readonly noteConstants: NoteConstants = noteConstants;
+  readonly DATE_MAP: any = noteConstants.DATE_MAP;
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {

@@ -12,8 +12,6 @@
       <div class="z-social-media-body">
         <div class="z-social-media-inputpost inputpost-new">
           <div class="mb10">
-            <!--<textarea textAreaAutoHeight class="form-control" rows="3" placeholder="Share your ideas"-->
-                      <!--(focus)="postEditModal.open()"></textarea>-->
             <div contenteditable="true" class="form-control" rows="3" placeholder="Share your ideas"
                       (focus)="postEditModal.open()"></div>
           </div>
@@ -50,7 +48,6 @@
     </p>
   </div>
 </div>
-<!--<div id="post-list-loading" class="pt20 pb20"></div>-->
 
 <div class="view-all" *ngIf="nextLink != undefined">
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>

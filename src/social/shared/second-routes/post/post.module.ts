@@ -14,7 +14,6 @@ import { PostNewComponent } from './post-new.component';
 import { PostEditComponent } from './post-edit.component';
 import { PostActivitiesComponent } from './post-activities.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
-import { PostPrivacyCustomComponent } from './post-privacy-custom.component';
 import { PostService } from './shared/post.service';
 
 @NgModule({
@@ -37,7 +36,6 @@ import { PostService } from './shared/post.service';
     PostNewComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
-    PostPrivacyCustomComponent,
     // MemberListInviteComponent,
     // Comments
     CommentItemEditorComponent
@@ -56,7 +54,6 @@ import { PostService } from './shared/post.service';
     PostNewComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
-    PostPrivacyCustomComponent,
     // MemberListInviteComponent,
 
 

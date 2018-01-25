@@ -32,7 +32,11 @@ export class NoteListComponent implements OnInit {
   @Input() page: string;
 
   noteConstants: NoteConstants = noteConstants;
+  showDateCaret: boolean;
   loading$: Observable<boolean>;
+  readonly DATE_MAP: any = noteConstants.DATE_MAP;
+  readonly DATE_ARR: string[] = Object.keys(this.DATE_MAP);
+  readonly SHARE_PAGES: string[] = [noteConstants.PAGE_SHARED_WITH_ME, noteConstants.PAGE_SHARED_BY_ME];
 
   readonly VIEW_MODE = {
     GRID: 'grid',
@@ -56,15 +60,23 @@ export class NoteListComponent implements OnInit {
 
   onSort(name: any) {
     if (this.page !== this.noteConstants.PAGE_RECENT)
-      this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {field: name, desc: !this.sortOption.desc}}});
+      // this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {field: name, desc: this.sortOption.desc}}});
+      if(this.sortOption.field === name)
+        if(this.DATE_ARR.includes(this.sortOption.field))
+          return;
+        else
+          this.onReverseSort();
+      else
+        this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {...this.sortOption, field: name}}});
+  }
+
+  onReverseSort() {
+    if (this.page !== this.noteConstants.PAGE_RECENT)
+      this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {...this.sortOption, desc: !this.sortOption.desc}}});
   }
 
   onSelectedAll() {
     this.store.dispatch(new note.SelectAll());
-  }
-
-  private pressedCtrlKey(ke: KeyboardEvent): boolean {
-    return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
 
   private deSelectObjects() {
