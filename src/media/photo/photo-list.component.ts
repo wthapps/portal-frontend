@@ -5,6 +5,7 @@ import { ActionTypes } from '../shared/store/actions/photo.action';
 import * as appStore from '../shared/store';
 
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   moduleId: module.id,
@@ -13,14 +14,14 @@ import { Store } from '@ngrx/store';
 })
 export class ZMediaPhotoListComponent implements OnInit {
   @ViewChild('introModal') introModal: any;
-  photos: any;// = this.photoSandBox.photo$;
+  photos: Observable<Array<any>>;// = this.photoSandBox.photo$;
 
   constructor(
     private userService: UserService,
     // private photoSandBox: PhotoSandbox,
     private store: Store<appStore.State>
   ) {
-    // this.photos = this.store.select(appStore.getPhotoEntities);
+    // this.photos = this.store.select(appStore.getPhotos);
   }
 
   ngOnInit() {

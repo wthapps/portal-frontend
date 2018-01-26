@@ -1,8 +1,9 @@
 import * as actions from '../actions/photo.action';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Photo } from '../../model/photo.model';
+import { createSelector } from 'reselect';
 
-export interface State extends EntityState<Partial<Photo>> {
+export interface State extends EntityState<Partial<any>> {
   loading: boolean;
   loaded:  boolean;
   failed:  boolean;
@@ -11,12 +12,12 @@ export interface State extends EntityState<Partial<Photo>> {
   photos:  Array<any>;
 };
 
-export const adapter: EntityAdapter<Partial<Photo>> = createEntityAdapter<Partial<Photo>>();
+export const adapter: EntityAdapter<Partial<any>> = createEntityAdapter<Partial<any>>();
 
 
 const INITIAL_STATE: State = adapter.getInitialState({
   ids: [],
-  entities: null,
+  entities: [],
   loading: false,
   loaded:  false,
   failed:  false,
@@ -86,8 +87,12 @@ export const getLoading = (state: State) => state.loading;
 export const getLoaded  = (state: State) => state.loaded;
 export const getFailed  = (state: State) => state.failed;
 export const getPhotoEntities    = (state: State) => state.entities;
+export const getPhotoState   = (state: State) => state;
 
+export const {
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectTotal,
+} = adapter.getSelectors(getPhotoState);
 
-// export const {
-//   selectIds: selectPhotoIds
-// } = adapter.getSelectors();

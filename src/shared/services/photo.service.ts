@@ -38,7 +38,7 @@ export class PhotoService {
     this.modifiedPhotosSubject.next(options);
   }
 
-  listPhoto(body: any = {}): any {
+  listPhoto(body: any = {}): Observable<any> {
     return this.apiBaseService.get(this.url, body);
   }
 

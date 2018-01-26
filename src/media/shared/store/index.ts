@@ -49,17 +49,12 @@ export const mediaReducers: ActionReducerMap<State> = {
  */
 export const getPhotoState   = createFeatureSelector<fromPhoto.State>('photo');
 
-// export const getPhotoState   = (state: State) => state.photo;
-
-// export const getPhotoEntities = createSelector(getPhotoState, fromPhoto.getPhotos);
-export const getPhotoEntities       = createSelector(getPhotoState, fromPhoto.getPhotoEntities);
-
-
+export const getPhotoEntities    = createSelector(getPhotoState, fromPhoto.getPhotoEntities);
 export const getPhotoLoaded  = createSelector(getPhotoState, fromPhoto.getLoaded);
 export const getPhotoLoading = createSelector(getPhotoState, fromPhoto.getLoading);
 export const getPhotoFailed  = createSelector(getPhotoState, fromPhoto.getFailed);
 export const getPhoto        = createSelector(getPhotoState, fromPhoto.getPhoto);
-export const getPhotos       = createSelector(getPhotoState, fromPhoto.getPhotos);
+export const getPhotos       = createSelector(getPhotoState, fromPhoto.selectAll);
 
 
 // export const getPhotoLoaded  = createSelector(getPhotoEntities, fromPhoto.getLoaded, state => state);
