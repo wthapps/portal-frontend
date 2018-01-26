@@ -14,7 +14,7 @@ import * as note from '../../actions/note';
 import { Subscription } from 'rxjs';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { UrlService, UserService } from "@shared/services";
-import { noteConstants } from '../../config/constants';
+import { noteConstants, NoteConstants } from '../../config/constants';
 
 declare var _: any;
 

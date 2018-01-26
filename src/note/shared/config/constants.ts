@@ -63,13 +63,13 @@ export class NoteConstants extends ConstantsBase {
       title: 'There is no recent note accessed by you!',
       subTitle: 'Recent Note',
     }
-  },
+  };
 
   ACCESS_NAME: any = {
     1: ' Last Opened',
     2: ' Last Modified',
     3: ' Uploaded'
-  },
+  };
 
   DATE_MAP: any = {
     'created_at': 'Create date',
