@@ -1,4 +1,5 @@
 import { Action }   from '@ngrx/store';
+import { User } from '@wth/shared/shared/models';
 
 export const ActionTypes = {
   GET:                  '[Photo] Get',
@@ -37,7 +38,7 @@ export class GetAll implements Action {
 
 export class GetAllSuccess implements Action {
   type = ActionTypes.GET_ALL_SUCCESS;
-  constructor(public payload: any = null) { }
+  constructor(public payload: Partial<User>[] = null) { }
 }
 
 export class GetAllFail implements Action {

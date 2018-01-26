@@ -34,7 +34,7 @@ export class NoteConstants extends ConstantsBase {
       edit: false,
       enableEdit: true,
     }
-  }
+  };
 
   NO_DATA: any = {
     MY_NOTE: {

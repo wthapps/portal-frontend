@@ -6,8 +6,8 @@ import 'rxjs/add/operator/filter';
 import { Constants, Config } from '@wth/shared/constant';
 import { ConfirmDialogModel } from '@wth/shared/shared/models/confirm-dialog.model';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { AppSandbox } from './app.sandbox';
-import { State } from './shared/store/index';
+// import { AppSandbox } from './app.sandbox';
+import { State } from './shared/store';
 import { Store } from '@ngrx/store';
 
 /**
@@ -18,7 +18,7 @@ import { Store } from '@ngrx/store';
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  providers: [AppSandbox]
+  providers: []
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;

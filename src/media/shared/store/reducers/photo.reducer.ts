@@ -2,7 +2,7 @@ import * as actions from '../actions/photo.action';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Photo } from '../../model/photo.model';
 
-export interface State extends EntityState<Photo> {
+export interface State extends EntityState<Partial<Photo>> {
   loading: boolean;
   loaded:  boolean;
   failed:  boolean;
@@ -11,7 +11,7 @@ export interface State extends EntityState<Photo> {
   photos:  Array<any>;
 };
 
-export const adapter: EntityAdapter<Photo> = createEntityAdapter<Photo>();
+export const adapter: EntityAdapter<Partial<Photo>> = createEntityAdapter<Partial<Photo>>();
 
 
 const INITIAL_STATE: State = adapter.getInitialState({
@@ -63,12 +63,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
     }
 
     case actions.ActionTypes.GET_ALL_SUCCESS: {
-      return Object.assign({}, state, {
-        loaded:   true,
-        loading:  false,
-        failed:   false,
-        photo:    action.payload
-      });
+      return adapter.addAll(action.payload.data, state);
     }
 
     case actions.ActionTypes.GET_ALL_FAIL: {
@@ -90,6 +85,7 @@ export const getPhotos    = (state: State) => state.photos;
 export const getLoading = (state: State) => state.loading;
 export const getLoaded  = (state: State) => state.loaded;
 export const getFailed  = (state: State) => state.failed;
+export const getPhotoEntities    = (state: State) => state.entities;
 
 
 // export const {

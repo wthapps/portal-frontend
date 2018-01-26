@@ -41,8 +41,9 @@ export class PhotoEffects {
   @Effect()
   get$: Observable<Action> = this.actions$
     .ofType(photoActions.ActionTypes.GET)
+    .map((action: photoActions.Get) => action.payload)
     .switchMap((state: any) => {
-      return this.photoService.get(state)
+      return this.photoService.getPhoto(state)
         .map(photo => new photoActions.GetSuccess(photo))
         .catch(error  => of(new photoActions.GetFail()));
     });
@@ -50,9 +51,10 @@ export class PhotoEffects {
   @Effect()
   getAll$: Observable<Action> = this.actions$
     .ofType(photoActions.ActionTypes.GET_ALL)
+    .map((action: photoActions.GetAll) => action.payload)
     .switchMap(state => {
-      return this.photoService.getAll(state)
-        .map(photos => new photoActions.GetAllSuccess(photos))
+      return this.photoService.listPhoto(state)
+        .map(response => new photoActions.GetAllSuccess(...response))
         .catch(error  => of(new photoActions.GetAllFail()));
     });
 }

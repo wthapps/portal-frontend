@@ -17,7 +17,7 @@ import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
  */
 
 import * as fromPhoto       from './reducers/photo.reducer';
-import { EntityState } from '@ngrx/entity';
+import { PhotoEffects } from './effects/photo.effect';
 
 /**
  * We treat each reducer like a table in a database. This means
@@ -49,6 +49,12 @@ export const mediaReducers: ActionReducerMap<State> = {
  */
 export const getPhotoState   = createFeatureSelector<fromPhoto.State>('photo');
 
+// export const getPhotoState   = (state: State) => state.photo;
+
+// export const getPhotoEntities = createSelector(getPhotoState, fromPhoto.getPhotos);
+export const getPhotoEntities       = createSelector(getPhotoState, fromPhoto.getPhotoEntities);
+
+
 export const getPhotoLoaded  = createSelector(getPhotoState, fromPhoto.getLoaded);
 export const getPhotoLoading = createSelector(getPhotoState, fromPhoto.getLoading);
 export const getPhotoFailed  = createSelector(getPhotoState, fromPhoto.getFailed);
@@ -56,4 +62,15 @@ export const getPhoto        = createSelector(getPhotoState, fromPhoto.getPhoto)
 export const getPhotos       = createSelector(getPhotoState, fromPhoto.getPhotos);
 
 
+// export const getPhotoLoaded  = createSelector(getPhotoEntities, fromPhoto.getLoaded, state => state);
+// export const getPhotoLoading = createSelector(getPhotoEntities, fromPhoto.getLoading, state => state);
+// export const getPhotoFailed  = createSelector(getPhotoEntities, fromPhoto.getFailed, state => state);
+// export const getPhoto        = createSelector(getPhotoEntities, fromPhoto.getPhoto, state => state);
+// export const getPhotos       = createSelector(getPhotoEntities, fromPhoto.getPhotos, state => state);
 
+
+export const appStore = {
+  photo: fromPhoto.reducer
+};
+
+export let appEffects: Array<any> = [PhotoEffects];

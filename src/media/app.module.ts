@@ -23,8 +23,7 @@ import { environment } from '@env/environment';
 import { StoreModule } from '@ngrx/store';
 
 import { EffectsModule } from '@ngrx/effects';
-import { PhotoEffects } from './shared/store/effects/photo.effect';
-import { mediaReducers } from './shared/store/index';
+import { appStore, appEffects } from './shared/store';
 
 
 @NgModule({
@@ -48,10 +47,8 @@ import { mediaReducers } from './shared/store/index';
     ZMediaSharedModule.forRoot(),
     CoreModule.forRoot(),
     SharedModule.forRoot(),
-    StoreModule.forRoot(mediaReducers),
-    EffectsModule.forRoot([
-      PhotoEffects
-    ]),
+    StoreModule.forRoot(appStore),
+    EffectsModule.forRoot(appEffects),
     !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [],
 
   ],
