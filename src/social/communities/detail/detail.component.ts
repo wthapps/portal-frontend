@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -15,7 +15,6 @@ import { EntitySelectComponent } from '@wth/shared/shared/components/entity-sele
 import { User } from '@wth/shared/shared/models';
 import { UserService } from '@shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
@@ -128,18 +127,13 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       }
       this.selectedTab = queryParam['tab'] ;
       this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
+
+      (!this.selectedTab || this.selectedTab === this.tab.post) && this.store.dispatch({type: SHORTCUT_LOAD});
     }).subscribe(() => {
       this.setTabVisibility();
       if (this.selectedTab !== undefined)
         this.getTabItems(this.uuid, this.selectedTab);
-
-      if(this.isPostTab) {
-        //   TODO: Update shorcut updates count
-        this.store.dispatch({type: SHORTCUT_LOAD});
-      }
     });
-
-
   }
 
   ngOnDestroy() {

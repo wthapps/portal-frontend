@@ -21,7 +21,10 @@ export class ZSocialLeftMenuComponent {
   uuid: string;
 
   shortcutsExpand: boolean = false;
-  MAX_CNT: number = 10;
+  readonly COUNT_DISPLAY: any = {
+    '0': ' ',
+    '10': '10+'
+  }
 
   constructor(private userService: UserService,
               private router: Router,

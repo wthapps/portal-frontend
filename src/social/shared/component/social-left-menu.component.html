@@ -23,7 +23,8 @@
         <i class="fa fa-users"></i> {{ shortcut?.name }}
       </a>
       <div class="menuleft-nav-sub-action">
-        <span>{{ shortcut?.updates_count  > 0 ? ( shortcut?.updates_count  < MAX_CNT ? shortcut?.updates_count : "${MAX_CNT}+" ) : '' }}</span>
+        <!--<span>{{ shortcut?.updates_count  > 0 ? ( shortcut?.updates_count  < MAX_CNT ? shortcut?.updates_count : "${MAX_CNT}+" ) : '' }}</span>-->
+        <span> {{ COUNT_DISPLAY[(shortcut?.updates_count)] || shortcut?.updates_count }}</span>
       </div>
     </div>
   </div>

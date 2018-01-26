@@ -22,8 +22,8 @@ export class SoShortcutService extends BaseEntityService<any> {
     this.url = this.soShortcutUrl;
   }
 
-  getSuggestions(query: any): Observable<any> {
-    return this.apiBaseService.post(`${this.url}/suggestions`, {query});
+  getSuggestions(q: any): Observable<any> {
+    return this.apiBaseService.post(`${this.url}/suggestions`, {q});
   }
 
   create(body: any, multiple: boolean=false): Observable<any> {
