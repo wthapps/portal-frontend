@@ -18,7 +18,8 @@
   <div class="page-body-control-nav page-body-control-nav-action" *ngIf="displayBackButton">
     <ul class="page-body-control-menu">
       <li class="divider">
-        <a class="btn btn-default" href="javascript:;" (click)="onAction({action: 'goBack', params: {}})" draggable="false"
+        <a class="btn btn-default" href="javascript:;" (click)="onAction({action: 'goBack', params: {}})"
+           draggable="false"
            pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
           <i class="fa fa-arrow-left"></i>
         </a>
@@ -118,13 +119,14 @@
           </li>
           <li>
             <a (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})" href="javascript:;"
-                 draggable="false">
-            <i class="fa fa-plus-square"></i> Add More Photos</a>
+               draggable="false">
+              <i class="fa fa-plus-square"></i> Add More Photos</a>
           </li>
           <li>
-            <a (click)="onAction({action: 'openModal', params: {modalName: 'editNameModal', selectedObjects: [object]}})"
-               href="javascript:;"
-               draggable="false">
+            <a
+              (click)="onAction({action: 'openModal', params: {modalName: 'editNameModal', selectedObjects: [object]}})"
+              href="javascript:;"
+              draggable="false">
               <i class="fa fa-edit"></i> Edit Title
             </a>
           </li>
@@ -184,7 +186,8 @@
       <li title="{{ favouriteTooltip }}">
         <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})"
-           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}" tooltipPosition="bottom">
+           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}"
+           tooltipPosition="bottom">
           <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>
@@ -259,8 +262,10 @@
         <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'confirmRemoveSharing', params: {selectedObjects: selectedObjects}})"
            pTooltip="{{ tooltip.remove }}" tooltipPosition="bottom">
-          <i class="fa fa-times"></i>
+          <i class="fa fa-times"></i> 1
         </a>
+      </li>
+      <li>
         <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})"
            pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
@@ -283,7 +288,8 @@
       <li title="{{ favouriteTooltip }}">
         <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})"
-           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}" tooltipPosition="bottom">
+           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}"
+           tooltipPosition="bottom">
           <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>
@@ -351,7 +357,8 @@
       <li title="{{ favouriteTooltip }}">
         <a class="btn btn-default" href="javascript:;" draggable="false"
            (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})"
-           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}" tooltipPosition="bottom">
+           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}"
+           tooltipPosition="bottom">
           <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>
@@ -413,7 +420,8 @@
     <!--view option-->
     <ul class="page-body-control-menu">
       <li class="dropdown">
-        <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" draggable="false"
+        <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+           draggable="false"
            pTooltip="{{ tooltip.changeView}}" tooltipPosition="bottom">
           <i class="fa"
              [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-left': (viewOption == timeline)}"></i>
@@ -442,3 +450,81 @@
     </ul>
   </div>
 </div>
+
+<!-- sharing_detail -->
+<div *ngIf="page == 'sharing_detail'" class="page-body-control share-by-me" [ngClass]="{'active': !noSelectedObjects}">
+  <div class="page-body-control-nav page-body-control-nav-action">
+    <ul class="page-body-control-menu">
+      <li class="divider">
+        <a class="btn btn-default" href="javascript:;" (click)="onAction({action: 'deselectAll', params: {}})"
+           draggable="false" pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
+          <i class="fa fa-times"></i>
+        </a>
+      </li>
+      <li>
+        <span class="btn btn-text">2 selected</span>
+      </li>
+    </ul>
+  </div>
+  <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
+    <ul class="page-body-control-menu">
+      <li>
+        <a class="btn btn-default" href="javascript:;" draggable="false"
+           pTooltip="{{ tooltip.remove }}" tooltipPosition="bottom">
+          <i class="fa fa-eye"></i>
+        </a>
+      </li>
+      <li>
+        <a class="btn btn-default" href="javascript:;" draggable="false"
+           pTooltip="{{ tooltip.remove }}" tooltipPosition="bottom">
+          <i class="fa fa-star-o"></i>
+        </a>
+      </li>
+      <li>
+        <a class="btn btn-default" href="javascript:;" draggable="false"
+           pTooltip="{{ tooltip.remove }}" tooltipPosition="bottom">
+          <i class="fa fa-times-circle-o"></i>
+        </a>
+      </li>
+      <li class="dropdown">
+        <a class="btn btn-default" href="javascript:;" data-toggle="dropdown" draggable="false">
+          <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li>
+            <a href="javascript:;" draggable="false">
+              <i class="fa fa-eye"></i> Preview all
+            </a>
+          </li>
+          <li>
+            <a href="javascript:;"
+               draggable="false">
+              <i class="fa fa-plus-square"></i> Add More Photos</a>
+          </li>
+          <li>
+            <a href="javascript:;" draggable="false">
+              <i class="fa fa-edit"></i> Edit Title
+            </a>
+          </li>
+          <li>
+            <a href="javascript:;" draggable="false">
+              <i class="fa fa-share-alt"></i> Sharing
+            </a>
+          </li>
+          <li>
+            <a href="javascript:;" draggable="false">
+              <i class="fa fa-download"></i> Download All
+            </a>
+          </li>
+          <li>
+            <a href="javascript:;" draggable="false">
+              <i class="fa fa-trash-o"></i> Delete
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+
+

@@ -132,7 +132,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.route.url
       .withLatestFrom(this.route.parent.url)
       .map((pair: any) => {
-        return _.find(pair, (url: any) => _.get(url, '0') != undefined);})
+        return _.find(pair, (url: any) => _.get(url, '0') != undefined);
+      })
       .map((url: any) => url[0].path)
       .takeUntil(this.destroySubject)
       .subscribe((url: any) => this.currentPath = url); // currentPath: photos, albums, shared-with-me
@@ -255,6 +256,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.selectedObjects = event.params.selectedObjects;
         this.toolbar.updateProperties({selectedObjects: this.selectedObjects});
         break;
+      case 'deselectAll':
+        this.selectedObjects.length = 0;
+        this.toolbar.updateProperties({selectedObjects: this.selectedObjects});
+        $('.photo-box').removeClass('selected');
+        break;
       case 'goBack':
         this.goBack();
         break;
@@ -279,11 +285,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         let ids2 = _.map(this.mediaStore.getSelectedObjects(), 'id');
         let selectedIdx = this.mediaStore.getCurrentSelectedIndex();
 
-        this.router.navigate([{outlets: {modal: [
-            'photos',
-            this.mediaStore.getSelectedObjects()[selectedIdx].id,
-            {ids: ids2, mode: 0}
-          ]}}], {queryParamsHandling: 'preserve', preserveFragment: true}
+        this.router.navigate([{
+            outlets: {
+              modal: [
+                'photos',
+                this.mediaStore.getSelectedObjects()[selectedIdx].id,
+                {ids: ids2, mode: 0}
+              ]
+            }
+          }], {queryParamsHandling: 'preserve', preserveFragment: true}
         );
 
         break;
@@ -292,12 +302,16 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'previewAllPhotosToolBar': {
         let ids = _.map(this.list.objects, 'id');
 
-        if(ids.length > 0) {
-          this.router.navigate([{outlets: {modal: [
-              'photos',
-              ids[0],
-              {ids: ids, mode: 0}
-            ]}}], {queryParamsHandling: 'preserve', preserveFragment: true}
+        if (ids.length > 0) {
+          this.router.navigate([{
+              outlets: {
+                modal: [
+                  'photos',
+                  ids[0],
+                  {ids: ids, mode: 0}
+                ]
+              }
+            }], {queryParamsHandling: 'preserve', preserveFragment: true}
           );
         }
         break;
@@ -305,11 +319,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
       case 'previewModal':
         let ids = _.map(this.selectedObjects, 'id');
-        this.router.navigate([{outlets: {modal: [
-            'photos',
-            this.selectedObjects[0].id,
-            {ids: ids, mode: 0}
-          ]}}], {queryParamsHandling: 'preserve', preserveFragment: true}
+        this.router.navigate([{
+            outlets: {
+              modal: [
+                'photos',
+                this.selectedObjects[0].id,
+                {ids: ids, mode: 0}
+              ]
+            }
+          }], {queryParamsHandling: 'preserve', preserveFragment: true}
         );
 
         break;
@@ -438,7 +456,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   goBack() {
     const tree: UrlTree = this.router.parseUrl(this.router.url);
-    if( tree.root.children.detail )
+    if (tree.root.children.detail)
       this.router.navigate([{outlets: {detail: null}}]);
     else
       this.location.back();
@@ -495,28 +513,36 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);
         // Take selected photos from photo list screen OR uploaded photos from upload photo component
-        options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
+        options = {selectedObjects: (params.data != undefined) ? params.data : this.selectedObjects};
         break;
       case 'createAlbumModal':
         this.loadModalComponent(AlbumCreateModalComponent);
         // Take selected photos from photo list screen OR uploaded photos from upload photo component
-        options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
+        options = {selectedObjects: (params.data != undefined) ? params.data : this.selectedObjects};
         break;
       case 'previewDetailsModal':
         let ids: any[] = _.map(this.selectedObjects, 'id');
         if (this.selectedObjects[0].object_type == 'album') {
-          this.router.navigate([{outlets: {detail: [
-              `${this.selectedObjects[0].object_type}s`,
-              this.selectedObjects[0].id,
-              {ids: ids, mode: 0, showDetail: true}
-            ]}}], {preserveQueryParams: true, preserveFragment: true}
+          this.router.navigate([{
+              outlets: {
+                detail: [
+                  `${this.selectedObjects[0].object_type}s`,
+                  this.selectedObjects[0].id,
+                  {ids: ids, mode: 0, showDetail: true}
+                ]
+              }
+            }], {preserveQueryParams: true, preserveFragment: true}
           );
         } else {
-          this.router.navigate([{outlets: {modal: [
-              `${this.selectedObjects[0].object_type}s`,
-              this.selectedObjects[0].id,
-              {ids: ids, mode: 0, showDetail: true}
-            ]}}], {preserveQueryParams: true, preserveFragment: true}
+          this.router.navigate([{
+              outlets: {
+                modal: [
+                  `${this.selectedObjects[0].object_type}s`,
+                  this.selectedObjects[0].id,
+                  {ids: ids, mode: 0, showDetail: true}
+                ]
+              }
+            }], {preserveQueryParams: true, preserveFragment: true}
           );
         }
 
