@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { Actions } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ZNoteService } from '../services/note.service';
 import 'rxjs/add/operator/withLatestFrom';
