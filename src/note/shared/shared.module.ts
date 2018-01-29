@@ -26,6 +26,7 @@ import { ZNoteSharedHeaderComponent } from './header/header.component';
 import { ModalModule } from '@shared/modals/modals.module';
 import { ZNoteContainerComponent } from "note/shared/containers/note-container.component";
 import { StoreModule } from "@ngrx/store/store";
+import { ZNoteShareProgressComponent } from "note/shared/progress/note-progress.component";
 
 
 /**
@@ -55,6 +56,7 @@ import { StoreModule } from "@ngrx/store/store";
     ZNoteSharedModalSharingComponent,
     ZNoteSharedBreadcrumbComponent,
     ZNoteSharedHeaderComponent,
+    ZNoteShareProgressComponent,
     ZNoteSharedLeftMenuComponent
   ],
   exports: [
@@ -75,6 +77,7 @@ import { StoreModule } from "@ngrx/store/store";
     ZNoteSharedTrashActionBarComponent,
     ZNoteSharedModalSharingComponent,
     ZNoteSharedBreadcrumbComponent,
+    ZNoteShareProgressComponent,
     ZNoteSharedLeftMenuComponent
   ]
 })

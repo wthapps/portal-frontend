@@ -1,0 +1,6 @@
+<wth-modal-dock #modalDock>
+  <wth-modal-dock-header [done]="(progess$ | async).done" [hasCloseIcon]="(progess$ | async).hasCloseIcon" [loading]="(progess$ | async).loading" [failed]="(progess$ | async).failed">
+    <p>{{ (progess$ | async).textMessage }}</p>
+  </wth-modal-dock-header>
+  <a *ngIf="(progess$ | async).enableAction" class="merge-contact-undo" href="javascript:;" (click)="doEvent()">{{(progess$ | async).actionText}}</a>
+</wth-modal-dock>

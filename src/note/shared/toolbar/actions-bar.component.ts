@@ -170,6 +170,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       if(currentPath != 'shared-by-me' && action.title == 'Stop Sharing') {
         action.show = false;
       }
+<<<<<<< HEAD
       if(currentPath == 'shared-by-me' && this.page == noteConstants.PAGE_SHARED_BY_ME && action.title == 'Make copy') {
         action.show = false;
       }
@@ -179,11 +180,19 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       if(![noteConstants.PAGE_RECENT, noteConstants.PAGE_NOTE_FAVOURITE ].includes(this.page) && action.title == 'Find folder') {
         action.show = false;
       }
+=======
+      // if(currentPath == 'shared-by-me' && this.page == noteConstants.PAGE_SHARED_BY_ME && action.title == 'Make copy') {
+      //   action.show = false;
+      // }
+      // if(currentPath == 'shared-with-me' && this.page == noteConstants.PAGE_SHARED_WITH_ME && action.title == 'Make copy') {
+      //   action.show = false;
+      // }
+>>>>>>> cc69e9f... add: note action messages
       // ==================
       if(this.subPage == noteConstants.PAGE_NOTE_EDIT && (action.title == 'Edit')) {
         action.show = false;
       }
-      if(this.subPage !== noteConstants.PAGE_NOTE_EDIT && (action.title == 'Print' || action.title == 'Export as PDF')) {
+      if(this.subPage !== noteConstants.PAGE_NOTE_EDIT && (action.title == 'Print')) {
         action.show = false;
       }
     }
@@ -200,7 +209,10 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     [Objects_Type] validate
     ====================================*/
     let objectTypeValidateObjects = (action, objects) => {
-      objects.map((object: any) => {if (object.object_type == 'folder' && action.title == 'Make copy') action.show = false;})
+      objects.map((object: any) => {
+        if (object.object_type == 'folder' && (action.title == 'Make copy' || action.title == 'Export as PDF'))
+          action.show = false;
+      })
     }
     Object.keys(this.actionsMenu).map((action: any) => objectTypeValidateObjects(this.actionsMenu[action], objects));
 

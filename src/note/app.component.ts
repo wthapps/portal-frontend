@@ -28,7 +28,9 @@ import * as fromRoot from './shared/reducers/index';
 import { Folder } from './shared/reducers/folder';
 import * as note from './shared/actions/note';
 import * as context from './shared/reducers/context';
+import * as progressContext from './shared/reducers/progress-context';
 import { MixedEntityService } from './shared/mixed-enity/mixed-entity.service';
+import { noteConstants } from "note/shared/config/constants";
 
 
 declare var _: any;
@@ -128,35 +130,104 @@ export class AppComponent implements OnInit, OnDestroy {
 
       // TODO move all of below services to store effect
       case 'note:mixed_entity:move_to_folder':
+        let number = event.payload.length
+        if (number == 1) {
+          this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Moving ${event.payload[0].title}`}});
+        }
+        if (number > 1) {
+          this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Moving ${number} files`}});
+        }
+
         this.mixedEntityService.update({payload: event.payload}, true)
-          .subscribe((res: any) => {
-            this.store.dispatch(new note.NotesDeleted(event.payload));
-            this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: event.payload});
-            // Delete old folders
-            _.forEach(event.payload, (item: any) => {
-              item.parent_id = item.parent_old_id;
-            });
-            this.commonEventService.broadcast({
-              action: 'destroy',
-              channel: 'noteLeftMenu',
-              payload: event.payload
-            });
-            this.commonEventService.broadcast({
-              action: 'note:mixed_entity:move_to_folder_done',
-              channel: 'noteActionsBar',
-              payload: event.payload
-            });
+          .withLatestFrom(this.store.select(context.getContext), (res: any, state: any) => {
+            return {res: res, state: state}
+          })
+          .subscribe((combine: any) => {
+            if (combine.state.page == noteConstants.PAGE_MY_NOTE || combine.state.page == noteConstants.PAGE_INSIDE_FOLDER) {
+              let callback = () => {this.router.navigate(['my-note'])};
+              if(combine.res.data && combine.res.data[0].parent_id) {
+                callback = () => {this.router.navigate(['folders', combine.res.data[0].parent_id])}
+              }
+              if (number == 1) {
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Moved ${event.payload[0].title}`}});
+              }
+              if (number > 1) {
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Moved ${number} files`}});
+              }
+              this.store.dispatch(new note.NotesDeleted(event.payload));
+              this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: event.payload});
+              // Delete old folders
+              _.forEach(event.payload, (item: any) => {
+                item.parent_id = item.parent_old_id;
+              });
+              this.commonEventService.broadcast({
+                action: 'destroy',
+                channel: 'noteLeftMenu',
+                payload: event.payload
+              });
+              this.commonEventService.broadcast({
+                action: 'note:mixed_entity:move_to_folder_done',
+                channel: 'noteActionsBar',
+                payload: event.payload
+              });
+            } else {
+              let callback = () => {this.router.navigate(['my-note'])};
+              if(combine.res.data && combine.res.data[0].parent_id) {
+                callback = () => {this.router.navigate(['folders', combine.res.data[0].parent_id])}
+              }
+              if (number == 1) {
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Moved ${event.payload[0].title}`}});
+              }
+              if (number > 1) {
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Moved ${number} files`}});
+              }
+            }
+
           });
         break;
-      case 'note:mixed_entity:make_a_copy':
+      case 'note:mixed_entity:make_a_copy': {
+        let number = event.payload.length;
+        if (number == 1) {
+          this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copying ${event.payload[0].title}`}});
+        }
+        if (number > 1) {
+          this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copying ${number} files`}});
+        }
         this.mixedEntityService.create(event.payload, true)
-          .subscribe((res: any) => {
-            this.store.dispatch(new note.MultiNotesAdded(res.data));
+          .withLatestFrom(this.store.select(context.getContext), (res: any, state: any) => {
+            return {res: res, state: state}
+          })
+          .subscribe((combine:any) => {
+            if (combine.state.page == noteConstants.PAGE_MY_NOTE || combine.state.page == noteConstants.PAGE_INSIDE_FOLDER) {
+              if (number == 1) {
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copied ${event.payload[0].title}`}});
+              }
+              if (number > 1) {
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copied ${number} files`}});
+              }
+              this.store.dispatch(new note.MultiNotesAdded(combine.res.data));
+            } else {
+              let callback = () => {this.router.navigate(['my-note'])}
+              if (number == 1) {
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Copied ${event.payload[0].title}`}});
+              }
+              if (number > 1) {
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Copied ${number} files`}});
+              }
+            }
           });
         break;
+      }
       case 'note:mixed_entity:delete':
         this.mixedEntityService.delete(0, event.payload)
           .subscribe((res: any) => {
+            let number = event.payload.length;
+            if (number == 1) {
+              this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Removed ${event.payload[0].title}`}});
+            }
+            if (number > 1) {
+              this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Removed ${number} files`}});
+            }
             this.store.dispatch(new note.NotesDeleted(event.payload));
             this.commonEventService.broadcast({action: 'destroy', channel: 'noteLeftMenu', payload: event.payload});
         });
@@ -186,6 +257,32 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         });
         break;
+      case 'note:note_edit:export_pdf': {
+        let number = event.payload.length;
+        if (number == 1) {
+          this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Exporting ${event.payload[0].title}`}})
+        }
+        if (number > 1) {
+          this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Exporting ${number} files`}})
+        }
+        let n = number;
+        for(let object of event.payload) {
+          this.apiBaseService.download('note/notes/pdf_download/' + object.id).subscribe((res: any) => {
+            var blob = new Blob([res], {type: 'application/pdf'});
+            saveAs(blob, object.title + '.pdf');
+            n = n - 1
+            if(n == 0) {
+              if (number == 1) {
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Exported "${event.payload[0].title}"`}})
+              }
+              if (number > 1) {
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Exported ${number} files`}})
+              }
+            }
+          })
+        }
+        break;
+      }
       default:
         break;
     }

@@ -126,9 +126,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         case 'note:note_edit:print':
           this.print();
           break;
-        case 'note:note_edit:export_pdf':
-          this.pdfDownload();
-          break;
       }
     })
   }
@@ -739,13 +736,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       $('.modal-backdrop').css('z-index', '0');
       this.router.navigate([{outlets: {modal: ['photos', file.id, {ids: [file.id]}]}}]);
     }
-  }
-
-  pdfDownload() {
-    this.apiBaseService.download('note/notes/pdf_download/' + this.note.id).subscribe((res: any) => {
-      var blob = new Blob([res], {type: 'application/pdf'});
-      saveAs(blob, this.note.title + '.pdf');
-    })
   }
 
   print() {
