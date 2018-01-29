@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 import { Subject } from "rxjs";
 import { UrlService } from "@shared/services";
 import { NoteConstants, noteConstants } from "note/shared/config/constants";
+import { Router } from '@angular/router';
 
 declare var _: any;
 declare let saveAs: any;
@@ -86,6 +87,13 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       action: this.makeACopy.bind(this),
       title: 'Make copy'
     },
+    findFolder: {
+      show: true,
+      needPermission: 'view',
+      inDropDown: true, // Inside dropdown list
+      action: this.findFolder.bind(this),
+      title: 'Find folder'
+    },
     moveToFolder: {
       show: true,
       needPermission: 'owner',
@@ -121,6 +129,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
               private urlService: UrlService,
               private store: Store<any>,
               private api: ApiBaseService,
+              private router: Router,
               public commonEventService: CommonEventService) {
     // this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
   }
@@ -165,6 +174,9 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
         action.show = false;
       }
       if(currentPath == 'shared-with-me' && this.page == noteConstants.PAGE_SHARED_WITH_ME && action.title == 'Make copy') {
+        action.show = false;
+      }
+      if(![noteConstants.PAGE_RECENT, noteConstants.PAGE_NOTE_FAVOURITE ].includes(this.page) && action.title == 'Find folder') {
         action.show = false;
       }
       // ==================
@@ -319,6 +331,14 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
           break;
       }
     }
+  }
+
+  findFolder() {
+    console.debug('inside Find Folder', this.selectedObjects);
+    let obj: any = this.selectedObjects[0];
+    let parentPath: string = (obj.permission == 'owner') ? '/my-note' : '/shared-with-me';
+    let path: string = obj.parent_id ? `${parentPath}/folders/${obj.parent_id}` : parentPath;
+    this.router.navigate([path]);
   }
 
   moveToFolder() {

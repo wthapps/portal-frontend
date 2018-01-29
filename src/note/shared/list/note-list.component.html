@@ -20,8 +20,8 @@
       </div>
       <div class="component-listbox-date clearfix sortbar-wrap" *ngIf="page !== noteConstants.PAGE_RECENT">
 
-        <span class="btn btn-text pull-right" (click)="onReverseSort()">
-            <i class="fa " [ngClass]="!sortOption?.desc ? 'fa-arrow-up' : 'fa-arrow-down'"
+        <span *ngIf="DATE_MAP[sortOption?.field]" class="btn btn-text pull-right" (click)="onReverseSort()">
+            <i class="fa "  [ngClass]="!sortOption?.desc ? 'fa-arrow-up' : 'fa-arrow-down'"
             ></i>
           </span>
         <div class="dropdown pull-left">

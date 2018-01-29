@@ -19,14 +19,17 @@ export class UserService {
 
   defaultPayment: any;
   profile$: Observable<any>;
+  notificationSetting$: Observable<any>;
 
   public cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;
   // Please use getSyncProfile
   private profile: User = null;
   // Please use getAsyncProfile
 
+  private readonly NOTIFICATION_SETTING_URL: string =  'users/notification_settings';
   private readonly EXP_TIME_MS = 24 * 60 * 60 * 365 * 1000;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  private _notificationSetting: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -34,6 +37,7 @@ export class UserService {
               public cookieService: CookieService) {
     this.readUserInfo();
     this.profile$ = this._profile.asObservable();
+    this.notificationSetting$ = this._notificationSetting.asObservable();
   }
 
   login(path: string, body: string): Observable<Response> {
@@ -154,6 +158,24 @@ export class UserService {
     this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
     this.setProfile(profile);
     // this.soUserProfile = {...this._soProfile.getValue(), profile_image: profile.profile_image};
+  }
+
+  getNotificationSetting() {
+    console.debug('getNotificationSetting inside ...');
+    if(!_.isEmpty(this._notificationSetting.getValue())) {
+      console.warn('Notification Setting value: ', this._notificationSetting.getValue());
+      return;
+    }
+    this.apiBaseService.post(`${this.NOTIFICATION_SETTING_URL}/index`).map(res => res.data)
+      .subscribe(this._notificationSetting);
+  }
+
+  updateNotificationSetting(body: any) {
+    this.apiBaseService.post(`${this.NOTIFICATION_SETTING_URL}/update`, body).map(res => res.data).subscribe(this._notificationSetting);
+  }
+
+  resetNotificationSetting() {
+    this.apiBaseService.post(`${this.NOTIFICATION_SETTING_URL}/reset`).map(res => res.data).subscribe(this._notificationSetting);
   }
 
   private storeDefaultPayment(response: any) {
