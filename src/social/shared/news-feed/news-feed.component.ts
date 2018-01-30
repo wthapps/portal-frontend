@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, Input } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { Router } from "@angular/router";
 
 declare var _: any;
 
@@ -16,8 +17,9 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
 
   selectedValues: string[] = [];
+  @Input() channels: any;
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -29,7 +31,10 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
   }
 
   onSave() {
-    console.log(this.selectedValues);
     this.modal.close();
+  }
+
+  onClick(q: any) {
+    this.router.navigate([`/news`], {queryParams: {q: q}});
   }
 }

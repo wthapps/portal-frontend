@@ -8,24 +8,13 @@
     <h3 class="panel-title">News feeds</h3>
   </div>
   <div class="panel-body">
-    <p><i class="fa fa-newspaper-o"></i> All news</p>
-
+    <div (click)="onClick('category::all')" class="can-click"><i class="fa fa-newspaper-o"></i> All news</div>
     <div class="accordion-menu">
       <p-accordion [multiple]="true">
-        <p-accordionTab header="News">
+        <p-accordionTab *ngFor="let category of channels | groupBy :'category'" header="{{category.key | titleCase}}">
           <ul class="list-unstyled">
-            <li>
-              <a href="javascript:;"><img src="/assets/icons/news.png" alt=""> <span>New source</span></a>
-            </li>
-            <li>
-              <a href="javascript:;"><img src="/assets/icons/news.png" alt=""> <span>New source</span></a>
-            </li>
-          </ul>
-        </p-accordionTab>
-        <p-accordionTab header="Technology">
-          <ul class="list-unstyled">
-            <li>
-              <a href="javascript:;"><img src="/assets/icons/news.png" alt=""> <span>New source</span></a>
+            <li *ngFor="let channel of category.value">
+              <a href="javascript:;" (click)="onClick('feed_link_id::'+channel.id)"><img [src]="channel.logo" alt="" style="width: 20px; height: 20px"> <span>{{channel.name}}</span></a>
             </li>
           </ul>
         </p-accordionTab>
