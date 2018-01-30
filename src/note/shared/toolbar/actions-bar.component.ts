@@ -170,24 +170,9 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       if(currentPath != 'shared-by-me' && action.title == 'Stop Sharing') {
         action.show = false;
       }
-<<<<<<< HEAD
-      if(currentPath == 'shared-by-me' && this.page == noteConstants.PAGE_SHARED_BY_ME && action.title == 'Make copy') {
-        action.show = false;
-      }
-      if(currentPath == 'shared-with-me' && this.page == noteConstants.PAGE_SHARED_WITH_ME && action.title == 'Make copy') {
-        action.show = false;
-      }
       if(![noteConstants.PAGE_RECENT, noteConstants.PAGE_NOTE_FAVOURITE ].includes(this.page) && action.title == 'Find folder') {
         action.show = false;
       }
-=======
-      // if(currentPath == 'shared-by-me' && this.page == noteConstants.PAGE_SHARED_BY_ME && action.title == 'Make copy') {
-      //   action.show = false;
-      // }
-      // if(currentPath == 'shared-with-me' && this.page == noteConstants.PAGE_SHARED_WITH_ME && action.title == 'Make copy') {
-      //   action.show = false;
-      // }
->>>>>>> cc69e9f... add: note action messages
       // ==================
       if(this.subPage == noteConstants.PAGE_NOTE_EDIT && (action.title == 'Edit')) {
         action.show = false;
@@ -346,7 +331,6 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   }
 
   findFolder() {
-    console.debug('inside Find Folder', this.selectedObjects);
     let obj: any = this.selectedObjects[0];
     let parentPath: string = (obj.permission == 'owner') ? '/my-note' : '/shared-with-me';
     let path: string = obj.parent_id ? `${parentPath}/folders/${obj.parent_id}` : parentPath;

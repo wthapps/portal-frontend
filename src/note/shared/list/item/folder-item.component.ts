@@ -96,7 +96,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   onView() {
     if(!this.data.deleted_at) {
       if (this.urls.paths[0] == 'shared-by-me') {this.router.navigate([`shared-by-me/folders`, this.data.id]); return;}
-      if (this.urls.paths[0] == 'shared-with-me') {this.router.navigate([`shared-with-me/folders`, this.data.id]); return;}
+      if (this.urls.paths[0] == 'shared-with-me' || this.data.permission != 'owner') {this.router.navigate([`shared-with-me/folders`, this.data.id]); return;}
       this.router.navigate([`folders`, this.data.id]);
     } else {
       this.wthConfirm.confirm({
