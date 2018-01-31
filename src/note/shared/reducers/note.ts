@@ -144,19 +144,37 @@ export function reducer(state: State = noteInitialState, action: note.NoteAction
       return {...state, loading: true};
     }
     case note.LOAD_SUCCESS: {
-      let hNotes: any = action['payload'].reduce((acc: any, item: any) => {
+      let [hNotes, hFolders, hSelected] = [{}, {}, []];
+
+      action['payload'].forEach(item => {
         if (item.object_type == ITEM_TYPE.NOTE)
-          acc[item.id] = item;
-        return acc;}, {});
-      let hFolders: any = action['payload'].reduce((acc: any, item: any) => {
+          hNotes[item.id] = item;
         if (item.object_type == ITEM_TYPE.FOLDER)
-          acc[item.id] = item;
-        return acc;}, {});
+          hFolders[item.id] = item;
+      });
+
+      state.selectedObjects.forEach(obj => {
+        if(obj.object_type == ITEM_TYPE.NOTE && hNotes[obj.id])
+          hSelected.push(obj);
+        if(obj.object_type == ITEM_TYPE.FOLDER && hFolders[obj.id])
+          hSelected.push(obj);
+      });
+
+      // let hNotes: any = action['payload'].reduce((acc: any, item: any) => {
+      //   if (item.object_type == ITEM_TYPE.NOTE)
+      //     acc[item.id] = item;
+      //   return acc;}, {});
+      // let hFolders: any = action['payload'].reduce((acc: any, item: any) => {
+      //   if (item.object_type == ITEM_TYPE.FOLDER)
+      //     acc[item.id] = item;
+      //   return acc;}, {});
+
+
 
       return Object.assign({}, state, {
         notes: hNotes,
         folders: hFolders,
-        selectedObjects: noteInitialState.selectedObjects,
+        selectedObjects: hSelected,
         selectAll: noteInitialState.selectAll,
         sortOption: noteInitialState.sortOption,
         loading: false,

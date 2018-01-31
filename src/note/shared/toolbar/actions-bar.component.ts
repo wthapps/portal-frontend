@@ -170,7 +170,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       if(currentPath != 'shared-by-me' && action.title == 'Stop Sharing') {
         action.show = false;
       }
-      if(![noteConstants.PAGE_RECENT, noteConstants.PAGE_NOTE_FAVOURITE ].includes(this.page) && action.title == 'Find folder') {
+      if([noteConstants.PAGE_MY_NOTE ].includes(this.page) && action.title == 'Find folder') {
         action.show = false;
       }
       // ==================
@@ -334,6 +334,10 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     let obj: any = this.selectedObjects[0];
     let parentPath: string = (obj.permission == 'owner') ? '/my-note' : '/shared-with-me';
     let path: string = obj.parent_id ? `${parentPath}/folders/${obj.parent_id}` : parentPath;
+    this.store.dispatch({
+      type: note.SELECT_ONE,
+      payload: obj
+    });
     this.router.navigate([path]);
   }
 
