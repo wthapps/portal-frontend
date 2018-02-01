@@ -19,6 +19,7 @@ import { EntitySelectComponent } from '@wth/shared/shared/components/entity-sele
 import { SoPost } from '@shared/shared/models';
 import { Constants } from '@wth/shared/constant';
 import { PhotoModalDataService, PhotoUploadService, UserService } from '@wth/shared/services';
+import { LoadingService } from "@shared/shared/components/loading/loading.service";
 
 
 @Component({
@@ -37,6 +38,10 @@ export class PostEditComponent implements OnInit, OnDestroy {
   @Input() photos: Array<any> = new Array<any>();
   @Input() community: any;
   @Input() soProfile: any;
+  @Input() showTag: boolean = true;
+  @Input() showAddPhotosButton: boolean = true;
+  @Input() link: any = null;
+
   @ViewChild('textarea') textarea: ElementRef;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
@@ -64,12 +69,14 @@ export class PostEditComponent implements OnInit, OnDestroy {
   privacyClassIcon: string;
   privacyName: string;
   profile$: Observable<any>;
+
   readonly soPostPrivacy : any = Constants.soPostPrivacy;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private fb: FormBuilder,
               private router: Router,
+              private loadingService: LoadingService,
               private socialService: SocialService,
               private photoSelectDataService : PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
@@ -174,7 +181,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
         disable_share: this.post.disable_share,
         mute: this.post.mute,
         parent_id: this.parent != null ? this.parent['id'] : null, // get parent post id
-        custom_objects: this.post.custom_objects
+        custom_objects: this.post.custom_objects,
+        link: this.link
       },
       isShare: this.isShare
     };
@@ -300,6 +308,14 @@ export class PostEditComponent implements OnInit, OnDestroy {
     }
     return '';
     // return `Constants.soPostPrivacy.${post.privacy}.class`;
+  }
+
+  loading() {
+    this.loadingService.start('#loading');
+  }
+
+  stopLoading() {
+    this.loadingService.stop('#loading');
   }
 
   private getPrivacyName(post: any): string {

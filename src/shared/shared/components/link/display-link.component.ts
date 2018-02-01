@@ -19,7 +19,6 @@ export class DisplayLinkComponent implements OnInit {
   }
 
   getId(url: any) {
-    console.log(url);
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
 

@@ -6,10 +6,10 @@
           <div class="news-item-header">
             <div class="news-item-nav">
               <!-- <a href="javascript:;"><img src="/assets/icons/news.png" alt=""></a> -->
-              <span>{{feed.category}}</span> • <span>{{feed.published_date | timeFormat}}</span>
+              <span>{{feed.feed_link_name}}</span> • <span>{{feed.published_date | timeFormat}}</span>
             </div>
             <div class="news-item-action">
-              <button (click)="openModalShare()" class="btn btn-default"><i class="fa fa-share-alt"></i></button>
+              <button (click)="openModalShare(feed)" class="btn btn-default"><i class="fa fa-share-alt"></i></button>
             </div>
           </div>
           <div class="news-item-content">
@@ -35,5 +35,5 @@
     </div>
   </div>
 </div>
-
-<app-social-news-share #modalShare></app-social-news-share>
+<so-post-edit #postEditModal [link]="link" [showTag]="false" [showAddPhotosButton]="false" (saved)="save($event)" (dismissed)="dismiss($event)"></so-post-edit>
+<!-- <app-social-news-share #modalShare></app-social-news-share> -->

@@ -83,15 +83,6 @@
       <div class="row">
         <div class="col-xs-6 col-sm-12">
           <div class="form-group">
-            <!--<textarea class="form-control textarea-autoheight"-->
-                      <!--#textarea-->
-                      <!--[autofocus]-->
-                      <!--textAreaAutoHeight-->
-                      <!--id="textarea-new-post"-->
-                      <!--placeholder="Share your ideas"-->
-                      <!--[formControl]="descCtrl"-->
-            <!--&gt;-->
-            <!--</textarea>-->
 
             <div contenteditable="true" class="form-control textarea-editor-input"
                       #textarea
@@ -102,8 +93,9 @@
             >
             </div>
           </div>
-
-          <div class="form-group">
+          <display-link *ngIf="link" [data]="link"></display-link>
+          <div id="loading"></div>
+          <div *ngIf="showTag" class="form-group">
             <tag-input [maxItems]='100'
                        [(ngModel)]="post.tags"
                        (onRemove)="removeTag($event)"
@@ -112,7 +104,6 @@
               <tag-input-dropdown [autocompleteItems]="tags">
               </tag-input-dropdown>
             </tag-input>
-
           </div>
           <div class="form-group">
             <div class="row-img row-img-10 grid">
@@ -151,13 +142,13 @@
         Shared from <a href="javascript:;" (click)="viewProfile(parent.owner.uuid)" >{{ parent.owner.name }}</a>
       </div>
       <div class="clearfix text-right">
-        <button type="button" class="btn btn-outline-default pull-left" *ngIf="parent == null" (click)="addMorePhoto($event)">
+        <button type="button" class="btn btn-outline-default pull-left" *ngIf="parent == null && showAddPhotosButton" (click)="addMorePhoto($event)">
           <i class="fa fa-camera"></i> Add Photo
         </button>
         <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel
         </button>
         <button type="submit" class="btn btn-outline-primary btn-min"
-                [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0)) || (files.length > 0)">Done
+                [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0)  || link) || (files.length > 0)">Done
         </button>
       </div>
     </form>

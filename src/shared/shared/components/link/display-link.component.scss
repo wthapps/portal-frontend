@@ -42,14 +42,14 @@
     }
   }
 
-  @media (min-width: $screen-lg-min) {
-    display: table;
-    .display-link-img, .display-link-txt {
-      display: table-cell;
-      vertical-align: top;
-    }
-    .display-link-img {
-      width: 45%;
-    }
-  }
+  // @media (min-width: $screen-lg-min) {
+  //   display: table;
+  //   .display-link-img, .display-link-txt {
+  //     display: table-cell;
+  //     vertical-align: top;
+  //   }
+  //   .display-link-img {
+  //     width: 45%;
+  //   }
+  // }
 }
