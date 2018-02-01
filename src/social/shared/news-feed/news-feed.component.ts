@@ -37,4 +37,16 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
   onClick(q: any) {
     this.router.navigate([`/news`], {queryParams: {q: q}});
   }
+
+  onEnter(event: any) {
+    console.log(event);
+  }
+
+  onEscape(event: any) {
+    console.log(event);
+  }
+
+  onKey(event: any) {
+    console.log(event);
+  }
 }

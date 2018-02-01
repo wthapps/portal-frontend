@@ -14,7 +14,9 @@
         <p-accordionTab *ngFor="let category of channels | groupBy :'category'" header="{{category.key | titleCase}}">
           <ul class="list-unstyled">
             <li *ngFor="let channel of category.value">
-              <a href="javascript:;" (click)="onClick('feed_link_id::'+channel.id)"><img [src]="channel.logo" alt="" style="width: 20px; height: 20px"> <span>{{channel.name}}</span></a>
+              <a href="javascript:;" (click)="onClick('feed_link_id::'+channel.id)">
+                <img [src]="channel.logo" alt="" style="width: 20px; height: 20px">
+                <span>{{channel.name}}</span></a>
             </li>
           </ul>
         </p-accordionTab>
@@ -29,36 +31,71 @@
     <h4 class="modal-title">News Settings</h4>
   </modal-header>
   <modal-body>
-    <p>Choose which channel you want to keep update with. Unchecked channel will be hidden from your newsfeed</p>
-    <div class="social-news-feeds-setting">
-      <div class="accordion-menu">
-        <p-accordion [multiple]="true">
-          <p-accordionTab header="News">
-            <ul class="list-unstyled">
-              <li>
-                <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
-                <img src="/assets/icons/news.png" alt=""> <span>New source</span>
-              </li>
-              <li>
-                <p-checkbox name="groupname" value="val2" [(ngModel)]="selectedValues"></p-checkbox>
-                <img src="/assets/icons/news.png" alt=""> <span>New source</span>
-              </li>
-            </ul>
-          </p-accordionTab>
-          <p-accordionTab header="Technology">
-            <ul class="list-unstyled">
-              <li>
-                <p-checkbox name="groupname" value="val3" [(ngModel)]="selectedValues"></p-checkbox>
-                <img src="/assets/icons/news.png" alt=""> <span>New source</span>
-              </li>
-              <li>
-                <p-checkbox name="groupname" value="val4" [(ngModel)]="selectedValues"></p-checkbox>
-                <img src="/assets/icons/news.png" alt=""> <span>New source</span>
-              </li>
-            </ul>
-          </p-accordionTab>
-        </p-accordion>
+    <p>Choose which channel you want to keep update with. You can search for news source by name or category</p>
+
+    <div class="form-group">
+      <div class="row row-10">
+        <div class="col-sm-8">
+          <textbox-search (onEnterEvent)="onEnter($event)"
+                          (onEscapeEvent)="onEscape($event)"
+                          (onKeyUpEvent)="onKey($event)"
+                          [placeholder]="'Search something'">
+          </textbox-search>
+        </div>
+        <div class="col-sm-4">
+          <select name="name" id="inputID" class="form-control">
+            <option value=""> -- All Categories --</option>
+            <option *ngFor="let category of channels | groupBy :'category'" [value]="category.key">
+              {{ category.key | titleCase }}
+            </option>
+          </select>
+        </div>
       </div>
+    </div>
+    <div class="social-news-feeds-setting">
+
+      <ng-container *ngIf="channels;else templateLoading">
+        <div *ngIf="channels.length == 0">
+          <h4>
+            No search result match
+          </h4>
+          <div class="text-fade">
+            <p>Here are some suggestions:</p>
+            <ul>
+              <li>Make sure all words are spelled correctly.</li>
+              <li>Try different keywords.</li>
+              <li>Try more general keywords.</li>
+              <li>Source may not available.</li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="channels.length > 0">
+          <ng-container *ngFor="let category of channels | groupBy :'category'">
+            <div *ngFor="let channel of category.value" class="media">
+              <div class="media-left">
+                <span class="avatar-xs"><img [src]="channel.logo" alt=""></span>
+              </div>
+              <div class="media-body">
+                <h5 class="media-heading m0">
+                  <a class="link-text" href="#">{{channel.name}}</a>
+                </h5>
+                <small class="text-fade text-capitalize">
+                  {{ category.key }}
+                </small>
+              </div>
+              <div class="media-right">
+                <button class="btn btn-sm btn-outline-default" type="button">Follow</button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <ng-template #templateLoading>
+        <box-loading></box-loading>
+      </ng-template>
+
+
     </div>
   </modal-body>
   <modal-footer>

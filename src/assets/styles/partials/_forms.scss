@@ -206,6 +206,13 @@ textarea {
 }
 
 .input-group-search-header {
+
+  .input-group {
+    .input-group-btn {
+      min-width: 34px;
+    }
+  }
+
   .input-group-form {
     p-autocomplete {
       .ui-autocomplete-multiple-container li {
