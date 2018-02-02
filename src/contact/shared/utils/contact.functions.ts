@@ -1,4 +1,3 @@
-import { Output, EventEmitter } from '@angular/core';
 import { _wu } from '../../../shared/shared/utils/utils';
 import { Config } from '../../../shared/constant/config/env.config';
 

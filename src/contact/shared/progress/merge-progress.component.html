@@ -1,4 +1,4 @@
-<wth-modal-dock #modalDock [cssClass]="'dock-merge-contact'" >
+<wth-modal-dock #modalDock [cssClass]="{'dock-merge-contact': true, 'no-display': !status}" >
   <wth-modal-dock-header *ngIf="status" [hasCloseIcon]="false" [loading]="(status==STATUS.processing)" [failed]="(status==STATUS.cancelled || status==STATUS.error)"
                          [done]="(status==STATUS.done || status==STATUS.undoed )">
     <span *ngIf="status==STATUS.processing">Merging</span>

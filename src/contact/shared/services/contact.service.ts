@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
-import { ContactImportContactDataService } from '../modal/import-contact/import-contact-data.service';
 import { GroupService } from '../../group/group.service';
 import { Router } from '@angular/router';
 import { BaseEntityService } from '../../../shared/services/base-entity-service';
@@ -16,16 +14,12 @@ import { ToastsService } from '../../../shared/shared/components/toast/toast-mes
 import { WthConfirmService } from '../../../shared/shared/components/confirmation/wth-confirm.service';
 
 
-declare var _: any;
-
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
   contacts: Array<any> = new Array<any>();
   mergingObjects: any[] = [];
   page: number = 1;
-
-  confirmDialog: any;
 
   // orderDesc: boolean = false;
   readonly startIndex: number = 0;
@@ -73,10 +67,6 @@ export class ZContactService extends BaseEntityService<any> {
     });
   }
 
-  getAllContacts() {
-    return _.orderBy(this.contacts, ['name'], [this.orderDescSubject.getValue() ? 'asc' : 'desc']);
-  }
-
   resetPageNumber() {
     this.page = 1;
   }
@@ -110,12 +100,6 @@ export class ZContactService extends BaseEntityService<any> {
       .map((response: any) => {
         this.deleteCallback(response.data);
       });
-  }
-
-  confirmDeleteContact(contact: any): Promise<any> {
-    this.selectedObjects.length = 0;
-    this.selectedObjects = [contact];
-    return this.confirmDeleteContacts();
   }
 
   confirmDeleteContacts(contacts: any[] = this.selectedObjects): Promise<any> {
@@ -164,10 +148,6 @@ export class ZContactService extends BaseEntityService<any> {
     this.listenToListSource.next(event);
 
     this.isSelectAllSubject.next(!this.isSelectAllSubject.getValue());
-  }
-
-  sendItemToList(event: any) {
-    this.listenToItemSource.next(event);
   }
 
   updateMultiple(body: any): Observable<any> {
@@ -289,10 +269,20 @@ export class ZContactService extends BaseEntityService<any> {
     this.checkSelectAll();
   }
 
+  sendRequest(contact: any) {
+    this.apiBaseService.post(`${this.url}/send_connect_request`, contact).toPromise()
+      .then(res => {
+        console.debug('sendRequest: ', res);
+        this.updateSingle(res.data);
+      })
+      .catch(err => console.error(err))
+    ;
+  }
+
   mergeDuplicateContacts(contacts: any[] = this.selectedObjects): Promise<any> {
     let ids: any[] = _.map(contacts, 'id');
     this.mergingObjects = [...contacts];
-    return this.apiBaseService.post(`${this.url}/merge_duplicate`, {ids: ids}).toPromise()
+    return this.apiBaseService.post(`${this.url}/merge_duplicate`, {ids}).toPromise()
       .then((res: any) => {
         let delete_ids: any[] = res.delete_ids;
         let updated_contacts: any[] = res.data;
@@ -312,7 +302,7 @@ export class ZContactService extends BaseEntityService<any> {
 
 
   undoMerge(contacts: any[] = this.mergingObjects): Promise<any> {
-    return this.apiBaseService.post(`${this.url}/undo_merge`, {contacts: contacts}).toPromise()
+    return this.apiBaseService.post(`${this.url}/undo_merge`, {contacts}).toPromise()
       .then((res: any) => {
         let restoreContacts: any[] = res.data;
         let ids = _.map(restoreContacts, 'id');
@@ -410,11 +400,5 @@ export class ZContactService extends BaseEntityService<any> {
       ct.id === contact.id
     );
     this.notifyContactsObservers();
-  }
-
-
-  private handleError(error: Response) {
-    console.error(error);
-    return Observable.throw(error.json().error || 'Server error');
   }
 }

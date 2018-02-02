@@ -9,6 +9,15 @@
       <i class="fa fa-envelope-o" aria-hidden="true"></i> Invite
     </a>
   </li>
+  <li *ngIf="data?.wthapps_user">
+    <a href="javascript:;" class="btn btn-outline-default btn-sm" *ngIf="UNCONNECT_STATUS.includes(data?.connect_status)" (click)="sendRequest(data)">
+      <i class="fa fa-user-plus" aria-hidden="true"></i> Connect
+    </a>
+    <span class="btn btn-text text-fade" *ngIf="!UNCONNECT_STATUS.includes(data?.connect_status)">
+      <i class="fa fa-check-circle" aria-hidden="true"></i> {{ CONNECT_STATUS[data?.connect_status] }}
+    </span>
+
+  </li>
   <li *ngIf="number > 1">
     <a href="javascript:;" class="btn btn-default" (click)="mergeDuplicate()"
        pTooltip="{{ tooltip.mergeContacts }}" tooltipPosition="bottom">

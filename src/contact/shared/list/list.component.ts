@@ -5,10 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import { ZContactService } from '../services/contact.service';
 import { Constants } from '../../../shared/constant/config/constants';
 
-declare var _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'z-contact-shared-list',
   templateUrl: 'list.component.html',
   styleUrls: ['list.component.scss']

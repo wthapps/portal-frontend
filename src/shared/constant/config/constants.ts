@@ -243,6 +243,13 @@ export class ConstantsBase {
     stranger: 99
   };
 
+  contactConnectStatus: any = {
+    1: 'Not Connected',
+    2: 'Request Sent',
+    3: 'Connected',
+    4: 'Rejected'
+  }
+
   soPostLimit: any = 10;
   soCommentLimit: any = 20;
 
