@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ZSocialNewsShareComponent } from './modal/share.component';
 import { ApiBaseService } from "@shared/services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { PostEditComponent } from "social/shared/second-routes/post/post-edit.component";
@@ -37,6 +36,16 @@ export class ZSocialNewsComponent implements OnInit {
         })
       }
     })
+    this.loadChannels();
+  }
+
+  doEvents(event: any) {
+    if (event.action == 'reload') {
+      this.loadChannels();
+    }
+  }
+
+  loadChannels() {
     this.apiBaseService.get(`zone/social_network/feeds/get_my_channels`).subscribe((res: any) => {
       this.channels = res.data.map((subscription: any) => {return subscription.feed_link})
     })

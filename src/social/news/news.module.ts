@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { ZSocialNewsComponent } from './news.component';
 import { ZSocialSharedModule } from '../shared/shared.module';
 import { ZSocialNewsRoutingModule } from './news-routing.module';
-import { ZSocialNewsShareComponent } from './modal/share.component';
 import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
@@ -13,12 +12,10 @@ import { SharedModule } from '@shared/shared.module';
     ZSocialNewsRoutingModule
   ],
   declarations: [
-    ZSocialNewsComponent,
-    ZSocialNewsShareComponent
+    ZSocialNewsComponent
   ],
   exports: [
-    ZSocialNewsComponent,
-    ZSocialNewsShareComponent
+    ZSocialNewsComponent
   ],
   providers: [],
 })

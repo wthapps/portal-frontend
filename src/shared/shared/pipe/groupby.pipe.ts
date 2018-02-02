@@ -6,6 +6,10 @@ export class GroupByPipe implements PipeTransform {
     if (!term || term == '') {
       return collection;
     }
+    if (!collection || collection.length == 0) {
+
+      return collection;
+    }
     let newValue = Array<any>();
 
     for (let i = 0; i < collection.length; i++) {

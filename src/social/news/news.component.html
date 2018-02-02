@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="zone-social-sidebar">
-      <app-social-shared-news-feed [channels]="channels"></app-social-shared-news-feed>
+      <app-social-shared-news-feed [channels]="channels" (events)="doEvents($event)"></app-social-shared-news-feed>
     </div>
   </div>
 </div>

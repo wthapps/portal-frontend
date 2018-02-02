@@ -110,7 +110,7 @@
                 </small>
               </div>
               <div class="media-right">
-                <button class="btn btn-sm btn-outline-default" type="button">Follow</button>
+                <button class="btn btn-sm btn-outline-default" type="button" (click)="toogleFollow(channel)">{{channel.subscribed == flas? 'Follow': 'Following'}}</button>
               </div>
             </div>
           </ng-container>
