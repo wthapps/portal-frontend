@@ -14,7 +14,8 @@ declare var _: any;
   encapsulation: ViewEncapsulation.None
 })
 export class ZSocialSharedNewsFeedComponent implements OnInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modalNew') modalNew: ModalComponent;
+  @ViewChild('modalEdit') modalEdit: ModalComponent;
 
   selectedValues: string[] = [];
   @Input() channels: any;
@@ -26,12 +27,8 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
 
   }
 
-  openModal() {
-    this.modal.open();
-  }
-
   onSave() {
-    this.modal.close();
+    this.modalNew.close();
   }
 
   onClick(q: any) {

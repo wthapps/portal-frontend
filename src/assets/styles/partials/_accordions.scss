@@ -1,37 +1,57 @@
 .accordion-menu {
-  .ui-accordion {
-    .ui-accordion-header {
+  .accordion-menu-header {
+    position: relative;
+    a {
       &, &:hover, &:focus {
-        background-color: transparent !important;
-        border-width: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        color: $text-color !important;
-      }
-      a {
-        padding: 5px 0;
-        color: inherit;
-        margin: 0;
         text-decoration: none;
-        .fa-caret-right {
-          &:before {
-            content: $fa-var-chevron-right;
-          }
+        color: inherit;
+      }
+    }
+    &.active {
+      a {
+        &, &:hover, &:focus {
+          color: $theme-color;
         }
-        .fa-caret-down {
-          &:before {
-            content: $fa-var-chevron-down;
-          }
+
+      }
+    }
+
+    .accordion-menu-text {
+      display: block;
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    }
+    .accordion-menu-icon {
+      position: relative;
+      z-index: 2;
+      float: left;
+      i {
+        width: 16px;
+        height: 14px;
+        text-align: center;
+      }
+      &[aria-expanded="true"], &:not(.collapsed) {
+        .fa-chevron-right:before {
+          content: $fa-var-chevron-down;
         }
       }
     }
-    .ui-accordion-content {
+  }
+  .accordion-menu-body {
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    ul {
+      margin: 0;
       padding: 0;
-      ul {
-        li {
-          padding: 10px 0;
-        }
-      }
+      list-style-type: none;
     }
   }
 }

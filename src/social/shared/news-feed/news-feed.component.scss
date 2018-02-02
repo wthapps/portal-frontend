@@ -2,37 +2,55 @@
 
 .social-news-feeds {
   .panel-body {
-    .accordion-menu {
-      margin-left: -15px;
-      margin-right: -15px;
-      .ui-accordion {
-        .ui-accordion-header {
-          a {
-            padding-left: 15px;
-            padding-right: 15px;
-          }
+
+    .link-text {
+      &, &:hover, &:focus {
+        color: inherit;
+      }
+      &:hover,
+      &.active {
+        background-color: #e5e5e5;
+      }
+      &.active {
+        color: $theme-color;
+      }
+    }
+  }
+  .accordion-menu {
+    margin-left: -15px;
+    margin-right: -15px;
+    .accordion-menu-header {
+      .accordion-menu-icon {
+        padding: 5px 0 5px 15px;
+      }
+      .accordion-menu-text {
+        padding: 5px 15px 5px 30px;
+      }
+      &:hover,
+      &.active {
+        background-color: #e5e5e5;
+      }
+      &.active {
+        a {
+          color: $theme-color;
         }
-        .ui-accordion-content {
-          ul {
-            margin: 0;
-            li {
-              padding: 0;
-            }
-          }
-          a {
-            padding: 10px 30px;
-            display: block;
-            text-decoration: none;
-            &:hover,
-            &.active {
-              color: inherit;
-              background-color: #e5e5e5;
-            }
-          }
+      }
+    }
+    .accordion-menu-body {
+      a {
+        display: block;
+        padding: 5px 15px 5px 30px;
+        &:hover,
+        &.active {
+          background-color: darken(#e5e5e5, 10%);
+        }
+        &.active {
+          color: $theme-color;
         }
       }
     }
   }
+
 }
 
 .social-news-feeds-setting {
