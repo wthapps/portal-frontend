@@ -188,23 +188,10 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       this.notificationService.markAsSeen();
   }
 
-  // markAllAsRead() {
-  //   if(this.type == 'connection')
-  //     this.connectionService.markAllAsRead();
-  //   else
-  //     this.notificationService.markAllAsRead();
-  // }
-
   onSelectedTab(tab: string) {
     this.type = tab;
     this.getLatestNotifications();
     this.markAsSeen();
-    // switch (tab) {
-    //   case 'update':
-    //     break;
-    //   case 'connection':
-    //     break;
-    // }
   }
 
   onSettingModal() {

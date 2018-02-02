@@ -38,7 +38,7 @@
     </nav>
   </div>
   <div class="note-editor-content" [ngClass]="{'show-aside': hasShowComment}">
-    <div class="note-editor-toolbar" *ngIf="note.permission !== 'view'">
+    <div class="note-editor-toolbar">
       <div class="container-fluid">
         <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-toolbar">
           <div class="ql-format-group">
