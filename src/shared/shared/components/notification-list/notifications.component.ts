@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NotificationService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
@@ -37,7 +37,6 @@ export class CommonNotificationsComponent implements OnInit {
       this.connectionService.getLatestNotifications();
     else
       this.notificationService.getLatestNotifications();
-    console.log(this.notificationListComponent);
   }
 
   getMoreNotifications() {

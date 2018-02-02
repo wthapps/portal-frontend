@@ -32,7 +32,7 @@
     </div>
     <div class="noti-item-action">
       <ul>
-        <li><i class="icon-zone-{{ modules[notification?.actions[0]?.module] }}"></i></li>
+        <li><i class="icon-zone-{{ modules[(notification?.actions[0]?.module || notification?.module)] }}"></i></li>
         <li (click)="clickedInside($event)">
           <i (click)="showMenu($event)" class="fa fa-ellipsis-v"></i>
           <ul #notiItemMenuEl class="dropdown-menu">
@@ -98,7 +98,7 @@
     </div>
     <div class="noti-item-action">
       <ul>
-        <li><i class="icon-zone-{{ modules[notification?.actions[0]?.module] }}"></i></li>
+        <li><i class="icon-zone-{{ modules[(notification?.actions[0]?.module || notification?.module)] }}"></i></li>
         <li (click)="clickedInside($event)">
           <i (click)="showMenu($event)" class="fa fa-ellipsis-v"></i>
           <ul #notiItemMenuEl class="dropdown-menu">
