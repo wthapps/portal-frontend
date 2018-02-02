@@ -86,6 +86,8 @@ import { MenuContainerModule } from '@shared/shared/components/menu-container/me
 import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 import { AccordionModule } from 'primeng/primeng';
+import { GridListModule } from '@wth/shared/components/grid-list/grid-list.module';
+import { ModalModule } from '@wth/shared/components/modal/modal.module';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -106,6 +108,10 @@ export * from './shared/components/navbar/navbar.module';
     CookieModule.forRoot(),
     InfiniteScrollModule,
     Ng2CableModule,
+
+    //Custom modules
+    GridListModule,
+    ModalModule
   ],
   declarations: [],
   exports: [
@@ -163,6 +169,10 @@ export * from './shared/components/navbar/navbar.module';
     ImageCropperModule,
     MenuContainerModule,
     NotificationListModule,
+
+    // Custom modules
+    GridListModule,
+    ModalModule,
 
     // Pipe
     PipeModule,

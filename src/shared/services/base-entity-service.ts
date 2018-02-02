@@ -14,12 +14,13 @@ export class BaseEntityService<T> {
     return this.apiBaseService.get(this.url, options);
   }
 
-  get(id: number): Observable<any> {
-    return this.apiBaseService.get(`${this.url}/${id}`);
+  get(id: number, path: string = ''): Observable<any> {
+    let url = path === '' ? this.url : `${this.url}/${path}`;
+    return this.apiBaseService.get(`${url}/${id}`);
   }
 
   create(body: any, multiple: boolean=false): Observable<any> {
-    if(multiple) {
+    if (multiple) {
       // this case body MUST be an array
       let payload = {payload: body, multiple: true};
       return this.apiBaseService.post(this.url, payload);
@@ -28,19 +29,21 @@ export class BaseEntityService<T> {
     }
   }
 
-  update(body: any, multiple: boolean=false): Observable<any> {
-    if(multiple) {
-      return this.apiBaseService.put(`${this.url}/multiple`, body);
+  update(body: any, multiple: boolean = false, path: string = ''): Observable<any> {
+    let url = path === '' ? this.url : `${this.url}/${path}`;
+    if (multiple) {
+      return this.apiBaseService.put(`${url}/multiple`, body);
     } else {
-      return this.apiBaseService.put(`${this.url}/${body.id}`, body);
+      return this.apiBaseService.put(`${url}/${body.id}`, body);
     }
   }
 
-  delete(id: any, payload?: any): Observable<any> {
-    if(id == 0) {
-      return this.apiBaseService.post(`${this.url}/0`, {multiple: true, payload: payload});
+  delete(id: any, payload?: any, path: string = ''): Observable<any> {
+    let url = path === '' ? this.url : `${this.url}/${path}`;
+    if (id == 0) {
+      return this.apiBaseService.post(`${url}/0`, {multiple: true, payload: payload});
     } else {
-      return this.apiBaseService.delete(`${this.url}/${id}`);
+      return this.apiBaseService.delete(`${url}/${id}`);
     }
   }
 }

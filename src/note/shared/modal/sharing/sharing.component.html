@@ -51,11 +51,11 @@
                 <div class="btn-group" *ngIf="!sharing._destroy">
                   <button type="button" class="btn btn-sm btn-outline-default dropdown-toggle" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
-                    {{(!sharing.permission || sharing.permission == 'view')? 'View Only': 'Edit'}} <span class="caret"></span>
+                    {{(!sharing.permission || sharing.permission == 'view')? 'View Only': 'Can Edit'}} <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right">
                     <li><a href="javascript:;" (click)="changePermission(sharing, 'view')"><i [ngClass]="{'fa fa-check': (!sharing.permission || sharing.permission == 'view')}"></i> View only</a></li>
-                    <li><a href="javascript:;" (click)="changePermission(sharing, 'edit')"><i [ngClass]="{'fa fa-check': (sharing.permission == 'edit')}"></i> Edit </a></li>
+                    <li><a href="javascript:;" (click)="changePermission(sharing, 'edit')"><i [ngClass]="{'fa fa-check': (sharing.permission == 'edit')}"></i> Can Edit </a></li>
                   </ul>
                 </div>
 
@@ -73,7 +73,7 @@
     <button *ngIf="showCancelButton && changed" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
     <button *ngIf="changed" type="button" [ngClass]="{'text-disable': !changed}"
             [disabled]="!changed" (click)="save()"
-            class="btn btn-outline-primary btn-min">Save changes
+            class="btn btn-outline-primary btn-min">Save
     </button>
     <button *ngIf="!changed" type="button" (click)="close()"
             class="btn btn-outline-primary btn-min"> Done

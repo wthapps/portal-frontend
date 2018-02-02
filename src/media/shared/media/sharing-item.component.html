@@ -1,0 +1,44 @@
+<div *ngIf="object" class="photo-box" id="photo-box-img-{{ object.id }}" [ngClass]="{'selected':object.selected}">
+  <div class="photo-box-action photo-box-action-right">
+    <i (click)="onEvent({action:'favourite', payload: {mode: 'add', selectedObject: object }})" class="fa fa-star-o"
+       *ngIf="!object.favorite"></i>
+    <i (click)="onEvent({action:'favourite', payload: {mode: 'remove', selectedObject: object }})" class="fa fa-star"
+       *ngIf="object.favorite"></i>
+  </div>
+
+  <div class="photo-box-figure"
+       (click)="onEvent({action: 'select', payload: {selectedObjects: object}})">
+    <div class="photo-box-input">
+      <i class="fa fa-check"
+         (click)="onEvent({action: object.selected? 'deselect': 'select', payload: {selectedObjects: object, checkbox: true  }}); $event.stopPropagation();"></i>
+    </div>
+    <figure class="img-center-dv can-click"
+            (dblclick)="$event.stopPropagation();onEvent({action:'viewDetails', payload: {selectedObject: object }}); ">
+      <div class="photo-box-figure-in">
+        <img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.photo_default" alt="">
+      </div>
+      <div class="photo-box-info">
+        <!--{{ object.name }} <br>-->
+        <span *ngIf="object.photo_number>1">
+          {{ object.photo_number }} photos
+        </span>
+        <span *ngIf="object.photo_number<=1">
+          {{ object.photo_number }} photo
+        </span>
+      </div>
+    </figure>
+    <div class="photo-box-name">
+      <span class="can-click" (dblclick)="onEvent({action:'openUpdate', payload: {modalName: 'editNameModal', selectedObject: object }})">
+        <i class="wthico-album"></i> {{ object.name }}
+      </span>
+      <div class="hidden">
+        <!--data return doesn't have json_shares-->
+        <!--<i *ngIf="object.json_shares" class="fa fa-user-plus"></i>-->
+        <i *ngIf="object.favorite" class="fa fa-star"></i>
+      </div>
+    </div>
+    <div class="photo-box-owner">{{ object.owner.name }}</div>
+    <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
+    <div class="photo-box-size">{{ object.photo_number }}</div>
+  </div>
+</div>

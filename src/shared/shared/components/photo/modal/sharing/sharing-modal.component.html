@@ -3,9 +3,8 @@
     <h4 class="modal-title">Sharing</h4>
   </modal-header>
   <modal-body>
-    <p>Contact</p>
     <div class="form-group">
-      <p-autoComplete [(ngModel)]="textContacts"
+      <p-autoComplete *ngIf="mode!=operation.editing" [(ngModel)]="textContacts"
                       [suggestions]="filteredContacts"
                       [multiple]="true"
                       [minLength]="1"
@@ -14,6 +13,11 @@
                       (onUnselect)="unSelectContact($event)"
                       (completeMethod)="contactTerm$.next($event)">
       </p-autoComplete>
+      <p *ngIf="mode==operation.editing" class="text-left changing padding8 rounded border border-danger border-1">
+        <i class="fa fa-exclamation-triangle text-danger"></i>
+        You have made changes that you need to save!
+      </p>
+
     </div>
     <div class="modal-body-collapse" *ngIf="sharedContacts?.length">
       <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
@@ -32,9 +36,14 @@
               <div class="media-body">
                 {{ contact.name }}
               </div>
+
               <div class="media-right">
-                <a href="#" (click)="toggleRemoving($event, contact.id)">{{ isDeletedItem(contact.id) ? 'Cancel':
-                  'Remove' }}</a>
+                <a class="btn btn-default" (click)="toggleRemoving($event, contact.id)"
+                   [title]="isDeletedItem(contact.id) ? 'Undo removing':'Remove'"
+                   href="javascript:void(0)">
+                  <i *ngIf="!isDeletedItem(contact.id)" class="fa fa-times" title="remove"></i>
+                  <i *ngIf="isDeletedItem(contact.id)" class="fa fa-undo" title="Undo removing"></i>
+                </a>
               </div>
             </div>
           </div>
@@ -43,12 +52,12 @@
     </div>
   </modal-body>
   <modal-footer>
-    <p *ngIf="hasChanged" class="text-left text-danger">You have made changes that you need to save!</p>
 
-    <button type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
-    <button type="button" [ngClass]="{'text-disable': !hasChanged}"
-            [disabled]="!hasChanged" (click)="save()"
-            class="btn btn-outline-primary btn-min">Done
+    <button *ngIf="hasChanged" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
+    <button *ngIf="!hasChanged" type="button" (click)="close()"
+            class="btn btn-outline-primary btn-min">Done    </button>
+    <button *ngIf="hasChanged" type="button" (click)="save()"
+            class="btn btn-outline-primary btn-min">Save
     </button>
   </modal-footer>
 </modal>

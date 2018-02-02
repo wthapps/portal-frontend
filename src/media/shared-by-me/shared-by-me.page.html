@@ -1,0 +1,12 @@
+<me-container #container [objects]="objects|async">
+  <me-toolbar #toolbar [objects]="objects|async"
+              [selectedObjects]="selectedObjects|async"
+              (events)="gridlist.onEvent($event)"></me-toolbar>
+  <me-grid-list #gridlist
+                [objects]="objects|async"
+                [currentPath]="'shared-with-me'"
+                (events)="doEvents($event)"
+  ></me-grid-list>
+</me-container>
+
+<ng-template #modalContainer></ng-template>

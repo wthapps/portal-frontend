@@ -88,13 +88,19 @@ export class SharingModalComponent implements OnDestroy {
   }
 
   close(options?: any) {
+    // cancel removing items
+    if (this.mode == this.operation.editing || this.mode == this.operation.deleting) {
+      this.removedContacts = [];
+      this.mode = this.operation.read;
+      return;
+    }
     this.modal.close().then();
   }
 
   getShared() {
     let body = {objects: _.map(this.selectedItems, 'id')};
 
-    this.mediaSharingService.getShared(body).take(1).subscribe((response: any)=> {
+    this.mediaSharingService.getShared(body).take(1).subscribe((response: any) => {
       this.sharedContacts = response.data;
     });
   }
@@ -128,7 +134,7 @@ export class SharingModalComponent implements OnDestroy {
 
       // Only subscribe to this action once`
       this.mediaSharingService.add(body).take(1).subscribe((response: any) => {
-          this.sharedContacts = this.selectedContacts;
+          this.sharedContacts.push(...this.selectedContacts);
           this.resetData();
           this.updateSelectedItems({contacts: this.sharedContacts});
         },
@@ -206,17 +212,12 @@ export class SharingModalComponent implements OnDestroy {
   }
 
   cancel() {
-    // cancel removing items
-    if (this.mode == this.operation.editing || this.mode == this.operation.deleting) {
-      this.removedContacts = [];
-      this.mode = this.operation.read;
-      return;
-    }
-    this.modal.close().then();
+    this.resetData();
   }
 
   selectContact(contact: any) {
     this.selectedContacts.push(contact);
+    this.hasChanged = true;
     this.setMode();
   }
 
@@ -247,7 +248,7 @@ export class SharingModalComponent implements OnDestroy {
     if (count == 0) {
       this.mode = this.operation.read;
     } else if (count > 0) {
-      this.mode = this.sharedContacts.length == 0 ? this.operation.creating : this.operation.editing;
+      this.mode = this.selectedContacts.length > 0 ? this.operation.creating : this.operation.editing;
     }
     this.hasChanged = this.mode != this.operation.read ? true : false;
   }

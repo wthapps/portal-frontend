@@ -1,16 +1,17 @@
  import { Injectable } from '@angular/core';
- import { ApiBaseService } from '@wth/shared/services';
+ import { ApiBaseService, BaseEntityService } from '@wth/shared/services';
 
 declare var _: any;
 const MEDIA_PATH:string = 'media';
 
 
 @Injectable()
-export class MediaObjectService {
+export class MediaObjectService extends BaseEntityService<any> {
 
   path = 'media';
-
-  constructor(private api: ApiBaseService) {
+  url = 'media';
+  constructor(protected api: ApiBaseService) {
+    super(api);
   }
 
   getObjects(path: string, queryString?: any): any {

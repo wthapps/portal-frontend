@@ -38,7 +38,7 @@ export class GetAll implements Action {
 
 export class GetAllSuccess implements Action {
   type = ActionTypes.GET_ALL_SUCCESS;
-  constructor(public payload: Partial<User>[] = null) { }
+  constructor(public payload: Partial<any>[] = null) { }
 }
 
 export class GetAllFail implements Action {

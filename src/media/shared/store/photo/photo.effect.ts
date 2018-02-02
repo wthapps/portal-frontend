@@ -8,7 +8,7 @@ import { Store }                  from '@ngrx/store';
 
 import { Observable }             from 'rxjs/Observable';
 import { of }                     from 'rxjs/observable/of';
-import * as photoActions         from '../actions/photo.action';
+import * as photoActions         from './photo.action';
 import * as store                 from '../index';
 import { PhotoService } from '@wth/shared/services';
 

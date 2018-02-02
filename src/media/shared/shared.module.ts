@@ -15,6 +15,11 @@ import { ZMediaSharingService } from '@wth/shared/shared/components/photo/modal/
 import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
 import { AlbumDetailInfoComponent } from '../album/album-detail-info.component';
 import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
+import { MediaToolbarComponent } from './media/media-toolbar.component';
+import { MediaGridListComponent } from './media/media-grid-list.component';
+import { MediaContainerComponent } from './container/media-container.component';
+import { MediaObjectService } from './container/media-object.service';
+import { SharingItemComponent } from './media/sharing-item.component';
 
 TagInputModule.withDefaults({
   tagInput: {
@@ -29,7 +34,7 @@ TagInputModule.withDefaults({
 @NgModule({
   imports: [
     TagInputModule,
-    SharedModule.forRoot()
+    SharedModule
   ],
   declarations: [
     MediaUploaderComponent,
@@ -40,6 +45,12 @@ TagInputModule.withDefaults({
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
     ZMediaAlbumDetailComponent,
+
+    // new components
+    MediaContainerComponent,
+    MediaToolbarComponent,
+    MediaGridListComponent,
+    SharingItemComponent
   ],
   exports: [
     MediaUploaderComponent,
@@ -49,7 +60,13 @@ TagInputModule.withDefaults({
     MediaItemComponent,
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
-    ZMediaAlbumDetailComponent
+    ZMediaAlbumDetailComponent,
+
+    //
+    MediaContainerComponent,
+    MediaToolbarComponent,
+    MediaGridListComponent,
+    SharingItemComponent
   ]
 })
 export class ZMediaSharedModule {
@@ -61,7 +78,8 @@ export class ZMediaSharedModule {
         ZMediaSharingService,
         ZMediaTaggingService,
         ZMediaStore,
-        MediaUploaderDataService
+        MediaUploaderDataService,
+        MediaObjectService
       ]
     };
   }

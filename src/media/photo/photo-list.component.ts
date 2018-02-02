@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { UserService } from '@wth/shared/services';
 // import { PhotoSandbox } from './photo.sandbox';
-import { ActionTypes } from '../shared/store/actions/photo.action';
+import { ActionTypes } from '../shared/store/photo/photo.action';
 import * as appStore from '../shared/store';
 
 import { Store } from '@ngrx/store';
@@ -21,11 +21,11 @@ export class ZMediaPhotoListComponent implements OnInit {
     // private photoSandBox: PhotoSandbox,
     private store: Store<appStore.State>
   ) {
-    // this.photos = this.store.select(appStore.getPhotos);
+    this.photos = this.store.select(appStore.getPhotos);
   }
 
   ngOnInit() {
-    // this.store.dispatch({type: ActionTypes.GET_ALL, payload: null});
+    this.store.dispatch({type: ActionTypes.GET_ALL, payload: null});
 
     if (!this.userService.getSyncProfile().introduction.media) {
       this.introModal.open();

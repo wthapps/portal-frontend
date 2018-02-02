@@ -8,6 +8,8 @@ import { ZMediaSharedByMeComponent } from './shared-by-me.component';
 import { ZMediaSharedByMeService } from './shared-by-me.service';
 import { ZMediaSharingDetailComponent } from './sharing-detail.component';
 import { SharedModule } from '@wth/shared/shared.module';
+import { SharedByMePage } from './shared-by-me.page';
+import { SharedByMeDetailPage } from './shared-by-me-detail.page';
 
 @NgModule({
   imports: [
@@ -16,6 +18,8 @@ import { SharedModule } from '@wth/shared/shared.module';
     SharedModule.forRoot()
   ],
   declarations: [
+    SharedByMePage,
+    SharedByMeDetailPage,
     ZMediaSharedByMeComponent,
     ZMediaSharingDetailComponent
   ],

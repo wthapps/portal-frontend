@@ -16,15 +16,19 @@ import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
  * notation packages up all of the exports into a single object.
  */
 
-import * as fromPhoto       from './reducers/photo.reducer';
-import { PhotoEffects } from './effects/photo.effect';
+import * as fromPhoto       from './photo';
+import * as fromObject       from './object';
+
+
+
 
 /**
  * We treat each reducer like a table in a database. This means
  * our top level state interface is just a map of keys to inner state types.
  */
 export interface State {
-  photo:       fromPhoto.State;
+  photo:   fromPhoto.State;
+  object:  fromObject.State;
 }
 
 /**
@@ -36,6 +40,7 @@ export interface State {
  */
 export const mediaReducers: ActionReducerMap<State> = {
   photo: fromPhoto.reducer,
+  object: fromObject.reducer
 };
 
 /**
@@ -49,11 +54,11 @@ export const mediaReducers: ActionReducerMap<State> = {
  */
 export const getPhotoState   = createFeatureSelector<fromPhoto.State>('photo');
 
-export const getPhotoEntities    = createSelector(getPhotoState, fromPhoto.getPhotoEntities);
-export const getPhotoLoaded  = createSelector(getPhotoState, fromPhoto.getLoaded);
-export const getPhotoLoading = createSelector(getPhotoState, fromPhoto.getLoading);
-export const getPhotoFailed  = createSelector(getPhotoState, fromPhoto.getFailed);
-export const getPhoto        = createSelector(getPhotoState, fromPhoto.getPhoto);
+// export const getPhotoEntities    = createSelector(getPhotoState, fromPhoto.getPhotoEntities);
+// export const getPhotoLoaded  = createSelector(getPhotoState, fromPhoto.getLoaded);
+// export const getPhotoLoading = createSelector(getPhotoState, fromPhoto.getLoading);
+// export const getPhotoFailed  = createSelector(getPhotoState, fromPhoto.getFailed);
+// export const getPhoto        = createSelector(getPhotoState, fromPhoto.getPhoto);
 export const getPhotos       = createSelector(getPhotoState, fromPhoto.selectAll);
 
 
@@ -63,9 +68,18 @@ export const getPhotos       = createSelector(getPhotoState, fromPhoto.selectAll
 // export const getPhoto        = createSelector(getPhotoEntities, fromPhoto.getPhoto, state => state);
 // export const getPhotos       = createSelector(getPhotoEntities, fromPhoto.getPhotos, state => state);
 
+// Object store functions
+export const getObjectState   = createFeatureSelector<fromObject.State>('object');
+export const getObjects       = createSelector(getObjectState, fromObject.selectAll);
+export const getObject       = createSelector(getObjectState, fromObject.getObject);
+
+export const getSelectedObjects       = createSelector(getObjectState, fromObject.getSelectedObjects);
+
+
 
 export const appStore = {
-  photo: fromPhoto.reducer
+  photo: fromPhoto.reducer,
+  object: fromObject.reducer
 };
 
-export let appEffects: Array<any> = [PhotoEffects];
+export let appEffects: Array<any> = [fromPhoto.PhotoEffects, fromObject.ObjectEffects];
