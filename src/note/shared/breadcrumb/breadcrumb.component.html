@@ -1,12 +1,15 @@
 <div class="breadcrumb-wrap" [ngClass]="{styleClass:styleClass}" [ngStyle]="style">
   <ol class="breadcrumb">
-    <li *ngFor="let item of model; let last = last;" [ngClass]="{'active': last}">
-      <button *ngIf="!last" type="button" class="btn btn-default dropdown-toggle" (click)="onClick(item)">
+    <li *ngFor="let item of model; let last = last;" [ngClass]="{'active': last}"
+        [title]="item.label">
+      <button *ngIf="!last" type="button" class="btn btn-default dropdown-toggle"
+              (click)="onClick(item)">
         {{ item.label }}
       </button>
       <div *ngIf="last" class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false" [disabled]="!permissions.enableEdit">
+                aria-expanded="false"
+                [disabled]="!permissions.enableEdit">
           {{ item.label }} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">

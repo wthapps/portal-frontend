@@ -19,7 +19,7 @@
   <div class="menuleft-nav-sub-item-list" [ngClass]="{'expand': shortcutsExpand}">
     <div *ngFor="let shortcut of shortcuts$ | async" class="menuleft-nav-sub-item" [routerLinkActive]="['active']">
       <a draggable="false" [routerLink]="[shortcut?.link]" (click)="onSubMenu(shortcut?.link)"
-         href="#">
+         pTooltip="{{ shortcut?.name }}" tooltipPosition="bottom" href="#">
         <i class="fa fa-users"></i> {{ shortcut?.name }}
       </a>
       <div class="menuleft-nav-sub-action">

@@ -10,6 +10,9 @@
 }
 
 .well-folder-tree-left-wrap {
+  .well-folder-tree {
+    width: 100%;
+  }
   &, &:hover {
     background-color: transparent;
   }

@@ -89,6 +89,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
 
   update(target: any, folders: any) {
     target.label = target.name;
+    target.title = target.name;
     target.icon = 'fa-folder-o';
     target.styleClass = `js-note-folders-tree-${target.id}`;
     if (!target.items) target.items = [];
