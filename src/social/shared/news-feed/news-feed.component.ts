@@ -20,6 +20,9 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
 
   selectedValues: string[] = [];
   @Input() channels: any;
+  addChannels: any = [];
+  categories: any = [];
+  channelChanged: any = false;
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private router: Router, private apiBaseService: ApiBaseService) {
@@ -31,6 +34,7 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
 
   onSave() {
     this.modalNew.close();
+    this.modalEdit.close();
     this.events.emit({action: 'reload'});
   }
 
@@ -47,16 +51,37 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
   }
 
   onKey(event: any) {
-    console.log(event);
+    this.apiBaseService.post(`zone/social_network/feeds/search_channels`, {q: event.search}).subscribe((res: any) => {
+      this.addChannels = res.data;
+    });
   }
 
   toogleFollow(channel: any) {
     this.apiBaseService.post(`zone/social_network/feeds/subscribe`, {id: channel.id}).subscribe((res: any) => {
-      if(res.data.length == 0) {
-        channel.subscribed = false;
-      } else {
-        channel.subscribed = true;
-      }
+      this.addChannels = this.addChannels.map((channel: any) => {
+        if(channel.id == res.data.id) {
+          return res.data;
+        } else {
+          return channel
+        }
+      })
+      this.channels = this.channels.map((channel: any) => {
+        if(channel.id == res.data.id) {
+          return res.data;
+        } else {
+          return channel
+        }
+      })
     })
+  }
+
+  openNewModal() {
+    this.modalNew.open();
+    this.apiBaseService.post(`zone/social_network/feeds/search_channels`, {q: 'all'}).subscribe((res: any) => {
+      this.addChannels = res.data;
+    });
+    this.apiBaseService.get(`zone/social_network/feeds/categories`).subscribe((res: any) => {
+      this.categories = res.data;
+    });
   }
 }

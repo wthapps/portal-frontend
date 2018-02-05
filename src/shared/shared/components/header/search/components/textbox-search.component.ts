@@ -42,7 +42,6 @@ export class TextBoxSearchComponent implements OnInit {
       this.onEnter();
       return;
     }
-    console.log('e.code : ', e.code);
     if (e.code == 'Escape') {
       this.onEscape();
       return;

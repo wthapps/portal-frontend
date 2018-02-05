@@ -47,7 +47,7 @@ export class ZSocialNewsComponent implements OnInit {
 
   loadChannels() {
     this.apiBaseService.get(`zone/social_network/feeds/get_my_channels`).subscribe((res: any) => {
-      this.channels = res.data.map((subscription: any) => {return subscription.feed_link})
+      this.channels = res.data;
     })
   }
 
