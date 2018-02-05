@@ -11,6 +11,7 @@ import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE } from '@wth/shared/constant';
 import { PhotoModalDataService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
+import { Observable } from 'rxjs/Observable';
 
 declare var $: any;
 
