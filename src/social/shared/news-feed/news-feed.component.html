@@ -80,8 +80,8 @@
     </div>
     <div class="social-news-feeds-setting">
 
-      <ng-container *ngIf="channels;else templateLoading">
-        <div *ngIf="channels.length == 0">
+      <ng-container *ngIf="addChannels;else templateLoading">
+        <div *ngIf="addChannels.length == 0">
           <h4>
             No search result match
           </h4>
