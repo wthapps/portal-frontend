@@ -2,7 +2,7 @@ import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Store } from '@ngrx/store';
 
@@ -22,12 +22,14 @@ export class SharedByMeDetailPage {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
+  id: number;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(
     private resolver: ComponentFactoryResolver,
     private router: Router,
+    private route: ActivatedRoute,
     private confirmService: WthConfirmService,
     private store: Store<appStore.State>
   ) {
@@ -37,7 +39,10 @@ export class SharedByMeDetailPage {
   }
 
   ngOnInit() {
-    this.store.dispatch({type: fromObject.GET, payload: {id: 16}});
+    this.route.params.subscribe(params => {
+      this.id = +params['id'];
+      this.store.dispatch({type: fromObject.GET, payload: {id: this.id}});
+    });
   }
 
   doEvents(event: any) {

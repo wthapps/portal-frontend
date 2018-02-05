@@ -1,14 +1,15 @@
-<div> {{ (object | async).data | json }}</div>
+<!--<div> {{ (object | async).data | json }}</div>-->
+<div class="media-page-detail">
+  <me-container>
+    <me-toolbar #toolbar [objects]="(object|async)?.data"
+                [selectedObjects]="selectedObjects|async"
+                (events)="gridlist.onEvent($event)"></me-toolbar>
+    <me-grid-list #gridlist
+                  [objects]="(object|async)?.data"
+                  [currentPath]="'shared-with-me'"
+                  (events)="doEvents($event)"
+    ></me-grid-list>
+  </me-container>
 
-<!--<me-container #container [objects]="(object|async).data">-->
-  <!--<me-toolbar #toolbar [objects]="(object|async).data"-->
-              <!--[selectedObjects]="selectedObjects|async"-->
-              <!--(events)="gridlist.onEvent($event)"></me-toolbar>-->
-  <!--<me-grid-list #gridlist-->
-                <!--[objects]="(object|async).data"-->
-                <!--[currentPath]="'shared-with-me'"-->
-                <!--(events)="doEvents($event)"-->
-  <!--&gt;</me-grid-list>-->
-<!--</me-container>-->
-
-<ng-template #modalContainer></ng-template>
+  <ng-template #modalContainer></ng-template>
+</div>

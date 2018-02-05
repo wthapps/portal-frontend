@@ -45,7 +45,7 @@ export class ObjectEffects {
     .switchMap((state: any) => {
       return this.mediaService.get(state.id, 'sharings')
         .map(response => new ObjectActions.GetSuccess(response))
-        .catch(error  => of(new ObjectActions.GetFail()));
+        .catch(error  => of(new ObjectActions.GetFail(error)));
     });
 
   @Effect()

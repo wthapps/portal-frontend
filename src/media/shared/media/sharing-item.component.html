@@ -16,6 +16,8 @@
             (dblclick)="$event.stopPropagation();onEvent({action:'viewDetails', payload: {selectedObject: object }}); ">
       <div class="photo-box-figure-in">
         <img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.photo_default" alt="">
+        <!--<img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.thumbnail_url" alt="">-->
+
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->

@@ -41,16 +41,16 @@
         </div>
         <me-sharing-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"
                  (events)="onEvent($event)"></me-sharing-item>
-        <div class="text-center p20" *ngIf="viewOption == 'grid'">
-          <a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"
-             *ngIf="group.key == 'album'">
-            View all
-          </a>
-          <a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"
-             *ngIf="group.key == 'photo'">
-            View all
-          </a>
-        </div>
+        <!--<div class="text-center p20" *ngIf="viewOption == 'grid'">-->
+          <!--<a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"-->
+             <!--*ngIf="group.key == 'album'">-->
+            <!--View all-->
+          <!--</a>-->
+          <!--<a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"-->
+             <!--*ngIf="group.key == 'photo'">-->
+            <!--View all-->
+          <!--</a>-->
+        <!--</div>-->
       </div>
     </div>
   </div>
