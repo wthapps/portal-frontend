@@ -16,6 +16,7 @@ import { Observable } from 'rxjs/Observable';
 export class ZSocialLeftMenuComponent {
   tooltip: any = Constants.tooltip;
   homeMenuItem: any;
+  communitiesMenuItem: any;
   socialMenu = Constants.socialMenuItems;
   shortcuts$: Observable<any>;
   uuid: string;
@@ -30,7 +31,7 @@ export class ZSocialLeftMenuComponent {
               private router: Router,
               private navigateService: WTHNavigateService,
               private store: Store<any> ) {
-    [this.homeMenuItem, ...this.socialMenu] = Constants.socialMenuItems;
+    [this.homeMenuItem, this.communitiesMenuItem, ...this.socialMenu] = Constants.socialMenuItems;
     this.store.dispatch({type: fromRoot.SHORTCUT_LOAD});
     this.store.dispatch({type: fromRoot.SO_PROFILE_LOAD});
     this.shortcuts$ = this.store.select(fromRoot.getShortcuts);

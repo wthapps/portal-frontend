@@ -33,6 +33,12 @@
   </div>
 </div>
 
+<div class="menuleft-nav-sub-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+  <a draggable="false" [routerLink]="[communitiesMenuItem.link]">
+    <i class="{{ communitiesMenuItem.icon }}"></i> {{ communitiesMenuItem.name }}
+  </a>
+</div>
+
 <ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">
   <div *ngIf="social.name != ''" [routerLinkActive]="['active']"
        [ngClass]="{'hidden': social.link == '/search'}" class="menuleft-nav-sub-item">

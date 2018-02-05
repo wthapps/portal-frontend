@@ -32,6 +32,19 @@
                           (onUnselect)="unselect($event)"
                           (onClear)="clear($event)"
                           (completeMethod)="search($event)">
+            <ng-template let-com pTemplate="item">
+              <div class="media media-user-list media-middle">
+                <div class="media-left">
+                  <div class="media-user-avatar avatar-xs">
+                    <img alt="" [src]="com?.profile_image">
+                  </div>
+                </div>
+                <div class="media-body">
+                  {{ com?.name }}
+                </div>
+              </div>
+            </ng-template>
+
           </p-autoComplete>
         </div>
       </form>
