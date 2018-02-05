@@ -23,6 +23,9 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
   addChannels: any = [];
   categories: any = [];
   channelChanged: any = false;
+  newSelectedCategory: any = 'all';
+  editSelectedCategory: any = 'all';
+
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private router: Router, private apiBaseService: ApiBaseService) {
@@ -51,6 +54,12 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
   }
 
   onKey(event: any) {
+    this.apiBaseService.post(`zone/social_network/feeds/search_channels`, {q: event.search}).subscribe((res: any) => {
+      this.addChannels = res.data;
+    });
+  }
+
+  onEditKey(event: any) {
     this.apiBaseService.post(`zone/social_network/feeds/search_channels`, {q: event.search}).subscribe((res: any) => {
       this.addChannels = res.data;
     });

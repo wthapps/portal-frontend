@@ -5,7 +5,6 @@
         <div class="news-item" *ngFor="let feed of feeds">
           <div class="news-item-header">
             <div class="news-item-nav">
-              <!-- <a href="javascript:;"><img src="/assets/icons/news.png" alt=""></a> -->
               <span>{{feed.feed_link_name}}</span> • <span>{{feed.published_date | timeFormat}}</span>
             </div>
             <div class="news-item-action">
@@ -14,7 +13,7 @@
           </div>
           <div class="news-item-content">
             <div class="news-item-img">
-              <img [ngStyle]="{'background': 'url(' + article.uri + ')'}" src="/assets/images_new/sizes/news.png"
+              <img [ngStyle]="{'background': 'url(' + article.uri + ')'}" src="/assets/images/zone/img-default.png"
                    alt="">
             </div>
             <div class="news-item-body">

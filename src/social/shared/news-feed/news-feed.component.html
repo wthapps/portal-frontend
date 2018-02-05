@@ -69,9 +69,9 @@
           </textbox-search>
         </div>
         <div class="col-sm-4">
-          <select name="name" class="form-control">
-            <option value=""> -- All Categories --</option>
-            <option *ngFor="let category of categories">
+          <select name="name" class="form-control" [(ngModel)]="newSelectedCategory">
+            <option value="all"> -- All Categories --</option>
+            <option *ngFor="let category of categories" [value]="category.name">
               {{ category.name | titleCase }}
             </option>
           </select>
@@ -95,9 +95,9 @@
             </ul>
           </div>
         </div>
-        <div *ngIf="channels.length > 0">
-          <ng-container *ngFor="let category of addChannels | groupBy :'category'">
-            <div *ngFor="let channel of category.value" class="media">
+        <div *ngIf="addChannels.length > 0">
+          <ng-container *ngFor="let channel of addChannels" >
+            <div class="media" *ngIf="newSelectedCategory == 'all' || channel.category == newSelectedCategory">
               <div class="media-left">
                 <span class="avatar-xs"><img [src]="channel.logo" alt=""></span>
               </div>
@@ -106,7 +106,7 @@
                   <a class="link-text" href="#">{{channel.name}}</a>
                 </h5>
                 <small class="text-fade text-capitalize">
-                  {{ category.key }}
+                  {{ channel.category }}
                 </small>
               </div>
               <div class="media-right">
@@ -145,8 +145,8 @@
           </textbox-search>
         </div>
         <div class="col-sm-4">
-          <select name="name" class="form-control">
-            <option value=""> -- All Categories --</option>
+          <select name="name" class="form-control" [(ngModel)]="editSelectedCategory">
+            <option value="all"> -- All Categories --</option>
             <option *ngFor="let category of channels | groupBy :'category'" [value]="category.key">
               {{ category.key | titleCase }}
             </option>
@@ -173,23 +173,25 @@
         </div>
         <div *ngIf="channels.length > 0">
           <ng-container *ngFor="let category of channels | groupBy :'category'">
-            <div *ngFor="let channel of category.value" class="media">
-              <div class="media-left">
-                <span class="avatar-xs"><img [src]="channel.logo" alt=""></span>
+            <ng-container *ngFor="let channel of category.value">
+              <div class="media" *ngIf="editSelectedCategory == 'all' || channel.category == editSelectedCategory">
+                <div class="media-left">
+                  <span class="avatar-xs"><img [src]="channel.logo" alt=""></span>
+                </div>
+                <div class="media-body">
+                  <h5 class="media-heading m0">
+                    <a class="link-text" href="#">{{channel.name}}</a>
+                  </h5>
+                  <small class="text-fade text-capitalize">
+                    {{ category.key }}
+                  </small>
+                </div>
+                <div class="media-right">
+                  <!-- <button class="btn btn-sm btn-outline-default" type="button">Following</button> -->
+                  <button class="btn btn-sm btn-outline-default" type="button" (click)="toogleFollow(channel)">{{channel.subscription == null? 'Follow': 'Following'}}</button>
+                </div>
               </div>
-              <div class="media-body">
-                <h5 class="media-heading m0">
-                  <a class="link-text" href="#">{{channel.name}}</a>
-                </h5>
-                <small class="text-fade text-capitalize">
-                  {{ category.key }}
-                </small>
-              </div>
-              <div class="media-right">
-                <!-- <button class="btn btn-sm btn-outline-default" type="button">Following</button> -->
-                <button class="btn btn-sm btn-outline-default" type="button" (click)="toogleFollow(channel)">{{channel.subscription == null? 'Follow': 'Following'}}</button>
-              </div>
-            </div>
+            </ng-container>
           </ng-container>
         </div>
       </ng-container>
