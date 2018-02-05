@@ -106,11 +106,14 @@ $color-table-row: #F9F9F9;
     }
     .contact-listbox-action {
       width: $contact-listbox-action;
-      min-width: 220px;
+      min-width: 310px;
       display: table-cell;
       vertical-align: middle;
       padding: 9px 10px;
       text-align: right;
+      .btn-outline-default{
+        min-width: 85px;
+      }
       ul.page-body-control-menu {
         margin: 0;
         padding: 0;
