@@ -100,8 +100,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
               private photoService: PhotoService,
               private photoUploadService: PhotoUploadService,
               private commonEventService: CommonEventService) {
-      this.noSave$ = Observable.merge(this.noSaveSubject.asObservable(), this.destroySubject, this.closeSubject);
-      this.closeObs$ = Observable.merge(
+    this.noSave$ = Observable.merge(this.noSaveSubject.asObservable(), this.destroySubject, this.closeSubject);
+    this.closeObs$ = Observable.merge(
       this.photoSelectDataService.closeObs$,
       this.photoSelectDataService.openObs$,
       this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable()
@@ -119,7 +119,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.context$ = this.store.select('context');
     this.commonEventService.filter((e: any) => e.channel == 'noteActionsBar').take(1).subscribe((e: any) => {
 
-      switch(e.action) {
+      switch (e.action) {
         case 'note:note_edit:close':
           this.router.navigate([{outlets: {detail: null}}]);
           break;
@@ -136,7 +136,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       switchMap((paramMap: any) => {
         let noteId = paramMap.get('id');
         this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
-        if(!!noteId)
+        if (!!noteId)
           return this.noteService.get(noteId).map(res => res.data);
         else
           return of(new Note());
@@ -148,7 +148,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         this.note = noteContent;
         this.store.dispatch(new note.NoteUpdated(this.note));
         this.initQuill();
-        if(currentFolder)
+        if (currentFolder)
           this.parentId = currentFolder.id;
         this.updateFormValue(this.note);
         // Reset content of elemenet div.ql-editor to prevent HTML data loss
@@ -332,7 +332,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
               });
               fileClipboard.value = '';
               this.quill.focus();
-            };
+            }
+            ;
           }
         }, 1);
       }
@@ -679,12 +680,24 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(value: any) {
-    if (this.editMode == Constants.modal.add) {
-      if (this.note.permission !== 'view') this.store.dispatch(new note.Add({...value, parent_id: this.parentId, content: this.editorElement.innerHTML}));
-    }
-    else {
-      if (this.note.permission != 'view' && this.noteChanged)
-        this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
+    if (value.title.length > 0 ||
+      value.tags.length > 0 ||
+      value.attachments.length > 0 ||
+      (this.editorElement.innerHTML.length > 0 && this.editorElement.innerHTML != '<p><br></p>')) {
+
+      if (this.editMode == Constants.modal.add) {
+        if (this.note.permission !== 'view') {
+          this.store.dispatch(new note.Add({
+            ...value,
+            parent_id: this.parentId,
+            content: this.editorElement.innerHTML
+          }));
+        }
+      } else {
+        if (this.note.permission != 'view' && this.noteChanged) {
+          this.store.dispatch(new note.Update({...value, id: this.note.id, content: this.editorElement.innerHTML}));
+        }
+      }
     }
     this.onModalClose();
   }
@@ -704,7 +717,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
    */
   onFirstSave() {
     if (this.editMode == Constants.modal.add) {
-
       this.noteService.create({
         ...this.form.value,
         content: this.editorElement.innerHTML,
@@ -715,7 +727,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
           this.editMode = Constants.modal.edit;
           this.store.dispatch(new note.MultiNotesAdded([res['data']]));
           this.router.navigate([{outlets: {detail: ['notes', this.note.id]}}]);
-        })
+        });
     }
   }
 
