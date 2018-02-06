@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Router } from "@angular/router";
 import { ApiBaseService } from "@shared/services";
@@ -14,13 +14,14 @@ declare var _: any;
   styleUrls: ['news-feed.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZSocialSharedNewsFeedComponent implements OnInit {
+export class ZSocialSharedNewsFeedComponent implements OnInit, OnChanges {
   @ViewChild('modalNew') modalNew: ModalComponent;
   @ViewChild('modalEdit') modalEdit: ModalComponent;
 
   selectedValues: string[] = [];
-  @Input() channels: any;
+  @Input() channels: any = [];
   addChannels: any = [];
+  editChannels: any = [];
   categories: any = [];
   channelChanged: any = false;
   newSelectedCategory: any = 'all';
@@ -32,7 +33,13 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.editChannels = [...this.channels];
+  }
 
+  ngOnChanges() {
+    if(this.channels && this.channels.length > 0) {
+      this.editChannels = [...this.channels];
+    }
   }
 
   onSave() {
@@ -60,8 +67,8 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
   }
 
   onEditKey(event: any) {
-    this.apiBaseService.post(`zone/social_network/feeds/search_channels`, {q: event.search}).subscribe((res: any) => {
-      this.addChannels = res.data;
+    this.apiBaseService.get(`zone/social_network/feeds/get_my_channels`, {q: `name::${event.search}`}).subscribe((res: any) => {
+      this.editChannels = res.data;
     });
   }
 
@@ -74,7 +81,7 @@ export class ZSocialSharedNewsFeedComponent implements OnInit {
           return channel
         }
       })
-      this.channels = this.channels.map((channel: any) => {
+      this.editChannels = this.editChannels.map((channel: any) => {
         if(channel.id == res.data.id) {
           return res.data;
         } else {

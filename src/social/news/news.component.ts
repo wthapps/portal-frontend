@@ -31,9 +31,7 @@ export class ZSocialNewsComponent implements OnInit {
       if (!params.q) {
         this.router.navigate([`/news`], {queryParams: {q: 'category::all'}});
       } else {
-        this.apiBaseService.post(`zone/social_network/feeds/search_feeds`, {q: params.q}).subscribe((res: any) => {
-          this.feeds = res.data;
-        })
+        this.searchFeeds(params.q)
       }
     })
     this.loadChannels();
@@ -42,11 +40,18 @@ export class ZSocialNewsComponent implements OnInit {
   doEvents(event: any) {
     if (event.action == 'reload') {
       this.loadChannels();
+      this.searchFeeds('category::all')
     }
   }
 
+  searchFeeds(text: any) {
+    this.apiBaseService.post(`zone/social_network/feeds/search_feeds`, {q: text}).subscribe((res: any) => {
+      this.feeds = res.data;
+    })
+  }
+
   loadChannels() {
-    this.apiBaseService.get(`zone/social_network/feeds/get_my_channels`).subscribe((res: any) => {
+    this.apiBaseService.get(`zone/social_network/feeds/get_my_channels`, {q: "category::all"}).subscribe((res: any) => {
       this.channels = res.data;
     })
   }

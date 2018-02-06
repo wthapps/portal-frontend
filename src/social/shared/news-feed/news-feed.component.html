@@ -25,7 +25,7 @@
 
       <ng-container *ngFor="let category of channels | groupBy :'category'">
         <div class="accordion-menu-header" [routerLinkActive]="['active']">
-          <a class="accordion-menu-icon collapsed" data-toggle="collapse" href="#collapseFeed-{{ category.key | freeSpace }}">
+          <a class="accordion-menu-icon" data-toggle="collapse" href="#collapseFeed-{{ category.key | freeSpace }}">
             <i class="fa fa-chevron-right"></i>
           </a>
 
@@ -34,7 +34,7 @@
             {{category.key | titleCase}}
           </a>
         </div>
-        <div class="accordion-menu-body collapse" id="collapseFeed-{{ category.key | freeSpace }}">
+        <div class="accordion-menu-body collapse in" id="collapseFeed-{{ category.key | freeSpace }}">
           <ul class="list-unstyled">
             <li *ngFor="let channel of category.value">
               <a [routerLink]="['/news']" [queryParams]="{ q: 'feed_link_id::' + channel.id}"
@@ -140,7 +140,7 @@
         <div class="col-sm-8">
           <textbox-search (onEnterEvent)="onEnter($event)"
                           (onEscapeEvent)="onEscape($event)"
-                          (onKeyUpEvent)="onKey($event)"
+                          (onKeyUpEvent)="onEditKey($event)"
                           [placeholder]="'Search something'">
           </textbox-search>
         </div>
@@ -172,7 +172,7 @@
           </div>
         </div>
         <div *ngIf="channels.length > 0">
-          <ng-container *ngFor="let category of channels | groupBy :'category'">
+          <ng-container *ngFor="let category of editChannels | groupBy :'category'">
             <ng-container *ngFor="let channel of category.value">
               <div class="media" *ngIf="editSelectedCategory == 'all' || channel.category == editSelectedCategory">
                 <div class="media-left">
