@@ -44,7 +44,12 @@
               <ng-template ngFor let-item [ngForOf]="data.phones">
                 <dt>{{ item.category | keyToValue:phoneCategories:'value':'text' }}</dt>
                 <dd>
+                  {{ item.country_alpha_code | phoneCodeFlag:countriesCode | json }}
                   <p>
+                    <img
+                      *ngIf="(countriesCode$ | async) && data.phones[0].country_alpha_code && item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
+                      src="assets/images/flags/{{ item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
+                      width="30" alt="">
                     {{ item.value }}
                   </p>
                 </dd>

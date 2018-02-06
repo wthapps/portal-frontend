@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
-import { CustomValidator } from '../../../shared/shared/validator/custom.validator';
 import { Contact } from '../contact.model';
-import { Constants } from '../../../shared/constant/config/constants';
 import { GroupService } from '../../group/group.service';
+import { CountryService } from '@shared/shared/components/countries/countries.service';
+import { Constants } from '@shared/constant';
+import { CustomValidator } from '@shared/shared/validator/custom.validator';
 
 declare let _: any;
 
@@ -14,7 +15,8 @@ declare let _: any;
   templateUrl: 'contact-edit.component.html',
   styleUrls: ['contact-edit.component.scss']
 })
-export class ZContactEditComponent implements OnChanges {
+export class ZContactEditComponent implements OnChanges, OnInit {
+
   @Input('contact') contact: Contact;
   @Input() mode: string = 'create';
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
@@ -47,6 +49,11 @@ export class ZContactEditComponent implements OnChanges {
 
   ];
 
+  countriesCode: any;
+  countriesNameCode: any;
+
+  filteredCountriesCode: Array<any> = new Array<any>();
+
   form: FormGroup;
   name: AbstractControl;
   company: AbstractControl;
@@ -58,10 +65,12 @@ export class ZContactEditComponent implements OnChanges {
   originalGroups: Object[];
   disableEdit: boolean = true;
 
-  constructor(private fb: FormBuilder, private groupService: GroupService) {
-    this.groupService.getAllGroups().then((res: any)=> {
+  constructor(private fb: FormBuilder,
+              private groupService: GroupService,
+              private countryService: CountryService) {
+    this.groupService.getAllGroups().then((res: any) => {
       this.originalGroups = res;
-      _.map(res, (v: any)=> {
+      _.map(res, (v: any) => {
         this.filteredGroupsMultiple.push({value: v.name, display: v.name});
       });
     });
@@ -73,24 +82,38 @@ export class ZContactEditComponent implements OnChanges {
     this.createForm();
   }
 
+  ngOnInit(): void {
+    this.countryService.getCountries().subscribe(
+      (res: any) => {
+        this.countriesCode = res;
+        this.countriesNameCode = _.map(res,
+          (v: any) => {
+            return v.name + ' (' + v.dial_code + ')';
+          }
+        );
+      });
+  }
+
   ngOnChanges() {
 
     if (this.contact && this.mode == 'edit') {
+      console.log(this.contact);
+
       this.removeAll();
 
-      _.map(this.contact.phones, (v: any)=> {
+      _.map(this.contact.phones, (v: any) => {
         this.addItem('phones', v);
       });
 
-      _.map(this.contact.emails, (v: any)=> {
+      _.map(this.contact.emails, (v: any) => {
         this.addItem('emails', v);
       });
 
-      _.map(this.contact.addresses, (v: any)=> {
+      _.map(this.contact.addresses, (v: any) => {
         this.addItem('addresses', v);
       });
 
-      _.map(this.contact.media, (v: any)=> {
+      _.map(this.contact.media, (v: any) => {
         this.addItem('media', v);
       });
 
@@ -121,7 +144,9 @@ export class ZContactEditComponent implements OnChanges {
     this.groups = this.form.controls['groups'];
     this.job_title = this.form.controls['job_title'];
     this.notes = this.form.controls['notes'];
-    setTimeout(() => { this.form.valueChanges.subscribe((data: any) => this.disableEdit = false); }, 400);
+    setTimeout(() => {
+      this.form.valueChanges.subscribe((data: any) => this.disableEdit = false);
+    }, 400);
   }
 
   removeAll() {
@@ -150,11 +175,13 @@ export class ZContactEditComponent implements OnChanges {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
             category: [item.category, Validators.compose([Validators.required])],
+            country_alpha_code: [item.country_alpha_code],
             value: [item.value, Validators.compose([CustomValidator.phoneFormat])]
           };
         } else {
           formGroup = {
             category: [data.category, Validators.compose([Validators.required])],
+            country_alpha_code: [''],
             value: [data.value, Validators.compose([CustomValidator.phoneFormat])]
           };
         }
@@ -279,6 +306,16 @@ export class ZContactEditComponent implements OnChanges {
     }
     if (this.mode == 'edit') {
       this.event.emit({action: 'contact:contact:update', payload: {item: this.contact}});
+    }
+  }
+
+  filterCountriesCode(event: any) {
+    this.filteredCountriesCode = [];
+    for (let i = 0; i < this.countriesNameCode.length; i++) {
+      let brand = this.countriesNameCode[i];
+      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+        this.filteredCountriesCode.push(brand);
+      }
     }
   }
 }

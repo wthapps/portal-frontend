@@ -138,6 +138,11 @@ textarea {
 
 .form-control-phone-country {
   background-color: red;
+
+  input.ui-autocomplete-input {
+    height: 34px !important;
+  }
+
   .ui-autocomplete {
     &.ui-widget {
       .ui-inputtext {

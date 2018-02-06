@@ -7,6 +7,8 @@ import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { Constants } from '../../../shared/constant/config/constants';
 import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
+import { Observable } from 'rxjs/Observable';
+import { CountryService } from '@shared/shared/components/countries/countries.service';
 
 declare let _: any;
 
@@ -25,10 +27,14 @@ export class ZContactDetailComponent implements OnInit {
   mediaCategories: any = Constants.mediaCategories;
   _contact: any = _contact;
 
+  countriesCode$: Observable<any>;
+
   constructor(private contactService: ZContactService,
               private route: ActivatedRoute,
               private groupService: GroupService,
-              private router: Router) {
+              private router: Router,
+              private countryService: CountryService,) {
+    this.countriesCode$ = this.countryService.countriesCode$;
   }
 
   ngOnInit() {
