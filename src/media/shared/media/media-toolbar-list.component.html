@@ -493,6 +493,12 @@
         <ul class="dropdown-menu dropdown-menu-right">
           <li>
             <a href="javascript:void(0);" draggable="false"
+               (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal'}})">
+              <i class="fa fa-plus-square"></i> Add to album
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" draggable="false"
                (click)="onAction({action: 'download', params: {selectedObjects: selectedObjects}})">
               <i class="fa fa-download"></i> Download
             </a>
