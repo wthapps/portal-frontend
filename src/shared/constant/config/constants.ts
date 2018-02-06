@@ -405,7 +405,12 @@ export class ConstantsBase {
     zoomIn: 'Zoom in',
     zoomOut: 'Zoom out',
     restore: 'Restore',
-    permanentDelete: 'Permanent Delete'
+    permanentDelete: 'Permanent Delete',
+    removeFromSharing: 'Remove from sharing',
+    previewSharing: 'Preview sharing',
+    deleteSharing: 'Delete Sharing',
+    doubleClickToEdit: 'Double click to edit',
+    addToSharing: 'Add to sharing'
   };
 
   confirmDialog: any = {

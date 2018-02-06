@@ -68,6 +68,19 @@
           <!--</button>-->
         <!--</p>-->
       </div>
+
+      <div *ngIf="page == 'sharing_detail'">
+        <h2><i class="fa fa-share-alt"></i></h2>
+        <h3>There is no photo or album is sharing!</h3>
+        <h4>Try to add some photos or albums.</h4>
+        <p>
+          <button class="btn btn-outline-primary"
+                  (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})">
+            <i class="fa fa-plus-square"></i> Add
+          </button>
+        </p>
+        <!--<me-uploader #uploader (outEvent)="onAction($event)"></me-uploader>-->
+      </div>
     </div>
 
     <div id="list-photo" class="row-img row-img-{{ sliderViewNumber }}" *ngIf="objects" (dragenter)="onDragenter($event)"

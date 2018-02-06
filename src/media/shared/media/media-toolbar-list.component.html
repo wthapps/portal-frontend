@@ -108,46 +108,11 @@
       </li>
 
       <li class="name dropdown" *ngIf="object && page == 'sharing_detail'">
-        <a class="btn btn-inline" href="javascript:;" data-toggle="dropdown" draggable="false">
-          {{ object.name }} <i class="fa fa-caret-down"></i>
+        <a class="btn btn-inline" href="javascript:void(0);" draggable="false"
+           pTooltip="{{ tooltip.doubleClickToEdit }}" tooltipPosition="bottom"
+           (dblclick)="onAction({action: 'openModal', params: {modalName: 'editNameModal', selectedObjects: [object]}})">
+          {{ object.name }}
         </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <li>
-            <a (click)="onAction({action: 'previewAllPhotosToolBar'})" href="javascript:;" draggable="false">
-              <i class="fa fa-eye"></i> Preview all
-            </a>
-          </li>
-          <li>
-            <a (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})" href="javascript:;"
-               draggable="false">
-              <i class="fa fa-plus-square"></i> Add More Photos</a>
-          </li>
-          <li>
-            <a
-              (click)="onAction({action: 'openModal', params: {modalName: 'editNameModal', selectedObjects: [object]}})"
-              href="javascript:;"
-              draggable="false">
-              <i class="fa fa-edit"></i> Edit Title
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;" draggable="false"
-               (click)="onAction({action: 'openModal', params: {modalName: 'sharingModalToolbar'}})">
-              <i class="fa fa-share-alt"></i> Sharing
-            </a>
-          </li>
-          <li>
-            <a (click)="onAction({action: 'downloadAllToolbar'})">
-              <i class="fa fa-download"></i> Download All
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;" draggable="false"
-               (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: [object], page: 'sharing_detail'}})">
-              <i class="fa fa-trash-o"></i> Delete
-            </a>
-          </li>
-        </ul>
       </li>
     </ul>
   </div>
@@ -207,12 +172,12 @@
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
-      <li class="dropdown action">
-        <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+      <li class="dropdown">
+        <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true"
            pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
           <i class="fa fa-ellipsis-v"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+        <ul class="dropdown-menu dropdown-menu-right">
           <li>
             <a (click)="onAction({action: 'openModal', params: {modalName: 'addToAlbumModal'}})" href="javascript:;"
                draggable="false">
@@ -253,24 +218,56 @@
         </a>
       </li>
     </ul>
-    <!-- sharing_detail -->
-    <ul class="page-body-control-menu"
-        *ngIf="page == 'sharing_detail'"
-        [ngClass]="{'text-disable': noSelectedObjects}"
-        [class.disabled]="noSelectedObjects">
+
+    <!--sharing detail-->
+
+    <ul class="page-body-control-menu" *ngIf="page == 'sharing_detail'">
+        <li>
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           (click)="onAction({action: 'previewAllPhotosToolBar'})"
+           pTooltip="{{ tooltip.previewSharing }}" tooltipPosition="bottom">
+          <i class="fa fa-eye"></i></a>
+      </li>
       <li>
-        <a class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="onAction({action: 'confirmRemoveSharing', params: {selectedObjects: selectedObjects}})"
-           pTooltip="{{ tooltip.remove }}" tooltipPosition="bottom">
-          <i class="fa fa-times"></i> 1
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           (click)="onAction({action: 'openModal', params: {modalName: 'photosSelectModal'}})"
+           pTooltip="{{ tooltip.addToSharing }}" tooltipPosition="bottom">
+          <i class="fa fa-plus-square"></i></a>
+      </li>
+      <li>
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+          (click)="onAction({action: 'openModal', params: {modalName: 'editNameModal', selectedObjects: [object]}})"
+           pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom">
+          <i class="fa fa-pencil"></i>
         </a>
       </li>
       <li>
-        <a class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})"
-           pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: [object], page: 'sharing_detail'}})"
+           pTooltip="{{ tooltip.deleteSharing }}" tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i>
         </a>
+      </li>
+      <li class="dropdown action">
+        <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true"
+           pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
+          <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+
+          <li>
+            <a href="javascript:void(0);" draggable="false"
+               (click)="onAction({action: 'openModal', params: {modalName: 'sharingModalToolbar'}})">
+              <i class="fa fa-share-alt"></i> Edit Sharing
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" draggable="false"
+               (click)="onAction({action: 'downloadAllToolbar'})">
+              <i class="fa fa-download"></i> Download sharing
+            </a>
+          </li>
+        </ul>
       </li>
     </ul>
 
@@ -451,38 +448,41 @@
   </div>
 </div>
 
-<!-- sharing_detail -->
+<!-- sharing_detail objects-->
 <div *ngIf="page == 'sharing_detail'" class="page-body-control share-by-me" [ngClass]="{'active': !noSelectedObjects}">
   <div class="page-body-control-nav page-body-control-nav-action">
     <ul class="page-body-control-menu">
       <li class="divider">
         <a class="btn btn-default" href="javascript:;" (click)="onAction({action: 'deselectAll', params: {}})"
-           draggable="false" pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
+           draggable="false" pTooltip="{{ tooltip.close }}" tooltipPosition="bottom">
           <i class="fa fa-times"></i>
         </a>
       </li>
       <li>
-        <span class="btn btn-text">2 selected</span>
+        <span class="btn btn-text">{{ selectedObjects.length }} selected</span>
       </li>
     </ul>
   </div>
   <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
     <ul class="page-body-control-menu">
       <li>
-        <a class="btn btn-default" href="javascript:;" draggable="false"
-           pTooltip="{{ tooltip.remove }}" tooltipPosition="bottom">
+        <a class="btn btn-default" href="javascript:void(0);" draggable="false"
+           pTooltip="{{ tooltip.preview }}" tooltipPosition="bottom"
+           (click)="onAction({action: 'previewModal', params: {}})">
           <i class="fa fa-eye"></i>
         </a>
       </li>
       <li>
         <a class="btn btn-default" href="javascript:;" draggable="false"
-           pTooltip="{{ tooltip.remove }}" tooltipPosition="bottom">
-          <i class="fa fa-star-o"></i>
+           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}" tooltipPosition="bottom"
+           (click)="onAction({action: 'favourite', params: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})">
+          <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>
       <li>
         <a class="btn btn-default" href="javascript:;" draggable="false"
-           pTooltip="{{ tooltip.remove }}" tooltipPosition="bottom">
+           pTooltip="{{ tooltip.removeFromSharing }}" tooltipPosition="bottom"
+           (click)="onAction({action: 'confirmRemoveSharing', params: {selectedObjects: selectedObjects}})">
           <i class="fa fa-times-circle-o"></i>
         </a>
       </li>
@@ -492,32 +492,14 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-right">
           <li>
-            <a href="javascript:;" draggable="false">
-              <i class="fa fa-eye"></i> Preview all
+            <a href="javascript:void(0);" draggable="false"
+               (click)="onAction({action: 'download', params: {selectedObjects: selectedObjects}})">
+              <i class="fa fa-download"></i> Download
             </a>
           </li>
           <li>
-            <a href="javascript:;"
-               draggable="false">
-              <i class="fa fa-plus-square"></i> Add More Photos</a>
-          </li>
-          <li>
-            <a href="javascript:;" draggable="false">
-              <i class="fa fa-edit"></i> Edit Title
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;" draggable="false">
-              <i class="fa fa-share-alt"></i> Sharing
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;" draggable="false">
-              <i class="fa fa-download"></i> Download All
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;" draggable="false">
+            <a href="javascript:void(0);" draggable="false"
+               (click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: selectedObjects}})">
               <i class="fa fa-trash-o"></i> Delete
             </a>
           </li>
@@ -526,5 +508,4 @@
     </ul>
   </div>
 </div>
-
 

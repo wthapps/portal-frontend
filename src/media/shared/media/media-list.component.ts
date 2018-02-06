@@ -390,12 +390,15 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   confirmRemoveSharing(objects: any) {
     let ids = objects.map((o: any) => {return o.id})
     this.wthConfirmService.confirm({
+      header: 'Remove sharing',
       acceptLabel: 'Remove',
-      message: 'Are you sure to remove ' + objects.length + ' sharings ?',
+      message: `You are removing selected photo(s)/album(s) from current sharing?
+      <br/>Your selected photo(s)/album(s) still keep in your Pictures Library!`,
       accept: () => {
         this.loadingService.start();
         this.apiBaseService.post(`media/sharings/destroy_objects`, {id: this.params.id, ids: ids}).subscribe((res: any) => {
           this.loadingService.stop();
+          this.deSelectObjects();
           this.refreshPrimaryList();
         });
       }
@@ -615,18 +618,26 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
     let sharings = _.filter(params.selectedObjects, (o: any) => o.object_type == 'sharing');
     let photos_count = photos.length + (photos.length > 1 ? ' photos?' : ' photo?');
+    let message = params.selectedObjects[0].object_type === 'sharing' ?
+      `You are deleting sharing!
+      <br/>Deleting this sharing will stop other users from accessing your photos
+      <br/>Your photos remain safe in your Pictures Library`
+      : `Are you sure to delete selected photo(s)/album(s)?`;
     if (sharings.length > 0) {
-      let ids = sharings.map((s: any) => { return s.id })
+      let ids = sharings.map((s: any) => { return s.id });
       this.wthConfirmService.confirm({
+        header: 'Delete confirmation',
         acceptLabel: 'Delete',
-        message: 'Are you sure to delete ' + sharings.length + ' sharings ?',
+        message: message,
         accept: () => {
           this.apiBaseService.post(`media/sharings/destroy`, {ids: ids}).subscribe((res: any) => {
             if(params.page == 'sharing_detail') {
               this.router.navigate([{outlets: {detail: null}}]);
-              setTimeout(() => {this.refreshPrimaryList()}, 200);
+              setTimeout(() => {
+                this.deSelectObjects();
+                this.refreshPrimaryList();
+              }, 200);
             } else {
-              this.loadingService.stop();
               this.refreshPrimaryList();
             }
           });
@@ -646,7 +657,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
                 _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
               });
               this.loadingService.stop();
-
+              this.deSelectObjects();
               // Ask for user confirmation before deleting selected ALBUMS
               if (albums.length > 0)
                 this.onAction({action: 'openModal', params: {modalName: 'deleteModal', selectedObjects: albums}});
