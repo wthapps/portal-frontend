@@ -344,7 +344,10 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         this.confirmDeleteMedia(event.params);
         break;
       case 'confirmRemoveSharing':
-        this.confirmRemoveSharing(event.params.selectedObjects);
+        this.confirmRemoveSharing(event.params);
+        break;
+      case 'deleteMedia':
+        this.deleteMedia(event.params);
         break;
       // Hide photos / albums present in shared-with-me screen
       case 'hideMedia':
@@ -387,13 +390,18 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  confirmRemoveSharing(objects: any) {
-    let ids = objects.map((o: any) => {return o.id})
+  confirmRemoveSharing(params: any) {
+    let objects = params.selectedObjects;
+    let ids = objects.map((o: any) => {return o.id});
+    let message = params.object.sharing_type === 'Media::Album' ?
+      `You are removing selected photo(s) in Sharing Album
+      <br/>Remove selected photo also remove from this Sharing and Album!`
+      : `You are removing selected photo(s)from current sharing?
+      <br/>Your selected photo(s) still keep in your Pictures Library!`;
     this.wthConfirmService.confirm({
       header: 'Remove sharing',
       acceptLabel: 'Remove',
-      message: `You are removing selected photo(s)/album(s) from current sharing?
-      <br/>Your selected photo(s)/album(s) still keep in your Pictures Library!`,
+      message: message,
       accept: () => {
         this.loadingService.start();
         this.apiBaseService.post(`media/sharings/destroy_objects`, {id: this.params.id, ids: ids}).subscribe((res: any) => {
@@ -678,6 +686,23 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+
+  deleteMedia(params: any) {
+    let objects = params.selectedObjects;
+    this.mediaObjectService.deleteObjects(objects, params.child_destroy).toPromise().then(
+      (res: any) => {
+        _.map(objects, (obj: any) => {
+          _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
+        });
+        this.loadingService.stop();
+        this.deSelectObjects();
+        if (this.page === 'album_detail') {
+          this.router.navigate([{outlets: {detail: null}}]);
+        }
+      },
+      (error: any) => this.loadingService.stop());
+  }
+
   // Hide media present in shared with me screen
   hideMedia(params: any, callback?: any) {
     return;
@@ -692,7 +717,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
         this.albumService.removeFromAlbum(params.selectedObject.id, params.selectedObjects).toPromise().then(
           (response: any) => {
-            console.log('before', this.objects);
             _.remove(this.objects, (object: any) => {
               return (_.indexOf(ids, object.id) !== -1);
             });

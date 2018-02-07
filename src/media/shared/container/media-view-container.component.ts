@@ -483,14 +483,13 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         // switch (this.objectType) {
         switch (params.selectedObjects[0].object_type) {
           case 'album':
-            // this.loadModalComponent();
-            // options = {selectedObject: this.object};
             this.loadModalComponent(AlbumDeleteModalComponent);
             options = {selectedObjects: params.selectedObjects};
-            // options = {selectedObjects: _.filter(this.selectedObjects, (o: any) => o.object_type == 'album')};
-            console.log('deleteModal album');
             break;
         }
+        break;
+      case 'deleteMedia':
+        console.log('delete media');
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);

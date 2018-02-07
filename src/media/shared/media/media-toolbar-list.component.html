@@ -100,7 +100,7 @@
           </li>
           <li>
             <a href="javascript:;" draggable="false"
-               (click)="onAction({action: 'deleteAlbumAndBack', params: {selectedObjects: [object]}})">
+               (click)="onAction({action: 'openModal', params: {modalName: 'deleteModal', selectedObjects: [object]}})">
               <i class="fa fa-trash-o"></i> Delete Album
             </a>
           </li>
@@ -368,7 +368,7 @@
       </li>
       <li>
         <a class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="onAction({action: 'delete', params: { selectedObjects: selectedObjects}})"
+           (click)="onAction({action: 'removeFromAlbum', params: { selectedObject: object,selectedObjects: selectedObjects}})"
            pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i>
         </a>
@@ -482,7 +482,7 @@
       <li>
         <a class="btn btn-default" href="javascript:;" draggable="false"
            pTooltip="{{ tooltip.removeFromSharing }}" tooltipPosition="bottom"
-           (click)="onAction({action: 'confirmRemoveSharing', params: {selectedObjects: selectedObjects}})">
+           (click)="onAction({action: 'confirmRemoveSharing', params: {object: object, selectedObjects: selectedObjects}})">
           <i class="fa fa-times-circle-o"></i>
         </a>
       </li>
