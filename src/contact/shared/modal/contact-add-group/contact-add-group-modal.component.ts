@@ -69,7 +69,7 @@ export class ContactAddGroupModalComponent implements OnInit, WthAppsBaseModal {
     });
     this.modal.open(options).then(() => {
       this.groupService.getAllGroups().then((groups: any[]) => {
-        this.originalGroups = groups;
+        this.originalGroups = groups.filter(gr => !gr.system);
         this.groups = _.map(this.originalGroups, 'name');
       });
     });

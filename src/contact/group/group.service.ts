@@ -177,6 +177,7 @@ export class GroupService extends BaseEntityService<Group> {
       name: group.name,
       link: '/contacts',
       hasSubMenu: !group.system,
+      system: group.system,
       count: 0,
       order: group.system ? group.order : (100 + group.order),
       icon: group.name == 'all contacts' ? 'fa fa-address-book-o'
