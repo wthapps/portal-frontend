@@ -75,6 +75,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       }
     } else {
       this.router.navigate(['/folders', event.item.id]);
+      // ignore expanded
       event.item.expanded = !event.item.expanded;
       $(htmlTarget).closest('.well-folder-tree').find('a').removeClass('active');
       $(htmlTarget).closest('a').addClass('active');
