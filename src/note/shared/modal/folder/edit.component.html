@@ -12,7 +12,7 @@
     </modal-body>
     <modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-      <button type="submit" [disabled]="!form.valid" class="btn btn-outline-primary btn-min">Done
+      <button type="submit" [disabled]="!form.valid || !form.dirty" class="btn btn-outline-primary btn-min">Done
       </button>
     </modal-footer>
 
