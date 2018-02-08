@@ -49,7 +49,7 @@ export class ZSocialSharedHeaderComponent implements OnInit {
 
   onEnter(e: any) {
     this.show = false;
-    this.router.navigate(['search', 'all'], {queryParams: {q: e.search}});
+    this.router.navigate(['search', 'all'], {queryParams: {q: this.search}});
   }
 
   onKey(e: any) {

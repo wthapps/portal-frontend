@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { ZSocialHomeComponent } from './home/home.component';
 import { ZSocialMembersComponent } from './friends/members.component';
 import { PostDetailComponent } from './shared/second-routes/post/post-detail.component';
 import { ZSocialSettingComponent } from './settings/setting.component';
 import { AuthGuard } from '@wth/shared/services';
+import { environment } from '@env/environment';
 
 export const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full', canActivate: [AuthGuard]},
@@ -24,7 +25,11 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,
+    {
+      enableTracing: !environment.production, // <-- debugging purposes only
+      preloadingStrategy: PreloadAllModules
+    })],
   exports: [RouterModule]
 })
 
