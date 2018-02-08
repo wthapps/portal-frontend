@@ -73,9 +73,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     documentElem.on('click',
       '#nav-notification-list, ' +
       '#notiItemMenuEl, ' +
-      '.modal-backdrop.in, ' +
-      '.modal.in, ' +
-      '.modal-notification-list-setting', function (e: any) {
+      '.modal-notification-list-setting', (e: any) => {
         e.stopPropagation();
       });
 

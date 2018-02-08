@@ -115,7 +115,7 @@
                 <a href="javascript:;" data-toggle="dropdown" style="display: block; padding: 5px"><i
                   class="fa fa-check"></i> {{ user.settings.viewable_post.value | titleCase }} <span
                   class="caret"></span></a>
-                <ul class="dropdown-menu dropdown-menu-check" aria-labelledby="dropdownMenu">
+                <ul class="dropdown-menu dropup-menu dropdown-menu-check" aria-labelledby="dropdownMenu">
                   <li *ngFor="let pr of PRIVACIES"><a href="javascript:;"
                          (click)="user.settings.viewable_post.value = pr; updateSettings({viewable_post: user.settings.viewable_post})">
                     <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == pr"></i> {{ PRIVACY_NAMES[pr] }}</a></li>
