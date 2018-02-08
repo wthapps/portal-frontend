@@ -39,6 +39,7 @@ export class ZNoteSharedToolBarComponent implements OnInit {
   }
 
   onChangeView(view: string) {
+
     this.store.dispatch({type: context.SET_CONTEXT, payload: { viewMode: view }});
   }
 }

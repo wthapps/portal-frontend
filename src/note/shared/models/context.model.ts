@@ -6,5 +6,6 @@ export class NoteContext extends Context {
   sort: any = {
     field: "name",
     desc: true
-  }
+  };
+  groupBy: string = 'date'
 }

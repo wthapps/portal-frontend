@@ -25,6 +25,7 @@ export class ZNoteContainerComponent implements OnInit {
   viewOption: string = 'grid';
   noteItems$: Observable<Note[]>;
   folderItems$: Observable<Folder[]>;
+  allItems$: Observable<any[]>;
   selectedObjects$: Observable<any[]>;
   isSelectAll$: Observable<boolean>;
   loading$: Observable<boolean>;
@@ -38,6 +39,7 @@ export class ZNoteContainerComponent implements OnInit {
      private store: Store<any>) {
     this.noteItems$ = this.store.select(listReducer.getNotes);
     this.folderItems$ = this.store.select(listReducer.getFolders);
+    this.allItems$ = this.store.select(listReducer.getAllItems);
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.context$ = this.store.select(context.getContext);

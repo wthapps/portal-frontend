@@ -25,11 +25,13 @@ export class NoteListComponent implements OnInit {
   @Input() items: any[];
   @Input() noteItems: Note[];
   @Input() folderItems: Folder[];
+  @Input() allItems: any[];
   @Input() viewOption: string = 'grid';
   @Input() orderDesc: boolean;
   @Input() sortOption: any;
   @Input() isSelectAll: boolean;
   @Input() page: string;
+  @Input() groupBy: string = 'date';
 
   noteConstants: NoteConstants = noteConstants;
   showDateCaret: boolean;
@@ -40,7 +42,8 @@ export class NoteListComponent implements OnInit {
 
   readonly VIEW_MODE = {
     GRID: 'grid',
-    LIST: 'list'
+    LIST: 'list',
+    TIMELINE: 'time'
   };
 
   @HostListener('document:keyup', ['$event'])
@@ -73,6 +76,11 @@ export class NoteListComponent implements OnInit {
   onReverseSort() {
     if (this.page !== this.noteConstants.PAGE_RECENT)
       this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {...this.sortOption, desc: !this.sortOption.desc}}});
+  }
+
+
+  group(groupBy: any) {
+    this.store.dispatch({type: context.SET_CONTEXT, payload: { groupBy }});
   }
 
   onSelectedAll() {

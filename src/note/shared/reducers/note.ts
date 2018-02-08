@@ -15,8 +15,15 @@ export const ITEM_TYPE = {
 };
 export const VIEW_MODE = {
   LIST: 'list',
-  GRID: 'grid'
+  GRID: 'grid',
+  TIMELINE: 'time'
 };
+export const GROUP_TYPE = {
+  date: 'date',
+  month: 'month',
+  year: 'year'
+};
+
 
 // State
 export interface  Filters {
@@ -30,6 +37,7 @@ export interface State {
   pageNo: number;
   orderDesc: boolean;
   sortOption: {field: string, desc: boolean};
+  group: string;
   selectedObjects: {id: string, object_type: string, parent_id: number}[];
   selectAll: boolean;
   viewMode: string;
@@ -45,6 +53,7 @@ export const noteInitialState: State = {
   pageNo: 0,
   orderDesc: true,
   sortOption: {field: 'name', desc: true},
+  group: GROUP_TYPE.date,
   selectedObjects: [],
   selectAll: false,
   viewMode: VIEW_MODE.LIST,

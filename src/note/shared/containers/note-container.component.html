@@ -25,8 +25,10 @@
     <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
       <note-list [noteItems]="noteItems$ | async"
                  [folderItems]="folderItems$ | async"
+                 [allItems]="allItems$ | async"
                  [viewOption]="(context$ | async)?.viewMode"
                  [sortOption]="(context$ | async)?.sort"
+                 [groupBy]="(context$ | async)?.groupBy"
                  [page]="(context$ | async).page"
                  [isSelectAll]="isSelectAll$ | async">
 

@@ -35,3 +35,4 @@ export function reducer(state: any = empty(), action: any) {
 export const getContext = (state: any) => state.context;
 export const getCurrentPageContext = (state: any) => state.context.page;
 export const getSortOptionContext = (state: any) => state.context.sort;
+export const getGroupByContext = (state: any) => state.context.groupBy;
