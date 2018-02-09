@@ -39,8 +39,10 @@
     </bs-modal-body>
     <bs-modal-footer>
       <div class="form-group">
-        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-        <button class="pull-right" type="button" class="btn btn-outline-default btn-min" (click)="signIn($event)">Sign in</button>
+        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
+                (click)="modal.close()">Cancel</button>
+        <button class="pull-right" type="button" class="btn btn-outline-default btn-min"
+                (click)="signIn($event)">Sign in</button>
       </div>
     </bs-modal-footer>
   </bs-modal>

@@ -21,8 +21,10 @@
       </div>
       <hr>
       <div class="clearfix text-right">
+        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
+                (click)="modal.close()">Cancel</button>
         <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min">Save</button>
-        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
+
       </div>
     </form>
   </bs-modal-body>

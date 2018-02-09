@@ -23,7 +23,7 @@
     </bs-modal-body>
 
     <bs-modal-footer>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
       <button type="button" (click)="submit()" [disabled]="!form.valid || form.pristine"
               class="btn btn-outline-primary btn-min">
         Done

@@ -7,7 +7,8 @@
   </bs-modal-body>
   <bs-modal-footer>
     <p *ngIf="hasDeletedItems" class="text-left text-danger">You have made changes that you need to save!</p>
-    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
+            (click)="modal.close()">Cancel</button>
     <button type="button" (click)="save()" class="btn btn-outline-primary btn-min" data-dismiss="modal">Done</button>
   </bs-modal-footer>
 </bs-modal>
