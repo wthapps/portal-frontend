@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { ZMediaTaggingService } from './tagging.service';
 import { TaggingElComponent } from './tagging-el.component';
 
@@ -12,7 +12,7 @@ declare var _: any;
   templateUrl: 'tagging-modal.component.html'
 })
 export class TaggingModalComponent {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('tag') tag: TaggingElComponent;
   @Input() selectedItems: any = [];
   @Input() mediaType: string = 'photo';

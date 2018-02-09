@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Response } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
 
 import { ZMediaTaggingService } from './tagging/tagging.service';
@@ -26,7 +26,7 @@ export class AlbumCreateModalComponent implements OnInit {
   @Input() items: Array<any>;
 
 
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('tag') tag: TaggingElComponent;
   form: FormGroup;
   descCtrl: AbstractControl;

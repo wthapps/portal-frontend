@@ -9,7 +9,7 @@ import {
   FormArray
 } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { forEach } from '@angular/router/src/utils/collection';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';

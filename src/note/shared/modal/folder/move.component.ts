@@ -4,7 +4,7 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers/index';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Note } from '@shared/shared/models/note.model';
@@ -19,7 +19,7 @@ declare var _: any;
 })
 
 export class ZNoteSharedModalFolderMoveComponent implements OnInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   titleModal: string = 'Move to Folder';
   menuItems: any = [];

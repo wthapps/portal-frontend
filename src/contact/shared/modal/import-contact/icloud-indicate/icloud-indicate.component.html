@@ -1,9 +1,9 @@
 <form>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title"> How to import iCloud Contacts into WTH!Contact </h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div>Please follow these steps to import iCloud Contacts into WTH!Contact</div>
       <ol>
         <br>
@@ -21,9 +21,9 @@
         <li> Select the "All Contacts.vcf" from the desktop (created in Step 2) and press Open. The vfc file will be imported into your WTH!Contact</li>
       </ol>
 
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="close()">Ok</button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    $(document).on('hidden.bs.modal', '.modal', () => {
+    $(document).on('hide.bs.modal', '.modal', () => {
       if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
       }

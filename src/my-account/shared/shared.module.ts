@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalModule } from 'ng2-bs3-modal';
 
 import { MySharedMenuComponent } from './menu/menu.component';
 import { SubscriptionEditModalComponent } from './subscription/modal/subscription-edit-modal.component';
@@ -33,7 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RouterModule,
     BrowserAnimationsModule,
 
-    Ng2Bs3ModalModule,
+    BsModalModule,
     SharedModule.forRoot()
   ],
   declarations: [

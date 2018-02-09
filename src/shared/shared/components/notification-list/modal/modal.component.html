@@ -1,8 +1,8 @@
-<modal [cssClass]="'modal-notification-list-setting'" #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal [cssClass]="'modal-notification-list-setting'" #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
     <p class="text-faded">Allow notification updates from</p>
     <div class="form-group">
       <div class="inputSwitch-wrap">
@@ -28,9 +28,9 @@
         <span>Media</span>
       </div>
     </div>
-  </modal-body>
-  <modal-footer>
-    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
     <button type="button" (click)="onSave()" class="btn btn-outline-primary btn-min" data-dismiss="modal">Done</button>
-  </modal-footer>
-</modal>
+  </bs-modal-footer>
+</bs-modal>

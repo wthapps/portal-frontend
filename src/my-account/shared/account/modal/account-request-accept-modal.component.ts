@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { CommonEventService } from '@wth/shared/services/common-event/common-eve
 })
 
 export class AccountRequestAcceptModalComponent {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   data: any;
 
   constructor(private commonEventService: CommonEventService) {

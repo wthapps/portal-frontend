@@ -1,8 +1,8 @@
-<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title"> Add to album</h4>
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
     <a class="btn btn-outline-primary" data-toggle="dropdown" href="#" (click)="onCreateNewAlbum()">
       <i class="fa fa-plus"></i> Create New Album
     </a>
@@ -40,8 +40,8 @@
         Load more
       </button>
     </div>
-  </modal-body>
-</modal>
+  </bs-modal-body>
+</bs-modal>
 
 
 <div class="toast-wrap-bottom toast-upload-wrap" id="added-to-album-toast" *ngIf="showToast">

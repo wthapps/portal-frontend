@@ -1,16 +1,16 @@
 <form novalidate>
-  <modal #modal
+  <bs-modal #modal
          [cssClass]="'modal-account-edit'"
          [keyboard]="false"
          [animation]="false"
-         [backdrop]="'static'" >
-    <modal-header>
+         [backdrop]="'static'" style="display: inline;" >
+    <bs-modal-header>
         <button aria-label="Close" class="close" (click)="close()">
           <span aria-hidden="true">×</span>
         </button>
       <h4 class="modal-title">Remove Account</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div class="padding10">
         <div>
           You are about to remove account list your list
@@ -26,14 +26,14 @@
         </div>
       </div>
 
-    </modal-body>
+    </bs-modal-body>
 
-    <modal-footer>
+    <bs-modal-footer>
     <div>
         <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
         <button class="btn btn-outline-primary btn-min pull-right" (click)="delete()">Remove</button>
       </div>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 
 </form>

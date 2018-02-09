@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, Output, EventEmitter, ViewChild } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Constants } from '../../../constant/config/constants';
 
 declare var $: any;
@@ -13,7 +13,7 @@ declare var dropzone: any;
 })
 
 export class UploadCropImageComponent implements AfterViewInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   @Output() imageClicked: EventEmitter<string> = new EventEmitter<string>();
 

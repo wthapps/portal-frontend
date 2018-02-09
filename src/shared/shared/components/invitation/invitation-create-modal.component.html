@@ -1,14 +1,14 @@
 <form [formGroup]="form" novalidate>
 
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header>
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header>
       <button aria-label="Close" class="close" (click)="doEvent({action: 'cancel'})" type="button">
         <span aria-hidden="true">×</span>
       </button>
       <h4 class="modal-title">Send Invitations</h4>
 
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
         <div>
           <div class="row row-12">
             <div class="col-sm-4 ml5">
@@ -74,9 +74,9 @@
         <button type="button" class="btn btn-default mb10" (click)="add()">
           <i class="fa fa-plus"></i> Add more
         </button>
-    </modal-body>
+    </bs-modal-body>
 
-    <modal-footer>
+    <bs-modal-footer>
     <div>
         <button type="button" class="btn btn-outline-default btn-min"
                 (click)="doEvent({action: 'cancel'})">Cancel</button>
@@ -84,7 +84,7 @@
                 (click)="doEvent({action: 'invitation:send_to_recipients'})">Send Invitations
         </button>
       </div>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 
 </form>

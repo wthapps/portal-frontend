@@ -1,25 +1,25 @@
 <form [formGroup]="form" novalidate>
 
-  <modal #modal
+  <bs-modal #modal
          [cssClass]="'modal-lg modal-account-list-edit'"
          [keyboard]="false"
          [animation]="false"
-         [backdrop]="'static'" >
-    <modal-header>
+         [backdrop]="'static'" style="display: inline;">
+    <bs-modal-header>
       <button aria-label="Close" class="close" (click)="close()" type="button">
-        <span aria-hidden="true">×</span>
+        <span aria-hidden="false">×</span>
       </button>
       <h4 class="modal-title">Add account</h4>
 
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
 <div>
 
 </div>
         <div class="pb5 bold">
           <div class="row row-12">
             <div class="col-sm-4">
-              Full name
+              Pro accounts
             </div>
             <div class="col-sm-4 ml5 pl0">
               Email address
@@ -128,16 +128,17 @@
           </button>
           <div class="pull-right pr20">
             <div>
-              {{ noOfMaster }} full accounts x ${{ masterPrice }} = $ {{ noOfMaster*masterPrice }}
+              {{ noOfMaster }} Full or Pro accounts x ${{ masterPrice }} = $ {{ noOfMaster*masterPrice }}
             </div>
           </div>
         </div>
 
+      <hr class="line">
 
       <div class="pb5 bold">
         <div class="row row-12">
           <div class="col-sm-4">
-            Full name
+            Sub accounts
           </div>
           <div class="col-sm-4 ml5 pl0">
             Email address
@@ -258,7 +259,7 @@
       <div class="panel panel-default mb0">
         <div class="row row-12 panel-body text-right">
           <div class="col-sm-10">
-            <div>New full accounts:</div>
+            <div>New Full or Pro accounts:</div>
           </div>
           <div class="col-sm-2">
             <div>${{ noOfMaster*masterPrice }}</div>
@@ -289,9 +290,9 @@
 
 
 
-    </modal-body>
+    </bs-modal-body>
 
-    <modal-footer>
+    <bs-modal-footer>
       <div>
         <button type="button" class="btn btn-outline-default btn-min"
                 (click)="close()">Cancel</button>
@@ -300,7 +301,7 @@
                 (click)="continue()">Continue
         </button>
       </div>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 
 </form>

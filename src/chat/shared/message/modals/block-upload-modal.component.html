@@ -1,8 +1,8 @@
-<modal #modal>
-    <modal-header [show-close]="true">
+<bs-modal #modal>
+    <bs-modal-header [showDismiss]="true">
         <h4 class="modal-title">Can not upload file</h4>
-    </modal-header>
-    <modal-body *ngIf="file">
+    </bs-modal-header>
+    <bs-modal-body *ngIf="file">
       <div class="alert alert-danger">
       	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <i class="fa fa-exclamation-triangle"></i> This file type is not permitted for sercurity reasons.
@@ -20,8 +20,8 @@
 
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="submit" class="btn btn-outline-primary btn-min" (click)="modal.close()">Ok</button>
-    </modal-footer>
-</modal>
+    </bs-modal-footer>
+</bs-modal>

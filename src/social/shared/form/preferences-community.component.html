@@ -1,9 +1,9 @@
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> About</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div *ngIf="data">
         <ng-template [ngIf]="isAdmin">
           <div class="mb20">
@@ -113,10 +113,10 @@
           </div>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-link btn-min pull-left" (click)="resetSettings()">Reset Default</button>
       <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit(form.value)">Done</button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

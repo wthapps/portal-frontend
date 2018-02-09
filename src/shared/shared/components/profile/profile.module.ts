@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalModule } from 'ng2-bs3-modal';
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
 
@@ -29,7 +29,7 @@ import { ZMyProfileComponent } from "@shared/shared/components/profile/my-profil
 @NgModule({
   imports: [
     CommonModule,
-    Ng2Bs3ModalModule,
+    BsModalModule,
     AutoCompleteModule,
     RadioButtonModule,
     FormsModule,

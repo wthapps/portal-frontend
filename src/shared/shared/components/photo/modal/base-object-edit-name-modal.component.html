@@ -1,9 +1,9 @@
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title">Rename</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div class="form-group" [ngClass]="{'has-error': (!name.valid && name.touched)}">
         <p>Please enter a new name for the {{ objectType }}:</p>
         <label for="edit-photo-album-name" class="sr-only">name</label>
@@ -13,13 +13,13 @@
           <span *ngIf="!name.valid && name.errors.required" class="help-block">Name is required</span>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
 
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
       <button [disabled]="!form.valid" (click)="onSubmit(form.value)" type="submit"
               class="btn btn-outline-primary btn-min">Done
       </button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

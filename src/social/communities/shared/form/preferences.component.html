@@ -1,9 +1,9 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
-  <modal #modal [keyboard]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title"> Preferences</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div *ngIf="data">
         <ng-template [ngIf]="isAdmin">
           <div class="mb20">Q
@@ -113,14 +113,14 @@
           </div>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-link btn-min pull-left" (click)="resetSettings()">Reset Default</button>
 
       <button [disabled]="!form.valid || (!hasChange && form.valid)"
               type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit()">Done
       </button>
-    </modal-footer>
+    </bs-modal-footer>
 
-  </modal>
+  </bs-modal>
 </form>

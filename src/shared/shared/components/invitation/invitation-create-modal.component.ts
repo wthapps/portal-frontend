@@ -1,7 +1,7 @@
 import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '../../validator/custom.validator';
 
 declare var _: any;
@@ -14,7 +14,7 @@ declare var _: any;
 export class InvitationCreateModalComponent implements OnInit {
   @Input() data: any;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   form: FormGroup;
   deleteObjects: any = [];

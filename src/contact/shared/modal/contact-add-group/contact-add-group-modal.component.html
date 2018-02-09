@@ -1,10 +1,10 @@
-<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title"><i class="fa" [ngClass]="titleIcon"></i> Add Group</h4>
-  </modal-header>
+  </bs-modal-header>
 
   <form [formGroup]="form" novalidate>
-    <modal-body>
+    <bs-modal-body>
       <div class="row ng2-tags-container-wrapper">
         <div class="col-sm-12">
           <div class="form-group">
@@ -23,13 +23,13 @@
         </div>
 
       </div>
-    </modal-body>
+    </bs-modal-body>
 
-    <modal-footer>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
       <button type="button" class="btn btn-outline-primary btn-min" (click)="submit()" [disabled]="!validData()">Done
       </button>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-    </modal-footer>
+    </bs-modal-footer>
   </form>
 
-</modal>
+</bs-modal>

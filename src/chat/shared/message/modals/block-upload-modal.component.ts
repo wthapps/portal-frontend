@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEvent, CommonEventService } from '@wth/shared/services';
 import { FileUploadHelper } from '@wth/shared/shared/helpers/file/file-upload.helper';
 
@@ -12,7 +12,7 @@ declare var _: any;
   templateUrl: 'block-upload-modal.component.html'
 })
 export class BlockUploadModal implements OnInit, OnDestroy {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   file: any;
   fileUploadHelper: any;
   event: any;

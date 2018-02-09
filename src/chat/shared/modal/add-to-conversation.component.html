@@ -1,9 +1,9 @@
 <form>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title"> <i class="fa fa-plus"></i> Add To Conversation </h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div class="form-group">
         <input type="text" name="name" class="form-control" placeholder="Name" value="">
       </div>
@@ -20,10 +20,10 @@
           </div>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
-      <button type="submit" class="btn btn-outline-primary btn-min" (click)="add()">Done</button>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-    </modal-footer>
-  </modal>
+      <button type="submit" class="btn btn-outline-primary btn-min" (click)="add()">Done</button>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

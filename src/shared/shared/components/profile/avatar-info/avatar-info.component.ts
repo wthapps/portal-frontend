@@ -3,7 +3,7 @@ import {
   FormGroup
 } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
@@ -38,7 +38,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
   @Input() data: any;
   @Input() editable: boolean = true;
   @Input() nameOnly: boolean = false;
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();

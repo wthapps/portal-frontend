@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { UserService } from '@shared/services/user.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
@@ -13,7 +13,7 @@ import { ApiBaseService } from '@shared/services/apibase.service';
   styleUrls: ['my-profile.component.scss']
 })
 export class ZMyProfileComponent implements OnInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   profile$: Observable<any>;
   data: any;
 
@@ -34,7 +34,7 @@ export class ZMyProfileComponent implements OnInit {
 
   updateUser(e: any) {
     this.userService.update(e.data).subscribe((res: any) => {
-      
+
     })
   }
 

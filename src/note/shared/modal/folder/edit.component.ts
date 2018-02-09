@@ -1,7 +1,7 @@
 import { Component, ViewChild, ViewEncapsulation, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
@@ -18,7 +18,7 @@ declare var _: any;
 })
 
 export class ZNoteSharedModalFolderEditComponent implements OnInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   titleModal: string = 'New Folder';
 

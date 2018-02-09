@@ -27,6 +27,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
   selectedItems: Array<any> = [];
   isSelectAll: boolean;
   currentUser: any;
+  modal: any;
   private destroySubject: Subject<any> = new Subject();
 
   constructor(
@@ -53,7 +54,9 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.destroySubject.unsubscribe();
   }
 
-  openAccountAddModal() {
+  openAccountAddModal(modal) {
+    // this.modal = modal;
+    // this.modal.open();
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_account_list_edit_modal',

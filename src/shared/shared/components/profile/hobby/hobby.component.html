@@ -33,11 +33,11 @@
 
 
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title">Hobby &amp; Interest</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div class="form-group">
         <div class="content-overflow" style="max-height: 195px;" formArrayName="hobbies">
           <div *ngFor="let hobby of  getFormControls(); let i=index" class="media">
@@ -71,12 +71,12 @@
           </button>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
       <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
               (click)="onCustomSubmit(form.value)">Done
       </button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

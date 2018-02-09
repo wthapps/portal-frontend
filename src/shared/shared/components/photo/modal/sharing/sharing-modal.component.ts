@@ -4,7 +4,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { ZMediaSharingService } from './sharing.service';
 import { Constants } from '../../../../../constant/config/constants';
 import { ApiBaseService } from '../../../../../services/apibase.service';
@@ -21,7 +21,7 @@ declare var _: any;
   styleUrls: ['sharing-modal.component.scss']
 })
 export class SharingModalComponent implements OnDestroy {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() selectedItems: any = [];
   @Input() type: string;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();

@@ -1,18 +1,18 @@
 <form>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title"> Contact Request</h4>
-    </modal-header>
-    <modal-body *ngIf="contact">
+    </bs-modal-header>
+    <bs-modal-body *ngIf="contact">
       <z-chat-share-user-icon [image]="contact?.profile_image" [size]="'xs'" [name]="contact.name" [groupType]="'couple'"
                               [userId]="contact.id"></z-chat-share-user-icon>
       <p class="mt10">Send contact message request to {{ contact.name }}</p>
       <textarea class="form-control" rows="2" [(ngModel)]="message" [ngModelOptions]="{standalone: true}">
       </textarea>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="submit" class="btn btn-outline-primary btn-min" (click)="send()">Send</button>
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

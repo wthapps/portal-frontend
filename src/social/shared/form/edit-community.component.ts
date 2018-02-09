@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { SoCommunityService } from '../services/community.service';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
@@ -22,7 +22,7 @@ import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 })
 
 export class ZSocialShareCommunityFormEditComponent {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() data: any = null;
   @Input() action: string = 'update'; // update, create
   @Output() setupDataUpdated: EventEmitter<any> = new EventEmitter<any>();

@@ -1,7 +1,7 @@
 import { Input, Output, ViewChild } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 
 declare let _: any;
@@ -9,7 +9,7 @@ declare let _: any;
 export class ProfileFormCustomSubmitMixin {
   @Input() data: any;
   @Output() eventOut: any;
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   deleteObjects: any = [];
   type: string;
   form: FormGroup;

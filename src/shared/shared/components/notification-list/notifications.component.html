@@ -37,11 +37,11 @@
 </div>
 
 
-<modal #settings [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #settings [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
     <p>Allow notification updates from</p>
     <div>
       <div>
@@ -55,9 +55,9 @@
         <p-checkbox name="group1" value="note" label="Note" [(ngModel)]="selectedNotifications"></p-checkbox>
       </div>
     </div>
-  </modal-body>
-  <modal-footer>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="settings.close()">Cancel</button>
     <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal">Done</button>
-    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-  </modal-footer>
-</modal>
+  </bs-modal-footer>
+</bs-modal>

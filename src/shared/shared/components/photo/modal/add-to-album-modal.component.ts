@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { ApiBaseService } from '../../../../services/apibase.service';
 import { Constants } from '../../../../constant/config/constants';
 import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
@@ -14,7 +14,7 @@ declare var _: any;
   templateUrl: 'add-to-album-modal.component.html',
 })
 export class AddToAlbumModalComponent implements OnInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   @Input() selectedPhotos: any;
   @Input() editAlbum: any;

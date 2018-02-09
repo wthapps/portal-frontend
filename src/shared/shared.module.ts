@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CookieModule, CookieService } from 'ngx-cookie';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalModule } from 'ng2-bs3-modal';
 
 import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
@@ -123,7 +123,7 @@ export * from './shared/components/navbar/navbar.module';
     // BrowserAnimationsModule,
 
     // Third parties modules
-    Ng2Bs3ModalModule,
+    BsModalModule,
     Ng2CableModule,
 
     // WTHApps modules

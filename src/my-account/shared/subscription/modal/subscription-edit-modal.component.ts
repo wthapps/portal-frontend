@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
@@ -15,7 +15,7 @@ declare var _: any;
 
 export class SubscriptionEditModalComponent implements OnInit {
   @Input() items: Array<any>;
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   mode: string = 'view';
   accountAction: string = 'add'; //'add' or 'delete'
@@ -43,9 +43,9 @@ export class SubscriptionEditModalComponent implements OnInit {
     // this.subscription = options.subscription;
     if (this.accountAction == 'delete') {
       // remove deleting items form
-      _.remove(this.items, (item: any) => {
-        return item.id == options.data[0].id;
-      });
+      // _.remove(this.items, (item: any) => {
+      //   return item.id == options.data[0].id;
+      // });
     }
     if (this.accountAction == 'add') {
       this.items = this.items.concat(this.operatingItems);

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/operator/switchMap';
 import 'rxjs/add/operator/debounceTime';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { ListComponent } from '../../ng2-hd/list/components/list.component';
 import { ApiBaseService } from '../../../services/apibase.service';
 
@@ -48,7 +48,7 @@ export const DEBOUNCE_TIME: any = 250;
 })
 
 export class EntitySelectComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('list') list: ListComponent;
 
   @Input() type: string;

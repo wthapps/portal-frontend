@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { WthAppsBaseModal } from '../../../../shared/shared/interfaces/wthapps-base-modal';
 import { CommonEventService } from '../../../../shared/services/common-event/common-event.service';
@@ -19,7 +19,7 @@ export class ContactAddGroupModalComponent implements OnInit, WthAppsBaseModal {
   @Input() mode: string;
   @Input() contacts: any;
 
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   event: any;
   titleIcon: string;
 

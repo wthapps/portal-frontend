@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input, OnDestroy } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { UserService } from '@wth/shared/services';
 
 
@@ -10,7 +10,7 @@ import { UserService } from '@wth/shared/services';
 })
 
 export class IntroductionModalComponent implements OnDestroy {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() data: any;
   @Input() after: any;
   index: number = 0;

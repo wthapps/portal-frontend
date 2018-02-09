@@ -5,7 +5,7 @@ import {
   FormBuilder
 } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
@@ -26,7 +26,7 @@ import { UserService } from '@wth/shared/services';
 
 export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() data: any;
   @Output() updated: EventEmitter<any> = new EventEmitter<any>();
 

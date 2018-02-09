@@ -1,9 +1,9 @@
 <form>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title"> <i class="fa fa-plus"></i> Import Contact</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div>Import your contacts from other account</div>
 
       <div class="content-overflow" style="max-height: 300px;">
@@ -58,11 +58,11 @@
           </div>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>
 
 <z-contact-share-icloud-indicate #icloud></z-contact-share-icloud-indicate>

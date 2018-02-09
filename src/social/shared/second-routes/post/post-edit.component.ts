@@ -14,7 +14,7 @@ import 'rxjs/add/operator/do';
 
 
 import { SocialService } from '../../services/social.service';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
 import { SoPost } from '@shared/shared/models';
 import { Constants } from '@wth/shared/constant';
@@ -29,7 +29,7 @@ import { LoadingService } from "@shared/shared/components/loading/loading.servic
 })
 
 export class PostEditComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
 
 
@@ -163,7 +163,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   close() {
     this.modal.close();
     this.photoSelectDataService.close();
-    $('.modal-backdrop').remove();
+    // $('.modal-backdrop').remove();
   }
 
   done(item: any) {
@@ -233,7 +233,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   dismiss(photos: any) {
     // this.photos.length = 0;
     this.dismissed.emit(photos);
-    this.modal.open();
+    this.modal.close(null).then();
     this.photoSelectDataService.close();
   }
 

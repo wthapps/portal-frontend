@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 
 import { WthAppsBaseModal } from '../../shared/shared/interfaces/wthapps-base-modal';
@@ -23,7 +23,7 @@ export class GroupEditModalComponent implements OnInit, WthAppsBaseModal {
   @Input() mode: string;
   @Input() item: Group;
 
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   event: any;
   titleName: string;
 

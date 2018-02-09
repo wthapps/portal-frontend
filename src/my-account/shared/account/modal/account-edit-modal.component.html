@@ -1,10 +1,10 @@
 <form [formGroup]="form" novalidate>
-  <modal #modal
+  <bs-modal #modal
          [cssClass]="'modal-account-edit'"
          [keyboard]="false"
-         [animation]="false"
-         [backdrop]="'static'" >
-    <modal-header>
+         [animation]="true"
+         [backdrop]="'static'" style="display: inline;">
+    <bs-modal-header>
       <div class="float-right" style="float:right; position: relative; top:-6px;">
         <button *ngIf="mode=='view'" class="btn btn-default" (click)="edit()">
           <i class="fa fa-pencil"></i>
@@ -19,8 +19,8 @@
       </div>
       <h4 class="modal-title">Edit Account</h4>
 
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
 
 
         <div class="row">
@@ -110,9 +110,9 @@
           </div>
         </div>
 
-    </modal-body>
+    </bs-modal-body>
 
-    <modal-footer>
+    <bs-modal-footer>
     <div>
 
         <button type="button" *ngIf="mode=='edit'" class="btn btn-outline-default btn-min"
@@ -127,7 +127,7 @@
                 (click)="close()">Done
         </button>
       </div>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 
 </form>

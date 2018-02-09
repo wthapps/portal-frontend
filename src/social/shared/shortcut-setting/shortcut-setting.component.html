@@ -1,8 +1,8 @@
-<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title">Edit shortcuts</h4>
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
     <p>Shortcuts allow quick access to some of your communities. Search your communities and click on toad them into
       your shortcut list.</p>
     <div class="form-group input-group-wrap input-group-search-header">
@@ -69,8 +69,8 @@
         </div>
       </div>
     </div>
-  </modal-body>
-  <modal-footer>
+  </bs-modal-body>
+  <bs-modal-footer>
     <button *ngIf="!hasChanged" type="submit" class="btn btn-outline-primary btn-min" (click)="done(null)">Done</button>
 
     <ng-container *ngIf="hasChanged">
@@ -79,5 +79,5 @@
 
     </ng-container>
 
-  </modal-footer>
-</modal>
+  </bs-modal-footer>
+</bs-modal>

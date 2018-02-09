@@ -4,7 +4,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Constants } from '@shared/constant/config/constants';
@@ -23,7 +23,7 @@ declare var $: any;
 })
 
 export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('auto') auto: AutoComplete;
 
   operation: any = {

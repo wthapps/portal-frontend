@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 // import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -19,7 +19,7 @@ import { SHORTCUTS_REMOVE } from '../reducers/index';
 })
 
 export class ZSocialShortcutSettingComponent implements OnDestroy {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   shortcuts$: Observable<any>;
   selectedComs: any[] = [];

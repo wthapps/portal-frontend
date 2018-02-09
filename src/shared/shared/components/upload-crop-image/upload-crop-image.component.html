@@ -1,8 +1,8 @@
-<modal #modal [keyboard]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #modal [keyboard]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title">Profile Picture</h4>
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
     <p>Selecte a photo as your profile picture so people can quickly recognize you</p>
     <div class="dropzone dropzonecrop-wrap" id="dropzone-wrap"></div>
     <div class="dropzonecrop-previews" id="dropzone-previews"></div>
@@ -21,5 +21,5 @@
         Done
       </button>
     </div>
-  </modal-body>
-</modal>
+  </bs-modal-body>
+</bs-modal>

@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, Output, EventEmitter, ViewChild } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Constants } from '../../../../constant/config/constants';
 import * as Cropper  from 'cropperjs';
 
@@ -14,7 +14,7 @@ import * as Cropper  from 'cropperjs';
 })
 
 export class CropImageComponent implements AfterViewInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Output() changeImageEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() doneEvent: EventEmitter<string> = new EventEmitter<string>();
 

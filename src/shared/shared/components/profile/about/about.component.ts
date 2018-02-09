@@ -6,7 +6,7 @@ import {
   FormArray, AbstractControl, FormControl
 } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { PartialsProfileService } from '../profile.service';
 import { Constants } from '../../../../constant/config/constants';
 import { CountryService } from '../../countries/countries.service';
@@ -20,7 +20,7 @@ declare var _: any;
 
 export class PartialsProfileAboutComponent implements OnInit {
   @Input('data') data: any;
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() editable: boolean;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 

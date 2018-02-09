@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild, SimpleChanges, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
@@ -47,7 +47,7 @@ declare let _: any;
 })
 
 export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
-  @ViewChild(ModalComponent) modal: ModalComponent;
+  @ViewChild(BsModalComponent) modal: BsModalComponent;
 
   note: Note = new Note();
   currentTab: any = 'note';
@@ -190,7 +190,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   initQuill() {
-    $(document).on('hidden.bs.modal', '.modal', () => {
+    $(document).on('hide.bs.modal', '.modal', () => {
       if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
       }

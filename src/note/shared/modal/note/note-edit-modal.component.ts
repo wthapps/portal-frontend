@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
@@ -55,7 +55,7 @@ declare let _: any;
 })
 export class NoteEditModalComponent implements OnDestroy, OnChanges, OnInit, AfterViewInit {
 
-  @ViewChild(ModalComponent) modal: ModalComponent;
+  @ViewChild(BsModalComponent) modal: BsModalComponent;
   @ViewChild('editor') editor: Editor;
   @Input() note: Note = new Note();
 
@@ -155,7 +155,7 @@ export class NoteEditModalComponent implements OnDestroy, OnChanges, OnInit, Aft
   }
 
   ngAfterViewInit(): void {
-    $(document).on('hidden.bs.modal', '.modal', () => {
+    $(document).on('hide.bs.modal', '.modal', () => {
       if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
       }

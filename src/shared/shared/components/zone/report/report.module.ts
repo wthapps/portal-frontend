@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalModule } from 'ng2-bs3-modal';
 
 import { ZSharedReportComponent } from './report.component';
 
@@ -13,7 +13,7 @@ import { ZSharedReportComponent } from './report.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    Ng2Bs3ModalModule
+    BsModalModule
   ],
   declarations: [
     ZSharedReportComponent

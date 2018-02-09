@@ -20,14 +20,14 @@
           <i class="fa {{ privacyClassIcon}}">
           </i> {{ privacyName }}</a>
 
-        <modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
-          <modal-header cssClass="modal-social-head">
+        <bs-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
+          <bs-modal-header cssClass="modal-social-head">
             <h4 class="modal-title text-left text-capitalize"> {{ privacyName }}</h4>
             <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-          </modal-header>
-          <modal-body>
+          </bs-modal-header>
+          <bs-modal-body>
             <ul class="list-unstyled social-list-user wth-scrollable">
               <li *ngFor="let item of item.custom_objects">
             <span class="social-list-user-action">
@@ -36,14 +36,14 @@
                 <span>{{ item.name }}</span>
               </li>
             </ul>
-          </modal-body>
-          <modal-footer>
+          </bs-modal-body>
+          <bs-modal-footer>
             <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal"
                     (click)="modal.dismiss()">
               DONE
             </button>
-          </modal-footer>
-        </modal>
+          </bs-modal-footer>
+        </bs-modal>
 
       </div>
     </div>

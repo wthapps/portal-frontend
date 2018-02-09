@@ -1,8 +1,8 @@
-<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title"><i class="fa fa-info-circle"></i> Information</h4>
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
       <div class="form-group" [ngClass]="{'has-error': (!name.valid && name.touched)}">
         <label for="album-name">Name</label>
@@ -25,5 +25,5 @@
         <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
       </div>
     </form>
-  </modal-body>
-</modal>
+  </bs-modal-body>
+</bs-modal>

@@ -36,11 +36,11 @@
 
 
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title">Address</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div formArrayName="addresses">
         <div *ngFor="let add_address of getFormControls(); let i=index" class="media mt0">
           <div class="media-body" [formGroupName]="i">
@@ -116,12 +116,12 @@
       <button type="button" class="btn btn-default" (click)="addItem()">
         <i class="fa fa-plus"></i> Add more
       </button>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
       <button type="submit" class="btn btn-outline-primary btn-min"
               (click)="onSubmit(form.value)">Done
       </button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

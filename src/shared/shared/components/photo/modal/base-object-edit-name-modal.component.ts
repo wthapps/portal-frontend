@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnInit, OnChanges } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
 
 
@@ -13,7 +13,7 @@ declare var _: any;
   templateUrl: 'base-object-edit-name-modal.component.html',
 })
 export class BaseObjectEditNameModalComponent implements OnInit, OnChanges {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   @Input() data: any = null;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();

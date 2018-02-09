@@ -1,9 +1,9 @@
-<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title"><i class="fa fa-info-circle"></i> Information</h4>
-  </modal-header>
+  </bs-modal-header>
   <form [formGroup]="form" novalidate>
-    <modal-body>
+    <bs-modal-body>
       <div class="row">
         <div class="col-sm-8">
           <div class="form-group"
@@ -30,10 +30,10 @@
         <textarea [formControl]="description" rows="3" class="form-control" id="edit-photo-description"
                   placeholder=""></textarea>
       </div>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" (click)="onSubmit(form.value)" class="btn btn-outline-primary btn-min">Save</button>
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-    </modal-footer>
+    </bs-modal-footer>
   </form>
-</modal>
+</bs-modal>

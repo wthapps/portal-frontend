@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { SoCommunityService } from '../services/community.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
@@ -21,7 +21,7 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 })
 
 export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnChanges {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() data: any;
   @Output() setupDataUpdated: EventEmitter<any> = new EventEmitter<any>();
 

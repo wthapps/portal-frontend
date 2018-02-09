@@ -1,6 +1,6 @@
 import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ChatService } from '../services/chat.service';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 declare var _: any;
 
@@ -14,7 +14,7 @@ export class ZChatShareRequestContactComponent {
 
   contact: any;
   message: string = 'Hello, please accept my request';
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private chatService: ChatService) {

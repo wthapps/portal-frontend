@@ -7,7 +7,7 @@ import {
   FormControl
 } from '@angular/forms';
 import { ZSharedReportService } from './report.service';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 declare var $: any;
 declare var _: any;
@@ -17,7 +17,7 @@ declare var _: any;
   templateUrl: 'report.component.html'
 })
 export class ZSharedReportComponent {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   REASONS: Array<any> = [
     {id: 1, description: 'Spam or Scam', entity: 'post;community'},

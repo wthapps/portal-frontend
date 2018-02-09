@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Router } from "@angular/router";
 import { ApiBaseService } from "@shared/services";
 
@@ -15,8 +15,8 @@ declare var _: any;
   encapsulation: ViewEncapsulation.None
 })
 export class ZSocialSharedNewsFeedComponent implements OnInit, OnChanges {
-  @ViewChild('modalNew') modalNew: ModalComponent;
-  @ViewChild('modalEdit') modalEdit: ModalComponent;
+  @ViewChild('modalNew') modalNew: BsModalComponent;
+  @ViewChild('modalEdit') modalEdit: BsModalComponent;
 
   selectedValues: string[] = [];
   @Input() channels: any = [];

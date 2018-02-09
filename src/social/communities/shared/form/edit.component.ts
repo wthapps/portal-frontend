@@ -22,7 +22,7 @@ import { Constants } from '@wth/shared/constant';
 
 export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
 
-  // @ViewChild('modal') modal: ModalComponent;
+  // @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('modal') modal: HdModalComponent;
   @Input() data: any;
   @Input() action: string;

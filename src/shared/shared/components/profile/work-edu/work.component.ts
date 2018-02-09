@@ -6,7 +6,7 @@ import {
   FormArray, AbstractControl, FormControl
 } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { PartialsProfileService } from '../profile.service';
 import { Mixin } from '../../../../design-patterns/decorator/mixin-decorator';
 import { ProfileFormMixin } from '../../../mixins/form/profile/profile-form.mixin';
@@ -22,7 +22,7 @@ declare var _: any;
 
 export class PartialsProfileWorkComponent implements ProfileFormMixin, ProfileFormCustomSubmitMixin {
   @Input('data') data: any;
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() editable: boolean;
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
 

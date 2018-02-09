@@ -1,6 +1,6 @@
 import { Component, ViewChild, ViewEncapsulation, Input, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Note } from '@shared/shared/models/note.model';
 import { ZNoteService } from '../../services/note.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
@@ -21,7 +21,7 @@ declare let saveAs: any;
 })
 
 export class ZNoteSharedModalNoteViewComponent implements AfterViewInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @ViewChildren('pModal') pModals: QueryList<any>;
   @Input() note: Note;
 

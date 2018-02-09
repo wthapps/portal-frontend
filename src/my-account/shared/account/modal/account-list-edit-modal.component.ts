@@ -1,11 +1,15 @@
-import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges } from '@angular/core';
+import {
+  Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges,
+  AfterViewInit
+} from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 
 declare var _: any;
+declare var $: any;
 declare let moment:any;
 
 
@@ -16,10 +20,10 @@ declare let moment:any;
   styleUrls: ['account-list-edit-modal.component.scss']
 })
 
-export class AccountListEditModalComponent implements OnInit {
+export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   @Input() data: any;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   form: FormGroup;
   deleteObjects: any = [];
@@ -41,6 +45,10 @@ export class AccountListEditModalComponent implements OnInit {
 
   ngOnInit() {
     this.initialize(new Array<any>());
+  }
+
+  ngAfterViewInit() {
+
   }
 
   /*
@@ -148,6 +156,9 @@ export class AccountListEditModalComponent implements OnInit {
     });
   }
 
+  hide(event: any) {
+    console.log('hide:::', event);
+  }
   done(values: any) {
     this.data = _.concat(this.deleteObjects, values);
     this.event.emit(this.data);

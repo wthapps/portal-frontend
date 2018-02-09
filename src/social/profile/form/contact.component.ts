@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 
 import { SocialService } from '../../shared/services/social.service';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { ApiBaseService, UserService } from '@wth/shared/services';
 import { CountryService } from '@wth/shared/shared/components/countries/countries.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
@@ -24,7 +24,7 @@ import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 
 export class ZSocialProfileFormContactComponent implements OnInit, OnChanges {
 
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() data: any;
   @Input() action: string;
   @Output() updated: EventEmitter<any> = new EventEmitter<any>();

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
 
 
@@ -13,14 +13,14 @@ declare var _: any;
   templateUrl: 'album-delete-modal.component.html',
 })
 export class AlbumDeleteModalComponent implements AfterViewInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   selectedAlbums: any;
 
   checked: boolean = false;
 
   ngAfterViewInit() {
-    $(document).on('hidden.bs.modal', '.modal', ()=> {
+    $(document).on('hide.bs.modal', '.modal',() => {
       if ($('.modal:visible').length) {
         $(document.body).addClass('modal-open');
       }

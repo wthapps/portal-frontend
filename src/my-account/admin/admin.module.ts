@@ -9,7 +9,7 @@ import { PipeModule } from   '@wth/shared/shared/pipe/pipe.module';
 import { MyAdminComponent } from './admin.component';
 import { AccountListComponent } from './accounts/account-list.component';
 import { MyInvitationsComponent } from './invitations/invitations.component';
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalModule } from 'ng2-bs3-modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AccountCreatePartialComponent } from './accounts/account-create-partial.component';
@@ -24,7 +24,7 @@ import { AccountCreatePartialComponent } from './accounts/account-create-partial
     // MatNativeDateModule, // TODO fix
     // MatInputModule,
 
-    Ng2Bs3ModalModule,
+    BsModalModule,
     PipeModule,
     MyAdminRoutingModule,
     MySharedModule.forRoot(),

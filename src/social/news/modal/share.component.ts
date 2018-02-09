@@ -1,5 +1,5 @@
 // import { Component, OnInit, ViewChild } from '@angular/core';
-// import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+// import { BsModalComponent } from 'ng2-bs3-modal';
 // import { Observable } from 'rxjs/Observable';
 // import { UserService } from '@shared/services';
 // import { Router } from '@angular/router';
@@ -13,7 +13,7 @@
 // })
 //
 // export class ZSocialNewsShareComponent implements OnInit {
-//   @ViewChild('modal') modal: ModalComponent;
+//   @ViewChild('modal') modal: BsModalComponent;
 //
 //   article: any = {
 //     uri: 'https://i-kinhdoanh.vnecdn.net/2018/01/10/biencam1-3203-1515575867_140x84.jpg',

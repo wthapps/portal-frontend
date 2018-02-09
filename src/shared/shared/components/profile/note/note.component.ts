@@ -8,7 +8,7 @@ import {
   FormControl
 } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { ApiBaseService } from '../../../../services/apibase.service';
 
 declare var _: any;
@@ -20,7 +20,7 @@ declare var _: any;
 
 export class PartialsProfileNoteComponent {
   @Input('data') data: any;
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() editable: boolean;
 
   form: FormGroup;

@@ -1,5 +1,5 @@
-<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-body>
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-body>
     <div class="z-social-media mb15">
       <div class="z-social-media-left pointer">
         <a href="javascript:;" (click)="viewProfile()">
@@ -59,9 +59,9 @@
       <display-link [data]="article"></display-link>
     </div>
 
-  </modal-body>
-  <modal-footer>
+  </bs-modal-body>
+  <bs-modal-footer>
     <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
     <button type="submit" class="btn btn-outline-primary btn-min" (click)="done(null)">Done</button>
-  </modal-footer>
-</modal>
+  </bs-modal-footer>
+</bs-modal>

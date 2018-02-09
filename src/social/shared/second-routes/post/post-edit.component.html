@@ -1,5 +1,5 @@
-<modal #modal cssClass="modal-social modal-long" [animation]="false">
-  <modal-body>
+<bs-modal #modal cssClass="modal-social modal-long" [animation]="false">
+  <bs-modal-body>
     <div class="z-social-media mb15">
       <div class="z-social-media-left pointer">
         <a href="javascript:;" (click)="viewProfile()">
@@ -152,7 +152,7 @@
         </button>
       </div>
     </form>
-  </modal-body>
-</modal>
+  </bs-modal-body>
+</bs-modal>
 
 <entity-select #privacyCustomModal type='custom_friend' (onSelected)="selectedItems($event)"></entity-select>

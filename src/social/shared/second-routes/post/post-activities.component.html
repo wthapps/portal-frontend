@@ -1,8 +1,9 @@
-<modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'" [animation]="false">
-  <modal-header [show-close]="true">
+<bs-modal #modal cssClass="modal-social modal-long" [keyboard]="false"
+          [backdrop]="'static'" [animation]="false" style="display: inline;">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title text-left"><i class="fa fa-share-alt"></i> Share Activities</h4>
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
     <ul class="list-unstyled social-list-user">
       <li *ngFor="let item of shares">
         <div class="z-social-media">
@@ -60,13 +61,14 @@
         </div>
       </li>
     </ul>
-  </modal-body>
-  <modal-footer>
-    <button type="button" class="btn btn-outline-primary btn-min">Done</button>
+  </bs-modal-body>
+  <bs-modal-footer>
     <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.dismiss()">
       Cancel
     </button>
-  </modal-footer>
-</modal>
+    <button type="button" class="btn btn-outline-primary btn-min">Done</button>
+
+  </bs-modal-footer>
+</bs-modal>
 
 

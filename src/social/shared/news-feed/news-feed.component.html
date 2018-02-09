@@ -52,11 +52,11 @@
 </div>
 
 
-<modal #modalNew [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #modalNew [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title">Add Source</h4>
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
     <p>Choose which channel you want to keep update with. You can search for news source by name or category</p>
 
     <div class="form-group">
@@ -121,18 +121,18 @@
         <box-loading></box-loading>
       </ng-template>
     </div>
-  </modal-body>
-  <modal-footer>
+  </bs-modal-body>
+  <bs-modal-footer>
     <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSave()">Done</button>
-  </modal-footer>
-</modal>
+  </bs-modal-footer>
+</bs-modal>
 
 
-<modal #modalEdit [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #modalEdit [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title">Edit Source</h4>
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
     <p>Choose which channel you want to keep update with. You can search for news source by name or category</p>
 
     <div class="form-group">
@@ -202,8 +202,8 @@
 
 
     </div>
-  </modal-body>
-  <modal-footer>
+  </bs-modal-body>
+  <bs-modal-footer>
     <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSave()">Done</button>
-  </modal-footer>
-</modal>
+  </bs-modal-footer>
+</bs-modal>
