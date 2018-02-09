@@ -36,7 +36,7 @@ export class ZNoteSharedHeaderComponent {
 
   onEnter(e: any) {
     this.show = false;
-    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: e.search}});
+    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: this.search}});
   }
 
   onKey(e: any) {
