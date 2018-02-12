@@ -21,14 +21,12 @@
       <div class="component-listbox-date clearfix sortbar-wrap" *ngIf="page !== noteConstants.PAGE_RECENT">
 
         <span *ngIf="DATE_MAP[sortOption?.field]" class="btn btn-text pull-right" (click)="onReverseSort()">
-            <i class="fa "  [ngClass]="!sortOption?.desc ? 'fa-arrow-up' : 'fa-arrow-down'"
-            ></i>
+            <i class="fa can-click" [ngClass]="!sortOption?.desc ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
           </span>
         <div class="dropdown pull-left">
-            <span class="btn btn-text dropdown-toggle" type="button" data-toggle="dropdown" (mouseenter)="showDateCaret=true" (mouseleave)="showDateCaret=false">
+            <span class="btn btn-text dropdown-toggle" data-toggle="dropdown" (mouseenter)="showDateCaret=true" (mouseleave)="showDateCaret=false">
               {{ DATE_MAP[sortOption?.field] || 'Created date' }}
-              <i *ngIf="showDateCaret" class="fa fa-caret-down"></i>
-              <!--<i class="fa fa-caret-down"></i>-->
+              <i *ngIf="showDateCaret" class="fa fa-caret-down can-click"></i>
             </span>
           <ul class="dropdown-menu dropdown-menu-right">
             <li><a href="javascript:;" (click)="onSort('created_at')">Create date</a></li>
@@ -51,7 +49,7 @@
             data-toggle="dropdown" type="button" style="margin-right: 10px; border: none; background: none">
       {{ groupBy | titleCase }}
     </button>
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu dropdown-menu-right">
       <li><a (click)="group('date');" href="javascript:;"> Date</a></li>
       <li><a (click)="group('month');" href="javascript:;"> Month</a></li>
       <li><a (click)="group('year');" href="javascript:;"> Year</a></li>
