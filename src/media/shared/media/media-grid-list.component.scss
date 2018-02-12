@@ -4,14 +4,6 @@
   display: block;
 }
 
-.photo-box-heading {
-  font-size: 14px;
-  font-weight: normal;
-  margin-bottom: 0;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
 .row-img {
   &.grid {
     @for $i from 1 through 12 {
