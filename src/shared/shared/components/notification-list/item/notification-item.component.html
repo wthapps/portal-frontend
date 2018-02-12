@@ -36,7 +36,8 @@
         <li (click)="clickedInside($event)">
           <i (click)="showMenu($event)" class="fa fa-ellipsis-v"></i>
           <ul #notiItemMenuEl class="dropdown-menu">
-            <li><a class="js-toggleNotification" id="data-toggle-{{ notification?.id }}" href="javascript:;" *ngIf="showToggle"
+            <li><a class="js-toggleNotification" id="data-toggle-{{ notification?.id }}" href="javascript:;"
+                   *ngIf="showToggle"
                    (click)="toggleNotification()">{{ itemSettings?.mute ?
               'Enable' : 'Disable' }} Notification for this post</a>
             <li>
@@ -102,7 +103,8 @@
         <li (click)="clickedInside($event)">
           <i (click)="showMenu($event)" class="fa fa-ellipsis-v"></i>
           <ul #notiItemMenuEl class="dropdown-menu">
-            <li><a class="js-toggleNotification" id="data-toggle-{{ notification?.id }}" href="javascript:;" *ngIf="showToggle"
+            <li><a class="js-toggleNotification" id="data-toggle-{{ notification?.id }}" href="javascript:;"
+                   *ngIf="showToggle"
                    (click)="toggleNotification()">{{ itemSettings?.mute ?
               'Enable' : 'Disable' }} Notification for this post</a>
             <li>
