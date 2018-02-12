@@ -1,4 +1,4 @@
-<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
   <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title"><i class="fa fa-info-circle"></i> Information</h4>
   </bs-modal-header>
@@ -32,9 +32,10 @@
       </div>
     </bs-modal-body>
     <bs-modal-footer>
-      <button type="button" (click)="onSubmit(form.value)" class="btn btn-outline-primary btn-min">Save</button>
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
               (click)="modal.close()">Cancel</button>
+      <button type="button" [disabled]="!form.valid || form.pristine"
+              (click)="onSubmit(form.value)" class="btn btn-outline-primary btn-min">Save</button>
     </bs-modal-footer>
   </form>
 </bs-modal>

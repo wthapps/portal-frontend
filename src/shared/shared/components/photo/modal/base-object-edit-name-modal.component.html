@@ -1,5 +1,5 @@
 <form [formGroup]="form" novalidate>
-  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
     <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title">Rename</h4>
     </bs-modal-header>
@@ -18,7 +18,7 @@
 
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
               (click)="modal.close()">Cancel</button>
-      <button [disabled]="!form.valid" (click)="onSubmit(form.value)" type="submit"
+      <button [disabled]="!form.valid || form.pristine" (click)="onSubmit(form.value)" type="submit"
               class="btn btn-outline-primary btn-min">Done
       </button>
     </bs-modal-footer>

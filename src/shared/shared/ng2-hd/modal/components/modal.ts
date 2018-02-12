@@ -74,9 +74,9 @@ export class HdModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    $(document).on('hide.bs.modal', '.modal', function() {
-      return ($('.modal:visible').length && $(document.body).addClass('modal-open'));
-    });
+    // $(document).on('hide.bs.modal', '.modal', function() {
+    //   return ($('.modal:visible').length && $(document.body).addClass('modal-open'));
+    // });
   }
 
 
