@@ -1,12 +1,13 @@
 .modal-dock-body{
   padding: 0 !important;
 }
-
-.merge-contact-undo{
+.modal-dock-header-title {
+  width: 90%;
+  pointer-events: none;
+}
+.dock-action{
   float: right;
-  position: relative;
-  top: -40px;
-  right: 40px;
   font-weight: bold;
   z-index: 10;
+  pointer-events:auto;
 }

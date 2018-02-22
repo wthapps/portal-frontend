@@ -19,6 +19,7 @@ export class ZNoteShareProgressComponent implements AfterViewInit, OnChanges, On
   @ViewChild('modalDock') modalDock: ModalDockComponent;
   progess$: any;
   callback: any;
+  timeout: any;
   sub: any;
   constructor(private store: Store<any>, private cdr: ChangeDetectorRef) {
     this.progess$ = this.store.select(progressContext.getProgressContext);
@@ -31,7 +32,11 @@ export class ZNoteShareProgressComponent implements AfterViewInit, OnChanges, On
   ngAfterViewInit() {
     this.sub = this.progess$.subscribe((progress: any) => {
       if(progress.open) {
+        clearTimeout(this.timeout);
         this.modalDock.open('dock-merge-contact');
+        this.timeout = setTimeout(() => {
+          this.modalDock.close();
+        }, 7000)
       } else {
         this.modalDock.close();
       }
