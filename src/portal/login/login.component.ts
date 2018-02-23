@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
         .subscribe((result) => {
             if (result) {
               // Initialize websocket
-              this.appearancesChannelService.subscribe();
+              // this.appearancesChannelService.subscribe();
               // this.chatSupportAppearanceChannel.subscribe();
 
               if (this.flagsRelease) {

@@ -19,7 +19,7 @@
         <div class="pb5 bold">
           <div class="row row-12">
             <div class="col-sm-4">
-              Pro accounts
+              Full accounts
             </div>
             <div class="col-sm-4 ml5 pl0">
               Email address
@@ -66,8 +66,7 @@
                     <input type="email" email class="form-control" formControlName="email"
                            (change)="changed(item.controls)"
                            placeholder="account-email@example.com">
-                    <div
-                      *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
+                    <div *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
                       <span
                         *ngIf="!item['controls'].email.valid && item['controls'].email.errors.emailFormat"
                         class="help-block text-danger">
@@ -78,7 +77,7 @@
                 </div>
 
                 <div class="col-sm-3 pl5 pr0">
-                  <div class="form-group no-label"
+                  <div class="form-group no-label no-label-birthday"
                        [ngClass]="{
                     'has-error': (!item['controls'].birthday.valid
                                 && item['controls'].birthday.touched),
@@ -86,7 +85,7 @@
                                 && item['controls'].birthday.touched
                                 && form.value.items[i].birthday.length > 0)}">
                     <p-calendar class="input-block"
-                                inputStyleClass="input-birthday"
+                                inputStyleClass="form-control"
                                 [maxDate]="maxDate" require="true"
                                 [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2004"
                                 formControlName="birthday"></p-calendar>
@@ -128,7 +127,7 @@
           </button>
           <div class="pull-right pr20">
             <div>
-              {{ noOfMaster }} Full or Pro accounts x ${{ masterPrice }} = $ {{ noOfMaster*masterPrice }}
+              {{ fullAccountCount }} Full accounts x ${{ fullPrice }} = ${{ fullAmount }}
             </div>
           </div>
         </div>
@@ -197,7 +196,7 @@
               </div>
               <div class="col-sm-3 pl5 pr0">
 
-                <div class="form-group no-label"
+                <div class="form-group no-label no-label-birthday"
                      [ngClass]="{
                     'has-error': (!item['controls'].birthday.valid
                                 && item['controls'].birthday.touched),
@@ -205,7 +204,7 @@
                                 && item['controls'].birthday.touched
                                 && form.value.items[i].birthday.length > 0)}">
                   <p-calendar class="input-block"
-                              inputStyleClass="input-birthday"
+                              inputStyleClass="form-control"
                               [maxDate]="maxDate" required="true"
                               [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2004"
                               formControlName="birthday"></p-calendar>
@@ -248,7 +247,7 @@
         </button>
         <div class="pull-right pr20">
           <div>
-            {{ noOfSub }} sub accounts x ${{ subPrice }} = ${{ noOfSub*subPrice }}
+            {{ subAccountCount }} sub accounts x ${{ subPrice }} = ${{ subAmount }}
           </div>
         </div>
       </div>
@@ -259,31 +258,31 @@
       <div class="panel panel-default mb0">
         <div class="row row-12 panel-body text-right">
           <div class="col-sm-10">
-            <div>New Full or Pro accounts:</div>
+            <div>New Full accounts:</div>
           </div>
           <div class="col-sm-2">
-            <div>${{ noOfMaster*masterPrice }}</div>
+            <div>${{ fullAmount }}</div>
           </div>
 
           <div class="col-sm-10" >
             <div>New sub accounts:</div>
           </div>
           <div class="col-sm-2">
-            <div>${{ noOfSub*subPrice }}</div>
+            <div>${{ subAmount }}</div>
           </div>
 
           <div class="col-sm-10">
             <div>Current accounts:</div>
           </div>
           <div class="col-sm-2">
-            <div>${{ masterPrice }}</div>
+            <div>${{ currentAmount }}</div>
           </div>
 
           <div class="col-sm-10">
             <div class="bold">Total:</div>
           </div>
           <div class="col-sm-2 bold">
-            <div>${{ noOfSub*subPrice + noOfMaster*masterPrice + masterPrice }}</div>
+            <div>${{ currentAmount + accountAmount }}</div>
           </div>
         </div>
       </div>
@@ -303,5 +302,4 @@
       </div>
     </bs-modal-footer>
   </bs-modal>
-
 </form>

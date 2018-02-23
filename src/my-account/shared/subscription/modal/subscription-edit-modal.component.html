@@ -19,39 +19,20 @@
         <div class="panel-body pt0 mt0 mb0">
           <h4>Pro plan</h4>
           <div class="row">
-
-            <div class="col-xs-5 text-right" >
-              <div>Cost:</div>
-            </div>
-            <div class="col-xs-7">
-              <div><b>5 Full or Pro accounts</b> * ${{ subscription.accountAmount }}</div>
-              <div><b>4 Sub accounts </b> * ${{ subscription.accountAmount }}</div>
-            </div>
-            <div class="col-xs-5 text-right">
-              <div>Number of accounts:</div>
-            </div>
-            <div class="col-xs-7">
-              <div>{{ 'subscription.accountCount' }}</div>
-            </div>
-            <div class="col-xs-5 text-right">
+            <div class="col-xs-6 text-right" >
+              <div>New Full accounts:</div>
+              <div>New Sub accounts:</div>
+              <div>Current billing amount:</div>
               <div>Total billing amount:</div>
-            </div>
-            <div class="col-xs-7">
-              <div>${{ subscription.accountAmount + 9.99 }}</div>
+              <div>Next billing date:</div>
             </div>
 
-            <div class="col-xs-5 text-right">
-              <div>Created date:</div>
-            </div>
-            <div class="col-xs-7">
-              <div>{{ 'subscription.billingDate | date: yMMMd' }}</div>
-            </div>
-
-            <div class="col-xs-5 text-right">
-              <div>Billing circle:</div>
-            </div>
-            <div class="col-xs-7">
-              <div> Bill on 15th Jeunary month </div>
+            <div class="col-xs-3 text-right">
+              <div><b> ${{ subscription.fullAccountCount * subscription.fullPrice}} </b></div>
+              <div><b> ${{ subscription.subAccountCount * subscription.subPrice}} </b></div>
+              <div><b> ${{ subscription.currentAmount }} </b></div>
+              <div><b> ${{ subscription.accountAmount + subscription.currentAmount }} </b></div>
+              <div><b> {{ subscription.billingDate | date: yMMMd }} </b></div>
             </div>
 
           </div>

@@ -6,6 +6,10 @@
     width: 145px !important;
   }
 }
-input[text].input-birthday {
-  width: 145px !important;
+.input-birthday {
+  width: 250px !important;
+}
+
+.no-label-birthday:before {
+  right: 20px;
 }
