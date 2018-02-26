@@ -17,6 +17,8 @@ import * as fromRouter from '@ngrx/router-store';
 import { storeFreeze } from 'ngrx-store-freeze';
 import * as fromAuth from '@core/store/auth';
 import * as fromUser from '@core/store/user';
+import * as fromAccount from './account';
+
 /**
  * Every reducer module's default export is the reducer function itself. In
  * addition, each module should export a type or interface that describes
@@ -32,6 +34,7 @@ import * as fromUser from '@core/store/user';
  */
 export interface State {
   auth: fromAuth.AuthState;
+  account: fromAccount.AccountState;
   user: fromUser.UserState;
   // layout: fromLayout.State;
   // router: fromRouter.RouterReducerState<RouterStateUrl>;
@@ -44,6 +47,7 @@ export interface State {
  */
 export const appReducers: ActionReducerMap<any> = {
   auth: fromAuth.authReducer,
+  account: fromAccount.accountReducer,
   user: fromUser.userReducer
   // layout: fromLayout.reducer,
   // router: fromRouter.routerReducer,
@@ -78,8 +82,10 @@ export const metaReducers: MetaReducer<State>[] = !environment.production
 //   fromLayout.getShowSidenav
 // );
 
+export const selectAccountState = createFeatureSelector<fromAccount.AccountState>('account');
+
 
 /**
  *
  */
-export let appEffects: Array<any> = [];
+export let appEffects: Array<any> = [fromAccount.AccountEffects];
