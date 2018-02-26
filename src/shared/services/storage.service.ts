@@ -18,19 +18,19 @@ export class StorageService {
   save(key: string, value: any) {
     // Convert StorageItem if need
     if (value instanceof StorageItem) {
-      value = value.value;
+      value = _.clone(value).value;
     }
     // Create new store if need
     let item = this.find(key);
     if (item) {
-      item.value = value;
+      item.value = _.clone(value);
     } else {
       this.saveNew(key, value);
     }
   }
 
   saveNew(key: string, value: any) {
-    let item = new StorageItem(key, value);
+    let item = new StorageItem(key, _.clone(value));
     _.remove(this.listItem, (i: any) => {
       return i.key == item.key;
     });
@@ -79,5 +79,3 @@ class StorageItem {
     console.log('save');
   }
 }
-
-

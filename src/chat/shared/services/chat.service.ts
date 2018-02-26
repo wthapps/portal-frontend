@@ -90,7 +90,7 @@ export class ChatService {
 
   subscribeNotification() {
     this.handler.addListener('remove_notification_after_select', 'on_conversation_select', (contact: any) => {
-      this.markAsRead(contact.group_json.id);
+      if (contact.notification_count > 0) this.markAsRead(contact.group_json.id);
     });
   }
 
@@ -115,13 +115,17 @@ export class ChatService {
   getMessages(groupId: number, options: any = {}) {
     let item: any = this.storage.find('chat_messages_group_' + groupId);
     if (item && item.value) {
-      this.storage.save('current_chat_messages', item.value);
+      if(this.storage.find('conversation_select').value.group_id == groupId) {
+        this.storage.save('current_chat_messages', item.value);
+      }
     } else {
-      //
+      this.storage.save('current_chat_messages', null);
       this.apiBaseService.get('zone/chat/message/' + groupId, options).subscribe(
         (res: any) => {
           this.storage.save('chat_messages_group_' + groupId, res);
-          this.storage.save('current_chat_messages', res);
+          if(this.storage.find('conversation_select').value.group_id == groupId) {
+            this.storage.save('current_chat_messages', res);
+          }
         }
       );
     }
@@ -227,15 +231,19 @@ export class ChatService {
   }
 
   loadMoreMessages(callback: any = null) {
-    let currentMessages: any = this.storage.find('current_chat_messages').value.data;
-    let page: any = parseInt(this.storage.find('current_chat_messages').value.page_metadata.page) + 1;
+    let current = this.storage.find('current_chat_messages').value || {};
+    let currentMessages: any = current.data || [];
+    let page: any = 1;
+    if (current.page_metadata) page = parseInt(current.page_metadata.page) + 1;
     let body: any = {page: page};
     let groupId: any = this.storage.find('conversation_select').value.group_json.id;
     this.apiBaseService.get('zone/chat/message/' + groupId, body).subscribe(
       (res: any) => {
         res.data = _chat.combineMessages(currentMessages, res.data);
         this.storage.save('chat_messages_group_' + groupId, res);
-        this.storage.save('current_chat_messages', res);
+        if(this.storage.find('conversation_select').value.group_id == groupId) {
+          this.storage.save('current_chat_messages', res);
+        }
         if(callback) callback();
       }
     );
