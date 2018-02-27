@@ -59,6 +59,14 @@ export class SoUserService {
     return this.apiBaseService.delete(`${soInvitationsUrl}/${uuid}`);
   }
 
+  acceptFriendRequest(uuid: any) {
+    return this.apiBaseService.post(`${soInvitationsUrl}/accept`, {uuid, show_status: true});
+  }
+
+  declineFriendRequest(uuid: any) {
+    return this.apiBaseService.post(`${soInvitationsUrl}/reject`, {uuid, show_status: true});
+  }
+
   getRelationShips(uuid?: string) {
     if (!uuid) {
       uuid = this.profile.uuid;

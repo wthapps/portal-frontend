@@ -29,14 +29,12 @@ export class ZSocialProfileComponent implements OnInit {
   userInfo: any;
   actions: Array<any>;
   relationships: any;
-  selectedTab: string;
   items: any;
 
   constructor(private socialService: SocialService,
               private userService: UserService,
               private route: ActivatedRoute,
               private profileDataService: ZSocialProfileDataService) {
-    // this.selectedTab = PROFILE_TAB.posts;
   }
 
   ngOnInit() {

@@ -38,7 +38,9 @@ export class ZSocialProfileCoverComponent implements OnInit {
   readonly FRIEND_STATUS: any = {
     STRANGER: 0,
     REQUEST_SENT: 1,
-    FRIEND: 2
+    FRIEND: 2,
+    BE_REJECTED: 3,
+    BE_REQUESTED: 88,
   };
 
   constructor(private socialService: SocialService,
@@ -133,6 +135,22 @@ export class ZSocialProfileCoverComponent implements OnInit {
 
   onCancelRequest() {
     this.socialService.user.cancelFriendRequest(this.userInfo.uuid).subscribe(
+      (res: any) => {
+        this.relationships = res.data;
+      },
+    );
+  }
+
+  onAcceptRequest() {
+    this.socialService.user.acceptFriendRequest(this.userInfo.uuid).subscribe(
+      (res: any) => {
+        this.relationships = res.data;
+      },
+    );
+  }
+
+  onDecline() {
+    this.socialService.user.declineFriendRequest(this.userInfo.uuid).subscribe(
       (res: any) => {
         this.relationships = res.data;
       },

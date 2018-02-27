@@ -15,10 +15,27 @@
 
       <div class="hd-item-action-right-bottom" *ngIf="relationships">
         <div class="btn-group" role="group">
-          <ng-container *ngIf="relationships.status == FRIEND_STATUS.STRANGER">
+          <ng-container *ngIf="[FRIEND_STATUS.STRANGER, FRIEND_STATUS.BE_REJECTED].includes(relationships.status)">
             <button class="btn btn-outline-default" type="button" (click)="onAddfriend()">
               <i class="fa fa-user-plus"></i> Add Friend
             </button>
+          </ng-container>
+
+          <ng-container *ngIf="relationships.status == FRIEND_STATUS.BE_REQUESTED">
+            <div class="btn-group">
+              <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user-plus"></i> Respond to Request
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a href="javascript:;" (click)="onAcceptRequest()">Accept Friend Request</a>
+                </li>
+                <li>
+                  <a href="javascript:;" (click)="onDecline()">Decline</a>
+                </li>
+              </ul>
+            </div>
           </ng-container>
 
           <ng-container *ngIf="relationships.status == FRIEND_STATUS.FRIEND">
@@ -42,7 +59,7 @@
             <div class="btn-group">
               <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
                       aria-haspopup="true" aria-expanded="false">
-                Friend Requested <span class="caret"></span>
+                <i class="fa fa-user-plus"></i> Request Sent <span class="caret"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
                 <li>

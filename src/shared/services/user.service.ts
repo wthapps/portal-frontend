@@ -154,6 +154,11 @@ export class UserService {
     return this.profile$;
   }
 
+  validProfile() {
+    let profile: any = this._profile.getValue();
+    return profile && Object.keys(profile).length > 0;
+  }
+
   updateProfile(profile: any) {
     this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
     this.setProfile(profile);
