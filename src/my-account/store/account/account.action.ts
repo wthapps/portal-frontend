@@ -1,4 +1,6 @@
-import { Action }   from '@ngrx/store';
+import { Action } from '@ngrx/store';
+// import { Update } from '@ngrx/entity';
+// import { User } from '@wth/shared/shared/models';
 
 export const ActionTypes = {
   LOGIN:                  '[Account] Login',
@@ -19,6 +21,9 @@ export const ActionTypes = {
   ADD:                    '[Account] Add',
   ADD_SUCCESS:            '[Account] Add Success',
   ADD_FAIL:               '[Account] Add Fail',
+  ADD_MANY:                    '[Account] Add Many',
+  ADD_MANY_SUCCESS:            '[Account] Add Many Success',
+  ADD_MANY_FAIL:               '[Account] Add Many Fail',
   UPDATE:                 '[Account] Update',
   UPDATE_SUCCESS:         '[Account] Update Success',
   UPDATE_FAIL:            '[Account] Update Fail',
@@ -163,6 +168,24 @@ export class AddFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class AddMany implements Action {
+  type = ActionTypes.ADD_MANY;
+
+  constructor(public payload: any) { }
+}
+
+export class AddManySuccess implements Action {
+  type = ActionTypes.ADD_MANY_SUCCESS;
+
+  constructor(public payload: any) { }
+}
+
+export class AddManyFail implements Action {
+  type = ActionTypes.ADD_MANY_FAIL;
+
+  constructor(public payload: any) { }
+}
+
 export class Delete implements Action {
   type = ActionTypes.DELETE;
 
@@ -200,6 +223,9 @@ export type Actions
   | Add
   | AddSuccess
   | AddFail
+  | AddMany
+  | AddManySuccess
+  | AddManyFail
   | Update
   | UpdateSuccess
   | UpdateFail

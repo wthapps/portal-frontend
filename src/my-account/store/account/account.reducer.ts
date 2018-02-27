@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { createEntityAdapter, EntityAdapter, EntityState, Update } from '@ngrx/entity';
 import * as actions from './account.action';
 import { User } from '@wth/shared/shared/models';
 
@@ -107,12 +107,13 @@ export function accountReducer(state = INITIAL_STATE, action: actions.Actions): 
     }
 
     case actions.ActionTypes.GET_ACCOUNTS_SUCCESS: {
-      return Object.assign({}, state, {
-        loaded:   true,
-        loading:  false,
-        failed:   false,
-        users:     action.payload.data
-      });
+      return accountAdapter.addAll(action.payload.data, state);
+      // return Object.assign({}, state, {
+      //   loaded:   true,
+      //   loading:  false,
+      //   failed:   false,
+      //   users:     action.payload.data
+      // });
     }
 
     case actions.ActionTypes.GET_ACCOUNTS_FAIL: {
@@ -131,12 +132,14 @@ export function accountReducer(state = INITIAL_STATE, action: actions.Actions): 
     }
 
     case actions.ActionTypes.ADD_SUCCESS: {
-      return Object.assign({}, state, {
-        loaded:   true,
-        loading:  false,
-        failed:   false,
-        user:     action.payload
-      });
+      // return Object.assign({}, state, {
+      //   loaded:   true,
+      //   loading:  false,
+      //   failed:   false,
+      //   user:     action.payload
+      // });
+      return accountAdapter.addOne(action.payload.data, state);
+
     }
 
     case actions.ActionTypes.ADD_FAIL: {
@@ -147,6 +150,52 @@ export function accountReducer(state = INITIAL_STATE, action: actions.Actions): 
         user:     null
       });
     }
+
+    case actions.ActionTypes.ADD_MANY: {
+      return Object.assign({}, state, {
+        loading: true
+      });
+    }
+
+    case actions.ActionTypes.ADD_MANY_SUCCESS: {
+      // return Object.assign({}, state, {
+      //   loaded:   true,
+      //   loading:  false,
+      //   failed:   false,
+      //   user:     action.payload
+      // });
+      return accountAdapter.addMany(action.payload.data, state);
+
+    }
+
+    case actions.ActionTypes.ADD_MANY_FAIL: {
+      return Object.assign({}, state, {
+        loaded:   false,
+        loading:  false,
+        failed:   true,
+        user:     null
+      });
+    }
+
+    case actions.ActionTypes.UPDATE: {
+      return Object.assign({}, state, {
+        loading: true
+      });
+    }
+
+    case actions.ActionTypes.UPDATE_SUCCESS: {
+      return accountAdapter.updateOne({id: action.payload.data.id, changes: action.payload.data }, state);
+    }
+
+    case actions.ActionTypes.UPDATE_FAIL: {
+      return Object.assign({}, state, {
+        loaded:   false,
+        loading:  false,
+        failed:   true,
+        user:     null
+      });
+    }
+
     case actions.ActionTypes.DELETE: {
       return Object.assign({}, state, {
         loading: true
@@ -154,12 +203,13 @@ export function accountReducer(state = INITIAL_STATE, action: actions.Actions): 
     }
 
     case actions.ActionTypes.DELETE_SUCCESS: {
-      return Object.assign({}, state, {
-        loaded:   true,
-        loading:  false,
-        failed:   false,
-        user:     action.payload
-      });
+      return accountAdapter.removeOne(action.payload.data[0].id, state);
+      // return Object.assign({}, state, {
+      //   loaded:   true,
+      //   loading:  false,
+      //   failed:   false,
+      //   user:     action.payload
+      // });
     }
 
     case actions.ActionTypes.DELETE_FAIL: {
@@ -185,6 +235,21 @@ export function accountReducer(state = INITIAL_STATE, action: actions.Actions): 
 /**
  * User store functions
  */
+
+export const {
+  // select the array of user ids
+  selectIds: selectUserIds,
+
+  // select the dictionary of user entities
+  selectEntities: selectUserEntities,
+
+  // select the array of users
+  selectAll: selectAllUsers,
+
+  // select the total user count
+  selectTotal: selectUserTotal
+} = accountAdapter.getSelectors();
+
 export const getAccountState   = createFeatureSelector<AccountState>('account');
 
 export const getAccountLoaded  = createSelector(getAccountState, (state: AccountState) => state.loaded);

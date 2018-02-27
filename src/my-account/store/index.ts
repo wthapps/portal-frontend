@@ -84,6 +84,10 @@ export const metaReducers: MetaReducer<State>[] = !environment.production
 
 export const selectAccountState = createFeatureSelector<fromAccount.AccountState>('account');
 
+export const selectUserIds = createSelector(selectAccountState, fromAccount.selectUserIds);
+export const selectUserEntities = createSelector(selectAccountState, fromAccount.selectUserEntities);
+export const selectAllUsers = createSelector(selectAccountState, fromAccount.selectAllUsers);
+export const selectUserCount = createSelector(selectAccountState, fromAccount.selectUserTotal);
 
 /**
  *

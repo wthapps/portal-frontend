@@ -70,7 +70,7 @@ export class SubscriptionEditModalComponent implements OnInit, AfterViewInit {
     }
 
     // load current subscription
-    this.getCurrentSubscription();
+    this.getCurrentSubscription(options.user);
 
     this.updateSubscription();
 
@@ -96,8 +96,8 @@ export class SubscriptionEditModalComponent implements OnInit, AfterViewInit {
     this.modal.close(options).then();
   }
 
-  getCurrentSubscription() {
-    this.api.get('account/subscriptions/current_subscription').subscribe(
+  getCurrentSubscription(user: any) {
+    this.api.get(`account/accounts/${user.id}/subscription`).subscribe(
       (response: any) => {
         this.subscription = response.data;
       }
@@ -115,7 +115,7 @@ export class SubscriptionEditModalComponent implements OnInit, AfterViewInit {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:subscription:update',
-      payload: { accounts: this.operatingItems, subscription: this.subscription }
+      payload: { accounts: this.operatingItems, subscription: this.subscription, mode: this.accountAction }
     });
     this.modal.close().then();
   }

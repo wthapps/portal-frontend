@@ -11,7 +11,11 @@ import { of } from 'rxjs/observable/of';
 import {
   ActionTypes,
   Get, GetSuccess, GetFail,
-  GetAccounts, GetAccountsSuccess, GetAccountsFail
+  GetAccounts, GetAccountsSuccess, GetAccountsFail,
+  Add, AddSuccess, AddFail,
+  AddMany, AddManySuccess, AddManyFail,
+  Update, UpdateSuccess, UpdateFail,
+  Delete, DeleteSuccess, DeleteFail
 }       from './account.action';
 import { AccountService } from '../../shared/account/account.service';
 
@@ -43,7 +47,7 @@ export class AccountEffects {
     .map((action: Get) => action.payload)
     .switchMap((state: any) => {
       return this.accountService.get(state)
-        .map(photo => new GetSuccess(photo))
+        .map(response => new GetSuccess(response))
         .catch(error  => of(new GetFail(error)));
     });
 
@@ -56,4 +60,45 @@ export class AccountEffects {
         .map(response => new GetAccountsSuccess(response))
         .catch(error  => of(new GetAccountsFail(error)));
     });
+
+  @Effect()
+  add$: Observable<Action> = this.actions$
+    .ofType(ActionTypes.ADD)
+    .map((action: Add) => action.payload)
+    .switchMap((state: any) => {
+      return this.accountService.create(state)
+        .map(response => new AddSuccess(response))
+        .catch(error  => of(new AddFail(error)));
+    });
+
+  @Effect()
+  addMany$: Observable<Action> = this.actions$
+    .ofType(ActionTypes.ADD_MANY)
+    .map((action: AddMany) => action.payload)
+    .switchMap((state: any) => {
+      return this.accountService.create(state, true)
+        .map(response => new AddManySuccess(response))
+        .catch(error  => of(new AddManyFail(error)));
+    });
+
+  @Effect()
+  update$: Observable<Action> = this.actions$
+    .ofType(ActionTypes.UPDATE)
+    .map((action: Update) => action.payload)
+    .switchMap((state: any) => {
+      return this.accountService.update(state)
+        .map(response => new UpdateSuccess(response))
+        .catch(error  => of(new UpdateFail(error)));
+    });
+
+  @Effect()
+  delete$: Observable<Action> = this.actions$
+    .ofType(ActionTypes.DELETE)
+    .map((action: Delete) => action.payload)
+    .switchMap((state: any) => {
+      return this.accountService.delete(0, state)
+        .map(response => new DeleteSuccess(response))
+        .catch(error  => of(new DeleteFail(error)));
+    });
+
 }

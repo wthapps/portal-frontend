@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit {
       let password = values.password;
       let body = JSON.stringify({user: {email, password}});
 
-      this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
+      // this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
       this.userService.login('users/sign_in', body)
         .subscribe((result) => {
             if (result) {

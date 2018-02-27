@@ -48,7 +48,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private store: Store<fromRoot.State>
   ) {
-    this.user = this.store.pipe(select(fromRoot.selectAccountState));
+    this.user = this.store.pipe(select(fromRoot.selectAllUsers));
   }
 
   ngOnInit() {
