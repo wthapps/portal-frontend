@@ -100,4 +100,12 @@ export class SoUserService {
   getFollowingList(uuid: string = this.userService.getSyncProfile().uuid ) {
     return this.apiBaseService.get(`${soUsersUrl}/followings/${uuid}`);
   }
+
+  getReceivedRequests(uuid: string = this.userService.getSyncProfile().uuid) {
+    return this.apiBaseService.post(`${soUsersUrl}/get_received_invitations`);
+  }
+
+  getPendingRequests(uuid: string = this.userService.getSyncProfile().uuid) {
+    return this.apiBaseService.post(`${soUsersUrl}/get_pending_invitations`);
+  }
 }

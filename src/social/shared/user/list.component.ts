@@ -1,11 +1,7 @@
 import { Component, OnInit, HostBinding, Input, OnChanges, EventEmitter, Output } from '@angular/core';
 import * as fromMember from '../../shared/actions/member';
 
-
-
-
 @Component({
-
   selector: 'z-social-share-profile-list',
   templateUrl: 'list.component.html'
 })

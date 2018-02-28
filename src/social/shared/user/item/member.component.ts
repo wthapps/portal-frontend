@@ -1,17 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
-
-
 import { SocialService } from '../../services/social.service';
 import { SocialFavoriteService } from '../../services/social-favorites.service';
 import * as fromMember from '../../../shared/actions/member';
 import { Constants } from '@wth/shared/constant';
 
-
-
 @Component({
-
   selector: 'z-social-share-profile-member',
   templateUrl: 'member.component.html'
 })

@@ -3,6 +3,9 @@
     <ng-template [ngIf]="(type == 'members' || type == 'member')">
       <z-social-share-profile-member [data]="item" (outEvent)="onAction($event)"></z-social-share-profile-member>
     </ng-template>
+    <ng-template [ngIf]="(type == 'pending' || type == 'received')">
+      <z-social-share-friend-request [type]="type" [data]="item" (outEvent)="onAction($event)"></z-social-share-friend-request>
+    </ng-template>
     <ng-template [ngIf]="(type == 'communities' || type == 'community')">
       <z-social-share-profile-community [data]="item" (actionFromItem)="onAction($event)"></z-social-share-profile-community>
     </ng-template>

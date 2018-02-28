@@ -19,12 +19,13 @@ export let FRIEND_TABS: any = {
   friends: 'friends',
   followers: 'followers',
   followings: 'followings',
-  blacklists: 'blacklists'
+  blacklists: 'blacklists',
+  received: 'received',
+  pending: 'pending'
 };
 
 
 @Component({
-
   selector: 'z-social-members',
   templateUrl: 'members.component.html',
   styleUrls: ['members.component.scss']
@@ -45,9 +46,11 @@ export class ZSocialMembersComponent implements OnInit {
   totalFollowers: number;
   totalFollowings: number;
   totalBlacklist: number;
+  totalReceivedRequests: number;
+  totalPendingRequests: number;
   readonly friendTabs = FRIEND_TABS;
-  totalBlacklists: number;
   showLoading: boolean;
+  loading: boolean;
 
   constructor(private socialService: SocialService,
               private zoneReportService: ZSharedReportService,
@@ -100,6 +103,23 @@ export class ZSocialMembersComponent implements OnInit {
         this.list = [];
         this.stopLoading();
         break;
+      case FRIEND_TABS.received:
+        this.socialService.user.getReceivedRequests().toPromise()
+          .then((res: any) => {
+            this.list = res.data;
+            this.stopLoading();
+          })
+          .catch(() => this.stopLoading());
+        break;
+      case FRIEND_TABS.pending:
+        this.socialService.user.getPendingRequests().toPromise()
+          .then((res: any) => {
+            console.debug('this.list - ', this.list, res );
+            this.list = res.data;
+            this.stopLoading();
+          })
+          .catch(() => this.stopLoading());
+        break;
       default:
         this.stopLoading();
         console.error('Getting a strange tab. Need implementation? ', tab);
@@ -107,11 +127,13 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   startLoading() {
+    this.loading = true;
     if (this.showLoading)
       this.loadingService.start('#users-list');
   }
 
   stopLoading() {
+    this.loading = false;
     if (this.showLoading)
       this.loadingService.stop('#users-list');
   }
@@ -133,6 +155,10 @@ export class ZSocialMembersComponent implements OnInit {
         this.totalFollowings -= 1;
         break;
       case fromMember.ACTIONS.DELETE:
+        if ( this.currentState == FRIEND_TABS.pending)
+          this.totalPendingRequests -= 1;
+        if ( this.currentState == FRIEND_TABS.received)
+          this.totalReceivedRequests -= 1;
         break;
       default:
 
@@ -140,54 +166,10 @@ export class ZSocialMembersComponent implements OnInit {
     }
   }
 
-  // unfriend(user: any) {
-  //   this.socialService.user.unfriend(user.uuid).subscribe(
-  //     (res: any) => {
-  //       // this.getUser();
-  //       _.remove(this.list, (i: any) => i.uuid == user.uuid);
-  //
-  //       // User should unfollow this user as well
-  //       if (user.is_following)
-  //         this.totalFollowings -= 1;
-  //
-  //       this.totalFollowers -= 1;
-  //     },
-  //   );
-  // }
-
-
   reportFriend(friend: any) {
     this.zoneReportService.friend(friend.uuid);
     return false;
   }
-
-
-  // unfollow(item: any) {
-  //   this.socialService.user.unfollow(item.uuid).subscribe(
-  //     (res: any) => {
-  //       // this.getUser();
-  //       if (_.get(res, 'success', false) == true)
-  //         this.totalFollowings -= 1;
-  //       if (this.currentState == this.friendTabs.followings)
-  //         _.remove(this.list, (i: any) => i.uuid == item.uuid);
-  //
-  //       if (this.currentState == this.friendTabs.friends)
-  //         item.is_following = false;
-  //     },
-  //   );
-  // }
-
-  // follow(item: any) {
-  //   this.socialService.user.follow(item.uuid).subscribe(
-  //     (res: any) => {
-  //       if (_.get(res, 'success', false) == true)
-  //         this.totalFollowings += 1;
-  //       item.is_following = true;
-  //       console.log('Follow success: ', res.data);
-  //     },
-  //   );
-  // }
-
 
   getUser() {
     this.getDataList(this.currentState, true);
@@ -199,6 +181,8 @@ export class ZSocialMembersComponent implements OnInit {
         this.totalFollowers = _.get(res, 'data.total_followers', 0);
         this.totalFollowings = _.get(res, 'data.total_followings', 0);
         this.totalBlacklist = _.get(res, 'data.total_blacklists', 0);
+        this.totalReceivedRequests = _.get(res, 'data.total_received_requests', 0);
+        this.totalPendingRequests = _.get(res, 'data.total_pending_requests', 0);
         // this.list = res.data[this.currentState];
       },
       error => this.errorMessage = <any>error
