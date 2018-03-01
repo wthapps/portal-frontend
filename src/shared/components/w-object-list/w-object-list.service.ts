@@ -23,10 +23,14 @@ export class WObjectListService {
   multipleSelection$: any;
   private multipleSelectionSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
+  objectsDisabled$: any;
+  private objectsDisabledSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+
   constructor() {
     this.view$ = this.viewSubject.asObservable();
     this.selectedObjects$ = this.selectedObjectsSubject.asObservable();
     this.multipleSelection$ = this.multipleSelectionSubject.asObservable();
+    this.objectsDisabled$ = this.objectsDisabledSubject.asObservable();
 
     this.groupBy$ = this.groupBySubject.asObservable();
     this.sortBy$ = this.sortBySubject.asObservable();
@@ -65,6 +69,10 @@ export class WObjectListService {
 
   setMultipleSelection(event: boolean) {
     this.multipleSelectionSubject.next(event);
+  }
+
+  setObjectsDisabled(data: string[]) {
+    this.objectsDisabledSubject.next(data);
   }
 
   removeItem(id: any) {

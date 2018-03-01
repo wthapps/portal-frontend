@@ -10,7 +10,7 @@
         <li [ngClass]="{'active': currentTab == 'albums' || currentTab == 'albums_detail'}">
           <a (click)="tabAction('albums')" href="javascript:;"><i class="fa fa-file-photo-o"></i> Albums</a>
         </li>
-        <li [ngClass]="{'active': currentTab == 'favourites'}">
+        <li [ngClass]="{'active': currentTab == 'favourites' || currentTab == 'favourites_detail'}">
           <a (click)="tabAction('favourites')" href="javascript:;"><i class="fa fa-star"></i> Favourites</a>
         </li>
         <li [ngClass]="{'active': currentTab == 'shared_with_me'}">
@@ -23,7 +23,9 @@
     <w-object-toolbar-selected
       *ngIf="currentTab == 'photos' ||
       currentTab == 'albums_detail' ||
+      currentTab == 'favourites' ||
       currentTab == 'favourites_detail' ||
+      currentTab == 'shared_with_me' ||
       currentTab == 'shared_with_me_detail'">
       <button (click)="onInsert()" class="btn btn-outline-default" type="button">Insert</button>
     </w-object-toolbar-selected>
@@ -70,7 +72,7 @@
               <div class="wobject-box-name">
                 <span>{{ item.name }}</span>
                 <div class="wobject-box-action">
-                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}"></i>
                 </div>
               </div>
             </ng-container>
@@ -87,7 +89,7 @@
 
                 <span>{{ item.name }}.{{ item.extension }}</span>
                 <div class="wobject-box-action">
-                  <i class="fa fa-star" [ngClass]="{'fa-star-o': !favorite}"></i>
+                  <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}"></i>
                 </div>
               </div>
             </ng-container>

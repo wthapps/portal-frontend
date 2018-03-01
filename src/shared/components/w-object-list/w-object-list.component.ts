@@ -1,6 +1,6 @@
 import {
   Component, Input, Output, ContentChild, TemplateRef, AfterViewInit,
-  AfterContentChecked, OnChanges, SimpleChanges, ViewEncapsulation, EventEmitter, OnDestroy
+  AfterContentChecked, ViewEncapsulation, EventEmitter, OnDestroy
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
@@ -20,7 +20,7 @@ declare let _: any;
   encapsulation: ViewEncapsulation.None
 })
 
-export class WObjectListComponent implements OnChanges, OnDestroy, AfterViewInit, AfterContentChecked {
+export class WObjectListComponent implements OnDestroy, AfterContentChecked {
   @Input() data: Media[];
   @Input() sortInline: Boolean = true;
   @Output() completeLoadMore: EventEmitter<boolean> = new EventEmitter<boolean>(false);
@@ -35,7 +35,7 @@ export class WObjectListComponent implements OnChanges, OnDestroy, AfterViewInit
   view$: Observable<string>;
   selectedObjects: any;
 
-  multipleSelection: boolean;
+  objectsDisabled: any;
 
   hasScrollbar: boolean;
   groupBy: string;
@@ -45,18 +45,9 @@ export class WObjectListComponent implements OnChanges, OnDestroy, AfterViewInit
   constructor(private objectListService: WObjectListService) {
     this.view$ = this.objectListService.view$;
 
-    this.objectListService.multipleSelection$
+    this.objectListService.objectsDisabled$
       .takeUntil(componentDestroyed(this))
-      .subscribe(res => {
-        this.multipleSelection = res;
-        if (this.dragSelect) {
-          if (res) {
-            this.dragSelect.start();
-          } else {
-            this.dragSelect.break();
-          }
-        }
-      });
+      .subscribe(res => this.objectsDisabled = res);
 
     this.objectListService.selectedObjects$
       .takeUntil(componentDestroyed(this))
@@ -76,39 +67,20 @@ export class WObjectListComponent implements OnChanges, OnDestroy, AfterViewInit
 
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.dragSelect && this.multipleSelection) {
-      this.dragSelect.start();
-    }
-  }
-
   ngOnDestroy(): void {
   }
 
-  ngAfterViewInit(): void {
-    // if (this.multipleSelection) {
-    //   this.dragSelect = new DragSelect({
-    //     selectables: document.getElementsByClassName('wobject-drag'),
-    //     area: document.getElementById('wobject-drag-body'),
-    //     callback: e => this.onDragSelected(e)
-    //   });
-    // }
-  }
-
   ngAfterContentChecked(): void {
-    if (this.multipleSelection) {
-      if (this.dragSelect) {
-        this.dragSelect.start();
-        this.dragSelect.addSelectables(document.getElementsByClassName('wobject-drag'));
-      } else {
-        this.dragSelect = new DragSelect({
-          selectables: document.getElementsByClassName('wobject-drag'),
-          area: document.getElementById('wobject-drag-body'),
-          callback: e => this.onDragSelected(e)
-        });
-      }
+    if (this.dragSelect) {
+      this.dragSelect.start();
+      this.dragSelect.addSelectables(document.getElementsByClassName('wobject-drag'));
+    } else {
+      this.dragSelect = new DragSelect({
+        selectables: document.getElementsByClassName('wobject-drag'),
+        area: document.getElementById('wobject-drag-body'),
+        callback: e => this.onDragSelected(e)
+      });
     }
-
 
     const dragBodyScroll = document.getElementById('wobject-drag-body');
     if (dragBodyScroll) {
@@ -154,12 +126,11 @@ export class WObjectListComponent implements OnChanges, OnDestroy, AfterViewInit
     this.completeDoubleClick.emit(item);
   }
 
-  onCLick(item: any) {
-    if (!this.multipleSelection) {
+  onClick(item: any) {
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0) {
       this.completeDoubleClick.emit(item);
-    } else {
-      return false;
     }
+    return false;
   }
 
   onClearAll() {
@@ -198,5 +169,9 @@ export class WObjectListComponent implements OnChanges, OnDestroy, AfterViewInit
 
   isActive(item: any) {
     return (_.find(this.selectedObjects, {'id': item.id}));
+  }
+
+  isSelected(item: any) {
+    return (_.indexOf(this.objectsDisabled, item.object_type) === -1);
   }
 }

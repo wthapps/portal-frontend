@@ -89,7 +89,9 @@
     <ng-container *ngFor="let objects of data | groupByMap: groupBy : sortOrder : sortBy : sortOrder">
       <div class="wobject-row-title">{{ objects.key }}</div>
       <div *ngFor="let item of objects.value" class="wobject-row" [ngClass]="{active: isActive(item)}">
-        <button (dblclick)="onDoubleClick(item)" (click)="onCLick(item)" type="button" class="wobject-click wobject-drag"
+        <button (dblclick)="onDoubleClick(item)" (click)="onClick(item)" type="button"
+                class="wobject-click"
+                [ngClass]="{'wobject-drag': isSelected(item)}"
                 [attr.data-id]="item.id"
                 [attr.data-type]="item.object_type">
         </button>

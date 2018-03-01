@@ -38,8 +38,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   constructor(private mediaSelectionService: WMediaSelectionService,
               private photoDataService: PhotoModalDataService,
-              private objectListService: WObjectListService,
-              private commonEventService: CommonEventService) {
+              private objectListService: WObjectListService) {
     this.medias$ = this.mediaSelectionService.medias$;
     this.mediaParent$ = this.mediaSelectionService.mediaParent$;
     this.selectedMedias$ = this.objectListService.selectedObjects$;
@@ -69,16 +68,16 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   tabAction(action: string) {
     this.currentTab = action;
-    this.nextLink = `media/${this.currentTab}`;
+    this.buildLink(action);
     this.mediaSelectionService.clearMediaParent();
     this.mediaSelectionService.clear();
     this.objectListService.clear();
     this.getObjects();
 
-    if (this.currentTab === 'albums') {
-      this.objectListService.setMultipleSelection(false);
+    if (this.currentTab === 'albums' || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me') {
+      this.objectListService.setObjectsDisabled(['album']);
     } else {
-      this.objectListService.setMultipleSelection(true);
+      this.objectListService.setObjectsDisabled([]);
     }
   }
 
@@ -87,7 +86,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.mediaSelectionService.getMedias(this.nextLink).subscribe(
         (res: ResponseMetaData) => {
-          this.nextLink = res.page_metadata.links.next;
+          this.buildLink(res.page_metadata.links.next);
           this.isLoading = false;
         }
       );
@@ -103,7 +102,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   onCompleteSort(event: any) {
     if (event) {
       console.log(event);
-      this.nextLink = `media/${this.currentTab}?sort=${event.sortOrder}&sort_name=${event.sortBy}`;
+      this.buildLink(this.currentTab, event.sortOrder, event.sortBy);
       this.mediaSelectionService.clear();
       this.getObjects();
     }
@@ -112,18 +111,17 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   onInsert() {
     console.log(this.objectListService.getSelectedObjects());
     this.modal.close().then();
+    this.objectListService.clear();
   }
 
   onTabBack() {
     if (this.currentTab === 'albums_detail') {
       this.currentTab = 'albums';
+      this.objectListService.setObjectsDisabled(['album']);
     } else if (this.currentTab === 'favourites_detail') {
       this.currentTab = 'favourites';
     }
-    this.nextLink = `media/${this.currentTab}`;
-
-    this.objectListService.setMultipleSelection(false);
-
+    this.buildLink(this.currentTab);
     this.mediaSelectionService.clearMediaParent();
     this.mediaSelectionService.clear();
     this.objectListService.clear();
@@ -131,22 +129,61 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   onCompleteDoubleClick(item: Media) {
-    console.log('onCompleteDoubleClick:', item);
+    console.log('onCompleteDoubleClick:', item, this.currentTab);
     if (item.object_type === 'album') {
       if (this.currentTab === 'albums') {
         this.currentTab = 'albums_detail';
-        this.nextLink = `media/photos?album=${item.id}`;
-
       } else if (this.currentTab === 'favourites') {
         this.currentTab = 'favourites_detail';
-        this.nextLink = `media/photos?album=${item.id}`;
       }
-      this.objectListService.setMultipleSelection(true);
+      this.buildLink('photos', item.id);
+
+      this.objectListService.setObjectsDisabled([]);
 
       this.mediaSelectionService.setMediaParent(item);
       this.mediaSelectionService.clear();
       this.objectListService.clear();
       this.getObjects();
     }
+    console.log('onCompleteDoubleClick:', this.currentTab);
+  }
+
+  private buildLink(type: String, id?: number, sortOrder?: string, sortBy?: string) {
+    let urlAPI = '';
+    switch (type) {
+      case 'photos':
+        urlAPI = `media/photos`;
+        if (id) {
+          urlAPI = urlAPI + `?album=${id}`;
+        }
+        if (sortOrder && sortBy) {
+          if (id) {
+            urlAPI = urlAPI + `&sort=${sortOrder}&sort_name=${sortBy}`;
+          } else {
+            urlAPI = urlAPI + `?sort=${sortOrder}&sort_name=${sortBy}`;
+          }
+        }
+        break;
+      case 'albums':
+        urlAPI = `media/albums`;
+        if (sortOrder && sortBy) {
+          urlAPI = urlAPI + `?sort=${sortOrder}&sort_name=${sortBy}`;
+        }
+        break;
+      case 'favourites':
+        urlAPI = `media/media?list_type=favorites`;
+        if (sortOrder && sortBy) {
+          urlAPI = urlAPI + `&sort=${sortOrder}&sort_name=${sortBy}`;
+        }
+        break;
+      case 'shared_with_me':
+        urlAPI = `media/shared-with-me`;
+        if (sortOrder && sortBy) {
+          urlAPI = urlAPI + `&sort=${sortOrder}&sort_name=${sortBy}`;
+        }
+        break;
+    }
+
+    this.nextLink = urlAPI;
   }
 }

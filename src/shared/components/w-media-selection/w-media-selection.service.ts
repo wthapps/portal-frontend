@@ -14,12 +14,16 @@ export class WMediaSelectionService {
   medias$: any;
   private mediasSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>(null);
 
+  selectedMedias$: any;
+  private selectedMediasSubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+
   mediaParent$: any;
   private mediaParentSubject: BehaviorSubject<Media> = new BehaviorSubject<Media>(null);
 
   constructor(private apiBaseService: ApiBaseService,
               private datePipe: DatePipe) {
     this.medias$ = this.mediasSubject.asObservable();
+    this.selectedMedias$ = this.selectedMediasSubject.asObservable();
     this.mediaParent$ = this.mediaParentSubject.asObservable();
   }
 
