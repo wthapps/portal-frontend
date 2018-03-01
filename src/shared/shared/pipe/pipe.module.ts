@@ -19,14 +19,16 @@ import { SafeHtmlPipe } from './safeHtml.pipe';
 import { TimeFormatPipe } from './time-format.pipe';
 import { LinkifyPipe } from './linkify.pipe';
 import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe, PhoneCodeToDisplayCodePipe } from './phone-to-flag.pipe';
-import { MapToIterablePipe } from "@shared/shared/pipe/map-to-iterable.pipe";
-import { FreeSpacePipe } from "@shared/shared/pipe/free-space.pipe";
+import { MapToIterablePipe } from '@shared/shared/pipe/map-to-iterable.pipe';
+import { FreeSpacePipe } from '@shared/shared/pipe/free-space.pipe';
+import { GroupByMapPipe } from '@shared/shared/pipe/group-by-map.pipe';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [
+    GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,
     GroupByMonthYearPipe,
@@ -51,6 +53,7 @@ import { FreeSpacePipe } from "@shared/shared/pipe/free-space.pipe";
     PhoneCodeToDisplayCodePipe
   ],
   exports: [
+    GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,
     GroupByMonthYearPipe,

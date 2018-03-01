@@ -21,7 +21,11 @@ import { MyAdminModule } from './admin/admin.module';
 import { WelcomeModule } from './welcome/welcome.module';
 import { MyAccountMyProfileModule } from './my-profile/my-profile.module';
 import { FooterModule } from '@wth/shared/components/footer/footer.module';
-
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { environment } from '@env/environment';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { appReducers, metaReducers, appEffects } from './store';
 
 
 @NgModule({
@@ -44,7 +48,11 @@ import { FooterModule } from '@wth/shared/components/footer/footer.module';
     FooterModule,
     MySharedModule.forRoot(),
     SharedModule.forRoot(),
-    CoreModule.forRoot(),  ],
+    CoreModule.forRoot(),
+    StoreModule.forRoot(appReducers, { metaReducers }),
+    EffectsModule.forRoot(appEffects),
+    !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [],
+  ],
   declarations: [AppComponent],
   providers: [
     {

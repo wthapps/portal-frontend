@@ -1,0 +1,59 @@
+@import "../../../../assets/styles/global";
+
+.wobject-selected-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  z-index: -1;
+  &.active {
+    z-index: 10;
+    .wobject-selected-bar-content {
+      top: 0;
+    }
+  }
+}
+
+.wobject-selected-bar-content {
+  position: relative;
+  top: -100px;
+  left: 0;
+  right: 0;
+  background-color: $theme-color;
+  padding: 10px 15px;
+  @include flexbox();
+  @include justify-content(space-between);
+  @include transition($transition-base);
+  &, .btn-text {
+    color: #ffffff;
+  }
+  .btn-default {
+    color: #ffffff;
+    &:hover, &:focus {
+      color: $theme-color;
+    }
+  }
+  .btn-outline-default {
+    &,&:hover, &:focus {
+      border-color: transparent;
+      color: $theme-color;
+    }
+  }
+}
+
+.wobject-selected-bar-left {
+  ul {
+    margin: 0;
+    padding: 0;
+    li {
+      display: inline-block;
+      margin-right: 10px;
+      &.divider {
+        margin: 0;
+        padding-right: 10px;
+        border-right: 1px solid #FFFFFF;
+      }
+    }
+  }
+}

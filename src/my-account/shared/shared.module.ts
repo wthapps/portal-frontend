@@ -18,6 +18,7 @@ import { AccountService } from './account/account.service';
 import { SubscriptionService } from './subscription/subscription.service';
 import { SharedModule } from '@shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
 
 
@@ -34,7 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
 
     BsModalModule,
-    SharedModule.forRoot()
+    SharedModule
   ],
   declarations: [
     MySharedMenuComponent,

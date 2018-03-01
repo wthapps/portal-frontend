@@ -8,12 +8,17 @@
        [scrollWindow]="false"
        (scrolled)="scrollDown()"
        (scrolledUp)="onLoadMore()">
-    <div class="message-item-wrapper" *ngIf="item && item.value">
-      <div class="message-item-dv" *ngFor="let message of item.value.data; trackBy: message?.id">
-        <message-item [message]="message" [prevMessage]="getPrevMessage(message)"
-                      (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
+    <ng-container *ngIf="(item && item.value); else loadingBlock">
+      <div class="message-item-wrapper" >
+        <div class="message-item-dv" *ngFor="let message of item.value.data; trackBy: message?.id">
+          <message-item [message]="message" [prevMessage]="getPrevMessage(message)"
+                        (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
+        </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-template class="message-item-wrapper" #loadingBlock>
+      <box-loading class="message-item-dv"></box-loading>
+    </ng-template>
   </div>
   <div *ngIf="!contactItem.value.active">
     <z-chat-share-item-request [message]="item.value.data"></z-chat-share-item-request>

@@ -85,12 +85,12 @@ export class LoginComponent implements OnInit {
       let password = values.password;
       let body = JSON.stringify({user: {email, password}});
 
-      this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
+      // this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
       this.userService.login('users/sign_in', body)
         .subscribe((result) => {
             if (result) {
               // Initialize websocket
-              this.appearancesChannelService.subscribe();
+              // this.appearancesChannelService.subscribe();
               // this.chatSupportAppearanceChannel.subscribe();
 
               if (this.flagsRelease) {

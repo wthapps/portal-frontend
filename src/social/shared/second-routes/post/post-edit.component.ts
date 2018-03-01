@@ -70,7 +70,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   privacyName: string;
   profile$: Observable<any>;
 
-  readonly soPostPrivacy : any = Constants.soPostPrivacy;
+  readonly soPostPrivacy: any = Constants.soPostPrivacy;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -78,7 +78,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
               private router: Router,
               private loadingService: LoadingService,
               private socialService: SocialService,
-              private photoSelectDataService : PhotoModalDataService,
+              private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
               private userService: UserService) {
   }
@@ -104,7 +104,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   viewProfile(uuid: string = this.userService.getSyncProfile().uuid) {
-    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
+    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve', preserveFragment: true})
       .then(() => this.router.navigate(['profile', uuid]));
   }
 
@@ -116,13 +116,13 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   open(options: any = {mode: 'add', isShare: false, addingPhotos: false, post: null, parent: null}) {
     this.post = new SoPost();
-    if(this.socialService.community.currentCommunity) {
+    if (this.socialService.community.currentCommunity) {
       this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
       this.post.custom_objects.length = 0;
       this.post.custom_objects.push(this.socialService.community.currentCommunity); // Default share new post to current community
     } else {
       let defaultPrivacy: string = _.get(this.soProfile, 'settings.viewable_post.value');
-      if(options.mode === 'add' && defaultPrivacy ) {
+      if (options.mode === 'add' && defaultPrivacy) {
         this.post.privacy = defaultPrivacy;
       }
 
@@ -198,14 +198,14 @@ export class PostEditComponent implements OnInit, OnDestroy {
   uploadFiles(files: Array<any>) {
     this.photoUploadService.uploadPhotos(files)
       .subscribe((res: any) => {
-          this.files.shift(); // remove file was uploaded
-          // Only add distinct photos into post edit
-          this.post.photos.unshift(res.data);
-          this.uploadedPhotos.push(res.data);
+        this.files.shift(); // remove file was uploaded
+        // Only add distinct photos into post edit
+        this.post.photos.unshift(res.data);
+        this.uploadedPhotos.push(res.data);
 
-    }, (err: any) => {
+      }, (err: any) => {
         console.log('Error when uploading files ', err);
-    });
+      });
   }
 
   cancelUploading(file: any) {
@@ -293,7 +293,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   private getPrivacyClassIcon(post: any): string {
-    let privacy = ( !post || post.privacy == '' ) ? 'public' : post.privacy;
+    let privacy = (!post || post.privacy == '') ? 'public' : post.privacy;
     switch (privacy) {
       case Constants.soPostPrivacy.friends.data:
         return 'fa-users';
@@ -319,8 +319,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   private getPrivacyName(post: any): string {
-    let privacy = ( !post || post.privacy == '' ) ? 'public' : post.privacy;
-    if(privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
+    let privacy = (!post || post.privacy == '') ? 'public' : post.privacy;
+    if (privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
       return post.custom_objects[0].name;
     return privacy.replace('_', ' ');
   }
@@ -328,7 +328,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   private subscribePhotoSelectEvents() {
     let closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$, this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable());
 
-    this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos : any) => {
+    this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos: any) => {
       this.next(photos);
     });
 

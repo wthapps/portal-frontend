@@ -7,14 +7,14 @@ import { Observable } from 'rxjs/Observable';
 export class PhotoModalDataService {
 
   // Observable string streams
-  openObs$ : Observable<any>;
-  closeObs$ : Observable<any>;
-  nextObs$ : Observable<any>;
-  chooseFilesObs$  : Observable<any>;
-  uploadObs$  : Observable<any>;
+  openObs$: Observable<any>;
+  closeObs$: Observable<any>;
+  nextObs$: Observable<any>;
+  chooseFilesObs$: Observable<any>;
+  uploadObs$: Observable<any>;
   // saveObs$  : Observable<any>;
-  dismissObs$  : Observable<any>;
-  initObs$  : Observable<any>;
+  dismissObs$: Observable<any>;
+  initObs$: Observable<any>;
 
   // Observable string sources
   private modalOpenSource = new Subject<string>();

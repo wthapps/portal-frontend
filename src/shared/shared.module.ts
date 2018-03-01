@@ -88,6 +88,7 @@ import { ConnectionNotificationService } from '@wth/shared/services/connection-n
 import { AccordionModule } from 'primeng/primeng';
 import { GridListModule } from '@wth/shared/components/grid-list/grid-list.module';
 import { ModalModule } from '@wth/shared/components/modal/modal.module';
+import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -111,7 +112,8 @@ export * from './shared/components/navbar/navbar.module';
 
     //Custom modules
     GridListModule,
-    ModalModule
+    ModalModule,
+    WMediaSelectionModule
   ],
   declarations: [],
   exports: [
@@ -173,6 +175,7 @@ export * from './shared/components/navbar/navbar.module';
     // Custom modules
     GridListModule,
     ModalModule,
+    WMediaSelectionModule,
 
     // Pipe
     PipeModule,

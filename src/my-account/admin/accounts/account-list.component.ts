@@ -11,6 +11,11 @@ import { CommonEventService } from '@wth/shared/services/common-event/common-eve
 import { AccountService } from '../../shared/account/account.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { UserService } from '@wth/shared/services/user.service';
+import { Observable } from 'rxjs/Observable';
+import { Store, select } from '@ngrx/store';
+
+import * as fromRoot from '../../store';
+import * as fromAccount from '../../store/account';
 
 declare let _: any;
 
@@ -28,6 +33,9 @@ export class AccountListComponent implements OnInit, OnDestroy {
   isSelectAll: boolean;
   currentUser: any;
   modal: any;
+  user: Observable<any>;
+
+
   private destroySubject: Subject<any> = new Subject();
 
   constructor(
@@ -37,16 +45,20 @@ export class AccountListComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private loadingService: LoadingService,
     private wthConfirmService: WthConfirmService,
-    private userService: UserService
+    private userService: UserService,
+    private store: Store<fromRoot.State>
   ) {
-
+    this.user = this.store.pipe(select(fromRoot.selectAllUsers));
   }
 
   ngOnInit() {
     this.currentUser = this.userService.getSyncProfile();
-    this.accountService.getAll().subscribe((response: any) => {
-      this.items = response.data;
-    });
+
+    this.store.dispatch({type: fromAccount.ActionTypes.GET_ACCOUNTS, payload: {...this.userService.getSyncProfile()}});
+
+    // this.accountService.getAll().subscribe((response: any) => {
+    //   this.items = response.data;
+    // });
   }
 
   ngOnDestroy() {

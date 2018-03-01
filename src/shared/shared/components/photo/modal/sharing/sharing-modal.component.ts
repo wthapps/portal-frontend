@@ -122,25 +122,41 @@ export class SharingModalComponent implements OnDestroy {
   }
 
   save() {
-    console.log(this.mode)
     // create new sharing with selected contacts
-    if (this.mode == this.operation.creating) {
-      let body = {
-        objects: _.map(this.selectedItems, (item: any) => {
-          return {id: item.id, object_type: item.object_type};
-        }),
-        recipients: _.map(this.selectedContacts, 'id')
-      };
-
-      // Only subscribe to this action once`
-      this.mediaSharingService.add(body).take(1).subscribe((response: any) => {
-          this.sharedContacts.push(...this.selectedContacts);
-          this.resetData();
-          this.updateSelectedItems({contacts: this.sharedContacts});
-        },
-        (error: any) => {
-          console.log('error', error);
+    if (this.mode == this.operation.creating && this.selectedItems && this.selectedItems.length > 0) {
+      if (this.selectedItems[0].object_type == 'album') {
+        this.selectedItems.forEach((item: any) => {
+          let body = {
+            objects: [item],
+            recipients: _.map(this.selectedContacts, 'id')
+          };
+          this.mediaSharingService.add(body).take(1).subscribe((response: any) => {
+              this.sharedContacts.push(...this.selectedContacts);
+              this.resetData();
+              this.updateSelectedItems({contacts: this.sharedContacts});
+            },
+            (error: any) => {
+              console.log('error', error);
+            });
         });
+      } else {
+        let body = {
+          objects: _.map(this.selectedItems, (item: any) => {
+            return {id: item.id, object_type: item.object_type};
+          }),
+          recipients: _.map(this.selectedContacts, 'id')
+        };
+
+        // Only subscribe to this action once`
+        this.mediaSharingService.add(body).take(1).subscribe((response: any) => {
+            this.sharedContacts.push(...this.selectedContacts);
+            this.resetData();
+            this.updateSelectedItems({contacts: this.sharedContacts});
+          },
+          (error: any) => {
+            console.log('error', error);
+          });
+      }
     }
 
     if (!this.sharing && this.mode == this.operation.editing) {

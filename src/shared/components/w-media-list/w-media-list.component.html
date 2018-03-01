@@ -1,0 +1,53 @@
+<div class="wmedia-view wmedia-{{ view$ | async }}">
+  <div class="wmedia-item">
+    <div class="wmedia-box">
+      <div class="wmedia-box-name">Name <i class="fa fa-arrow-down"></i></div>
+    </div>
+    <div class="wmedia-owner">Owner <i class="fa fa-arrow-down"></i></div>
+    <div class="wmedia-create-date">Create Date <i class="fa fa-arrow-down"></i></div>
+    <div class="wmedia-file-size">File Size <i class="fa fa-arrow-down"></i></div>
+  </div>
+  <div *ngFor="let item of data" class="wmedia-item">
+
+    <!-------------- Album view --------------->
+    <ng-container *ngIf="item.object_type == 'album'">
+      <div class="wmedia-box">
+        <div class="wmedia-box-input">
+          <i class="fa fa-check"></i>
+        </div>
+        <div class="wmedia-box-img">
+          <img src="/assets/images_new/sizes/media.png" [ngStyle]="{'background': 'url(' + item.photo_default + ')'}" alt="">
+        </div>
+        <div class="wmedia-box-info">{{ item.photo_number }} photo<span *ngIf="item.photo_number>1">s</span></div>
+        <div class="wmedia-box-name">{{ item.name }}</div>
+        <div class="wmedia-box-action">
+          <i class="fa fa-star"></i>
+        </div>
+      </div>
+      <div class="wmedia-owner">{{ item.owner?.name }}</div>
+      <div class="wmedia-create-date">{{ item.created_at | date: 'MMM dd yyyy' }}</div>
+      <div class="wmedia-file-size">{{ item.photo_number }} photo<span *ngIf="item.photo_number>1">s</span></div>
+    </ng-container>
+
+    <!-------------- Photo view --------------->
+    <ng-container *ngIf="item.object_type == 'photo'">
+      <div class="wmedia-box">
+        <div class="wmedia-box-input">
+          <i class="fa fa-check"></i>
+        </div>
+        <div class="wmedia-box-img">
+          <img src="/assets/images_new/sizes/media.png" [ngStyle]="{'background': 'url(' + item.thumbnail_url + ')'}" alt="">
+        </div>
+        <div class="wmedia-box-name">{{ item.name }}</div>
+        <div class="wmedia-box-action">
+          <i class="fa fa-star"></i>
+        </div>
+      </div>
+      <div class="wmedia-owner">{{ item.owner?.name }}</div>
+      <div class="wmedia-create-date">{{ item.created_at | date: 'MMM dd yyyy' }}</div>
+      <div class="wmedia-file-size">{{ item.size | bytes:0 }}</div>
+    </ng-container>
+
+
+  </div>
+</div>

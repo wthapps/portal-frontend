@@ -32,11 +32,19 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   userId: number = 0;
 
   accounts: Array<any>;
-  noOfMaster: number = 0;
-  noOfSub: number = 0;
+  fullAccountCount: number = 0;
+  subAccountCount: number = 0;
+  accountCount: number = this.fullAccountCount + this.subAccountCount;
+
   // These are get value form subscription and plan
-  masterPrice: any = 9.99;
+  fullPrice: any = 9.99;
   subPrice: any = 4.99;
+
+  fullAmount: any = this.fullAccountCount * this.fullPrice;
+  subAmount: any = this.subAccountCount * this.subPrice;
+  accountAmount: any = this.fullAmount + this.subAmount;
+  currentAmount: any = this.fullPrice;
+
   defaultDate: string = moment().subtract(13, 'years').calendar(); // at least 13 year-old
   maxDate: Date = new Date(moment().subtract(13, 'years').calendar());
 
@@ -57,8 +65,8 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   * @mode: add or edit or view. default is add
   * */
   open(options: any = {mode:'add', data: undefined}) {
-    this.noOfSub = 0;
-    this.noOfMaster = 0;
+    this.subAccountCount = 0;
+    this.fullAccountCount = 0;
     this.accounts = options.accounts;
     this.data = options.data;
     this.initialize(this.data);
@@ -72,7 +80,7 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
 
   initialize(items: Array<any>) {
 
-    if(this.form == undefined) {
+    if (this.form === undefined) {
       this.form = this.fb.group({
         'items': this.fb.array([])
       });
@@ -81,16 +89,16 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
         for (let i = 0; i < items.length; i++) {
           this.add(items[i].parent_id != null? true: false, items[i]);
         }
-      } else if(items.length == 0) {
+      } else if(items.length === 0) {
         for (let i = 0; i < this.noOfCtrl; i++) {
-          this.add(i % 2 != 0? true : false);
+          this.add(i % 2 !== 0? true : false);
         }
       }
     }
   }
 
   create(subAccount: boolean, item?: any) {
-    let parentId = subAccount == false? null: this.userId;
+    let parentId = subAccount === false ? null : this.userId;
     let creatorId = parentId == null ? 0 : null;
 
     if (item) {
@@ -148,8 +156,13 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
         accountAction: 'add',
         accounts: this.accounts,
         subscription: {
-          accountCount: this.noOfSub + this.noOfMaster,
-          accountAmount: this.noOfSub*4.99 + this.noOfMaster*9.99,
+          accountCount: this.accountCount,
+          accountAmount: this.accountAmount,
+          currentAmount: this.currentAmount,
+          subAccountCount: this.subAccountCount,
+          fullAccountCount: this.fullAccountCount,
+          subPrice: this.subPrice,
+          fullPrice: this.fullPrice,
           billingDate: moment()
         }
       }
@@ -216,24 +229,30 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
 
   private countNoOfSubAndMaster(parent_id: any, countDown: boolean = false) {
 
-    if(parent_id == null) {
+    if (parent_id == null) {
       if(countDown)
-        this.noOfMaster--;
+        this.fullAccountCount--;
       else
-        this.noOfMaster++;
+        this.fullAccountCount++;
     }
-    if(parent_id == 0) {
-      if(countDown)
-        this.noOfSub--;
+    if (parent_id == 0) {
+      if (countDown)
+        this.subAccountCount--;
       else
-        this.noOfSub++;
+        this.subAccountCount++;
     }
 
-    if(this.noOfSub < 0)
-      this.noOfSub = 0;
+    if (this.subAccountCount < 0)
+      this.subAccountCount = 0;
 
-    if(this.noOfMaster < 0)
-      this.noOfMaster = 0;
+    if (this.fullAccountCount < 0)
+      this.fullAccountCount = 0;
+
+
+    this.subAmount = this.subAccountCount * this.subPrice;
+    this.fullAmount = this.fullAccountCount * this.fullPrice;
+    this.accountAmount = this.subAmount + this.fullAmount;
+    this.accountCount = this.subAccountCount + this.fullAccountCount;
   }
 
 }

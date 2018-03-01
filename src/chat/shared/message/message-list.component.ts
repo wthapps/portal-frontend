@@ -34,7 +34,6 @@ export class MessageListComponent implements OnInit {
   }
 
   onLoadMore() {
-    let currentLength = this.item.value.data.length;
     this.chatService.loadMoreMessages();
   }
 

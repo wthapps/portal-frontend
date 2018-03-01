@@ -53,7 +53,7 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
     });
 
     this.item = this.chatService.getCurrentMessages();
-    if(!this.chatService.userService.getSyncProfile().introduction.chat) this.introModal.open();
+    if(!this.chatService.userService.getSyncProfile().introduction || !this.chatService.userService.getSyncProfile().introduction.chat) this.introModal.open();
   }
 
   doEvent(event: CommonEvent) {

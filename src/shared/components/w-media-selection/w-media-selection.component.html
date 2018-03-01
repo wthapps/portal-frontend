@@ -1,0 +1,117 @@
+<bs-modal #modal cssClass="modal-media-selection" [keyboard]="false" [animation]="false" [backdrop]="'static'"
+          (onDismiss)="dismiss($event)" style="z-index: 1111;">
+  <bs-modal-header [showDismiss]="true">
+    <button class="btn btn-search btn-default pull-right" type="button"><i class="fa fa-search"></i></button>
+    <nav class="nav-tabs-wrap nav-tabs-wrap-md clearfix pull-left">
+      <ul class="nav nav-tabs list-unstyled clearfix">
+        <li [ngClass]="{'active': currentTab == 'photos'}">
+          <a (click)="tabAction('photos')" href="javascript:;"><i class="fa fa-photo"></i> Photos</a>
+        </li>
+        <li [ngClass]="{'active': currentTab == 'albums' || currentTab == 'albums_detail'}">
+          <a (click)="tabAction('albums')" href="javascript:;"><i class="fa fa-file-photo-o"></i> Albums</a>
+        </li>
+        <li [ngClass]="{'active': currentTab == 'favourites'}">
+          <a (click)="tabAction('favourites')" href="javascript:;"><i class="fa fa-star"></i> Favourites</a>
+        </li>
+        <li [ngClass]="{'active': currentTab == 'shared_with_me'}">
+          <a (click)="tabAction('shared_with_me')" href="javascript:;"><i class="fw fw-shared-with-me"></i>
+            Shared with me
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <w-object-toolbar-selected
+      *ngIf="currentTab == 'photos' ||
+      currentTab == 'albums_detail' ||
+      currentTab == 'favourites_detail' ||
+      currentTab == 'shared_with_me_detail'">
+      <button (click)="onInsert()" class="btn btn-outline-default" type="button">Insert</button>
+    </w-object-toolbar-selected>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div class="media-selection-toolbar">
+      <div *ngIf="currentTab == 'albums_detail' ||
+            currentTab == 'favourites_detail' ||
+            currentTab == 'shared_with_me_detail'"
+           class="media-selection-toolbar-left pull-left">
+        <ul class="list-unstyled">
+          <li class="divider">
+            <button (click)="onTabBack()" class="btn btn-default" type="button">
+              <i class="fa fa-arrow-left"></i>
+            </button>
+          </li>
+          <li>
+            <span class="btn btn-text">{{ (mediaParent$ | async)?.name }}</span>
+          </li>
+        </ul>
+      </div>
+      <w-object-toolbar-view class="pull-right"></w-object-toolbar-view>
+    </div>
+
+    <ng-container *ngIf="medias$ | async as mediasList; else templateloading">
+      <ng-container *ngIf="mediasList.length; else templateNodata">
+        <w-object-list class="media-selection-content gray-light"
+                       [data]="mediasList"
+                       [sortInline]="false"
+                       (completeSort)="onCompleteSort($event)"
+                       (completeLoadMore)="onCompleteLoadMore($event)"
+                       (completeDoubleClick)="onCompleteDoubleClick($event)">
+          <ng-template #columnBox let-item>
+
+            <!-------------- Album view --------------->
+            <ng-container *ngIf="item.object_type == 'album'">
+              <div class="wobject-box-img">
+                <img src="/assets/images_new/sizes/media.png"
+                     [ngStyle]="{'background': 'url(' + item.photo_default + ')'}"
+                     alt="">
+                <div class="wmedia-box-info">{{ item.photo_number }} photo<span *ngIf="item.photo_number>1">s</span>
+                </div>
+              </div>
+              <div class="wobject-box-name">
+                <span>{{ item.name }}</span>
+                <div class="wobject-box-action">
+                  <i class="fa fa-star"></i>
+                </div>
+              </div>
+            </ng-container>
+
+
+            <!-------------- Photo view --------------->
+            <ng-container *ngIf="item.object_type == 'photo'">
+              <div class="wobject-box-img">
+                <img src="/assets/images_new/sizes/media.png"
+                     [ngStyle]="{'background': 'url(' + item.thumbnail_url + ')'}"
+                     alt="">
+              </div>
+              <div class="wobject-box-name">
+
+                <span>{{ item.name }}.{{ item.extension }}</span>
+                <div class="wobject-box-action">
+                  <i class="fa fa-star" [ngClass]="{'fa-star-o': !favorite}"></i>
+                </div>
+              </div>
+            </ng-container>
+          </ng-template>
+          <ng-template #columnFileSize let-item>
+            <span *ngIf="item.object_type == 'album'">{{ item.photo_number }}</span>
+            <span *ngIf="item.object_type == 'photo'">{{ item.size | bytes:0 }}</span>
+          </ng-template>
+        </w-object-list>
+      </ng-container>
+      <ng-template #templateNodata>
+        <div class="media-selection-content gray-light">
+          <box-no-data [icon]="'fa fa-picture-o'"
+                       [title]="'There is no photo!'"
+                       [subTitle]="'There is no photo. Try to upload a file.'">
+          </box-no-data>
+        </div>
+      </ng-template>
+    </ng-container>
+    <ng-template #templateloading>
+      <div class="media-selection-content gray-light">
+        <box-loading></box-loading>
+      </div>
+    </ng-template>
+
+  </bs-modal-body>
+</bs-modal>

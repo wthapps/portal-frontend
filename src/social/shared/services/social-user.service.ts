@@ -59,6 +59,14 @@ export class SoUserService {
     return this.apiBaseService.delete(`${soInvitationsUrl}/${uuid}`);
   }
 
+  acceptFriendRequest(uuid: any) {
+    return this.apiBaseService.post(`${soInvitationsUrl}/accept`, {uuid, show_status: true});
+  }
+
+  declineFriendRequest(uuid: any) {
+    return this.apiBaseService.post(`${soInvitationsUrl}/reject`, {uuid, show_status: true});
+  }
+
   getRelationShips(uuid?: string) {
     if (!uuid) {
       uuid = this.profile.uuid;
@@ -91,5 +99,13 @@ export class SoUserService {
   // ================= Following ======================
   getFollowingList(uuid: string = this.userService.getSyncProfile().uuid ) {
     return this.apiBaseService.get(`${soUsersUrl}/followings/${uuid}`);
+  }
+
+  getReceivedRequests(uuid: string = this.userService.getSyncProfile().uuid) {
+    return this.apiBaseService.post(`${soUsersUrl}/get_received_invitations`);
+  }
+
+  getPendingRequests(uuid: string = this.userService.getSyncProfile().uuid) {
+    return this.apiBaseService.post(`${soUsersUrl}/get_pending_invitations`);
   }
 }

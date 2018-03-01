@@ -1,5 +1,8 @@
 <!--<account-list-edit-modal #modal></account-list-edit-modal>-->
 
+
+<!--<div> {{ (user | async) | json }}</div>-->
+
 <div class="box-panel">
   <h3 class="box-panel-title">
     Accounts
@@ -76,7 +79,7 @@
       </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of items">
+        <tr *ngFor="let item of (user | async)">
           <!--<th>-->
             <!--<div>-->
               <!--<p-checkbox value="" label=""-->
@@ -90,7 +93,7 @@
           <td><a rel="nofollow" target="_top"
                  href="mailto:{{ item.email }}">{{ item.email }}</a></td>
           <td> {{ item.parent_id == null ? 'Full account': 'Sub account' }} </td>
-          <td *ngIf="item.last_sign_in_at"> {{ item.last_sign_in_at | date: 'yMMMd' }} </td>
+          <td *ngIf="item.last_sign_in_at"> {{ item.last_sign_in_at | date: 'MMM d, y' }} </td>
           <td *ngIf="!item.last_sign_in_at"> N/A </td>
 
           <td>

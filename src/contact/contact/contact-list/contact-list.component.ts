@@ -43,6 +43,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   tokensActionsBar: any;
   contact$: Observable<any>;
   originalContacts: any = [];
+  loaded: boolean = false;
 
   linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
   linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
@@ -112,8 +113,10 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     this.contactService.initLoad$
       .takeUntil(this.destroySubject)
       .subscribe((data: any) => {
-        if (data === true)
+        if (data === true) {
+          this.loaded = true;
           this.loadingService.stop('#contact-list');
+        }
       });
     this.cdr.detectChanges();
   }

@@ -24,7 +24,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   checkLogin(url: string): Promise<boolean> {
-    if (this.userService.loggedIn && this.userService.getSyncProfile()) return Promise.resolve(true);
+    if (this.userService.loggedIn && this.userService.validProfile()) {
+      return Promise.resolve(true);
+    }
+    window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${window.location['href']}`;
     return Promise.resolve(false);
   }
 }

@@ -1,0 +1,59 @@
+@import "../../../assets/styles/global";
+
+.modal-media-selection {
+  width: $container-md;
+  .btn-search {
+    margin: -5px 15px -15px;
+  }
+  .nav-tabs-wrap {
+    margin: -15px;
+    padding: 0 15px;
+    float: left;
+  }
+  .modal-body {
+    padding: 0;
+  }
+  .media-selection-toolbar {
+    padding: 5px 15px;
+    position: relative;
+    @include clearfix;
+    @include box-shadow($box-shadow-bottom-sm);
+    .media-selection-toolbar-left {
+      ul {
+        margin: 0;
+        li {
+          display: inline-block;
+          &.divider {
+            margin: 0 10px 0 0;
+            padding-right: 10px;
+            border-right: 1px solid $text-color;
+          }
+        }
+      }
+    }
+  }
+  .media-selection-content {
+    height: 400px;
+    @include flexbox();
+    @include justify-content(space-around);
+    .wobject-view {
+      @include flex(1);
+    }
+  }
+
+  .wobject-selected-bar {
+    @include border-top-radius(5px);
+  }
+
+  //.wobject-box-name {
+  //  position: relative;
+  //  span {
+  //    @include flexbox();
+  //    width: 100%;
+  //    overflow: hidden;
+  //    -ms-text-overflow: ellipsis;
+  //    text-overflow: ellipsis;
+  //    white-space: nowrap;
+  //  }
+  //}
+}

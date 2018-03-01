@@ -22,7 +22,7 @@ export class ChannelService extends CableService {
       this.createConnectionInstance(this.userService.getSyncProfile().uuid);
       let thisCopy = this;
       App.channel = App.cable.subscriptions.create(
-        {channel: 'Channel'},
+        {channel: 'CommonChannel'},
         {
           connected: function() {
             console.log('connected');
@@ -50,5 +50,3 @@ export class ChannelService extends CableService {
       App.channel.unsubscribe();
   }
 }
-
-

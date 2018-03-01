@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({name: 'convertByPattern'})
 export class ConvertByPatternPipe implements PipeTransform {
-  transform(collection: Array<any>, term: string, pattern:string, detectChange:any = 0) {
+  transform(collection: Array<any>, term: string, pattern: string, detectChange: any = 0) {
     if (!term || !pattern || term == '' || pattern == '') {
       return collection;
     }
@@ -14,7 +14,7 @@ export class ConvertByPatternPipe implements PipeTransform {
     return newValue;
   }
 
-  private deepFind(obj: any, path: any, pattern:string) {
+  private deepFind(obj: any, path: any, pattern: string) {
     var paths = path.toString().split(/[\.\[\]]/);
     var current = obj;
 
@@ -27,15 +27,15 @@ export class ConvertByPatternPipe implements PipeTransform {
             let date = new Date(current[paths[i]]);
             current[paths[i] + '_converted'] = this.formatDate(date, pattern);
           }
-        //  Write others code here
-        //   .......
+          //  Write others code here
+          //   .......
         }
       }
     }
     return current;
   }
 
-  private formatDate(date:any, pattern:string) {
+  private formatDate(date: any, pattern: string) {
     let current = '';
     let monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
