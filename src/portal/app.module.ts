@@ -25,7 +25,6 @@ import { SubscribeModule } from './sub_unsub/subscribe.module';
 import { SupportModule } from './support/support.module';
 import { NotificationModule } from './notifications/notifications.module';
 
-
 @NgModule({
   declarations: [
     AppComponent

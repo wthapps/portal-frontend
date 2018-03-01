@@ -48,6 +48,12 @@
         'has-success': (email.valid && email.touched)}">
           <label class="sr-only" for="email">Email address</label>
           <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
+
+          <ng-container *ngIf="verified; else sent_verify">
+            <div style="position: relative; top: -30px; right: 10px; float: right; color: green; font-size: 20px"><i class="fa fa-check-circle"></i></div>
+          </ng-container>
+
+          <ng-template #sent_verify><button type=button (click)="sendVerifyEmail()" class="verify" style="height: 34px; position: relative; top: -34px; float: right; border-radius: 0px 4px 4px 0px; background: #eeeeee;">Verify Email</button></ng-template>
           <div *ngIf="!email.valid && email.touched">
             <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
             <span *ngIf="!email.errors.required && email.errors.emailFormat" class="help-block">

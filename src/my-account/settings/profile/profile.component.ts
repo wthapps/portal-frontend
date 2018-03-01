@@ -19,6 +19,7 @@ import { PhotoModalDataService } from '@wth/shared/services/photo-modal-data.ser
 import { PhotoUploadService } from '@wth/shared/services/photo-upload.service';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 import { Constants } from '@wth/shared/constant/config/constants';
+import { ApiBaseService, UrlService } from "@shared/services";
 
 declare var $: any;
 declare var _: any;
@@ -62,12 +63,16 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   // validMonths: number[] = [];
   validYears: number[] = [];
   submitted: boolean = false;
+  verified: boolean = false;
+
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(public userService: UserService,
               private fb: FormBuilder,
               private countryService: CountryService,
               private toastsService: ToastsService,
+              private apiBaseService: ApiBaseService,
+              private urlService: UrlService,
               // private photoSelectDataService : PhotoModalDataService,
               // private photoUploadService: PhotoUploadService,
               private commonEventService: CommonEventService,
@@ -117,6 +122,16 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // verified email
+    if(this.urlService.getQuery() && this.urlService.getQuery().verified == 'true') {
+      this.toastsService.success('You have successfully verify your email address');
+    }
+    if(this.urlService.getQuery() && this.urlService.getQuery().verified == 'false') {
+      this.toastsService.danger('Cannot verify your email address. Please try again');
+    }
+    this.apiBaseService.post('users/get_user').subscribe((res: any) => {
+      this.verified = res.data.verified
+    })
     // Set value before updating form (checking user leave this page)
     this.formValue = this.form.value;
 
@@ -222,6 +237,12 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           console.log(error);
         }
       );
+  }
+
+  sendVerifyEmail() {
+    this.apiBaseService.post(`users/confirmation`).subscribe((res: any) => {
+      this.toastsService.success('A verification email was sent to your email address');
+    })
   }
 
   private range (start: number, end: number) {
