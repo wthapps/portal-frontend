@@ -8,6 +8,7 @@ import { LoadingService } from '../../loading/loading.service';
 
 import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
+import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 
 @Component({
   selector: 'cover-profile',
@@ -23,7 +24,8 @@ export class CoverProfileComponent {
 
   constructor(private loadingService: LoadingService,
               private photoSelectDataService: PhotoModalDataService,
-              private photoUploadService: PhotoUploadService) {
+              private photoUploadService: PhotoUploadService,
+              private objectListService: WObjectListService) {
 
     this.closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
   }
@@ -59,6 +61,9 @@ export class CoverProfileComponent {
   changeProfileImage(event: any) {
     console.log('chnage Avatar image');
     // this.loadingService.start('#profile_image');
+
+    this.objectListService.setMultipleSelection(false);
+
     let loadingId: string = '#profile_image';
     this.selectPhoto((photos: any) => {
       // Update avatar image

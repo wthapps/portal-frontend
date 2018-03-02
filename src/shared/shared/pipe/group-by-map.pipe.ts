@@ -31,7 +31,6 @@ export class GroupByMapPipe implements PipeTransform {
       })
       .value();
     if (result[0] && (result[0].key === 'photo' || result[0].key === 'album')) {
-      console.log(result[0]);
       return _.orderBy(result, ['key'], ['asc']);
     } else {
       return _.orderBy(result, ['key'], [orderBy]);

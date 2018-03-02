@@ -1,13 +1,10 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
-import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { Subscription } from 'rxjs/Subscription';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { Observable } from 'rxjs/Observable';
-import { Photo } from '@shared/shared/models';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
-import { WMediaListService } from '@shared/components/w-media-list/w-media-list.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { Media } from '@shared/shared/models/media.model';
 
