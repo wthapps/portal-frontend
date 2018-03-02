@@ -12,11 +12,11 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { SoCommunityService } from '../services/community.service';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
-
+import { SHORTCUT_ADD_MULTI_DONE } from '../reducers/index';
+import { Store } from '@ngrx/store';
 
 
 @Component({
-
   selector: 'z-social-share-community-form-edit',
   templateUrl: 'edit-community.component.html'
 })
@@ -32,7 +32,8 @@ export class ZSocialShareCommunityFormEditComponent {
   tag_line: AbstractControl;
   description: AbstractControl;
 
-  constructor(private fb: FormBuilder, private communityService: SoCommunityService) {
+  constructor(private fb: FormBuilder, private communityService: SoCommunityService,
+              private store: Store<any>) {
     this.form = fb.group(
       {
         'community_name': ['', Validators.compose([Validators.required])],
@@ -143,6 +144,11 @@ export class ZSocialShareCommunityFormEditComponent {
     } else {
       this.communityService.createCommunity(body).toPromise().then((res: any) => {
         this.setupDataUpdated.emit(res.data);
+
+        //  Update shortcut list if posible
+        console.debug('result: ', res);
+        if (res.shortcut)
+          this.store.dispatch({type: SHORTCUT_ADD_MULTI_DONE, payload: res.shortcut});
         this.modal.close();
       });
     }

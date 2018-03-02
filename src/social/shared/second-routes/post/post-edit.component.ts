@@ -20,6 +20,7 @@ import { SoPost } from '@shared/shared/models';
 import { Constants } from '@wth/shared/constant';
 import { PhotoModalDataService, PhotoUploadService, UserService } from '@wth/shared/services';
 import { LoadingService } from "@shared/shared/components/loading/loading.service";
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 
 
 @Component({
@@ -78,6 +79,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
               private router: Router,
               private loadingService: LoadingService,
               private socialService: SocialService,
+              private mediaSelectionService: WMediaSelectionService,
               private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
               private userService: UserService) {
@@ -95,6 +97,13 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.photosCtrl = this.form.controls['photos'];
     // this.currentUser = this.userService.getSyncProfile();
     this.profile$ = this.userService.getAsyncProfile();
+
+
+    this.mediaSelectionService.selectedMedias$.subscribe((items) => {
+      console.debug(items);
+      // this.post = {...this.post};
+      this.post.photos = items;
+    });
 
   }
 
@@ -226,8 +235,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   addMorePhoto(event: any) {
     this.onMoreAdded.emit(true);
-    this.photoSelectDataService.open({return: true, selectingPhotos: this.post.photos});
-    this.subscribePhotoSelectEvents();
+    this.mediaSelectionService.open();
+    // this.photoSelectDataService.open({return: true, selectingPhotos: this.post.photos});
+    // this.subscribePhotoSelectEvents();
   }
 
   dismiss(photos: any) {

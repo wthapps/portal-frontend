@@ -6,6 +6,8 @@ import { tap } from 'rxjs/operators/tap';
 import { Media } from '@shared/shared/models/media.model';
 import { ApiBaseService } from '@shared/services';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
+import { Subject } from 'rxjs';
+import { log } from 'util';
 
 declare let _: any;
 
@@ -20,11 +22,25 @@ export class WMediaSelectionService {
   mediaParent$: any;
   private mediaParentSubject: BehaviorSubject<Media> = new BehaviorSubject<Media>(null);
 
+  open$: any;
+  private openSubject: Subject<boolean> = new Subject<boolean>();
+
+  multipleSelection$: any;
+  private multipleSelectionSubject: Subject<boolean> = new Subject<boolean>();
+
   constructor(private apiBaseService: ApiBaseService,
               private datePipe: DatePipe) {
     this.medias$ = this.mediasSubject.asObservable();
     this.selectedMedias$ = this.selectedMediasSubject.asObservable();
     this.mediaParent$ = this.mediaParentSubject.asObservable();
+    this.open$ = this.openSubject.asObservable();
+    this.multipleSelection$ = this.multipleSelectionSubject.asObservable();
+  }
+  open(){
+    this.openSubject.next(true);
+  }
+  close(){
+    this.openSubject.next(false);
   }
 
   getMedias(nextLink?: any) {
@@ -53,9 +69,22 @@ export class WMediaSelectionService {
     this.mediasSubject.next(null);
   }
 
-
   setMediaParent(media: Media) {
     this.mediaParentSubject.next(media);
+  }
+
+  setMultipleSelection(active: boolean) {
+    this.multipleSelectionSubject.next(active);
+  }
+
+  setSelectedMedias(medias: Media[]) {
+    // let fullMedias = this.mediasSubject.getValue().filter((media: any) => {
+    //   return medias.some((m: any) => { if (media.id == m.id && media.object_type == m.object_type) return true; }); })
+    // this.selectedMediasSubject.next(fullMedias);
+
+    let news = this.mediasSubject.getValue().filter((media: any) => { return medias.some((m: any) => { if(media.id == m.id && media.object_type == m.object_type) return true; })})
+    console.log(news);
+    this.selectedMediasSubject.next(news);
   }
 
   clearMediaParent() {

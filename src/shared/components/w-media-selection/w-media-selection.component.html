@@ -55,6 +55,7 @@
         <w-object-list class="media-selection-content gray-light"
                        [data]="mediasList"
                        [sortInline]="false"
+                       [multipleSelection]="multipleSelection$ | async"
                        (completeSort)="onCompleteSort($event)"
                        (completeLoadMore)="onCompleteLoadMore($event)"
                        (completeDoubleClick)="onCompleteDoubleClick($event)">

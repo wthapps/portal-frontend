@@ -23,6 +23,7 @@ declare let _: any;
 export class WObjectListComponent implements OnDestroy, AfterContentChecked {
   @Input() data: Media[];
   @Input() sortInline: Boolean = true;
+  @Input() multipleSelection: Boolean = true;
   @Output() completeLoadMore: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   @Output() completeSort: EventEmitter<any> = new EventEmitter<any>(null);
   @Output() completeDoubleClick: EventEmitter<any> = new EventEmitter<any>(null);
@@ -71,15 +72,17 @@ export class WObjectListComponent implements OnDestroy, AfterContentChecked {
   }
 
   ngAfterContentChecked(): void {
-    if (this.dragSelect) {
-      this.dragSelect.start();
-      this.dragSelect.addSelectables(document.getElementsByClassName('wobject-drag'));
-    } else {
-      this.dragSelect = new DragSelect({
-        selectables: document.getElementsByClassName('wobject-drag'),
-        area: document.getElementById('wobject-drag-body'),
-        callback: e => this.onDragSelected(e)
-      });
+    if(this.multipleSelection){
+      if (this.dragSelect) {
+        this.dragSelect.start();
+        this.dragSelect.addSelectables(document.getElementsByClassName('wobject-drag'));
+      } else {
+        this.dragSelect = new DragSelect({
+          selectables: document.getElementsByClassName('wobject-drag'),
+          area: document.getElementById('wobject-drag-body'),
+          callback: e => this.onDragSelected(e)
+        });
+      }
     }
 
     const dragBodyScroll = document.getElementById('wobject-drag-body');

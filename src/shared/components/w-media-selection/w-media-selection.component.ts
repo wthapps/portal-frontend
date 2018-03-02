@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { Subscription } from 'rxjs/Subscription';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
@@ -27,6 +26,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   medias$: Observable<Media[]>;
   mediaParent$: Observable<Media>;
   selectedMedias$: Observable<Media[]>;
+  multipleSelection$: Observable<boolean>;
 
   currentTab: String = 'photos'; // photos, albums, albums_detail, favourites, shared_with_me
 
@@ -34,22 +34,31 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   isLoading: boolean;
 
   constructor(private mediaSelectionService: WMediaSelectionService,
-              private photoDataService: PhotoModalDataService,
               private objectListService: WObjectListService) {
     this.medias$ = this.mediaSelectionService.medias$;
     this.mediaParent$ = this.mediaSelectionService.mediaParent$;
+    this.multipleSelection$ = this.mediaSelectionService.multipleSelection$;
+
     this.selectedMedias$ = this.objectListService.selectedObjects$;
   }
 
   ngOnInit(): void {
-    this.openSubscription = this.photoDataService.openObs$.subscribe(
-      (options: any) => {
-        console.log('open: options: ', options);
-        this.open(options);
-
+    this.mediaSelectionService.open$
+      .takeUntil(componentDestroyed(this))
+      .subscribe((res:any)=>{
+        console.debug('media selection component: open ');
+        this.open();
         this.getObjects();
-      }
-    );
+      });
+
+    // this.openSubscription = this.photoDataService.openObs$.subscribe(
+    //   (options: any) => {
+    //     console.log('open: options: ', options);
+    //     this.open(options);
+    //
+    //     this.getObjects();
+    //   }
+    // );
   }
 
   ngOnDestroy(): void {
@@ -106,9 +115,10 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   onInsert() {
+    this.mediaSelectionService.setSelectedMedias(this.objectListService.getSelectedObjects());
     console.log(this.objectListService.getSelectedObjects());
     this.modal.close().then();
-    this.objectListService.clear();
+    // this.objectListService.clear();
   }
 
   onTabBack() {

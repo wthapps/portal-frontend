@@ -26,7 +26,7 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
     WObjectToolbarSelectedComponent
   ],
   providers: [
-    WObjectListService
+
   ],
 })
 export class WObjectListModule {

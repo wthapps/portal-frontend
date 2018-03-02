@@ -28,7 +28,6 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
     WMediaSelectionComponent
   ],
   providers: [
-    WMediaSelectionService,
     DatePipe
   ],
 })

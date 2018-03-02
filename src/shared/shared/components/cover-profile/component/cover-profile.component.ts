@@ -9,6 +9,7 @@ import { LoadingService } from '../../loading/loading.service';
 import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 
 @Component({
   selector: 'cover-profile',
@@ -24,6 +25,7 @@ export class CoverProfileComponent {
 
   constructor(private loadingService: LoadingService,
               private photoSelectDataService: PhotoModalDataService,
+              private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService,
               private objectListService: WObjectListService) {
 
@@ -35,32 +37,43 @@ export class CoverProfileComponent {
    selectPhoto function Should work when there is 1 PhotoDataSelectComponent available in current view
    */
   selectPhoto(callback: any, loadingId?: string) {
-    this.photoSelectDataService.open({'multipleSelect': false});
-    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
-      .take(1) // User can only select 1 photo to change profile avatar / cover image
-      .takeUntil(this.closeObs$).subscribe(
-        (photo: any) => {
-          callback(photo);
-        }, (err: any) => console.error('cover profile selectPhoto error: ', err));
+    // this.photoSelectDataService.open({'multipleSelect': false});
+    // this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
+    //   .take(1) // User can only select 1 photo to change profile avatar / cover image
+    //   .takeUntil(this.closeObs$).subscribe(
+    //     (photo: any) => {
+    //       callback(photo);
+    //     }, (err: any) => console.error('cover profile selectPhoto error: ', err));
+    //
+    // this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$
+    //   .take(1)
+    //   .takeUntil(this.closeObs$)
+    //   .switchMap((photos: any) => {
+    //     this.loadingService.start(loadingId);
+    //     return this.photoUploadService.uploadPhotos(photos);
+    //   })
+    //   .subscribe(
+    //     (res: any) => {
+    //       callback([res.data]);
+    //       this.loadingService.stop(loadingId);
+    //     }, (err: any) => this.loadingService.stop(loadingId));
 
-    this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$
-      .take(1)
-      .takeUntil(this.closeObs$)
-      .switchMap((photos: any) => {
-        this.loadingService.start(loadingId);
-        return this.photoUploadService.uploadPhotos(photos);
-      })
-      .subscribe(
-        (res: any) => {
-          callback([res.data]);
-          this.loadingService.stop(loadingId);
-        }, (err: any) => this.loadingService.stop(loadingId));
+    this.mediaSelectionService.setMultipleSelection(false);
+    this.mediaSelectionService.open();
+    this.mediaSelectionService.selectedMedias$.subscribe((items) => {
+      console.debug(items);
+      if(items.length > 0)
+        callback(items);
+    }, (err: any) => console.error('cover profile selectPhoto error: ', err));
+
   }
 
 
   changeProfileImage(event: any) {
     console.log('chnage Avatar image');
     // this.loadingService.start('#profile_image');
+
+    this.mediaSelectionService.setMultipleSelection(false);
 
     this.objectListService.setMultipleSelection(false);
 

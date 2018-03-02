@@ -8,6 +8,8 @@ import { LoadingService } from '@wth/shared/shared/components/loading/loading.se
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@wth/shared/constant';
+import { SHORTCUTS_REMOVE_DONE } from '../reducers/index';
+import { Store } from '@ngrx/store';
 
 declare let _: any;
 /**
@@ -27,6 +29,7 @@ export class SoCommunityService  {
               private router: Router,
               private userService: UserService,
               private loadingService: LoadingService,
+              private store: Store<any>,
               private toastsService: ToastsService,
               private wthConfirmService: WthConfirmService ) {
   }
@@ -64,9 +67,12 @@ export class SoCommunityService  {
             this.loadingService.start();
             this.leaveCommunity(community.uuid)
               .toPromise()
-              .then(() => {
-              this.loadingService.stop();
-              resolve(community); })
+              .then((res) => {
+                this.loadingService.stop();
+                if(res.shortcut_id)
+                  this.store.dispatch({type: SHORTCUTS_REMOVE_DONE, payload: [res.shortcut_id]});
+                resolve(community);
+              })
               .catch((error: any) => {
                 reject(error);
                 this.toastsService.danger(error);
@@ -87,10 +93,13 @@ export class SoCommunityService  {
           this.loadingService.start();
           this.deleteCommunity(`${community.uuid}`)
             .toPromise()
-            .then(() => {
+            .then((res) => {
                   resolve(community);
                   this.toastsService.success(`Your community - ${community.name} - has been deleted successfully`);
-                  this.loadingService.stop();})
+                  this.loadingService.stop();
+                  if(res.shortcut_id)
+                    this.store.dispatch({type: SHORTCUTS_REMOVE_DONE, payload: [res.shortcut_id]});
+          })
             .catch((error: any) => {
                   reject(error);
                   this.toastsService.danger(error);

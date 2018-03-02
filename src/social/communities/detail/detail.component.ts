@@ -19,7 +19,7 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { Constants } from '@wth/shared/constant';
-import { SHORTCUT_LOAD } from '../../shared/reducers/index';
+import { SHORTCUT_LOAD, SHORTCUT_ADD_MULTI_DONE } from '../../shared/reducers/index';
 import { Store } from '@ngrx/store';
 
 declare let _: any;
@@ -372,6 +372,10 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
         //  Grant edit profile / cover image privilege to community admins
         this.community.canEdit = this.isAdmin;
+
+        console.debug('result: ', res);
+        if (res.shortcut)
+          this.store.dispatch({type: SHORTCUT_ADD_MULTI_DONE, payload: res.shortcut});
       },
       error => {
         this.errorMessage = <any>error;

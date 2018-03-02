@@ -89,6 +89,8 @@ import { AccordionModule } from 'primeng/primeng';
 import { GridListModule } from '@wth/shared/components/grid-list/grid-list.module';
 import { ModalModule } from '@wth/shared/components/modal/modal.module';
 import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
+import { WObjectListService } from '@wth/shared/components/w-object-list/w-object-list.service';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -221,6 +223,8 @@ export class SharedModule {
         GenericFileService,
         ToastsService,
         MessageService,
+        WObjectListService,
+        WMediaSelectionService,
         DomService,
       ]
     };

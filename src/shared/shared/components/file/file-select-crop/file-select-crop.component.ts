@@ -11,6 +11,7 @@ import { CommonEventService } from '../../../../services/common-event/common-eve
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { Subject } from 'rxjs/Subject';
 import { CropImageComponent } from '@wth/shared/shared/components/file/file-crop/crop-image.component';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 
 
 declare let $: any;
@@ -32,6 +33,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
 
   constructor(private commonEventService: CommonEventService,
               private photoSelectDataService: PhotoModalDataService,
+              private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService) {
   }
 
@@ -79,8 +81,10 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   }
 
   openPhotoSelect(editCurrentMode: any) {
-    this.photoSelectDataService.open({editCurrentMode: editCurrentMode});
-    this.subscribePhotoSelectEvents();
+    // this.photoSelectDataService.open({editCurrentMode: editCurrentMode});
+    // this.subscribePhotoSelectEvents();
+
+    this.mediaSelectionService.open();
   }
 
   editCurrentImage() {
