@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 import { tap } from 'rxjs/operators/tap';
 
 import { Media } from '@shared/shared/models/media.model';
 import { ApiBaseService } from '@shared/services';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
-import { Subject } from 'rxjs';
-import { log } from 'util';
+import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 
 declare let _: any;
 
@@ -29,6 +29,7 @@ export class WMediaSelectionService {
   private multipleSelectionSubject: Subject<boolean> = new Subject<boolean>();
 
   constructor(private apiBaseService: ApiBaseService,
+              private objectListService: WObjectListService,
               private datePipe: DatePipe) {
     this.medias$ = this.mediasSubject.asObservable();
     this.selectedMedias$ = this.selectedMediasSubject.asObservable();
@@ -36,10 +37,12 @@ export class WMediaSelectionService {
     this.open$ = this.openSubject.asObservable();
     this.multipleSelection$ = this.multipleSelectionSubject.asObservable();
   }
-  open(){
+
+  open() {
     this.openSubject.next(true);
   }
-  close(){
+
+  close() {
     this.openSubject.next(false);
   }
 
@@ -74,7 +77,7 @@ export class WMediaSelectionService {
   }
 
   setMultipleSelection(active: boolean) {
-    this.multipleSelectionSubject.next(active);
+    this.objectListService.setMultipleSelection(active);
   }
 
   setSelectedMedias(medias: Media[]) {
@@ -82,9 +85,12 @@ export class WMediaSelectionService {
     //   return medias.some((m: any) => { if (media.id == m.id && media.object_type == m.object_type) return true; }); })
     // this.selectedMediasSubject.next(fullMedias);
 
-    let news = this.mediasSubject.getValue().filter((media: any) => { return medias.some((m: any) => { if(media.id == m.id && media.object_type == m.object_type) return true; })})
-    console.log(news);
-    this.selectedMediasSubject.next(news);
+    let newMedias = this.mediasSubject.getValue().filter((media: any) => {
+      return medias.some((m: any) => {
+        return (media.id === m.id && media.object_type === m.object_type);
+      });
+    });
+    this.selectedMediasSubject.next(newMedias);
   }
 
   clearMediaParent() {

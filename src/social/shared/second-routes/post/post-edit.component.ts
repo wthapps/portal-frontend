@@ -236,6 +236,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   addMorePhoto(event: any) {
     this.onMoreAdded.emit(true);
     this.mediaSelectionService.open();
+    this.mediaSelectionService.setMultipleSelection(true);
     // this.photoSelectDataService.open({return: true, selectingPhotos: this.post.photos});
     // this.subscribePhotoSelectEvents();
   }

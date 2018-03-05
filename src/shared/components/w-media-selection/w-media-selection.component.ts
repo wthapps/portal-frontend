@@ -21,8 +21,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal') modal: BsModalComponent;
 
-  openSubscription: Subscription;
-
   medias$: Observable<Media[]>;
   mediaParent$: Observable<Media>;
   selectedMedias$: Observable<Media[]>;
@@ -45,20 +43,10 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.mediaSelectionService.open$
       .takeUntil(componentDestroyed(this))
-      .subscribe((res:any)=>{
-        console.debug('media selection component: open ');
+      .subscribe((res: any) => {
         this.open();
         this.getObjects();
       });
-
-    // this.openSubscription = this.photoDataService.openObs$.subscribe(
-    //   (options: any) => {
-    //     console.log('open: options: ', options);
-    //     this.open(options);
-    //
-    //     this.getObjects();
-    //   }
-    // );
   }
 
   ngOnDestroy(): void {
@@ -116,7 +104,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   onInsert() {
     this.mediaSelectionService.setSelectedMedias(this.objectListService.getSelectedObjects());
-    console.log(this.objectListService.getSelectedObjects());
     this.modal.close().then();
     // this.objectListService.clear();
   }
@@ -136,7 +123,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   onCompleteDoubleClick(item: Media) {
-    console.log('onCompleteDoubleClick:', item, this.currentTab);
     if (item.object_type === 'album') {
       if (this.currentTab === 'albums') {
         this.currentTab = 'albums_detail';
@@ -151,8 +137,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.mediaSelectionService.clear();
       this.objectListService.clear();
       this.getObjects();
+    } else {
+      this.onInsert();
     }
-    console.log('onCompleteDoubleClick:', this.currentTab);
   }
 
   private buildLink(type: String, id?: number, sortOrder?: string, sortBy?: string) {

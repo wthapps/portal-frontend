@@ -74,8 +74,7 @@ export class CoverProfileComponent {
     // this.loadingService.start('#profile_image');
 
     this.mediaSelectionService.setMultipleSelection(false);
-
-    this.objectListService.setMultipleSelection(false);
+    this.objectListService.clear();
 
     let loadingId: string = '#profile_image';
     this.selectPhoto((photos: any) => {

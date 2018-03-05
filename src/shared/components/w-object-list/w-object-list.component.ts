@@ -1,6 +1,6 @@
 import {
   Component, Input, Output, ContentChild, TemplateRef, AfterViewInit,
-  AfterContentChecked, ViewEncapsulation, EventEmitter, OnDestroy
+  AfterContentChecked, ViewEncapsulation, EventEmitter, OnDestroy, OnChanges, SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
@@ -20,10 +20,9 @@ declare let _: any;
   encapsulation: ViewEncapsulation.None
 })
 
-export class WObjectListComponent implements OnDestroy, AfterContentChecked {
+export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentChecked {
   @Input() data: Media[];
   @Input() sortInline: Boolean = true;
-  @Input() multipleSelection: Boolean = true;
   @Output() completeLoadMore: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   @Output() completeSort: EventEmitter<any> = new EventEmitter<any>(null);
   @Output() completeDoubleClick: EventEmitter<any> = new EventEmitter<any>(null);
@@ -39,6 +38,7 @@ export class WObjectListComponent implements OnDestroy, AfterContentChecked {
   objectsDisabled: any;
 
   hasScrollbar: boolean;
+  hasMultipleSelection: Boolean = true;
   groupBy: string;
   sortBy: string;
   sortOrder: string;
@@ -66,13 +66,20 @@ export class WObjectListComponent implements OnDestroy, AfterContentChecked {
       .takeUntil(componentDestroyed(this))
       .subscribe(res => this.sortOrder = res);
 
+    this.objectListService.multipleSelection$
+      .takeUntil(componentDestroyed(this))
+      .subscribe(res => this.hasMultipleSelection = res);
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
   }
 
   ngOnDestroy(): void {
   }
 
   ngAfterContentChecked(): void {
-    if(this.multipleSelection){
+    if (this.hasMultipleSelection) {
       if (this.dragSelect) {
         this.dragSelect.start();
         this.dragSelect.addSelectables(document.getElementsByClassName('wobject-drag'));
@@ -82,6 +89,10 @@ export class WObjectListComponent implements OnDestroy, AfterContentChecked {
           area: document.getElementById('wobject-drag-body'),
           callback: e => this.onDragSelected(e)
         });
+      }
+    } else {
+      if (this.dragSelect) {
+        this.dragSelect.stop();
       }
     }
 
@@ -130,7 +141,7 @@ export class WObjectListComponent implements OnDestroy, AfterContentChecked {
   }
 
   onClick(item: any) {
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0) {
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
       this.completeDoubleClick.emit(item);
     }
     return false;
