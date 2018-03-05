@@ -27,7 +27,7 @@ export class ZSocialShareProfileListComponent implements OnInit, OnChanges {
   }
 
   onAction(event: any) {
-    switch (event.action) {
+    switch (event.action.toUpperCase()) {
       case fromMember.ACTIONS.DELETE:
         this.removeItem(event.data);
         break;

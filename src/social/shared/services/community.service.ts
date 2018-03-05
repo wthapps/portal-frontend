@@ -49,15 +49,16 @@ export class SoCommunityService  {
 
 
   confirmLeaveCommunity(community: any): Promise<any> {
-    let enoughAdmins = community.admin_count > 1 ? true : false;
+    let enoughAdmins = community.admin_count > 1;
 
-    let pickAnotherAdmin = _.find(community.admins, (a: any) => a.id == this.userService.getSyncProfile().id) != undefined  && !enoughAdmins;
+    let pickAnotherAdmin = community.admins.some((a: any) => a.id == this.userService.getSyncProfile().id)  && !enoughAdmins && (community.user_count > 1);
 
     return new Promise<any>((resolve, reject) => {
       this.wthConfirmService.confirm({
+        acceptLabel: 'OK',
         message: pickAnotherAdmin ?
           `Hi there, you need to pick another admin for the community ${community.name} before leaving.` :
-          `Are you sure to leave the community ${community.name}?`,
+          `Are you sure to leave the community ${community.name} ?`,
         header: 'Leave Community',
         accept: () => {
           if (pickAnotherAdmin) {
