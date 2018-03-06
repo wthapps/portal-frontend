@@ -20,7 +20,6 @@ export class ZNoteSharedWithMeComponent implements OnInit {
               private route: ActivatedRoute) {
     //  Open up node edit modal for query params
     route.queryParamMap.subscribe((paramMap: any) => {
-      console.debug('paramsMap: ', paramMap);
       if(paramMap.get('notes')) {
         this.noteService.get(paramMap.get('notes')).toPromise()
           .then((res: any )=> {

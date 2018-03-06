@@ -19,6 +19,7 @@ import * as context from '../reducers/context';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from "@shared/shared/components/confirmation/wth-confirm.service";
 import { Router } from "@angular/router";
+import { noteConstants } from "note/shared/config/constants";
 
 
 @Injectable()
@@ -28,13 +29,14 @@ export class NoteEffects {
               private toastsService: ToastsService,
               private wthConfirmService: WthConfirmService,
               private router: Router,
-              private store: Store<fromRoot.State>) {
+              private store: Store<any>) {
   }
 
   @Effect() addNote = this.actions
     .ofType(note.ADD)
     .map((action: any) => action['payload'])
     .switchMap((payload: any) => {
+      noteConstants
       return this.noteService.create(payload)
         .withLatestFrom(this.store, (res: any, state: any) => {
           if(state.context.permissions.edit) {
@@ -48,9 +50,10 @@ export class NoteEffects {
 
   @Effect() updateNote = this.actions
     .ofType(note.UPDATE)
-    .map((action: any) => action['payload'])
-    .switchMap((payload: any) => {
-      return this.noteService.update(payload)
+    .withLatestFrom(this.store, (action: any, state: any) => [action, state.context])
+    // .map(([action, context]: any) => action['payload'])
+    .switchMap(([action, context]: any) => {
+      return this.noteService.update(action['payload'])
         .map((res: any) => {
           // this.toastsService.success('Note updated successfully, yay');
           return ({type: note.NOTE_UPDATED, payload: res['data']});
@@ -59,9 +62,22 @@ export class NoteEffects {
           // this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
           this.wthConfirmService.confirm({
             message: 'The file you looking for was deleted or you do not have permission to access',
-            header: 'File not found',
+            header: 'Note not found',
             rejectLabel: null,
             accept: () => {
+              if (context.page == noteConstants.PAGE_SHARED_WITH_ME) {
+                this.store.dispatch({type: note.LOAD, payload: {parent_id: null, shared_with_me: true}});
+              } else {
+                this.store.dispatch({type: note.LOAD, payload: {parent_id: null}});
+              }
+              this.router.navigate([{outlets: {detail: null}}]);
+            },
+            reject: () => {
+              if (context.page == noteConstants.PAGE_SHARED_WITH_ME) {
+                this.store.dispatch({type: note.LOAD, payload: {parent_id: null, shared_with_me: true}});
+              } else {
+                this.store.dispatch({type: note.LOAD, payload: {parent_id: null}});
+              }
               this.router.navigate([{outlets: {detail: null}}]);
             }
           });
@@ -99,7 +115,20 @@ export class NoteEffects {
           {type: note.LOAD_SUCCESS, payload: res.data},
           {type: context.SET_CONTEXT, payload: {loading: false}},
           {type: note.SET_LIST_PERMISSION, payload: {canAdd: true}}]; })
-      .catch(() => of({type: note.LOAD_SUCCESS, payload: []}));
+          .catch(() => {
+            // this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
+            this.wthConfirmService.confirm({
+              message: 'The folder you looking for was deleted or you do not have permission to access',
+              header: 'Folder not found',
+              rejectLabel: null,
+              accept: () => {
+                this.router.navigate(["my-note"]);
+              },
+              reject: () => {
+                this.router.navigate(["my-note"]);
+              }
+            });
+            return empty();})
     });
 
 

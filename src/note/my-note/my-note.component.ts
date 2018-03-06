@@ -45,6 +45,9 @@ export class ZNoteMyNoteComponent implements OnInit {
           rejectLabel: null,
           accept: () => {
             this.router.navigate(["my-note"]);
+          },
+          reject: () => {
+            this.router.navigate(["my-note"]);
           }
         });
       }
