@@ -59,6 +59,10 @@ export class ZNoteService extends BaseEntityService<any> {
       .catch(this.handleError);
   }
 
+  getNoteAvailable(id: any) {
+    return this.apiBaseService.get(this.url + '/get_note_available/' + id)
+  }
+
   deleteNote(body?: any) {
     /*return this.apiBaseService.delete(`${this.url}/${body.id}`)
      .do(deletedNote => {

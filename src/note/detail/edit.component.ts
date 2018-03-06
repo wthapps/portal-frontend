@@ -133,13 +133,19 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     // Merge with get current folder - this.store.select(fromRoot.getCurrentFolder)
     this.route.paramMap.pipe(
-      switchMap((paramMap: any) => {
+      combineLatest(this.context$),
+      switchMap(([paramMap, context]: any) => {
         let noteId = paramMap.get('id');
         this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
-        if (!!noteId)
-          return this.noteService.get(noteId).map(res => res.data);
-        else
+        if (!!noteId) {
+          if(context.page == noteConstants.PAGE_TRASH) {
+            return this.noteService.get(noteId).map(res => res.data);
+          } else {
+            return this.noteService.getNoteAvailable(noteId).map(res => res.data);
+          }
+        } else {
           return of(new Note());
+        }
       }),
       combineLatest(this.store.select(fromRoot.getCurrentFolder)),
       takeUntil(this.destroySubject)
@@ -154,7 +160,11 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         // Reset content of elemenet div.ql-editor to prevent HTML data loss
         document.querySelector('.ql-editor').innerHTML = this.note.content;
         if (this.note.permission !== 'view') this.registerAutoSave();
-      });
+      },
+      (error: any) => {
+        this.onModalClose({queryParams: {error: "file_does_not_exist"}});
+      }
+    );
 
     $('body').on('dblclick', '.ql-editor img', this.doubleClickImage.bind(this));
   }
@@ -702,13 +712,17 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.onModalClose();
   }
 
-  onModalClose() {
+  onModalClose(options = null) {
     // this.modal.close()
     //   .then(() => {
     //     this.closeSubject.next('');
     //   });
 
-    this.router.navigate([{outlets: {detail: null}}]);
+    if(options) {
+      this.router.navigate([{outlets: {detail: null}}], options);
+    } else {
+      this.router.navigate([{outlets: {detail: null}}]);
+    }
     this.closeSubject.next('');
   }
 

@@ -26,9 +26,12 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent {
               protected userService: UserService,
               protected sharingService: ZMediaSharingService) {
     super(route, router, wthConfirmService, loadingService, photoService, userService, sharingService);
+    console.log(this.isOwner)
+    console.log(this.isOwner)
   }
 
   doEvent(event: any) {
+
     switch (event.action) {
       // Handle all of event in child class here
       case 'media:photo:load_sharing_info':

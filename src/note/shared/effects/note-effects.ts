@@ -17,6 +17,8 @@ import * as note from '../actions/note';
 import * as fromRoot from '../reducers/index';
 import * as context from '../reducers/context';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { WthConfirmService } from "@shared/shared/components/confirmation/wth-confirm.service";
+import { Router } from "@angular/router";
 
 
 @Injectable()
@@ -24,6 +26,8 @@ export class NoteEffects {
 
   constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
               private toastsService: ToastsService,
+              private wthConfirmService: WthConfirmService,
+              private router: Router,
               private store: Store<fromRoot.State>) {
   }
 
@@ -52,7 +56,15 @@ export class NoteEffects {
           return ({type: note.NOTE_UPDATED, payload: res['data']});
         } )
         .catch(() => {
-          this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
+          // this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
+          this.wthConfirmService.confirm({
+            message: 'The file you looking for was deleted or you do not have permission to access',
+            header: 'File not found',
+            rejectLabel: null,
+            accept: () => {
+              this.router.navigate([{outlets: {detail: null}}]);
+            }
+          });
           return empty();})
         ;
     });

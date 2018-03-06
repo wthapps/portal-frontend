@@ -16,6 +16,10 @@ import { AppStore } from '../shared/app-store';
 import { MixedEntityAction } from '../shared/mixed-enity/mixed-entity.action';
 import { UserService } from '@shared/services/user.service';
 import { noteConstants, NoteConstants } from "note/shared/config/constants";
+import { UrlService } from "@shared/services";
+import { BsModalComponent } from "ng2-bs3-modal";
+import { WthConfirmService } from "@shared/shared/components/confirmation/wth-confirm.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 declare var _: any;
 
@@ -25,9 +29,27 @@ declare var _: any;
 })
 export class ZNoteMyNoteComponent implements OnInit {
   noteConstants: NoteConstants = noteConstants;
+  @ViewChild('modal') modal: BsModalComponent;
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<any>,
+    private urlService: UrlService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private wthConfirmService: WthConfirmService) {}
   ngOnInit() {
+    // File does not exist
+    this.route.queryParams.subscribe((params: any) => {
+      if (params.error == 'file_does_not_exist') {
+        this.wthConfirmService.confirm({
+          message: 'The file you looking for was deleted or you do not have permission to access',
+          header: 'File not found',
+          rejectLabel: null,
+          accept: () => {
+            this.router.navigate(["my-note"]);
+          }
+        });
+      }
+    })
     this.store.dispatch({type: note.LOAD, payload: {parent_id: null}});
     this.store.dispatch({type: context.SET_CONTEXT, payload: {
       page: this.noteConstants.PAGE_MY_NOTE,

@@ -7,10 +7,12 @@ import { Observable } from 'rxjs/Observable';
 
 import { ZNoteService } from '../shared/services/note.service';
 import * as fromRoot from '../shared/reducers/index';
+import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import * as listReducer from '../shared/reducers/features/list-mixed-entities';
+import { noteConstants } from "note/shared/config/constants";
 
 
 @Component({
@@ -46,7 +48,9 @@ export class ZNoteTrashComponent implements OnInit {
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.loading$ = this.store.select(fromRoot.getLoading);
 
-    this.store.dispatch({type: note.TRASH_LOAD});
+    this.store.dispatch({type: context.SET_CONTEXT, payload: {
+      page: noteConstants.PAGE_TRASH}});
+    this.store.dispatch({type: note.TRASH_LOAD});
   }
 
   onNewNote() {
