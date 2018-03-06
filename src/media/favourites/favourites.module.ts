@@ -12,9 +12,9 @@ import { CoreModule } from '@wth/core/core.module';
 @NgModule({
   imports: [
     ZMediaFavoriteRoutingModule,
-    ZMediaSharedModule.forRoot(),
-    SharedModule.forRoot(),
-    CoreModule.forRoot()
+    ZMediaSharedModule,
+    SharedModule,
+    CoreModule
 
   ],
   declarations: [

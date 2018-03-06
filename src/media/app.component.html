@@ -16,21 +16,12 @@
   </main>
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
-  <!--<p-confirmDialog header="Confirmation" width="670" #cd>-->
-    <!--<p-footer>-->
-      <!--<button class="btn btn-outline-default btn-min" type="button" pButton icon=""-->
-              <!--label="{{ confirmDialog?.label?.reject ? confirmDialog?.label?.reject : 'Cancel' }}"-->
-              <!--(click)="cd.reject()"></button>-->
-      <!--<button class="btn btn-outline-primary btn-min" type="button" pButton icon=""-->
-              <!--label="{{ confirmDialog?.label?.accept ? confirmDialog?.label?.accept : 'Done' }}"-->
-              <!--(click)="cd.accept()"></button>-->
-    <!--</p-footer>-->
-  <!--</p-confirmDialog>-->
   <wth-confirm></wth-confirm>
   <me-uploader #uploader (outEvent)="onAction($event)"></me-uploader>
 </div>
 <h-file-select></h-file-select>
 <h-file-select-crop></h-file-select-crop>
+<w-media-selection></w-media-selection>
 <wth-introduction #introduction
                     [after]="{media: true}"
                     [data]="[

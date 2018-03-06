@@ -10,9 +10,9 @@ import { CoreModule } from '@wth/core/core.module';
 @NgModule({
   imports: [
     ZMediaSearchRoutingModule,
-    ZMediaSharedModule.forRoot(),
-    SharedModule.forRoot(),
-    CoreModule.forRoot()
+    ZMediaSharedModule,
+    SharedModule,
+    CoreModule
 
   ],
   declarations: [ZMediaSearchComponent],

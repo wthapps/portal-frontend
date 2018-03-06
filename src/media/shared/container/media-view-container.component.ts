@@ -37,7 +37,6 @@ declare var _: any;
 
 
 @Component({
-  moduleId: module.id,
   selector: 'me-view-container',
   templateUrl: 'media-view-container.component.html',
   providers: [MediaObjectService],
@@ -521,29 +520,17 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
       case 'previewDetailsModal':
         let ids: any[] = _.map(this.selectedObjects, 'id');
-        if (this.selectedObjects[0].object_type == 'album') {
-          this.router.navigate([{
-              outlets: {
-                detail: [
-                  `${this.selectedObjects[0].object_type}s`,
-                  this.selectedObjects[0].id,
-                  {ids: ids, mode: 0, showDetail: true}
-                ]
-              }
-            }], {preserveQueryParams: true, preserveFragment: true}
-          );
-        } else {
-          this.router.navigate([{
-              outlets: {
-                modal: [
-                  `${this.selectedObjects[0].object_type}s`,
-                  this.selectedObjects[0].id,
-                  {ids: ids, mode: 0, showDetail: true}
-                ]
-              }
-            }], {preserveQueryParams: true, preserveFragment: true}
-          );
-        }
+        let outlet = (this.selectedObjects[0].object_type == 'album') ? 'detail' : 'modal';
+        this.router.navigate([{
+            outlets: {
+              [outlet]: [
+                `${this.selectedObjects[0].object_type}s`,
+                this.selectedObjects[0].id,
+                {ids: ids, mode: 0, showDetail: true}
+              ]
+            }
+          }], {preserveQueryParams: true, preserveFragment: true}
+        );
 
 
         break;

@@ -15,10 +15,10 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
   imports: [
     ZMediaPhotoRoutingModule,
 
-    ZMediaSharedModule.forRoot(),
+    ZMediaSharedModule,
     ModalModule,
-    SharedModule.forRoot(),
-    CoreModule.forRoot()
+    SharedModule,
+    CoreModule
 
   ],
   declarations: [

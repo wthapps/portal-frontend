@@ -14,8 +14,8 @@ import { SharedByMeDetailPage } from './shared-by-me-detail.page';
 @NgModule({
   imports: [
     ZMediaSharedByMeRoutingModule,
-    ZMediaSharedModule.forRoot(),
-    SharedModule.forRoot()
+    ZMediaSharedModule,
+    SharedModule
   ],
   declarations: [
     SharedByMePage,

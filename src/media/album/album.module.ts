@@ -14,9 +14,9 @@ import { CoreModule } from '@wth/core/core.module';
 @NgModule({
   imports: [
     ZMediaAlbumRoutingModule,
-    ZMediaSharedModule.forRoot(),
-    SharedModule.forRoot(),
-    CoreModule.forRoot()
+    ZMediaSharedModule,
+    SharedModule,
+    CoreModule
 
   ],
   declarations: [

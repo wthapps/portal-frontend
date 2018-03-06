@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, Output, EventEmitter, OnDestroy, Input } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/filter';
@@ -24,6 +24,7 @@ declare let _: any;
 
 export class FileSelectCropComponent implements OnInit, OnDestroy {
   @ViewChild('cropImage') cropImage: CropImageComponent;
+  @Input() useNewPhotoSelect: boolean = false;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   currentImage: string;
@@ -81,10 +82,12 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   }
 
   openPhotoSelect(editCurrentMode: any) {
-    // this.photoSelectDataService.open({editCurrentMode: editCurrentMode});
-    // this.subscribePhotoSelectEvents();
-
-    this.mediaSelectionService.open();
+    if(!this.useNewPhotoSelect) {
+      this.photoSelectDataService.open({editCurrentMode: editCurrentMode});
+      this.subscribePhotoSelectEvents();
+    }
+    else
+      this.mediaSelectionService.open();
   }
 
   editCurrentImage() {
