@@ -68,10 +68,11 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.profile$ = this.userService.getAsyncProfile();
     // Support get route params from parent route as well as current route. Ex: Profile post page
     let parentRouteParams = this.route.parent.paramMap;
+    let reloadQueryParam = this.route.queryParamMap; // .filter(queryParamM => !!queryParamM.get('r'));
     this.showLoading = document.getElementById('post-list-loading') !== null;
 
     this.route.paramMap
-      .combineLatest(parentRouteParams)
+      .combineLatest(parentRouteParams, reloadQueryParam)
       .takeUntil(this.destroySubject)
       .map(([paramMap, parentParamMap]: any) => {
         this.startLoading();
@@ -191,6 +192,10 @@ export class PostListComponent implements OnInit, OnDestroy {
           }
         );
     }
+  }
+
+  updateUserSettings(privacy: string) {
+    // this.store.dispatch({type: SO_PROFILE_UPDATE_DONE, payload: res.data});
   }
 
   dismiss(item: any) {

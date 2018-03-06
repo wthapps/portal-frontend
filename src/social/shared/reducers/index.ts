@@ -3,9 +3,7 @@ import { createSelector } from '@ngrx/store';
 export const SHORTCUT_LOAD = '[SOCIAL] SHORTCUT LOAD';
 export const SHORTCUT_LOAD_DONE = '[SOCIAL] SHORTCUT LOAD DONE';
 export const SHORTCUT_LOAD_FAILED = '[SOCIAL] SHORTCUT LOAD FAILED';
-export const SHORTCUT_UPDATE = '[SOCIAL] UPDATE SHORTCUT';
 export const SHORTCUT_UPDATE_DONE = '[SOCIAL] UPDATE SHORTCUT DONE';
-export const SHORTCUT_UPDATE_FAILED = '[SOCIAL] UPDATE SHORTCUT FAILED';
 export const SHORTCUT_ADD = '[SOCIAL] ADD SHORTCUT';
 export const SHORTCUT_ADD_MULTI = '[SOCIAL] ADD SHORTCUT MULTIPLE';
 export const SHORTCUT_ADD_MULTI_DONE = '[SOCIAL] ADD SHORTCUT MULTIPLE DONE';
@@ -18,12 +16,17 @@ export const SO_PROFILE_UPDATE = '[SOCIAL] SO PROFILE UPDATE';
 export const SO_PROFILE_UPDATE_DONE = '[SOCIAL] SO PROFILE UPDATE DONE';
 
 
+export const POSTS_COUNT_LOAD = '[SOCIAL] NEW SOCIAL POSTS COUNT LOAD';
+export const POSTS_COUNT_LOAD_DONE = '[SOCIAL] NEW SOCIAL POSTS COUNT LOAD DONE';
+
+
 export const COMMON_FAILED = '[SOCIAL] COMMON FAILED';
 
 export interface AppState {
   shortcuts: {[id: number]: any};
   soProfile: any,
   selectedIds: number[];
+  newSocialPostsCount: number;
 };
 
 // export type AppState = { shortcuts: {[id: number]: any}, selectedIds: number[] };
@@ -32,7 +35,8 @@ export type State = {app: AppState };
 export const socialInitialState: AppState = {
   shortcuts: {},
   soProfile: {},
-  selectedIds: []
+  selectedIds: [],
+  newSocialPostsCount: 0
 }
 
 export function appReducer(state = socialInitialState, action: any): AppState {
@@ -59,6 +63,13 @@ export function appReducer(state = socialInitialState, action: any): AppState {
     case SO_PROFILE_UPDATE_DONE: {
       return {...state, soProfile: action.payload};
     }
+    case SO_PROFILE_SETTING_UPDATE_DONE: {
+      // let soProfile: any = { ...state.soProfile, settings};
+      return { ...state, soProfile: action.payload };
+    }
+    case POSTS_COUNT_LOAD_DONE: {
+      return {...state, newSocialPostsCount: action.payload};
+    }
 
     default: {
       return state;
@@ -69,6 +80,7 @@ export function appReducer(state = socialInitialState, action: any): AppState {
 export const getAppState = (state: State) => state.app;
 export const getShortcutEntities = (state: State) => state.app.shortcuts;
 export const getSoProfile = (state: State) => state.app.soProfile;
+export const getNewPostsCount = (state: State) => state.app.newSocialPostsCount;
 
 export const getShortcuts = createSelector(getAppState, getShortcutEntities, (appState, shortcuts) => {
   let arr: any[] = [];

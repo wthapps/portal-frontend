@@ -1,7 +1,11 @@
 <div class="menuleft-nav-sub-item text-capitalize" [routerLinkActive]="['active']">
-  <a draggable="false" [routerLink]="[homeMenuItem.link]">
+  <a draggable="false" [routerLink]="[homeMenuItem.link]" (click)="reloadHome()">
     <i class="{{ homeMenuItem.icon }}"></i> {{ homeMenuItem.name }}
   </a>
+  <!--{{ newPostsCount$ | async }}-->
+  <div class="menuleft-nav-sub-display">
+    <span> {{ COUNT_DISPLAY[(newPostsCount$ | async)] || (newPostsCount$ | async) }}</span>
+  </div>
 </div>
 
 <div class="menuleft-nav-sub-item">
