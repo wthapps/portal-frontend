@@ -11,6 +11,7 @@ import { interval } from 'rxjs/observable/interval';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { POSTS_COUNT_LOAD } from '../reducers/index';
+import { POSTS_COUNT_LOAD_DONE } from '../reducers/index';
 
 @Component({
   selector: 'z-social-left-menu',
@@ -61,6 +62,7 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
 
   reloadHome() {
     let time = new Date().getTime();
+    this.store.dispatch({type: POSTS_COUNT_LOAD_DONE, payload: 0});
     this.router.navigate(['/home'], {queryParams: {r: time}, relativeTo: this.route});
   }
 

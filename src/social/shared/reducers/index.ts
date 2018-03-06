@@ -14,6 +14,7 @@ export const SHORTCUTS_REMOVE_DONE = '[SOCIAL] REMOVE SHORTCUTS DONE';
 export const SO_PROFILE_LOAD = '[SOCIAL] SO PROFILE LOAD';
 export const SO_PROFILE_UPDATE = '[SOCIAL] SO PROFILE UPDATE';
 export const SO_PROFILE_UPDATE_DONE = '[SOCIAL] SO PROFILE UPDATE DONE';
+export const SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE = '[SOCIAL] SO PROFILE SETTING PRIVACY UPDATE DONE';
 
 
 export const POSTS_COUNT_LOAD = '[SOCIAL] NEW SOCIAL POSTS COUNT LOAD';
@@ -63,9 +64,10 @@ export function appReducer(state = socialInitialState, action: any): AppState {
     case SO_PROFILE_UPDATE_DONE: {
       return {...state, soProfile: action.payload};
     }
-    case SO_PROFILE_SETTING_UPDATE_DONE: {
-      // let soProfile: any = { ...state.soProfile, settings};
-      return { ...state, soProfile: action.payload };
+    case SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE: {
+      let soProfile = { ...state.soProfile };
+      soProfile.settings.viewable_post.value = action.payload;
+      return { ...state, soProfile };
     }
     case POSTS_COUNT_LOAD_DONE: {
       return {...state, newSocialPostsCount: action.payload};
