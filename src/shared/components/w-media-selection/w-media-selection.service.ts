@@ -70,6 +70,9 @@ export class WMediaSelectionService {
 
   clear() {
     this.mediasSubject.next(null);
+    this.selectedMediasSubject.next([]);
+    this.mediaParentSubject.next(null);
+    this.objectListService.clear();
   }
 
   setMediaParent(media: Media) {
@@ -93,8 +96,14 @@ export class WMediaSelectionService {
     this.selectedMediasSubject.next(newMedias);
   }
 
+  clearSelectedMedias() {
+    this.selectedMediasSubject.next([]);
+    this.objectListService.clear();
+  }
+
   clearMediaParent() {
     this.mediaParentSubject.next(null);
   }
+
 }
 

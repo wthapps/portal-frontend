@@ -152,6 +152,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onLoadMore() {
+    console.log('onLoadMore');
     this.completeLoadMore.emit(true);
   }
 
@@ -159,8 +160,8 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
     let sortOrder = this.sortOrder;
     if (this.sortBy === sortBy) {
       sortOrder = (sortOrder === 'desc') ? 'asc' : 'desc';
-      this.objectListService.setSortOrder(sortOrder);
     }
+    this.objectListService.setSortOrder(sortOrder);
     this.objectListService.setSortBy(sortBy);
 
     if (!this.sortInline) {

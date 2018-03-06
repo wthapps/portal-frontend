@@ -43,7 +43,7 @@
             </button>
           </li>
           <li>
-            <span class="btn btn-text">{{ (mediaParent$ | async)?.name }}</span>
+            <span class="btn btn-text">{{ mediaParent?.name }}</span>
           </li>
         </ul>
       </div>
@@ -51,7 +51,7 @@
     </div>
 
     <ng-container *ngIf="medias$ | async as mediasList; else templateloading">
-      <ng-container *ngIf="mediasList.length; else templateNodata">
+      <ng-container *ngIf="mediasList?.length; else templateNodata">
         <w-object-list class="media-selection-content gray-light"
                        [data]="mediasList"
                        [sortInline]="false"

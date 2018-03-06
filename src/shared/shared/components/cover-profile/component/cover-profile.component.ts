@@ -62,7 +62,7 @@ export class CoverProfileComponent {
     this.mediaSelectionService.open();
     this.mediaSelectionService.selectedMedias$.subscribe((items) => {
       console.debug(items);
-      if(items.length > 0)
+      if (items.length > 0)
         callback(items);
     }, (err: any) => console.error('cover profile selectPhoto error: ', err));
 
@@ -73,8 +73,8 @@ export class CoverProfileComponent {
     console.log('chnage Avatar image');
     // this.loadingService.start('#profile_image');
 
-    this.mediaSelectionService.setMultipleSelection(false);
-    this.objectListService.clear();
+    // this.mediaSelectionService.setMultipleSelection(false);
+    // this.objectListService.clear();
 
     let loadingId: string = '#profile_image';
     this.selectPhoto((photos: any) => {

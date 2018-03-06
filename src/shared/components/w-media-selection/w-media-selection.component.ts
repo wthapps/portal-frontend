@@ -22,7 +22,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
 
   medias$: Observable<Media[]>;
-  mediaParent$: Observable<Media>;
+  mediaParent: Media;
   selectedMedias$: Observable<Media[]>;
   multipleSelection$: Observable<boolean>;
 
@@ -34,10 +34,12 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   constructor(private mediaSelectionService: WMediaSelectionService,
               private objectListService: WObjectListService) {
     this.medias$ = this.mediaSelectionService.medias$;
-    this.mediaParent$ = this.mediaSelectionService.mediaParent$;
     this.multipleSelection$ = this.mediaSelectionService.multipleSelection$;
-
     this.selectedMedias$ = this.objectListService.selectedObjects$;
+
+    this.mediaSelectionService.mediaParent$
+      .takeUntil(componentDestroyed(this))
+      .subscribe((res: Media) => this.mediaParent = res);
   }
 
   ngOnInit(): void {
@@ -60,12 +62,22 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     console.log('Post Photo Select Component DISMISSED', event);
   }
 
+  getObjects() {
+    if (this.nextLink && !this.isLoading) {
+      this.isLoading = true;
+      this.mediaSelectionService.getMedias(this.nextLink).subscribe(
+        (res: ResponseMetaData) => {
+          this.nextLink = res.page_metadata.links.next;
+          this.isLoading = false;
+        }
+      );
+    }
+  }
+
   tabAction(action: string) {
-    this.currentTab = action;
-    this.buildLink(action);
-    this.mediaSelectionService.clearMediaParent();
     this.mediaSelectionService.clear();
-    this.objectListService.clear();
+    this.currentTab = action;
+    this.nextLink = this.buildNextLink();
     this.getObjects();
 
     if (this.currentTab === 'albums' || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me') {
@@ -75,29 +87,22 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  getObjects() {
-    if (this.nextLink && !this.isLoading) {
-      this.isLoading = true;
-      this.mediaSelectionService.getMedias(this.nextLink).subscribe(
-        (res: ResponseMetaData) => {
-          this.buildLink(res.page_metadata.links.next);
-          this.isLoading = false;
-        }
-      );
+  onTabBack() {
+    if (this.currentTab === 'albums_detail') {
+      this.currentTab = 'albums';
+      this.objectListService.setObjectsDisabled(['album']);
+    } else if (this.currentTab === 'favourites_detail') {
+      this.currentTab = 'favourites';
+    } else if (this.currentTab === 'shared_with_me_detail') {
+      this.currentTab = 'shared_with_me';
     }
+    this.mediaSelectionService.clear();
+    this.nextLink = this.buildNextLink();
+    this.getObjects();
   }
 
   onCompleteLoadMore(event: boolean) {
     if (event) {
-      this.getObjects();
-    }
-  }
-
-  onCompleteSort(event: any) {
-    if (event) {
-      console.log(event);
-      this.buildLink(this.currentTab, event.sortOrder, event.sortBy);
-      this.mediaSelectionService.clear();
       this.getObjects();
     }
   }
@@ -108,20 +113,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     // this.objectListService.clear();
   }
 
-  onTabBack() {
-    if (this.currentTab === 'albums_detail') {
-      this.currentTab = 'albums';
-      this.objectListService.setObjectsDisabled(['album']);
-    } else if (this.currentTab === 'favourites_detail') {
-      this.currentTab = 'favourites';
-    }
-    this.buildLink(this.currentTab);
-    this.mediaSelectionService.clearMediaParent();
-    this.mediaSelectionService.clear();
-    this.objectListService.clear();
-    this.getObjects();
-  }
-
   onCompleteDoubleClick(item: Media) {
     if (item.object_type === 'album') {
       if (this.currentTab === 'albums') {
@@ -129,55 +120,59 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       } else if (this.currentTab === 'favourites') {
         this.currentTab = 'favourites_detail';
       }
-      this.buildLink('photos', item.id);
+      this.mediaSelectionService.clear();
+      this.mediaSelectionService.setMediaParent(item);
 
+      this.nextLink = this.buildNextLink();
       this.objectListService.setObjectsDisabled([]);
 
-      this.mediaSelectionService.setMediaParent(item);
-      this.mediaSelectionService.clear();
-      this.objectListService.clear();
       this.getObjects();
     } else {
       this.onInsert();
     }
   }
 
-  private buildLink(type: String, id?: number, sortOrder?: string, sortBy?: string) {
+
+
+  onCompleteSort(event: any) {
+    if (event) {
+      this.nextLink = this.buildNextLink() + `&sort=${event.sortOrder}&sort_name=${event.sortBy}`;
+      const mediaParent = this.mediaParent;
+      this.mediaSelectionService.clear();
+      this.mediaSelectionService.setMediaParent(mediaParent);
+      this.getObjects();
+    }
+  }
+
+  private buildNextLink() {
     let urlAPI = '';
-    switch (type) {
+    switch (this.currentTab) {
       case 'photos':
-        urlAPI = `media/photos`;
-        if (id) {
-          urlAPI = urlAPI + `?album=${id}`;
-        }
-        if (sortOrder && sortBy) {
-          if (id) {
-            urlAPI = urlAPI + `&sort=${sortOrder}&sort_name=${sortBy}`;
-          } else {
-            urlAPI = urlAPI + `?sort=${sortOrder}&sort_name=${sortBy}`;
-          }
-        }
+        urlAPI = `media/photos?active=1`;
         break;
       case 'albums':
-        urlAPI = `media/albums`;
-        if (sortOrder && sortBy) {
-          urlAPI = urlAPI + `?sort=${sortOrder}&sort_name=${sortBy}`;
-        }
+        urlAPI = `media/albums?active=1`;
+        break;
+      case 'albums_detail':
+        urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'favourites':
-        urlAPI = `media/media?list_type=favorites`;
-        if (sortOrder && sortBy) {
-          urlAPI = urlAPI + `&sort=${sortOrder}&sort_name=${sortBy}`;
-        }
+        urlAPI = `media/media?active=1&list_type=favorites`;
+        break;
+      case 'favourites_detail':
+        urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'shared_with_me':
-        urlAPI = `media/shared-with-me`;
-        if (sortOrder && sortBy) {
-          urlAPI = urlAPI + `&sort=${sortOrder}&sort_name=${sortBy}`;
-        }
+        urlAPI = `media/shared-with-me?active=1`;
+        break;
+      case 'shared_with_me_detail':
+        urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
+        break;
+      default:
+        urlAPI = `media/photos?active=1`;
         break;
     }
-
-    this.nextLink = urlAPI;
+    return urlAPI;
   }
+
 }

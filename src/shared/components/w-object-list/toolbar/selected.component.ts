@@ -1,11 +1,13 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
+import { Media } from '@shared/shared/models/media.model';
 
 @Component({
   selector: 'w-object-toolbar-selected',
   template: `
-    <div class="wobject-selected-bar" [ngClass]="{active: (selectedObjects$ | async).length > 0}">
+    <div *ngIf="(selectedObjects$ | async)" class="wobject-selected-bar"
+         [ngClass]="{active: (selectedObjects$ | async)?.length > 0}">
       <div class="wobject-selected-bar-content">
         <div class="wobject-selected-bar-left">
           <ul class="list-unstyled">
@@ -15,7 +17,7 @@ import { WObjectListService } from '@shared/components/w-object-list/w-object-li
               </button>
             </li>
             <li>
-              <span class="btn btn-text">{{ (selectedObjects$ | async).length }} selected</span>
+              <span class="btn btn-text">{{ (selectedObjects$ | async)?.length }} selected</span>
             </li>
           </ul>
 
@@ -31,7 +33,7 @@ import { WObjectListService } from '@shared/components/w-object-list/w-object-li
 })
 
 export class WObjectToolbarSelectedComponent {
-  selectedObjects$: Observable<string>;
+  selectedObjects$: Observable<Media[]>;
 
   constructor(private objectListService: WObjectListService) {
     this.selectedObjects$ = this.objectListService.selectedObjects$;
