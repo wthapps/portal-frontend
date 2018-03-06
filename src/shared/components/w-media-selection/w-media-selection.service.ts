@@ -44,6 +44,7 @@ export class WMediaSelectionService {
 
   close() {
     this.openSubject.next(false);
+    this.clear();
   }
 
   getMedias(nextLink?: any) {

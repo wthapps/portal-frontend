@@ -26,9 +26,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   selectedMedias$: Observable<Media[]>;
   multipleSelection$: Observable<boolean>;
 
-  currentTab: String = 'photos'; // photos, albums, albums_detail, favourites, shared_with_me
-
-  nextLink: String = 'media/photos';
+  currentTab: string; // photos, albums, albums_detail, favourites, shared_with_me
+  nextLink: string;
   isLoading: boolean;
 
   constructor(private mediaSelectionService: WMediaSelectionService,
@@ -46,12 +45,20 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     this.mediaSelectionService.open$
       .takeUntil(componentDestroyed(this))
       .subscribe((res: any) => {
+        this.initialState();
         this.open();
         this.getObjects();
       });
   }
 
   ngOnDestroy(): void {
+  }
+
+  initialState() {
+    this.mediaSelectionService.clear();
+    this.currentTab = 'photos';
+    this.nextLink = 'media/photos';
+    this.isLoading = false;
   }
 
   open(options: any = {return: false}) {
@@ -110,7 +117,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   onInsert() {
     this.mediaSelectionService.setSelectedMedias(this.objectListService.getSelectedObjects());
     this.modal.close().then();
-    // this.objectListService.clear();
+    this.objectListService.clear();
   }
 
   onCompleteDoubleClick(item: Media) {
@@ -131,8 +138,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.onInsert();
     }
   }
-
-
 
   onCompleteSort(event: any) {
     if (event) {

@@ -43,7 +43,7 @@
             </button>
           </li>
           <li>
-            <span class="btn btn-text">{{ mediaParent?.name }}</span>
+            <span *ngIf="mediaParent" class="btn btn-text">{{ mediaParent?.name }}</span>
           </li>
         </ul>
       </div>

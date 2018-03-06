@@ -8,8 +8,8 @@ export class Media {
   created_at: any;
   photo_default: any;
   favorite: boolean;
-  tags: Array<any> = [];
-  tags_json: Array<any> = [];
+  tags: any = [];
+  tags_json: any = [];
 
   extension: string;
   dimensions: string;
@@ -30,6 +30,8 @@ export class Media {
     created_at?: any,
     photo_default?: any,
     favorite?: boolean,
+    tags?: any,
+    tags_json?: any,
 
     extension?: string,
     dimensions?: string,
@@ -38,7 +40,7 @@ export class Media {
     url?: string,
     json_shares?: any,
     content_type?: string,
-    object_type?: string,
+    object_type?: string
   }) {
     if (fields) {
       Object.assign(this, fields);

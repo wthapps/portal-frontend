@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { BsModalModule } from 'ng2-bs3-modal';
 
-import { WMediaListModule } from '@shared/components/w-media-list/w-media-list.module';
 import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
 
 import { WMediaSelectionComponent } from './w-media-selection.component';
@@ -15,7 +14,6 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
   imports: [
     CommonModule,
     BsModalModule,
-    WMediaListModule,
     WObjectListModule,
     PipeModule,
     BoxNoDataModule,

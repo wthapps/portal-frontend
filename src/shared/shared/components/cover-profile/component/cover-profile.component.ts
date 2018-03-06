@@ -70,12 +70,7 @@ export class CoverProfileComponent {
 
 
   changeProfileImage(event: any) {
-    console.log('chnage Avatar image');
-    // this.loadingService.start('#profile_image');
-
-    // this.mediaSelectionService.setMultipleSelection(false);
-    // this.objectListService.clear();
-
+    console.log('change Avatar image');
     let loadingId: string = '#profile_image';
     this.selectPhoto((photos: any) => {
       // Update avatar image
