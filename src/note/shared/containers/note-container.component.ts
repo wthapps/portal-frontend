@@ -8,7 +8,6 @@ import * as listReducer from '../reducers/features/list-mixed-entities';
 import * as context from '../reducers/context';
 import { Observable } from 'rxjs/Observable';
 import { Folder } from '../reducers/folder';
-import { UserService } from '@shared/services/user.service';
 import { noteConstants, NoteConstants } from "../config/constants";
 import { Note } from "@shared/shared/models/note.model";
 
@@ -19,7 +18,6 @@ declare var _: any;
   templateUrl: 'note-container.component.html'
 })
 export class ZNoteContainerComponent implements OnInit {
-  @ViewChild('introModal') introModal: any;
   @Input() breadcrumbs: any;
 
   viewOption: string = 'grid';
@@ -35,8 +33,7 @@ export class ZNoteContainerComponent implements OnInit {
   noteConstants: NoteConstants = noteConstants;
 
   constructor(private noteService: ZNoteService,
-     private userService: UserService,
-     private store: Store<any>) {
+    private store: Store<any>) {
     this.noteItems$ = this.store.select(listReducer.getNotes);
     this.folderItems$ = this.store.select(listReducer.getFolders);
     this.allItems$ = this.store.select(listReducer.getAllItems);
@@ -47,7 +44,6 @@ export class ZNoteContainerComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(!_.get(this.userService.getSyncProfile(), 'introduction.note')) this.introModal.open();
   }
 
   onNewNote() {

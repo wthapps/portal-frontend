@@ -27,6 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { ZNoteDetailModule } from './detail/detail.module';
 import { ZNoteSharedByMeModule } from './shared-by-me/shared-by-me.module';
+import { ModalModule } from '@wth/shared/modals/modals.module';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { ZNoteSharedByMeModule } from './shared-by-me/shared-by-me.module';
     ZNoteSettingsModule,
     ZNoteTrashModule,
     ZNotePhotoModule,
+    ModalModule,
     SharedModule.forRoot(),
     ZNoteSharedModule.forRoot(),
 

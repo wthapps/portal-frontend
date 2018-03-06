@@ -6,28 +6,36 @@ import {
   CanActivateChild
 }                           from '@angular/router';
 import { AuthService }      from './auth.service';
-import { Constants } from '../constant/config/constants';
-import { UserService } from "./user.service";
+import { Constants } from '@wth/shared/constant';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let url: string = window.location['href'];
     return this.checkLogin(url);
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.canActivate(route, state);
   }
 
-  checkLogin(url: string): Promise<boolean> {
-    if (this.userService.loggedIn && this.userService.validProfile()) {
-      return Promise.resolve(true);
+  private checkLogin(url: string): boolean {
+    if (this.authService.loggedIn) {
+        return true;
     }
-    window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${window.location['href']}`;
-    return Promise.resolve(false);
+    this.authService.redirectUrl = window.location.href;
+    let currentUrl = location.toString();
+
+    if (`${Constants.baseUrls}/` === currentUrl) {
+      this.router.navigate(['/login']);
+    } else {
+      location.href = `${Constants.baseUrls.app}/login?returnUrl=${window.location.href}`;
+    }
+
+    return false;
   }
+
 }

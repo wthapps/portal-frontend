@@ -5,7 +5,7 @@ import {
   ViewEncapsulation,
   ViewChild,
   ViewContainerRef,
-  ComponentFactoryResolver
+  ComponentFactoryResolver, AfterViewInit
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -31,6 +31,8 @@ import * as context from './shared/reducers/context';
 import * as progressContext from './shared/reducers/progress-context';
 import { MixedEntityService } from './shared/mixed-enity/mixed-entity.service';
 import { noteConstants } from "note/shared/config/constants";
+import { AuthService } from '@wth/shared/services';
+import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 
 
 declare var _: any;
@@ -51,8 +53,10 @@ declare var _: any;
     ZNoteSharedModalFolderMoveComponent
   ]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  @ViewChild('introduction') introduction: IntroductionModalComponent;
+
   modalComponent: any;
   modal: any;
   folders$: Observable<Folder[]>;
@@ -61,6 +65,7 @@ export class AppComponent implements OnInit, OnDestroy {
   destroySubject: Subject<any> = new Subject();
 
   constructor(private router: Router,
+              private authService: AuthService,
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               private apiBaseService: ApiBaseService,
@@ -84,6 +89,12 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
+  }
+
+  ngAfterViewInit() {
+    if (!this.authService.user.introduction || !this.authService.user.introduction.note) {
+      this.introduction.open();
+    }
   }
 
   ngOnDestroy() {

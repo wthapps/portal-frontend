@@ -22,7 +22,6 @@ declare var $: any;
 export class ConversationDetailComponent implements CommonEventAction, OnInit, OnDestroy {
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
-  @ViewChild('introModal') introModal: any;
   item: any;
   events: any;
 
@@ -51,9 +50,7 @@ export class ConversationDetailComponent implements CommonEventAction, OnInit, O
     this.commonEventSub = this.commonEventService.filter((event: CommonEvent) => event.channel == 'chatCommonEvent').subscribe((event: CommonEvent) => {
       this.doEvent(event);
     });
-
     this.item = this.chatService.getCurrentMessages();
-    if(!this.chatService.userService.getSyncProfile().introduction || !this.chatService.userService.getSyncProfile().introduction.chat) this.introModal.open();
   }
 
   doEvent(event: CommonEvent) {

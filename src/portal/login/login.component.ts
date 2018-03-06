@@ -49,11 +49,7 @@ export class LoginComponent implements OnInit {
               private appearancesChannelService: AppearancesChannelService,
               private ng2Cable: Ng2Cable,
               private authService: AuthService) {
-    // if (this.userService.loggedIn) {
-    //   this.router.navigate(['/account/setting/profile']);
-    // }
-
-    if (this.userService.loggedIn && this.flagsRelease) {
+    if (this.authService.loggedIn && this.flagsRelease) {
       window.location.href = Constants.urls.afterLogin;
     }
 
@@ -72,6 +68,15 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loadingService.stop();
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+    if (this.authService.loggedIn && this.returnUrl.length > 0) {
+      if (this.returnUrl.indexOf(Constants.baseUrls.app) >= 0) {
+        this.router.navigate([this.returnUrl]);
+      } else {
+        window.location.href = this.returnUrl;
+      }
+    }
   }
 
   onSubmit(values: any): void {
@@ -85,25 +90,45 @@ export class LoginComponent implements OnInit {
       let password = values.password;
       let body = JSON.stringify({user: {email, password}});
 
-      // this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
-      this.userService.login('users/sign_in', body)
-        .subscribe((result) => {
-            if (result) {
-              // Initialize websocket
-              // this.appearancesChannelService.subscribe();
-              // this.chatSupportAppearanceChannel.subscribe();
+      // this.userService.login('users/sign_in', body)
+      //   .subscribe((result) => {
+      //       if (result) {
+      //         // Initialize websocket
+      //         // this.appearancesChannelService.subscribe();
+      //         // this.chatSupportAppearanceChannel.subscribe();
+      //
+      //         if (this.flagsRelease) {
+      //           window.location.href = Constants.urls.afterLogin;
+      //         } else {
+      //           // Redirect to previous url
+      //           if (this.returnUrl == undefined) {
+      //             this.returnUrl = (this.userService.getSyncProfile() && this.userService.getSyncProfile().took_a_tour) ? '' : Constants.baseUrls.myAccount;
+      //           }
+      //           window.location.href = this.returnUrl;
+      //
+      //           // TODO Store payment info
+      //         }
+      //       }
+      //     },
+      //     error => {
+      //       // stop loading
+      //       this.loadingService.stop();
+      //       this.toastsService.danger('Invalid email or password');
+      //       //console.log('login error:', error);
+      //     }
+      //   );
 
-              if (this.flagsRelease) {
-                window.location.href = Constants.urls.afterLogin;
-              } else {
-                // Redirect to previous url
-                if (this.returnUrl == undefined) {
-                  this.returnUrl = (this.userService.getSyncProfile() && this.userService.getSyncProfile().took_a_tour) ? '' : Constants.baseUrls.myAccount;
-                }
-                window.location.href = this.returnUrl;
-
-                // TODO Store payment info
-              }
+      this.authService.login(body)
+        .subscribe((response: any) => {
+            this.loadingService.stop();
+            let returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+            console.log('returnUrl:::', returnUrl);
+            if (returnUrl === '') {
+              this.router.navigate(['']);
+            } else if (returnUrl.indexOf(Constants.baseUrls.app) >= 0) {
+              this.router.navigate([returnUrl]);
+            } else {
+              window.location.href = returnUrl;
             }
           },
           error => {

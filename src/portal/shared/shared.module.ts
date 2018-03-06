@@ -3,7 +3,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { PortalSharedFooterComponent, PortalSharedFooterPromotionComponent } from './footer/footer.component';
-import { PortalHeaderComponent } from './header/header.component';
 import { SharedModule } from '../../shared/shared.module';
 import { CoreModule } from '../../core/core.module';
 
@@ -22,12 +21,10 @@ import { CoreModule } from '../../core/core.module';
   declarations: [
     PortalSharedFooterComponent,
     PortalSharedFooterPromotionComponent,
-    PortalHeaderComponent
   ],
   exports: [
     PortalSharedFooterComponent,
     PortalSharedFooterPromotionComponent,
-    PortalHeaderComponent,
     SharedModule
   ]
 })

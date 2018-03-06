@@ -26,7 +26,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { environment } from '@env/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers, metaReducers, appEffects } from './store';
-import { ConfirmationModule } from "my-account/confirmation/confirmation.module";
+import { ConfirmationModule } from './confirmation/confirmation.module';
 
 
 @NgModule({

@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiBaseService } from "@shared/services";
 import { Router, ActivatedRoute } from "@angular/router";
-import { PostEditComponent } from "social/shared/second-routes/post/post-edit.component";
-import { PostService } from "social/shared/second-routes/post/shared/post.service";
+import { PostEditComponent } from '../shared/second-routes/post/post-edit.component';
+import { PostService } from '../shared/second-routes/post/shared/post.service';
 
 @Component({
   selector: 'app-social-news',

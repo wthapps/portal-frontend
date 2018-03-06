@@ -130,8 +130,8 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       this.toastsService.danger('Cannot verify your email address. Please try again');
     }
     this.apiBaseService.post('users/get_user').subscribe((res: any) => {
-      this.verified = res.data.verified
-    })
+      this.verified = res.data.verified;
+    });
     // Set value before updating form (checking user leave this page)
     this.formValue = this.form.value;
 
@@ -207,7 +207,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     // console.log(event);
     switch (event.action) {
       case 'SELECT_CROP:DONE':
-        console.debug('inside doEvent - SELECT_CROP:DONE', event);
         // Change user profile
         this.updateProfileImageBase64(event.payload);
         break;

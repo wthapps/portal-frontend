@@ -1,6 +1,5 @@
 <div class="wrapper">
-  <wth-header-navbar class="header">
-
+  <wth-header-navbar class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
     <media-shared-header></media-shared-header>
   </wth-header-navbar>
   <main class="main">
@@ -32,3 +31,13 @@
 </div>
 <h-file-select></h-file-select>
 <h-file-select-crop></h-file-select-crop>
+<wth-introduction #introduction
+                    [after]="{media: true}"
+                    [data]="[
+  {
+    title: 'Welcome to WTH!Pictures',
+    icon: '../../assets/icons/pictures-50x50.png',
+    content: 'WTH!Photo help you store, organize and share your photos.'
+  }
+  ]">
+</wth-introduction>

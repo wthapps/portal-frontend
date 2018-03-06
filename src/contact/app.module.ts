@@ -15,6 +15,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderNavbarModule } from '../shared/shared/components/navbar/navbar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalModule } from '@wth/shared/modals/modals.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MyProfileModule,
     GroupModule,
     SettingsModule,
+    ModalModule,
     ContactSharedModule.forRoot(),
 
     // WTHApps modules

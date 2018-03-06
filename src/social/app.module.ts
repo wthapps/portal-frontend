@@ -21,6 +21,7 @@ import { ShortcutEffects } from './shared/effects/shortcut-effects';
 import { environment } from '@env/environment';
 import { appReducer } from './shared/reducers/index';
 import { SoProfileEffects } from './shared/effects/so-profile-effects';
+import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SocialPostsEffects } from './shared/effects/social-posts-effects';
 
 @NgModule({
@@ -33,6 +34,7 @@ import { SocialPostsEffects } from './shared/effects/social-posts-effects';
     ZSocialHomeModule,
     SocialSettingsModule,
     ZSocialPhotoModule,
+    ModalModule,
     ZSocialSharedModule.forRoot(),
     SharedModule.forRoot(),
     CoreModule.forRoot(),

@@ -123,6 +123,8 @@ export class UserService {
     this.cookieService.remove('logged_in', this.cookieOptionsArgs);
     this.cookieService.remove('profile', this.cookieOptionsArgs);
 
+    localStorage.removeItem('profile');
+
     this.loggedIn = false;
     this.profile = null;
   }
@@ -160,13 +162,12 @@ export class UserService {
   }
 
   updateProfile(profile: any) {
-    this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
+    localStorage.setItem('profile', JSON.stringify(profile));
     this.setProfile(profile);
     // this.soUserProfile = {...this._soProfile.getValue(), profile_image: profile.profile_image};
   }
 
   getNotificationSetting() {
-    console.debug('getNotificationSetting inside ...');
     if(!_.isEmpty(this._notificationSetting.getValue())) {
       console.warn('Notification Setting value: ', this._notificationSetting.getValue());
       return;
@@ -202,9 +203,9 @@ export class UserService {
 
     // TODO move string constants to config file
     this.cookieService.put('jwt', response.token, cookieOptionsArgs);
-    this.cookieService.put('profile', JSON.stringify(response.data), cookieOptionsArgs);
     this.cookieService.put('logged_in', 'true', cookieOptionsArgs);
     this.cookieService.put(Constants.cookieKeys.chatSupportId, response.data.uuid, cookieOptionsArgs);
+    localStorage.setItem('profile', JSON.stringify(response.data));
 
     this.loggedIn = true;
     this.profile = response.data;
@@ -213,8 +214,8 @@ export class UserService {
 
   private readUserInfo() {
     if (this.cookieService.get('logged_in')) {
-      if (this.cookieService.get('profile'))
-        this.setProfile(JSON.parse(this.cookieService.get('profile')));
+      if (localStorage.getItem('profile'))
+        this.setProfile(JSON.parse(localStorage.getItem('profile')));
 
       this.loggedIn = Boolean(this.cookieService.get('logged_in'));
     }
@@ -223,11 +224,5 @@ export class UserService {
   setProfile(profile: any) {
     this.profile = profile;
     this._profile.next(Object.assign(this._profile.getValue(), profile));
-  }
-
-  setProfileByKey(key: any, data: any) {
-    this.profile = this._profile.getValue()
-    this.profile[key] = data;
-    this._profile.next(Object.assign(this.profile));
   }
 }

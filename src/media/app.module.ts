@@ -24,6 +24,7 @@ import { StoreModule } from '@ngrx/store';
 
 import { EffectsModule } from '@ngrx/effects';
 import { appStore, appEffects } from './shared/store';
+import { ModalModule } from '@wth/shared/modals/modals.module';
 
 
 @NgModule({
@@ -43,7 +44,7 @@ import { appStore, appEffects } from './shared/store';
     ZMediaMyProfileModule,
 
     AppRoutingModule,
-
+    ModalModule,
     ZMediaSharedModule.forRoot(),
     CoreModule.forRoot(),
     SharedModule.forRoot(),

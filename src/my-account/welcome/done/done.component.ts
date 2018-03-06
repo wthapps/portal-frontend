@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { UserService } from '@wth/shared/services/user.service';
 import { Constants } from '@wth/shared/constant/config/constants';
+import { AuthService, UserService } from '@wth/shared/services';
 
 @Component({
   moduleId: module.id,
@@ -14,12 +14,13 @@ import { Constants } from '@wth/shared/constant/config/constants';
 export class WelcomeDoneComponent implements OnInit {
   navigateUrl: string = Constants.baseUrls.social + '/my-profile';
 
-  constructor(private userService: UserService,
+  constructor(private authService: AuthService,
+              private userService: UserService,
               private router: Router) {
   }
 
   ngOnInit(): void {
-    if (this.userService.getSyncProfile() && !this.userService.getSyncProfile().took_a_tour) {
+    if (this.authService.user && !this.authService.user.took_a_tour) {
       let body = JSON.stringify({
         took_a_tour: true
       });

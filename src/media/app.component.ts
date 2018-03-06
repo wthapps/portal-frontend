@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
@@ -9,6 +9,8 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 // import { AppSandbox } from './app.sandbox';
 import { State } from './shared/store';
 import { Store } from '@ngrx/store';
+import { AuthService } from '@wth/shared/services';
+import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 
 /**
  * This class represents the main application component.
@@ -20,13 +22,16 @@ import { Store } from '@ngrx/store';
   styleUrls: ['app.component.scss'],
   providers: []
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('introduction') introduction: IntroductionModalComponent;
+
   routerSubscription: Subscription;
 
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private wthConfirmService: WthConfirmService,
     mediaStore: Store<State>
   ) {
@@ -44,6 +49,12 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
+  }
+
+  ngAfterViewInit() {
+    if (!this.authService.user.introduction || !this.authService.user.introduction.media) {
+      this.introduction.open();
+    }
   }
 
   ngOnDestroy() {

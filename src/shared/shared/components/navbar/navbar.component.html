@@ -3,7 +3,7 @@
     <ng-content></ng-content>
 
     <div class="header-nav-right">
-      <ng-template [ngIf]="!userService.loggedIn">
+      <ng-template [ngIf]="!loggedIn">
         <div class="hidden-xs">
           <div class="btn-group header-nav-link">
             <a [routerLink]="['/signup']" class="btn btn-link" href="#">Sign up</a>
@@ -13,7 +13,7 @@
           </div>
         </div>
       </ng-template>
-      <ng-template [ngIf]="userService.loggedIn">
+      <ng-template [ngIf]="loggedIn">
         <div class="btn-group header-nav-search-btn visible-xs-inline-block">
           <button (click)="onShowSearchMobile($event)" type="button" class="btn btn-default">
             <i class="fa fa-search"></i>
@@ -121,7 +121,7 @@
                   aria-haspopup="true"
                   aria-expanded="false">
             <span class="avatar-xxs">
-              <img alt="" width="30" [src]="(userService?.profile$ | async)?.profile_image || defaultAvatar"
+              <img alt="" width="30" [src]="user?.profile_image || defaultAvatar"
                    class="lazyload">
             </span>
             <i class="fa fa-caret-down ml10 hidden-xs"></i>
@@ -131,16 +131,17 @@
               <div class="media p10">
                 <div class="media-left">
                   <div class="avatar-md">
-                    <img alt="" [src]="(userService?.profile$ | async)?.profile_image">
+                    <img alt="" [src]="user?.profile_image || defaultAvatar">
+
                   </div>
                 </div>
                 <div class="media-body">
-                  <p class="media-heading bold mb0">{{ (userService?.profile$ | async)?.first_name }}
-                    {{ (userService?.profile$ | async)?.last_name }}</p>
-                  <small class="text-fade">{{ (userService?.profile$ | async)?.email }}</small>
+                  <p class="media-heading bold mb0">{{ user?.first_name }}
+                    {{ user?.last_name }}</p>
+                  <small class="text-fade">{{ user?.email }}</small>
                   <div class="navbar-nav-plan m">
-                    <p class="media-heading bold">{{ (userService?.profile$ | async)?.plan?.name }}</p>
-                    <button class="btn btn-primary" *ngIf="(userService?.profile$ | async)?.plan?.is_trial"
+                    <p class="media-heading bold">{{ user?.plan?.name }}</p>
+                    <button class="btn btn-primary" *ngIf="user?.plan?.is_trial"
                             (click)="redirectTo('my', 'plans', $event)">
                       <i class="fa fa-arrow-circle-up"></i> Upgrade
                     </button>

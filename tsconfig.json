@@ -18,7 +18,14 @@
       "@env/*": ["environments/*"],
       "@shared/*": ["shared/*"],
       "@wth/shared/*": ["shared/*"],
-      "@wth/core/*": ["core/*"]
+      "@wth/core/*": ["core/*"],
+      "@portal/*": ["portal/*"],
+      "@account/*": ["my-account/*"],
+      "@social/*": ["social/*"],
+      "@media/*": ["media/*"],
+      "@chat/*": ["chat/*"],
+      "@contacts/*": ["contact/*"],
+      "@notes/*": ["note/*"]
     },
     "lib": [
       "es2017",
