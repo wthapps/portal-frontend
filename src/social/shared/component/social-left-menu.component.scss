@@ -40,6 +40,13 @@
     text-overflow: ellipsis;
     display: block;
   }
+  .menuleft-nav-sub-display {
+    span {
+      padding: 8px;
+      color: $text-color-fade;
+      @include opacity(1);
+    }
+  }
   .menuleft-nav-sub-action {
     span {
       padding: 8px;

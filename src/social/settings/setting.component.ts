@@ -24,7 +24,7 @@ export class ZSocialSettingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.socialService.user.get().subscribe((res: any) => {
+    this.socialService.user.get().toPromise().then((res: any) => {
         this.user = new SoUser().from(res.data);
       },
     );

@@ -3,7 +3,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 
-import { UserService } from '../shared/services/user.service';
+import { AuthService } from '@wth/shared/services';
+import { Constants } from '@wth/shared/constant';
 
 declare let $: any;
 
@@ -18,17 +19,18 @@ declare let $: any;
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
+  logoUrl: string = Constants.baseUrls.cdn + '/logo/logo.png';
 
   constructor(
     private router: Router,
-    private userService: UserService
+    private authService: AuthService
   ) {
 
   }
 
   ngOnInit() {
-    if (this.userService.loggedIn && this.userService.getSyncProfile() && !this.userService.getSyncProfile().took_a_tour) {
-      // window.location.href = Constants.baseUrls.myAccount;
+    if (this.authService.loggedIn && this.authService.user && !this.authService.user.took_a_tour) {
+      window.location.href = Constants.baseUrls.myAccount;
     }
 
     this.routerSubscription = this.router.events

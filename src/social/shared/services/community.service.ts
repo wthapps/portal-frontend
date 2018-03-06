@@ -88,6 +88,7 @@ export class SoCommunityService  {
   confirmDeleteCommunity(community: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.wthConfirmService.confirm({
+        acceptLabel: 'OK',
         message: `Are you sure to delete the community ${community.name}`,
         header: 'Delete Community',
         accept: () => {

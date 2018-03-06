@@ -19,6 +19,7 @@ import { ZChatMyProfileModule } from './my-profile/my-profile.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '@wth/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalModule } from '@wth/shared/modals/modals.module';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ZChatPhotoModule,
     ZChatMyProfileModule,
 
+    ModalModule,
     ZChatSharedModule.forRoot(),
     SharedModule.forRoot()
   ],

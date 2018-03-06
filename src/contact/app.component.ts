@@ -1,4 +1,7 @@
-import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit, OnDestroy,
+  AfterViewInit
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -20,8 +23,9 @@ import { GoogleApiService } from './shared/services/google-api.service';
 import { Config } from '../shared/constant/config/env.config';
 
 import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
-import { CommonEvent, CommonEventAction, CommonEventService } from '@wth/shared/services';
+import { AuthService, CommonEvent, CommonEventAction, CommonEventService } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 
 @Component({
   selector: 'app-root',
@@ -32,10 +36,11 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
     ZContactSharedSettingsComponent
   ]
 })
-export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
+  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  @ViewChild('introduction') introduction: IntroductionModalComponent;
 
   routerSubscription: Subscription;
-  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
   groups: Group[] = [];
@@ -49,6 +54,7 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
 
 
   constructor(private router: Router,
+              private authService: AuthService,
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               public contactService: ZContactService,
@@ -80,6 +86,12 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
       .then((groups: any[]) => console.debug('getAllGroups: ', groups))
       .then(() => this.contactService.initialLoad())
       .then(() => this.googleApiService.handleClientLoad());
+  }
+
+  ngAfterViewInit() {
+    if (!this.authService.user.introduction || !this.authService.user.introduction.contact) {
+      this.introduction.open();
+    }
   }
 
   ngOnDestroy() {

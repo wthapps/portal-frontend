@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 // import { AutoCompleteModule } from 'primeng/autocomplete';
 
-import * as fromRoot from 'social/shared/reducers';
+import * as fromRoot from '../../shared/reducers';
 import { SoShortcutService } from '../services/shortcut.service';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';

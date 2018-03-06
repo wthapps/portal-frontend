@@ -11,8 +11,8 @@ import { SharedModule } from '@wth/shared/shared.module';
 @NgModule({
   imports: [
     ZMediaSharedWithMeRoutingModule,
-    ZMediaSharedModule.forRoot(),
-    SharedModule.forRoot()
+    ZMediaSharedModule,
+    SharedModule
   ],
   declarations: [
     ZMediaSharedWithMeComponent

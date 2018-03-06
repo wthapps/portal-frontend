@@ -20,6 +20,10 @@ export class SoPostService {
     return this.getListSocialPosts(uuid2, type);
   }
 
+  getNewPostsCount(uuid: string = this.userService.getSyncProfile().uuid) {
+    return this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/get_new_social_posts_count`);
+  }
+
   getSettings(uuid: string) {
     return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`).debounceTime(250);
   }

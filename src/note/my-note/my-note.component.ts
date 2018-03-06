@@ -14,7 +14,6 @@ import { Folder } from '../shared/reducers/folder';
 import { Note } from '@shared/shared/models/note.model';
 import { AppStore } from '../shared/app-store';
 import { MixedEntityAction } from '../shared/mixed-enity/mixed-entity.action';
-import { UserService } from '@shared/services/user.service';
 import { noteConstants, NoteConstants } from "note/shared/config/constants";
 import { UrlService } from "@shared/services";
 import { BsModalComponent } from "ng2-bs3-modal";

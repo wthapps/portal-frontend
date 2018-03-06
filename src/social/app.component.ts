@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
 import { Config } from '@wth/shared/constant';
+import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+import { AuthService } from '@wth/shared/services';
 
 
 /**
@@ -17,12 +19,14 @@ import { Config } from '@wth/shared/constant';
   styleUrls: ['app.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('introduction') introduction: IntroductionModalComponent;
+
   routerSubscription: Subscription;
 
   // confirmInfo$: Observable<ConfirmInfo>;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -31,6 +35,12 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
+  }
+
+  ngAfterViewInit() {
+    if (!this.authService.user.introduction || !this.authService.user.introduction.social) {
+      this.introduction.open();
+    }
   }
 
   ngOnDestroy() {

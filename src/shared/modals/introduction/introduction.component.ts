@@ -4,7 +4,7 @@ import { UserService } from '@wth/shared/services';
 
 
 @Component({
-  selector: 'introduction-modal',
+  selector: 'wth-introduction',
   styleUrls: ['introduction.component.css'],
   templateUrl: 'introduction.component.html'
 })

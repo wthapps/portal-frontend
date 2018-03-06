@@ -18,7 +18,7 @@ import { ApiBaseService, UserService } from '@wth/shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
 import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { PostService } from './shared/post.service';
-import { getSoProfile } from '../../reducers/index';
+import { getSoProfile, SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE } from '../../reducers/index';
 
 @Component({
   selector: 'so-post-list',
@@ -68,10 +68,11 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.profile$ = this.userService.getAsyncProfile();
     // Support get route params from parent route as well as current route. Ex: Profile post page
     let parentRouteParams = this.route.parent.paramMap;
+    let reloadQueryParam = this.route.queryParamMap; // .filter(queryParamM => !!queryParamM.get('r'));
     this.showLoading = document.getElementById('post-list-loading') !== null;
 
     this.route.paramMap
-      .combineLatest(parentRouteParams)
+      .combineLatest(parentRouteParams, reloadQueryParam)
       .takeUntil(this.destroySubject)
       .map(([paramMap, parentParamMap]: any) => {
         this.startLoading();
@@ -166,6 +167,7 @@ export class PostListComponent implements OnInit, OnDestroy {
             this.items.unshift(..._.map([response.data], this.mapPost)); // Adding new post at the beginning of posts array
             this.postEditModal.close();
             this.postIsEmpty = false;
+            this.store.dispatch({type: SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE, payload: response.data.privacy });
           },
           (error: any) => {
             console.log('error', error);
@@ -185,12 +187,18 @@ export class PostListComponent implements OnInit, OnDestroy {
               this.items[idx] = editedItem;
             }
 
+            this.store.dispatch({type: SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE, payload: response.data.privacy });
+
           },
           (error: any) => {
             console.log('error', error);
           }
         );
     }
+  }
+
+  updateUserSettings(privacy: string) {
+    // this.store.dispatch({type: SO_PROFILE_UPDATE_DONE, payload: res.data});
   }
 
   dismiss(item: any) {

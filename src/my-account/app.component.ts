@@ -23,7 +23,7 @@ import { Config } from '@shared/constant/config/env.config';
 import { Store } from '@ngrx/store';
 import * as fromRoot from './store';
 import * as fromAccount from './store/account';
-import { UserService } from '@wth/shared/services';
+import { AuthService, UserService } from '@wth/shared/services';
 
 
 declare let $: any;
@@ -61,6 +61,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private subscriptionService: SubscriptionService,
     private toastsService: ToastsService,
     private userService: UserService,
+    private authService: AuthService,
     private store: Store<fromRoot.State>
   ) {
     this.commonEventService.filter((event: any) => event.channel == 'my_account').subscribe((event: any) => {

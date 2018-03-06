@@ -13,7 +13,6 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: 'photo-list.component.html'
 })
 export class ZMediaPhotoListComponent implements OnInit {
-  @ViewChild('introModal') introModal: any;
   photos: Observable<Array<any>>;// = this.photoSandBox.photo$;
 
   constructor(
@@ -26,9 +25,5 @@ export class ZMediaPhotoListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch({type: ActionTypes.GET_ALL, payload: null});
-
-    if (!_.get(this.userService.getSyncProfile(), 'introduction.media')) {
-      this.introModal.open();
-    }
   }
 }

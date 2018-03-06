@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <wth-header-navbar class="header">
+  <wth-header-navbar class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
     <note-shared-header></note-shared-header>
   </wth-header-navbar>
   <main class="main">
@@ -24,3 +24,13 @@
   <h-file-select-crop></h-file-select-crop>
   <z-note-share-progress></z-note-share-progress>
 </div>
+<wth-introduction #introduction
+                    [after]="{note: true}"
+                    [data]="[
+  {
+    title: 'Welcome to WTH!Notes',
+    icon: '../../assets/icons/notes-50x50.png',
+    content: 'WTH!Notes helps you organize all your notes in an easy-to-use filing system.'
+  }
+  ]">
+</wth-introduction>

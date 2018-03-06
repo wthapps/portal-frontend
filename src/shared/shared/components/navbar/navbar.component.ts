@@ -1,5 +1,7 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild } from '@angular/core';
-import { UserService } from '../../../services/user.service';
+import {
+  Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild,
+  Input
+} from '@angular/core';
 import { Constants } from '../../../constant/config/constants';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { ChannelService } from '../../../channels/channel.service';
@@ -7,10 +9,11 @@ import { NotificationService } from '../../../services/notification.service';
 import { Router } from '@angular/router';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
+import { AuthService } from '@wth/shared/services';
+import { User } from '@wth/shared/shared/models';
 
 declare var $: any;
 declare var _: any;
-declare let App: any; //This App stands for ActionCable
 
 /**
  * This class represents the navigation bar component.
@@ -22,6 +25,10 @@ declare let App: any; //This App stands for ActionCable
   encapsulation: ViewEncapsulation.None
 })
 export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
+  @Input() user: User;
+  @Input() loggedIn: boolean;
+  @ViewChild('notifications') notificationListComponent: NotificationListComponent;
+
   tooltip: any = Constants.tooltip;
   defaultAvatar: string = Constants.img.avatar;
   showUpdatedVersion: boolean = false;
@@ -29,7 +36,6 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   newVersion: string;
   constants: any;
   urls: any = Constants.baseUrls;
-
   type: string = 'update'; // update , connection
 
   @HostListener('document:click', ['$event']) clickedOutside($event: any) {
@@ -37,14 +43,12 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showSearchMobile = false;
   }
 
-  @ViewChild('notifications') notificationListComponent: NotificationListComponent;
-
-  constructor(public userService: UserService,
-              private navigateService: WTHNavigateService,
+  constructor(private navigateService: WTHNavigateService,
               private channelService: ChannelService,
               private router: Router,
               public connectionService: ConnectionNotificationService,
-              public notificationService: NotificationService) {
+              public notificationService: NotificationService,
+              public authService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -90,21 +94,22 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   logout() {
-    this.userService.logout('users/sign_out')
-      .take(1)
-      .subscribe(
-        () => {
-          window.location.href = `${Constants.baseUrls.app}/login`;
-          // this.userService.deleteUserInfo();
-          // this.appearancesChannelService.unsubscribe();
-          // this.router.navigate(['/login']);
-        },
-        error => {
-          this.userService.deleteUserInfo();
-          // this.router.navigate(['/login']);
-          // console.log('logout error', error);
-        }
-      );
+    this.authService.logout();
+    // this.userService.logout('users/sign_out')
+    //   .take(1)
+    //   .subscribe(
+    //     () => {
+    //       window.location.href = `${Constants.baseUrls.app}/login`;
+    //       // this.userService.deleteUserInfo();
+    //       // this.appearancesChannelService.unsubscribe();
+    //       // this.router.navigate(['/login']);
+    //     },
+    //     error => {
+    //       this.userService.deleteUserInfo();
+    //       // this.router.navigate(['/login']);
+    //       // console.log('logout error', error);
+    //     }
+    //   );
   }
 
   redirectTo(domain: string = '', path: string = '', event: any) {
