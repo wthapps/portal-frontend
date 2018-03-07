@@ -10,7 +10,7 @@ import { CommonEventService } from '@wth/shared/services/common-event/common-eve
 
 declare var _: any;
 declare var $: any;
-declare let moment:any;
+declare let moment: any;
 
 
 @Component({
@@ -43,10 +43,10 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   fullAmount: any = this.fullAccountCount * this.fullPrice;
   subAmount: any = this.subAccountCount * this.subPrice;
   accountAmount: any = this.fullAmount + this.subAmount;
-  currentAmount: any = this.fullPrice;
 
   defaultDate: string = moment().subtract(13, 'years').calendar(); // at least 13 year-old
   maxDate: Date = new Date(moment().subtract(13, 'years').calendar());
+  subscription: any;
 
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService) {
   }
@@ -64,10 +64,11 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   * @data: array of item
   * @mode: add or edit or view. default is add
   * */
-  open(options: any = {mode:'add', data: undefined}) {
+  open(options: any = {mode:'add', data: undefined, subscription: {}}) {
     this.subAccountCount = 0;
     this.fullAccountCount = 0;
     this.accounts = options.accounts;
+    this.subscription = options.subscription;
     this.data = options.data;
     this.initialize(this.data);
     this.modal.open(options).then();
@@ -151,21 +152,16 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:subscription:open_subscription_update_modal',
-      payload: {mode: 'edit',
+      payload: {
+        mode: 'edit',
         data: this.data,
         accountAction: 'add',
         accounts: this.accounts,
-        subscription: {
-          accountCount: this.accountCount,
-          accountAmount: this.accountAmount,
-          currentAmount: this.currentAmount,
-          subAccountCount: this.subAccountCount,
-          fullAccountCount: this.fullAccountCount,
-          subPrice: this.subPrice,
-          fullPrice: this.fullPrice,
-          billingDate: moment()
-        }
-      }
+        editing: {
+          accountCount: this.subAccountCount,
+          accountPrice: this.subPrice
+        },
+        subscription: this.subscription
     });
   }
 

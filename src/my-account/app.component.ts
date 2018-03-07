@@ -134,24 +134,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.modal.open({...event.payload, user: this.currentUser});
         break;
       case 'my_account:subscription:update':
-        this.wthConfirmService.confirm({
-          message: 'You are about Update Subscription.' +
-          'This action will change your subscription and you will be charged $' +
-          // event.payload.subscription.accountAmount + '/month' +
-          'Are you sure you want to update?',
-          header: 'Update subscription',
-          acceptLabel: 'Yes, Update',
-          accept: () => {
-            if (event.payload.mode == 'add') {
-              this.store.dispatch(new fromAccount.AddMany(event.payload));
-            } else {
-              this.store.dispatch(new fromAccount.Delete([...event.payload.accounts]));
-            }
-            // this.subscriptionService.update({id: 0, ...event.payload}).subscribe((response: any) => {
-            //   this.toastsService.success('You have just changed your subscription successfully!')
-            // });
-          }
-        });
+        if (event.payload.mode === 'add') {
+          this.store.dispatch(new fromAccount.AddMany(event.payload));
+        } else if (event.payload.mode === 'delete') {
+          this.store.dispatch(new fromAccount.Delete([...event.payload.accounts]));
+        }
         break;
     }
   }

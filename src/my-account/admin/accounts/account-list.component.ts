@@ -16,6 +16,7 @@ import { Store, select } from '@ngrx/store';
 
 import * as fromRoot from '../../store';
 import * as fromAccount from '../../store/account';
+import { ApiBaseService } from '@wth/shared/services';
 
 declare let _: any;
 
@@ -34,7 +35,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
   currentUser: any;
   modal: any;
   user: Observable<any>;
-
+  subscription: any;
 
   private destroySubject: Subject<any> = new Subject();
 
@@ -46,6 +47,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
     private loadingService: LoadingService,
     private wthConfirmService: WthConfirmService,
     private userService: UserService,
+    private api: ApiBaseService,
     private store: Store<fromRoot.State>
   ) {
     this.user = this.store.pipe(select(fromRoot.selectAllUsers));
@@ -56,26 +58,20 @@ export class AccountListComponent implements OnInit, OnDestroy {
 
     this.store.dispatch({type: fromAccount.ActionTypes.GET_ACCOUNTS, payload: {...this.userService.getSyncProfile()}});
 
-    // this.accountService.getAll().subscribe((response: any) => {
-    //   this.items = response.data;
-    // });
+    this.api.get(`account/accounts/${this.user.id}/subscription`).subscribe(
+      (response: any) => {
+        this.subscription = response.data;
+        // if (response.data.next_billing_date === null) {
+        //   this.subscription.next_billing_date = moment().add(1, 'months');
+        // }
+      }
+    );
   }
 
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
   }
-
-  openAccountAddModal(modal) {
-    // this.modal = modal;
-    // this.modal.open();
-    this.commonEventService.broadcast({
-      channel: 'my_account',
-      action: 'my_account:account:open_account_list_edit_modal',
-      payload: {mode: 'edit', accountAction: 'add', data: new Array<any>(), accounts: this.items}
-    });
-  }
-
 
   doEvent(event: any) {
     this.loadingService.start('#loading');
@@ -117,7 +113,28 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_delete_modal',
-      payload: {mode: 'edit', accountAction: 'delete', data: [item], accounts: this.items}
+      payload: {
+        mode: 'edit',
+        accountAction: 'delete',
+        data: [item],
+        accounts: this.items,
+        subscription: this.subscription}
+    });
+  }
+
+  openAccountAddModal(modal) {
+    // this.modal = modal;
+    // this.modal.open();
+    this.commonEventService.broadcast({
+      channel: 'my_account',
+      action: 'my_account:account:open_account_list_edit_modal',
+      payload: {
+        mode: 'edit',
+        accountAction: 'add',
+        data: new Array<any>(),
+        accounts: this.items,
+        subscription: this.subscription
+      }
     });
   }
 

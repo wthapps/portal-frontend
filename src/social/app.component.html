@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <wth-header-navbar class="header">
+  <wth-header-navbar class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
     <social-shared-header></social-shared-header>
   </wth-header-navbar>
   <main class="main">

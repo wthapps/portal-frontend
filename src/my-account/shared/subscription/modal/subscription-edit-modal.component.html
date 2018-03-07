@@ -17,22 +17,20 @@
 
       <div class="panel panel-default pt0 mt0 mb0">
         <div class="panel-body pt0 mt0 mb0">
-          <h4>Pro plan</h4>
+          <h4>{{ plan.description }} plan</h4>
           <div class="row">
             <div class="col-xs-6 text-right" >
-              <div>New Full accounts:</div>
-              <div>New Sub accounts:</div>
+              <div>New accounts:</div>
               <div>Current billing amount:</div>
               <div>Total billing amount:</div>
               <div>Next billing date:</div>
             </div>
 
             <div class="col-xs-3 text-right">
-              <div><b> ${{ subscription.fullAccountCount * subscription.fullPrice}} </b></div>
-              <div><b> ${{ subscription.subAccountCount * subscription.subPrice}} </b></div>
-              <div><b> ${{ subscription.currentAmount }} </b></div>
-              <div><b> ${{ subscription.accountAmount + subscription.currentAmount }} </b></div>
-              <div><b> {{ subscription.billingDate | date: 'yMMMd' }} </b></div>
+              <div><b> ${{ editing?.accountCount * (editing?.accountPrice | number) }} </b></div>
+              <div><b> ${{ subscription?.amount | number }} </b></div>
+              <div style="width: 160px"><b> ${{ editing?.accountCount * (editing?.accountPrice | number) + (subscription?.amount | number) }}/month </b></div>
+              <div><b> {{ subscription?.next_billing_date | date: 'MMM d, y' }} </b></div>
             </div>
 
           </div>
@@ -41,30 +39,11 @@
 
       <div>
         <p>
-          *Email to new users will be automatically sent after your subscription is updated. This may take a few minutes
+          <input #chkAgree type="checkbox" checked> I read and agree to the
+          <a target="_blank" [href]="constants.baseUrls.app + '/policies/terms'"> Term of service</a> -
+          <a target="_blank" [href]="constants.baseUrls.app + '/policies/privacy'">Privacy &amp; policies</a>
         </p>
       </div>
-      <!--<table class="table table-striped table-middle">-->
-        <!--<thead>-->
-          <!--<tr>-->
-            <!--<th>Full name</th>-->
-            <!--<th>Email</th>-->
-            <!--<th>Account type</th>-->
-          <!--</tr>-->
-        <!--</thead>-->
-        <!--<tbody>-->
-          <!--<tr *ngFor="let item of items">-->
-            <!--<td><a href="javascript:void(0);" (click)="view()">{{ item.name }}</a>-->
-              <!--<span *ngIf="item.status == 'new'" class="bg-success p2">-->
-                <!--New-->
-              <!--</span>-->
-            <!--</td>-->
-            <!--<td><a rel="nofollow" target="_top"-->
-                   <!--href="mailto:{{ item.email }}">{{ item.email }}</a></td>-->
-            <!--<td> {{ item.parent_id == null ? 'Full account': 'Sub account' }} </td>-->
-          <!--</tr>-->
-        <!--</tbody>-->
-      <!--</table>-->
 
     </bs-modal-body>
 
@@ -73,9 +52,9 @@
         <button *ngIf="accountAction == 'add'" class="btn btn-outline-default btn-min pull-left"
                 (click)="edit()">Back</button>
         <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
-        <button class="btn btn-outline-primary btn-min pull-right"
+        <button class="btn btn-outline-primary btn-min pull-right" [disabled]="!chkAgree.checked"
                 *ngIf="mode == 'edit'"
-                (click)="update()">Update Subscription</button>
+                (click)="update()">Continue</button>
       </div>
     </bs-modal-footer>
   </bs-modal>
