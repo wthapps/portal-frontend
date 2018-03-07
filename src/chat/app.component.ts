@@ -28,8 +28,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
 
-  constructor(private router: Router,
-              private authService: AuthService,
+  constructor(public authService: AuthService,
+              private router: Router,
               private chatService: ChatService,
               private wthConfirmService: WthConfirmService) {
 

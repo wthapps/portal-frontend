@@ -30,8 +30,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
 
   constructor(
+    public authService: AuthService,
     private router: Router,
-    private authService: AuthService,
     private wthConfirmService: WthConfirmService,
     mediaStore: Store<State>
   ) {

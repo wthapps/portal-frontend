@@ -53,8 +53,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit, CommonEve
   private destroySubject: Subject<any> = new Subject<any>();
 
 
-  constructor(private router: Router,
-              private authService: AuthService,
+  constructor(public authService: AuthService,
+              private router: Router,
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               public contactService: ZContactService,

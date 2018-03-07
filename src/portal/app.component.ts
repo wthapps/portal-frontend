@@ -22,8 +22,8 @@ export class AppComponent implements OnInit, OnDestroy {
   logoUrl: string = Constants.baseUrls.cdn + '/logo/logo.png';
 
   constructor(
-    private router: Router,
-    private authService: AuthService
+    public authService: AuthService,
+    private router: Router
   ) {
 
   }

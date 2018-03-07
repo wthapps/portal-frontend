@@ -32,7 +32,7 @@
               <div><b> ${{ subscription.subAccountCount * subscription.subPrice}} </b></div>
               <div><b> ${{ subscription.currentAmount }} </b></div>
               <div><b> ${{ subscription.accountAmount + subscription.currentAmount }} </b></div>
-              <div><b> {{ subscription.billingDate | date: yMMMd }} </b></div>
+              <div><b> {{ subscription.billingDate | date: 'yMMMd' }} </b></div>
             </div>
 
           </div>

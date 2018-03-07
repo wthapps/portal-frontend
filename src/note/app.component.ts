@@ -64,8 +64,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   currentFolder: any;
   destroySubject: Subject<any> = new Subject();
 
-  constructor(private router: Router,
-              private authService: AuthService,
+  constructor(public authService: AuthService,
+              private router: Router,
               private resolver: ComponentFactoryResolver,
               private commonEventService: CommonEventService,
               private apiBaseService: ApiBaseService,

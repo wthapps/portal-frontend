@@ -1,21 +1,7 @@
-import { Component, OnInit, ViewChild, HostBinding } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {
-  FormGroup,
-  AbstractControl,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
-
-import { ReCaptchaComponent } from 'angular2-recaptcha/lib/captcha.component';
-
-
-import { LoadingService } from '../../shared/shared/components/loading/loading.service';
-import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
-import { CustomValidator } from '../../shared/shared/validator/custom.validator';
-import { fadeInAnimation } from '../../shared/shared/animations/route.animation';
-import { ApiBaseService, UrlService } from "@shared/services";
-import { Router, ActivatedRoute } from "@angular/router";
+import { ApiBaseService, UrlService } from '@shared/services';
+import { Router } from '@angular/router';
 
 /**
  * This class represents the lazy loaded AboutComponent.

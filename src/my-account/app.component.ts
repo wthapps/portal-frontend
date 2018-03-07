@@ -53,6 +53,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   currentUser: any;
 
   constructor(
+    public authService: AuthService,
     private router: Router,
     private resolver: ComponentFactoryResolver,
     private commonEventService: CommonEventService,
@@ -61,7 +62,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private subscriptionService: SubscriptionService,
     private toastsService: ToastsService,
     private userService: UserService,
-    private authService: AuthService,
     private store: Store<fromRoot.State>
   ) {
     this.commonEventService.filter((event: any) => event.channel == 'my_account').subscribe((event: any) => {
