@@ -142,6 +142,13 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
 
   onClick(item: any) {
     if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
+      this.objectListService.clear();
+      this.objectListService.addItem(
+        {
+          id: item.id,
+          object_type: item.object_type,
+        }
+      );
       this.completeDoubleClick.emit(item);
     }
     return false;
