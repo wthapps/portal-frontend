@@ -21,6 +21,8 @@ import { Constants } from '@wth/shared/constant';
 import { PhotoModalDataService, PhotoUploadService, UserService } from '@wth/shared/services';
 import { LoadingService } from "@shared/shared/components/loading/loading.service";
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -97,13 +99,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.photosCtrl = this.form.controls['photos'];
     // this.currentUser = this.userService.getSyncProfile();
     this.profile$ = this.userService.getAsyncProfile();
-
-
-    this.mediaSelectionService.selectedMedias$.subscribe((items) => {
-      console.debug(items);
-      // this.post = {...this.post};
-      this.post.photos = items;
-    });
 
   }
 
@@ -239,6 +234,15 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.mediaSelectionService.setMultipleSelection(true);
     // this.photoSelectDataService.open({return: true, selectingPhotos: this.post.photos});
     // this.subscribePhotoSelectEvents();
+
+    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+    this.mediaSelectionService.selectedMedias$.pipe(
+      // takeUntil(this.mediaSelectionService.open$)
+      takeUntil(close$)
+    ).subscribe((items) => {
+      console.debug(items);
+      this.post.photos = items;
+    });
   }
 
   dismiss(photos: any) {

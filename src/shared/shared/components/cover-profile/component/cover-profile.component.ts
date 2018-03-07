@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeUntil';
@@ -10,12 +10,14 @@ import { PhotoModalDataService } from '../../../../services/photo-modal-data.ser
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { take, takeUntil } from 'rxjs/operators';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 @Component({
   selector: 'cover-profile',
   templateUrl: 'cover-profile.component.html'
 })
-export class CoverProfileComponent {
+export class CoverProfileComponent implements OnDestroy {
   @Input() item: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -32,6 +34,9 @@ export class CoverProfileComponent {
     this.closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
   }
 
+  ngOnDestroy() {
+
+  }
 
   /*
    selectPhoto function Should work when there is 1 PhotoDataSelectComponent available in current view
@@ -58,9 +63,13 @@ export class CoverProfileComponent {
     //       this.loadingService.stop(loadingId);
     //     }, (err: any) => this.loadingService.stop(loadingId));
 
+    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+
     this.mediaSelectionService.setMultipleSelection(false);
     this.mediaSelectionService.open();
-    this.mediaSelectionService.selectedMedias$.subscribe((items) => {
+    this.mediaSelectionService.selectedMedias$.pipe(
+      takeUntil(close$)
+      ).subscribe((items) => {
       console.debug(items);
       if (items.length > 0)
         callback(items);

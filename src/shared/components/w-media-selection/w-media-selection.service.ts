@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { tap } from 'rxjs/operators/tap';
 
@@ -16,7 +17,7 @@ export class WMediaSelectionService {
   medias$: any;
   private mediasSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>(null);
 
-  selectedMedias$: any;
+  selectedMedias$: Observable<any[]>;
   private selectedMediasSubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   mediaParent$: any;

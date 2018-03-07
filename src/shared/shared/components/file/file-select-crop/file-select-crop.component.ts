@@ -12,6 +12,8 @@ import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { Subject } from 'rxjs/Subject';
 import { CropImageComponent } from '@wth/shared/shared/components/file/file-crop/crop-image.component';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { takeUntil } from 'rxjs/operators';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 
 declare let $: any;
@@ -86,8 +88,18 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
       this.photoSelectDataService.open({editCurrentMode: editCurrentMode});
       this.subscribePhotoSelectEvents();
     }
-    else
+    else {
+      this.mediaSelectionService.setMultipleSelection(true);
       this.mediaSelectionService.open();
+
+      let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+      this.mediaSelectionService.selectedMedias$.pipe(
+        // takeUntil(this.mediaSelectionService.open$)
+        takeUntil(close$)
+      ).subscribe((items) => {
+        this.next(items);
+      });
+    }
   }
 
   editCurrentImage() {
