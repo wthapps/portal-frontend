@@ -338,6 +338,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       type: note.SELECT_ONE,
       payload: obj
     });
+    this.commonEventService.broadcast({channel: 'noteLeftMenu', action: 'expanded', payload: []});
     this.router.navigate([path]);
   }
 

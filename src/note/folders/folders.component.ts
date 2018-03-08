@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
 
 import { ZNoteService } from '../shared/services/note.service';
@@ -77,7 +77,6 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
           this.breadcrumbs.push({id: v.id, name: v.name, object_type: v.object_type, parent_id: v.parent_id, label: v.name, routerLink: this.initRoute + '/folders/' + v.id});
         });
       });
-
     });
   }
 

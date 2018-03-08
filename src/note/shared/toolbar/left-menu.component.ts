@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostBinding, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Constants } from '@shared/constant/config/constants';
 import { ZNoteService } from '../services/note.service';
 import * as fromFolder from '../actions/folder';
@@ -26,7 +26,8 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
   noteFoldersTree: any[] = [];
   noteFolders: Folder[] = [] ;
 
-  constructor(private store: Store<any>, private apiBaseService: ApiBaseService, private router: Router, private commonEventService: CommonEventService) {
+  constructor(private store: Store<any>, private apiBaseService: ApiBaseService,
+    private router: Router, private commonEventService: CommonEventService) {
     this.sub = this.store.select(fromRoot.getFoldersTree).subscribe((folders: any) => {
       this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: folders});
     });
@@ -38,7 +39,6 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
         event.payload = [event.payload];
       }
       event.payload = event.payload.filter((i: any) => {return i.object_type == 'folder'});
-
       switch(event.action) {
         // Update and create
         case 'update': {
@@ -52,6 +52,22 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
             this.destroy(folder, this.noteFoldersTree);
           }
           this.store.dispatch({type: folder.FOLDER_UPDATED, payload: this.noteFoldersTree});
+          break;
+        }
+        case 'expanded': {
+          // folders changes many times to reaches end state
+          this.store.select(fromRoot.getNotesState).take(3).subscribe((state: any) => {
+            Object.keys(state.folders).forEach((k: any) => {
+              this.update(state.folders[k], this.noteFoldersTree);
+            });
+          })
+          // folder path changes 2 times to reaches end state
+          this.store.select(fromRoot.getCurrentFolderPath).take(2).subscribe((folders: any) => {
+            folders.forEach((folder: any) => {
+              folder.expanded = true;
+              this.update(folder, this.noteFoldersTree);
+            })
+          })
           break;
         }
         default:
@@ -88,7 +104,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     $('.ui-panelmenu-headerlink-hasicon').removeClass('active');
   }
 
-  update(target: any, folders: any) {
+  update(target: any, folders: any, options: any = {}) {
     target.label = target.name;
     target.title = target.name;
     target.icon = 'fa-folder-o';
@@ -101,6 +117,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
           if (folder.id == target.id) {
             folder.label = target.label;
             folder.name = target.name;
+            folder.expanded = target.expanded;
           };
         }
       } else {
@@ -119,6 +136,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
             if (f.id == target.id) {
               f.label = target.label;
               f.name = target.name;
+              f.expanded = target.expanded;
             };
           }
         } else {
