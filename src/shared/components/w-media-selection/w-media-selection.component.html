@@ -4,6 +4,9 @@
     <button class="btn btn-search btn-default pull-right" type="button"><i class="fa fa-search"></i></button>
     <nav class="nav-tabs-wrap nav-tabs-wrap-md clearfix pull-left">
       <ul class="nav nav-tabs list-unstyled clearfix">
+        <li [ngClass]="{'active': currentTab == 'upload'}">
+          <a (click)="tabAction('upload')" href="javascript:;"><i class="fa fa-cloud-upload"></i> Upload</a>
+        </li>
         <li [ngClass]="{'active': currentTab == 'photos'}">
           <a (click)="tabAction('photos')" href="javascript:;"><i class="fa fa-photo"></i> Photos</a>
         </li>
@@ -31,7 +34,7 @@
     </w-object-toolbar-selected>
   </bs-modal-header>
   <bs-modal-body>
-    <div class="media-selection-toolbar">
+    <div *ngIf="currentTab !== 'upload'" class="media-selection-toolbar">
       <div *ngIf="currentTab == 'albums_detail' ||
             currentTab == 'favourites_detail' ||
             currentTab == 'shared_with_me_detail'"
@@ -50,70 +53,89 @@
       <w-object-toolbar-view class="pull-right"></w-object-toolbar-view>
     </div>
 
-    <ng-container *ngIf="medias$ | async as mediasList; else templateloading">
-      <ng-container *ngIf="mediasList?.length; else templateNodata">
-        <w-object-list class="media-selection-content gray-light"
-                       [data]="mediasList"
-                       [sortInline]="false"
-                       (completeSort)="onCompleteSort($event)"
-                       (completeLoadMore)="onCompleteLoadMore($event)"
-                       (completeDoubleClick)="onCompleteDoubleClick($event)">
-          <ng-template #columnBox let-item>
+    <ng-container *ngIf="currentTab === 'upload'">
+      <div class="media-selection-content gray-light">
+        <div class="media-selection-upload-wrap">
+          <dropzone class="dropzone-container"
+                    [config]="dropzoneConfig"
+                    [disabled]="dropzoneDisabled"
+                    [message]="'<h3><i class=\'fa fa-picture-o\'></i><span>Drag your photos here</span></h3>or<div><span class=\'btn btn-outline-primary\'><i class=\'fa fa-cloud-upload\'></i> Upload Photo</span></div>'"
+                    (error)="onUploadError($event)"
+                    (thumbnail)="onUploadThumbnail($event)"
+                    (success)="onUploadSuccess($event)">
+          </dropzone>
+        </div>
 
-            <!-------------- Album view --------------->
-            <ng-container *ngIf="item.object_type == 'album'">
-              <div class="wobject-box-img">
-                <img src="/assets/images_new/sizes/media.png"
-                     [ngStyle]="{'background': 'url(' + item.photo_default + ')'}"
-                     alt="">
-                <div class="wmedia-box-info">{{ item.photo_number }} photo<span *ngIf="item.photo_number>1">s</span>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="currentTab !== 'upload'">
+      <ng-container *ngIf="medias$ | async as mediasList; else templateloading">
+        <ng-container *ngIf="mediasList?.length; else templateNodata">
+          <w-object-list class="media-selection-content gray-light"
+                         [data]="mediasList"
+                         [sortInline]="false"
+                         (completeSort)="onCompleteSort($event)"
+                         (completeLoadMore)="onCompleteLoadMore($event)"
+                         (completeDoubleClick)="onCompleteDoubleClick($event)">
+            <ng-template #columnBox let-item>
+
+              <!-------------- Album view --------------->
+              <ng-container *ngIf="item.object_type == 'album'">
+                <div class="wobject-box-img">
+                  <img src="/assets/images_new/sizes/media.png"
+                       [ngStyle]="{'background': 'url(' + item.photo_default + ')'}"
+                       alt="">
+                  <div class="wmedia-box-info">{{ item.photo_number }} photo<span *ngIf="item.photo_number>1">s</span>
+                  </div>
                 </div>
-              </div>
-              <div class="wobject-box-name">
-                <span>{{ item.name }}</span>
-                <div class="wobject-box-action">
-                  <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}"></i>
+                <div class="wobject-box-name">
+                  <span>{{ item.name }}</span>
+                  <div class="wobject-box-action">
+                    <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}"></i>
+                  </div>
                 </div>
-              </div>
-            </ng-container>
+              </ng-container>
 
 
-            <!-------------- Photo view --------------->
-            <ng-container *ngIf="item.object_type == 'photo'">
-              <div class="wobject-box-img">
-                <img src="/assets/images_new/sizes/media.png"
-                     [ngStyle]="{'background': 'url(' + item.thumbnail_url + ')'}"
-                     alt="">
-              </div>
-              <div class="wobject-box-name">
-
-                <span>{{ item.name }}.{{ item.extension }}</span>
-                <div class="wobject-box-action">
-                  <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}"></i>
+              <!-------------- Photo view --------------->
+              <ng-container *ngIf="item.object_type == 'photo'">
+                <div class="wobject-box-img">
+                  <img src="/assets/images_new/sizes/media.png"
+                       [ngStyle]="{'background': 'url(' + item.thumbnail_url + ')'}"
+                       alt="">
                 </div>
-              </div>
-            </ng-container>
-          </ng-template>
-          <ng-template #columnFileSize let-item>
-            <span *ngIf="item.object_type == 'album'">{{ item.photo_number }}</span>
-            <span *ngIf="item.object_type == 'photo'">{{ item.size | bytes:0 }}</span>
-          </ng-template>
-        </w-object-list>
+                <div class="wobject-box-name">
+
+                  <span>{{ item.name }}.{{ item.extension }}</span>
+                  <div class="wobject-box-action">
+                    <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}"></i>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-template>
+            <ng-template #columnFileSize let-item>
+              <span *ngIf="item.object_type == 'album'">{{ item.photo_number }}</span>
+              <span *ngIf="item.object_type == 'photo'">{{ item.size | bytes:0 }}</span>
+            </ng-template>
+          </w-object-list>
+        </ng-container>
+        <ng-template #templateNodata>
+          <div class="media-selection-content gray-light">
+            <box-no-data [icon]="'fa fa-picture-o'"
+                         [title]="'There is no photo!'"
+                         [subTitle]="'There is no photo. Try to upload a file.'">
+            </box-no-data>
+          </div>
+        </ng-template>
       </ng-container>
-      <ng-template #templateNodata>
+      <ng-template #templateloading>
         <div class="media-selection-content gray-light">
-          <box-no-data [icon]="'fa fa-picture-o'"
-                       [title]="'There is no photo!'"
-                       [subTitle]="'There is no photo. Try to upload a file.'">
-          </box-no-data>
+          <box-loading></box-loading>
         </div>
       </ng-template>
     </ng-container>
-    <ng-template #templateloading>
-      <div class="media-selection-content gray-light">
-        <box-loading></box-loading>
-      </div>
-    </ng-template>
+
+
 
   </bs-modal-body>
 </bs-modal>

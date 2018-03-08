@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { Observable } from 'rxjs/Observable';
@@ -9,6 +8,7 @@ import { Media } from '@shared/shared/models/media.model';
 
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import 'rxjs/add/operator/takeUntil';
+import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 
 @Component({
   selector: 'w-media-selection',
@@ -18,7 +18,6 @@ import 'rxjs/add/operator/takeUntil';
 })
 
 export class WMediaSelectionComponent implements OnInit, OnDestroy {
-
   @ViewChild('modal') modal: BsModalComponent;
 
   medias$: Observable<Media[]>;
@@ -26,9 +25,19 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   selectedMedias$: Observable<Media[]>;
   multipleSelection$: Observable<boolean>;
 
-  currentTab: string; // photos, albums, albums_detail, favourites, shared_with_me
+  currentTab: string; // upload, photos, albums, albums_detail, favourites, shared_with_me
   nextLink: string;
   isLoading: boolean;
+
+  dropzoneConfig: DropzoneConfigInterface = {
+    clickable: true,
+    maxFiles: null, //1
+    autoReset: null,
+    errorReset: null,
+    cancelReset: null
+  };
+  dropzoneDisabled: Boolean = false;
+  dropzoneHasUpload: Boolean = false;
 
   constructor(private mediaSelectionService: WMediaSelectionService,
               private objectListService: WObjectListService) {
@@ -56,13 +65,18 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   initialState() {
     this.mediaSelectionService.clear();
-    this.currentTab = 'photos';
+    this.currentTab = 'upload'; //'photos';
     this.nextLink = 'media/photos';
     this.isLoading = false;
   }
 
   open(options: any = {return: false}) {
     this.modal.open().then();
+  }
+
+  close(options: any = {return: false}) {
+    this.mediaSelectionService.close();
+    this.modal.close().then();
   }
 
   dismiss(event: any): void {
@@ -84,13 +98,16 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   tabAction(action: string) {
     this.mediaSelectionService.clear();
     this.currentTab = action;
-    this.nextLink = this.buildNextLink();
-    this.getObjects();
 
-    if (this.currentTab === 'albums' || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me') {
-      this.objectListService.setObjectsDisabled(['album']);
-    } else {
-      this.objectListService.setObjectsDisabled([]);
+    if (this.currentTab !== 'upload') {
+      this.nextLink = this.buildNextLink();
+      this.getObjects();
+
+      if (this.currentTab === 'albums' || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me') {
+        this.objectListService.setObjectsDisabled(['album']);
+      } else {
+        this.objectListService.setObjectsDisabled([]);
+      }
     }
   }
 
@@ -116,7 +133,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   onInsert() {
     this.mediaSelectionService.setSelectedMedias(this.objectListService.getSelectedObjects());
-    this.modal.close().then();
+    this.close();
     this.objectListService.clear();
   }
 
@@ -148,6 +165,26 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.getObjects();
     }
   }
+
+
+  /**
+   * Dropzone
+   * @param args
+   */
+  onUploadError(args: any) {
+    console.log('onUploadError:', args);
+  }
+
+  onUploadSuccess(args: any) {
+    console.log('onUploadSuccess:', args);
+  }
+
+  onUploadThumbnail(args: any) {
+    console.log('onUploadThumbnail:', args);
+    console.log('onUploadThumbnail:', args[0]['dataURL']);
+    this.close();
+  }
+
 
   private buildNextLink() {
     let urlAPI = '';

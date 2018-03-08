@@ -5,15 +5,27 @@ import { BsModalModule } from 'ng2-bs3-modal';
 import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
 
 import { WMediaSelectionComponent } from './w-media-selection.component';
-import { WMediaSelectionService } from './w-media-selection.service';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
+
+import { DropzoneModule } from 'ngx-dropzone-wrapper';
+import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
+import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+
+const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
+  // Change this to your upload POST address:
+  url: 'https://httpbin.org/post',
+  maxFilesize: 50,
+  acceptedFiles: 'image/*',
+  autoProcessQueue: false
+};
 
 @NgModule({
   imports: [
     CommonModule,
     BsModalModule,
+    DropzoneModule,
     WObjectListModule,
     PipeModule,
     BoxNoDataModule,
@@ -26,7 +38,11 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
     WMediaSelectionComponent
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    {
+      provide: DROPZONE_CONFIG,
+      useValue: DEFAULT_DROPZONE_CONFIG
+    }
   ],
 })
 export class WMediaSelectionModule {

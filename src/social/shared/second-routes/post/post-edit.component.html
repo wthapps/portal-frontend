@@ -143,22 +143,10 @@
       </div>
       <div class="clearfix text-right">
         <!-- Single button -->
-        <div class="btn-group pull-left">
-          <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false">
-            <i class="fa fa-camera"></i>
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="javascript:;"><i class="fa fa-upload"></i> Upload from computer</a>
-            </li>
-            <li>
-              <a *ngIf="parent == null && showAddPhotosButton" (click)="addMorePhoto($event)" href="javascript:;">
-                <img src="/assets/icons/wth-grey.png" alt=""> Select from WTH!Picture
-              </a>
-            </li>
-          </ul>
-        </div>
+        <button *ngIf="parent == null && showAddPhotosButton" (click)="addMorePhoto($event)" type="button" class="btn btn-outline-default pull-left">
+          <i class="fa fa-camera"></i>
+        </button>
+
         <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">
           Cancel
         </button>

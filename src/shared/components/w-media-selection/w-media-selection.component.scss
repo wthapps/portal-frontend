@@ -1,4 +1,5 @@
 @import "../../../assets/styles/global";
+@import '~dropzone/dist/min/dropzone.min.css';
 
 .modal-media-selection {
   width: $container-md;
@@ -34,6 +35,7 @@
   }
   .media-selection-content {
     height: 400px;
+    position: relative;
     @include flexbox();
     @include justify-content(space-around);
     .wobject-view {
@@ -56,4 +58,64 @@
   //    white-space: nowrap;
   //  }
   //}
+}
+
+.media-selection-upload-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  .dropzone-container > {
+    .dropzone {
+      &.dz-wrapper {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 0;
+        .dz-message {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          margin: 0;
+          max-width: none;
+          width: 100%;
+          padding: 0;
+          border-width: 0;
+          font-size: $font-size-base;
+          display: block !important;
+        }
+        .dz-text {
+          font-size: 16px;
+          color: #a1a1a1;
+
+          h3 {
+            margin-top: 0;
+            font-size: 30px;
+            i {
+              font-size: 120px;
+            }
+            span {
+              display: block;
+            }
+          }
+          div {
+            margin: 20px 0 0;
+          }
+        }
+        .dz-preview {
+          display: none;
+        }
+      }
+      &.dz-started {
+        .dz-message {
+          visibility: hidden;
+        }
+      }
+    }
+  }
 }
