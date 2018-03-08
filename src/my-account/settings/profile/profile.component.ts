@@ -25,7 +25,6 @@ declare var $: any;
 declare var _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'my-setting-profile',
   templateUrl: 'profile.component.html'
 })

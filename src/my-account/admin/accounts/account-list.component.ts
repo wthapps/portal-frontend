@@ -16,14 +16,14 @@ import { Store, select } from '@ngrx/store';
 
 import * as fromRoot from '../../store';
 import * as fromAccount from '../../store/account';
-import { ApiBaseService } from '@wth/shared/services';
+import { ApiBaseService, AuthService } from '@wth/shared/services';
 
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'account-list',
   templateUrl: 'account-list.component.html',
+  styleUrls: ['account-list.component.scss'],
   providers: [InvitationService]
 })
 
@@ -36,10 +36,12 @@ export class AccountListComponent implements OnInit, OnDestroy {
   modal: any;
   user: Observable<any>;
   subscription: any;
+  parent: any;
 
   private destroySubject: Subject<any> = new Subject();
 
   constructor(
+    public authService: AuthService,
     private commonEventService: CommonEventService,
     private accountService: AccountService,
     private toaster: ToastsService,
@@ -54,16 +56,21 @@ export class AccountListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentUser = this.userService.getSyncProfile();
+    this.currentUser = this.authService.user;
 
     this.store.dispatch({type: fromAccount.ActionTypes.GET_ACCOUNTS, payload: {...this.userService.getSyncProfile()}});
 
-    this.api.get(`account/accounts/${this.user.id}/subscription`).subscribe(
+    this.api.get(`account/accounts/${this.currentUser.id}/subscription`).subscribe(
       (response: any) => {
         this.subscription = response.data;
         // if (response.data.next_billing_date === null) {
         //   this.subscription.next_billing_date = moment().add(1, 'months');
         // }
+      }
+    );
+    this.api.get(`account/accounts/${this.currentUser.id}/parent`).subscribe(
+      (response: any) => {
+        this.parent = response.data;
       }
     );
   }
@@ -93,6 +100,14 @@ export class AccountListComponent implements OnInit, OnDestroy {
     // }
   }
 
+  acceptRequest(item: any) {
+    this.commonEventService.broadcast({
+      channel: 'my_account',
+      action: 'my_account:account:accept_request_ownership',
+      payload: { user: item }
+    });
+  }
+
   view(item: any) {
     this.commonEventService.broadcast({
       channel: 'my_account',
@@ -100,6 +115,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
       payload: {mode: 'view', data: item}
     });
   }
+
 
   edit(item: any) {
     this.commonEventService.broadcast({
@@ -134,6 +150,19 @@ export class AccountListComponent implements OnInit, OnDestroy {
         data: new Array<any>(),
         accounts: this.items,
         subscription: this.subscription
+      }
+    });
+  }
+
+  openRequestOwnershipModal(modal) {
+    // this.modal = modal;
+    // this.modal.open();
+    this.commonEventService.broadcast({
+      channel: 'my_account',
+      action: 'my_account:account:open_request_ownership_modal',
+      payload: {
+        user: this.currentUser,
+        parent: this.parent
       }
     });
   }

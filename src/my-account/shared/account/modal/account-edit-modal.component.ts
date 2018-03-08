@@ -46,7 +46,7 @@ export class AccountEditModalComponent implements OnInit {
     this.mode = options.mode || 'edit';
     this.item = options.data;
     this.initialize();
-    if(options.data) {
+    if (options.data) {
 
       // this.form.controls['name'].setValue(this.item.name);
       // this.form.controls['name'].setValue(this.item.name);
@@ -62,12 +62,11 @@ export class AccountEditModalComponent implements OnInit {
   }
 
   close(options?: any) {
-    this.mode = 'view';
     this.modal.close(options).then();
   }
 
   initialize() {
-    if(this.form == undefined) {
+    if (this.form == undefined) {
       this.form = this.fb.group({
         'id': [this.item.id, Validators.compose([
           Validators.required
@@ -82,7 +81,7 @@ export class AccountEditModalComponent implements OnInit {
           Validators.required,
           Validators.minLength(8),
           CustomValidator.lowercaseUppercase,
-          CustomValidator.specialSymbolOrNumber
+          // CustomValidator.specialSymbolOrNumber
         ])]
       });
     }

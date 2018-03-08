@@ -13,12 +13,12 @@ import { Constants } from '@wth/shared/constant/config/constants';
 
 @Component({
   moduleId: module.id,
-  selector: 'my-billing-details',
-  templateUrl: 'details.component.html'
+  selector: 'my-payment-method',
+  templateUrl: 'payment-method.component.html'
 })
 
-export class MyBillingDetailsComponent implements OnInit {
-  pageTitle: string = 'Billing Details';
+export class PaymentMethodComponent implements OnInit {
+  pageTitle: string = 'Payment method';
   credit_card: CreditCard;
 
   private cookieOptionsArgs: CookieOptions = {

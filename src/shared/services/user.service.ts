@@ -162,6 +162,7 @@ export class UserService {
   }
 
   updateProfile(profile: any) {
+    localStorage.removeItem('profile');
     localStorage.setItem('profile', JSON.stringify(profile));
     this.setProfile(profile);
     // this.soUserProfile = {...this._soProfile.getValue(), profile_image: profile.profile_image};

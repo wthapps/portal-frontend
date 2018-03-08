@@ -162,7 +162,8 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
           accountPrice: this.subPrice
         },
         subscription: this.subscription
-    })
+      }
+    });
   }
 
   hide(event: any) {

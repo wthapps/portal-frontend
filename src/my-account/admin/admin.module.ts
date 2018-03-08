@@ -13,6 +13,7 @@ import { BsModalModule } from 'ng2-bs3-modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AccountCreatePartialComponent } from './accounts/account-create-partial.component';
+import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
 // import { MatInputModule, MatNativeDateModule } from '@angular/material';
 
 
@@ -27,8 +28,8 @@ import { AccountCreatePartialComponent } from './accounts/account-create-partial
     BsModalModule,
     PipeModule,
     MyAdminRoutingModule,
-    MySharedModule.forRoot(),
-    SharedModule.forRoot()
+    MySharedModule,
+    SharedModule
   ],
   declarations: [
     MyAdminComponent,
@@ -36,7 +37,8 @@ import { AccountCreatePartialComponent } from './accounts/account-create-partial
 
     // Account
     AccountListComponent,
-    AccountCreatePartialComponent
+    AccountCreatePartialComponent,
+    AccountRequestOwnershipModalComponent,
   ],
   exports: [
     MyAdminComponent,

@@ -24,6 +24,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from './store';
 import * as fromAccount from './store/account';
 import { AuthService, UserService } from '@wth/shared/services';
+import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
 
 
 declare let $: any;
@@ -42,6 +43,7 @@ declare let $: any;
     AccountDeleteModalComponent,
     AccountRequestSendModalComponent,
     AccountRequestAcceptModalComponent,
+    AccountRequestOwnershipModalComponent,
     SubscriptionEditModalComponent
   ]
 })
@@ -77,6 +79,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
+    window.addEventListener('storage', (data: any) => {
+      console.log('storage changed:::', data);
+    });
+
+    // fix scroll to top after changing route
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      window.scrollTo(0, 0);
+    });
   }
 
   ngAfterViewInit() {
@@ -115,14 +128,25 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         //   });
 
         break;
+      case 'my_account:account:open_request_ownership_modal':
+        this.loadModalComponent(AccountRequestOwnershipModalComponent);
+        this.modal.open({...event.payload});
+        break;
       case 'my_account:account:send_request_ownership':
-        this.toastsService.success('You have just sent request ownership successfully!')
+        this.accountService.requestOwnership(this.currentUser).subscribe((response: any) => {
+          this.toastsService.success('You have just sent request ownership successfully!');
+        });
         break;
       case 'my_account:account:accept_request_ownership':
-        this.toastsService.success('You have just accept request ownership successfully!')
+        this.accountService.acceptOwnership({
+            id: this.currentUser.id,
+            requestedId: event.payload.user.id
+          }).subscribe((response: any) => {
+          this.toastsService.success('You have just accepted request ownership successfully!');
+        });
         break;
       case 'my_account:account:reject_request_ownership':
-        this.toastsService.success('You have just reject request ownership successfully!')
+        this.toastsService.success('You have just reject request ownership successfully!');
         break;
       case 'my_account:account:open_accept_request_ownership_modal':
         this.loadModalComponent(AccountRequestAcceptModalComponent);

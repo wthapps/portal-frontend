@@ -29,9 +29,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.authService.loggedIn && this.authService.user && !this.authService.user.took_a_tour) {
-      window.location.href = Constants.baseUrls.myAccount;
-    }
+    // if (this.authService.loggedIn && this.authService.user && !this.authService.user.took_a_tour) {
+    //   window.location.href = Constants.baseUrls.myAccount;
+    // }
 
     this.routerSubscription = this.router.events
       .filter(event => event instanceof NavigationEnd)

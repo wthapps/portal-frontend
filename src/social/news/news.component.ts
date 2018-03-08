@@ -33,8 +33,12 @@ export class ZSocialNewsComponent implements OnInit {
       } else {
         this.searchFeeds(params.q)
       }
-    })
+    });
     this.loadChannels();
+
+    this.apiBaseService.get('zone/social_network/feeds').subscribe((response: any) => {
+      console.log('feeds response:::', response);
+    })
   }
 
   doEvents(event: any) {

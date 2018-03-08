@@ -17,4 +17,15 @@ export class AccountService extends BaseEntityService<any> {
     return this.api.get(`account/accounts/${payload.id}/accounts`);
 
   }
+  requestOwnership(payload: any): Observable<any> {
+
+    return this.api.put(`account/accounts/${payload.id}/request_ownership`);
+
+  }
+
+  acceptOwnership(payload: any): Observable<any> {
+
+    return this.api.post(`account/accounts/${payload.id}/accept_ownership`, { id: payload.requestedId });
+
+  }
 }

@@ -35,16 +35,16 @@
       <h5 class="aside-title">Subscription &amp; Billing</h5>
       <ul class="navgroup-menu">
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/plans']">Current subscription</a>
+          <a [routerLink]="['/billing/subscription']">Current subscription</a>
         </li>
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/plans']">Subscription history</a>
+          <a [routerLink]="['/billing/subscription_history']">Subscription history</a>
         </li>
+        <!--<li [routerLinkActive]="['active']">-->
+          <!--<a [routerLink]="['/billing/plan']">Plan</a>-->
+        <!--</li>-->
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/plans']">Plans</a>
-        </li>
-        <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/billing/details']">Billing Details</a>
+          <a [routerLink]="['/billing/payment_method']">Payment method</a>
         </li>
         <li [routerLinkActive]="['active']"><a [routerLink]="['/billing/history']">Billing History</a></li>
       </ul>
