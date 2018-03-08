@@ -48,6 +48,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     this.mediaSelectionService.mediaParent$
       .takeUntil(componentDestroyed(this))
       .subscribe((res: Media) => this.mediaParent = res);
+
+
+    this.objectListService.multipleSelection$
+      .takeUntil(componentDestroyed(this))
+      .subscribe(res => this.dropzoneConfig.maxFiles = (!res ? 1 : null));
   }
 
   ngOnInit(): void {
@@ -117,8 +122,10 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.objectListService.setObjectsDisabled(['album']);
     } else if (this.currentTab === 'favourites_detail') {
       this.currentTab = 'favourites';
+      this.objectListService.setObjectsDisabled(['album']);
     } else if (this.currentTab === 'shared_with_me_detail') {
       this.currentTab = 'shared_with_me';
+      this.objectListService.setObjectsDisabled(['album']);
     }
     this.mediaSelectionService.clear();
     this.nextLink = this.buildNextLink();

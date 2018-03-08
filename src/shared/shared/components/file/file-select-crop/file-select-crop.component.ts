@@ -89,7 +89,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
       this.subscribePhotoSelectEvents();
     }
     else {
-      this.mediaSelectionService.setMultipleSelection(true);
+      this.mediaSelectionService.setMultipleSelection(false);
       this.mediaSelectionService.open();
 
       let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
@@ -115,7 +115,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
 
   next(files: any[]) {
     if (files.length < 1) {
-      console.error('file-select-crop: next error: files should have at least 1 element');
+      console.warn('file-select-crop: next error: files should have at least 1 element');
     } else {
       console.debug('inside file-select-crop - next handling ...', files);
       let img: string = files[0].thumbnail_url;
@@ -126,7 +126,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
 
   handleLocalImage(files: any[]) {
     if (files.length < 1) {
-      console.error('file-select-crop: handleLocalImage error: files should have at least 1 element');
+      console.warn('file-select-crop: handleLocalImage error: files should have at least 1 element');
     } else {
       console.debug('handle local image: ', files);
       this.photoUploadService.getPhoto(files[0])
