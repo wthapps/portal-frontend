@@ -86,9 +86,11 @@ export class PhotoUploadService {
   }
 
   getValidImages(files: Array<any>): Array<any> {
-    return _.filter(files, (f: any) => {
-      return f.type.indexOf('image') > -1;
-    });
+    return files.filter(this.isValidImage);
+  }
+
+  isValidImage(file: any): boolean {
+    return file.type.indexOf('image') > -1;
   }
 
    /**

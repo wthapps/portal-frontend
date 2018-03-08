@@ -10,7 +10,7 @@ import { PhotoModalDataService } from '../../../../services/photo-modal-data.ser
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil, switchMap, filter } from 'rxjs/operators';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 @Component({
@@ -68,13 +68,23 @@ export class CoverProfileComponent implements OnDestroy {
     this.mediaSelectionService.setMultipleSelection(false);
     this.mediaSelectionService.open();
     this.mediaSelectionService.selectedMedias$.pipe(
-      takeUntil(close$)
+      takeUntil(close$),
+      filter((items: any[]) => items.length > 0)
       ).subscribe((items) => {
-      console.debug(items);
       if (items.length > 0)
         callback(items);
     }, (err: any) => console.error('cover profile selectPhoto error: ', err));
 
+    this.mediaSelectionService.uploadingMedias$.pipe(
+      takeUntil(close$),
+      switchMap(([file, dataUrl]) => {
+        this.loadingService.start(loadingId);
+        return this.photoUploadService.uploadPhotos([file]);
+      })
+    ).subscribe(res => {
+      callback([res.data]);
+      this.loadingService.stop(loadingId);
+    }, err => this.loadingService.stop(loadingId));
   }
 
 

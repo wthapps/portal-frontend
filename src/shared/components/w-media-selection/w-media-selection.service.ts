@@ -17,6 +17,9 @@ export class WMediaSelectionService {
   medias$: any;
   private mediasSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>(null);
 
+  uploadingMedias$: any;
+  private uploadingMediaSubject: Subject<any[]> = new Subject<any[]>();
+
   selectedMedias$: Observable<any[]>;
   private selectedMediasSubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
@@ -33,6 +36,7 @@ export class WMediaSelectionService {
               private objectListService: WObjectListService,
               private datePipe: DatePipe) {
     this.medias$ = this.mediasSubject.asObservable();
+    this.uploadingMedias$ = this.uploadingMediaSubject.asObservable();
     this.selectedMedias$ = this.selectedMediasSubject.asObservable();
     this.mediaParent$ = this.mediaParentSubject.asObservable();
     this.open$ = this.openSubject.asObservable();
@@ -70,6 +74,10 @@ export class WMediaSelectionService {
     );
   }
 
+  upload(medias: any[]) {
+    this.uploadingMediaSubject.next(medias);
+  }
+
   clear() {
     this.mediasSubject.next(null);
     this.selectedMediasSubject.next([]);
@@ -86,10 +94,6 @@ export class WMediaSelectionService {
   }
 
   setSelectedMedias(medias: Media[]) {
-    // let fullMedias = this.mediasSubject.getValue().filter((media: any) => {
-    //   return medias.some((m: any) => { if (media.id == m.id && media.object_type == m.object_type) return true; }); })
-    // this.selectedMediasSubject.next(fullMedias);
-
     let newMedias = this.mediasSubject.getValue().filter((media: any) => {
       return medias.some((m: any) => {
         return (media.id === m.id && media.object_type === m.object_type);

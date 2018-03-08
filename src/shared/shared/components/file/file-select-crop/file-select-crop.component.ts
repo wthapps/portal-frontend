@@ -12,7 +12,7 @@ import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { Subject } from 'rxjs/Subject';
 import { CropImageComponent } from '@wth/shared/shared/components/file/file-crop/crop-image.component';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 
@@ -94,10 +94,16 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
 
       let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
       this.mediaSelectionService.selectedMedias$.pipe(
-        // takeUntil(this.mediaSelectionService.open$)
         takeUntil(close$)
       ).subscribe((items) => {
         this.next(items);
+      });
+
+      this.mediaSelectionService.uploadingMedias$.pipe(
+        takeUntil(close$),
+        map(([file, dataUrl]) => [file])
+      ).subscribe((files: any) => {
+        this.handleLocalImage(files);
       });
     }
   }
@@ -122,8 +128,10 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     if (files.length < 1) {
       console.error('file-select-crop: handleLocalImage error: files should have at least 1 element');
     } else {
+      console.debug('handle local image: ', files);
       this.photoUploadService.getPhoto(files[0])
         .then((image: any) => {
+          console.debug('image: ', image);
           this.cropImage.open(image);
           this.photoSelectDataService.close();
         });

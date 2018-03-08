@@ -184,8 +184,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   registerAutoSave() {
     // Auto save
     Observable.merge(
-      this.form.valueChanges.do(() => console.debug('valueChanges...')),
-      Observable.fromEvent(this.customEditor, 'text-change').do(() => console.debug('text=change')))
+      this.form.valueChanges,
+      Observable.fromEvent(this.customEditor, 'text-change'))
       .do(() => this.noteChanged = true)
       .takeUntil(Observable.merge(this.noSave$, this.closeSubject))
       .debounceTime(DEBOUNCE_MS)
