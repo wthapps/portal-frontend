@@ -18,7 +18,7 @@ declare var _: any;
   templateUrl: 'note-list.component.html',
   styleUrls: ['note-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteListComponent implements OnInit {
   @Input() data: any[];
@@ -36,6 +36,7 @@ export class NoteListComponent implements OnInit {
   noteConstants: NoteConstants = noteConstants;
   showDateCaret: boolean;
   loading$: Observable<boolean>;
+  pressingCtrlKey: boolean;
   readonly DATE_MAP: any = noteConstants.DATE_MAP;
   readonly DATE_ARR: string[] = Object.keys(this.DATE_MAP);
   readonly SHARE_PAGES: string[] = [noteConstants.PAGE_SHARED_WITH_ME, noteConstants.PAGE_SHARED_BY_ME];
@@ -51,6 +52,16 @@ export class NoteListComponent implements OnInit {
     //if pressing ESC key
     if (ke.keyCode == 27) {
       this.deSelectObjects();
+    }
+    if (this.pressedCtrlKey(ke)) {
+      this.pressingCtrlKey = false;
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ke: KeyboardEvent) {
+    if (this.pressedCtrlKey(ke)) {
+      this.pressingCtrlKey = true;
     }
   }
 
@@ -89,5 +100,9 @@ export class NoteListComponent implements OnInit {
 
   private deSelectObjects() {
     this.store.dispatch({type: note.DESELECT_ALL});
+  }
+
+  private pressedCtrlKey(ke: KeyboardEvent): boolean {
+    return (ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ;
   }
 }

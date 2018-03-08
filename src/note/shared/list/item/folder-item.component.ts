@@ -27,31 +27,17 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   @Input() data: any;
   @Input() page: string = 'MY_NOTE';
   @Input() sortOption: any;
+  @Input() pressingCtrlKey: boolean;
   @Output() onAction: EventEmitter<any> = new EventEmitter<any>();
 
   tooltip: any = Constants.tooltip;
   selected: boolean = false;
   sub: Subscription;
-  pressingCtrlKey: boolean;
   urls: any;
 
   readonly PAGE_TYPE: any = Constants.notePageType;
   readonly noteConstants: NoteConstants = noteConstants;
   readonly DATE_MAP: any = noteConstants.DATE_MAP;
-
-  @HostListener('document:keydown', ['$event'])
-  onKeyDown(ke: KeyboardEvent) {
-    if (this.pressedCtrlKey(ke)) {
-      this.pressingCtrlKey = true;
-    }
-  }
-
-  @HostListener('document:keyup', ['$event'])
-  onKeyUp(ke: KeyboardEvent) {
-    if (this.pressedCtrlKey(ke)) {
-      this.pressingCtrlKey = false;
-    }
-  }
 
   constructor(public userService: UserService,
               private noteService: ZNoteService,
@@ -111,7 +97,4 @@ export class FolderItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  private pressedCtrlKey(ke: KeyboardEvent): boolean {
-    return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
-  }
 }

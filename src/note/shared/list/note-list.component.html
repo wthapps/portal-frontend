@@ -66,7 +66,7 @@
     <ng-container  *ngIf="viewOption !== VIEW_MODE.TIMELINE">
       <h4 class="ml10" *ngIf="folderItems?.length > 0 && viewOption == VIEW_MODE.GRID">Folders</h4>
       <ng-container *ngFor="let item of folderItems">
-        <folder-item [data]="item" [sortOption]="sortOption" class="component-listbox-body" [page]="page" *ngIf="(page !== noteConstants.PAGE_NOTE_FAVOURITE) || (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></folder-item>
+        <folder-item [data]="item" [sortOption]="sortOption" [pressingCtrlKey]="pressingCtrlKey" class="component-listbox-body" [page]="page" *ngIf="(page !== noteConstants.PAGE_NOTE_FAVOURITE) || (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></folder-item>
       </ng-container>
 
       <div class="clearfix"></div>
@@ -74,7 +74,7 @@
       <h4 class="ml10" *ngIf="noteItems?.length > 0 && viewOption == VIEW_MODE.GRID">Notes</h4>
 
       <ng-container *ngFor="let item of noteItems">
-        <note-item [data]="item" [sortOption]="sortOption" class="component-listbox-body" [page]="page" *ngIf="(page !== noteConstants.PAGE_NOTE_FAVOURITE )|| (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></note-item>
+        <note-item [data]="item" [sortOption]="sortOption" [pressingCtrlKey]="pressingCtrlKey" class="component-listbox-body" [page]="page" *ngIf="(page !== noteConstants.PAGE_NOTE_FAVOURITE )|| (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></note-item>
       </ng-container>
 
     </ng-container>
@@ -83,15 +83,11 @@
     <div *ngIf="viewOption == VIEW_MODE.TIMELINE">
       <div *ngFor="let group of allItems | groupByMonthYear:'created_at' :groupBy :allItems.length" class="clearfix">
         <p class="m15 fz15">{{ group.key }}</p>
-        <!--<ng-container *ngFor="let item of group.value">-->
-          <!--<folder-item [data]="item" [sortOption]="sortOption" class="component-listbox-body" [page]="page" *ngIf="item.object_type== 'folder' && (page !== noteConstants.PAGE_NOTE_FAVOURITE) || (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></folder-item>-->
-          <!--<note-item [data]="item" [sortOption]="sortOption" class="component-listbox-body" [page]="page" *ngIf="item.object_type == 'note' && (page !== noteConstants.PAGE_NOTE_FAVOURITE )|| (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></note-item>-->
-        <!--</ng-container>-->
 
         <div *ngFor="let objectGroup of group.value | groupByObjectType: true ">
           <ng-container *ngFor="let item of objectGroup.value">
-            <folder-item [data]="item" [sortOption]="sortOption" class="component-listbox-body" [page]="page" *ngIf="item.object_type== 'folder' && (page !== noteConstants.PAGE_NOTE_FAVOURITE) || (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></folder-item>
-            <note-item [data]="item" [sortOption]="sortOption" class="component-listbox-body" [page]="page" *ngIf="item.object_type == 'note' && (page !== noteConstants.PAGE_NOTE_FAVOURITE )|| (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></note-item>
+            <folder-item [data]="item" [sortOption]="sortOption" [pressingCtrlKey]="pressingCtrlKey" class="component-listbox-body" [page]="page" *ngIf="item.object_type== 'folder' && (page !== noteConstants.PAGE_NOTE_FAVOURITE) || (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></folder-item>
+            <note-item [data]="item" [sortOption]="sortOption" [pressingCtrlKey]="pressingCtrlKey" class="component-listbox-body" [page]="page" *ngIf="item.object_type == 'note' && (page !== noteConstants.PAGE_NOTE_FAVOURITE )|| (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></note-item>
           </ng-container>
           <div class="clearfix"></div>
         </div>
