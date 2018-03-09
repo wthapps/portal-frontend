@@ -144,8 +144,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         let number = event.payload.length;
         let title = "";
         if (number == 1) {
-          title = event.payload[0].title ? event.payload[0].title : event.payload[0].name;
-          this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Moving "${title}"`}});
+          this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Moving "${event.payload[0].title ? event.payload[0].title : event.payload[0].name}"`}});
         }
         if (number > 1) {
           this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Moving ${number} files`}});
@@ -163,8 +162,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
               }
               number = combine.res.data.length;
               if (number == 1) {
-                title = event.payload[0].title ? event.payload[0].title : event.payload[0].name;
-                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Moved "${title}"`}});
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Moved "${event.payload[0].title ? event.payload[0].title : event.payload[0].name}"`}});
               }
               if (number > 1) {
                 this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Moved ${number} files`}});
@@ -192,8 +190,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
               }
               number = combine.res.data.length;
               if (number == 1) {
-                title = event.payload[0].title ? event.payload[0].title : event.payload[0].name;
-                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Moved "${title}"`}});
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Moved "${event.payload[0].title ? event.payload[0].title : event.payload[0].name}"`}});
               }
               if (number > 1) {
                 this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Moved ${number} files`}});
@@ -205,7 +202,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'note:mixed_entity:make_a_copy': {
         let number = event.payload.length;
         if (number == 1) {
-          this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copying "${event.payload[0].title}"`}});
+          this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copying "${event.payload[0].title ? event.payload[0].title : event.payload[0].name}"`}});
         }
         if (number > 1) {
           this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copying ${number} files`}});
@@ -217,7 +214,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe((combine:any) => {
             if (combine.state.page == noteConstants.PAGE_MY_NOTE || combine.state.page == noteConstants.PAGE_INSIDE_FOLDER) {
               if (number == 1) {
-                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copied "${event.payload[0].title}"`}});
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copied "${event.payload[0].title ? event.payload[0].title : event.payload[0].name}"`}});
               }
               if (number > 1) {
                 this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copied ${number} files`}});
@@ -226,7 +223,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
               let callback = () => {this.router.navigate(['my-note'])}
               if (number == 1) {
-                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Copied "${event.payload[0].title}"`}});
+                this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Copied "${event.payload[0].title ? event.payload[0].title : event.payload[0].name}"`}});
               }
               if (number > 1) {
                 this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, enableAction: true, actionText: "Find", callback: callback, textMessage: `Copied ${number} files`}});
@@ -240,7 +237,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe((res: any) => {
             let number = event.payload.length;
             if (number == 1) {
-              this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Removed "${event.payload[0].title}"`}});
+              this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Removed "${event.payload[0].title ? event.payload[0].title : event.payload[0].name}"`}});
             }
             if (number > 1) {
               this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Removed ${number} files`}});
