@@ -20,6 +20,7 @@
     "start-chat": "ng serve --app chat --port 3020 --open",
     "start-contact": "ng serve --app contact --port 3025 --open",
     "start-note": "ng serve --app note --port 3030 --open",
+    "prettier": "prettier {src,e2e}/**/*.{ts,json,md,scss} --write",
     "ng build all": "build --prod --build-optimizer --aot --app portal && build --prod --build-optimizer --aot --app my-account && build --prod --build-optimizer --aot --app media && build --prod --build-optimizer --aot --app social && build --prod --build-optimizer --aot --app contact && build --prod --build-optimizer --aot --app note"
   },
   "private": true,
@@ -39,6 +40,7 @@
     "karma-coverage-istanbul-reporter": "1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "0.2.2",
+    "prettier": "1.11.1",
     "protractor": "~5.1.2",
     "source-map-explorer": "^1.5.0",
     "ts-node": "~3.3.0",
