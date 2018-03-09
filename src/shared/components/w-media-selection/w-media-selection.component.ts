@@ -60,7 +60,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       .takeUntil(componentDestroyed(this))
       .subscribe((res: any) => {
         this.initialState();
-        this.open();
+        if (res)
+          this.open();
         this.getObjects();
       });
   }
