@@ -82,9 +82,7 @@
               <!-------------- Album view --------------->
               <ng-container *ngIf="item.object_type == 'album'">
                 <div class="wobject-box-img">
-                  <img src="/assets/images_new/sizes/media.png"
-                       [ngStyle]="{'background': 'url(' + item.photo_default + ')'}"
-                       alt="">
+                  <img [src]="item.photo_default" alt="">
                   <div class="wmedia-box-info">{{ item.photo_number }} photo<span *ngIf="item.photo_number>1">s</span>
                   </div>
                 </div>
@@ -100,9 +98,7 @@
               <!-------------- Photo view --------------->
               <ng-container *ngIf="item.object_type == 'photo'">
                 <div class="wobject-box-img">
-                  <img src="/assets/images_new/sizes/media.png"
-                       [ngStyle]="{'background': 'url(' + item.thumbnail_url + ')'}"
-                       alt="">
+                  <img [src]="item.thumbnail_url" alt="">
                 </div>
                 <div class="wobject-box-name">
 

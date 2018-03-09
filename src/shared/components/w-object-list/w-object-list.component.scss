@@ -187,9 +187,6 @@ $wobject-checkbox: 30px;
           &:after {
             border-color: $theme-color;
           }
-          .wobject-box-img {
-
-          }
         }
       }
     }
@@ -211,9 +208,14 @@ $wobject-checkbox: 30px;
         text-overflow: ellipsis;
         background-color: #ffffff;
       }
+
       .wobject-box-img {
+        padding-bottom: 75%;
         position: relative;
-        img {
+        overflow: hidden;
+
+        img{
+          @include center();
           width: 100%;
           height: auto;
         }
