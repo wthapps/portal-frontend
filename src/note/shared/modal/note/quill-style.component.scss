@@ -64,9 +64,12 @@
     //visibility: hidden;
     display: none;
   }
+  .ql-container.ql-snow {
+    border-style: none;
+  }
   .printable {
     //visibility: visible;
-    //display: block;
+    display: block;
   }
 
 }

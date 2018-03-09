@@ -46,10 +46,15 @@ function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'ti
   if (!objA || !objB) return;
   let o = orderDesc ? 1 : -1;
 
-  if(_.get(objA, field) > _.get(objB, field))
+  if(getValue(objA, field) > getValue(objB, field))
     return 1*o;
-  if(_.get(objA, field) < _.get(objB, field))
+  if(getValue(objA, field) < getValue(objB, field))
     return -1*o;
 
   return 0;
+}
+
+function getValue(obj: any, field: any) {
+  let val = _.get(obj, field);
+  return (typeof val === 'string') ? val.toLowerCase() : val;
 }

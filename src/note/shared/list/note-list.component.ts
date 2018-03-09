@@ -34,7 +34,6 @@ export class NoteListComponent implements OnInit {
   @Input() groupBy: string = 'date';
 
   noteConstants: NoteConstants = noteConstants;
-  showDateCaret: boolean;
   loading$: Observable<boolean>;
   pressingCtrlKey: boolean;
   readonly DATE_MAP: any = noteConstants.DATE_MAP;

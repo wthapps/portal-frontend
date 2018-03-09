@@ -29,7 +29,7 @@ import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
 import { CommonEventService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
-import { takeUntil, switchMap, combineLatest } from 'rxjs/operators';
+import { takeUntil, switchMap, combineLatest, filter } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { noteConstants } from 'note/shared/config/constants';
 import { Counter } from '@wth/core/quill/modules/counter';
@@ -117,7 +117,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.assignFormValue(null);
     this.context$ = this.store.select('context');
-    this.commonEventService.filter((e: any) => e.channel == 'noteActionsBar').take(1).subscribe((e: any) => {
+    this.commonEventService.filter((e: any) => e.channel == 'noteActionsBar').pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe((e: any) => {
 
       switch (e.action) {
         case 'note:note_edit:close':

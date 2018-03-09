@@ -56,6 +56,17 @@ $note-action: 200px;
   }
 }
 
+.dropdown .caret-toggle {
+  i {
+    visibility: hidden;
+  }
+  &:hover {
+    i {
+      visibility: visible;
+    }
+  }
+}
+
 .component-listbox-grid {
   display: block;
   margin: 20px;
