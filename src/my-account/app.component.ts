@@ -79,9 +79,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
-    window.addEventListener('storage', (data: any) => {
-      console.log('storage changed:::', data);
-    });
 
     // fix scroll to top after changing route
     this.router.events.subscribe((evt) => {

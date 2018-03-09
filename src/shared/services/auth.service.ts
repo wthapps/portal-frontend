@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { isNullOrUndefined } from 'util';
+import { WindowService } from '@wth/shared/services/window.service';
 
 const PROFILE       = 'profile';
 const PPROFILE      = 'pProfile'; // public profile
@@ -36,7 +37,9 @@ export class AuthService {
   constructor(
     private cookieService: CookieService,
     private api: ApiBaseService,
+    private windowService: WindowService,
     private userService: UserService // TODO will be remove after refactoring by AuthService
+
   ) {
 
     this.jwt = cookieService.get(JWT);
@@ -70,7 +73,14 @@ export class AuthService {
 
       this.deleteLoggedInInfo();
     }
-    console.log('authService:::', this);
+    this.windowService.watchStorage().subscribe((payload: any) => {
+      this.user = payload.profile;
+      this._user$.next(payload.profile);
+      this.user$ = this._user$.asObservable();
+    });
+    window.addEventListener('storage', (data: any) => {
+      console.log('storage changed:::', data);
+    });
   }
 
   login(payload: any): Observable<any> {

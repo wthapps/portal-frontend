@@ -11,6 +11,7 @@ import { Constants } from '../constant/config/constants';
 import { ApiBaseService } from './apibase.service';
 import { User } from '../shared/models/user.model';
 import { HttpClient } from '@angular/common/http';
+import { WindowService } from '@wth/shared/services/window.service';
 
 @Injectable()
 export class UserService {
@@ -34,7 +35,9 @@ export class UserService {
   constructor(private http: HttpClient,
               private router: Router,
               private apiBaseService: ApiBaseService,
-              public cookieService: CookieService) {
+              public cookieService: CookieService,
+              private windowService: WindowService
+  ) {
     this.readUserInfo();
     this.profile$ = this._profile.asObservable();
     this.notificationSetting$ = this._notificationSetting.asObservable();
@@ -82,6 +85,7 @@ export class UserService {
       .map((res: any) => {
         if (res) {
           this.updateProfile(res.data);
+          this.windowService.setItem({ profile: res.data });
           this.readUserInfo();
         }
         return res;

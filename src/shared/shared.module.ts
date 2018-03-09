@@ -91,6 +91,7 @@ import { ModalModule } from '@wth/shared/components/modal/modal.module';
 import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
 import { WObjectListService } from '@wth/shared/components/w-object-list/w-object-list.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { WindowService } from '@wth/shared/services/window.service';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -226,6 +227,7 @@ export class SharedModule {
         WObjectListService,
         WMediaSelectionService,
         DomService,
+        WindowService
       ]
     };
   }
