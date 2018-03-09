@@ -53,14 +53,14 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
 
   constructor(private questionControlService: QuestionControlService,
               private loadingService: LoadingService,
-              private photoSelectDataService: PhotoModalDataService,
+              // private photoSelectDataService: PhotoModalDataService,
               private apiBaseService: ApiBaseService,
               private userService: UserService,
               private toastsService: ToastsService,
               private commonEventService: CommonEventService,
               private photoUploadService: PhotoUploadService) {
-    this.closeObs$ = Observable.merge(
-      this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
+    // this.closeObs$ = Observable.merge(
+    //   this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
     this.handleSelectCropEvent();
   }
 

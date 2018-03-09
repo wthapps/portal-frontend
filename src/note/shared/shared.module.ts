@@ -10,7 +10,7 @@ import { NoteItemComponent } from './list/item/note-item.component';
 import { FolderItemComponent } from './list/item/folder-item.component';
 
 import { ZNoteService } from './services/note.service';
-import { NoteEditModalComponent } from './modal/note/note-edit-modal.component';
+// import { NoteEditModalComponent } from './modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './modal/note/view.component';
 
 import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.component';
@@ -48,7 +48,7 @@ import { ZNoteShareProgressComponent } from "note/shared/progress/note-progress.
     FolderItemComponent,
     ZNoteContainerComponent,
 
-    NoteEditModalComponent,
+    // NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
@@ -70,7 +70,7 @@ import { ZNoteShareProgressComponent } from "note/shared/progress/note-progress.
     ZNoteSharedHeaderComponent,
     ZNoteContainerComponent,
 
-    NoteEditModalComponent,
+    // NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,

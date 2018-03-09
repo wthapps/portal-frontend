@@ -37,6 +37,7 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { Constants } from '@shared/constant';
 import { BaseEvent } from '@shared/shared/event/base-event';
 import { PostActivitiesComponent } from './post-activities.component';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 
 @Component({
   selector: 'so-post',
@@ -68,6 +69,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
               private photoService: PhotoService,
               private loading: LoadingService,
               private photoSelectDataService: PhotoModalDataService,
+              private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private toast: ToastsService,
@@ -105,7 +107,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   ngOnInit() {
-    this.photoSelectDataService.init({multipleSelect: false});
+    // this.photoSelectDataService.init({multipleSelect: false});
+    this.mediaSelectionService.setMultipleSelection(false);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -346,9 +349,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   openPhotoModal(data: any) {
-    this.photoSelectDataService.open(data);
-
-    this.subscribePhotoEvents();
+    // this.photoSelectDataService.open(data);
+    //
+    // this.subscribePhotoEvents();
   }
 
   openShare() {
@@ -454,32 +457,32 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
 
-  private subscribePhotoEvents() {
-    // Subscribe actions corresponding with photo modal actions
-    let closeObs$ = Observable.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$, this.photoSelectDataService.closeObs$, this.destroySubject.asObservable());
-
-    this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
-        (photos: any) => {
-          this.commentEditor.setCommentAttributes({photo: photos[0]});
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
-
-    this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
-      .mergeMap((files: any) => {
-        this.commentEditor.updateAttributes({hasUploadingPhoto: true, files: files});
-        return this.photoUploadService.uploadPhotos(files);
-      }).subscribe(
-        (response: any) => {
-          console.log('response data: ', response.data);
-          this.commentEditor.setCommentAttributes({photo: response.data});
-          this.commentEditor.updateAttributes({hasUploadingPhoto: false});
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
-  }
+  // private subscribePhotoEvents() {
+  //   // Subscribe actions corresponding with photo modal actions
+  //   let closeObs$ = Observable.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$, this.photoSelectDataService.closeObs$, this.destroySubject.asObservable());
+  //
+  //   this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
+  //       (photos: any) => {
+  //         this.commentEditor.setCommentAttributes({photo: photos[0]});
+  //       },
+  //       (error: any) => {
+  //         console.error(error);
+  //       }
+  //     );
+  //
+  //   this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
+  //     .mergeMap((files: any) => {
+  //       this.commentEditor.updateAttributes({hasUploadingPhoto: true, files: files});
+  //       return this.photoUploadService.uploadPhotos(files);
+  //     }).subscribe(
+  //       (response: any) => {
+  //         console.log('response data: ', response.data);
+  //         this.commentEditor.setCommentAttributes({photo: response.data});
+  //         this.commentEditor.updateAttributes({hasUploadingPhoto: false});
+  //       },
+  //       (error: any) => {
+  //         console.error(error);
+  //       }
+  //     );
+  // }
 }

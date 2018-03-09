@@ -82,7 +82,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
               private loadingService: LoadingService,
               private socialService: SocialService,
               private mediaSelectionService: WMediaSelectionService,
-              private photoSelectDataService: PhotoModalDataService,
+              // private photoSelectDataService: PhotoModalDataService,
               private photoUploadService: PhotoUploadService,
               private userService: UserService) {
   }
@@ -155,7 +155,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
     if (options.addingPhotos) {
-      this.photoSelectDataService.open({return: false});
+      // this.photoSelectDataService.open({return: false});
+      this.mediaSelectionService.setMultipleSelection(true);
+      this.mediaSelectionService.open();
     } else {
       this.modal.open();
     }
@@ -166,7 +168,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   close() {
     this.modal.close();
-    this.photoSelectDataService.close();
+    this.mediaSelectionService.close();
+    // this.photoSelectDataService.close();
     // $('.modal-backdrop').remove();
   }
 
@@ -191,7 +194,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
       isShare: this.isShare
     };
     this.saved.emit(options);
-    this.photoSelectDataService.close();
+    this.mediaSelectionService.close();
+    // this.photoSelectDataService.close();
 
     this.modal.close();
 
@@ -224,7 +228,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   next(selectedPhotos: any) {
     // Create union of selected photos and add to post
     this.post.photos = _.uniqBy(_.flatten([this.post.photos, selectedPhotos]), 'id');
-    this.photoSelectDataService.close();
+    this.mediaSelectionService.close();
     this.modal.open();
   }
 
@@ -255,7 +259,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     // this.photos.length = 0;
     this.dismissed.emit(photos);
     this.modal.close(null).then();
-    this.photoSelectDataService.close();
+    this.mediaSelectionService.close();
   }
 
   // upload(files: Array<any>) {

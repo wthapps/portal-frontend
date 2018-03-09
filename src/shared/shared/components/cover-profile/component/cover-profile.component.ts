@@ -26,12 +26,12 @@ export class CoverProfileComponent implements OnDestroy {
   uploadPhotoSubscription: Subscription;
 
   constructor(private loadingService: LoadingService,
-              private photoSelectDataService: PhotoModalDataService,
+              // private photoSelectDataService: PhotoModalDataService,
               private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService,
               private objectListService: WObjectListService) {
 
-    this.closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
+    // this.closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
   }
 
   ngOnDestroy() {

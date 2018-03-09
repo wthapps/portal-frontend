@@ -29,11 +29,13 @@ import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
 import { CommonEventService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
-import { takeUntil, switchMap, combineLatest, filter } from 'rxjs/operators';
+import { takeUntil, switchMap, combineLatest, filter, mergeMap, map } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { noteConstants } from 'note/shared/config/constants';
 import { Counter } from '@wth/core/quill/modules/counter';
 import { CustomImage } from '@wth/core/quill/modules/custom-image';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 
 
 const DEBOUNCE_MS = 2500;
@@ -93,19 +95,20 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
               protected router: Router,
               private route: ActivatedRoute,
               private store: Store<any>,
-              private photoSelectDataService: PhotoModalDataService,
+              // private photoSelectDataService: PhotoModalDataService,
               private fileService: GenericFileService,
               private apiBaseService: ApiBaseService,
               private clientDetectorService: ClientDetectorService,
               private photoService: PhotoService,
               private photoUploadService: PhotoUploadService,
+              private mediaSelectionService: WMediaSelectionService,
               private commonEventService: CommonEventService) {
     this.noSave$ = Observable.merge(this.noSaveSubject.asObservable(), this.destroySubject, this.closeSubject);
-    this.closeObs$ = Observable.merge(
-      this.photoSelectDataService.closeObs$,
-      this.photoSelectDataService.openObs$,
-      this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable()
-    );
+    // this.closeObs$ = Observable.merge(
+    //   this.photoSelectDataService.closeObs$,
+    //   this.photoSelectDataService.openObs$,
+    //   this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable()
+    // );
 
 
     this.fileUploadHelper = new FileUploadHelper();
@@ -502,26 +505,54 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   selectInlinePhotos4Note() {
-    this.photoSelectDataService.open({return: true, multipleSelect: false});
+    // this.photoSelectDataService.open({return: true, multipleSelect: false});
+    //
+    // this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any[]) => {
+    //   photos.forEach((photo: any) => this.insertInlineImage(null, photo.url, photo.id));
+    // });
+    //
+    // let ids: string[] = [];
+    // this.photoSelectDataService.uploadObs$.takeUntil(this.closeObs$)
+    //   .mergeMap((files: any) => {
+    //     const randId = `img_${new Date().getTime()}`;
+    //     this.insertFakeImage(randId);
+    //     ids.push(randId);
+    //     return this.photoUploadService.uploadPhotos(files);
+    //   })
+    //   .subscribe((res: any) => {
+    //     console.debug('inline photo upload: ', res);
+    //     const randId = ids.shift();
+    //     $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
+    //     $(`i#${randId}`).remove();
+    //   });
 
-    this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any[]) => {
+
+    this.mediaSelectionService.open();
+    this.mediaSelectionService.setMultipleSelection(true);
+
+    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+    this.mediaSelectionService.selectedMedias$.pipe(
+      takeUntil(close$),
+      filter((items: any[])=> items.length > 0)
+    ).subscribe((photos) => {
       photos.forEach((photo: any) => this.insertInlineImage(null, photo.url, photo.id));
     });
 
     let ids: string[] = [];
-    this.photoSelectDataService.uploadObs$.takeUntil(this.closeObs$)
-      .mergeMap((files: any) => {
-        const randId = `img_${new Date().getTime()}`;
-        this.insertFakeImage(randId);
-        ids.push(randId);
-        return this.photoUploadService.uploadPhotos(files);
-      })
-      .subscribe((res: any) => {
-        console.debug('inline photo upload: ', res);
-        const randId = ids.shift();
-        $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
-        $(`i#${randId}`).remove();
-      });
+    this.mediaSelectionService.uploadingMedias$.pipe(
+      takeUntil(close$),
+      map(([file, dataUrl]) => [file]),
+      mergeMap((files: any[]) => {
+            const randId = `img_${new Date().getTime()}`;
+            this.insertFakeImage(randId);
+            ids.push(randId);
+            return this.photoUploadService.uploadPhotos(files);
+          })
+    ).subscribe((res: any) => {
+          const randId = ids.shift();
+          $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
+          $(`i#${randId}`).remove();
+    });
   }
 
   copyFormat() {
@@ -687,7 +718,10 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   selectPhotos() {
-    this.photoSelectDataService.open({return: true});
+    // this.photoSelectDataService.open({return: true});
+    this.mediaSelectionService.open();
+    this.mediaSelectionService.setMultipleSelection(true);
+
     this.selectPhotos4Attachments();
   }
 
@@ -805,23 +839,54 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   private selectPhotos4Attachments() {
-    this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any) => {
+    // this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any) => {
+    //   this.note.attachments.push(...photos);
+    //   this.form.controls['attachments'].setValue(this.note.attachments);
+    // });
+    //
+    // this.photoSelectDataService.uploadObs$.takeUntil(this.closeObs$).subscribe((files: any) => {
+    //   this.note.attachments.push(...files);
+    //   _.forEach(files, (file: any) => {
+    //     this.photoUploadService.uploadPhotos(files)
+    //       .subscribe((response: any) => {
+    //         let index = _.indexOf(this.note.attachments, file);
+    //         this.note.attachments[index] = response.data;
+    //         this.form.controls['attachments'].setValue(this.note.attachments);
+    //       }, (err: any) => {
+    //         console.log('Error when uploading files ', err);
+    //       });
+    //   });
+    // });
+
+
+
+    this.mediaSelectionService.open();
+    this.mediaSelectionService.setMultipleSelection(true);
+
+    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+    this.mediaSelectionService.selectedMedias$.pipe(
+      takeUntil(close$),
+      filter((items: any[])=> items.length > 0)
+    ).subscribe((photos) => {
       this.note.attachments.push(...photos);
       this.form.controls['attachments'].setValue(this.note.attachments);
     });
 
-    this.photoSelectDataService.uploadObs$.takeUntil(this.closeObs$).subscribe((files: any) => {
-      this.note.attachments.push(...files);
-      _.forEach(files, (file: any) => {
-        this.photoUploadService.uploadPhotos(files)
-          .subscribe((response: any) => {
-            let index = _.indexOf(this.note.attachments, file);
-            this.note.attachments[index] = response.data;
-            this.form.controls['attachments'].setValue(this.note.attachments);
-          }, (err: any) => {
-            console.log('Error when uploading files ', err);
-          });
-      });
+    this.mediaSelectionService.uploadingMedias$.pipe(
+      takeUntil(close$),
+      map(([file, dataUrl]) => [file])
+    ).subscribe((files: any) => {
+        this.note.attachments.push(...files);
+        _.forEach(files, (file: any) => {
+          this.photoUploadService.uploadPhotos(files)
+            .subscribe((response: any) => {
+              let index = _.indexOf(this.note.attachments, file);
+              this.note.attachments[index] = response.data;
+              this.form.controls['attachments'].setValue(this.note.attachments);
+            }, (err: any) => {
+              console.log('Error when uploading files ', err);
+            });
+        });
     });
   }
 

@@ -19,7 +19,7 @@ import { ZNoteService } from './shared/services/note.service';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { NoteEditModalComponent } from './shared/modal/note/note-edit-modal.component';
+// import { NoteEditModalComponent } from './shared/modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './shared/modal/note/view.component';
 import { ZNoteSharedModalFolderEditComponent } from './shared/modal/folder/edit.component';
 import { ZNoteSharedModalFolderMoveComponent } from './shared/modal/folder/move.component';
@@ -46,7 +46,7 @@ declare var _: any;
   styleUrls: ['app.component.scss'],
   encapsulation: ViewEncapsulation.None,
   entryComponents: [
-    NoteEditModalComponent,
+    // NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalSharingComponent,

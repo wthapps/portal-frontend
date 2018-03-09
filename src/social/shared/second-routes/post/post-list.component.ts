@@ -56,7 +56,7 @@ export class PostListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private postService: PostService,
-              private photoSelectDataService: PhotoModalDataService,
+              // private photoSelectDataService: PhotoModalDataService,
               private userService: UserService,
               private store: Store<any>
   ) {
@@ -89,15 +89,15 @@ export class PostListComponent implements OnInit, OnDestroy {
     }, (err: any) => this.stopLoading());
 
     // Subscribe photo select events
-    this.photoSelectDataService.init('');
+    // this.photoSelectDataService.init('');
 
-    let closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.destroySubject);
-
-    this.photoSelectDataService.nextObs$
-      .takeUntil(closeObs$).subscribe(
-      (photos: any) => {
-        this.onSelectPhotoComment(photos);
-      });
+    // let closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.destroySubject);
+    //
+    // this.photoSelectDataService.nextObs$
+    //   .takeUntil(closeObs$).subscribe(
+    //   (photos: any) => {
+    //     this.onSelectPhotoComment(photos);
+    //   });
   }
 
   startLoading() {

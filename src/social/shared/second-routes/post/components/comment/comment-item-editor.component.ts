@@ -12,10 +12,13 @@ import {
   ReplyUpdateEvent
 } from '../../../../events/social-events';
 import { SoComment, User } from '@wth/shared/shared/models';
-import { UserService } from '@wth/shared/services';
+import { UserService, PhotoUploadService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { Constants } from '@wth/shared/constant';
 import { Router } from '@angular/router';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { takeUntil, filter, map, mergeMap } from 'rxjs/operators';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 
 
 export enum CommentEditorMode {
@@ -35,7 +38,7 @@ declare let document: any;
   styleUrls: ['comment-item-editor.component.scss']
 })
 
-export class CommentItemEditorComponent implements OnInit {
+export class CommentItemEditorComponent implements OnInit, OnDestroy {
   // @Input() item: SoPost;
   @Input() parent: any; // parent is able to be Post or Comment or Photo or other object
   @Input() parentType: string = 'SocialNetwork::Post';  // 'SocialNetwork::Post' or 'SocialNetwork::Comment'
@@ -49,7 +52,7 @@ export class CommentItemEditorComponent implements OnInit {
   commentEditorMode = CommentEditorMode;
   hasUploadingPhoto: boolean = false;
   hasUpdatedContent: boolean = false;
-  files: any;
+  files: any[];
   emojiData: any[];
   user$: Observable<User>;
   showEmoji: boolean;
@@ -64,6 +67,8 @@ export class CommentItemEditorComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private router: Router,
+              private mediaSelectionService: WMediaSelectionService,
+              private photoUploadService: PhotoUploadService,
               public userService: UserService) {
     this.user$ = this.userService.getAsyncProfile();
 
@@ -83,6 +88,10 @@ export class CommentItemEditorComponent implements OnInit {
     });
     this.contentCtrl = this.commentEditorForm.controls['content'];
     this.photosCtrl = this.commentEditorForm.controls['photo'];
+  }
+
+  ngOnDestroy() {
+
   }
 
   viewProfile(uuid: string) {
@@ -172,8 +181,31 @@ export class CommentItemEditorComponent implements OnInit {
   }
 
   onOpenPhotoSelect() {
-    this.eventEmitter.emit(new OpenPhotoModalEvent(this));
+    // this.eventEmitter.emit(new OpenPhotoModalEvent(this));
 
+    this.mediaSelectionService.open();
+    this.mediaSelectionService.setMultipleSelection(false);
+
+    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+    this.mediaSelectionService.selectedMedias$.pipe(
+      takeUntil(close$),
+      filter(items => items.length > 0)
+    ).subscribe((items) => {
+      this.comment.photo = items[0];
+    });
+
+    this.mediaSelectionService.uploadingMedias$.pipe(
+      takeUntil(close$),
+      map(([file, dataUrl]) => [file]),
+      mergeMap((files: any[]) => {
+        this.hasUploadingPhoto = true;
+        this.files = files;
+        return this.photoUploadService.uploadPhotos(files);
+      })
+    ).subscribe((res: any) => {
+      this.comment.photo = res.data;
+      this.hasUploadingPhoto = false;
+    });
   }
 
   onEmojiClick(e: any) {
@@ -232,11 +264,7 @@ export class CommentItemEditorComponent implements OnInit {
         this.comment.photo = null;
         this.commentEditorForm.controls['photo'].setValue(null);
         this.files = null;
-        if (this.comment.content != '')
-          this.hasUpdatedContent = true;
-        else
-          this.hasUpdatedContent = false;
-
+        this.hasUpdatedContent = (this.comment.content != '');
         break;
       case 'cancelUploadingPhoto':
         break;

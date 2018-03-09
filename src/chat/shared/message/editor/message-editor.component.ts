@@ -9,9 +9,12 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { ChatService } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE } from '@wth/shared/constant';
-import { PhotoModalDataService } from '@wth/shared/services';
+import { PhotoModalDataService, PhotoUploadService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { takeUntil, filter, mergeMap, map } from 'rxjs/operators';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 
 declare var $: any;
 
@@ -40,7 +43,9 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   private messageEditorId = '#chat-message-text';
 
   constructor(private chatService: ChatService,
-              private photoSelectDataService: PhotoModalDataService,
+              // private photoSelectDataService: PhotoModalDataService,
+              private mediaSelectionService: WMediaSelectionService,
+              // private photoUploadService: PhotoUploadService,
               private fb: FormBuilder) {
     this.createForm();
   }
@@ -168,9 +173,26 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   onOpenSelectPhotos() {
     // this.photoModal.open();
-    this.photoSelectDataService.open('');
+    // this.photoSelectDataService.open('');
+    // this.subscribePhotoEvents();
 
-    this.subscribePhotoEvents();
+    this.mediaSelectionService.open();
+    this.mediaSelectionService.setMultipleSelection(true);
+
+    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+    this.mediaSelectionService.selectedMedias$.pipe(
+      takeUntil(close$),
+      filter((items: any[])=> items.length > 0)
+    ).subscribe((photos) => {
+      this.chooseDone(photos);
+    });
+
+    this.mediaSelectionService.uploadingMedias$.pipe(
+      takeUntil(close$),
+      map(([file, dataUrl]) => [file])
+    ).subscribe((photos: any) => {
+      this.uploadFile(photos);
+    });
   }
 
   chooseDone(e: any) {
@@ -211,34 +233,34 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     this.unsubscribePhotoEvents();
   }
 
-  private subscribePhotoEvents() {
-
-    let closeObs$ = Observable.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.closeObs$);
-    // Subscribe actions corresponding with photo modal actions
-
-    if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
-      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
-        (photos: any) => {
-          this.chooseDone(photos);
-          // this.uploadPhoto(photos);
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
-    }
-
-    if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
-      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe(
-        (photos: any) => {
-          this.uploadFile(photos);
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
-    }
-  }
+  // private subscribePhotoEvents() {
+  //
+  //   let closeObs$ = Observable.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.closeObs$);
+  //   // Subscribe actions corresponding with photo modal actions
+  //
+  //   if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
+  //     this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
+  //       (photos: any) => {
+  //         this.chooseDone(photos);
+  //         // this.uploadPhoto(photos);
+  //       },
+  //       (error: any) => {
+  //         console.error(error);
+  //       }
+  //     );
+  //   }
+  //
+  //   if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
+  //     this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe(
+  //       (photos: any) => {
+  //         this.uploadFile(photos);
+  //       },
+  //       (error: any) => {
+  //         console.error(error);
+  //       }
+  //     );
+  //   }
+  // }
 
   private buildQuoteMessage(message: any): string {
     return `<blockquote contenteditable="false">

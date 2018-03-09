@@ -105,14 +105,14 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private wthConfirmService: WthConfirmService,
               private toastsService: ToastsService,
-              private photoSelectDataService: PhotoModalDataService,
+              // private photoSelectDataService: PhotoModalDataService,
               private zoneReportService: ZSharedReportService,
               public favoriteService: SocialFavoriteService,
               private store: Store<any>,
               private socialService: SocialService) {
 
     // All subscriptions to photo select modal should be closed when 1 of following events are emitted
-    this.closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
+    // this.closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
     this.profile$ = this.userService.getAsyncProfile();
   }
 
