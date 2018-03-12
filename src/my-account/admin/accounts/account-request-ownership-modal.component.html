@@ -13,18 +13,23 @@
     <bs-modal-body>
       <div class="padding10">
         <div>
-          You are requesting ownership for your account from {{ parent?.name}}
+          You are requesting ownership for your account from
+          <b><a rel="nofollow" target="_top" href="mailto:{{parent.email}}">{{ parent?.name}}</a></b>
         </div>
         <div>
-          Once your request is accepted, your account will be permanently remove from {{ parent?.name }} account
+          Once your request is accepted, your account will be permanently remove from
+          <b><a rel="nofollow" target="_top" href="mailto:{{parent.email}}">{{ parent?.name}}</a></b> account
         </div>
         <div>
-          {{ parent?.name }} will no longer able to access into our account or your personal information
+          <b><a rel="nofollow" target="_top" href="mailto:{{parent.email}}">{{ parent?.name}}</a></b>
+          will no longer able to access into our account or your personal information
         </div>
         <div>
           In additional, you must be responsible for subscription fee starting at the next billing cycle to keep using WTHApps.
           <br>
-          For the remaning of this billing cycle. {{ parent?.name }} will have access your to their accounts
+          For the remaining of this billing cycle.
+          <b><a rel="nofollow" target="_top" href="mailto:{{parent.email}}">{{ parent?.name}}</a></b>
+          will have access your to their accounts
         </div>
       </div>
 

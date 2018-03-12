@@ -158,7 +158,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         if (event.payload.mode === 'add') {
           this.store.dispatch(new fromAccount.AddMany(event.payload));
         } else if (event.payload.mode === 'delete') {
-          this.store.dispatch(new fromAccount.Delete([...event.payload.accounts]));
+          this.store.dispatch(new fromAccount.Update({...event.payload.accounts[0], removing: true}));
         }
         break;
     }

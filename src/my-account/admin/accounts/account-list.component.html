@@ -88,9 +88,6 @@
           <td>
             <a href="javascript:void(0);" (click)="view(item)">{{ item.name }}</a>
             <label *ngIf="item?.parent_id == null && item.creator_id == null" class="admin-mark">Master</label>
-            <label *ngIf="item?.parent_id > 0 && item?.requested_full_account" title="Ownership request">
-              <i class="fa fa-info-circle requested-full-account"></i></label>
-
           </td>
           <td><a rel="nofollow" target="_top"
                  href="mailto:{{ item.email }}">{{ item.email }}</a></td>
@@ -99,13 +96,13 @@
 
           <td>
             <div class="text-right">
-              <button *ngIf="item?.requested_full_account" class="btn btn-default" (click)="acceptRequest(item)" title="Accept Request">
-                <i class="fa fa-check-circle"></i></button>
+              <button *ngIf="item?.requested_full_account && !item?.removing" class="btn btn-default" (click)="acceptRequest(item)" title="Accept Request">
+                <i class="fa fa-check-circle requested-full-account"></i></button>
 
-              <button class="btn btn-default" (click)="edit(item)" title="Edit">
+              <button *ngIf="!item?.removing" class="btn btn-default" (click)="edit(item)" title="Edit">
                 <i class="fa fa-pencil"></i></button>
-              <button [disabled]="item?.parent_id == null"
-                      class="btn btn-default" title="Delete"
+              <button *ngIf="!item?.removing" [disabled]="item?.parent_id == null"
+                      class="btn btn-default" title="Remove"
                       (click)="delete(item)"><i class="fa fa-trash"></i></button>
             </div>
           </td>

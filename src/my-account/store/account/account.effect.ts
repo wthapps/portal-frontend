@@ -18,6 +18,7 @@ import {
   Delete, DeleteSuccess, DeleteFail
 }       from './account.action';
 import { AccountService } from '../../shared/account/account.service';
+import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -36,7 +37,7 @@ import { AccountService } from '../../shared/account/account.service';
 @Injectable()
 export class AccountEffects {
 
-  constructor (private actions$: Actions, private accountService: AccountService) {}
+  constructor (private actions$: Actions, private accountService: AccountService, private toastsService: ToastsService) {}
 
   /**
    * Photo
@@ -67,7 +68,10 @@ export class AccountEffects {
     .map((action: Add) => action.payload)
     .switchMap((state: any) => {
       return this.accountService.create(state)
-        .map(response => new AddSuccess(response))
+        .map(response => {
+          this.toastsService.success('You added account successfully!');
+          return new AddSuccess(response);
+        })
         .catch(error  => of(new AddFail(error)));
     });
 
@@ -77,7 +81,10 @@ export class AccountEffects {
     .map((action: AddMany) => action.payload)
     .switchMap((state: any) => {
       return this.accountService.create(state, true)
-        .map(response => new AddManySuccess(response))
+        .map(response => {
+          this.toastsService.success('You added account successfully!');
+          return new AddManySuccess(response);
+        })
         .catch(error  => of(new AddManyFail(error)));
     });
 
@@ -87,7 +94,10 @@ export class AccountEffects {
     .map((action: Update) => action.payload)
     .switchMap((state: any) => {
       return this.accountService.update(state)
-        .map(response => new UpdateSuccess(response))
+        .map(response => {
+          this.toastsService.success('You updated account successfully!');
+          return new UpdateSuccess(response);
+        })
         .catch(error  => of(new UpdateFail(error)));
     });
 
@@ -97,7 +107,10 @@ export class AccountEffects {
     .map((action: Delete) => action.payload)
     .switchMap((state: any) => {
       return this.accountService.delete(0, state)
-        .map(response => new DeleteSuccess(response))
+        .map(response => {
+          this.toastsService.success('You deleted account successfully!');
+          return new DeleteSuccess(response);
+        })
         .catch(error  => of(new DeleteFail(error)));
     });
 

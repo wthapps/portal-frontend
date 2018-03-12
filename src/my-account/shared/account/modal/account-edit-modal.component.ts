@@ -76,13 +76,13 @@ export class AccountEditModalComponent implements OnInit {
         ])],
         'email': [this.item.email, Validators.compose([
           Validators.required
-        ])],
-        'password': [this.item.generated_password, Validators.compose([
-          Validators.required,
-          Validators.minLength(8),
-          CustomValidator.lowercaseUppercase,
-          // CustomValidator.specialSymbolOrNumber
         ])]
+        // 'password': [this.item.generated_password, Validators.compose([
+        //   Validators.required,
+        //   Validators.minLength(8),
+        //   CustomValidator.lowercaseUppercase,
+        //   // CustomValidator.specialSymbolOrNumber
+        // ])]
       });
     }
   }
@@ -97,12 +97,13 @@ export class AccountEditModalComponent implements OnInit {
 
 
   save() {
-    this.mode = 'view';
+    // this.mode = 'view';
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:update',
       payload: {data: this.form.value}
     });
+    this.modal.close().then();
   }
 
   acceptRequestOwnership() {

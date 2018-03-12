@@ -34,8 +34,8 @@ export class AccountRequestOwnershipModalComponent implements OnInit {
   * @data: array of item
   * @mode: add or edit or view. default is add
   * */
-  open(options: any = {data: undefined, mode: 'edit'}) {
-    this.parent = options.data;
+  open(options: any = {data: undefined, user: undefined, parent: undefined}) {
+    this.parent = options.parent;
     this.user = options.user;
     this.options = options;
     this.modal.open(options).then();

@@ -46,9 +46,10 @@ export class AccountDeleteModalComponent implements OnInit {
   delete() {
     this.commonEventService.broadcast({
       channel: 'my_account',
-      action: 'my_account:subscription:open_subscription_update_modal',
-      payload: {...this.options, accountAction: 'delete'}
+      action: 'my_account:subscription:update',
+      payload: {mode: 'delete', accounts: this.item}
     });
+    this.modal.close().then();
   }
 
 }

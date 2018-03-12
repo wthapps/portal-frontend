@@ -11,25 +11,25 @@
         <span aria-hidden="true">×</span>
       </button>
       <h4 class="modal-title">Update Subscription</h4>
-
     </bs-modal-header>
     <bs-modal-body>
 
       <div class="panel panel-default pt0 mt0 mb0">
         <div class="panel-body pt0 mt0 mb0">
-          <h4>{{ plan?.description }} plan</h4>
           <div class="row">
-            <div class="col-xs-6 text-right" >
-              <div>New accounts:</div>
-              <div>Current billing amount:</div>
+            <div class="col-xs-4 text-right" >
+              <div>Plan type:</div>
+              <div>Number of accounts:</div>
               <div>Total billing amount:</div>
+              <div>Payment method:</div>
               <div>Next billing date:</div>
             </div>
 
-            <div class="col-xs-3 text-right">
-              <div><b> ${{ editing?.accountCount * (editing?.accountPrice | number) }} </b></div>
-              <div><b> ${{ subscription?.amount | number }} </b></div>
-              <div style="width: 160px"><b> ${{ editing?.accountCount * (editing?.accountPrice | number) + (subscription?.amount | number) }}/month </b></div>
+            <div class="col-xs-3 text-left pl0">
+              <div> {{ plan?.description }} </div>
+              <div> {{ editing?.accountCount +  subscription?.accounts_count}} </div>
+              <div><b> ${{ editing?.accountCount * (editing?.accountPrice | number) + (subscription?.amount | number) }}/month </b></div>
+              <div>VISA</div>
               <div><b> {{ subscription?.next_billing_date | date: 'MMM d, y' }} </b></div>
             </div>
 

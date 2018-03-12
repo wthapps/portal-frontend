@@ -12,6 +12,7 @@ import { CommonEventService } from '@wth/shared/services/common-event/common-eve
 export class AccountRequestAcceptModalComponent {
   @ViewChild('modal') modal: BsModalComponent;
   data: any;
+  parent: any;
 
   constructor(private commonEventService: CommonEventService) {
   }
@@ -21,7 +22,8 @@ export class AccountRequestAcceptModalComponent {
   * @data: array of item
   * @mode: add or edit or view. default is add
   * */
-  open(options: any = {data: undefined, mode: 'add'}) {
+  open(options: any = {data: undefined, parent: undefined, mode: 'add'}) {
+    this.parent = options.parent;
     this.modal.open(options).then();
   }
 
