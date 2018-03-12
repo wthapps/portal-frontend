@@ -13,7 +13,7 @@ export class ConstantsBase {
     cdn: Config.CDN,
   };
   cdn: any = Config.CDN;
-  flagsRelease: any = false;
+  useDefaultPage: any = true;
 
   cookieOptionsArgs: any = {
     path: '/',
@@ -161,7 +161,7 @@ export class ConstantsBase {
   };
 
   urls: any =  {
-    afterLogin: Config.SUB_DOMAIN.SOCIAL,
+    default: Config.SUB_DOMAIN.SOCIAL,
     zoneSoPosts: 'zone/social_network/posts',
     zoneSoComments: 'zone/social_network/comments',
     zoneSoMyPosts: 'zone/social_network/my_posts',

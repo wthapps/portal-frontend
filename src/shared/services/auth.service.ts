@@ -84,10 +84,9 @@ export class AuthService {
   }
 
   login(payload: any): Observable<any> {
-    this.api.post('users/sign_in', payload).subscribe(
-      (response: any) => {
+    return this.api.post('users/sign_in', payload).map
+      ((response: any) => {
         this.jwt = response.token;
-
         this.loggedIn = true;
         this._loggedIn$.next(true);
         this.loggedIn$ = this._loggedIn$.asObservable();
@@ -98,13 +97,7 @@ export class AuthService {
         // if (this.redirectUrl.indexOf('login') === -1) {
         //   window.location.href = this.redirectUrl;
         // }
-      },
-      (error: any) => {
-        //process error
-        console.log('error:::');
       });
-    return Observable.of(true);
-
   }
 
   logout(): void {

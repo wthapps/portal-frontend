@@ -1,5 +1,5 @@
 <bs-modal #modal cssClass="modal-social modal-long"
-       (onDismiss)="cancel($event)" [animation]="false">
+       (onDismiss)="cancel($event)" [animation]="false" [backdrop]="'static'">
   <bs-modal-header>
     <h4 class="modal-title text-left"><i class="{{ titleIcon }}"></i> {{ title }} </h4>
   </bs-modal-header>
@@ -18,7 +18,7 @@
     </hd-list>
   </bs-modal-body>
   <bs-modal-footer>
-    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (onDismiss)="cancel($event)">
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">
       Cancel
     </button>
     <button type="button" class="btn btn-outline-primary btn-min"

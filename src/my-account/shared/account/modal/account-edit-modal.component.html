@@ -27,7 +27,7 @@
           <div class="col-xs-12 col-sm-12">
             <div class="form-group" [ngClass]="{'has-error': (!form.controls.name.valid && form.controls.name.touched)}">
               <label for="fullName">Full name</label>
-              <label *ngIf="item.parent_id == null && item.creator_id == null" class="admin-mark">Admin</label>
+              <label *ngIf="item.parent_id == null && item.creator_id == null" class="admin-mark">Master</label>
 
               <input [formControl]="form.controls.name" class="form-control" id="fullName"
                      [readonly]="mode=='view' ? true: false"

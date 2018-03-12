@@ -87,7 +87,7 @@
           <!--</th>-->
           <td>
             <a href="javascript:void(0);" (click)="view(item)">{{ item.name }}</a>
-            <label *ngIf="item?.parent_id == null && item.creator_id == null" class="admin-mark">Admin</label>
+            <label *ngIf="item?.parent_id == null && item.creator_id == null" class="admin-mark">Master</label>
             <label *ngIf="item?.parent_id > 0 && item?.requested_full_account" title="Ownership request">
               <i class="fa fa-info-circle requested-full-account"></i></label>
 
@@ -104,7 +104,7 @@
 
               <button class="btn btn-default" (click)="edit(item)" title="Edit">
                 <i class="fa fa-pencil"></i></button>
-              <button *ngIf="item?.parent_id != null || item.creator_id != null"
+              <button [disabled]="item?.parent_id == null"
                       class="btn btn-default" title="Delete"
                       (click)="delete(item)"><i class="fa fa-trash"></i></button>
             </div>

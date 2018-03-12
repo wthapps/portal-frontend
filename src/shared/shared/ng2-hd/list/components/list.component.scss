@@ -4,3 +4,8 @@
 @import 'themes/default-theme';
 @import 'themes/minimal-theme';
 @import 'themes/dark-theme';
+
+.hd-list-content-scrollale{
+  overflow-y: auto;
+  max-height: 400px;
+}

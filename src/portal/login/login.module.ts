@@ -10,7 +10,7 @@ import { PortalSharedModule } from '../shared/shared.module';
 @NgModule({
   imports: [
     LoginRoutingModule,
-    PortalSharedModule.forRoot()
+    PortalSharedModule
   ],
   declarations: [LoginComponent],
   exports: [LoginComponent],
