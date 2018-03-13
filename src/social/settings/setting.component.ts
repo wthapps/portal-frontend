@@ -15,7 +15,7 @@ export class ZSocialSettingComponent implements OnInit {
 
   user: SoUser = new SoUser();
   readonly PRIVACIES: string[] = ['public', 'friends', 'personal'];
-  readonly PRIVACY_NAMES: any = {'public': 'Public', 'friends': 'Friends', 'personal': 'Only me'};
+  readonly PRIVACY_NAMES: any = {'public': 'Public', 'friends': 'Friends', 'personal': 'Personal'};
 
   constructor(private socialService: SocialService,
               private store: Store<any>,

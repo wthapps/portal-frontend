@@ -30,6 +30,7 @@ import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/mo
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 import { saveAs } from 'file-saver';
+import { ApiBaseService } from '@wth/shared/services';
 // declare var saveAs: any;
 
 declare var $: any;
@@ -121,6 +122,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
               private mediaUploaderDataService: MediaUploaderDataService,
               private mediaStore: ZMediaStore,
               private cdr: ChangeDetectorRef,
+              private api: ApiBaseService,
               private wthConfirmService: WthConfirmService) {
 
   }
@@ -337,7 +339,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.updateDetailObject(event.params.properties);
         break;
       case 'download':
-        this.download(event.params.selectedObjects);
+        if (event.params.objectType === 'sharing') {
+          this.downloadSharing(event.params.selectedObject);
+        } else {
+          this.download(event.params.selectedObjects);
+        }
         break;
       case 'downloadAlbum':
         this.downloadAlbum(event.params.selectedObjects[0]);
@@ -424,6 +430,17 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         }
       );
     });
+  }
+
+  downloadSharing(sharing: any) {
+    this.api.get(`media/sharings/${sharing.id}`).subscribe(
+      (response: any) => {
+        let files = response.data;
+        this.download(files);
+      },
+      (error: any) => {
+
+      });
   }
 
   edit() {

@@ -35,6 +35,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   socialMenu = Constants.socialMenuItems;
   chatMenu = Constants.chatMenuItems;
   noteMenu = Constants.noteMenuItems;
+  currentVersion: string = Constants.currentVersion;
   hostname: string = '';
   isProfileTab: boolean;
   currentGroup: string;

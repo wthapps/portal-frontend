@@ -217,6 +217,26 @@
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
+      <li *ngIf="selectedObjects?.length" class="dropdown action">
+        <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true"
+           pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
+          <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li>
+            <a (click)="onAction({action:'openModal', params: {modalName: 'editNameModal', selectedObject: selectedObjects[0] }})"
+               draggable="false" href="javascript:void(0);">
+              <i class="fa fa-edit"></i> Edit title</a>
+          </li>
+
+          <li>
+            <a *ngIf="selectedObjects[0].photo_number > 0"
+               draggable="false" href="javascript:void(0);"
+               (click)="onAction({action: 'download', params: {objectType: 'sharing', selectedObject: selectedObjects[0]}})">
+              <i class="fa fa-download"></i> Download</a>
+          </li>
+        </ul>
+      </li>
     </ul>
 
     <!--sharing detail-->

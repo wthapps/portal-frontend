@@ -26,7 +26,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // confirmInfo$: Observable<ConfirmInfo>;
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor( public authService: AuthService, private router: Router) {
   }
 
   ngOnInit() {

@@ -272,7 +272,7 @@ export class ZContactService extends BaseEntityService<any> {
   sendRequest(contact: any) {
     this.apiBaseService.post(`${this.url}/send_connect_request`, contact).toPromise()
       .then(res => {
-        console.debug('sendRequest: ', res);
+        this.toastsService.success(`You sent connection request successfully`);
         this.updateSingle(res.data);
       })
       .catch(err => console.error(err))

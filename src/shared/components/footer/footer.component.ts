@@ -11,7 +11,7 @@ import { Constants } from '../../../shared/constant';
 })
 export class FooterComponent {
   portalDomain: string = Constants.baseUrls.app;
-
+  currentVersion: string = Constants.currentVersion;
 }
 
 @Component({

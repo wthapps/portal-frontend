@@ -24,10 +24,7 @@ export class HomeComponent {
 
   errorMessage: any;
 
-  flagsRelease: boolean = Constants.flagsRelease;
-
   tooltip: any = Constants.tooltip;
-
   sex: number = 0;
   form: FormGroup;
   first_name: AbstractControl;
@@ -47,9 +44,6 @@ export class HomeComponent {
               private userService: UserService,
               private toastsService: ToastsService,
               private loadingService: LoadingService) {
-    if (this.flagsRelease) {
-      this.router.navigate(['/login']);
-    }
 
     this.form = fb.group({
       'first_name': ['',
