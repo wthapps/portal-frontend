@@ -10,7 +10,8 @@ import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
       {path: 'shared-with-me', component: ZMediaSharedWithMeComponent, canActivate: [AuthGuard], children: [
         {path: ':uuid', component: ZMediaSharedWithMeComponent},
         {path: 'album/:id', component: ZMediaAlbumDetailComponent}
-      ]}
+      ]},
+      {path: 'shared-with-me/:id', component: ZMediaAlbumDetailComponent, outlet: 'detail', canActivate: [AuthGuard]}
     ])
   ],
   exports: [RouterModule]

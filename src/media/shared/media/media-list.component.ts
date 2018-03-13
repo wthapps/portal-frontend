@@ -365,6 +365,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         break;
       case 'viewInfo':
       case 'viewDetails':
+        // console.log("xxxxxx",this.selectedObjects[0])
         if (this.selectedObjects[0].object_type == 'album') {
           this.viewDetails();
         } else {
@@ -743,16 +744,22 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   viewDetails() {
-    if (this.page != 'shared-with-me')
+    if (this.page != 'shared-with-me') {
       this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}], {
         queryParamsHandling: 'preserve',
         preserveFragment: true
       });
-    else
-      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}]}}], {
+    }
+    else {
+      // this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}]}}], {
+      //   queryParamsHandling: 'preserve',
+      //   preserveFragment: true
+      // });
+      this.router.navigate([{outlets: {detail: ['shared-with-me', this.selectedObjects[0].id]}}], {
         queryParamsHandling: 'preserve',
         preserveFragment: true
       });
+    }
   }
 
   slideShow() {
