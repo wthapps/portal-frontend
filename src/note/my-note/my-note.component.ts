@@ -36,22 +36,7 @@ export class ZNoteMyNoteComponent implements OnInit {
     private router: Router,
     private wthConfirmService: WthConfirmService) {}
   ngOnInit() {
-    // File does not exist
-    this.route.queryParams.subscribe((params: any) => {
-      if (params.error == 'file_does_not_exist') {
-        this.wthConfirmService.confirm({
-          message: 'The file you looking for was deleted or you do not have permission to access',
-          header: 'File not found',
-          rejectLabel: null,
-          accept: () => {
-            this.router.navigate(["my-note"]);
-          },
-          reject: () => {
-            this.router.navigate(["my-note"]);
-          }
-        });
-      }
-    })
+    
     this.store.dispatch({type: note.LOAD, payload: {parent_id: null}});
     this.store.dispatch({type: context.SET_CONTEXT, payload: {
       page: this.noteConstants.PAGE_MY_NOTE,

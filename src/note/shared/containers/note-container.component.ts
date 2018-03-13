@@ -10,6 +10,8 @@ import { Observable } from 'rxjs/Observable';
 import { Folder } from '../reducers/folder';
 import { noteConstants, NoteConstants } from "../config/constants";
 import { Note } from "@shared/shared/models/note.model";
+import { ActivatedRoute, Router } from "@angular/router";
+import { WthConfirmService } from "@shared/shared/components/confirmation/wth-confirm.service";
 
 declare var _: any;
 
@@ -33,6 +35,9 @@ export class ZNoteContainerComponent implements OnInit {
   noteConstants: NoteConstants = noteConstants;
 
   constructor(private noteService: ZNoteService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private wthConfirmService: WthConfirmService,
     private store: Store<any>) {
     this.noteItems$ = this.store.select(listReducer.getNotes);
     this.folderItems$ = this.store.select(listReducer.getFolders);
@@ -44,6 +49,22 @@ export class ZNoteContainerComponent implements OnInit {
   }
 
   ngOnInit() {
+    // File does not exist
+    this.route.queryParams.subscribe((params: any) => {
+      if (params.error == 'file_does_not_exist') {
+        this.wthConfirmService.confirm({
+          message: 'The file you looking for was deleted or you do not have permission to access',
+          header: 'File not found',
+          rejectLabel: null,
+          accept: () => {
+            this.router.navigate(["my-note"]);
+          },
+          reject: () => {
+            this.router.navigate(["my-note"]);
+          }
+        });
+      }
+    })
   }
 
   onNewNote() {
