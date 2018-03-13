@@ -7,6 +7,7 @@ export const SHORTCUT_UPDATE_DONE = '[SOCIAL] UPDATE SHORTCUT DONE';
 export const SHORTCUT_ADD = '[SOCIAL] ADD SHORTCUT';
 export const SHORTCUT_ADD_MULTI = '[SOCIAL] ADD SHORTCUT MULTIPLE';
 export const SHORTCUT_ADD_MULTI_DONE = '[SOCIAL] ADD SHORTCUT MULTIPLE DONE';
+export const SHORTCUT_ACCESSED = '[SOCIAL] SHORTCUT ACCESSED';
 export const SHORTCUTS_REMOVE = '[SOCIAL] REMOVE SHORTCUTS';
 export const SHORTCUTS_REMOVE_DONE = '[SOCIAL] REMOVE SHORTCUTS DONE';
 
@@ -59,6 +60,11 @@ export function appReducer(state = socialInitialState, action: any): AppState {
     let shortcuts = {...state.shortcuts};
     action.payload.forEach(id => delete shortcuts[id]);
     return {...state, shortcuts: shortcuts};
+    }
+    case SHORTCUT_ACCESSED: {
+      let shortcuts = {...state.shortcuts};
+      shortcuts[action.payload].updates_count = 0;
+      return {...state, shortcuts: shortcuts};
     }
 
     case SO_PROFILE_UPDATE_DONE: {

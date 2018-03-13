@@ -54,6 +54,7 @@ export class NotificationSettingModalComponent implements OnInit, OnDestroy {
 
     this.userService.updateNotificationSetting({enable_social: this.social, enable_chat: this.chat,
       enable_note: this.note, enable_media: this.media });
+    this.modal.close();
   }
 
 }

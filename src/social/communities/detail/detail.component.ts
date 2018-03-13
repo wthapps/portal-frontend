@@ -19,7 +19,7 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { Constants } from '@wth/shared/constant';
-import { SHORTCUT_LOAD, SHORTCUT_ADD_MULTI_DONE } from '../../shared/reducers/index';
+import { SHORTCUT_LOAD, SHORTCUT_ADD_MULTI_DONE, SHORTCUT_ACCESSED } from '../../shared/reducers/index';
 import { Store } from '@ngrx/store';
 
 declare let _: any;
@@ -128,7 +128,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       this.selectedTab = queryParam['tab'] ;
       this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
 
-      (!this.selectedTab || this.selectedTab === this.tab.post) && this.store.dispatch({type: SHORTCUT_LOAD});
+      // (!this.selectedTab || this.selectedTab === this.tab.post) && this.store.dispatch({type: SHORTCUT_LOAD});
     }).subscribe(() => {
       this.setTabVisibility();
       if (this.selectedTab !== undefined)
@@ -374,8 +374,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.community.canEdit = this.isAdmin;
 
         console.debug('result: ', res);
-        if (res.shortcut)
+        if (res.shortcut) {
           this.store.dispatch({type: SHORTCUT_ADD_MULTI_DONE, payload: res.shortcut});
+        }
       },
       error => {
         this.errorMessage = <any>error;

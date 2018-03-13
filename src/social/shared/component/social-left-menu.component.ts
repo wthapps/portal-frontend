@@ -12,6 +12,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { POSTS_COUNT_LOAD } from '../reducers/index';
 import { POSTS_COUNT_LOAD_DONE } from '../reducers/index';
+import { SHORTCUT_LOAD } from '@social/shared/reducers';
+import { SHORTCUT_ACCESSED } from '@social/shared/reducers';
 
 @Component({
   selector: 'z-social-left-menu',
@@ -60,6 +62,10 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
     }
   }
 
+  onShortcutAccessed(shortcut: any) {
+    this.store.dispatch({type: SHORTCUT_ACCESSED, payload: shortcut.id});
+  }
+
   reloadHome() {
     let time = new Date().getTime();
     this.store.dispatch({type: POSTS_COUNT_LOAD_DONE, payload: 0});
@@ -73,6 +79,7 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
       .subscribe(() => {
       console.debug('counting ...');
       this.store.dispatch({type: POSTS_COUNT_LOAD});
+      this.store.dispatch({type: SHORTCUT_LOAD});
       });
   }
 
