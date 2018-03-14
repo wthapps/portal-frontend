@@ -13,7 +13,6 @@ import { APP_BASE_HREF } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { HeaderNavbarModule } from '../shared/partials/header/navbar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 
@@ -37,7 +36,6 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
     ContactSharedModule.forRoot(),
 
     // WTHApps modules
-    HeaderNavbarModule,
     SharedModule.forRoot(),
     CoreModule.forRoot(),
   ],

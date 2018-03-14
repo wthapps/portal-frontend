@@ -11,7 +11,6 @@ import { PortalSharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AboutModule } from './about/about.module';
-import { HomeModule } from './home/home.module';
 import { ContactModule } from './contact/contact.module';
 import { PageErrorsModule } from './errors/errors.module';
 import { LoginModule } from './login/login.module';
@@ -35,7 +34,6 @@ import { NotificationModule } from './notifications/notifications.module';
 
     AppRoutingModule,
     AboutModule,
-    HomeModule,
     ContactModule,
     PageErrorsModule,
     LoginModule,
