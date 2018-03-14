@@ -20,7 +20,7 @@ import { MyPlansModule } from './plans/plans.module';
 import { MyAdminModule } from './admin/admin.module';
 import { WelcomeModule } from './welcome/welcome.module';
 import { MyAccountMyProfileModule } from './my-profile/my-profile.module';
-import { FooterModule } from '@wth/shared/components/footer/footer.module';
+import { FooterModule } from '@wth/shared/partials/footer/footer.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from '@env/environment';

@@ -1,31 +1,28 @@
 <div *ngIf="showNavSearch" class="nav-tabs-wrap nav-tabs-wrap-search">
-  <ul class="nav nav-tabs" role="tablist" [routerLinkActive]="['active']">
+  <ul class="nav nav-tabs" role="tablist">
     <li [routerLink]="['/search/all']"
         [queryParams]="{q:params}"
-        [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact:true}">
+        [ngClass]="{'active': (term === 'all')}">
       <a href="javascript:;">All</a>
     </li>
-    <li [routerLink]="['/search/member']"
+    <li [routerLink]="['/search/members']"
         [queryParams]="{q:params}"
-        [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact:true}">
+        [ngClass]="{'active': (term === 'members')}">
       <a href="javascript:;">Members</a>
     </li>
-    <li [routerLink]="['/search/community']"
+    <li [routerLink]="['/search/communities']"
         [queryParams]="{q:params}"
-        [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact:true}">
+        [ngClass]="{'active': (term === 'communities')}">
       <a href="javascript:;">Communities</a>
     </li>
-    <li [routerLink]="['/search/post']"
+    <li [routerLink]="['/search/posts']"
         [queryParams]="{q:params}"
-        [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact:true}">
-      <a href="javascript:;">Post</a>
+        [ngClass]="{'active': (term === 'posts')}">
+      <a href="javascript:;">Posts</a>
     </li>
   </ul>
 </div>
+
 <div class="page-body-content gray-light page-body-content-search"
   lockYOffset="10"
   observeAttributes="true"
@@ -39,10 +36,10 @@
           <h3 class="panel-title">{{ group | titleCase }}</h3>
         </div>
 
-        <z-social-share-profile-list *ngIf="group=='member' || group=='community'"
+        <z-social-share-profile-list *ngIf="group=='members' || group=='communities'"
                                      [data]="result" [type]="group"></z-social-share-profile-list>
 
-        <so-post-list *ngIf="group == 'post'" #posts
+        <so-post-list *ngIf="group == 'posts'" #posts
                       [items]="result"
                       [type]="'search'">
         </so-post-list>
@@ -59,7 +56,7 @@
         <box-loading></box-loading>
       </ng-template>
     </div>
-    <div *ngIf="group == 'post'" class="zone-social-sidebar">
+    <div *ngIf="group == 'posts'" class="zone-social-sidebar">
       <z-social-post-by></z-social-post-by>
       <z-social-post-date></z-social-post-date>
     </div>
@@ -72,7 +69,7 @@
     <div class="panel-heading">
       <h3 class="panel-title">
         <a class="link-text"
-           [routerLink]="['/search', group=='members'?'member':group=='communities'?'community':'post']"
+           [routerLink]="['/search', group=='members'?'member':group=='communities'?'communities':'posts']"
            [queryParams]="{q:params}">
           {{ group | titleCase }}
         </a>

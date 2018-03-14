@@ -2,10 +2,10 @@ import {
   Component, ViewEncapsulation, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild,
   Input
 } from '@angular/core';
-import { Constants } from '../../../constant/config/constants';
-import { WTHNavigateService } from '../../../services/wth-navigate.service';
-import { ChannelService } from '../../../channels/channel.service';
-import { NotificationService } from '../../../services/notification.service';
+import { Constants } from '../../constant/config/constants';
+import { WTHNavigateService } from '../../services/wth-navigate.service';
+import { ChannelService } from '../../channels/channel.service';
+import { NotificationService } from '../../services/notification.service';
 import { Router } from '@angular/router';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
@@ -19,12 +19,12 @@ declare var _: any;
  * This class represents the navigation bar component.
  */
 @Component({
-  selector: 'wth-header-navbar',
-  templateUrl: 'navbar.component.html',
-  styleUrls: ['navbar.component.scss'],
+  selector: 'w-header',
+  templateUrl: 'header.component.html',
+  styleUrls: ['header.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
+export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() user: User;
   @Input() loggedIn: boolean;
   @ViewChild('notifications') notificationListComponent: NotificationListComponent;
@@ -95,21 +95,6 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   logout() {
     this.authService.logout();
-    // this.userService.logout('users/sign_out')
-    //   .take(1)
-    //   .subscribe(
-    //     () => {
-    //       window.location.href = `${Constants.baseUrls.app}/login`;
-    //       // this.userService.deleteUserInfo();
-    //       // this.appearancesChannelService.unsubscribe();
-    //       // this.router.navigate(['/login']);
-    //     },
-    //     error => {
-    //       this.userService.deleteUserInfo();
-    //       // this.router.navigate(['/login']);
-    //       // console.log('logout error', error);
-    //     }
-    //   );
   }
 
   redirectTo(domain: string = '', path: string = '', event: any) {
@@ -163,14 +148,14 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   doAction(action: any, notif_id: string) {
-    if (this.type == 'connection')
+    if (this.type === 'connection')
       this.connectionService.doAction(action, notif_id);
     else
       this.notificationService.doAction(action, notif_id);
   }
 
   getLatestNotifications() {
-    if (this.type == 'connection')
+    if (this.type === 'connection')
       this.connectionService.getLatestNotifications();
     else
       this.notificationService.getLatestNotifications();
@@ -185,7 +170,7 @@ export class HeaderNavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   markAsSeen() {
-    if (this.type == 'connection')
+    if (this.type === 'connection')
       this.connectionService.markAsSeen();
     else
       this.notificationService.markAsSeen();

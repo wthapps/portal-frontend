@@ -1,6 +1,6 @@
 import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ServiceManager } from '@wth/shared/services';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiBaseService, ServiceManager } from '@wth/shared/services';
 
 @Component({
 
@@ -23,21 +23,17 @@ export class ZSocialSearchResultAllComponent implements OnDestroy {
   show_more_communities: any;
   show_more_members: any;
   params: any;
+  term: string = 'all';
 
-  constructor(private route: ActivatedRoute,
-              public serviceManager: ServiceManager) {
-
-    this.sub = this.route.queryParams.subscribe((params: any) => {
+  constructor(private route: ActivatedRoute, private router: Router, private api: ApiBaseService) {
+      this.sub = this.route.queryParams.subscribe((params: any) => {
       this.params = params['q'];
-      console.log(this.params);
-
       if (this.params) {
-        this.serviceManager.getApi().post(`zone/social_network/search`, {
+        this.api.post(`zone/social_network/search`, {
           q: this.params,
-          types: ['member', 'community', 'post']
+          types: ['members', 'communities', 'posts']
         }).subscribe(
           (res: any) => {
-            console.log(res);
             this.result = res.data;
             this.groups = Object.keys(res.data);
             if (res.show_more_posts) {

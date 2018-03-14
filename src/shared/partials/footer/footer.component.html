@@ -4,7 +4,8 @@
       <div class="row">
         <div class="col-sm-3">
           <h5>Around the Site</h5>
-          <ul class="footer-menu">
+            <ng-content></ng-content>
+          <ul class="footer-menu around-the-site">
             <li>
               <a [attr.href]="portalDomain + '/apps'">Apps</a>
             </li>
@@ -18,6 +19,7 @@
         </div>
         <div class="col-sm-3">
           <h5>Support</h5>
+          <ng-content></ng-content>
           <ul class="footer-menu">
             <li>
               <a [attr.href]="portalDomain + '/policies/terms'">Term of Service</a>
@@ -29,6 +31,7 @@
         </div>
         <div class="col-sm-3">
           <h5>Account</h5>
+          <ng-content></ng-content>
           <ul class="footer-menu">
             <li><a [attr.href]="portalDomain + '/signup'">Sign up</a></li>
             <li><a [attr.href]="portalDomain + '/login'">Log in</a></li>

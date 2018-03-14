@@ -1,6 +1,5 @@
 <div class="wrapper">
-  <!--<portal-header [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async"></portal-header>-->
-  <wth-header-navbar class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
+  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
     <div class="header-nav-left">
       <a [routerLink]="['/']" class="navbar-brand" href="#">
         <img [src]="logoUrl" alt="WTHApps">
@@ -40,7 +39,7 @@
       </div><!-- /.navbar-collapse -->
     </div>
 
-  </wth-header-navbar>
+  </w-header>
   <main class="main">
      <router-outlet></router-outlet>
   </main>

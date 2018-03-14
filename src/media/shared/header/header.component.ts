@@ -1,6 +1,6 @@
 import { Component, ViewChild, HostListener } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
-import { TextBoxSearchComponent } from '@wth/shared/shared/components/header/search/components/textbox-search.component';
+import { TextBoxSearchComponent } from '@wth/shared/partials/search-box/textbox-search.component';
 import { ServiceManager } from '@wth/shared/services';
 
 

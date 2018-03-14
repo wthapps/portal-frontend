@@ -40,9 +40,7 @@ import { CommonEventService } from './services/common-event/common-event.service
 import { PipeModule } from './shared/pipe/pipe.module';
 
 import { LoadingModule } from './shared/components/loading/loading.module';
-import { FooterModule } from './components/footer/footer.module';
-import { HeaderModule } from './shared/components/header/header.module';
-import { HeaderNavbarModule } from './shared/components/navbar/navbar.module';
+import { FooterModule } from './partials/footer/footer.module';
 import { TablePricingModule } from './shared/components/table-pricing/table-pricing.module';
 import { ToastsModule } from './shared/components/toast/toast-message.module';
 import { CoreChatSupportModule } from './shared/components/chat-support/chat-support.module';
@@ -92,14 +90,13 @@ import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-me
 import { WObjectListService } from '@wth/shared/components/w-object-list/w-object-list.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WindowService } from '@wth/shared/services/window.service';
+import { PartialModule } from '@wth/shared/partials';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
-
-export * from './shared/components/navbar/navbar.module';
 
 @NgModule({
   imports: [
@@ -113,6 +110,7 @@ export * from './shared/components/navbar/navbar.module';
     InfiniteScrollModule,
     Ng2CableModule,
 
+    PartialModule,
     //Custom modules
     GridListModule,
     ModalModule,
@@ -152,8 +150,8 @@ export * from './shared/components/navbar/navbar.module';
     BoxNoDataModule,
 
     FooterModule,
-    HeaderModule,
-    HeaderNavbarModule,
+    PartialModule,
+
     TablePricingModule,
     CoreChatSupportModule,
     UploadCropImageModule,

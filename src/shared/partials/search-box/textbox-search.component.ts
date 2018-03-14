@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
-import { Constants } from '../../../../../constant/config/constants';
+import { Constants } from '../../constant/config/constants';
 
 declare let _: any;
 
@@ -38,11 +38,13 @@ export class TextBoxSearchComponent implements OnInit {
   }
 
   onKeyUp(e: any) {
-    if (e.code == 'Enter') {
+    // Enter key
+    if (e.keyCode === 13) {
       this.onEnter();
       return;
     }
-    if (e.code == 'Escape') {
+    // Escape key
+    if (e.code === 27) {
       this.onEscape();
       return;
     }

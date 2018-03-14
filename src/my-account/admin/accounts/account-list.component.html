@@ -96,6 +96,7 @@
 
           <td>
             <div class="text-right">
+              <label *ngIf="item?.removing">Removed</label>
               <button *ngIf="item?.requested_full_account && !item?.removing" class="btn btn-default" (click)="acceptRequest(item)" title="Accept Request">
                 <i class="fa fa-check-circle requested-full-account"></i></button>
 

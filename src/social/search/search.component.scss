@@ -1,27 +1,31 @@
 @import "../../assets/styles/global";
 
-$nav-tabs-wrap-search-h: 64px;
+$nav-tabs-wrap-search-h: 60px;
 .nav-tabs-wrap-search {
-  padding-left: 45px;
+  padding: 15px 0 0 45px;
   position: relative;
   z-index: 100;
   height: $nav-tabs-wrap-search-h;
   @include box-shadow($box-shadow-bottom);
-
-  .nav-tabs:not(.active) {
-    > li:first-child {
-      > a:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -15px;
-        color: #000000;
-        font-weight: bold;
-        background-color: #f54a59;
-        height: 3px;
+  .nav-tabs {
+    a {
+        height: 45px;
       }
     }
+  .nav-tabs:not(.active) {
+    //> li:first-child {
+    //  > a:after {
+    //    content: "";
+    //    position: absolute;
+    //    left: 0;
+    //    right: 0;
+    //    bottom: 0px;
+    //    color: #000000;
+    //    font-weight: bold;
+    //    background-color: #f54a59;
+    //    height: 3px;
+    //  }
+    //}
   }
 }
 

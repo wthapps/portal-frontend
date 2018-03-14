@@ -9,9 +9,9 @@ import { ZSocialSearchResultAllComponent } from './all/search-all.component';
       {
         path: '',
         children: [
-          {path: 'member', component: ZSocialSearchResultDetailComponent},
-          {path: 'community', component: ZSocialSearchResultDetailComponent},
-          {path: 'post', component: ZSocialSearchResultDetailComponent},
+          {path: 'members', component: ZSocialSearchResultDetailComponent},
+          {path: 'communities', component: ZSocialSearchResultDetailComponent},
+          {path: 'posts', component: ZSocialSearchResultDetailComponent},
           {path: 'all', component: ZSocialSearchResultAllComponent},
           {path: '', component: ZSocialSearchResultAllComponent}
         ]

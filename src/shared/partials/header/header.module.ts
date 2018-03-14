@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
-import { HeaderNavbarComponent } from './navbar.component';
+import { HeaderComponent } from './header.component';
 import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
 
 @NgModule({
@@ -17,13 +17,13 @@ import { NotificationListModule } from '@shared/shared/components/notification-l
     NotificationListModule
   ],
   declarations: [
-    HeaderNavbarComponent
+    HeaderComponent
   ],
   exports: [
-    HeaderNavbarComponent
+    HeaderComponent
   ],
   providers: []
 })
 
-export class HeaderNavbarModule {
+export class HeaderModule {
 }

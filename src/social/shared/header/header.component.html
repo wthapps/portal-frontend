@@ -5,9 +5,12 @@
 
   <div class="navbar-form navbar-left hidden-xs navbar-form-search">
     <div class="navbar-searchTop" (click)="clickedInside($event)">
-      <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)"
+      <textbox-search #textbox (onEnterEvent)="onEnter($event)"
+                      (onEscapeEvent)="onEscape($event)"
                       (onKeyUpEvent)="onKey($event)"
-                      [placeholder]="'Search something'" [showSearchAdvanced]="false"
+                      [placeholder]="'Search something'"
+                      [search]="search"
+                      [showSearchAdvanced]="false"
                       (onSearchAdvancedEvent)="onSearchAdvanced($event)">
 
         <div class="input-group-suggestions" *ngIf="show && !searchAdvanced">

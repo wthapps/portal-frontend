@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TextBoxSearchComponent } from '@wth/shared/shared/components/header/search/components/textbox-search.component';
+import { TextBoxSearchComponent } from '@wth/shared/partials/search-box/textbox-search.component';
 import { ServiceManager } from '@wth/shared/services';
 
 declare var _: any;

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { TextBoxSearchComponent } from '../../../shared/shared/components/header/search/components/textbox-search.component';
+import { TextBoxSearchComponent } from '../../../shared/partials/search-box/textbox-search.component';
 import { ServiceManager } from '../../../shared/services/service-manager';
 import { SuggestionService } from '../../../shared/services/suggestion.service';
 

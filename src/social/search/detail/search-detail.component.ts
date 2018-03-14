@@ -32,17 +32,19 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
   nextLink: any;
 
   showNavSearch:boolean = true;
+  term: string = '';
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               public serviceManager: ServiceManager,
               private urlService: UrlService,
               private socialService: SocialService) {
-
+    this.term = location.pathname.toString().split('/')[2];
     this.events = this.router.events
       .filter((event: any) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
         this.group = this.urlService.getId();
+        console.log('this.group:::', this.group);
         this.params = this.urlService.getQuery()['q'];
         this.filter = this.urlService.getQuery()['filter_post'];
         this.filterDate = this.urlService.getQuery()['filter_date'];
@@ -66,7 +68,6 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
 
 
     this.route.fragment.subscribe((f: any) => {
-      console.debug('search fragment: ', f);
       this.showNavSearch = !(f=='detail');
     });
 
