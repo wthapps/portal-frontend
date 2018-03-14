@@ -53,7 +53,7 @@ export class ZNoteContainerComponent implements OnInit {
     this.route.queryParams.subscribe((params: any) => {
       if (params.error == 'file_does_not_exist') {
         this.wthConfirmService.confirm({
-          message: 'The file you looking for was deleted or you do not have permission to access',
+          message: 'The file you are looking for was deleted or you do not have permission to access',
           header: 'File not found',
           rejectLabel: null,
           accept: () => {

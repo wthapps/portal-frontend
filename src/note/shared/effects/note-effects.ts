@@ -61,7 +61,7 @@ export class NoteEffects {
         .catch(() => {
           // this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
           this.wthConfirmService.confirm({
-            message: 'The file you looking for was deleted or you do not have permission to access',
+            message: 'The file you are looking for was deleted or you do not have permission to access',
             header: 'Note not found',
             rejectLabel: null,
             accept: () => {
@@ -118,7 +118,7 @@ export class NoteEffects {
           .catch(() => {
             // this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
             this.wthConfirmService.confirm({
-              message: 'The folder you looking for was deleted or you do not have permission to access',
+              message: 'The folder you are looking for was deleted or you do not have permission to access',
               header: 'Folder not found',
               rejectLabel: null,
               accept: () => {
