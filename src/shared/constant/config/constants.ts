@@ -162,6 +162,10 @@ export class ConstantsBase {
     max: 12
   };
 
+  user: any = {
+    minPassword: 8
+  };
+
   urls: any =  {
     default: Config.SUB_DOMAIN.SOCIAL,
     zoneSoPosts: 'zone/social_network/posts',

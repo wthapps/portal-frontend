@@ -10,6 +10,8 @@ import { MyPreferencesComponent } from './preferences/preferences.component';
 
 import { MySharedModule } from '../shared/shared.module';
 import { SharedModule } from '@wth/shared/shared.module';
+import { SettingsPasswordComponent } from "@account/settings/password/password.component";
+import { DeleteAccountComponent } from "@account/settings/delete-account/delete-account.component";
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { SharedModule } from '@wth/shared/shared.module';
   declarations: [
     MySettingComponent,
     MyProfileComponent,
+    SettingsPasswordComponent,
     MyAccountComponent,
+    DeleteAccountComponent,
     MyPreferencesComponent
   ],
   exports: [
