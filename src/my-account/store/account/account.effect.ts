@@ -19,6 +19,7 @@ import {
 }       from './account.action';
 import { AccountService } from '../../shared/account/account.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
+import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -37,7 +38,12 @@ import { ToastsService } from '@wth/shared/shared/components/toast/toast-message
 @Injectable()
 export class AccountEffects {
 
-  constructor (private actions$: Actions, private accountService: AccountService, private toastsService: ToastsService) {}
+  constructor (
+    private actions$: Actions,
+    private accountService: AccountService,
+    private toastsService: ToastsService,
+    private loadingService: LoadingService
+  ) {}
 
   /**
    * Photo
@@ -57,9 +63,17 @@ export class AccountEffects {
     .ofType(ActionTypes.GET_ACCOUNTS)
     .map((action: GetAccounts) => action.payload)
     .switchMap(state => {
+      this.loadingService.start();
       return this.accountService.getAccounts(state)
-        .map(response => new GetAccountsSuccess(response))
-        .catch(error  => of(new GetAccountsFail(error)));
+        .map(response => {
+          this.loadingService.stop();
+          return new GetAccountsSuccess(response);
+        })
+        .catch(response  => {
+          this.loadingService.stop();
+          this.toastsService.danger(response.error.error);
+          return of(new GetAccountsFail(response));
+        });
     });
 
   @Effect()
@@ -80,12 +94,18 @@ export class AccountEffects {
     .ofType(ActionTypes.ADD_MANY)
     .map((action: AddMany) => action.payload)
     .switchMap((state: any) => {
+      this.loadingService.start();
       return this.accountService.create(state, true)
         .map(response => {
+          this.loadingService.stop();
           this.toastsService.success('You added account successfully!');
           return new AddManySuccess(response);
         })
-        .catch(error  => of(new AddManyFail(error)));
+        .catch(response  => {
+          this.loadingService.stop();
+          this.toastsService.danger(response.error.error);
+          return of(new AddManyFail(response));
+        });
     });
 
   @Effect()
@@ -93,12 +113,18 @@ export class AccountEffects {
     .ofType(ActionTypes.UPDATE)
     .map((action: Update) => action.payload)
     .switchMap((state: any) => {
+      this.loadingService.start();
       return this.accountService.update(state)
         .map(response => {
+          this.loadingService.stop();
           this.toastsService.success('You updated account successfully!');
           return new UpdateSuccess(response);
         })
-        .catch(error  => of(new UpdateFail(error)));
+        .catch(response  => {
+          this.loadingService.stop();
+          this.toastsService.success(response.error.error);
+          return of(new UpdateFail(response));
+        });
     });
 
   @Effect()
@@ -106,12 +132,18 @@ export class AccountEffects {
     .ofType(ActionTypes.DELETE)
     .map((action: Delete) => action.payload)
     .switchMap((state: any) => {
+      this.loadingService.start();
       return this.accountService.delete(0, state)
         .map(response => {
+          this.loadingService.stop();
           this.toastsService.success('You deleted account successfully!');
           return new DeleteSuccess(response);
         })
-        .catch(error  => of(new DeleteFail(error)));
+        .catch(response  => {
+          this.loadingService.stop();
+          this.toastsService.danger(response.error.error);
+          return of(new DeleteFail(response));
+        });
     });
 
 }
