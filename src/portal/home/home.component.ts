@@ -75,8 +75,15 @@ export class HomeComponent {
   }
 
   gotoHashtag(link: string, prodID: string) {
-    this.router.navigate([`${link}`], {fragment: prodID});
+    this.router.navigate([`${link}`], {fragment: prodID, preserveFragment: true})
+      .then(_ => this.jump(prodID));
     return false;
+  }
+
+
+  jump(h) {
+    var top = document.getElementById(h).offsetTop;
+    window.scrollTo(0, top);
   }
 
   onSubmit(values: any): void {
