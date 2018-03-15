@@ -49,6 +49,13 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
               public connectionService: ConnectionNotificationService,
               public notificationService: NotificationService,
               public authService: AuthService) {
+
+    this.notificationService.getNewNotificationCounts().toPromise()
+      .then(res => {
+        console.debug('res: ', res);
+        this.connectionService.newNotifCount = res.connection_count;
+        this.notificationService.newNotifCount = res.update_count;
+      });
   }
 
   ngOnInit(): void {

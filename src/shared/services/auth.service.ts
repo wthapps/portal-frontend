@@ -41,6 +41,8 @@ export class AuthService {
     private userService: UserService // TODO will be remove after refactoring by AuthService
 
   ) {
+    this.loggedIn$ = this._loggedIn$.asObservable();
+    this.user$ = this._user$.asObservable();
 
     this.jwt = cookieService.get(JWT);
     this.loggedIn = Boolean(cookieService.get(LOGGEDIN));
@@ -54,29 +56,29 @@ export class AuthService {
       this.api.post(`users/current_session/profile`, {jwt: `${cookieService.get(JWT)}`}).subscribe((response) => {
         this.loggedIn = true;
         this._loggedIn$.next(this.loggedIn);
-        this.loggedIn$ = this._loggedIn$.asObservable();
+        // this.loggedIn$ = this._loggedIn$.asObservable();
         this.user = response.data;
         this._user$.next(this.user);
-        this.user$ = this._user$.asObservable();
+        // this.user$ = this._user$.asObservable();
         this.storeLoggedInInfo();
       }, (error) => {
         this.loggedIn = false;
         this._loggedIn$.next(this.loggedIn);
-        this.loggedIn$ = this._loggedIn$.asObservable();
+        // this.loggedIn$ = this._loggedIn$.asObservable();
 
         this.deleteLoggedInInfo();
       });
     } else {
       this.loggedIn = false;
       this._loggedIn$.next(this.loggedIn);
-      this.loggedIn$ = this._loggedIn$.asObservable();
+      // this.loggedIn$ = this._loggedIn$.asObservable();
 
       this.deleteLoggedInInfo();
     }
     this.windowService.watchStorage().subscribe((payload: any) => {
       this.user = payload.profile;
       this._user$.next(payload.profile);
-      this.user$ = this._user$.asObservable();
+      // this.user$ = this._user$.asObservable();
     });
     window.addEventListener('storage', (data: any) => {
       console.log('storage changed:::', data);
@@ -89,10 +91,10 @@ export class AuthService {
         this.jwt = response.token;
         this.loggedIn = true;
         this._loggedIn$.next(true);
-        this.loggedIn$ = this._loggedIn$.asObservable();
+        // this.loggedIn$ = this._loggedIn$.asObservable();
         this.user = response.data;
         this._user$.next(this.user);
-        this.user$ = this._user$.asObservable();
+        // this.user$ = this._user$.asObservable();
         this.storeAuthInfo();
         // if (this.redirectUrl.indexOf('login') === -1) {
         //   window.location.href = this.redirectUrl;
@@ -112,10 +114,10 @@ export class AuthService {
     this.jwt = null;
     this.loggedIn = false;
     this._loggedIn$.next(false);
-    this.loggedIn$ = this._loggedIn$.asObservable();
+    // this.loggedIn$ = this._loggedIn$.asObservable();
     this.user = null;
     this._user$.next({});
-    this.user$ = this._user$.asObservable();
+    // this.user$ = this._user$.asObservable();
     this.deleteAuthInfo();
   }
 

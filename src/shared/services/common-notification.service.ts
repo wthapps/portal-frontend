@@ -177,8 +177,9 @@ export class CommonNotificationInterface {
     this.api.get(`${this.url}/get_latest`, {sort_name: 'created_at'})
       .toPromise().then(
       (result: any) => {
-        _.remove(this.notifications); // Make sure this.notifications has no value before assigning
-        this.notifications = result.data;
+        // _.remove(this.notifications); // Make sure this.notifications has no value before assigning
+        this.notifications = [...result.data];
+        this.newNotifCount = 0;
         this.nextLink = result.page_metadata.links.next;
         if (_.isEmpty(this.nextLink))
           this.loadingDone = true;

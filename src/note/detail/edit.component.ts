@@ -5,19 +5,13 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/skip';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/take';
+import { takeUntil, switchMap, combineLatest, filter, mergeMap, map, debounceTime, tap } from 'rxjs/operators';
 
 import * as fromRoot from '../shared/reducers/index';
 import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
-import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { PhotoUploadService } from '@shared/services/photo-upload.service';
 import { FileUploadHelper } from '@shared/shared/helpers/file/file-upload.helper';
 import { GenericFile } from '@shared/shared/models/generic-file.model';
@@ -29,13 +23,16 @@ import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
 import { CommonEventService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
-import { takeUntil, switchMap, combineLatest, filter, mergeMap, map } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { noteConstants } from 'note/shared/config/constants';
 import { Counter } from '@wth/core/quill/modules/counter';
 import { CustomImage } from '@wth/core/quill/modules/custom-image';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import ImageBlot from '@wth/core/quill/blots/image';
+import IconBlot from '@wth/core/quill/blots/icon';
+import DividerBlot from '@wth/core/quill/blots/divider';
+import { Font, Size } from '@wth/core/quill/blots/font-size';
 
 
 const DEBOUNCE_MS = 2500;
@@ -95,7 +92,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
               protected router: Router,
               private route: ActivatedRoute,
               private store: Store<any>,
-              // private photoSelectDataService: PhotoModalDataService,
               private fileService: GenericFileService,
               private apiBaseService: ApiBaseService,
               private clientDetectorService: ClientDetectorService,
@@ -104,13 +100,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
               private mediaSelectionService: WMediaSelectionService,
               private commonEventService: CommonEventService) {
     this.noSave$ = Observable.merge(this.noSaveSubject.asObservable(), this.destroySubject, this.closeSubject);
-    // this.closeObs$ = Observable.merge(
-    //   this.photoSelectDataService.closeObs$,
-    //   this.photoSelectDataService.openObs$,
-    //   this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable()
-    // );
-
-
     this.fileUploadHelper = new FileUploadHelper();
 
     let getOs: any = this.clientDetectorService.getOs();
@@ -190,12 +179,12 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     // Auto save
     Observable.merge(
       this.form.valueChanges,
-      Observable.fromEvent(this.customEditor, 'text-change'))
-      .do(() => this.noteChanged = true)
-      .takeUntil(Observable.merge(this.noSave$, this.closeSubject))
-      .debounceTime(DEBOUNCE_MS)
-      .takeUntil(Observable.merge(this.noSave$, this.closeSubject))
-      .subscribe(() => {
+      Observable.fromEvent(this.customEditor, 'text-change')).pipe(
+      tap(() => this.noteChanged = true),
+      takeUntil(Observable.merge(this.noSave$, this.closeSubject)),
+      debounceTime(DEBOUNCE_MS),
+      takeUntil(Observable.merge(this.noSave$, this.closeSubject))
+      ).subscribe(() => {
         if (this.editMode == Constants.modal.add && !this.note.id) {
           this.onFirstSave();
         } else {
@@ -223,8 +212,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       }
     };
 
-    this.registerFontSizeBlot();
-    this.registerDividerBlot();
+    Quill.register(Font, true);
+    Quill.register(Size, true);
+    Quill.register(DividerBlot);
     this.extendClipboard(this);
     Quill.register('modules/counter', Counter, true);
     Quill.register('modules/customImage', CustomImage, true);
@@ -279,7 +269,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
     $('.ql-editor').attr('tabindex', 1);
 
-    this.registerIconBlot();
+    Quill.register(IconBlot);
     this.registerImageBlot();
     this.customizeKeyboardBindings();
 
@@ -316,6 +306,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         if (e.defaultPrevented || !this.quill.isEnabled()) return;
         let range = this.quill.getSelection();
         let delta = new Delta().retain(range.index);
+        console.debug('onPaste: ', e);
         // let scrollTop = this.quill.scrollingContainer.scrollTop;
         // this.scrollTop = scrollTop;
         this.container.focus(); // comment out to prevent scroll to top
@@ -357,36 +348,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     Quill.register('modules/clipboard', PlainClipboard, true);
   }
 
-  registerFontSizeBlot() {
-    // Add custom to whitelist
-    let Font = Quill.import('formats/font');
-    Font.whitelist = ['gotham', 'georgia', 'helvetica', 'courier-new', 'times-new-roman', 'trebuchet', 'verdana'];
-    Quill.register(Font, true);
-
-    let Size = Quill.import('attributors/style/size');
-    Size.whitelist = [
-      '8px', '10px', '12px', '14px', '18px', '24px', '36px'
-    ];
-    Quill.register(Size, true);
-
-  }
-
-  registerDividerBlot() {
-
-    let BlockEmbed = Quill.import('blots/block/embed');
-
-    class DividerBlot extends BlockEmbed {
-    }
-
-    DividerBlot.blotName = 'divider';
-    DividerBlot.tagName = 'hr';
-    Quill.register(DividerBlot);
-  }
-
   customizeKeyboardBindings() {
-    console.debug('inside customizeKeyboardBindings: ');
-
-    // Remove default binding for spacebar key
+     // Remove default binding for spacebar key
     delete this.customEditor.keyboard.bindings[32];
 
     // Auto detect hyperlink context when typing
@@ -423,61 +386,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   registerImageBlot() {
-    let BlockEmbed = Quill.import('blots/block/embed');
-
-    class ImageBlot extends BlockEmbed {
-      static create(value: any) {
-        let node = super.create();
-        node.setAttribute('alt', value.alt);
-        node.setAttribute('src', value.url);
-        node.setAttribute('id', value.id);
-        node.setAttribute('data-id', value['data-id']);
-        node.setAttribute('style', value.style);
-        return node;
-      }
-
-      static value(node: any) {
-        return {
-          alt: node.getAttribute('alt'),
-          url: node.getAttribute('src'),
-          id: node.getAttribute('id'),
-          'data-id': node.getAttribute('data-id'),
-          style: node.getAttribute('style')
-        };
-      }
-
-    }
-
-    ImageBlot.blotName = 'image';
-    ImageBlot.tagName = 'img';
     Quill.register(ImageBlot);
     var toolbar = this.customEditor.getModule('toolbar');
     toolbar.addHandler('image', () => this.selectInlinePhotos4Note());
-  }
-
-  registerIconBlot() {
-    let BlockEmbed = Quill.import('blots/block/embed');
-
-    class IconBlot extends BlockEmbed {
-      static create(value: any) {
-        let node = super.create();
-        node.setAttribute('class', value.class);
-        node.setAttribute('id', value.id);
-        return node;
-      }
-
-      static value(node: any) {
-        return {
-          class: node.getAttribute('class'),
-          id: node.getAttribute('id')
-        };
-      }
-    }
-
-    IconBlot.blotName = 'i';
-    IconBlot.tagName = 'i';
-    Quill.register(IconBlot);
-
   }
 
   insertFakeImage(id: any) {
@@ -505,28 +416,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   selectInlinePhotos4Note() {
-    // this.photoSelectDataService.open({return: true, multipleSelect: false});
-    //
-    // this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any[]) => {
-    //   photos.forEach((photo: any) => this.insertInlineImage(null, photo.url, photo.id));
-    // });
-    //
-    // let ids: string[] = [];
-    // this.photoSelectDataService.uploadObs$.takeUntil(this.closeObs$)
-    //   .mergeMap((files: any) => {
-    //     const randId = `img_${new Date().getTime()}`;
-    //     this.insertFakeImage(randId);
-    //     ids.push(randId);
-    //     return this.photoUploadService.uploadPhotos(files);
-    //   })
-    //   .subscribe((res: any) => {
-    //     console.debug('inline photo upload: ', res);
-    //     const randId = ids.shift();
-    //     $(`i#${randId}`).after(`<img src="${res.data.url}" data-id="${res.data.id}" />`);
-    //     $(`i#${randId}`).remove();
-    //   });
-
-
     this.mediaSelectionService.open();
     this.mediaSelectionService.setMultipleSelection(true);
 
@@ -567,9 +456,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
 
   listenImageChanges() {
-    this.photoService.modifiedPhotos$
-      .takeUntil(this.destroySubject.asObservable())
-      .subscribe((object: any) => {
+    this.photoService.modifiedPhotos$.pipe(
+      takeUntil(this.destroySubject.asObservable())
+      ).subscribe((object: any) => {
         console.debug('modifiedPhotos - note: ', object);
         switch (object.action) {
           case 'update':
@@ -643,9 +532,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   updateCurrentNote(): void {
-    this.store.select(fromRoot.getCurrentNote)
-      .takeUntil(Observable.merge(this.closeSubject, this.destroySubject))
-      .subscribe((note: Note) => {
+    this.store.select(fromRoot.getCurrentNote).pipe(
+      takeUntil(Observable.merge(this.closeSubject, this.destroySubject))
+      ).subscribe((note: Note) => {
         if (note != undefined) {
           this.updateFormValue(note);
         }
@@ -749,11 +638,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   onModalClose(options = null) {
-    // this.modal.close()
-    //   .then(() => {
-    //     this.closeSubject.next('');
-    //   });
-
     if(options) {
       this.router.navigate([{outlets: {detail: null}}], options);
     } else {
@@ -839,27 +723,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   private selectPhotos4Attachments() {
-    // this.photoSelectDataService.nextObs$.takeUntil(this.closeObs$).subscribe((photos: any) => {
-    //   this.note.attachments.push(...photos);
-    //   this.form.controls['attachments'].setValue(this.note.attachments);
-    // });
-    //
-    // this.photoSelectDataService.uploadObs$.takeUntil(this.closeObs$).subscribe((files: any) => {
-    //   this.note.attachments.push(...files);
-    //   _.forEach(files, (file: any) => {
-    //     this.photoUploadService.uploadPhotos(files)
-    //       .subscribe((response: any) => {
-    //         let index = _.indexOf(this.note.attachments, file);
-    //         this.note.attachments[index] = response.data;
-    //         this.form.controls['attachments'].setValue(this.note.attachments);
-    //       }, (err: any) => {
-    //         console.log('Error when uploading files ', err);
-    //       });
-    //   });
-    // });
-
-
-
     this.mediaSelectionService.open();
     this.mediaSelectionService.setMultipleSelection(true);
 
