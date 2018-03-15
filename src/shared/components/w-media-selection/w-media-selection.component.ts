@@ -9,6 +9,7 @@ import { Media } from '@shared/shared/models/media.model';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import 'rxjs/add/operator/takeUntil';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+import { TextBoxSearchComponent } from '@shared/partials/search-box/textbox-search.component';
 
 @Component({
   selector: 'w-media-selection',
@@ -37,7 +38,12 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     cancelReset: null
   };
   dropzoneDisabled: Boolean = false;
-  dropzoneHasUpload: Boolean = false;
+
+  // search
+  searchShow: Boolean = false;
+  searchText: string;
+
+  // end search
 
   constructor(private mediaSelectionService: WMediaSelectionService,
               private objectListService: WObjectListService) {
@@ -59,10 +65,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     this.mediaSelectionService.open$
       .takeUntil(componentDestroyed(this))
       .subscribe((res: any) => {
-        this.initialState();
-        if (res)
+        if (res) {
+          this.initialState();
           this.open();
-        this.getObjects();
+          this.getObjects();
+        }
       });
   }
 
@@ -71,8 +78,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   initialState() {
     this.mediaSelectionService.clear();
-    this.currentTab = 'upload'; //'photos';
-    this.nextLink = 'media/photos';
+    this.currentTab = 'upload'; // 'photos';
+    this.nextLink = null; // 'media/photos'
     this.isLoading = false;
   }
 
@@ -127,6 +134,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     } else if (this.currentTab === 'shared_with_me_detail') {
       this.currentTab = 'shared_with_me';
       this.objectListService.setObjectsDisabled(['album']);
+    } else if (this.currentTab === 'search') {
+      this.currentTab = 'photos';
     }
     this.mediaSelectionService.clear();
     this.nextLink = this.buildNextLink();
@@ -174,6 +183,30 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Search
+   * @param e
+   */
+  onSearchEnter(e: any) {
+    console.log(e);
+    this.searchText = e.search;
+    this.tabAction('search');
+  }
+
+  onSearchEscape(e?: any) {
+    if (e) {
+      this.searchShow = false;
+      this.searchText = null;
+      if (this.currentTab === 'search') {
+        this.onTabBack();
+      }
+    }
+  }
+
+  /**
+   * end Search
+   */
+
 
   /**
    * Dropzone
@@ -219,6 +252,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         break;
       case 'shared_with_me_detail':
         urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
+        break;
+      case 'search':
+        urlAPI = `media/search?active=1&q=${this.searchText}`;
         break;
       default:
         urlAPI = `media/photos?active=1`;

@@ -1,7 +1,20 @@
 <bs-modal #modal cssClass="modal-media-selection" [keyboard]="false" [animation]="false" [backdrop]="'static'"
           (onDismiss)="dismiss($event)" style="z-index: 1111;">
   <bs-modal-header [showDismiss]="true">
-    <button class="btn btn-search btn-default pull-right" type="button"><i class="fa fa-search"></i></button>
+    <div *ngIf="searchShow" class="modal-media-search">
+      <div class="modal-media-search-in">
+        <textbox-search [placeholder]="'Search something'"
+                        [showSearchClearText]="true"
+                        [search]="searchText"
+                        (onEnterEvent)="onSearchEnter($event)"
+                        (onEscapeEvent)="onSearchEscape($event)">
+        </textbox-search>
+      </div>
+
+    </div>
+    <button (click)="searchShow = true" class="btn btn-search btn-default pull-right" type="button">
+      <i class="fa fa-search"></i>
+    </button>
     <nav class="nav-tabs-wrap nav-tabs-wrap-md clearfix pull-left">
       <ul class="nav nav-tabs list-unstyled clearfix">
         <li [ngClass]="{'active': currentTab == 'upload'}">
@@ -47,6 +60,13 @@
           </li>
           <li>
             <span *ngIf="mediaParent" class="btn btn-text">{{ mediaParent?.name }}</span>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="currentTab == 'search'" class="media-selection-toolbar-left pull-left">
+        <ul class="list-unstyled">
+          <li>
+            <span class="btn btn-text">Search result</span>
           </li>
         </ul>
       </div>
@@ -130,7 +150,6 @@
         </div>
       </ng-template>
     </ng-container>
-
 
 
   </bs-modal-body>

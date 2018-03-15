@@ -8,6 +8,7 @@ import { WMediaSelectionComponent } from './w-media-selection.component';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
+import { PartialModule } from '@shared/partials';
 
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
@@ -29,7 +30,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     WObjectListModule,
     PipeModule,
     BoxNoDataModule,
-    BoxLoadingModule
+    BoxLoadingModule,
+    PartialModule
   ],
   declarations: [
     WMediaSelectionComponent

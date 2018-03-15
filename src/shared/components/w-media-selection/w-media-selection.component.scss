@@ -1,6 +1,22 @@
 @import "../../../assets/styles/global";
 @import '~dropzone/dist/min/dropzone.min.css';
 
+.modal-media-search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  padding: 10px 15px;
+  background-color: #ffffff;
+  .modal-media-search-in {
+    position: relative;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .modal-media-selection {
   width: $container-md;
   .btn-search {

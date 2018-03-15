@@ -1,15 +1,17 @@
 <div class="input-group-wrap input-group-search-header">
   <form class="input-group">
     <span class="input-group-btn input-group-left">
-        <button class="btn btn-default" type="button" (click)="onEnter()" pTooltip="{{ tooltip.search }}"
-                tooltipPosition="bottom">
-          <i class="fa fa-search"></i>
-        </button>
-      </span>
+      <button class="btn btn-default" type="button" (click)="onEnter()" pTooltip="{{ tooltip.search }}"
+              tooltipPosition="bottom">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
 
-    <input #input autocomplete="off" type="text" name="search" class="form-control" [(ngModel)]="search" placeholder="{{ placeholder }}">
+    <input #input autocomplete="off" type="text" name="search" class="form-control" [(ngModel)]="search"
+           placeholder="{{ placeholder }}">
     <span class="input-group-btn">
-        <button *ngIf="search && search.length > 0" (click)="onEscape()" class="btn btn-default" type="reset" pTooltip="{{ tooltip.reset }}"
+        <button *ngIf="showSearchClearText || (search && search.length > 0)" (click)="onEscape()"
+                class="btn btn-default" type="reset" pTooltip="{{ tooltip.reset }}"
                 tooltipPosition="bottom">
           <i class="fa fa-times"></i>
         </button>
