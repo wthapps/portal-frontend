@@ -691,6 +691,77 @@ $bubbleUp-ul: 62px;
   }
 }
 
+@include keyframes(product-note-li-1) {
+  0% {
+    top: 100%;
+  }
+  20% {
+    top: 0;
+  }
+  99% {
+    top: 0;
+  }
+  100% {
+    top: -100%;
+  }
+}
+
+.product-note {
+  .product-note-img {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      li:first-child {
+        position: absolute;
+        top: 0;
+        right: 0;
+        @include animation('product-note-li-1 15s infinite ease-in-out');
+      }
+    }
+    img {
+      display: block;
+    }
+    @media (min-width: $screen-sm-min) {
+      float: right;
+      text-align: right;
+      margin-top: 50px;
+    }
+
+    @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
+      width: 320px;
+      > img {
+        width: 220px;
+      }
+      ul img {
+        width: 90px;
+      }
+    }
+
+    @media (max-width: $screen-xs-max) {
+      width: 290px;
+      > img {
+        width: 190px;
+      }
+      ul img {
+        width: 90px;
+      }
+    }
+  }
+  .page-content-txt {
+    @media (min-width: $screen-sm-min) {
+      overflow: hidden;
+      padding-right: 80px;
+    }
+  }
+}
+
 .container {
   &.d-flex {
     @media (max-width: $screen-xs-max) {
