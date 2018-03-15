@@ -11,6 +11,7 @@ import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { WthConfirmService } from '../confirmation/wth-confirm.service';
 import { CommonEventService } from '../../../../shared/services';
+import { NotificationService } from "@shared/services/notification.service";
 
 
 declare var $: any;
@@ -52,6 +53,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
               private location: Location,
               private apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService,
+              private notificationService: NotificationService,
               private commonEventService: CommonEventService) {
     this.uuid = this.userService.getSyncProfile().uuid;
     this.urls = Constants.baseUrls;
@@ -71,7 +73,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.currentGroup = this.extractLabel(event.url);
       });
-
+    // this.notificationService.getLatestNotifications();
   }
 
   ngAfterViewInit() {
