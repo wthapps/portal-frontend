@@ -127,7 +127,7 @@ export class UserService {
     this.cookieService.remove('logged_in', this.cookieOptionsArgs);
     this.cookieService.remove('profile', this.cookieOptionsArgs);
 
-    localStorage.removeItem('profile');
+    // localStorage.removeItem('profile');
 
     this.loggedIn = false;
     this.profile = null;
@@ -166,8 +166,9 @@ export class UserService {
   }
 
   updateProfile(profile: any) {
-    localStorage.removeItem('profile');
-    localStorage.setItem('profile', JSON.stringify(profile));
+    // localStorage.removeItem('profile');
+    this.cookieService.put('profile', JSON.stringify(profile), this.cookieOptionsArgs);
+    this.windowService.setItem({profile: profile});
     this.setProfile(profile);
     // this.soUserProfile = {...this._soProfile.getValue(), profile_image: profile.profile_image};
   }
@@ -210,7 +211,7 @@ export class UserService {
     this.cookieService.put('jwt', response.token, cookieOptionsArgs);
     this.cookieService.put('logged_in', 'true', cookieOptionsArgs);
     this.cookieService.put(Constants.cookieKeys.chatSupportId, response.data.uuid, cookieOptionsArgs);
-    localStorage.setItem('profile', JSON.stringify(response.data));
+    this.cookieService.put('profile', JSON.stringify(response.data), this.cookieOptionsArgs);
 
     this.loggedIn = true;
     this.profile = response.data;
@@ -219,8 +220,8 @@ export class UserService {
 
   private readUserInfo() {
     if (this.cookieService.get('logged_in')) {
-      if (localStorage.getItem('profile'))
-        this.setProfile(JSON.parse(localStorage.getItem('profile')));
+      if (this.cookieService.get('profile'))
+        this.setProfile(JSON.parse(this.cookieService.get('profile')));
 
       this.loggedIn = Boolean(this.cookieService.get('logged_in'));
     }

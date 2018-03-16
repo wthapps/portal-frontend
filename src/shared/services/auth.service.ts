@@ -6,7 +6,6 @@ import { ApiBaseService } from './apibase.service';
 import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { isNullOrUndefined } from 'util';
 import { WindowService } from '@wth/shared/services/window.service';
 
 const PROFILE       = 'profile';
@@ -24,7 +23,7 @@ export class AuthService {
   // store the URL so we can redirect after logging in
   loggedIn: boolean;
   redirectUrl: string;
-  user: any;
+  user: any = null;
   jwt: string;
   EXP_TIME = 24 * 60 * 60 * 365 * 1000;
 
@@ -46,9 +45,8 @@ export class AuthService {
 
     this.jwt = cookieService.get(JWT);
     this.loggedIn = Boolean(cookieService.get(LOGGEDIN));
-
     if (this.loggedIn) {
-      let profile = localStorage.getItem(PROFILE);
+      let profile = cookieService.get(PROFILE);
       if (profile !== 'undefined' && profile !== null && profile !== '') {
         this.user = JSON.parse(String(profile));
       }
@@ -91,14 +89,9 @@ export class AuthService {
         this.jwt = response.token;
         this.loggedIn = true;
         this._loggedIn$.next(true);
-        // this.loggedIn$ = this._loggedIn$.asObservable();
         this.user = response.data;
         this._user$.next(this.user);
-        // this.user$ = this._user$.asObservable();
         this.storeAuthInfo();
-        // if (this.redirectUrl.indexOf('login') === -1) {
-        //   window.location.href = this.redirectUrl;
-        // }
       });
   }
 
@@ -134,10 +127,10 @@ export class AuthService {
     // store in session
     this.cookieService.put(JWT, this.jwt, cookieOptionsArgs);
     this.cookieService.put(LOGGEDIN, `${this.loggedIn}`, cookieOptionsArgs);
+    this.cookieService.put(PROFILE, `${JSON.stringify(this.user)}`, cookieOptionsArgs);
+
   }
 
-  private updateVariables(auth: any) {
-  }
 
   private storeLoggedInInfo() {
     localStorage.setItem(PROFILE, JSON.stringify(this.user));
@@ -157,6 +150,8 @@ export class AuthService {
     // delete cookie datawt
     this.cookieService.remove(JWT, cookieOptionsArgs);
     this.cookieService.remove(LOGGEDIN, cookieOptionsArgs);
+    this.cookieService.remove(PROFILE, cookieOptionsArgs);
+
   }
 
   private deleteLoggedInInfo() {
