@@ -47,7 +47,7 @@ import { WMediaSelectionService } from '@wth/shared/components/w-media-selection
 export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChanges, OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
-
+  @Input() user: any;
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
   @Input() showComments: boolean = true;

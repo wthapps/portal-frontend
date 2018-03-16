@@ -1,8 +1,8 @@
 <div *ngIf="!showInfo" class="z-social-media">
-  <a href="javascript:;" (click)="viewProfile(item.owner.uuid)">
+  <a href="javascript:void(0);" (click)="viewProfile(item.owner.uuid)">
     <div class="z-social-media-left">
       <div class="avatar-xs">
-        <img [src]="item?.owner?.is_owner ? (profile$ | async)?.profile_image : item.owner.profile_image"
+        <img [src]="item?.owner?.is_owner ? user?.profile_image : item.owner.profile_image"
              alt="">
       </div>
     </div>

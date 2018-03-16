@@ -6,6 +6,7 @@ import { Constants } from '../constant/config/constants';
 import { NotificationChannelService } from '../channels/notification-channel.service';
 import { UserService } from './user.service';
 import { WTHNavigateService } from './wth-navigate.service';
+import { AuthService } from '@wth/shared/services';
 
 /**
  * Created by phat on 18/11/2016.
@@ -23,19 +24,20 @@ export class CommonNotificationInterface {
   outEvent: EventEmitter<any> = new EventEmitter();
   url: string = Constants.urls.zoneSoNotifications;
 
-  constructor(protected api: ApiBaseService,
-              protected navigateService: WTHNavigateService,
-              protected userService: UserService) {
+  constructor(
+    protected api: ApiBaseService,
+    protected navigateService: WTHNavigateService,
+    protected authService: AuthService
+  ) {
   }
 
   get() {
     return this.api.get(`${this.url}`)
-      .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
+      .filter(() => this.authService.loggedIn) // Do not call this API if user is not logged in
       ;
   }
 
   doAction(action: any, notif_id: string) {
-    console.debug('action: ', action, notif_id);
     let link: string = action.link;
     let method = action.method;
     let params = action.params;
@@ -50,11 +52,7 @@ export class CommonNotificationInterface {
 
     switch (method) {
       case 'navigate':
-        // this.router.navigate(['/' + link ], { queryParams: body });
-
-        console.debug('navigate: ', link, module, body);
         this.navigateService.navigateOrRedirect(link, module, body);
-
         let currentNotif = _.find(this.notifications, {id: this.currentNotifId});
         this.markAsRead(currentNotif);
 
@@ -71,7 +69,6 @@ export class CommonNotificationInterface {
               else
                 return notif;
             });
-            console.debug('post - ', this.notifications);
           },
           (error: any) => {
             console.log('error', error);
@@ -112,10 +109,10 @@ export class CommonNotificationInterface {
     let notif_ids = _.map(this.notifications, (i: any) => i.id);
     let body = {'ids': notif_ids};
 
-    if (!(this.userService.loggedIn && this.userService.getSyncProfile()))
+    if (!(this.authService.loggedIn && this.authService.user))
       return;
     return this.api.post(`${this.url}/mark_as_seen`, body)
-      .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
+      .filter(() => this.authService.loggedIn) // Do not call this API if user is not logged in
       .subscribe(
         (result: any) => {
           this.countNewNotifications();
@@ -138,7 +135,7 @@ export class CommonNotificationInterface {
     this.currentNotifId = notification.id;
     let body = {'ids': this.currentNotifId};
     return this.api.post(`${this.url}/toggle_read_status`, body)
-      .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
+      .filter(() => this.authService.loggedIn) // Do not call this API if user is not logged in
       .toPromise().then(
         (result: any) => {
           _.each(this.notifications, (n: any) => {
@@ -158,7 +155,7 @@ export class CommonNotificationInterface {
 
   markAllAsRead() {
     this.api.post(`${this.url}/mark_all_as_read`, [])
-      .filter(() => this.userService.loggedIn) // Do not call this API if user is not logged in
+      .filter(() => this.authService.loggedIn) // Do not call this API if user is not logged in
       .toPromise().then(
       (result: any) => {
         _.each(this.notifications, (n: any) => {
@@ -172,7 +169,7 @@ export class CommonNotificationInterface {
   }
 
   getLatestNotifications() {
-    if (this.initLoad && this.loadingDone && this.userService.loggedIn && this.userService.getSyncProfile())
+    if (this.initLoad && this.loadingDone && this.authService.loggedIn && this.authService.user)
       return; // Only load once at first time
     this.api.get(`${this.url}/get_latest`, {sort_name: 'created_at'})
       .toPromise().then(
@@ -208,10 +205,9 @@ export class CommonNotificationInterface {
   getMoreNotifications() {
     // if(this.loadingDone) {
     if (this.isLoadingDone() || this.nextLink === undefined) {
-      console.debug('All notifications are loaded !');
       return;
     }
-    if (this.userService.loggedIn && this.userService.getSyncProfile())
+    if (this.authService.loggedIn && this.authService.user)
       return;
     this.api.get(this.nextLink)
       .toPromise().then(

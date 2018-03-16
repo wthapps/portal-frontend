@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { PostListComponent } from '../shared/second-routes/post/post-list.component';
 import { SocialService } from '../shared/services/social.service';
+import { AuthService } from '@wth/shared/services';
 
 
 /**
@@ -13,7 +14,7 @@ import { SocialService } from '../shared/services/social.service';
 export class ZSocialHomeComponent {
   @ViewChild('posts') posts: PostListComponent;
 
-  constructor(private socialService: SocialService) {
+  constructor(public authService: AuthService, private socialService: SocialService) {
     this.socialService.community.currentCommunity = undefined;
   }
 

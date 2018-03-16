@@ -13,7 +13,7 @@ import { PostListComponent } from '../../shared/second-routes/post/post-list.com
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
 import { User } from '@wth/shared/shared/models';
-import { UserService } from '@shared/services';
+import { AuthService, UserService } from '@shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
@@ -99,7 +99,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   private destroySubject: Subject<any> = new Subject<any>();
 
-  constructor(
+  constructor(public authService: AuthService,
               private route: ActivatedRoute,
               private router: Router,
               private userService: UserService,

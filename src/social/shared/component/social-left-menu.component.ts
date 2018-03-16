@@ -44,7 +44,6 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
               private store: Store<any> ) {
     [this.homeMenuItem, this.communitiesMenuItem, ...this.socialMenu] = Constants.socialMenuItems;
     this.store.dispatch({type: fromRoot.SHORTCUT_LOAD});
-    this.store.dispatch({type: fromRoot.SO_PROFILE_LOAD});
     this.shortcuts$ = this.store.select(fromRoot.getShortcuts);
     this.newPostsCount$ = this.store.select(fromRoot.getNewPostsCount);
     this.uuid = this.userService.getSyncProfile().uuid;

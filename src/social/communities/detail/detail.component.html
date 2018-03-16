@@ -154,7 +154,11 @@
       </div>
 
       <!--post list-->
-      <so-post-list *ngIf="isPostTab" #posts [type]="'community'" [canCreatePost]="isMember" [community]="community"></so-post-list>
+      <so-post-list *ngIf="isPostTab" #posts
+                    [user]="authService.user$|async"
+                    [type]="'community'"
+                    [canCreatePost]="isMember"
+                    [community]="community"></so-post-list>
 
       <!--about-->
       <div class="panel panel-default" *ngIf="isAboutTab">

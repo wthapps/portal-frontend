@@ -13,10 +13,9 @@ import 'rxjs/add/operator/finally';
 
 import { PostEditComponent } from './post-edit.component';
 import { SocialService } from '../../services/social.service';
-import { SoPost, User } from '@wth/shared/shared/models';
-import { ApiBaseService, UserService } from '@wth/shared/services';
+import { SoPost } from '@wth/shared/shared/models';
+import { ApiBaseService } from '@wth/shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
-import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { PostService } from './shared/post.service';
 import { getSoProfile, SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE } from '../../reducers/index';
 
@@ -34,8 +33,8 @@ export class PostListComponent implements OnInit, OnDestroy {
   @Input() showComments: boolean = true;
 
   @Input() items: Array<SoPost>;
+  @Input() user: any;
   uuid: string;
-  currentUser: User;
   commentBox: any;
   page_index: number = 0;
   loading_done: boolean = false;
@@ -46,7 +45,6 @@ export class PostListComponent implements OnInit, OnDestroy {
   showLoading: boolean = true;
 
   soProfile$: Observable<any>;
-  profile$: Observable<any>;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -56,16 +54,12 @@ export class PostListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private postService: PostService,
-              // private photoSelectDataService: PhotoModalDataService,
-              private userService: UserService,
               private store: Store<any>
   ) {
     this.soProfile$ = store.select(getSoProfile);
   }
 
   ngOnInit() {
-    this.currentUser = this.socialService.user.profile;
-    this.profile$ = this.userService.getAsyncProfile();
     // Support get route params from parent route as well as current route. Ex: Profile post page
     let parentRouteParams = this.route.parent.paramMap;
     let reloadQueryParam = this.route.queryParamMap; // .filter(queryParamM => !!queryParamM.get('r'));
@@ -110,7 +104,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.loadingService.stop('#post-list-loading');
   }
 
-  viewProfile(uuid: string = this.userService.getSyncProfile().uuid) {
+  viewProfile(uuid: string) {
     this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
       .then(() => this.router.navigate(['profile', uuid]));
   }

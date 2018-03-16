@@ -30,7 +30,7 @@ import { Constants } from '@wth/shared/constant';
 })
 
 export class PostFooterComponent implements OnChanges {
-
+  @Input() user: any;
   @Input() item: SoPost;
   @Input() type: string;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
@@ -49,7 +49,6 @@ export class PostFooterComponent implements OnChanges {
   totalComment: number = 1;
   commentPageIndex: number = 0;
   loadingDone: boolean = false;
-  user$: Observable<any>;
   readonly commentLimit: number = Constants.soCommentLimit;
 
   tooltip: any = Constants.tooltip;
@@ -59,7 +58,6 @@ export class PostFooterComponent implements OnChanges {
               public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
-    this.user$ = this.userService.getAsyncProfile();
   }
 
   ngOnChanges(data: any) {

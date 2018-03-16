@@ -21,7 +21,7 @@ import { PostComponent } from '../post.component';
 export class PostHeaderComponent implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
-
+  @Input() user: any;
   tooltip: any = Constants.tooltip;
 
   showInfo: boolean = false;
@@ -32,15 +32,12 @@ export class PostHeaderComponent implements OnChanges {
   readonly profileUrl: string = Constants.urls.profile;
   privacyName: string;
   privacyClassIcon: string;
-  profile$: Observable<any>;
 
   constructor(private postItem: PostComponent,
               private socialService: SocialService,
               private router: Router,
               public userService: UserService,
               private zoneReportService: ZSharedReportService) {
-    // this.user = this.socialService.user.profile;
-    this.profile$ = this.userService.getAsyncProfile();
   }
 
   ngOnChanges(data: any) {

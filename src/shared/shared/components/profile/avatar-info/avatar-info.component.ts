@@ -176,7 +176,6 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
   }
 
   private updateUser(body: string): void {
-    // this.apiBaseService.put('zone/social_network/users/update', body)
     this.userService.update(body)
       .subscribe((result: any) => {
           // stop loading

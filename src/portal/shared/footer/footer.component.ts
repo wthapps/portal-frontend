@@ -10,7 +10,9 @@ import { Constants } from '@wth/shared/constant';
   templateUrl: 'footer.component.html',
   styleUrls: ['footer.component.scss'],
 })
-export class PortalSharedFooterComponent { }
+export class PortalSharedFooterComponent {
+  currentVersion: string = Constants.currentVersion;
+}
 
 @Component({
   moduleId: module.id,
@@ -18,5 +20,4 @@ export class PortalSharedFooterComponent { }
   templateUrl: 'footer-promotion.component.html'
 })
 export class PortalSharedFooterPromotionComponent {
-  currentVersion: string = Constants.currentVersion;
 }

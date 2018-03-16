@@ -4,10 +4,10 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../constant/config/constants';
 import { NotificationChannelService } from '../channels/notification-channel.service';
-import { UserService } from './user.service';
 import { WTHNavigateService } from './wth-navigate.service';
 import { CommonNotificationInterface } from '@wth/shared/services/common-notification.service';
 import { Observable } from 'rxjs';
+import { AuthService } from '@wth/shared/services/auth.service';
 
 /**
  * Created by phat on 18/11/2016.
@@ -21,8 +21,8 @@ export class NotificationService extends CommonNotificationInterface {
 
   constructor(protected api: ApiBaseService,
               protected navigateService: WTHNavigateService,
-              protected userService: UserService) {
-    super(api, navigateService, userService);
+              protected authService: AuthService) {
+    super(api, navigateService, authService);
   }
 
   getNewNotificationCounts(): Observable<any> {

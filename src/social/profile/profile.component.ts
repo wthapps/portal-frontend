@@ -8,7 +8,7 @@ import 'rxjs/add/observable/forkJoin';
 import { SocialService } from '../shared/services/social.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ZSocialProfileDataService } from './profile-data.service';
-import { UserService } from '@wth/shared/services';
+import { AuthService, UserService } from '@wth/shared/services';
 
 
 export let PROFILE_TAB = {
@@ -31,7 +31,9 @@ export class ZSocialProfileComponent implements OnInit {
   relationships: any;
   items: any;
 
-  constructor(private socialService: SocialService,
+  constructor(
+    public authService: AuthService,
+    private socialService: SocialService,
               private userService: UserService,
               private route: ActivatedRoute,
               private profileDataService: ZSocialProfileDataService) {
@@ -47,7 +49,7 @@ export class ZSocialProfileComponent implements OnInit {
     )
     .subscribe((res: any) => {
       this.userInfo = res[0].data;
-      this.userInfo.canEdit = (this.userInfo.uuid === this.userService.getSyncProfile().uuid);
+      this.userInfo.canEdit = (this.userInfo.uuid === this.authService.user.uuid);
 
       this.actions = _.get(res[0], 'actions', []);
       this.relationships = res[1].relationships;
@@ -57,7 +59,7 @@ export class ZSocialProfileComponent implements OnInit {
   }
 
   getRelationship(uuid: any): Promise<any> {
-      if (this.userService.getSyncProfile().uuid != uuid) {
+      if (this.authService.user.uuid !== uuid) {
         return this.socialService.user.getRelationShips(uuid)
           .toPromise()
           .then((res: any) => {
