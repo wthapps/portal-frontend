@@ -84,6 +84,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     if (!this.userService.getSyncProfile().profile_image) {
       this.userService.getSyncProfile().profile_image = Constants.img.avatar;
     }
+    this.handleSelectCropEvent();
 
     if (this.userService.getSyncProfile().birthday !== null) {
       let birthday = new Date(this.userService.getSyncProfile().birthday);
@@ -190,7 +191,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     event.preventDefault();
     // this.uploadProfile.modal.open();
     this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.getSyncProfile().profile_image} });
-    this.handleSelectCropEvent();
   }
 
   handleSelectCropEvent() {

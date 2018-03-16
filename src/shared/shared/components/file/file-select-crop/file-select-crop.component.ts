@@ -131,7 +131,6 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
       console.debug('handle local image: ', files);
       this.photoUploadService.getPhoto(files[0])
         .then((image: any) => {
-          console.debug('image: ', image);
           this.cropImage.open(image);
           this.mediaSelectionService.close();
         });
