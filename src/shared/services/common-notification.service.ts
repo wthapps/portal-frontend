@@ -169,7 +169,7 @@ export class CommonNotificationInterface {
   }
 
   getLatestNotifications() {
-    if (this.initLoad && this.loadingDone && this.authService.loggedIn && this.authService.user)
+    if (this.initLoad && this.loadingDone && !(this.authService.loggedIn && this.authService.user))
       return; // Only load once at first time
     this.api.get(`${this.url}/get_latest`, {sort_name: 'created_at'})
       .toPromise().then(
@@ -207,7 +207,7 @@ export class CommonNotificationInterface {
     if (this.isLoadingDone() || this.nextLink === undefined) {
       return;
     }
-    if (this.authService.loggedIn && this.authService.user)
+    if (!(this.authService.loggedIn && this.authService.user))
       return;
     this.api.get(this.nextLink)
       .toPromise().then(
