@@ -52,7 +52,13 @@ $wobject-checkbox: 30px;
       display: none;
     }
   }
-
+  .wobject-click:not(.wobject-drag) + .wobject-row-checkbox, .wobject-row-checkbox.disabled {
+    pointer-events: none;
+    i {
+      @include opacity(0.1);
+      background-color: $line !important;
+    }
+  }
   .wobject-row-checkbox {
     text-align: center;
     z-index: 2;
@@ -214,7 +220,7 @@ $wobject-checkbox: 30px;
         position: relative;
         overflow: hidden;
 
-        img{
+        img {
           @include center();
           width: 100%;
           height: auto;

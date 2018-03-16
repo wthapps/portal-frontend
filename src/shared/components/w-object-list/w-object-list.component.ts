@@ -36,6 +36,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   selectedObjects: any;
 
   objectsDisabled: any;
+  totalObjectsDisabled: Number = 0;
 
   hasScrollbar: boolean;
   hasMultipleSelection: Boolean = true;
@@ -73,6 +74,12 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.totalObjectsDisabled = 0;
+
+    for (let object_type of this.objectsDisabled) {
+      let totalObjectsDisabled = _.filter(this.data, (media: Media) => (media.object_type === object_type));
+      this.totalObjectsDisabled = this.totalObjectsDisabled + totalObjectsDisabled.length;
+    }
   }
 
   ngOnDestroy(): void {
@@ -118,21 +125,34 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onMultiSelected(item: any) {
-    this.objectListService.addOrRemoveItem({
-      id: item.id,
-      object_type: item.object_type,
-    });
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
+      this.objectListService.clear();
+      this.objectListService.addItem(
+        {
+          id: item.id,
+          object_type: item.object_type,
+        }
+      );
+      this.completeDoubleClick.emit(item);
+    } else {
+      this.objectListService.addOrRemoveItem({
+        id: item.id,
+        object_type: item.object_type,
+      });
+    }
   }
 
   onSelectedAll() {
     this.objectListService.clear();
     _.map(this.data, (v: any) => {
-      this.objectListService.addItem(
-        {
-          id: v.id,
-          object_type: v.object_type,
-        }
-      );
+      if (_.indexOf(this.objectsDisabled, v.object_type) === -1) {
+        this.objectListService.addItem(
+          {
+            id: v.id,
+            object_type: v.object_type,
+          }
+        );
+      }
     });
   }
 

@@ -2,11 +2,15 @@
      [ngClass]="{'has-scrollbar': hasScrollbar}">
   <div *ngIf="data && data.length > 0" class="wobject-row-header">
     <div class="wobject-row">
-      <div *ngIf="data.length === selectedObjects.length && data.length !==0" (click)="onClearAll()"
+
+      <div *ngIf="(data.length === selectedObjects.length + totalObjectsDisabled)
+      && data.length !==0 && selectedObjects.length !== 0" (click)="onClearAll()"
            class="wobject-row-checkbox">
         <i class="fa fa-check active"></i>
       </div>
-      <div *ngIf="data.length !== selectedObjects.length" (click)="onSelectedAll()" class="wobject-row-checkbox">
+      <div [ngClass]="{disabled: !hasMultipleSelection || data.length === totalObjectsDisabled}"
+           *ngIf="(data.length !== selectedObjects.length + totalObjectsDisabled) || data.length === totalObjectsDisabled"
+           (click)="onSelectedAll()" class="wobject-row-checkbox">
         <i class="fa fa-check"></i>
       </div>
       <div class="wobject-row-ui">
