@@ -53,9 +53,8 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     if (authService.isAuthenticated()) {
       this.notificationService.getNewNotificationCounts().toPromise()
         .then(res => {
-          console.debug('res: ', res);
-          this.connectionService.newNotifCount = res.connection_count;
-          this.notificationService.newNotifCount = res.update_count;
+          this.connectionService.newNotifCount = res.data.connection_count;
+          this.notificationService.newNotifCount = res.data.update_count;
         });
     }
   }

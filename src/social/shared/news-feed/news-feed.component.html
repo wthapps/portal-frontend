@@ -31,7 +31,7 @@
 
           <a class="accordion-menu-text" [routerLink]="['/news']" [queryParams]="{ q: 'category::' + category.key}"
              href="#">
-            {{category.key | titleCase}}
+            {{(category.key || 'Invalid Link') | titleCase}}
           </a>
         </div>
         <div class="accordion-menu-body collapse in" id="collapseFeed-{{ category.key | freeSpace }}">
@@ -39,8 +39,8 @@
             <li *ngFor="let channel of category.value">
               <a [routerLink]="['/news']" [queryParams]="{ q: 'feed_link_id::' + channel.id}"
                  [routerLinkActive]="['active']" href="#">
-                <img [src]="channel.logo" alt="" style="width: 20px; height: 20px">
-                <span>{{channel.name}}</span>
+                <img [src]="channel.logo || '/assets/images/thumbnail/image_default.png'" alt="" style="width: 20px; height: 20px">
+                <span>{{channel.name || (channel.link | maxLength:15)}}</span>
               </a>
             </li>
           </ul>
@@ -99,14 +99,14 @@
           <ng-container *ngFor="let channel of addChannels" >
             <div class="media" *ngIf="newSelectedCategory == 'all' || channel.category == newSelectedCategory">
               <div class="media-left">
-                <span class="avatar-xs"><img [src]="channel.logo" alt=""></span>
+                <span class="avatar-xs"><img [src]="channel.logo || '/assets/images/thumbnail/image_default.png'" alt=""></span>
               </div>
               <div class="media-body">
                 <h5 class="media-heading m0">
-                  <a class="link-text" href="#">{{channel.name}}</a>
+                  <a class="link-text" href="#">{{channel.name || channel.link}}</a>
                 </h5>
                 <small class="text-fade text-capitalize">
-                  {{ channel.category }}
+                  {{ channel.category || 'Invalid Link'}}
                 </small>
               </div>
               <div class="media-right">
@@ -176,14 +176,14 @@
             <ng-container *ngFor="let channel of category.value">
               <div class="media" *ngIf="editSelectedCategory == 'all' || channel.category == editSelectedCategory">
                 <div class="media-left">
-                  <span class="avatar-xs"><img [src]="channel.logo" alt=""></span>
+                  <span class="avatar-xs"><img [src]="channel.logo || '/assets/images/thumbnail/image_default.png'" alt=""></span>
                 </div>
                 <div class="media-body">
                   <h5 class="media-heading m0">
-                    <a class="link-text" href="#">{{channel.name}}</a>
+                    <a class="link-text" href="#">{{channel.name || channel.link}}</a>
                   </h5>
                   <small class="text-fade text-capitalize">
-                    {{ category.key }}
+                    {{ category.key || 'Invalid Link'}}
                   </small>
                 </div>
                 <div class="media-right">

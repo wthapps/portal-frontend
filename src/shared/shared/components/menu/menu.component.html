@@ -1,11 +1,9 @@
-<!-- {{notificationService.notifications | wthFilterBy:'seen_state':'new':notificationService.notifications.length | json}} -->
-<!-- {{notificationService.notifications | json}} -->
+
 <nav class="page-menuleft" draggable="false">
   <div class="menuleft-nav">
     <div class="menuleft-nav-item has-sub" [ngClass]="{'active': urls.social == hostname && !isProfileTab, 'show': urls.social == hostname}">
       <a id="menuleft-nav-intro-1" draggable="false" href="javascript:void(0);" (click)="onMenu('social')">
         <i class="icon-zone-social"></i> Social Media
-        <i class="fa fa-circle notification-dot"></i>
       </a>
       <div class="menuleft-nav-sub" *ngIf="urls.social === hostname " [ngClass]="{'active': urls.social == hostname && !isProfileTab, 'show': urls.social == hostname}">
         <ng-content select="z-social-left-menu"></ng-content>
