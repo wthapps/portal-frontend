@@ -1,7 +1,10 @@
 import { EnvConfig } from './env-config.interface';
 
 export const environment = {
-  production: true
+  production: true,
+  keys: {
+    recaptcha_site_key: '6LdCdU0UAAAAADLbZ8Vf6UoQ-TeyzZjhOEiwcXxJ'
+  }
 };
 
 console.log('environment:::', environment);

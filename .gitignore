@@ -72,4 +72,3 @@ bower_components
 /src/html/
 ts-node*
 firefox_root
-/src/environments/environment.ts

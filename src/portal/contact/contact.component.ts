@@ -14,6 +14,8 @@ import { ContactService } from './contact.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
 import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
 import { CustomValidator } from '../../shared/shared/validator/custom.validator';
+import { ApiBaseService } from '@wth/shared/services';
+import { environment } from '@env/environment';
 
 /**
  * This class represents the lazy loaded AboutComponent.
@@ -25,7 +27,6 @@ import { CustomValidator } from '../../shared/shared/validator/custom.validator'
   styleUrls: ['contact.component.scss']
 })
 export class ContactComponent implements OnInit {
-  siteKey: string = '6LeZ0xIUAAAAABLfFeQpUGfK84j5aWgOnWbfJKM4';
   recaptchaState: boolean = false;
 
   @ViewChild(ReCaptchaComponent) captcha: ReCaptchaComponent;
@@ -41,19 +42,24 @@ export class ContactComponent implements OnInit {
   subject: AbstractControl;
   body: AbstractControl;
   submitted: boolean = false;
+  siteKey: string = environment.keys.recaptcha_site_key;
 
   _recaptchaResponse: any = '';
 
   constructor(private fb: FormBuilder,
               private contactService: ContactService,
               private loadingService: LoadingService,
-              private toastsService: ToastsService) {
+              private toastsService: ToastsService
+  ) {
 
     // if (this.userService.loggedIn) {
     //   this.emailInput = this.userService.getSyncProfile().email;
     //   this.first_nameInput = this.userService.getSyncProfile().first_name;
     //   this.last_nameInput = this.userService.getSyncProfile().last_name;
     // }
+
+    //this.captcha.reset();
+    // this.siteKey= this.captcha.getResponse();
 
     this.form = fb.group({
       'first_name': [this.first_nameInput],
@@ -82,7 +88,6 @@ export class ContactComponent implements OnInit {
   }
 
   handleCorrectCaptcha(e: any) {
-    console.log(e);
     this._recaptchaResponse = e;
     this.recaptchaState = true;
   }
