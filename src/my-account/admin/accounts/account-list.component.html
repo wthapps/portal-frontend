@@ -33,7 +33,7 @@
   </div>
   <!--full account without sub-->
 
-  <div *ngIf="currentUser?.parent_id > 0">
+  <div *ngIf="(authService.user$|async)?.parent_id != null">
 
     <div>
       Your account type dose not have the ability to create and manage additional accounts
@@ -42,10 +42,8 @@
       In order to create and manage additional accounts, please request to full ownership account to upgrade into pro account
     </div>
     <div class="box-panel-subtitle">
-
       <a class="btn btn-outline-primary btn-min" (click)="openRequestOwnershipModal(modal)">
         Request ownership</a>
-
     </div>
   </div>
 
@@ -97,7 +95,8 @@
           <td>
             <div class="text-right">
               <label *ngIf="item?.removing">Removed</label>
-              <button *ngIf="item?.requested_full_account && !item?.removing" class="btn btn-default" (click)="acceptRequest(item)" title="Accept Request">
+              <button *ngIf="item?.requested_full_account && !item?.removing && item?.parent_id != null" class="btn btn-default"
+                      (click)="acceptRequest(item)" title="Accept Request">
                 <i class="fa fa-check-circle requested-full-account"></i></button>
 
               <button *ngIf="!item?.removing" class="btn btn-default" (click)="edit(item)" title="Edit">
