@@ -24,10 +24,16 @@ export class ZSharedReportComponent {
     {id: 2, description: 'Hate Speech or Personal Harassment', entity: 'post;community;member;friend'},
     {id: 3, description: 'Inappropriate content or Fail Information', entity: 'post;member;community'},
     {id: 4, description: 'Adult content without marked “Adult content”', entity: 'post'},
-    {id: 4, description: 'Duplicate, fake or misleading', entity: 'community'},
-    {id: 1, description: 'Fake Account or Impersonating', entity: 'member;friend'},
+    {id: 5, description: 'Duplicate, fake or misleading', entity: 'community'},
+    {id: 6, description: 'Fake Account or Impersonating', entity: 'member;friend'},
     {id: 99, description: 'Other', entity: 'member;post;community;friend'}
   ];
+
+  ENTITY: any = {
+  'post' : 1,
+  'member' : 2,
+  'community' : 3,
+  };
 
   reasons: Array<any> = [];
   uuid: string = '';
@@ -65,7 +71,7 @@ export class ZSharedReportComponent {
   onSubmit(values: any): void {
     let body = JSON.stringify({
       object_id: this.uuid,
-      entity: this.entityType == 'post' ? 1 : this.entityType == 'member' ? 2 : 3,
+      entity: this.entityType == 'post' ? this.ENTITY['post'] : this.entityType == 'member' ? this.ENTITY['member'] : this.ENTITY['community'],
       reports: [{id: this.reason.id, description: this.reason.id == 99 ? values.other : this.reason.description}]
     });
     // this.apiBaseService.post(`zone/social_network/userreports`, body)
