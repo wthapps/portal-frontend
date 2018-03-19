@@ -22,8 +22,8 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-8 col-sm-offset-2">
-        <h3 class="h1">Anything comes in mind?</h3>
-        <p>If you are interested in our business or having any issue idea that you want to share, feel free to drop us
+        <h3 class="h2 text-center">Anything comes in mind?</h3>
+        <p class="fz18 mb20">If you are interested in our business or having any issue idea that you want to share, feel free to drop us
           a message.</p>
         <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
           <div class="row">
@@ -84,7 +84,8 @@
           <button [disabled]="!form.valid || !recaptchaState" type="submit" class="btn btn-outline-primary btn-min mr20">
             Send
           </button>
-          <a [routerLink]="['/']" class="btn btn-default btn-min">Cancel</a>
+
+          <a [routerLink]="['/']" class="btn btn-outline-default btn-min">Cancel</a>
         </form>
       </div>
     </div>
