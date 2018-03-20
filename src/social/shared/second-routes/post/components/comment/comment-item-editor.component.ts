@@ -86,7 +86,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       'content': [this.comment.content, ''],
       'photo': [this.comment.photo, null]
     });
-    this.contentCtrl = this.commentEditorForm.controls['content'];
+    // this.contentCtrl = this.commentEditorForm.controls['content'];
+    this.setCommentContent(this.commentEditorForm.controls['content'].value);
     this.photosCtrl = this.commentEditorForm.controls['photo'];
   }
 
@@ -103,9 +104,10 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     // Create, Update, Reply
     if (e.keyCode == 13 && !e.shiftKey) {
       e.preventDefault();
+      this.setCommentContent(e.srcElement.innerHTML);
       if (this.checkValidForm()) {
         // this.comment.content = this.commentEditorForm.value;
-        this.post(this.commentEditorForm.value);
+        this.post(this.comment.content);
       } else {
         this.cancel();
       }
@@ -210,7 +212,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   onEmojiClick(e: any) {
     let emoj: any = e.replace(/\\/gi, '');
-    this.comment.content += emoj;
+    this.comment.content = this.commentDomValue + emoj;
     this.hasUpdatedContent = true;
   }
 
@@ -232,22 +234,26 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  post(comment: any) {
+  post(comment?: any) {
     let event: any = null;
 
+    this.comment.content = comment || this.commentContent.nativeElement.innerHTML;
     if (this.mode == CommentEditorMode.Add) {
       // add new comment/reply to post
       this.comment.parent = this.parent;
       this.comment.parentId = this.parent.uuid;
       this.comment.parentType = this.parentType;
 
+
       _.set(this.originComment, 'isCreatingNewReply', false);
-      event = new CommentCreateEvent(this.comment);
+      event = new CommentCreateEvent({...this.comment});
+      this.setCommentDomContent('');
 
     } else if (this.mode == CommentEditorMode.Edit) {
 
       // update current comment/reply
-      this.comment.content = this.commentEditorForm.value.content;
+      // this.comment.content = this.commentEditorForm.value.content;
+      // this.commentContent.nativeElement.setInnerHTML(this.commentEditorForm.controls['content']);
       event = new CommentUpdateEvent(this.comment);
     }
     this.eventEmitter.emit(event);
@@ -277,11 +283,29 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   hasChanged() {
-    if (this.commentEditorForm.controls['content'].value == '' &&
+    if (this.comment.content == '' &&
       this.commentEditorForm.controls['photo'].value == null) {
       return false;
     }
     return true;
+  }
+
+  setCommentContent(value: any) {
+    this.comment.content = value;
+    // this.commentContent.nativeElement.innerHTML = value;
+  }
+
+  setCommentDomContent(value: any) {
+    this.commentContent.nativeElement.innerHTML = value;
+  }
+
+  setCommentContentFromDom() {
+    this.setCommentContent(this.commentContent.nativeElement.innerHTML);
+    // this.commentContent.nativeElement.innerHTML = value;
+  }
+
+  get commentDomValue() {
+    return this.commentContent.nativeElement.innerHTML;
   }
 
 }

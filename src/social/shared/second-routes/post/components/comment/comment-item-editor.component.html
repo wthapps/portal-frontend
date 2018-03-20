@@ -38,10 +38,10 @@
 
         <div contenteditable="true" #commentContent placeholder="Add a comment"
              class="form-control textarea-editor-input commentContent-editor-input"
-             [formControl]="contentCtrl"
-                  (keyup)="onKey($event)"
-                  [(ngModel)]="comment.content">
+                  [innerHTML]="comment.content"
+                  (keyup)="onKey($event)">
         </div>
+
       </div>
 
       <photo-item-preview [photo]="comment?.photo"
@@ -54,7 +54,7 @@
                 href="javascript:;">Cancel
         </button>
 
-        <button class="btn btn-sm btn-outline-default" href="javascript:;" (click)="post(commentEditorForm.value)"
+        <button class="btn btn-sm btn-outline-default" href="javascript:;" (click)="post()"
                 [disabled]="!hasUpdatedContent || !hasChanged()">Post
         </button>
       </div>
