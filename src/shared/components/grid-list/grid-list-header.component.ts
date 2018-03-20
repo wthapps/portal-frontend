@@ -4,12 +4,12 @@ import { Constants } from '../../constant/config/constants';
 declare var _: any;
 
 @Component({
-  selector: 'grid-list-header',
+  selector: 'w-grid-list-header',
   templateUrl: 'grid-list-header.component.html',
   styleUrls: ['grid-list-header.component.scss']
 })
 
-export class GridListHeaderComponent {
+export class WGridListHeaderComponent {
   @Input() data: any;
   @Input() viewOption: string;
   @Output() events: EventEmitter<any> = new EventEmitter<any>();

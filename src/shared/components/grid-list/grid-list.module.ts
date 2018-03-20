@@ -3,7 +3,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { SliderModule } from 'primeng/primeng';
-import { GridListHeaderComponent } from '@wth/shared/components';
+import { WGridListHeaderComponent } from './grid-list-header.component';
+import { WGridListComponent } from './grid-list.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { PipeModule } from '@wth/shared/shared/pipe/pipe.module';
 
 
 @NgModule({
@@ -12,11 +15,19 @@ import { GridListHeaderComponent } from '@wth/shared/components';
     FormsModule,
     ReactiveFormsModule,
 
+    InfiniteScrollModule,
+    PipeModule,
     SliderModule
   ],
-  declarations: [GridListHeaderComponent],
-  exports: [GridListHeaderComponent],
+  declarations: [
+    WGridListHeaderComponent,
+    WGridListComponent
+  ],
+  exports: [
+    WGridListHeaderComponent,
+    WGridListComponent
+  ],
   providers: [],
 })
-export class GridListModule {
+export class WGridListModule {
 }

@@ -10,11 +10,13 @@ import { ZMediaSharingDetailComponent } from './sharing-detail.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { SharedByMePage } from './shared-by-me.page';
 import { SharedByMeDetailPage } from './shared-by-me-detail.page';
+import { WGridListModule } from '@wth/shared/components/grid-list';
 
 @NgModule({
   imports: [
     ZMediaSharedByMeRoutingModule,
     ZMediaSharedModule,
+    WGridListModule,
     SharedModule
   ],
   declarations: [
@@ -24,6 +26,7 @@ import { SharedByMeDetailPage } from './shared-by-me-detail.page';
     ZMediaSharingDetailComponent
   ],
   exports: [
+    WGridListModule,
     ZMediaSharedByMeComponent
   ],
   providers: [

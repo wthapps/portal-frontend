@@ -47,24 +47,7 @@ export class ZSocialSearchResultAllComponent implements OnDestroy {
             }
           }
         );
-
-        // this.api.get(`social_network/search?q=${this.params}`).subscribe(
-        //   (res: any) => {
-        //     this.result = res.data;
-        //     this.groups = Object.keys(res.data);
-        //     if (res.show_more_posts) {
-        //       this.show_more_posts = res.show_more_posts;
-        //     }
-        //     if (res.show_more_communities) {
-        //       this.show_more_communities = res.show_more_communities;
-        //     }
-        //     if (res.show_more_members) {
-        //       this.show_more_members = res.show_more_members;
-        //     }
-        //   }
-        // );
       }
-
     });
   }
 

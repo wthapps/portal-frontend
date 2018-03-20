@@ -84,7 +84,7 @@ import { MenuContainerModule } from '@shared/shared/components/menu-container/me
 import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 import { AccordionModule } from 'primeng/primeng';
-import { GridListModule } from '@wth/shared/components/grid-list/grid-list.module';
+import { WGridListModule } from '@wth/shared/components/grid-list/grid-list.module';
 import { ModalModule } from '@wth/shared/components/modal/modal.module';
 import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
 import { WObjectListService } from '@wth/shared/components/w-object-list/w-object-list.service';
@@ -112,7 +112,6 @@ import { PartialModule } from '@wth/shared/partials';
 
     PartialModule,
     //Custom modules
-    GridListModule,
     ModalModule,
     WMediaSelectionModule
   ],
@@ -174,7 +173,6 @@ import { PartialModule } from '@wth/shared/partials';
     NotificationListModule,
 
     // Custom modules
-    GridListModule,
     ModalModule,
     WMediaSelectionModule,
 

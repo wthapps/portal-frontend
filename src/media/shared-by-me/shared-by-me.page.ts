@@ -3,7 +3,6 @@ import { MediaObjectService } from '../shared/container/media-object.service';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { AlbumCreateModalComponent } from '@wth/shared/shared/components/photo/modal/album-create-modal.component';
-import { FileSelectComponent } from "@shared/shared/components/file/file-select/file-select.component";
 import { AddToAlbumModalComponent } from "@shared/shared/components/photo/modal/add-to-album-modal.component";
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
@@ -14,6 +13,7 @@ import * as appStore from '../shared/store';
 import * as fromObject from '../shared/store/object';
 import { Observable } from 'rxjs/Observable';
 import { EditNameModalComponent } from '@wth/shared/components/modal';
+import { FileSelectComponent } from '@wth/shared/shared/components/file/file-select/file-select.component';
 
 @Component({
   selector: 'shared-by-me',
@@ -26,7 +26,7 @@ import { EditNameModalComponent } from '@wth/shared/components/modal';
 })
 export class SharedByMePage implements OnInit {
 
-  objects: Observable<Array<any>>;
+  objects: Observable<Array<any>> = new Observable<Array<any>>();
   selectedObjects: Observable<Array<any>>;
 
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;

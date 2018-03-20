@@ -3,23 +3,20 @@ import {
   Input,
   Output,
   EventEmitter,
-  AfterViewInit,
   OnInit,
   HostListener,
-  ComponentFactoryResolver,
   OnDestroy,
   ViewEncapsulation,
   ChangeDetectorRef
 } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
 
-import { MediaObjectService } from '../container/media-object.service';
-import { ZMediaStore } from '../store/media.store';
+import { MediaObjectService } from '../../../media/shared/container/media-object.service';
+import { ZMediaStore } from '../../../media/shared/store/media.store';
 import { Constants } from '@wth/shared/constant';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
 
@@ -28,15 +25,15 @@ declare var $: any;
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  selector: 'me-grid-list',
-  templateUrl: 'media-grid-list.component.html',
-  styleUrls: ['media-grid-list.component.scss'],
+  selector: 'w-grid-list',
+  templateUrl: 'grid-list.component.html',
+  styleUrls: ['grid-list.component.scss'],
   providers: [
     MediaObjectService
   ]
 })
 
-export class MediaGridListComponent implements OnInit, OnDestroy {
+export class WGridListComponent implements OnInit, OnDestroy {
   selectedObjects: Array<any> = new Array<any>();
 
   @Input() viewOption: string = 'grid';

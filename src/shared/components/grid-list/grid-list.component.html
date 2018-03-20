@@ -7,8 +7,8 @@
 
   <div class="page-body-content-in">
 
-    <grid-list-header *ngIf="objects?.length > 0" [data]="objects" [viewOption]="viewOption"
-                    (events)="doAction($event)"></grid-list-header>
+    <w-grid-list-header *ngIf="objects?.length > 0" [data]="objects" [viewOption]="viewOption"
+                    (events)="doAction($event)"></w-grid-list-header>
 
 
     <div *ngIf="objects?.length == 0" class="zone-no-photo text-center">
@@ -36,11 +36,11 @@
           {{ group.key }}
         </p>
         <div *ngIf="group.value" class="clearfix">
-          <me-sharing-item *ngFor="let item of group.value;" [type]="item.object_type" [object]="item"
-                   (events)="onEvent($event)"></me-sharing-item>
+          <!--<me-sharing-item *ngFor="let item of group.value;" [type]="item.object_type" [object]="item"-->
+                   <!--(events)="onEvent($event)"></me-sharing-item>-->
         </div>
-        <me-sharing-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"
-                 (events)="onEvent($event)"></me-sharing-item>
+        <!--<me-sharing-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"-->
+                 <!--(events)="onEvent($event)"></me-sharing-item>-->
         <!--<div class="text-center p20" *ngIf="viewOption == 'grid'">-->
           <!--<a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"-->
              <!--*ngIf="group.key == 'album'">-->
