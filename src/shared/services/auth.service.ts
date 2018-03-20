@@ -47,25 +47,30 @@ export class AuthService {
     this.loggedIn = Boolean(cookieService.get(LOGGEDIN));
     if (this.loggedIn) {
       let profile = cookieService.get(PROFILE);
-      if (profile !== undefined && profile !== null && profile !== '') {
-        this.user = JSON.parse(String(profile));
-      }
-
-      this.api.post(`users/current_session/profile`, {jwt: `${cookieService.get(JWT)}`}).subscribe((response) => {
-        this.loggedIn = true;
-        this._loggedIn$.next(this.loggedIn);
-        // this.loggedIn$ = this._loggedIn$.asObservable();
-        this.user = response.data;
-        this._user$.next(this.user);
-        // this.user$ = this._user$.asObservable();
-        this.storeLoggedInInfo();
-      }, (error) => {
+      if (!profile) {
         this.loggedIn = false;
-        this._loggedIn$.next(this.loggedIn);
-        // this.loggedIn$ = this._loggedIn$.asObservable();
-
-        this.deleteLoggedInInfo();
-      });
+        this.deleteAuthInfo();
+      } else {
+        this.user = JSON.parse(String(profile));
+        this._user$.next(this.user);
+      }
+      this._loggedIn$.next(this.loggedIn);
+      //
+      // this.api.post(`users/current_session/profile`, {jwt: `${cookieService.get(JWT)}`}).subscribe((response) => {
+      //   this.loggedIn = true;
+      //   this._loggedIn$.next(this.loggedIn);
+      //   // this.loggedIn$ = this._loggedIn$.asObservable();
+      //   this.user = response.data;
+      //   this._user$.next(this.user);
+      //   // this.user$ = this._user$.asObservable();
+      //   this.storeLoggedInInfo();
+      // }, (error) => {
+      //   this.loggedIn = false;
+      //   this._loggedIn$.next(this.loggedIn);
+      //   // this.loggedIn$ = this._loggedIn$.asObservable();
+      //
+      //   this.deleteLoggedInInfo();
+      // });
     } else {
       this.loggedIn = false;
       this._loggedIn$.next(this.loggedIn);
@@ -76,9 +81,8 @@ export class AuthService {
     this.windowService.watchStorage().subscribe((payload: any) => {
       this.user = payload.profile;
       this._user$.next(payload.profile);
-      // this.user$ = this._user$.asObservable();
     });
-    window.addEventListener('storage', (data: any) => {
+    window.addEventListener('cookie', (data: any) => {
       console.log('storage changed:::', data);
     });
   }
