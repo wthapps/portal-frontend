@@ -62,7 +62,7 @@
     <div class="form-group">
       <div class="row row-10">
         <div class="col-sm-8">
-          <textbox-search (onEnterEvent)="onEnter($event)"
+          <textbox-search #textbox (onEnterEvent)="onEnter($event)"
                           (onEscapeEvent)="onEscape($event)"
                           (onKeyUpEvent)="onKey($event)"
                           [placeholder]="'Search something'">
@@ -148,7 +148,7 @@
           <select name="name" class="form-control" [(ngModel)]="editSelectedCategory">
             <option value="all"> -- All Categories --</option>
             <option *ngFor="let category of channels | groupBy :'category'" [value]="category.key">
-              {{ category.key | titleCase }}
+              {{ (category.key | titleCase) || 'Invalid Link' }}
             </option>
           </select>
         </div>
@@ -174,7 +174,8 @@
         <div *ngIf="channels.length > 0">
           <ng-container *ngFor="let category of editChannels | groupBy :'category'">
             <ng-container *ngFor="let channel of category.value">
-              <div class="media" *ngIf="editSelectedCategory == 'all' || channel.category == editSelectedCategory">
+              <!-- To check invaild category (!category.key && editSelectedCategory == 'undefined') -->
+              <div class="media" *ngIf="(!category.key && editSelectedCategory == 'undefined') || editSelectedCategory == 'all' || channel.category == editSelectedCategory">
                 <div class="media-left">
                   <span class="avatar-xs"><img [src]="channel.logo || '/assets/images/thumbnail/image_default.png'" alt=""></span>
                 </div>

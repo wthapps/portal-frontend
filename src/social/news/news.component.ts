@@ -13,9 +13,6 @@ import { PostService } from '../shared/second-routes/post/shared/post.service';
 export class ZSocialNewsComponent implements OnInit {
   @ViewChild('postEditModal') modalShare: PostEditComponent;
 
-  article: any = {
-    uri: 'https://i-kinhdoanh.vnecdn.net/2018/01/10/biencam1-3203-1515575867_140x84.jpg'
-  };
   channels: any;
   feeds: any;
   link: any;
@@ -55,7 +52,7 @@ export class ZSocialNewsComponent implements OnInit {
   }
 
   loadChannels() {
-    this.apiBaseService.get(`zone/social_network/feeds/get_my_channels`, {q: "category::all"}).subscribe((res: any) => {
+    this.apiBaseService.get(`zone/social_network/feeds/get_my_channels`, {q: "all"}).subscribe((res: any) => {
       this.channels = res.data;
     })
   }

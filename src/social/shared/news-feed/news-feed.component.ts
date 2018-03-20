@@ -2,6 +2,8 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEm
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Router } from "@angular/router";
 import { ApiBaseService } from "@shared/services";
+import { LoadingService } from "@shared/shared/components/loading/loading.service";
+import { TextBoxSearchComponent } from "@shared/partials/search-box";
 
 declare var _: any;
 
@@ -17,19 +19,24 @@ declare var _: any;
 export class ZSocialSharedNewsFeedComponent implements OnInit, OnChanges {
   @ViewChild('modalNew') modalNew: BsModalComponent;
   @ViewChild('modalEdit') modalEdit: BsModalComponent;
+  @ViewChild('textbox') textbox: TextBoxSearchComponent;
+  @Input() channels: any = [];
 
   selectedValues: string[] = [];
-  @Input() channels: any = [];
   addChannels: any = [];
   editChannels: any = [];
   categories: any = [];
   channelChanged: any = false;
   newSelectedCategory: any = 'all';
   editSelectedCategory: any = 'all';
+  search: any = '';
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private router: Router, private apiBaseService: ApiBaseService) {
+  constructor(private router: Router,
+    private apiBaseService: ApiBaseService,
+    private loadingService: LoadingService
+  ) {
   }
 
   ngOnInit(): void {
@@ -46,6 +53,7 @@ export class ZSocialSharedNewsFeedComponent implements OnInit, OnChanges {
     this.modalNew.close();
     this.modalEdit.close();
     this.events.emit({action: 'reload'});
+    this.textbox.search = '';
   }
 
   onClick(q: any) {
@@ -61,13 +69,15 @@ export class ZSocialSharedNewsFeedComponent implements OnInit, OnChanges {
   }
 
   onKey(event: any) {
+    this.addChannels = null;
     this.apiBaseService.post(`zone/social_network/feeds/search_channels`, {q: event.search}).subscribe((res: any) => {
       this.addChannels = res.data;
     });
   }
 
   onEditKey(event: any) {
-    this.apiBaseService.get(`zone/social_network/feeds/get_my_channels`, {q: `name::${event.search}`}).subscribe((res: any) => {
+    this.editChannels = null;
+    this.apiBaseService.get(`zone/social_network/feeds/get_my_channels`, {q: event.search}).subscribe((res: any) => {
       this.editChannels = res.data;
     });
   }
