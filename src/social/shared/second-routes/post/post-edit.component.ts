@@ -4,13 +4,11 @@ import {
 } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/do';
+import { takeUntil, filter, map } from 'rxjs/operators';
 
 
 import { SocialService } from '../../services/social.service';
@@ -21,8 +19,6 @@ import { Constants } from '@wth/shared/constant';
 import { PhotoModalDataService, PhotoUploadService, UserService } from '@wth/shared/services';
 import { LoadingService } from "@shared/shared/components/loading/loading.service";
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { takeUntil, switchMap, mergeMap, filter, map } from 'rxjs/operators';
 
 
 @Component({
@@ -59,6 +55,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
   tags: Array<string> = new Array<string>();
   originalTags: Array<any> = new Array<any>();
   custom_objects: Array<any> = new Array<any>();
+  description: any;
+  hasChange: boolean;
 
   form: FormGroup;
   descCtrl: AbstractControl;
@@ -94,7 +92,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       'tags': [this.post.tags],
       'photos': [this.post.photos, null]
     });
-    this.descCtrl = this.form.controls['description'];
+    // this.descCtrl = this.form.controls['description'];
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
     // this.currentUser = this.userService.getSyncProfile();
@@ -138,7 +136,11 @@ export class PostEditComponent implements OnInit, OnDestroy {
     if (options.post != null) {
       this.post = _.cloneDeep(options.post);
       this.originalTags = this.post.tags;
+      this.setItemDescription(options.post.description);
+    } else {
+      this.setItemDescription('');
     }
+
     if (options.parent != null) {
       this.parent = options.parent;
     }
@@ -147,11 +149,12 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
 
     this.form = this.fb.group({
-      'description': [this.post.description, Validators.compose([Validators.required])],
+      // 'description': [this.post.description, Validators.compose([Validators.required])],
       'tags': [_.map(this.post.tags, 'name'), null],
       'photos': [this.post.photos, null]
     });
-    this.descCtrl = this.form.controls['description'];
+    // this.descCtrl = this.form.controls['description'];
+    this.setItemDescription(this.post.description);
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
     if (options.addingPhotos) {
@@ -175,11 +178,12 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   done(item: any) {
 
+    this.setItemDescriptionFromDom();
     let options: any = {
       mode: this.mode,
       item: {
         uuid: this.post.uuid,
-        description: item.description,
+        description: this.description,
         photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
         tags_json: this.post.tags,
         privacy: this.post.privacy,
@@ -193,6 +197,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       },
       isShare: this.isShare
     };
+
     this.saved.emit(options);
     this.mediaSelectionService.close();
     // this.photoSelectDataService.close();
@@ -236,8 +241,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.onMoreAdded.emit(true);
     this.mediaSelectionService.open();
     this.mediaSelectionService.setMultipleSelection(true);
-    // this.photoSelectDataService.open({return: true, selectingPhotos: this.post.photos});
-    // this.subscribePhotoSelectEvents();
 
     let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
     this.mediaSelectionService.selectedMedias$.pipe(
@@ -261,19 +264,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.modal.close(null).then();
     this.mediaSelectionService.close();
   }
-
-  // upload(files: Array<any>) {
-  //   // Filter valid image type
-  //   let valid_images = this.photoUploadService.getValidImages(files);
-  //
-  //   _.forEach(valid_images, (file: any) => {
-  //     this.files.push(file);
-  //   });
-  //   // this.files = files;
-  //   this.photoSelectDataService.close();
-  //   this.modal.open();
-  //   this.uploadFiles(this.files);
-  // }
 
   uploadOne(file: any) {
     // Filter valid image type
@@ -352,6 +342,14 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   stopLoading() {
     this.loadingService.stop('#loading');
+  }
+
+  private setItemDescription(value: any) {
+    this.description = value;
+  }
+
+  private setItemDescriptionFromDom() {
+    this.setItemDescription(this.textarea.nativeElement.innerHTML);
   }
 
   private getPrivacyName(post: any): string {

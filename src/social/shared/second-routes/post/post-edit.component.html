@@ -89,7 +89,8 @@
                  [autofocus]
                  id="textarea-new-post"
                  placeholder="Share your ideas"
-                 [formControl]="descCtrl"
+                 [innerHTML]="description"
+                 (keyup)="hasChange = true"
             >
             </div>
           </div>
@@ -151,7 +152,7 @@
           Cancel
         </button>
         <button type="submit" class="btn btn-outline-primary btn-min"
-                [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0)  || link) || (files.length > 0)">
+                [disabled]="!((hasChange) || (post.photos.length > 0)  || link) || (files.length > 0)">
           Done
         </button>
       </div>

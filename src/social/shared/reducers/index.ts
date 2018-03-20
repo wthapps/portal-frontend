@@ -72,7 +72,7 @@ export function appReducer(state = socialInitialState, action: any): AppState {
     }
     case SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE: {
       let soProfile = { ...state.soProfile };
-      soProfile.settings.viewable_post.value = action.payload;
+      _.set(soProfile, 'settings.viewable_post.value', action.payload) ;
       return { ...state, soProfile };
     }
     case POSTS_COUNT_LOAD_DONE: {
