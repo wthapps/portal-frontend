@@ -47,7 +47,7 @@ export class AuthService {
     this.loggedIn = Boolean(cookieService.get(LOGGEDIN));
     if (this.loggedIn) {
       let profile = cookieService.get(PROFILE);
-      if (profile !== 'undefined' && profile !== null && profile !== '') {
+      if (profile !== undefined && profile !== null && profile !== '') {
         this.user = JSON.parse(String(profile));
       }
 
