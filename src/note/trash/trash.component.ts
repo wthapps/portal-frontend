@@ -12,8 +12,7 @@ import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import * as listReducer from '../shared/reducers/features/list-mixed-entities';
-import { noteConstants } from "note/shared/config/constants";
-
+import { noteConstants } from 'note/shared/config/constants';
 
 @Component({
   selector: 'z-note-trash',
@@ -30,14 +29,14 @@ export class ZNoteTrashComponent implements OnInit {
   isSelectAll$: Observable<boolean>;
   loading$: Observable<any>;
 
-
   readonly PAGE_TYPE: any = Constants.notePageType;
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private store: Store<fromRoot.State>,
-              private noteService: ZNoteService) {
-  }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: Store<fromRoot.State>,
+    private noteService: ZNoteService
+  ) {}
 
   ngOnInit() {
     this.noteItems$ = this.store.select(listReducer.getNotes);
@@ -48,22 +47,26 @@ export class ZNoteTrashComponent implements OnInit {
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.loading$ = this.store.select(fromRoot.getLoading);
 
-    this.store.dispatch({type: context.SET_CONTEXT, payload: {
-      page: noteConstants.PAGE_TRASH}});
-    this.store.dispatch({type: note.TRASH_LOAD});
+    this.store.dispatch({
+      type: context.SET_CONTEXT,
+      payload: {
+        page: noteConstants.PAGE_TRASH
+      }
+    });
+    this.store.dispatch({ type: note.TRASH_LOAD });
   }
 
   onNewNote() {
     this.noteService.modalEvent({
       action: 'note:open_note_add_modal',
-      payload: {parent_id: null}
+      payload: { parent_id: null }
     });
   }
 
   onFolder() {
     this.noteService.modalEvent({
       action: 'note:folder:create',
-      payload: {parent_id: null}
+      payload: { parent_id: null }
     });
   }
 }

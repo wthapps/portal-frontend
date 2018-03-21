@@ -1,7 +1,7 @@
 @import '../../assets/styles/global';
-@import "../../assets/styles/variables";
-@import "../../assets/fonts/font-awesome/scss/custom-variables";
-@import "../../assets/fonts/font-awesome/scss/font-awesome";
+@import '../../assets/styles/variables';
+@import '../../assets/fonts/font-awesome/scss/custom-variables';
+@import '../../assets/fonts/font-awesome/scss/font-awesome';
 
 $note-editor-aside-w: 400px;
 
@@ -12,12 +12,13 @@ $note-editor-aside-w: 400px;
   width: 100%;
   height: 100%;
   z-index: 1000;
-  background-color: #FFF;
+  background-color: #fff;
   @include flexbox;
   @include flex-direction(column);
 
   #quill-container {
-    &:after, &:before {
+    &:after,
+    &:before {
       content: none;
     }
     @include flexbox;
@@ -68,7 +69,7 @@ $note-editor-aside-w: 400px;
 
   position: relative;
   background-color: #f6f6f6;
-  .container-fluid{
+  .container-fluid {
     max-width: none;
   }
   .note-editor-toolbar {
@@ -173,7 +174,6 @@ $note-editor-aside-w: 400px;
   //}
 }
 
-
 @media screen {
   .printable {
     /*visibility: hidden;*/
@@ -193,5 +193,4 @@ $note-editor-aside-w: 400px;
     //visibility: visible;
     display: block;
   }
-
 }

@@ -12,9 +12,9 @@ import * as listReducer from '../shared/reducers/features/list-mixed-entities';
 
 import { Note } from '@shared/shared/models/note.model';
 import { Folder } from '../shared/reducers/folder';
-import { CommonEventService } from "@shared/services";
+import { CommonEventService } from '@shared/services';
 import * as context from '../shared/reducers/context';
-import { noteConstants, NoteConstants } from "note/shared/config/constants";
+import { noteConstants, NoteConstants } from 'note/shared/config/constants';
 
 @Component({
   selector: 'z-note-shared-by-me',
@@ -25,12 +25,18 @@ export class ZNoteSharedByMeComponent implements OnInit {
 
   constructor(private store: Store<any>) {}
   ngOnInit() {
-    this.store.dispatch({type: note.LOAD, payload: {parent_id: null, shared_by_me: true}});
-    this.store.dispatch({type: context.SET_CONTEXT, payload: {
-      page: this.noteConstants.PAGE_SHARED_BY_ME,
-      pathTitle: 'Shared by me',
-      permissions: this.noteConstants.PAGE_PERMISSIONS.SHARED_BY_ME,
-      noData: this.noteConstants.NO_DATA.SHARED_BY_ME
-    }});
+    this.store.dispatch({
+      type: note.LOAD,
+      payload: { parent_id: null, shared_by_me: true }
+    });
+    this.store.dispatch({
+      type: context.SET_CONTEXT,
+      payload: {
+        page: this.noteConstants.PAGE_SHARED_BY_ME,
+        pathTitle: 'Shared by me',
+        permissions: this.noteConstants.PAGE_PERMISSIONS.SHARED_BY_ME,
+        noData: this.noteConstants.NO_DATA.SHARED_BY_ME
+      }
+    });
   }
 }

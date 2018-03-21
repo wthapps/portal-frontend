@@ -3,15 +3,9 @@ import { BaseHomeRoutingModule } from './home-routing.module';
 import { ZNoteSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [
-    BaseHomeRoutingModule,
-    ZNoteSharedModule
-  ],
-  declarations: [
-  ],
-  exports: [
-  ],
-  providers: [
-  ]
+  imports: [BaseHomeRoutingModule, ZNoteSharedModule],
+  declarations: [],
+  exports: [],
+  providers: []
 })
-export class ZNoteHomeModule { }
+export class ZNoteHomeModule {}

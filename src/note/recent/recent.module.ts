@@ -5,18 +5,9 @@ import { ZNoteRecentComponent } from './recent.component';
 import { ZNoteRecentRoutingModule } from './recent-routing.module';
 
 @NgModule({
-  imports: [
-    ZNoteRecentRoutingModule,
-    ZNoteSharedModule
-  ],
-  declarations: [
-    ZNoteRecentComponent
-  ],
-  exports: [
-    ZNoteRecentComponent
-  ],
+  imports: [ZNoteRecentRoutingModule, ZNoteSharedModule],
+  declarations: [ZNoteRecentComponent],
+  exports: [ZNoteRecentComponent],
   providers: []
 })
-
-export class ZNoteRecentModule {
-}
+export class ZNoteRecentModule {}

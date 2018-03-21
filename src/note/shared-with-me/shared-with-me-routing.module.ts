@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { ZNoteSharedWithMeComponent } from './shared-with-me.component';
 import { AuthGuard } from '@wth/shared/services';
-import { ZNoteFoldersComponent } from "note/folders/folders.component";
+import { ZNoteFoldersComponent } from 'note/folders/folders.component';
 
 @NgModule({
   imports: [
@@ -22,5 +22,4 @@ import { ZNoteFoldersComponent } from "note/folders/folders.component";
   ],
   exports: [RouterModule]
 })
-export class ZNoteSharedWithMeRoutingModule {
-}
+export class ZNoteSharedWithMeRoutingModule {}

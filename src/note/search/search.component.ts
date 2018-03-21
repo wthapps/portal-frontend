@@ -11,7 +11,6 @@ import * as fromRoot from '../shared/reducers/index';
 import * as fromNote from '../shared/actions/note';
 import * as listReducer from '../shared/reducers/features/list-mixed-entities';
 
-
 @Component({
   selector: 'z-note-search',
   templateUrl: 'search.component.html'
@@ -30,10 +29,12 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
   viewMode$: Observable<any>;
   loading$: Observable<boolean>;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private urlService: UrlService,
     private store: Store<any>,
-    private apiBaseService: ApiBaseService) {
+    private apiBaseService: ApiBaseService
+  ) {
     this.noteItems$ = this.store.select(listReducer.getNotes);
     this.folderItems$ = this.store.select(listReducer.getFolders);
     this.sortOption$ = this.store.select(fromRoot.getSortOption);
@@ -44,11 +45,11 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
     this.loading$ = this.store.select(fromRoot.getLoading);
 
     this.event = this.router.events
-    .filter((event: any) => event instanceof NavigationEnd)
-    .subscribe((event: NavigationEnd) => {
-      this.params = this.urlService.getQuery();
-      this.getSearchResult();
-    });
+      .filter((event: any) => event instanceof NavigationEnd)
+      .subscribe((event: NavigationEnd) => {
+        this.params = this.urlService.getQuery();
+        this.getSearchResult();
+      });
   }
 
   ngOnInit() {
@@ -56,20 +57,18 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(event) this.event.unsubscribe();
+    if (event) this.event.unsubscribe();
   }
 
   getSearchResult() {
-    this.apiBaseService.get(`note/search`, {q: this.params['q']}).subscribe((res: any) => {
-      this.store.dispatch(new fromNote.LoadSuccess(res.data));
-    });
+    this.apiBaseService
+      .get(`note/search`, { q: this.params['q'] })
+      .subscribe((res: any) => {
+        this.store.dispatch(new fromNote.LoadSuccess(res.data));
+      });
   }
 
-  onNewNote() {
+  onNewNote() {}
 
-  }
-
-  onFolder() {
-
-  }
+  onFolder() {}
 }

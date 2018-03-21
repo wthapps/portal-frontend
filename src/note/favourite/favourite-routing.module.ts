@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AuthGuard } from "@shared/services";
+import { AuthGuard } from '@shared/services';
 import { ZNoteFavouriteComponent } from './favourite.component';
 
 @NgModule({
@@ -11,10 +11,9 @@ import { ZNoteFavouriteComponent } from './favourite.component';
         path: '',
         component: ZNoteFavouriteComponent,
         canActivate: [AuthGuard]
-      },
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class ZNoteFavouriteRoutingModule {
-}
+export class ZNoteFavouriteRoutingModule {}

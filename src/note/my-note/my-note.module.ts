@@ -9,29 +9,22 @@ import { ZNoteMyNoteNotesComponent } from './notes/notes.component';
 // import { ZNoteEditComponent } from './notes/note-edit.component';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 
-
 @NgModule({
-  imports: [
-    ModalModule,
-    ZNoteMyNoteRoutingModule,
-    ZNoteSharedModule,
-  ],
+  imports: [ModalModule, ZNoteMyNoteRoutingModule, ZNoteSharedModule],
   declarations: [
     ZNoteMyNoteComponent,
     ZNoteMyNoteFoldersComponent,
-    ZNoteMyNoteNotesComponent,
+    ZNoteMyNoteNotesComponent
     // ZNoteCreateComponent,
     // ZNoteEditComponent
   ],
   exports: [
     ZNoteMyNoteComponent,
     ZNoteMyNoteFoldersComponent,
-    ZNoteMyNoteNotesComponent,
+    ZNoteMyNoteNotesComponent
     // ZNoteCreateComponent,
     // ZNoteEditComponent
   ],
   providers: []
 })
-
-export class ZNoteMyNoteModule {
-}
+export class ZNoteMyNoteModule {}

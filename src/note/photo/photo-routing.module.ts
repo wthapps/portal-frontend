@@ -6,10 +6,14 @@ import { AuthGuard } from '@wth/shared/services';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'photos/:id', component: NotePhotoDetailComponent, outlet: 'modal', canActivate: [AuthGuard]},
+      {
+        path: 'photos/:id',
+        component: NotePhotoDetailComponent,
+        outlet: 'modal',
+        canActivate: [AuthGuard]
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class ZNotePhotoRoutingModule {
-}
+export class ZNotePhotoRoutingModule {}
