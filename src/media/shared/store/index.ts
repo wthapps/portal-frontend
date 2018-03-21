@@ -17,9 +17,8 @@ import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
  */
 
 import * as fromPhoto       from './photo';
+import * as fromAlbum       from './album';
 import * as fromObject       from './object';
-
-
 
 
 /**
@@ -28,6 +27,7 @@ import * as fromObject       from './object';
  */
 export interface State {
   photo:   fromPhoto.State;
+  album:   fromAlbum.State;
   object:  fromObject.State;
 }
 
@@ -40,6 +40,7 @@ export interface State {
  */
 export const mediaReducers: ActionReducerMap<State> = {
   photo: fromPhoto.reducer,
+  album: fromAlbum.reducer,
   object: fromObject.reducer
 };
 
@@ -61,12 +62,12 @@ export const getPhotoState   = createFeatureSelector<fromPhoto.State>('photo');
 // export const getPhoto        = createSelector(getPhotoState, fromPhoto.getPhoto);
 export const getPhotos       = createSelector(getPhotoState, fromPhoto.selectAll);
 
+/**
+ * Albums store functions
+ */
+export const selectAlbumState   = createFeatureSelector<fromAlbum.State>('album');
+export const selectAlbums = createSelector(selectAlbumState, fromAlbum.selectAll);
 
-// export const getPhotoLoaded  = createSelector(getPhotoEntities, fromPhoto.getLoaded, state => state);
-// export const getPhotoLoading = createSelector(getPhotoEntities, fromPhoto.getLoading, state => state);
-// export const getPhotoFailed  = createSelector(getPhotoEntities, fromPhoto.getFailed, state => state);
-// export const getPhoto        = createSelector(getPhotoEntities, fromPhoto.getPhoto, state => state);
-// export const getPhotos       = createSelector(getPhotoEntities, fromPhoto.getPhotos, state => state);
 
 // Object store functions
 export const getObjectState   = createFeatureSelector<fromObject.State>('object');
@@ -79,7 +80,12 @@ export const getSelectedObjects       = createSelector(getObjectState, fromObjec
 
 export const appStore = {
   photo: fromPhoto.reducer,
+  album: fromAlbum.reducer,
   object: fromObject.reducer
 };
 
-export let appEffects: Array<any> = [fromPhoto.PhotoEffects, fromObject.ObjectEffects];
+export let appEffects: Array<any> = [
+  fromPhoto.PhotoEffects,
+  fromAlbum.AlbumEffects,
+  fromObject.ObjectEffects
+];

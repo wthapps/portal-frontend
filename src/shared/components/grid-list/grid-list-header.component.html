@@ -1,7 +1,5 @@
 <div class="grid-list-head">
-<div *ngIf="viewOption == 'grid'" class="clearfix sortbar-wrap">
-
-
+<div *ngIf="view == 'grid'" class="clearfix sortbar-wrap">
 
   <span class="btn btn-text pull-right" (click)="sort(field);" style="cursor: pointer;">
     <i class="fa" [ngClass]="{'fa-arrow-up': (direction == 'asc'), 'fa-arrow-down': (direction == 'desc')}"></i>
@@ -31,7 +29,7 @@
 
 </div>
 
-<div *ngIf="viewOption == 'list'">
+<div *ngIf="view == 'list'">
   <div class="photo-box-nav">
     <div class="photo-box-figure">
       <div (click)="sort('Name')" class="photo-box-name can-click">
@@ -51,7 +49,7 @@
   </div>
 </div>
 
-<div *ngIf="viewOption == 'timeline'" class="pull-right">
+<div *ngIf="view == 'timeline'" class="pull-right">
   <span class="dropdown">
     <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle"
             data-toggle="dropdown" type="button" style="margin-right: 10px; border: none; background: none">

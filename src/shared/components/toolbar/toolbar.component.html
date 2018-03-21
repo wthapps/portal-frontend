@@ -1,14 +1,14 @@
 <div class="page-body-control">
-  <div class="page-body-control-nav" *ngIf="displayCreateButtons">
+  <div class="page-body-control-nav">
     <ul class="page-body-control-menu">
       <li>
-        <button class="btn btn-outline-primary" (click)="showUploadForm()">
+        <button class="btn btn-outline-primary" (click)="doAction({action: openUploadFile, payload: {}})">
           <i class="fa fa-cloud-upload"></i> Upload File
         </button>
       </li>
       <li>
         <button class="btn btn-outline-primary"
-                (click)="onAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
+                (click)="doAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
           <i class="fa fa-plus-circle"></i> Create Album
         </button>
       </li>
@@ -18,7 +18,7 @@
   <div class="page-body-control-nav page-body-control-nav-action" *ngIf="displayBackButton">
     <ul class="page-body-control-menu">
       <li class="divider">
-        <a class="btn btn-default" href="javascript:;" (click)="onAction({action: 'goBack', payload: {}})"
+        <a class="btn btn-default" href="javascript:;" (click)="doAction({action: 'goBack', payload: {}})"
            draggable="false"
            pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
           <i class="fa fa-arrow-left"></i>
@@ -39,7 +39,7 @@
         [class.disabled]="noSelectedObjects">
       <li>
         <a class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="onAction({action: 'confirmDeleteMedia', payload: {selectedObjects: selectedObjects}})"
+           (click)="doAction({action: 'confirmDeleteMedia', payload: {selectedObjects: selectedObjects}})"
            pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i>
         </a>
@@ -52,14 +52,14 @@
         [class.disabled]="noSelectedObjects">
       <li>
         <a class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="onAction({action: 'confirmRemoveSharing', payload: {selectedObjects: selectedObjects}})"
+           (click)="doAction({action: 'confirmRemoveSharing', payload: {selectedObjects: selectedObjects}})"
            pTooltip="{{ tooltip.remove }}" tooltipPosition="bottom">
           <i class="fa fa-times"></i> 1
         </a>
       </li>
       <li>
         <a class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="onAction({action: 'confirmDeleteMedia', payload: {selectedObjects: selectedObjects}})"
+           (click)="doAction({action: 'confirmDeleteMedia', payload: {selectedObjects: selectedObjects}})"
            pTooltip="{{ tooltip.delete }}" tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i>
         </a>
@@ -69,7 +69,7 @@
     <ul class="page-body-control-menu" *ngIf="selectedObjects.length > 0">
       <li>
         <a class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="onAction({action: 'delete', payload: {selectedObjects: selectedObjects}})"
+           (click)="doAction({action: 'delete', payload: {selectedObjects: selectedObjects}})"
            pTooltip="Delete sharing" tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i></a>
       </li>
@@ -84,23 +84,27 @@
            draggable="false"
            pTooltip="{{ tooltip.changeView}}" tooltipPosition="bottom">
           <i class="fa"
-             [ngClass]="{'fa-th-large': (viewOption == grid), 'fa-th-list': (viewOption == list), 'fa-align-left': (viewOption == timeline)}"></i>
+             [ngClass]="{
+             'fa-th-large': (view === 'grid'),
+             'fa-th-list': (view === 'list'),
+             'fa-align-left': (view === 'timeline')}">
+          </i>
         </a>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
           <li>
-            <a (click)="onAction({action: 'changeView', payload: {viewOption: grid}})" href="javascript:;"
+            <a (click)="doAction({action: 'changeView', payload: {view: grid}})" href="javascript:void(0);"
                draggable="false">
               <i class="fa fa-th-large"></i> Grid
             </a>
           </li>
           <li>
-            <a (click)="onAction({action: 'changeView', payload: {viewOption: list}})" href="javascript:;"
+            <a (click)="doAction({action: 'changeView', payload: {view: list}})" href="javascript:void(0);"
                draggable="false">
               <i class="fa fa-th-list"></i> List
             </a>
           </li>
           <li>
-            <a (click)="onAction({action: 'changeView', payload: {viewOption: timeline}})" href="javascript:;"
+            <a (click)="doAction({action: 'changeView', payload: {view: timeline}})" href="javascript:void(0);"
                draggable="false">
               <i class="fa fa-align-left"></i> Timeline
             </a>

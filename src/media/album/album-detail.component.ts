@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-
-
-import { ZMediaAlbumService } from './album.service';
+import { AlbumService } from '../shared/services/album.service';
 
 @Component({
   moduleId: module.id,
@@ -19,7 +17,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private albumService: ZMediaAlbumService) {
+    private albumService: AlbumService) {
   }
 
   ngOnInit() {

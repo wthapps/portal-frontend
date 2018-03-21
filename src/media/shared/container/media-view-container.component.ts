@@ -14,7 +14,7 @@ import { MediaToolbarListComponent } from '../media/media-toolbar-list.component
 import { MediaListComponent } from '../media/media-list.component';
 import { MediaObjectService } from './media-object.service';
 import { AlbumDetailInfoComponent } from '../../album/album-detail-info.component';
-import { ZMediaAlbumService } from '../../album/album.service';
+import { AlbumService } from '../services/album.service';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
 import { ZMediaStore } from '../store/media.store';
 import { TaggingModalComponent } from '@shared/shared/components/photo/modal/tagging/tagging-modal.component';
@@ -118,7 +118,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
               private route: ActivatedRoute,
               private location: Location,
               private mediaObjectService: MediaObjectService,
-              private albumService: ZMediaAlbumService,
+              private albumService: AlbumService,
               private mediaUploaderDataService: MediaUploaderDataService,
               private mediaStore: ZMediaStore,
               private cdr: ChangeDetectorRef,

@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService } from '@wth/shared/services';
+import { ApiBaseService, BaseEntityService } from '@wth/shared/services';
 
 declare var _: any;
 
 @Injectable()
-export class ZMediaAlbumService {
-
-  url = 'media/albums';
-
-  constructor(private apiBaseService: ApiBaseService) {
+export class AlbumService extends BaseEntityService<any> {
+  constructor(protected apiBaseService: ApiBaseService) {
+    super(apiBaseService);
+    this.url = 'media/albums';
   }
 
   listAlbum(body: any = {}): any {

@@ -19,7 +19,7 @@ import 'rxjs/add/operator/takeUntil';
 
 
 import { MediaObjectService } from '../container/media-object.service';
-import { ZMediaAlbumService } from '../../album/album.service';
+import { AlbumService } from '../services/album.service';
 import { ZMediaStore } from '../store/media.store';
 import { BaseObjectEditNameModalComponent } from '@wth/shared/shared/components/photo/modal/base-object-edit-name-modal.component';
 import { AlbumCreateModalComponent } from '@shared/shared/components/photo/modal/album-create-modal.component';
@@ -127,7 +127,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
               protected location: Location,
               protected mediaStore: ZMediaStore,
               protected cdr: ChangeDetectorRef,
-              protected albumService: ZMediaAlbumService) {
+              protected albumService: AlbumService) {
 
     this.photoService.modifiedPhotos$.takeUntil(this.destroySubject.asObservable()).subscribe((object: any) => {
       switch (object.action) {

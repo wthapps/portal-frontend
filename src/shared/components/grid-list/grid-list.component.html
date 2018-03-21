@@ -1,60 +1,110 @@
-<div class="page-body-content has-page-body-control gray-light"
-     infinite-scroll
-     [infiniteScrollDistance]="2"
-     [infiniteScrollThrottle]="500"
-     [scrollWindow]="false"
-     (scrolled)="getMoreObjects()">
+<w-toolbar #toolbar
+           [view]="view"
+           [selectedObjects]="selectedObjects"
+           (event)="doEvent($event)">
 
-  <div class="page-body-content-in">
+</w-toolbar>
 
-    <w-grid-list-header *ngIf="objects?.length > 0" [data]="objects" [viewOption]="viewOption"
-                    (events)="doAction($event)"></w-grid-list-header>
+<ng-container *ngIf="objects else noData">
+
+  <div class="page-body-content has-page-body-control gray-light"
+       infinite-scroll
+       [infiniteScrollDistance]="2"
+       [infiniteScrollThrottle]="500"
+       [scrollWindow]="false"
+       (scrolled)="getMoreObjects()">
+
+    <div class="page-body-content-in">
+
+      <w-grid-list-header *ngIf="objects"
+                          [data]="objects"
+                          [view]="view"
+                          (events)="doAction($event)">
+
+      </w-grid-list-header>
 
 
-    <div *ngIf="objects?.length == 0" class="zone-no-photo text-center">
-      <div *ngIf="page == 'search' ">
-        <h3>Data not matched</h3>
-        <h4>Please change your search criteria!</h4>
-      </div>
+      <div id="list-photo" class="row-img row-img-{{ sliderViewNumber }}" *ngIf="objects" (dragenter)="onDragenter($event)"
+           [ngClass]="view" (dragleave)="onDragleave($event)">
+        <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">
+          <p class="m15 fz15" *ngIf="group.key && (view !== 'grid')">
+            {{ group.key | titleCase }}
+          </p>
+          <div *ngIf="group.value" class="clearfix">
+            <w-grid-list-item *ngFor="let item of group.value;" [type]="item.object_type" [object]="item"
+                     (events)="onAction($event)">
 
-      <div *ngIf="page == 'shared-by-me'">
-        <h2><i class="fa fa-share-alt"></i></h2>
-        <h3>There is no photo shared by you</h3>
-        <h4>Photos can be shared to your connected contact.</h4>
-        <!--<p>-->
-          <!--<button class="btn btn-default">-->
-            <!--Learn More-->
-          <!--</button>-->
-        <!--</p>-->
-      </div>
-    </div>
+            </w-grid-list-item>
+          </div>
+          <w-grid-list-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"
+                   (events)="onAction($event)">
 
-    <div id="list-photo" class="row-img row-img-{{ sliderViewNumber }}" (dragenter)="onDragenter($event)"
-         [ngClass]="viewOption" (dragleave)="onDragleave($event)">
-      <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">
-        <p class="photo-box-heading" *ngIf="group.key && (viewOption != 'grid')">
-          {{ group.key }}
-        </p>
-        <div *ngIf="group.value" class="clearfix">
-          <!--<me-sharing-item *ngFor="let item of group.value;" [type]="item.object_type" [object]="item"-->
-                   <!--(events)="onEvent($event)"></me-sharing-item>-->
+          </w-grid-list-item>
+
+
+
+
+
+          <!--<div class="text-center p20" *ngIf="viewOption == 'grid' && MIX_SCREEN.indexOf(currentPath) > -1">-->
+            <!--<a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"-->
+               <!--*ngIf="group.key == 'album'">-->
+              <!--View all-->
+            <!--</a>-->
+            <!--<a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"-->
+               <!--*ngIf="group.key == 'photo'">-->
+              <!--View all-->
+            <!--</a>-->
+            <!--<hr *ngIf="MIX_SCREEN.indexOf(currentPath) > -1">-->
+          <!--</div>-->
         </div>
-        <!--<me-sharing-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"-->
-                 <!--(events)="onEvent($event)"></me-sharing-item>-->
-        <!--<div class="text-center p20" *ngIf="viewOption == 'grid'">-->
-          <!--<a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"-->
-             <!--*ngIf="group.key == 'album'">-->
-            <!--View all-->
-          <!--</a>-->
-          <!--<a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"-->
-             <!--*ngIf="group.key == 'photo'">-->
-            <!--View all-->
-          <!--</a>-->
-        <!--</div>-->
       </div>
+
+      <!--<div id="list-photo" class="row-img row-img-{{ sliderViewNumber }}" (dragenter)="onDragenter($event)"-->
+           <!--[ngClass]="viewOption" (dragleave)="onDragleave($event)">-->
+        <!--<div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">-->
+          <!--<p class="photo-box-heading" *ngIf="group.key && (viewOption != 'grid')">-->
+            <!--{{ group.key }}-->
+          <!--</p>-->
+          <!--<div *ngIf="group.value" class="clearfix">-->
+            <!--&lt;!&ndash;<me-sharing-item *ngFor="let item of group.value;" [type]="item.object_type" [object]="item"&ndash;&gt;-->
+                     <!--&lt;!&ndash;(events)="doEvent($event)"></me-sharing-item>&ndash;&gt;-->
+          <!--</div>-->
+          <!--&lt;!&ndash;<me-sharing-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"&ndash;&gt;-->
+                   <!--&lt;!&ndash;(events)="doEvent($event)"></me-sharing-item>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="text-center p20" *ngIf="viewOption == 'grid'">&ndash;&gt;-->
+            <!--&lt;!&ndash;<a [routerLink]="['/albums']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"&ndash;&gt;-->
+               <!--&lt;!&ndash;*ngIf="group.key == 'album'">&ndash;&gt;-->
+              <!--&lt;!&ndash;View all&ndash;&gt;-->
+            <!--&lt;!&ndash;</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;<a [routerLink]="['/photos']" [queryParams]="{favorite: true}" class="btn btn-outline-primary"&ndash;&gt;-->
+               <!--&lt;!&ndash;*ngIf="group.key == 'photo'">&ndash;&gt;-->
+              <!--&lt;!&ndash;View all&ndash;&gt;-->
+            <!--&lt;!&ndash;</a>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
+
+    <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
   </div>
 
-  <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
-</div>
+</ng-container>
 
+<ng-template #noData>
+  <div class="zone-no-photo text-center">
+    <div>
+      <h2><i class="fa fa-share-alt"></i></h2>
+      <h3>There is no photo shared by you</h3>
+      <h4>Photos can be shared to your connected contact.</h4>
+      <p>
+      <button class="btn btn-default">
+        Learn More
+      </button>
+      </p>
+    </div>
+  </div>
+</ng-template>
+
+<ng-container *ngTemplateOutlet="noData">
+
+</ng-container>

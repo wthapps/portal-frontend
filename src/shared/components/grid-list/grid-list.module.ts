@@ -7,6 +7,8 @@ import { WGridListHeaderComponent } from './grid-list-header.component';
 import { WGridListComponent } from './grid-list.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PipeModule } from '@wth/shared/shared/pipe/pipe.module';
+import { WToolbarModule } from '@wth/shared/components/toolbar';
+import { WGridListItemComponent } from '@wth/shared/components/grid-list/grid-list-item.component';
 
 
 @NgModule({
@@ -16,15 +18,20 @@ import { PipeModule } from '@wth/shared/shared/pipe/pipe.module';
     ReactiveFormsModule,
 
     InfiniteScrollModule,
+    SliderModule,
+
+    // Wthapps modules
     PipeModule,
-    SliderModule
+    WToolbarModule
   ],
   declarations: [
     WGridListHeaderComponent,
+    WGridListItemComponent,
     WGridListComponent
   ],
   exports: [
     WGridListHeaderComponent,
+    WGridListItemComponent,
     WGridListComponent
   ],
   providers: [],

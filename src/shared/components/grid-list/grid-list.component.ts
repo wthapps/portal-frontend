@@ -7,15 +7,16 @@ import {
   HostListener,
   OnDestroy,
   ViewEncapsulation,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ContentChild,
+  TemplateRef
 } from '@angular/core';
-import { Location } from '@angular/common';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
+import { Observable } from 'rxjs/Observable';
 
 
-import { MediaObjectService } from '../../../media/shared/container/media-object.service';
 import { ZMediaStore } from '../../../media/shared/store/media.store';
 import { Constants } from '@wth/shared/constant';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
@@ -29,24 +30,23 @@ declare var $: any;
   templateUrl: 'grid-list.component.html',
   styleUrls: ['grid-list.component.scss'],
   providers: [
-    MediaObjectService
   ]
 })
 
 export class WGridListComponent implements OnInit, OnDestroy {
-  selectedObjects: Array<any> = new Array<any>();
 
-  @Input() viewOption: string = 'grid';
-  @Input() currentPath: string = 'shared-by-me'; // photos, albums, videos, playlist, share-with-me, favourites
+  @Input() view: string = 'grid';
   @Input() objects: Array<any> = new Array<any>();
 
+  @Input() currentPath: string = 'shared-by-me'; // photos, albums, videos, playlist, share-with-me, favourites
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
+
+  selectedObjects: Array<any> = new Array<any>();
 
   sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
   groupByTime: string = 'date';
   currentGroupByTime: string = 'date';
-  groupBy: string = '';
 
   // this is used in list pages
   hasObjects: boolean = true;
@@ -56,6 +56,32 @@ export class WGridListComponent implements OnInit, OnDestroy {
   page: string;
 
   nextLink: string;
+
+
+  @Input() data: Array<any>;
+  @Input() sortInline: Boolean = true;
+  @Output() completeLoadMore: EventEmitter<boolean> = new EventEmitter<boolean>(false);
+  @Output() completeSort: EventEmitter<any> = new EventEmitter<any>(null);
+  @Output() completeDoubleClick: EventEmitter<any> = new EventEmitter<any>(null);
+
+  @ContentChild('columnBox') columnBoxTmpl: TemplateRef<any>;
+  @ContentChild('columnFileSize') columnFileSizeTmpl: TemplateRef<any>;
+  @ContentChild('columnAction') columnActionTmpl: TemplateRef<any>;
+
+  dragSelect: any;
+  view$: Observable<string>;
+
+  objectsDisabled: any;
+  totalObjectsDisabled: Number = 0;
+
+  hasScrollbar: boolean;
+  hasMultipleSelection: Boolean = true;
+  groupBy: string = '';
+  sortBy: string;
+  sortOrder: string;
+
+
+
 
   private pressingCtrlKey: boolean = false;
 
@@ -86,7 +112,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
   }
 
   constructor(protected loadingService: LoadingService,
-              protected location: Location,
               protected mediaStore: ZMediaStore,
               protected cdr: ChangeDetectorRef,
               ) {
@@ -106,27 +131,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
     this.destroySubject.unsubscribe();    // Destroy unused subscriptions
   }
 
-  getMoreObjects() {
-    // this.loadingService.start('#list-photo');
-    // if (this.nextLink != null) { // if there are more objects
-    //   // this.mediaObjectService.getObjects(this.nextLink).subscribe((response: any)=> {
-    //   this.mediaObjectService.loadMore(this.nextLink)
-    //     .toPromise()
-    //     .then((response: any)=> {
-    //       // this.loadingService.stop('#list-photo');
-    //       this.objects.push(...response.data);
-    //       this.nextLink = response.page_metadata.links.next;
-    //     });
-    // }
-  }
-
-  initProperties(properties: any) {
-    // this.objectType = properties.objectType;
-    // this.currentPath = properties.currentPath;
-    // this.currentPage = properties.currentPage;
-    // this.params = properties.params;
-  }
-
   onDragenter(e: any) {
     e.preventDefault();
   }
@@ -136,50 +140,30 @@ export class WGridListComponent implements OnInit, OnDestroy {
     // this.selectablesEnable = false;
   }
 
-  onEvent(event: any) {
-
+  doEvent(event: any) {
     if (event.action === 'changeView') {
-      this.changeView(event.payload.viewOption);
-      return;
-    }
-
-    if (event.action === 'select') {
-      this.selectObject(event.payload);
-    }
-    if (event.action === 'deselect') {
-      this.selectObject(event.payload, false);
+      this.changeView(event.payload.view);
     }
     this.events.emit(event);
   }
 
-  changeView(viewOption: string) {
-    this.viewOption = viewOption;
-    if (this.viewOption == 'grid') {
+  changeView(view: string) {
+    this.view = view;
+    if (this.view === 'grid') {
       this.groupByTime = '';
       this.groupBy = 'object_type';
     }
-    if (this.viewOption == 'list') {
+    if (this.view === 'list') {
       this.groupByTime = '';
       this.groupBy = '';
     }
-    if (this.viewOption == 'timeline') {
+    if (this.view === 'timeline') {
       this.groupByTime = this.currentGroupByTime;
       this.groupBy = 'created_at_converted';
     }
   }
 
-  // sort(event: any) {
-  //   if (event.action == 'slider') {
-  //     this.sliderViewNumber = event.number;
-  //   }
-  //   if (event.action == 'sort') {
-  //     this.sort(event.data);
-  //   }
-  //   if (event.action == 'group') {
-  //     this.groupByTime = event.data;
-  //     this.currentGroupByTime = this.groupByTime;
-  //   }
-  // }
+
 
   actionItem(ev: any) {
     this.events.emit(ev);
@@ -187,134 +171,116 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
   // considering moving doAction into list-media
   doAction(event: any) {
-    console.log(event);
-    switch (event.action) {
-      case 'zoom':
-        this.sliderViewNumber = event.number;
-        break;
-      case 'group':
-        this.groupByTime = event.data;
-        this.currentGroupByTime = this.groupByTime;
-        break;
-      case 'sort':
-        this.sort(event.data);
-        break;
-      case 'showUploadedPhotos':
-        this.showUploadedPhotos(event.payload.data);
-        break;
-      case 'share':
-        this.share();
-        break;
-      case 'favourite':
-        this.favourite(event.payload);
-        break;
-      case 'tag':
-        this.tag();
-        break;
-      case 'showNewAlbum':
-        this.showNewAlbum(event.data);
-        break;
-      case 'edit':
-        this.edit();
-        break;
-      case 'editName':
-        this.editName(event.payload.selectedObject);
-        break;
-      case 'editInfo':
-        this.editInfo(event.payload.selectedObject);
-        break;
-      // Hide photos / albums present in shared-with-me screen
-      case 'hideMedia':
-        this.hideMedia(event.payload);
-        break;
-      case 'changeView':
-        this.changeView(event.payload.viewOption);
-        break;
-      case 'preview':
-      case 'previewAll':
-        this.preview();
-        break;
-      case 'viewInfo':
-      case 'viewDetails':
 
-        // if (this.selectedObjects[0].object_type == 'sharing') {
-        //   this.router.navigate([{outlets: {detail: ['shared-by-me', this.selectedObjects[0].id]}}], {
-        //     queryParamsHandling: 'preserve',
-        //     preserveFragment: true
-        //   });
-        // }
-        break;
-      case 'slideShow':
-        this.slideShow();
-        break;
-      case 'changeCoverImage':
-        this.changeCoverImage();
-        break;
+  }
+
+  isSelecting(item: any) {
+    return (_.find(this.selectedObjects, {'id': item.id}));
+  }
+
+  isSelected(item: any) {
+    return (_.indexOf(this.selectedObjects, item.object_type) === -1);
+  }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   this.totalObjectsDisabled = 0;
+  //
+  //   for (let object_type of this.objectsDisabled) {
+  //     let totalObjectsDisabled = _.filter(this.data, (media: Media) => (media.object_type === object_type));
+  //     this.totalObjectsDisabled = this.totalObjectsDisabled + totalObjectsDisabled.length;
+  //   }
+  // }
+
+
+  // ngAfterContentChecked(): void {
+  //   if (this.hasMultipleSelection) {
+  //     if (this.dragSelect) {
+  //       this.dragSelect.start();
+  //       this.dragSelect.addSelectables(document.getElementsByClassName('wobject-drag'));
+  //     } else {
+  //       this.dragSelect = new DragSelect({
+  //         selectables: document.getElementsByClassName('wobject-drag'),
+  //         area: document.getElementById('wobject-drag-body'),
+  //         callback: e => this.onDragSelected(e)
+  //       });
+  //     }
+  //   } else {
+  //     if (this.dragSelect) {
+  //       this.dragSelect.stop();
+  //     }
+  //   }
+  //
+  //   const dragBodyScroll = document.getElementById('wobject-drag-body');
+  //   if (dragBodyScroll) {
+  //     this.hasScrollbar = (dragBodyScroll.scrollHeight > dragBodyScroll.clientHeight);
+  //   }
+  //
+  // }
+
+  onDragSelected(data: any) {
+
+  }
+
+  onMultiSelected(item: any) {
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
+
+      this.completeDoubleClick.emit(item);
+    } else {
 
     }
   }
 
+  onSelectedAll() {
+    _.map(this.data, (v: any) => {
+      if (_.indexOf(this.objectsDisabled, v.object_type) === -1) {
 
-  preview() {
-    return;
+      }
+    });
   }
 
-  share() {
-    return;
+  onDoubleClick(item: any) {
+    this.completeDoubleClick.emit(item);
   }
 
-  favourite(params: any) {
+  onClick(item: any) {
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
 
+      this.completeDoubleClick.emit(item);
+    }
+    return false;
   }
 
-  tag() {
-
-    // this.modal.open();
-    return;
+  onClearAll() {
   }
 
-  edit() {
-
+  onLoadMore() {
+    console.log('onLoadMore');
+    this.completeLoadMore.emit(true);
   }
 
-  editName(selectedObject: any) {
+  onSort(sortBy: string) {
+    let sortOrder = this.sortOrder;
+    if (this.sortBy === sortBy) {
+      sortOrder = (sortOrder === 'desc') ? 'asc' : 'desc';
+    }
 
+    if (!this.sortInline) {
+      this.completeSort.emit({
+        sortBy: sortBy,
+        sortOrder: sortOrder,
+      });
+    }
   }
 
-  editInfo(selectedObject: any) {
-
+  onGroup(groupBy: string) {
+    if (!this.sortInline) {
+      this.completeSort.emit({
+        sortBy: this.sortBy,
+        sortOrder: this.sortOrder,
+      });
+    }
   }
 
-  // Hide media present in shared with me screen
-  hideMedia(params: any, callback?: any) {
-    return;
-  }
-
-  viewDetails() {
-
-  }
-
-  slideShow() {
-    return;
-  }
-
-  changeCoverImage() {
-    return;
-  }
-
-  showNewAlbum(data?: any) {
-    console.debug('show new album: ', data);
-  }
-
-  showUploadedPhotos(data?: any) {
-    console.debug('showUploadedPhotos: ', data);
-  }
-
-  private refreshPrimaryList(): void {
-  }
-
-  private clearOutletsAndRefreshList(): void {
-  }
 
   private selectAllPhotos() {
     // this.selectedObjects.length = 0;
@@ -344,7 +310,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
   private deSelectAll() {
       this.selectedObjects.length = 0;
-      this.onEvent({action: 'deselectAll', payload: {}});
+      this.doEvent({action: 'deselectAll', payload: {}});
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {

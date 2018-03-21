@@ -1,7 +1,4 @@
 <me-container #container [objects]="objects|async">
-  <me-toolbar #toolbar [objects]="objects|async"
-              [selectedObjects]="selectedObjects|async"
-              (events)="gridlist.onEvent($event)"></me-toolbar>
   <w-grid-list #gridlist
                 [objects]="objects|async"
                 [currentPath]="'shared-with-me'"

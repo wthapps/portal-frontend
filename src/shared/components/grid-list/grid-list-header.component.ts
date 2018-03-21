@@ -11,7 +11,7 @@ declare var _: any;
 
 export class WGridListHeaderComponent {
   @Input() data: any;
-  @Input() viewOption: string;
+  @Input() view: string;
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
   field: any = 'Date';
@@ -28,7 +28,7 @@ export class WGridListHeaderComponent {
 
 
   sort(field: string, direction: string = '', groupBy: string = '') {
-    if (this.viewOption !== 'list') {
+    if (this.view !== 'list') {
       this.field = 'Date';
     }
     if (field === this.field) {
