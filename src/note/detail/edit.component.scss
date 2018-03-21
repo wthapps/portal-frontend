@@ -68,7 +68,7 @@ $note-editor-aside-w: 400px;
 
   position: relative;
   background-color: #f6f6f6;
-  .container-fluid {
+  .container-fluid{
     max-width: none;
   }
   .note-editor-toolbar {
@@ -81,11 +81,6 @@ $note-editor-aside-w: 400px;
       padding-left: 0;
       padding-right: 0;
       padding-bottom: 0;
-      .ql-color-picker {
-        .ql-picker-options {
-          width: 112px;
-        }
-      }
     }
     .quill-toolbar-attachment {
       padding: 8px 0;
@@ -177,6 +172,7 @@ $note-editor-aside-w: 400px;
   //
   //}
 }
+
 
 @media screen {
   .printable {

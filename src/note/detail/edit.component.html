@@ -217,10 +217,10 @@
               <i class="fa fa-plus"></i> Photo
             </button>
             <button class="btn btn-outline-default can-click btn-style-1 fileinput-button"
-                  pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top" [disabled]="note.permission == 'view'">
-                  <i class="fa fa-paperclip"></i> Attachment
-                  <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';"
-                         (change)="selectFiles($event)"/>
+                    pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top" [disabled]="note.permission == 'view'">
+              <i class="fa fa-paperclip"></i> Attachment
+              <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';"
+                     (change)="selectFiles($event)"/>
             </button>
           </div>
 
@@ -240,44 +240,44 @@
     <div class="note-editor-body" id="scrolling-container">
       <div class="container" id="quill-container-wrapper">
         <!--<div id="quill-content-body" style="position: relative; padding: 0">-->
-          <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-editor"></div>
-          <div [ngClass]="{'hidden': currentTab !== 'attachment'}" class="attachment-list-wrap">
+        <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-editor"></div>
+        <div [ngClass]="{'hidden': currentTab !== 'attachment'}" class="attachment-list-wrap">
 
-            <table class="table table-middle wth-table table-hover"
-                   *ngIf="note.attachments && note.attachments.length > 0">
-              <thead>
-              <tr>
-                <th class="can-click" (click)="onSort('name')">
-                  Name <i *ngIf="hasSortBy" class="fa"
-                          [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
-                </th>
-                <th>File size</th>
-                <th>Date Modified</th>
-                <th>&nbsp;</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let att of note.attachments">
-                <td [ngClass]="{'can-click': att.object_type == 'photo'}" (click)="fileAttachmentClick(att)">
-                  <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
-                  <i *ngIf="att.thumbnail_url && att.object_type !== 'photo'" class="fa fa-file"></i>
-                  <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
-                  {{ att.name }}
-                </td>
-                <td>{{ att.size | bytes:3 }}</td>
-                <td>{{ (att.updated_at || att.created_at) | date: 'MMM dd yyyy' }}</td>
-                <td class="text-right">
-                  <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
-                    <i class="fa fa-download"></i>
-                  </button>
-                  <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button" [disabled]="note.permission == 'view'">
-                    <i class="fa fa-trash-o"></i>
-                  </button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
+          <table class="table table-middle wth-table table-hover"
+                 *ngIf="note.attachments && note.attachments.length > 0">
+            <thead>
+            <tr>
+              <th class="can-click" (click)="onSort('name')">
+                Name <i *ngIf="hasSortBy" class="fa"
+                        [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
+              </th>
+              <th>File size</th>
+              <th>Date Modified</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let att of note.attachments">
+              <td [ngClass]="{'can-click': att.object_type == 'photo'}" (click)="fileAttachmentClick(att)">
+                <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
+                <i *ngIf="att.thumbnail_url && att.object_type !== 'photo'" class="fa fa-file"></i>
+                <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+                {{ att.name }}
+              </td>
+              <td>{{ att.size | bytes:3 }}</td>
+              <td>{{ (att.updated_at || att.created_at) | date: 'MMM dd yyyy' }}</td>
+              <td class="text-right">
+                <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
+                  <i class="fa fa-download"></i>
+                </button>
+                <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button" [disabled]="note.permission == 'view'">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
         <!--</div>-->
       </div>
     </div>
