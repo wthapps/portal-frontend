@@ -342,16 +342,13 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         console.debug('onPaste: ', e);
         // let scrollTop = this.quill.scrollingContainer.scrollTop;
         // this.scrollTop = scrollTop;
-        this.container.focus(); // comment out to prevent scroll to top
+        // this.container.focus(); // comment out to prevent scroll to top
         this.quill.selection.update(Quill.sources.SILENT);
         setTimeout(() => {
           if (dataClipboard1[0].match('text/*')) {
             delta = delta.concat(this.convert()).delete(range.length);
             this.quill.updateContents(delta, Quill.sources.USER);
-            this.quill.setSelection(
-              delta.length() - range.length,
-              Quill.sources.SILENT
-            );
+            // this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
             this.quill.focus();
             // this.quill.scrollingContainer.scrollTop = scrollTop;
             // this.scrollTop = null;
