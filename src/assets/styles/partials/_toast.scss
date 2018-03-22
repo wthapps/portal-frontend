@@ -1,6 +1,7 @@
 .toast-message {
   .ui-growl {
     @include center();
+    position: fixed;
     width: 570px;
     max-width: 100%;
     right: auto;
