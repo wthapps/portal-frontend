@@ -1,11 +1,9 @@
-<me-view-container [objectType]="'album'" [pageType]="'list'" [page]="'albums'"></me-view-container>
+<!--<me-view-container [objectType]="'album'" [pageType]="'list'" [page]="'albums'"></me-view-container>-->
 
-<!--<div>-->
-  <!--{{ albums|async|json }}-->
-<!--</div>-->
 
-  <!--<w-grid-list #gridlist-->
-               <!--[objects]="albums|async"-->
-               <!--[currentPath]="'albums'"-->
-               <!--(event)="doEvent($event)"-->
-  <!--&gt;</w-grid-list>-->
+<w-grid-list #gridlist
+             [objects]="albums|async"
+             [currentPath]="'albums'"
+             (event)="doEvent($event)"
+></w-grid-list>
+<ng-template #modalContainer></ng-template>

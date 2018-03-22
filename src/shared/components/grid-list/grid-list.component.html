@@ -12,32 +12,35 @@
        [infiniteScrollDistance]="2"
        [infiniteScrollThrottle]="500"
        [scrollWindow]="false"
-       (scrolled)="getMoreObjects()">
+       (scrolled)="doEvent({action: 'loadMore'})">
 
     <div class="page-body-content-in">
 
       <w-grid-list-header *ngIf="objects"
                           [data]="objects"
                           [view]="view"
-                          (events)="doAction($event)">
-
+                          (event)="doEvent($event)">
       </w-grid-list-header>
 
 
-      <div id="list-photo" class="row-img row-img-{{ sliderViewNumber }}" *ngIf="objects" (dragenter)="onDragenter($event)"
+      <div id="list-photo" class="row-img row-img-{{ viewSize }}" *ngIf="objects" (dragenter)="onDragenter($event)"
            [ngClass]="view" (dragleave)="onDragleave($event)">
         <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">
           <p class="m15 fz15" *ngIf="group.key && (view !== 'grid')">
             {{ group.key | titleCase }}
           </p>
           <div *ngIf="group.value" class="clearfix">
-            <w-grid-list-item *ngFor="let item of group.value;" [type]="item.object_type" [object]="item"
-                     (events)="onAction($event)">
+            <w-grid-list-item *ngFor="let item of group.value;"
+                              [type]="item.object_type"
+                              [object]="item"
+                              (event)="doEvent($event)">
 
             </w-grid-list-item>
           </div>
-          <w-grid-list-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group"
-                   (events)="onAction($event)">
+          <w-grid-list-item *ngIf="group && !group.value"
+                            [type]="group.object_type"
+                            [object]="group"
+                            (event)="doEvent($event)">
 
           </w-grid-list-item>
 

@@ -7,12 +7,12 @@ import { Constants } from '@wth/shared/constant';
   templateUrl: 'grid-list-item.component.html',
   styleUrls: ['grid-list-item.component.scss']
 })
-export class WGridListItemComponent implements OnChanges {
+export class WGridListItemComponent {
   @HostBinding('class') cssClass = 'row-img-item';
   @Input() type: string = 'photo';
   @Input() object: any;
 
-  @Output() events: EventEmitter<any> = new EventEmitter<any>();
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   readonly DEFAULT_IMAGE = Constants.img.default;
   // Mapping map path from list to detail: photos => photo, albums => album
@@ -23,11 +23,34 @@ export class WGridListItemComponent implements OnChanges {
     'shared-with-me': 'mix',
   };
 
-  ngOnChanges() {
 
+  doAction(event: any) {
+    this.event.emit(event);
   }
 
-  onAction(options: any) {
-    this.events.emit(options);
+  select(item: any) {
+    let object = item;
+    object.selected = true;
+    this.doAction({action: 'select', payload: {selectedObjects: [object], clearAll: true }});
+  }
+
+  toggleSelection(item: any, event: any) {
+    let action = 'select';
+    let object = item;
+    if (item.selected){
+      action = 'deselect';
+      object.selected = false;
+    }
+    else {
+      action = 'select';
+      object.selected = true;
+    }
+    this.doAction({action: action, payload: { selectedObjects: [object] }});
+    event.stopPropagation();
+  }
+
+  editName(item: any, event: any) {
+    event.stopPropagation();
+    this.doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: item }});
   }
 }

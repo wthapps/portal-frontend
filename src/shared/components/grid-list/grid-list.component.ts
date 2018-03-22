@@ -7,19 +7,15 @@ import {
   HostListener,
   OnDestroy,
   ViewEncapsulation,
-  ChangeDetectorRef,
   ContentChild,
   TemplateRef
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
-import { Observable } from 'rxjs/Observable';
 
 
-import { ZMediaStore } from '../../../media/shared/store/media.store';
 import { Constants } from '@wth/shared/constant';
-import { LoadingService } from '@shared/shared/components/loading/loading.service';
 
 declare var _: any;
 declare var $: any;
@@ -40,17 +36,13 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
   @Input() currentPath: string = 'shared-by-me'; // photos, albums, videos, playlist, share-with-me, favourites
 
-  @Output() events: EventEmitter<any> = new EventEmitter<any>();
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   selectedObjects: Array<any> = new Array<any>();
 
-  sliderViewNumber: number = Constants.mediaSliderViewNumber.default;
+  viewSize: number = Constants.mediaSliderViewNumber.default;
   groupByTime: string = 'date';
   currentGroupByTime: string = 'date';
-
-  // this is used in list pages
-  hasObjects: boolean = true;
-
   // this is used in detail pages
   object: any;
   page: string;
@@ -69,7 +61,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
   @ContentChild('columnAction') columnActionTmpl: TemplateRef<any>;
 
   dragSelect: any;
-  view$: Observable<string>;
 
   objectsDisabled: any;
   totalObjectsDisabled: Number = 0;
@@ -106,22 +97,12 @@ export class WGridListComponent implements OnInit, OnDestroy {
     }
 
     //if pressing ESC key
-    if (ke.keyCode == 27) {
+    if (ke.keyCode === 27) {
       this.deSelectAll();
     }
   }
 
-  constructor(protected loadingService: LoadingService,
-              protected mediaStore: ZMediaStore,
-              protected cdr: ChangeDetectorRef,
-              ) {
-
-
-  }
-
   ngOnInit() {
-    // set grid view mode is default
-    this.changeView('grid');
 
   }
 
@@ -141,10 +122,21 @@ export class WGridListComponent implements OnInit, OnDestroy {
   }
 
   doEvent(event: any) {
-    if (event.action === 'changeView') {
-      this.changeView(event.payload.view);
+    switch (event.action) {
+      case 'changeView':
+        this.changeView(event.payload.view);
+        break;
+      case 'zoom':
+        this.zoom(event.payload);
+        break;
+      default:
+        this.event.emit(event);
+        break;
     }
-    this.events.emit(event);
+  }
+
+  zoom(payload: any) {
+    this.viewSize = payload.viewSize;
   }
 
   changeView(view: string) {
@@ -165,14 +157,8 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
 
 
-  actionItem(ev: any) {
-    this.events.emit(ev);
-  }
 
-  // considering moving doAction into list-media
-  doAction(event: any) {
 
-  }
 
   isSelecting(item: any) {
     return (_.find(this.selectedObjects, {'id': item.id}));
@@ -296,7 +282,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
     } else {
       if(mode) {
         if (payload.checkbox !== true) {
-          this.events.emit({action: 'deselectAll'});
+          this.event.emit({action: 'deselectAll'});
         }
         item.selected = true;
       } else {
@@ -310,7 +296,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
   private deSelectAll() {
       this.selectedObjects.length = 0;
-      this.doEvent({action: 'deselectAll', payload: {}});
+      this.doEvent({ action: 'deselectAll' });
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {

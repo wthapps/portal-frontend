@@ -1,6 +1,5 @@
 import * as actions from './album.action';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { Album } from '@media/shared/model/album.model';
 
 
 export interface State extends EntityState<Partial<any>> {
@@ -64,6 +63,11 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
     }
 
     case actions.ActionTypes.GET_ALL_SUCCESS: {
+      // add selected attribute
+      action.payload.data.map(obj => {
+        obj['selected'] = false;
+        return obj;
+      });
       return albumAdapter.addAll(action.payload.data, state);
     }
 
@@ -75,6 +79,83 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         photos:   []
       });
     }
+
+    case actions.ActionTypes.SELECT_ALL: {
+      Object.values(state.entities).map(obj => {
+        obj.selected = true;
+        return obj;
+      });
+      return Object.assign({}, state, {
+        loaded:   false,
+        loading:  false,
+        failed:   true,
+        objects:   []
+      });
+    }
+
+    case actions.ActionTypes.SELECT:
+      Object.values(state.entities).map(obj => {
+        if (obj.id === action.payload.selectedObjects[0].id) {
+          obj.selected = true;
+        } else if (action.payload.clearAll) {
+          obj.selected = false;
+        }
+        return obj;
+      });
+      return Object.assign({}, state, {
+        loaded: false,
+        loading: false,
+        failed: true,
+        objects: []
+      });
+    case actions.ActionTypes.DESELECT: {
+      Object.values(state.entities).map(obj => {
+        if (obj.id === action.payload.selectedObjects[0].id) {
+          obj.selected = false;
+        }
+        return obj;
+      });
+      return Object.assign({}, state, {
+        loaded: false,
+        loading: false,
+        failed: true,
+        objects: []
+      });
+        // return albumAdapter.updateMany(
+        //   action.payload.selectedObjects.map(
+        //     (object) => Object.assign({}, { id: object.id, changes: object })),
+        //   {...state, loaded: true, loading: false }
+        // );
+    }
+    case actions.ActionTypes.DESELECT_ALL: {
+      Object.values(state.entities).map(obj => {
+        obj.selected = false;
+        return obj;
+      });
+      return Object.assign({}, state, {
+        loaded: false,
+        loading: false,
+        failed: true,
+        objects: []
+      });
+    }
+    case actions.ActionTypes.ADD: {
+        return albumAdapter.addOne(action.payload.data, state);
+      }
+
+    case actions.ActionTypes.ADD_SUCCESS: {
+        Object.values(state.entities).map(obj => {
+          obj.selected = false;
+          return obj;
+        });
+        return Object.assign({}, state, {
+          loaded:   false,
+          loading:  false,
+          failed:   true,
+          objects:   []
+        });
+    }
+
     default: {
       return state;
     }

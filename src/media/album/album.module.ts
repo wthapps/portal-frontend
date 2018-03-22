@@ -11,6 +11,7 @@ import { AlbumDetailInfoComponent } from './album-detail-info.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { WGridListModule } from '@wth/shared/components/grid-list';
+import { MediaModalModule } from '@media/shared/modal/modal.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { WGridListModule } from '@wth/shared/components/grid-list';
     ZMediaSharedModule,
     SharedModule,
     CoreModule,
+    MediaModalModule,
     WGridListModule
   ],
   declarations: [

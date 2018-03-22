@@ -21,8 +21,6 @@ import { BaseObjectEditNameModalComponent } from './modal/base-object-edit-name-
 import { PhotoEditModalComponent } from './modal/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from './modal/add-to-album-modal.component';
 import { AlbumEditModalComponent } from './modal/album-edit-modal.component';
-import { AlbumDeleteModalComponent } from './modal/album-delete-modal.component';
-import { AlbumCreateModalComponent } from './modal/album-create-modal.component';
 import { ZMediaShareListComponent } from './list/list.component';
 import { MediaListHeaderComponent } from './list/media-list-header.component';
 import { ZMediaShareItemComponent } from './list/item/item.component';
@@ -68,8 +66,6 @@ import { ImageCropperModule } from '@shared/shared/components/image-cropper/imag
     PhotoEditModalComponent,
     AddToAlbumModalComponent,
     AlbumEditModalComponent,
-    AlbumDeleteModalComponent,
-    AlbumCreateModalComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
     ZMediaShareItemComponent,
@@ -90,8 +86,6 @@ import { ImageCropperModule } from '@shared/shared/components/image-cropper/imag
     PhotoEditModalComponent,
     AddToAlbumModalComponent,
     AlbumEditModalComponent,
-    AlbumDeleteModalComponent,
-    AlbumCreateModalComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
     ZMediaShareItemComponent,

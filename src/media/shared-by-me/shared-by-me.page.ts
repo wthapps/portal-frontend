@@ -2,7 +2,7 @@ import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRe
 import { MediaObjectService } from '../shared/container/media-object.service';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { AlbumCreateModalComponent } from '@wth/shared/shared/components/photo/modal/album-create-modal.component';
+import { AlbumCreateModalComponent } from 'media/shared/modal';
 import { AddToAlbumModalComponent } from "@shared/shared/components/photo/modal/add-to-album-modal.component";
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';

@@ -1,5 +1,4 @@
 import { Action }   from '@ngrx/store';
-import { User } from '@wth/shared/shared/models';
 
 export const ActionTypes = {
   GET:                  '[Album] Get',
@@ -8,6 +7,10 @@ export const ActionTypes = {
   GET_ALL:              '[Album] Get All',
   GET_ALL_SUCCESS:      '[Album] Get All Success',
   GET_ALL_FAIL:         '[Album] Get All',
+  SELECT:               '[Album] Select',
+  SELECT_ALL:           '[Album] Select All',
+  DESELECT:             '[Album] Deselect',
+  DESELECT_ALL:         '[Album] Deselect All',
   ADD:                  '[Album] Add',
   ADD_SUCCESS:          '[Album] Add Success',
   ADD_FAIL:             '[Album] Add Fail',
@@ -62,11 +65,32 @@ export class GetFail implements Action {
 }
 
 export class Select implements Action {
-  type = ActionTypes.GET;
+  type = ActionTypes.SELECT;
+  constructor(public payload: any = null) { }
+}
+
+export class SelectAll implements Action {
+  type = ActionTypes.SELECT_ALL;
+  constructor(public payload: any = null) { }
+}
+
+export class Deselect implements Action {
+  type = ActionTypes.DESELECT;
+  constructor(public payload: any = null) { }
+}
+
+export class DeselectAll implements Action {
+  type = ActionTypes.DESELECT_ALL;
   constructor(public payload: any = null) { }
 }
 
 export class Add implements Action {
+  type = ActionTypes.ADD;
+
+  constructor(public payload: any = null) { }
+}
+
+export class AddSuccess implements Action {
   type = ActionTypes.ADD;
 
   constructor(public payload: any = null) { }
@@ -90,6 +114,11 @@ export type Actions
   | GetAll
   | GetAllSuccess
   | GetAllFail
+  | Select
+  | SelectAll
+  | Deselect
+  | DeselectAll
   | Add
+  | AddSuccess
   | Update
   | Delete;

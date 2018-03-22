@@ -5,10 +5,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
+import { TaggingElComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-el.component';
+import { ApiBaseService } from '@wth/shared/services';
+import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
 
-import { ZMediaTaggingService } from './tagging/tagging.service';
-import { TaggingElComponent } from './tagging/tagging-el.component';
-import { ApiBaseService } from '../../../../services/apibase.service';
 
 
 declare var $: any;
@@ -93,6 +93,7 @@ export class AlbumCreateModalComponent implements OnInit {
       .subscribe((res: any) => {
         this.album = res.data;
         this.doneFormModal.emit(this.album);
+        this.event.emit({action: 'addAlbumSuccessful', payload: res });
 
         let retPhotos = _.get(res, 'data.photo_number', 0);
         this.viewAlbumDetail(this.album.id );

@@ -20,9 +20,7 @@ import { ZMediaStore } from '../store/media.store';
 import { TaggingModalComponent } from '@shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { BaseObjectEditNameModalComponent } from '@shared/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { AlbumCreateModalComponent } from '@wth/shared/shared/components/photo/modal/album-create-modal.component';
 import { AlbumEditModalComponent } from '@shared/shared/components/photo/modal/album-edit-modal.component';
-import { AlbumDeleteModalComponent } from '@wth/shared/shared/components/photo/modal/album-delete-modal.component';
 import { FileSelectComponent } from '@wth/shared/shared/components/file/file-select/file-select.component';
 import { PhotoDetailPartialComponent } from '@shared/shared/components/photo/detail/photo-detail-partial.component';
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo-edit-modal.component';
@@ -30,6 +28,7 @@ import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/mo
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 import { saveAs } from 'file-saver';
+import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/shared/modal';
 // declare var saveAs: any;
 
 declare var $: any;

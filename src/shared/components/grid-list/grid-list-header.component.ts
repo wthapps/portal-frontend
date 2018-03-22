@@ -12,7 +12,7 @@ declare var _: any;
 export class WGridListHeaderComponent {
   @Input() data: any;
   @Input() view: string;
-  @Output() events: EventEmitter<any> = new EventEmitter<any>();
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   field: any = 'Date';
   direction: any = 'asc';
@@ -22,8 +22,9 @@ export class WGridListHeaderComponent {
   sliderMax: number = Constants.mediaSliderViewNumber.max;
 
   zoom(event: any) {
+    console.log('zoomming:::', event);
     this.sliderVal = event.value;
-    this.events.emit({action: 'zoom', data: this.data, number: event.value});
+    this.event.emit({action: 'zoom', payload: { viewSize: event.value }});
   }
 
 
@@ -40,13 +41,13 @@ export class WGridListHeaderComponent {
 
 
     if (this.field === 'Date' || this.field === 'Month' || this.field === 'Year') {
-      this.events.emit({action: 'sort', data: {sort: this.direction, sort_name: 'created_at'}});
+      this.event.emit({action: 'sort', data: {sort: this.direction, sort_name: 'created_at'}});
     } else {
-      this.events.emit({action: 'sort', data: {sort: this.direction, sort_name: this.field}});
+      this.event.emit({action: 'sort', data: {sort: this.direction, sort_name: this.field}});
     }
   }
 
   group(groupBy: any) {
-    this.events.emit({action: 'group', data: groupBy});
+    this.event.emit({action: 'group', data: groupBy});
   }
 }

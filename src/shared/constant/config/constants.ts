@@ -157,7 +157,7 @@ export class ConstantsBase {
   };
 
   mediaSliderViewNumber: any = {
-    min: 2,
+    min: 4,
     default: 8,
     max: 12
   };
