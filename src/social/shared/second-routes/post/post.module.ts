@@ -15,6 +15,7 @@ import { PostEditComponent } from './post-edit.component';
 import { PostActivitiesComponent } from './post-activities.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
 import { PostService } from './shared/post.service';
+import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { PostService } from './shared/post.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MiniEditorModule,
     Ng2HdModule,
     SharedModule,
     TagInputModule,
@@ -46,6 +48,7 @@ import { PostService } from './shared/post.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MiniEditorModule,
     Ng2HdModule,
 
     TagInputModule,

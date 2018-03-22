@@ -6,3 +6,4 @@ interface NodeModule {
 
 declare let $: any;
 declare let _: any;
+declare let Quill: any;

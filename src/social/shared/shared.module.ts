@@ -32,6 +32,7 @@ import { ZSocialSharedNewsFeedComponent } from './news-feed/news-feed.component'
 import { ZSocialLeftMenuComponent } from './component/social-left-menu.component';
 import { SoShortcutService } from './services/shortcut.service';
 import { ZSocialShortcutSettingComponent } from './shortcut-setting/shortcut-setting.component';
+import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor';
 
 
 /**
@@ -45,6 +46,7 @@ import { ZSocialShortcutSettingComponent } from './shortcut-setting/shortcut-set
     CoverProfileModule,
     PostModule,
     ZSocialShareProfileModule,
+    MiniEditorModule,
     SharedModule
   ],
   declarations: [
@@ -93,8 +95,13 @@ import { ZSocialShortcutSettingComponent } from './shortcut-setting/shortcut-set
     ZSocialSharedHeaderComponent,
     ZSocialSharedNewsFeedComponent,
     ZSocialShortcutSettingComponent,
+
+    MiniEditorModule,
+
   //  Left menu
     ZSocialLeftMenuComponent
+
+
   ]
 })
 export class ZSocialSharedModule {

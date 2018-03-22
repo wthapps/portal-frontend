@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { takeUntil, filter, map, mergeMap } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor';
 
 
 export enum CommentEditorMode {
@@ -47,6 +48,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   @Input() mode: any = CommentEditorMode.Add;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('commentContent') commentContent: ElementRef;
+  @ViewChild(MiniEditor) editor: MiniEditor;
 
   comment: SoComment = new SoComment(); // Clone comment
   commentEditorMode = CommentEditorMode;
@@ -100,11 +102,33 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       .then(() => this.router.navigate(['profile', uuid]));
   }
 
-  onKey(e: any) {
-    // Create, Update, Reply
-    if (e.keyCode == 13 && !e.shiftKey) {
-      e.preventDefault();
-      this.setCommentContent(e.srcElement.innerHTML);
+  // onKey(e: any) {
+  //   // Create, Update, Reply
+  //   if (e.keyCode == 13 && !e.shiftKey) {
+  //     e.preventDefault();
+  //     this.setCommentContent(e.srcElement.innerHTML);
+  //     if (this.checkValidForm()) {
+  //       // this.comment.content = this.commentEditorForm.value;
+  //       this.post(this.comment.content);
+  //     } else {
+  //       this.cancel();
+  //     }
+  //     return;
+  //   } else if (e.keyCode == 13 && e.shiftKey) {
+  //     return;
+  //   } else if (e.keyCode == 27) {
+  //     this.cancel();
+  //     return;
+  //   }
+  //
+  //   this.showEmoji = false;
+  //   this.hasUpdatedContent = true;
+  // }
+
+  handleKeyUp(e: any) {
+    console.debug('handle key up: ', e);
+    if (e.keyCode === 13) {
+      console.debug('comment content: ', this.comment.content);
       if (this.checkValidForm()) {
         // this.comment.content = this.commentEditorForm.value;
         this.post(this.comment.content);
@@ -112,15 +136,10 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
         this.cancel();
       }
       return;
-    } else if (e.keyCode == 13 && e.shiftKey) {
-      return;
-    } else if (e.keyCode == 27) {
+    } else if (e.keyCode === 27) {
       this.cancel();
       return;
     }
-
-    this.showEmoji = false;
-    this.hasUpdatedContent = true;
   }
 
   /*
@@ -212,7 +231,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   onEmojiClick(e: any) {
     let emoj: any = e.replace(/\\/gi, '');
-    this.comment.content = this.commentDomValue + emoj;
+    this.editor.addEmoj(emoj);
+    // this.comment.content = this.commentDomValue + emoj;
     this.hasUpdatedContent = true;
   }
 
@@ -237,7 +257,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   post(comment?: any) {
     let event: any = null;
 
-    this.comment.content = comment || this.commentContent.nativeElement.innerHTML;
+    this.comment.content = comment || this.comment.content
     if (this.mode == CommentEditorMode.Add) {
       // add new comment/reply to post
       this.comment.parent = this.parent;
@@ -279,7 +299,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   checkValidForm(): boolean {
     // remove leading and trailing whitespaces: spaces, tabs, new lines from comment content before saving
-    return this.hasUpdatedContent && this.comment.content.replace(/^\s+|\s+$/g, '') !== '';
+    // return this.hasUpdatedContent && this.comment.content.replace(/^\s+|\s+$/g, '') !== '';
+    return !!this.comment.content;
   }
 
   hasChanged() {
@@ -296,16 +317,12 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   setCommentDomContent(value: any) {
-    this.commentContent.nativeElement.innerHTML = value;
-  }
-
-  setCommentContentFromDom() {
-    this.setCommentContent(this.commentContent.nativeElement.innerHTML);
     // this.commentContent.nativeElement.innerHTML = value;
   }
 
-  get commentDomValue() {
-    return this.commentContent.nativeElement.innerHTML;
+  setCommentContentFromDom() {
+    // this.setCommentContent(this.commentContent.nativeElement.innerHTML);
+    // this.commentContent.nativeElement.innerHTML = value;
   }
 
 }

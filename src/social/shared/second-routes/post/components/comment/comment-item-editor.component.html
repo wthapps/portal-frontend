@@ -7,7 +7,7 @@
     </a>
   </div>
   <div class="z-social-media-body">
-    <form [formGroup]="commentEditorForm" novalidate>
+    <form  novalidate>
 
       <div class="z-social-media-inputpost">
         <span class="z-social-media-inputpost-icon">
@@ -30,17 +30,16 @@
           </div>
         </span>
 
-        <!--<textarea #commentContent class="form-control comment-editor-input" placeholder="Add a comment"-->
-                  <!--textAreaAutoHeight-->
-                  <!--[formControl]="contentCtrl"-->
-                  <!--(keyup)="onKey($event)"-->
-                  <!--[(ngModel)]="comment.content"></textarea>-->
+        <!--<div contenteditable="true" #commentContent placeholder="Add a comment"-->
+             <!--class="form-control textarea-editor-input commentContent-editor-input"-->
+                  <!--[innerHTML]="comment.content"-->
+                  <!--(keyup)="onKey($event)">-->
+        <!--</div>-->
 
-        <div contenteditable="true" #commentContent placeholder="Add a comment"
-             class="form-control textarea-editor-input commentContent-editor-input"
-                  [innerHTML]="comment.content"
-                  (keyup)="onKey($event)">
-        </div>
+        <mini-editor [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" [style]="{'height':'auto', 'min-height': '34px', 'word-break': 'break-word' }" (onKeyUp)="handleKeyUp($event)">
+          <p-header>
+          </p-header>
+        </mini-editor>
 
       </div>
 
@@ -55,7 +54,7 @@
         </button>
 
         <button class="btn btn-sm btn-outline-default" href="javascript:;" (click)="post()"
-                [disabled]="!hasUpdatedContent || !hasChanged()">Post
+                [disabled]="!hasChanged()">Post
         </button>
       </div>
 
