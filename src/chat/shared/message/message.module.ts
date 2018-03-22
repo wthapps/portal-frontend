@@ -8,7 +8,7 @@ import { ZChatShareRequestContactComponent } from '../modal/request-contact.comp
 import { ZChatShareUserIconComponent } from '../user/user-icon.component';
 import { MessageItemSimpleComponent } from './messages/message-simple-item.component';
 import { MessageItemActionComponent } from './messages/message-actions-item.component';
-import { BlockUploadModal } from './modals/block-upload-modal.component';
+import { LockUploadModal } from './modals/lock-upload-modal.component';
 import { SharedModule } from '@wth/shared/shared.module';
 
 @NgModule({
@@ -24,7 +24,7 @@ import { SharedModule } from '@wth/shared/shared.module';
     ZChatShareUserIconComponent,
     MessageItemActionComponent,
     MessageItemSimpleComponent,
-    BlockUploadModal,
+    LockUploadModal,
     MessageItemComponent
   ],
   exports: [
@@ -35,7 +35,7 @@ import { SharedModule } from '@wth/shared/shared.module';
     ZChatShareUserIconComponent,
     MessageItemActionComponent,
     MessageItemSimpleComponent,
-    BlockUploadModal,
+    LockUploadModal,
     MessageItemComponent
   ],
   providers: [

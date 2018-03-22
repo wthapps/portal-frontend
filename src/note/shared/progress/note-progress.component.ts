@@ -4,7 +4,6 @@ import { ModalDockComponent } from '../../../shared/shared/components/modal/dock
 import { LoadingService } from '../../../shared/shared/components/loading/loading.service';
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 import { CommonEvent } from '../../../shared/services/common-event/common-event';
-import { FileUploadHelper } from '../../../shared/shared/helpers/file/file-upload.helper';
 import { Store } from "@ngrx/store";
 import * as progressContext from "../reducers/progress-context";
 

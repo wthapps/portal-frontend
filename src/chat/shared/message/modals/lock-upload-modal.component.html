@@ -2,22 +2,21 @@
     <bs-modal-header [showDismiss]="true">
         <h4 class="modal-title">Can not upload file</h4>
     </bs-modal-header>
-    <bs-modal-body *ngIf="file">
+    <bs-modal-body *ngIf="files">
       <div class="alert alert-danger">
       	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <i class="fa fa-exclamation-triangle"></i> This file type is not permitted for sercurity reasons.
       </div>
-      <div class="media">
+      <div class="media" *ngFor="let file of files">
         <div class="media-left pl10">
           <i class="fa fa-file-archive-o"></i>
         </div>
         <div class="media-body">
           <strong>{{ file.name }}</strong>
           <div class="text-fade">
-            <ng-template [ngIf]="file.extension">Type: {{ file.extension }} <br></ng-template>
+            <ng-template [ngIf]="file.extension">Type: {{ fileUtil.getExtension(file) }} <br></ng-template>
             Size: {{ file.size | bytes }}
           </div>
-
         </div>
       </div>
     </bs-modal-body>

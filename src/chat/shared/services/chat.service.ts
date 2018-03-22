@@ -8,7 +8,6 @@ import { Observable } from 'rxjs/Observable';
 import { ChatContactService } from './chat-contact.service';
 import { Message } from '../models/message.model';
 import { _chat } from '../utils/chat.functions';
-import { FileUploadHelper } from '@wth/shared/shared/helpers/file/file-upload.helper';
 import {
   ApiBaseService, ChatCommonService, CommonEventService, GenericFileService, HandlerService, PhotoUploadService,
   StorageService,
@@ -16,13 +15,15 @@ import {
 } from '@wth/shared/services';
 import { ChatConstant } from '@wth/shared/constant';
 import { GenericFile } from '@wth/shared/shared/models/generic-file.model';
+import { FileReaderUtil } from "@shared/shared/utils/file/file-reader.util";
+import { FileUploaderService } from "@shared/services/file/file-uploader.service";
+import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
 
 
 declare var _: any;
 
 @Injectable()
 export class ChatService {
-  public fileUploadHelper: FileUploadHelper;
   public constant: any;
 
   constructor(public storage: StorageService,
@@ -34,6 +35,7 @@ export class ChatService {
               public commonEventService: CommonEventService,
               public router: Router,
               public handler: HandlerService,
+              public fileUploaderService: FileUploaderService,
               private fileService: GenericFileService) {
     // =============================
     this.storage.save('chat_conversations', null);
@@ -44,7 +46,6 @@ export class ChatService {
     this.storage.save('current_chat_messages', null);
     this.storage.save('users_online', []);
     this.storage.save('number_message', 20);
-    this.fileUploadHelper = new FileUploadHelper();
     this.constant = ChatConstant;
   }
 
@@ -178,52 +179,32 @@ export class ChatService {
     return this.apiBaseService.put(`zone/chat/conversations/${conversationId}/messages`, {message: message});
   }
 
-  uploadFiles(files: any, parent?: any) {
-    for (let i = 0; i < files.length; i++) {
-      files[0].parent = {
-        id: parent.id,
-        uuid: '',
-        type: 'Chat::Message'
-      };
-    }
-    this.fileUploadHelper.upload(files, (event: any, file: any) => {
-      let genericFile = new GenericFile({
-        file: event.target['result'],
-        name: file.name,
-        content_type: file.type,
-        parent: file.parent
-      });
-      // update current message and broadcast on server
-      this.fileService.create(genericFile)
-        .subscribe((response: any) => {
-          console.log('send file successfully', response);
-      });
-    });
-  }
-
   uploadPhotoOnWeb(photo: any) {
     let groupId = this.storage.find('conversation_select').value.group_json.id;
     this.sendMessage(groupId, {type: 'file', id: photo.id, object: 'Photo'});
   }
 
   createUploadingFile(files?: any) {
-    this.fileUploadHelper.allowUpload(files, (filesAllow: any, filesNotAllow: any) => {
+    let filesAddedPolicy = FileUploadPolicy.allowMultiple(files);
+    filesAddedPolicy.forEach((file: any) => {
       let groupId = this.storage.find('conversation_select').value.group_json.id;
       let message: Message = new Message({
         message: 'Sending file.....',
         message_type: 'file',
         content_type: 'media/generic'
       });
-
-      for (let i = 0; i < filesAllow.length; i++) {
+      if (file.allow) {
         this.sendMessage(groupId, message, null, (response: any) => {
-          this.uploadFiles([filesAllow[i]], {id: response.data.id});
+          file.parent = {
+            id: response.data.id,
+            uuid: '',
+            type: 'Chat::Message'
+          };
+          this.fileUploaderService.uploadGenericFile(file).subscribe((res: any) => console.log('send file successfully', res));
         });
       }
-      for (let i = 0; i < filesNotAllow.length; i++) {
-        this.commonEventService.broadcast({channel: 'chatBlockMessage', payload: filesNotAllow[i]})
-      }
     });
+    this.commonEventService.broadcast({channel: 'chatLockMessage', payload: filesAddedPolicy.filter((item: any) => !item.allow)})
   }
 
   getUsersOnline() {

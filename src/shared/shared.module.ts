@@ -91,6 +91,7 @@ import { WObjectListService } from '@wth/shared/components/w-object-list/w-objec
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WindowService } from '@wth/shared/services/window.service';
 import { PartialModule } from '@wth/shared/partials';
+import { FileUploaderService } from "@shared/services/file/file-uploader.service";
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -223,6 +224,7 @@ export class SharedModule {
         WObjectListService,
         WMediaSelectionService,
         DomService,
+        FileUploaderService,
         WindowService
       ]
     };
