@@ -1,0 +1,24 @@
+@import "../../../scss/global";
+
+.mini-editor {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  .ui-editor-toolbar {
+    display: none;
+  }
+  .ui-editor-content {
+    border: 1px solid $input-border !important;
+    -webkit-border-radius: $input-border-radius;
+    -moz-border-radius: $input-border-radius;
+    border-radius: $input-border-radius;
+    margin: 0;
+    padding: 0;
+  }
+  .ql-editor {
+    min-height: 18px;
+    padding: 8px;
+  }
+}

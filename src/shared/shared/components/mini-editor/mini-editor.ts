@@ -1,4 +1,7 @@
-import {NgModule,Component,ElementRef,AfterViewInit,Input,Output,EventEmitter,ContentChild,OnChanges,forwardRef} from '@angular/core';
+import {
+  NgModule, Component, ElementRef, AfterViewInit, Input, Output, EventEmitter, ContentChild, OnChanges,
+  forwardRef, ViewEncapsulation
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import { DomHandler } from 'primeng/components/dom/domhandler';
@@ -21,11 +24,13 @@ export const EDITOR_VALUE_ACCESSOR: any = {
 @Component({
   selector: 'mini-editor',
   template: `
-        <div [ngClass]="'ui-widget ui-editor-container ui-corner-all'" [class]="styleClass">
+        <div [ngClass]="'mini-editor ui-widget ui-editor-container ui-corner-all'" [class]="styleClass">
           <div class="ui-editor-toolbar ui-widget-header ui-corner-top"></div>
           <div class="ui-editor-content" [ngStyle]="style"></div>
         </div>
     `,
+  styleUrls: ['mini-editor.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   providers: [DomHandler,EDITOR_VALUE_ACCESSOR]
 })
 export class MiniEditor implements AfterViewInit,ControlValueAccessor {

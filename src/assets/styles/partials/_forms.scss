@@ -208,6 +208,9 @@ textarea {
 
 .textarea-editor-view {
   word-break: break-word;
+  > div > br {
+    display: none;
+  }
 }
 
 .input-group-search-header {

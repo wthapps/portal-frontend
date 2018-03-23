@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <div class="z-social-carousel">
+  <div *ngIf="item.photos.length>0" class="z-social-carousel">
     <ul class="{{ item.displayCss }}">
       <li *ngFor="let photo of item.photos;	let	i	=	index">
         <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, photo)">
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <div class="z-social-carousel">
+    <div *ngIf="parentItem.photos.length>0" class="z-social-carousel">
       <ul class="carousel-thumb-style-6">
           <li *ngFor="let photo of parentItem.photos;	let	i	=	index">
             <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, {id: photo?.id, parentItem: originalParent})">

@@ -37,9 +37,9 @@
             </div>
           </div>
 
-          <div class="z-social-carousel">
+          <div *ngIf="comment.photo" class="z-social-carousel">
             <ul class="{{ item?.displayCss }}">
-              <li *ngIf="comment.photo">
+              <li>
                 <figure
                   (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id, comment: comment})">
                   <img class="img-full" *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">
