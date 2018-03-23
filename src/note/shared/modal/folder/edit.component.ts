@@ -7,6 +7,7 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
 import * as note from '../../actions/note';
 import * as folder from '../../actions/folder';
+import { withLatestFrom } from 'rxjs/operators';
 
 declare var $: any;
 declare var _: any;
@@ -67,9 +68,10 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
         this.folder.parent_id = this.currentFolder.id;
       }
       this.apiBaseService.post('note/folders', this.folder)
-        .withLatestFrom(this.store, (res: any, state: any) => {
-          return {res: res, state: state.context}
-        })
+        .pipe(
+          withLatestFrom(this.store, (res: any, state: any) => {
+            return {res: res, state: state.context}
+          }))
         .subscribe((combine: any) => {
           if(combine.state.permissions.edit) {
             this.store.dispatch(new note.MultiNotesAdded([combine.res.data]));

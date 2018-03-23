@@ -9,10 +9,8 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import './operators';
-import 'rxjs/add/operator/filter';
 import { Subject } from 'rxjs/Subject';
 
 import { ZNoteService } from './shared/services/note.service';
@@ -33,6 +31,7 @@ import { MixedEntityService } from './shared/mixed-enity/mixed-entity.service';
 import { noteConstants } from "note/shared/config/constants";
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+import { withLatestFrom, filter, takeUntil } from 'rxjs/operators';
 
 
 declare var _: any;
@@ -76,16 +75,26 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.commonEventService.filter((event: any) => event.channel == 'menuCommonEvent' || event.channel == 'noteActionsBar').subscribe((event: any) => {
       this.doEvent(event);
     });
-    this.noteService.modalEvent$.takeUntil(this.destroySubject).subscribe((event: any) => this.doEvent(event));
-    this.store.select(fromRoot.getCurrentFolder).takeUntil(this.destroySubject).subscribe((folder: any) => {
+    this.noteService.modalEvent$
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
+      .subscribe((event: any) => this.doEvent(event));
+    this.store.select(fromRoot.getCurrentFolder)
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
+      .subscribe((folder: any) => {
       this.currentFolder = folder;
     });
   }
 
   ngOnInit() {
     this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .takeUntil(this.destroySubject)
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroySubject)
+      )
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
@@ -151,9 +160,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this.mixedEntityService.update({payload: event.payload}, true)
-          .withLatestFrom(this.store.select(context.getContext), (res: any, state: any) => {
+          .pipe(
+            withLatestFrom(this.store.select(context.getContext), (res: any, state: any) => {
             return {res: res, state: state}
-          })
+          }))
           .subscribe((combine: any) => {
             if (combine.state.page == noteConstants.PAGE_MY_NOTE || combine.state.page == noteConstants.PAGE_INSIDE_FOLDER) {
               let callback = () => {this.router.navigate(['my-note'])};
@@ -208,9 +218,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           this.store.dispatch({type: progressContext.SET_PROGRESS_CONTEXT, payload: {open: true, textMessage: `Copying ${number} files`}});
         }
         this.mixedEntityService.create(event.payload, true)
-          .withLatestFrom(this.store.select(context.getContext), (res: any, state: any) => {
+          .pipe(
+            withLatestFrom(this.store.select(context.getContext), (res: any, state: any) => {
             return {res: res, state: state}
-          })
+          }))
           .subscribe((combine:any) => {
             if (combine.state.page == noteConstants.PAGE_MY_NOTE || combine.state.page == noteConstants.PAGE_INSIDE_FOLDER) {
               if (number == 1) {
