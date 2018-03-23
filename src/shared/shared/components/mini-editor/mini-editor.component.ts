@@ -22,7 +22,6 @@ export const EDITOR_VALUE_ACCESSOR: any = {
   selector: 'mini-editor',
   template: `
         <div [ngClass]="'ui-widget ui-editor-container ui-corner-all'" [class]="styleClass">
-          <div class="ui-editor-toolbar ui-widget-header ui-corner-top"></div>
           <div class="ui-editor-content" [ngStyle]="style"></div>
         </div>
     `,
@@ -59,12 +58,11 @@ export class MiniEditor implements AfterViewInit,ControlValueAccessor {
 
   ngAfterViewInit() {
     this.editorElement = this.domHandler.findSingle(this.el.nativeElement ,'div.ui-editor-content');
-    let toolbarElement = this.domHandler.findSingle(this.el.nativeElement ,'div.ui-editor-toolbar');
 
 
     this.quill = new Quill(this.editorElement, {
       modules: {
-        toolbar: toolbarElement
+        toolbar: false
       },
       placeholder: this.placeholder,
       readOnly: this.readonly,
@@ -174,10 +172,3 @@ export class MiniEditor implements AfterViewInit,ControlValueAccessor {
     }
   }
 }
-
-@NgModule({
-  imports: [CommonModule, EditorModule],
-  exports: [MiniEditor, SharedModule],
-  declarations: [MiniEditor]
-})
-export class MiniEditorModule { }

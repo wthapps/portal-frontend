@@ -36,7 +36,8 @@
                   <!--(keyup)="onKey($event)">-->
         <!--</div>-->
 
-        <mini-editor [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" [style]="{'height':'auto', 'min-height': '34px', 'word-break': 'break-word' }" (onKeyUp)="handleKeyUp($event)">
+        <mini-editor [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" placeholder="Add a comment"
+                     [style]="{'height':'auto', 'min-height': '27px'}" (onKeyUp)="handleKeyUp($event)">
           <p-header>
           </p-header>
         </mini-editor>

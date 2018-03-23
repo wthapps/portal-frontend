@@ -10,10 +10,12 @@ import { MessageItemSimpleComponent } from './messages/message-simple-item.compo
 import { MessageItemActionComponent } from './messages/message-actions-item.component';
 import { LockUploadModal } from './modals/lock-upload-modal.component';
 import { SharedModule } from '@wth/shared/shared.module';
+import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    MiniEditorModule,
     SharedModule.forRoot()
   ],
   declarations: [
