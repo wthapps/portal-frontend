@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/finally';
 
-
 import { SocialService } from '../shared/services/social.service';
 import { SocialFavoriteService } from '../shared/services/social-favorites.service';
 import * as fromMember from '../shared/actions/member';
@@ -11,9 +10,6 @@ import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { SoUser } from '@wth/shared/shared/models';
 import { Constants } from '@wth/shared/constant';
-
-
-
 
 export let FRIEND_TABS: any = {
   friends: 'friends',
@@ -23,7 +19,6 @@ export let FRIEND_TABS: any = {
   received: 'received',
   pending: 'pending'
 };
-
 
 @Component({
   selector: 'z-social-members',
@@ -52,11 +47,12 @@ export class ZSocialMembersComponent implements OnInit {
   showLoading: boolean;
   loading: boolean;
 
-  constructor(private socialService: SocialService,
-              private zoneReportService: ZSharedReportService,
-              private favoriteService: SocialFavoriteService,
-              private loadingService: LoadingService) {
-  }
+  constructor(
+    private socialService: SocialService,
+    private zoneReportService: ZSharedReportService,
+    private favoriteService: SocialFavoriteService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit() {
     this.getUser();
@@ -64,24 +60,31 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   getDataList(tab: string, forceOption: boolean = false) {
-    if (this.currentState === tab && !forceOption)
-      return;
+    if (this.currentState === tab && !forceOption) return;
     this.currentState = tab;
     this.startLoading();
     switch (tab) {
       case FRIEND_TABS.friends:
-        this.socialService.user.getFriends().take(1)
+        this.socialService.user
+          .getFriends()
+          .take(1)
           .finally(() => this.stopLoading())
           .subscribe((res: any) => {
             this.list = res.data;
             this.totalFriends = this.list.length;
             for (let i = 0; i < this.list.length; i++) {
-              _.set(this.list, `${i}.friend_status`, Constants.friendStatus.accepted);
+              _.set(
+                this.list,
+                `${i}.friend_status`,
+                Constants.friendStatus.accepted
+              );
             }
           });
         break;
       case FRIEND_TABS.followers:
-        this.socialService.user.getFollowerList().take(1)
+        this.socialService.user
+          .getFollowerList()
+          .take(1)
           .finally(() => this.stopLoading())
           .subscribe((res: any) => {
             this.list = res.data;
@@ -89,7 +92,9 @@ export class ZSocialMembersComponent implements OnInit {
           });
         break;
       case FRIEND_TABS.followings:
-        this.socialService.user.getFollowingList().take(1)
+        this.socialService.user
+          .getFollowingList()
+          .take(1)
           .finally(() => this.stopLoading())
           .subscribe((res: any) => {
             this.list = res.data;
@@ -104,7 +109,9 @@ export class ZSocialMembersComponent implements OnInit {
         this.stopLoading();
         break;
       case FRIEND_TABS.received:
-        this.socialService.user.getReceivedRequests().toPromise()
+        this.socialService.user
+          .getReceivedRequests()
+          .toPromise()
           .then((res: any) => {
             this.list = res.data;
             this.stopLoading();
@@ -112,9 +119,11 @@ export class ZSocialMembersComponent implements OnInit {
           .catch(() => this.stopLoading());
         break;
       case FRIEND_TABS.pending:
-        this.socialService.user.getPendingRequests().toPromise()
+        this.socialService.user
+          .getPendingRequests()
+          .toPromise()
           .then((res: any) => {
-            console.debug('this.list - ', this.list, res );
+            console.debug('this.list - ', this.list, res);
             this.list = res.data;
             this.stopLoading();
           })
@@ -128,18 +137,16 @@ export class ZSocialMembersComponent implements OnInit {
 
   startLoading() {
     this.loading = true;
-    if (this.showLoading)
-      this.loadingService.start('#users-list');
+    if (this.showLoading) this.loadingService.start('#users-list');
   }
 
   stopLoading() {
     this.loading = false;
-    if (this.showLoading)
-      this.loadingService.stop('#users-list');
+    if (this.showLoading) this.loadingService.stop('#users-list');
   }
 
   onAction(event?: any) {
-    switch(event.action) {
+    switch (event.action) {
       case fromMember.ACTIONS.ADD_FRIEND:
         this.totalFollowings -= 1;
         this.totalFollowers -= 1;
@@ -155,13 +162,12 @@ export class ZSocialMembersComponent implements OnInit {
         this.totalFollowings -= 1;
         break;
       case fromMember.ACTIONS.DELETE:
-        if ( this.currentState == FRIEND_TABS.pending)
+        if (this.currentState == FRIEND_TABS.pending)
           this.totalPendingRequests -= 1;
-        if ( this.currentState == FRIEND_TABS.received)
+        if (this.currentState == FRIEND_TABS.received)
           this.totalReceivedRequests -= 1;
         break;
       default:
-
         break;
     }
   }
@@ -173,34 +179,43 @@ export class ZSocialMembersComponent implements OnInit {
 
   getUser() {
     this.getDataList(this.currentState, true);
-    this.socialService.user.get().toPromise().then(
-      (res: any) => {
+    this.socialService.user
+      .get()
+      .toPromise()
+      .then((res: any) => {
         // this.data = res.data;
         // this.addFollowingIntoFollower();
         this.totalFriends = _.get(res, 'data.total_friends', 0);
         this.totalFollowers = _.get(res, 'data.total_followers', 0);
         this.totalFollowings = _.get(res, 'data.total_followings', 0);
         this.totalBlacklist = _.get(res, 'data.total_blacklists', 0);
-        this.totalReceivedRequests = _.get(res, 'data.total_received_requests', 0);
-        this.totalPendingRequests = _.get(res, 'data.total_pending_requests', 0);
+        this.totalReceivedRequests = _.get(
+          res,
+          'data.total_received_requests',
+          0
+        );
+        this.totalPendingRequests = _.get(
+          res,
+          'data.total_pending_requests',
+          0
+        );
         // this.list = res.data[this.currentState];
-      },
-      error => this.errorMessage = <any>error
-    );
+      }, error => (this.errorMessage = <any>error));
   }
 
   getFavourite(uuid: any) {
-    this.socialService.user.getFavourite(uuid, 'friend').subscribe(
-      (res: any) => {
+    this.socialService.user
+      .getFavourite(uuid, 'friend')
+      .subscribe((res: any) => {
         this.favourite = res.data;
-      }
-    );
+      });
   }
 
   addFavourite(uuid: any) {
-    this.favoriteService.addFavourite(uuid, 'friend').then((res: any) => this.favourite = res.data);
+    this.favoriteService
+      .addFavourite(uuid, 'friend')
+      .then((res: any) => (this.favourite = res.data));
   }
-
 
   focusSearchFriends() {
     $('#searchTopHeader').focus();

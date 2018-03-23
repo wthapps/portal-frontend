@@ -22,9 +22,8 @@ import { CommunityRoutingModule } from './community-routing.module';
     CommunityRoutingModule,
     ZSocialSharedModule,
     ZSocialCommunitySharedModule,
-    SharedModule,
+    SharedModule
     // CoreModule
-
   ],
   declarations: [
     ZSocialCommunityListComponent,
@@ -36,11 +35,10 @@ import { CommunityRoutingModule } from './community-routing.module';
     // ZSocialCommunityCoverComponent
 
     // Preferences
-    ZSocialCommunityFormPreferenceComponent,
+    ZSocialCommunityFormPreferenceComponent
 
     // // Notifications
     // ZSocialNotificationsComponent
-
   ],
   exports: [
     ZSocialSharedModule,
@@ -50,5 +48,4 @@ import { CommunityRoutingModule } from './community-routing.module';
   ],
   providers: []
 })
-export class ZSocialCommunityModule {
-}
+export class ZSocialCommunityModule {}

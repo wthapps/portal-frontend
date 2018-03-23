@@ -12,4 +12,4 @@ import { ZSocialCommunityDetailComponent } from './detail/detail.component';
   ],
   exports: [RouterModule]
 })
-export class CommunityRoutingModule { }
+export class CommunityRoutingModule {}

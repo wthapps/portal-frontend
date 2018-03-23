@@ -12,30 +12,41 @@ import { SO_PROFILE_UPDATE_DONE } from '../shared/reducers/index';
   templateUrl: 'setting.component.html'
 })
 export class ZSocialSettingComponent implements OnInit {
-
   user: SoUser = new SoUser();
   readonly PRIVACIES: string[] = ['public', 'friends', 'personal'];
-  readonly PRIVACY_NAMES: any = {'public': 'Public', 'friends': 'Friends', 'personal': 'Personal'};
+  readonly PRIVACY_NAMES: any = {
+    public: 'Public',
+    friends: 'Friends',
+    personal: 'Personal'
+  };
 
-  constructor(private socialService: SocialService,
-              private store: Store<any>,
-              private wthConfirmService: WthConfirmService) {
-  //
+  constructor(
+    private socialService: SocialService,
+    private store: Store<any>,
+    private wthConfirmService: WthConfirmService
+  ) {
+    //
   }
 
   ngOnInit() {
-    this.socialService.user.get().toPromise().then((res: any) => {
+    this.socialService.user
+      .get()
+      .toPromise()
+      .then((res: any) => {
         this.user = new SoUser().from(res.data);
-      },
-    );
+      });
   }
 
   updateSettings(settings: any) {
-    this.socialService.user.update({settings: settings}).subscribe((res: any) => {
+    this.socialService.user
+      .update({ settings: settings })
+      .subscribe((res: any) => {
         this.user = new SoUser().from(res.data);
-        this.store.dispatch({type: SO_PROFILE_UPDATE_DONE, payload: res.data});
-      },
-    );
+        this.store.dispatch({
+          type: SO_PROFILE_UPDATE_DONE,
+          payload: res.data
+        });
+      });
   }
 
   resetSettings() {
@@ -45,15 +56,17 @@ export class ZSocialSettingComponent implements OnInit {
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {
-        this.socialService.user.reset_setting()
-          .toPromise().then((res: any) => {
+        this.socialService.user
+          .reset_setting()
+          .toPromise()
+          .then((res: any) => {
             this.user = new SoUser().from(res.data);
-            this.store.dispatch({type: SO_PROFILE_UPDATE_DONE, payload: res.data});
-          },
-        );
+            this.store.dispatch({
+              type: SO_PROFILE_UPDATE_DONE,
+              payload: res.data
+            });
+          });
       }
     });
-
-
   }
 }

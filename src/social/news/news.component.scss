@@ -1,9 +1,9 @@
-@import "../../assets/styles/global";
+@import '../../assets/styles/global';
 
 .news-list {
   .news-item {
-    background: #FFFFFF;
-    border: 1px solid #D8D8D8;
+    background: #ffffff;
+    border: 1px solid #d8d8d8;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -16,7 +16,7 @@
     position: relative;
     margin-bottom: 10px;
     .news-item-nav {
-      color: #9B9B9B;
+      color: #9b9b9b;
       line-height: 16px;
       img {
         position: relative;
@@ -47,13 +47,14 @@
 
   .news-item-heading {
     font-size: 18px;
-    color: #4A4A4A;
+    color: #4a4a4a;
     letter-spacing: 0;
     font-weight: bold;
     margin: 0 0 5px;
     a {
       color: inherit;
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         color: $link-color;
         text-decoration: none;
       }

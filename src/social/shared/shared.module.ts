@@ -1,7 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { ZSocialFavoritesComponent } from './favorites/social-favorites.component';
 
-
 import { SocialService } from './services/social.service';
 import { SoCommunityService } from './services/community.service';
 
@@ -34,7 +33,6 @@ import { SoShortcutService } from './services/shortcut.service';
 import { ZSocialShortcutSettingComponent } from './shortcut-setting/shortcut-setting.component';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
 
-
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -62,7 +60,6 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
     PostDetailComponent,
     PostDetailPhotoComponent,
 
-
     // Search
     // ZSocialSearchResultComponent,
 
@@ -73,9 +70,8 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
     ZSocialSharedHeaderComponent,
     ZSocialSharedNewsFeedComponent,
     ZSocialShortcutSettingComponent,
-  //  Left menu
+    //  Left menu
     ZSocialLeftMenuComponent
-
   ],
   exports: [
     ZSocialFavoritesComponent,
@@ -98,10 +94,8 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
 
     MiniEditorModule,
 
-  //  Left menu
+    //  Left menu
     ZSocialLeftMenuComponent
-
-
   ]
 })
 export class ZSocialSharedModule {

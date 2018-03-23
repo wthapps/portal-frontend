@@ -3,7 +3,6 @@ import { PostListComponent } from '../shared/second-routes/post/post-list.compon
 import { SocialService } from '../shared/services/social.service';
 import { AuthService } from '@wth/shared/services';
 
-
 /**
  * This class represents the lazy loaded HomeComponent.
  */
@@ -14,7 +13,10 @@ import { AuthService } from '@wth/shared/services';
 export class ZSocialHomeComponent {
   @ViewChild('posts') posts: PostListComponent;
 
-  constructor(public authService: AuthService, private socialService: SocialService) {
+  constructor(
+    public authService: AuthService,
+    private socialService: SocialService
+  ) {
     this.socialService.community.currentCommunity = undefined;
   }
 

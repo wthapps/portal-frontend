@@ -8,15 +8,9 @@ import { SharedModule } from '@wth/shared/shared.module';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ZSocialSharedModule,
-    ModalModule,
-    SharedModule
-  ],
+  imports: [CommonModule, ZSocialSharedModule, ModalModule, SharedModule],
   declarations: [ZSocialHomeComponent],
   exports: [ZSocialHomeComponent],
   providers: []
 })
-export class ZSocialHomeModule {
-}
+export class ZSocialHomeModule {}

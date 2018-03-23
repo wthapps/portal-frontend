@@ -3,13 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ZSocialNewsComponent } from './news.component';
 
-const routes: Routes = [
-  {path: '', component: ZSocialNewsComponent},
-];
+const routes: Routes = [{ path: '', component: ZSocialNewsComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class ZSocialNewsRoutingModule {
-}
+export class ZSocialNewsRoutingModule {}

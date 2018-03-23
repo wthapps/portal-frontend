@@ -10,16 +10,17 @@ import { AuthGuard } from '@wth/shared/services';
   imports: [
     RouterModule.forChild([
       {
-        path: ':id', component: ZSocialProfileComponent,
+        path: ':id',
+        component: ZSocialProfileComponent,
         children: [
-          {path: 'about', component: ZSocialProfileAboutComponent},
-          {path: 'post', component: ZSocialProfilePostComponent},
-          {path: 'friends', component: ZSocialProfileFriendComponent},
-          {path: '', component: ZSocialProfilePostComponent}
+          { path: 'about', component: ZSocialProfileAboutComponent },
+          { path: 'post', component: ZSocialProfilePostComponent },
+          { path: 'friends', component: ZSocialProfileFriendComponent },
+          { path: '', component: ZSocialProfilePostComponent }
         ]
-      },
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class ProfileRoutingModule { }
+export class ProfileRoutingModule {}

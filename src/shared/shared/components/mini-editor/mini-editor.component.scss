@@ -20,5 +20,16 @@
   .ql-editor {
     min-height: 18px;
     padding: 8px;
+    word-break: break-word;
+    > p:first-child {
+      > br:first-child {
+        display: none;
+      }
+      &:after {
+        content: '';
+        width: 100px;
+        display: inline-block;
+      }
+    }
   }
 }

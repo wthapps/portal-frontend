@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ZMyProfileComponent } from "@shared/shared/components/profile/my-profile/my-profile.component";
+import { ZMyProfileComponent } from '@shared/shared/components/profile/my-profile/my-profile.component';
 // import { ZSocialMyProfileComponent } from './my-profile.component';
 
 @NgModule({
   imports: [
-    RouterModule.forChild([
-      {path: '', component: ZMyProfileComponent},
-      ])
+    RouterModule.forChild([{ path: '', component: ZMyProfileComponent }])
   ],
   exports: [RouterModule]
 })
-export class MyProfileRoutingModule { }
+export class MyProfileRoutingModule {}

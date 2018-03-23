@@ -10,7 +10,6 @@ import { ZSocialPostDateFilterComponent } from './components/post-date.component
 import { SharedModule } from '@wth/shared/shared.module';
 import { SearchRoutingModule } from './search-routing.module';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -34,5 +33,4 @@ import { SearchRoutingModule } from './search-routing.module';
   ],
   providers: []
 })
-export class ZSocialSearchModule {
-}
+export class ZSocialSearchModule {}

@@ -50,5 +50,4 @@ import { ProfileRoutingModule } from './profile-routing.module';
   ],
   providers: [ZSocialProfileDataService]
 })
-export class ZSocialProfileModule {
-}
+export class ZSocialProfileModule {}

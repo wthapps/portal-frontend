@@ -7,15 +7,7 @@ import { SharedModule } from '@wth/shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    SharedModule,
-  ],
-  declarations: [
-    ZSocialSettingComponent
-  ]
+  imports: [CommonModule, FormsModule, HttpClientModule, SharedModule],
+  declarations: [ZSocialSettingComponent]
 })
-export class SocialSettingsModule {
-}
+export class SocialSettingsModule {}

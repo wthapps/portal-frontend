@@ -6,18 +6,9 @@ import { ZSocialNewsRoutingModule } from './news-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    ZSocialSharedModule,
-    ZSocialNewsRoutingModule
-  ],
-  declarations: [
-    ZSocialNewsComponent
-  ],
-  exports: [
-    ZSocialNewsComponent
-  ],
-  providers: [],
+  imports: [SharedModule, ZSocialSharedModule, ZSocialNewsRoutingModule],
+  declarations: [ZSocialNewsComponent],
+  exports: [ZSocialNewsComponent],
+  providers: []
 })
-export class ZSocialNewsModule {
-}
+export class ZSocialNewsModule {}

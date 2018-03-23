@@ -1,4 +1,4 @@
-@import "../../assets/styles/global";
+@import '../../assets/styles/global';
 
 $nav-tabs-wrap-search-h: 60px;
 .nav-tabs-wrap-search {
@@ -9,9 +9,9 @@ $nav-tabs-wrap-search-h: 60px;
   @include box-shadow($box-shadow-bottom);
   .nav-tabs {
     a {
-        height: 45px;
-      }
+      height: 45px;
     }
+  }
   .nav-tabs:not(.active) {
     //> li:first-child {
     //  > a:after {
@@ -54,5 +54,4 @@ $nav-tabs-wrap-search-h: 60px;
       }
     }
   }
-
 }
