@@ -126,9 +126,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   // }
 
   handleKeyUp(e: any) {
-    console.debug('handle key up: ', e);
     if (e.keyCode === 13) {
-      console.debug('comment content: ', this.comment.content);
       if (this.checkValidForm()) {
         // this.comment.content = this.commentEditorForm.value;
         this.post(this.comment.content);
@@ -145,34 +143,34 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   /*
    * Now we just supports ONE photo
    * */
-  editComment(photo: any) {
-    this.comment.photo = photo;
-    this.commentEditorForm.controls['photo'].setValue(photo);
+  // editComment(photo: any) {
+  //   this.comment.photo = photo;
+  //   this.commentEditorForm.controls['photo'].setValue(photo);
+  //
+  // }
 
-  }
+  // setCommentAttributes(attributes: any) {
+  //   if ('photo' in attributes) {
+  //     this.comment.photo = attributes.photo;
+  //     this.commentEditorForm.controls['photo'].setValue(attributes.photo)
+  //   }
+  //   if ('content' in attributes) {
+  //     this.comment.content = attributes.content || '';
+  //   }
+  //
+  //   this.hasUpdatedContent = true;
+  // }
 
-  setCommentAttributes(attributes: any) {
-    if ('photo' in attributes) {
-      this.comment.photo = attributes.photo;
-      this.commentEditorForm.controls['photo'].setValue(attributes.photo)
-    }
-    if ('content' in attributes) {
-      this.comment.content = attributes.content || '';
-    }
-
-    this.hasUpdatedContent = true;
-  }
-
-  updateAttributes(options: any) {
-    if ('hasUploadingPhoto' in options) {
-      this.hasUploadingPhoto = options.hasUploadingPhoto;
-    }
-    if ('files' in options) {
-      this.files = options.files;
-    }
-
-    this.hasUpdatedContent = true;
-  }
+  // updateAttributes(options: any) {
+  //   if ('hasUploadingPhoto' in options) {
+  //     this.hasUploadingPhoto = options.hasUploadingPhoto;
+  //   }
+  //   if ('files' in options) {
+  //     this.files = options.files;
+  //   }
+  //
+  //   this.hasUpdatedContent = true;
+  // }
 
   commentAction(photos?: any) {
     let commentEvent: any;
@@ -212,7 +210,9 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       takeUntil(close$),
       filter(items => items.length > 0)
     ).subscribe((items) => {
-      this.comment.photo = items[0];
+      // this.comment.photo = items[0];
+      this.setPhoto(items[0]);
+      this.hasUpdatedContent = true;
     });
 
     this.mediaSelectionService.uploadingMedias$.pipe(
@@ -224,8 +224,10 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
         return this.photoUploadService.uploadPhotos(files);
       })
     ).subscribe((res: any) => {
-      this.comment.photo = res.data;
+      // this.comment.photo = res.data;
+      this.setPhoto(res.data);
       this.hasUploadingPhoto = false;
+      this.hasUpdatedContent = true;
     });
   }
 
@@ -237,10 +239,12 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.comment.content = '';
-    this.comment.photo = null;
-    this.commentEditorForm.controls['content'].setValue('');
-    this.commentEditorForm.controls['photo'].setValue(null);
+    // this.comment.content = '';
+    // this.comment.photo = null;
+    // this.commentEditorForm.controls['content'].setValue('');
+    // this.commentEditorForm.controls['photo'].setValue(null);
+    this.setCommentContent('');
+    this.setPhoto(null);
     this.hasUpdatedContent = false;
     if (this.mode == CommentEditorMode.Add) {
       // add new comment/reply to post
@@ -267,7 +271,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
       _.set(this.originComment, 'isCreatingNewReply', false);
       event = new CommentCreateEvent({...this.comment});
-      this.setCommentDomContent('');
 
     } else if (this.mode == CommentEditorMode.Edit) {
 
@@ -278,8 +281,9 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     }
     this.eventEmitter.emit(event);
     this.comment.content = '';
-    this.comment.photo = null;
-    this.commentEditorForm.controls['photo'].setValue(null);
+    this.setPhoto(null);
+    // this.comment.photo = null;
+    // this.commentEditorForm.controls['photo'].setValue(null);
     this.files = null;
     this.hasUpdatedContent = false;
   }
@@ -287,8 +291,9 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   doEvents(response: any) {
     switch (response.action) {
       case 'remove':
-        this.comment.photo = null;
-        this.commentEditorForm.controls['photo'].setValue(null);
+        // this.comment.photo = null;
+        // this.commentEditorForm.controls['photo'].setValue(null);
+        this.setPhoto(null);
         this.files = null;
         this.hasUpdatedContent = (this.comment.content != '');
         break;
@@ -300,12 +305,11 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   checkValidForm(): boolean {
     // remove leading and trailing whitespaces: spaces, tabs, new lines from comment content before saving
     // return this.hasUpdatedContent && this.comment.content.replace(/^\s+|\s+$/g, '') !== '';
-    return !!this.comment.content;
+    return !!this.comment.content || !!this.comment.photo;
   }
 
   hasChanged() {
-    if (this.comment.content == '' &&
-      this.commentEditorForm.controls['photo'].value == null) {
+    if (this.comment.content === '' && !this.hasUpdatedContent && !this.comment.photo) {
       return false;
     }
     return true;
@@ -313,16 +317,10 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   setCommentContent(value: any) {
     this.comment.content = value;
-    // this.commentContent.nativeElement.innerHTML = value;
   }
 
-  setCommentDomContent(value: any) {
-    // this.commentContent.nativeElement.innerHTML = value;
+  private setPhoto(photo: any) {
+    this.comment.photo = photo;
+    this.commentEditorForm.controls['photo'].setValue(photo);
   }
-
-  setCommentContentFromDom() {
-    // this.setCommentContent(this.commentContent.nativeElement.innerHTML);
-    // this.commentContent.nativeElement.innerHTML = value;
-  }
-
 }

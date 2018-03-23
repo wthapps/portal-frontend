@@ -104,7 +104,6 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   // }
 
   handleKeyUp(e: any) {
-    console.debug('handle key up: ', e);
     if (e.keyCode === 13) {
       this.send(true);
     } else if (e.keyCode === 27) {
