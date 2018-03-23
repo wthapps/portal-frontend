@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/observable/merge';
@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { takeUntil, filter, mergeMap, map } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 
 declare var $: any;
 
@@ -25,10 +26,10 @@ declare var $: any;
 })
 
 export class MessageEditorComponent implements OnInit, OnDestroy {
+  @ViewChild(MiniEditor) editor: MiniEditor;
+
   tooltip: any = Constants.tooltip;
-
   emojiData: any = [];
-
   mode: string;
   // Subscription list
   nextPhotoSubscription: Subscription;
@@ -66,39 +67,49 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     this.messageCtrl = <FormControl>this.messageEditorForm.controls['message'];
   }
 
-  @HostListener('document:keydown', ['$event'])
-  onKeyDown(ev: KeyboardEvent) {
+  // @HostListener('document:keydown', ['$event'])
+  // onKeyDown(ev: KeyboardEvent) {
+  //
+  //   // if pressing Shift key
+  //   if (ev.keyCode == 16) {
+  //     this.pressingShiftKey = true;
+  //     // this.keyCtrlClass = 'active';
+  //   }
+  //
+  //   if (ev.keyCode == 13) {
+  //     if (!this.pressingShiftKey) {
+  //       ev.preventDefault();
+  //     }
+  //   }
+  // }
 
-    // if pressing Shift key
-    if (ev.keyCode == 16) {
-      this.pressingShiftKey = true;
-      // this.keyCtrlClass = 'active';
-    }
+  // @HostListener('document:keyup', ['$event'])
+  // onKeyUp(ev: KeyboardEvent) {
+  //   if (ev.keyCode == 16) {
+  //     this.pressingShiftKey = false;
+  //   }
+  //   // pressed Enter Key
+  //   if (ev.keyCode == 13) {
+  //     if (!this.pressingShiftKey) {
+  //       // if (!this.pressingShiftKey && this.messageEditorForm.valid) {
+  //
+  //       this.send(true);
+  //     }
+  //   }
+  //
+  //   // pressed ESC
+  //   if (ev.keyCode == 27) {
+  //     this.cancelEditingMessage();
+  //   }
+  // }
 
-    if (ev.keyCode == 13) {
-      if (!this.pressingShiftKey) {
-        ev.preventDefault();
-      }
-    }
-  }
-
-  @HostListener('document:keyup', ['$event'])
-  onKeyUp(ev: KeyboardEvent) {
-    if (ev.keyCode == 16) {
-      this.pressingShiftKey = false;
-    }
-    // pressed Enter Key
-    if (ev.keyCode == 13) {
-      if (!this.pressingShiftKey) {
-        // if (!this.pressingShiftKey && this.messageEditorForm.valid) {
-
-        this.send(true);
-      }
-    }
-
-    // pressed ESC
-    if (ev.keyCode == 27) {
+  handleKeyUp(e: any) {
+    console.debug('handle key up: ', e);
+    if (e.keyCode === 13) {
+      this.send(true);
+    } else if (e.keyCode === 27) {
       this.cancelEditingMessage();
+      return;
     }
   }
 
@@ -143,12 +154,12 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   send(enter?: boolean) {
 
-    let message: string = $(this.messageEditorId).html();
-
-    if (enter) {
-      // message = message.replace('<div><br></div>', '');
-    }
-    this.message.message = message;
+    // let message: string = $(this.messageEditorId).html();
+    //
+    // if (enter) {
+    //   // message = message.replace('<div><br></div>', '');
+    // }
+    // this.message.message = message;
 
     if (this.mode == FORM_MODE.EDIT) {
       this.chatService.updateMessage(this.message.group_id, this.message).subscribe(
@@ -163,8 +174,9 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   onEmojiClick(e: any) {
-    $('#chat-message-text').append(`${e.replace(/\\/gi, '')}`);
-    this.placeCaretAtEnd(document.getElementById('chat-message-text'));
+    // $('#chat-message-text').append(`${e.replace(/\\/gi, '')}`);
+    this.editor.addEmoj(`${e.replace(/\\/gi, '')}`);
+    // this.placeCaretAtEnd(document.getElementById('chat-message-text'));
   }
 
   onChangeValue(event: any) {
@@ -276,10 +288,10 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   private unsubscribePhotoEvents() {
-    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub: Subscription) => {
-      if (sub && !sub.closed)
-        sub.unsubscribe();
-    });
+    // [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub: Subscription) => {
+    //   if (sub && !sub.closed)
+    //     sub.unsubscribe();
+    // });
   }
 
   private resetEditor() {

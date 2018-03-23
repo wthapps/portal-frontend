@@ -2,31 +2,16 @@
   <div class="chat-message-container">
     <form [formGroup]="messageEditorForm" novalidate>
 
-      <div id="chat-message-text" class="chatbox-container-input message-editor-input" contenteditable="true"
-           spellcheck="true" tabindex="0" placeholder="Type message here" alt=""
-           [ngClass]="{'message-editing': mode=='EDIT'}"
-           [innerHtml]="message.message">
-
-            <!--<ng-template contenteditable="false">-->
-              <!--<p [innerHtml]="message.message"></p>-->
-            <!--</ng-template>-->
-
-            <!--<ng-template contenteditable="false">-->
-              <!--<blockquote contenteditable="false">-->
-                <!--<strong >{{ message.display.name }}</strong>-->
-                <!--<span >{{message.created_at | timeFormat: "time_only"}}</span>-->
-                <!--<p [innerHtml]="message.message"></p>-->
-              <!--</blockquote>-->
-            <!--</ng-template>-->
-
-      <!--<textarea id="chat-message-text" class="message-editor-input" spellcheck="false" tabindex="1"-->
-                <!--[ngClass]="{'message-editing': mode=='EDIT'}" autocomplete="off" autocorrect="off"-->
-                <!--placeholder="Type message here" alt=""-->
-                <!--[formControl]="messageCtrl"-->
-                <!--[(ngModel)]="message.message">-->
-
-      <!--</textarea>-->
-      </div>
+      <!--<div id="chat-message-text" class="chatbox-container-input message-editor-input" contenteditable="true"-->
+           <!--spellcheck="true" tabindex="0" placeholder="Type message here" alt=""-->
+           <!--[ngClass]="{'message-editing': mode=='EDIT'}"-->
+           <!--[innerHtml]="message.message">-->
+      <!--</div>-->
+      <mini-editor [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" placeholder="Type message here"
+                   [style]="{'height':'auto', 'min-height': '27px'}" (onKeyUp)="handleKeyUp($event)">
+        <p-header>
+        </p-header>
+      </mini-editor>
       <div class="row">
         <div class="col-sm-6">
           <button class="btn btn-default" (click)="onOpenSelectPhotos()"

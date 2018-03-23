@@ -15,8 +15,7 @@ import { PostEditComponent } from './post-edit.component';
 import { PostActivitiesComponent } from './post-activities.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
 import { PostService } from './shared/post.service';
-import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor';
-
+import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
 @NgModule({
   imports: [
     RouterModule,
