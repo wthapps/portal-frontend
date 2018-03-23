@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { takeUntil, filter, map, mergeMap } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor';
+import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 
 
 export enum CommentEditorMode {
