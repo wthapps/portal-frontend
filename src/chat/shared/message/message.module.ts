@@ -8,7 +8,6 @@ import { ZChatShareRequestContactComponent } from '../modal/request-contact.comp
 import { ZChatShareUserIconComponent } from '../user/user-icon.component';
 import { MessageItemSimpleComponent } from './messages/message-simple-item.component';
 import { MessageItemActionComponent } from './messages/message-actions-item.component';
-import { LockUploadModal } from './modals/lock-upload-modal.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
 
@@ -26,7 +25,6 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
     ZChatShareUserIconComponent,
     MessageItemActionComponent,
     MessageItemSimpleComponent,
-    LockUploadModal,
     MessageItemComponent
   ],
   exports: [
@@ -37,7 +35,6 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
     ZChatShareUserIconComponent,
     MessageItemActionComponent,
     MessageItemSimpleComponent,
-    LockUploadModal,
     MessageItemComponent
   ],
   providers: [

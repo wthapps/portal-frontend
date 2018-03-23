@@ -3,6 +3,12 @@ import { FileReaderUtil } from "@shared/shared/utils/file/file-reader.util";
 import { GenericFileService } from "@shared/services";
 import { GenericFile } from "@shared/shared/models/generic-file.model";
 import { Observer, Observable } from "rxjs";
+import * as Boom from "boom";
+import { of } from "rxjs/observable/of";
+import { map, concatAll, catchError, mergeAll } from "rxjs/operators";
+import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
+import { _throw } from 'rxjs/observable/throw';
+import { from } from 'rxjs/observable/from';
 
 @Injectable()
 export class FileUploaderService {
@@ -10,6 +16,7 @@ export class FileUploaderService {
   constructor(private genericFileService: GenericFileService){}
 
   uploadGenericFile(file: any) : Observable<any> {
+    if (!file) throw Boom.badData('file is empty');
     return new Observable((observer: any) => {
       FileReaderUtil.read(file).then((event: any) => {
         let genericFile = new GenericFile({
@@ -20,12 +27,37 @@ export class FileUploaderService {
         });
         this.genericFileService.create(genericFile).take(1).subscribe((res: any) => {
           observer.next(res);
-        })
+        });
       });
     })
   }
 
-  uploadMultiple(files: any) {
+  uploadMultipleGenericFiles(files: any): Observable<any> {
+    if (!files || files.length < 1) throw Boom.badData('files are empty');
+    const source = from(Object.keys(files).map((key: any) => files[key]));
+    const uploadFiles = source.pipe(
+      map((file: any) => this.uploadGenericFile(file)),
+      mergeAll()
+    );
+    return uploadFiles;
+  }
 
+
+  uploadGenericFilePolicy(file: any, policies: any = FileUploadPolicy.blackList) {
+    if (FileUploadPolicy.isAllow(file, policies)) {
+      return this.uploadGenericFile(file);
+    } else {
+      return _throw(Boom.notAcceptable('file does not accept'));
+    }
+  }
+
+  uploadMultipleGenericFilesPolicy(files: any, policies: any = FileUploadPolicy.blackList) {
+    if (!files || files.length < 1) throw Boom.badData('files are empty');
+    const source = from(Object.keys(files).map((key: any) => files[key]));
+    const uploadFilesPolicy = source.pipe(
+      map((file: any) => this.uploadGenericFilePolicy(file).pipe(catchError(error => of(error.output.payload)))),
+      mergeAll()
+    );
+    return uploadFilesPolicy;
   }
 }

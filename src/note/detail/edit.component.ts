@@ -30,7 +30,6 @@ import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import { PhotoUploadService } from '@shared/services/photo-upload.service';
-import { FileUploadHelper } from '@shared/shared/helpers/file/file-upload.helper';
 import { GenericFile } from '@shared/shared/models/generic-file.model';
 import { GenericFileService } from '@shared/services/generic-file.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -50,6 +49,8 @@ import ImageBlot from '@wth/core/quill/blots/image';
 import IconBlot from '@wth/core/quill/blots/icon';
 import DividerBlot from '@wth/core/quill/blots/divider';
 import { Font, Size } from '@wth/core/quill/blots/font-size';
+import { FileUploaderService } from "@shared/services/file/file-uploader.service";
+import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -70,7 +71,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   hasSortBy: boolean = false;
   noteChanged: boolean = false;
   customEditor: any;
-  public fileUploadHelper: FileUploadHelper;
   tooltip: any = Constants.tooltip;
 
   titleModal: string = 'New Note';
@@ -114,6 +114,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     private photoService: PhotoService,
     private photoUploadService: PhotoUploadService,
     private mediaSelectionService: WMediaSelectionService,
+    private fileUploaderService: FileUploaderService,
     private commonEventService: CommonEventService
   ) {
     this.noSave$ = Observable.merge(
@@ -121,7 +122,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       this.destroySubject,
       this.closeSubject
     );
-    this.fileUploadHelper = new FileUploadHelper();
 
     let getOs: any = this.clientDetectorService.getOs();
     this.buttonControl = getOs.name == 7 ? '⌘' : 'ctrl';
@@ -689,15 +689,17 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     if (files.length == 0) {
       return;
     }
-    this.fileUploadHelper.allowUpload(
-      files,
-      (filesAllowed: any[], filesNotAllowed: any[]) => {
-        this.note.attachments = [...this.note.attachments, ...filesAllowed];
-        // this.form.controls['attachments'].setValue(this.note.attachments);
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files);
+    this.note.attachments = [...this.note.attachments, ...filesAddedPolicy.filter(file => file.allow == true)];
 
-        this.uploadFiles(filesAllowed);
+    this.fileUploaderService.uploadMultipleGenericFilesPolicy(files).subscribe((response: any) => {
+      if (!response.error) {
+        this.note.attachments = this.note.attachments.map(att => { if (att.name == response.data.full_name && !att.uuid) return response.data; return att});
+        this.form.controls['attachments'].setValue(this.note.attachments);
       }
-    );
+    });
+    const filesNotAllow = filesAddedPolicy.filter(file => file.allow == false);
+    if(filesNotAllow.length > 0) this.commonEventService.broadcast({channel: 'LockMessage', payload: filesNotAllow});
   }
 
   selectPhotos() {
@@ -817,26 +819,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         this.download(att);
       }
     }
-  }
-
-  private uploadFiles(files: any, parent?: any) {
-    this.fileUploadHelper.upload(files, (event: any, file: any) => {
-      let genericFile = new GenericFile({
-        file: event.target['result'],
-        name: file.name,
-        content_type: file.type,
-        parent: file.parent
-      });
-      // update current message and broadcast on server
-      this.fileService.create(genericFile).subscribe((response: any) => {
-        let index = _.indexOf(this.note.attachments, file);
-        this.note.attachments[index] = {
-          object_type: 'file',
-          ...response.data
-        };
-        this.form.controls['attachments'].setValue(this.note.attachments);
-      });
-    });
   }
 
   private selectPhotos4Attachments() {

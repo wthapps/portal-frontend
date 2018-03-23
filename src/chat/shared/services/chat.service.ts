@@ -204,7 +204,8 @@ export class ChatService {
         });
       }
     });
-    this.commonEventService.broadcast({channel: 'chatLockMessage', payload: filesAddedPolicy.filter((item: any) => !item.allow)})
+    let tmp = filesAddedPolicy.filter((item: any) => !item.allow)
+    if (tmp && tmp.length > 0) this.commonEventService.broadcast({channel: 'LockMessage', payload: tmp});
   }
 
   getUsersOnline() {
