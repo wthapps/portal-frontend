@@ -14,9 +14,9 @@ export const environment = {
 
 console.log('environment:::', environment);
 
-const host = '192.168.0.109';
+// const host = '192.168.0.109';
 // const host = '192.168.0.106';
-// const host = 'localhost';
+const host = 'localhost';
 
 export const ConfigByEnv: EnvConfig = {
   CDN: `http://${host}:4000/assets`,
