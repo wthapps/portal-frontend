@@ -11,7 +11,7 @@ import { defer } from 'rxjs/observable/defer';
 import * as folder from '../actions/folder';
 import * as context from '../reducers/context';
 import { ZFolderService } from '../services/folder.service';
-import { map, concatMap, withLatestFrom, catchError } from 'rxjs/operators';
+import { map, concatMap, withLatestFrom, catchError, mergeMap } from 'rxjs/operators';
 
 
 @Injectable()
@@ -55,12 +55,11 @@ export class FolderEffects {
     .ofType(folder.SET_CURRENT_FOLDER)
     .pipe(
       map((action: any) => action['payload']),
-      concatMap((payload: any) => {
-        return this.folderService.getFolderPath(payload);
-      }),
-      concatMap((res: any) => { return [
-          new folder.SetCurrentFolderPathAndUpdateCurrent(res['data']),
-          {type: context.SET_CONTEXT_BY_FOLDER_PATHS, payload : res.data}
-        ]}),
+      concatMap((payload: any) => this.folderService.getFolderPath(payload)
+      ),
+      mergeMap((res: any) => { return [
+        new folder.SetCurrentFolderPathAndUpdateCurrent(res['data']),
+        {type: context.SET_CONTEXT_BY_FOLDER_PATHS, payload : res.data}
+      ]}),
       catchError(() => empty()));
 }
