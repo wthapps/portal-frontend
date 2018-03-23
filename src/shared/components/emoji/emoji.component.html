@@ -1,0 +1,54 @@
+<p-overlayPanel #overlayPanel styleClass="emoji-overlayPanel">
+  <div class="emoji-wrap">
+    <div id="emoji-container" class="emoji-content" (scroll)="onEmojiScroll($event)">
+      <ng-container *ngFor="let item of emojiData | async | keys as list">
+        <dl *ngIf="item.key !== 'regional' && item.key !== 'modifier'" id="emoji-{{item.key}}">
+          <ng-container [ngSwitch]="item.key">
+            <dt *ngSwitchCase="'people'">Smileys &amp; People</dt>
+            <dt *ngSwitchCase="'nature'">Animals &amp; Nature</dt>
+            <dt *ngSwitchCase="'food'">Food &amp; Drink</dt>
+            <dt *ngSwitchCase="'travel'">Travel &amp; Places</dt>
+            <dt *ngSwitchDefault>{{ item.key }}</dt>
+          </ng-container>
+          <dd>
+            <ul>
+              <li *ngFor="let emoji of item.value" (click)="onSelected(emoji)">
+                <i *ngIf="emoji.diversity" class="emojione-{{ size }}-diversity _{{ emoji.code_points.base }}"></i>
+                <i *ngIf="!emoji.diversity"
+                   class="emojione-{{ size }}-{{ emoji.category }} _{{ emoji.code_points.base }}"></i>
+              </li>
+            </ul>
+          </dd>
+        </dl>
+      </ng-container>
+    </div>
+    <div class="emoji-toolbar">
+      <ul>
+        <li [ngClass]="{'active': currentGroup == 'people'}" (click)="scroll('emoji-people')">
+          <i class="emojione-40-people _1f600"></i>
+        </li>
+        <li [ngClass]="{'active': currentGroup == 'nature'}" (click)="scroll('emoji-nature')">
+          <i class="emojione-40-nature _1f98a"></i>
+        </li>
+        <li [ngClass]="{'active': currentGroup == 'food'}" (click)="scroll('emoji-food')">
+          <i class="emojione-40-food _1f352"></i>
+        </li>
+        <li [ngClass]="{'active': currentGroup == 'activity'}" (click)="scroll('emoji-activity')">
+          <i class="emojione-40-activity _26bd"></i>
+        </li>
+        <li [ngClass]="{'active': currentGroup == 'travel'}" (click)="scroll('emoji-travel')">
+          <i class="emojione-40-travel _2708"></i>
+        </li>
+        <li [ngClass]="{'active': currentGroup == 'objects'}" (click)="scroll('emoji-objects')">
+          <i class="emojione-40-objects _1f4a1"></i>
+        </li>
+        <li [ngClass]="{'active': currentGroup == 'symbols'}" (click)="scroll('emoji-symbols')">
+          <i class="emojione-40-symbols _1f4af"></i>
+        </li>
+        <li [ngClass]="{'active': currentGroup == 'flags'}" (click)="scroll('emoji-flags')">
+          <i class="emojione-40-flags _1f3c1"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
+</p-overlayPanel>

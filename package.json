@@ -20,7 +20,7 @@
     "start-chat": "ng serve --app chat --port 3020 --open",
     "start-contact": "ng serve --app contact --port 3025 --open",
     "start-note": "ng serve --app note --port 3030 --open",
-    "prettier": "prettier {src,e2e}/**/*.{ts,json,md,scss} --write",
+    "prettier": "prettier {src,e2e}/shared/components/emoji/**/*.{ts,json,md,scss} --write",
     "ng build all": "build --prod --build-optimizer --aot --app portal && build --prod --build-optimizer --aot --app my-account && build --prod --build-optimizer --aot --app media && build --prod --build-optimizer --aot --app social && build --prod --build-optimizer --aot --app contact && build --prod --build-optimizer --aot --app note"
   },
   "private": true,
@@ -78,6 +78,7 @@
     "cropperjs": "1.1.3",
     "dragselect": "1.7.23",
     "dropzone": "5.1.1",
+    "emojione-assets": "^3.1.1",
     "file-saver": "1.3.3",
     "font-awesome": "4.7.0",
     "intl": "1.2.5",

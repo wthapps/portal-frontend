@@ -351,3 +351,10 @@ $retina-suffix: '@2x';
     border-left: $size-w solid transparent;
   }
 }
+
+@mixin grayscale_element($value) {
+  -webkit-filter: #{"grayscale(#{$value})"};
+  -moz-filter: #{"grayscale(#{$value})"};
+  filter:#{"grayscale(#{$value})"};
+}
+

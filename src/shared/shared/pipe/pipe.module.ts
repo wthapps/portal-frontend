@@ -22,6 +22,7 @@ import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe, PhoneCodeToDisplayCodePipe }
 import { MapToIterablePipe } from '@shared/shared/pipe/map-to-iterable.pipe';
 import { FreeSpacePipe } from '@shared/shared/pipe/free-space.pipe';
 import { GroupByMapPipe } from '@shared/shared/pipe/group-by-map.pipe';
+import { KeysPipe } from '@shared/shared/pipe/keys.pipe';
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import { GroupByMapPipe } from '@shared/shared/pipe/group-by-map.pipe';
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
     MapToIterablePipe,
-    PhoneCodeToDisplayCodePipe
+    PhoneCodeToDisplayCodePipe,
+    KeysPipe
   ],
   exports: [
     GroupByMapPipe,
@@ -75,7 +77,8 @@ import { GroupByMapPipe } from '@shared/shared/pipe/group-by-map.pipe';
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
     MapToIterablePipe,
-    PhoneCodeToDisplayCodePipe
+    PhoneCodeToDisplayCodePipe,
+    KeysPipe
   ],
   providers: []
 })

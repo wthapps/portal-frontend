@@ -92,7 +92,9 @@ import { WMediaSelectionService } from '@wth/shared/components/w-media-selection
 import { WindowService } from '@wth/shared/services/window.service';
 import { PartialModule } from '@wth/shared/partials';
 import { FileUploaderService } from "@shared/services/file/file-uploader.service";
+import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 /**
@@ -172,6 +174,7 @@ import { FileUploaderService } from "@shared/services/file/file-uploader.service
     ImageCropperModule,
     MenuContainerModule,
     NotificationListModule,
+    WTHEmojiModule,
 
     // Custom modules
     ModalModule,

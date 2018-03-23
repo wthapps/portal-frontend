@@ -14,8 +14,9 @@ export const environment = {
 
 console.log('environment:::', environment);
 
-// const host = '192.168.0.116';
-const host = 'localhost';
+const host = '192.168.0.109';
+// const host = '192.168.0.106';
+// const host = 'localhost';
 
 export const ConfigByEnv: EnvConfig = {
   CDN: `http://${host}:4000/assets`,
@@ -29,6 +30,6 @@ export const ConfigByEnv: EnvConfig = {
     SOCIAL: 'http://localhost:3015',
     CHAT: 'http://localhost:3020',
     CONTACT: 'http://localhost:3025',
-    NOTE: 'http://localhost:3030',
+    NOTE: 'http://localhost:3030'
   }
 };

@@ -13,13 +13,13 @@ import {
 } from '../../../../events/social-events';
 import { SoComment, User } from '@wth/shared/shared/models';
 import { UserService, PhotoUploadService } from '@wth/shared/services';
-import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { Constants } from '@wth/shared/constant';
 import { Router } from '@angular/router';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { takeUntil, filter, map, mergeMap } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
+import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 
 
 export enum CommentEditorMode {
@@ -55,7 +55,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   hasUploadingPhoto: boolean = false;
   hasUpdatedContent: boolean = false;
   files: any[];
-  emojiData: any[];
   user$: Observable<User>;
   showEmoji: boolean;
 
@@ -71,10 +70,9 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
               private router: Router,
               private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService,
-              public userService: UserService) {
+              public userService: UserService,
+              private emojiService: WTHEmojiService) {
     this.user$ = this.userService.getAsyncProfile();
-
-    this.emojiData = ZChatEmojiService.emojis;
   }
 
   ngOnInit() {
@@ -98,7 +96,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   viewProfile(uuid: string) {
-    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
+    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve', preserveFragment: true})
       .then(() => this.router.navigate(['profile', uuid]));
   }
 
@@ -317,6 +315,11 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   setCommentContent(value: any) {
     this.comment.content = value;
+  }
+
+  showEmojiBtn(event: any) {
+    console.log(event);
+    this.emojiService.show(event);
   }
 
   private setPhoto(photo: any) {
