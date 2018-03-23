@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 
 
 import { BaseZoneSocialItem } from '../../../shared/base/base-social-item';
-import { ApiBaseService } from '@wth/shared/services';
+import { ApiBaseService, AuthService } from '@wth/shared/services';
 import { SoPost } from '@wth/shared/shared/models';
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './shared/post.service';
@@ -31,6 +31,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
               private route: ActivatedRoute,
               public router: Router,
               public location: Location,
+              public authService: AuthService,
               private postService: PostService) {
     super();
   }

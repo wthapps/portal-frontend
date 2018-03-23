@@ -8,7 +8,7 @@
       </div>
       <div class="panel panel-default">
       	<div class="panel-body">
-          <so-post [item]="item" type="detail" (modalOpened)="openEditModal($event)"></so-post>
+          <so-post [item]="item" type="detail" [user]="authService.user$|async" (modalOpened)="openEditModal($event)"></so-post>
       	</div>
       </div>
     </div>
