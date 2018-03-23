@@ -1,9 +1,11 @@
-<w-toolbar #toolbar
-           [view]="view"
-           [selectedObjects]="selectedObjects"
-           (event)="doEvent($event)">
-
-</w-toolbar>
+<!--<w-toolbar #toolbar-->
+           <!--[view]="view"-->
+           <!--[selectedObjects]="selectedObjects"-->
+           <!--[leftActionsTemplate]="leftActionsTemplate ? leftActionsTemplate : leftActionsDefaultTemplate"-->
+           <!--[objectActionsTemplate]="objectActionsTemplate"-->
+           <!--(event)="doEvent($event)">-->
+<!--</w-toolbar>-->
+<!--<ng-content select="w-toolbar"></ng-content>-->
 
 <ng-container *ngIf="objects else noData">
 

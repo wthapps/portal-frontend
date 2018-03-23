@@ -67,6 +67,8 @@ export const getPhotos       = createSelector(getPhotoState, fromPhoto.selectAll
  */
 export const selectAlbumState   = createFeatureSelector<fromAlbum.State>('album');
 export const selectAlbums = createSelector(selectAlbumState, fromAlbum.selectAll);
+export const selectPhotosOfAlbum = createSelector(selectAlbumState, fromAlbum.getPhotos);
+
 
 
 // Object store functions

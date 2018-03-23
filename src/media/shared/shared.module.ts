@@ -14,7 +14,7 @@ import { SharedModule } from '@wth/shared/shared.module';
 import { ZMediaSharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
 import { AlbumDetailInfoComponent } from '../album/album-detail-info.component';
-import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
+// import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
 import { MediaContainerComponent } from './container/media-container.component';
 import { MediaObjectService } from './container/media-object.service';
 import { SharingItemComponent } from './media/sharing-item.component';
@@ -43,7 +43,7 @@ TagInputModule.withDefaults({
     MediaItemComponent,
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
-    ZMediaAlbumDetailComponent,
+    // ZMediaAlbumDetailComponent,
 
     // new components
     MediaContainerComponent,
@@ -57,7 +57,7 @@ TagInputModule.withDefaults({
     MediaItemComponent,
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
-    ZMediaAlbumDetailComponent,
+    // ZMediaAlbumDetailComponent,
 
     //
     MediaContainerComponent,

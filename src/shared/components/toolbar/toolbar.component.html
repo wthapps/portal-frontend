@@ -1,104 +1,24 @@
 <div class="page-body-control">
   <div class="page-body-control-nav">
-    <ul class="page-body-control-menu">
-      <li>
-        <button class="btn btn-outline-primary" (click)="doAction({action: 'openUploadModal'})">
-          <i class="fa fa-cloud-upload"></i> Upload File
-        </button>
-      </li>
-      <li>
-        <button class="btn btn-outline-primary"
-                (click)="doAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
-          <i class="fa fa-plus-circle"></i> Create Album
-        </button>
-      </li>
-    </ul>
+    <ng-container *ngTemplateOutlet="leftActionsTemplate"></ng-container>
+    <!--<ng-content></ng-content>-->
   </div>
 
-  <div class="page-body-control-nav page-body-control-nav-action" *ngIf="displayBackButton">
-    <ul class="page-body-control-menu">
-      <li class="divider">
-        <a class="btn btn-default" href="javascript:;" (click)="doAction({action: 'goBack', payload: {}})"
-           draggable="false"
-           pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
-          <i class="fa fa-arrow-left"></i>
-        </a>
-      </li>
-    </ul>
-  </div>
+  <!--<div class="page-body-control-nav page-body-control-nav-action" *ngIf="displayBackButton">-->
+    <!--<ul class="page-body-control-menu">-->
+      <!--<li class="divider">-->
+        <!--<a class="btn btn-default" href="javascript:;" (click)="doAction({action: 'goBack', payload: {}})"-->
+           <!--draggable="false"-->
+           <!--pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">-->
+          <!--<i class="fa fa-arrow-left"></i>-->
+        <!--</a>-->
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</div>-->
 
   <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
-
-    <ul class="page-body-control-menu" [ngClass]="{'text-disable': noSelectedObjects}"
-        [class.disabled]="noSelectedObjects">
-      <li>
-        <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
-           href="javascript:void(0);"
-           (click)="doAction({action: 'openModal', payload: {modalName: 'sharingModal'}})">
-          <i class="fa fa-share-alt"></i>
-        </a>
-      </li>
-
-      <li title="{{ favouriteTooltip }}">
-        <a class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="doAction({action: 'favourite', payload: {mode: isFavourited ? 'remove' : 'add', multiItem: true}})"
-           pTooltip="{{(isFavourited) ? tooltip.removeFromFavourites: tooltip.addToFavorites}}"
-           tooltipPosition="bottom">
-          <i class="fa" [ngClass]="isFavourited ? 'fa-star': 'fa-star-o'"></i>
-        </a>
-      </li>
-      <li>
-        <a class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="doAction({action: 'openModal', payload: {modalName: 'taggingModal'}})"
-           pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
-          <i class="fa fa-tag"></i></a>
-      </li>
-      <li>
-        <a class="btn btn-default" href="javascript:;" draggable="false"
-           (click)="doAction({action: 'openModal', payload: {modalName:'deleteModal', selectedObjects: selectedObjects}})"
-           pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
-          <i class="fa fa-trash-o"></i></a>
-      </li>
-
-      <li class="dropdown action">
-        <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-           pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
-          <i class="fa fa-ellipsis-v"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-          <li>
-            <a (click)="doAction({action: 'slideShow', payload: {}})" href="javascript:;" draggable="false">
-              <i class="fa fa-toggle-right"></i> Slideshow
-            </a>
-          </li>
-          <li>
-            <a (click)="doAction({action: 'setCoverImage', payload: {}})" href="javascript:;" draggable="false">
-              <i class="fa fa-image"></i> Set Album Cover
-            </a>
-          </li>
-          <li>
-            <a (click)="doAction({action: 'openModal', payload: {modalName: 'editInfoModal'}})" href="javascript:;"
-               draggable="false">
-              <i class="fa fa-edit"></i> Edit Information
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;" draggable="false" [ngClass]="{'text-disable': selectedObjects.length != 1}"
-               (click)="doAction({action: 'downloadAlbum', payload: {selectedObjects: selectedObjects}})">
-              <i class="fa fa-download"></i> Download
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;" draggable="false"
-               (click)="doAction({action: 'openModal', payload: {modalName: 'previewDetailsModal'}})">
-              <i class="fa fa-info-circle"></i> Information
-            </a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-
-
+    <ng-container *ngTemplateOutlet="objectActionsTemplate"></ng-container>
+    <!--<ng-content></ng-content>-->
 
     <!--view option-->
     <ul class="page-body-control-menu">

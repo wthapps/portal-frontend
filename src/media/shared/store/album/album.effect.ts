@@ -4,12 +4,9 @@ import 'rxjs/add/operator/switchMap';
 import { Injectable }             from '@angular/core';
 import { Effect, Actions }        from '@ngrx/effects';
 import { Action }                 from '@ngrx/store';
-import { Store }                  from '@ngrx/store';
-
 import { Observable }             from 'rxjs/Observable';
 import { of }                     from 'rxjs/observable/of';
 import * as albumActions         from './album.action';
-import * as store                 from '../index';
 import { AlbumService } from '@media/shared/services/album.service';
 
 /**
@@ -31,7 +28,6 @@ export class AlbumEffects {
 
   constructor(
     private actions$: Actions,
-    private appState$: Store<store.State>,
     private albumService: AlbumService
   ) {}
 
@@ -44,7 +40,7 @@ export class AlbumEffects {
     .map((action: albumActions.Get) => action.payload)
     .switchMap((state: any) => {
       return this.albumService.getAlbum(state)
-        .map(photo => new albumActions.GetSuccess(photo))
+        .map(response => new albumActions.GetSuccess(response))
         .catch(error  => of(new albumActions.GetFail()));
     });
 
@@ -56,5 +52,17 @@ export class AlbumEffects {
       return this.albumService.getAll(state)
         .map(response => new albumActions.GetAllSuccess(...response))
         .catch(error  => of(new albumActions.GetAllFail()));
+    });
+
+  @Effect()
+  getPhotos$: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.GET_PHOTOS)
+    .map((action: albumActions.GetPhotos) => action.payload)
+    .switchMap(state => {
+      return this.albumService.getPhotosByAlbum(state.id)
+        .map(response => new albumActions.GetPhotosSuccess(...response))
+        .catch(error  => {
+
+        });
     });
 }

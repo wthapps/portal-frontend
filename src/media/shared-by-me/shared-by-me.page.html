@@ -1,7 +1,6 @@
 <me-container #container [objects]="objects|async">
   <w-grid-list #gridlist
                 [objects]="objects|async"
-                [currentPath]="'shared-with-me'"
                 (events)="doEvents($event)"
   ></w-grid-list>
 </me-container>

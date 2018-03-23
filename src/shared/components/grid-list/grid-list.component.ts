@@ -30,12 +30,13 @@ declare var $: any;
 })
 
 export class WGridListComponent implements OnInit, OnDestroy {
+  @Input() leftActionsTemplate: TemplateRef<any>;
+  @Input() objectActionsTemplate: TemplateRef<any>;
+  @Input() moreActionsTemplate: TemplateRef<any>;
+
 
   @Input() view: string = 'grid';
   @Input() objects: Array<any> = new Array<any>();
-
-  @Input() currentPath: string = 'shared-by-me'; // photos, albums, videos, playlist, share-with-me, favourites
-
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   selectedObjects: Array<any> = new Array<any>();
@@ -48,13 +49,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
   page: string;
 
   nextLink: string;
-
-
-  @Input() data: Array<any>;
-  @Input() sortInline: Boolean = true;
-  @Output() completeLoadMore: EventEmitter<boolean> = new EventEmitter<boolean>(false);
-  @Output() completeSort: EventEmitter<any> = new EventEmitter<any>(null);
-  @Output() completeDoubleClick: EventEmitter<any> = new EventEmitter<any>(null);
 
   @ContentChild('columnBox') columnBoxTmpl: TemplateRef<any>;
   @ContentChild('columnFileSize') columnFileSizeTmpl: TemplateRef<any>;
@@ -103,7 +97,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    this.selectedObjects = [];
   }
 
   ngOnDestroy() {
@@ -130,6 +124,21 @@ export class WGridListComponent implements OnInit, OnDestroy {
         this.zoom(event.payload);
         break;
       default:
+      if (event.action === 'deselectAll') {
+        this.selectedObjects.length = 0;
+      }
+      if (event.action === 'select') {
+        if (event.payload.clearAll) {
+          this.selectedObjects.length = 0;
+        }
+        event.payload.selectedObjects.forEach(obj => {
+          this.selectedObjects.push(obj);
+        });
+      } else if (event.action === 'deselect') {
+        event.payload.selectedObjects.forEach(obj => {
+          this.selectedObjects.splice(this.selectedObjects.indexOf(obj.id), 1);
+        });
+      }
         this.event.emit(event);
         break;
     }
@@ -161,11 +170,11 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
 
   isSelecting(item: any) {
-    return (_.find(this.selectedObjects, {'id': item.id}));
+    // return (_.find(this.selectedObjects, {'id': item.id}));
   }
 
   isSelected(item: any) {
-    return (_.indexOf(this.selectedObjects, item.object_type) === -1);
+    // return (_.indexOf(this.selectedObjects, item.object_type) === -1);
   }
 
   // ngOnChanges(changes: SimpleChanges): void {
@@ -210,28 +219,21 @@ export class WGridListComponent implements OnInit, OnDestroy {
   onMultiSelected(item: any) {
     if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
 
-      this.completeDoubleClick.emit(item);
     } else {
 
     }
   }
 
   onSelectedAll() {
-    _.map(this.data, (v: any) => {
-      if (_.indexOf(this.objectsDisabled, v.object_type) === -1) {
 
-      }
-    });
   }
 
   onDoubleClick(item: any) {
-    this.completeDoubleClick.emit(item);
   }
 
   onClick(item: any) {
     if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
 
-      this.completeDoubleClick.emit(item);
     }
     return false;
   }
@@ -240,8 +242,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
   }
 
   onLoadMore() {
-    console.log('onLoadMore');
-    this.completeLoadMore.emit(true);
   }
 
   onSort(sortBy: string) {
@@ -249,22 +249,10 @@ export class WGridListComponent implements OnInit, OnDestroy {
     if (this.sortBy === sortBy) {
       sortOrder = (sortOrder === 'desc') ? 'asc' : 'desc';
     }
-
-    if (!this.sortInline) {
-      this.completeSort.emit({
-        sortBy: sortBy,
-        sortOrder: sortOrder,
-      });
-    }
   }
 
   onGroup(groupBy: string) {
-    if (!this.sortInline) {
-      this.completeSort.emit({
-        sortBy: this.sortBy,
-        sortOrder: this.sortOrder,
-      });
-    }
+
   }
 
 
@@ -275,27 +263,27 @@ export class WGridListComponent implements OnInit, OnDestroy {
   }
  // mode = true is selecting
   private selectObject(payload: any, mode: boolean = true): void {
-    this.selectedObjects = [];
-    let item = payload.selectedObjects;
-    if (this.pressingCtrlKey) {
-      item.selected = !item.selected;
-    } else {
-      if(mode) {
-        if (payload.checkbox !== true) {
-          this.event.emit({action: 'deselectAll'});
-        }
-        item.selected = true;
-      } else {
-        item.selected = false;
-      }
-      this.selectedObjects.length = 0;
-    }
-    this.selectedObjects.push(item);
-    payload.selectedObjects = this.selectedObjects;
+    // this.selectedObjects = [];
+    // let item = payload.selectedObjects;
+    // if (this.pressingCtrlKey) {
+    //   item.selected = !item.selected;
+    // } else {
+    //   if(mode) {
+    //     if (payload.checkbox !== true) {
+    //       this.event.emit({action: 'deselectAll'});
+    //     }
+    //     item.selected = true;
+    //   } else {
+    //     item.selected = false;
+    //   }
+    //   this.selectedObjects.length = 0;
+    // }
+    // this.selectedObjects.push(item);
+    // payload.selectedObjects = this.selectedObjects;
   }
 
   private deSelectAll() {
-      this.selectedObjects.length = 0;
+      // this.selectedObjects.length = 0;
       this.doEvent({ action: 'deselectAll' });
   }
 

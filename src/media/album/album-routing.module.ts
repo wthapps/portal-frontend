@@ -18,7 +18,7 @@ import { AuthGuard } from '@wth/shared/services';
         ]
       },
       {
-        path: 'albums/:id', component: ZMediaAlbumDetailComponent, outlet: 'detail',
+        path: 'albums/:id', component: ZMediaAlbumDetailComponent, // outlet: 'detail',
         canActivate: [AuthGuard]
       }
     ])

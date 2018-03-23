@@ -10,6 +10,8 @@ import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/shared/modal';
+import { MediaObjectService } from '@media/shared/container/media-object.service';
+import { Constants } from '@wth/shared/constant';
 
 
 @Component({
@@ -29,11 +31,14 @@ export class AlbumListComponent implements OnInit {
   modal: any;
 
   albums: Observable<any>;
+  tooltip: any = Constants.tooltip;
+
 
   constructor(private store: Store<appStore.State>,
               private resolver: ComponentFactoryResolver,
               private mediaUploaderDataService: MediaUploaderDataService,
-              private router: Router
+              private router: Router,
+              private mediaObjectService: MediaObjectService
   ) {
     this.albums = this.store.select(appStore.selectAlbums);
     this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
@@ -136,10 +141,11 @@ export class AlbumListComponent implements OnInit {
   }
 
   viewDetails(payload: any) {
-    this.router.navigate([{outlets: {detail: ['albums', payload.selectedObject.id]}}], {
-      queryParamsHandling: 'preserve',
-      preserveFragment: true
-    });
+    // this.router.navigate([{outlets: {detail: ['albums', payload.selectedObject.id]}}], {
+    //   queryParamsHandling: 'preserve',
+    //   preserveFragment: true
+    // });
+    this.router.navigate(['albums', payload.selectedObject.id]);
   }
 
   editName(payload: any) {
@@ -148,66 +154,22 @@ export class AlbumListComponent implements OnInit {
 
   favourite(payload: any) {
     console.log('do favorite:::', payload);
-    // let body: any;
-    // let selectedIndex: number = -1;
-    // let mode = params.mode;
-    //
-    // // single favourite
-    // if (params.hasOwnProperty('selectedObject')) {
-    //   body = {
-    //     objects: [_.pick(params.selectedObject, ['id', 'object_type'])],
-    //     mode: mode
-    //   };
-    //   selectedIndex = _.findIndex(this.objects, ['id', params.selectedObject.id]);
-    //
-    // } else { // multi-favourite
-    //   body = {
-    //     objects: _.map(this.selectedObjects, (object: any) => {
-    //       return _.pick(object, ['id', 'object_type']);
-    //     }),
-    //     mode: mode
-    //   };
-    // }
-    //
-    // let self = this;
-    //
-    // this.mediaObjectService.favourite(body).toPromise()
-    //   .then(
-    //     (response: any) => {
-    //       // update favourite attribute
-    //       if (selectedIndex != -1) {
-    //         this.objects[selectedIndex].favorite = (mode == 'add' ? true : false);
-    //         // refresh objects if current page is favourite
-    //
-    //         // update for album detail page
-    //         if (params.hasOwnProperty('page') && params.page == 'album_detail') {
-    //           // this.object.favorite = (mode == 'add' ? true : false);
-    //           self.onAction({
-    //             action: 'updateDetailObject',
-    //             params: {properties: [{key: 'favorite', value: (mode == 'add' ? true : false)}]}
-    //           });
-    //         }
-    //         if (mode == 'remove' && this.page == 'favorites') {
-    //           // here just handles un-favourite ONE object
-    //           this.objects.splice(selectedIndex, 1);
-    //         }
-    //         return;
-    //       }
-    //
-    //       _.map(this.selectedObjects, (object: any)=> {
-    //         object.favorite = (mode == 'add' ? true : false);
-    //       });
-    //       if (mode == 'remove' && this.page == 'favorites') {
-    //         _.remove(this.objects, (object: any) => {
-    //           return false == object.favorite;
-    //         });
-    //       }
-    //
-    //     },
-    //     (error: any) => {
-    //       console.log('error: ', error);
-    //     }
-    //   );
+    let body = {
+        objects: _.map(payload.selectedObjects, (object: any) => {
+          return _.pick(object, ['id', 'object_type']);
+        }),
+        mode: payload.mode
+      };
+
+    this.mediaObjectService.favourite(body).toPromise()
+      .then(
+        (response: any) => {
+          this.store.dispatch(new fromAlbum.FavoriteSuccess(payload));
+        },
+        (error: any) => {
+          console.log('error: ', error);
+        }
+      );
   }
 
   private destroySubject() {

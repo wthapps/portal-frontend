@@ -14,6 +14,7 @@ export class WGridListItemComponent {
 
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
+
   readonly DEFAULT_IMAGE = Constants.img.default;
   // Mapping map path from list to detail: photos => photo, albums => album
   readonly LIST_ITEM_TYPE_MAP = {

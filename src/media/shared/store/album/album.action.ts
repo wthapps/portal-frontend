@@ -4,6 +4,8 @@ export const ActionTypes = {
   GET:                  '[Album] Get',
   GET_SUCCESS:          '[Album] Get Success',
   GET_FAIL:             '[Album] Get Fail',
+  GET_PHOTOS:           '[Album] Get Photos',
+  GET_PHOTOS_SUCCESS:   '[Album] Get Photos Success',
   GET_ALL:              '[Album] Get All',
   GET_ALL_SUCCESS:      '[Album] Get All Success',
   GET_ALL_FAIL:         '[Album] Get All',
@@ -11,6 +13,7 @@ export const ActionTypes = {
   SELECT_ALL:           '[Album] Select All',
   DESELECT:             '[Album] Deselect',
   DESELECT_ALL:         '[Album] Deselect All',
+  FAVORITE_SUCCESS:     '[Album] Favorite Success',
   ADD:                  '[Album] Add',
   ADD_SUCCESS:          '[Album] Add Success',
   ADD_FAIL:             '[Album] Add Fail',
@@ -59,6 +62,16 @@ export class GetSuccess implements Action {
   constructor(public payload: any = null) { }
 }
 
+export class GetPhotos implements Action {
+  type = ActionTypes.GET_PHOTOS;
+  constructor(public payload: any = null) { }
+}
+
+export class GetPhotosSuccess implements Action {
+  type = ActionTypes.GET_PHOTOS_SUCCESS;
+  constructor(public payload: any = null) { }
+}
+
 export class GetFail implements Action {
   type = ActionTypes.GET_FAIL;
   constructor(public payload: any = null) { }
@@ -81,6 +94,11 @@ export class Deselect implements Action {
 
 export class DeselectAll implements Action {
   type = ActionTypes.DESELECT_ALL;
+  constructor(public payload: any = null) { }
+}
+
+export class FavoriteSuccess implements Action {
+  type = ActionTypes.FAVORITE_SUCCESS;
   constructor(public payload: any = null) { }
 }
 
@@ -112,12 +130,15 @@ export type Actions
   | GetSuccess
   | GetFail
   | GetAll
+  | GetPhotos
+  | GetPhotosSuccess
   | GetAllSuccess
   | GetAllFail
   | Select
   | SelectAll
   | Deselect
   | DeselectAll
+  | FavoriteSuccess
   | Add
   | AddSuccess
   | Update

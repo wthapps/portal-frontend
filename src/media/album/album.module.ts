@@ -12,6 +12,7 @@ import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { WGridListModule } from '@wth/shared/components/grid-list';
 import { MediaModalModule } from '@media/shared/modal/modal.module';
+import { WToolbarModule } from '@wth/shared/components/toolbar';
 
 @NgModule({
   imports: [
@@ -20,18 +21,19 @@ import { MediaModalModule } from '@media/shared/modal/modal.module';
     SharedModule,
     CoreModule,
     MediaModalModule,
+    WToolbarModule,
     WGridListModule
   ],
   declarations: [
     ZMediaAlbumComponent,
     AlbumListComponent,
-    // ZMediaAlbumDetailComponent,
+    ZMediaAlbumDetailComponent,
     // AlbumDetailInfoComponent
   ],
   exports: [
     ZMediaAlbumComponent,
     AlbumListComponent,
-    // ZMediaAlbumDetailComponent,
+    ZMediaAlbumDetailComponent,
     // AlbumDetailInfoComponent
   ],
   providers: [

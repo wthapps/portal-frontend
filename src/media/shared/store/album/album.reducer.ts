@@ -9,6 +9,8 @@ export interface State extends EntityState<Partial<any>> {
   selectedAlbumId: number;
   album:    any;
   albums:  Array<any>;
+  photo: any;
+  photos: Array<any>;
 }
 
 export const albumAdapter: EntityAdapter<Partial<any>> = createEntityAdapter<Partial<any>>();
@@ -22,7 +24,9 @@ const INITIAL_STATE: State = albumAdapter.getInitialState({
   failed:  false,
   selectedAlbumId: null,
   album:    null,
-  albums:  []
+  albums:  [],
+  photo: null,
+  photos: []
 });
 
 
@@ -53,6 +57,23 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         loading:  false,
         failed:   true,
         photos:     null
+      });
+    }
+
+    case actions.ActionTypes.GET_PHOTOS: {
+      return Object.assign({}, state, {
+        loading: true,
+        photos: [],
+        photo: null
+      });
+    }
+
+    case actions.ActionTypes.GET_PHOTOS_SUCCESS: {
+      return Object.assign({}, state, {
+        loaded:   true,
+        loading:  false,
+        failed:   false,
+        photos:   action.payload.data
       });
     }
 
@@ -139,6 +160,26 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         objects: []
       });
     }
+
+    case actions.ActionTypes.FAVORITE_SUCCESS: {
+      Object.values(state.entities).map(obj => {
+        action.payload.selectedObjects.forEach(selectedObject => {
+          if (obj.id === selectedObject.id && action.payload.mode === 'add') {
+            obj.favorite = true;
+          } else if (obj.id === selectedObject.id && action.payload.mode === 'remove') {
+            obj.favorite = false;
+          }
+        });
+        return obj;
+      });
+      return Object.assign({}, state, {
+        loaded: false,
+        loading: false,
+        failed: true,
+        objects: []
+      });
+    }
+
     case actions.ActionTypes.ADD: {
         return albumAdapter.addOne(action.payload.data, state);
       }
@@ -169,6 +210,7 @@ export const getLoaded  = (state: State) => state.loaded;
 export const getFailed  = (state: State) => state.failed;
 export const getAlbumEntities    = (state: State) => state.entities;
 export const getAlbumState   = (state: State) => state;
+export const getPhotos    = (state: State) => state.photos;
 
 
 
