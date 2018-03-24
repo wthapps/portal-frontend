@@ -38,6 +38,11 @@ export class BaseEntityService<T> {
     }
   }
 
+  updateMany(payload: any, path: string = ''): Observable<any> {
+    let url = path === '' ? this.url : `${this.url}/${path}`;
+    return this.apiBaseService.post(`${url}/update_many`, payload);
+  }
+
   delete(id: any, payload?: any, path: string = ''): Observable<any> {
     let url = path === '' ? this.url : `${this.url}/${path}`;
     if (id == 0) {

@@ -29,26 +29,26 @@
 
     <li>
       <a class="btn btn-default" href="javascript:void(0);" draggable="false"
-         *ngIf="toolbar.checkFavorite()"
-         (click)="doAction({
+         *ngIf="toolbar.favoriteAll"
+         (click)="toolbar.doAction({
            action: 'favourite',
            payload: { mode: 'remove',
            multiItem: true,
-           selectedObjects: gridlist.selectedObjects }})"
+           selectedObjects: toolbar.selectedObjects }})"
          pTooltip="{{ tooltip.removeFromFavourites }}"
          tooltipPosition="bottom">
-        <i class="fa fa-star "></i>
+        <i class="fa fa-star"></i>
       </a>
       <a class="btn btn-default" href="javascript:void(0);" draggable="false"
-         *ngIf="!toolbar.checkFavorite()"
+         *ngIf="!toolbar.favoriteAll"
          (click)="toolbar.doAction({
            action: 'favourite',
            payload: { mode: 'add',
            multiItem: true,
-           selectedObjects: gridlist.selectedObjects }})"
+           selectedObjects: toolbar.selectedObjects }})"
          pTooltip="{{ tooltip.addToFavorites }}"
          tooltipPosition="bottom">
-        <i class="fa fa-star-o'"></i>
+        <i class="fa fa-star-o"></i>
       </a>
     </li>
     <li>
@@ -80,22 +80,18 @@
             <i class="fa fa-image"></i> Set Album Cover
           </a>
         </li>
-        <li>
-          <a (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'editInfoModal'}})" href="javascript:;"
-             draggable="false">
+        <li *ngIf="toolbar.hasOneObject">
+          <a (click)="toolbar.doAction({
+            action: 'openModal',
+            payload: {modalName: 'editInfoModal', selectedObject: toolbar.selectedObjects[0]}
+          })" href="javascript:void(0);" draggable="false" >
             <i class="fa fa-edit"></i> Edit Information
           </a>
         </li>
         <li>
-          <a href="javascript:;" draggable="false" [ngClass]="{'text-disable': gridlist.selectedObjects.length != 1}"
+          <a href="javascript:void(0);" draggable="false" [ngClass]="{'text-disable': gridlist.selectedObjects.length != 1}"
              (click)="toolbar.doAction({action: 'downloadAlbum', payload: {selectedObjects: selectedObjects}})">
             <i class="fa fa-download"></i> Download
-          </a>
-        </li>
-        <li>
-          <a href="javascript:;" draggable="false"
-             (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'previewDetailsModal'}})">
-            <i class="fa fa-info-circle"></i> Information
           </a>
         </li>
       </ul>
@@ -114,5 +110,6 @@
 <w-grid-list #gridlist
              [objects]="albums|async"
              (event)="doEvent($event)"
+             (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)"
 ></w-grid-list>
 <ng-template #modalContainer></ng-template>

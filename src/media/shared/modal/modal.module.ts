@@ -24,6 +24,7 @@ import { PartialsPhotoTaggingModule } from '@wth/shared/shared/components/photo/
     AlbumDeleteModalComponent
   ],
   exports: [
+    AlbumCreateModalComponent,
     AlbumDeleteModalComponent
   ]
 })

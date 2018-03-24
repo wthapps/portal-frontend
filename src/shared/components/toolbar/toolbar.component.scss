@@ -1,25 +1,21 @@
 @import "../../../assets/styles/global";
 
 .page-body-control {
-  &.share-by-me {
-    position: absolute;
-    top: -100px;
-    left: 0;
-    right: 0;
+  &.sub-object-actions {
     @include transition($transition-base);
     @include box-shadow(none);
     background-color: $theme-color;
-    color: #ffffff;
+    color: #ffffff !important;
     .btn {
-      color: #ffffff;
+      color: #ffffff !important;
       &:not(.btn-text) {
         &:hover, &:focus {
-          color: $theme-color;
+          color: $theme-color !important;
         }
       }
     }
     .divider {
-      border-right-color: #fff;
+      border-right-color: #fff !important;
     }
     &.active {
       top: 0;

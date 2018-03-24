@@ -8,6 +8,7 @@ import { Observable }             from 'rxjs/Observable';
 import { of }                     from 'rxjs/observable/of';
 import * as albumActions         from './album.action';
 import { AlbumService } from '@media/shared/services/album.service';
+import { MediaObjectService } from '@media/shared/container/media-object.service';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -28,6 +29,7 @@ export class AlbumEffects {
 
   constructor(
     private actions$: Actions,
+    private mediaObjectService: MediaObjectService,
     private albumService: AlbumService
   ) {}
 
@@ -63,6 +65,17 @@ export class AlbumEffects {
         .map(response => new albumActions.GetPhotosSuccess(...response))
         .catch(error  => {
 
+        });
+    });
+
+  @Effect()
+  update$: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.UPDATE)
+    .map((action: albumActions.Update) => action.payload)
+    .switchMap(state => {
+      return this.mediaObjectService.update(state, false, 'media')
+        .map(response => {
+          return new albumActions.UpdateSuccess({...response});
         });
     });
 }

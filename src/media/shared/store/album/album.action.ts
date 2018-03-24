@@ -104,13 +104,21 @@ export class FavoriteSuccess implements Action {
 
 export class Add implements Action {
   type = ActionTypes.ADD;
-
   constructor(public payload: any = null) { }
 }
 
 export class AddSuccess implements Action {
-  type = ActionTypes.ADD;
+  type = ActionTypes.ADD_SUCCESS;
+  constructor(public payload: any = null) { }
+}
 
+export class AddMany implements Action {
+  type = ActionTypes.ADD_MANY;
+  constructor(public payload: any = null) { }
+}
+
+export class AddManySuccess implements Action {
+  type = ActionTypes.ADD_MANY_SUCCESS;
   constructor(public payload: any = null) { }
 }
 
@@ -119,9 +127,38 @@ export class Update implements Action {
   constructor(public payload: any) { }
 }
 
+export class UpdateSuccess implements Action {
+  type = ActionTypes.UPDATE_SUCCESS;
+  constructor(public payload: any) { }
+}
+
+export class UpdateMany implements Action {
+  type = ActionTypes.UPDATE_MANY;
+  constructor(public payload: any) { }
+}
+
+export class UpdateManySuccess implements Action {
+  type = ActionTypes.UPDATE_MANY_SUCCESS;
+  constructor(public payload: any) { }
+}
+
 export class Delete implements Action {
   type = ActionTypes.DELETE;
+  constructor(public payload: any = null) { }
+}
 
+export class DeleteSuccess implements Action {
+  type = ActionTypes.DELETE_SUCCESS;
+  constructor(public payload: any = null) { }
+}
+
+export class DeleteMany implements Action {
+  type = ActionTypes.DELETE_MANY;
+  constructor(public payload: any = null) { }
+}
+
+export class DeleteManySuccess implements Action {
+  type = ActionTypes.DELETE_MANY_SUCCESS;
   constructor(public payload: any = null) { }
 }
 
@@ -141,5 +178,13 @@ export type Actions
   | FavoriteSuccess
   | Add
   | AddSuccess
+  | AddMany
+  | AddManySuccess
   | Update
-  | Delete;
+  | UpdateSuccess
+  | UpdateMany
+  | UpdateManySuccess
+  | Delete
+  | DeleteSuccess
+  | DeleteMany
+  | DeleteManySuccess;

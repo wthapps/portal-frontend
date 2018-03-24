@@ -12,6 +12,8 @@ import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal
 import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/shared/modal';
 import { MediaObjectService } from '@media/shared/container/media-object.service';
 import { Constants } from '@wth/shared/constant';
+import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
+import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 
 
 @Component({
@@ -22,7 +24,8 @@ import { Constants } from '@wth/shared/constant';
     BaseObjectEditNameModalComponent,
     SharingModalComponent,
     TaggingModalComponent,
-    AlbumDeleteModalComponent
+    AlbumDeleteModalComponent,
+    AlbumEditModalComponent
   ]
 })
 export class AlbumListComponent implements OnInit {
@@ -51,10 +54,11 @@ export class AlbumListComponent implements OnInit {
   }
 
   doEvent(event: any) {
-    console.log('event actions:::', event.action);
+    console.log('event actions:::', event.action, event.payload);
 
     switch (event.action) {
       case 'loadMore':
+        this.store.dispatch(new fromAlbum.GetAll());
         break;
       case 'select':
         this.store.dispatch(new fromAlbum.Select(event.payload));
@@ -84,7 +88,10 @@ export class AlbumListComponent implements OnInit {
         this.viewDetails(event.payload);
         break;
       case 'editName':
-        this.editName(event.params);
+      case 'editInfo':
+        this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
+
+        // this.editName(event.params);
         break;
     }
   }
@@ -113,6 +120,10 @@ export class AlbumListComponent implements OnInit {
           options = {selectedObjects: []};
         }
         break;
+      case 'editInfoModal':
+        this.loadModalComponent(AlbumEditModalComponent);
+        options = {selectedObject: payload.selectedObject};
+        break;
       case 'deleteModal':
         this.loadModalComponent(AlbumDeleteModalComponent);
         options = {selectedObjects: payload.selectedObjects};
@@ -125,6 +136,7 @@ export class AlbumListComponent implements OnInit {
     }
 
   }
+
 
   private loadModalComponent(component: any) {
     let modalComponentFactory = this.resolver.resolveComponentFactory(component);

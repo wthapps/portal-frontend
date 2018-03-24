@@ -1,119 +1,220 @@
 <div class="media-page-detail">
-  <me-view-container [objectType]="'album'" [pageType]="'detail'" [page]="'album_detail'" [params]="params"
-                     [object]="album" [showDetailInfo]="showDetail" ></me-view-container>
+  <div class="media-page-detail-left gray-light" [ngClass]="{'has-media-page-detail-right': showDetailsInfo}">
 
-  <!--<ng-template #leftActionsTemplate>-->
-    <!--<ul class="page-body-control-menu">-->
-      <!--<li class="divider">-->
-        <!--<a class="btn btn-default" href="javascript:void(0);" (click)="doAction({action: 'goBack', params: {}})"-->
-           <!--draggable="false"-->
-           <!--pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">-->
-          <!--<i class="fa fa-arrow-left"></i>-->
-        <!--</a>-->
-      <!--</li>-->
-    <!--</ul>-->
-  <!--</ng-template>-->
+  <!--<me-view-container [objectType]="'album'" [pageType]="'detail'" [page]="'album_detail'" [params]="params"-->
+                     <!--[object]="album" [showDetailInfo]="showDetail" ></me-view-container>-->
 
-  <!--<ng-template #objectActionsTemplate>-->
-    <!--<ul class="page-body-control-menu" [ngClass]="{'text-disable': noSelectedObjects}"-->
-        <!--[class.disabled]="noSelectedObjects">-->
-      <!--<li>-->
-        <!--<a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"-->
-           <!--href="javascript:void(0);"-->
-           <!--(click)="doAction({action: 'openModal', payload: {modalName: 'sharingModal'}})">-->
-          <!--<i class="fa fa-share-alt"></i>-->
-        <!--</a>-->
-      <!--</li>-->
+  <ng-template #leftAlbumActionsTemplate>
+    <ul class="page-body-control-menu">
+      <li class="divider">
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           (click)="toolbar.doAction({action: 'goBack'})"
+           pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
+          <i class="fa fa-arrow-left"></i>
+        </a>
+      </li>
 
-      <!--<li>-->
-        <!--<a class="btn btn-default" href="javascript:void(0);" draggable="false"-->
-           <!--*ngIf="toolbar.checkFavorite()"-->
-           <!--(click)="doAction({-->
-           <!--action: 'favourite',-->
-           <!--payload: { mode: 'remove',-->
-           <!--multiItem: true,-->
-           <!--selectedObjects: gridlist.selectedObjects }})"-->
-           <!--pTooltip="{{ tooltip.removeFromFavourites }}"-->
-           <!--tooltipPosition="bottom">-->
-          <!--<i class="fa fa-star "></i>-->
-        <!--</a>-->
-        <!--<a class="btn btn-default" href="javascript:void(0);" draggable="false"-->
-           <!--*ngIf="!toolbar.checkFavorite()"-->
-           <!--(click)="toolbar.doAction({-->
-           <!--action: 'favourite',-->
-           <!--payload: { mode: 'add',-->
-           <!--multiItem: true,-->
-           <!--selectedObjects: gridlist.selectedObjects }})"-->
-           <!--pTooltip="{{ tooltip.addToFavorites }}"-->
-           <!--tooltipPosition="bottom">-->
-          <!--<i class="fa fa-star-o'"></i>-->
-        <!--</a>-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--<a class="btn btn-default" href="javascript:;" draggable="false"-->
-           <!--(click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'taggingModal'}})"-->
-           <!--pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">-->
-          <!--<i class="fa fa-tag"></i></a>-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--<a class="btn btn-default" href="javascript:;" draggable="false"-->
-           <!--(click)="toolbar.doAction({action: 'openModal', payload: {modalName:'deleteModal', selectedObjects: selectedObjects}})"-->
-           <!--pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">-->
-          <!--<i class="fa fa-trash-o"></i></a>-->
-      <!--</li>-->
+      <li>
+        <a class="btn btn-inline" draggable="false" href="javascript:void(0);" title="Double click to edit"
+           (dblclick)="toolbar.doAction({
+             action: 'openModal',
+             payload: {modalName: 'editNameModal', selectedObject: toolbar.object }
+           })">
+          {{ toolbar.object?.name }}
+        </a>
+      </li>
+    </ul>
+  </ng-template>
 
-      <!--<li class="dropdown action">-->
-        <!--<a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"-->
-           <!--pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">-->
-          <!--<i class="fa fa-ellipsis-v"></i>-->
-        <!--</a>-->
-        <!--<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">-->
-          <!--<li>-->
-            <!--<a (click)="toolbar.doAction({action: 'slideShow', payload: {}})" href="javascript:;" draggable="false">-->
-              <!--<i class="fa fa-toggle-right"></i> Slideshow-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a (click)="toolbar.doAction({action: 'setCoverImage', payload: {}})" href="javascript:;" draggable="false">-->
-              <!--<i class="fa fa-image"></i> Set Album Cover-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'editInfoModal'}})" href="javascript:;"-->
-               <!--draggable="false">-->
-              <!--<i class="fa fa-edit"></i> Edit Information-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a href="javascript:;" draggable="false" [ngClass]="{'text-disable': gridlist.selectedObjects.length != 1}"-->
-               <!--(click)="toolbar.doAction({action: 'downloadAlbum', payload: {selectedObjects: selectedObjects}})">-->
-              <!--<i class="fa fa-download"></i> Download-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a href="javascript:;" draggable="false"-->
-               <!--(click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'previewDetailsModal'}})">-->
-              <!--<i class="fa fa-info-circle"></i> Information-->
-            <!--</a>-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</li>-->
-    <!--</ul>-->
-  <!--</ng-template>-->
+  <ng-template #albumActionsTemplate>
+    <ul class="page-body-control-menu" [ngClass]="{'text-disable': noSelectedObjects}"
+        [class.disabled]="noSelectedObjects">
+      <li>
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           pTooltip="{{ tooltip.addMorePhotos}}" tooltipPosition="bottom"
+           (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'photosSelectModal'}})">
+          <i class="fa fa-plus-square"></i>
+        </a>
+      </li>
+      <li>
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
+           (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'sharingModal'}})">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
 
-  <!--<w-toolbar #toolbar-->
-             <!--[view]="gridlist.view"-->
-             <!--[selectedObjects]="gridlist.selectedObjects"-->
-             <!--[leftActionsTemplate]="leftActionsTemplate"-->
-             <!--[objectActionsTemplate]="objectActionsTemplate"-->
-             <!--(event)="gridlist.doEvent($event)">-->
-  <!--</w-toolbar>-->
+      <li>
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           (click)="toolbar.doAction({
+             action: 'favourite',
+             payload: { mode: toolbar.object?.favorite ? 'remove' : 'add',
+             selectedObjects: [toolbar.object] }
+           })"
+           pTooltip="{{ toolbar.object?.favorite ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
+           tooltipPosition="bottom">
+          <i class="fa" [ngClass]="toolbar.object?.favorite ? 'fa-star' : 'fa-star-o'"></i>
+        </a>
+      </li>
+      <li>
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'taggingModal'}})"
+           pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
+          <i class="fa fa-tag"></i></a>
+      </li>
 
-  <!--<w-grid-list #gridlist-->
-               <!--[leftActionsTemplate]="leftActionsTemplate"-->
-               <!--[objects]="photos|async"-->
-               <!--(event)="doEvent($event)">-->
-  <!--</w-grid-list>-->
-  <!--<ng-template #modalContainer></ng-template>-->
+      <li class="dropdown action">
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           data-toggle="dropdown"
+           pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
+          <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+          <li>
+            <a draggable="false" href="javascript:void(0);"
+               (click)="toolbar.doAction({action: 'slideShow', payload: {}})">
+              <i class="fa fa-toggle-right"></i> Slideshow
+            </a>
+          </li>
+          <li>
+            <a draggable="false" href="javascript:void(0);"
+               (click)="toolbar.doAction({action: 'setCoverImage', payload: {}})">
+              <i class="fa fa-image"></i> Set Album Cover
+            </a>
+          </li>
+          <li>
+            <a draggable="false" href="javascript:void(0);"
+               (click)="toolbar.doAction({action: 'downloadAlbum', payload: {selectedObjects: [toolbar.object]}})">
+              <i class="fa fa-download"></i> Download
+            </a>
+          </li>
+          <li>
+            <a draggable="false" href="javascript:void(0);"
+               (click)="toolbar.doAction({action: 'toggleDetailsInfo' })">
+              <i class="fa fa-info-circle"></i> View Information
+            </a>
+          </li>
+          <li>
+            <a draggable="false" href="javascript:void(0);"
+               (click)="toolbar.doAction({
+               action: 'openModal',
+               payload: { modalName: 'editInfoModal', selectedObject: toolbar.object }})">
+              <i class="fa fa-edit"></i> Edit Information
+            </a>
+          </li>
+          <li>
+            <a class="btn btn-default" href="javascript:void(0);" draggable="false"
+               (click)="toolbar.doAction({
+               action: 'openModal',
+               payload: {modalName:'deleteModal', selectedObjects: selectedObjects}})">
+              <i class="fa fa-trash-o"></i> Delete Album
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </ng-template>
 
+
+  <ng-template #leftPhotoActionsTemplate>
+    <ul class="page-body-control-menu">
+      <li class="divider">
+        <a class="btn btn-default" href="javascript:;" (click)="toolbar.doAction({action: 'deselectAll'})"
+           draggable="false" pTooltip="{{ tooltip.close }}" tooltipPosition="bottom">
+          <i class="fa fa-times"></i>
+        </a>
+      </li>
+      <li>
+        <span class="btn btn-text">{{ toolbar.selectedObjects.length }} selected</span>
+      </li>
+    </ul>
+  </ng-template>
+
+  <ng-template #photoActionsTemplate>
+    <ul class="page-body-control-menu">
+      <li>
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
+           (click)="doAction({action: 'openModal', payload: {modalName: 'sharingModal'}})">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+
+      <li>
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           (click)="toolbar.doAction({
+             action: 'favourite',
+             payload: { mode: toolbar.object?.favorite ? 'remove' : 'add',
+             selectedObjects: [toolbar.object] }
+           })"
+           pTooltip="{{ toolbar.object?.favorite ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
+           tooltipPosition="bottom">
+          <i class="fa" [ngClass]="toolbar.object?.favorite ? 'fa-star' : 'fa-star-o'"></i>
+        </a>
+      </li>
+      <li>
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'taggingModal'}})"
+           pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
+          <i class="fa fa-tag"></i></a>
+      </li>
+      <li>
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
+           (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'deleteModal'}})"
+           pTooltip="{{ tooltip.removeFromAlbum}}" tooltipPosition="bottom">
+          <i class="fa fa-trash-o"></i></a>
+      </li>
+      <li class="dropdown">
+        <a class="btn btn-default" href="javascript:;" data-toggle="dropdown" draggable="false">
+          <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li>
+            <a href="javascript:void(0);" draggable="false"
+               (click)="onAction({action: 'openModal',
+               payload: {modalName: 'addToAlbumModal',
+               selectedObjects: toolbar.selectedObjects}})">
+              <i class="fa fa-plus-square"></i> Add to album
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" draggable="false"
+               (click)="onAction({
+               action: 'download',
+               payload: {selectedObjects: selectedObjects}})">
+              <i class="fa fa-download"></i> Download
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" draggable="false"
+               (click)="onAction({action: 'confirmDeleteMedia', payload: {selectedObjects: selectedObjects}})">
+              <i class="fa fa-trash-o"></i> Delete
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </ng-template>
+
+  <w-toolbar #toolbar
+             [view]="gridlist.view"
+             [object]="album"
+             [selectedObjects]="gridlist.selectedObjects"
+             [leftActionsTemplate]="gridlist.selectedObjects.length === 0 ? leftAlbumActionsTemplate : leftPhotoActionsTemplate"
+             [objectActionsTemplate]="gridlist.selectedObjects.length === 0 ? albumActionsTemplate : photoActionsTemplate"
+             (event)="gridlist.doEvent($event)">
+  </w-toolbar>
+
+  <w-grid-list #gridlist
+               [leftActionsTemplate]="leftActionsTemplate"
+               [objects]="photos|async"
+               (event)="doEvent($event)"
+               (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)">
+  </w-grid-list>
+  <ng-template #modalContainer></ng-template>
+
+  </div>
+  <div class="media-page-detail-right">
+    <ng-template #infoContainer></ng-template>
+  </div>
 </div>

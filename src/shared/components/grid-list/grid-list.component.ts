@@ -38,6 +38,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
   @Input() view: string = 'grid';
   @Input() objects: Array<any> = new Array<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectedObjectsChanged: EventEmitter<any> = new EventEmitter<any>();
 
   selectedObjects: Array<any> = new Array<any>();
 
@@ -139,7 +140,28 @@ export class WGridListComponent implements OnInit, OnDestroy {
           this.selectedObjects.splice(this.selectedObjects.indexOf(obj.id), 1);
         });
       }
-        this.event.emit(event);
+      if (event.action === 'select' ||
+          event.action === 'selectAll' ||
+          event.action === 'deselect' ||
+          event.action === 'deselectAll') {
+        if (event.action === 'deselectAll') {
+          this.selectedObjects.map(obj => obj.selected = false);
+        }
+        this.selectedObjectsChanged.emit(this.selectedObjects);
+      }
+
+      // Update favorite status for toolbar when hit favorite action on item
+      if (event.action === 'favourite' && !event.payload.multiItem) {
+        this.selectedObjects.map(object => {
+          if (object.id === event.payload.selectedObjects[0].id ) {
+            object.favorite = event.payload.mode === 'add' ? true : false;
+          }
+          return object;
+        });
+        this.selectedObjectsChanged.emit(this.selectedObjects);
+      }
+
+      this.event.emit(event);
         break;
     }
   }

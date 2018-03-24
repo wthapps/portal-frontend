@@ -42,7 +42,7 @@ export class AlbumDetailInfoComponent implements OnChanges {
     this.tagEvent.emit(album);
   }
 
-  onAction(options?: any) {
+  doAction(options?: any) {
     this.event.emit(options);
   }
 }
