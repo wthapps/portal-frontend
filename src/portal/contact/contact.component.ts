@@ -69,10 +69,10 @@ export class ContactComponent implements OnInit, OnDestroy {
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
       'subject': ['',
-        Validators.compose([Validators.required, Validators.minLength(3)])
+        Validators.compose([Validators.required])
       ],
       'body': ['',
-        Validators.compose([Validators.required, Validators.minLength(5)])
+        Validators.compose([Validators.required])
       ]
     });
 
