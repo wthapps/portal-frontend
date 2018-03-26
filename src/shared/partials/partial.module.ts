@@ -7,6 +7,7 @@ import { CalendarModule, TooltipModule } from 'primeng/primeng';
 import { HeaderModule } from '@wth/shared/partials/header';
 import { TextBoxSearchComponent } from '@wth/shared/partials/search-box';
 import { FooterModule } from '@wth/shared/partials/footer';
+import { ComponentsModule } from "@shared/components/components.module";
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { FooterModule } from '@wth/shared/partials/footer';
     ReactiveFormsModule,
     CalendarModule,
     TooltipModule,
+    ComponentsModule,
 
     HeaderModule,
     FooterModule

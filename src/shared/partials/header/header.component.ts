@@ -24,7 +24,7 @@ declare var _: any;
   styleUrls: ['header.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() loggedIn: boolean;
   @ViewChild('notifications') notificationListComponent: NotificationListComponent;
@@ -49,14 +49,6 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
               public connectionService: ConnectionNotificationService,
               public notificationService: NotificationService,
               public authService: AuthService) {
-
-    if (authService.isAuthenticated()) {
-      this.notificationService.getNewNotificationCounts().toPromise()
-        .then(res => {
-          this.connectionService.newNotifCount = res.data.connection_count;
-          this.notificationService.newNotifCount = res.data.update_count;
-        });
-    }
   }
 
   ngOnInit(): void {
@@ -65,132 +57,5 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.channelService.unsubscribe();
-  }
-
-  ngAfterViewInit(): void {
-    let documentElem = $(document);
-    let nav = $('.navbar-default');
-    let lastScrollTop = 0;
-
-    documentElem.on('scroll', function () {
-      let currentScrollTop = $(this).scrollTop();
-      if (currentScrollTop < lastScrollTop && currentScrollTop != 0) {
-        nav.addClass('active');
-      } else {
-        nav.removeClass('active');
-      }
-      lastScrollTop = currentScrollTop;
-    });
-
-    documentElem.on('click',
-      '#nav-notification-list, ' +
-      '#notiItemMenuEl, ' +
-      '.modal-notification-list-setting', (e: any) => {
-        e.stopPropagation();
-      });
-
-    documentElem.on('click', '#nav-notification-list .dropdown-toggle', function (e: any) {
-      e.stopPropagation();
-      $(this).next('ul').toggle();
-    });
-  }
-
-  onShowSearchMobile($event: Event) {
-    $event.preventDefault();
-    $event.stopPropagation();
-    this.showSearchMobile = true;
-  }
-
-  logout() {
-    this.authService.logout();
-  }
-
-  redirectTo(domain: string = '', path: string = '', event: any) {
-    event.preventDefault();
-
-    let url: string = '';
-    switch (domain) {
-      case 'home':
-        url = `${Constants.baseUrls.app}`;
-        break;
-      case 'my':
-        url = `${Constants.baseUrls.myAccount}`;
-        break;
-      case 'media':
-        url = `${Constants.baseUrls.media}`;
-        break;
-      case 'social':
-        url = `${Constants.baseUrls.social}`;
-        break;
-      case 'chat':
-        url = `${Constants.baseUrls.chat}`;
-        break;
-      case 'contacts':
-        url = `${Constants.baseUrls.contact}`;
-        break;
-      case 'notes':
-        url = `${Constants.baseUrls.note}`;
-        break;
-    }
-
-    window.location.href = url + '/' + path;
-  }
-
-
-  viewAllNotifications() {
-    // Close mini notification dropdown box in the header
-    $('.navbar-nav-notification').removeClass('open');
-
-    // Navigate to notification page of social module
-    if (this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social, Constants.baseUrls.media, Constants.baseUrls.contact]))
-      this.navigateService.navigateTo(['/notifications'], {type: this.type});
-    else
-      this.navigateService.navigateOrRedirect('notifications', 'social');
-  }
-
-  getMoreNotifications() {
-    if (this.type == 'connection')
-      this.connectionService.getMoreNotifications();
-    else
-      this.notificationService.getMoreNotifications();
-  }
-
-  doAction(action: any, notif_id: string) {
-    if (this.type === 'connection')
-      this.connectionService.doAction(action, notif_id);
-    else
-      this.notificationService.doAction(action, notif_id);
-  }
-
-  getLatestNotifications() {
-    if (this.type === 'connection')
-      this.connectionService.getLatestNotifications();
-    else
-      this.notificationService.getLatestNotifications();
-  }
-
-  toggleViewNotifications() {
-    this.getLatestNotifications(); // Load latest notifications in the first click
-    if (this.notificationService.notifications.length <= 0) {
-      this.getMoreNotifications();
-    }
-    this.markAsSeen();
-  }
-
-  markAsSeen() {
-    if (this.type === 'connection')
-      this.connectionService.markAsSeen();
-    else
-      this.notificationService.markAsSeen();
-  }
-
-  onSelectedTab(tab: string) {
-    this.type = tab;
-    this.getLatestNotifications();
-    this.markAsSeen();
-  }
-
-  onSettingModal() {
-    this.notificationListComponent.settingModal.open();
   }
 }

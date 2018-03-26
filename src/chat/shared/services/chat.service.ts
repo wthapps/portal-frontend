@@ -18,6 +18,7 @@ import { GenericFile } from '@wth/shared/shared/models/generic-file.model';
 import { FileReaderUtil } from "@shared/shared/utils/file/file-reader.util";
 import { FileUploaderService } from "@shared/services/file/file-uploader.service";
 import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
+import { ConversationApiCommands } from "@shared/commands/chat/coversation-commands";
 
 
 declare var _: any;

@@ -7,6 +7,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { HeaderComponent } from './header.component';
 import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
+import { ComponentsModule } from "@shared/components/components.module";
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { NotificationListModule } from '@shared/shared/components/notification-l
     RouterModule,
     TooltipModule,
     InfiniteScrollModule,
+    ComponentsModule,
     NotificationListModule
   ],
   declarations: [

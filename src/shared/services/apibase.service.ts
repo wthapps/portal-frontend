@@ -9,6 +9,8 @@ import { CookieService } from 'ngx-cookie';
 import { Constants } from '../constant/config/constants';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { RequestMethod, ResponseContentType } from '@angular/http';
+import { JsonConverterUtil } from "@shared/shared/utils/converters/json-converter.util";
+import { UrlConverterUtil } from "@shared/shared/utils/converters/url-converter.util";
 
 
 @Injectable()
@@ -37,75 +39,61 @@ export class ApiBaseService {
    * Performs a request with `get` http method.
    */
   get(path: string, body: any = '', options:any = {}): Observable<any> {
-    this.buildOptions(options);
-    return this.http.get(this.baseUrl + path + this.paramsToString(body), this.options)
-      .catch(this.handleError);
+    return this.call('get', path, body, options);
   }
 
   /**
    * Performs a request with `post` http method.
    */
   post(path: string, body: any = '', options:any = {}): Observable<any> {
-    this.buildOptions(options);
-    return this.http.post(this.baseUrl + path, this.stringify(body), this.options)
-      .take(1)
-      .catch(this.handleError);
+    return this.call('post', path, body, options);
   }
 
   /**
    * Performs a request with `put` http method.
    */
   put(path: string, body: any = '', options:any = {}): Observable<any> {
-    this.buildOptions(options);
-    return this.http.put(this.baseUrl + path, this.stringify(body), this.options)
-      .take(1)
-      .catch(this.handleError);
+    return this.call('put', path, body, options);
   }
 
   /**
    * Performs a request with `delete` http method.
    */
   delete(path: string, body: any = '', options:any = {}): Observable<any> {
-    this.buildOptions(options);
-    return this.http.delete(this.baseUrl + path + this.paramsToString(body), this.options)
-      .catch(this.handleError);
+    return this.call('delete', path, body, options);
   }
 
   /**
    * Performs a request with `patch` http method.
    */
   patch(path: string, body: any = '', options:any = {}): Observable<any> {
-    this.buildOptions(options);
-    return this.http.patch(this.baseUrl + path, this.stringify(body), this.options)
-      .take(1)
-      .catch(this.handleError);
+    return this.call('patch', path, body, options);
   }
 
   download(path: string, body: any = '', options:any = {}): Observable<any> {
+    return this.call('post', path, body, options = {responseType: 'blob'});
+  }
+
+  addCommand(command: Observable<any>): Observable<any> {
+    return Observable.create((observer: any) => {
+      command.take(1).subscribe((c: any) => {
+        this.call(c.method, c.path, c.body, c.options).take(1).catch(this.handleError).subscribe((res: any) => {
+          observer.next(res);
+        })
+      });
+    });
+  }
+
+  private call(method: string, path: string, body: any = '', options:any = {}): Observable<any> {
     this.buildOptions(options);
-    return this.http.post(this.baseUrl + path, this.stringify(body), {
-      responseType: 'blob',
-      headers: this.headers
-    }).take(1);
-  }
-
-  stringify(body: any) {
-    if (typeof body == 'object') {
-      body = JSON.stringify(body);
-    }
-    return body;
-  }
-
-  paramsToString(body: any): string {
-    if (typeof body == 'object') {
-      let str: string = '';
-      for (let param in body) {
-        str += param + '=' + body[param] + '&';
-      }
-      str = str.slice(0, -1);
-      return '?' + str;
+    if (method == 'get' || method == 'delete') {
+      return this.http[method](this.baseUrl + path + UrlConverterUtil.objectToUrl(body), this.options)
+        .take(1)
+        .catch(this.handleError);
     } else {
-      return body;
+      return this.http[method](this.baseUrl + path, JsonConverterUtil.objectToString(body), this.options)
+        .take(1)
+        .catch(this.handleError);
     }
   }
 
@@ -121,7 +109,11 @@ export class ApiBaseService {
     this.options = {
       headers: this.headers,
     };
-    if(!options.unjson) this.options.responseType = 'json';
+    if(options.responseType) {
+      this.options.responseType = options.responseType;
+    } else {
+      this.options.responseType = 'json';
+    }
   }
 
   private handleError(error: any | any): any {

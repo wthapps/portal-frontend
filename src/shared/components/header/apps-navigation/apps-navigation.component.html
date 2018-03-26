@@ -1,0 +1,40 @@
+<div class="btn-group header-nav-apps">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          pTooltip="{{ tooltip.wthApps }}" tooltipPosition="bottom">
+    <i class="fa fa-th"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-right">
+    <li>
+      <a [href]="urls.social">
+        <i class="wthicon wthicon-social-lg"></i>
+        <span>Social Media</span>
+      </a>
+    </li>
+    <li>
+      <a [href]="urls.chat">
+        <i class="wthicon wthicon-chat-lg"></i>
+        <span>Chat</span>
+      </a>
+    </li>
+    <li>
+      <a [href]="urls.media">
+        <i class="wthicon wthicon-pictures-lg"></i>
+        <span>Pictures</span>
+      </a>
+    </li>
+    <li>
+      <a [href]="urls.contact">
+        <i class="wthicon wthicon-contacts-lg"></i>
+        <span>Contacts</span>
+      </a>
+    </li>
+    <li>
+      <a [href]="urls.note">
+        <i class="wthicon wthicon-notes-lg"></i>
+        <span>Notes</span>
+      </a>
+    </li>
+  </ul>
+</div>
