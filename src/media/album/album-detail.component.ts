@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
@@ -17,12 +17,6 @@ import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/mod
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { takeUntil } from 'rxjs/operator/takeUntil';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { filter } from 'rxjs/operator/filter';
-import { map } from "rxjs/operator/map";
-import { mergeMap } from "rxjs/operator/mergeMap";
-
 
 @Component({
   selector: 'z-media-album-detail',
@@ -38,7 +32,7 @@ import { mergeMap } from "rxjs/operator/mergeMap";
     AddToAlbumModalComponent
   ]
 })
-export class ZMediaAlbumDetailComponent implements OnInit {
+export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   @ViewChild('infoContainer', {read: ViewContainerRef}) infoContainer: ViewContainerRef;
 
@@ -64,7 +58,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     private albumService: AlbumService,
     private mediaSelectionService: WMediaSelectionService
   ) {
-    this.photos = this.store.select(appStore.selectPhotosOfAlbum);
+    this.photos = this.store.select(appStore.selectDetailObjects);
   }
 
   ngOnInit() {
@@ -80,7 +74,7 @@ export class ZMediaAlbumDetailComponent implements OnInit {
         return this.albumService.getAlbum(params['id']); })
         .subscribe((res: any) => {
           this.album = res.data;
-          this.store.dispatch(new fromAlbum.GetPhotos(this.album));
+          this.store.dispatch(new fromAlbum.GetAll({objectType: 'photo', detail: true, object: this.album}));
           this.detailInfo.updateProperties({ object: this.album });
         });
   }
@@ -120,11 +114,13 @@ export class ZMediaAlbumDetailComponent implements OnInit {
         break;
       case 'editName':
       case 'editInfo':
-        this.store.dispatch(new fromAlbum.Update(this.album));
-        // this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
+        this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
         break;
       case 'toggleDetailsInfo':
         this.showDetailsInfo = !this.showDetailsInfo;
+        break;
+      case 'addPhotoToAlbum':
+        this.store.dispatch(new fromAlbum.AddToDetailObjects({ object: this.album, photos: event.payload.photos }));
         break;
       case 'goBack':
         this.router.navigate(['albums']);
@@ -165,23 +161,17 @@ export class ZMediaAlbumDetailComponent implements OnInit {
         options = {selectedObject: payload.selectedObject};
         break;
       case 'photosSelectModal':
-        // this.mediaSelectionService.open();
-        // this.mediaSelectionService.setMultipleSelection(false);
-        //
-        // let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
-        // this.mediaSelectionService.selectedMedias$.pipe(
-        //   takeUntil(close$),
-        //   filter(items => items.length > 0)
-        // ).subscribe((items) => {
-        //
-        // });
-        //
-        // this.mediaSelectionService.uploadingMedias$.pipe(
-        //   takeUntil(close$),
-        //   map(([file, dataUrl]) => [file])
-        // ).subscribe((res: any) => {
-        //
-        // });
+        this.mediaSelectionService.open('photos');
+        this.mediaSelectionService.setMultipleSelection(true);
+
+        this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
+          .subscribe((photos => {
+            this.doEvent({action: 'addPhotoToAlbum', payload: {photos: photos }});
+        });
+
+        this.mediaSelectionService.uploadingMedias$.subscribe((res: any) => {
+
+        });
         break;
       default:
         break;
@@ -189,6 +179,10 @@ export class ZMediaAlbumDetailComponent implements OnInit {
     if (this.modal) {
       this.modal.open(options);
     }
+
+  }
+
+  ngOnDestroy() {
 
   }
 

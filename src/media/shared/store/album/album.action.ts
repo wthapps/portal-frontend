@@ -4,8 +4,6 @@ export const ActionTypes = {
   GET:                  '[Album] Get',
   GET_SUCCESS:          '[Album] Get Success',
   GET_FAIL:             '[Album] Get Fail',
-  GET_PHOTOS:           '[Album] Get Photos',
-  GET_PHOTOS_SUCCESS:   '[Album] Get Photos Success',
   GET_ALL:              '[Album] Get All',
   GET_ALL_SUCCESS:      '[Album] Get All Success',
   GET_ALL_FAIL:         '[Album] Get All',
@@ -20,6 +18,10 @@ export const ActionTypes = {
   ADD_MANY:             '[Album] Add Many',
   ADD_MANY_SUCCESS:     '[Album] Add Many Success',
   ADD_MANY_FAIL:        '[Album] Add Many Fail',
+  ADD_TO_DETAIL_OBJECTS: '[Album] Add To Detail Objects',
+  ADD_TO_DETAIL_OBJECTS_SUCCESS:     '[Album] Add To Detail Objects Success',
+  REMOVE_FROM_DETAIL_OBJECTS:     '[Album] Remove From Detail Objects',
+  REMOVE_FROM_DETAIL_OBJECTS_SUCCESS:     '[Album] Remove From Detail Objects Success',
   UPDATE:               '[Album] Update',
   UPDATE_SUCCESS:       '[Album] Update Success',
   UPDATE_FAIL:          '[Album] Update Fail',
@@ -39,7 +41,7 @@ export const ActionTypes = {
  */
 export class GetAll implements Action {
   type = ActionTypes.GET_ALL;
-  constructor(public payload: any = null) { }
+  constructor(public payload: any = {objectType: 'all', detail: false, object: null, query: null }) { }
 }
 
 export class GetAllSuccess implements Action {
@@ -59,16 +61,6 @@ export class Get implements Action {
 
 export class GetSuccess implements Action {
   type = ActionTypes.GET_SUCCESS;
-  constructor(public payload: any = null) { }
-}
-
-export class GetPhotos implements Action {
-  type = ActionTypes.GET_PHOTOS;
-  constructor(public payload: any = null) { }
-}
-
-export class GetPhotosSuccess implements Action {
-  type = ActionTypes.GET_PHOTOS_SUCCESS;
   constructor(public payload: any = null) { }
 }
 
@@ -122,6 +114,34 @@ export class AddManySuccess implements Action {
   constructor(public payload: any = null) { }
 }
 
+export class AddToDetailObjects implements Action {
+  type = ActionTypes.ADD_TO_DETAIL_OBJECTS;
+
+  /**
+   * Create action that add objects list to detail objects list
+   * @param payload
+   * with structure { object: object, objects: array<object> }
+   * object: parent object
+   * objects: array of objects that you need to add to parent object
+   */
+  constructor(public payload: any = { object: null, objects: Array<any> }) { }
+}
+
+export class AddToDetailObjectsSuccess implements Action {
+  type = ActionTypes.ADD_TO_DETAIL_OBJECTS_SUCCESS;
+  constructor(public payload: any = null) { }
+}
+
+export class RemoveFromDetailObjects implements Action {
+  type = ActionTypes.REMOVE_FROM_DETAIL_OBJECTS;
+  constructor(public payload: any = null) { }
+}
+
+export class RemoveFromDetailObjectsSuccess implements Action {
+  type = ActionTypes.REMOVE_FROM_DETAIL_OBJECTS_SUCCESS;
+  constructor(public payload: any = null) { }
+}
+
 export class Update implements Action {
   type = ActionTypes.UPDATE;
   constructor(public payload: any) { }
@@ -167,8 +187,6 @@ export type Actions
   | GetSuccess
   | GetFail
   | GetAll
-  | GetPhotos
-  | GetPhotosSuccess
   | GetAllSuccess
   | GetAllFail
   | Select

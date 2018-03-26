@@ -43,14 +43,14 @@ export class AlbumListComponent implements OnInit {
               private router: Router,
               private mediaObjectService: MediaObjectService
   ) {
-    this.albums = this.store.select(appStore.selectAlbums);
+    this.albums = this.store.select(appStore.selectObjects);
     this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doEvent(event);
     });
   }
 
   ngOnInit() {
-    this.store.dispatch(new fromAlbum.GetAll());
+    this.store.dispatch(new fromAlbum.GetAll({objectType: 'album'}));
   }
 
   doEvent(event: any) {

@@ -44,7 +44,7 @@ export class WMediaSelectionService {
   }
 
   /**
-   * upload, photos, albums, albums_detail, favourites, shared_with_me
+   * upload, photos, albums, favourites, shared_with_me
    * @param {string} currentTab
    */
   open(currentTab: string = 'upload') {

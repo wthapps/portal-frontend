@@ -56,9 +56,9 @@
       {{ field }}
     </button>
     <ul class="dropdown-menu dropdown-menu-right">
-      <li><a (click)="sort('Date', '', 'date')" href="javascript:;"> Date</a></li>
-      <li><a (click)="sort('Month', '', 'month')" href="javascript:;"> Month</a></li>
-      <li><a (click)="sort('Year', '', 'year')" href="javascript:;"> Year</a></li>
+      <li><a (click)="changeView('timeline', 'date');" href="javascript:void(0);"> Date</a></li>
+      <li><a (click)="changeView('timeline', 'month')" href="javascript:void(0);"> Month</a></li>
+      <li><a (click)="changeView('timeline', 'year')" href="javascript:void(0)"> Year</a></li>
     </ul>
   </span>
   <i class="fa can-click" [ngClass]="{'fa-arrow-up': (direction == 'asc'), 'fa-arrow-down': (direction == 'desc')}"

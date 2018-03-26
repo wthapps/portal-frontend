@@ -44,7 +44,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
   viewSize: number = Constants.mediaSliderViewNumber.default;
   groupByTime: string = 'date';
-  currentGroupByTime: string = 'date';
   // this is used in detail pages
   object: any;
   page: string;
@@ -71,9 +70,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
   private pressingCtrlKey: boolean = false;
 
-  private currentPage: string;
   private objectType: string; //photo, album, video, playlist, all
-  private params: any;
   private currentView: number;
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -119,7 +116,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
   doEvent(event: any) {
     switch (event.action) {
       case 'changeView':
-        this.changeView(event.payload.view);
+        this.changeView(event.payload.view, event.payload.groupBy);
         break;
       case 'zoom':
         this.zoom(event.payload);
@@ -170,7 +167,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
     this.viewSize = payload.viewSize;
   }
 
-  changeView(view: string) {
+  changeView(view: string, groupBy: string) {
     this.view = view;
     if (this.view === 'grid') {
       this.groupByTime = '';
@@ -181,11 +178,14 @@ export class WGridListComponent implements OnInit, OnDestroy {
       this.groupBy = '';
     }
     if (this.view === 'timeline') {
-      this.groupByTime = this.currentGroupByTime;
+      this.groupByTime = groupBy || 'date';
       this.groupBy = 'created_at_converted';
     }
   }
 
+  group(event: any) {
+
+  }
 
 
 

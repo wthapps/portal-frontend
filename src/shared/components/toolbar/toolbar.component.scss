@@ -5,17 +5,17 @@
     @include transition($transition-base);
     @include box-shadow(none);
     background-color: $theme-color;
-    color: #ffffff !important;
+    color: #ffffff;
     .btn {
-      color: #ffffff !important;
+      color: #ffffff;
       &:not(.btn-text) {
         &:hover, &:focus {
-          color: $theme-color !important;
+          color: $theme-color;
         }
       }
     }
     .divider {
-      border-right-color: #fff !important;
+      border-right-color: #fff;
     }
     &.active {
       top: 0;

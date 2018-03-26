@@ -144,12 +144,12 @@
         <a class="btn btn-default" draggable="false" href="javascript:void(0);"
            (click)="toolbar.doAction({
              action: 'favourite',
-             payload: { mode: toolbar.object?.favorite ? 'remove' : 'add',
-             selectedObjects: [toolbar.object] }
+             payload: { mode: toolbar.favoriteAll ? 'remove' : 'add',
+             selectedObjects: toolbar.selectedObjects }
            })"
-           pTooltip="{{ toolbar.object?.favorite ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
+           pTooltip="{{ toolbar.favoriteAll ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
            tooltipPosition="bottom">
-          <i class="fa" [ngClass]="toolbar.object?.favorite ? 'fa-star' : 'fa-star-o'"></i>
+          <i class="fa" [ngClass]="toolbar.favoriteAll ? 'fa-star' : 'fa-star-o'"></i>
         </a>
       </li>
       <li>

@@ -5,12 +5,13 @@ import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 export interface State extends EntityState<Partial<any>> {
   loading: boolean;
   loaded:  boolean;
-  failed:  boolean;
-  selectedAlbumId: number;
-  album:    any;
-  albums:  Array<any>;
-  photo: any;
-  photos: Array<any>;
+  detail: boolean; // if state is in details page as album detail, sharing detail
+  selectedObjectId: number;
+  selectedDetailObjectId: number;
+  object:    any;
+  objects:  Array<any>;
+  detailObject: any;
+  detailObjects: Array<any>;
 }
 
 export const albumAdapter: EntityAdapter<Partial<any>> = createEntityAdapter<Partial<any>>();
@@ -21,12 +22,13 @@ const INITIAL_STATE: State = albumAdapter.getInitialState({
   entities: [],
   loading: false,
   loaded:  false,
-  failed:  false,
-  selectedAlbumId: null,
-  album:    null,
-  albums:  [],
-  photo: null,
-  photos: []
+  detail: false,
+  selectedObjectId: null,
+  selectedDetailObjectId: null,
+  object:    null,
+  objects:  [],
+  detailObject: null,
+  detailObjects: []
 });
 
 
@@ -46,7 +48,6 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       return Object.assign({}, state, {
         loaded:   true,
         loading:  false,
-        failed:   false,
         photo:     action.payload
       });
     }
@@ -55,25 +56,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       return Object.assign({}, state, {
         loaded:   false,
         loading:  false,
-        failed:   true,
         photos:     null
-      });
-    }
-
-    case actions.ActionTypes.GET_PHOTOS: {
-      return Object.assign({}, state, {
-        loading: true,
-        photos: [],
-        photo: null
-      });
-    }
-
-    case actions.ActionTypes.GET_PHOTOS_SUCCESS: {
-      return Object.assign({}, state, {
-        loaded:   true,
-        loading:  false,
-        failed:   false,
-        photos:   action.payload.data
       });
     }
 
@@ -84,64 +67,97 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
     }
 
     case actions.ActionTypes.GET_ALL_SUCCESS: {
+      let result: any;
       // add selected attribute
       action.payload.data.map(obj => {
         obj['selected'] = false;
         return obj;
       });
-      return albumAdapter.addAll(action.payload.data, state);
+      if (action.payload.detail) {
+        result = Object.assign({}, state, {
+          loaded:   true,
+          loading:  false,
+          detail: true,
+          detailObjects: action.payload.data,
+          detailObject: null,
+        });
+      } else {
+        result = Object.assign({}, state, {
+          loaded:   true,
+          loading:  false,
+          detail: false,
+          objects:   action.payload.data,
+          object: null,
+          detailObjects: [],
+          detailObject: null,
+        });
+      }
+      return result;
+
+      // return albumAdapter.addAll(action.payload.data, state);
     }
 
     case actions.ActionTypes.GET_ALL_FAIL: {
       return Object.assign({}, state, {
         loaded:   false,
         loading:  false,
-        failed:   true,
-        photos:   []
-      });
-    }
-
-    case actions.ActionTypes.SELECT_ALL: {
-      Object.values(state.entities).map(obj => {
-        obj.selected = true;
-        return obj;
-      });
-      return Object.assign({}, state, {
-        loaded:   false,
-        loading:  false,
-        failed:   true,
         objects:   []
       });
     }
 
-    case actions.ActionTypes.SELECT:
-      Object.values(state.entities).map(obj => {
-        if (obj.id === action.payload.selectedObjects[0].id) {
+    case actions.ActionTypes.SELECT_ALL: {
+      if (state.detail) {
+        Object.values(state.detailObjects).map(obj => {
           obj.selected = true;
-        } else if (action.payload.clearAll) {
-          obj.selected = false;
-        }
-        return obj;
-      });
-      return Object.assign({}, state, {
-        loaded: false,
-        loading: false,
-        failed: true,
-        objects: []
-      });
+          return obj;
+        });
+      } else {
+        Object.values(state.objects).map(obj => {
+          obj.selected = true;
+          return obj;
+        });
+      }
+      return state
+    }
+
+    case actions.ActionTypes.SELECT:
+      if (state.detail) {
+        Object.values(state.detailObjects).map(obj => {
+          if (obj.id === action.payload.selectedObjects[0].id) {
+            obj.selected = true;
+          } else if (action.payload.clearAll) {
+            obj.selected = false;
+          }
+          return obj;
+        });
+      } else {
+        Object.values(state.objects).map(obj => {
+          if (obj.id === action.payload.selectedObjects[0].id) {
+            obj.selected = true;
+          } else if (action.payload.clearAll) {
+            obj.selected = false;
+          }
+          return obj;
+        });
+      }
+      return state;
     case actions.ActionTypes.DESELECT: {
-      Object.values(state.entities).map(obj => {
-        if (obj.id === action.payload.selectedObjects[0].id) {
-          obj.selected = false;
-        }
-        return obj;
-      });
-      return Object.assign({}, state, {
-        loaded: false,
-        loading: false,
-        failed: true,
-        objects: []
-      });
+      if (state.detail) {
+        Object.values(state.detailObjects).map(obj => {
+          if (obj.id === action.payload.selectedObjects[0].id) {
+            obj.selected = false;
+          }
+          return obj;
+        });
+      } else {
+        Object.values(state.objects).map(obj => {
+          if (obj.id === action.payload.selectedObjects[0].id) {
+            obj.selected = false;
+          }
+          return obj;
+        });
+      }
+      return state;
         // return albumAdapter.updateMany(
         //   action.payload.selectedObjects.map(
         //     (object) => Object.assign({}, { id: object.id, changes: object })),
@@ -149,35 +165,45 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         // );
     }
     case actions.ActionTypes.DESELECT_ALL: {
-      Object.values(state.entities).map(obj => {
-        obj.selected = false;
-        return obj;
-      });
-      return Object.assign({}, state, {
-        loaded: false,
-        loading: false,
-        failed: true,
-        objects: []
-      });
+      if (state.detail) {
+        Object.values(state.detailObjects).map(obj => {
+          obj.selected = false;
+          return obj;
+        });
+      } else {
+        Object.values(state.objects).map(obj => {
+          obj.selected = false;
+          return obj;
+        });
+      }
+      return state;
     }
 
     case actions.ActionTypes.FAVORITE_SUCCESS: {
-      Object.values(state.entities).map(obj => {
-        action.payload.selectedObjects.forEach(selectedObject => {
-          if (obj.id === selectedObject.id && action.payload.mode === 'add') {
-            obj.favorite = true;
-          } else if (obj.id === selectedObject.id && action.payload.mode === 'remove') {
-            obj.favorite = false;
-          }
+      if (state.detail) {
+        Object.values(state.detailObjects).map(obj => {
+          action.payload.selectedObjects.forEach(selectedObject => {
+            if (obj.id === selectedObject.id && action.payload.mode === 'add') {
+              obj.favorite = true;
+            } else if (obj.id === selectedObject.id && action.payload.mode === 'remove') {
+              obj.favorite = false;
+            }
+          });
+          return obj;
         });
-        return obj;
-      });
-      return Object.assign({}, state, {
-        loaded: false,
-        loading: false,
-        failed: true,
-        objects: []
-      });
+      } else {
+        Object.values(state.objects).map(obj => {
+          action.payload.selectedObjects.forEach(selectedObject => {
+            if (obj.id === selectedObject.id && action.payload.mode === 'add') {
+              obj.favorite = true;
+            } else if (obj.id === selectedObject.id && action.payload.mode === 'remove') {
+              obj.favorite = false;
+            }
+          });
+          return obj;
+        });
+      }
+      return state;
     }
 
     case actions.ActionTypes.ADD: {
@@ -189,12 +215,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           obj.selected = false;
           return obj;
         });
-        return Object.assign({}, state, {
-          loaded:   false,
-          loading:  false,
-          failed:   true,
-          objects:   []
-        });
+        return state;
     }
 
     default: {
@@ -203,14 +224,15 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
   }
 }
 
-export const getAlbum    = (state: State) => state.album;
-export const getAlbums    = (state: State) => state.albums;
 export const getLoading = (state: State) => state.loading;
 export const getLoaded  = (state: State) => state.loaded;
-export const getFailed  = (state: State) => state.failed;
-export const getAlbumEntities    = (state: State) => state.entities;
-export const getAlbumState   = (state: State) => state;
-export const getPhotos    = (state: State) => state.photos;
+export const getObjectEntities    = (state: State) => state.entities;
+export const getObjectState   = (state: State) => state;
+export const getObjects    = (state: State) => state.objects;
+export const getObject    = (state: State) => state.object;
+export const getDetailObjects    = (state: State) => state.detailObjects;
+export const getDetailObject    = (state: State) => state.detailObject;
+
 
 
 
@@ -219,4 +241,4 @@ export const {
   selectEntities,
   selectAll,
   selectTotal,
-} = albumAdapter.getSelectors(getAlbumState);
+} = albumAdapter.getSelectors(getObjectState);

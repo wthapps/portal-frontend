@@ -47,7 +47,7 @@ export class WGridListHeaderComponent {
     }
   }
 
-  group(groupBy: any) {
-    this.event.emit({action: 'group', data: groupBy});
+  changeView(view: string, groupBy: string) {
+    this.event.emit({action: 'changeView', payload: { view: view, groupBy: groupBy }});
   }
 }

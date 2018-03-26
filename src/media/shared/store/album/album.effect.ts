@@ -51,22 +51,31 @@ export class AlbumEffects {
     .ofType(albumActions.ActionTypes.GET_ALL)
     .map((action: albumActions.GetAll) => action.payload)
     .switchMap(state => {
-      return this.albumService.getAll(state)
-        .map(response => new albumActions.GetAllSuccess(...response))
-        .catch(error  => of(new albumActions.GetAllFail()));
+      if (state.objectType === 'album') {
+        return this.albumService.getAll(state)
+          .map(response => new albumActions.GetAllSuccess({...response, ...state}))
+          .catch(error => of(new albumActions.GetAllFail()));
+      } else {
+          return this.albumService.getPhotosByAlbum(state.object.id)
+            .map(response => new albumActions.GetAllSuccess({...response, ...state}))
+            .catch(error  => {
+
+            });
+        }
     });
 
   @Effect()
-  getPhotos$: Observable<Action> = this.actions$
-    .ofType(albumActions.ActionTypes.GET_PHOTOS)
-    .map((action: albumActions.GetPhotos) => action.payload)
+  addToDetailObjects$: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.ADD_TO_DETAIL_OBJECTS)
+    .map((action: albumActions.AddToDetailObjects) => action.payload)
     .switchMap(state => {
-      return this.albumService.getPhotosByAlbum(state.id)
-        .map(response => new albumActions.GetPhotosSuccess(...response))
+      return this.albumService.addToAlbum(state.object.id, state.photos)
+        .map(response => new albumActions.AddToDetailObjectsSuccess(...response))
         .catch(error  => {
 
         });
     });
+
 
   @Effect()
   update$: Observable<Action> = this.actions$

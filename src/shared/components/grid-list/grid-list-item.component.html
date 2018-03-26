@@ -1,6 +1,4 @@
-<div class="photo-box"
-     [ngClass]="{'selected': object.selected}"
-     id="photo-box-img-{{ object.id }}">
+<div class="photo-box" [ngClass]="{'selected': object.selected}" id="photo-box-img-{{ object.id }}">
   <div class="photo-box-action photo-box-action-right">
     <i (click)="doAction({action:'favourite', payload: {mode: 'add', selectedObjects: [object] }})" class="fa fa-star-o"
        *ngIf="!object.favorite"></i>
@@ -9,38 +7,38 @@
   </div>
 
   <!--type == 'photo'-->
-  <!--<div *ngIf="object.object_type == 'photo'" class="photo-box-figure"-->
-       <!--(click)="doAction({action:'select', payload: {selectedObject: object }})">-->
-    <!--<div class="photo-box-input">-->
-      <!--<i class="fa fa-check"></i>-->
-    <!--</div>-->
-    <!--<figure class="img-center-dv can-click" (dblclick)="doAction({action:'previewAllPhotos', payload: {selectedObject: object}})">-->
-      <!--<div class="photo-box-figure-in">-->
-        <!--<img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.thumbnail_url" alt="">-->
-      <!--</div>-->
-    <!--</figure>-->
-    <!--<div class="photo-box-name">-->
-      <!--<span class="can-click" (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">-->
-        <!--{{ object.name }}.{{ object.extension }}-->
-      <!--</span>-->
-      <!--<div class="hidden">-->
-        <!--<i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>-->
-        <!--<i *ngIf="object.favorite" class="fa fa-star"></i>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<div class="photo-box-owner">{{ object.owner.name }}</div>-->
-    <!--<div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>-->
-    <!--<div class="photo-box-size">{{ object.size | bytes:0 }}</div>-->
-  <!--</div>-->
+  <div *ngIf="object.object_type == 'photo'" class="photo-box-figure" (click)="select(object)">
+    <div class="photo-box-input" (click)="toggleSelection(object, $event)">
+      <i class="fa fa-check"></i>
+    </div>
+    <figure class="img-center-dv can-click" (dblclick)="doAction({action:'previewAllPhotos', payload: {selectedObject: object}})">
+      <div class="photo-box-figure-in">
+        <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url" alt="">
+      </div>
+    </figure>
+    <div class="photo-box-name">
+      <span class="can-click" title="Double click to edit name"
+            (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
+        {{ object.name }}.{{ object.extension }}
+      </span>
+      <div class="hidden">
+        <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
+        <i *ngIf="object.favorite" class="fa fa-star"></i>
+      </div>
+    </div>
+    <div class="photo-box-owner">{{ object.owner.name }}</div>
+    <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
+    <div class="photo-box-size">{{ object.size | bytes:0 }}</div>
+  </div>
 
   <!--type == 'album'-->
-  <div class="photo-box-figure" (click)="select(object)">
+  <div *ngIf="object.object_type == 'album'" class="photo-box-figure" (click)="select(object)">
     <div class="photo-box-input" (click)="toggleSelection(object, $event)">
       <i class="fa fa-check"></i>
     </div>
     <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
       <div class="photo-box-figure-in">
-        <img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.photo_default" alt="">
+        <img draggable="false" class="img-center lazyload" [src]="object.photo_default" alt="">
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->

@@ -41,10 +41,10 @@ export class ConvertByPatternPipe implements PipeTransform {
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
     if (pattern == 'date') {
-      current = date.getDate() + '-' + monthNames[date.getMonth()] + '-' + date.getFullYear();
+      current = `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
     }
     if (pattern == 'month') {
-      current = monthNames[date.getMonth()] + '-' + date.getFullYear();
+      current = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
     }
     if (pattern == 'year') {
       current = date.getFullYear();
