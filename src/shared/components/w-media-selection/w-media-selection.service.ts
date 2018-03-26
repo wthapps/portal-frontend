@@ -27,7 +27,7 @@ export class WMediaSelectionService {
   private mediaParentSubject: BehaviorSubject<Media> = new BehaviorSubject<Media>(null);
 
   open$: any;
-  private openSubject: Subject<boolean> = new Subject<boolean>();
+  private openSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   multipleSelection$: any;
   private multipleSelectionSubject: Subject<boolean> = new Subject<boolean>();
@@ -43,12 +43,16 @@ export class WMediaSelectionService {
     this.multipleSelection$ = this.multipleSelectionSubject.asObservable();
   }
 
-  open() {
-    this.openSubject.next(true);
+  /**
+   * upload, photos, albums, albums_detail, favourites, shared_with_me
+   * @param {string} currentTab
+   */
+  open(currentTab: string = 'upload') {
+    this.openSubject.next({currentTab: currentTab});
   }
 
   close() {
-    this.openSubject.next(false);
+    this.openSubject.next(null);
     this.clear();
   }
 

@@ -9,7 +9,6 @@ import { Media } from '@shared/shared/models/media.model';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import 'rxjs/add/operator/takeUntil';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
-import { TextBoxSearchComponent } from '@shared/partials/search-box/textbox-search.component';
 
 @Component({
   selector: 'w-media-selection',
@@ -32,7 +31,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   dropzoneConfig: DropzoneConfigInterface = {
     clickable: true,
-    maxFiles: null, //1
+    maxFiles: null, // 1
     autoReset: null,
     errorReset: null,
     cancelReset: null
@@ -66,7 +65,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       .takeUntil(componentDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
-          this.initialState();
+          this.initialState(res);
           this.open();
           this.getObjects();
         }
@@ -76,10 +75,10 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  initialState() {
+  initialState(initialState: any) {
     this.mediaSelectionService.clear();
-    this.currentTab = 'upload'; // 'photos';
-    this.nextLink = null; // 'media/photos'
+    this.currentTab = initialState.currentTab; // 'upload', 'photos';
+    this.nextLink = this.buildNextLink(); // 'media/photos'
     this.isLoading = false;
   }
 
@@ -257,7 +256,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         urlAPI = `media/search?active=1&q=${this.searchText}`;
         break;
       default:
-        urlAPI = `media/photos?active=1`;
+        urlAPI = null;
         break;
     }
     return urlAPI;
