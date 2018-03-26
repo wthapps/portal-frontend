@@ -82,6 +82,11 @@ $note-editor-aside-w: 400px;
       padding-left: 0;
       padding-right: 0;
       padding-bottom: 0;
+      .ql-color-picker {
+        .ql-picker-options {
+          width: 112px;
+        }
+      }
     }
     .quill-toolbar-attachment {
       padding: 8px 0;
