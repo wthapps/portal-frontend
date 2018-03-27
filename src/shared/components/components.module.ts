@@ -8,6 +8,8 @@ import { NotificationDropDownComponent } from "@shared/components/header/notific
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { NotificationListModule } from "@shared/shared/components/notification-list/notification-list.module";
 import { ChatNotificationComponent } from "@shared/components/header/chat-notification/chat-notification.component";
+import { PipeModule } from "@shared/shared/pipe/pipe.module";
+import { ZChatEmojiModule } from "@shared/shared/emoji/emoji.module";
 
 @NgModule({
   imports: [
@@ -16,6 +18,8 @@ import { ChatNotificationComponent } from "@shared/components/header/chat-notifi
     ReactiveFormsModule,
     InfiniteScrollModule,
     NotificationListModule,
+    ZChatEmojiModule,
+    PipeModule,
     TooltipModule,
   ],
   declarations: [

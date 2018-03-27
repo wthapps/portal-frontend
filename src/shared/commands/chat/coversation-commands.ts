@@ -8,10 +8,11 @@ export class ConversationApiCommands extends ApiCommand {
     return this.createRequest('post', 'zone/chat/notification/mark_as_read', conversation);
   }
 
-  static markAllAsRead(conversations: any) {
-    const observerables = conversations.map((c: any) => {
-      return this.markAsRead(conversations);
-    })
-    return concat(...observerables);
+  static mostRecentConversations() {
+    return this.createRequest('get', 'zone/chat/conversations/most_recent_conversations');
+  }
+
+  static markAllAsRead() {
+    return this.createRequest('post', 'zone/chat/notification/mark_all_as_read');
   }
 }

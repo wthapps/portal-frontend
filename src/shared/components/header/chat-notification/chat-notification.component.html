@@ -2,8 +2,8 @@
   <button (click)="viewAllNotifications()" type="button" class="btn btn-default dropdown-toggle"
           pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
-    <span class="notification-num" *ngIf="(notificationService.newNotifCount + connectionService.newNotifCount) > 0">
-      {{ notificationService.newNotifCount + connectionService.newNotifCount }}
+    <span *ngIf="notificationCount" class="notification-num">
+      {{notificationCount}}
     </span>
   </button>
 </div>
@@ -13,28 +13,16 @@
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
           pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
-    <span class="notification-num" *ngIf="(notificationService.newNotifCount + connectionService.newNotifCount) > 0">
-      {{ notificationService.newNotifCount + connectionService.newNotifCount }}
+    <span *ngIf="notificationCount" class="notification-num">
+      {{notificationCount}}
     </span>
   </button>
   <div id="nav-notification-list" class="nav-notification-list dropdown-menu dropdown-menu-right">
     <div class="nav-notification-list-header">
-      <nav class="nav-tabs-wrap pl10 pr10 clearfix">
+      <nav class="nav-tabs-wrap p10 clearfix">
         <div class="pull-right">
-          <button class="btn btn-default btn-default-no-border" type="button" (click)="onSettingModal()"><i class="fa fa-cog"></i></button>
+          <a (click)="markAllAsRead()"> Mark all as read </a>
         </div>
-        <ul class="nav nav-tabs pull-left list-unstyled clearfix visible-md-block visible-lg-block">
-          <li [ngClass]="type==undefined || type == 'update' ? 'active': ''">
-            <a (click)="onSelectedTab('update')" href="javascript:;">
-              Update <span class="badge" [ngClass]="{'active': (notificationService.newNotifCount > 0)}"> {{ notificationService.newNotifCount }}</span>
-            </a>
-          </li>
-          <li [ngClass]="type=='connection'? 'active': ''">
-            <a (click)="onSelectedTab('connection')" href="javascript:;">
-              Connection <span class="badge" [ngClass]="{'active': (connectionService.newNotifCount > 0)}"> {{ connectionService.newNotifCount }}</span>
-            </a>
-          </li>
-        </ul>
       </nav>
     </div>
     <div class="nav-notification-list-content"
@@ -42,15 +30,48 @@
          observeAttributes="true"
          infinite-scroll
          [scrollWindow]="false"
-         (scrolled)="getMoreNotifications()">
-      <app-partials-notification-list #notifications [size]="'xs'" [type]="type"></app-partials-notification-list>
+         (scrolled)="getMore()">
 
-      <div *ngIf="notificationService.notifications.length == 0" class="p10">
-        Currently you have no notifications
+      <div class="notification-list notification-list-xs">
+        <div *ngFor="let conversation of conversations" class="noti-item can-click" [ngClass]="conversation.group_user.notification_count > 0 ? 'conversation_active' : ''">
+          <div class="noti-item-avatar">
+            <img *ngIf="conversation.group_type != 'multiple'" class="avatar-xs" [src]="conversation.group_user.display.image" alt="">
+            <img *ngIf="conversation.group_type == 'multiple'" class="avatar-xs" [src]="conversation.image" alt="">
+          </div>
+          <div class="noti-item-content">
+            <div>
+              <span *ngIf="conversation.group_type != 'multiple'" class="bold">{{conversation.group_user.display.name}}</span>
+              <span *ngIf="conversation.group_type == 'multiple'" class="bold">{{(conversation.name || conversation.users_name) | maxLength:30}}</span>
+              <br>
+              <span *ngIf="conversation.message" class="pt5 message">
+                <span *ngIf="conversation.message.message_type == 'text'" [innerHtml]="conversation.message.message | wthEmojis | linkify | stripHtml | safeHtml"></span>
+                <span *ngIf="conversation.message.message_type == 'request'"> Sent a request </span>
+                <span *ngIf="conversation.message.message_type == 'file'"> Sent a file </span>
+              </span>
+              <br>
+              <small *ngIf="conversation.message" class="text-fade"> {{conversation.message.created_at | timeFormat}} </small>
+            </div>
+          </div>
+          <div class="noti-item-action">
+
+              <div class="dropdown-submenu">
+                <button type="button" class="btn btn-default dropdown-toggle"
+                        pTooltip="{{ tooltip.moreActions }}" tooltipPosition="bottom" (click)="subToggle($event)">
+                  <i class="fa fa-ellipsis-v" style="pointer-events: none"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" style="width: auto !important; top: 22px">
+                  <li>
+                    <a>Mark as read</a>
+                    <a>Turn off notification</a>
+                  </li>
+                </ul>
+              </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="nav-notification-list-footer">
-      <a href="javascript:;" (click)="viewAllNotifications()">View all {{ type == 'connection' ? 'connections' : 'updates'}}</a>
+      <a href="javascript:;" (click)="viewAllNotifications()"> Go to WTH!Chat </a>
     </div>
   </div>
 </div>

@@ -94,6 +94,7 @@ import { PartialModule } from '@wth/shared/partials';
 import { FileUploaderService } from "@shared/services/file/file-uploader.service";
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { ComponentsModule } from "@shared/components/components.module";
+import { ApiProxyService } from "@shared/services/apiproxy.service";
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -229,6 +230,7 @@ export class SharedModule {
         WObjectListService,
         WMediaSelectionService,
         DomService,
+        ApiProxyService,
         FileUploaderService,
         WindowService
       ]

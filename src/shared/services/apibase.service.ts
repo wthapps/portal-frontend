@@ -31,7 +31,7 @@ export class ApiBaseService {
     'ACCEPT': 'application/json'
   });
 
-  constructor(private http: HttpClient,
+  constructor(public http: HttpClient,
               public router: Router,
               public cookieService: CookieService) {  }
 
@@ -84,7 +84,7 @@ export class ApiBaseService {
     });
   }
 
-  private call(method: string, path: string, body: any = '', options:any = {}): Observable<any> {
+  protected call(method: string, path: string, body: any = '', options:any = {}): Observable<any> {
     this.buildOptions(options);
     if (method == 'get' || method == 'delete') {
       return this.http[method](this.baseUrl + path + UrlConverterUtil.objectToUrl(body), this.options)
@@ -116,7 +116,7 @@ export class ApiBaseService {
     }
   }
 
-  private handleError(error: any | any): any {
+  protected handleError(error: any | any): any {
     if (error.status == 401 && error.statusText == 'Unauthorized') {
       window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${window.location['href']}`;
     }
