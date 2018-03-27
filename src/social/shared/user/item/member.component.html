@@ -15,7 +15,7 @@
   </div>
   <div class="media-right" style="min-width: 275px;">
     <div class="pull-right no-wrap">
-      <div class="btn-group" role="group" aria-label="">
+      <div class="btn-group" role="group" aria-label="" *ngIf="data?.uuid !== user?.uuid">
         <ng-template [ngIf]="data.friend_status == friendStatus.stranger">
           <button class="btn btn-outline-default" type="button" (click)="addFriend(data)">
             <i class="fa fa-user-plus"></i> Add Friend
@@ -63,6 +63,7 @@
             </ul>
           </div>
         </ng-template>
+
       </div>
 
       <!--menu-->

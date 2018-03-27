@@ -1,5 +1,6 @@
 import { Component, OnInit, HostBinding, Input, OnChanges, EventEmitter, Output } from '@angular/core';
 import * as fromMember from '../../shared/actions/member';
+import { User } from '@wth/shared/shared/models';
 
 @Component({
   selector: 'z-social-share-profile-list',
@@ -9,6 +10,7 @@ export class ZSocialShareProfileListComponent implements OnInit, OnChanges {
   @Input() data: any;
   @Input() type: string; // members, member, communities, community
   @Input() layout: string = 'list-group'; //row
+  @Input() user: User;
   @Input() class: string = 'list-group-item'; //col-xs-6
   @Output() outEvent: EventEmitter<any> = new EventEmitter();
 

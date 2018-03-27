@@ -16,7 +16,7 @@ import { UserService, PhotoUploadService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { Router } from '@angular/router';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { takeUntil, filter, map, mergeMap } from 'rxjs/operators';
+import { takeUntil, filter, map, mergeMap, take } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
@@ -318,8 +318,16 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   showEmojiBtn(event: any) {
-    console.log(event);
     this.emojiService.show(event);
+
+    this.emojiService.selectedEmoji$.pipe(
+      take(1)
+    ).subscribe(data => {
+      console.debug(data);
+      this.editor.addEmoj(data.shortname);
+      // this.comment.content = this.commentDomValue + emoj;
+      this.hasUpdatedContent = true;
+    });
   }
 
   private setPhoto(photo: any) {

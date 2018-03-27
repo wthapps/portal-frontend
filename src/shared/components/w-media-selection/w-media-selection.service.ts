@@ -27,7 +27,7 @@ export class WMediaSelectionService {
   private mediaParentSubject: BehaviorSubject<Media> = new BehaviorSubject<Media>(null);
 
   open$: any;
-  private openSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private openSubject: Subject<any> = new Subject<any>();
 
   multipleSelection$: any;
   private multipleSelectionSubject: Subject<boolean> = new Subject<boolean>();

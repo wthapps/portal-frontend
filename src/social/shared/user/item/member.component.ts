@@ -5,6 +5,7 @@ import { SocialService } from '../../services/social.service';
 import { SocialFavoriteService } from '../../services/social-favorites.service';
 import * as fromMember from '../../../shared/actions/member';
 import { Constants } from '@wth/shared/constant';
+import { User } from '@wth/shared/shared/models';
 
 @Component({
   selector: 'z-social-share-profile-member',
@@ -12,6 +13,7 @@ import { Constants } from '@wth/shared/constant';
 })
 export class ZSocialShareProfileMemberComponent {
   @Input() data: any;
+  @Input() user: User;
   @Output() outEvent: EventEmitter<any> = new EventEmitter();
 
   favourite: any; // toggle favourites status for members, communities

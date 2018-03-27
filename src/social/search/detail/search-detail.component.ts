@@ -1,7 +1,7 @@
 import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { SocialService } from '../../shared/services/social.service';
-import { ServiceManager, UrlService } from '@wth/shared/services';
+import { ServiceManager, UrlService, AuthService } from '@wth/shared/services';
 
 declare let _: any;
 
@@ -37,6 +37,7 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
   constructor(private router: Router,
               private route: ActivatedRoute,
               public serviceManager: ServiceManager,
+              public authService: AuthService,
               private urlService: UrlService,
               private socialService: SocialService) {
     this.term = location.pathname.toString().split('/')[2];

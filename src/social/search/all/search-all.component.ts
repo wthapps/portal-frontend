@@ -1,9 +1,8 @@
 import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiBaseService, ServiceManager } from '@wth/shared/services';
+import { ApiBaseService, ServiceManager, AuthService } from '@wth/shared/services';
 
 @Component({
-
   selector: 'z-social-search-all',
   templateUrl: 'search-all.component.html',
   styleUrls: ['../search.component.scss'],
@@ -25,7 +24,8 @@ export class ZSocialSearchResultAllComponent implements OnDestroy {
   params: any;
   term: string = 'all';
 
-  constructor(private route: ActivatedRoute, private router: Router, private api: ApiBaseService) {
+  constructor(private route: ActivatedRoute, private router: Router, private api: ApiBaseService,
+              public authService: AuthService ) {
       this.sub = this.route.queryParams.subscribe((params: any) => {
       this.params = params['q'];
       if (this.params) {

@@ -47,6 +47,7 @@
 
         <z-social-share-profile-list *ngIf="group=='members' || group=='communities'"
                                      [data]="result[group]"
+                                     [user]="authService.user$ | async"
                                      [type]="group">
         </z-social-share-profile-list>
 
