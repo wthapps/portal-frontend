@@ -8,7 +8,8 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil, filter, map } from 'rxjs/operators';
+import { Subscription } from 'rxjs/Subscription';
+import { takeUntil, filter, map, tap, mergeMap } from 'rxjs/operators';
 
 
 import { SocialService } from '../../services/social.service';
@@ -16,7 +17,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
 import { SoPost } from '@shared/shared/models';
 import { Constants } from '@wth/shared/constant';
-import { PhotoModalDataService, PhotoUploadService, UserService } from '@wth/shared/services';
+import { PhotoUploadService, UserService } from '@wth/shared/services';
 import { LoadingService } from "@shared/shared/components/loading/loading.service";
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 
@@ -74,6 +75,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   readonly soPostPrivacy: any = Constants.soPostPrivacy;
 
   private destroySubject: Subject<any> = new Subject<any>();
+  private uploadSubscriptions: {[filename: string]: Subscription } = {} ;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -209,7 +211,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   uploadFiles(files: Array<any>) {
-    this.photoUploadService.uploadPhotos(files)
+    if(files.length <= 0)
+      return;
+    let subscription = this.photoUploadService.uploadPhotos(files)
       .subscribe((res: any) => {
         this.files.shift(); // remove file was uploaded
         // Only add distinct photos into post edit
@@ -219,10 +223,16 @@ export class PostEditComponent implements OnInit, OnDestroy {
       }, (err: any) => {
         console.log('Error when uploading files ', err);
       });
+
+    this.uploadSubscriptions[files[0].name]= subscription;
   }
 
   cancelUploading(file: any) {
     _.pull(this.files, file);
+    if(file.name && this.uploadSubscriptions[file.name]) {
+      this.uploadSubscriptions[file.name].unsubscribe();
+      delete this.uploadSubscriptions[file.name];
+    }
   }
 
   removePhoto(photo: any, event: any) {
@@ -250,12 +260,25 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.post.photos = _.uniqBy(_.flatten([this.post.photos, items]), 'id');
     });
 
+    // this.mediaSelectionService.uploadingMedias$.pipe(
+    //   takeUntil(close$),
+    //   map(([file, dataUrl]) => file)
+    // ).subscribe((item: any[]) => {
+    //   console.debug('type of: ', typeof item);
+    //   this.uploadOne(item);
+    // });
+
     this.mediaSelectionService.uploadingMedias$.pipe(
-      takeUntil(close$),
-      map(([file, dataUrl]) => file)
-    ).subscribe((item: any[]) => {
-      this.uploadOne(item);
-    });
+        takeUntil(close$),
+        map(([file, dataUrl]) => file),
+        filter(file => this.photoUploadService.isValidImage(file)),
+        tap(file => {
+          this.files.push(file);
+          this.modal.open();
+        })
+      ).subscribe((item: any[]) => {
+        this.uploadFiles([item]);
+      });
   }
 
   dismiss(photos: any) {
@@ -265,17 +288,17 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.mediaSelectionService.close();
   }
 
-  uploadOne(file: any) {
-    // Filter valid image type
-    let files = [file];
-    let valid_images = this.photoUploadService.getValidImages(files);
-
-    _.forEach(valid_images, (file: any) => {
-      this.files.push(file);
-    });
-    this.modal.open();
-    this.uploadFiles(files);
-  }
+  // uploadOne(file: any) {
+  //   // Filter valid image type
+  //   let files = [file];
+  //   let valid_images = this.photoUploadService.getValidImages(files);
+  //
+  //   _.forEach(valid_images, (file: any) => {
+  //     this.files.push(file);
+  //   });
+  //   this.modal.open();
+  //   this.uploadFiles(files);
+  // }
 
   customPrivacy(type: string, event: any) {
     event.preventDefault();
@@ -357,18 +380,5 @@ export class PostEditComponent implements OnInit, OnDestroy {
     if (privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
       return post.custom_objects[0].name;
     return privacy.replace('_', ' ');
-  }
-
-  private subscribePhotoSelectEvents() {
-    // let closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$, this.photoSelectDataService.dismissObs$, this.destroySubject.asObservable());
-    //
-    // this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe((photos: any) => {
-    //   this.next(photos);
-    // });
-
-    // this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe((files: any) => {
-    //   this.upload(files);
-    // });
-
   }
 }
