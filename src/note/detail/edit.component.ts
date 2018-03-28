@@ -706,7 +706,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
     for(let i = 0; i < files.length; i++) {
       let f = files[i];
-      let sub = this.fileUploaderService.uploadMultipleGenericFilesPolicy([f]).subscribe((response: any) => {
+      let sub = this.fileUploaderService.uploadGenericFile(f).subscribe((response: any) => {
         if (!response.error) {
           this.note.attachments = this.note.attachments.map(att => { if (att.name == response.data.full_name && !att.uuid) return response.data; return att});
           this.form.controls['attachments'].setValue(this.note.attachments);

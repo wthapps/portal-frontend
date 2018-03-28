@@ -5,7 +5,7 @@ import { GenericFile } from "@shared/shared/models/generic-file.model";
 import { Observer, Observable } from "rxjs";
 import * as Boom from "boom";
 import { of } from "rxjs/observable/of";
-import { map, concatAll, catchError, mergeAll } from "rxjs/operators";
+import { map, concatAll, catchError, mergeAll, mergeMap } from "rxjs/operators";
 import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
 import { _throw } from 'rxjs/observable/throw';
 import { from } from 'rxjs/observable/from';
@@ -16,20 +16,20 @@ export class FileUploaderService {
   constructor(private genericFileService: GenericFileService){}
 
   uploadGenericFile(file: any) : Observable<any> {
-    if (!file) throw Boom.badData('file is empty');
-    return new Observable((observer: any) => {
-      FileReaderUtil.read(file).then((event: any) => {
-        let genericFile = new GenericFile({
+    if (!file) {
+      return _throw(Boom.badData('file is empty'));
+    }
+    return of(file).pipe(
+      mergeMap(file => FileReaderUtil.read(file), (file, event) => {
+        return new GenericFile({
           file: event.target.result,
           name: file.name,
           content_type: file.type,
           parent: file.parent
         });
-        this.genericFileService.create(genericFile).take(1).subscribe((res: any) => {
-          observer.next(res);
-        });
-      });
-    })
+      }),
+      mergeMap(genericFile => this.genericFileService.create(genericFile))
+    );
   }
 
   uploadMultipleGenericFiles(files: any): Observable<any> {
