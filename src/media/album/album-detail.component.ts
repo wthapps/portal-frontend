@@ -167,7 +167,7 @@ export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
         this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
           .subscribe((photos => {
             this.doEvent({action: 'addPhotoToAlbum', payload: {photos: photos }});
-        });
+        })
 
         this.mediaSelectionService.uploadingMedias$.subscribe((res: any) => {
 

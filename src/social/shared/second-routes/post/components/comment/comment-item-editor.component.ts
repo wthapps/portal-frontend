@@ -20,6 +20,7 @@ import { takeUntil, filter, map, mergeMap, take } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
+import { Subject } from 'rxjs';
 
 
 export enum CommentEditorMode {
@@ -65,6 +66,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   tooltip: any = Constants.tooltip;
 
   textContent = 'Let\'s try 1st sample';
+  cancelPhotoSubject: Subject<any> = new Subject<any>();
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -99,29 +101,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve', preserveFragment: true})
       .then(() => this.router.navigate(['profile', uuid]));
   }
-
-  // onKey(e: any) {
-  //   // Create, Update, Reply
-  //   if (e.keyCode == 13 && !e.shiftKey) {
-  //     e.preventDefault();
-  //     this.setCommentContent(e.srcElement.innerHTML);
-  //     if (this.checkValidForm()) {
-  //       // this.comment.content = this.commentEditorForm.value;
-  //       this.post(this.comment.content);
-  //     } else {
-  //       this.cancel();
-  //     }
-  //     return;
-  //   } else if (e.keyCode == 13 && e.shiftKey) {
-  //     return;
-  //   } else if (e.keyCode == 27) {
-  //     this.cancel();
-  //     return;
-  //   }
-  //
-  //   this.showEmoji = false;
-  //   this.hasUpdatedContent = true;
-  // }
 
   handleKeyUp(e: any) {
     if (e.keyCode === 13) {
@@ -203,7 +182,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.mediaSelectionService.open();
     this.mediaSelectionService.setMultipleSelection(false);
 
-    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, this.cancelPhotoSubject, componentDestroyed(this));
     this.mediaSelectionService.selectedMedias$.pipe(
       takeUntil(close$),
       filter(items => items.length > 0)
@@ -333,5 +312,9 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   private setPhoto(photo: any) {
     this.comment.photo = photo;
     this.commentEditorForm.controls['photo'].setValue(photo);
+
+    if(photo == null) {
+      this.cancelPhotoSubject.next('');
+    }
   }
 }

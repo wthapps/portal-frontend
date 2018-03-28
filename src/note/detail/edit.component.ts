@@ -51,6 +51,7 @@ import DividerBlot from '@wth/core/quill/blots/divider';
 import { Font, Size } from '@wth/core/quill/blots/font-size';
 import { FileUploaderService } from "@shared/services/file/file-uploader.service";
 import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
+import { Subscription } from 'rxjs';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -101,6 +102,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   private EXCLUDE_FORMATS: string[] = ['link'];
   resize: any;
   context$: any;
+
+
+  private uploadSubscriptions: {[filename: string]: Subscription } = {} ;
 
   constructor(
     private fb: FormBuilder,
@@ -477,7 +481,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       componentDestroyed(this)
     );
     this.mediaSelectionService.selectedMedias$
-      .pipe(takeUntil(close$), filter((items: any[]) => items.length > 0))
+      .pipe(
+        takeUntil(close$),
+        filter((items: any[]) => items.length > 0))
       .subscribe(photos => {
         photos.forEach((photo: any) =>
           this.insertInlineImage(null, photo.url, photo.id)
@@ -682,6 +688,11 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   cancelUpload(file: any) {
     this.note.attachments = _.pull(this.note.attachments, file);
     this.form.controls['attachments'].setValue(this.note.attachments);
+
+    if(file.name && this.uploadSubscriptions[file.name]) {
+      this.uploadSubscriptions[file.name].unsubscribe();
+      delete this.uploadSubscriptions[file.name];
+    }
   }
 
   selectFiles(event: any) {
@@ -692,12 +703,18 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     const filesAddedPolicy = FileUploadPolicy.allowMultiple(files);
     this.note.attachments = [...this.note.attachments, ...filesAddedPolicy.filter(file => file.allow == true)];
 
-    this.fileUploaderService.uploadMultipleGenericFilesPolicy(files).subscribe((response: any) => {
-      if (!response.error) {
-        this.note.attachments = this.note.attachments.map(att => { if (att.name == response.data.full_name && !att.uuid) return response.data; return att});
-        this.form.controls['attachments'].setValue(this.note.attachments);
-      }
-    });
+
+    for(let i = 0; i < files.length; i++) {
+      let f = files[i];
+      let sub = this.fileUploaderService.uploadMultipleGenericFilesPolicy([f]).subscribe((response: any) => {
+        if (!response.error) {
+          this.note.attachments = this.note.attachments.map(att => { if (att.name == response.data.full_name && !att.uuid) return response.data; return att});
+          this.form.controls['attachments'].setValue(this.note.attachments);
+        }
+      });
+
+      this.uploadSubscriptions[f.name] = sub;
+    }
     const filesNotAllow = filesAddedPolicy.filter(file => file.allow == false);
     if(filesNotAllow.length > 0) this.commonEventService.broadcast({channel: 'LockMessage', payload: filesNotAllow});
   }
@@ -837,11 +854,13 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       });
 
     this.mediaSelectionService.uploadingMedias$
-      .pipe(takeUntil(close$), map(([file, dataUrl]) => [file]))
+      .pipe(
+        takeUntil(close$),
+        map(([file, dataUrl]) => [file]))
       .subscribe((files: any) => {
         this.note.attachments.push(...files);
         _.forEach(files, (file: any) => {
-          this.photoUploadService.uploadPhotos(files).subscribe(
+          let sub = this.photoUploadService.uploadPhotos(files).subscribe(
             (response: any) => {
               let index = _.indexOf(this.note.attachments, file);
               this.note.attachments[index] = response.data;
@@ -851,6 +870,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
               console.log('Error when uploading files ', err);
             }
           );
+
+          this.uploadSubscriptions[file.name] = sub;
         });
       });
   }
