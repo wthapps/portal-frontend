@@ -64,31 +64,30 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
     }
   }
 
-  importGoogleContacts(): Promise<any> {
-    this.importStatus = undefined;
-    return this.gapi.isSignedIn()
-      .then((user: any) => {
-          this.modalDock.open();
-          this.importStatus = this.IMPORT_STATUS.importing;
-          return this.gapi.startImportContact(user);}
-        ,(err: any) => {
-          this.importStatus = this.IMPORT_STATUS.error;
-          return this.importDone(err);
-        })
-      .then((data: any) => {
-        if(data !== undefined) {
-          this.importedContacts = data;
-          this.successfulNum = this.gapi.totalImporting;
-          this.contactService.addMoreContacts(data);
-          return this.importDone();
-        } else {
-          let err: any = new Error('import contact have no data');
-          return this.importDone(err);
-        }
-      },(err: any) => {
-        console.log('importContact err: ', err);
-        return this.importDone(err);
-      });
+  async importGoogleContacts() {
+    try {
+      this.importStatus = undefined;
+      const user = await this.gapi.isSignedIn();
+      this.modalDock.open();
+      this.importStatus = this.IMPORT_STATUS.importing;
+      const data = await this.gapi.startImportContact(user);
+      let result = undefined;
+      if(data !== undefined) {
+        this.importedContacts = data;
+        this.successfulNum = this.gapi.totalImporting;
+        this.contactService.addMoreContacts(data);
+        result = await this.importDone();
+      } else {
+        let err: any = new Error('import contact have no data');
+        result = await this.importDone(err);
+      }
+      return result;
+    }
+    catch (err) {
+      console.warn('importContact err: ', err);
+      this.importStatus = this.IMPORT_STATUS.error;
+      return this.importDone(err);
+    };
   }
 
   importFile(payload: any) {

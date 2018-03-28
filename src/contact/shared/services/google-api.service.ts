@@ -85,35 +85,30 @@ export class GoogleApiService {
     }
   }
 
-  startImportContact(user1?: any): Promise<any> {
+  async startImportContact(user1?: any) {
     let user = user1 || this.GoogleAuth.currentUser.get();
     let isAuthorized = user.hasGrantedScopes(this.SCOPE);
     this.totalImporting = 0;
     console.log('user: ', user);
-    if (_.get(user, 'Zi.access_token') != undefined && isAuthorized)
-      return this.getGoogleContactsList(user.Zi.access_token)
-        .then((data: any) => {
-          console.log('client request result: ', data);
-          this.totalImporting = _.get(data, 'feed.entry', []).length;
-          return this.mappingParams(_.get(data, 'feed.entry', []));
-        },
-        (err: any) => {
-          return Promise.reject( err);
-        })
-        .then((mapped_data: any) => { return this.importContactsToDb({
-            import_info: {provider: 'google'},
-            contacts: mapped_data
-        }); }
-        , (err: any) => {
-          this.revokeAccess();
-          return Promise.reject( err);
-        })
-        .then((data: any) => {
-          this.revokeAccess();
-          return Promise.resolve(data);
+    if (_.get(user, 'Zi.access_token') != undefined && isAuthorized) {
+      const data = await this.getGoogleContactsList(user.Zi.access_token)
+      this.totalImporting = _.get(data, 'feed.entry', []).length;
+      const mapped_data = this.mappingParams(_.get(data, 'feed.entry', []));
+      try {
+        const importedContacts = await this.importContactsToDb({
+          import_info: {provider: 'google'},
+          contacts: mapped_data
         });
+
+        this.revokeAccess();
+        return importedContacts;
+      }
+      catch (err) {
+        this.revokeAccess();
+      }
+    }
     else
-      return Promise.reject(new Error(`access_token not found. Please recheck: ${user}`));
+      throw Error(`access_token not found. Please recheck: ${user}`);
   }
 
   revokeAccess() {
