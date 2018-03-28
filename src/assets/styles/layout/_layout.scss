@@ -3,6 +3,7 @@
   min-height: 100vh;
   @include flexbox;
   @include flex-direction(column);
+  padding-top: $header-height;
 }
 
 .main {

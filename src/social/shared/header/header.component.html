@@ -1,34 +1,32 @@
-<div class="header-nav-left">
-  <a [routerLink]="['/']" class="navbar-brand" href="#">
-    <img src="/assets/images/logo-zone-small.png" alt="WTHApps">
-  </a>
+<a [routerLink]="['/']" class="navbar-brand" href="#">
+  <img src="/assets/images/logo-zone-small.png" alt="WTHApps">
+</a>
 
-  <div class="navbar-form navbar-left hidden-xs navbar-form-search">
-    <div class="navbar-searchTop" (click)="clickedInside($event)">
-      <textbox-search #textbox (onEnterEvent)="onEnter($event)"
-                      (onEscapeEvent)="onEscape($event)"
-                      (onKeyUpEvent)="onKey($event)"
-                      [placeholder]="'Search something'"
-                      [search]="search"
-                      [showSearchAdvanced]="false"
-                      (onSearchAdvancedEvent)="onSearchAdvanced($event)">
+<div class="navbar-form navbar-left hidden-xs navbar-form-search">
+  <div class="navbar-searchTop" (click)="clickedInside($event)">
+    <textbox-search #textbox (onEnterEvent)="onEnter($event)"
+                    (onEscapeEvent)="onEscape($event)"
+                    (onKeyUpEvent)="onKey($event)"
+                    [placeholder]="'Search something'"
+                    [search]="search"
+                    [showSearchAdvanced]="false"
+                    (onSearchAdvancedEvent)="onSearchAdvanced($event)">
 
-        <div class="input-group-suggestions" *ngIf="show && !searchAdvanced">
-          <div class="list-group">
-            <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item"
-               (click)="onNavigation(data)">
-              <span class="avatar-xxs"><img [src]="data.profile_image" alt=""></span>
-              <span class="avatar-name-txt">{{ data.name }}</span>
-            </a>
-          </div>
-          <div class="list-group-footer">
-            <a class="d-block" href="javascript:;" (click)="onEnter($event)">
-              Show more result
-            </a>
-          </div>
+      <div class="input-group-suggestions" *ngIf="show && !searchAdvanced">
+        <div class="list-group">
+          <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item"
+             (click)="onNavigation(data)">
+            <span class="avatar-xxs"><img [src]="data.profile_image" alt=""></span>
+            <span class="avatar-name-txt">{{ data.name }}</span>
+          </a>
         </div>
+        <div class="list-group-footer">
+          <a class="d-block" href="javascript:;" (click)="onEnter($event)">
+            Show more result
+          </a>
+        </div>
+      </div>
 
-      </textbox-search>
-    </div>
+    </textbox-search>
   </div>
 </div>

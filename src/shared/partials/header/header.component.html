@@ -1,37 +1,34 @@
 <nav class="header-nav" [ngClass]="{'header-nav-xs-show-search': showSearchMobile}" role="navigation">
-  <div class="container-fluid">
-    <ng-content></ng-content>
-
-    <div class="header-nav-right">
-      <ng-template [ngIf]="!loggedIn">
-        <div class="hidden-xs">
-          <div class="btn-group header-nav-link">
-            <a [routerLink]="['/signup']" class="btn btn-link" href="#">Sign up</a>
-          </div>
-          <div class="btn-group header-nav-link">
-            <a [routerLink]="['/login']" class="btn btn-link" href="#">Log in</a>
-          </div>
+  <ng-content></ng-content>
+  <div class="header-nav-right">
+    <ng-template [ngIf]="!loggedIn">
+      <div class="hidden-xs">
+        <div class="btn-group header-nav-link">
+          <a [routerLink]="['/signup']" class="btn btn-link" href="#">Sign up</a>
         </div>
-      </ng-template>
-      <ng-template [ngIf]="loggedIn">
-        <div class="btn-group header-nav-search-btn visible-xs-inline-block">
-          <button (click)="onShowSearchMobile($event)" type="button" class="btn btn-default">
-            <i class="fa fa-search"></i>
-          </button>
+        <div class="btn-group header-nav-link">
+          <a [routerLink]="['/login']" class="btn btn-link" href="#">Log in</a>
         </div>
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="loggedIn">
+      <div *ngIf="hasSearch" class="btn-group header-nav-search-btn visible-xs-inline-block">
+        <button (click)="onShowSearchMobile($event)" type="button" class="btn btn-default">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
 
-        <!-- apps navigation -->
-        <apps-navigation></apps-navigation>
+      <!-- apps navigation -->
+      <apps-navigation></apps-navigation>
 
-        <!-- chat notification -->
-        <chat-notification></chat-notification>
+      <!-- chat notification -->
+      <chat-notification></chat-notification>
 
-        <!-- notification-dropdown -->
-        <notification-dropdown></notification-dropdown>
+      <!-- notification-dropdown -->
+      <notification-dropdown></notification-dropdown>
 
-        <!-- profile dropdown -->
-        <profile-dropdown [user]="user"></profile-dropdown>
-      </ng-template>
-    </div>
+      <!-- profile dropdown -->
+      <profile-dropdown [user]="user"></profile-dropdown>
+    </ng-template>
   </div>
 </nav>

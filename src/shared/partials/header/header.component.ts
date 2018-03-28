@@ -27,6 +27,7 @@ declare var _: any;
 export class HeaderComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() loggedIn: boolean;
+  @Input() hasSearch: Boolean = true;
   @ViewChild('notifications') notificationListComponent: NotificationListComponent;
 
   tooltip: any = Constants.tooltip;
@@ -57,5 +58,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.channelService.unsubscribe();
+  }
+
+  onShowSearchMobile($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    this.showSearchMobile = true;
   }
 }

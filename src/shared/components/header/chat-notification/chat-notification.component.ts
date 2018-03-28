@@ -74,12 +74,6 @@ export class ChatNotificationComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onShowSearchMobile($event: Event) {
-    $event.preventDefault();
-    $event.stopPropagation();
-    this.showSearchMobile = true;
-  }
-
   viewAllNotifications() {
     // Close mini notification dropdown box in the header
     $('.navbar-nav-notification').removeClass('open');

@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 
 import { AuthService } from '@wth/shared/services';
-import { Constants } from '@wth/shared/constant';
 
 declare let $: any;
 
@@ -19,7 +18,6 @@ declare let $: any;
 })
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
-  logoUrl: string = Constants.baseUrls.cdn + '/logo/logo.png';
 
   constructor(
     public authService: AuthService,

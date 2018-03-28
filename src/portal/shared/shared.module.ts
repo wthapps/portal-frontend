@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PortalSharedFooterComponent, PortalSharedFooterPromotionComponent } from './footer/footer.component';
 import { SharedModule } from '../../shared/shared.module';
 import { CoreModule } from '../../core/core.module';
+import { PortalSharedHeaderComponent } from '@portal/shared/header/header.component';
 
 
 /**
@@ -19,10 +20,12 @@ import { CoreModule } from '../../core/core.module';
     SharedModule.forRoot()
   ],
   declarations: [
+    PortalSharedHeaderComponent,
     PortalSharedFooterComponent,
     PortalSharedFooterPromotionComponent,
   ],
   exports: [
+    PortalSharedHeaderComponent,
     PortalSharedFooterComponent,
     PortalSharedFooterPromotionComponent,
     SharedModule
