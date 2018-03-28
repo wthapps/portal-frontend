@@ -4,7 +4,7 @@ import { Action, Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 
 import { of } from 'rxjs/observable/of';
-import { delayWhen, filter, map, catchError, concatMap } from 'rxjs/operators';
+import { delayWhen, filter, map, catchError, concatMap, retry } from 'rxjs/operators';
 
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import * as fromRoot from '../reducers/index';
@@ -24,10 +24,11 @@ export class SoProfileEffects {
   @Effect() loadSoProfile = this.actions
     .ofType(fromRoot.SO_PROFILE_LOAD)
     .pipe(
-      delayWhen( authService.user$.pipe(
-        filter(u => !!u && Object.keys(u).length > 0)
-      )),
+      // delayWhen( authService.user$.pipe(
+      //   filter(u => !!u && Object.keys(u).length > 0)
+      // )),
       concatMap(() => this.soUserService.get()),
+      retry(3),
       map((res: any) => {
         return ({type: fromRoot.SO_PROFILE_UPDATE_DONE, payload: res['data']});
       }),

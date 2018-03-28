@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Action, Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-import { delayWhen, filter, map, concatMap, catchError } from 'rxjs/operators';
+import { delayWhen, filter, map, concatMap, catchError, tap, retry } from 'rxjs/operators';
 
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
@@ -24,17 +24,20 @@ export class ShortcutEffects {
               private shortcutService: SoShortcutService,
               private authService: AuthService,
               private store: Store<fromRoot.State>) {
-    this.validUser$ = authService.user$.pipe(
-      filter(u => !!u && Object.keys(u).length > 0)
-    )
+    // this.validUser$ = authService.user$.pipe(
+    //   tap(u => console.debug('BEFORE valid user: ', u)),
+    //   filter(u => !!u && Object.keys(u).length > 0),
+    //   tap(u => console.debug('AFTER valid user: ', u))
+    // )
   }
 
   @Effect() loadShortcuts = this.actions
     .ofType(fromRoot.SHORTCUT_LOAD)
     .pipe(
-      delayWhen(this.validUser$),
+      // delayWhen(this.validUser$),
       map((action: any) => action['payload']),
       concatMap(_ => this.shortcutService.getAll()),
+      retry(3),
       map((res: any) => {
         return ({type: fromRoot.SHORTCUT_LOAD_DONE, payload: res['data']});
       }),
