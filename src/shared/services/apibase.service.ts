@@ -118,7 +118,7 @@ export class ApiBaseService {
 
   private handleError(error: any | any): any {
     if (error.status == 401 && error.statusText == 'Unauthorized') {
-      // window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${window.location['href']}`;
+      window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${window.location['href']}`;
     }
 
     return Observable.throw(error);

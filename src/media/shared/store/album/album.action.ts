@@ -124,7 +124,7 @@ export class AddToDetailObjects implements Action {
    * object: parent object
    * objects: array of objects that you need to add to parent object
    */
-  constructor(public payload: any = { object: null, objects: Array<any> }) { }
+  constructor(public payload: any = { object: null, objects: [] }) { }
 }
 
 export class AddToDetailObjectsSuccess implements Action {

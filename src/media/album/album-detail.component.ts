@@ -122,6 +122,9 @@ export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
       case 'addPhotoToAlbum':
         this.store.dispatch(new fromAlbum.AddToDetailObjects({ object: this.album, photos: event.payload.photos }));
         break;
+      case 'removeFromAlbum':
+        this.store.dispatch(new fromAlbum.RemoveFromDetailObjects(event.payload));
+        break;
       case 'goBack':
         this.router.navigate(['albums']);
         break;
@@ -165,7 +168,7 @@ export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
         this.mediaSelectionService.setMultipleSelection(true);
 
         this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
-          .subscribe((photos => {
+          .subscribe(photos => {
             this.doEvent({action: 'addPhotoToAlbum', payload: {photos: photos }});
         })
 

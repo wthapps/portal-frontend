@@ -13,8 +13,7 @@ import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/sha
 import { MediaObjectService } from '@media/shared/container/media-object.service';
 import { Constants } from '@wth/shared/constant';
 import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
-import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
-
+import { DynamicModal } from '@media/shared/modal/dynamic-modal';
 
 @Component({
   selector: 'z-media-album-list',
@@ -28,7 +27,7 @@ import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.compone
     AlbumEditModalComponent
   ]
 })
-export class AlbumListComponent implements OnInit {
+export class AlbumListComponent extends DynamicModal implements OnInit {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
@@ -38,11 +37,12 @@ export class AlbumListComponent implements OnInit {
 
 
   constructor(private store: Store<appStore.State>,
-              private resolver: ComponentFactoryResolver,
+              protected resolver: ComponentFactoryResolver,
               private mediaUploaderDataService: MediaUploaderDataService,
               private router: Router,
               private mediaObjectService: MediaObjectService
   ) {
+    super(resolver);
     this.albums = this.store.select(appStore.selectObjects);
     this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doEvent(event);
@@ -96,62 +96,6 @@ export class AlbumListComponent implements OnInit {
     }
   }
 
-  openModal(payload: any) {
-    let options: any;
-    switch (payload.modalName) {
-      case 'createAlbumModal':
-        this.loadModalComponent(AlbumCreateModalComponent);
-        options = {selectedObjects: []};
-        break;
-      case 'editNameModal':
-        this.loadModalComponent(BaseObjectEditNameModalComponent);
-        options = {selectedObject: payload.selectedObject};
-        break;
-      case 'sharingModal':
-        this.loadModalComponent(SharingModalComponent);
-        var objects = _.get(payload, 'selectedObjects', []).concat([]);
-        options = {selectedObjects: objects, updateListObjects: payload.updateListObjects};
-        break;
-      case 'taggingModal':
-        this.loadModalComponent(TaggingModalComponent);
-        if (payload.object) {
-          options = {selectedObjects: []};
-        } else {
-          options = {selectedObjects: []};
-        }
-        break;
-      case 'editInfoModal':
-        this.loadModalComponent(AlbumEditModalComponent);
-        options = {selectedObject: payload.selectedObject};
-        break;
-      case 'deleteModal':
-        this.loadModalComponent(AlbumDeleteModalComponent);
-        options = {selectedObjects: payload.selectedObjects};
-        break;
-      default:
-        break;
-    }
-    if (this.modal) {
-      this.modal.open(options);
-    }
-
-  }
-
-
-  private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
-    this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
-    this.modal = this.modalComponent.instance;
-
-    // handle all of action from modal all
-    this.modal.event.takeUntil(this.destroySubject).subscribe((event: any) => {
-
-      // considering moving doAction into list-media
-      this.doEvent(event);
-    });
-  }
-
   viewDetails(payload: any) {
     // this.router.navigate([{outlets: {detail: ['albums', payload.selectedObject.id]}}], {
     //   queryParamsHandling: 'preserve',
@@ -160,12 +104,7 @@ export class AlbumListComponent implements OnInit {
     this.router.navigate(['albums', payload.selectedObject.id]);
   }
 
-  editName(payload: any) {
-
-  }
-
   favourite(payload: any) {
-    console.log('do favorite:::', payload);
     let body = {
         objects: _.map(payload.selectedObjects, (object: any) => {
           return _.pick(object, ['id', 'object_type']);
@@ -182,9 +121,5 @@ export class AlbumListComponent implements OnInit {
           console.log('error: ', error);
         }
       );
-  }
-
-  private destroySubject() {
-
   }
 }

@@ -22,7 +22,7 @@
     <li>
       <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
          href="javascript:void(0);"
-         (click)="doAction({action: 'openModal', payload: {modalName: 'sharingModal'}})">
+         (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'sharingModal'}})">
         <i class="fa fa-share-alt"></i>
       </a>
     </li>

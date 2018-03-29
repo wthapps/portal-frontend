@@ -87,4 +87,15 @@ export class AlbumEffects {
           return new albumActions.UpdateSuccess({...response});
         });
     });
+
+  @Effect()
+  removeFromDetailObjects$: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.REMOVE_FROM_DETAIL_OBJECTS)
+    .map((action: albumActions.RemoveFromDetailObjects) => action.payload)
+    .switchMap(state => {
+      return this.albumService.removeFromAlbum(state.object.id, {photos: state.selectedObjects, type: 'delete' } )
+        .map(response => {
+          return new albumActions.RemoveFromDetailObjectsSuccess({...response});
+        });
+    });
 }

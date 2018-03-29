@@ -218,6 +218,15 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         return state;
     }
 
+    case actions.ActionTypes.ADD_TO_DETAIL_OBJECTS_SUCCESS: {
+      Object.values(action.payload.data).map(obj => {
+        obj.selected = false;
+        return obj;
+      });
+      state.detailObjects.push(...action.payload.data);
+      return state;
+    }
+
     default: {
       return state;
     }
