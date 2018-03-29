@@ -72,6 +72,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
       this.importStatus = this.IMPORT_STATUS.importing;
       const data = await this.gapi.startImportContact(user);
       let result = undefined;
+      console.debug(data);
       if(data !== undefined) {
         this.importedContacts = data;
         this.successfulNum = this.gapi.totalImporting;
