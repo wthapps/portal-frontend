@@ -23,6 +23,25 @@ export class AlbumService extends BaseEntityService<any> {
     return this.apiBaseService.get(`media/photos`, body);
   }
 
+  getPhotos(payload: any): any {
+    return this.apiBaseService.get(`${this.url}/${payload.album.id}/photos`, payload);
+  }
+
+  getPhoto(payload: any): any {
+    return this.apiBaseService.get(`${this.url}/${payload.album.id}/photos/${payload.photo.id}`);
+  }
+
+  addPhotos(payload: any): any {
+    return this.apiBaseService.post(`${this.url}/${payload.album.id}/photos`, {photos: payload.photos});
+  }
+
+  removePhotos(payload: any): any {
+    return this.apiBaseService.post(`${this.url}/${payload.album.id}/photos/delete_many`, {
+      photos: payload.photos,
+      delete_child: false
+    });
+  }
+
   addToAlbum(id: number, selectedPhotos: any): any {
     let body = JSON.stringify({
       photos: _.map(selectedPhotos, 'id')

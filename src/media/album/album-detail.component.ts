@@ -120,7 +120,7 @@ export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
         this.showDetailsInfo = !this.showDetailsInfo;
         break;
       case 'addPhotoToAlbum':
-        this.store.dispatch(new fromAlbum.AddToDetailObjects({ object: this.album, photos: event.payload.photos }));
+        this.store.dispatch(new fromAlbum.AddToDetailObjects({ album: this.album, photos: event.payload.photos }));
         break;
       case 'removeFromAlbum':
         this.store.dispatch(new fromAlbum.RemoveFromDetailObjects(event.payload));
@@ -170,7 +170,7 @@ export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
         this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
           .subscribe(photos => {
             this.doEvent({action: 'addPhotoToAlbum', payload: {photos: photos }});
-        })
+        });
 
         this.mediaSelectionService.uploadingMedias$.subscribe((res: any) => {
 

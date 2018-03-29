@@ -198,6 +198,10 @@ export type Actions
   | AddSuccess
   | AddMany
   | AddManySuccess
+  | AddToDetailObjects
+  | AddToDetailObjectsSuccess
+  | RemoveFromDetailObjects
+  | RemoveFromDetailObjectsSuccess
   | Update
   | UpdateSuccess
   | UpdateMany

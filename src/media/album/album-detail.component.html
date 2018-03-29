@@ -1,3 +1,4 @@
+
 <div class="media-page-detail">
   <div class="media-page-detail-left gray-light" [ngClass]="{'has-media-page-detail-right': showDetailsInfo}">
 
@@ -205,6 +206,7 @@
              [objectActionsTemplate]="gridlist.selectedObjects.length === 0 ? albumActionsTemplate : photoActionsTemplate"
              (event)="gridlist.doEvent($event)">
   </w-toolbar>
+
 
   <w-grid-list #gridlist
                [leftActionsTemplate]="leftAlbumActionsTemplate"

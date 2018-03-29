@@ -90,8 +90,6 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
       case 'editName':
       case 'editInfo':
         this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
-
-        // this.editName(event.params);
         break;
     }
   }

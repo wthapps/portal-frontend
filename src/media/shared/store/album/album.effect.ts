@@ -68,9 +68,9 @@ export class AlbumEffects {
   addToDetailObjects$: Observable<Action> = this.actions$
     .ofType(albumActions.ActionTypes.ADD_TO_DETAIL_OBJECTS)
     .map((action: albumActions.AddToDetailObjects) => action.payload)
-    .switchMap(state => {
-      return this.albumService.addToAlbum(state.object.id, state.photos)
-        .map(response => new albumActions.AddToDetailObjectsSuccess(...response))
+    .switchMap(payload => {
+      return this.albumService.addPhotos({...payload})
+        .map(response => new albumActions.AddManySuccess(...response))
         .catch(error  => {
 
         });
@@ -92,10 +92,10 @@ export class AlbumEffects {
   removeFromDetailObjects$: Observable<Action> = this.actions$
     .ofType(albumActions.ActionTypes.REMOVE_FROM_DETAIL_OBJECTS)
     .map((action: albumActions.RemoveFromDetailObjects) => action.payload)
-    .switchMap(state => {
-      return this.albumService.removeFromAlbum(state.object.id, {photos: state.selectedObjects, type: 'delete' } )
+    .switchMap(payload => {
+      return this.albumService.removePhotos({album: payload.object, photos: payload.selectedObjects} )
         .map(response => {
-          return new albumActions.RemoveFromDetailObjectsSuccess({...response});
+          return new albumActions.DeleteManySuccess({data: payload.selectedObjects});
         });
     });
 }

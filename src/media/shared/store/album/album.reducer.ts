@@ -1,8 +1,10 @@
 import * as actions from './album.action';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
-
-export interface State extends EntityState<Partial<any>> {
+// extends EntityState<Partial<any>>
+export interface State  extends EntityState<any> {
+  // ids: Array<any>;
+  // entities: Array<any>;
   loading: boolean;
   loaded:  boolean;
   detail: boolean; // if state is in details page as album detail, sharing detail
@@ -14,7 +16,7 @@ export interface State extends EntityState<Partial<any>> {
   detailObjects: Array<any>;
 }
 
-export const albumAdapter: EntityAdapter<Partial<any>> = createEntityAdapter<Partial<any>>();
+export const albumAdapter: EntityAdapter<any> = createEntityAdapter<any>();
 
 
 const INITIAL_STATE: State = albumAdapter.getInitialState({
@@ -211,15 +213,49 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       }
 
     case actions.ActionTypes.ADD_SUCCESS: {
-        Object.values(state.entities).map(obj => {
-          obj.selected = false;
-          return obj;
-        });
+        action.payload.data['selected'] = false;
+        if (state.detail) {
+          state.detailObjects.push(action.payload.data);
+        } else {
+          state.objects.push(action.payload.data);
+        }
         return state;
     }
 
+    case actions.ActionTypes.ADD_MANY_SUCCESS: {
+      const cloneState = {
+        objects: [...state.objects],
+        detailObjects: [...state.detailObjects]
+      };
+      action.payload.data.map(obj => {
+        obj.selected = false;
+        if (state.detail) {
+          cloneState.detailObjects.push(obj);
+        }
+      });
+
+      return  Object.assign({}, state, cloneState);
+    }
+
+    case actions.ActionTypes.DELETE_MANY_SUCCESS: {
+      const cloneState = {
+        objects: [...state.objects],
+        detailObjects: [...state.detailObjects]
+      };
+      if (state.detail) {
+        action.payload.data.forEach(obj => {
+          cloneState.detailObjects.splice(cloneState.detailObjects.indexOf(obj), 1);
+        });
+      } else {
+        action.payload.data.forEach(obj => {
+          cloneState.objects.splice(cloneState.objects.indexOf(obj), 1);
+        });
+      }
+      return  Object.assign({}, state, cloneState);
+    }
+
     case actions.ActionTypes.ADD_TO_DETAIL_OBJECTS_SUCCESS: {
-      Object.values(action.payload.data).map(obj => {
+      action.payload.data.map(obj => {
         obj.selected = false;
         return obj;
       });
@@ -231,6 +267,16 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       return state;
     }
   }
+}
+
+function insertItem(array, item, index) {
+  let newArray = array.slice();
+  newArray.splice(index, 0, item);
+  return newArray;
+}
+
+function removeItem(array, index) {
+  return array.filter( (item, i) => i !== index);
 }
 
 export const getLoading = (state: State) => state.loading;
