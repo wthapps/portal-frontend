@@ -1,6 +1,5 @@
 import {
   Component,
-  Input,
   ViewChild,
   SimpleChanges,
   OnInit,
@@ -74,7 +73,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   customEditor: any;
   tooltip: any = Constants.tooltip;
 
-  titleModal: string = 'New Note';
   subPage: string = noteConstants.PAGE_NOTE_EDIT;
 
   buttonControl: string = '';
@@ -86,8 +84,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   attachments: AbstractControl;
   files: Array<any> = new Array<any>();
 
-  private contentChange$: Observable<any>;
-  private closeObs$: Observable<any>;
   private closeSubject: Subject<any> = new Subject<any>();
   private noSaveSubject: Subject<any> = new Subject<any>();
   private destroySubject: Subject<any> = new Subject<any>();
@@ -327,60 +323,64 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
     class PlainClipboard extends Clipboard {
       onPaste(e: any) {
-        // super.onPaste(e);
-        // fix flash screen while paste into editor
-        this.container.style.position = 'fixed';
-        this.container.style.zIndex = '-1';
+        try {
+          // super.onPaste(e);
+          // fix flash screen while paste into editor
+          this.container.style.position = 'fixed';
+          this.container.style.zIndex = '-1';
 
-        var dataClipboard1 = e.clipboardData.types;
+          var dataClipboard1 = e.clipboardData.types;
 
-        if (dataClipboard1[0].match('Files')) {
-          if (e.clipboardData.items[0].type.match('image/*')) {
-            var fileClipboard = e.clipboardData.items[0].getAsFile();
-          }
-        }
-
-        if (e.defaultPrevented || !this.quill.isEnabled()) return;
-        let range = this.quill.getSelection();
-        let delta = new Delta().retain(range.index);
-        console.debug('onPaste: ', e);
-        // let scrollTop = this.quill.scrollingContainer.scrollTop;
-        // this.scrollTop = scrollTop;
-        // this.container.focus(); // comment out to prevent scroll to top
-        this.quill.selection.update(Quill.sources.SILENT);
-        setTimeout(() => {
-          if (dataClipboard1[0].match('text/*')) {
-            delta = delta.concat(this.convert()).delete(range.length);
-            this.quill.updateContents(delta, Quill.sources.USER);
-            // this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
-            this.quill.focus();
-            // this.quill.scrollingContainer.scrollTop = scrollTop;
-            // this.scrollTop = null;
-            // this.quill.selection.scrollIntoView();
-          } else {
-            if (fileClipboard.type.match('image/*')) {
-              // var reader = new FileReader();
-              // reader.onload = (e: any) => {
-              let ids = [];
-              const randId = `img_${new Date().getTime()}`;
-              self.insertFakeImage(randId);
-              ids.push(randId);
-              // let file = e.target['result'];
-              let files = [fileClipboard];
-              self.photoUploadService
-                .uploadPhotos(files)
-                .subscribe((res: any) => {
-                  const randId = ids.shift();
-                  $(`i#${randId}`).after(
-                    `<img src="${res.data.url}" data-id="${res.data.id}" />`
-                  );
-                  $(`i#${randId}`).remove();
-                });
-              fileClipboard.value = '';
-              this.quill.focus();
+          if (dataClipboard1[0].match('Files')) {
+            if (e.clipboardData.items[0].type.match('image/*')) {
+              var fileClipboard = e.clipboardData.items[0].getAsFile();
             }
           }
-        }, 1);
+
+          if (e.defaultPrevented || !this.quill.isEnabled()) return;
+          let range = this.quill.getSelection();
+          let delta = new Delta().retain(range.index);
+          console.debug('onPaste: ', e);
+          // let scrollTop = this.quill.scrollingContainer.scrollTop;
+          // this.scrollTop = scrollTop;
+          // this.container.focus(); // comment out to prevent scroll to top
+          this.quill.selection.update(Quill.sources.SILENT);
+          setTimeout(() => {
+            if (dataClipboard1[0].match('text/*')) {
+              delta = delta.concat(this.convert()).delete(range.length);
+              this.quill.updateContents(delta, Quill.sources.USER);
+              // this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
+              this.quill.focus();
+              // this.quill.scrollingContainer.scrollTop = scrollTop;
+              // this.scrollTop = null;
+              // this.quill.selection.scrollIntoView();
+            } else {
+              if (fileClipboard.type.match('image/*')) {
+                // var reader = new FileReader();
+                // reader.onload = (e: any) => {
+                let ids = [];
+                const randId = `img_${new Date().getTime()}`;
+                self.insertFakeImage(randId);
+                ids.push(randId);
+                // let file = e.target['result'];
+                let files = [fileClipboard];
+                self.photoUploadService
+                  .uploadPhotos(files)
+                  .subscribe((res: any) => {
+                    const randId = ids.shift();
+                    $(`i#${randId}`).after(
+                      `<img src="${res.data.url}" data-id="${res.data.id}" />`
+                    );
+                    $(`i#${randId}`).remove();
+                  });
+                fileClipboard.value = '';
+                this.quill.focus();
+              }
+            }
+          }, 1);
+        } catch (err) {
+          console.error('A wild bug appear. Watch out!! ', err);
+        }
       }
     }
 
