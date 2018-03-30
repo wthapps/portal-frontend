@@ -387,7 +387,7 @@ export class ChatService {
   }
 
   markAsRead(groupId: any) {
-    this.apiBaseService.post('zone/chat/notification/mark_as_read', {group_id: groupId}).subscribe((res: any) => {
+    this.apiBaseService.post('zone/chat/notification/mark_as_read', {id: groupId}).subscribe((res: any) => {
       let item = this.storage.find('chat_conversations');
       if (item && item.value) {
         let contact = _.find(item.value.data, (contact: any) => {
