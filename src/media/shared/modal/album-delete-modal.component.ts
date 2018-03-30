@@ -14,7 +14,7 @@ export class AlbumDeleteModalComponent {
   checked: boolean = false;
 
   open(options?: any) {
-    // this.selectedAlbums = options['selectedObjects'];
+    this.selectedAlbums = options['selectedObjects'];
     this.modal.open();
   }
 

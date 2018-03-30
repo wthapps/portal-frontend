@@ -14,7 +14,7 @@
        [infiniteScrollDistance]="2"
        [infiniteScrollThrottle]="500"
        [scrollWindow]="false"
-       (scrolled)="doEvent({action: 'loadMore'})">
+       (scrolled)="doEvent({action: 'getAll', payload: { nextLink: nextLink }})">
 
     <div class="page-body-content-in">
 

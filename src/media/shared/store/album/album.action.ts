@@ -34,6 +34,8 @@ export const ActionTypes = {
   DELETE_MANY:          '[Album] Delete Many',
   DELETE_MANY_SUCCESS:  '[Album] Delete Many Success',
   DELETE_MANY_FAIL:     '[Album] Delete Many Fail',
+  DOWNLOAD:             '[Album] Download',
+  FAVORITE:             '[Album] Favorite',
 };
 
 /**
@@ -182,6 +184,16 @@ export class DeleteManySuccess implements Action {
   constructor(public payload: any = null) { }
 }
 
+export class Download implements Action {
+  type = ActionTypes.DOWNLOAD;
+  constructor(public payload: any = null) { }
+}
+
+export class Favorite implements Action {
+  type = ActionTypes.FAVORITE;
+  constructor(public payload: any = null) { }
+}
+
 export type Actions
   = Get
   | GetSuccess
@@ -209,4 +221,6 @@ export type Actions
   | Delete
   | DeleteSuccess
   | DeleteMany
-  | DeleteManySuccess;
+  | DeleteManySuccess
+  | Download
+  | Favorite;

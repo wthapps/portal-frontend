@@ -14,6 +14,7 @@ import { MediaObjectService } from '@media/shared/container/media-object.service
 import { Constants } from '@wth/shared/constant';
 import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
 import { DynamicModal } from '@media/shared/modal/dynamic-modal';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 
 @Component({
   selector: 'z-media-album-list',
@@ -33,6 +34,8 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
   modal: any;
 
   albums: Observable<any>;
+  nextLink: Observable<any>;
+
   tooltip: any = Constants.tooltip;
 
 
@@ -43,22 +46,24 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
               private mediaObjectService: MediaObjectService
   ) {
     super(resolver);
+
     this.albums = this.store.select(appStore.selectObjects);
+    this.nextLink = this.store.select(appStore.selectNextLink);
     this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doEvent(event);
     });
   }
 
   ngOnInit() {
-    this.store.dispatch(new fromAlbum.GetAll({objectType: 'album'}));
+    this.doEvent({ action: 'getAll', payload: {objectType: 'album', query: null} });
   }
 
   doEvent(event: any) {
     console.log('event actions:::', event.action, event.payload);
 
     switch (event.action) {
-      case 'loadMore':
-        this.store.dispatch(new fromAlbum.GetAll());
+      case 'getAll':
+        this.store.dispatch(new fromAlbum.GetAll(event.payload));
         break;
       case 'select':
         this.store.dispatch(new fromAlbum.Select(event.payload));
@@ -82,7 +87,7 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
         this.store.dispatch(new fromAlbum.AddSuccess(event.payload));
         break;
       case 'favourite':
-        this.favourite(event.payload);
+        this.store.dispatch(new fromAlbum.Favorite(event.payload));
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);
@@ -91,14 +96,13 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
       case 'editInfo':
         this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
         break;
+      case 'deleteMedia':
+        this.store.dispatch(new fromAlbum.DeleteMany({...event.payload}));
+        break;
     }
   }
 
   viewDetails(payload: any) {
-    // this.router.navigate([{outlets: {detail: ['albums', payload.selectedObject.id]}}], {
-    //   queryParamsHandling: 'preserve',
-    //   preserveFragment: true
-    // });
     this.router.navigate(['albums', payload.selectedObject.id]);
   }
 

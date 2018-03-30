@@ -3,6 +3,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
+import { saveAs } from 'file-saver';
+
 
 import { AlbumService } from '../shared/services/album.service';
 import * as fromAlbum from '../shared/store/album/album.action';
@@ -12,11 +14,12 @@ import { MediaObjectService } from '@media/shared/container/media-object.service
 import { BaseObjectEditNameModalComponent } from '@shared/shared/components/photo/modal/base-object-edit-name-modal.component';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { AlbumDeleteModalComponent } from '@media/shared/modal';
+import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/shared/modal';
 import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { DynamicModal } from '@media/shared/modal/dynamic-modal';
 
 @Component({
   selector: 'z-media-album-detail',
@@ -26,38 +29,40 @@ import { WMediaSelectionService } from '@wth/shared/components/w-media-selection
     BaseObjectEditNameModalComponent,
     TaggingModalComponent,
     SharingModalComponent,
+    AlbumCreateModalComponent,
     AlbumEditModalComponent,
     AlbumDeleteModalComponent,
     AlbumDetailInfoComponent,
     AddToAlbumModalComponent
   ]
 })
-export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
+export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   @ViewChild('infoContainer', {read: ViewContainerRef}) infoContainer: ViewContainerRef;
 
   album: any;
   params: any;
   showDetail: boolean;
-  modalComponent: any;
-  modal: any;
 
   detailInfoComponent: any;
   detailInfo: any;
   showDetailsInfo: boolean;
 
   photos: Observable<any>;
+  nextLink: Observable<any>;
+
   tooltip: any = Constants.tooltip;
 
   constructor(
     private store: Store<appStore.State>,
-    private resolver: ComponentFactoryResolver,
+    protected resolver: ComponentFactoryResolver,
     private mediaObjectService: MediaObjectService,
     private router: Router,
     private route: ActivatedRoute,
     private albumService: AlbumService,
     private mediaSelectionService: WMediaSelectionService
   ) {
+    super(resolver);
     this.photos = this.store.select(appStore.selectDetailObjects);
   }
 
@@ -98,7 +103,7 @@ export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
         this.store.dispatch(new fromAlbum.DeselectAll());
         break;
       case 'openModal':
-        this.openModal(event.payload);
+        this.openModal(event.payload, this.mediaSelectionService);
         break;
       case 'openUploadModal':
         // this.mediaUploaderDataService.onShowUp();
@@ -107,10 +112,22 @@ export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
         this.store.dispatch(new fromAlbum.AddSuccess(event.payload));
         break;
       case 'favourite':
-        this.favourite(event.payload);
+        this.store.dispatch(new fromAlbum.Favorite(event.payload));
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);
+        break;
+      case 'previewAllPhotos':
+        this.router.navigate([{
+            outlets: {
+              modal: [
+                'photos',
+                event.payload.selectedObject.id,
+                {ids: [event.payload.selectedObject.id], mode: 0}
+              ]
+            }
+          }], {queryParamsHandling: 'preserve', preserveFragment: true}
+        );
         break;
       case 'editName':
       case 'editInfo':
@@ -125,64 +142,13 @@ export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
       case 'removeFromAlbum':
         this.store.dispatch(new fromAlbum.RemoveFromDetailObjects(event.payload));
         break;
+      case 'download':
+        this.store.dispatch(new fromAlbum.Download(event.payload));
+        break;
       case 'goBack':
         this.router.navigate(['albums']);
         break;
     }
-  }
-
-  openModal(payload: any) {
-    let options: any;
-    switch (payload.modalName) {
-      // case 'createAlbumModal':
-      //   this.loadModalComponent(AlbumCreateModalComponent);
-      //   options = {selectedObjects: []};
-      //   break;
-      case 'editNameModal':
-        this.loadModalComponent(BaseObjectEditNameModalComponent);
-        options = {selectedObject: payload.selectedObject};
-        break;
-      case 'sharingModal':
-        this.loadModalComponent(SharingModalComponent);
-        var objects = _.get(payload, 'selectedObjects', []).concat([]);
-        options = {selectedObjects: objects, updateListObjects: payload.updateListObjects};
-        break;
-      case 'taggingModal':
-        this.loadModalComponent(TaggingModalComponent);
-        if (payload.object) {
-          options = {selectedObjects: []};
-        } else {
-          options = {selectedObjects: []};
-        }
-        break;
-      case 'deleteModal':
-        this.loadModalComponent(AlbumDeleteModalComponent);
-        options = {selectedObjects: payload.selectedObjects};
-        break;
-      case 'editInfoModal':
-        this.loadModalComponent(AlbumEditModalComponent);
-        options = {selectedObject: payload.selectedObject};
-        break;
-      case 'photosSelectModal':
-        this.mediaSelectionService.open('photos');
-        this.mediaSelectionService.setMultipleSelection(true);
-
-        this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
-          .subscribe(photos => {
-            this.doEvent({action: 'addPhotoToAlbum', payload: {photos: photos }});
-        });
-
-        this.mediaSelectionService.uploadingMedias$.subscribe((res: any) => {
-
-        });
-        break;
-      default:
-        break;
-    }
-    if (this.modal) {
-      this.modal.open(options);
-    }
-
   }
 
   ngOnDestroy() {
@@ -197,52 +163,16 @@ export class ZMediaAlbumDetailComponent implements OnInit, OnDestroy {
     this.detailInfo.updateProperties({ object: this.album });
   }
 
-  private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
-    this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
-    this.modal = this.modalComponent.instance;
-
-    // handle all of action from modal all
-    this.modal.event.takeUntil(this.destroySubject).subscribe((event: any) => {
-
-      // considering moving doAction into list-media
-      this.doEvent(event);
-    });
-  }
-
-  viewDetails(payload: any) {
-    this.router.navigate([{outlets: {detail: ['albums', payload.selectedObject.id]}}], {
-      queryParamsHandling: 'preserve',
-      preserveFragment: true
-    });
-  }
-
-  editName(payload: any) {
-
-  }
-
-  favourite(payload: any) {
-    console.log('do favorite:::', payload);
-    let body = {
-      objects: _.map(payload.selectedObjects, (object: any) => {
-        return _.pick(object, ['id', 'object_type']);
-      }),
-      mode: payload.mode
-    };
-
-    this.mediaObjectService.favourite(body).toPromise()
-      .then(
-        (response: any) => {
-          this.store.dispatch(new fromAlbum.FavoriteSuccess(payload));
-        },
-        (error: any) => {
-          console.log('error: ', error);
+  private viewDetails(payload: any) {
+    this.router.navigate([{
+        outlets: {
+          modal: [
+            'photos',
+            payload.selectedObject.id,
+            {ids: [payload.selectedObject.id], mode: 0}
+          ]
         }
-      );
-  }
-
-  private destroySubject() {
-
+      }], {queryParamsHandling: 'preserve', preserveFragment: true}
+    );
   }
 }

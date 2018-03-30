@@ -70,6 +70,7 @@ export const selectObjects = createSelector(selectAlbumState, fromAlbum.getObjec
 export const selectObject = createSelector(selectAlbumState, fromAlbum.getObject);
 export const selectDetailObjects = createSelector(selectAlbumState, fromAlbum.getDetailObjects);
 export const selectDetailObject = createSelector(selectAlbumState, fromAlbum.getDetailObject);
+export const selectNextLink = createSelector(selectAlbumState, fromAlbum.getNextLink);
 
 
 // Object store functions

@@ -36,10 +36,7 @@ export class AlbumService extends BaseEntityService<any> {
   }
 
   removePhotos(payload: any): any {
-    return this.apiBaseService.post(`${this.url}/${payload.album.id}/photos/delete_many`, {
-      photos: payload.photos,
-      delete_child: false
-    });
+    return this.apiBaseService.post(`${this.url}/${payload.album.id}/photos/delete_many`, payload);
   }
 
   addToAlbum(id: number, selectedPhotos: any): any {

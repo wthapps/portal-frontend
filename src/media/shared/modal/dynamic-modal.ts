@@ -4,6 +4,7 @@ import { BaseObjectEditNameModalComponent } from '@wth/shared/shared/components/
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 
 export class DynamicModal {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
@@ -25,7 +26,7 @@ export class DynamicModal {
     });
   }
 
-  openModal(payload: any) {
+  openModal(payload: any, mediaSelectionService?: any) {
     let options: any;
     switch (payload.modalName) {
       case 'createAlbumModal':
@@ -38,16 +39,11 @@ export class DynamicModal {
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);
-        var objects = _.get(payload, 'selectedObjects', []).concat([]);
-        options = {selectedObjects: objects, updateListObjects: payload.updateListObjects};
+        options = {selectedObjects: payload.selectedObjects};
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
-        if (payload.object) {
-          options = {selectedObjects: []};
-        } else {
-          options = {selectedObjects: []};
-        }
+        options = {selectedObjects: payload.selectedObjects};
         break;
       case 'editInfoModal':
         this.loadModalComponent(AlbumEditModalComponent);
@@ -56,6 +52,23 @@ export class DynamicModal {
       case 'deleteModal':
         this.loadModalComponent(AlbumDeleteModalComponent);
         options = {selectedObjects: payload.selectedObjects};
+        break;
+      case 'addToAlbumModal':
+        this.loadModalComponent(AddToAlbumModalComponent);
+        // Take selected photos from photo list screen OR uploaded photos from upload photo component
+        options = {selectedObjects: payload.selectedObjects};
+        break;
+      case 'photosSelectModal':
+        mediaSelectionService.open('photos');
+        mediaSelectionService.setMultipleSelection(true);
+
+        mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
+          .subscribe(photos => {
+            this.doEvent({action: 'addPhotoToAlbum', payload: {photos: photos }});
+          });
+        mediaSelectionService.uploadingMedias$.subscribe((photos: any) => {
+          this.doEvent({action: 'addPhotoToAlbum', payload: {photos: photos }});
+        });
         break;
       default:
         break;

@@ -9,6 +9,7 @@ import { of }                     from 'rxjs/observable/of';
 import * as albumActions         from './album.action';
 import { AlbumService } from '@media/shared/services/album.service';
 import { MediaObjectService } from '@media/shared/container/media-object.service';
+import { saveAs } from 'file-saver';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -27,11 +28,10 @@ import { MediaObjectService } from '@media/shared/container/media-object.service
 @Injectable()
 export class AlbumEffects {
 
-  constructor(
-    private actions$: Actions,
-    private mediaObjectService: MediaObjectService,
-    private albumService: AlbumService
-  ) {}
+  constructor(private actions$: Actions,
+              private mediaObjectService: MediaObjectService,
+              private albumService: AlbumService) {
+  }
 
   /**
    * Photo
@@ -43,25 +43,25 @@ export class AlbumEffects {
     .switchMap((state: any) => {
       return this.albumService.getAlbum(state)
         .map(response => new albumActions.GetSuccess(response))
-        .catch(error  => of(new albumActions.GetFail()));
+        .catch(error => of(new albumActions.GetFail()));
     });
 
   @Effect()
   getAll$: Observable<Action> = this.actions$
     .ofType(albumActions.ActionTypes.GET_ALL)
     .map((action: albumActions.GetAll) => action.payload)
-    .switchMap(state => {
-      if (state.objectType === 'album') {
-        return this.albumService.getAll(state)
-          .map(response => new albumActions.GetAllSuccess({...response, ...state}))
+    .switchMap(payload => {
+      if (payload.objectType === 'album') {
+        return this.albumService.getAll(payload)
+          .map(response => new albumActions.GetAllSuccess({...response, ...payload}))
           .catch(error => of(new albumActions.GetAllFail()));
       } else {
-          return this.albumService.getPhotosByAlbum(state.object.id)
-            .map(response => new albumActions.GetAllSuccess({...response, ...state}))
-            .catch(error  => {
+        return this.albumService.getPhotosByAlbum(payload.object.id)
+          .map(response => new albumActions.GetAllSuccess({...response, ...payload}))
+          .catch(error => {
 
-            });
-        }
+          });
+      }
     });
 
   @Effect()
@@ -71,7 +71,7 @@ export class AlbumEffects {
     .switchMap(payload => {
       return this.albumService.addPhotos({...payload})
         .map(response => new albumActions.AddManySuccess(...response))
-        .catch(error  => {
+        .catch(error => {
 
         });
     });
@@ -89,13 +89,87 @@ export class AlbumEffects {
     });
 
   @Effect()
+  updateMany$: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.UPDATE_MANY)
+    .map((action: albumActions.UpdateMany) => action.payload)
+    .switchMap(state => {
+      return this.mediaObjectService.update(state, false, 'media')
+        .map(response => {
+          return new albumActions.UpdateManySuccess({...response});
+        });
+    });
+
+  @Effect()
+  delete$: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.DELETE)
+    .map((action: albumActions.Delete) => action.payload)
+    .switchMap(state => {
+      return this.mediaObjectService.delete(state, false, 'media')
+        .map(response => {
+          return new albumActions.DeleteSuccess({...response});
+        });
+    });
+
+  @Effect()
+  deleteMany$: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.DELETE_MANY)
+    .map((action: albumActions.Delete) => action.payload)
+    .switchMap(payload => {
+      return this.mediaObjectService.deleteMany({objects: payload.selectedObjects}, 'media')
+        .map(response => {
+          return new albumActions.DeleteManySuccess({data: payload.selectedObjects});
+        });
+    });
+
+  @Effect()
   removeFromDetailObjects$: Observable<Action> = this.actions$
     .ofType(albumActions.ActionTypes.REMOVE_FROM_DETAIL_OBJECTS)
     .map((action: albumActions.RemoveFromDetailObjects) => action.payload)
     .switchMap(payload => {
-      return this.albumService.removePhotos({album: payload.object, photos: payload.selectedObjects} )
+      return this.albumService.removePhotos({
+        album: payload.object,
+        photos: payload.selectedObjects,
+        delete_child: payload.delete_child || false
+      })
         .map(response => {
           return new albumActions.DeleteManySuccess({data: payload.selectedObjects});
         });
+    });
+
+  @Effect()
+  download$: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.DOWNLOAD)
+    .map((action: albumActions.Download) => action.payload)
+    .switchMap(payload => {
+      if (payload.selectedObjects && payload.selectedObjects.length > 0) {
+        payload.selectedObjects.forEach(file => {
+          return this.mediaObjectService.download({id: file.id}).subscribe(
+            (response: any) => {
+              const blob = new Blob([response], {type: file.content_type});
+              saveAs(blob, file.name + '.' + file.extension);
+            },
+            (error: any) => {
+
+            }
+          );
+        });
+      } else {
+        return null;
+      }
+    });
+
+  @Effect()
+  favorite$: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.FAVORITE)
+    .map((action: albumActions.Favorite) => action.payload)
+    .switchMap(payload => {
+      return this.mediaObjectService.favourite({objects: payload.selectedObjects, mode: payload.mode})
+        .map(response => {
+            return new albumActions.FavoriteSuccess({...payload, data: response.data });
+          },
+          (error: any) => {
+            console.log('error: ', error);
+          }
+        );
     });
 }

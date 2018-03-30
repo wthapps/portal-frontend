@@ -40,7 +40,7 @@ export class AddToAlbumModalComponent implements OnInit {
   open(options: any) {
     this.getAlbum();
     this.selectedPhotos = options.selectedObjects;
-    this.modal.open(options).then((res: any) => console.log('form add to album: open modal ', res));
+    this.modal.open(options).then();
   }
 
   close(options?: any) {
@@ -82,7 +82,7 @@ export class AddToAlbumModalComponent implements OnInit {
   }
 
   onCreateNewAlbum() {
-    this.onAction({action: 'openModal', params: {modalName: 'createAlbumModal', data: this.selectedPhotos}});
+    this.onAction({action: 'openModal', payload: {modalName: 'createAlbumModal', data: this.selectedPhotos}});
   }
 
 }

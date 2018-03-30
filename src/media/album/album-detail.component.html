@@ -91,12 +91,6 @@
           </li>
           <li>
             <a draggable="false" href="javascript:void(0);"
-               (click)="toolbar.doAction({action: 'toggleDetailsInfo' })">
-              <i class="fa fa-info-circle"></i> View Information
-            </a>
-          </li>
-          <li>
-            <a draggable="false" href="javascript:void(0);"
                (click)="toolbar.doAction({
                action: 'openModal',
                payload: { modalName: 'editInfoModal', selectedObject: toolbar.object }})">
@@ -109,6 +103,12 @@
                action: 'openModal',
                payload: {modalName:'deleteModal', selectedObjects: selectedObjects}})">
               <i class="fa fa-trash-o"></i> Delete Album
+            </a>
+          </li>
+          <li>
+            <a draggable="false" href="javascript:void(0);"
+               (click)="toolbar.doAction({action: 'toggleDetailsInfo' })">
+              <i class="fa fa-info-circle"></i> View Details
             </a>
           </li>
         </ul>
@@ -161,8 +161,8 @@
       </li>
       <li>
         <a class="btn btn-default" draggable="false" href="javascript:void(0);"
-           (click)="toolbar.doAction({action: 'removeFromAlbum', payload: {object:
-           toolbar.object, selectedObjects: toolbar.selectedObjects}})"
+           (click)="toolbar.doAction({action: 'removeFromAlbum',
+           payload: { object: toolbar.object, selectedObjects: toolbar.selectedObjects }})"
            pTooltip="{{ tooltip.removeFromAlbum}}" tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i></a>
       </li>
@@ -173,24 +173,30 @@
         <ul class="dropdown-menu dropdown-menu-right">
           <li>
             <a href="javascript:void(0);" draggable="false"
-               (click)="onAction({action: 'openModal',
-               payload: {modalName: 'addToAlbumModal',
-               selectedObjects: toolbar.selectedObjects}})">
+               (click)="toolbar.doAction({action: 'openModal',
+               payload: {modalName: 'addToAlbumModal', selectedObjects: toolbar.selectedObjects}})">
               <i class="fa fa-plus-square"></i> Add to album
             </a>
           </li>
           <li>
             <a href="javascript:void(0);" draggable="false"
-               (click)="onAction({
-               action: 'download',
-               payload: {selectedObjects: selectedObjects}})">
+               (click)="toolbar.doAction({
+               action: 'download', payload: { selectedObjects: toolbar.selectedObjects }})">
               <i class="fa fa-download"></i> Download
             </a>
           </li>
           <li>
             <a href="javascript:void(0);" draggable="false"
-               (click)="onAction({action: 'confirmDeleteMedia', payload: {selectedObjects: selectedObjects}})">
+            (click)="toolbar.doAction({action: 'removeFromAlbum',
+            payload: { object: toolbar.object, selectedObjects: toolbar.selectedObjects, delete_child: true }})">
               <i class="fa fa-trash-o"></i> Delete
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0);" draggable="false"
+               (click)="toolbar.doAction({action: 'viewDetails',
+                    payload: { selectedObject: toolbar.selectedObjects[0] }})">
+              <i class="fa fa-info-circle"></i> View Details
             </a>
           </li>
         </ul>

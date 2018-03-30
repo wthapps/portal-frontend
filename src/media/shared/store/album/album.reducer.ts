@@ -12,6 +12,9 @@ export interface State  extends EntityState<any> {
   selectedDetailObjectId: number;
   object:    any;
   objects:  Array<any>;
+  currentLink: string;
+  nextLink: string;
+  query: string;
   detailObject: any;
   detailObjects: Array<any>;
 }
@@ -29,6 +32,9 @@ const INITIAL_STATE: State = albumAdapter.getInitialState({
   selectedDetailObjectId: null,
   object:    null,
   objects:  [],
+  currentLink: null,
+  nextLink: null,
+  query: null,
   detailObject: null,
   detailObjects: []
 });
@@ -72,7 +78,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       let result: any;
       // add selected attribute
       action.payload.data.map(obj => {
-        obj['selected'] = false;
+        obj['selected'] = state.selectedObjectId === obj.id ? true : false;
         return obj;
       });
       if (action.payload.detail) {
@@ -92,6 +98,8 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           object: null,
           detailObjects: [],
           detailObject: null,
+          currentLink: action.payload.page_metadata.links.self,
+          nextLink: action.payload.page_metadata.links.next
         });
       }
       return result;
@@ -119,7 +127,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           return obj;
         });
       }
-      return state
+      return state;
     }
 
     case actions.ActionTypes.SELECT:
@@ -127,6 +135,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         Object.values(state.detailObjects).map(obj => {
           if (obj.id === action.payload.selectedObjects[0].id) {
             obj.selected = true;
+            state.selectedObjectId = obj.id;
           } else if (action.payload.clearAll) {
             obj.selected = false;
           }
@@ -136,6 +145,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         Object.values(state.objects).map(obj => {
           if (obj.id === action.payload.selectedObjects[0].id) {
             obj.selected = true;
+            state.selectedObjectId = obj.id;
           } else if (action.payload.clearAll) {
             obj.selected = false;
           }
@@ -217,6 +227,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         if (state.detail) {
           state.detailObjects.push(action.payload.data);
         } else {
+          state.selectedObjectId = action.payload.data.id;
           state.objects.push(action.payload.data);
         }
         return state;
@@ -231,6 +242,8 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         obj.selected = false;
         if (state.detail) {
           cloneState.detailObjects.push(obj);
+        } else {
+          cloneState.objects.push(obj);
         }
       });
 
@@ -287,6 +300,8 @@ export const getObjects    = (state: State) => state.objects;
 export const getObject    = (state: State) => state.object;
 export const getDetailObjects    = (state: State) => state.detailObjects;
 export const getDetailObject    = (state: State) => state.detailObject;
+export const getNextLink    = (state: State) => state.nextLink;
+
 
 
 

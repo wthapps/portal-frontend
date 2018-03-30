@@ -37,6 +37,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
   @Input() view: string = 'grid';
   @Input() objects: Array<any> = new Array<any>();
+  @Input() nextLink: string = null;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedObjectsChanged: EventEmitter<any> = new EventEmitter<any>();
 
@@ -47,8 +48,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
   // this is used in detail pages
   object: any;
   page: string;
-
-  nextLink: string;
 
   @ContentChild('columnBox') columnBoxTmpl: TemplateRef<any>;
   @ContentChild('columnFileSize') columnFileSizeTmpl: TemplateRef<any>;
@@ -65,13 +64,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
   sortBy: string;
   sortOrder: string;
 
-
-
-
   private pressingCtrlKey: boolean = false;
-
-  private objectType: string; //photo, album, video, playlist, all
-  private currentView: number;
   private destroySubject: Subject<any> = new Subject<any>();
 
 
@@ -99,7 +92,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.currentView = 0;
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();    // Destroy unused subscriptions
   }
@@ -122,43 +114,53 @@ export class WGridListComponent implements OnInit, OnDestroy {
         this.zoom(event.payload);
         break;
       default:
-      if (event.action === 'deselectAll') {
-        this.selectedObjects.length = 0;
-      }
-      if (event.action === 'select') {
-        if (event.payload.clearAll) {
+        if (event.action === 'getAll' && !event.payload.nextLink) {
+          break;
+        }
+        if (event.action === 'deselectAll') {
           this.selectedObjects.length = 0;
         }
-        event.payload.selectedObjects.forEach(obj => {
-          this.selectedObjects.push(obj);
-        });
-      } else if (event.action === 'deselect') {
-        event.payload.selectedObjects.forEach(obj => {
-          this.selectedObjects.splice(this.selectedObjects.indexOf(obj.id), 1);
-        });
-      }
-      if (event.action === 'select' ||
-          event.action === 'selectAll' ||
-          event.action === 'deselect' ||
-          event.action === 'deselectAll') {
-        if (event.action === 'deselectAll') {
-          this.selectedObjects.map(obj => obj.selected = false);
-        }
-        this.selectedObjectsChanged.emit(this.selectedObjects);
-      }
-
-      // Update favorite status for toolbar when hit favorite action on item
-      if (event.action === 'favourite' && !event.payload.multiItem) {
-        this.selectedObjects.map(object => {
-          if (object.id === event.payload.selectedObjects[0].id ) {
-            object.favorite = event.payload.mode === 'add' ? true : false;
+        if (event.action === 'select') {
+          if (!this.pressingCtrlKey && !event.payload.checkbox) {
+            event.payload.clearAll = true;
+          } else if (this.pressingCtrlKey && event.payload.selectedObjects[0].selected) {
+            event.action = 'deselect';
           }
-          return object;
-        });
-        this.selectedObjectsChanged.emit(this.selectedObjects);
-      }
+          if (event.payload.clearAll) {
+            this.selectedObjects.length = 0;
+          }
 
-      this.event.emit(event);
+
+          event.payload.selectedObjects.forEach(obj => {
+            this.selectedObjects.push(obj);
+          });
+        } else if (event.action === 'deselect') {
+          event.payload.selectedObjects.forEach(obj => {
+            this.selectedObjects.splice(this.selectedObjects.indexOf(obj.id), 1);
+          });
+        }
+        if (event.action === 'select' ||
+            event.action === 'selectAll' ||
+            event.action === 'deselect' ||
+            event.action === 'deselectAll') {
+          if (event.action === 'deselectAll') {
+            this.selectedObjects.map(obj => obj.selected = false);
+          }
+          this.selectedObjectsChanged.emit(this.selectedObjects);
+        }
+
+        // Update favorite status for toolbar when hit favorite action on item
+        if (event.action === 'favourite' && !event.payload.multiItem) {
+          this.selectedObjects.map(object => {
+            if (object.id === event.payload.selectedObjects[0].id ) {
+              object.favorite = event.payload.mode === 'add' ? true : false;
+            }
+            return object;
+          });
+          this.selectedObjectsChanged.emit(this.selectedObjects);
+        }
+
+        this.event.emit(event);
         break;
     }
   }
@@ -182,14 +184,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
       this.groupBy = 'created_at_converted';
     }
   }
-
-  group(event: any) {
-
-  }
-
-
-
-
 
   isSelecting(item: any) {
     // return (_.find(this.selectedObjects, {'id': item.id}));
@@ -260,12 +254,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  onClearAll() {
-  }
-
-  onLoadMore() {
-  }
-
   onSort(sortBy: string) {
     let sortOrder = this.sortOrder;
     if (this.sortBy === sortBy) {
@@ -273,16 +261,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
     }
   }
 
-  onGroup(groupBy: string) {
-
-  }
-
-
-  private selectAllPhotos() {
-    // this.selectedObjects.length = 0;
-    // this.selectedObjects.push(..._.filter(this.objects, ['object_type', 'photo']));
-    // this.mediaStore.selectObjects(this.selectedObjects);
-  }
  // mode = true is selecting
   private selectObject(payload: any, mode: boolean = true): void {
     // this.selectedObjects = [];
@@ -305,7 +283,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
   }
 
   private deSelectAll() {
-      // this.selectedObjects.length = 0;
       this.doEvent({ action: 'deselectAll' });
   }
 
@@ -313,8 +290,4 @@ export class WGridListComponent implements OnInit, OnDestroy {
     return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
 
-  private sort(data: any) {
-    console.log(data);
-    // this.getObjects(data);
-  }
 }

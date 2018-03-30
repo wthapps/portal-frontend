@@ -94,16 +94,14 @@ export class AlbumCreateModalComponent implements OnInit {
         this.album = res.data;
         this.doneFormModal.emit(this.album);
         this.event.emit({action: 'addAlbumSuccessful', payload: res });
-
-        let retPhotos = _.get(res, 'data.photo_number', 0);
         this.viewAlbumDetail(this.album.id );
 
-        this.modal.close().then((res: any) => console.log('Album create modal should close now'));
+        this.modal.close().then();
       });
   }
 
   viewAlbumDetail(albumId: number) {
-    this.router.navigate(['./', {outlets: {detail: [`albums`, albumId]}}], { queryParams: {r: 1}});
+    this.router.navigate(['albums', albumId]);
   }
 
   onAction(action: string, data: any) {
@@ -111,7 +109,7 @@ export class AlbumCreateModalComponent implements OnInit {
     this.event.emit(options);
   }
 
-  autoCompleteTags = (text: string): Observable<Response> => {
+  autoCompleteTags = (text: string): Observable<any> => {
     return this.tagService.getTags(text)
       // .map(data => { console.log('autocompleteTags: ', data.json()); return data.json().map((t: any) => t.name)})
       .map(data => data.json().map((item: any) => item.name))

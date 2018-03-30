@@ -21,7 +21,8 @@
     <li>
       <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
          href="javascript:void(0);"
-         (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'sharingModal'}})">
+         (click)="toolbar.doAction({action: 'openModal',
+         payload: {modalName: 'sharingModal', selectedObjects: toolbar.selectedObjects}})">
         <i class="fa fa-share-alt"></i>
       </a>
     </li>
@@ -52,13 +53,15 @@
     </li>
     <li>
       <a class="btn btn-default" href="javascript:;" draggable="false"
-         (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'taggingModal'}})"
+         (click)="toolbar.doAction({action: 'openModal',
+         payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})"
          pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
         <i class="fa fa-tag"></i></a>
     </li>
     <li>
       <a class="btn btn-default" href="javascript:;" draggable="false"
-         (click)="toolbar.doAction({action: 'openModal', payload: {modalName:'deleteModal', selectedObjects: selectedObjects}})"
+         (click)="toolbar.doAction({action: 'openModal', payload: {
+         modalName:'deleteModal', selectedObjects: toolbar.selectedObjects}})"
          pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
         <i class="fa fa-trash-o"></i></a>
     </li>
@@ -87,6 +90,14 @@
             <i class="fa fa-edit"></i> Edit Information
           </a>
         </li>
+        <li *ngIf="toolbar.hasOneObject">
+          <a (click)="toolbar.doAction({
+            action: 'viewDetails',
+            payload: { selectedObject: toolbar.selectedObjects[0] }
+          })" href="javascript:void(0);" draggable="false" >
+            <i class="fa fa-edit"></i> View Detail
+          </a>
+        </li>
         <li>
           <a href="javascript:void(0);" draggable="false" [ngClass]="{'text-disable': gridlist.selectedObjects.length != 1}"
              (click)="toolbar.doAction({action: 'downloadAlbum', payload: {selectedObjects: selectedObjects}})">
@@ -108,6 +119,7 @@
 
 <w-grid-list #gridlist
              [objects]="albums|async"
+             [nextLink]="nextLink|async"
              (event)="doEvent($event)"
              (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)"
 ></w-grid-list>

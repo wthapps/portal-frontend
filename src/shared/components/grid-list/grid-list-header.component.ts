@@ -22,7 +22,6 @@ export class WGridListHeaderComponent {
   sliderMax: number = Constants.mediaSliderViewNumber.max;
 
   zoom(event: any) {
-    console.log('zoomming:::', event);
     this.sliderVal = event.value;
     this.event.emit({action: 'zoom', payload: { viewSize: event.value }});
   }

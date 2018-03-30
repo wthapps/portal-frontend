@@ -45,10 +45,15 @@ export class BaseEntityService<T> {
 
   delete(id: any, payload?: any, path: string = ''): Observable<any> {
     let url = path === '' ? this.url : `${this.url}/${path}`;
-    if (id == 0) {
+    if (id === 0) {
       return this.apiBaseService.post(`${url}/0`, {multiple: true, payload: payload});
     } else {
       return this.apiBaseService.delete(`${url}/${id}`);
     }
+  }
+
+  deleteMany(payload?: any, path: string = ''): Observable<any> {
+    let url = path === '' ? this.url : `${this.url}/${path}`;
+    return this.apiBaseService.post(`${url}/delete_many`, {...payload });
   }
 }
