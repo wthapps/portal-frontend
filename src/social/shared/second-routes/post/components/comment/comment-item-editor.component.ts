@@ -20,7 +20,7 @@ import { takeUntil, filter, map, mergeMap, take } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 
 export enum CommentEditorMode {
@@ -67,6 +67,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   textContent = 'Let\'s try 1st sample';
   cancelPhotoSubject: Subject<any> = new Subject<any>();
+  close$: Observable<any>;
+  uploadSubscription: Subscription;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -75,6 +77,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
               public userService: UserService,
               private emojiService: WTHEmojiService) {
     this.user$ = this.userService.getAsyncProfile();
+    this.close$ = Observable.merge(this.mediaSelectionService.open$, this.cancelPhotoSubject, componentDestroyed(this));
   }
 
   ngOnInit() {
@@ -182,9 +185,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.mediaSelectionService.open();
     this.mediaSelectionService.setMultipleSelection(false);
 
-    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, this.cancelPhotoSubject, componentDestroyed(this));
     this.mediaSelectionService.selectedMedias$.pipe(
-      takeUntil(close$),
+      takeUntil(this.close$),
       filter(items => items.length > 0)
     ).subscribe((items) => {
       // this.comment.photo = items[0];
@@ -192,8 +194,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       this.hasUpdatedContent = true;
     });
 
-    this.mediaSelectionService.uploadingMedias$.pipe(
-      takeUntil(close$),
+    this.uploadSubscription = this.mediaSelectionService.uploadingMedias$.pipe(
+      takeUntil(this.close$),
       map(([file, dataUrl]) => [file]),
       mergeMap((files: any[]) => {
         this.hasUploadingPhoto = true;
@@ -268,13 +270,17 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   doEvents(response: any) {
     switch (response.action) {
       case 'remove':
-        // this.comment.photo = null;
-        // this.commentEditorForm.controls['photo'].setValue(null);
+        // this.setPhoto(null);
+        // this.files = null;
+        // this.hasUpdatedContent = (this.comment.content != '');
+        // break;
+      case 'cancelUploadingPhoto':
+      case 'cancelUpload':
         this.setPhoto(null);
+        if(this.uploadSubscription)
+          this.uploadSubscription.unsubscribe();
         this.files = null;
         this.hasUpdatedContent = (this.comment.content != '');
-        break;
-      case 'cancelUploadingPhoto':
         break;
     }
   }
