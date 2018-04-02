@@ -12,6 +12,7 @@ import { ApiBaseService } from "@shared/services/apibase.service";
 import { ApiProxyService } from "@shared/services/apiproxy.service";
 import { ConversationApiCommands } from "@shared/commands/chat/coversation-commands";
 import { StorageService } from "@shared/services/storage.service";
+import { HandlerService } from "@shared/services/handler.service";
 
 @Component({
   selector: 'chat-notification',
@@ -23,7 +24,7 @@ export class ChatNotificationComponent implements OnInit, AfterViewInit {
   tooltip: any = Constants.tooltip;
   defaultAvatar: string = Constants.img.avatar;
   urls: any = Constants.baseUrls;
-  conversations: any;
+  conversations: any = [];
   notificationCount: any;
 
   constructor(private navigateService: WTHNavigateService,
@@ -32,70 +33,110 @@ export class ChatNotificationComponent implements OnInit, AfterViewInit {
               private storageService: StorageService,
               public connectionService: ConnectionNotificationService,
               public notificationService: NotificationService,
+              public handlerService: HandlerService,
               public wthNavigateService: WTHNavigateService,
               public authService: AuthService) {
   }
 
   ngOnInit() {
-    // if (this.authService.isAuthenticated()) {
-    //   this.apiBaseService.addCommand(ConversationApiCommands.mostRecentConversations()).subscribe((res: any) => {
-    //      this.conversations = res.data;
-    //   });
-    // }
+    if (this.authService.isAuthenticated()) {
+      this.apiBaseService.addCommand(ConversationApiCommands.notificationsCount()).subscribe((res: any) => {
+         this.notificationCount = res.data.count;
+      });
+    }
+    this.handlerService.addListener('remove_notification_after_select_header', 'on_conversation_select', (contact: any) => {
+      if (this.notificationCount > 0 &&  this.notificationCount - contact.notification_count > 0) {
+        this.notificationCount -=  contact.notification_count;
+      } else {
+        this.notificationCount = 0;
+      }
+      this.conversations = this.conversations.map((conversation: any) => {
+        if (conversation.id == contact.group_json.id) {
+          conversation.group_user.notification_count = 0;
+        }
+        return conversation;
+      });
+    });
+    this.handlerService.addListener('add_notification', 'on_notification_come', (res: any) => {
+      this.notificationCount += res.count;
+    });
   }
 
   ngAfterViewInit(): void {
     //
   }
 
-  viewAllNotifications() {
-    // Close mini notification dropdown box in the header
-    $('.navbar-nav-notification').removeClass('open');
-
-    // Navigate to notification page of social module
-    if (this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social, Constants.baseUrls.media, Constants.baseUrls.contact]))
-      this.navigateService.navigateTo(['/notifications']);
-    else
-      this.navigateService.navigateOrRedirect('notifications', 'social');
+  gotoChat() {
+    this.navigateService.navigateOrRedirect('conversations', 'chat');
+    $('#chat-header-notification').removeClass('open');
   }
 
   toggleViewNotifications() {
     this.apiBaseService.addCommand(ConversationApiCommands.mostRecentConversations()).subscribe((res: any) => {
        this.conversations = res.data;
-       this.notificationCount = this.totalNotificationCalculate();
     });
   }
 
   markAllAsRead() {
     this.apiBaseService.addCommand(ConversationApiCommands.markAllAsRead()).subscribe((res: any) => {
        this.conversations = this.conversations.map((conversation: any) => {
+         this.notificationCount -= conversation.group_user.notification_count;
          conversation.group_user.notification_count = 0;
          return conversation;
        });
-       this.notificationCount = this.totalNotificationCalculate();
+       this.updateChatStore('markAllAsRead');
     });
-
-    this.updateChatStore('markAllAsRead');
   }
 
   markAsRead(c: any) {
     this.apiBaseService.addCommand(ConversationApiCommands.markAsRead({id: c.id})).subscribe((res: any) => {
        this.conversations = this.conversations.map((conversation: any) => {
-         if (conversation.id == c.id) conversation.group_user.notification_count = 0;
+         if (conversation.id == c.id) {
+           if (this.notificationCount > 0) this.notificationCount -= conversation.group_user.notification_count;
+           conversation.group_user.notification_count = 0;
+         }
          return conversation;
        });
-       this.notificationCount = this.totalNotificationCalculate();
+       this.updateChatStore('markAsRead', {id: c.id});
     });
   }
 
   updateNotification(c: any) {
     this.apiBaseService.addCommand(ConversationApiCommands.updateNotification({id: c.id, notification: false})).subscribe((res: any) => {
-      console.log(res);
+      this.updateChatStore('disableNotification', {id: c.id});
     });
   }
 
   updateChatStore(action: any, params: any = null) {
-    console.log(this.storageService.find('chat_conversations'));
+    switch(action) {
+      case 'markAllAsRead':
+        if (this.storageService.find('chat_conversations') && this.storageService.find('chat_conversations').value && this.storageService.find('chat_conversations').value.data) {
+          const conversations = this.storageService.find('chat_conversations').value.data.map((conversation: any) => {
+            conversation.notification_count = 0;
+            return conversation;
+          })
+          this.storageService.find('chat_conversations').value.data = conversations;
+        }
+      break;
+      case 'markAsRead':
+        if (this.storageService.find('chat_conversations') && this.storageService.find('chat_conversations').value && this.storageService.find('chat_conversations').value.data) {
+          const conversations = this.storageService.find('chat_conversations').value.data.map((conversation: any) => {
+            if (conversation.group_json.id == params.id) conversation.notification_count = 0;
+            return conversation;
+          })
+          this.storageService.find('chat_conversations').value.data = conversations;
+        }
+      break;
+      case 'disableNotification':
+        if (this.storageService.find('chat_conversations') && this.storageService.find('chat_conversations').value && this.storageService.find('chat_conversations').value.data) {
+          const conversations = this.storageService.find('chat_conversations').value.data.map((conversation: any) => {
+            if (conversation.group_json.id == params.id) conversation.notification = false;
+            return conversation;
+          })
+          this.storageService.find('chat_conversations').value.data = conversations;
+        }
+      break;
+    }
   }
 
   getMore() {
@@ -107,14 +148,6 @@ export class ChatNotificationComponent implements OnInit, AfterViewInit {
   private navigate(conversation: any) {
     $('#chat-header-notification').removeClass('open');
     this.wthNavigateService.navigateOrRedirect(`conversations/${conversation.group_user.id}`, 'chat');
-  }
-
-
-  private totalNotificationCalculate() {
-    return this.conversations.reduce((acc, curr) => {
-      acc += curr.group_user.notification_count;
-      return acc;
-    }, 0);
   }
 
   private subToggle(e: any) {

@@ -39,23 +39,25 @@ export class ChatCommonService {
     let message = data.message;
     message.links = data.links;
     let item = this.storage.find('chat_messages_group_' + groupId);
-    let contactSelect = this.storage.find('conversation_select').value;
-    if (item && item.value) {
-      let isReplace = false;
-      for (let i = 0; i < item.value.data.length; i++) {
-        if(item.value.data[i].id == message.id) {
-          isReplace = true;
-          item.value.data[i] = message;
+    if (this.storage.find('conversation_select')) {
+      let contactSelect = this.storage.find('conversation_select').value;
+      if (item && item.value) {
+        let isReplace = false;
+        for (let i = 0; i < item.value.data.length; i++) {
+          if(item.value.data[i].id == message.id) {
+            isReplace = true;
+            item.value.data[i] = message;
+          }
         }
-      }
-      if (!isReplace) {
-        item.value.data.push(message);
-      }
-      if(contactSelect.group_json.id == groupId) {
-        this.storage.save('current_chat_messages', item);
-      }
-      if (!contactSelect.favourite) {
-        this.moveFristRecentList();
+        if (!isReplace) {
+          item.value.data.push(message);
+        }
+        if(contactSelect.group_json.id == groupId) {
+          this.storage.save('current_chat_messages', item);
+        }
+        if (!contactSelect.favourite) {
+          this.moveFristRecentList();
+        }
       }
     }
   }

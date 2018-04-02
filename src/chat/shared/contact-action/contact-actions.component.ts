@@ -38,7 +38,6 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   onSelect(contact: any) {
-    console.log(contact);
     if (this.config.history) {
       this.chatService.updateHistory(contact);
     }

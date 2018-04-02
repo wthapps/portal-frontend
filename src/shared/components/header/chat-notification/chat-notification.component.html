@@ -1,8 +1,8 @@
 <div class="btn-group header-nav-notification visible-xs-inline-block">
-  <button (click)="viewAllNotifications()" type="button" class="btn btn-default dropdown-toggle"
+  <button (click)="gotoChat()" type="button" class="btn btn-default dropdown-toggle"
           pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
-    <span *ngIf="notificationCount" class="notification-num">
+    <span *ngIf="notificationCount > 0" class="notification-num">
       {{notificationCount}}
     </span>
   </button>
@@ -13,7 +13,7 @@
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
           pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
-    <span *ngIf="notificationCount" class="notification-num">
+    <span *ngIf="notificationCount > 0" class="notification-num">
       {{notificationCount}}
     </span>
   </button>
@@ -53,7 +53,6 @@
             </div>
           </div>
           <div class="noti-item-action">
-
               <div class="dropdown-submenu">
                 <button type="button" class="btn btn-default dropdown-toggle"
                         pTooltip="{{ tooltip.moreActions }}" tooltipPosition="bottom" (click)="subToggle($event)">
@@ -73,7 +72,7 @@
       </div>
     </div>
     <div class="nav-notification-list-footer">
-      <a href="javascript:;" (click)="viewAllNotifications()"> Go to WTH!Chat </a>
+      <a href="javascript:;" (click)="gotoChat();"> Go to WTH!Chat </a>
     </div>
   </div>
 </div>

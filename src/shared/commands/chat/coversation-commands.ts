@@ -19,4 +19,8 @@ export class ConversationApiCommands extends ApiCommand {
   static updateNotification(data: any) {
     return this.createRequest('post', 'zone/chat/notification/update_notification', data);
   }
+
+  static notificationsCount() {
+    return this.createRequest('post', 'zone/chat/notification/count');
+  }
 }

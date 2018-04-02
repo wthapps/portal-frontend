@@ -1,5 +1,6 @@
 import { Processable } from './processable';
 import { ServiceManager } from '../../services';
+import { HandlerService } from "@shared/services/handler.service";
 
 declare let _:any;
 
@@ -9,7 +10,6 @@ export class ChatNotification implements Processable {
   }
 
   process(data: any) {
-    console.log('testing::::', data);
     if (data.data.type == 'notification_count') {
       this.addNotification(data);
     }
@@ -42,10 +42,11 @@ export class ChatNotification implements Processable {
     if(item && item.value) {
       let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.data.group_id) return contact;});
       if (contact && contact.notification) {
-        contact.notification_count = data.data.count;
+        if (contact.notification) contact.notification_count = data.data.count;
         this.serviceManager.getChatCommonService().updateAll();
       }
     }
+    this.serviceManager.handlerService.triggerEvent('on_notification_come', {count: 1});
   }
 
   addContact(data:any) {

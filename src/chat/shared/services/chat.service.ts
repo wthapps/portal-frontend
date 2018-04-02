@@ -68,6 +68,25 @@ export class ChatService {
     }
   }
 
+  getConversationsAsync(option: any = {}) {
+    return new Observable((observer: any) => {
+      const res: any = this.storage.find('chat_conversations');
+      if (res && res.value && !option.forceFromApi) {
+        observer.next(res);
+      } else {
+        this.apiBaseService.get('zone/chat/contacts').subscribe(
+          (res: any) => {
+            this.storage.save('chat_conversations', res);
+            this.chatCommonService.setRecentConversations();
+            this.chatCommonService.setFavouriteConversations();
+            this.chatCommonService.setHistoryConversations();
+            observer.next(this.storage.find('chat_conversations'));
+          }
+        );
+      }
+    })
+  }
+
   getUserContacts(option: any = {}) {
     return this.apiBaseService.get('contact/contacts/internal_contacts');
   }
@@ -86,7 +105,7 @@ export class ChatService {
   }
 
   selectContact(contact: any) {
-    this.storage.save('conversation_select', contact);
+    // this.storage.save('conversation_select', contact);
     this.handler.triggerEvent('on_conversation_select', contact);
   }
 
@@ -125,7 +144,7 @@ export class ChatService {
       this.apiBaseService.get('zone/chat/message/' + groupId, options).subscribe(
         (res: any) => {
           this.storage.save('chat_messages_group_' + groupId, res);
-          if(this.storage.find('conversation_select').value.group_id == groupId) {
+          if(this.storage.find('conversation_select').value && this.storage.find('conversation_select').value.group_id == groupId) {
             this.storage.save('current_chat_messages', res);
           }
         }
