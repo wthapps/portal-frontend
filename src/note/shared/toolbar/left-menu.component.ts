@@ -14,6 +14,7 @@ import { Folder } from '../reducers/folder';
 
 declare let $: any;
 declare let _: any;
+
 @Component({
   selector: 'z-note-shared-left-menu',
   templateUrl: 'left-menu.component.html',
@@ -24,31 +25,33 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
   sub: any;
   sub2: any;
   noteFoldersTree: any[] = [];
-  noteFolders: Folder[] = [] ;
+  showFolderTree: boolean;
 
   constructor(private store: Store<any>, private apiBaseService: ApiBaseService,
-    private router: Router, private commonEventService: CommonEventService) {
+              private router: Router, private commonEventService: CommonEventService) {
     this.sub = this.store.select(fromRoot.getFoldersTree).subscribe((folders: any) => {
       this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: folders});
     });
     this.sub2 = this.commonEventService.filter((event: any) => event.channel == 'noteLeftMenu').subscribe((event: any) => {
-      if(!event.payload || event.action == '') {
+      if (!event.payload || event.action === '') {
         return;
       }
-      if(!(event.payload instanceof Array)) {
+      if (!(event.payload instanceof Array)) {
         event.payload = [event.payload];
       }
-      event.payload = event.payload.filter((i: any) => {return i.object_type == 'folder'});
-      switch(event.action) {
+      event.payload = event.payload.filter((i: any) => {
+        return i.object_type === 'folder';
+      });
+      switch (event.action) {
         // Update and create
         case 'update': {
-          for(let folder of event.payload) {
+          for (let folder of event.payload) {
             this.update(folder, this.noteFoldersTree);
           }
           break;
         }
         case 'destroy': {
-          for(let folder of event.payload) {
+          for (let folder of event.payload) {
             this.destroy(folder, this.noteFoldersTree);
           }
           this.store.dispatch({type: folder.FOLDER_UPDATED, payload: this.noteFoldersTree});
@@ -110,15 +113,15 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     target.icon = 'fa-folder-o';
     target.styleClass = `js-note-folders-tree-${target.id}`;
     if (!target.items) target.items = [];
-    target.command = (event: any)=> this.loadMenu(event);
+    target.command = (event: any) => this.loadMenu(event);
     if (!target.parent_id) {
       if (_.some(folders, ['id', target.id])) {
-        for(let folder of folders) {
+        for (let folder of folders) {
           if (folder.id == target.id) {
             folder.label = target.label;
             folder.name = target.name;
             folder.expanded = target.expanded;
-          };
+          }
         }
       } else {
         folders.unshift(target);
@@ -126,18 +129,18 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       this.sort(folders);
       return;
     }
-    for(let folder of folders) {
+    for (let folder of folders) {
       if (folder.items instanceof Array && folder.items.length > 0) {
         this.update(target, folder.items);
       }
       if (target.parent_id == folder.id) {
         if (_.some(folder.items, ['id', target.id])) {
-          for(let f of folder.items) {
+          for (let f of folder.items) {
             if (f.id == target.id) {
               f.label = target.label;
               f.name = target.name;
               f.expanded = target.expanded;
-            };
+            }
           }
         } else {
           folder.items.unshift(target);
@@ -148,7 +151,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
   }
 
   sort(folders: any) {
-    folders.sort(function(a, b) {
+    folders.sort(function (a, b) {
       var nameA = a.name.toUpperCase(); // ignore upper and lowercase
       var nameB = b.name.toUpperCase(); // ignore upper and lowercase
       if (nameA < nameB) {
@@ -163,12 +166,16 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
 
   destroy(target: any, folders: any) {
     if (!target.parent_id) {
-      _.remove(folders, (item: any) => {return item.id == target.id});
+      _.remove(folders, (item: any) => {
+        return item.id == target.id
+      });
       return;
     }
-    for(let folder of folders) {
+    for (let folder of folders) {
       if (target.parent_id == folder.id) {
-        _.remove(folder.items, (item: any) => {return item.id == target.id});
+        _.remove(folder.items, (item: any) => {
+          return item.id == target.id
+        });
       }
       this.destroy(target, folder.items);
     }

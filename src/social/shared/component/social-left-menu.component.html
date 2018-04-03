@@ -1,62 +1,58 @@
-<div class="menuleft-nav-sub-item text-capitalize" [routerLinkActive]="['active']">
-  <a draggable="false" [routerLink]="[homeMenuItem.link]" (click)="reloadHome()">
+<div class="menuleft-item" [routerLinkActive]="['active']">
+  <a [routerLink]="[homeMenuItem.link]" [routerLinkActive]="['active']"
+     (click)="onNoteClick($event)" href="javascript:void(0);">
     <i class="{{ homeMenuItem.icon }}"></i> {{ homeMenuItem.name }}
   </a>
-  <!--{{ newPostsCount$ | async }}-->
-  <div class="menuleft-nav-sub-display">
+  <div class="menuleft-item-action">
     <span> {{ COUNT_DISPLAY[(newPostsCount$ | async)] || (newPostsCount$ | async) }}</span>
   </div>
 </div>
 
-<div class="menuleft-nav-sub-item">
+<div class="menuleft-item" [routerLinkActive]="['active']">
   <a draggable="false" href="javascript:;">
     <i class="fa fa-external-link-square"></i> Shortcuts
   </a>
-  <div class="menuleft-nav-sub-action">
-    <span (click)="shortcutSetting.modal.open()" class="can-click">
+  <div class="menuleft-item-action">
+    <span (click)="shortcutSetting.modal.open()">
       <i class="fa fa-pencil"></i>
     </span>
   </div>
 </div>
 
-<div class="menuleft-nav-shortcuts">
-  <div class="menuleft-nav-sub-item-list" [ngClass]="{'expand': shortcutsExpand}">
-    <div *ngFor="let shortcut of shortcuts$ | async" class="menuleft-nav-sub-item" [routerLinkActive]="['active']" (click)="onShortcutAccessed(shortcut)">
-      <a draggable="false" [routerLink]="[shortcut?.link]" (click)="onSubMenu(shortcut?.link)"
-         pTooltip="{{ shortcut?.name }}" tooltipPosition="bottom" href="#">
-        <i class="fa fa-users"></i> {{ shortcut?.name }}
-      </a>
-      <div class="menuleft-nav-sub-action">
-        <span> {{ COUNT_DISPLAY[(shortcut?.updates_count)] || shortcut?.updates_count }}</span>
-      </div>
+<div class="menuleft-item-shortcuts" [ngClass]="{'expand': shortcutsExpand}">
+  <div class="menuleft-item" *ngFor="let shortcut of shortcuts$ | async" [routerLinkActive]="['active']"
+       (click)="onShortcutAccessed(shortcut)">
+    <a draggable="false" [routerLink]="[shortcut?.link]" (click)="onSubMenu(shortcut?.link)"
+       pTooltip="{{ shortcut?.name }}" tooltipPosition="bottom" href="#">
+      <i class="fa fa-users"></i> {{ shortcut?.name }}
+    </a>
+    <div class="menuleft-item-action">
+      <span> {{ COUNT_DISPLAY[(shortcut?.updates_count)] || shortcut?.updates_count }}</span>
     </div>
-  </div>
-  <div *ngIf="(shortcuts$ | async).length > 8" class="menuleft-nav-shortcuts-more">
-    <a *ngIf="!shortcutsExpand" (click)="shortcutsExpand = true" href="javascript:;"><i class="fa fa-caret-down"></i> Show more</a>
-    <a *ngIf="shortcutsExpand" (click)="shortcutsExpand = false" href="javascript:;"><i class="fa fa-caret-up"></i> Show less</a>
   </div>
 </div>
 
-<div class="menuleft-nav-sub-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+<div *ngIf="(shortcuts$ | async).length > 8" class="menuleft-nav-shortcuts-more">
+  <a *ngIf="!shortcutsExpand" (click)="shortcutsExpand = true" href="javascript:;"><i class="fa fa-caret-down"></i>
+    Show more</a>
+  <a *ngIf="shortcutsExpand" (click)="shortcutsExpand = false" href="javascript:;"><i class="fa fa-caret-up"></i> Show
+    less</a>
+</div>
+
+<div class="menuleft-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
   <a draggable="false" [routerLink]="[communitiesMenuItem.link]">
     <i class="{{ communitiesMenuItem.icon }}"></i> {{ communitiesMenuItem.name }}
   </a>
 </div>
 
-<ng-template ngFor let-social [ngForOf]="socialMenu" let-i="index">
-  <div *ngIf="social.name != ''" [routerLinkActive]="['active']"
-       [ngClass]="{'hidden': social.link == '/search'}" class="menuleft-nav-sub-item">
-    <a draggable="false" *ngIf="social.link == '/profile'" [routerLink]="['/profile',uuid]" href="javascript:;"
-       (click)="onSubMenu('/profile/' + uuid)">
-      <i class="{{ social.icon }}"></i> {{ social.name }}
-    </a>
-    <a draggable="false" *ngIf="social.link != '/profile'" [routerLink]="[social.link]"
+<ng-container *ngFor="let social of socialMenu">
+  <div *ngIf="social.name != ''" class="menuleft-item" [routerLinkActive]="['active']">
+    <a href="javascript:;" *ngIf="social.link !== '/profile'" [routerLink]="[social.link]"
        (click)="onSubMenu(social.link)">
       <i class="{{ social.icon }}"></i> {{ social.name }}
     </a>
   </div>
-  <div class="divider" *ngIf="social.name == ''"></div>
-</ng-template>
+</ng-container>
 
 
 <z-social-shortcut-setting #shortcutSetting></z-social-shortcut-setting>

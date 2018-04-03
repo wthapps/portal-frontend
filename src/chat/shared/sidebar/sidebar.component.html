@@ -1,44 +1,46 @@
 <z-chat-share-toolbar #chatToolbar style="display: none"></z-chat-share-toolbar>
-<aside class="main-page-left-in page-body-sidebar aside-chat">
-  <div class="form-group">
-    <a href="javascript:;" class="btn btn-outline-primary" (click)="onAddContact()"><i class="fa fa-weixin"></i> Message</a>
-  </div>
-  <dl class="media-user-list-group">
-    <dt>Favourites</dt>
-    <dd *ngIf="favouriteContacts.value">
-      <div class="media media-middle media-user-list media-user-list-hover"
-           *ngFor="let contact of favouriteContacts.value" [routerLinkActive]="['active']">
-        <div class="media-body">
-          <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
-            <z-chat-share-user [data]="contact"></z-chat-share-user>
-          </a>
-        </div>
-        <div class="media-right">
-          <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
-        </div>
-      </div>
-    </dd>
-  </dl>
-  <dl class="media-user-list-group">
-    <dt>Recent</dt>
-    <dd *ngIf="recentContacts.value">
-      <div class="media media-middle media-user-list media-user-list-hover" *ngFor="let contact of recentContacts.value"
-           [routerLinkActive]="['active']">
-        <div class="media-body">
-          <a [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)">
-            <z-chat-share-user [data]="contact"></z-chat-share-user>
-          </a>
-        </div>
-        <div class="media-right">
-          <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
-        </div>
-      </div>
-    </dd>
-  </dl>
-  <dl class="media-user-list-group">
-    <dd>
-      <a [routerLink]="['/history']" href="#" class="btn btn-outline-default"><i class="fa fa-clock-o"></i> History</a>
-    </dd>
-  </dl>
 
-</aside>
+<div class="menuleft-item">
+  <a href="javascript:;" (click)="onAddContact()">
+    <i class="fa fa-plus"></i> Message
+  </a>
+</div>
+
+<div *ngFor="let chat of chatMenu" class="menuleft-item" [routerLinkActive]="['active']">
+  <a [routerLink]="[chat.link]" href="#">
+    <i class="{{ chat.icon }}"></i> {{ chat.name }}
+  </a>
+</div>
+
+<ng-container *ngIf="favouriteContacts.value">
+  <h4 class="p15">
+    Favourites
+  </h4>
+  <div *ngFor="let contact of favouriteContacts.value" class="menuleft-item" [routerLinkActive]="['active']">
+    <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)"
+       href="javascript:;">
+      <z-chat-share-user class="media-chat-user-item" [data]="contact"></z-chat-share-user>
+      <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
+    </a>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="recentContacts.value">
+  <h4 class="p15">
+    Recent
+  </h4>
+  <div *ngFor="let contact of recentContacts.value" class="menuleft-item" [routerLinkActive]="['active']">
+    <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)"
+       href="javascript:;">
+      <z-chat-share-user class="media-chat-user-item" [data]="contact"></z-chat-share-user>
+      <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
+    </a>
+  </div>
+</ng-container>
+
+<div class="menuleft-item">
+  <a [routerLink]="['/history']" href="#">
+    <i class="fa fa-clock-o"></i> History
+  </a>
+</div>
+

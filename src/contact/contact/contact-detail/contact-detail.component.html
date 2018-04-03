@@ -1,4 +1,4 @@
-<div *ngIf="data" class="media-page-detail-left">
+<ng-container *ngIf="data">
   <z-contact-shared-toolbar>
     <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
       <z-contact-shared-actions-bar
@@ -127,6 +127,5 @@
       </div>
     </div>
   </div>
-</div>
-
+</ng-container>
 <contact-add-group-modal #modal></contact-add-group-modal>

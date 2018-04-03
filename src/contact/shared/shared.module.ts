@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ZContactSharedLeftMenuComponent } from '@contacts/shared/toolbar/left-menu.component';
 import { ZContactSharedListComponent } from './list/list.component';
 import { ZContactSharedItemComponent } from './list/item/item.component';
 import { ZContactService } from './services/contact.service';
@@ -59,6 +60,7 @@ import { ZContactShareMergeProgressComponent } from './progress/merge-progress.c
     ZContactShareImportContactComponent,
     ZContactShareMergeProgressComponent,
     ZContactSharedToolbarComponent,
+    ZContactSharedLeftMenuComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
 
@@ -87,6 +89,7 @@ import { ZContactShareMergeProgressComponent } from './progress/merge-progress.c
     ZContactShareImportContactComponent,
     ZContactShareMergeProgressComponent,
     ZContactSharedToolbarComponent,
+    ZContactSharedLeftMenuComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
 

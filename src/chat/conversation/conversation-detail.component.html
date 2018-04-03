@@ -1,11 +1,7 @@
-<z-chat-share-toolbar></z-chat-share-toolbar>
+<z-chat-share-toolbar class="page-body-control"></z-chat-share-toolbar>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar">
-  <div class="page-body-content-chat" (drop)="drop($event)" (dragover)="drag($event)" (dragenter)="drag($event)">
-    <message-list #messageList class="page-body-chat-content"></message-list>
-    <message-editor #messageEditor ></message-editor>
-  </div>
+<div class="page-body-content has-page-body-control" (drop)="drop($event)" (dragover)="drag($event)" (dragenter)="drag($event)">
+  <message-list #messageList></message-list>
+  <message-editor #messageEditor ></message-editor>
 </div>
-
-<!-- (dragenter)="onDragenter($event)" (dragleave)="onDragleave($event)"  -->
 

@@ -1,6 +1,6 @@
-<div class="page-body-control has-page-body-sidebar" *ngIf="item.value">
-  <div class="media media-user-list">
-    <div class="media-body" *ngIf="item.value">
+<ng-container *ngIf="item.value">
+  <div class="page-body-nav">
+    <div class="page-body-nav-left">
       <z-chat-share-user [data]="item.value">
         <small *ngIf="item.value.group_json.member_count > 2" [attr.title]="item.value.group_json | chatGroupMembers"
                class="can-click" (click)="onShowMemberBar()">
@@ -9,7 +9,7 @@
         </small>
       </z-chat-share-user>
     </div>
-    <div class="media-right">
+    <div class="page-body-nav-right">
       <button *ngIf="item.value.group_json.group_type == 'multiple'" type="button" class="btn btn-default"
               (click)="onAddMember()" pTooltip="{{ tooltip.addPeople }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
@@ -59,32 +59,32 @@
       </div>
     </div>
   </div>
-
-</div>
-<ng-template [ngIf]="item.value && showMemberBar">
-  <div *ngIf="item.value.group_json.group_type == 'multiple' || item.value.group_json.group_type == 'support'" class="page-body-control-sub has-page-body-sidebar">
-    <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
-      <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)"
-              class="btn btn-sm btn-default dropdown-toggle" type="button"
-              data-toggle="dropdown">
+  <ng-container *ngIf="showMemberBar">
+    <div *ngIf="item.value.group_json.group_type == 'multiple' || item.value.group_json.group_type == 'support'"
+         class="page-body-nav-sub">
+      <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
+        <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)"
+                class="btn btn-sm btn-default dropdown-toggle" type="button"
+                data-toggle="dropdown">
         <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) != -1"
               class="fa fa-circle online"></span>
-        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) == -1"
-              class="fa fa-circle"></span>
-        <span *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true"></span>
-        {{ user_in_group.name }} <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li *ngIf="showSendMessage"><a href="javascript:;" (click)="onSelect(user_in_group)">Send Message</a></li>
-        <!--<li class="divider"></li>-->
-        <li><a [routerLink]="[profileUrl, user_in_group.uuid]">View Profile</a></li>
-        <li *ngIf="showBlacklist"><a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a></li>
-        <li *ngIf="item.value.role == 'admin'"><a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove
-          From Conversation</a></li>
-      </ul>
+          <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) == -1"
+                class="fa fa-circle"></span>
+          <span *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true"></span>
+          {{ user_in_group.name }} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li *ngIf="showSendMessage"><a href="javascript:;" (click)="onSelect(user_in_group)">Send Message</a></li>
+          <!--<li class="divider"></li>-->
+          <li><a [routerLink]="[profileUrl, user_in_group.uuid]">View Profile</a></li>
+          <li *ngIf="showBlacklist"><a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a></li>
+          <li *ngIf="item.value.role == 'admin'"><a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove
+            From Conversation</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
-</ng-template>
+  </ng-container>
+</ng-container>
 
 
 <z-chat-share-edit-conversation #editConversation></z-chat-share-edit-conversation>

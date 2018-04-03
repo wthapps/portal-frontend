@@ -1,4 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { ZMediaSharedLeftMenuComponent } from '@media/shared/left-menu/left-menu.component';
 import { MediaUploaderComponent } from './uploader/media-uploader.component';
 import { MediaViewContainerComponent } from './container/media-view-container.component';
 import { MediaToolbarListComponent } from './media/media-toolbar-list.component';
@@ -47,7 +48,8 @@ TagInputModule.withDefaults({
 
     // new components
     MediaContainerComponent,
-    SharingItemComponent
+    SharingItemComponent,
+    ZMediaSharedLeftMenuComponent
   ],
   exports: [
     MediaUploaderComponent,
@@ -61,7 +63,8 @@ TagInputModule.withDefaults({
 
     //
     MediaContainerComponent,
-    SharingItemComponent
+    SharingItemComponent,
+    ZMediaSharedLeftMenuComponent
   ]
 })
 export class ZMediaSharedModule {

@@ -1,68 +1,27 @@
 @import "../../../assets/styles/global";
 
-.menuleft-nav-sub-item-list {
+.menuleft-item-shortcuts {
   max-height: (36*8)+px;
   overflow: hidden;
   &.expand {
     max-height: none;
   }
-  .menuleft-nav-sub-item {
+  .menuleft-item {
     > a {
-      padding-left: 45px;
-    }
-    .menuleft-nav-sub-action {
-      span {
-        display: inline-block;
-        @include opacity(1);
-      }
+      padding-left: 30px;
     }
   }
 }
 
 .menuleft-nav-shortcuts-more {
+  display: block;
   a {
-    padding-left: 45px;
+    padding-left: 30px;
+    color: $text-color;
+    text-decoration: none;
     &:hover {
       color: $theme-color;
     }
   }
 }
 
-.menuleft-nav-sub-item {
-  @include flexbox;
-  width: 100%;
-  position: relative;
-  > a {
-    @include flex(1);
-    white-space: nowrap;
-    overflow: hidden;
-    -ms-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    display: block;
-  }
-  .menuleft-nav-sub-display {
-    span {
-      padding: 8px;
-      color: $text-color-fade;
-      @include opacity(1);
-    }
-  }
-  .menuleft-nav-sub-action {
-    span {
-      padding: 8px;
-      color: $text-color-fade;
-      @include opacity(0.5);
-      display: none;
-    }
-  }
-  &:hover {
-    .menuleft-nav-sub-action {
-      span {
-        display: inline-block;
-        &:hover {
-          @include opacity(1);
-        }
-      }
-    }
-  }
-}

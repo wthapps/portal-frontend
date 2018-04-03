@@ -1,20 +1,9 @@
-@import "../../../assets/styles/variables";
-@import "../../../assets/styles/partials/colors";
 @import "../../../assets/styles/global";
-.page-body-control-sub {
-  padding-bottom: 6px !important;
-  height: auto !important;
-  .dropdown {
-    display: inline-block;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    .btn {
-      background-color: #d8d8d8;
-      text-transform: none;
-    }
-  }
-}
 
+.page-body-nav-sub {
+  padding-right: 50px;
+}
 .online {
   color: $user-online;
 }
+

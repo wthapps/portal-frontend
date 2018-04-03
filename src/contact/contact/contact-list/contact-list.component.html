@@ -1,36 +1,36 @@
-<div class="media-page-detail-left">
-  <z-contact-shared-toolbar>
-    <div *ngIf="contactService.selectedObjects.length>0"
-         class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
+<z-contact-shared-toolbar>
+  <div *ngIf="contactService.selectedObjects.length>0"
+       class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
 
-      <z-contact-shared-actions-bar
-        [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
-        [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
-        [showViewDetail]="false"
-        [showEdit]="false"
-        [showInvitation]="false"
-        [number]="contactService.selectedObjects.length"
-        [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')"
-        [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'blacklist')"
-        (eventOut)="doActionsToolbar($event)"
-      ></z-contact-shared-actions-bar>
-    </div>
-  </z-contact-shared-toolbar>
-  <div id="contact-list" class="page-body-content has-page-body-control"
-       lockYOffset="10"
-       observeAttributes="true"
-       infinite-scroll
-       [scrollWindow]="false"
-       (scrolled)="onLoadMore()">
+    <z-contact-shared-actions-bar
+      [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
+      [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
+      [showViewDetail]="false"
+      [showEdit]="false"
+      [showInvitation]="false"
+      [number]="contactService.selectedObjects.length"
+      [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')"
+      [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'blacklist')"
+      (eventOut)="doActionsToolbar($event)"
+    ></z-contact-shared-actions-bar>
+  </div>
+</z-contact-shared-toolbar>
+<div id="contact-list" class="page-body-content has-page-body-control"
+     lockYOffset="10"
+     observeAttributes="true"
+     infinite-scroll
+     [scrollWindow]="false"
+     (scrolled)="onLoadMore()">
 
-    <div class="page-body-content-in" *ngIf="loaded && contacts.length==0">
-      There is no contact in your contact book
-    </div>
-    <div class="page-body-content-in" *ngIf="contacts.length>=1">
-      <z-contact-shared-list [data]="contacts"></z-contact-shared-list>
-    </div>
+  <div class="page-body-content-in" *ngIf="loaded && contacts.length==0">
+    There is no contact in your contact book
+  </div>
+  <div class="page-body-content-in" *ngIf="contacts.length>=1">
+    <z-contact-shared-list [data]="contacts"></z-contact-shared-list>
   </div>
 </div>
+
+
 <contact-add-group-modal #modal></contact-add-group-modal>
 <invitation-create-modal #invitationModal (event)="doEvent($event)"></invitation-create-modal>
 <!-- && contactService.selectedObjects.length==1 -->

@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { ZChatToolbarComponent } from '../toolbar/toolbar.component';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { StorageService, UrlService, HandlerService } from "@shared/services";
 
-declare var $:any;
+declare var $: any;
+
 @Component({
   selector: 'z-chat-share-sidebar',
   templateUrl: 'sidebar.component.html',
@@ -12,33 +14,36 @@ declare var $:any;
 })
 
 export class ZChatSidebarComponent implements OnInit {
-  usersOnlineItem:any;
-  favouriteContacts:any;
-  historyContacts:any;
-  recentContacts:any;
-  historyShow:any = true;
-  isRedirect:boolean;
+  chatMenu = Constants.chatMenuItems;
+
+  usersOnlineItem: any;
+  favouriteContacts: any;
+  historyContacts: any;
+  recentContacts: any;
+  historyShow: any = true;
+  isRedirect: boolean;
   @ViewChild('chatToolbar') chatToolbar: ZChatToolbarComponent;
 
   constructor(public chatService: ChatService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private handlerService: HandlerService,
-    private urlService: UrlService,
-    private storageService: StorageService) {}
+              private router: Router,
+              private route: ActivatedRoute,
+              private handlerService: HandlerService,
+              private urlService: UrlService,
+              private storageService: StorageService) {
+  }
 
   ngOnInit() {
     this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: any) => {
-      if (this.urlService.parse().paths[0] == 'conversations') {
+      if (this.urlService.parse().paths[0] === 'conversations') {
         if (this.urlService.parse().paths[1]) {
           this.chatService.getConversationsAsync().take(1).subscribe((res: any) => {
             if (res.value && res.value.data) {
               res.value.data.forEach(contact => {
-                if (contact.id == parseInt(this.urlService.parse().paths[1])) {
+                if (contact.id === parseInt(this.urlService.parse().paths[1])) {
                   this.storageService.save('conversation_select', contact);
                   this.chatService.getMessages(contact.group_json.id);
                 }
-              })
+              });
             }
           });
         } else {
@@ -59,7 +64,7 @@ export class ZChatSidebarComponent implements OnInit {
     this.usersOnlineItem = this.chatService.getUsersOnline();
   }
 
-  onSelect(contact:any) {
+  onSelect(contact: any) {
     $('#chat-message-text').focus();
     this.chatService.selectContact(contact);
   }

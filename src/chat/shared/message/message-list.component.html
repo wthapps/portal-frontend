@@ -1,15 +1,15 @@
-<div *ngIf="contactItem && contactItem.value">
+<ng-container *ngIf="contactItem && contactItem.value">
   <div #list *ngIf="contactItem.value.active"
        scrollToBottom [detectChange]="contactItem.value.group_id"
-       class="page-body-chat-content-in"
+       class="message-wrapper"
        infiniteScrollDistance="1"
        infiniteScrollUpDistance="2"
        infiniteScroll
-       [scrollWindow]="false"
+       [scrollWindow]="true"
        (scrolled)="scrollDown()"
        (scrolledUp)="onLoadMore()">
     <ng-container *ngIf="(item && item.value); else loadingBlock">
-      <div class="message-item-wrapper" >
+      <div class="message-item-wrapper">
         <div class="message-item-dv" *ngFor="let message of item.value.data; trackBy: message?.id">
           <message-item [message]="message" [prevMessage]="getPrevMessage(message)"
                         (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
@@ -20,10 +20,7 @@
       <box-loading class="message-item-dv"></box-loading>
     </ng-template>
   </div>
-  <div *ngIf="!contactItem.value.active">
-    <z-chat-share-item-request [message]="item.value.data"></z-chat-share-item-request>
-  </div>
-</div>
-
+  <z-chat-share-item-request *ngIf="!contactItem.value.active" [message]="item.value.data"></z-chat-share-item-request>
+</ng-container>
 <z-chat-share-request-contact #request></z-chat-share-request-contact>
 <lock-upload-modal></lock-upload-modal>
