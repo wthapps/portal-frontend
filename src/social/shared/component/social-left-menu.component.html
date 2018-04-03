@@ -1,6 +1,6 @@
 <div class="menuleft-item" [routerLinkActive]="['active']">
   <a [routerLink]="[homeMenuItem.link]" [routerLinkActive]="['active']"
-     (click)="onNoteClick($event)" href="javascript:void(0);">
+     (click)="reloadHome($event)" href="javascript:void(0);">
     <i class="{{ homeMenuItem.icon }}"></i> {{ homeMenuItem.name }}
   </a>
   <div class="menuleft-item-action">
