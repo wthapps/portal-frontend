@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeModule } from './home/home.module';
 import { AboutModule } from './about/about.module';
-import { ContactModule } from './contact/contact.module';
 import { PageErrorsModule } from './errors/errors.module';
 import { LoginModule } from './login/login.module';
 import { MyAccountModule } from './my-account/my-account.module';
@@ -33,7 +32,6 @@ import { NotificationModule } from './notifications/notifications.module';
     AppRoutingModule,
     HomeModule,
     AboutModule,
-    ContactModule,
     PageErrorsModule,
     LoginModule,
     MyAccountModule,
