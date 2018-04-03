@@ -63,7 +63,8 @@
                     <a href="javascript:void" (click)="markAsRead(conversation); parentHide($event);">Mark as read</a>
                   </li>
                   <li>
-                    <a href="javascript:void" (click)="updateNotification(conversation); parentHide($event);"> Disable notification</a>
+                    <a *ngIf="conversation.group_user.notification" href="javascript:void" (click)="updateNotification(conversation); parentHide($event);"> Disable notification</a>
+                    <a *ngIf="!conversation.group_user.notification" href="javascript:void" (click)="updateNotification(conversation); parentHide($event);"> Enable notification</a>
                   </li>
                 </ul>
               </div>

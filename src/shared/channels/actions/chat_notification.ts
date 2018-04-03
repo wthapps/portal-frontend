@@ -46,7 +46,7 @@ export class ChatNotification implements Processable {
         this.serviceManager.getChatCommonService().updateAll();
       }
     }
-    this.serviceManager.handlerService.triggerEvent('on_notification_come', {count: 1});
+    if(data.data.count) this.serviceManager.handlerService.triggerEvent('on_notification_come', {count: 1});
   }
 
   addContact(data:any) {

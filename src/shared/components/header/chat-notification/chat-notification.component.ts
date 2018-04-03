@@ -70,7 +70,6 @@ export class ChatNotificationComponent implements OnInit {
 
   toggleViewNotifications() {
     this.apiBaseService.addCommand(ConversationApiCommands.mostRecentConversations()).subscribe((res: any) => {
-      console.log(res);
       this.links = res.page_metadata.links;
       this.conversations = res.data;
     });
@@ -78,31 +77,38 @@ export class ChatNotificationComponent implements OnInit {
 
   markAllAsRead() {
     this.apiBaseService.addCommand(ConversationApiCommands.markAllAsRead()).subscribe((res: any) => {
-       this.conversations = this.conversations.map((conversation: any) => {
-         this.notificationCount -= conversation.group_user.notification_count;
+      this.notificationCount = 0;
+      this.conversations = this.conversations.map((conversation: any) => {
          conversation.group_user.notification_count = 0;
          return conversation;
-       });
-       this.updateChatStore('markAllAsRead');
+      });
+      this.updateChatStore('markAllAsRead');
     });
   }
 
   markAsRead(c: any) {
     this.apiBaseService.addCommand(ConversationApiCommands.markAsRead({id: c.id})).subscribe((res: any) => {
-       this.conversations = this.conversations.map((conversation: any) => {
-         if (conversation.id == c.id) {
-           if (this.notificationCount > 0) this.notificationCount -= conversation.group_user.notification_count;
-           conversation.group_user.notification_count = 0;
-         }
-         return conversation;
-       });
-       this.updateChatStore('markAsRead', {id: c.id});
+      if (this.notificationCount > 0) {
+        if (this.notificationCount - res.data.old > 0) {
+          this.notificationCount -= res.data.old;
+        } else {
+          this.notificationCount = 0;
+        }
+      }
+      this.conversations = this.conversations.map((conversation: any) => {
+       if (conversation.id == c.id) {
+         conversation.group_user.notification_count = 0;
+       }
+       return conversation;
+      });
+      this.updateChatStore('markAsRead', {id: c.id});
     });
   }
 
   updateNotification(c: any) {
-    this.apiBaseService.addCommand(ConversationApiCommands.updateNotification({id: c.id, notification: false})).subscribe((res: any) => {
-      this.updateChatStore('disableNotification', {id: c.id});
+    this.apiBaseService.addCommand(ConversationApiCommands.updateNotification({id: c.id, notification: !c.group_user.notification})).subscribe((res: any) => {
+      c.group_user.notification = res.data.group_user.notification;
+      this.updateChatStore('updateNotification', {id: c.id, notification: res.data.group_user.notification});
     });
   }
 
@@ -126,10 +132,10 @@ export class ChatNotificationComponent implements OnInit {
           this.storageService.find('chat_conversations').value.data = conversations;
         }
       break;
-      case 'disableNotification':
+      case 'updateNotification':
         if (this.storageService.find('chat_conversations') && this.storageService.find('chat_conversations').value && this.storageService.find('chat_conversations').value.data) {
           const conversations = this.storageService.find('chat_conversations').value.data.map((conversation: any) => {
-            if (conversation.group_json.id == params.id) conversation.notification = false;
+            if (conversation.group_json.id == params.id) conversation.notification = params.notification;
             return conversation;
           })
           this.storageService.find('chat_conversations').value.data = conversations;
