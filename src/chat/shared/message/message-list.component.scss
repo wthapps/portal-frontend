@@ -21,3 +21,182 @@
   }
 }
 
+
+$message-item-content-card-right: 85px;
+.message-item {
+  margin-bottom: 15px;
+  .message-item-date {
+    position: relative;
+    padding: 10px 0 20px 0;
+    text-align: center;
+    &:after {
+      content: "";
+      height: 1px;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      background-color: $line;
+    }
+    span {
+      position: relative;
+      z-index: 1;
+      bottom: -5px;
+      display: inline-block;
+      padding: 5px 10px 5px 10px;
+      background-color: #ffffff;
+    }
+  }
+
+  .message-item-content {
+    position: relative;
+    padding-left: 50px;
+  }
+
+  .message-item-content-main {
+    &:before {
+      content: '';
+      position: absolute;
+      top: 10px;
+    }
+  }
+
+  .message-item-owner-avatar {
+    position: absolute;
+    left: 0;
+    top: 25px;
+    width: 50px;
+  }
+
+  .message-item-owner-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 2px;
+    a {
+      color: inherit;
+    }
+  }
+
+  .message-item-content-card {
+    padding-right: $message-item-content-card-right;
+    position: relative;
+  }
+
+  .message-item-content-main {
+    border-radius: 4px;
+    padding: 10px;
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-word;
+    background-color: #eff1f2;
+    margin-bottom: 10px;
+    .message-item-menu {
+      position: absolute;
+      top: 0;
+      right: -25px;
+      i {
+        width: 20px;
+        height: 20px;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 16px;
+        background-color: #D8D8D8;
+        color: #ffffff;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .message-item-action {
+    position: absolute;
+    top: 0;
+    right: 0;
+    .message-item-time {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 12px;
+      @include opacity(0.7);
+    }
+
+  }
+
+  .message-item-status {
+    position: absolute;
+    bottom: -5px;
+    font-size: 11px;
+    left: 0;
+    color: #6EC8F5;
+  }
+
+  .message-item-content-text {
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .message-item-content-contact-sharing {
+  }
+
+  .message-item-content-photo {
+    img {
+      max-width: 300px;
+    }
+  }
+
+  .message-item-content-other-files {
+    a {
+      display: block;
+      color: inherit;
+    }
+    .fa-file-o {
+      font-size: 18px;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      padding: 0;
+      line-height: 38px;
+      background-color: #fff;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      color: $text-color;
+      border: 1px solid $line;
+    }
+  }
+
+  &.message-item-left {
+    .message-item-content-main {
+      &:before {
+        @include make-arrow(left, #eff1f2, 6px, 6px);
+        left: -6px;
+      }
+    }
+  }
+
+  &.message-item-right {
+    .message-item-owner {
+      display: none;
+    }
+    .message-item-content-card {
+      text-align: right;
+    }
+    .message-item-content-main {
+      text-align: left;
+      background-color: #E0F5FF;
+      &:before {
+        @include make-arrow(right, #E0F5FF, 6px, 6px);
+        right: -6px;
+      }
+      .message-item-menu {
+        right: -30px;
+      }
+    }
+    .message-item-status {
+      left: auto;
+      right: $message-item-content-card-right;
+    }
+  }
+}
