@@ -14,19 +14,19 @@ import { HandlerService } from '@shared/services/handler.service';
 
 @Injectable()
 export class ServiceManager {
-
-  constructor(public apiBaseService: ApiBaseService,
-              public fb: FormBuilder,
-              public route: ActivatedRoute,
-              public storageService: StorageService,
-              public router: Router,
-              public urlService: UrlService,
-              public chatCommonService: ChatCommonService,
-              public commonEventService: CommonEventService,
-              public handlerService: HandlerService,
-              public connectionService: ConnectionNotificationService,
-              public notificationService: NotificationService) {
-  }
+  constructor(
+    public apiBaseService: ApiBaseService,
+    public fb: FormBuilder,
+    public route: ActivatedRoute,
+    public storageService: StorageService,
+    public router: Router,
+    public urlService: UrlService,
+    public chatCommonService: ChatCommonService,
+    public commonEventService: CommonEventService,
+    public handlerService: HandlerService,
+    public connectionService: ConnectionNotificationService,
+    public notificationService: NotificationService
+  ) {}
 
   getApi() {
     return this.apiBaseService;
