@@ -8,17 +8,9 @@ import { LoginRoutingModule } from './login-routing.module';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [
-    LoginRoutingModule,
-    PortalSharedModule
-  ],
+  imports: [LoginRoutingModule, PortalSharedModule],
   declarations: [LoginComponent],
   exports: [LoginComponent],
-  providers: [
-    AuthService,
-    AppearancesChannelService
-  ]
+  providers: [AuthService, AppearancesChannelService]
 })
-
-export class LoginModule {
-}
+export class LoginModule {}

@@ -14,14 +14,13 @@ import { MyAppsDetailComponent } from './detail/detail.component';
         component: MyAppsComponent,
         canActivate: [AuthGuard],
         children: [
-          {path: ':id', component: MyAppsDetailComponent},
-          {path: '', component: MyAppsListComponent},
-          {path: '*', component: MyAppsListComponent}
+          { path: ':id', component: MyAppsDetailComponent },
+          { path: '', component: MyAppsListComponent },
+          { path: '*', component: MyAppsListComponent }
         ]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class MyAppsRoutingModule {
-}
+export class MyAppsRoutingModule {}

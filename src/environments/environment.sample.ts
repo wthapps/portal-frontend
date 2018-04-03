@@ -9,7 +9,6 @@ export const environment = {
   production: false
 };
 
-
 console.log('environment:::', environment);
 
 export const ConfigByEnv: EnvConfig = {
@@ -28,6 +27,6 @@ export const ConfigByEnv: EnvConfig = {
     SOCIAL: 'http://localhost:3015',
     CHAT: 'http://localhost:3020',
     CONTACT: 'http://localhost:3025',
-    NOTE: 'http://localhost:3030',
+    NOTE: 'http://localhost:3030'
   }
 };

@@ -1,9 +1,15 @@
-import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { MediaObjectService } from '../shared/container/media-object.service';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { AlbumCreateModalComponent } from 'media/shared/modal';
-import { AddToAlbumModalComponent } from "@shared/shared/components/photo/modal/add-to-album-modal.component";
+import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/add-to-album-modal.component';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Subject } from 'rxjs/Subject';
@@ -18,18 +24,18 @@ import { FileSelectComponent } from '@wth/shared/shared/components/file/file-sel
 @Component({
   selector: 'shared-by-me',
   templateUrl: 'shared-by-me.page.html',
-  entryComponents:[
+  entryComponents: [
     EditNameModalComponent,
     AlbumCreateModalComponent,
     FileSelectComponent
   ]
 })
 export class SharedByMePage implements OnInit {
-
   objects: Observable<Array<any>> = new Observable<Array<any>>();
   selectedObjects: Observable<Array<any>>;
 
-  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  @ViewChild('modalContainer', { read: ViewContainerRef })
+  modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
 
@@ -46,17 +52,23 @@ export class SharedByMePage implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch({type: fromObject.GET_ALL, payload: {url: '/sharings'}});
+    this.store.dispatch({
+      type: fromObject.GET_ALL,
+      payload: { url: '/sharings' }
+    });
   }
 
   doEvents(event: any) {
     switch (event.action) {
       case 'select':
       case 'deselect':
-        this.store.dispatch({type: fromObject.SELECT, payload: {selectedObjects: event.payload.selectedObjects}});
+        this.store.dispatch({
+          type: fromObject.SELECT,
+          payload: { selectedObjects: event.payload.selectedObjects }
+        });
         break;
       case 'deselectAll':
-        this.store.dispatch({type: fromObject.DESELECT_ALL, payload: {}});
+        this.store.dispatch({ type: fromObject.DESELECT_ALL, payload: {} });
         break;
       case 'viewDetails':
         this.viewDetails(event);
@@ -65,7 +77,10 @@ export class SharedByMePage implements OnInit {
         this.openModal(event.payload);
         break;
       case 'update':
-        this.store.dispatch({type: fromObject.UPDATE, payload: {selectedObject: event.payload.selectedObject}});
+        this.store.dispatch({
+          type: fromObject.UPDATE,
+          payload: { selectedObject: event.payload.selectedObject }
+        });
         break;
       case 'delete':
         this.delete(event.payload.selectedObjects);
@@ -74,7 +89,10 @@ export class SharedByMePage implements OnInit {
   }
 
   viewDetails(option: any) {
-    this.router.navigate(['shared-by-me-new', option.payload.selectedObject.id]);
+    this.router.navigate([
+      'shared-by-me-new',
+      option.payload.selectedObject.id
+    ]);
   }
 
   delete(objects: any) {
@@ -84,7 +102,10 @@ export class SharedByMePage implements OnInit {
       message: `Deleting selected sharing(s) will stop other users from accessing your photos
       <br/>Your photos will be in your library`,
       accept: () => {
-        this.store.dispatch({type: fromObject.DELETE, payload: {selectedObjects: objects}});
+        this.store.dispatch({
+          type: fromObject.DELETE,
+          payload: { selectedObjects: objects }
+        });
       }
     });
   }
@@ -94,7 +115,7 @@ export class SharedByMePage implements OnInit {
     switch (params.modalName) {
       case 'editNameModal':
         this.loadModalComponent(EditNameModalComponent);
-        options = {selectedObject: params.selectedObject};
+        options = { selectedObject: params.selectedObject };
         break;
     }
     if (this.modal) {
@@ -107,9 +128,13 @@ export class SharedByMePage implements OnInit {
   }
 
   private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    let modalComponentFactory = this.resolver.resolveComponentFactory(
+      component
+    );
     this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    this.modalComponent = this.modalContainer.createComponent(
+      modalComponentFactory
+    );
     this.modal = this.modalComponent.instance;
 
     // handle all of action from modal all
@@ -117,5 +142,4 @@ export class SharedByMePage implements OnInit {
       this.doEvents(event);
     });
   }
-
 }

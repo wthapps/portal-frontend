@@ -17,9 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -37,7 +35,7 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
 
     // WTHApps modules
     SharedModule.forRoot(),
-    CoreModule.forRoot(),
+    CoreModule.forRoot()
   ],
   providers: [
     {
@@ -52,4 +50,4 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

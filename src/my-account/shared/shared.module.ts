@@ -20,8 +20,6 @@ import { SharedModule } from '@shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
-
-
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -65,10 +63,7 @@ export class MySharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: MySharedModule,
-      providers: [
-        AccountService,
-        SubscriptionService
-      ]
+      providers: [AccountService, SubscriptionService]
     };
   }
 }

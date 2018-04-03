@@ -11,5 +11,5 @@ declare var _: any;
 })
 export class ZMediaSearchComponent {
   @ViewChild('container') container: MediaViewContainerComponent;
-  sub:any;
+  sub: any;
 }

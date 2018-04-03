@@ -28,6 +28,4 @@ import { ZChatNewConversationComponent } from './new-conversation.component';
   ],
   providers: []
 })
-
-export class ZChatConversationModule {
-}
+export class ZChatConversationModule {}

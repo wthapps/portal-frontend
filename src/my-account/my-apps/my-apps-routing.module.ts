@@ -15,16 +15,15 @@ import { AuthGuard } from '@wth/shared/services';
         component: MyMyAppsComponent,
         canActivate: [AuthGuard],
         children: [
-          {path: ':id/add', component: MyMyAppsDetailAddComponent},
-          {path: ':id/edit/:id_dns', component: MyMyAppsDetailAddComponent},
-          {path: ':id', component: MyMyAppsDetailComponent},
-          {path: '', component: MyMyAppsListComponent},
-          {path: '**', component: MyMyAppsListComponent}
+          { path: ':id/add', component: MyMyAppsDetailAddComponent },
+          { path: ':id/edit/:id_dns', component: MyMyAppsDetailAddComponent },
+          { path: ':id', component: MyMyAppsDetailComponent },
+          { path: '', component: MyMyAppsListComponent },
+          { path: '**', component: MyMyAppsListComponent }
         ]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class MyMyAppsRoutingModule {
-}
+export class MyMyAppsRoutingModule {}

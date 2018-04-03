@@ -1,6 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
 
-
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../constant/config/constants';
 import { NotificationChannelService } from '../channels/notification-channel.service';
@@ -19,9 +18,11 @@ declare var _: any;
 export class NotificationService extends CommonNotificationInterface {
   url: string = Constants.urls.zoneSoNotifications;
 
-  constructor(protected api: ApiBaseService,
-              protected navigateService: WTHNavigateService,
-              protected authService: AuthService) {
+  constructor(
+    protected api: ApiBaseService,
+    protected navigateService: WTHNavigateService,
+    protected authService: AuthService
+  ) {
     super(api, navigateService, authService);
   }
 

@@ -32,8 +32,10 @@ export class PhotoUploadService {
 
   readonly soPhotoUrl: string = Constants.urls.zoneSoPhotos;
 
-  constructor(private apiService: ApiBaseService,
-              private userService: UserService) {
+  constructor(
+    private apiService: ApiBaseService,
+    private userService: UserService
+  ) {
     this.loadConfigOnce();
   }
 
@@ -44,23 +46,27 @@ export class PhotoUploadService {
 
   loadConfig() {
     // ONLY load config 1 time
-    this.apiService.post(`${this.soPhotoUrl}/get_aws_config`)
+    this.apiService
+      .post(`${this.soPhotoUrl}/get_aws_config`)
       .filter(() => this.userService.loggedIn)
       .delay(3000) // Delay this action 3s to prevent slow loading at initial time
-      .take(1).subscribe((data: any) => {
-      this.albumTempBucketName = data.tempBucket;
-      this.bucketRegion = data.region;
-      this.bucketSubFolder = data.bucketSubFolder;
-      this.identityPoolId = data.identityPoolId;
+      .take(1)
+      .subscribe(
+        (data: any) => {
+          this.albumTempBucketName = data.tempBucket;
+          this.bucketRegion = data.region;
+          this.bucketSubFolder = data.bucketSubFolder;
+          this.identityPoolId = data.identityPoolId;
 
-      this.init();
-    }, (err: any) => {
-      console.error('Error loading config', err);
-    });
+          this.init();
+        },
+        (err: any) => {
+          console.error('Error loading config', err);
+        }
+      );
   }
 
   init(): void {
-
     AWS.config.update({
       region: this.bucketRegion,
       credentials: new AWS.CognitoIdentityCredentials({
@@ -70,18 +76,18 @@ export class PhotoUploadService {
 
     this.s3 = new AWS.S3({
       apiVersion: '2006-03-01',
-      params: {Bucket: this.albumTempBucketName}
+      params: { Bucket: this.albumTempBucketName }
     });
   }
 
   getPhoto(photo: any): Promise<any> {
     return new Promise((resolve: any) => {
-        let reader: FileReader = new FileReader();
+      let reader: FileReader = new FileReader();
 
-        reader.onload = (data: any) => {
-          resolve(data.target['result']);
-        };
-        reader.readAsDataURL(photo);
+      reader.onload = (data: any) => {
+        resolve(data.target['result']);
+      };
+      reader.readAsDataURL(photo);
     });
   }
 
@@ -93,13 +99,13 @@ export class PhotoUploadService {
     return file.type.indexOf('image') > -1;
   }
 
-   /**
+  /**
    * Upload multiple photos to s3 and convert output streams to Observable
    * @param photos
    * @returns {any}
    */
   uploadPhotos(photos: Array<any>): Observable<any> {
-    if (!( window.File && window.FileReader && window.FileList && window.Blob )) {
+    if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
       let err_msg = 'The File APIs are not fully supported in this browser.';
       console.error(err_msg);
       return Observable.throw(err_msg);
@@ -107,7 +113,8 @@ export class PhotoUploadService {
 
     // ONLY Process 4 photos at a time
     return Observable.from(photos)
-      .mergeMap((photo: any) => this.readFile(photo),
+      .mergeMap(
+        (photo: any) => this.readFile(photo),
         (photo: any, data: any) => {
           // below code handles rename when pasting on Notes
           // worked around for this case
@@ -123,10 +130,14 @@ export class PhotoUploadService {
         },
         this.MAX_FILES
       )
-      .mergeMap((combinedData: any) => this.apiService.post('media/photos', combinedData),
+      .mergeMap(
+        (combinedData: any) =>
+          this.apiService.post('media/photos', combinedData),
         (combinedData: any, returnData: any) => {
-          return {originPhoto: combinedData, data: returnData.data};
-        }, this.MAX_FILES);
+          return { originPhoto: combinedData, data: returnData.data };
+        },
+        this.MAX_FILES
+      );
   }
 
   readFile(file: any): Promise<any> {
@@ -144,5 +155,4 @@ export class PhotoUploadService {
       reader.readAsDataURL(file);
     });
   }
-
 }

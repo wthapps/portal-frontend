@@ -13,17 +13,17 @@ import { AuthGuard } from '@wth/shared/services';
         component: ZMediaAlbumComponent,
         canActivate: [AuthGuard],
         children: [
-          {path: '', component: AlbumListComponent},
-          {path: '*', component: AlbumListComponent}
+          { path: '', component: AlbumListComponent },
+          { path: '*', component: AlbumListComponent }
         ]
       },
       {
-        path: 'albums/:id', component: ZMediaAlbumDetailComponent,
+        path: 'albums/:id',
+        component: ZMediaAlbumDetailComponent,
         canActivate: [AuthGuard]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class ZMediaAlbumRoutingModule {
-}
+export class ZMediaAlbumRoutingModule {}

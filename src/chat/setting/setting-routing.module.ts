@@ -16,5 +16,4 @@ import { ZChatSettingComponent } from './setting.component';
   ],
   exports: [RouterModule]
 })
-export class ZChatSettingRoutingModule {
-}
+export class ZChatSettingRoutingModule {}

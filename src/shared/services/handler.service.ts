@@ -1,4 +1,4 @@
-import { Injectable }     from '@angular/core';
+import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { UserService } from './user.service';
 
@@ -36,4 +36,3 @@ export class HandlerService extends StorageService {
     }
   }
 }
-

@@ -14,18 +14,8 @@ import { SharedModule } from '@wth/shared/shared.module';
     MySharedModule.forRoot(),
     SharedModule.forRoot()
   ],
-  declarations: [
-    MyPaymentComponent,
-    MyPaymentConfirmComponent
-  ],
-  exports: [
-    MyPaymentComponent,
-    MyPaymentConfirmComponent
-  ],
-  providers: [
-    MyPaymentService
-  ]
+  declarations: [MyPaymentComponent, MyPaymentConfirmComponent],
+  exports: [MyPaymentComponent, MyPaymentConfirmComponent],
+  providers: [MyPaymentService]
 })
-
-export class MyPaymentModule {
-}
+export class MyPaymentModule {}

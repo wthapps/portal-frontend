@@ -10,14 +10,11 @@ import { AuthService } from '@wth/shared/services/auth.service';
 export class ConnectionNotificationService extends CommonNotificationInterface {
   readonly url: string = Constants.urls.zoneSoConnections;
 
-  constructor(protected api: ApiBaseService,
-              protected navigateService: WTHNavigateService,
-              protected authService: AuthService) {
+  constructor(
+    protected api: ApiBaseService,
+    protected navigateService: WTHNavigateService,
+    protected authService: AuthService
+  ) {
     super(api, navigateService, authService);
   }
-
 }
-
-
-
-

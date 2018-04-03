@@ -16,7 +16,6 @@ import { LoadingService } from '../../shared/shared/components/loading/loading.s
 import { Constants } from '../../shared/constant/config/constants';
 import { Ng2Cable } from 'ng2-cable';
 
-
 declare var $: any;
 
 /**
@@ -38,23 +37,23 @@ export class LoginComponent implements OnInit {
 
   private returnUrl: string;
 
-  constructor(private fb: FormBuilder,
-              private router: Router,
-              private route: ActivatedRoute,
-              private userService: UserService,
-              private toastsService: ToastsService,
-              private loadingService: LoadingService,
-              private appearancesChannelService: AppearancesChannelService,
-              private ng2Cable: Ng2Cable,
-              private authService: AuthService) {
-
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private toastsService: ToastsService,
+    private loadingService: LoadingService,
+    private appearancesChannelService: AppearancesChannelService,
+    private ng2Cable: Ng2Cable,
+    private authService: AuthService
+  ) {
     this.form = fb.group({
-      'email': ['',
+      email: [
+        '',
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'password': ['',
-        Validators.compose([Validators.required])
-      ]
+      password: ['', Validators.compose([Validators.required])]
     });
 
     this.email = this.form.controls['email'];
@@ -75,7 +74,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(values: any): void {
-
     this.submitted = true;
     if (this.form.valid) {
       // start loading
@@ -83,31 +81,30 @@ export class LoginComponent implements OnInit {
 
       let email = values.email;
       let password = values.password;
-      let body = JSON.stringify({user: {email, password}});
+      let body = JSON.stringify({ user: { email, password } });
 
-
-      this.authService.login(body)
-        .subscribe((response: any) => {
-            this.loadingService.stop();
-            this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-            if (this.returnUrl.indexOf(Constants.baseUrls.app) >= 0) {
-              this.router.navigate([this.returnUrl]);
+      this.authService.login(body).subscribe(
+        (response: any) => {
+          this.loadingService.stop();
+          this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+          if (this.returnUrl.indexOf(Constants.baseUrls.app) >= 0) {
+            this.router.navigate([this.returnUrl]);
+          } else {
+            if (this.returnUrl === '' && Constants.useDefaultPage) {
+              window.location.href = Constants.urls.default;
+            } else if (this.returnUrl === '' && !Constants.useDefaultPage) {
+              this.router.navigate(['']);
             } else {
-              if (this.returnUrl === '' && Constants.useDefaultPage) {
-                window.location.href = Constants.urls.default;
-              } else if (this.returnUrl === '' && !Constants.useDefaultPage) {
-                this.router.navigate(['']);
-              } else {
-                window.location.href = this.returnUrl;
-              }
+              window.location.href = this.returnUrl;
             }
-          },
-          (error: any) => {
-            // stop loading
-            this.loadingService.stop();
-            this.toastsService.danger(error.error.error);
           }
-        );
+        },
+        (error: any) => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(error.error.error);
+        }
+      );
     }
   }
 }

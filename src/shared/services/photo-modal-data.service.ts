@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 // This Data service is created for communitication between photo select component and its containers
 export class PhotoModalDataService {
-
   // Observable string streams
   openObs$: Observable<any>;
   closeObs$: Observable<any>;
@@ -37,12 +36,11 @@ export class PhotoModalDataService {
     this.initObs$ = this.modalInitSource.asObservable();
   }
 
-
   init(options: any) {
     this.modalInitSource.next(options);
   }
 
-  open(options: any = {return: false}) {
+  open(options: any = { return: false }) {
     this.modalOpenSource.next(options);
   }
 
@@ -66,6 +64,4 @@ export class PhotoModalDataService {
   close() {
     this.modalCloseSource.next('');
   }
-
 }
-

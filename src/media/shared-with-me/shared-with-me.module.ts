@@ -9,21 +9,9 @@ import { ZMediaSharedWithMeService } from './shared-with-me.service';
 import { SharedModule } from '@wth/shared/shared.module';
 
 @NgModule({
-  imports: [
-    ZMediaSharedWithMeRoutingModule,
-    ZMediaSharedModule,
-    SharedModule
-  ],
-  declarations: [
-    ZMediaSharedWithMeComponent
-  ],
-  exports: [
-    ZMediaSharedWithMeComponent
-  ],
-  providers: [
-    ZMediaSharedWithMeService
-  ]
+  imports: [ZMediaSharedWithMeRoutingModule, ZMediaSharedModule, SharedModule],
+  declarations: [ZMediaSharedWithMeComponent],
+  exports: [ZMediaSharedWithMeComponent],
+  providers: [ZMediaSharedWithMeService]
 })
-
-export class ZMediaSharedWithMeModule {
-}
+export class ZMediaSharedWithMeModule {}

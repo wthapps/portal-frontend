@@ -4,22 +4,17 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CommonNotificationsComponent } from '@wth/shared/shared/components/notification-list/notifications.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
 
     RouterModule.forChild([
-      {path: '', component: CommonNotificationsComponent},
+      { path: '', component: CommonNotificationsComponent }
     ])
   ],
-  declarations: [
-  ],
-  exports: [
-  ],
+  declarations: [],
+  exports: [],
   providers: []
 })
-
-export class ContactNotificationModule {
-}
+export class ContactNotificationModule {}

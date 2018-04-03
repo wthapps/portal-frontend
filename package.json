@@ -20,7 +20,7 @@
     "start-chat": "ng serve --app chat --port 3020 --open",
     "start-contact": "ng serve --app contact --port 3025 --open",
     "start-note": "ng serve --app note --port 3030 --open",
-    "prettier": "prettier {src,e2e}/**/*.{ts,scss} --write",
+    "prettier": "prettier {src,e2e}/**/**/*.{ts,scss} --write",
     "ng build all": "build --prod --build-optimizer --aot --app portal && build --prod --build-optimizer --aot --app my-account && build --prod --build-optimizer --aot --app media && build --prod --build-optimizer --aot --app social && build --prod --build-optimizer --aot --app contact && build --prod --build-optimizer --aot --app note"
   },
   "private": true,

@@ -21,7 +21,6 @@ declare var $: any;
   selector: 'sd-new-password',
   templateUrl: 'new-password.component.html'
 })
-
 export class NewPasswordComponent implements OnInit {
   form: FormGroup;
   password: AbstractControl;
@@ -32,20 +31,24 @@ export class NewPasswordComponent implements OnInit {
   private selectedId: number;
   private selectedReset_code: string;
 
-  constructor(private fb: FormBuilder,
-              private route: ActivatedRoute,
-              private router: Router,
-              private toastsService: ToastsService,
-              private loadingService: LoadingService,
-              private apiBaseService: ApiBaseService) {
-
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private toastsService: ToastsService,
+    private loadingService: LoadingService,
+    private apiBaseService: ApiBaseService
+  ) {
     this.form = fb.group({
-      'password': ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(8),
-        CustomValidator.lowercaseUppercase,
-        CustomValidator.specialSymbolOrNumber
-      ])],
+      password: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(8),
+          CustomValidator.lowercaseUppercase,
+          CustomValidator.specialSymbolOrNumber
+        ])
+      ]
     });
 
     this.password = this.form.controls['password'];
@@ -73,26 +76,24 @@ export class NewPasswordComponent implements OnInit {
         reset_code: this.selectedReset_code,
         password
       });
-      this.apiBaseService.put('users/recovery/password', body)
-        .subscribe((result: any) => {
-            // stop loading
-            this.loadingService.stop();
-            if (result.data === null) {
-              this.toastsService.danger(result.message);
-            } else {
-              this.toastsService.success('You set new password successfully!');
-              this.router.navigate(['/login']);
-            }
-          },
-          error => {
-            // stop loading
-            this.loadingService.stop();
-            this.toastsService.danger(error);
-            console.log('error:', error);
-          });
+      this.apiBaseService.put('users/recovery/password', body).subscribe(
+        (result: any) => {
+          // stop loading
+          this.loadingService.stop();
+          if (result.data === null) {
+            this.toastsService.danger(result.message);
+          } else {
+            this.toastsService.success('You set new password successfully!');
+            this.router.navigate(['/login']);
+          }
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(error);
+          console.log('error:', error);
+        }
+      );
     }
   }
 }
-
-
-

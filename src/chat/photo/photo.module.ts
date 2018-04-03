@@ -5,7 +5,6 @@ import { ChatPhotoDetailComponent } from './photo-detail.component';
 import { ZChatPhotoRoutingModule } from './photo-routing.module';
 import { SharedModule } from '@wth/shared/shared.module';
 
-
 @NgModule({
   imports: [
     ReactiveFormsModule,
@@ -13,14 +12,8 @@ import { SharedModule } from '@wth/shared/shared.module';
     ZChatSharedModule.forRoot(),
     SharedModule.forRoot()
   ],
-  declarations: [
-    ChatPhotoDetailComponent
-  ],
-  exports: [
-    ChatPhotoDetailComponent
-  ],
+  declarations: [ChatPhotoDetailComponent],
+  exports: [ChatPhotoDetailComponent],
   providers: []
 })
-
-export class ZChatPhotoModule {
-}
+export class ZChatPhotoModule {}

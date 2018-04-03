@@ -1,10 +1,16 @@
-import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+  OnDestroy
+} from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
 import { saveAs } from 'file-saver';
-
 
 import { AlbumService } from '../shared/services/album.service';
 import * as fromAlbum from '../shared/store/album/album.action';
@@ -14,7 +20,10 @@ import { MediaObjectService } from '@media/shared/container/media-object.service
 import { BaseObjectEditNameModalComponent } from '@shared/shared/components/photo/modal/base-object-edit-name-modal.component';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/shared/modal';
+import {
+  AlbumCreateModalComponent,
+  AlbumDeleteModalComponent
+} from '@media/shared/modal';
 import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
@@ -36,9 +45,12 @@ import { DynamicModal } from '@media/shared/modal/dynamic-modal';
     AddToAlbumModalComponent
   ]
 })
-export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, OnDestroy {
-  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
-  @ViewChild('infoContainer', {read: ViewContainerRef}) infoContainer: ViewContainerRef;
+export class ZMediaAlbumDetailComponent extends DynamicModal
+  implements OnInit, OnDestroy {
+  @ViewChild('modalContainer', { read: ViewContainerRef })
+  modalContainer: ViewContainerRef;
+  @ViewChild('infoContainer', { read: ViewContainerRef })
+  infoContainer: ViewContainerRef;
 
   album: any;
   params: any;
@@ -68,20 +80,29 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
 
   ngOnInit() {
     this.createDetailInfoComponent();
-    this.detailInfo.event.takeUntil(this.destroySubject).subscribe((event: any) => {
-      this.doEvent(event);
-    });
+    this.detailInfo.event
+      .takeUntil(this.destroySubject)
+      .subscribe((event: any) => {
+        this.doEvent(event);
+      });
 
     this.route.params
       .switchMap((params: Params) => {
         this.params = params;
         this.showDetail = params['showDetail'] || false;
-        return this.albumService.getAlbum(params['id']); })
-        .subscribe((res: any) => {
-          this.album = res.data;
-          this.store.dispatch(new fromAlbum.GetAll({objectType: 'photo', detail: true, object: this.album}));
-          this.detailInfo.updateProperties({ object: this.album });
-        });
+        return this.albumService.getAlbum(params['id']);
+      })
+      .subscribe((res: any) => {
+        this.album = res.data;
+        this.store.dispatch(
+          new fromAlbum.GetAll({
+            objectType: 'photo',
+            detail: true,
+            object: this.album
+          })
+        );
+        this.detailInfo.updateProperties({ object: this.album });
+      });
   }
 
   doEvent(event: any) {
@@ -97,7 +118,11 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
         this.store.dispatch(new fromAlbum.SelectAll());
         break;
       case 'deselect':
-        this.store.dispatch(new fromAlbum.Deselect({selectedObjects: event.payload.selectedObjects}));
+        this.store.dispatch(
+          new fromAlbum.Deselect({
+            selectedObjects: event.payload.selectedObjects
+          })
+        );
         break;
       case 'deselectAll':
         this.store.dispatch(new fromAlbum.DeselectAll());
@@ -118,15 +143,19 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
         this.viewDetails(event.payload);
         break;
       case 'previewAllPhotos':
-        this.router.navigate([{
-            outlets: {
-              modal: [
-                'photos',
-                event.payload.selectedObject.id,
-                {ids: [event.payload.selectedObject.id], mode: 0}
-              ]
+        this.router.navigate(
+          [
+            {
+              outlets: {
+                modal: [
+                  'photos',
+                  event.payload.selectedObject.id,
+                  { ids: [event.payload.selectedObject.id], mode: 0 }
+                ]
+              }
             }
-          }], {queryParamsHandling: 'preserve', preserveFragment: true}
+          ],
+          { queryParamsHandling: 'preserve', preserveFragment: true }
         );
         break;
       case 'editName':
@@ -137,10 +166,17 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
         this.showDetailsInfo = !this.showDetailsInfo;
         break;
       case 'addPhotoToAlbum':
-        this.store.dispatch(new fromAlbum.AddToDetailObjects({ album: this.album, photos: event.payload.photos }));
+        this.store.dispatch(
+          new fromAlbum.AddToDetailObjects({
+            album: this.album,
+            photos: event.payload.photos
+          })
+        );
         break;
       case 'removeFromAlbum':
-        this.store.dispatch(new fromAlbum.RemoveFromDetailObjects(event.payload));
+        this.store.dispatch(
+          new fromAlbum.RemoveFromDetailObjects(event.payload)
+        );
         break;
       case 'download':
         this.store.dispatch(new fromAlbum.Download(event.payload));
@@ -151,28 +187,35 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
     }
   }
 
-  ngOnDestroy() {
-
-  }
+  ngOnDestroy() {}
 
   private createDetailInfoComponent() {
-    let detailInfoComponentFactory = this.resolver.resolveComponentFactory(AlbumDetailInfoComponent);
+    let detailInfoComponentFactory = this.resolver.resolveComponentFactory(
+      AlbumDetailInfoComponent
+    );
     this.infoContainer.clear();
-    this.detailInfoComponent = this.infoContainer.createComponent(detailInfoComponentFactory);
-    this.detailInfo = <AlbumDetailInfoComponent>this.detailInfoComponent.instance;
+    this.detailInfoComponent = this.infoContainer.createComponent(
+      detailInfoComponentFactory
+    );
+    this.detailInfo = <AlbumDetailInfoComponent>this.detailInfoComponent
+      .instance;
     this.detailInfo.updateProperties({ object: this.album });
   }
 
   private viewDetails(payload: any) {
-    this.router.navigate([{
-        outlets: {
-          modal: [
-            'photos',
-            payload.selectedObject.id,
-            {ids: [payload.selectedObject.id], mode: 0}
-          ]
+    this.router.navigate(
+      [
+        {
+          outlets: {
+            modal: [
+              'photos',
+              payload.selectedObject.id,
+              { ids: [payload.selectedObject.id], mode: 0 }
+            ]
+          }
         }
-      }], {queryParamsHandling: 'preserve', preserveFragment: true}
+      ],
+      { queryParamsHandling: 'preserve', preserveFragment: true }
     );
   }
 }

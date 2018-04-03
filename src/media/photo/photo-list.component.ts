@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: 'photo-list.component.html'
 })
 export class ZMediaPhotoListComponent implements OnInit {
-  photos: Observable<Array<any>>;// = this.photoSandBox.photo$;
+  photos: Observable<Array<any>>; // = this.photoSandBox.photo$;
 
   constructor(
     private userService: UserService,
@@ -24,6 +24,6 @@ export class ZMediaPhotoListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch({type: ActionTypes.GET_ALL, payload: null});
+    this.store.dispatch({ type: ActionTypes.GET_ALL, payload: null });
   }
 }

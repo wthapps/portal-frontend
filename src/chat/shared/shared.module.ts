@@ -31,10 +31,7 @@ import { ChatCommonService } from '@wth/shared/services';
  */
 
 @NgModule({
-  imports: [
-    SharedModule.forRoot(),
-    ZChatMessageModule
-  ],
+  imports: [SharedModule.forRoot(), ZChatMessageModule],
   declarations: [
     ZChatSidebarComponent,
     ZChatToolbarComponent,

@@ -5,10 +5,7 @@ import { ApiBaseService } from '@wth/shared/services/apibase.service';
 
 @Injectable()
 export class MyPaymentService {
-
-  constructor(private api: ApiBaseService) {
-
-  }
+  constructor(private api: ApiBaseService) {}
   create(path: string, body: string): Observable<Response> {
     return this.api.post(path, body);
   }

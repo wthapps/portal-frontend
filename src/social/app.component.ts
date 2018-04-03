@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewEncapsulation,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -8,7 +15,6 @@ import 'rxjs/add/operator/do';
 import { Config } from '@wth/shared/constant';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { AuthService } from '@wth/shared/services';
-
 
 /**
  * This class represents the main application component.
@@ -26,8 +32,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // confirmInfo$: Observable<ConfirmInfo>;
 
-  constructor( public authService: AuthService, private router: Router) {
-  }
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.routerSubscription = this.router.events
@@ -38,7 +43,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (!this.authService.user.introduction || !this.authService.user.introduction.social) {
+    if (
+      !this.authService.user.introduction ||
+      !this.authService.user.introduction.social
+    ) {
       this.introduction.open();
     }
   }

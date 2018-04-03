@@ -26,19 +26,15 @@ import { WToolbarModule } from '@wth/shared/components/toolbar';
   declarations: [
     ZMediaAlbumComponent,
     AlbumListComponent,
-    ZMediaAlbumDetailComponent,
+    ZMediaAlbumDetailComponent
     // AlbumDetailInfoComponent
   ],
   exports: [
     ZMediaAlbumComponent,
     AlbumListComponent,
-    ZMediaAlbumDetailComponent,
+    ZMediaAlbumDetailComponent
     // AlbumDetailInfoComponent
   ],
-  providers: [
-    AlbumService
-  ]
+  providers: [AlbumService]
 })
-
-export class ZMediaAlbumModule {
-}
+export class ZMediaAlbumModule {}

@@ -16,8 +16,7 @@ export class ZChatHistoryComponent implements OnInit {
     history: true
   };
 
-  constructor(private chatService: ChatService) {
-  }
+  constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.contactItem = this.chatService.getHistoryConversations();

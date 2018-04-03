@@ -13,15 +13,9 @@ import { CoreModule } from '@wth/core/core.module';
     ZMediaSharedModule,
     SharedModule,
     CoreModule
-
   ],
   declarations: [ZMediaSearchComponent],
-  exports: [
-    ZMediaSearchRoutingModule,
-    ZMediaSharedModule
-  ],
+  exports: [ZMediaSearchRoutingModule, ZMediaSharedModule],
   providers: []
 })
-
-export class ZMediaSearchModule {
-}
+export class ZMediaSearchModule {}

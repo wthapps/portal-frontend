@@ -14,15 +14,8 @@ import { PortalSharedModule } from '../shared/shared.module';
     PortalSharedModule.forRoot(),
     ReCaptchaModule
   ],
-  declarations: [
-    ContactComponent
-  ],
-  exports: [
-    ContactComponent
-  ],
-  providers: [
-    ContactService
-  ]
+  declarations: [ContactComponent],
+  exports: [ContactComponent],
+  providers: [ContactService]
 })
-export class ContactModule {
-}
+export class ContactModule {}

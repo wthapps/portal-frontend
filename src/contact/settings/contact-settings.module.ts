@@ -15,14 +15,8 @@ import { AutoCompleteModule, RadioButtonModule } from 'primeng/primeng';
     // CoreModule,
     SharedModule
   ],
-  declarations: [
-    SettingsComponent
-  ],
-  exports: [
-    SettingsComponent
-  ],
+  declarations: [SettingsComponent],
+  exports: [SettingsComponent],
   providers: []
 })
-
-export class SettingsModule {
-}
+export class SettingsModule {}

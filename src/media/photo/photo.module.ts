@@ -19,21 +19,12 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
     ModalModule,
     SharedModule,
     CoreModule
-
   ],
-  declarations: [
-    ZMediaPhotoListComponent,
-    PhotoDetailComponent
-  ],
-  exports: [
-    ZMediaPhotoListComponent,
-    PhotoDetailComponent
-  ],
+  declarations: [ZMediaPhotoListComponent, PhotoDetailComponent],
+  exports: [ZMediaPhotoListComponent, PhotoDetailComponent],
   providers: [
-    PhotoService,
+    PhotoService
     // PhotoSandbox
   ]
 })
-
-export class ZMediaPhotoModule {
-}
+export class ZMediaPhotoModule {}

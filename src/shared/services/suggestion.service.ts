@@ -10,16 +10,17 @@ declare var _: any;
  * This service works as a bridge between search component in CORE with specific module services. Ex: ContactSearch + ContactService
  */
 export class SuggestionService {
-
   public input$: Observable<string>;
   public suggest$: Observable<any[]>;
 
-  private inputSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private inputSubject: BehaviorSubject<string> = new BehaviorSubject<string>(
+    ''
+  );
   private suggestSubject: BehaviorSubject<any[]> = new BehaviorSubject([]);
 
   constructor() {
     this.input$ = this.inputSubject.asObservable();
-    this.suggest$  = this.suggestSubject.asObservable();
+    this.suggest$ = this.suggestSubject.asObservable();
   }
 
   public setInput(input: string) {
@@ -37,5 +38,4 @@ export class SuggestionService {
   public getSuggestion(): any[] {
     return this.suggestSubject.getValue();
   }
-
 }

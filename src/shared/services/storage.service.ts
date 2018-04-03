@@ -1,4 +1,4 @@
-import { Injectable }     from '@angular/core';
+import { Injectable } from '@angular/core';
 import { UserService } from './user.service';
 
 declare var _: any;
@@ -52,7 +52,12 @@ export class StorageService {
   }
 
   resetIfNeed() {
-    if (this.storageId && this.userService.getSyncProfile() && this.storageId != this.userService.getSyncProfile().id && this.reset) {
+    if (
+      this.storageId &&
+      this.userService.getSyncProfile() &&
+      this.storageId != this.userService.getSyncProfile().id &&
+      this.reset
+    ) {
       for (let item of this.listItem) {
         item.value = null;
       }
@@ -64,7 +69,6 @@ export class StorageService {
     return this.listItem;
   }
 }
-
 
 class StorageItem {
   key: string;

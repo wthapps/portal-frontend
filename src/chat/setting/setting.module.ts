@@ -6,7 +6,6 @@ import { ZChatSettingComponent } from './setting.component';
 import { ZChatSharedModule } from '../shared/shared.module';
 import { SharedModule } from '@wth/shared/shared.module';
 
-
 @NgModule({
   imports: [
     ReactiveFormsModule,
@@ -14,14 +13,8 @@ import { SharedModule } from '@wth/shared/shared.module';
     ZChatSharedModule.forRoot(),
     SharedModule.forRoot()
   ],
-  declarations: [
-    ZChatSettingComponent
-  ],
-  exports: [
-    ZChatSettingComponent
-  ],
+  declarations: [ZChatSettingComponent],
+  exports: [ZChatSettingComponent],
   providers: []
 })
-
-export class ZChatSettingModule {
-}
+export class ZChatSettingModule {}

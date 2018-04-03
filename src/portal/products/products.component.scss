@@ -1,11 +1,10 @@
-@import "../../shared/scss/global";
+@import '../../shared/scss/global';
 
 :host {
   display: block;
 }
 
 .page-content {
-
   .page-content-txt {
     h4 {
       font-size: 21px;
@@ -23,7 +22,8 @@
       }
     }
     @media (max-width: $screen-xs-max) {
-      figure, h4 {
+      figure,
+      h4 {
         text-align: center;
       }
       h4 {
@@ -132,7 +132,6 @@
 }
 
 .product-onemore {
-
   @media (max-width: $screen-md-max) {
     padding-bottom: 10px;
   }
@@ -302,7 +301,8 @@ $bubbleUp-ul: 62px;
   margin-right: auto;
   @media (max-width: 410px + $grid-gutter-width) {
     width: auto;
-    .product-chat-img-left, .product-chat-img-right {
+    .product-chat-img-left,
+    .product-chat-img-right {
       img {
         width: 60px;
         height: auto;

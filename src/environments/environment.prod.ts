@@ -27,10 +27,9 @@ export const ConfigByEnv: EnvConfig = {
     SOCIAL: `${protocol}://social${fullDomain}`,
     CHAT: `${protocol}://chat${fullDomain}`,
     CONTACT: `${protocol}://contacts${fullDomain}`,
-    NOTE: `${protocol}://notes${fullDomain}`,
+    NOTE: `${protocol}://notes${fullDomain}`
   }
 };
-
 
 // // const host = '192.168.0.116';
 // const host = 'localhost';

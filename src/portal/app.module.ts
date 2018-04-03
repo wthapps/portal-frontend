@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
-
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { PortalSharedModule } from './shared/shared.module';
@@ -26,9 +25,7 @@ import { SupportModule } from './support/support.module';
 import { NotificationModule } from './notifications/notifications.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -65,6 +62,5 @@ import { NotificationModule } from './notifications/notifications.module';
     // }
   ],
   bootstrap: [AppComponent]
-
 })
-export class AppModule { }
+export class AppModule {}

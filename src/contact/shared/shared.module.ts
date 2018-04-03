@@ -78,7 +78,6 @@ import { ZContactShareMergeProgressComponent } from './progress/merge-progress.c
     // custom component
     Ng2HdModule,
 
-
     // third party libs
     TagInputModule,
 
@@ -97,12 +96,9 @@ import { ZContactShareMergeProgressComponent } from './progress/merge-progress.c
     ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,
     ZContactShareIcloudIndicateComponent,
-    ICloudOAuthComponent,
-
-
+    ICloudOAuthComponent
   ]
 })
-
 export class ContactSharedModule {
   static forRoot(): ModuleWithProviders {
     return {

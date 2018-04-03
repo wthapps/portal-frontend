@@ -58,7 +58,6 @@ import { ReadMoreModule } from './shared/components/read-more/read-more.module';
 import { CoverProfileModule } from './shared/components/cover-profile/cover-profile.module';
 import { ZChatEmojiModule } from './shared/emoji/emoji.module';
 
-
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { GenericFileService } from './services/generic-file.service';
@@ -91,13 +90,11 @@ import { WObjectListService } from '@wth/shared/components/w-object-list/w-objec
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WindowService } from '@wth/shared/services/window.service';
 import { PartialModule } from '@wth/shared/partials';
-import { FileUploaderService } from "@shared/services/file/file-uploader.service";
+import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
-import { ComponentsModule } from "@shared/components/components.module";
-import { ApiProxyService } from "@shared/services/apiproxy.service";
+import { ComponentsModule } from '@shared/components/components.module';
+import { ApiProxyService } from '@shared/services/apiproxy.service';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.

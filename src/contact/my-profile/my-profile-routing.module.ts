@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AuthGuard } from '@wth/shared/services';
-import { ZMyProfileComponent } from "@shared/shared/components/profile/my-profile/my-profile.component";
+import { ZMyProfileComponent } from '@shared/shared/components/profile/my-profile/my-profile.component';
 
 @NgModule({
   imports: [
@@ -16,5 +16,4 @@ import { ZMyProfileComponent } from "@shared/shared/components/profile/my-profil
   ],
   exports: [RouterModule]
 })
-export class ZContactMyProfileRoutingModule {
-}
+export class ZContactMyProfileRoutingModule {}

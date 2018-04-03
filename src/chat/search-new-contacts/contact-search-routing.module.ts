@@ -15,5 +15,4 @@ import { ZChatContactSearchComponent } from './contact-search.component';
   ],
   exports: [RouterModule]
 })
-export class ZChatContactSearchRoutingModule {
-}
+export class ZChatContactSearchRoutingModule {}

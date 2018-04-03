@@ -1,4 +1,9 @@
-import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -19,7 +24,8 @@ export class SharedByMeDetailPage {
   objects: Observable<Array<any>>;
   selectedObjects: Observable<Array<any>>;
 
-  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  @ViewChild('modalContainer', { read: ViewContainerRef })
+  modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
   id: number;
@@ -41,7 +47,7 @@ export class SharedByMeDetailPage {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
-      this.store.dispatch({type: fromObject.GET, payload: {id: this.id}});
+      this.store.dispatch({ type: fromObject.GET, payload: { id: this.id } });
     });
   }
 
@@ -49,10 +55,13 @@ export class SharedByMeDetailPage {
     switch (event.action) {
       case 'select':
       case 'deselect':
-        this.store.dispatch({type: fromObject.SELECT, payload: {selectedObjects: event.payload.selectedObjects}});
+        this.store.dispatch({
+          type: fromObject.SELECT,
+          payload: { selectedObjects: event.payload.selectedObjects }
+        });
         break;
       case 'deselectAll':
-        this.store.dispatch({type: fromObject.DESELECT_ALL, payload: {}});
+        this.store.dispatch({ type: fromObject.DESELECT_ALL, payload: {} });
         break;
       case 'viewDetails':
         this.viewDetails(event);
@@ -61,7 +70,10 @@ export class SharedByMeDetailPage {
         this.openModal(event.payload);
         break;
       case 'update':
-        this.store.dispatch({type: fromObject.UPDATE, payload: {selectedObject: event.payload.selectedObject}});
+        this.store.dispatch({
+          type: fromObject.UPDATE,
+          payload: { selectedObject: event.payload.selectedObject }
+        });
         break;
       case 'delete':
         this.delete(event.payload.selectedObjects);
@@ -70,7 +82,10 @@ export class SharedByMeDetailPage {
   }
 
   viewDetails(option: any) {
-    this.router.navigate(['shared-by-me-new', option.payload.selectedObject.id]);
+    this.router.navigate([
+      'shared-by-me-new',
+      option.payload.selectedObject.id
+    ]);
   }
 
   delete(objects: any) {
@@ -80,7 +95,10 @@ export class SharedByMeDetailPage {
       message: `Deleting selected sharing(s) will stop other users from accessing your photos
       <br/>Your photos will be in your library`,
       accept: () => {
-        this.store.dispatch({type: fromObject.DELETE, payload: {selectedObjects: objects}});
+        this.store.dispatch({
+          type: fromObject.DELETE,
+          payload: { selectedObjects: objects }
+        });
       }
     });
   }
@@ -90,7 +108,7 @@ export class SharedByMeDetailPage {
     switch (params.modalName) {
       case 'editNameModal':
         this.loadModalComponent(EditNameModalComponent);
-        options = {selectedObject: params.selectedObject};
+        options = { selectedObject: params.selectedObject };
         break;
     }
     if (this.modal) {
@@ -103,9 +121,13 @@ export class SharedByMeDetailPage {
   }
 
   private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    let modalComponentFactory = this.resolver.resolveComponentFactory(
+      component
+    );
     this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    this.modalComponent = this.modalContainer.createComponent(
+      modalComponentFactory
+    );
     this.modal = this.modalComponent.instance;
 
     // handle all of action from modal all
@@ -113,5 +135,4 @@ export class SharedByMeDetailPage {
       this.doEvents(event);
     });
   }
-
 }

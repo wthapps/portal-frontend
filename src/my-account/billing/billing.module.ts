@@ -41,6 +41,4 @@ import { PaymentMethodModule } from '@account/billing/payment-method';
   ],
   providers: [MyTransactionService]
 })
-
-export class MyBillingModule {
-}
+export class MyBillingModule {}

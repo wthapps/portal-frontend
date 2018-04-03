@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ViewChild
+} from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
@@ -35,12 +41,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private wthConfirmService: WthConfirmService,
     mediaStore: Store<State>
   ) {
-
-    this.wthConfirmService.confirmDialog$.subscribe(
-      (res: any) => {
-        this.confirmDialog = res;
-      }
-    );
+    this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
+      this.confirmDialog = res;
+    });
   }
 
   ngOnInit() {
@@ -52,7 +55,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (!this.authService.user.introduction || !this.authService.user.introduction.media) {
+    if (
+      !this.authService.user.introduction ||
+      !this.authService.user.introduction.media
+    ) {
       this.introduction.open();
     }
   }

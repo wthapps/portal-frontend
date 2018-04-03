@@ -3,9 +3,7 @@ import { ApiBaseService } from '@wth/shared/services/apibase.service';
 
 @Injectable()
 export class MyAppsService {
-
-  constructor(private apiBaseService: ApiBaseService) {
-  }
+  constructor(private apiBaseService: ApiBaseService) {}
 
   list(): any {
     return this.apiBaseService.get('apps');

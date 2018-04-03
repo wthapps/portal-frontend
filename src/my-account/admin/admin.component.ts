@@ -1,10 +1,8 @@
-import { Component }  from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   moduleId: module.id,
   selector: 'my-admin',
   templateUrl: 'admin.component.html'
 })
-
-export class MyAdminComponent {
-}
+export class MyAdminComponent {}

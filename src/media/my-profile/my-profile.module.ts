@@ -6,21 +6,15 @@ import { ZMediaMyProfileRoutingModule } from './my-profile-routing.module';
 import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 
-
 @NgModule({
   imports: [
     ZMediaMyProfileRoutingModule,
     ZMediaSharedModule,
     SharedModule,
     CoreModule
-
   ],
-  declarations: [
-  ],
-  exports: [
-  ],
+  declarations: [],
+  exports: [],
   providers: []
 })
-
-export class ZMediaMyProfileModule {
-}
+export class ZMediaMyProfileModule {}

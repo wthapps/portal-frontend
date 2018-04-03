@@ -4,16 +4,18 @@ import { Injectable } from '@angular/core';
 export class UrlService {
   url: string;
 
-  setUrl(url:string) {
+  setUrl(url: string) {
     this.url = url;
   }
 
   getQuery() {
-    let vars:any = [];
-    let hash:any;
-    let hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    let vars: any = [];
+    let hash: any;
+    let hashes = window.location.href
+      .slice(window.location.href.indexOf('?') + 1)
+      .split('&');
     // reset some functions default of array
-    for(var i = 0; i < hashes.length; i++) {
+    for (var i = 0; i < hashes.length; i++) {
       hash = hashes[i].split('=');
       vars.push(hash[0]);
       vars[hash[0]] = hash[1];
@@ -32,17 +34,17 @@ export class UrlService {
   }
 
   parse(href?: any) {
-    if(!href) {
+    if (!href) {
       href = window.location.href;
     }
-    let link = document.createElement("a");
+    let link = document.createElement('a');
     link.href = href;
     let hashes: any = {};
     hashes.hostname = link.hostname;
     hashes.pathname = link.pathname;
     hashes.paths = link.pathname.split('/');
     hashes.paths.shift();
-    hashes.id = hashes.paths[hashes.paths.length -1];
+    hashes.id = hashes.paths[hashes.paths.length - 1];
     return hashes;
   }
 }

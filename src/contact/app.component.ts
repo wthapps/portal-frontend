@@ -1,5 +1,10 @@
 import {
-  Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit, OnDestroy,
+  Component,
+  ComponentFactoryResolver,
+  ViewChild,
+  ViewContainerRef,
+  OnInit,
+  OnDestroy,
   AfterViewInit
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
@@ -13,8 +18,6 @@ import 'rxjs/add/operator/last';
 import { ConfirmDialogModel } from '../shared/shared/models/confirm-dialog.model';
 import { Constants } from '../shared/constant/config/constants';
 
-
-
 import { ZContactService } from './shared/services/contact.service';
 import { Group } from './group/group.model';
 import { GroupService } from './group/group.service';
@@ -23,7 +26,12 @@ import { GoogleApiService } from './shared/services/google-api.service';
 import { Config } from '../shared/constant/config/env.config';
 
 import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
-import { AuthService, CommonEvent, CommonEventAction, CommonEventService } from '@wth/shared/services';
+import {
+  AuthService,
+  CommonEvent,
+  CommonEventAction,
+  CommonEventService
+} from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 
@@ -31,13 +39,12 @@ import { IntroductionModalComponent } from '@wth/shared/modals/introduction/intr
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  entryComponents: [
-    GroupEditModalComponent,
-    ZContactSharedSettingsComponent
-  ]
+  entryComponents: [GroupEditModalComponent, ZContactSharedSettingsComponent]
 })
-export class AppComponent implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
-  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+export class AppComponent
+  implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
+  @ViewChild('modalContainer', { read: ViewContainerRef })
+  modalContainer: ViewContainerRef;
   @ViewChild('introduction') introduction: IntroductionModalComponent;
 
   routerSubscription: Subscription;
@@ -52,17 +59,21 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit, CommonEve
 
   private destroySubject: Subject<any> = new Subject<any>();
 
-
-  constructor(public authService: AuthService,
-              private router: Router,
-              private resolver: ComponentFactoryResolver,
-              private commonEventService: CommonEventService,
-              public contactService: ZContactService,
-              private groupService: GroupService,
-              private googleApiService: GoogleApiService,
-              private wthConfirmService: WthConfirmService) {
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private resolver: ComponentFactoryResolver,
+    private commonEventService: CommonEventService,
+    public contactService: ZContactService,
+    private groupService: GroupService,
+    private googleApiService: GoogleApiService,
+    private wthConfirmService: WthConfirmService
+  ) {
     console.log('Environment config', Config, this.confirmDialog);
-    this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common)
+    this.commonEventService
+      .filter(
+        (event: CommonEvent) => event.channel == Constants.contactEvents.common
+      )
       .takeUntil(this.destroySubject)
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
@@ -82,14 +93,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit, CommonEve
         document.body.scrollTop = 0;
       });
 
-    this.groupService.getAllGroups()
+    this.groupService
+      .getAllGroups()
       .then((groups: any[]) => console.debug('getAllGroups: ', groups))
       .then(() => this.contactService.initialLoad())
       .then(() => this.googleApiService.handleClientLoad());
   }
 
   ngAfterViewInit() {
-    if (!this.authService.user.introduction || !this.authService.user.introduction.contact) {
+    if (
+      !this.authService.user.introduction ||
+      !this.authService.user.introduction.contact
+    ) {
       this.introduction.open();
     }
   }
@@ -115,10 +130,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit, CommonEve
         break;
       case 'contact:group:delete':
         let group = this.getGroup(event.payload.selectedItem);
-        this.groupService.delete(group.id).subscribe(
-          (res: any) => {
-            console.log(res);
-          });
+        this.groupService.delete(group.id).subscribe((res: any) => {
+          console.log(res);
+        });
         break;
     }
   }
@@ -128,9 +142,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit, CommonEve
   }
 
   private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    let modalComponentFactory = this.resolver.resolveComponentFactory(
+      component
+    );
     this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    this.modalComponent = this.modalContainer.createComponent(
+      modalComponentFactory
+    );
     this.modal = this.modalComponent.instance;
   }
 }

@@ -54,14 +54,15 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
 
     StoreModule.forRoot(AppStore),
 
-
     // StoreDevtoolsModule.instrument({ maxAge: 50 }),
 
     EffectsModule.forRoot(AppEffects),
 
     // StoreDevtoolsModule.instrumentOnlyWithExtension(),
 
-    !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [],
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+      : []
 
     // SharedModule.forRoot(),
   ],
@@ -79,5 +80,4 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}

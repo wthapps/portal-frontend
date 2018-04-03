@@ -10,7 +10,6 @@ import { MyAppsSharedModule } from './shared/shared.module';
 import { MySharedModule } from '../shared/shared.module';
 import { SharedModule } from '@wth/shared/shared.module';
 
-
 @NgModule({
   imports: [
     MyAppsRoutingModule,
@@ -18,16 +17,8 @@ import { SharedModule } from '@wth/shared/shared.module';
     MySharedModule.forRoot(),
     SharedModule.forRoot()
   ],
-  declarations: [
-    MyAppsComponent,
-    MyAppsListComponent,
-    MyAppsDetailComponent
-  ],
-  exports: [
-    MyAppsComponent
-  ],
+  declarations: [MyAppsComponent, MyAppsListComponent, MyAppsDetailComponent],
+  exports: [MyAppsComponent],
   providers: [MyAppsService]
 })
-
-export class MyAppsModule {
-}
+export class MyAppsModule {}

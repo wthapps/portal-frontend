@@ -15,20 +15,9 @@ import { CoreModule } from '@wth/core/core.module';
     ZMediaSharedModule,
     SharedModule,
     CoreModule
-
   ],
-  declarations: [
-    ZMediaFavoriteListComponent,
-    ZMediaFavoriteDetailComponent
-  ],
-  exports: [
-    ZMediaFavoriteListComponent,
-    ZMediaFavoriteDetailComponent
-  ],
-  providers: [
-    ZMediaFavoriteService
-  ]
+  declarations: [ZMediaFavoriteListComponent, ZMediaFavoriteDetailComponent],
+  exports: [ZMediaFavoriteListComponent, ZMediaFavoriteDetailComponent],
+  providers: [ZMediaFavoriteService]
 })
-
-export class ZMediaFavoriteModule {
-}
+export class ZMediaFavoriteModule {}

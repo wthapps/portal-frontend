@@ -26,13 +26,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { appStore, appEffects } from './shared/store';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 
-
 @NgModule({
   imports: [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-
 
     ZMediaHomeModule,
     ZMediaAlbumModule,
@@ -50,15 +48,17 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
     SharedModule.forRoot(),
     StoreModule.forRoot(appStore),
     EffectsModule.forRoot(appEffects),
-    !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [],
-
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+      : []
   ],
   declarations: [AppComponent],
-  providers: [{
-    provide: APP_BASE_HREF,
-    useValue: '/'
-  }],
+  providers: [
+    {
+      provide: APP_BASE_HREF,
+      useValue: '/'
+    }
+  ],
   bootstrap: [AppComponent]
-
 })
-export class AppModule { }
+export class AppModule {}

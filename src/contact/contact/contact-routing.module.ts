@@ -8,13 +8,28 @@ import { AuthGuard } from '@wth/shared/services';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'contacts', component: ZContactListComponent, canActivate: [AuthGuard] },
-      { path: 'contacts/:id', component: ZContactEditPageComponent, canActivate: [AuthGuard] },
-      { path: 'contacts/new', component: ZContactEditPageComponent, canActivate: [AuthGuard] },
-      { path: 'contacts/detail/:id', component: ZContactDetailComponent, canActivate: [AuthGuard] }
+      {
+        path: 'contacts',
+        component: ZContactListComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'contacts/:id',
+        component: ZContactEditPageComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'contacts/new',
+        component: ZContactEditPageComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'contacts/detail/:id',
+        component: ZContactDetailComponent,
+        canActivate: [AuthGuard]
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class ZContactRoutingModule {
-}
+export class ZContactRoutingModule {}

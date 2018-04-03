@@ -22,7 +22,7 @@ import { SharingItemComponent } from './media/sharing-item.component';
 
 TagInputModule.withDefaults({
   tagInput: {
-    placeholder: '',
+    placeholder: ''
   }
 });
 
@@ -34,7 +34,7 @@ TagInputModule.withDefaults({
   imports: [
     TagInputModule,
     // WGridListModule,
-    SharedModule,
+    SharedModule
   ],
   declarations: [
     MediaUploaderComponent,

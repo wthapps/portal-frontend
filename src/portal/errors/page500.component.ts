@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   moduleId: module.id,
   templateUrl: 'page500.component.html'
 })
-
 export class Page500Component {
   PanelTitle: string = '500';
 }

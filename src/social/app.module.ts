@@ -8,7 +8,6 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ZSocialSharedModule } from './shared/shared.module';
@@ -39,17 +38,23 @@ import { SocialPostsEffects } from './shared/effects/social-posts-effects';
     SharedModule.forRoot(),
     CoreModule.forRoot(),
 
-    StoreModule.forRoot({app: appReducer}),
-    EffectsModule.forRoot([ShortcutEffects, SoProfileEffects, SocialPostsEffects]),
-    !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [],
-
+    StoreModule.forRoot({ app: appReducer }),
+    EffectsModule.forRoot([
+      ShortcutEffects,
+      SoProfileEffects,
+      SocialPostsEffects
+    ]),
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+      : []
   ],
   declarations: [AppComponent],
-  providers: [{
-    provide: APP_BASE_HREF,
-    useValue: '/'
-  }],
+  providers: [
+    {
+      provide: APP_BASE_HREF,
+      useValue: '/'
+    }
+  ],
   bootstrap: [AppComponent]
-
 })
-export class AppModule { }
+export class AppModule {}

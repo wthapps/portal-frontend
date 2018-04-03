@@ -1,7 +1,7 @@
 import { BaseEntity } from '../../shared/shared/models/base-entity.model';
 
 export class Address extends BaseEntity {
-  category: string='work';
+  category: string = 'work';
   house_number?: string;
   house_name?: string;
   street_name?: string;

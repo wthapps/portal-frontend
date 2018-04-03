@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-
-
 import { ZMediaFavoriteService } from './favourites.service';
 import { PhotoService } from '@wth/shared/services';
 
@@ -14,7 +12,6 @@ declare var _: any;
   templateUrl: 'favourites-list.component.html'
 })
 export class ZMediaFavoriteListComponent implements OnInit {
-
   data: any = [];
   nextLink: string = null;
 
@@ -26,24 +23,23 @@ export class ZMediaFavoriteListComponent implements OnInit {
 
   favouriteIsEmpty: boolean = false;
 
-
-  constructor(private photoService: PhotoService,
-              private favoriteService: ZMediaFavoriteService) {
-  }
+  constructor(
+    private photoService: PhotoService,
+    private favoriteService: ZMediaFavoriteService
+  ) {}
 
   ngOnInit() {
     // this.getFavorite();
     return;
   }
 
-  getFavorite(body:any = {}) {
+  getFavorite(body: any = {}) {
     return;
   }
 
   onLoadMore(event: any) {
     return;
   }
-
 
   actionItem(event: any) {
     //console.log(event);
@@ -99,22 +95,27 @@ export class ZMediaFavoriteListComponent implements OnInit {
     this.hasFavourite = _.some(this.selectedPhotos, ['favorite', false]);
   }
 
-  private onPreviewAll(item: any) {
-  }
+  private onPreviewAll(item: any) {}
 
   private onOneFavourite(item: any) {
     let findItemFavourite = _.findIndex(this.data.albums, ['id', item.id]);
-    this.photoService.actionOneFavourite(item).toPromise().then((res: any)=> {
-      if (res.message === 'success') {
-        this.data.albums[findItemFavourite].favorite = (this.data.albums[findItemFavourite].favorite) ? false : true;
-      }
-    });
+    this.photoService
+      .actionOneFavourite(item)
+      .toPromise()
+      .then((res: any) => {
+        if (res.message === 'success') {
+          this.data.albums[findItemFavourite].favorite = this.data.albums[
+            findItemFavourite
+          ].favorite
+            ? false
+            : true;
+        }
+      });
   }
 
-  private sort(data:any) {
+  private sort(data: any) {
     this.getFavorite(data);
   }
 
   // --- End Action for Item --- //
-
 }

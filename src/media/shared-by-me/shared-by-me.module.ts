@@ -25,14 +25,7 @@ import { WGridListModule } from '@wth/shared/components/grid-list';
     ZMediaSharedByMeComponent,
     ZMediaSharingDetailComponent
   ],
-  exports: [
-    WGridListModule,
-    ZMediaSharedByMeComponent
-  ],
-  providers: [
-    ZMediaSharedByMeService
-  ]
+  exports: [WGridListModule, ZMediaSharedByMeComponent],
+  providers: [ZMediaSharedByMeService]
 })
-
-export class ZMediaSharedByMeModule {
-}
+export class ZMediaSharedByMeModule {}

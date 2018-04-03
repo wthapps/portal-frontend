@@ -10,16 +10,15 @@ import { MyPreferencesComponent } from './preferences/preferences.component';
 
 import { MySharedModule } from '../shared/shared.module';
 import { SharedModule } from '@wth/shared/shared.module';
-import { SettingsPasswordComponent } from "@account/settings/password/password.component";
-import { DeleteAccountComponent } from "@account/settings/delete-account/delete-account.component";
-
+import { SettingsPasswordComponent } from '@account/settings/password/password.component';
+import { DeleteAccountComponent } from '@account/settings/delete-account/delete-account.component';
 
 @NgModule({
   imports: [
     CommonModule,
     MySettingRoutingModule,
     MySharedModule.forRoot(),
-    SharedModule.forRoot(),
+    SharedModule.forRoot()
   ],
   declarations: [
     MySettingComponent,
@@ -29,10 +28,6 @@ import { DeleteAccountComponent } from "@account/settings/delete-account/delete-
     DeleteAccountComponent,
     MyPreferencesComponent
   ],
-  exports: [
-    MySettingComponent
-  ]
+  exports: [MySettingComponent]
 })
-
-export class MySettingModule {
-}
+export class MySettingModule {}

@@ -16,15 +16,8 @@ import { GroupService } from './group.service';
     BsModalModule,
     ContactSharedModule
   ],
-  declarations: [
-    GroupEditModalComponent
-  ],
-  exports: [
-    GroupEditModalComponent
-  ],
-  providers: [
-    GroupService
-  ]
+  declarations: [GroupEditModalComponent],
+  exports: [GroupEditModalComponent],
+  providers: [GroupService]
 })
-export class GroupModule {
-}
+export class GroupModule {}

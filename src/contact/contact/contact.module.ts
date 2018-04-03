@@ -30,7 +30,7 @@ import { InvitationModule } from '../../shared/shared/components/invitation/invi
     ZContactDetailComponent,
 
     //components
-    ZContactEditComponent,
+    ZContactEditComponent
   ],
   exports: [
     ZContactListComponent,
@@ -42,5 +42,4 @@ import { InvitationModule } from '../../shared/shared/components/invitation/invi
   ],
   providers: []
 })
-export class ContactModule {
-}
+export class ContactModule {}

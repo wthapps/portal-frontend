@@ -19,20 +19,30 @@ import { PaymentMethodComponent } from '@account/billing/payment-method/payment-
         component: MyBillingComponent,
         canActivate: [AuthGuard],
         children: [
-          {path: 'subscription', component: MySubscriptionComponent},
-          {path: 'subscription_history', component: MySubscriptionHistoryComponent},
-          {path: 'payment_method', component: PaymentMethodComponent},
-          {path: 'plan', component: MyPlanComponent},
-          {path: 'history', component: MyBillingHistoryComponent},
-          {path: '', component: MyBillingHistoryComponent},
-          {path: '*', component: MyBillingHistoryComponent}
+          { path: 'subscription', component: MySubscriptionComponent },
+          {
+            path: 'subscription_history',
+            component: MySubscriptionHistoryComponent
+          },
+          { path: 'payment_method', component: PaymentMethodComponent },
+          { path: 'plan', component: MyPlanComponent },
+          { path: 'history', component: MyBillingHistoryComponent },
+          { path: '', component: MyBillingHistoryComponent },
+          { path: '*', component: MyBillingHistoryComponent }
         ]
       },
-      {path: 'transactions/:id/receipt', component: MyReceiptComponent, canActivate: [AuthGuard]},
-      {path: 'transactions/:id', component: MyTransactionDetailsComponent, canActivate: [AuthGuard]},
+      {
+        path: 'transactions/:id/receipt',
+        component: MyReceiptComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'transactions/:id',
+        component: MyTransactionDetailsComponent,
+        canActivate: [AuthGuard]
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class MyBillingRoutingModule {
-}
+export class MyBillingRoutingModule {}

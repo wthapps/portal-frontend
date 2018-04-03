@@ -6,7 +6,6 @@ import { ZChatMyProfileRoutingModule } from './my-profile-routing.module';
 import { SharedModule } from '@wth/shared/shared.module';
 import { ZChatMyProfileComponent } from '@chat/my-profile/my-profile.component';
 
-
 @NgModule({
   imports: [
     ReactiveFormsModule,
@@ -14,14 +13,8 @@ import { ZChatMyProfileComponent } from '@chat/my-profile/my-profile.component';
     ZChatSharedModule.forRoot(),
     SharedModule.forRoot()
   ],
-  declarations: [
-    ZChatMyProfileComponent,
-  ],
-  exports: [
-    ZChatMyProfileComponent
-  ],
+  declarations: [ZChatMyProfileComponent],
+  exports: [ZChatMyProfileComponent],
   providers: []
 })
-
-export class ZChatMyProfileModule {
-}
+export class ZChatMyProfileModule {}

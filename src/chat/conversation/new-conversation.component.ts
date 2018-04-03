@@ -16,5 +16,4 @@ export class ZChatNewConversationComponent {
   onEditConversation() {
     this.chatToolbar.onEditConversation();
   }
-
 }

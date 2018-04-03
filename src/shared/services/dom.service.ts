@@ -9,11 +9,11 @@ import {
 
 @Injectable()
 export class DomService {
-
-  constructor(private componentFactoryResolver: ComponentFactoryResolver,
-              private appRef: ApplicationRef,
-              private injector: Injector) {
-  }
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private appRef: ApplicationRef,
+    private injector: Injector
+  ) {}
 
   createComponentRef(component: any): ComponentRef<any> {
     const componentRef = this.componentFactoryResolver

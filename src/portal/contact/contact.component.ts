@@ -4,7 +4,8 @@ import {
   FormGroup,
   AbstractControl,
   FormBuilder,
-  Validators, FormControl
+  Validators,
+  FormControl
 } from '@angular/forms';
 
 import { ReCaptchaComponent } from 'angular2-recaptcha/lib/captcha.component';
@@ -50,12 +51,13 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   private recaptchaResponse: any = '';
 
-  constructor(private fb: FormBuilder,
-              private contactService: ContactService,
-              private userService: UserService,
-              private loadingService: LoadingService,
-              private toastsService: ToastsService) {
-
+  constructor(
+    private fb: FormBuilder,
+    private contactService: ContactService,
+    private userService: UserService,
+    private loadingService: LoadingService,
+    private toastsService: ToastsService
+  ) {
     // if (this.userService.loggedIn) {
     //   this.emailInput = this.userService.getSyncProfile().email;
     //   this.first_nameInput = this.userService.getSyncProfile().first_name;
@@ -63,17 +65,14 @@ export class ContactComponent implements OnInit, OnDestroy {
     // }
 
     this.form = fb.group({
-      'first_name': [this.first_nameInput],
-      'last_name': [this.last_nameInput],
-      'email': [this.emailInput,
+      first_name: [this.first_nameInput],
+      last_name: [this.last_nameInput],
+      email: [
+        this.emailInput,
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'subject': ['',
-        Validators.compose([Validators.required])
-      ],
-      'body': ['',
-        Validators.compose([Validators.required])
-      ]
+      subject: ['', Validators.compose([Validators.required])],
+      body: ['', Validators.compose([Validators.required])]
     });
 
     this.first_name = this.form.controls['first_name'];
@@ -87,18 +86,14 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.recaptchaResponse = '';
     this.recaptchaState = false;
 
-    this.userService.profile$
-      .subscribe(
-        (res: User) => {
-          if (res) {
-            (<FormControl>this.email).setValue(res.email);
-          }
-        }
-      );
+    this.userService.profile$.subscribe((res: User) => {
+      if (res) {
+        (<FormControl>this.email).setValue(res.email);
+      }
+    });
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   handleCorrectCaptcha(e: any) {
     this.recaptchaResponse = e;
@@ -108,7 +103,6 @@ export class ContactComponent implements OnInit, OnDestroy {
   onSubmit(values: any): void {
     this.submitted = true;
     if (this.form.valid) {
-
       // start loading
       this.loadingService.start();
 
@@ -116,11 +110,15 @@ export class ContactComponent implements OnInit, OnDestroy {
       values.recaptcha_response = this.recaptchaResponse;
 
       const body = JSON.stringify(values);
-      this.contactService.createFeedback(body)
+      this.contactService
+        .createFeedback(body)
         .takeUntil(componentDestroyed(this))
-        .subscribe((res: any) => {
+        .subscribe(
+          (res: any) => {
             this.loadingService.stop();
-            this.toastsService.success('Message sent! Thanks for your email, we will answer you within 24 hours.');
+            this.toastsService.success(
+              'Message sent! Thanks for your email, we will answer you within 24 hours.'
+            );
           },
           (error: any) => {
             // stop loading

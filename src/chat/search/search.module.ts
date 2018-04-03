@@ -5,7 +5,6 @@ import { ZChatSearchRoutingModule } from './search-routing.module';
 import { ZChatSearchComponent } from './search.component';
 import { SharedModule } from '@wth/shared/shared.module';
 
-
 @NgModule({
   imports: [
     ReactiveFormsModule,
@@ -13,14 +12,8 @@ import { SharedModule } from '@wth/shared/shared.module';
     ZChatSharedModule.forRoot(),
     SharedModule.forRoot()
   ],
-  declarations: [
-    ZChatSearchComponent
-  ],
-  exports: [
-    ZChatSearchComponent
-  ],
+  declarations: [ZChatSearchComponent],
+  exports: [ZChatSearchComponent],
   providers: []
 })
-
-export class ZChatSearchModule {
-}
+export class ZChatSearchModule {}

@@ -1,9 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-
 import { ApiBaseService, CommonEventService } from '@shared/services';
-
 
 @Component({
   moduleId: module.id,
@@ -19,22 +17,27 @@ export class ZMediaSharingDetailComponent implements OnInit, OnDestroy {
   constructor(
     private apiBaseService: ApiBaseService,
     private commonEventService: CommonEventService,
-    private route: ActivatedRoute) {
-  }
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.commonEventService.filter((e: any) => {return e.channel == 'media:photo:update_recipients'}).subscribe((e: any) => {
-      this.params.recipients = e.payload;
-    })
+    this.commonEventService
+      .filter((e: any) => {
+        return e.channel == 'media:photo:update_recipients';
+      })
+      .subscribe((e: any) => {
+        this.params.recipients = e.payload;
+      });
     this.route.params.subscribe((params: any) => {
-        this.apiBaseService.get(`media/sharings/${params.id}`).subscribe((res: any) => {
+      this.apiBaseService
+        .get(`media/sharings/${params.id}`)
+        .subscribe((res: any) => {
           this.params = res;
         });
-      }
-    )
+    });
   }
 
   ngOnDestroy() {
-    if(this.sub) this.sub.unsubscribe();
+    if (this.sub) this.sub.unsubscribe();
   }
 }

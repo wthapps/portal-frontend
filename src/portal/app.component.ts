@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
@@ -19,12 +25,7 @@ declare let $: any;
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
-  constructor(
-    public authService: AuthService,
-    private router: Router
-  ) {
-
-  }
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     // if (this.authService.loggedIn && this.authService.user && !this.authService.user.took_a_tour) {
@@ -41,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     // fix scroll to top after changing route
-    this.router.events.subscribe((evt) => {
+    this.router.events.subscribe(evt => {
       if (!(evt instanceof NavigationEnd)) {
         return;
       }

@@ -18,4 +18,3 @@ export interface EnvConfig {
   SUB_DOMAIN?: EnvConfigSubDomain;
   RES?: string;
 }
-

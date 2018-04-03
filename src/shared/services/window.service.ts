@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class WindowService {
-  private storageSub= new Subject<boolean>();
+  private storageSub = new Subject<boolean>();
 
   watchStorage(): Observable<any> {
     return this.storageSub.asObservable();

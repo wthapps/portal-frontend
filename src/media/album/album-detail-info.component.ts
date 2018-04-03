@@ -1,15 +1,19 @@
-import { Component, Output, Input, EventEmitter, OnChanges } from '@angular/core';
+import {
+  Component,
+  Output,
+  Input,
+  EventEmitter,
+  OnChanges
+} from '@angular/core';
 import { Album } from '../shared/model/album.model';
 
 @Component({
   moduleId: module.id,
   selector: 'album-detail-info',
   templateUrl: 'album-detail-info.component.html',
-  styleUrls: ['album-detail-info.component.scss'],
+  styleUrls: ['album-detail-info.component.scss']
 })
-
 export class AlbumDetailInfoComponent implements OnChanges {
-
   @Input() object: any;
   @Output() closeInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() tagEvent: EventEmitter<Album> = new EventEmitter<Album>();

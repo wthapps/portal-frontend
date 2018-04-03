@@ -11,7 +11,6 @@ import { ZChatContactPendingComponent } from './contact-pending.component';
 import { ZChatContactReceiveComponent } from './contact-receive.component';
 import { SharedModule } from '@wth/shared/shared.module';
 
-
 @NgModule({
   imports: [
     ReactiveFormsModule,
@@ -39,6 +38,4 @@ import { SharedModule } from '@wth/shared/shared.module';
   ],
   providers: []
 })
-
-export class ZChatContactModule {
-}
+export class ZChatContactModule {}

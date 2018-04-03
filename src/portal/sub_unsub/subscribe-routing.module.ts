@@ -7,11 +7,10 @@ import { UnSubscribeComponent } from './unsubscribe.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'subscribe', component: SubscribeComponent},
-      {path: 'unsubscribe', component: UnSubscribeComponent},
+      { path: 'subscribe', component: SubscribeComponent },
+      { path: 'unsubscribe', component: UnSubscribeComponent }
     ])
   ],
   exports: [RouterModule]
 })
-export class SubscribeRoutingModule {
-}
+export class SubscribeRoutingModule {}

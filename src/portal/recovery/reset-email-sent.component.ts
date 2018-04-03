@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   selector: 'sd-reset-email',
   templateUrl: 'reset-email-sent.component.html'
 })
-
-export class ResetEmailSentComponent {
-}
+export class ResetEmailSentComponent {}

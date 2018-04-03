@@ -9,12 +9,23 @@ import { WelcomeDoneComponent } from './done/done.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'welcome', component: WelcomeComponent, canActivate: [AuthGuard]},
-      {path: 'takeatour', component: TakeATourComponent, canActivate: [AuthGuard]},
-      {path: 'welcome/done', component: WelcomeDoneComponent, canActivate: [AuthGuard]},
+      {
+        path: 'welcome',
+        component: WelcomeComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'takeatour',
+        component: TakeATourComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'welcome/done',
+        component: WelcomeDoneComponent,
+        canActivate: [AuthGuard]
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class WelcomeRoutingModule {
-}
+export class WelcomeRoutingModule {}

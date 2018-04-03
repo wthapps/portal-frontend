@@ -9,16 +9,15 @@ import { AuthService, UserService } from '@wth/shared/services';
   templateUrl: 'welcome.component.html',
   styleUrls: ['welcome.component.scss']
 })
-
 export class WelcomeComponent implements OnInit {
-
   pageTitle: string = 'Welcome Page';
   navigateUrl: string = Constants.baseUrls.social + '/my-profile';
 
-  constructor(private authService: AuthService,
-              private userService: UserService,
-              private router: Router) {
-  }
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     if (this.authService.user && this.authService.user.took_a_tour) {
@@ -32,11 +31,9 @@ export class WelcomeComponent implements OnInit {
         took_a_tour: true
       });
 
-      this.userService.update(body).subscribe(
-        (res: any) => {
-          window.location.href = this.navigateUrl;
-        });
-
+      this.userService.update(body).subscribe((res: any) => {
+        window.location.href = this.navigateUrl;
+      });
     }
   }
 }

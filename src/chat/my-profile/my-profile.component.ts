@@ -7,6 +7,4 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styleUrls: ['my-profile.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZChatMyProfileComponent {
-
-}
+export class ZChatMyProfileComponent {}

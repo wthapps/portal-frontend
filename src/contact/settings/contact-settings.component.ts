@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
-
-
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
@@ -10,8 +8,8 @@ import { WthConfirmService } from '@shared/shared/components/confirmation/wth-co
 declare var _: any;
 
 const DEFAULT_SETTING: any = {
-  'phone_default_code': 'Canada (+1)',
-  'contacts_sort_by': 'first_name'
+  phone_default_code: 'Canada (+1)',
+  contacts_sort_by: 'first_name'
 };
 
 @Component({
@@ -26,30 +24,36 @@ export class SettingsComponent implements OnInit {
   countriesNameCode: any;
   filteredCountriesCode: any[];
 
-  constructor(private fb: FormBuilder, private countryService: CountryService,
-              private apiBaseService: ApiBaseService,
-              private wthConfirmService: WthConfirmService) {
+  constructor(
+    private fb: FormBuilder,
+    private countryService: CountryService,
+    private apiBaseService: ApiBaseService,
+    private wthConfirmService: WthConfirmService
+  ) {
     // Init default
     this.form = this.fb.group(DEFAULT_SETTING);
   }
 
   ngOnInit() {
-    this.apiBaseService.get(`contact/contacts/settings`).toPromise().then((res: any) => {
-      this.setSettingForm(res.data);
-    });
-    this.countryService.getCountries().subscribe(
-      (res: any) => {
-        this.countriesCode = res;
-        this.countriesNameCode = _.map(res,
-          (v: any) => {
-            return v.name + ' (' + v.dial_code + ')';
-          }
-        );
+    this.apiBaseService
+      .get(`contact/contacts/settings`)
+      .toPromise()
+      .then((res: any) => {
+        this.setSettingForm(res.data);
       });
+    this.countryService.getCountries().subscribe((res: any) => {
+      this.countriesCode = res;
+      this.countriesNameCode = _.map(res, (v: any) => {
+        return v.name + ' (' + v.dial_code + ')';
+      });
+    });
   }
 
   onSubmit() {
-    this.apiBaseService.post(`contact/contacts/update_settings`, {contact_setting_attributes: this.form.value})
+    this.apiBaseService
+      .post(`contact/contacts/update_settings`, {
+        contact_setting_attributes: this.form.value
+      })
       .toPromise();
   }
 
@@ -62,10 +66,16 @@ export class SettingsComponent implements OnInit {
       message: 'Are you sure you want to reset settings?',
       header: 'Reset Default',
       accept: () => {
-        this.apiBaseService.post(`contact/contacts/update_settings`, {
-          contact_setting_attributes: Object.assign({}, this.form.value, DEFAULT_SETTING)
-        })
-          .toPromise().then((res: any) => this.setSettingForm(res.data));
+        this.apiBaseService
+          .post(`contact/contacts/update_settings`, {
+            contact_setting_attributes: Object.assign(
+              {},
+              this.form.value,
+              DEFAULT_SETTING
+            )
+          })
+          .toPromise()
+          .then((res: any) => this.setSettingForm(res.data));
       }
     });
   }
@@ -87,11 +97,10 @@ export class SettingsComponent implements OnInit {
   private setSettingForm(data: any) {
     if (data && data.phone_default_code) {
       this.form = this.fb.group({
-        'id': data.id,
-        'phone_default_code': data.phone_default_code,
-        'contacts_sort_by': data.contacts_sort_by
+        id: data.id,
+        phone_default_code: data.phone_default_code,
+        contacts_sort_by: data.contacts_sort_by
       });
     }
   }
-
 }

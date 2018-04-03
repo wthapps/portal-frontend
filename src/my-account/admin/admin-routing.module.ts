@@ -14,14 +14,13 @@ import { AccountListComponent } from './accounts/account-list.component';
         component: MyAdminComponent,
         canActivate: [AuthGuard],
         children: [
-          {path: '', component: AccountListComponent},
-          {path: 'accounts', component: AccountListComponent},
-          {path: 'invitations', component: MyInvitationsComponent}
+          { path: '', component: AccountListComponent },
+          { path: 'accounts', component: AccountListComponent },
+          { path: 'invitations', component: MyInvitationsComponent }
         ]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class MyAdminRoutingModule {
-}
+export class MyAdminRoutingModule {}

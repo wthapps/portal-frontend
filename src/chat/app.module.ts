@@ -21,7 +21,6 @@ import { SharedModule } from '@wth/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -46,11 +45,12 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
     SharedModule.forRoot()
   ],
   declarations: [AppComponent],
-  providers: [{
-    provide: APP_BASE_HREF,
-    useValue: '/'
-  }],
+  providers: [
+    {
+      provide: APP_BASE_HREF,
+      useValue: '/'
+    }
+  ],
   bootstrap: [AppComponent]
-
 })
-export class AppModule { }
+export class AppModule {}

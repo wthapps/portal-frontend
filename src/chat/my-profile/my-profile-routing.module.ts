@@ -23,5 +23,4 @@ import { ZChatMyProfileComponent } from '@chat/my-profile/my-profile.component';
   ],
   exports: [RouterModule]
 })
-export class ZChatMyProfileRoutingModule {
-}
+export class ZChatMyProfileRoutingModule {}

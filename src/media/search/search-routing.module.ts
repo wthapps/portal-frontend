@@ -15,5 +15,4 @@ import { ZMediaSearchComponent } from './search.component';
   ],
   exports: [RouterModule]
 })
-export class ZMediaSearchRoutingModule {
-}
+export class ZMediaSearchRoutingModule {}

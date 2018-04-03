@@ -5,10 +5,9 @@ import { MyAccountComponent } from './my-account.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'my-account', component: MyAccountComponent}
+      { path: 'my-account', component: MyAccountComponent }
     ])
   ],
   exports: [RouterModule]
 })
-export class MyAccountRoutingModule {
-}
+export class MyAccountRoutingModule {}

@@ -1,14 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-
 
 import { WthAppsBaseModal } from '../../shared/shared/interfaces/wthapps-base-modal';
 import { Group } from './group.model';
 import { GroupService } from './group.service';
-
-
 
 declare var $: any;
 
@@ -18,7 +20,6 @@ declare var $: any;
   templateUrl: 'group-edit-modal.component.html',
   styleUrls: ['group-edit-modal.component.scss']
 })
-
 export class GroupEditModalComponent implements OnInit, WthAppsBaseModal {
   @Input() mode: string;
   @Input() item: Group;
@@ -30,17 +31,14 @@ export class GroupEditModalComponent implements OnInit, WthAppsBaseModal {
   form: FormGroup;
   name: AbstractControl;
 
-  constructor(private fb: FormBuilder, private groupService: GroupService) {
-
-
-  }
+  constructor(private fb: FormBuilder, private groupService: GroupService) {}
 
   ngOnInit() {
     this.titleName = this.mode == 'edit' ? 'Edit Group' : 'New Group';
 
     this.form = this.fb.group({
       id: [this.item.id],
-      'name': [this.item.name, Validators.compose([Validators.required])]
+      name: [this.item.name, Validators.compose([Validators.required])]
     });
     this.name = this.form.controls['name'];
   }

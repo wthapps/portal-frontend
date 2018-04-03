@@ -38,11 +38,6 @@ import { SharedModule } from '@wth/shared/shared.module';
     MyDNSComponent,
     MyDNSEditComponent
   ],
-  providers: [
-    MyMyAppsService,
-    MyDNSService
-  ]
+  providers: [MyMyAppsService, MyDNSService]
 })
-
-export class MyMyAppsModule {
-}
+export class MyMyAppsModule {}

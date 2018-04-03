@@ -30,7 +30,6 @@ export const ConfigByEnv: EnvConfig = {
     SOCIAL: 'http://localhost:30015',
     CHAT: 'http://localhost:30020',
     CONTACT: 'http://localhost:30025',
-    NOTE: 'http://localhost:30030',
+    NOTE: 'http://localhost:30030'
   }
 };
-

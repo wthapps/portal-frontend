@@ -6,7 +6,6 @@ import { BsModalModule } from 'ng2-bs3-modal';
 import { IntroductionModalComponent } from './introduction/introduction.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -19,14 +18,7 @@ import { IntroductionModalComponent } from './introduction/introduction.componen
     // BrowserAnimationsModule,
     BsModalModule
   ],
-  declarations: [
-    IntroductionModalComponent
-  ],
-  exports: [
-    IntroductionModalComponent
-  ]
+  declarations: [IntroductionModalComponent],
+  exports: [IntroductionModalComponent]
 })
-
-export class ModalModule {
-
-}
+export class ModalModule {}

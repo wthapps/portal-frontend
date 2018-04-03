@@ -5,8 +5,6 @@ import { ZContactMyProfileRoutingModule } from './my-profile-routing.module';
 import { CoreModule } from '../../core/core.module';
 import { SharedModule } from '../../shared/shared.module';
 
-
-
 @NgModule({
   imports: [
     ReactiveFormsModule,
@@ -14,12 +12,8 @@ import { SharedModule } from '../../shared/shared.module';
     CoreModule,
     SharedModule
   ],
-  declarations: [
-  ],
-  exports: [
-  ],
+  declarations: [],
+  exports: [],
   providers: []
 })
-
-export class MyProfileModule {
-}
+export class MyProfileModule {}

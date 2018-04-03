@@ -28,7 +28,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers, metaReducers, appEffects } from './store';
 import { ConfirmationModule } from './confirmation/confirmation.module';
 
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -53,7 +52,9 @@ import { ConfirmationModule } from './confirmation/confirmation.module';
     CoreModule.forRoot(),
     StoreModule.forRoot(appReducers, { metaReducers }),
     EffectsModule.forRoot(appEffects),
-    !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [],
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+      : []
   ],
   declarations: [AppComponent],
   providers: [
@@ -63,6 +64,5 @@ import { ConfirmationModule } from './confirmation/confirmation.module';
     }
   ],
   bootstrap: [AppComponent]
-
 })
-export class AppModule { }
+export class AppModule {}

@@ -5,19 +5,8 @@ import { UnSubscribeComponent } from './unsubscribe.component';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [
-    SubscribeRoutingModule,
-    PortalSharedModule.forRoot()
-  ],
-  declarations: [
-    SubscribeComponent,
-    UnSubscribeComponent
-  ],
-  exports: [
-    SubscribeComponent,
-    UnSubscribeComponent
-  ]
+  imports: [SubscribeRoutingModule, PortalSharedModule.forRoot()],
+  declarations: [SubscribeComponent, UnSubscribeComponent],
+  exports: [SubscribeComponent, UnSubscribeComponent]
 })
-
-export class SubscribeModule {
-}
+export class SubscribeModule {}

@@ -8,7 +8,6 @@ import { fadeInAnimation } from '../../shared/shared/animations/route.animation'
   styleUrls: ['policies.component.scss'],
   animations: [fadeInAnimation]
 })
-
 export class TermsComponent {
   @HostBinding('@fadeInAnimation') fadeInAnimation = true;
 

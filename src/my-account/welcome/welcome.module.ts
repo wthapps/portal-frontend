@@ -7,16 +7,7 @@ import { MySharedModule } from '../shared/shared.module';
 import { WelcomeDoneComponent } from './done/done.component';
 
 @NgModule({
-  imports: [
-    WelcomeRoutingModule,
-    MySharedModule
-  ],
-  declarations: [
-    WelcomeComponent,
-    TakeATourComponent,
-    WelcomeDoneComponent
-  ]
+  imports: [WelcomeRoutingModule, MySharedModule],
+  declarations: [WelcomeComponent, TakeATourComponent, WelcomeDoneComponent]
 })
-
-export class WelcomeModule {
-}
+export class WelcomeModule {}

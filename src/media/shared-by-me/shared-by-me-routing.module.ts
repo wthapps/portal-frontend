@@ -9,13 +9,29 @@ import { SharedByMeDetailPage } from './shared-by-me-detail.page';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'shared-by-me-new', component: SharedByMePage, canActivate: [AuthGuard]},
-      {path: 'shared-by-me-new/:id', component: SharedByMeDetailPage, canActivate: [AuthGuard]},
-      {path: 'shared-by-me', component: ZMediaSharedByMeComponent, canActivate: [AuthGuard]},
-      {path: 'shared-by-me/:id', component: ZMediaSharingDetailComponent, outlet: 'detail', canActivate: [AuthGuard]}
+      {
+        path: 'shared-by-me-new',
+        component: SharedByMePage,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'shared-by-me-new/:id',
+        component: SharedByMeDetailPage,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'shared-by-me',
+        component: ZMediaSharedByMeComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'shared-by-me/:id',
+        component: ZMediaSharingDetailComponent,
+        outlet: 'detail',
+        canActivate: [AuthGuard]
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class ZMediaSharedByMeRoutingModule {
-}
+export class ZMediaSharedByMeRoutingModule {}

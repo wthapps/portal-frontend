@@ -48,8 +48,8 @@ import ImageBlot from '@wth/core/quill/blots/image';
 import IconBlot from '@wth/core/quill/blots/icon';
 import DividerBlot from '@wth/core/quill/blots/divider';
 import { Font, Size } from '@wth/core/quill/blots/font-size';
-import { FileUploaderService } from "@shared/services/file/file-uploader.service";
-import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
+import { FileUploaderService } from '@shared/services/file/file-uploader.service';
+import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { Subscription } from 'rxjs';
 
 const DEBOUNCE_MS = 2500;
@@ -99,8 +99,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   resize: any;
   context$: any;
 
-
-  private uploadSubscriptions: {[filename: string]: Subscription } = {} ;
+  private uploadSubscriptions: { [filename: string]: Subscription } = {};
 
   constructor(
     private fb: FormBuilder,
@@ -481,9 +480,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       componentDestroyed(this)
     );
     this.mediaSelectionService.selectedMedias$
-      .pipe(
-        takeUntil(close$),
-        filter((items: any[]) => items.length > 0))
+      .pipe(takeUntil(close$), filter((items: any[]) => items.length > 0))
       .subscribe(photos => {
         photos.forEach((photo: any) =>
           this.insertInlineImage(null, photo.url, photo.id)
@@ -689,7 +686,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.note.attachments = _.pull(this.note.attachments, file);
     this.form.controls['attachments'].setValue(this.note.attachments);
 
-    if(file.name && this.uploadSubscriptions[file.name]) {
+    if (file.name && this.uploadSubscriptions[file.name]) {
       this.uploadSubscriptions[file.name].unsubscribe();
       delete this.uploadSubscriptions[file.name];
     }
@@ -701,22 +698,34 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       return;
     }
     const filesAddedPolicy = FileUploadPolicy.allowMultiple(files);
-    this.note.attachments = [...this.note.attachments, ...filesAddedPolicy.filter(file => file.allow == true)];
+    this.note.attachments = [
+      ...this.note.attachments,
+      ...filesAddedPolicy.filter(file => file.allow == true)
+    ];
 
-
-    for(let i = 0; i < files.length; i++) {
+    for (let i = 0; i < files.length; i++) {
       let f = files[i];
-      let sub = this.fileUploaderService.uploadGenericFile(f).subscribe((response: any) => {
-        if (!response.error) {
-          this.note.attachments = this.note.attachments.map(att => { if (att.name == response.data.full_name && !att.uuid) return response.data; return att});
-          this.form.controls['attachments'].setValue(this.note.attachments);
-        }
-      });
+      let sub = this.fileUploaderService
+        .uploadGenericFile(f)
+        .subscribe((response: any) => {
+          if (!response.error) {
+            this.note.attachments = this.note.attachments.map(att => {
+              if (att.name == response.data.full_name && !att.uuid)
+                return response.data;
+              return att;
+            });
+            this.form.controls['attachments'].setValue(this.note.attachments);
+          }
+        });
 
       this.uploadSubscriptions[f.name] = sub;
     }
     const filesNotAllow = filesAddedPolicy.filter(file => file.allow == false);
-    if(filesNotAllow.length > 0) this.commonEventService.broadcast({channel: 'LockMessage', payload: filesNotAllow});
+    if (filesNotAllow.length > 0)
+      this.commonEventService.broadcast({
+        channel: 'LockMessage',
+        payload: filesNotAllow
+      });
   }
 
   selectPhotos() {
@@ -854,9 +863,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       });
 
     this.mediaSelectionService.uploadingMedias$
-      .pipe(
-        takeUntil(close$),
-        map(([file, dataUrl]) => [file]))
+      .pipe(takeUntil(close$), map(([file, dataUrl]) => [file]))
       .subscribe((files: any) => {
         this.note.attachments.push(...files);
         _.forEach(files, (file: any) => {

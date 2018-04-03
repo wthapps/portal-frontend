@@ -1,4 +1,4 @@
-import { FileUtil } from "@shared/shared/utils/file/file.util";
+import { FileUtil } from '@shared/shared/utils/file/file.util';
 
 export class FileUploadPolicy {
   static blackList = ['exe', 'msi', 'dmg', 'deb', 'run', 'bat', 'out'];
@@ -14,8 +14,8 @@ export class FileUploadPolicy {
   }
 
   static allowMultiple(files: any, policies: any = this.blackList) {
-    if(!files || files.length < 1) {
-      throw Error("files are empty");
+    if (!files || files.length < 1) {
+      throw Error('files are empty');
     }
     return Object.keys(files).map((key: any) => this.allow(files[key]));
   }

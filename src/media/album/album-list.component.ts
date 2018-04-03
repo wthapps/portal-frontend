@@ -1,4 +1,10 @@
-import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
@@ -9,7 +15,10 @@ import { BaseObjectEditNameModalComponent } from '@wth/shared/shared/components/
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/shared/modal';
+import {
+  AlbumCreateModalComponent,
+  AlbumDeleteModalComponent
+} from '@media/shared/modal';
 import { MediaObjectService } from '@media/shared/container/media-object.service';
 import { Constants } from '@wth/shared/constant';
 import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
@@ -29,7 +38,8 @@ import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/mo
   ]
 })
 export class AlbumListComponent extends DynamicModal implements OnInit {
-  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  @ViewChild('modalContainer', { read: ViewContainerRef })
+  modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
 
@@ -38,19 +48,21 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
 
   tooltip: any = Constants.tooltip;
 
-
-  constructor(private store: Store<appStore.State>,
-              protected resolver: ComponentFactoryResolver,
-              private mediaUploaderDataService: MediaUploaderDataService,
-              private router: Router
+  constructor(
+    private store: Store<appStore.State>,
+    protected resolver: ComponentFactoryResolver,
+    private mediaUploaderDataService: MediaUploaderDataService,
+    private router: Router
   ) {
     super(resolver);
 
     this.albums = this.store.select(appStore.selectObjects);
     this.nextLink = this.store.select(appStore.selectNextLink);
-    this.mediaUploaderDataService.action$.takeUntil(this.destroySubject).subscribe((event: any) => {
-      this.doEvent(event);
-    });
+    this.mediaUploaderDataService.action$
+      .takeUntil(this.destroySubject)
+      .subscribe((event: any) => {
+        this.doEvent(event);
+      });
   }
 
   ngOnInit() {
@@ -62,10 +74,14 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
 
     switch (event.action) {
       case 'getAll':
-        this.store.dispatch(new fromAlbum.GetAll({...event.payload, objectType: 'album'}));
+        this.store.dispatch(
+          new fromAlbum.GetAll({ ...event.payload, objectType: 'album' })
+        );
         break;
       case 'getMore':
-        this.store.dispatch(new fromAlbum.GetAll({...event.payload, objectType: 'album'}));
+        this.store.dispatch(
+          new fromAlbum.GetAll({ ...event.payload, objectType: 'album' })
+        );
         break;
       case 'select':
         this.store.dispatch(new fromAlbum.Select(event.payload));
@@ -74,7 +90,11 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
         this.store.dispatch(new fromAlbum.SelectAll());
         break;
       case 'deselect':
-        this.store.dispatch(new fromAlbum.Deselect({selectedObjects: event.payload.selectedObjects}));
+        this.store.dispatch(
+          new fromAlbum.Deselect({
+            selectedObjects: event.payload.selectedObjects
+          })
+        );
         break;
       case 'deselectAll':
         this.store.dispatch(new fromAlbum.DeselectAll());
@@ -99,7 +119,7 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
         this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
         break;
       case 'deleteMedia':
-        this.store.dispatch(new fromAlbum.DeleteMany({...event.payload}));
+        this.store.dispatch(new fromAlbum.DeleteMany({ ...event.payload }));
         break;
     }
   }

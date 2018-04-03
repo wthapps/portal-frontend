@@ -7,11 +7,9 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AlbumService extends ApiBaseService {
-
   url: string = 'zone/albums/';
 
   constructor(http: HttpClient, router: Router) {
     super(http, router, null);
   }
-
 }

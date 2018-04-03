@@ -14,40 +14,35 @@ import { fadeInAnimation } from '../../shared/shared/animations/route.animation'
   styleUrls: ['products.component.scss'],
   animations: [fadeInAnimation]
 })
-
 export class ProductsComponent implements AfterViewChecked {
   @HostBinding('@fadeInAnimation') fadeInAnimation = true;
   private scrollExecuted: boolean = false;
 
-  constructor(private activatedRoute: ActivatedRoute) {
-  }
+  constructor(private activatedRoute: ActivatedRoute) {}
 
   ngAfterViewChecked() {
-
     if (!this.scrollExecuted) {
       let routeFragmentSubscription: Subscription;
 
       // Automatic scroll
-      routeFragmentSubscription =
-        this.activatedRoute.fragment.subscribe(
-          fragment => {
-            if (fragment) {
-              let element = document.getElementById(fragment);
-              if (element) {
-                element.scrollIntoView();
+      routeFragmentSubscription = this.activatedRoute.fragment.subscribe(
+        fragment => {
+          if (fragment) {
+            let element = document.getElementById(fragment);
+            if (element) {
+              element.scrollIntoView();
 
-                this.scrollExecuted = true;
+              this.scrollExecuted = true;
 
-                // Free resources
-                setTimeout(
-                  () => {
-                    console.log('routeFragmentSubscription unsubscribe');
-                    routeFragmentSubscription.unsubscribe();
-                  }, 1000);
-              }
+              // Free resources
+              setTimeout(() => {
+                console.log('routeFragmentSubscription unsubscribe');
+                routeFragmentSubscription.unsubscribe();
+              }, 1000);
             }
-          });
+          }
+        }
+      );
     }
-
   }
 }

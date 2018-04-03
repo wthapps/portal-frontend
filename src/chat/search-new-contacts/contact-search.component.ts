@@ -16,19 +16,16 @@ export class ZChatContactSearchComponent implements OnInit {
   newContacts: any;
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
 
-  constructor(private chatService: ChatService) {
-  }
+  constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.contactItem = this.chatService.getConversations();
   }
 
   search() {
-    this.chatService.searchUsers(this.name).subscribe(
-      (res: any) => {
-        this.newContacts = res.data;
-      }
-    );
+    this.chatService.searchUsers(this.name).subscribe((res: any) => {
+      this.newContacts = res.data;
+    });
   }
 
   onRequest(contact: any) {

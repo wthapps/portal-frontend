@@ -16,5 +16,4 @@ import { AuthGuard } from '@wth/shared/services';
   ],
   exports: [RouterModule]
 })
-export class MyPlansRoutingModule {
-}
+export class MyPlansRoutingModule {}

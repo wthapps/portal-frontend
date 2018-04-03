@@ -8,15 +8,14 @@ import { Constants } from '@wth/shared/constant';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { WindowService } from '@wth/shared/services/window.service';
 
-const PROFILE       = 'profile';
-const PPROFILE      = 'pProfile'; // public profile
-const SETTINGS      = 'settings';
-const CONSTANTS      = 'constants';
-const VERSION      = 'version';
-const APPS      = 'apps';
-const JWT           = 'jwt';
-const LOGGEDIN      = 'logged_in';
-
+const PROFILE = 'profile';
+const PPROFILE = 'pProfile'; // public profile
+const SETTINGS = 'settings';
+const CONSTANTS = 'constants';
+const VERSION = 'version';
+const APPS = 'apps';
+const JWT = 'jwt';
+const LOGGEDIN = 'logged_in';
 
 @Injectable()
 export class AuthService {
@@ -38,7 +37,6 @@ export class AuthService {
     private api: ApiBaseService,
     private windowService: WindowService,
     private userService: UserService // TODO will be remove after refactoring by AuthService
-
   ) {
     this.loggedIn$ = this._loggedIn$.asObservable();
     this.user$ = this._user$.asObservable();
@@ -88,23 +86,22 @@ export class AuthService {
   }
 
   login(payload: any): Observable<any> {
-    return this.api.post('users/sign_in', payload).map
-      ((response: any) => {
-        this.jwt = response.token;
-        this.loggedIn = true;
-        this._loggedIn$.next(true);
-        this.user = response.data;
-        this._user$.next(this.user);
-        this.storeAuthInfo();
-      });
+    return this.api.post('users/sign_in', payload).map((response: any) => {
+      this.jwt = response.token;
+      this.loggedIn = true;
+      this._loggedIn$.next(true);
+      this.user = response.data;
+      this._user$.next(this.user);
+      this.storeAuthInfo();
+    });
   }
 
   logout(): void {
-
     this.api.delete('users/sign_out').subscribe(
       response => {
         location.href = `${Constants.baseUrls.app}/login`;
-      }, error => {
+      },
+      error => {
         console.log('logout error:::', error);
       }
     );
@@ -123,7 +120,10 @@ export class AuthService {
   }
 
   private storeAuthInfo() {
-    let cookieOptionsArgs = {...Constants.cookieOptionsArgs, expires: new Date(new Date().getTime() + this.EXP_TIME)};
+    let cookieOptionsArgs = {
+      ...Constants.cookieOptionsArgs,
+      expires: new Date(new Date().getTime() + this.EXP_TIME)
+    };
 
     // store in local storage
     this.storeLoggedInInfo();
@@ -131,10 +131,12 @@ export class AuthService {
     // store in session
     this.cookieService.put(JWT, this.jwt, cookieOptionsArgs);
     this.cookieService.put(LOGGEDIN, `${this.loggedIn}`, cookieOptionsArgs);
-    this.cookieService.put(PROFILE, `${JSON.stringify(this.user)}`, cookieOptionsArgs);
-
+    this.cookieService.put(
+      PROFILE,
+      `${JSON.stringify(this.user)}`,
+      cookieOptionsArgs
+    );
   }
-
 
   private storeLoggedInInfo() {
     localStorage.setItem(PROFILE, JSON.stringify(this.user));
@@ -146,8 +148,10 @@ export class AuthService {
   }
 
   private deleteAuthInfo() {
-
-    let cookieOptionsArgs = {...Constants.cookieOptionsArgs, expires: new Date(new Date().getTime() + this.EXP_TIME)};
+    let cookieOptionsArgs = {
+      ...Constants.cookieOptionsArgs,
+      expires: new Date(new Date().getTime() + this.EXP_TIME)
+    };
 
     this.deleteLoggedInInfo();
 
@@ -155,13 +159,20 @@ export class AuthService {
     this.cookieService.remove(JWT, cookieOptionsArgs);
     this.cookieService.remove(LOGGEDIN, cookieOptionsArgs);
     this.cookieService.remove(PROFILE, cookieOptionsArgs);
-
   }
 
   private deleteLoggedInInfo() {
-    let keys: Array<string> = [PROFILE, PPROFILE, SETTINGS, LOGGEDIN, CONSTANTS, VERSION, APPS];
+    let keys: Array<string> = [
+      PROFILE,
+      PPROFILE,
+      SETTINGS,
+      LOGGEDIN,
+      CONSTANTS,
+      VERSION,
+      APPS
+    ];
     // delete local storage data
-    keys.forEach((key) => {
+    keys.forEach(key => {
       localStorage.removeItem(key);
     });
   }

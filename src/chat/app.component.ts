@@ -1,5 +1,9 @@
 import {
-  Component, OnInit, OnDestroy, ViewChild, AfterViewInit
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  AfterViewInit
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,15 +15,13 @@ import { Constants } from '@wth/shared/constant';
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 
-
-
 /**
  * This class represents the main application component.
  */
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('introduction') introduction: IntroductionModalComponent;
@@ -28,30 +30,32 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
 
-  constructor(public authService: AuthService,
-              private router: Router,
-              private chatService: ChatService,
-              private wthConfirmService: WthConfirmService) {
-
-    this.wthConfirmService.confirmDialog$.subscribe(
-      (res: any) => {
-        this.confirmDialog = res;
-      }
-    );
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private chatService: ChatService,
+    private wthConfirmService: WthConfirmService
+  ) {
+    this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
+      this.confirmDialog = res;
+    });
   }
-
 
   ngOnInit() {
     this.chatService.subscribeNotification();
 
-    this.routerSubscription = this.router.events.filter(event => event instanceof NavigationEnd)
-    .subscribe((event: any) => {
+    this.routerSubscription = this.router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
   }
 
   ngAfterViewInit() {
-    if (!this.authService.user.introduction || !this.authService.user.introduction.chat) {
+    if (
+      !this.authService.user.introduction ||
+      !this.authService.user.introduction.chat
+    ) {
       this.introduction.open();
     }
   }
