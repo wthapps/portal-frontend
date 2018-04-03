@@ -1,8 +1,6 @@
-<div class="page-body-control has-page-body-sidebar">
-  <z-chat-contact-navigation [tab]="'all'" [count]="count"></z-chat-contact-navigation>
-</div>
+<z-chat-contact-navigation class="page-body-control" [tab]="'all'" [count]="count"></z-chat-contact-navigation>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem && contactItem.value && contactItem.value.data">
+<div class="page-body-content has-page-body-control" *ngIf="contactItem && contactItem.value && contactItem.value.data">
   <div class="page-body-content-in">
     <div class="row media-user-row-group">
       <div class="col-sm-12"
@@ -28,7 +26,7 @@
 
 <!--<z-chat-share-add-contact #addContact></z-chat-share-add-contact>-->
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem && !contactItem.value">
+<div class="page-body-content has-page-body-control" *ngIf="contactItem && !contactItem.value">
   <div class="page-body-content-in">
     <div class="inside-loading">
       <div class="pt20 pb20"></div>
@@ -36,7 +34,7 @@
   </div>
 </div>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar"
+<div class="page-body-content has-page-body-control"
      *ngIf="contactItem && contactItem.value && contactItem.value.data && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length).length == 0 ">
   <div class="page-body-content-in">
     No data

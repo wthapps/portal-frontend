@@ -1,8 +1,8 @@
-<div class="page-body-control has-page-body-sidebar">
+<div class="page-body-control">
   <z-chat-contact-navigation [tab]="'sent_request'" [count]="count"></z-chat-contact-navigation>
 </div>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="contactItem && contactItem.value">
+<div class="page-body-content has-page-body-control" *ngIf="contactItem && contactItem.value">
   <div class="page-body-content-in">
     <div class="row media-user-list-group">
       <div class="col-sm-6"
@@ -26,7 +26,7 @@
 
 </div>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar" *ngIf="!contactItem.value">
+<div class="page-body-content has-page-body-control" *ngIf="!contactItem.value">
   <div class="page-body-content-in">
     <div class="inside-loading">
       <div class="pt20 pb20"></div>
@@ -34,7 +34,7 @@
   </div>
 </div>
 
-<div class="page-body-content has-page-body-control has-page-body-sidebar"
+<div class="page-body-content has-page-body-control"
      *ngIf="contactItem.value && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatGroupSentRquest:contactItem.value.data.length).length == 0">
   <div class="page-body-content-in">
     No data
