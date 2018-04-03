@@ -56,7 +56,7 @@ export class SettingsPasswordComponent implements OnInit {
               this.toastsService.success(result.message);
               //console.log('change password:', result.message);
             } else {
-              this.toastsService.danger(result.message);
+              this.toastsService.danger('Your password is incorrect');
               //console.log('change password error:', result.message);
             }
           },
