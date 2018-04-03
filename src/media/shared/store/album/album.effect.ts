@@ -65,6 +65,25 @@ export class AlbumEffects {
     });
 
   @Effect()
+  getMore$: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.GET_MORE)
+    .map((action: albumActions.GetMore) => action.payload)
+    .switchMap(payload => {
+      if (payload.objectType === 'album') {
+        return this.albumService.getAll(payload)
+          .map(response => new albumActions.GetAllSuccess({...response, ...payload}))
+          .catch(error => of(new albumActions.GetAllFail()));
+      } else {
+        return this.albumService.getPhotosByAlbum(payload.object.id)
+          .map(response => new albumActions.GetAllSuccess({...response, ...payload}))
+          .catch(error => {
+
+          });
+      }
+    });
+
+
+  @Effect()
   addToDetailObjects$: Observable<Action> = this.actions$
     .ofType(albumActions.ActionTypes.ADD_TO_DETAIL_OBJECTS)
     .map((action: albumActions.AddToDetailObjects) => action.payload)

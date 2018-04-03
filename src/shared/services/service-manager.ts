@@ -10,7 +10,7 @@ import { NotificationService } from './notification.service';
 import { CommonEventService } from './common-event/common-event.service';
 import { UrlService } from './url.service';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
-import { HandlerService } from "@shared/services";
+import { HandlerService } from '@shared/services/handler.service';
 
 @Injectable()
 export class ServiceManager {

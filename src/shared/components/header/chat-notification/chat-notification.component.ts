@@ -165,7 +165,7 @@ export class ChatNotificationComponent implements OnInit {
     $('#chat-header-notification').find('ul.dropdown-menu').not($(e.target).next('ul')).hide();
   }
 
-  private hideActionsMenu(e: any) {
+  hideActionsMenu(e: any) {
     e.stopPropagation();
     e.preventDefault();
     $('#chat-header-notification').find('ul.dropdown-menu').hide();

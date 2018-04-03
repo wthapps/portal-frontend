@@ -282,15 +282,6 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
   }
 }
 
-function insertItem(array, item, index) {
-  let newArray = array.slice();
-  newArray.splice(index, 0, item);
-  return newArray;
-}
-
-function removeItem(array, index) {
-  return array.filter( (item, i) => i !== index);
-}
 
 export const getLoading = (state: State) => state.loading;
 export const getLoaded  = (state: State) => state.loaded;
@@ -301,10 +292,6 @@ export const getObject    = (state: State) => state.object;
 export const getDetailObjects    = (state: State) => state.detailObjects;
 export const getDetailObject    = (state: State) => state.detailObject;
 export const getNextLink    = (state: State) => state.nextLink;
-
-
-
-
 
 export const {
   selectIds,

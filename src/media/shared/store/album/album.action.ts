@@ -6,6 +6,8 @@ export const ActionTypes = {
   GET_FAIL:             '[Album] Get Fail',
   GET_ALL:              '[Album] Get All',
   GET_ALL_SUCCESS:      '[Album] Get All Success',
+  GET_MORE:             '[Album] Get More',
+  GET_MORE_SUCCESS:     '[Album] Get More Success',
   GET_ALL_FAIL:         '[Album] Get All',
   SELECT:               '[Album] Select',
   SELECT_ALL:           '[Album] Select All',
@@ -48,6 +50,16 @@ export class GetAll implements Action {
 
 export class GetAllSuccess implements Action {
   type = ActionTypes.GET_ALL_SUCCESS;
+  constructor(public payload: Partial<any>[] = null) { }
+}
+
+export class GetMore implements Action {
+  type = ActionTypes.GET_MORE;
+  constructor(public payload: any = {objectType: 'all', detail: false, object: null, query: null }) { }
+}
+
+export class GetMoreSuccess implements Action {
+  type = ActionTypes.GET_MORE_SUCCESS;
   constructor(public payload: Partial<any>[] = null) { }
 }
 

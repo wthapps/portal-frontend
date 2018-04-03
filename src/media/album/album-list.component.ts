@@ -42,8 +42,7 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
   constructor(private store: Store<appStore.State>,
               protected resolver: ComponentFactoryResolver,
               private mediaUploaderDataService: MediaUploaderDataService,
-              private router: Router,
-              private mediaObjectService: MediaObjectService
+              private router: Router
   ) {
     super(resolver);
 
@@ -55,7 +54,7 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
   }
 
   ngOnInit() {
-    this.doEvent({ action: 'getAll', payload: {objectType: 'album', query: null} });
+    this.doEvent({ action: 'getAll', payload: {} });
   }
 
   doEvent(event: any) {
@@ -63,7 +62,10 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
 
     switch (event.action) {
       case 'getAll':
-        this.store.dispatch(new fromAlbum.GetAll(event.payload));
+        this.store.dispatch(new fromAlbum.GetAll({...event.payload, objectType: 'album'}));
+        break;
+      case 'getMore':
+        this.store.dispatch(new fromAlbum.GetAll({...event.payload, objectType: 'album'}));
         break;
       case 'select':
         this.store.dispatch(new fromAlbum.Select(event.payload));
@@ -104,24 +106,5 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
 
   viewDetails(payload: any) {
     this.router.navigate(['albums', payload.selectedObject.id]);
-  }
-
-  favourite(payload: any) {
-    let body = {
-        objects: _.map(payload.selectedObjects, (object: any) => {
-          return _.pick(object, ['id', 'object_type']);
-        }),
-        mode: payload.mode
-      };
-
-    this.mediaObjectService.favourite(body).toPromise()
-      .then(
-        (response: any) => {
-          this.store.dispatch(new fromAlbum.FavoriteSuccess(payload));
-        },
-        (error: any) => {
-          console.log('error: ', error);
-        }
-      );
   }
 }
