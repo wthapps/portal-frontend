@@ -9,6 +9,7 @@ import { CommonEventService } from '../../../shared/services/common-event/common
 import { CommonEvent } from '../../../shared/services/common-event/common-event';
 import { GenericFile } from '../../../shared/shared/models/generic-file.model';
 import { FileReaderUtil } from "@shared/shared/utils/file/file-reader.util";
+import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
 
 @Component({
   selector: 'z-contact-share-import-progress',
@@ -100,7 +101,10 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
         content_type: file.type,
         importing: true
       });
-
+      if (!FileUploadPolicy.isAllow(genericFile)) {
+        this.commonEventService.broadcast({channel: 'LockMessage', payload: [genericFile]});
+        return;
+      }
       this.modalDock.open();
       this.importStatus = this.IMPORT_STATUS.importing;
       // update current message and broadcast on server

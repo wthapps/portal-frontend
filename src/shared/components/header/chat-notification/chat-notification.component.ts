@@ -19,13 +19,14 @@ import { HandlerService } from "@shared/services/handler.service";
   templateUrl: './chat-notification.component.html',
   styleUrls: ['./chat-notification.component.css']
 })
-export class ChatNotificationComponent implements OnInit, AfterViewInit {
+export class ChatNotificationComponent implements OnInit {
 
   tooltip: any = Constants.tooltip;
   defaultAvatar: string = Constants.img.avatar;
   urls: any = Constants.baseUrls;
   conversations: any = [];
   notificationCount: any;
+  links: any;
 
   constructor(private navigateService: WTHNavigateService,
               private apiBaseService: ApiBaseService,
@@ -62,10 +63,6 @@ export class ChatNotificationComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    //
-  }
-
   gotoChat() {
     this.navigateService.navigateOrRedirect('conversations', 'chat');
     $('#chat-header-notification').removeClass('open');
@@ -73,7 +70,9 @@ export class ChatNotificationComponent implements OnInit, AfterViewInit {
 
   toggleViewNotifications() {
     this.apiBaseService.addCommand(ConversationApiCommands.mostRecentConversations()).subscribe((res: any) => {
-       this.conversations = res.data;
+      console.log(res);
+      this.links = res.page_metadata.links;
+      this.conversations = res.data;
     });
   }
 
@@ -140,9 +139,12 @@ export class ChatNotificationComponent implements OnInit, AfterViewInit {
   }
 
   getMore() {
-    // this.apiBaseService.addCommand(ConversationApiCommands.mostRecentConversations()).subscribe((res: any) => {
-    //    // this.conversations = res.data;
-    // });
+    if(this.links && this.links.next) {
+      this.apiBaseService.get(this.links.next).subscribe((res: any) => {
+        this.conversations = [...this.conversations, ...res.data];
+        this.links = res.page_metadata.links;
+      });
+    }
   }
 
   private navigate(conversation: any) {

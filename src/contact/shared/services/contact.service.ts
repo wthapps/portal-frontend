@@ -12,6 +12,9 @@ import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { SuggestionService } from '../../../shared/services/suggestion.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '../../../shared/shared/components/confirmation/wth-confirm.service';
+import { FileUploaderService } from "@shared/services/file/file-uploader.service";
+import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
+import * as Boom from "boom";
 
 
 @Injectable()
@@ -46,6 +49,7 @@ export class ZContactService extends BaseEntityService<any> {
               public groupService: GroupService,
               private suggestService: SuggestionService,
               private toastsService: ToastsService,
+              private fileUploaderService: FileUploaderService,
               public router: Router,
               private wthConfirmService: WthConfirmService) {
     super(apiBaseService);

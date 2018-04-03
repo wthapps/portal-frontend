@@ -18,6 +18,8 @@ import 'rxjs/add/operator/takeWhile';
 import { MediaUploaderDataService } from './media-uploader-data.service';
 import { ModalDockComponent } from '@wth/shared/shared/components/modal/dock.component';
 import { ApiBaseService, PhotoUploadService } from '@wth/shared/services';
+import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
+import { CommonEventService } from "@shared/services/common-event/common-event.service";
 
 declare var $: any;
 declare var _: any;
@@ -61,6 +63,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
   constructor(private apiService: ApiBaseService, private renderer: Renderer,
               private router: Router,
+              private commonEventService: CommonEventService,
               private mediaUploadDataService: MediaUploaderDataService,
               private photoUploadService: PhotoUploadService) {
     this.dragleave();
@@ -124,6 +127,11 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
 
   uploadImages(files: any) {
+    const filesNotAllow = FileUploadPolicy.allowMultiple(files).filter(file => file.allow == false);
+    if (filesNotAllow && filesNotAllow.length > 0) {
+      this.commonEventService.broadcast({channel: 'LockMessage', payload: filesNotAllow});
+      return;
+    }
     this.step = this.uploadSteps.init;
     this.modalDock.open();
 

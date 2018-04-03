@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { CommonEventService } from "@shared/services";
 
 @Component({
   moduleId: module.id,
@@ -18,7 +19,6 @@ export class ZContactShareImportContactComponent implements OnInit, OnDestroy{
     {name: 'outlook', provider: 'microsoft', type: 'outlook_contacts', text: 'Outlook Contacts', class: 'fa fa-windows'}
   ];
 
-
   formData: FormData;
   files: Array<any>;
   uploadInput: EventEmitter<any>;
@@ -26,7 +26,7 @@ export class ZContactShareImportContactComponent implements OnInit, OnDestroy{
   dragOver: boolean;
   sub: any;
 
-  constructor() {}
+  constructor(private commonEventService: CommonEventService) {}
 
   ngOnInit() {
     this.sub = this.icloud.event.subscribe(() => {
