@@ -38,11 +38,10 @@ export class WGridListHeaderComponent {
       this.field = field;
     }
 
-
     if (this.field === 'Date' || this.field === 'Month' || this.field === 'Year') {
-      this.event.emit({action: 'sort', data: {sort: this.direction, sort_name: 'created_at'}});
+      this.event.emit({action: 'sort', payload: {queryParams: {sort: this.direction, sort_name: 'created_at'}}});
     } else {
-      this.event.emit({action: 'sort', data: {sort: this.direction, sort_name: this.field}});
+      this.event.emit({action: 'sort', payload: {queryParams: {sort: this.direction, sort_name: this.field}}});
     }
   }
 

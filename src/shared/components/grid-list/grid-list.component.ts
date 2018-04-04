@@ -14,6 +14,7 @@ import {
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
+
 import { Constants } from '@wth/shared/constant';
 
 declare var _: any;
@@ -24,8 +25,10 @@ declare var $: any;
   selector: 'w-grid-list',
   templateUrl: 'grid-list.component.html',
   styleUrls: ['grid-list.component.scss'],
-  providers: []
+  providers: [
+  ]
 })
+
 export class WGridListComponent implements OnInit, OnDestroy {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
@@ -89,7 +92,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroySubject.next('');
-    this.destroySubject.unsubscribe(); // Destroy unused subscriptions
+    this.destroySubject.unsubscribe();    // Destroy unused subscriptions
   }
 
   onDragenter(e: any) {
@@ -110,44 +113,37 @@ export class WGridListComponent implements OnInit, OnDestroy {
         this.zoom(event.payload);
         break;
       default:
-        if (event.action === 'getAll' && !event.payload.nextLink) {
-          break;
-        }
+        // if (event.action === 'getAll' && !event.payload.nextLink) {
+        //   break;
+        // }
         if (event.action === 'deselectAll') {
           this.selectedObjects.length = 0;
         }
         if (event.action === 'select') {
           if (!this.pressingCtrlKey && !event.payload.checkbox) {
             event.payload.clearAll = true;
-          } else if (
-            this.pressingCtrlKey &&
-            event.payload.selectedObjects[0].selected
-          ) {
+          } else if (this.pressingCtrlKey && event.payload.selectedObjects[0].selected) {
             event.action = 'deselect';
           }
           if (event.payload.clearAll) {
             this.selectedObjects.length = 0;
           }
 
+
           event.payload.selectedObjects.forEach(obj => {
             this.selectedObjects.push(obj);
           });
         } else if (event.action === 'deselect') {
           event.payload.selectedObjects.forEach(obj => {
-            this.selectedObjects.splice(
-              this.selectedObjects.indexOf(obj.id),
-              1
-            );
+            this.selectedObjects.splice(this.selectedObjects.indexOf(obj.id), 1);
           });
         }
-        if (
-          event.action === 'select' ||
-          event.action === 'selectAll' ||
-          event.action === 'deselect' ||
-          event.action === 'deselectAll'
-        ) {
+        if (event.action === 'select' ||
+            event.action === 'selectAll' ||
+            event.action === 'deselect' ||
+            event.action === 'deselectAll') {
           if (event.action === 'deselectAll') {
-            this.selectedObjects.map(obj => (obj.selected = false));
+            this.selectedObjects.map(obj => obj.selected = false);
           }
           this.selectedObjectsChanged.emit(this.selectedObjects);
         }
@@ -155,7 +151,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
         // Update favorite status for toolbar when hit favorite action on item
         if (event.action === 'favourite' && !event.payload.multiItem) {
           this.selectedObjects.map(object => {
-            if (object.id === event.payload.selectedObjects[0].id) {
+            if (object.id === event.payload.selectedObjects[0].id ) {
               object.favorite = event.payload.mode === 'add' ? true : false;
             }
             return object;
@@ -188,111 +184,16 @@ export class WGridListComponent implements OnInit, OnDestroy {
     }
   }
 
-  isSelecting(item: any) {
-    // return (_.find(this.selectedObjects, {'id': item.id}));
-  }
+  onDragSelected(data: any) {
 
-  isSelected(item: any) {
-    // return (_.indexOf(this.selectedObjects, item.object_type) === -1);
-  }
-
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   this.totalObjectsDisabled = 0;
-  //
-  //   for (let object_type of this.objectsDisabled) {
-  //     let totalObjectsDisabled = _.filter(this.data, (media: Media) => (media.object_type === object_type));
-  //     this.totalObjectsDisabled = this.totalObjectsDisabled + totalObjectsDisabled.length;
-  //   }
-  // }
-
-  // ngAfterContentChecked(): void {
-  //   if (this.hasMultipleSelection) {
-  //     if (this.dragSelect) {
-  //       this.dragSelect.start();
-  //       this.dragSelect.addSelectables(document.getElementsByClassName('wobject-drag'));
-  //     } else {
-  //       this.dragSelect = new DragSelect({
-  //         selectables: document.getElementsByClassName('wobject-drag'),
-  //         area: document.getElementById('wobject-drag-body'),
-  //         callback: e => this.onDragSelected(e)
-  //       });
-  //     }
-  //   } else {
-  //     if (this.dragSelect) {
-  //       this.dragSelect.stop();
-  //     }
-  //   }
-  //
-  //   const dragBodyScroll = document.getElementById('wobject-drag-body');
-  //   if (dragBodyScroll) {
-  //     this.hasScrollbar = (dragBodyScroll.scrollHeight > dragBodyScroll.clientHeight);
-  //   }
-  //
-  // }
-
-  onDragSelected(data: any) {}
-
-  onMultiSelected(item: any) {
-    if (
-      _.indexOf(this.objectsDisabled, item.object_type) >= 0 ||
-      !this.hasMultipleSelection
-    ) {
-    } else {
-    }
-  }
-
-  onSelectedAll() {}
-
-  onDoubleClick(item: any) {}
-
-  onClick(item: any) {
-    if (
-      _.indexOf(this.objectsDisabled, item.object_type) >= 0 ||
-      !this.hasMultipleSelection
-    ) {
-    }
-    return false;
-  }
-
-  onSort(sortBy: string) {
-    let sortOrder = this.sortOrder;
-    if (this.sortBy === sortBy) {
-      sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
-    }
-  }
-
-  // mode = true is selecting
-  private selectObject(payload: any, mode: boolean = true): void {
-    // this.selectedObjects = [];
-    // let item = payload.selectedObjects;
-    // if (this.pressingCtrlKey) {
-    //   item.selected = !item.selected;
-    // } else {
-    //   if(mode) {
-    //     if (payload.checkbox !== true) {
-    //       this.event.emit({action: 'deselectAll'});
-    //     }
-    //     item.selected = true;
-    //   } else {
-    //     item.selected = false;
-    //   }
-    //   this.selectedObjects.length = 0;
-    // }
-    // this.selectedObjects.push(item);
-    // payload.selectedObjects = this.selectedObjects;
   }
 
   private deSelectAll() {
-    this.doEvent({ action: 'deselectAll' });
+      this.doEvent({ action: 'deselectAll' });
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {
-    return ke.keyCode == 17 ||
-      ke.keyCode == 18 ||
-      ke.keyCode == 91 ||
-      ke.keyCode == 93 ||
-      ke.ctrlKey
-      ? true
-      : false;
+    return ((ke.keyCode === 17 || ke.keyCode === 18 || ke.keyCode === 91 || ke.keyCode === 93 || ke.ctrlKey) ? true : false);
   }
+
 }

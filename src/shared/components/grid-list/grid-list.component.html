@@ -5,9 +5,9 @@
            <!--[objectActionsTemplate]="objectActionsTemplate"-->
            <!--(event)="doEvent($event)">-->
 <!--</w-toolbar>-->
-<!--<ng-content select="w-toolbar"></ng-content>-->
+<ng-content select="w-toolbar"></ng-content>
 
-<ng-container *ngIf="objects else noData">
+<ng-container *ngIf="objects">
 
   <div class="page-body-content has-page-body-control gray-light"
        infinite-scroll
@@ -90,26 +90,9 @@
       <!--</div>-->
     </div>
 
-    <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
+    <!--<div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>-->
   </div>
 
 </ng-container>
+<ng-content select="div"></ng-content>
 
-<ng-template #noData>
-  <div class="zone-no-photo text-center">
-    <div>
-      <h2><i class="fa fa-share-alt"></i></h2>
-      <h3>There is no photo shared by you</h3>
-      <h4>Photos can be shared to your connected contact.</h4>
-      <p>
-      <button class="btn btn-default">
-        Learn More
-      </button>
-      </p>
-    </div>
-  </div>
-</ng-template>
-
-<ng-container *ngTemplateOutlet="noData">
-
-</ng-container>

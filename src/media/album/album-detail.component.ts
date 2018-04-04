@@ -45,12 +45,8 @@ import { DynamicModal } from '@media/shared/modal/dynamic-modal';
     AddToAlbumModalComponent
   ]
 })
-export class ZMediaAlbumDetailComponent extends DynamicModal
-  implements OnInit, OnDestroy {
-  @ViewChild('modalContainer', { read: ViewContainerRef })
-  modalContainer: ViewContainerRef;
-  @ViewChild('infoContainer', { read: ViewContainerRef })
-  infoContainer: ViewContainerRef;
+export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, OnDestroy {
+  @ViewChild('infoContainer', { read: ViewContainerRef }) infoContainer: ViewContainerRef;
 
   album: any;
   params: any;
@@ -64,11 +60,11 @@ export class ZMediaAlbumDetailComponent extends DynamicModal
   nextLink: Observable<any>;
 
   tooltip: any = Constants.tooltip;
+  detail = true;
 
   constructor(
     private store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
-    private mediaObjectService: MediaObjectService,
     private router: Router,
     private route: ActivatedRoute,
     private albumService: AlbumService,
@@ -97,7 +93,7 @@ export class ZMediaAlbumDetailComponent extends DynamicModal
         this.store.dispatch(
           new fromAlbum.GetAll({
             objectType: 'photo',
-            detail: true,
+            detail: this.detail,
             object: this.album
           })
         );
@@ -110,6 +106,18 @@ export class ZMediaAlbumDetailComponent extends DynamicModal
 
     switch (event.action) {
       case 'loadMore':
+        this.store.dispatch(new fromAlbum.GetMore({
+          ...event.payload,
+          objectType: 'photo',
+          detail: this.detail,
+          object: this.album }));
+        break;
+      case 'sort':
+        this.store.dispatch(new fromAlbum.GetAll({
+          ...event.payload,
+          objectType: 'photo',
+          detail: this.detail,
+          object: this.album }));
         break;
       case 'select':
         this.store.dispatch(new fromAlbum.Select(event.payload));
@@ -190,7 +198,7 @@ export class ZMediaAlbumDetailComponent extends DynamicModal
   ngOnDestroy() {}
 
   private createDetailInfoComponent() {
-    let detailInfoComponentFactory = this.resolver.resolveComponentFactory(
+    const detailInfoComponentFactory = this.resolver.resolveComponentFactory(
       AlbumDetailInfoComponent
     );
     this.infoContainer.clear();

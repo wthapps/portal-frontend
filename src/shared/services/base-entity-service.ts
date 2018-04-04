@@ -6,8 +6,9 @@ export class BaseEntityService<T> {
 
   constructor(protected apiBaseService: ApiBaseService) {}
 
-  getAll(options?: any): Observable<any> {
-    return this.apiBaseService.get(this.url, options);
+  getAll(options?: any, url?: any): Observable<any> {
+    const path = url || this.url;
+    return this.apiBaseService.get(path, options);
   }
 
   get(id: number, path: string = ''): Observable<any> {

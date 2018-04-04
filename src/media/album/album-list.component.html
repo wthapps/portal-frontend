@@ -121,6 +121,21 @@
              [objects]="albums|async"
              [nextLink]="nextLink|async"
              (event)="doEvent($event)"
-             (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)"
-></w-grid-list>
+             (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)">
+
+  <!--no data region-->
+  <div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length">
+    <div>
+      <h2><i class="icon-album"></i></h2>
+      <h3>There is no album!</h3>
+      <h4>Try to create an album.</h4>
+      <p>
+        <button class="btn btn-outline-primary"
+                (click)="doEvent({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
+          <i class="fa fa-plus-circle"></i> Create album
+        </button>
+      </p>
+    </div>
+  </div>
+</w-grid-list>
 <ng-template #modalContainer></ng-template>

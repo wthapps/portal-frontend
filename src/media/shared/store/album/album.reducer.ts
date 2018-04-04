@@ -36,7 +36,10 @@ const INITIAL_STATE: State = albumAdapter.getInitialState({
   nextLink: null,
   query: null,
   detailObject: null,
-  detailObjects: []
+  detailObjects: [],
+  currentLinkDetail: null,
+  nextLinkDetail: null,
+  queryDetail: null,
 });
 
 
@@ -88,6 +91,8 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           detail: true,
           detailObjects: action.payload.data,
           detailObject: null,
+          currentLinkDetail: action.payload.page_metadata.links.self,
+          nextLinkDetail: action.payload.page_metadata.links.next
         });
       } else {
         result = Object.assign({}, state, {
@@ -103,8 +108,39 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         });
       }
       return result;
+    }
 
-      // return albumAdapter.addAll(action.payload.data, state);
+    case actions.ActionTypes.GET_MORE_SUCCESS: {
+      let result: any;
+      // add selected attribute
+      action.payload.data.map(obj => {
+        obj['selected'] = state.selectedObjectId === obj.id ? true : false;
+        return obj;
+      });
+      if (action.payload.detail) {
+        result = Object.assign({}, state, {
+          loaded:   true,
+          loading:  false,
+          detail: true,
+          detailObjects: action.payload.data,
+          detailObject: null,
+          currentLinkDetail: action.payload.page_metadata.links.self,
+          nextLinkDetail: action.payload.page_metadata.links.next
+        });
+      } else {
+        result = Object.assign({}, state, {
+          loaded:   true,
+          loading:  false,
+          detail: false,
+          objects:   action.payload.data,
+          object: null,
+          detailObjects: [],
+          detailObject: null,
+          currentLink: action.payload.page_metadata.links.self,
+          nextLink: action.payload.page_metadata.links.next
+        });
+      }
+      return result;
     }
 
     case actions.ActionTypes.GET_ALL_FAIL: {

@@ -8,6 +8,7 @@ import 'rxjs/add/operator/takeUntil';
 import { ApiBaseService } from './apibase.service';
 import { WthConfirmService } from '../shared/components/confirmation/wth-confirm.service';
 import { Photo } from '../shared/models/photo.model';
+import { BaseEntityService } from '@wth/shared/services';
 // import { BaseEntityService } from '@wth/shared/services';
 
 declare var _: any;

@@ -80,8 +80,12 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
         break;
       case 'getMore':
         this.store.dispatch(
-          new fromAlbum.GetAll({ ...event.payload, objectType: 'album' })
+          new fromAlbum.GetMore({ ...event.payload, objectType: 'album' })
         );
+        break;
+      case 'sort':
+        this.store.dispatch(new fromAlbum.GetAll({
+          ...event.payload, objectType: 'album'}));
         break;
       case 'select':
         this.store.dispatch(new fromAlbum.Select(event.payload));

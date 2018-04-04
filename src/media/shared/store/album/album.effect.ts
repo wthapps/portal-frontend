@@ -10,6 +10,7 @@ import * as albumActions         from './album.action';
 import { AlbumService } from '@media/shared/services/album.service';
 import { MediaObjectService } from '@media/shared/container/media-object.service';
 import { saveAs } from 'file-saver';
+import { PhotoService } from '@wth/shared/services/photo.service';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -28,9 +29,12 @@ import { saveAs } from 'file-saver';
 @Injectable()
 export class AlbumEffects {
 
-  constructor(private actions$: Actions,
-              private mediaObjectService: MediaObjectService,
-              private albumService: AlbumService) {
+  constructor(
+    private actions$: Actions,
+    private mediaObjectService: MediaObjectService,
+    private albumService: AlbumService,
+    private photoService: PhotoService
+  ) {
   }
 
   /**
@@ -52,15 +56,11 @@ export class AlbumEffects {
     .map((action: albumActions.GetAll) => action.payload)
     .switchMap(payload => {
       if (payload.objectType === 'album') {
-        return this.albumService.getAll(payload)
-          .map(response => new albumActions.GetAllSuccess({...response, ...payload}))
-          .catch(error => of(new albumActions.GetAllFail()));
+        return this.albumService.getAll({...payload.queryParams})
+          .map(response => new albumActions.GetAllSuccess({...response, ...payload}));
       } else {
-        return this.albumService.getPhotosByAlbum(payload.object.id)
-          .map(response => new albumActions.GetAllSuccess({...response, ...payload}))
-          .catch(error => {
-
-          });
+        return this.albumService.getPhotosByAlbum(payload.object.id, payload.queryParams)
+          .map(response => new albumActions.GetAllSuccess({...response, ...payload}));
       }
     });
 
@@ -71,11 +71,11 @@ export class AlbumEffects {
     .switchMap(payload => {
       if (payload.objectType === 'album') {
         return this.albumService.getAll(payload)
-          .map(response => new albumActions.GetAllSuccess({...response, ...payload}))
+          .map(response => new albumActions.AddManySuccess({...response}))
           .catch(error => of(new albumActions.GetAllFail()));
       } else {
         return this.albumService.getPhotosByAlbum(payload.object.id)
-          .map(response => new albumActions.GetAllSuccess({...response, ...payload}))
+          .map(response => new albumActions.AddManySuccess({...response}))
           .catch(error => {
 
           });
