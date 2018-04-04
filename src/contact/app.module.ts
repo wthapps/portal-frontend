@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
-import { SharedModule } from '../shared/shared.module';
+// import { SharedModule } from '../shared/shared.module';
 import { CoreModule } from '../core/core.module';
 import { HomeModule } from '../contact/home/home.module';
 import { ContactModule } from './contact/contact.module';
@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,7 +36,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     ContactSharedModule.forRoot(),
 
     // WTHApps modules
-    SharedModule.forRoot(),
+    WthCommonModule,
     SharedServicesModule.forRoot(),
     CoreModule.forRoot()
   ],

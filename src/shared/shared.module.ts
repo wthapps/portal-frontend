@@ -49,12 +49,12 @@ import { DataTableModule } from 'primeng/components/datatable/datatable';
 import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
 import { MenuContainerModule } from '@shared/shared/components/menu-container/menu-container.module';
 import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
-import { ModalModule } from '@wth/shared/components/modal/modal.module';
 import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
 import { PartialModule } from '@wth/shared/partials';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { ComponentsModule } from '@shared/components/components.module';
 import { AccordionModule } from 'primeng/components/accordion/accordion';
+import { ModalModule } from '@wth/shared/components/modal/modal.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.

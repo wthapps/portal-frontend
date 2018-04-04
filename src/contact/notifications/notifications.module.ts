@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '@wth/shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CommonNotificationsComponent } from '@wth/shared/shared/components/notification-list/notifications.component';
+import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
+    WthCommonModule,
 
     RouterModule.forChild([
       { path: '', component: CommonNotificationsComponent }

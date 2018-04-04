@@ -27,8 +27,24 @@ import { ZContactSharedHeaderComponent } from './header/header.component';
 import { ZContactShareIcloudIndicateComponent } from './modal/import-contact/icloud-indicate/icloud-indicate.component';
 
 import { CoreModule } from '../../core/core.module';
-import { SharedModule } from '../../shared/shared.module';
 import { ZContactShareMergeProgressComponent } from './progress/merge-progress.component';
+import { WthCommonModule } from '@wth/shared/common/wth-common.module';
+import { ZMyProfileComponent } from '@wth/shared/shared/components/profile/my-profile/my-profile.component';
+import { ModalDockModule } from '@wth/shared/shared/components/modal/dock.module';
+import { ComponentsModule } from '@wth/shared/components/components.module';
+import { WMediaSelectionModule } from '@wth/shared/components/w-media-selection/w-media-selection.module';
+import { ModalModule } from '@wth/shared/components/modal/modal.module';
+import { PartialModule } from '@wth/shared/partials';
+import { PartialsProfileModule } from '@wth/shared/shared/components/profile/profile.module';
+import { CoverProfileModule } from '@wth/shared/shared/components/cover-profile/cover-profile.module';
+import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
+import { CalendarModule } from 'primeng/components/calendar/calendar';
+import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
+import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
+import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
+import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
+import { ZSharedMenuModule } from '@wth/shared/shared/components/menu/menu.module';
+import { FileModule } from '@wth/shared/shared/components/file/file.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -42,15 +58,31 @@ import { ZContactShareMergeProgressComponent } from './progress/merge-progress.c
     ReactiveFormsModule,
     ZContactPipeModule,
 
+    // Wth common module
+    WthCommonModule,
+
     // custom component
     Ng2HdModule,
+    ModalModule,
+    WMediaSelectionModule,
+    ComponentsModule,
+    FileModule,
+    PartialModule,
+    PartialsProfileModule,
+    CoverProfileModule,
+    ModalDockModule,
+    ZSharedMenuModule,
 
     // third party libs
     TagInputModule,
+    InputSwitchModule,
+    CheckboxModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    CalendarModule,
+    PanelMenuModule,
     // BrowserAnimationsModule,
 
-    CoreModule,
-    SharedModule
   ],
   declarations: [
     ZContactSharedListComponent,
@@ -64,6 +96,7 @@ import { ZContactShareMergeProgressComponent } from './progress/merge-progress.c
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
 
+
     //modal here
     ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,
@@ -73,13 +106,28 @@ import { ZContactShareMergeProgressComponent } from './progress/merge-progress.c
   exports: [
     CommonModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
     ZContactPipeModule,
 
     // custom component
     Ng2HdModule,
+    ModalDockModule,
+    ModalModule,
+    FileModule,
+    PartialModule,
+    WMediaSelectionModule,
+    ComponentsModule,
+    ZSharedMenuModule,
 
     // third party libs
     TagInputModule,
+    InputSwitchModule,
+    CheckboxModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    CalendarModule,
+    PanelMenuModule,
 
     ZContactSharedListComponent,
     ZContactSharedItemComponent,
@@ -91,6 +139,9 @@ import { ZContactShareMergeProgressComponent } from './progress/merge-progress.c
     ZContactSharedLeftMenuComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
+
+    // my profile
+    ZMyProfileComponent,
 
     // modal here
     ContactAddGroupModalComponent,

@@ -10,8 +10,8 @@ import { ZContactDetailComponent } from './contact-detail/contact-detail.compone
 import { ZContactEditComponent } from './contact-edit/contact-edit.component';
 
 import { CoreModule } from '../../core/core.module';
-import { SharedModule } from '../../shared/shared.module';
 import { InvitationModule } from '../../shared/shared/components/invitation/invitation.module';
+import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 
 @NgModule({
   imports: [
@@ -22,7 +22,7 @@ import { InvitationModule } from '../../shared/shared/components/invitation/invi
     ContactSharedModule,
 
     CoreModule,
-    SharedModule
+    WthCommonModule
   ],
   declarations: [
     ZContactListComponent,

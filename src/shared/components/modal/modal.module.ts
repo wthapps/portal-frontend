@@ -22,6 +22,8 @@ import { PipeModule } from "@shared/shared/pipe/pipe.module";
     LockUploadModalComponent
   ],
   exports: [
+    BsModalModule,
+
     EditNameModalComponent,
     LockUploadModalComponent
   ]
