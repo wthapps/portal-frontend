@@ -6,7 +6,7 @@ import {
 
 import { DomSanitizer } from '@angular/platform-browser';
 import { DomHandler } from 'primeng/components/dom/domhandler';
-import { FileUpload } from 'primeng/primeng';
+import { FileUpload } from 'primeng/components/fileupload/fileupload';
 
 @Component({
     selector: 'h-file-upload',

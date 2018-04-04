@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { WTHEmojiService } from './emoji.service';
-import { OverlayPanel } from 'primeng/primeng';
+import { OverlayPanel } from 'primeng/components/overlaypanel/overlaypanel';
 
 @Component({
   selector: 'app-wth-emoji',

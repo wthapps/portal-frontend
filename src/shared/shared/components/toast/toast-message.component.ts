@@ -27,7 +27,7 @@
 // });
 
 import { Component } from '@angular/core';
-import { Message } from 'primeng/primeng';
+import { Message } from 'primeng/components/common/message';
 
 @Component({
     selector: 'wth-toast',

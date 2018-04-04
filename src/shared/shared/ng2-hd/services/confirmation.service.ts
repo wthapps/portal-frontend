@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HConfirmation } from './comfirmation';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 @Injectable()
 export class HConfirmationService {
