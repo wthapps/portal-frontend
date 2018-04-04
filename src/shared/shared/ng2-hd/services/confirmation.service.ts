@@ -5,7 +5,6 @@ import { ConfirmationService } from 'primeng/components/common/confirmationservi
 
 @Injectable()
 export class HConfirmationService {
-
   constructor(private confirmationService: ConfirmationService) {}
 
   confirm(confirmation: HConfirmation) {

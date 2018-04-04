@@ -68,6 +68,8 @@
     & + .page-body-content {
       margin-top: $page-body-control-height;
     }
+
+
     &.has-page-body-sidebar {
       margin-left: $main-page-left-sm;
       @media (min-width: $screen-md-min) {
@@ -96,21 +98,14 @@
     height: $page-body-control-sub-height;
   }
   .page-body-content {
-    //position: absolute;
-    //top: 0;
-    //left: 0;
-    //right: 0;
-    //bottom: 0;
-    //overflow: auto;
-    //z-index: 1;
-    &.has-page-body-control {
-      //top: $page-body-control-height;
-    }
     &.has-page-body-sidebar {
       left: $main-page-left-sm;
       @media (min-width: $screen-md-min) {
         left: $main-page-left;
       }
+    }
+    &.has-page-body-control {
+      margin-top: $page-body-control-height;
     }
   }
   .page-body-content-in {

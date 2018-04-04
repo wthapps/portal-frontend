@@ -10,7 +10,6 @@ import { WToolbarModule } from '@wth/shared/components/toolbar';
 import { WGridListItemComponent } from '@wth/shared/components/grid-list/grid-list-item.component';
 import { SliderModule } from 'primeng/components/slider/slider';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -34,7 +33,6 @@ import { SliderModule } from 'primeng/components/slider/slider';
     WGridListItemComponent,
     WGridListComponent
   ],
-  providers: [],
+  providers: []
 })
-export class WGridListModule {
-}
+export class WGridListModule {}

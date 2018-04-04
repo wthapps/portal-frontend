@@ -14,7 +14,6 @@ import {
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
-
 import { Constants } from '@wth/shared/constant';
 
 declare var _: any;
@@ -25,15 +24,13 @@ declare var $: any;
   selector: 'w-grid-list',
   templateUrl: 'grid-list.component.html',
   styleUrls: ['grid-list.component.scss'],
-  providers: [
-  ]
+  providers: []
 })
-
 export class WGridListComponent implements OnInit, OnDestroy {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
   @Input() moreActionsTemplate: TemplateRef<any>;
-
+  @Input() scrollWindow: Boolean = true;
 
   @Input() view: string = 'grid';
   @Input() objects: Array<any> = new Array<any>();
@@ -67,7 +64,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
   private pressingCtrlKey: boolean = false;
   private destroySubject: Subject<any> = new Subject<any>();
 
-
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
     if (this.pressedCtrlKey(ke)) {
@@ -93,7 +89,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroySubject.next('');
-    this.destroySubject.unsubscribe();    // Destroy unused subscriptions
+    this.destroySubject.unsubscribe(); // Destroy unused subscriptions
   }
 
   onDragenter(e: any) {
@@ -123,28 +119,35 @@ export class WGridListComponent implements OnInit, OnDestroy {
         if (event.action === 'select') {
           if (!this.pressingCtrlKey && !event.payload.checkbox) {
             event.payload.clearAll = true;
-          } else if (this.pressingCtrlKey && event.payload.selectedObjects[0].selected) {
+          } else if (
+            this.pressingCtrlKey &&
+            event.payload.selectedObjects[0].selected
+          ) {
             event.action = 'deselect';
           }
           if (event.payload.clearAll) {
             this.selectedObjects.length = 0;
           }
 
-
           event.payload.selectedObjects.forEach(obj => {
             this.selectedObjects.push(obj);
           });
         } else if (event.action === 'deselect') {
           event.payload.selectedObjects.forEach(obj => {
-            this.selectedObjects.splice(this.selectedObjects.indexOf(obj.id), 1);
+            this.selectedObjects.splice(
+              this.selectedObjects.indexOf(obj.id),
+              1
+            );
           });
         }
-        if (event.action === 'select' ||
-            event.action === 'selectAll' ||
-            event.action === 'deselect' ||
-            event.action === 'deselectAll') {
+        if (
+          event.action === 'select' ||
+          event.action === 'selectAll' ||
+          event.action === 'deselect' ||
+          event.action === 'deselectAll'
+        ) {
           if (event.action === 'deselectAll') {
-            this.selectedObjects.map(obj => obj.selected = false);
+            this.selectedObjects.map(obj => (obj.selected = false));
           }
           this.selectedObjectsChanged.emit(this.selectedObjects);
         }
@@ -152,7 +155,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
         // Update favorite status for toolbar when hit favorite action on item
         if (event.action === 'favourite' && !event.payload.multiItem) {
           this.selectedObjects.map(object => {
-            if (object.id === event.payload.selectedObjects[0].id ) {
+            if (object.id === event.payload.selectedObjects[0].id) {
               object.favorite = event.payload.mode === 'add' ? true : false;
             }
             return object;
@@ -202,7 +205,6 @@ export class WGridListComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-
   // ngAfterContentChecked(): void {
   //   if (this.hasMultipleSelection) {
   //     if (this.dragSelect) {
@@ -228,28 +230,26 @@ export class WGridListComponent implements OnInit, OnDestroy {
   //
   // }
 
-  onDragSelected(data: any) {
-
-  }
+  onDragSelected(data: any) {}
 
   onMultiSelected(item: any) {
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
-
+    if (
+      _.indexOf(this.objectsDisabled, item.object_type) >= 0 ||
+      !this.hasMultipleSelection
+    ) {
     } else {
-
     }
   }
 
-  onSelectedAll() {
+  onSelectedAll() {}
 
-  }
-
-  onDoubleClick(item: any) {
-  }
+  onDoubleClick(item: any) {}
 
   onClick(item: any) {
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
-
+    if (
+      _.indexOf(this.objectsDisabled, item.object_type) >= 0 ||
+      !this.hasMultipleSelection
+    ) {
     }
     return false;
   }
@@ -257,11 +257,11 @@ export class WGridListComponent implements OnInit, OnDestroy {
   onSort(sortBy: string) {
     let sortOrder = this.sortOrder;
     if (this.sortBy === sortBy) {
-      sortOrder = (sortOrder === 'desc') ? 'asc' : 'desc';
+      sortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
     }
   }
 
- // mode = true is selecting
+  // mode = true is selecting
   private selectObject(payload: any, mode: boolean = true): void {
     // this.selectedObjects = [];
     // let item = payload.selectedObjects;
@@ -283,11 +283,16 @@ export class WGridListComponent implements OnInit, OnDestroy {
   }
 
   private deSelectAll() {
-      this.doEvent({ action: 'deselectAll' });
+    this.doEvent({ action: 'deselectAll' });
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {
-    return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
+    return ke.keyCode == 17 ||
+      ke.keyCode == 18 ||
+      ke.keyCode == 91 ||
+      ke.keyCode == 93 ||
+      ke.ctrlKey
+      ? true
+      : false;
   }
-
 }

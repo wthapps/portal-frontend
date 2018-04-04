@@ -39,10 +39,6 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     MessageItemSimpleComponent,
     MessageItemComponent
   ],
-  providers: [
-
-  ]
+  providers: []
 })
-
-export class ZChatMessageModule {
-}
+export class ZChatMessageModule {}

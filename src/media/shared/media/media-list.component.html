@@ -1,13 +1,10 @@
 <!--<me-list-header [data]="objects" [viewOption]="viewOption" (outEvent)="actionSortbar($event)"></me-list-header>-->
-
-
-<div class="page-body-content has-page-body-control gray-light"
+<div class="page-body-content has-page-body-control"
      infinite-scroll
      [infiniteScrollDistance]="2"
      [infiniteScrollThrottle]="500"
-     [scrollWindow]="false"
+     [scrollWindow]="true"
      (scrolled)="getMoreObjects()">
-
   <div class="page-body-content-in">
 
     <me-list-header *ngIf="objects?.length > 0" [data]="objects" [viewOption]="viewOption"

@@ -30,7 +30,7 @@ import { Component } from '@angular/core';
 import { Message } from 'primeng/components/common/message';
 
 @Component({
-    selector: 'wth-toast',
+  selector: 'wth-toast',
   templateUrl: 'toast-message.component.html',
   styleUrls: ['toast-message.component.scss']
 })
@@ -38,6 +38,5 @@ export class ToastsComponent {
   life: number = 3000;
   msgs: Message[] = [];
 
-  constructor() {
-  }
+  constructor() {}
 }

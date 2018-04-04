@@ -17,7 +17,6 @@ import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-
 import { WthConfirmModule } from '@wth/shared/shared/components/confirmation/wth-confirm.module';
 import { Ng2CableModule } from 'ng2-cable';
 
-
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -31,8 +30,7 @@ import { Ng2CableModule } from 'ng2-cable';
     HttpClientModule,
     Ng2CableModule,
 
-    CookieModule.forRoot(),
-
+    CookieModule.forRoot()
   ],
   declarations: [],
   exports: [
@@ -67,8 +65,7 @@ export class WthCommonModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: WthCommonModule,
-      providers: [
-      ]
+      providers: []
     };
   }
 }

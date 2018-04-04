@@ -20,15 +20,8 @@ import { FooterModule } from '@wth/shared/partials/footer/footer.module';
     // PortalSharedModule.forRoot(),
     ReCaptchaModule
   ],
-  declarations: [
-    ContactComponent
-  ],
-  exports: [
-    ContactComponent
-  ],
-  providers: [
-    ContactService
-  ]
+  declarations: [ContactComponent],
+  exports: [ContactComponent],
+  providers: [ContactService]
 })
-export class ContactUsModule {
-}
+export class ContactUsModule {}

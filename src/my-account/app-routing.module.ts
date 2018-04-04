@@ -8,7 +8,10 @@ import { RouterModule } from '@angular/router';
          (do not place feature module routes here, use an own -routing.module.ts in the feature instead)
        */
 
-      { path: 'contact', loadChildren: './contact-us/contact.module#ContactUsModule'}
+      {
+        path: 'contact',
+        loadChildren: './contact-us/contact.module#ContactUsModule'
+      }
     ])
   ],
   exports: [RouterModule]

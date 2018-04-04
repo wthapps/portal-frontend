@@ -1,4 +1,9 @@
-import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
+import {
+  NgModule,
+  ModuleWithProviders,
+  SkipSelf,
+  Optional
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,7 +30,6 @@ import { PhotoService } from './services/photo.service';
 import { CountryService } from './shared/components/countries/countries.service';
 import { SuggestionService } from './services/suggestion.service';
 import { CommonEventService } from './services/common-event/common-event.service';
-
 
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
@@ -57,24 +61,20 @@ import { WthConfirmModule } from '@wth/shared/shared/components/confirmation/wth
 import { Ng2CableModule } from 'ng2-cable';
 import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 
-
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [
-
-  ],
+  imports: [],
   declarations: [],
-  exports: [
-  ]
+  exports: []
 })
 export class SharedServicesModule {
   constructor(
     @Optional()
     @SkipSelf()
-      parentModule: SharedServicesModule
+    parentModule: SharedServicesModule
   ) {
     if (parentModule) {
       throw new Error(

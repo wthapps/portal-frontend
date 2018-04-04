@@ -1,13 +1,22 @@
-import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  EventEmitter,
+  Output,
+  OnChanges,
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { Constants } from '@wth/shared/constant';
 
 @Component({
   selector: 'w-toolbar',
   exportAs: 'wToolbar',
   templateUrl: 'toolbar.component.html',
-  styleUrls: ['toolbar.component.scss']
+  styleUrls: ['toolbar.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-
 export class WToolbarComponent {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
@@ -28,12 +37,14 @@ export class WToolbarComponent {
 
   tooltip: any = Constants.tooltip;
 
-  constructor() {
-  }
+  constructor() {}
 
   doAction(event: any) {
     if (event.action === 'favourite') {
-      event.payload.selectedObjects.map(object => object.favorite = event.payload.mode === 'add' ? true : false);
+      event.payload.selectedObjects.map(
+        object =>
+          (object.favorite = event.payload.mode === 'add' ? true : false)
+      );
       this.updateSelectedObjects(event.payload.selectedObjects);
     }
     if (event.action === 'deselectAll') {

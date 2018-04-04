@@ -13,7 +13,7 @@
        infinite-scroll
        [infiniteScrollDistance]="2"
        [infiniteScrollThrottle]="500"
-       [scrollWindow]="false"
+       [scrollWindow]="scrollWindow"
        (scrolled)="doEvent({action: 'getAll', payload: { nextLink: nextLink }})">
 
     <div class="page-body-content-in">

@@ -35,8 +35,7 @@ import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 
     // Custom modules
     ModalModule,
-    WthCommonModule,
-
+    WthCommonModule
   ],
   declarations: [
     PortalSharedHeaderComponent,

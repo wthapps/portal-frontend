@@ -41,7 +41,7 @@
          lockYOffset="30"
          observeAttributes="true"
          infinite-scroll
-         [scrollWindow]="false"
+         [scrollWindow]="true"
          (scrolled)="getMoreNotifications()">
       <app-partials-notification-list #notifications [size]="'xs'" [type]="type"></app-partials-notification-list>
 

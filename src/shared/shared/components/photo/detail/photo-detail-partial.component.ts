@@ -11,7 +11,9 @@ import {
   OnChanges,
   SimpleChanges,
   OnDestroy,
-  ViewEncapsulation, ElementRef
+  ViewEncapsulation,
+  ElementRef,
+  Renderer2
 } from '@angular/core';
 
 import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
@@ -37,8 +39,8 @@ declare let _: any;
     TaggingModalComponent
   ]
 })
-export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
-
+export class PhotoDetailPartialComponent
+  implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() module: string;
   @Input() photo: any;
   @Input() loading: boolean;
@@ -49,7 +51,8 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   @Input() recipients: Array<any> = [];
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  @ViewChild('modalContainer', { read: ViewContainerRef })
+  modalContainer: ViewContainerRef;
   tooltip: any = Constants.tooltip;
   menus: any = [];
 
@@ -62,8 +65,12 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   image: any;
   loadingImg: boolean = true;
 
-  constructor(private resolver: ComponentFactoryResolver,
-              private photoService: PhotoService) {
+  constructor(
+    private resolver: ComponentFactoryResolver,
+    private photoService: PhotoService,
+    private renderer: Renderer2
+  ) {
+    this.renderer.addClass(document.body, 'modal-open');
   }
 
   ngOnInit() {
@@ -78,12 +85,11 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     this.loadMenu();
   }
 
-  ngAfterViewInit() {
-
-  }
+  ngAfterViewInit() {}
 
   ngOnDestroy() {
-    this.event.emit({action: 'destroy'});
+    this.renderer.removeClass(document.body, 'modal-open');
+    this.event.emit({ action: 'destroy' });
   }
 
   loadMenu() {
@@ -96,7 +102,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         toolTip: Constants.tooltip.share,
         iconClass: 'fa fa-share-alt',
         action: 'openModal',
-        params: {modalName: 'sharingModal'}
+        params: { modalName: 'sharingModal' }
       },
       {
         text: 'Favourite',
@@ -109,7 +115,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         toolTip: Constants.tooltip.tag,
         iconClass: 'fa fa-tag',
         action: 'openModal',
-        params: {modalName: 'taggingModal'}
+        params: { modalName: 'taggingModal' }
       },
       // {
       //   text: 'Edit',
@@ -130,7 +136,7 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
             toolTip: Constants.tooltip.addToAlbum,
             iconClass: 'fa fa-plus-square',
             action: 'openModal',
-            params: {modalName: 'addToAlbumModal'}
+            params: { modalName: 'addToAlbumModal' }
           },
           {
             text: 'Download',
@@ -149,9 +155,8 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
       }
     ];
 
-    if(this.isOwner) {
-      this.menus.splice(3, 0,
-      {
+    if (this.isOwner) {
+      this.menus.splice(3, 0, {
         text: 'Edit',
         toolTip: Constants.tooltip.edit,
         iconClass: 'fa fa-edit',
@@ -160,14 +165,13 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     }
 
     if (canDelete) {
-      this.menus.splice(4, 0,
-        {
-          text: 'Delete',
-          toolTip: Constants.tooltip.delete,
-          iconClass: 'fa fa-trash-o',
-          action: 'confirmDelete',
-          params: {}
-        });
+      this.menus.splice(4, 0, {
+        text: 'Delete',
+        toolTip: Constants.tooltip.delete,
+        iconClass: 'fa fa-trash-o',
+        action: 'confirmDelete',
+        params: {}
+      });
     }
   }
 
@@ -176,11 +180,11 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     switch (modalName) {
       case 'editInfoModal':
         this.loadModalComponent(PhotoEditModalComponent);
-        options = {selectedObject: this.photo};
+        options = { selectedObject: this.photo };
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);
-        options = {selectedObjects: [this.photo]};
+        options = { selectedObjects: [this.photo] };
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
@@ -191,19 +195,16 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
         break;
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);
-        options = {selectedObjects: [this.photo]};
+        options = { selectedObjects: [this.photo] };
         break;
     }
     this.modal.open(options);
-
   }
-
 
   // New code
 
-
   goBack() {
-    this.event.emit({action: 'goBack'});
+    this.event.emit({ action: 'goBack' });
   }
 
   doAction(event: any) {
@@ -240,11 +241,13 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
     let index = 0;
 
     if (direction) {
-      index = this.currentIndex < (this.ids.length - 1) ? this.currentIndex + 1 : 0;
+      index =
+        this.currentIndex < this.ids.length - 1 ? this.currentIndex + 1 : 0;
     } else {
-      index = this.currentIndex > 0 ? this.currentIndex - 1 : this.ids.length - 1;
+      index =
+        this.currentIndex > 0 ? this.currentIndex - 1 : this.ids.length - 1;
     }
-    this.event.emit({action: 'loadItem', id: this.ids[index]});
+    this.event.emit({ action: 'loadItem', id: this.ids[index] });
   }
 
   onZoomIn() {
@@ -261,7 +264,10 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   }
 
   onStart(event?: any) {
-    this.image = (event && event.path) ? event.path[0] : document.getElementById('image-viewer');
+    this.image =
+      event && event.path
+        ? event.path[0]
+        : document.getElementById('image-viewer');
     this.cropper = new Cropper(this.image, {
       autoCrop: false,
       // dragMode: 'move',
@@ -296,25 +302,27 @@ export class PhotoDetailPartialComponent implements OnInit, AfterViewInit, OnCha
   }
 
   private savePhoto(dataImg: any) {
-    this.photoService.confirmUpdate(this.photo, dataImg)
-      .then((data: any) => {
-          this.event.emit({action: 'photoUpdated', payload: data});
-          this.hasEditPhoto = false;
-        }
-      );
+    this.photoService.confirmUpdate(this.photo, dataImg).then((data: any) => {
+      this.event.emit({ action: 'photoUpdated', payload: data });
+      this.hasEditPhoto = false;
+    });
   }
 
   private showInfo() {
     this.showDetail = !this.showDetail;
     if (this.recipients.length == 0 && this.showDetail == true) {
-      this.event.emit({action: 'media:photo:load_sharing_info'});
+      this.event.emit({ action: 'media:photo:load_sharing_info' });
     }
   }
 
   private loadModalComponent(component: any) {
-    const modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    const modalComponentFactory = this.resolver.resolveComponentFactory(
+      component
+    );
     this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    this.modalComponent = this.modalContainer.createComponent(
+      modalComponentFactory
+    );
     this.modal = this.modalComponent.instance;
   }
 }
