@@ -46,7 +46,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     ModalModule,
     ZMediaSharedModule.forRoot(),
     CoreModule.forRoot(),
-    SharedModule.forRoot(),,
+    SharedModule.forRoot(),
     SharedServicesModule.forRoot(),
     StoreModule.forRoot(appStore),
     EffectsModule.forRoot(appEffects),
