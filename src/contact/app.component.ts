@@ -13,9 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/last';
+import { takeUntil, filter } from 'rxjs/operators';
 import { ConfirmDialogModel } from '../shared/shared/models/confirm-dialog.model';
 import { Constants } from '../shared/constant/config/constants';
 
@@ -75,13 +73,16 @@ export class AppComponent
     this.commonEventService
       .filter(
         (event: CommonEvent) => event.channel == Constants.contactEvents.common
+      ).pipe(
+        takeUntil(this.destroySubject)
       )
-      .takeUntil(this.destroySubject)
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
       });
     this.groupService.groups$
-      .takeUntil(this.destroySubject)
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
       .subscribe((groups: any[]) => {
         this.groups = groups;
       });
@@ -89,8 +90,10 @@ export class AppComponent
 
   ngOnInit() {
     this.routerSubscription = this.router.events
-      .takeUntil(this.destroySubject)
-      .filter(event => event instanceof NavigationEnd)
+      .pipe(
+        takeUntil(this.destroySubject),
+        filter(event => event instanceof NavigationEnd)
+      )
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });

@@ -130,7 +130,7 @@ export class GoogleApiService {
       });
       return JSON.parse(data.body);
     } catch (err) {
-      console.error('getGoogleContactsList error', err);
+      console.warn('getGoogleContactsList error', err);
     };
   }
 
@@ -179,7 +179,7 @@ export class GoogleApiService {
       return res.data;
     }
     catch (err) {
-      console.error('import contacts ERRORS ', err);
+      console.warn('import contacts ERRORS ', err);
     };
   }
 }

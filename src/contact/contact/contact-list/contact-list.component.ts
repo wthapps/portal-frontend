@@ -4,7 +4,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
 
 
 import { ZContactService } from '../../shared/services/contact.service';
@@ -21,12 +20,15 @@ import { Recipient } from '../../../shared/shared/components/invitation/recipien
 import { Config } from '../../../shared/constant/config/env.config';
 import { Constants } from '../../../shared/constant/config/constants';
 import { CommonEvent, CommonEventAction, CommonEventService } from '@wth/shared/services';
+import { routeAnimation } from '@wth/shared/shared/animations/route.animation';
+import { takeUntil } from 'rxjs/operators';
 
 declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'z-contact-list',
-  templateUrl: 'contact-list.component.html'
+  templateUrl: 'contact-list.component.html',
+  // animations: [routeAnimation]
 })
 export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
@@ -64,7 +66,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     private toaster: ToastsService
   ) {
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common)
-      .takeUntil(this.destroySubject)
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
       });
@@ -74,7 +78,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
 
   ngOnInit() {
     this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.actionsToolbar)
-      .takeUntil(this.destroySubject)
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
       .subscribe((event: CommonEvent) => {
         let tmp = _.cloneDeep(this.contactService.selectedObjects);
         this.contactService.selectedObjects = [event.payload];
@@ -100,7 +106,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     });
 
     this.contactService.contacts$
-      .takeUntil(this.destroySubject)
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
       .subscribe((contacts: any[]) => {
         this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
         this.loadingService.stop();
@@ -111,7 +119,9 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     this.loadingService.start('#contact-list');
 
     this.contactService.initLoad$
-      .takeUntil(this.destroySubject)
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
       .subscribe((data: any) => {
         if (data === true) {
           this.loaded = true;

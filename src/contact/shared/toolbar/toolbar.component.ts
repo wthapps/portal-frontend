@@ -57,7 +57,7 @@ export class ZContactSharedToolbarComponent implements OnInit {
         });
         break;
       default:
-        console.error('Unhandled import option: ', event.provider);
+        console.warn('Unhandled import option: ', event.provider);
         break;
     }
   }

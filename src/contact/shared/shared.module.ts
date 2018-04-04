@@ -45,6 +45,9 @@ import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
 import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
 import { ZSharedMenuModule } from '@wth/shared/shared/components/menu/menu.module';
 import { FileModule } from '@wth/shared/shared/components/file/file.module';
+import { CheckForUpdateService } from '@contacts/shared/services/check-for-update.service';
+import { LogUpdateService } from '@contacts/shared/services/log-update.service';
+import { PromptUpdateService } from '@contacts/shared/services/prompt-update.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -158,7 +161,13 @@ export class ContactSharedModule {
         ZContactService,
         GoogleApiService,
         ZContactMenuService,
-        ContactImportContactDataService
+        ContactImportContactDataService,
+
+        // Service Workers services
+        CheckForUpdateService,
+        LogUpdateService,
+        PromptUpdateService
+
       ]
     };
   }
