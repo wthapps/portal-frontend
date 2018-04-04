@@ -5,7 +5,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [HomeRoutingModule, PortalSharedModule.forRoot()],
+  imports: [HomeRoutingModule, PortalSharedModule],
   declarations: [HomeComponent],
   exports: [HomeComponent],
   providers: []

@@ -5,7 +5,7 @@ import { ProductsRoutingModule } from './products-routing.module';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [ProductsRoutingModule, PortalSharedModule.forRoot()],
+  imports: [ProductsRoutingModule, PortalSharedModule],
   declarations: [ProductsComponent],
   exports: [ProductsComponent]
 })

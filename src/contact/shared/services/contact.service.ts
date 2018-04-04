@@ -8,13 +8,13 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { GroupService } from '../../group/group.service';
 import { Router } from '@angular/router';
 import { BaseEntityService } from '../../../shared/services/base-entity-service';
-import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { SuggestionService } from '../../../shared/services/suggestion.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '../../../shared/shared/components/confirmation/wth-confirm.service';
 import { FileUploaderService } from "@shared/services/file/file-uploader.service";
 import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
 import * as Boom from "boom";
+import { ApiBaseService } from '@wth/shared/services';
 
 
 @Injectable()

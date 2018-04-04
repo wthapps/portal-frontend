@@ -10,7 +10,7 @@ import { SupportRoutingModule } from './support-routing.module';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [SupportRoutingModule, PortalSharedModule.forRoot()],
+  imports: [SupportRoutingModule, PortalSharedModule],
   declarations: [
     SupportComponent,
     SupportProductComponent,

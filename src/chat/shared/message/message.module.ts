@@ -10,12 +10,14 @@ import { MessageItemSimpleComponent } from './messages/message-simple-item.compo
 import { MessageItemActionComponent } from './messages/message-actions-item.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
     CommonModule,
     MiniEditorModule,
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    SharedServicesModule.forRoot()
   ],
   declarations: [
     MessageEditorComponent,

@@ -17,7 +17,7 @@ import { FooterModule } from '@wth/shared/partials/footer/footer.module';
     FormsModule,
     ReactiveFormsModule,
     FooterModule,
-    // PortalSharedModule.forRoot(),
+    // PortalSharedModule,
     ReCaptchaModule
   ],
   declarations: [

@@ -25,6 +25,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { appStore, appEffects } from './shared/store';
 import { ModalModule } from '@wth/shared/modals/modals.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
     ModalModule,
     ZMediaSharedModule.forRoot(),
     CoreModule.forRoot(),
-    SharedModule.forRoot(),
+    SharedModule.forRoot(),,
+    SharedServicesModule.forRoot(),
     StoreModule.forRoot(appStore),
     EffectsModule.forRoot(appEffects),
     !environment.production

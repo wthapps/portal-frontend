@@ -22,6 +22,7 @@ import { appReducer } from './shared/reducers/index';
 import { SoProfileEffects } from './shared/effects/so-profile-effects';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SocialPostsEffects } from './shared/effects/social-posts-effects';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { SocialPostsEffects } from './shared/effects/social-posts-effects';
     ModalModule,
     ZSocialSharedModule.forRoot(),
     SharedModule.forRoot(),
+    SharedServicesModule.forRoot(),
     CoreModule.forRoot(),
 
     StoreModule.forRoot({ app: appReducer }),

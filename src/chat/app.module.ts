@@ -20,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '@wth/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from '@wth/shared/modals/modals.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
 
     ModalModule,
     ZChatSharedModule.forRoot(),
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    SharedServicesModule.forRoot()
   ],
   declarations: [AppComponent],
   providers: [

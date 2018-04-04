@@ -27,6 +27,7 @@ import { environment } from '@env/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers, metaReducers, appEffects } from './store';
 import { ConfirmationModule } from './confirmation/confirmation.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
@@ -49,6 +50,7 @@ import { ConfirmationModule } from './confirmation/confirmation.module';
     FooterModule,
     MySharedModule.forRoot(),
     SharedModule.forRoot(),
+    SharedServicesModule.forRoot(),
     CoreModule.forRoot(),
     StoreModule.forRoot(appReducers, { metaReducers }),
     EffectsModule.forRoot(appEffects),

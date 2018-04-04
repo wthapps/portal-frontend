@@ -8,7 +8,7 @@ import { PrivacyComponent } from './privacy.component';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [PoliciesRoutingModule, PortalSharedModule.forRoot()],
+  imports: [PoliciesRoutingModule, PortalSharedModule],
   declarations: [PoliciesComponent, TermsComponent, PrivacyComponent],
   exports: [PoliciesComponent]
 })

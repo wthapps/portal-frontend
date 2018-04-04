@@ -4,7 +4,6 @@ import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
 import { CoreModule } from '../core/core.module';
-import { SharedModule } from '../shared/shared.module';
 import { PortalSharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
@@ -22,6 +21,7 @@ import { RegisterModule } from './register/register.module';
 import { SubscribeModule } from './sub_unsub/subscribe.module';
 import { SupportModule } from './support/support.module';
 import { NotificationModule } from './notifications/notifications.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -46,7 +46,7 @@ import { NotificationModule } from './notifications/notifications.module';
 
     PortalSharedModule.forRoot(),
     CoreModule.forRoot(),
-    SharedModule.forRoot()
+    SharedServicesModule.forRoot()
   ],
   providers: [
     {

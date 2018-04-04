@@ -15,6 +15,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from '@wth/shared/modals/modals.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,6 +36,7 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
 
     // WTHApps modules
     SharedModule.forRoot(),
+    SharedServicesModule.forRoot(),
     CoreModule.forRoot()
   ],
   providers: [

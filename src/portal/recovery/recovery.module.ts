@@ -7,7 +7,7 @@ import { ResetEmailSentComponent } from './reset-email-sent.component';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [RecoveryRoutingModule, PortalSharedModule.forRoot()],
+  imports: [RecoveryRoutingModule, PortalSharedModule],
   declarations: [
     ForgottenPasswordComponent,
     NewPasswordComponent,

@@ -5,7 +5,7 @@ import { RegisterRoutingModule } from './register-routing.module';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [RegisterRoutingModule, PortalSharedModule.forRoot()],
+  imports: [RegisterRoutingModule, PortalSharedModule],
   declarations: [RegisterComponent],
   exports: [RegisterComponent]
 })

@@ -10,13 +10,15 @@ import { ZChatContactSentRequestComponent } from './contact-sent-request.compone
 import { ZChatContactPendingComponent } from './contact-pending.component';
 import { ZChatContactReceiveComponent } from './contact-receive.component';
 import { SharedModule } from '@wth/shared/shared.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
     ReactiveFormsModule,
     ZChatContactRoutingModule,
     ZChatSharedModule.forRoot(),
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    SharedServicesModule.forRoot()
   ],
   declarations: [
     ZChatContactComponent,
