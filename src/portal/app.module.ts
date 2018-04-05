@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -22,12 +23,14 @@ import { SubscribeModule } from './sub_unsub/subscribe.module';
 import { SupportModule } from './support/support.module';
 import { NotificationModule } from './notifications/notifications.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import {environment} from '@env/environment';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
 
     AppRoutingModule,
     HomeModule,
