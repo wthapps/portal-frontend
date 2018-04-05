@@ -1,51 +1,23 @@
-import {
-  Component,
-  ComponentFactoryResolver,
-  OnInit,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import { DynamicModal } from '@media/shared/modal/dynamic-modal';
 import { Router } from '@angular/router';
-
 import { Store } from '@ngrx/store';
+import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import * as appStore from '../shared/store';
 import * as fromAlbum from '../shared/store/album/album.action';
-import { BaseObjectEditNameModalComponent } from '@wth/shared/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import {
-  AlbumCreateModalComponent,
-  AlbumDeleteModalComponent
-} from '@media/shared/modal';
-import { MediaObjectService } from '@media/shared/container/media-object.service';
+import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
-import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
-import { DynamicModal } from '@media/shared/modal/dynamic-modal';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 
 @Component({
-  selector: 'z-media-album-list',
-  templateUrl: 'album-list.component.html',
-  entryComponents: [
-    AlbumCreateModalComponent,
-    BaseObjectEditNameModalComponent,
-    SharingModalComponent,
-    TaggingModalComponent,
-    AlbumDeleteModalComponent,
-    AlbumEditModalComponent
-  ]
+  selector: 'me-sharings',
+  templateUrl: 'sharing-list.component.html'
 })
-export class AlbumListComponent extends DynamicModal implements OnInit {
-
-  albums$: Observable<any>;
+export class ZMediaSharingListComponent extends DynamicModal implements OnInit {
+  sharings$: Observable<any>;
   loading$: Observable<any>;
-
   nextLink$: Observable<any>;
 
   tooltip: any = Constants.tooltip;
-
   constructor(
     private store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
@@ -54,15 +26,9 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
   ) {
     super(resolver);
 
-    this.albums$ = this.store.select(appStore.selectObjects);
+    this.sharings$ = this.store.select(appStore.selectObjects);
     this.nextLink$ = this.store.select(appStore.selectNextLink);
     this.loading$ = this.store.select(appStore.selectLoading);
-
-    this.mediaUploaderDataService.action$
-      .takeUntil(this.destroySubject)
-      .subscribe((event: any) => {
-        this.doEvent(event);
-      });
   }
 
   ngOnInit() {
@@ -75,12 +41,12 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
     switch (event.action) {
       case 'getAll':
         this.store.dispatch(
-          new fromAlbum.GetAll({ ...event.payload, objectType: 'album' })
+          new fromAlbum.GetAll({ ...event.payload, objectType: 'sharing' })
         );
         break;
       case 'getMore':
         this.store.dispatch(
-          new fromAlbum.GetMore({ ...event.payload, objectType: 'album' })
+          new fromAlbum.GetMore({ ...event.payload, objectType: 'sharing' })
         );
         break;
       case 'sort':
@@ -129,6 +95,6 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
   }
 
   viewDetails(payload: any) {
-    this.router.navigate(['albums', payload.selectedObject.id]);
+    this.router.navigate(['shared-by-me', payload.selectedObject.id]);
   }
 }

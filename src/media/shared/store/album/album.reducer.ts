@@ -6,7 +6,6 @@ export interface State  extends EntityState<any> {
   // ids: Array<any>;
   // entities: Array<any>;
   loading: boolean;
-  loaded:  boolean;
   detail: boolean; // if state is in details page as album detail, sharing detail
   selectedObjectId: number;
   selectedDetailObjectId: number;
@@ -25,8 +24,7 @@ export const albumAdapter: EntityAdapter<any> = createEntityAdapter<any>();
 const INITIAL_STATE: State = albumAdapter.getInitialState({
   ids: [],
   entities: [],
-  loading: false,
-  loaded:  false,
+  loading: true,
   detail: false,
   selectedObjectId: null,
   selectedDetailObjectId: null,
@@ -57,7 +55,6 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
 
     case actions.ActionTypes.GET_SUCCESS: {
       return Object.assign({}, state, {
-        loaded:   true,
         loading:  false,
         photo:     action.payload
       });
@@ -65,7 +62,6 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
 
     case actions.ActionTypes.GET_FAIL: {
       return Object.assign({}, state, {
-        loaded:   false,
         loading:  false,
         photos:     null
       });
@@ -86,7 +82,6 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       });
       if (action.payload.detail) {
         result = Object.assign({}, state, {
-          loaded:   true,
           loading:  false,
           detail: true,
           detailObjects: action.payload.data,
@@ -96,7 +91,6 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         });
       } else {
         result = Object.assign({}, state, {
-          loaded:   true,
           loading:  false,
           detail: false,
           objects:   action.payload.data,
@@ -119,7 +113,6 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       });
       if (action.payload.detail) {
         result = Object.assign({}, state, {
-          loaded:   true,
           loading:  false,
           detail: true,
           detailObjects: action.payload.data,
@@ -129,7 +122,6 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         });
       } else {
         result = Object.assign({}, state, {
-          loaded:   true,
           loading:  false,
           detail: false,
           objects:   action.payload.data,
@@ -145,7 +137,6 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
 
     case actions.ActionTypes.GET_ALL_FAIL: {
       return Object.assign({}, state, {
-        loaded:   false,
         loading:  false,
         objects:   []
       });
@@ -209,7 +200,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         // return albumAdapter.updateMany(
         //   action.payload.selectedObjects.map(
         //     (object) => Object.assign({}, { id: object.id, changes: object })),
-        //   {...state, loaded: true, loading: false }
+        //   {...state, loading: false }
         // );
     }
     case actions.ActionTypes.DESELECT_ALL: {
@@ -320,7 +311,6 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
 
 
 export const getLoading = (state: State) => state.loading;
-export const getLoaded  = (state: State) => state.loaded;
 export const getObjectEntities    = (state: State) => state.entities;
 export const getObjectState   = (state: State) => state;
 export const getObjects    = (state: State) => state.objects;

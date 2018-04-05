@@ -71,6 +71,8 @@ export const selectObject = createSelector(selectAlbumState, fromAlbum.getObject
 export const selectDetailObjects = createSelector(selectAlbumState, fromAlbum.getDetailObjects);
 export const selectDetailObject = createSelector(selectAlbumState, fromAlbum.getDetailObject);
 export const selectNextLink = createSelector(selectAlbumState, fromAlbum.getNextLink);
+export const selectLoading = createSelector(selectAlbumState, fromAlbum.getLoading);
+
 
 
 // Object store functions

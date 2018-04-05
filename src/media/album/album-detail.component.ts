@@ -61,6 +61,7 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
 
   tooltip: any = Constants.tooltip;
   detail = true;
+  returnUrl: string;
 
   constructor(
     private store: Store<appStore.State>,
@@ -75,6 +76,8 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
   }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'albums';
+
     this.createDetailInfoComponent();
     this.detailInfo.event
       .takeUntil(this.destroySubject)
@@ -190,7 +193,7 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
         this.store.dispatch(new fromAlbum.Download(event.payload));
         break;
       case 'goBack':
-        this.router.navigate(['albums']);
+        this.router.navigate([this.returnUrl]);
         break;
     }
   }

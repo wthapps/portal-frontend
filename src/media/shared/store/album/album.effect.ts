@@ -58,6 +58,12 @@ export class AlbumEffects {
       if (payload.objectType === 'album') {
         return this.albumService.getAll({...payload.queryParams})
           .map(response => new albumActions.GetAllSuccess({...response, ...payload}));
+      } else if (payload.objectType === 'sharing' || payload.objectType === 'media') {
+        return this.mediaObjectService.getObjects(
+          payload.objectType === 'sharing' ?
+          'shared-by-me' :
+          'media', {...payload.queryParams})
+          .map(response => new albumActions.GetAllSuccess({...response, ...payload}));
       } else {
         return this.albumService.getPhotosByAlbum(payload.object.id, payload.queryParams)
           .map(response => new albumActions.GetAllSuccess({...response, ...payload}));
@@ -70,7 +76,7 @@ export class AlbumEffects {
     .map((action: albumActions.GetMore) => action.payload)
     .switchMap(payload => {
       if (payload.objectType === 'album') {
-        return this.albumService.getAll(payload)
+        return this.albumService.getAll('', payload.nextLink.replace(/^\//, ''))
           .map(response => new albumActions.AddManySuccess({...response}))
           .catch(error => of(new albumActions.GetAllFail()));
       } else {

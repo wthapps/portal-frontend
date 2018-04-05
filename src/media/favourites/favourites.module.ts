@@ -8,13 +8,17 @@ import { ZMediaFavoriteService } from './favourites.service';
 import { ZMediaFavoriteRoutingModule } from './favourites-routing.module';
 import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
+import { WToolbarModule } from '@wth/shared/components/toolbar';
+import { WGridListModule } from '@wth/shared/components/grid-list';
 
 @NgModule({
   imports: [
     ZMediaFavoriteRoutingModule,
     ZMediaSharedModule,
     SharedModule,
-    CoreModule
+    CoreModule,
+    WToolbarModule,
+    WGridListModule
   ],
   declarations: [ZMediaFavoriteListComponent, ZMediaFavoriteDetailComponent],
   exports: [ZMediaFavoriteListComponent, ZMediaFavoriteDetailComponent],

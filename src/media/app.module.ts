@@ -13,7 +13,7 @@ import { ZMediaFavoriteModule } from './favourites/favourites.module';
 import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZMediaSearchModule } from './search/search.module';
 import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
-import { ZMediaSharedByMeModule } from './shared-by-me/shared-by-me.module';
+import { ZMediaSharingModule } from './shared-by-me/sharing.module';
 import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -38,7 +38,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     ZMediaPhotoModule,
     ZMediaFavoriteModule,
     ZMediaSharedWithMeModule,
-    ZMediaSharedByMeModule,
+    ZMediaSharingModule,
     ZMediaSearchModule,
     ZMediaMyProfileModule,
 

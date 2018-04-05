@@ -113,9 +113,9 @@ export class WGridListComponent implements OnInit, OnDestroy {
         this.zoom(event.payload);
         break;
       default:
-        // if (event.action === 'getAll' && !event.payload.nextLink) {
-        //   break;
-        // }
+        if (event.action === 'getMore' && !event.payload.nextLink) {
+          break;
+        }
         if (event.action === 'deselectAll') {
           this.selectedObjects.length = 0;
         }

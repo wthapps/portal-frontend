@@ -117,26 +117,21 @@
 </w-toolbar>
 
 <w-grid-list #gridlist
-             [objects]="albums$|async"
+             [objects]="sharings$|async"
              [nextLink]="nextLink$|async"
              (event)="doEvent($event)"
              (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)">
 
   <!--no data region-->
-  <div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length">
-    <div>
-      <h2><i class="icon-album"></i></h2>
-      <h3>There is no album!</h3>
-      <h4>Try to create an album.</h4>
-      <p>
-        <button class="btn btn-outline-primary"
-                (click)="doEvent({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
-          <i class="fa fa-plus-circle"></i> Create album
-        </button>
-      </p>
-    </div>
-  </div>
+
 </w-grid-list>
+<div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length">
+  <div>
+    <h2><i class="fa fa-share-alt"></i></h2>
+    <h3>There is no sharing</h3>
+    <h4>Photos and albums can be shared to your connected contact</h4>
+  </div>
+</div>
 
 <div class="gray-light" *ngIf="loading$|async">
   <div class="text-center">

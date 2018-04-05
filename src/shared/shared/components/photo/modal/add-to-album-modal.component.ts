@@ -23,7 +23,7 @@ export class AddToAlbumModalComponent implements OnInit {
 
   dataAlbums: any = [];
   nextLink: string = null;
-  showToast: boolean = false;
+  showToast = false;
 
   selectedAlbum: any;
 
@@ -66,11 +66,8 @@ export class AddToAlbumModalComponent implements OnInit {
 
   addToAlbum(album: any, index: number) {
     this.selectedAlbum = album;
-    let body = JSON.stringify({
-      photos: _.map(this.selectedPhotos, 'id')
-    });
-    console.log(album, body);
-    this.apiBaseService.post(`media/albums/${album.id}/photos`, body).subscribe((res: any)=> {
+
+    this.apiBaseService.post(`media/albums/${album.id}/photos`, {photos: this.selectedPhotos}).subscribe((res: any)=> {
       this.dataAlbums[index].photo_number = res.data.length;
       this.modal.close();
       this.showToast = true;

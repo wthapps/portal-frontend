@@ -1,121 +1,133 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 
-import { ZMediaFavoriteService } from './favourites.service';
-import { PhotoService } from '@wth/shared/services';
+import { Store } from '@ngrx/store';
+import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { Constants } from '@wth/shared/constant';
+import * as appStore from '../shared/store';
+import * as fromAlbum from '../shared/store/album/album.action';
+import { DynamicModal } from '@media/shared/modal/dynamic-modal';
 
-declare var $: any;
-declare var _: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'z-media-favourites-list',
+  selector: 'me-favourites-list',
   templateUrl: 'favourites-list.component.html'
 })
-export class ZMediaFavoriteListComponent implements OnInit {
-  data: any = [];
-  nextLink: string = null;
-
-  selectedPhotos: any = [];
-
-  keyCtrl: boolean = false;
-  hasFavourite: boolean = false;
-  currentView: string = 'grid';
-
-  favouriteIsEmpty: boolean = false;
+export class ZMediaFavoriteListComponent extends DynamicModal implements OnInit {
+  favoriteObjects$: Observable<any>;
+  loading$: Observable<any>;
+  nextLink$: Observable<any>;
+  tooltip: any = Constants.tooltip;
 
   constructor(
-    private photoService: PhotoService,
-    private favoriteService: ZMediaFavoriteService
-  ) {}
+    private store: Store<appStore.State>,
+    protected resolver: ComponentFactoryResolver,
+    private mediaUploaderDataService: MediaUploaderDataService,
+    private router: Router
+  ) {
+    super(resolver);
+
+    this.favoriteObjects$ = this.store.select(appStore.selectObjects);
+    this.nextLink$ = this.store.select(appStore.selectNextLink);
+    this.loading$ = this.store.select(appStore.selectLoading);
+  }
 
   ngOnInit() {
-    // this.getFavorite();
-    return;
+    this.doEvent({ action: 'getAll', payload: {queryParams: {list_type: 'favorites'}} });
   }
 
-  getFavorite(body: any = {}) {
-    return;
-  }
+  doEvent(event: any) {
+    console.log('event actions:::', event.action, event.payload);
 
-  onLoadMore(event: any) {
-    return;
-  }
-
-  actionItem(event: any) {
-    //console.log(event);
     switch (event.action) {
-      case 'select':
-        this.onSelectedPhotos(event.data);
+      case 'getAll':
+        this.store.dispatch(
+          new fromAlbum.GetAll({ ...event.payload, objectType: 'media' })
+        );
         break;
-      case 'previewAll':
-        this.onPreviewAll(event.data);
-        break;
-      case 'favourite':
-        this.onOneFavourite(event.data);
+      case 'getMore':
+        this.store.dispatch(
+          new fromAlbum.GetMore({ ...event.payload, objectType: 'media' })
+        );
         break;
       case 'sort':
-        this.sort(event.data);
+        this.store.dispatch(new fromAlbum.GetAll({
+          ...event.payload, objectType: 'album'}));
         break;
-      default:
+      case 'select':
+        this.store.dispatch(new fromAlbum.Select(event.payload));
+        break;
+      case 'selectAll':
+        this.store.dispatch(new fromAlbum.SelectAll());
+        break;
+      case 'deselect':
+        this.store.dispatch(
+          new fromAlbum.Deselect({
+            selectedObjects: event.payload.selectedObjects
+          })
+        );
+        break;
+      case 'deselectAll':
+        this.store.dispatch(new fromAlbum.DeselectAll());
+        break;
+      case 'openModal':
+        this.openModal(event.payload);
+        break;
+      case 'openUploadModal':
+        this.mediaUploaderDataService.onShowUp();
+        break;
+      case 'addAlbumSuccessful':
+        this.store.dispatch(new fromAlbum.AddSuccess(event.payload));
+        break;
+      case 'favourite':
+        this.store.dispatch(new fromAlbum.Favorite(event.payload));
+        break;
+      case 'viewDetails':
+        this.viewDetails(event.payload);
+        break;
+      case 'editName':
+      case 'editInfo':
+        this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
+        break;
+      case 'deleteMedia':
+        this.store.dispatch(new fromAlbum.DeleteMany({ ...event.payload }));
         break;
     }
   }
 
-  actionToolbar(event: any) {
-    // console.log(event);
-    switch (event) {
-      case 'listView':
-        this.currentView = 'list';
-        break;
-      case 'gridView':
-        this.currentView = 'grid';
-        break;
-      default:
-        break;
-    }
-  }
-
-  // --- Action for Item --- //
-  private onSelectedPhotos(item: any) {
-    if (this.keyCtrl) {
-      if (_.some(this.selectedPhotos, ['id', item.id])) {
-        $('#photo-box-img-' + item.id).removeClass('selected');
-        _.remove(this.selectedPhotos, ['id', item.id]);
-      } else {
-        $('#photo-box-img-' + item.id).addClass('selected');
-        this.selectedPhotos.push(item);
-      }
+  viewDetails(payload: any) {
+    const object = payload.selectedObject;
+    if (object.object_type === 'album') {
+      this.router.navigate(['albums', object.id], {queryParams: {returnUrl: this.router.url}});
     } else {
-      $('.row-img .photo-box-img').removeClass('selected');
-      $('#photo-box-img-' + item.id).addClass('selected');
-      this.selectedPhotos.length = 0;
-      this.selectedPhotos.push(item);
-      console.log(this.selectedPhotos);
+      this.router.navigate([{
+          outlets: {
+            ['modal']: [
+              `photos`,
+              object.id,
+              {ids: [object.id], mode: 0}
+            ]
+          }
+        }], {preserveQueryParams: true, preserveFragment: true}
+      );
     }
-    this.hasFavourite = _.some(this.selectedPhotos, ['favorite', false]);
   }
 
-  private onPreviewAll(item: any) {}
-
-  private onOneFavourite(item: any) {
-    let findItemFavourite = _.findIndex(this.data.albums, ['id', item.id]);
-    this.photoService
-      .actionOneFavourite(item)
-      .toPromise()
-      .then((res: any) => {
-        if (res.message === 'success') {
-          this.data.albums[findItemFavourite].favorite = this.data.albums[
-            findItemFavourite
-          ].favorite
-            ? false
-            : true;
-        }
-      });
-  }
-
-  private sort(data: any) {
-    this.getFavorite(data);
-  }
-
-  // --- End Action for Item --- //
+  // private onOneFavourite(item: any) {
+  //   let findItemFavourite = _.findIndex(this.data.albums, ['id', item.id]);
+  //   this.photoService
+  //     .actionOneFavourite(item)
+  //     .toPromise()
+  //     .then((res: any) => {
+  //       if (res.message === 'success') {
+  //         this.data.albums[findItemFavourite].favorite = this.data.albums[
+  //           findItemFavourite
+  //         ].favorite
+  //           ? false
+  //           : true;
+  //       }
+  //     });
+  // }
 }
