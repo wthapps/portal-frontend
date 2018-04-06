@@ -20,17 +20,11 @@
     "updateMode": "prefetch",
     "resources": {
       "files": [
-        "/assets/**",
-        "/assets/**/**",
-        "/assets/**/**/**",
-        "promo.3ab8c4398287b918ced1.jpg"
+        "/assets/**"
       ],
       "urls": [
-        "https://apis.google.com/js/api.js",
-        "https://cdnjs.cloudflare.com/ajax/libs/lazysizes/4.0.1/lazysizes.min.js",
-        "https://printjs-4de6.kxcdn.com/print.min.css",
-        "https://cdn-apps.wthapps.com/favicons/favicon-32x32.png",
-        "https://cdn-apps.wthapps.com/favicons/favicon-16x16.png",
+        "/contacts",
+        "/settings"
       ]
     }
   }],

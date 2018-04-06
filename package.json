@@ -21,12 +21,16 @@
     "start-contact": "ng serve --app contact --port 3025 --open",
     "start-note": "ng serve --app note --port 3030 --open",
     "prettier": "prettier {src,e2e}/**/**/*.{ts,scss} --write",
+    "build-portal": "ng build --prod --app portal && http-server -p 3000 dist/portal",
+    "build-my-account": "ng build --prod --app my-account && http-server -p 3005 dist/my-account",
+    "build-note": "ng build --prod --app note && http-server -p 3030 dist/note",
+    "build-contact": "ng build --prod --app contact && http-server -p 3025 dist/contact",
     "ng build all": "build --prod --build-optimizer --aot --app portal && build --prod --build-optimizer --aot --app my-account && build --prod --build-optimizer --aot --app media && build --prod --build-optimizer --aot --app social && build --prod --build-optimizer --aot --app contact && build --prod --build-optimizer --aot --app note"
   },
   "private": true,
   "devDependencies": {
     "@angular-devkit/schematics": "0.4.5",
-    "@angular/cli": "1.6.5",
+    "@angular/cli": "^1.7.4",
     "@angular/compiler-cli": "5.2.0",
     "@angular/language-service": "5.2.0",
     "@types/jasmine": "~2.5.53",

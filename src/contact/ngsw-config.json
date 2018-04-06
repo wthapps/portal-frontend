@@ -23,7 +23,9 @@
         "/assets/**"
       ],
       "urls": [
-        "/contacts",
+        "https://apis.google.com/js/api.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/lazysizes/4.0.1/lazysizes.min.js",
+        "https://printjs-4de6.kxcdn.com/print.min.css",
         "/settings"
       ]
     }
@@ -31,8 +33,9 @@
   "dataGroups": [{
     "name": "api-freshness",
     "urls": [
-      "/contact/**",
+      "/contact/contacts",
       "/contact/groups",
+      "/contact/**",
       "/contacts",
       "/zone/social_network/notifications/get_new_notifications/count",
       "/zone/chat/notification/count"
@@ -43,7 +46,7 @@
       "timeout": "60s",
       "strategy": "freshness"
     }
-  },
+    },
     {
       "name": "api-performance",
       "urls": [

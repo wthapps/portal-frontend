@@ -4,6 +4,6 @@ interface NodeModule {
   id: string;
 }
 
-declare let _: any;
-declare let $: any;
-declare let Quill: any;
+declare var _: any;
+declare var $: any;
+declare var Quill: any;

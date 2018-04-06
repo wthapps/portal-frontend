@@ -9,20 +9,6 @@
   "display": "standalone",
   "orientation": "portrait",
 
-  "routing":{
-    "routes":{
-      "/": {
-        "match": true
-      },
-      "/login":{
-        "match": "prefix"
-      },
-      "/about":{
-        "match": "prefix"
-      }
-    }
-  },
-
   "icons": [
     {
       "src": "../assets/images/favicons/android-chrome-192x192.png",

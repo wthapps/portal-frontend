@@ -83,7 +83,7 @@ export class HomeComponent {
   gotoHashtag(link: string, prodID: string) {
     this.router
       .navigate([`${link}`], { fragment: prodID, preserveFragment: true })
-      .then(_ => this.jump(prodID));
+      .then(() => this.jump(prodID));
     return false;
   }
 

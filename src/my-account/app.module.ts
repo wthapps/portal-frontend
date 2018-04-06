@@ -28,11 +28,13 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers, metaReducers, appEffects } from './store';
 import { ConfirmationModule } from './confirmation/confirmation.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpClientModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
 
     AppRoutingModule,
     MyHomeModule,

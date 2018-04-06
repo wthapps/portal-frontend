@@ -76,6 +76,38 @@
     },
     {
       "name": "my-account",
+      "root": "src",
+      "outDir": "dist/my-account",
+      "appRoot": ".",
+      "assets": [
+        "assets"
+      ],
+      "index": "index.html",
+      "main": "my-account/main.ts",
+      "polyfills": "my-account/polyfills.ts",
+      "test": "my-account/test.ts",
+      "tsconfig": "my-account/tsconfig.app.json",
+      "testTsconfig": "my-account/tsconfig.spec.json",
+      "prefix": "",
+      "serviceWorker": true,
+      "styles": [
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "my-account/styles/my-account.scss"
+      ],
+      "scripts": [
+        "../src/shared/channels/common.js",
+        "../node_modules/moment/min/moment.min.js"
+      ],
+      "environmentSource": "./environments/environment.ts",
+      "environments": {
+        "dev": "./environments/environment.ts",
+        "prod": "./environments/environment.prod.ts",
+        "stag": "./environments/environment.stag.ts"
+      }
+    },
+    {
+      "name": "my-account2",
       "root": "src/my-account",
       "outDir": "dist/my-account",
       "assets": [
@@ -92,6 +124,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
+      "serviceWorker": true,
       "styles": [
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",
@@ -126,6 +159,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
+      "serviceWorker": true,
       "styles": [
         "../../node_modules/bootstrap/dist/css/bootstrap.css",
         "../../node_modules/font-awesome/css/font-awesome.min.css",
@@ -163,6 +197,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
+      "serviceWorker": true,
       "styles": [
         "../../node_modules/bootstrap/dist/css/bootstrap.css",
         "../../node_modules/font-awesome/css/font-awesome.min.css",
@@ -202,6 +237,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
+      "serviceWorker": true,
       "styles": [
         "../../node_modules/bootstrap/dist/css/bootstrap.css",
         "../../node_modules/font-awesome/css/font-awesome.min.css",
@@ -226,6 +262,39 @@
     },
     {
       "name": "contact",
+      "root": "src",
+      "outDir": "dist/contact",
+      "appRoot": ".",
+      "assets": [
+        "assets"
+      ],
+      "index": "index.html",
+      "main": "contact/main.ts",
+      "polyfills": "contact/polyfills.ts",
+      "test": "contact/test.ts",
+      "tsconfig": "contact/tsconfig.app.json",
+      "testTsconfig": "contact/tsconfig.spec.json",
+      "prefix": "con",
+      "serviceWorker": true,
+      "styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../node_modules/font-awesome/css/font-awesome.min.css",
+        "../node_modules/primeng/resources/themes/omega/theme.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "contact/styles/contact.scss"
+      ],
+      "scripts": [
+        "./shared/channels/common.js"
+      ],
+      "environmentSource": "./environments/environment.ts",
+      "environments": {
+        "dev": "./environments/environment.ts",
+        "prod": "./environments/environment.prod.ts",
+        "stag": "./environments/environment.stag.ts"
+      }
+    },
+    {
+      "name": "contact2",
       "root": "src/contact",
       "outDir": "dist/contact",
       "assets": [
@@ -278,6 +347,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "note",
+      "serviceWorker": true,
       "styles": [
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",

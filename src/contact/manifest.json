@@ -1,6 +1,6 @@
 {
-  "short_name": "WTH Contact",
-  "name": "WTH Contact",
+  "short_name": "WTH Contact 2",
+  "name": "WTH Contact short",
   "start_url": "/",
 
   "theme_color": "#f48c5b",
@@ -8,6 +8,20 @@
 
   "display": "standalone",
   "orientation": "portrait",
+
+  "routing":{
+    "routes":{
+      "/": {
+        "match": true
+      },
+      "/contacts":{
+        "match": "prefix"
+      },
+      "/settings":{
+        "match": "prefix"
+      }
+    }
+  },
 
   "icons": [
     {
