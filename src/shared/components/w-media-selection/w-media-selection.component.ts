@@ -241,13 +241,13 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'favourites':
-        urlAPI = `media/media?active=1&list_type=favorites`;
+        urlAPI = `media/favorites?active=1`;
         break;
       case 'favourites_detail':
         urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'shared_with_me':
-        urlAPI = `media/shared-with-me?active=1`;
+        urlAPI = `media/sharings/shared_with_me?active=1`;
         break;
       case 'shared_with_me_detail':
         urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;

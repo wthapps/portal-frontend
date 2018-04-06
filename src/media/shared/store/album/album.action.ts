@@ -38,6 +38,8 @@ export const ActionTypes = {
   DELETE_MANY_FAIL:     '[Album] Delete Many Fail',
   DOWNLOAD:             '[Album] Download',
   FAVORITE:             '[Album] Favorite',
+  GET_ALL_FAVORITE:     '[Album] Get All Favorite',
+
 };
 
 /**
@@ -75,6 +77,11 @@ export class Get implements Action {
 
 export class GetSuccess implements Action {
   type = ActionTypes.GET_SUCCESS;
+  constructor(public payload: any = null) { }
+}
+
+export class GetAllFavorite implements Action {
+  type = ActionTypes.GET_ALL_FAVORITE;
   constructor(public payload: any = null) { }
 }
 
@@ -235,4 +242,5 @@ export type Actions
   | DeleteMany
   | DeleteManySuccess
   | Download
-  | Favorite;
+  | Favorite
+  | GetAllFavorite;

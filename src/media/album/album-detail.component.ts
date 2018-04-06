@@ -95,9 +95,11 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
         this.album = res.data;
         this.store.dispatch(
           new fromAlbum.GetAll({
-            objectType: 'photo',
             detail: this.detail,
-            object: this.album
+            path: 'media/media',
+            queryParams: {
+              type: 'photo', album: this.album.id
+            }
           })
         );
         this.detailInfo.updateProperties({ object: this.album });
@@ -111,14 +113,14 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
       case 'loadMore':
         this.store.dispatch(new fromAlbum.GetMore({
           ...event.payload,
-          objectType: 'photo',
+          type: 'photo',
           detail: this.detail,
           object: this.album }));
         break;
       case 'sort':
         this.store.dispatch(new fromAlbum.GetAll({
           ...event.payload,
-          objectType: 'photo',
+          type: 'photo',
           detail: this.detail,
           object: this.album }));
         break;

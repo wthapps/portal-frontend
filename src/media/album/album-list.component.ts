@@ -66,7 +66,7 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
   }
 
   ngOnInit() {
-    this.doEvent({ action: 'getAll', payload: {} });
+    this.doEvent({action: 'getAll', payload: {path: 'media/media', queryParams: {type: 'album'}}});
   }
 
   doEvent(event: any) {
@@ -75,17 +75,17 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
     switch (event.action) {
       case 'getAll':
         this.store.dispatch(
-          new fromAlbum.GetAll({ ...event.payload, objectType: 'album' })
+          new fromAlbum.GetAll({ ...event.payload})
         );
         break;
       case 'getMore':
         this.store.dispatch(
-          new fromAlbum.GetMore({ ...event.payload, objectType: 'album' })
+          new fromAlbum.GetMore({ ...event.payload})
         );
         break;
       case 'sort':
         this.store.dispatch(new fromAlbum.GetAll({
-          ...event.payload, objectType: 'album'}));
+          ...event.payload}));
         break;
       case 'select':
         this.store.dispatch(new fromAlbum.Select(event.payload));

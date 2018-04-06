@@ -2,7 +2,7 @@
   <ul class="page-body-control-menu">
     <li>
       <button class="btn btn-outline-primary" (click)="toolbar.doAction({action: 'openUploadModal'})">
-        <i class="fa fa-cloud-upload"></i> Upload File
+        <i class="fa fa-cloud-upload"></i> Upload Photo
       </button>
     </li>
     <li>
@@ -126,12 +126,11 @@
   <div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length">
     <div>
       <h2><i class="icon-album"></i></h2>
-      <h3>There is no album!</h3>
-      <h4>Try to create an album.</h4>
+      <h3>There are no albums!</h3>
       <p>
         <button class="btn btn-outline-primary"
                 (click)="doEvent({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
-          <i class="fa fa-plus-circle"></i> Create album
+          <i class="fa fa-plus-circle"></i> Create an album
         </button>
       </p>
     </div>

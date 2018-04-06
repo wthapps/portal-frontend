@@ -55,19 +55,8 @@ export class AlbumEffects {
     .ofType(albumActions.ActionTypes.GET_ALL)
     .map((action: albumActions.GetAll) => action.payload)
     .switchMap(payload => {
-      if (payload.objectType === 'album') {
-        return this.albumService.getAll({...payload.queryParams})
+        return this.mediaObjectService.getAll(payload.queryParams, payload.path)
           .map(response => new albumActions.GetAllSuccess({...response, ...payload}));
-      } else if (payload.objectType === 'sharing' || payload.objectType === 'media') {
-        return this.mediaObjectService.getObjects(
-          payload.objectType === 'sharing' ?
-          'shared-by-me' :
-          'media', {...payload.queryParams})
-          .map(response => new albumActions.GetAllSuccess({...response, ...payload}));
-      } else {
-        return this.albumService.getPhotosByAlbum(payload.object.id, payload.queryParams)
-          .map(response => new albumActions.GetAllSuccess({...response, ...payload}));
-      }
     });
 
   @Effect()
@@ -181,6 +170,21 @@ export class AlbumEffects {
       } else {
         return null;
       }
+    });
+
+  @Effect()
+  getAllFavorite: Observable<Action> = this.actions$
+    .ofType(albumActions.ActionTypes.GET_ALL_FAVORITE)
+    .map((action: albumActions.GetAllFavorite) => action.payload)
+    .switchMap(payload => {
+      return this.mediaObjectService.getAllFavorite({...payload.queryParams})
+        .map(response => {
+            return new albumActions.GetAllSuccess({...payload, ...response});
+          },
+          (error: any) => {
+            console.log('error: ', error);
+          }
+        );
     });
 
   @Effect()

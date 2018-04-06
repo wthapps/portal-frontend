@@ -70,4 +70,7 @@ export class MediaObjectService extends BaseEntityService<any> {
     return this.api.download('media/files/download', body);
   }
 
+  getAllFavorite(queryString?: any): any {
+    return this.api.get('media/favorites', queryString).take(1); // This subscription should take 1 input ONLY
+  }
 }

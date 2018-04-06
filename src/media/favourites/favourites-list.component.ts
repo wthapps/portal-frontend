@@ -35,7 +35,7 @@ export class ZMediaFavoriteListComponent extends DynamicModal implements OnInit 
   }
 
   ngOnInit() {
-    this.doEvent({ action: 'getAll', payload: {queryParams: {list_type: 'favorites'}} });
+    this.doEvent({ action: 'getAll', payload: {path: 'media/favorites', queryParams: {}} });
   }
 
   doEvent(event: any) {
@@ -44,17 +44,17 @@ export class ZMediaFavoriteListComponent extends DynamicModal implements OnInit 
     switch (event.action) {
       case 'getAll':
         this.store.dispatch(
-          new fromAlbum.GetAll({ ...event.payload, objectType: 'media' })
+          new fromAlbum.GetAll({ ...event.payload})
         );
         break;
       case 'getMore':
         this.store.dispatch(
-          new fromAlbum.GetMore({ ...event.payload, objectType: 'media' })
+          new fromAlbum.GetMore({ ...event.payload})
         );
         break;
       case 'sort':
         this.store.dispatch(new fromAlbum.GetAll({
-          ...event.payload, objectType: 'album'}));
+          ...event.payload}));
         break;
       case 'select':
         this.store.dispatch(new fromAlbum.Select(event.payload));

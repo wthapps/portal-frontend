@@ -131,12 +131,12 @@ export class SubscriptionEditModalComponent implements OnInit, AfterViewInit {
         editingAmount = parseFloat(this.subscription.amount) - this.editing.accountCount * this.editing.accountPrice;
       }
       this.wthConfirmService.confirm({
-        message: `You are about Update Subscription. <br>
-        This action will change your subscription and you will be charged $${editingAmount}/month <br>
-        Are you sure you want to update your current subscription`,
+        message: `You are about Update subscription. <br>
+        This action will change your subscription and you will be charged $${editingAmount}/month. <br>
+        Are you sure you want to update your current subscription.`,
         header: 'Update subscription' ,
         rejectLabel: 'Cancel',
-        acceptLabel: 'Yes, Update',
+        acceptLabel: 'Update',
         accept: () => {
           this.commonEventService.broadcast({
             channel: 'my_account',

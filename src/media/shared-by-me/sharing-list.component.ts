@@ -7,10 +7,20 @@ import * as appStore from '../shared/store';
 import * as fromAlbum from '../shared/store/album/album.action';
 import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { BaseObjectEditNameModalComponent } from '@shared/shared/components/photo/modal/base-object-edit-name-modal.component';
+import { AlbumCreateModalComponent } from '@media/shared/modal';
 
 @Component({
   selector: 'me-sharings',
-  templateUrl: 'sharing-list.component.html'
+  templateUrl: 'sharing-list.component.html',
+  entryComponents: [
+    AlbumCreateModalComponent,
+    BaseObjectEditNameModalComponent,
+    SharingModalComponent,
+    TaggingModalComponent
+  ]
 })
 export class ZMediaSharingListComponent extends DynamicModal implements OnInit {
   sharings$: Observable<any>;
@@ -32,7 +42,7 @@ export class ZMediaSharingListComponent extends DynamicModal implements OnInit {
   }
 
   ngOnInit() {
-    this.doEvent({ action: 'getAll', payload: {} });
+    this.doEvent({ action: 'getAll', payload: {path: 'media/sharings', queryParams: {}} });
   }
 
   doEvent(event: any) {
@@ -41,12 +51,12 @@ export class ZMediaSharingListComponent extends DynamicModal implements OnInit {
     switch (event.action) {
       case 'getAll':
         this.store.dispatch(
-          new fromAlbum.GetAll({ ...event.payload, objectType: 'sharing' })
+          new fromAlbum.GetAll({ ...event.payload})
         );
         break;
       case 'getMore':
         this.store.dispatch(
-          new fromAlbum.GetMore({ ...event.payload, objectType: 'sharing' })
+          new fromAlbum.GetMore({ ...event.payload})
         );
         break;
       case 'sort':
