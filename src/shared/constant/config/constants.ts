@@ -143,7 +143,7 @@ export class ConstantsBase {
     {name: 'My Page', link: '/profile', icon: 'fa fa-user-circle'},
     {name: '', link: '', icon: ''},
     {name: 'Settings', link: '/settings', icon: 'fa fa-cog'},
-    {name: 'Search', link: '/search', icon: 'fa fa-search'}
+    {name: '', link: '/search', icon: 'fa fa-search'}
   ];
 
   pictureMenuActions:  any = {

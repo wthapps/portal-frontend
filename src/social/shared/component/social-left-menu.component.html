@@ -40,14 +40,19 @@
 </div>
 
 <div class="menuleft-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-  <a draggable="false" [routerLink]="[communitiesMenuItem.link]">
+  <a draggable="false" [routerLink]="[communitiesMenuItem.link]" href="#">
     <i class="{{ communitiesMenuItem.icon }}"></i> {{ communitiesMenuItem.name }}
   </a>
 </div>
 
 <ng-container *ngFor="let social of socialMenu">
   <div *ngIf="social.name != ''" class="menuleft-item" [routerLinkActive]="['active']">
-    <a href="javascript:;" *ngIf="social.link !== '/profile'" [routerLink]="[social.link]"
+    <a [routerLink]="['/profile', uuid]" href="javascript:;" *ngIf="social.link == '/profile'"
+       (click)="onSubMenu('/profile/' + uuid)">
+      <i class="{{ social.icon }}"></i> {{ social.name }}
+    </a>
+
+    <a [routerLink]="[social.link]" href="javascript:;" *ngIf="social.link !== '/profile'"
        (click)="onSubMenu(social.link)">
       <i class="{{ social.icon }}"></i> {{ social.name }}
     </a>
