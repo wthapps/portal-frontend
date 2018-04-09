@@ -16,7 +16,6 @@ import { AlbumService } from '../shared/services/album.service';
 import * as fromAlbum from '../shared/store/album/album.action';
 import * as appStore from '../shared/store';
 import { Constants } from '@wth/shared/constant';
-import { MediaObjectService } from '@media/shared/container/media-object.service';
 import { BaseObjectEditNameModalComponent } from '@shared/shared/components/photo/modal/base-object-edit-name-modal.component';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';

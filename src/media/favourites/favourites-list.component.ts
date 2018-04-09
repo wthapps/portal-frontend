@@ -110,24 +110,8 @@ export class ZMediaFavoriteListComponent extends DynamicModal implements OnInit 
               {ids: [object.id], mode: 0}
             ]
           }
-        }], {preserveQueryParams: true, preserveFragment: true}
+        }], {queryParamsHandling: 'preserve', preserveFragment: true}
       );
     }
   }
-
-  // private onOneFavourite(item: any) {
-  //   let findItemFavourite = _.findIndex(this.data.albums, ['id', item.id]);
-  //   this.photoService
-  //     .actionOneFavourite(item)
-  //     .toPromise()
-  //     .then((res: any) => {
-  //       if (res.message === 'success') {
-  //         this.data.albums[findItemFavourite].favorite = this.data.albums[
-  //           findItemFavourite
-  //         ].favorite
-  //           ? false
-  //           : true;
-  //       }
-  //     });
-  // }
 }

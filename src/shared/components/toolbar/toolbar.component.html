@@ -1,8 +1,25 @@
 <div class="page-body-control" [ngClass]="{'sub-object-actions' : (selectedObjects.length > 0 && object)}">
 
   <!--Left actions-->
+  <!--default left actions-->
+  <ng-template #leftActions>
+    <ul class="page-body-control-menu">
+      <li>
+        <button class="btn btn-outline-primary" (click)="doAction({action: 'openUploadModal'})">
+          <i class="fa fa-cloud-upload"></i> Upload Photo
+        </button>
+      </li>
+      <li>
+        <button class="btn btn-outline-primary"
+                (click)="doAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
+          <i class="fa fa-plus-circle"></i> Create Album
+        </button>
+      </li>
+    </ul>
+  </ng-template>
+
   <div class="page-body-control-nav">
-    <ng-container *ngTemplateOutlet="leftActionsTemplate"></ng-container>
+    <ng-container *ngTemplateOutlet="leftActionsTemplate? leftActionsTemplate : leftActions"></ng-container>
   </div>
 
   <!--object's main actions-->

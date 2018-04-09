@@ -11,6 +11,7 @@ import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { BaseObjectEditNameModalComponent } from '@shared/shared/components/photo/modal/base-object-edit-name-modal.component';
 import { AlbumCreateModalComponent } from '@media/shared/modal';
+import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 @Component({
   selector: 'me-sharings',
@@ -32,7 +33,8 @@ export class ZMediaSharingListComponent extends DynamicModal implements OnInit {
     private store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
     private mediaUploaderDataService: MediaUploaderDataService,
-    private router: Router
+    private router: Router,
+    private confirmService: WthConfirmService
   ) {
     super(resolver);
 
@@ -99,7 +101,13 @@ export class ZMediaSharingListComponent extends DynamicModal implements OnInit {
         this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
         break;
       case 'deleteMedia':
-        this.store.dispatch(new fromAlbum.DeleteMany({ ...event.payload }));
+        this.confirmService.confirm({
+          header: 'Delete sharing',
+          acceptLabel: 'Delete',
+          message: `Are you sure to delete ${event.payload.selectedObjects.length} sharing(s)`,
+          accept: () => {
+            this.store.dispatch(new fromAlbum.DeleteMany({...event.payload}));
+          }});
         break;
     }
   }

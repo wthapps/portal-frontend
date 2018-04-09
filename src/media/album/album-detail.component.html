@@ -100,7 +100,7 @@
             <a draggable="false" href="javascript:void(0);"
                (click)="doEvent({
                action: 'openModal',
-               payload: {modalName:'deleteModal', selectedObjects: toolbar.selectedObjects}})">
+               payload: {modalName:'deleteModal', selectedObjects: [toolbar.object]}})">
               <i class="fa fa-trash-o"></i> Delete Album
             </a>
           </li>

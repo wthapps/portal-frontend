@@ -108,7 +108,7 @@ export class ZMediaSharedWithMeComponent extends DynamicModal implements OnInit 
               {ids: [object.id], mode: 0}
             ]
           }
-        }], {preserveQueryParams: true, preserveFragment: true}
+        }], {queryParamsHandling: 'preserve', preserveFragment: true}
       );
     }
   }

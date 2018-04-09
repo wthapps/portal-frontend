@@ -69,9 +69,8 @@
 
   <!--sharing-->
     <div *ngIf="object.object_type == 'sharing'" class="photo-box-figure" (click)="select(object)">
-      <div class="photo-box-input">
-        <i class="fa fa-check"
-           (click)="onEvent({action: object.selected? 'deselect': 'select', payload: {selectedObjects: object, checkbox: true  }}); $event.stopPropagation();"></i>
+      <div class="photo-box-input" (click)="toggleSelection(object, $event)">
+        <i class="fa fa-check"></i>
       </div>
       <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
         <div class="photo-box-figure-in">
