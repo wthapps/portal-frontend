@@ -5,8 +5,8 @@ import {
 import * as fromNote from './../note';
 import * as fromFolder from './../folder';
 import * as context from './../context';
-import { noteConstants, NoteConstants } from "note/shared/config/constants";
-import { AppState } from "note/shared/reducers/state";
+import { noteConstants, NoteConstants } from "@notes/shared/config/constants";
+import { AppState } from "@notes/shared/reducers/state";
 
 export const getNotesState = (state: AppState) => state.notes;
 export const getFoldersState = (state: AppState) => state.folders;

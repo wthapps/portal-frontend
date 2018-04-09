@@ -12,7 +12,7 @@ import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import * as listReducer from '../shared/reducers/features/list-mixed-entities';
-import { noteConstants } from 'note/shared/config/constants';
+import { noteConstants } from '@notes/shared/config/constants';
 
 @Component({
   selector: 'z-note-trash',

@@ -11,7 +11,9 @@ import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
+import { of } from 'rxjs/observable/of';
 import {
   takeUntil,
   switchMap,
@@ -38,8 +40,7 @@ import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
 import { CommonEventService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
-import { of } from 'rxjs/observable/of';
-import { noteConstants } from 'note/shared/config/constants';
+import { noteConstants } from '@notes/shared/config/constants';
 import { Counter } from '@wth/core/quill/modules/counter';
 import { CustomImage } from '@wth/core/quill/modules/custom-image';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
@@ -50,7 +51,6 @@ import DividerBlot from '@wth/core/quill/blots/divider';
 import { Font, Size } from '@wth/core/quill/blots/font-size';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
-import { Subscription } from 'rxjs';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;

@@ -16,7 +16,7 @@ import { Note } from '@shared/shared/models/note.model';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { NoteBreadcrumb } from '../shared/breadcrumb/breadcrumb';
 import { UrlService } from '@shared/services';
-import { noteConstants, NoteConstants } from 'note/shared/config/constants';
+import { noteConstants, NoteConstants } from '@notes/shared/config/constants';
 
 declare var _: any;
 

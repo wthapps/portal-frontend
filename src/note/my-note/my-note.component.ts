@@ -14,7 +14,7 @@ import { Folder } from '../shared/reducers/folder';
 import { Note } from '@shared/shared/models/note.model';
 import { AppStore } from '../shared/app-store';
 import { MixedEntityAction } from '../shared/mixed-enity/mixed-entity.action';
-import { noteConstants, NoteConstants } from 'note/shared/config/constants';
+import { noteConstants, NoteConstants } from '@notes/shared/config/constants';
 import { UrlService } from '@shared/services';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';

@@ -1,5 +1,5 @@
 import { ActionReducer, Action } from '@ngrx/store';
-import { NoteContext } from "note/shared/models/context.model";
+import { NoteContext } from "@notes/shared/models/context.model";
 
 export const SET_CONTEXT = '[NOTE] SET_CONTEXT';
 export const SET_CONTEXT_BY_FOLDER_PATHS = '[NOTE] SET_CONTEXT_BY_FOLDER_PATHS';

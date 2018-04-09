@@ -12,7 +12,7 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
 import { Subject } from "rxjs";
 import { UrlService } from "@shared/services";
-import { NoteConstants, noteConstants } from "note/shared/config/constants";
+import { NoteConstants, noteConstants } from "@notes/shared/config/constants";
 import { Router } from '@angular/router';
 
 declare var _: any;

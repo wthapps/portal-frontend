@@ -29,7 +29,7 @@ import * as note from './shared/actions/note';
 import * as context from './shared/reducers/context';
 import * as progressContext from './shared/reducers/progress-context';
 import { MixedEntityService } from './shared/mixed-enity/mixed-entity.service';
-import { noteConstants } from 'note/shared/config/constants';
+import { noteConstants } from '@notes/shared/config/constants';
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { withLatestFrom, filter, takeUntil } from 'rxjs/operators';

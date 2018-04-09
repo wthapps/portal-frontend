@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import * as note from '../shared/actions/note';
 
 import * as context from '../shared/reducers/context';
-import { noteConstants, NoteConstants } from 'note/shared/config/constants';
+import { noteConstants, NoteConstants } from '@notes/shared/config/constants';
 
 @Component({
   selector: 'z-note-recent',

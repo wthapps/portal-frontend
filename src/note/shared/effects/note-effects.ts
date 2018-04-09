@@ -14,7 +14,7 @@ import * as context from '../reducers/context';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from "@shared/shared/components/confirmation/wth-confirm.service";
 import { Router } from "@angular/router";
-import { noteConstants } from "note/shared/config/constants";
+import { noteConstants } from "@notes/shared/config/constants";
 
 
 @Injectable()

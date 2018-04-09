@@ -14,7 +14,7 @@ import { Note } from '@shared/shared/models/note.model';
 import { Folder } from '../shared/reducers/folder';
 import { CommonEventService } from '@shared/services';
 import * as context from '../shared/reducers/context';
-import { noteConstants, NoteConstants } from 'note/shared/config/constants';
+import { noteConstants, NoteConstants } from '@notes/shared/config/constants';
 
 @Component({
   selector: 'z-note-shared-by-me',

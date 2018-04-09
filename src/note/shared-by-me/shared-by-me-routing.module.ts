@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { ZNoteFoldersComponent } from 'note/folders/folders.component';
+import { ZNoteFoldersComponent } from '@notes/folders/folders.component';
 import { AuthGuard } from '@shared/services';
-import { ZNoteSharedByMeComponent } from 'note/shared-by-me/shared-by-me.component';
+import { ZNoteSharedByMeComponent } from '@notes/shared-by-me/shared-by-me.component';
 
 @NgModule({
   imports: [
