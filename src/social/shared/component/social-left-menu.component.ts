@@ -68,7 +68,8 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
   reloadHome() {
     let time = new Date().getTime();
     this.store.dispatch({type: POSTS_COUNT_LOAD_DONE, payload: 0});
-    this.router.navigate(['/home'], {queryParams: {r: time}, relativeTo: this.route});
+    this.router.navigate(['/home'], {queryParams: {r: time}, relativeTo: this.route})
+      .then(() => this.clearOutlets());
   }
 
   countNewPostsEvery1min() {

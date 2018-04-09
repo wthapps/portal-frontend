@@ -1,8 +1,7 @@
-.photo-box-img img {
-  user-drag: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+
+.page-body-content {
+  display: none;
+  &.post-detail-page{
+    display: block;
+  }
 }

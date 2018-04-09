@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -13,9 +13,9 @@ import { PostService } from './shared/post.service';
 
 
 @Component({
-
   selector: 'so-post-detail',
-  templateUrl: 'post-detail.component.html'
+  templateUrl: 'post-detail.component.html',
+  styleUrls: ['post-detail.component.scss']
 })
 
 export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {

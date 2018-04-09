@@ -29,6 +29,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('introduction') introduction: IntroductionModalComponent;
 
   routerSubscription: Subscription;
+  currentRoute: string = 'primary';
+  primaryFirstLoad: boolean = false;
+  readonly PRIMARY: string = 'primary';
 
   // confirmInfo$: Observable<ConfirmInfo>;
 
@@ -49,6 +52,21 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
       this.introduction.open();
     }
+  }
+
+  onActivate(event) {
+    if(!event || !event.route) {
+      this.primaryFirstLoad ? this.router.navigate([{ outlets: { modal: null, detail: null } }]) : this.primaryFirstLoad = true;
+      return;
+    }
+    this.currentRoute = event.route.outlet;
+
+    if(this.currentRoute === this.PRIMARY)
+      this.router.navigate([{ outlets: { modal: null, detail: null } }]);
+  }
+
+  onDeactivate(event) {
+    this.currentRoute = this.PRIMARY;
   }
 
   ngOnDestroy() {

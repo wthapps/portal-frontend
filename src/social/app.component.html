@@ -10,10 +10,13 @@
         </z-shared-menu>
       </aside>
     </div>
-    <div class="main-page-body">
-      <router-outlet></router-outlet>
-      <router-outlet name="modal"></router-outlet>
-      <router-outlet name="detail"></router-outlet>
+    <div class="main-page-body" [ngClass]="{'main-page-detail': currentRoute === 'detail'}">
+      <router-outlet name="modal" (activate)='onActivate($event)'
+                     (deactivate)='onDeactivate($event)'></router-outlet>
+      <router-outlet name="detail" (activate)='onActivate($event)'
+                     (deactivate)='onDeactivate($event)'></router-outlet>
+      <router-outlet (activate)='onActivate($event)'
+                     (deactivate)='onDeactivate($event)'></router-outlet>
     </div>
   </main>
   <wth-toast></wth-toast>
