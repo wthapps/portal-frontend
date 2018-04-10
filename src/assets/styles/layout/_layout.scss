@@ -52,9 +52,10 @@
   .page-body-control {
     height: $page-body-control-height;
     background-color: #ffffff;
-    padding: 15px 30px;
+    padding: 15px 10px;
     position: fixed;
     right: 0;
+    left: 0;
     top: $header-height;
     display: block;
     z-index: 30;
@@ -63,6 +64,7 @@
 
     @media (min-width: $screen-md-min) {
       left: $main-page-left;
+      padding: 15px 30px;
     }
 
     & + .page-body-content {

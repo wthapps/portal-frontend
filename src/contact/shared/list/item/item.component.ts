@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ZContactSharedItemComponent implements OnInit {
   @Input() data: any;
-  @HostBinding('class') cssClass:string = 'contact-listbox-row';
+  @HostBinding('class') cssClass:string = 'component-listbox-body';
 
   // selected: boolean = false;
 
@@ -39,10 +39,10 @@ export class ZContactSharedItemComponent implements OnInit {
     this.data.selected = !this.data.selected;
     if (this.data.selected) {
       this.contactService.addItemSelectedObjects(this.data);
-      this.cssClass = 'contact-listbox-row active';
+      this.cssClass = 'component-listbox-body active';
     } else {
       this.contactService.removeItemSelectedObjects(this.data);
-      this.cssClass = 'contact-listbox-row';
+      this.cssClass = 'component-listbox-body';
     }
   }
 

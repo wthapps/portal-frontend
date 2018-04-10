@@ -1,4 +1,9 @@
 <nav class="header-nav" [ngClass]="{'header-nav-xs-show-search': showSearchMobile}" role="navigation">
+  <div class="header-nav-mobile">
+    <button (click)="onShowSideBar($event)" class="btn btn-default" type="button">
+      <i class="fa fa-bars"></i>
+    </button>
+  </div>
   <ng-content></ng-content>
   <div class="header-nav-right">
     <ng-template [ngIf]="!loggedIn">

@@ -1,3 +1,7 @@
+<div class="menuleft-logo">
+  <img src="/assets/images_new/logo-contact.png" alt="">
+</div>
+
 <div class="menuleft-item" [ngClass]="{'active' : ( currentGroup === 'all contacts')}">
   <a href="javascript:;" [routerLink]="['contacts', {group: 'all contacts'}]"
      (click)="doEvent({action: 'contacts', event: $event})">

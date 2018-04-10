@@ -8,10 +8,10 @@ import * as listReducer from '../reducers/features/list-mixed-entities';
 import * as context from '../reducers/context';
 import { Observable } from 'rxjs/Observable';
 import { Folder } from '../reducers/folder';
-import { noteConstants, NoteConstants } from "../config/constants";
-import { Note } from "@shared/shared/models/note.model";
-import { ActivatedRoute, Router } from "@angular/router";
-import { WthConfirmService } from "@shared/shared/components/confirmation/wth-confirm.service";
+import { noteConstants, NoteConstants } from '../config/constants';
+import { Note } from '@shared/shared/models/note.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 
 declare var _: any;
 
@@ -34,11 +34,13 @@ export class ZNoteContainerComponent implements OnInit {
   currentFolder$: Observable<any>;
   noteConstants: NoteConstants = noteConstants;
 
-  constructor(private noteService: ZNoteService,
+  constructor(
+    private noteService: ZNoteService,
     private route: ActivatedRoute,
     private router: Router,
     private wthConfirmService: WthConfirmService,
-    private store: Store<any>) {
+    private store: Store<any>
+  ) {
     this.noteItems$ = this.store.select(listReducer.getNotes);
     this.folderItems$ = this.store.select(listReducer.getFolders);
     this.allItems$ = this.store.select(listReducer.getAllItems);
@@ -53,22 +55,23 @@ export class ZNoteContainerComponent implements OnInit {
     this.route.queryParams.subscribe((params: any) => {
       if (params.error == 'file_does_not_exist') {
         this.wthConfirmService.confirm({
-          message: 'The file you are looking for was deleted or you do not have permission to access',
+          message:
+            'The file you are looking for was deleted or you do not have permission to access',
           header: 'File not found',
           rejectLabel: null,
           accept: () => {
-            this.router.navigate(["my-note"]);
+            this.router.navigate(['my-note']);
           },
           reject: () => {
-            this.router.navigate(["my-note"]);
+            this.router.navigate(['my-note']);
           }
         });
       }
-    })
+    });
   }
 
   onNewNote() {
-    this.noteService.modalEvent({action: 'note:open_note_add_modal'});
+    this.noteService.modalEvent({ action: 'note:open_note_add_modal' });
   }
 
   onFolder() {

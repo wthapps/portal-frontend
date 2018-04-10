@@ -5,7 +5,8 @@ import {
   ViewContainerRef,
   OnInit,
   OnDestroy,
-  AfterViewInit
+  AfterViewInit,
+  ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -38,7 +39,8 @@ import { IntroductionModalComponent } from '@wth/shared/modals/introduction/intr
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   entryComponents: [GroupEditModalComponent, ZContactSharedSettingsComponent]
 })
 export class AppComponent

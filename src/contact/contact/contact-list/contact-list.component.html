@@ -25,9 +25,9 @@
   <div class="page-body-content-in" *ngIf="loaded && contacts.length==0">
     There is no contact in your contact book
   </div>
-  <div class="page-body-content-in" *ngIf="contacts.length>=1">
+  <ng-container *ngIf="contacts.length>=1">
     <z-contact-shared-list [data]="contacts"></z-contact-shared-list>
-  </div>
+  </ng-container>
 </div>
 
 

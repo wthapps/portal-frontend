@@ -1,215 +1,90 @@
 @import '../../../shared/scss/global';
 
-$contact-listbox-input: 0%;
-$contact-listbox-name: 35%;
-$contact-listbox-email: 20%;
-$contact-listbox-phone: 20%;
-$contact-listbox-action: 100%;
-$color-table-row: #F9F9F9;
+$component-name: auto;
+$component-owner: 200px;
+$component-email: 200px;
+$component-phone: 200px;
+$component-action: 320px;
 
-:host {
-  display: block;
+.component-listbox-list {
+  .component-listbox-name {
+    width: $component-name;
+  }
 
-  & /deep/ .contact-listbox-wrap {
-    display: table;
-    border-collapse: collapse;
-    .contact-listbox-row {
-      display: table-row;
-      border-bottom: 1px solid $line;
-      > div {
-        display: table-cell;
-        vertical-align: middle;
-        padding: 9px 10px;
-      }
-      .actions-bar {
-        display: table-cell;
-      }
+  .component-listbox-owner {
+    width: $component-owner;
+  }
 
-      .contact-listbox-block-link {
-        color: inherit;
-        text-decoration: none;
-        &:after {
-          content: '';
-          display: block;
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          color: $text-color;
-        }
-      }
+  .component-listbox-email {
+    width: $component-email;
+  }
 
-      &.contact-listbox-header {
-        font-weight: bold;
-      }
+  .component-listbox-phone {
+    width: $component-email;
+  }
 
+  .component-listbox-action {
+    width: 110px;
+    @media (min-width: $screen-sm-min) {
+      width: $component-action;
     }
-    .contact-listbox-row {
-      &.active, &:hover {
-        background-color: $color-table-row;
-      }
+  }
+}
 
+.component-listbox-action {
+  @include clearfix;
+  .page-body-control-menu {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    @include clearfix;
+    text-align: right;
+    > li {
+      display: inline-block;
     }
+  }
+}
 
-    .contact-listbox-input {
-      width: $contact-listbox-input;
-      text-align: left;
-      .fa-check {
-        border: 1px solid $text-color;
-        -webkit-border-radius: 2px;
-        -moz-border-radius: 2px;
-        border-radius: 2px;
-        cursor: pointer;
-        &:before {
-          visibility: hidden;
-        }
+.component-listbox-list {
+  .component-listbox-name {
+    .contact-listbox-block-link {
+      @include flexbox;
+      @include align-items(center);
+      .media-user {
+        margin-right: 5px;
       }
-
-      &.active {
-        .fa-check {
-          color: $color-inverse;
-          &:before {
-            visibility: visible;
-          }
-        }
+      span {
+        @include flex(1);
       }
     }
-    .contact-listbox-name {
-      width: $contact-listbox-name;
-      min-width: 200px;
-      position: relative;
-      figure {
-        float: left;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-      span.name {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        position: absolute;
-        left: 54px;
-        right: 0;
-        line-height: 34px;
-      }
+  }
+  .component-listbox-description {
+    display: none !important;
+  }
+  .component-listbox-date {
+    display: none !important;
+  }
+
+  @media (max-width: $screen-xs-max) {
+    .component-listbox-email,
+    .component-listbox-phone {
+      display: none !important;
     }
-    .contact-listbox-email {
-      width: $contact-listbox-email;
-      min-width: 160px;
+    .component-listbox-input {
+      width: 40px;
     }
-    .contact-listbox-phone {
-      width: $contact-listbox-phone;
-      min-width: 160px;
-    }
-    .contact-listbox-action {
-      width: $contact-listbox-action;
-      min-width: 310px;
-      display: table-cell;
-      vertical-align: middle;
-      padding: 9px 10px;
-      text-align: right;
-      .btn-outline-default{
-        min-width: 85px;
-      }
-      ul.page-body-control-menu {
-        margin: 0;
-        padding: 0;
-        list-style-type: none;
-        float: right;
-        > li {
-          float: left;
+    .page-body-control-menu {
+      > li:not(.dropdown) {
+        display: none;
+        &:nth-child(2) {
+          display: inline-block;
         }
       }
     }
+  }
 
-    .media-user {
-      overflow: visible;
-      position: relative;
-      $media-user-status-w: 18px;
-      $media-user-status-pos: $media-user-status-w - 3px;
-      .media-user-status {
-        position: absolute;
-        bottom: -3px;
-        left: 20px;
-        width: $media-user-status-w;
-        height: $media-user-status-w;
-        border-radius: 50%;
-        &.online {
-          background-color: $user-online;
-          border: 3px solid #FFF;
-        }
-        &.offline {
-          background-color: $user-offline;
-          border: 3px solid #FFF;
-        }
-        &.blacklist {
-          color: red;
-          background-color: #FFF;
-          border: 3px solid #FFF;
-        }
-      }
-
-      .media-user-name {
-        position: absolute;
-        right: 0;
-        top: 0;
-        line-height: 1;
-        p {
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-          white-space: nowrap;
-          -ms-text-overflow: ellipsis;
-          text-overflow: ellipsis;
-        }
-        small {
-          @include opacity(0.6);
-        }
-      }
-      .avatar-xs {
-        & + .media-user-name {
-          @include center(false, true);
-          left: $avatar-xs + 10px;
-        }
-        & ~ .media-user-status {
-          left: $avatar-xs - $media-user-status-pos;
-        }
-      }
-      .avatar-xsm {
-        & + .media-user-name {
-          left: $avatar-xsm + 10px;
-        }
-        & ~ .media-user-status {
-          left: $avatar-xsm - $media-user-status-pos;
-        }
-      }
-      .avatar-sm {
-        & + .media-user-name {
-          left: $avatar-sm + 10px;
-        }
-        & ~ .media-user-status {
-          left: $avatar-sm - $media-user-status-pos;
-        }
-      }
-      .avatar-md {
-        & + .media-user-name {
-          left: $avatar-md + 10px;
-        }
-        & ~ .media-user-status {
-          left: $avatar-md - $media-user-status-pos;
-        }
-      }
-      .avatar-lg {
-        & + .media-user-name {
-          left: $avatar-lg + 10px;
-        }
-        & ~ .media-user-status {
-          left: $avatar-lg - $media-user-status-pos;
-        }
-      }
-    }
+  .media-user {
+    display: inline-block;
+    vertical-align: middle;
   }
 }

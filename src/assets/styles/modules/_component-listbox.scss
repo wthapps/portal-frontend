@@ -7,8 +7,12 @@
     display: table-header-group;
     .component-listbox-row {
       > div {
-        padding-top: 20px;
-        padding-bottom: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        @media (min-width: $screen-sm-min) {
+          padding-top: 20px;
+          padding-bottom: 20px;
+        }
       }
     }
   }
@@ -24,10 +28,18 @@
       padding: 9px 10px;
       min-height: 54px;
       &:first-child, .first {
-        padding-left: 30px;
+        padding-left: 10px;
       }
       &:last-child, .last {
-        padding-right: 30px;
+        padding-right: 10px;
+      }
+      @media (min-width: $screen-sm-min) {
+        &:first-child, .first {
+          padding-left: 30px;
+        }
+        &:last-child, .last {
+          padding-right: 30px;
+        }
       }
     }
     &.active, &:hover {

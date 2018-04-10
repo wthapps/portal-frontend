@@ -1,5 +1,5 @@
 <ng-container *ngIf="data">
-  <z-contact-shared-toolbar>
+  <z-contact-shared-toolbar [currentPage]="'detail'" [hasBack]="true">
     <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
       <z-contact-shared-actions-bar
         [showViewDetail]="false"

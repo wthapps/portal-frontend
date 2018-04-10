@@ -1,15 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
 import { ZContactService } from '../services/contact.service';
 import { Constants } from '../../../shared/constant/config/constants';
 
-
 @Component({
   selector: 'z-contact-shared-list',
   templateUrl: 'list.component.html',
-  styleUrls: ['list.component.scss']
+  styleUrls: ['list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ZContactSharedListComponent {
   @Input() data: any;
@@ -34,7 +34,6 @@ export class ZContactSharedListComponent {
     }
     // this.data = _.orderBy(this.data, [this.currentSort], [(this.descending ? 'desc' : 'asc')]);
 
-
     return false;
   }
 
@@ -46,7 +45,7 @@ export class ZContactSharedListComponent {
       this.contactService.sendListToItem(true);
       this.contactService.selectedObjects.length = 0;
 
-      _.map(this.data, (v: any)=> {
+      _.map(this.data, (v: any) => {
         this.contactService.selectedObjects.push(v);
       });
     }
@@ -55,5 +54,4 @@ export class ZContactSharedListComponent {
   trackItem(index: any, item: any) {
     return item ? item.id : undefined;
   }
-
 }

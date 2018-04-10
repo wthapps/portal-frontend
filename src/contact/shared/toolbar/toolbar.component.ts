@@ -21,11 +21,12 @@ export class ZContactSharedToolbarComponent implements OnInit {
 
   @Input() pageTitle: string = ''; // TODO will be removed
   @Input() hasBack: boolean = false;
+  @Input() currentPage: string;
   selectedContact: string;
 
   tooltip: any = Constants.tooltip;
 
-  constructor(private contactService: ZContactService, private commonEventService: CommonEventService) {
+  constructor(public contactService: ZContactService, private commonEventService: CommonEventService) {
   }
 
   ngOnInit() {
