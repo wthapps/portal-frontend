@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { takeUntil, filter, map, tap, mergeMap } from 'rxjs/operators';
+import { takeUntil, filter, map, tap } from 'rxjs/operators';
 
 
 import { SocialService } from '../../services/social.service';
@@ -260,14 +260,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.post.photos = _.uniqBy(_.flatten([this.post.photos, items]), 'id');
     });
 
-    // this.mediaSelectionService.uploadingMedias$.pipe(
-    //   takeUntil(close$),
-    //   map(([file, dataUrl]) => file)
-    // ).subscribe((item: any[]) => {
-    //   console.debug('type of: ', typeof item);
-    //   this.uploadOne(item);
-    // });
-
     this.mediaSelectionService.uploadingMedias$.pipe(
         takeUntil(close$),
         map(([file, dataUrl]) => file),
@@ -287,18 +279,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.modal.close(null).then();
     this.mediaSelectionService.close();
   }
-
-  // uploadOne(file: any) {
-  //   // Filter valid image type
-  //   let files = [file];
-  //   let valid_images = this.photoUploadService.getValidImages(files);
-  //
-  //   _.forEach(valid_images, (file: any) => {
-  //     this.files.push(file);
-  //   });
-  //   this.modal.open();
-  //   this.uploadFiles(files);
-  // }
 
   customPrivacy(type: string, event: any) {
     event.preventDefault();

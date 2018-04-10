@@ -81,17 +81,6 @@ export class PostListComponent implements OnInit, OnDestroy {
           this.stopLoading();
         }
     }, (err: any) => this.stopLoading());
-
-    // Subscribe photo select events
-    // this.photoSelectDataService.init('');
-
-    // let closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.destroySubject);
-    //
-    // this.photoSelectDataService.nextObs$
-    //   .takeUntil(closeObs$).subscribe(
-    //   (photos: any) => {
-    //     this.onSelectPhotoComment(photos);
-    //   });
   }
 
   startLoading() {

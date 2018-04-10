@@ -16,10 +16,9 @@ import { User } from '@wth/shared/shared/models';
 import { AuthService, UserService } from '@shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { Constants } from '@wth/shared/constant';
-import { SHORTCUT_LOAD, SHORTCUT_ADD_MULTI_DONE, SHORTCUT_ACCESSED } from '../../shared/reducers/index';
+import { SHORTCUT_ADD_MULTI_DONE } from '../../shared/reducers/index';
 import { Store } from '@ngrx/store';
 
 declare let _: any;
