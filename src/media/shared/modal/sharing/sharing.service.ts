@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService } from '../../../../../services/apibase.service';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
+import { BaseEntityService } from '@wth/shared/services';
 
 @Injectable()
-export class ZMediaSharingService {
-  constructor(private apiBaseService: ApiBaseService) {
+export class SharingService extends BaseEntityService<any> {
+  constructor(protected apiBaseService: ApiBaseService) {
+    super(apiBaseService);
+    this.url = 'media/sharings';
   }
 
   getContacts(query: string = ''): any {
@@ -26,5 +29,13 @@ export class ZMediaSharingService {
 
   add(body: any): any {
     return this.apiBaseService.post(`media/sharings`, body);
+  }
+
+  addObjects(payload): any {
+    return this.apiBaseService.post(`${this.url}/${payload.sharing.id}/objects`, {objects: payload.objects});
+  }
+
+  removeObjects(payload: any): any {
+    return this.apiBaseService.post(`${this.url}/${payload.sharing.id}/objects/delete_many`, {objects: payload.objects});
   }
 }

@@ -17,20 +17,17 @@ import { AlbumDetailInfoComponent } from '../../album/album-detail-info.componen
 import { AlbumService } from '../services/album.service';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
 import { ZMediaStore } from '../store/media.store';
-import { TaggingModalComponent } from '@shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { BaseObjectEditNameModalComponent } from '@shared/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { AlbumEditModalComponent } from '@shared/shared/components/photo/modal/album-edit-modal.component';
 import { FileSelectComponent } from '@wth/shared/shared/components/file/file-select/file-select.component';
 import { PhotoDetailPartialComponent } from '@shared/shared/components/photo/detail/photo-detail-partial.component';
-import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo-edit-modal.component';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 import { saveAs } from 'file-saver';
 import { ApiBaseService } from '@wth/shared/services';
-import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/shared/modal';
-// declare var saveAs: any;
+import {
+  AddToAlbumModalComponent, AlbumCreateModalComponent, AlbumDeleteModalComponent,
+  MediaRenameModalComponent, SharingModalComponent, TaggingModalComponent,
+  AlbumEditModalComponent, PhotoEditModalComponent
+} from '@media/shared/modal';
 
 declare var $: any;
 declare var _: any;
@@ -47,7 +44,7 @@ declare var _: any;
     SharingModalComponent,
     TaggingModalComponent,
 
-    BaseObjectEditNameModalComponent,
+    MediaRenameModalComponent,
 
     AlbumCreateModalComponent,
     AlbumEditModalComponent,
@@ -482,7 +479,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     let options: any;
     switch (params.modalName) {
       case 'editNameModal':
-        this.loadModalComponent(BaseObjectEditNameModalComponent);
+        this.loadModalComponent(MediaRenameModalComponent);
         options = {selectedObject: this.selectedObjects[0]};
         if (params.selectedObjects) options = {selectedObject: params.selectedObjects[0]};
         break;

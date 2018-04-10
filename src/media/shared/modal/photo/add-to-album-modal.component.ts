@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { ApiBaseService } from '../../../../services/apibase.service';
-import { Constants } from '../../../../constant/config/constants';
-import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
+import { Constants } from '../../../../shared/constant/config/constants';
+import { WthAppsBaseModal } from '../../../../shared/shared/interfaces/wthapps-base-modal';
 
 
 declare var $: any;

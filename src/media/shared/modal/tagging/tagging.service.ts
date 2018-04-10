@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ApiBaseService } from '../../../../../services/apibase.service';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 
 @Injectable()
 export class ZMediaTaggingService {

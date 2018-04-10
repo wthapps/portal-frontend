@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseService } from '@wth/shared/services';
 
-declare var _: any;
-
 @Injectable()
 export class ZMediaFavoriteService {
   url = 'media/favorites';

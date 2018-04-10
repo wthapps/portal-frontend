@@ -16,10 +16,10 @@ import {
   Renderer2
 } from '@angular/core';
 
-import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
-import { PhotoEditModalComponent } from '../modal/photo-edit-modal.component';
-import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
-import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
+import { SharingModalComponent } from '../../../../../media/shared/modal/sharing/sharing-modal.component';
+import { PhotoEditModalComponent } from '../../../../../media/shared/modal/photo/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from '../../../../../media/shared/modal/photo/add-to-album-modal.component';
+import { TaggingModalComponent } from '../../../../../media/shared/modal/tagging/tagging-modal.component';
 import { Constants } from '@shared/constant';
 import { PhotoService } from '@shared/services';
 import * as Cropper from 'cropperjs';

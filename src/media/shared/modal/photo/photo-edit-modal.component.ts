@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnChanges, ViewChild } from '@angular/core';
-import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
 
 
 import {
@@ -11,8 +10,8 @@ import {
 } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Photo } from '../../../models/photo.model';
-
+import { WthAppsBaseModal } from '@wth/shared/shared/interfaces/wthapps-base-modal';
+import { Photo } from '@wth/shared/shared/models';
 
 declare var $: any;
 

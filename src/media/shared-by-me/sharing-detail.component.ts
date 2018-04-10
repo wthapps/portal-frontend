@@ -2,25 +2,41 @@ import { Component, OnInit, OnDestroy, ComponentFactoryResolver } from '@angular
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { ApiBaseService, CommonEventService } from '@shared/services';
-import * as fromAlbum from '../shared/store/album/album.action';
+import {
+  Select,
+  SelectAll,
+  Deselect,
+  DeselectAll,
+  GetAll,
+  GetMore,
+  Favorite,
+  Update,
+  AddSuccess,
+  AddToDetailObjects,
+  RemoveFromDetailObjects,
+  Download,
+  DeleteMany
+} from '../shared/store/media/media.actions';
 import * as appStore from '../shared/store';
 import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
 import { DynamicModal } from '@media/shared/modal/dynamic-modal';
 import { Store } from '@ngrx/store';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { BaseObjectEditNameModalComponent } from '@wth/shared/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
+import {
+  MediaRenameModalComponent,
+  SharingModalComponent,
+  TaggingModalComponent,
+  AddToAlbumModalComponent
+} from '@media/shared/modal';
 
 @Component({
   moduleId: module.id,
   selector: 'me-sharing-detail',
   templateUrl: 'sharing-detail.component.html',
   entryComponents: [
-    BaseObjectEditNameModalComponent,
+    MediaRenameModalComponent,
     SharingModalComponent,
     TaggingModalComponent,
     AddToAlbumModalComponent
@@ -73,7 +89,7 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
 
         // get photos by sharing
         this.store.dispatch(
-          new fromAlbum.GetAll({
+          new GetAll({
             detail: this.detail,
             path: 'media/media',
             queryParams: {
@@ -121,38 +137,33 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
   }
 
   doEvent(event: any) {
-    console.log('event actions:::', event.action);
-
     switch (event.action) {
       case 'loadMore':
-        this.store.dispatch(new fromAlbum.GetMore({
+        this.store.dispatch(new GetMore({
           ...event.payload,
           type: 'photo',
           detail: this.detail,
           object: this.sharing }));
         break;
       case 'sort':
-        this.store.dispatch(new fromAlbum.GetAll({
+        this.store.dispatch(new GetAll({
           ...event.payload,
           type: 'photo',
           detail: this.detail,
           object: this.sharing }));
         break;
       case 'select':
-        this.store.dispatch(new fromAlbum.Select(event.payload));
+        this.store.dispatch(new Select(event.payload));
         break;
       case 'selectAll':
-        this.store.dispatch(new fromAlbum.SelectAll());
+        this.store.dispatch(new SelectAll());
         break;
       case 'deselect':
         this.store.dispatch(
-          new fromAlbum.Deselect({
-            selectedObjects: event.payload.selectedObjects
-          })
-        );
+          new Deselect({selectedObjects: event.payload.selectedObjects}));
         break;
       case 'deselectAll':
-        this.store.dispatch(new fromAlbum.DeselectAll());
+        this.store.dispatch(new DeselectAll());
         break;
       case 'openModal':
         this.openModal(event.payload, this.mediaSelectionService);
@@ -161,10 +172,10 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
         // this.mediaUploaderDataService.onShowUp();
         break;
       case 'addAlbumSuccessful':
-        this.store.dispatch(new fromAlbum.AddSuccess(event.payload));
+        this.store.dispatch(new AddSuccess(event.payload));
         break;
       case 'favourite':
-        this.store.dispatch(new fromAlbum.Favorite(event.payload));
+        this.store.dispatch(new Favorite(event.payload));
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);
@@ -174,26 +185,20 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
         break;
       case 'editName':
       case 'editInfo':
-        this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
+        this.store.dispatch(new Update(event.params.selectedObject));
         break;
       case 'toggleDetailsInfo':
         this.showDetailsInfo = !this.showDetailsInfo;
         break;
-      case 'addPhotoToAlbum':
-        this.store.dispatch(
-          new fromAlbum.AddToDetailObjects({
-            parent: this.sharing,
-            photos: event.payload.photos
-          })
-        );
+      // add photos to current sharing
+      case 'addToParent':
+        this.store.dispatch(new AddToDetailObjects({sharing: this.sharing, objects: event.payload.photos}));
         break;
-      case 'removeFromAlbum':
-        this.store.dispatch(
-          new fromAlbum.RemoveFromDetailObjects(event.payload)
-        );
+      case 'removeFromParent':
+        this.store.dispatch(new RemoveFromDetailObjects(event.payload));
         break;
       case 'download':
-        this.store.dispatch(new fromAlbum.Download(event.payload));
+        this.store.dispatch(new Download(event.payload));
         break;
       case 'deleteMedia':
         this.confirmService.confirm({
@@ -201,7 +206,7 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
           acceptLabel: 'Delete',
           message: `Are you sure to delete ${event.payload.selectedObjects.length} sharing`,
           accept: () => {
-            this.store.dispatch(new fromAlbum.DeleteMany({...event.payload}));
+            this.store.dispatch(new DeleteMany({...event.payload}));
           }});
         break;
       case 'goBack':

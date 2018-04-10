@@ -5,12 +5,12 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { ZMediaSharingService } from './sharing.service';
-import { Constants } from '../../../../../constant/config/constants';
-import { ApiBaseService } from '../../../../../services/apibase.service';
+import { SharingService } from './sharing.service';
+import { Constants } from '../../../../shared/constant/config/constants';
+import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { Router } from '@angular/router';
-import { WthConfirmService } from '../../../confirmation/wth-confirm.service';
-import { CommonEventService } from '../../../../../services/common-event/common-event.service';
+import { WthConfirmService } from '../../../../shared/shared/components/confirmation/wth-confirm.service';
+import { CommonEventService } from '../../../../shared/services/common-event/common-event.service';
 
 declare var $: any;
 declare var _: any;
@@ -54,7 +54,7 @@ export class SharingModalComponent implements OnDestroy {
 
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
 
-  constructor(private mediaSharingService: ZMediaSharingService,
+  constructor(private mediaSharingService: SharingService,
     private apiBaseService: ApiBaseService,
     private router: Router,
     private commonEventService: CommonEventService,

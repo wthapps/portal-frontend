@@ -17,17 +17,16 @@ import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
  */
 
 import * as fromPhoto       from './photo';
-import * as fromAlbum       from './album';
+import * as fromMedia       from './media';
 import * as fromObject       from './object';
-
 
 /**
  * We treat each reducer like a table in a database. This means
  * our top level state interface is just a map of keys to inner state types.
  */
 export interface State {
+  media:   fromMedia.State;
   photo:   fromPhoto.State;
-  album:   fromAlbum.State;
   object:  fromObject.State;
 }
 
@@ -39,8 +38,8 @@ export interface State {
  * the result from right to left.
  */
 export const mediaReducers: ActionReducerMap<State> = {
+  media: fromMedia.reducer,
   photo: fromPhoto.reducer,
-  album: fromAlbum.reducer,
   object: fromObject.reducer
 };
 
@@ -49,6 +48,17 @@ export const mediaReducers: ActionReducerMap<State> = {
  * have no knowledge of the overall state tree. To make them useable, we
  * need to make new selectors that wrap them.
  */
+
+// /**
+//  * Media store functions
+//  */
+export const selectMediaState   = createFeatureSelector<fromMedia.State>('media');
+export const selectObjects = createSelector(selectMediaState, fromMedia.getObjects);
+export const selectObject = createSelector(selectMediaState, fromMedia.getObject);
+export const selectDetailObjects = createSelector(selectMediaState, fromMedia.getDetailObjects);
+export const selectDetailObject = createSelector(selectMediaState, fromMedia.getDetailObject);
+export const selectNextLink = createSelector(selectMediaState, fromMedia.getNextLink);
+export const selectLoading = createSelector(selectMediaState, fromMedia.getLoading);
 
 /**
  * Photos store functions
@@ -62,19 +72,6 @@ export const getPhotoState   = createFeatureSelector<fromPhoto.State>('photo');
 // export const getPhoto        = createSelector(getPhotoState, fromPhoto.getPhoto);
 export const getPhotos       = createSelector(getPhotoState, fromPhoto.selectAll);
 
-/**
- * Albums store functions
- */
-export const selectAlbumState   = createFeatureSelector<fromAlbum.State>('album');
-export const selectObjects = createSelector(selectAlbumState, fromAlbum.getObjects);
-export const selectObject = createSelector(selectAlbumState, fromAlbum.getObject);
-export const selectDetailObjects = createSelector(selectAlbumState, fromAlbum.getDetailObjects);
-export const selectDetailObject = createSelector(selectAlbumState, fromAlbum.getDetailObject);
-export const selectNextLink = createSelector(selectAlbumState, fromAlbum.getNextLink);
-export const selectLoading = createSelector(selectAlbumState, fromAlbum.getLoading);
-
-
-
 // Object store functions
 export const getObjectState   = createFeatureSelector<fromObject.State>('object');
 export const getObjects       = createSelector(getObjectState, fromObject.selectAll);
@@ -85,13 +82,13 @@ export const getSelectedObjects       = createSelector(getObjectState, fromObjec
 
 
 export const appStore = {
+  media: fromMedia.reducer,
   photo: fromPhoto.reducer,
-  album: fromAlbum.reducer,
   object: fromObject.reducer
 };
 
 export let appEffects: Array<any> = [
+  fromMedia.MediaEffects,
   fromPhoto.PhotoEffects,
-  fromAlbum.AlbumEffects,
   fromObject.ObjectEffects
 ];

@@ -54,14 +54,6 @@
             <i class="fa fa-pencil"></i>
           </a>
         </li>
-        <!--<li>-->
-          <!--<a class="btn btn-default" draggable="false" href="javascript:void(0);"-->
-             <!--(click)="onAction({action: 'confirmDeleteMedia', params: {selectedObjects: [object], page: 'sharing_detail'}})"-->
-             <!--pTooltip="{{ tooltip.deleteSharing }}" tooltipPosition="bottom">-->
-            <!--<i class="fa fa-trash-o"></i>-->
-          <!--</a>-->
-        <!--</li>-->
-
         <li>
           <a class="btn btn-default" draggable="false" href="javascript:void(0);"
              pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
@@ -90,12 +82,6 @@
                 <i class="fa fa-trash-o"></i> Delete
               </a>
             </li>
-            <!--<li>-->
-              <!--<a draggable="false" href="javascript:void(0);"-->
-                 <!--(click)="doEvent({action: 'toggleDetailsInfo' })">-->
-                <!--<i class="fa fa-info-circle"></i> View Details-->
-              <!--</a>-->
-            <!--</li>-->
           </ul>
         </li>
       </ul>
@@ -150,7 +136,7 @@
         </li>
         <li>
           <a class="btn btn-default" draggable="false" href="javascript:void(0);"
-             (click)="doEvent({action: 'removeFromSharing',
+             (click)="doEvent({action: 'removeFromParent',
            payload: { object: toolbar.object, selectedObjects: toolbar.selectedObjects }})"
              pTooltip="{{ tooltip.removeFromSharing}}" tooltipPosition="bottom">
             <i class="fa fa-trash-o"></i></a>
@@ -176,7 +162,7 @@
             </li>
             <li>
               <a href="javascript:void(0);" draggable="false"
-                 (click)="doEvent({action: 'removeFromAlbum',
+                 (click)="doEvent({action: 'removeFromParent',
             payload: { object: toolbar.object, selectedObjects: toolbar.selectedObjects, delete_child: true }})">
                 <i class="fa fa-trash-o"></i> Delete
               </a>

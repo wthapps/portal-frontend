@@ -2,11 +2,8 @@ import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { AddToAlbumModalComponent } from '../modal/add-to-album-modal.component';
-import { AlbumEditModalComponent } from '../modal/album-edit-modal.component';
-import { SharingModalComponent } from '../modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '../modal/tagging/tagging-modal.component';
-import { BaseObjectEditNameModalComponent } from '../modal/base-object-edit-name-modal.component';
+import { SharingModalComponent } from '../../../../../media/shared/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '../../../../../media/shared/modal/tagging/tagging-modal.component';
 import { ZMediaToolbarPhotoComponent } from './photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './album/album.component';
 import { Constants } from '../../../../constant/config/constants';
@@ -17,9 +14,9 @@ import { Constants } from '../../../../constant/config/constants';
 })
 
 export class ZMediaToolbarComponent {
-  @ViewChild('formAddAlbum') formAddAlbum: AddToAlbumModalComponent;
-  @ViewChild('formEditAlbum') formEditAlbum: AlbumEditModalComponent;
-  @ViewChild('formEditName') formEditName: BaseObjectEditNameModalComponent;
+  @ViewChild('formAddAlbum') formAddAlbum: any;
+  @ViewChild('formEditAlbum') formEditAlbum: any;
+  @ViewChild('formEditName') formEditName: any;
   @ViewChild('zoneSharing') zoneSharing: SharingModalComponent;
   @ViewChild('zoneTagging') zoneTagging: TaggingModalComponent;
   @ViewChild('toolbarPhoto') toolbarPhoto: ZMediaToolbarPhotoComponent;

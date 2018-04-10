@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { BsModalModule } from 'ng2-bs3-modal';
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { SharingModalComponent } from './sharing-modal.component';
-import { ZMediaSharingService } from './sharing.service';
+import { SharingService } from './sharing.service';
 
 
 @NgModule({
@@ -22,7 +22,7 @@ import { ZMediaSharingService } from './sharing.service';
     SharingModalComponent
   ],
   providers: [
-    ZMediaSharingService
+    SharingService
   ]
 })
 

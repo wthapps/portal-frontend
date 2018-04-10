@@ -162,8 +162,8 @@
       </li>
       <li>
         <a class="btn btn-default" draggable="false" href="javascript:void(0);"
-           (click)="doEvent({action: 'removeFromAlbum',
-           payload: { object: toolbar.object, selectedObjects: toolbar.selectedObjects }})"
+           (click)="doEvent({action: 'removeFromParent',
+           payload: { album: toolbar.object, selectedObjects: toolbar.selectedObjects }})"
            pTooltip="{{ tooltip.removeFromAlbum}}" tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i></a>
       </li>
@@ -188,8 +188,8 @@
           </li>
           <li>
             <a href="javascript:void(0);" draggable="false"
-            (click)="doEvent({action: 'removeFromAlbum',
-            payload: { object: toolbar.object, selectedObjects: toolbar.selectedObjects, delete_child: true }})">
+            (click)="doEvent({action: 'deleteMedia',
+            payload: { selectedObjects: toolbar.selectedObjects, delete_child: true }})">
               <i class="fa fa-trash-o"></i> Delete
             </a>
           </li>

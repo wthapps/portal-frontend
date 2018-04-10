@@ -1,12 +1,24 @@
 import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { DynamicModal } from '@media/shared/modal/dynamic-modal';
 import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import * as appStore from '../shared/store';
-import * as fromMedia from '../shared/store/album/album.action';
 import { Store } from '@ngrx/store';
+import {
+  Select,
+  SelectAll,
+  Deselect,
+  DeselectAll,
+  GetAll,
+  GetMore,
+  Favorite,
+  Update,
+  AddSuccess,
+  DeleteMany
+} from '../shared/store/media/media.actions';
 
 @Component({
   moduleId: module.id,
@@ -37,38 +49,29 @@ export class ZMediaSharedWithMeComponent extends DynamicModal implements OnInit 
   }
 
   doEvent(event: any) {
-    console.log('event actions:::', event.action, event.payload);
 
     switch (event.action) {
       case 'getAll':
-        this.store.dispatch(
-          new fromMedia.GetAll({ ...event.payload})
-        );
+        this.store.dispatch(new GetAll({...event.payload}));
         break;
       case 'getMore':
-        this.store.dispatch(
-          new fromMedia.GetMore({ ...event.payload})
-        );
+        this.store.dispatch(new GetMore({...event.payload}));
         break;
       case 'sort':
-        this.store.dispatch(new fromMedia.GetAll({
-          ...event.payload}));
+        this.store.dispatch(new GetAll({...event.payload}));
         break;
       case 'select':
-        this.store.dispatch(new fromMedia.Select(event.payload));
+        this.store.dispatch(new Select(event.payload));
         break;
       case 'selectAll':
-        this.store.dispatch(new fromMedia.SelectAll());
+        this.store.dispatch(new SelectAll());
         break;
       case 'deselect':
-        this.store.dispatch(
-          new fromMedia.Deselect({
-            selectedObjects: event.payload.selectedObjects
-          })
+        this.store.dispatch(new Deselect({selectedObjects: event.payload.selectedObjects})
         );
         break;
       case 'deselectAll':
-        this.store.dispatch(new fromMedia.DeselectAll());
+        this.store.dispatch(new DeselectAll());
         break;
       case 'openModal':
         this.openModal(event.payload);
@@ -77,20 +80,20 @@ export class ZMediaSharedWithMeComponent extends DynamicModal implements OnInit 
         this.mediaUploaderDataService.onShowUp();
         break;
       case 'addAlbumSuccessful':
-        this.store.dispatch(new fromMedia.AddSuccess(event.payload));
+        this.store.dispatch(new AddSuccess(event.payload));
         break;
       case 'favourite':
-        this.store.dispatch(new fromMedia.Favorite(event.payload));
+        this.store.dispatch(new Favorite(event.payload));
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);
         break;
       case 'editName':
       case 'editInfo':
-        this.store.dispatch(new fromMedia.Update(event.params.selectedObject));
+        this.store.dispatch(new Update(event.params.selectedObject));
         break;
       case 'deleteMedia':
-        this.store.dispatch(new fromMedia.DeleteMany({ ...event.payload }));
+        this.store.dispatch(new DeleteMany({ ...event.payload }));
         break;
     }
   }

@@ -1,38 +1,45 @@
 import {
   Component,
   ComponentFactoryResolver,
-  OnInit,
-  ViewChild,
-  ViewContainerRef
+  OnInit
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import * as appStore from '../shared/store';
-import * as fromAlbum from '../shared/store/album/album.action';
-import { BaseObjectEditNameModalComponent } from '@wth/shared/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import {
+  Select,
+  SelectAll,
+  Deselect,
+  DeselectAll,
+  GetAll,
+  GetMore,
+  Favorite,
+  Update,
+  AddSuccess,
+  DeleteMany
+} from '../shared/store/media/media.actions';
+import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
+import {
+  MediaRenameModalComponent,
+  SharingModalComponent,
+  TaggingModalComponent,
   AlbumCreateModalComponent,
+  AlbumEditModalComponent,
   AlbumDeleteModalComponent
 } from '@media/shared/modal';
-import { MediaObjectService } from '@media/shared/container/media-object.service';
 import { Constants } from '@wth/shared/constant';
-import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
 import { DynamicModal } from '@media/shared/modal/dynamic-modal';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 
 @Component({
   selector: 'z-media-album-list',
   templateUrl: 'album-list.component.html',
   entryComponents: [
-    AlbumCreateModalComponent,
-    BaseObjectEditNameModalComponent,
+    MediaRenameModalComponent,
     SharingModalComponent,
     TaggingModalComponent,
+    AlbumCreateModalComponent,
     AlbumDeleteModalComponent,
     AlbumEditModalComponent
   ]
@@ -75,33 +82,30 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
     switch (event.action) {
       case 'getAll':
         this.store.dispatch(
-          new fromAlbum.GetAll({ ...event.payload})
+          new GetAll({ ...event.payload})
         );
         break;
       case 'getMore':
         this.store.dispatch(
-          new fromAlbum.GetMore({ ...event.payload})
+          new GetMore({ ...event.payload})
         );
         break;
       case 'sort':
-        this.store.dispatch(new fromAlbum.GetAll({
+        this.store.dispatch(new GetAll({
           ...event.payload}));
         break;
       case 'select':
-        this.store.dispatch(new fromAlbum.Select(event.payload));
+        this.store.dispatch(new Select(event.payload));
         break;
       case 'selectAll':
-        this.store.dispatch(new fromAlbum.SelectAll());
+        this.store.dispatch(new SelectAll());
         break;
       case 'deselect':
-        this.store.dispatch(
-          new fromAlbum.Deselect({
-            selectedObjects: event.payload.selectedObjects
-          })
+        this.store.dispatch(new Deselect({selectedObjects: event.payload.selectedObjects})
         );
         break;
       case 'deselectAll':
-        this.store.dispatch(new fromAlbum.DeselectAll());
+        this.store.dispatch(new DeselectAll());
         break;
       case 'openModal':
         this.openModal(event.payload);
@@ -110,20 +114,20 @@ export class AlbumListComponent extends DynamicModal implements OnInit {
         this.mediaUploaderDataService.onShowUp();
         break;
       case 'addAlbumSuccessful':
-        this.store.dispatch(new fromAlbum.AddSuccess(event.payload));
+        this.store.dispatch(new AddSuccess(event.payload));
         break;
       case 'favourite':
-        this.store.dispatch(new fromAlbum.Favorite(event.payload));
+        this.store.dispatch(new Favorite(event.payload));
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);
         break;
       case 'editName':
       case 'editInfo':
-        this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
+        this.store.dispatch(new Update(event.params.selectedObject));
         break;
       case 'deleteMedia':
-        this.store.dispatch(new fromAlbum.DeleteMany({ ...event.payload }));
+        this.store.dispatch(new DeleteMany({ ...event.payload }));
         break;
     }
   }
