@@ -16,13 +16,13 @@ import {
   Renderer2
 } from '@angular/core';
 
-import { SharingModalComponent } from '../../../../../media/shared/modal/sharing/sharing-modal.component';
-import { PhotoEditModalComponent } from '../../../../../media/shared/modal/photo/photo-edit-modal.component';
-import { AddToAlbumModalComponent } from '../../../../../media/shared/modal/photo/add-to-album-modal.component';
-import { TaggingModalComponent } from '../../../../../media/shared/modal/tagging/tagging-modal.component';
 import { Constants } from '@shared/constant';
 import { PhotoService } from '@shared/services';
 import * as Cropper from 'cropperjs';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { TaggingModalComponent } from '@shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 declare let $: any;
 declare let _: any;

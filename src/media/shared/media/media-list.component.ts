@@ -4,7 +4,6 @@ import {
   Output,
   EventEmitter,
   AfterViewInit,
-  OnInit,
   HostListener,
   ComponentFactoryResolver,
   OnDestroy,
@@ -19,7 +18,7 @@ import 'rxjs/add/operator/takeUntil';
 
 
 import { MediaObjectService } from '../container/media-object.service';
-import { AlbumService } from '../services/album.service';
+import { AlbumService } from '../service/album.service';
 import { ZMediaStore } from '../store/media.store';
 import { PhotoDetailPartialComponent } from '@wth/shared/shared/components/photo/detail/photo-detail-partial.component';
 import { Constants } from '@wth/shared/constant';
@@ -27,9 +26,14 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { ApiBaseService, PhotoService } from '@shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
 import {
-  AlbumCreateModalComponent, AlbumDeleteModalComponent, MediaRenameModalComponent,
-  PhotoEditModalComponent,  AlbumEditModalComponent, TaggingModalComponent, SharingModalComponent,
+  AlbumCreateModalComponent,
+  AlbumDeleteModalComponent,
+  AlbumEditModalComponent
 } from '@media/shared/modal';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 
 declare var _: any;
 declare var $: any;

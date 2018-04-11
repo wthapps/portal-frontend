@@ -26,6 +26,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { appStore, appEffects } from './shared/store';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { ServiceModule } from '@media/shared/service/service.module';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
     AppRoutingModule,
     ModalModule,
+    ServiceModule,
     ZMediaSharedModule.forRoot(),
     CoreModule.forRoot(),
     SharedModule.forRoot(),

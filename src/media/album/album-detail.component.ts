@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { saveAs } from 'file-saver';
 
-import { AlbumService } from '../shared/services/album.service';
+import { AlbumService } from '../shared/service/album.service';
 import * as appStore from '../shared/store';
 import {
   Select,
@@ -32,10 +32,6 @@ import {
 import { Constants } from '@wth/shared/constant';
 
 import {
-  MediaRenameModalComponent,
-  SharingModalComponent,
-  TaggingModalComponent,
-  AddToAlbumModalComponent,
   AlbumCreateModalComponent,
   AlbumDeleteModalComponent,
   AlbumEditModalComponent
@@ -43,7 +39,11 @@ import {
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { DynamicModal } from '@media/shared/modal/dynamic-modal';
-import {  } from '@media/shared/modal/tagging/tagging-modal.component';
+import {  } from '@media/../../shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 @Component({
   selector: 'me-album-detail',
@@ -209,7 +209,7 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
         this.store.dispatch(new Download(event.payload));
         break;
       case 'goBack':
-        this.router.navigate([this.returnUrl]);
+        this.router.navigateByUrl(this.returnUrl);
         break;
     }
   }

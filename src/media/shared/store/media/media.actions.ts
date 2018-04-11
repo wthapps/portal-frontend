@@ -4,6 +4,7 @@ export const ActionTypes = {
   GET:                  '[Media] Get',
   GET_SUCCESS:          '[Media] Get Success',
   GET_FAIL:             '[Media] Get Fail',
+  SEARCH:               '[Media] Get Search',
   GET_ALL:              '[Media] Get All',
   GET_ALL_SUCCESS:      '[Media] Get All Success',
   GET_MORE:             '[Media] Get More',
@@ -45,6 +46,11 @@ export const ActionTypes = {
 /**
  * Media Actions
  */
+export class Search implements Action {
+  type = ActionTypes.SEARCH;
+  constructor(public payload: any = null) { }
+}
+
 export class GetAll implements Action {
   type = ActionTypes.GET_ALL;
   constructor(public payload: any = {objectType: 'all', detail: false, object: null, query: null }) { }
@@ -217,6 +223,7 @@ export type Actions
   = Get
   | GetSuccess
   | GetFail
+  | Search
   | GetAll
   | GetAllSuccess
   | GetAllFail

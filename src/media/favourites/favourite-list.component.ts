@@ -21,13 +21,13 @@ import {
 import { DynamicModal } from '@media/shared/modal/dynamic-modal';
 
 import {
-  MediaRenameModalComponent,
-  SharingModalComponent,
-  TaggingModalComponent,
-  AddToAlbumModalComponent,
   AlbumEditModalComponent,
-  PhotoEditModalComponent
 } from '@media/shared/modal';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 
 @Component({

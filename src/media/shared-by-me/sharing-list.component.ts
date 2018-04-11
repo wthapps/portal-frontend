@@ -18,13 +18,11 @@ import {
 } from '../shared/store/media/media.actions';
 import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
-import {
-  MediaRenameModalComponent,
-  SharingModalComponent,
-  TaggingModalComponent,
-  AlbumCreateModalComponent
-} from '@media/shared/modal';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { SharingModalComponent } from '@shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { AlbumCreateModalComponent } from '@media/shared/modal';
 
 @Component({
   selector: 'me-sharings',

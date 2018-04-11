@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
-
-import { ApiBaseService } from '../../../../shared/services/apibase.service';
+import { ApiBaseService } from '@wth/shared/services';
 
 @Injectable()
 export class ZMediaTaggingService {
@@ -14,7 +13,7 @@ export class ZMediaTaggingService {
     return this.apiBaseService.get(this.tagUrl);
   }
 
-  getTags(keys:any): Observable<any> {
+  getTags(keys: any): Observable<any> {
     return this.apiBaseService.get(this.tagUrl, {q: `name:${keys}`});
   }
 

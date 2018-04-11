@@ -1,7 +1,8 @@
-import { Component, ViewChild, HostListener } from '@angular/core';
+import { Component, ViewChild, HostListener, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { TextBoxSearchComponent } from '@wth/shared/partials/search-box/textbox-search.component';
 import { ServiceManager } from '@wth/shared/services';
+import { ActivatedRoute, Params } from '@angular/router';
 
 
 declare var _: any;
@@ -15,7 +16,7 @@ declare var _: any;
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.scss'],
 })
-export class ZMediaSharedHeaderComponent {
+export class ZMediaSharedHeaderComponent implements OnInit {
   constants: any;
   suggestions: any = [];
   show: boolean = false;
@@ -53,8 +54,16 @@ export class ZMediaSharedHeaderComponent {
     this.searchAdvanced = false;
   }
 
-  constructor(public serviceManager: ServiceManager) {
+  constructor(public serviceManager: ServiceManager, private route: ActivatedRoute,
+  ) {
     this.createForm();
+  }
+
+  ngOnInit() {
+    this.route.queryParams.subscribe((params: Params) => {
+      this.search = params['q'];
+      this.textbox.search = this.search;
+    });
   }
 
   clickedInside($event: Event) {

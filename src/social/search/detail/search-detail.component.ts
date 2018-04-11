@@ -45,7 +45,6 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
       .filter((event: any) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
         this.group = this.urlService.getId();
-        console.log('this.group:::', this.group);
         this.params = this.urlService.getQuery()['q'];
         this.filter = this.urlService.getQuery()['filter_post'];
         this.filterDate = this.urlService.getQuery()['filter_date'];

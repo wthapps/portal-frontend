@@ -24,12 +24,10 @@ import { DynamicModal } from '@media/shared/modal/dynamic-modal';
 import { Store } from '@ngrx/store';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import {
-  MediaRenameModalComponent,
-  SharingModalComponent,
-  TaggingModalComponent,
-  AddToAlbumModalComponent
-} from '@media/shared/modal';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 @Component({
   moduleId: module.id,

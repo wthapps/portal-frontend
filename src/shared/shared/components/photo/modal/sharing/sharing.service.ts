@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService } from '../../../../shared/services/apibase.service';
-import { BaseEntityService } from '@wth/shared/services';
+
+import { ApiBaseService, BaseEntityService } from '@wth/shared/services';
 
 @Injectable()
 export class SharingService extends BaseEntityService<any> {
@@ -11,7 +11,7 @@ export class SharingService extends BaseEntityService<any> {
 
   getContacts(query: string = ''): any {
     let body: any;
-    body = {'q': (query == undefined ? '' : 'name:'+query)};
+    body = {'q': (query === 'undefined' ? '' : 'name:' + query)};
     return this.apiBaseService.get('contact/contacts', body);
   }
 

@@ -2,13 +2,14 @@ import { ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/
 import {
   AlbumCreateModalComponent,
   AlbumDeleteModalComponent,
-  SharingModalComponent,
-  TaggingModalComponent
+  AlbumEditModalComponent,
 } from '@media/shared/modal';
-import { AlbumEditModalComponent } from '@media/shared/modal/album/album-edit-modal.component';
-import { PhotoEditModalComponent } from '@media/shared/modal/photo/photo-edit-modal.component';
-import { AddToAlbumModalComponent } from '@media/shared/modal/photo/add-to-album-modal.component';
-import { MediaRenameModalComponent } from '@media/shared/modal/media/media-rename-modal.component';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+
 
 export class DynamicModal {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;

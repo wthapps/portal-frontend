@@ -2,11 +2,11 @@ import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { SharingModalComponent } from '../../../../../media/shared/modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '../../../../../media/shared/modal/tagging/tagging-modal.component';
 import { ZMediaToolbarPhotoComponent } from './photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './album/album.component';
 import { Constants } from '../../../../constant/config/constants';
+import { SharingModalComponent } from '@shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 
 @Component({
     selector: 'z-media-share-toolbar',

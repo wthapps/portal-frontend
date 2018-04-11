@@ -8,10 +8,10 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Constants } from '@shared/constant/config/constants';
-import { SharingService } from '@shared/../../../../media/shared/modal/sharing/sharing.service';
 import { Store } from '@ngrx/store';
 import * as fromShareModal from '../../reducers/share-modal';
 import { AutoComplete } from 'primeng/primeng';
+import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 
 declare var $: any;

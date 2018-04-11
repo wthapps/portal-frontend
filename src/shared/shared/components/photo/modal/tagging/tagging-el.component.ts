@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';

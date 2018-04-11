@@ -22,15 +22,15 @@ import {
 } from '../shared/store/media/media.actions';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import {
-  MediaRenameModalComponent,
-  SharingModalComponent,
-  TaggingModalComponent,
   AlbumCreateModalComponent,
   AlbumEditModalComponent,
   AlbumDeleteModalComponent
 } from '@media/shared/modal';
 import { Constants } from '@wth/shared/constant';
 import { DynamicModal } from '@media/shared/modal/dynamic-modal';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 
 @Component({
   selector: 'z-media-album-list',

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { ZMediaSharedModule } from '../shared/shared.module';
 
-import { AlbumService } from '../shared/services/album.service';
+import { AlbumService } from '../shared/service/album.service';
 import { ZMediaAlbumComponent } from './album.component';
 import { AlbumListComponent } from './album-list.component';
 import { ZMediaAlbumDetailComponent } from './album-detail.component';

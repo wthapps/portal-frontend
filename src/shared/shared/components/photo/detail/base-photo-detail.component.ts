@@ -8,9 +8,9 @@ import 'rxjs/add/operator/map';
 import { Photo } from '../../../models/photo.model';
 import { PhotoService } from '../../../../services/photo.service';
 import { LoadingService } from '../../loading/loading.service';
-import { SharingService } from '../../../../../media/shared/modal/sharing/sharing.service';
 import { WthConfirmService } from '../../confirmation/wth-confirm.service';
 import { UserService } from '@wth/shared/services';
+import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 declare let _: any;
 declare let saveAs: any;

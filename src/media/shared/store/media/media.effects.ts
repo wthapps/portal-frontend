@@ -8,11 +8,11 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 
 import * as mediaActions         from './media.actions';
-import { AlbumService } from '@media/shared/services/album.service';
+import { AlbumService } from '@media/shared/service/album.service';
 import { MediaObjectService } from '@media/shared/container/media-object.service';
 import { saveAs } from 'file-saver';
-import { PhotoService } from '@wth/shared/services/photo.service';
-import { SharingService } from '@media/shared/modal/sharing/sharing.service';
+import { SearchService } from '@media/shared/service';
+import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -35,8 +35,8 @@ export class MediaEffects {
     private actions$: Actions,
     private mediaObjectService: MediaObjectService,
     private albumService: AlbumService,
-    private photoService: PhotoService,
-    private sharingService: SharingService
+    private sharingService: SharingService,
+    private searchService: SearchService
   ) {
   }
 
@@ -78,6 +78,15 @@ export class MediaEffects {
 
           });
       }
+    });
+
+  @Effect()
+  search$: Observable<Action> = this.actions$
+    .ofType(mediaActions.ActionTypes.SEARCH)
+    .map((action: mediaActions.Search) => action.payload)
+    .switchMap(payload => {
+      return this.searchService.search(payload.path, payload.queryParams)
+        .map(response => new mediaActions.GetAllSuccess({...response, ...payload}));
     });
 
 

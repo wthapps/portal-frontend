@@ -5,7 +5,7 @@ import { MediaViewContainerComponent } from './container/media-view-container.co
 import { MediaToolbarListComponent } from './media/media-toolbar-list.component';
 import { MediaListComponent } from './media/media-list.component';
 import { MediaItemComponent } from './media/media-item.component';
-import { AlbumService } from './services/album.service';
+import { AlbumService } from './service/album.service';
 import { MediaUploaderDataService } from './uploader/media-uploader-data.service';
 
 import { ZMediaStore } from './store/media.store';
@@ -16,8 +16,8 @@ import { AlbumDetailInfoComponent } from '../album/album-detail-info.component';
 // import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
 import { MediaObjectService } from './container/media-object.service';
 import { SharingItemComponent } from './media/sharing-item.component';
-import { ZMediaTaggingService } from '@media/shared/modal/tagging/tagging.service';
-import { SharingService } from '@media/shared/modal/sharing/sharing.service';
+import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
+import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 TagInputModule.withDefaults({
   tagInput: {
@@ -70,8 +70,8 @@ export class ZMediaSharedModule {
       ngModule: ZMediaSharedModule,
       providers: [
         AlbumService,
-        SharingService,
         ZMediaTaggingService,
+        SharingService,
         ZMediaStore,
         MediaUploaderDataService,
         MediaObjectService

@@ -23,13 +23,17 @@ import { ZMediaShareItemComponent } from './list/item/item.component';
 
 import { PhotoService } from '../../../services/photo.service';
 
-import { PartialsPhotoSharingModule } from '../../../../media/shared/modal/sharing/sharing.module';
 import { SliderModule } from 'primeng/components/slider/slider';
 import { PhotoItemPreviewComponent } from './photo-item-preview.component';
-import { PartialsPhotoTaggingModule } from '../../../../media/shared/modal/tagging/tagging.module';
 import { BasePhotoDetailComponent } from './detail/base-photo-detail.component';
 import { BoxLoadingModule } from '../box-loading/box-loading.module';
 import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
+
+import { PartialsPhotoSharingModule } from './modal/sharing/sharing.module';
+import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
+import { MediaRenameModalComponent } from './modal/media/media-rename-modal.component';
+import { PhotoEditModalComponent } from './modal/photo/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.component';
 
 
 @NgModule({
@@ -50,9 +54,15 @@ import { ImageCropperModule } from '@shared/shared/components/image-cropper/imag
     BoxLoadingModule,
     PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule,
-    ImageCropperModule
+    ImageCropperModule,
+    PartialsPhotoTaggingModule,
+    PartialsPhotoSharingModule
   ],
   declarations: [
+    MediaRenameModalComponent,
+    PhotoEditModalComponent,
+    AddToAlbumModalComponent,
+
     PhotoDetailPartialComponent,
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
@@ -65,6 +75,12 @@ import { ImageCropperModule } from '@shared/shared/components/image-cropper/imag
     BasePhotoDetailComponent
   ],
   exports: [
+    MediaRenameModalComponent,
+    PhotoEditModalComponent,
+    AddToAlbumModalComponent,
+    PartialsPhotoTaggingModule,
+    PartialsPhotoSharingModule,
+
     BoxLoadingModule,
     PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule,
