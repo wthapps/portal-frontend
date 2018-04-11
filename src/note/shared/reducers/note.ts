@@ -6,8 +6,8 @@ import { Folder } from './folder';
 
 // Constants
 export const ITEM_TYPE = {
-  NOTE: 'note',
-  FOLDER: 'folder'
+  NOTE: 'Note::Note',
+  FOLDER: 'Note::Folder'
 };
 export const VIEW_MODE = {
   LIST: 'list',
@@ -20,12 +20,16 @@ export const GROUP_TYPE = {
   year: 'year'
 };
 
+// State
+export interface Filters {
+  folder: string;
+}
 
 export interface State {
   notes: { [id: number]: Note };
   currentNote: Note | null;
   noteHistory: { id: number | string; stackId: number; stack: Note[] }; // Lastest note is at index 0 in Note Undo stack
-  folders: { [id: number]: Folder };
+  folders: { [id: number]: Folder }; //{1 :{id: 1, name: "abc"}, 2 :{id: 2, name: "sdfsdf"}  }
   pageNo: number;
   orderDesc: boolean;
   sortOption: { field: string; desc: boolean };
@@ -187,15 +191,6 @@ export function reducer(
           hSelected.push(obj);
         }
       });
-
-      // const hNotes: any = action['payload'].reduce((acc: any, item: any) => {
-      //   if (item.object_type === ITEM_TYPE.NOTE)
-      //     acc[item.id] = item;
-      //   return acc;}, {});
-      // const hFolders: any = action['payload'].reduce((acc: any, item: any) => {
-      //   if (item.object_type === ITEM_TYPE.FOLDER)
-      //     acc[item.id] = item;
-      //   return acc;}, {});
 
       return Object.assign({}, state, {
         notes: hNotes,
@@ -366,6 +361,7 @@ export function reducer(
 }
 
 export const getNotes = (state: State) => state.notes;
+export const getPageNo = (state: State) => state.pageNo;
 export const getOrderDesc = (state: State) => state.orderDesc;
 export const getSortOption = (state: State) => state.sortOption;
 export const getFolders = (state: State) => state.folders;

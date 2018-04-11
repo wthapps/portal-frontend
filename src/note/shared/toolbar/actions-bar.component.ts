@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, OnChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectionStrategy,
+  OnChanges,
+  OnDestroy
+} from '@angular/core';
 
 import 'rxjs/add/operator/take';
 
@@ -10,9 +17,9 @@ import * as context from '../reducers/context';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
-import { Subject } from "rxjs";
-import { UrlService } from "@shared/services";
-import { NoteConstants, noteConstants } from "@notes/shared/config/constants";
+import { Subject } from 'rxjs';
+import { UrlService } from '@shared/services';
+import { NoteConstants, noteConstants } from '@notes/shared/config/constants';
 import { Router } from '@angular/router';
 
 declare var _: any;
@@ -25,8 +32,8 @@ declare let saveAs: any;
   styleUrls: ['actions-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
-export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestroy {
+export class ZNoteSharedActionBarComponent
+  implements OnInit, OnChanges, OnDestroy {
   @Input() page: any;
   @Input() subPage: any;
   @Input() selectedObjects: any[] = [];
@@ -39,6 +46,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   destroySubject: Subject<any> = new Subject<any>();
   urls: any;
   disableDropDown: any = false;
+  detectMenu: any = false;
 
   actionsMenu: any = {
     favourite: {
@@ -122,29 +130,43 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       action: this.stopSharing.bind(this),
       title: 'Stop Sharing'
     }
-  }
+  };
 
-  constructor(public noteService: ZNoteService,
-              private wthConfirm: WthConfirmService,
-              private urlService: UrlService,
-              private store: Store<any>,
-              private api: ApiBaseService,
-              private router: Router,
-              public commonEventService: CommonEventService) {
+  constructor(
+    public noteService: ZNoteService,
+    private wthConfirm: WthConfirmService,
+    private urlService: UrlService,
+    private store: Store<any>,
+    private api: ApiBaseService,
+    private router: Router,
+    public commonEventService: CommonEventService
+  ) {
     // this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
   }
 
   ngOnInit() {
     // Inline toolbar only
     this.validatePermission(this.selectedObjects);
-    this.commonEventService.filter((e: any) => e.channel == 'noteActionsBar' && this.toolbarPosition == 'top').subscribe((e: any) => {
-      if(e.action == 'note:toolbar_change') { this.validatePermission(this.selectedObjects); }
-    })
+    this.commonEventService
+      .filter(
+        (e: any) =>
+          e.channel == 'noteActionsBar' && this.toolbarPosition == 'top'
+      )
+      .subscribe((e: any) => {
+        if (e.action == 'note:toolbar_change') {
+          this.validatePermission(this.selectedObjects);
+        }
+      });
   }
 
   validatePermission(objects) {
     this.urls = this.urlService.parse();
-
+    /*====================================
+    [Position] validate
+    ====================================*/
+    if (this.toolbarPosition == 'top') {
+      this.actionsMenu.findFolder.show = false;
+    }
     /*====================================
     [Permission] validate
     ====================================*/
@@ -152,36 +174,52 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       // check permission in each objects
       objects.map((object: any) => {
         // if permission is view turn off all acions edit
-        if(object.permission == 'view' && (action.needPermission == 'edit' || action.needPermission == 'owner')) {
+        if (
+          object.permission == 'view' &&
+          (action.needPermission == 'edit' || action.needPermission == 'owner')
+        ) {
           action.show = false;
         }
-        if(object.permission == 'edit' && action.needPermission == 'owner') {
+        if (object.permission == 'edit' && action.needPermission == 'owner') {
           action.show = false;
         }
-      })
-    }
-    Object.keys(this.actionsMenu).map((action: any) => permissonValidateObjects(this.actionsMenu[action], objects));
+      });
+    };
+    Object.keys(this.actionsMenu).map((action: any) =>
+      permissonValidateObjects(this.actionsMenu[action], objects)
+    );
 
     /*====================================
     [Path And Page] validate (shared-with-me, shared-by-me)
     ====================================*/
     let pathValidate = (action, currentPath) => {
       // ==================
-      if(currentPath != 'shared-by-me' && action.title == 'Stop Sharing') {
+      if (currentPath != 'shared-by-me' && action.title == 'Stop Sharing') {
         action.show = false;
       }
-      if([noteConstants.PAGE_MY_NOTE ].includes(this.page) && action.title == 'Find folder') {
+      if (
+        [noteConstants.PAGE_MY_NOTE].includes(this.page) &&
+        action.title == 'Find folder'
+      ) {
         action.show = false;
       }
       // ==================
-      if(this.subPage == noteConstants.PAGE_NOTE_EDIT && (action.title == 'Edit')) {
+      if (
+        this.subPage == noteConstants.PAGE_NOTE_EDIT &&
+        action.title == 'Edit'
+      ) {
         action.show = false;
       }
-      if(this.subPage !== noteConstants.PAGE_NOTE_EDIT && (action.title == 'Print')) {
+      if (
+        this.subPage !== noteConstants.PAGE_NOTE_EDIT &&
+        action.title == 'Print'
+      ) {
         action.show = false;
       }
-    }
-    Object.keys(this.actionsMenu).map((action: any) => pathValidate(this.actionsMenu[action], this.urls.paths[0]));
+    };
+    Object.keys(this.actionsMenu).map((action: any) =>
+      pathValidate(this.actionsMenu[action], this.urls.paths[0])
+    );
 
     /*====================================
     [Objects_Number] validate
@@ -195,11 +233,16 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     ====================================*/
     let objectTypeValidateObjects = (action, objects) => {
       objects.map((object: any) => {
-        if (object.object_type == 'folder' && (action.title == 'Make copy' || action.title == 'Export as PDF'))
+        if (
+          object.object_type == 'Note::Folder' &&
+          (action.title == 'Make copy' || action.title == 'Export as PDF')
+        )
           action.show = false;
-      })
-    }
-    Object.keys(this.actionsMenu).map((action: any) => objectTypeValidateObjects(this.actionsMenu[action], objects));
+      });
+    };
+    Object.keys(this.actionsMenu).map((action: any) =>
+      objectTypeValidateObjects(this.actionsMenu[action], objects)
+    );
 
     /*====================================
     [Favourite] validate
@@ -209,24 +252,36 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       // check Favourite in each objects
       objects.map((object: any) => {
         if (action.title == 'Favourite') {
-          if (!object.favourite) {
-            action.iconClass = 'fa fa-star-o'
+          if (object.favourite == false) {
+            this.detectMenu = !this.detectMenu;
+            action.iconClass = 'fa fa-star-o';
+            allFavorite = false;
+          }
+          if (object.favourite == true) {
+            this.detectMenu = !this.detectMenu;
+            action.iconClass = 'fa fa-star';
             allFavorite = false;
           }
         }
       });
-    }
-    if (allFavorite) this.actionsMenu.favourite.iconClass = 'fa fa-star'
-    Object.keys(this.actionsMenu).map((action: any) => permissonValidateFavourites(this.actionsMenu[action], objects));
+    };
+    if (allFavorite) this.actionsMenu.favourite.iconClass = 'fa fa-star';
+    Object.keys(this.actionsMenu).map((action: any) =>
+      permissonValidateFavourites(this.actionsMenu[action], objects)
+    );
     // After All
     this.disableDropDown = true;
-    for(let key of Object.keys(this.actionsMenu)) {
-      if (this.actionsMenu[key].inDropDown && this.actionsMenu[key].show) this.disableDropDown = false;
+    for (let key of Object.keys(this.actionsMenu)) {
+      if (this.actionsMenu[key].inDropDown && this.actionsMenu[key].show)
+        this.disableDropDown = false;
     }
   }
 
   ngOnDestroy() {
-    if (this.destroySubject) {this.destroySubject.next(''); this.destroySubject.unsubscribe();}
+    if (this.destroySubject) {
+      this.destroySubject.next('');
+      this.destroySubject.unsubscribe();
+    }
   }
 
   ngOnChanges(e: any) {
@@ -238,8 +293,7 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
 
   toolbarSetup(e: any) {
     // show toolbar or not, toolbar top only
-    // console.log(e)
-    if(this.selectedObjects.length < 1 && this.toolbarPosition == 'top') {
+    if (this.selectedObjects.length < 1 && this.toolbarPosition == 'top') {
       this.show = false;
     } else {
       this.show = true;
@@ -248,23 +302,33 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
 
   toolbarActionsSetup(e: any) {
     // Turn on action before validate
-    Object.keys(this.actionsMenu).map((action: any) => this.actionsMenu[action].show = true);
+    Object.keys(this.actionsMenu).map(
+      (action: any) => (this.actionsMenu[action].show = true)
+    );
     this.validatePermission(this.selectedObjects);
   }
 
   stopSharing() {
     this.wthConfirm.confirm({
-      message: 'Are you sure stop share item(s). After pressing Remove, selected item(s) will disappear on this page.',
+      message:
+        'Are you sure stop share item(s). After pressing Remove, selected item(s) will disappear on this page.',
       header: 'Remove',
       accept: () => {
-        this.store.dispatch({type: note.REMOVE_SHARE_WITH_ME, payload: this.selectedObjects})
+        this.store.dispatch({
+          type: note.REMOVE_SHARE_WITH_ME,
+          payload: this.selectedObjects
+        });
       }
-    })
+    });
   }
 
   deleteOrRemove() {
-    let deleteObjects = this.selectedObjects.filter((object: any) => object.permission == 'owner');
-    let removeObjects = this.selectedObjects.filter((object: any) => object.permission !== 'owner');
+    let deleteObjects = this.selectedObjects.filter(
+      (object: any) => object.permission == 'owner'
+    );
+    let removeObjects = this.selectedObjects.filter(
+      (object: any) => object.permission !== 'owner'
+    );
     if (deleteObjects.length > 0) {
       this.commonEventService.broadcast({
         channel: 'noteActionsBar',
@@ -278,7 +342,10 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
       });
     }
     if (removeObjects.length > 0) {
-      this.store.dispatch({type: note.REMOVE_SHARE_WITH_ME, payload: removeObjects});
+      this.store.dispatch({
+        type: note.REMOVE_SHARE_WITH_ME,
+        payload: removeObjects
+      });
     }
   }
 
@@ -316,10 +383,13 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
     if (this.selectedObjects.length > 0) {
       let selectedObject = this.selectedObjects[0];
       switch (selectedObject.object_type) {
-        case 'note':
-          this.noteService.modalEvent({action: 'note:open_note_edit_modal', payload: selectedObject});
+        case 'Note::Note':
+          this.noteService.modalEvent({
+            action: 'note:open_note_edit_modal',
+            payload: selectedObject
+          });
           break;
-        case 'folder':
+        case 'Note::Folder':
           this.commonEventService.broadcast({
             channel: 'noteActionsBar',
             action: 'note:folder:edit',
@@ -332,13 +402,20 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
 
   findFolder() {
     let obj: any = this.selectedObjects[0];
-    let parentPath: string = (obj.permission == 'owner') ? '/my-note' : '/shared-with-me';
-    let path: string = obj.parent_id ? `${parentPath}/folders/${obj.parent_id}` : parentPath;
+    let parentPath: string =
+      obj.permission == 'owner' ? '/my-note' : '/shared-with-me';
+    let path: string = obj.parent_id
+      ? `${parentPath}/folders/${obj.parent_id}`
+      : parentPath;
     this.store.dispatch({
       type: note.SELECT_ONE,
       payload: obj
     });
-    this.commonEventService.broadcast({channel: 'noteLeftMenu', action: 'expanded', payload: []});
+    this.commonEventService.broadcast({
+      channel: 'noteLeftMenu',
+      action: 'expanded',
+      payload: []
+    });
     this.router.navigate([path]);
   }
 
@@ -359,11 +436,15 @@ export class ZNoteSharedActionBarComponent implements OnInit, OnChanges, OnDestr
   }
 
   favourite() {
-    let cb: any = () => {this.validatePermission(this.selectedObjects)}
     this.commonEventService.broadcast({
       channel: 'noteActionsBar',
       action: 'note:mixed_entity:favourite',
-      payload: {objects: this.selectedObjects, callback: cb}
+      payload: { objects: this.selectedObjects }
+    });
+    // hard code to change
+    this.selectedObjects = this.selectedObjects.map(o => {
+      o.favourite = !o.favourite;
+      return o;
     });
   }
 }

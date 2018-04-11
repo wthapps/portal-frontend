@@ -1,5 +1,11 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, OnDestroy, HostListener,
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  HostListener,
   ChangeDetectionStrategy
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -12,13 +18,12 @@ import { Constants } from '@shared/constant/config/constants';
 import { ZNoteService } from '../../services/note.service';
 import * as fromRoot from '../../reducers/index';
 import * as note from '../../actions/note';
-import { NoteConstants, noteConstants } from "../../config/constants";
+import { NoteConstants, noteConstants } from '../../config/constants';
 import { UserService } from '@wth/shared/services';
-
 
 @Component({
   selector: 'note-item',
-  templateUrl: 'note-item.component.html',
+  templateUrl: 'note-item.component.html'
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteItemComponent implements OnInit, OnDestroy {
@@ -35,27 +40,28 @@ export class NoteItemComponent implements OnInit, OnDestroy {
   selected: boolean = false;
   sub: Subscription;
 
-
-  constructor(public userService: UserService,
-              private noteService: ZNoteService,
-              private store: Store<fromRoot.State>,
-              private router: Router) {
-  }
-
+  constructor(
+    public userService: UserService,
+    private noteService: ZNoteService,
+    private store: Store<fromRoot.State>,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.sub = this.store.select(fromRoot.getSelectedObjects).subscribe((objects: any[]) => {
-      let sel: boolean = false;
-      for (let o of objects) {
-        if (o && o.object_type == 'note' && o.id == this.data.id) sel = true;
-      }
-      this.selected = sel;
-    });
+    this.sub = this.store
+      .select(fromRoot.getSelectedObjects)
+      .subscribe((objects: any[]) => {
+        let sel: boolean = false;
+        for (let o of objects) {
+          if (o && o.object_type == 'Note::Note' && o.id == this.data.id)
+            sel = true;
+        }
+        this.selected = sel;
+      });
   }
 
   ngOnDestroy() {
-    if(this.sub && !this.sub.closed)
-      this.sub.unsubscribe();
+    if (this.sub && !this.sub.closed) this.sub.unsubscribe();
   }
 
   onSelected() {
@@ -80,7 +86,9 @@ export class NoteItemComponent implements OnInit, OnDestroy {
   }
 
   onView() {
-    this.router.navigate([{outlets: {detail: ['notes', this.data.id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
+    this.router.navigate([{ outlets: { detail: ['notes', this.data.id] } }], {
+      queryParamsHandling: 'preserve',
+      preserveFragment: true
+    });
   }
-
 }

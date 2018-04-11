@@ -14,7 +14,7 @@
       <i class="fa fa-ellipsis-v"></i>
     </button>
     <ul class="dropdown-menu dropdown-menu-right text-right">
-      <ng-template ngFor let-menu [ngForOf]="actionsMenu | mapToIterable">
+      <ng-template ngFor let-menu [ngForOf]="actionsMenu | mapToIterable: detectMenu">
         <li *ngIf="menu.val.show && menu.val.inDropDown">
           <a tabindex="-1" href="javascript:;"
           (click)="menu.val.action()">{{menu.val.title}}</a>

@@ -20,6 +20,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '@wth/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from '@wth/shared/modals/modals.module';
+import { StoreModule } from '@ngrx/store';
+import { ChatStore } from '@chat/shared/chat-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '@env/environment';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
@@ -43,8 +47,13 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
     ModalModule,
     ZChatSharedModule.forRoot(),
+    SharedServicesModule.forRoot(),
+    StoreModule.forRoot(ChatStore),
     SharedModule.forRoot(),
-    SharedServicesModule.forRoot()
+
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+      : []
   ],
   declarations: [AppComponent],
   providers: [

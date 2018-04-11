@@ -78,7 +78,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   buttonControl: string = '';
 
   form: FormGroup;
-  title: AbstractControl;
+  name: AbstractControl;
   content: AbstractControl;
   tags: AbstractControl;
   attachments: AbstractControl;
@@ -632,13 +632,13 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
   assignFormValue(data?: Note) {
     this.form = this.fb.group({
-      title: [_.get(data, 'title', '')],
+      name: [_.get(data, 'name', '')],
       // 'content': [_.get(data, 'content', ''), Validators.compose([Validators.required])],
       tags: [_.get(data, 'tags', [])],
       attachments: [_.get(data, 'attachments', [])]
     });
 
-    this.title = this.form.controls['title'];
+    this.name = this.form.controls['name'];
     // this.content = this.form.get('content');
     this.tags = this.form.controls['tags'];
     this.attachments = this.form.controls['attachments'];
@@ -646,12 +646,11 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   updateFormValue(data: Note) {
-    this.form.controls['title'].setValue(_.get(data, 'title', ''));
-    // this.form.controls['content'].setValue(_.get(data, 'title', ''));
+    this.form.controls['name'].setValue(_.get(data, 'name', ''));
     this.form.controls['tags'].setValue(_.get(data, 'tags', []));
     this.form.controls['attachments'].setValue(_.get(data, 'attachments', []));
 
-    this.title = this.form.controls['title'];
+    this.name = this.form.controls['name'];
     // this.content = this.form.get('content');
     this.tags = this.form.controls['tags'];
     this.attachments = this.form.controls['attachments'];
@@ -738,7 +737,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
   onSubmit(value: any) {
     if (
-      value.title.length > 0 ||
+      value.name.length > 0 ||
       value.tags.length > 0 ||
       value.attachments.length > 0 ||
       (this.editorElement.innerHTML.length > 0 &&
@@ -802,7 +801,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   download(file: any) {
-    console.log('downloading:::');
     this.apiBaseService
       .download('common/files/download', {
         id: file.id,

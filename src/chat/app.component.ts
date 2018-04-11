@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.chatService.subscribeNotification();
+    this.chatService.initalize();
 
     this.routerSubscription = this.router.events
       .filter(event => event instanceof NavigationEnd)

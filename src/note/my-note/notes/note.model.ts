@@ -1,7 +1,6 @@
 import { BaseEntity } from '@shared/shared/models/base-entity.model';
 class Note extends BaseEntity {
-
-  title: string;
+  name: string;
   content: string;
   tags: Array<any>;
   attachments: Array<any>;
@@ -11,8 +10,7 @@ class Note extends BaseEntity {
   folder_id: number;
   permission: string;
 
-
-  constructor(attributes: any={}) {
+  constructor(attributes: any = {}) {
     super(attributes);
   }
 }
