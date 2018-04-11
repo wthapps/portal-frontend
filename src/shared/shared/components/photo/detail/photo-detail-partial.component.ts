@@ -34,8 +34,8 @@ declare let _: any;
   encapsulation: ViewEncapsulation.None,
   entryComponents: [
     SharingModalComponent,
-    PhotoEditModalComponent,
-    AddToAlbumModalComponent,
+    // PhotoEditModalComponent,
+    // AddToAlbumModalComponent,
     TaggingModalComponent
   ]
 })

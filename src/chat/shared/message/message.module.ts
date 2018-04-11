@@ -11,11 +11,13 @@ import { MessageItemActionComponent } from './messages/message-actions-item.comp
 import { SharedModule } from '@wth/shared/shared.module';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
+import { ChatNoteListModalComponent } from '@chat/shared/modal/note-list/note-list-modal.component';
 
 @NgModule({
   imports: [
-    CommonModule,
     MiniEditorModule,
+    ChatNoteListModule,
     SharedModule.forRoot(),
     SharedServicesModule.forRoot()
   ],
@@ -27,6 +29,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     ZChatShareUserIconComponent,
     MessageItemActionComponent,
     MessageItemSimpleComponent,
+    ChatNoteListModalComponent,
     MessageItemComponent
   ],
   exports: [
