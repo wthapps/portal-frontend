@@ -6,3 +6,4 @@ interface NodeModule {
 
 declare var _: any;
 declare var $: any;
+declare var gapi: any;

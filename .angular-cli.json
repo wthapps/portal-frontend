@@ -261,7 +261,7 @@
       }
     },
     {
-      "name": "contact",
+      "name": "contact0",
       "root": "src",
       "outDir": "dist/contact",
       "appRoot": ".",
@@ -294,7 +294,7 @@
       }
     },
     {
-      "name": "contact2",
+      "name": "contact",
       "root": "src/contact",
       "outDir": "dist/contact",
       "assets": [
@@ -303,7 +303,9 @@
           "input": "../assets/",
           "output": "./assets/",
           "allowOutsideOutDir": true
-        }],
+        },
+        "manifest.json"
+      ],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",

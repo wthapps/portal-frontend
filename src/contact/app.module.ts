@@ -23,7 +23,6 @@ import { environment } from '@env/environment';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     BrowserAnimationsModule,
     HttpClientModule,
 
@@ -41,6 +40,7 @@ import { environment } from '@env/environment';
     WthCommonModule,
     SharedServicesModule.forRoot(),
     CoreModule.forRoot()
+    // ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
   ],
   providers: [
     {
