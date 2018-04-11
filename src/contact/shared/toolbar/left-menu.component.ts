@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Group } from '@contacts/group/group.model';
 import { GroupService } from '@contacts/group/group.service';
@@ -27,6 +27,7 @@ export class ZContactSharedLeftMenuComponent implements OnInit, OnDestroy {
               public contactService: ZContactService,
               private wthConfirmService: WthConfirmService,
               private apiBaseService: ApiBaseService,
+              private renderer: Renderer2,
               private commonEventService: CommonEventService) {
     this.groupService.groups$
       .takeUntil(this.destroySubject)
@@ -52,8 +53,11 @@ export class ZContactSharedLeftMenuComponent implements OnInit, OnDestroy {
   }
 
   doEvent(event: any) {
-    this.commonEventService.broadcast({channel: 'contactCommonEvent', action: event.action, payload: event.payload});
-    this.commonEventService.broadcast({channel: 'menuCommonEvent', action: event.action, payload: event.payload});
+    this.renderer.removeClass(document.body, 'left-sidebar-open');
+    if (event) {
+      this.commonEventService.broadcast({channel: 'contactCommonEvent', action: event.action, payload: event.payload});
+      this.commonEventService.broadcast({channel: 'menuCommonEvent', action: event.action, payload: event.payload});
+    }
   }
 
   deleteGroup(group: any) {

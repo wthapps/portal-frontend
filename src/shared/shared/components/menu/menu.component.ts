@@ -11,7 +11,7 @@ import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { WthConfirmService } from '../confirmation/wth-confirm.service';
 import { CommonEventService } from '../../../../shared/services';
-import { NotificationService } from "@shared/services/notification.service";
+import { NotificationService } from '@shared/services/notification.service';
 
 
 declare var $: any;

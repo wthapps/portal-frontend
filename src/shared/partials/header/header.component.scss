@@ -38,7 +38,9 @@
     }
 
     .navbar-searchTop {
-      width: 400px;
+      @media (min-width: $screen-sm-min) {
+        width: 400px;
+      }
     }
 
     &.header-nav-xs-show-search {

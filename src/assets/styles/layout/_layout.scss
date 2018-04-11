@@ -71,7 +71,6 @@
       margin-top: $page-body-control-height;
     }
 
-
     &.has-page-body-sidebar {
       margin-left: $main-page-left-sm;
       @media (min-width: $screen-md-min) {
@@ -117,6 +116,15 @@
 
 .page-body-control-nav {
   float: left;
+
+  h4 {
+    margin: 0;
+    line-height: 34px;
+    @media (min-width: $screen-sm-min) {
+      font-size: 24px;
+    }
+  }
+
   .page-body-control-menu {
     margin: 0;
     padding: 0;

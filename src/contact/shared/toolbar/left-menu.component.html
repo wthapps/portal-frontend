@@ -33,7 +33,7 @@
   </a>
 </div>
 <div class="menuleft-item" [routerLinkActive]="['active']">
-  <a [routerLink]="['/settings']" href="#">
+  <a [routerLink]="['/settings']" (click)="doEvent(null)" href="#">
     <i class="fa fa fa-cog"></i> Settings
   </a>
 </div>
