@@ -1,11 +1,11 @@
 <div *ngIf="data" class="component-listbox-row"
-     [ngClass]="{'item-folder': data.object_type == 'folder', 'active': selected}">
+     [ngClass]="{'item-folder': data.object_type == 'Note::Folder', 'active': selected}">
   <div class="component-listbox-input">
     <i (click)="onClickMulti()" class="fa fa-check"></i>
   </div>
   <div class="component-listbox-name can-click" (click)="onClick()" (dblclick)="onView()">
     <span>
-      <i class="fa" [ngClass]="{'fa-folder-o': data.object_type == 'folder', 'fa-file': data.object_type == 'note'}"></i> {{ data.title || 'Untitled' }}
+      <i class="fa" [ngClass]="{'fa-folder-o': data.object_type == 'Note::Folder', 'fa-file': data.object_type == 'Note::Note'}"></i> {{ data.name || 'Untitled' }}
     </span>
   </div>
   <div class="component-listbox-owner can-click" (click)="onClick()" (dblclick)="onView()">

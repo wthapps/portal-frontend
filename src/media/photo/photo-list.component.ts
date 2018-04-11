@@ -1,22 +1,34 @@
 import { Component, ViewChild, OnInit, ComponentFactoryResolver } from '@angular/core';
-import { UserService } from '@wth/shared/services';
-// import { PhotoSandbox } from './photo.sandbox';
+import { Router } from '@angular/router';
+
 
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import * as appStore from '../shared/store';
-import * as fromMedia from '../shared/store/album/album.action';
-import { Router } from '@angular/router';
+import {
+  Select,
+  SelectAll,
+  Deselect,
+  DeselectAll,
+  GetAll,
+  GetMore,
+  Favorite,
+  Update,
+  AddSuccess,
+  DeleteMany
+} from '../shared/store/media/media.actions';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import { Constants } from '@wth/shared/constant';
 import { DynamicModal } from '@media/shared/modal/dynamic-modal';
-import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/shared/modal';
-import { BaseObjectEditNameModalComponent } from '@wth/shared/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { AlbumEditModalComponent } from '@shared/shared/components/photo/modal/album-edit-modal.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import {
+  AlbumCreateModalComponent
+} from '@media/shared/modal';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 
 declare var _: any;
 
@@ -25,13 +37,12 @@ declare var _: any;
   selector: 'me-photo-list',
   templateUrl: 'photo-list.component.html',
   entryComponents: [
-    AlbumCreateModalComponent,
-    BaseObjectEditNameModalComponent,
+    MediaRenameModalComponent,
     SharingModalComponent,
     TaggingModalComponent,
-    AlbumDeleteModalComponent,
-    AlbumEditModalComponent,
-    AddToAlbumModalComponent
+    AlbumCreateModalComponent,
+    AddToAlbumModalComponent,
+    PhotoEditModalComponent
   ]
 })
 export class ZMediaPhotoListComponent extends DynamicModal implements OnInit {
@@ -64,34 +75,25 @@ export class ZMediaPhotoListComponent extends DynamicModal implements OnInit {
 
     switch (event.action) {
       case 'getAll':
-        this.store.dispatch(
-          new fromMedia.GetAll({ ...event.payload})
-        );
+        this.store.dispatch(new GetAll({...event.payload}));
         break;
       case 'getMore':
-        this.store.dispatch(
-          new fromMedia.GetMore({ ...event.payload})
-        );
+        this.store.dispatch(new GetMore({...event.payload}));
         break;
       case 'sort':
-        this.store.dispatch(new fromMedia.GetAll({
-          ...event.payload}));
+        this.store.dispatch(new GetAll({...event.payload}));
         break;
       case 'select':
-        this.store.dispatch(new fromMedia.Select(event.payload));
+        this.store.dispatch(new Select(event.payload));
         break;
       case 'selectAll':
-        this.store.dispatch(new fromMedia.SelectAll());
+        this.store.dispatch(new SelectAll());
         break;
       case 'deselect':
-        this.store.dispatch(
-          new fromMedia.Deselect({
-            selectedObjects: event.payload.selectedObjects
-          })
-        );
+        this.store.dispatch(new Deselect({selectedObjects: event.payload.selectedObjects}));
         break;
       case 'deselectAll':
-        this.store.dispatch(new fromMedia.DeselectAll());
+        this.store.dispatch(new DeselectAll());
         break;
       case 'openModal':
         this.openModal(event.payload);
@@ -100,10 +102,10 @@ export class ZMediaPhotoListComponent extends DynamicModal implements OnInit {
         this.mediaUploaderDataService.onShowUp();
         break;
       case 'addAlbumSuccessful':
-        this.store.dispatch(new fromMedia.AddSuccess(event.payload));
+        this.store.dispatch(new AddSuccess(event.payload));
         break;
       case 'favourite':
-        this.store.dispatch(new fromMedia.Favorite(event.payload));
+        this.store.dispatch(new Favorite(event.payload));
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);
@@ -113,7 +115,7 @@ export class ZMediaPhotoListComponent extends DynamicModal implements OnInit {
         break;
       case 'editName':
       case 'editInfo':
-        this.store.dispatch(new fromMedia.Update(event.params.selectedObject));
+        this.store.dispatch(new Update(event.params.selectedObject));
         break;
       case 'deleteMedia':
         this.confirmService.confirm({
@@ -121,7 +123,7 @@ export class ZMediaPhotoListComponent extends DynamicModal implements OnInit {
           acceptLabel: 'Delete',
           message: `Are you sure to delete ${event.payload.selectedObjects.length} photos`,
           accept: () => {
-            this.store.dispatch(new fromMedia.DeleteMany({...event.payload}));
+            this.store.dispatch(new DeleteMany({...event.payload}));
           }});
         break;
     }

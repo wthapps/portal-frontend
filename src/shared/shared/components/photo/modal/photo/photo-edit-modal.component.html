@@ -1,6 +1,6 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
   <bs-modal-header [showDismiss]="true">
-    <h4 class="modal-title"><i class="fa fa-info-circle"></i> Information</h4>
+    <h4 class="modal-title">Edit photo</h4>
   </bs-modal-header>
   <form [formGroup]="form" novalidate>
     <bs-modal-body>
@@ -20,7 +20,7 @@
         <div class="col-sm-4">
           <label>Date Created</label>
           <div>
-            <p-calendar class="input-block" formControlName="date"></p-calendar>
+            <p-calendar class="input-block" inputStyleClass="form-control" formControlName="date"></p-calendar>
           </div>
         </div>
       </div>

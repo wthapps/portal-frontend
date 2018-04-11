@@ -2,8 +2,7 @@ import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit } from
 import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Constants } from '../../../../constant/config/constants';
-import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
+import { Constants } from '@wth/shared/constant';
 
 declare var $: any;
 declare var _: any;
@@ -40,11 +39,11 @@ export class AlbumEditModalComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    $(document).on('hide.bs.modal', '.modal',() => {
-      if ($('.modal:visible').length) {
-        $(document.body).addClass('modal-open');
-      }
-    });
+    // $(document).on('hide.bs.modal', '.modal',() => {
+    //   if ($('.modal:visible').length) {
+    //     $(document.body).addClass('modal-open');
+    //   }
+    // });
   }
 
   open(options?: any) {

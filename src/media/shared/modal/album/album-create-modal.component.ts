@@ -5,10 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
-import { TaggingElComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-el.component';
 import { ApiBaseService } from '@wth/shared/services';
+import { TaggingElComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-el.component';
 import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
-
 
 
 declare var $: any;

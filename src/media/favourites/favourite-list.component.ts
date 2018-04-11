@@ -6,14 +6,42 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
 import * as appStore from '../shared/store';
-import * as fromAlbum from '../shared/store/album/album.action';
+import {
+  Select,
+  SelectAll,
+  Deselect,
+  DeselectAll,
+  GetAll,
+  GetMore,
+  Favorite,
+  Update,
+  AddSuccess,
+  DeleteMany
+} from '../shared/store/media/media.actions';
 import { DynamicModal } from '@media/shared/modal/dynamic-modal';
+
+import {
+  AlbumEditModalComponent,
+} from '@media/shared/modal';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 
 @Component({
   moduleId: module.id,
-  selector: 'me-favourites-list',
-  templateUrl: 'favourites-list.component.html'
+  selector: 'me-favourite-list',
+  templateUrl: 'favourite-list.component.html',
+  entryComponents: [
+    MediaRenameModalComponent,
+    SharingModalComponent,
+    TaggingModalComponent,
+    AlbumEditModalComponent,
+    PhotoEditModalComponent,
+    AddToAlbumModalComponent
+  ]
 })
 export class ZMediaFavoriteListComponent extends DynamicModal implements OnInit {
   favoriteObjects$: Observable<any>;
@@ -39,38 +67,27 @@ export class ZMediaFavoriteListComponent extends DynamicModal implements OnInit 
   }
 
   doEvent(event: any) {
-    console.log('event actions:::', event.action, event.payload);
-
     switch (event.action) {
       case 'getAll':
-        this.store.dispatch(
-          new fromAlbum.GetAll({ ...event.payload})
-        );
+        this.store.dispatch(new GetAll({...event.payload}));
         break;
       case 'getMore':
-        this.store.dispatch(
-          new fromAlbum.GetMore({ ...event.payload})
-        );
+        this.store.dispatch(new GetMore({...event.payload}));
         break;
       case 'sort':
-        this.store.dispatch(new fromAlbum.GetAll({
-          ...event.payload}));
+        this.store.dispatch(new GetAll({...event.payload}));
         break;
       case 'select':
-        this.store.dispatch(new fromAlbum.Select(event.payload));
+        this.store.dispatch(new Select(event.payload));
         break;
       case 'selectAll':
-        this.store.dispatch(new fromAlbum.SelectAll());
+        this.store.dispatch(new SelectAll());
         break;
       case 'deselect':
-        this.store.dispatch(
-          new fromAlbum.Deselect({
-            selectedObjects: event.payload.selectedObjects
-          })
-        );
+        this.store.dispatch(new Deselect({selectedObjects: event.payload.selectedObjects}));
         break;
       case 'deselectAll':
-        this.store.dispatch(new fromAlbum.DeselectAll());
+        this.store.dispatch(new DeselectAll());
         break;
       case 'openModal':
         this.openModal(event.payload);
@@ -79,20 +96,20 @@ export class ZMediaFavoriteListComponent extends DynamicModal implements OnInit 
         this.mediaUploaderDataService.onShowUp();
         break;
       case 'addAlbumSuccessful':
-        this.store.dispatch(new fromAlbum.AddSuccess(event.payload));
+        this.store.dispatch(new AddSuccess(event.payload));
         break;
       case 'favourite':
-        this.store.dispatch(new fromAlbum.Favorite(event.payload));
+        this.store.dispatch(new Favorite(event.payload));
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);
         break;
       case 'editName':
       case 'editInfo':
-        this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
+        this.store.dispatch(new Update(event.params.selectedObject));
         break;
       case 'deleteMedia':
-        this.store.dispatch(new fromAlbum.DeleteMany({ ...event.payload }));
+        this.store.dispatch(new DeleteMany({...event.payload }));
         break;
     }
   }

@@ -8,10 +8,10 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Constants } from '@shared/constant/config/constants';
-import { ZMediaSharingService } from '@shared/shared/components/photo/modal/sharing/sharing.service';
 import { Store } from '@ngrx/store';
 import * as fromShareModal from '../../reducers/share-modal';
 import { AutoComplete } from 'primeng/primeng';
+import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 
 declare var $: any;
@@ -52,7 +52,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   constructor(private commonEventService: CommonEventService,
               private apiBaseService: ApiBaseService,
               private store: Store<any>,
-              private mediaSharingService: ZMediaSharingService) {
+              private mediaSharingService: SharingService) {
     this.subscription = store.select('share').subscribe((state: any) => {
       this.selectedContacts = state.current.selectedContacts;
       this.sharedSharings = state.current.sharedSharings;

@@ -4,14 +4,28 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PhotoService, UserService } from '@wth/shared/services';
 import { BasePhotoDetailComponent } from '@wth/shared/shared/components/photo/detail/base-photo-detail.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { ZMediaSharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
+import {
+  AlbumCreateModalComponent
+} from '@media/shared/modal';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 @Component({
   selector: 'photo-detail',
   templateUrl: 'photo-detail.component.html',
   styleUrls: ['photo-detail.component.scss'],
-  entryComponents: []
+  entryComponents: [
+    MediaRenameModalComponent,
+    SharingModalComponent,
+    TaggingModalComponent,
+    AlbumCreateModalComponent,
+    AddToAlbumModalComponent,
+    PhotoEditModalComponent]
 })
 export class PhotoDetailComponent extends BasePhotoDetailComponent {
   constructor(
@@ -21,7 +35,7 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent {
     protected loadingService: LoadingService,
     protected photoService: PhotoService,
     protected userService: UserService,
-    protected sharingService: ZMediaSharingService
+    protected sharingService: SharingService
   ) {
     super(
       route,

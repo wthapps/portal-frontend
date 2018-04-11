@@ -1,50 +1,56 @@
 import { Action }   from '@ngrx/store';
 
 export const ActionTypes = {
-  GET:                  '[Album] Get',
-  GET_SUCCESS:          '[Album] Get Success',
-  GET_FAIL:             '[Album] Get Fail',
-  GET_ALL:              '[Album] Get All',
-  GET_ALL_SUCCESS:      '[Album] Get All Success',
-  GET_MORE:             '[Album] Get More',
-  GET_MORE_SUCCESS:     '[Album] Get More Success',
-  GET_ALL_FAIL:         '[Album] Get All',
-  SELECT:               '[Album] Select',
-  SELECT_ALL:           '[Album] Select All',
-  DESELECT:             '[Album] Deselect',
-  DESELECT_ALL:         '[Album] Deselect All',
-  FAVORITE_SUCCESS:     '[Album] Favorite Success',
-  ADD:                  '[Album] Add',
-  ADD_SUCCESS:          '[Album] Add Success',
-  ADD_FAIL:             '[Album] Add Fail',
-  ADD_MANY:             '[Album] Add Many',
-  ADD_MANY_SUCCESS:     '[Album] Add Many Success',
-  ADD_MANY_FAIL:        '[Album] Add Many Fail',
-  ADD_TO_DETAIL_OBJECTS: '[Album] Add To Detail Objects',
-  ADD_TO_DETAIL_OBJECTS_SUCCESS:     '[Album] Add To Detail Objects Success',
-  REMOVE_FROM_DETAIL_OBJECTS:     '[Album] Remove From Detail Objects',
-  REMOVE_FROM_DETAIL_OBJECTS_SUCCESS:     '[Album] Remove From Detail Objects Success',
-  UPDATE:               '[Album] Update',
-  UPDATE_SUCCESS:       '[Album] Update Success',
-  UPDATE_FAIL:          '[Album] Update Fail',
-  UPDATE_MANY:          '[Album] Update Many',
-  UPDATE_MANY_SUCCESS:  '[Album] Update Many Success',
-  UPDATE_MANY_FAIL:     '[Album] Update Many Fail',
-  DELETE:               '[Album] Delete',
-  DELETE_SUCCESS:       '[Album] Delete Success',
-  DELETE_FAIL:          '[Album] Delete Fail',
-  DELETE_MANY:          '[Album] Delete Many',
-  DELETE_MANY_SUCCESS:  '[Album] Delete Many Success',
-  DELETE_MANY_FAIL:     '[Album] Delete Many Fail',
-  DOWNLOAD:             '[Album] Download',
-  FAVORITE:             '[Album] Favorite',
-  GET_ALL_FAVORITE:     '[Album] Get All Favorite',
+  GET:                  '[Media] Get',
+  GET_SUCCESS:          '[Media] Get Success',
+  GET_FAIL:             '[Media] Get Fail',
+  SEARCH:               '[Media] Get Search',
+  GET_ALL:              '[Media] Get All',
+  GET_ALL_SUCCESS:      '[Media] Get All Success',
+  GET_MORE:             '[Media] Get More',
+  GET_MORE_SUCCESS:     '[Media] Get More Success',
+  GET_ALL_FAIL:         '[Media] Get All',
+  SELECT:               '[Media] Select',
+  SELECT_ALL:           '[Media] Select All',
+  DESELECT:             '[Media] Deselect',
+  DESELECT_ALL:         '[Media] Deselect All',
+  FAVORITE_SUCCESS:     '[Media] Favorite Success',
+  ADD:                  '[Media] Add',
+  ADD_SUCCESS:          '[Media] Add Success',
+  ADD_FAIL:             '[Media] Add Fail',
+  ADD_MANY:             '[Media] Add Many',
+  ADD_MANY_SUCCESS:     '[Media] Add Many Success',
+  ADD_MANY_FAIL:        '[Media] Add Many Fail',
+  ADD_TO_DETAIL_OBJECTS: '[Media] Add To Detail Objects',
+  ADD_TO_DETAIL_OBJECTS_SUCCESS:     '[Media] Add To Detail Objects Success',
+  REMOVE_FROM_DETAIL_OBJECTS:     '[Media] Remove From Detail Objects',
+  REMOVE_FROM_DETAIL_OBJECTS_SUCCESS:     '[Media] Remove From Detail Objects Success',
+  UPDATE:               '[Media] Update',
+  UPDATE_SUCCESS:       '[Media] Update Success',
+  UPDATE_FAIL:          '[Media] Update Fail',
+  UPDATE_MANY:          '[Media] Update Many',
+  UPDATE_MANY_SUCCESS:  '[Media] Update Many Success',
+  UPDATE_MANY_FAIL:     '[Media] Update Many Fail',
+  DELETE:               '[Media] Delete',
+  DELETE_SUCCESS:       '[Media] Delete Success',
+  DELETE_FAIL:          '[Media] Delete Fail',
+  DELETE_MANY:          '[Media] Delete Many',
+  DELETE_MANY_SUCCESS:  '[Media] Delete Many Success',
+  DELETE_MANY_FAIL:     '[Media] Delete Many Fail',
+  DOWNLOAD:             '[Media] Download',
+  FAVORITE:             '[Media] Favorite',
+  GET_ALL_FAVORITE:     '[Media] Get All Favorite',
 
 };
 
 /**
- * Album Actions
+ * Media Actions
  */
+export class Search implements Action {
+  type = ActionTypes.SEARCH;
+  constructor(public payload: any = null) { }
+}
+
 export class GetAll implements Action {
   type = ActionTypes.GET_ALL;
   constructor(public payload: any = {objectType: 'all', detail: false, object: null, query: null }) { }
@@ -217,6 +223,7 @@ export type Actions
   = Get
   | GetSuccess
   | GetFail
+  | Search
   | GetAll
   | GetAllSuccess
   | GetAllFail

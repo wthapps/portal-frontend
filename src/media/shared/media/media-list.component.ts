@@ -4,7 +4,6 @@ import {
   Output,
   EventEmitter,
   AfterViewInit,
-  OnInit,
   HostListener,
   ComponentFactoryResolver,
   OnDestroy,
@@ -19,19 +18,22 @@ import 'rxjs/add/operator/takeUntil';
 
 
 import { MediaObjectService } from '../container/media-object.service';
-import { AlbumService } from '../services/album.service';
+import { AlbumService } from '../service/album.service';
 import { ZMediaStore } from '../store/media.store';
-import { BaseObjectEditNameModalComponent } from '@wth/shared/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo-edit-modal.component';
 import { PhotoDetailPartialComponent } from '@wth/shared/shared/components/photo/detail/photo-detail-partial.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { SharingModalComponent } from '@shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService, PhotoService } from '@shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
-import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/shared/modal';
-import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
+import {
+  AlbumCreateModalComponent,
+  AlbumDeleteModalComponent,
+  AlbumEditModalComponent
+} from '@media/shared/modal';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 
 declare var _: any;
 declare var $: any;
@@ -46,7 +48,7 @@ declare var $: any;
     MediaObjectService
   ],
   entryComponents: [
-    BaseObjectEditNameModalComponent,
+    MediaRenameModalComponent,
     PhotoEditModalComponent,
     AlbumCreateModalComponent,
     AlbumEditModalComponent,

@@ -1,10 +1,15 @@
 import { ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
-import { AlbumCreateModalComponent, AlbumDeleteModalComponent } from '@media/shared/modal';
-import { BaseObjectEditNameModalComponent } from '@wth/shared/shared/components/photo/modal/base-object-edit-name-modal.component';
+import {
+  AlbumCreateModalComponent,
+  AlbumDeleteModalComponent,
+  AlbumEditModalComponent,
+} from '@media/shared/modal';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+
 
 export class DynamicModal {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
@@ -34,7 +39,7 @@ export class DynamicModal {
         options = {selectedObjects: []};
         break;
       case 'editNameModal':
-        this.loadModalComponent(BaseObjectEditNameModalComponent);
+        this.loadModalComponent(MediaRenameModalComponent);
         options = {selectedObject: payload.selectedObject};
         break;
       case 'sharingModal':
@@ -46,7 +51,11 @@ export class DynamicModal {
         options = {selectedObjects: payload.selectedObjects};
         break;
       case 'editInfoModal':
-        this.loadModalComponent(AlbumEditModalComponent);
+        if (payload.selectedObject.object_type === 'album') {
+          this.loadModalComponent(AlbumEditModalComponent);
+        } else {
+          this.loadModalComponent(PhotoEditModalComponent);
+        }
         options = {selectedObject: payload.selectedObject};
         break;
       case 'deleteModal':
@@ -64,10 +73,10 @@ export class DynamicModal {
 
         mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
           .subscribe(photos => {
-            this.doEvent({action: 'addPhotoToAlbum', payload: {photos: photos }});
+            this.doEvent({action: 'addToParent', payload: {photos: photos }});
           });
         mediaSelectionService.uploadingMedias$.subscribe((photos: any) => {
-          this.doEvent({action: 'addPhotoToAlbum', payload: {photos: photos }});
+          this.doEvent({action: 'addToParent', payload: {photos: photos }});
         });
         break;
       default:

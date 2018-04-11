@@ -13,11 +13,10 @@
         <div class="list-group">
           <a *ngFor="let s of suggestions" href="javascript:;" class="list-group-item" (click)="setText(data)">
             <span>
-              <i *ngIf="s.object_type == 'folder'" class="fa fa-folder-o"></i>
-              <i *ngIf="s.object_type == 'note'" class="fa fa-file"></i>
+              <i *ngIf="s.object_type == 'Note::Folder'" class="fa fa-folder-o"></i>
+              <i *ngIf="s.object_type == 'Note::Note'" class="fa fa-file"></i>
             </span>
-            <span *ngIf="s.object_type == 'folder'" class="avatar-name-txt"> {{ s.name }} </span>
-            <span *ngIf="s.object_type == 'note'" class="avatar-name-txt"> {{ s.title }} </span>
+            <span class="avatar-name-txt"> {{ s.name }} </span>
           </a>
         </div>
         <div class="list-group-footer">

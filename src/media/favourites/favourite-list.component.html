@@ -55,14 +55,14 @@
         <i class="fa fa-ellipsis-v"></i>
       </a>
       <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-        <!--<li *ngIf="toolbar.hasOneObject">-->
-          <!--<a (click)="toolbar.doAction({-->
-            <!--action: 'openModal',-->
-            <!--payload: {modalName: 'editInfoModal', selectedObject: toolbar.selectedObjects[0]}-->
-          <!--})" href="javascript:void(0);" draggable="false" >-->
-            <!--<i class="fa fa-edit"></i> Edit Information-->
-          <!--</a>-->
-        <!--</li>-->
+        <li *ngIf="toolbar.hasOneObject">
+          <a (click)="toolbar.doAction({
+            action: 'openModal',
+            payload: {modalName: 'editInfoModal', selectedObject: toolbar.selectedObjects[0]}
+          })" href="javascript:void(0);" draggable="false" >
+            <i class="fa fa-edit"></i> Edit Information
+          </a>
+        </li>
         <li>
           <a href="javascript:void(0);" draggable="false" [ngClass]="{'text-disable': gridlist.selectedObjects.length != 1}"
              (click)="toolbar.doAction({action: 'downloadAlbum', payload: {selectedObjects: selectedObjects}})">

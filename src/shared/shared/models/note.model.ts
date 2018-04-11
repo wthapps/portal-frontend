@@ -1,7 +1,6 @@
 import { BaseEntity } from './base-entity.model';
 export class Note extends BaseEntity {
-
-  title: string = '';
+  name: string = '';
   content: string = '';
 
   tags: Array<any> = [];
@@ -14,7 +13,7 @@ export class Note extends BaseEntity {
   permission: string;
   favourite: any;
 
-  constructor(attributes: any={}) {
+  constructor(attributes: any = {}) {
     super(attributes);
   }
 }

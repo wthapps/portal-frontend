@@ -2,17 +2,15 @@ import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnIni
 import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { WthAppsBaseModal } from '../../../interfaces/wthapps-base-modal';
-
 
 declare var $: any;
 declare var _: any;
 
 @Component({
-    selector: 'me-edit-name-modal',
-  templateUrl: 'base-object-edit-name-modal.component.html',
+  selector: 'me-rename-modal',
+  templateUrl: 'media-rename-modal.component.html'
 })
-export class BaseObjectEditNameModalComponent implements OnInit, OnChanges {
+export class MediaRenameModalComponent implements OnInit, OnChanges {
   @ViewChild('modal') modal: BsModalComponent;
 
   @Input() data: any = null;

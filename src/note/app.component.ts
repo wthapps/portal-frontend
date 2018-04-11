@@ -173,17 +173,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       // TODO move all of below services to store effect
       case 'note:mixed_entity:move_to_folder':
         let number = event.payload.length;
-        let title = '';
         if (number == 1) {
           this.store.dispatch({
             type: progressContext.SET_PROGRESS_CONTEXT,
             payload: {
               open: true,
-              textMessage: `Moving "${
-                event.payload[0].title
-                  ? event.payload[0].title
-                  : event.payload[0].name
-              }"`
+              textMessage: `Moving "${event.payload[0].name}"`
             }
           });
         }
@@ -229,11 +224,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     enableAction: true,
                     actionText: 'Find',
                     callback: callback,
-                    textMessage: `Moved "${
-                      event.payload[0].title
-                        ? event.payload[0].title
-                        : event.payload[0].name
-                    }"`
+                    textMessage: `Moved "${event.payload[0].name}"`
                   }
                 });
               }
@@ -290,11 +281,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     enableAction: true,
                     actionText: 'Find',
                     callback: callback,
-                    textMessage: `Moved "${
-                      event.payload[0].title
-                        ? event.payload[0].title
-                        : event.payload[0].name
-                    }"`
+                    textMessage: `Moved "${event.payload[0].name}"`
                   }
                 });
               }
@@ -320,11 +307,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             type: progressContext.SET_PROGRESS_CONTEXT,
             payload: {
               open: true,
-              textMessage: `Copying "${
-                event.payload[0].title
-                  ? event.payload[0].title
-                  : event.payload[0].name
-              }"`
+              textMessage: `Copying "${event.payload[0].name}"`
             }
           });
         }
@@ -354,11 +337,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                   type: progressContext.SET_PROGRESS_CONTEXT,
                   payload: {
                     open: true,
-                    textMessage: `Copied "${
-                      event.payload[0].title
-                        ? event.payload[0].title
-                        : event.payload[0].name
-                    }"`
+                    textMessage: `Copied "${event.payload[0].name}"`
                   }
                 });
               }
@@ -381,11 +360,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     enableAction: true,
                     actionText: 'Find',
                     callback: callback,
-                    textMessage: `Copied "${
-                      event.payload[0].title
-                        ? event.payload[0].title
-                        : event.payload[0].name
-                    }"`
+                    textMessage: `Copied "${event.payload[0].name}"`
                   }
                 });
               }
@@ -415,11 +390,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 type: progressContext.SET_PROGRESS_CONTEXT,
                 payload: {
                   open: true,
-                  textMessage: `Removed "${
-                    event.payload[0].title
-                      ? event.payload[0].title
-                      : event.payload[0].name
-                  }"`
+                  textMessage: `Removed "${event.payload[0].name}"`
                 }
               });
             }
@@ -449,7 +420,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           .post('note/mixed_entities/favourites', { objects: objects })
           .subscribe((res: any) => {
             this.store.dispatch(new note.MultiNotesUpdated(res.data));
-            // event.payload.callback();
             this.commonEventService.broadcast({
               action: 'note:toolbar_change',
               channel: 'noteActionsBar'
@@ -480,7 +450,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             type: progressContext.SET_PROGRESS_CONTEXT,
             payload: {
               open: true,
-              textMessage: `Exporting ${event.payload[0].title}`
+              textMessage: `Exporting ${event.payload[0].name}`
             }
           });
         }
@@ -496,7 +466,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             .download('note/notes/pdf_download/' + object.id)
             .subscribe((res: any) => {
               var blob = new Blob([res], { type: 'application/pdf' });
-              saveAs(blob, object.title + '.pdf');
+              saveAs(blob, object.name + '.pdf');
               n = n - 1;
               if (n == 0) {
                 if (number == 1) {
@@ -504,7 +474,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     type: progressContext.SET_PROGRESS_CONTEXT,
                     payload: {
                       open: true,
-                      textMessage: `Exported "${event.payload[0].title}"`
+                      textMessage: `Exported "${event.payload[0].name}"`
                     }
                   });
                 }

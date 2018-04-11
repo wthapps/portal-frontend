@@ -8,9 +8,9 @@ import 'rxjs/add/operator/map';
 import { Photo } from '../../../models/photo.model';
 import { PhotoService } from '../../../../services/photo.service';
 import { LoadingService } from '../../loading/loading.service';
-import { ZMediaSharingService } from '../modal/sharing/sharing.service';
 import { WthConfirmService } from '../../confirmation/wth-confirm.service';
 import { UserService } from '@wth/shared/services';
+import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 declare let _: any;
 declare let saveAs: any;
@@ -51,7 +51,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
               protected loadingService: LoadingService,
               protected photoService: PhotoService,
               protected userService: UserService,
-              protected sharingService?: ZMediaSharingService
+              protected sharingService?: SharingService
   ) {
     // this.router = router;
     // this.route = route;

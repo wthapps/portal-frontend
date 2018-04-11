@@ -12,29 +12,45 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { saveAs } from 'file-saver';
 
-import { AlbumService } from '../shared/services/album.service';
-import * as fromAlbum from '../shared/store/album/album.action';
+import { AlbumService } from '../shared/service/album.service';
 import * as appStore from '../shared/store';
+import {
+  Select,
+  SelectAll,
+  Deselect,
+  DeselectAll,
+  GetAll,
+  GetMore,
+  Favorite,
+  Download,
+  Update,
+  AddSuccess,
+  AddToDetailObjects,
+  RemoveFromDetailObjects
+} from '../shared/store/media/media.actions';
+
 import { Constants } from '@wth/shared/constant';
-import { BaseObjectEditNameModalComponent } from '@shared/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+
 import {
   AlbumCreateModalComponent,
-  AlbumDeleteModalComponent
+  AlbumDeleteModalComponent,
+  AlbumEditModalComponent
 } from '@media/shared/modal';
-import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { DynamicModal } from '@media/shared/modal/dynamic-modal';
+import {  } from '@media/../../shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 @Component({
-  selector: 'z-media-album-detail',
+  selector: 'me-album-detail',
   templateUrl: 'album-detail.component.html',
   styleUrls: ['album-detail.component.scss'],
   entryComponents: [
-    BaseObjectEditNameModalComponent,
+    MediaRenameModalComponent,
     TaggingModalComponent,
     SharingModalComponent,
     AlbumCreateModalComponent,
@@ -93,7 +109,7 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
       .subscribe((res: any) => {
         this.album = res.data;
         this.store.dispatch(
-          new fromAlbum.GetAll({
+          new GetAll({
             detail: this.detail,
             path: 'media/media',
             queryParams: {
@@ -110,34 +126,34 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
 
     switch (event.action) {
       case 'loadMore':
-        this.store.dispatch(new fromAlbum.GetMore({
+        this.store.dispatch(new GetMore({
           ...event.payload,
           type: 'photo',
           detail: this.detail,
           object: this.album }));
         break;
       case 'sort':
-        this.store.dispatch(new fromAlbum.GetAll({
+        this.store.dispatch(new GetAll({
           ...event.payload,
           type: 'photo',
           detail: this.detail,
           object: this.album }));
         break;
       case 'select':
-        this.store.dispatch(new fromAlbum.Select(event.payload));
+        this.store.dispatch(new Select(event.payload));
         break;
       case 'selectAll':
-        this.store.dispatch(new fromAlbum.SelectAll());
+        this.store.dispatch(new SelectAll());
         break;
       case 'deselect':
         this.store.dispatch(
-          new fromAlbum.Deselect({
+          new Deselect({
             selectedObjects: event.payload.selectedObjects
           })
         );
         break;
       case 'deselectAll':
-        this.store.dispatch(new fromAlbum.DeselectAll());
+        this.store.dispatch(new DeselectAll());
         break;
       case 'openModal':
         this.openModal(event.payload, this.mediaSelectionService);
@@ -146,10 +162,10 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
         // this.mediaUploaderDataService.onShowUp();
         break;
       case 'addAlbumSuccessful':
-        this.store.dispatch(new fromAlbum.AddSuccess(event.payload));
+        this.store.dispatch(new AddSuccess(event.payload));
         break;
       case 'favourite':
-        this.store.dispatch(new fromAlbum.Favorite(event.payload));
+        this.store.dispatch(new Favorite(event.payload));
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);
@@ -172,29 +188,28 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
         break;
       case 'editName':
       case 'editInfo':
-        this.store.dispatch(new fromAlbum.Update(event.params.selectedObject));
+        this.store.dispatch(new Update(event.params.selectedObject));
         break;
       case 'toggleDetailsInfo':
         this.showDetailsInfo = !this.showDetailsInfo;
         break;
-      case 'addPhotoToAlbum':
+      // add photos to album
+      case 'addToParent':
         this.store.dispatch(
-          new fromAlbum.AddToDetailObjects({
+          new AddToDetailObjects({
             album: this.album,
             photos: event.payload.photos
           })
         );
         break;
-      case 'removeFromAlbum':
-        this.store.dispatch(
-          new fromAlbum.RemoveFromDetailObjects(event.payload)
-        );
+      case 'removeFromParent':
+        this.store.dispatch(new RemoveFromDetailObjects(event.payload));
         break;
       case 'download':
-        this.store.dispatch(new fromAlbum.Download(event.payload));
+        this.store.dispatch(new Download(event.payload));
         break;
       case 'goBack':
-        this.router.navigate([this.returnUrl]);
+        this.router.navigateByUrl(this.returnUrl);
         break;
     }
   }

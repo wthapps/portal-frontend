@@ -17,23 +17,23 @@ import { ZMediaToolbarComponent } from './toolbar/toolbar.component';
 import { ZMediaToolbarPhotoComponent } from './toolbar/photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './toolbar/album/album.component';
 import { ZMediaToolbarAlbumDetailComponent } from './toolbar/album/album-detail.component';
-import { BaseObjectEditNameModalComponent } from './modal/base-object-edit-name-modal.component';
-import { PhotoEditModalComponent } from './modal/photo-edit-modal.component';
-import { AddToAlbumModalComponent } from './modal/add-to-album-modal.component';
-import { AlbumEditModalComponent } from './modal/album-edit-modal.component';
 import { ZMediaShareListComponent } from './list/list.component';
 import { MediaListHeaderComponent } from './list/media-list-header.component';
 import { ZMediaShareItemComponent } from './list/item/item.component';
 
 import { PhotoService } from '../../../services/photo.service';
 
-import { PartialsPhotoSharingModule } from './modal/sharing/sharing.module';
 import { SliderModule } from 'primeng/components/slider/slider';
 import { PhotoItemPreviewComponent } from './photo-item-preview.component';
-import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
 import { BasePhotoDetailComponent } from './detail/base-photo-detail.component';
 import { BoxLoadingModule } from '../box-loading/box-loading.module';
 import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
+
+import { PartialsPhotoSharingModule } from './modal/sharing/sharing.module';
+import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
+import { MediaRenameModalComponent } from './modal/media/media-rename-modal.component';
+import { PhotoEditModalComponent } from './modal/photo/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.component';
 
 
 @NgModule({
@@ -54,18 +54,20 @@ import { ImageCropperModule } from '@shared/shared/components/image-cropper/imag
     BoxLoadingModule,
     PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule,
-    ImageCropperModule
+    ImageCropperModule,
+    PartialsPhotoTaggingModule,
+    PartialsPhotoSharingModule
   ],
   declarations: [
+    MediaRenameModalComponent,
+    PhotoEditModalComponent,
+    AddToAlbumModalComponent,
+
     PhotoDetailPartialComponent,
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
     ZMediaToolbarAlbumDetailComponent,
-    BaseObjectEditNameModalComponent,
-    PhotoEditModalComponent,
-    AddToAlbumModalComponent,
-    AlbumEditModalComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
     ZMediaShareItemComponent,
@@ -73,6 +75,12 @@ import { ImageCropperModule } from '@shared/shared/components/image-cropper/imag
     BasePhotoDetailComponent
   ],
   exports: [
+    MediaRenameModalComponent,
+    PhotoEditModalComponent,
+    AddToAlbumModalComponent,
+    PartialsPhotoTaggingModule,
+    PartialsPhotoSharingModule,
+
     BoxLoadingModule,
     PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule,
@@ -82,10 +90,6 @@ import { ImageCropperModule } from '@shared/shared/components/image-cropper/imag
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
     ZMediaToolbarAlbumDetailComponent,
-    BaseObjectEditNameModalComponent,
-    PhotoEditModalComponent,
-    AddToAlbumModalComponent,
-    AlbumEditModalComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
     ZMediaShareItemComponent,

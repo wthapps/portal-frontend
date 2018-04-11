@@ -31,7 +31,7 @@
         </li>
         <!--<li><a href="#"><i class="fa fa-video-camera"></i> Upload Video</a></li>-->
         <li role="separator" class="divider"></li>
-        <li><a href="javascript:;" (click)="formEditAlbum.modal.open()"><i class="fa fa-files-o"></i> Create Album</a>
+        <li><a href="javascript:;" (click)="formAddAlbum.modal.open()"><i class="fa fa-files-o"></i> Create Album</a>
         </li>
         <!--<li><a href="#"><i class="fa fa-list-alt"></i> Create Playlist</a></li>-->
       </ul>
@@ -92,12 +92,12 @@
 </div>
 
 
-<add-to-album-modal #formAddAlbum [editAlbum]="formEditAlbum"
-                                 [selectedPhotos]="selectedPhotos"></add-to-album-modal>
-<album-edit-modal #formEditAlbum [selectedPhotos]="selectedPhotos"></album-edit-modal>
+<!--<add-to-album-modal #formAddAlbum [editAlbum]="formEditAlbum"-->
+                                 <!--[selectedPhotos]="selectedPhotos"></add-to-album-modal>-->
+<!--<album-edit-modal #formEditAlbum [selectedPhotos]="selectedPhotos"></album-edit-modal>-->
 
-<me-edit-name-modal *ngIf="type == 'photo'" #formEditName [data]="selectedPhotos[0]"></me-edit-name-modal>
-<me-edit-name-modal *ngIf="type == 'album'" #formEditName [data]="selectedAlbums[0]"></me-edit-name-modal>
+<!--<me-edit-name-modal *ngIf="type == 'photo'" #formEditName [data]="selectedPhotos[0]"></me-edit-name-modal>-->
+<!--<me-edit-name-modal *ngIf="type == 'album'" #formEditName [data]="selectedAlbums[0]"></me-edit-name-modal>-->
 
 
 <!--<me-uploader #zoneUpload (outEvent)="onAction($event)"></me-uploader>-->

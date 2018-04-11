@@ -10,10 +10,10 @@
       </div>
 
       <div class="note-editor-header-input">
-        <input *ngIf="note.permission !== 'view'" tabindex="1" autofocus (keypress)="onToEditor($event)" [formControl]="title" type="text"
+        <input *ngIf="note.permission !== 'view'" tabindex="1" autofocus (keypress)="onToEditor($event)" [formControl]="name" type="text"
                class="form-control fz18" id="note_form_title"
                placeholder="Title">
-        <h4 *ngIf="note.permission == 'view'">{{note.title}}</h4>
+        <h4 *ngIf="note.permission == 'view'">{{note.name}}</h4>
       </div>
     </div>
   </div>

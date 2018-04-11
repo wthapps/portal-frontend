@@ -1,5 +1,5 @@
-import * as actions from './album.action';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
+import * as actions from './media.actions';
 
 // extends EntityState<Partial<any>>
 export interface State  extends EntityState<any> {
@@ -18,10 +18,10 @@ export interface State  extends EntityState<any> {
   detailObjects: Array<any>;
 }
 
-export const albumAdapter: EntityAdapter<any> = createEntityAdapter<any>();
+export const mediaAdapter: EntityAdapter<any> = createEntityAdapter<any>();
 
 
-const INITIAL_STATE: State = albumAdapter.getInitialState({
+const INITIAL_STATE: State = mediaAdapter.getInitialState({
   ids: [],
   entities: [],
   loading: true,
@@ -246,7 +246,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
     }
 
     case actions.ActionTypes.ADD: {
-        return albumAdapter.addOne(action.payload.data, state);
+        return mediaAdapter.addOne(action.payload.data, state);
       }
 
     case actions.ActionTypes.ADD_SUCCESS: {
@@ -324,4 +324,4 @@ export const {
   selectEntities,
   selectAll,
   selectTotal,
-} = albumAdapter.getSelectors(getObjectState);
+} = mediaAdapter.getSelectors(getObjectState);

@@ -1,6 +1,6 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
   <bs-modal-header [showDismiss]="true">
-    <h4 class="modal-title"><i class="fa fa-info-circle"></i> Information</h4>
+    <h4 class="modal-title">Edit Album</h4>
   </bs-modal-header>
   <bs-modal-body>
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
@@ -17,7 +17,7 @@
       </div>
       <hr>
       <div class="row-img grid" *ngIf="selectedPhotos">
-        <z-media-share-list [data]="selectedPhotos" [view]="'grid'"></z-media-share-list>
+        <!--<z-media-share-list [data]="selectedPhotos" [view]="'grid'"></z-media-share-list>-->
       </div>
       <hr>
       <div class="clearfix text-right">

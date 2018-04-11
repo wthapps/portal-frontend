@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../shared/services/chat.service';
+import { Store } from '@ngrx/store';
 
 @Component({
   moduleId: module.id,

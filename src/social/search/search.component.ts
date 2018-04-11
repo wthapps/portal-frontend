@@ -16,12 +16,9 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.route.queryParams.subscribe((params: any) => {
       this.params = params['q'];
-
-      console.debug('queryParams: ', params);
     });
 
     this.route.fragment.subscribe((f: any) => {
-      console.debug('search fragment: ', f);
     });
   }
 
