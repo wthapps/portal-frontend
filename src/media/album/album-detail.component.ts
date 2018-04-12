@@ -15,15 +15,10 @@ import { saveAs } from 'file-saver';
 import { AlbumService } from '../shared/service/album.service';
 import * as appStore from '../shared/store';
 import {
-  Select,
-  SelectAll,
-  Deselect,
-  DeselectAll,
   GetAll,
   GetMore,
   Favorite,
   Download,
-  Update,
   AddSuccess,
   AddToDetailObjects,
   RemoveFromDetailObjects
@@ -31,36 +26,18 @@ import {
 
 import { Constants } from '@wth/shared/constant';
 
-import {
-  AlbumCreateModalComponent,
-  AlbumDeleteModalComponent,
-  AlbumEditModalComponent
-} from '@media/shared/modal';
+
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { DynamicModal } from '@media/shared/modal/dynamic-modal';
+import { MediaActionHandler } from '@media/shared/media';
 import {  } from '@media/../../shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 @Component({
   selector: 'me-album-detail',
   templateUrl: 'album-detail.component.html',
-  styleUrls: ['album-detail.component.scss'],
-  entryComponents: [
-    MediaRenameModalComponent,
-    TaggingModalComponent,
-    SharingModalComponent,
-    AlbumCreateModalComponent,
-    AlbumEditModalComponent,
-    AlbumDeleteModalComponent,
-    AlbumDetailInfoComponent,
-    AddToAlbumModalComponent
-  ]
+  styleUrls: ['album-detail.component.scss']
 })
-export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, OnDestroy {
+export class ZMediaAlbumDetailComponent extends MediaActionHandler implements OnInit, OnDestroy {
   @ViewChild('infoContainer', { read: ViewContainerRef }) infoContainer: ViewContainerRef;
 
   album: any;
@@ -78,15 +55,18 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
   detail = true;
   returnUrl: string;
 
+  private type = 'photo';
+  private path = 'media/media';
+
   constructor(
-    private store: Store<appStore.State>,
+    protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
     private router: Router,
     private route: ActivatedRoute,
     private albumService: AlbumService,
     private mediaSelectionService: WMediaSelectionService
   ) {
-    super(resolver);
+    super(resolver, store);
     this.photos = this.store.select(appStore.selectDetailObjects);
   }
 
@@ -122,41 +102,17 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
   }
 
   doEvent(event: any) {
-    console.log('event actions:::', event.action);
+    super.doEvent(event);
 
     switch (event.action) {
-      case 'loadMore':
-        this.store.dispatch(new GetMore({
-          ...event.payload,
-          type: 'photo',
-          detail: this.detail,
-          object: this.album }));
-        break;
       case 'sort':
-        this.store.dispatch(new GetAll({
-          ...event.payload,
-          type: 'photo',
-          detail: this.detail,
-          object: this.album }));
-        break;
-      case 'select':
-        this.store.dispatch(new Select(event.payload));
-        break;
-      case 'selectAll':
-        this.store.dispatch(new SelectAll());
-        break;
-      case 'deselect':
-        this.store.dispatch(
-          new Deselect({
-            selectedObjects: event.payload.selectedObjects
-          })
-        );
-        break;
-      case 'deselectAll':
-        this.store.dispatch(new DeselectAll());
-        break;
-      case 'openModal':
-        this.openModal(event.payload, this.mediaSelectionService);
+        this.store.dispatch(new GetAll({path: this.path, detail: this.detail,
+            queryParams: {
+            type: this.type,
+            album: this.album.id,
+            ...event.payload.queryParams
+          }
+        }));
         break;
       case 'openUploadModal':
         // this.mediaUploaderDataService.onShowUp();
@@ -186,21 +142,12 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
           { queryParamsHandling: 'preserve', preserveFragment: true }
         );
         break;
-      case 'editName':
-      case 'editInfo':
-        this.store.dispatch(new Update(event.params.selectedObject));
-        break;
       case 'toggleDetailsInfo':
         this.showDetailsInfo = !this.showDetailsInfo;
         break;
       // add photos to album
       case 'addToParent':
-        this.store.dispatch(
-          new AddToDetailObjects({
-            album: this.album,
-            photos: event.payload.photos
-          })
-        );
+        this.store.dispatch(new AddToDetailObjects({album: this.album, photos: event.payload.photos}));
         break;
       case 'removeFromParent':
         this.store.dispatch(new RemoveFromDetailObjects(event.payload));
@@ -212,6 +159,15 @@ export class ZMediaAlbumDetailComponent extends DynamicModal implements OnInit, 
         this.router.navigateByUrl(this.returnUrl);
         break;
     }
+  }
+
+  getMore(event: any) {
+    this.store.dispatch(new GetMore({
+      ...event.payload,
+      type: 'photo',
+      detail: this.detail,
+      object: this.album })
+    );
   }
 
   ngOnDestroy() {}

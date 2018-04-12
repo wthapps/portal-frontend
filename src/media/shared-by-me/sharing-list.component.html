@@ -1,14 +1,14 @@
 <ng-template #objectActionsTemplate>
   <ul class="page-body-control-menu" [ngClass]="{'text-disable': noSelectedObjects}"
       [class.disabled]="noSelectedObjects">
-    <li>
-      <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
-         href="javascript:void(0);"
-         (click)="toolbar.doAction({action: 'openModal',
-         payload: {modalName: 'sharingModal', selectedObjects: toolbar.selectedObjects}})">
-        <i class="fa fa-share-alt"></i>
-      </a>
-    </li>
+    <!--<li>-->
+      <!--<a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"-->
+         <!--href="javascript:void(0);"-->
+         <!--(click)="toolbar.doAction({action: 'openModal',-->
+         <!--payload: {modalName: 'sharingModal', selectedObjects: toolbar.selectedObjects}})">-->
+        <!--<i class="fa fa-share-alt"></i>-->
+      <!--</a>-->
+    <!--</li>-->
     <li>
       <a class="btn btn-default" href="javascript:;" draggable="false"
          (click)="toolbar.doAction({action: 'deleteMedia', payload: {selectedObjects: toolbar.selectedObjects}})"
@@ -32,7 +32,8 @@
         </li>
         <li>
           <a href="javascript:void(0);" draggable="false" [ngClass]="{'text-disable': !toolbar.hasOneObject}"
-             (click)="toolbar.doAction({action: 'downloadAlbum', payload: {selectedObjects: selectedObjects}})">
+             (click)="toolbar.doAction({action: 'downloadAlbum',
+             payload: {selectedObjects: toolbar.selectedObjects}})">
             <i class="fa fa-download"></i> Download
           </a>
         </li>
@@ -73,9 +74,9 @@
   </div>
 </div>
 
-<div class="gray-light" *ngIf="loading$|async">
-  <div class="text-center">
-    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-  </div>
-</div>
+<!--<div class="gray-light" *ngIf="loading$|async">-->
+  <!--<div class="text-center">-->
+    <!--<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>-->
+  <!--</div>-->
+<!--</div>-->
 <ng-template #modalContainer></ng-template>

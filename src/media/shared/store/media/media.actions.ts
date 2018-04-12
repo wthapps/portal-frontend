@@ -38,6 +38,7 @@ export const ActionTypes = {
   DELETE_MANY_SUCCESS:  '[Media] Delete Many Success',
   DELETE_MANY_FAIL:     '[Media] Delete Many Fail',
   DOWNLOAD:             '[Media] Download',
+  DOWNLOAD_SUCCESS:     '[Media] Download Success',
   FAVORITE:             '[Media] Favorite',
   GET_ALL_FAVORITE:     '[Media] Get All Favorite',
 
@@ -211,6 +212,11 @@ export class DeleteManySuccess implements Action {
 
 export class Download implements Action {
   type = ActionTypes.DOWNLOAD;
+  constructor(public payload: any = null) { }
+}
+
+export class DownloadSuccess implements Action {
+  type = ActionTypes.DOWNLOAD_SUCCESS;
   constructor(public payload: any = null) { }
 }
 

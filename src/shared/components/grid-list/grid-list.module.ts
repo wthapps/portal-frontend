@@ -9,6 +9,7 @@ import { PipeModule } from '@wth/shared/shared/pipe/pipe.module';
 import { WToolbarModule } from '@wth/shared/components/toolbar';
 import { WGridListItemComponent } from '@wth/shared/components/grid-list/grid-list-item.component';
 import { SliderModule } from 'primeng/components/slider/slider';
+import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { SliderModule } from 'primeng/components/slider/slider';
 
     // Wthapps modules
     PipeModule,
-    WToolbarModule
+    WToolbarModule,
+    BoxLoadingModule
   ],
   declarations: [
     WGridListHeaderComponent,

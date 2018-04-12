@@ -1,13 +1,7 @@
 import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import * as appStore from '../shared/store';
 import {
-  Select,
-  SelectAll,
-  Deselect,
-  DeselectAll,
-  GetMore,
   Favorite,
-  Update,
   AddSuccess,
   DeleteMany,
   Search
@@ -17,47 +11,34 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { DynamicModal } from '@media/shared/modal/dynamic-modal';
 import { Constants } from '@wth/shared/constant';
-import {
-  AlbumCreateModalComponent,
-} from '@media/shared/modal';
-import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
-import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { MediaActionHandler } from '@media/shared/media';
+
 
 @Component({
   moduleId: module.id,
   selector: 'me-search',
-  templateUrl: 'search.component.html',
-  entryComponents: [
-    MediaRenameModalComponent,
-    SharingModalComponent,
-    TaggingModalComponent,
-    AddToAlbumModalComponent,
-    AlbumCreateModalComponent,
-    PhotoEditModalComponent
-  ]
+  templateUrl: 'search.component.html'
 })
-export class ZMediaSearchComponent extends DynamicModal implements OnInit {
+export class ZMediaSearchComponent extends MediaActionHandler implements OnInit {
   objects$: Observable<any>;
   loading$: Observable<any>;
   nextLink$: Observable<any>;
   tooltip: any = Constants.tooltip;
-  objectType = 'media';
+  type = 'all';
+  path = 'media/search';
   returnUrl = '';
   sub: any;
+  query = null;
   constructor(
-    private store: Store<appStore.State>,
+    protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
     private mediaUploaderDataService: MediaUploaderDataService,
     private router: Router,
     private confirmService: WthConfirmService,
     private route: ActivatedRoute
   ) {
-    super(resolver);
+    super(resolver, store);
 
     this.objects$ = this.store.select(appStore.selectObjects);
     this.nextLink$ = this.store.select(appStore.selectNextLink);
@@ -68,40 +49,22 @@ export class ZMediaSearchComponent extends DynamicModal implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
 
     this.sub = this.route.queryParams.subscribe((params: any) => {
-      const query = params['q'];
-      if (query) {
-        this.doEvent({ action: 'search', payload: {path: 'media/search', queryParams: {q: query}}});
+      this.query = params['q'];
+      if (this.query) {
+        this.doEvent({ action: 'search', payload: {path: 'media/search', queryParams: {q: this.query}}});
       }
     });
   }
 
   doEvent(event: any) {
-    console.log('event actions:::', event.action, event.payload);
+    super.doEvent(event);
 
     switch (event.action) {
       case 'search':
         this.store.dispatch(new Search({...event.payload}));
         break;
-      case 'getMore':
-        this.store.dispatch(new GetMore({...event.payload}));
-        break;
       case 'sort':
-        this.store.dispatch(new Search({...event.payload}));
-        break;
-      case 'select':
-        this.store.dispatch(new Select(event.payload));
-        break;
-      case 'selectAll':
-        this.store.dispatch(new SelectAll());
-        break;
-      case 'deselect':
-        this.store.dispatch(new Deselect({selectedObjects: event.payload.selectedObjects}));
-        break;
-      case 'deselectAll':
-        this.store.dispatch(new DeselectAll());
-        break;
-      case 'openModal':
-        this.openModal(event.payload);
+        this.store.dispatch(new Search({path: this.path, queryParams: {q: this.query, ...event.payload.queryParams}}));
         break;
       case 'openUploadModal':
         this.mediaUploaderDataService.onShowUp();
@@ -117,10 +80,6 @@ export class ZMediaSearchComponent extends DynamicModal implements OnInit {
         break;
       case 'preview':
         this.preview(event.payload);
-        break;
-      case 'editName':
-      case 'editInfo':
-        this.store.dispatch(new Update(event.params.selectedObject));
         break;
       case 'deleteMedia':
         this.confirmService.confirm({

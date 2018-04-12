@@ -10,9 +10,6 @@ import { AlbumEditModalComponent } from './album/album-edit-modal.component';
 import { AlbumDeleteModalComponent } from './album/album-delete-modal.component';
 import { PartialsPhotoTaggingModule } from '@wth/shared/shared/components/photo/modal/tagging/tagging.module';
 
-
-
-
 @NgModule({
   imports: [
     CommonModule,

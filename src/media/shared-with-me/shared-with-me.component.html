@@ -113,18 +113,16 @@
 
 </w-grid-list>
 <!--no data region-->
+<!--<div class="page-body-content-in">-->
+
 <div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length">
   <div>
-    <h2><i class="fa fa-picture-o"></i></h2>
-    <h3>There are no photos!</h3>
-    <p>
-      <button class="btn btn-outline-primary" (click)="doEvent({action: 'openUploadModal'})">
-        <i class="fa fa-cloud-upload"></i> Upload Photo
-      </button>
-    </p>
+    <h2><i class="fw fw-shared-with-me"></i></h2>
+    <h3>There are no shared photos or albums!</h3>
+    <h4>Photos and albums are shared by your connected contacts.</h4>
   </div>
 </div>
-
+<!--</div>-->
 <div class="gray-light" *ngIf="loading$|async">
   <div class="text-center">
     <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>

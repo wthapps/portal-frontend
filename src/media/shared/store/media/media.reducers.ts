@@ -149,7 +149,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           return obj;
         });
       } else {
-        Object.values(state.objects).map(obj => {
+        state.objects.map(obj => {
           obj.selected = true;
           return obj;
         });
@@ -159,7 +159,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
 
     case actions.ActionTypes.SELECT:
       if (state.detail) {
-        Object.values(state.detailObjects).map(obj => {
+        state.detailObjects.map(obj => {
           if (obj.id === action.payload.selectedObjects[0].id) {
             obj.selected = true;
             state.selectedObjectId = obj.id;
@@ -169,7 +169,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           return obj;
         });
       } else {
-        Object.values(state.objects).map(obj => {
+        state.objects.map(obj => {
           if (obj.id === action.payload.selectedObjects[0].id) {
             obj.selected = true;
             state.selectedObjectId = obj.id;
@@ -182,14 +182,14 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       return state;
     case actions.ActionTypes.DESELECT: {
       if (state.detail) {
-        Object.values(state.detailObjects).map(obj => {
+        state.detailObjects.map(obj => {
           if (obj.id === action.payload.selectedObjects[0].id) {
             obj.selected = false;
           }
           return obj;
         });
       } else {
-        Object.values(state.objects).map(obj => {
+        state.objects.map(obj => {
           if (obj.id === action.payload.selectedObjects[0].id) {
             obj.selected = false;
           }
@@ -205,12 +205,12 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
     }
     case actions.ActionTypes.DESELECT_ALL: {
       if (state.detail) {
-        Object.values(state.detailObjects).map(obj => {
+        state.detailObjects.map(obj => {
           obj.selected = false;
           return obj;
         });
       } else {
-        Object.values(state.objects).map(obj => {
+        state.objects.map(obj => {
           obj.selected = false;
           return obj;
         });
@@ -220,7 +220,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
 
     case actions.ActionTypes.FAVORITE_SUCCESS: {
       if (state.detail) {
-        Object.values(state.detailObjects).map(obj => {
+        state.detailObjects.map(obj => {
           action.payload.selectedObjects.forEach(selectedObject => {
             if (obj.id === selectedObject.id && action.payload.mode === 'add') {
               obj.favorite = true;
@@ -231,7 +231,7 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           return obj;
         });
       } else {
-        Object.values(state.objects).map(obj => {
+        state.objects.map(obj => {
           action.payload.selectedObjects.forEach(selectedObject => {
             if (obj.id === selectedObject.id && action.payload.mode === 'add') {
               obj.favorite = true;

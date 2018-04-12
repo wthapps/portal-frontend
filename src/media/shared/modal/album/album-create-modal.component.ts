@@ -62,8 +62,7 @@ export class AlbumCreateModalComponent implements OnInit {
   open(options?: any) {
     // Get selected photo object list
     this.selectedPhotos = _.filter(options.selectedObjects, {'object_type' : 'photo'});
-    console.log('Photos loaded to album create component: ', this.selectedPhotos);
-    this.modal.open().then((res: any) => console.log('Album create modal opened, options', res));
+    this.modal.open().then();
   }
 
   close(options?: any) {
@@ -120,19 +119,15 @@ export class AlbumCreateModalComponent implements OnInit {
 
   removePhoto(photo: any, event: any): void {
     _.remove(this.selectedPhotos, (p: any) => p.id == photo.id);
-    console.debug('Removed photo id: ', photo.id);
   }
 
 
   removeTag(tag: any) {
-
     this.album.tags = _.pull(this.album.tags, _.find(this.album.tags, ['name', tag]));
-    console.log('tag remove', tag, this.album.tags);
   }
 
 
   addTag(event: any) {
-    console.log('add tag');
   }
 
   onAddItems(arrayItems: Array<number>) {

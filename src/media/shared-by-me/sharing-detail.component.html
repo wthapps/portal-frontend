@@ -1,11 +1,3 @@
-<!--<div class="media-page-detail" *ngIf="params">-->
-
-  <!--<me-view-container [objectType]="'sharing'" [pageType]="'detail'" [page]="'sharing_detail'" [params]="params.sharing"-->
-                     <!--[object]="params.sharing" [recipients]="params.recipients" [showDetailInfo]="showDetail" ></me-view-container>-->
-<!--</div>-->
-
-
-
 <div class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
   <div class="page-over-full-header">
     <ng-template #leftSharingActionsTemplate>
@@ -185,7 +177,7 @@
                [selectedObjects]="gridlist.selectedObjects"
                [leftActionsTemplate]="gridlist.selectedObjects.length === 0 ? leftSharingActionsTemplate : leftPhotoActionsTemplate"
                [objectActionsTemplate]="gridlist.selectedObjects.length === 0 ? sharingActionsTemplate : photoActionsTemplate"
-               (event)="doEvent($event)">
+               (event)="gridlist.doEvent($event)">
     </w-toolbar>
 
 

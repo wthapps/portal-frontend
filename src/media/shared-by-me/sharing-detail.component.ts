@@ -3,14 +3,9 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import {
-  Select,
-  SelectAll,
-  Deselect,
-  DeselectAll,
   GetAll,
   GetMore,
   Favorite,
-  Update,
   AddSuccess,
   AddToDetailObjects,
   RemoveFromDetailObjects,
@@ -20,27 +15,17 @@ import {
 import * as appStore from '../shared/store';
 import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
-import { DynamicModal } from '@media/shared/modal/dynamic-modal';
 import { Store } from '@ngrx/store';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+import { MediaActionHandler } from '@media/shared/media';
 
 @Component({
   moduleId: module.id,
   selector: 'me-sharing-detail',
-  templateUrl: 'sharing-detail.component.html',
-  entryComponents: [
-    MediaRenameModalComponent,
-    SharingModalComponent,
-    TaggingModalComponent,
-    AddToAlbumModalComponent
-  ]
+  templateUrl: 'sharing-detail.component.html'
 })
-export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit, OnDestroy {
+export class ZMediaSharingDetailComponent extends MediaActionHandler implements OnInit, OnDestroy {
   object: any;
   sub: any;
   sharing: any;
@@ -55,18 +40,20 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
   tooltip: any = Constants.tooltip;
   detail = true;
   returnUrl: string;
+  private path = 'media/media';
+  private type = 'photo';
 
   constructor(
     private apiBaseService: ApiBaseService,
     private commonEventService: CommonEventService,
-    private store: Store<appStore.State>,
+    protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
     private router: Router,
     private route: ActivatedRoute,
     private mediaSelectionService: WMediaSelectionService,
     private confirmService: WthConfirmService
   ) {
-    super(resolver);
+    super(resolver, store);
     this.photos = this.store.select(appStore.selectDetailObjects);
   }
 
@@ -86,46 +73,12 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
         this.params = response;
 
         // get photos by sharing
-        this.store.dispatch(
-          new GetAll({
-            detail: this.detail,
-            path: 'media/media',
-            queryParams: {
-              type: 'photo', sharing: this.sharing.id
-            }
-          })
-        );
+        this.doEvent({
+          action: 'getAll',
+          payload: {detail: this.detail, path: this.path, queryParams: {type: this.type, sharing: this.sharing.id}}
+        });
       });
-
     });
-
-    //
-    // this.createDetailInfoComponent();
-    // this.detailInfo.event
-    //   .takeUntil(this.destroySubject)
-    //   .subscribe((event: any) => {
-    //     this.doEvent(event);
-    //   });
-    //
-    // this.route.params
-    //   .switchMap((params: Params) => {
-    //     this.params = params;
-    //     this.showDetail = params['showDetail'] || false;
-    //     return this.albumService.getAlbum(params['id']);
-    //   })
-    //   .subscribe((res: any) => {
-    //     this.album = res.data;
-    //     this.store.dispatch(
-    //       new fromAlbum.GetAll({
-    //         detail: this.detail,
-    //         path: 'media/media',
-    //         queryParams: {
-    //           type: 'photo', album: this.album.id
-    //         }
-    //       })
-    //     );
-    //     this.detailInfo.updateProperties({ object: this.album });
-    //   });
   }
 
   ngOnDestroy() {
@@ -135,36 +88,12 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
   }
 
   doEvent(event: any) {
+    super.doEvent(event);
+
     switch (event.action) {
-      case 'loadMore':
-        this.store.dispatch(new GetMore({
-          ...event.payload,
-          type: 'photo',
-          detail: this.detail,
-          object: this.sharing }));
-        break;
       case 'sort':
-        this.store.dispatch(new GetAll({
-          ...event.payload,
-          type: 'photo',
-          detail: this.detail,
-          object: this.sharing }));
-        break;
-      case 'select':
-        this.store.dispatch(new Select(event.payload));
-        break;
-      case 'selectAll':
-        this.store.dispatch(new SelectAll());
-        break;
-      case 'deselect':
-        this.store.dispatch(
-          new Deselect({selectedObjects: event.payload.selectedObjects}));
-        break;
-      case 'deselectAll':
-        this.store.dispatch(new DeselectAll());
-        break;
-      case 'openModal':
-        this.openModal(event.payload, this.mediaSelectionService);
+        this.store.dispatch(new GetAll({detail: this.detail, path: this.path,
+          queryParams: {...event.payload.queryParams, type: this.type, sharing: this.sharing.id}}));
         break;
       case 'openUploadModal':
         // this.mediaUploaderDataService.onShowUp();
@@ -181,10 +110,6 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
       case 'preview':
         this.preview(event.payload);
         break;
-      case 'editName':
-      case 'editInfo':
-        this.store.dispatch(new Update(event.params.selectedObject));
-        break;
       case 'toggleDetailsInfo':
         this.showDetailsInfo = !this.showDetailsInfo;
         break;
@@ -194,9 +119,6 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
         break;
       case 'removeFromParent':
         this.store.dispatch(new RemoveFromDetailObjects(event.payload));
-        break;
-      case 'download':
-        this.store.dispatch(new Download(event.payload));
         break;
       case 'deleteMedia':
         this.confirmService.confirm({
@@ -210,21 +132,15 @@ export class ZMediaSharingDetailComponent extends DynamicModal implements OnInit
       case 'goBack':
         this.router.navigate([this.returnUrl]);
         break;
+      case 'download':
+        this.store.dispatch(new Download(event.payload));
+        break;
     }
   }
 
-  // private createDetailInfoComponent() {
-  //   const detailInfoComponentFactory = this.resolver.resolveComponentFactory(
-  //     AlbumDetailInfoComponent
-  //   );
-  //   this.infoContainer.clear();
-  //   this.detailInfoComponent = this.infoContainer.createComponent(
-  //     detailInfoComponentFactory
-  //   );
-  //   this.detailInfo = <AlbumDetailInfoComponent>this.detailInfoComponent
-  //     .instance;
-  //   this.detailInfo.updateProperties({ object: this.album });
-  // }
+  getMore(event: any) {
+    this.store.dispatch(new GetMore({...event.payload, type: 'photo', detail: this.detail, object: this.sharing }));
+  }
 
   private preview(payload: any) {
     const objects = payload.selectedObjects;

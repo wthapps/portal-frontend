@@ -72,7 +72,7 @@
 
         <li>
           <a href="javascript:void(0);" draggable="false"
-             (click)="toolbar.doAction({action: 'download', payload: {selectedObjects: selectedObjects}})">
+             (click)="toolbar.doAction({action: 'download', payload: {selectedObjects: toolbar.selectedObjects}})">
             <i class="fa fa-download"></i> Download</a>
         </li>
         <li *ngIf="toolbar.hasOneObject" href="javascript:void(0);" draggable="false" >
@@ -126,9 +126,11 @@
 </div>
 
 <div class="gray-light" *ngIf="loading$|async">
-  <div class="text-center">
-    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-  </div>
+  <box-loading></box-loading>
+
+  <!--<div class="text-center">-->
+    <!--<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>-->
+  <!--</div>-->
 </div>
 <ng-template #modalContainer></ng-template>
 

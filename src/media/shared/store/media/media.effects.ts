@@ -193,7 +193,7 @@ export class MediaEffects {
               saveAs(blob, file.name + '.' + file.extension);
             },
             (error: any) => {
-
+              return Observable.throw(error);
             }
           );
         });

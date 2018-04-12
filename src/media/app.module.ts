@@ -27,6 +27,13 @@ import { appStore, appEffects } from './shared/store';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ServiceModule } from '@media/shared/service/service.module';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { AlbumCreateModalComponent, AlbumDeleteModalComponent, AlbumEditModalComponent } from '@media/shared/modal';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 
 @NgModule({
   imports: [
@@ -63,6 +70,16 @@ import { ServiceModule } from '@media/shared/service/service.module';
       useValue: '/'
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    MediaRenameModalComponent,
+    SharingModalComponent,
+    TaggingModalComponent,
+    AlbumCreateModalComponent,
+    AlbumEditModalComponent,
+    AlbumDeleteModalComponent,
+    AlbumDetailInfoComponent,
+    AddToAlbumModalComponent,
+    PhotoEditModalComponent]
 })
 export class AppModule {}

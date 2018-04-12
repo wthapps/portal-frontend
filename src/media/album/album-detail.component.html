@@ -1,9 +1,5 @@
 <div class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
   <div class="page-over-full-header">
-
-  <!--<me-view-container [objectType]="'album'" [pageType]="'detail'" [page]="'album_detail'" [params]="params"-->
-                     <!--[object]="album" [showDetailInfo]="showDetail" ></me-view-container>-->
-
   <ng-template #leftAlbumActionsTemplate>
     <ul class="page-body-control-menu">
       <li class="divider">
@@ -58,14 +54,14 @@
       </li>
       <li>
         <a class="btn btn-default" draggable="false" href="javascript:void(0);"
-           (click)="doEvent({action: 'openModal', payload: {modalName: 'taggingModal'}})"
-           pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
+           pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom"
+           (click)="doEvent({action: 'openModal',
+           payload: {modalName: 'taggingModal', selectedObjects:  [toolbar.object]}})">
           <i class="fa fa-tag"></i></a>
       </li>
 
       <li class="dropdown action">
-        <a class="btn btn-default" draggable="false" href="javascript:void(0);"
-           data-toggle="dropdown"
+        <a class="btn btn-default" draggable="false" href="javascript:void(0);" data-toggle="dropdown"
            pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
           <i class="fa fa-ellipsis-v"></i>
         </a>
@@ -156,7 +152,8 @@
       </li>
       <li>
         <a class="btn btn-default" draggable="false" href="javascript:void(0);"
-           (click)="doEvent({action: 'openModal', payload: {modalName: 'taggingModal'}})"
+           (click)="doEvent({action: 'openModal', payload: {
+           modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects}})"
            pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
           <i class="fa fa-tag"></i></a>
       </li>
@@ -211,7 +208,7 @@
              [selectedObjects]="gridlist.selectedObjects"
              [leftActionsTemplate]="gridlist.selectedObjects.length === 0 ? leftAlbumActionsTemplate : leftPhotoActionsTemplate"
              [objectActionsTemplate]="gridlist.selectedObjects.length === 0 ? albumActionsTemplate : photoActionsTemplate"
-             (event)="doEvent($event)">
+             (event)="gridlist.doEvent($event)">
   </w-toolbar>
 
 
