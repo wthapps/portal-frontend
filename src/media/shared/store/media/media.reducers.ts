@@ -16,6 +16,9 @@ export interface State  extends EntityState<any> {
   query: string;
   detailObject: any;
   detailObjects: Array<any>;
+  currentLinkDetail: null;
+  nextLinkDetail: null;
+  queryDetail: null;
 }
 
 export const mediaAdapter: EntityAdapter<any> = createEntityAdapter<any>();
@@ -105,34 +108,58 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
     }
 
     case actions.ActionTypes.GET_MORE_SUCCESS: {
-      let result: any;
-      // add selected attribute
+      const cloneState = {
+        objects: [...state.objects],
+        detailObjects: [...state.detailObjects],
+        currentLink: state.currentLink,
+        nextLink: state.nextLink,
+        currentLinkDetail: state.currentLinkDetail,
+        nextLinkDetail: state.nextLinkDetail
+      };
+
       action.payload.data.map(obj => {
-        obj['selected'] = state.selectedObjectId === obj.id ? true : false;
-        return obj;
+        obj.selected = false;
+        if (state.detail) {
+          cloneState.detailObjects.push(obj);
+          cloneState.currentLinkDetail = action.payload.page_metadata.links.self;
+          cloneState.nextLinkDetail = action.payload.page_metadata.links.next;
+        } else {
+          cloneState.objects.push(obj);
+          cloneState.currentLink = action.payload.page_metadata.links.self;
+          cloneState.nextLink = action.payload.page_metadata.links.next;
+        }
       });
-      if (action.payload.detail) {
-        result = Object.assign({}, state, {
-          loading:  false,
-          detail: true,
-          detailObjects: action.payload.data,
-          detailObject: null,
-          currentLinkDetail: action.payload.page_metadata.links.self,
-          nextLinkDetail: action.payload.page_metadata.links.next
-        });
-      } else {
-        result = Object.assign({}, state, {
-          loading:  false,
-          detail: false,
-          objects:   action.payload.data,
-          object: null,
-          detailObjects: [],
-          detailObject: null,
-          currentLink: action.payload.page_metadata.links.self,
-          nextLink: action.payload.page_metadata.links.next
-        });
-      }
-      return result;
+
+      return  Object.assign({}, state, cloneState);
+
+      // let result: any;
+      // // add selected attribute
+      // action.payload.data.map(obj => {
+      //   obj['selected'] = state.selectedObjectId === obj.id ? true : false;
+      //   return obj;
+      // });
+      // if (action.payload.detail) {
+      //   result = Object.assign({}, state, {
+      //     loading:  false,
+      //     detail: true,
+      //     detailObjects: action.payload.data,
+      //     detailObject: null,
+      //     currentLinkDetail: action.payload.page_metadata.links.self,
+      //     nextLinkDetail: action.payload.page_metadata.links.next
+      //   });
+      // } else {
+      //   result = Object.assign({}, state, {
+      //     loading:  false,
+      //     detail: false,
+      //     objects:   action.payload.data,
+      //     object: null,
+      //     detailObjects: [],
+      //     detailObject: null,
+      //     currentLink: action.payload.page_metadata.links.self,
+      //     nextLink: action.payload.page_metadata.links.next
+      //   });
+      // }
+      // return result;
     }
 
     case actions.ActionTypes.GET_ALL_FAIL: {
@@ -284,11 +311,11 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       };
       if (state.detail) {
         action.payload.data.forEach(obj => {
-          cloneState.detailObjects.splice(cloneState.detailObjects.indexOf(obj), 1);
+          cloneState.detailObjects = cloneState.detailObjects.filter(object => object.id !== obj.id);
         });
       } else {
         action.payload.data.forEach(obj => {
-          cloneState.objects.splice(cloneState.objects.indexOf(obj), 1);
+          cloneState.objects = cloneState.objects.filter(object => object.id !== obj.id);
         });
       }
       return  Object.assign({}, state, cloneState);

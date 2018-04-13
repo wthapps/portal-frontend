@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { Response } from '@angular/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
@@ -25,7 +24,7 @@ export class AlbumCreateModalComponent implements OnInit {
   @Input() items: Array<any>;
 
 
-  @ViewChild('modal') modal: BsModalComponent;
+  @ViewChild('modal') modal: any;
   @ViewChild('tag') tag: TaggingElComponent;
   form: FormGroup;
   descCtrl: AbstractControl;
@@ -63,10 +62,12 @@ export class AlbumCreateModalComponent implements OnInit {
     // Get selected photo object list
     this.selectedPhotos = _.filter(options.selectedObjects, {'object_type' : 'photo'});
     this.modal.open().then();
+    this.modal.element.nativeElement.style.display = 'inline';
+
   }
 
   close(options?: any) {
-    this.modal.close();
+    this.modal.close(options);
   }
 
   createAlbum() {
@@ -87,11 +88,13 @@ export class AlbumCreateModalComponent implements OnInit {
     }
     let album:any = {name: albumName, description: albumDes, photos: selectedPhotosId, tags_name: tagsName};
     // Only subscribe to this observable once
+    this.close(null);
     this.api.post(`media/albums`, album)
       .subscribe((res: any) => {
         this.album = res.data;
         this.doneFormModal.emit(this.album);
         this.event.emit({action: 'addAlbumSuccessful', payload: res });
+
         this.viewAlbumDetail(this.album.id );
 
         this.modal.close().then();
@@ -113,8 +116,7 @@ export class AlbumCreateModalComponent implements OnInit {
       .map(data => data.json().map((item: any) => item.name))
       // .do(result => console.log('data: ', result))
       // .map(result => result['data'])
-      .do(console.log)
-      ;
+      .do(console.log);
   }
 
   removePhoto(photo: any, event: any): void {

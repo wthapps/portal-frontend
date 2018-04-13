@@ -107,7 +107,6 @@ export class PhotoUploadService {
   uploadPhotos(photos: Array<any>): Observable<any> {
     if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
       let err_msg = 'The File APIs are not fully supported in this browser.';
-      console.error(err_msg);
       return Observable.throw(err_msg);
     }
 
@@ -130,8 +129,7 @@ export class PhotoUploadService {
         },
         this.MAX_FILES
       )
-      .mergeMap(
-        (combinedData: any) =>
+      .mergeMap((combinedData: any) =>
           this.apiService.post('media/photos', combinedData),
         (combinedData: any, returnData: any) => {
           return { originPhoto: combinedData, data: returnData.data };

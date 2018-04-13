@@ -18,6 +18,7 @@ import {
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import { Constants } from '@wth/shared/constant';
 import { MediaActionHandler } from '@media/shared/media';
+import { AlbumService } from '@media/shared/service';
 
 @Component({
   selector: 'z-media-album-list',
@@ -36,8 +37,9 @@ export class AlbumListComponent extends MediaActionHandler implements OnInit {
   constructor(
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
+    private router: Router,
     private mediaUploaderDataService: MediaUploaderDataService,
-    private router: Router
+    private albumService: AlbumService
   ) {
     super(resolver, store);
 
@@ -79,7 +81,9 @@ export class AlbumListComponent extends MediaActionHandler implements OnInit {
         this.store.dispatch(new DeleteMany({ ...event.payload }));
         break;
       case 'download':
-        this.store.dispatch(new Download(event.payload));
+        this.albumService.getPhotosByAlbum(event.payload.selectedObjects[0].id).subscribe(response => {
+          this.store.dispatch(new Download({selectedObjects: response.data}));
+        });
     }
   }
 

@@ -34,12 +34,13 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
 
   showDetailsInfo: boolean;
 
-  photos: Observable<any>;
+  photos$: Observable<any>;
   nextLink: Observable<any>;
 
   tooltip: any = Constants.tooltip;
   detail = true;
   returnUrl: string;
+  photos: Array<any>;
   private path = 'media/media';
   private type = 'photo';
 
@@ -50,11 +51,11 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
     protected resolver: ComponentFactoryResolver,
     private router: Router,
     private route: ActivatedRoute,
-    private mediaSelectionService: WMediaSelectionService,
+    protected mediaSelectionService: WMediaSelectionService,
     private confirmService: WthConfirmService
   ) {
-    super(resolver, store);
-    this.photos = this.store.select(appStore.selectDetailObjects);
+    super(resolver, store, mediaSelectionService);
+    this.photos$ = this.store.select(appStore.selectDetailObjects);
   }
 
   ngOnInit() {
@@ -70,6 +71,7 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
     this.route.params.subscribe((params: any) => {
       this.apiBaseService.get(`media/sharings/${params.id}`).subscribe((response: any) => {
         this.sharing = response.sharing;
+        this.photos = response.data;
         this.params = response;
 
         // get photos by sharing
@@ -133,7 +135,12 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
         this.router.navigate([this.returnUrl]);
         break;
       case 'download':
-        this.store.dispatch(new Download(event.payload));
+        // download sharing
+        if (event.payload.selectedObjects[0].object_type === 'sharing') {
+          this.store.dispatch(new Download({selectedObjects: this.photos}));
+        } else {
+          this.store.dispatch(new Download(event.payload));
+        }
         break;
     }
   }

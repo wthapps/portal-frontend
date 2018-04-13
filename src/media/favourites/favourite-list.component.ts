@@ -13,6 +13,8 @@ import {
   DeleteMany
 } from '../shared/store/media/media.actions';
 import { MediaActionHandler } from '@media/shared/media';
+import { DeleteManySuccess } from '@media/shared/store/media';
+import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -31,7 +33,8 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
     private mediaUploaderDataService: MediaUploaderDataService,
-    private router: Router
+    private router: Router,
+    private confirmService: WthConfirmService
   ) {
     super(resolver, store);
 
@@ -45,6 +48,8 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
   }
 
   doEvent(event: any) {
+    super.doEvent(event);
+
     switch (event.action) {
       case 'sort':
         this.store.dispatch(new GetAll({path: this.path, queryParams: {...event.payload.queryParams}}));
@@ -57,12 +62,19 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
         break;
       case 'favourite':
         this.store.dispatch(new Favorite(event.payload));
+        this.store.dispatch(new DeleteManySuccess({data: event.payload.selectedObjects}));
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);
         break;
       case 'deleteMedia':
-        this.store.dispatch(new DeleteMany({...event.payload }));
+        this.confirmService.confirm({
+          header: 'Delete confirmation',
+          acceptLabel: 'Delete',
+          message: `Are you sure to delete ${event.payload.selectedObjects.length} item(s)`,
+          accept: () => {
+            this.store.dispatch(new DeleteMany({...event.payload}));
+          }});
         break;
     }
   }

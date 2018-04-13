@@ -83,7 +83,7 @@
         </li>
         <li>
           <a href="javascript:void(0);" draggable="false" [ngClass]="{'text-disable': gridlist.selectedObjects.length != 1}"
-             (click)="toolbar.doAction({action: 'downloadAlbum', payload: {selectedObjects: selectedObjects}})">
+             (click)="toolbar.doAction({action: 'download', payload: {selectedObjects: toolbar.selectedObjects}})">
             <i class="fa fa-download"></i> Download
           </a>
         </li>

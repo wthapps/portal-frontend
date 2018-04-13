@@ -142,7 +142,6 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
     // Convert fileList to array
     this.pending_files = Array.prototype.slice.call( files );
-    console.log('Pending files: ', this.pending_files);
 
     this.photoUploadService.getPhoto(files[0]).then((res: any) => {
       this.current_photo = res;
@@ -152,16 +151,14 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     this.photoUploadService.uploadPhotos(files)
       .takeWhile(() => this.step != this.uploadSteps.uploaded && this.step != this.uploadSteps.stop)
       .subscribe((res: any) => {
-          console.log('Upload image to s3 and save info successfully', res);
           this.uploaded_num++;
           let returnData = res.data;
           let originPhoto = res.originPhoto;
-          // Remove success photos from pending files
-          console.log('Return data: ', res);
-          _.remove(this.pending_files, (file: any) => file.name === originPhoto.name && file.type === originPhoto.type);
-
           this.current_photo = returnData.thumbnail_url;
           this.photos.push(returnData);
+
+          // Remove success photos from pending files
+          _.remove(this.pending_files, (file: any) => file.name === originPhoto.name && file.type === originPhoto.type);
 
           // newPhoto.thumbnail_url = this.current_photo;
           // this.events.next(returnData);
@@ -183,7 +180,6 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     if ( _.get(options, 'action') !== 'updateMediaList') {
       this.step = this.uploadSteps.closed;
       this.modalDock.close();
-      console.log('media-uploader action: ', options);
     }
 
     // this.outEvent.emit(options);

@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { MediaActionHandler } from '@media/shared/media';
+import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 @Component({
   selector: 'me-sharings',
@@ -34,7 +35,8 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
     protected resolver: ComponentFactoryResolver,
     private mediaUploaderDataService: MediaUploaderDataService,
     private router: Router,
-    private confirmService: WthConfirmService
+    private confirmService: WthConfirmService,
+    private sharingService: SharingService
   ) {
     super(resolver, store);
 
@@ -76,7 +78,9 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
           }});
         break;
       case 'download':
-        this.store.dispatch(new Download(event.payload));
+        this.sharingService.get(event.payload.selectedObjects[0].id).subscribe(response => {
+          this.store.dispatch(new Download({selectedObjects: response.data}));
+        });
         break;
     }
   }

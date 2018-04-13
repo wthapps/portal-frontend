@@ -83,9 +83,9 @@ export class ZMediaSearchComponent extends MediaActionHandler implements OnInit 
         break;
       case 'deleteMedia':
         this.confirmService.confirm({
-          header: 'Delete photo',
+          header: 'Delete confirmation',
           acceptLabel: 'Delete',
-          message: `Are you sure to delete ${event.payload.selectedObjects.length} photos`,
+          message: `Are you sure to delete ${event.payload.selectedObjects.length} item(s)`,
           accept: () => {
             this.store.dispatch(new DeleteMany({...event.payload}));
           }});

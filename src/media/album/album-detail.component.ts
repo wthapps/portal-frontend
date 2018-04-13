@@ -64,9 +64,9 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
     private router: Router,
     private route: ActivatedRoute,
     private albumService: AlbumService,
-    private mediaSelectionService: WMediaSelectionService
+    protected mediaSelectionService: WMediaSelectionService
   ) {
-    super(resolver, store);
+    super(resolver, store, mediaSelectionService);
     this.photos = this.store.select(appStore.selectDetailObjects);
   }
 

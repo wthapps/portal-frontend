@@ -32,7 +32,7 @@
         </li>
         <li>
           <a href="javascript:void(0);" draggable="false" [ngClass]="{'text-disable': !toolbar.hasOneObject}"
-             (click)="toolbar.doAction({action: 'downloadAlbum',
+             (click)="toolbar.doAction({action: 'download',
              payload: {selectedObjects: toolbar.selectedObjects}})">
             <i class="fa fa-download"></i> Download
           </a>

@@ -233,6 +233,8 @@ export type Actions
   | GetAll
   | GetAllSuccess
   | GetAllFail
+  | GetMore
+  | GetMoreSuccess
   | Select
   | SelectAll
   | Deselect

@@ -21,7 +21,8 @@ export class MediaActionHandler {
 
   constructor(
     protected resolver: ComponentFactoryResolver,
-    protected store: Store<appStore.State>
+    protected store: Store<appStore.State>,
+    protected mediaSelectionService: any = null
   ) {}
 
   protected loadModalComponent(component: any) {
@@ -37,12 +38,12 @@ export class MediaActionHandler {
     });
   }
 
-  openModal(payload: any, mediaSelectionService?: any) {
+  openModal(payload: any, mediaSelectionService: any) {
     let options: any;
     switch (payload.modalName) {
       case 'createAlbumModal':
         this.loadModalComponent(AlbumCreateModalComponent);
-        options = {selectedObjects: []};
+        options = {selectedObjects: payload.selectedObjects || []};
         break;
       case 'editNameModal':
         this.loadModalComponent(MediaRenameModalComponent);
@@ -126,7 +127,7 @@ export class MediaActionHandler {
 
       // open modal
       case 'openModal':
-        this.openModal(event.payload);
+        this.openModal(event.payload, this.mediaSelectionService);
         break;
       }
   }

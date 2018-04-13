@@ -13,6 +13,8 @@ import { MediaObjectService } from '@media/shared/container/media-object.service
 import { saveAs } from 'file-saver';
 import { SearchService } from '@media/shared/service';
 import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
+import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
+import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -36,7 +38,9 @@ export class MediaEffects {
     private mediaObjectService: MediaObjectService,
     private albumService: AlbumService,
     private sharingService: SharingService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private toastsService: ToastsService,
+    private loading: LoadingService
   ) {
   }
 
@@ -58,8 +62,12 @@ export class MediaEffects {
     .ofType(mediaActions.ActionTypes.GET_ALL)
     .map((action: mediaActions.GetAll) => action.payload)
     .switchMap(payload => {
+        this.loading.start();
         return this.mediaObjectService.getAll(payload.queryParams, payload.path)
-          .map(response => new mediaActions.GetAllSuccess({...response, ...payload}));
+          .map(response => {
+            this.loading.stop();
+            return new mediaActions.GetAllSuccess({...response, ...payload})
+          });
     });
 
   @Effect()
@@ -67,17 +75,9 @@ export class MediaEffects {
     .ofType(mediaActions.ActionTypes.GET_MORE)
     .map((action: mediaActions.GetMore) => action.payload)
     .switchMap(payload => {
-      if (payload.objectType === 'album') {
-        return this.albumService.getAll('', payload.nextLink.replace(/^\//, ''))
-          .map(response => new mediaActions.AddManySuccess({...response}))
-          .catch(error => of(new mediaActions.GetAllFail()));
-      } else {
-        return this.albumService.getPhotosByAlbum(payload.object.id)
-          .map(response => new mediaActions.AddManySuccess({...response}))
-          .catch(error => {
-
-          });
-      }
+      return this.mediaObjectService.loadMore(payload.nextLink.replace(/^\//, ''))
+        .map(response => new mediaActions.GetMoreSuccess({...response}))
+        .catch(error => {});
     });
 
   @Effect()
@@ -96,12 +96,14 @@ export class MediaEffects {
     .map((action: mediaActions.AddToDetailObjects) => action.payload)
     .switchMap(payload => {
       if (payload.album) {
+        this.toastsService.success('You added item(s) successful!');
         return this.albumService.addPhotos({...payload})
           .map(response => new mediaActions.AddManySuccess(...response))
           .catch(error => {
 
           });
       } else {
+        this.toastsService.success('You added item(s) successful!');
         return this.sharingService.addObjects({...payload})
           .map(response => new mediaActions.AddManySuccess(...response))
           .catch(error => {
@@ -114,7 +116,7 @@ export class MediaEffects {
   removeFromDetailObjects$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.REMOVE_FROM_DETAIL_OBJECTS)
     .map((action: mediaActions.RemoveFromDetailObjects) => action.payload)
-    .switchMap(payload => {
+    .mergeMap(payload => {
       if (payload.album) {
         return this.albumService.removePhotos({
           album: payload.album,
@@ -122,6 +124,7 @@ export class MediaEffects {
           delete_child: payload.delete_child || false
         })
           .map(response => {
+            this.toastsService.success('You removed item(s) successful!');
             return new mediaActions.DeleteManySuccess({data: payload.selectedObjects});
           });
       } else {
@@ -131,6 +134,7 @@ export class MediaEffects {
           delete_child: payload.delete_child || false
         })
           .map(response => {
+            this.toastsService.success('You removed item(s) successful!');
             return new mediaActions.DeleteManySuccess({data: payload.selectedObjects});
           });
       }
@@ -140,9 +144,10 @@ export class MediaEffects {
   update$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.UPDATE)
     .map((action: mediaActions.Update) => action.payload)
-    .switchMap(state => {
+    .mergeMap(state => {
       return this.mediaObjectService.update(state, false, 'media')
         .map(response => {
+          this.toastsService.success('You updated item successful!');
           return new mediaActions.UpdateSuccess({...response});
         });
     });
@@ -151,9 +156,10 @@ export class MediaEffects {
   updateMany$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.UPDATE_MANY)
     .map((action: mediaActions.UpdateMany) => action.payload)
-    .switchMap(state => {
+    .mergeMap(state => {
       return this.mediaObjectService.update(state, false, 'media')
         .map(response => {
+          this.toastsService.success('You updated items successful!');
           return new mediaActions.UpdateManySuccess({...response});
         });
     });
@@ -162,9 +168,10 @@ export class MediaEffects {
   delete$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.DELETE)
     .map((action: mediaActions.Delete) => action.payload)
-    .switchMap(state => {
+    .mergeMap(state => {
       return this.mediaObjectService.delete(state, false, 'media')
         .map(response => {
+          this.toastsService.success('You deleted item successful!');
           return new mediaActions.DeleteSuccess({...response});
         });
     });
@@ -173,9 +180,12 @@ export class MediaEffects {
   deleteMany$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.DELETE_MANY)
     .map((action: mediaActions.Delete) => action.payload)
-    .switchMap(payload => {
+    .mergeMap(payload => {
+      this.loading.start();
       return this.mediaObjectService.deleteMany({objects: payload.selectedObjects}, 'media')
         .map(response => {
+          this.loading.stop();
+          this.toastsService.success('You deleted items successful!');
           return new mediaActions.DeleteManySuccess({data: payload.selectedObjects});
         });
     });
@@ -186,17 +196,20 @@ export class MediaEffects {
     .map((action: mediaActions.Download) => action.payload)
     .switchMap(payload => {
       if (payload.selectedObjects && payload.selectedObjects.length > 0) {
+        const result = [];
         payload.selectedObjects.forEach(file => {
-          return this.mediaObjectService.download({id: file.id}).subscribe(
+          this.mediaObjectService.download({id: file.id}).subscribe(
             (response: any) => {
               const blob = new Blob([response], {type: file.content_type});
               saveAs(blob, file.name + '.' + file.extension);
+              result.push(response);
             },
             (error: any) => {
               return Observable.throw(error);
             }
           );
         });
+        return Observable.from(result);
       } else {
         return null;
       }
@@ -221,7 +234,7 @@ export class MediaEffects {
   favorite$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.FAVORITE)
     .map((action: mediaActions.Favorite) => action.payload)
-    .switchMap(payload => {
+    .flatMap(payload => {
       return this.mediaObjectService.favourite({objects: payload.selectedObjects, mode: payload.mode})
         .map(response => {
             return new mediaActions.FavoriteSuccess({...payload, data: response.data });

@@ -43,6 +43,12 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
     this.photos$ = this.store.select(appStore.selectObjects);
     this.nextLink$ = this.store.select(appStore.selectNextLink);
     this.loading$ = this.store.select(appStore.selectLoading);
+
+    this.mediaUploaderDataService.action$
+      .takeUntil(this.destroySubject)
+      .subscribe((event: any) => {
+        this.doEvent(event);
+    });
   }
 
   ngOnInit() {

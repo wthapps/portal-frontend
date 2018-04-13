@@ -182,7 +182,7 @@
 
 
     <w-grid-list #gridlist
-                 [objects]="photos|async"
+                 [objects]="photos$|async"
                  (event)="doEvent($event)"
                  (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)">
 
