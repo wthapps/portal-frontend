@@ -6,7 +6,7 @@
 import { EnvConfig } from './env-config.interface';
 
 export const environment = {
-  production: true,
+  production: false,
   keys: {
     recaptcha_site_key: '6Ld0dU0UAAAAAK5cM_IEAe5LhpzKT-a250aDMZPl'
   }
@@ -14,23 +14,22 @@ export const environment = {
 
 console.log('environment:::', environment);
 
-// const host = '192.168.0.109';
-// const host = '192.168.0.106';
-const host = '192.168.0.109';
-const apiPort = 4000;
+const host = '192.168.0.116';
+// const host = 'localhost';
 
+const apiPort = 80000;
 export const ConfigByEnv: EnvConfig = {
-  CDN: `http://${host}:4000/assets`,
-  API: `http://${host}:4000`,
-  ENV: 'PROD',
-  DOMAIN: '192.168.0.109',
+  CDN: `http://${host}:${apiPort}/assets`,
+  API: `http://${host}:${apiPort}`,
+  ENV: 'DEV',
+  DOMAIN: 'localhost',
   SUB_DOMAIN: {
-    APP: 'http://192.168.0.109:3000',
-    MYACCOUNT: 'http://192.168.0.109:3005',
-    MEDIA: 'http://192.168.0.109:3010',
-    SOCIAL: 'http://192.168.0.109:3015',
-    CHAT: 'http://192.168.0.109:3020',
-    CONTACT: 'http://192.168.0.109:3025',
-    NOTE: 'http://192.168.0.109:3030'
+    APP: 'http://localhost:30000',
+    MYACCOUNT: 'http://localhost:30005',
+    MEDIA: 'http://localhost:30010',
+    SOCIAL: 'http://localhost:30015',
+    CHAT: 'http://localhost:30020',
+    CONTACT: 'http://localhost:30025',
+    NOTE: 'http://localhost:30030'
   }
 };

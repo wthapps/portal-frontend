@@ -16,20 +16,20 @@ console.log('environment:::', environment);
 
 // const host = '192.168.0.109';
 // const host = '192.168.0.106';
-const host = '127.0.0.1';
+const host = 'localhost';
 
 export const ConfigByEnv: EnvConfig = {
   CDN: `http://${host}:4000/assets`,
   API: `http://${host}:4000`,
   ENV: 'DEV',
-  DOMAIN: '127.0.0.1',
+  DOMAIN: 'localhost',
   SUB_DOMAIN: {
-    APP: 'http://127.0.0.1:3000',
-    MYACCOUNT: 'http://127.0.0.1:3005',
-    MEDIA: 'http://127.0.0.1:3010',
-    SOCIAL: 'http://127.0.0.1:3015',
-    CHAT: 'http://127.0.0.1:3020',
-    CONTACT: 'http://127.0.0.1:3025',
-    NOTE: 'http://127.0.0.1:3030'
+    APP: 'http://localhost:3000',
+    MYACCOUNT: 'http://localhost:3005',
+    MEDIA: 'http://localhost:3010',
+    SOCIAL: 'http://localhost:3015',
+    CHAT: 'http://localhost:3020',
+    CONTACT: 'http://localhost:3025',
+    NOTE: 'http://localhost:3030'
   }
 };
