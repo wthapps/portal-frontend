@@ -11,7 +11,7 @@
     <dl class="dl-horizontal" *ngIf="data.media && data.media.length > 0">
       <ng-template ngFor let-item [ngForOf]="data.media" let-i="index" [ngForTrackBy]="trackByFn">
         <dt>{{ item.category | keyToValue:mediaType:'category':'name' }}</dt>
-        <dd><p><a href="{{ item.value }}" target="_blank">{{ item.value }}</a></p></dd>
+        <dd><p><a href="{{ item.value }}" target="_blank" rel="noopener">{{ item.value }}</a></p></dd>
       </ng-template>
     </dl>
 

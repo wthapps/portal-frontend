@@ -39,8 +39,8 @@ import { environment } from '@env/environment';
     // WTHApps modules
     WthCommonModule,
     SharedServicesModule.forRoot(),
-    CoreModule.forRoot()
-    // ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
+    CoreModule.forRoot(),
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
   ],
   providers: [
     {
