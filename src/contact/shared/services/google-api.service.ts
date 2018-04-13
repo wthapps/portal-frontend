@@ -52,7 +52,8 @@ export class GoogleApiService {
 
   getGoogleApiConfig(): Promise<any> {
     if(_.isEmpty(this.CREDENTIAL_KEYS)) {
-      return this.contactService.getGoogleApiConfig().toPromise().then((res: any) => this.CREDENTIAL_KEYS = res.data);
+      return this.contactService.getGoogleApiConfig().toPromise()
+        .then((res: any) => this.CREDENTIAL_KEYS = res.data);
     }
     return Promise.resolve( this.CREDENTIAL_KEYS );
   }
@@ -71,6 +72,8 @@ export class GoogleApiService {
     }).then(() => {
       console.debug('inside initClient Promise, this: ', this);
       this.GoogleAuth = gapi.auth2.getAuthInstance();
+    }).catch(err => {
+      console.error(err);
     });
   }
 

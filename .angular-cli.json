@@ -6,39 +6,6 @@
   "apps": [
     {
       "name": "portal",
-      "root": "src",
-      "appRoot": ".",
-      "outDir": "dist/portal",
-      "assets": [
-        "assets"],
-      "index": "index.html",
-      "main": "portal/main.ts",
-      "polyfills": "portal/polyfills.ts",
-      "test": "portal/test.ts",
-      "tsconfig": "portal/tsconfig.app.json",
-      "testTsconfig": "portal/tsconfig.spec.json",
-      "prefix": "",
-      "serviceWorker": true,
-      "styles": [
-        "../node_modules/primeng/resources/themes/omega/theme.css",
-        "../node_modules/primeng/resources/primeng.min.css",
-        "../node_modules/cropperjs/dist/cropper.min.css",
-        "portal/styles/portal.scss"
-      ],
-      "scripts": [
-        "../node_modules/cropperjs/dist/cropper.min.js",
-        "../src/shared/channels/common.js"
-
-      ],
-      "environmentSource": "./environments/environment.ts",
-      "environments": {
-        "dev": "./environments/environment.ts",
-        "prod": "./environments/environment.prod.ts",
-        "stag": "./environments/environment.stag.ts"
-      }
-    },
-    {
-      "name": "portal2",
       "root": "src/portal",
       "appRoot": ".",
       "outDir": "dist/portal",
@@ -48,7 +15,9 @@
           "input": "../assets/",
           "output": "./assets/",
           "allowOutsideOutDir": true
-        }],
+        },
+        "manifest.json"
+      ],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
@@ -56,6 +25,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
+      "serviceWorker": true,
       "styles": [
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",
@@ -65,7 +35,6 @@
       "scripts": [
         "../../node_modules/cropperjs/dist/cropper.min.js",
         "../../src/shared/channels/common.js"
-
       ],
       "environmentSource": "../environments/environment.ts",
       "environments": {
@@ -76,38 +45,6 @@
     },
     {
       "name": "my-account",
-      "root": "src",
-      "outDir": "dist/my-account",
-      "appRoot": ".",
-      "assets": [
-        "assets"
-      ],
-      "index": "index.html",
-      "main": "my-account/main.ts",
-      "polyfills": "my-account/polyfills.ts",
-      "test": "my-account/test.ts",
-      "tsconfig": "my-account/tsconfig.app.json",
-      "testTsconfig": "my-account/tsconfig.spec.json",
-      "prefix": "",
-      "serviceWorker": true,
-      "styles": [
-        "../node_modules/primeng/resources/themes/omega/theme.css",
-        "../node_modules/primeng/resources/primeng.min.css",
-        "my-account/styles/my-account.scss"
-      ],
-      "scripts": [
-        "../src/shared/channels/common.js",
-        "../node_modules/moment/min/moment.min.js"
-      ],
-      "environmentSource": "./environments/environment.ts",
-      "environments": {
-        "dev": "./environments/environment.ts",
-        "prod": "./environments/environment.prod.ts",
-        "stag": "./environments/environment.stag.ts"
-      }
-    },
-    {
-      "name": "my-account2",
       "root": "src/my-account",
       "outDir": "dist/my-account",
       "assets": [
@@ -124,7 +61,6 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
-      "serviceWorker": true,
       "styles": [
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",
@@ -159,7 +95,6 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
-      "serviceWorker": true,
       "styles": [
         "../../node_modules/bootstrap/dist/css/bootstrap.css",
         "../../node_modules/font-awesome/css/font-awesome.min.css",
@@ -197,20 +132,16 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
-      "serviceWorker": true,
       "styles": [
         "../../node_modules/bootstrap/dist/css/bootstrap.css",
         "../../node_modules/font-awesome/css/font-awesome.min.css",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",
-        "../../node_modules/quill/dist/quill.core.css",
-        "../../node_modules/quill/dist/quill.snow.css",
         "styles/social.scss"
       ],
       "scripts": [
         "../../node_modules/moment/min/moment.min.js",
         "../../node_modules/file-saver/FileSaver.js",
-        "../../node_modules/quill/dist/quill.js",
         "../../src/shared/channels/common.js"
       ],
       "environmentSource": "../environments/environment.ts",
@@ -237,20 +168,16 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
-      "serviceWorker": true,
       "styles": [
         "../../node_modules/bootstrap/dist/css/bootstrap.css",
         "../../node_modules/font-awesome/css/font-awesome.min.css",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",
-        "../../node_modules/quill/dist/quill.core.css",
-        "../../node_modules/quill/dist/quill.snow.css",
         "styles/chat.scss"
       ],
       "scripts": [
         "../../node_modules/moment/min/moment.min.js",
         "../../node_modules/file-saver/FileSaver.js",
-        "../../node_modules/quill/dist/quill.js",
         "../../src/shared/channels/common.js"
       ],
       "environmentSource": "../environments/environment.ts",
@@ -258,39 +185,6 @@
         "dev": "../environments/environment.ts",
         "prod": "../environments/environment.prod.ts",
         "stag": "../environments/environment.stag.ts"
-      }
-    },
-    {
-      "name": "contact0",
-      "root": "src",
-      "outDir": "dist/contact",
-      "appRoot": ".",
-      "assets": [
-        "assets"
-      ],
-      "index": "index.html",
-      "main": "contact/main.ts",
-      "polyfills": "contact/polyfills.ts",
-      "test": "contact/test.ts",
-      "tsconfig": "contact/tsconfig.app.json",
-      "testTsconfig": "contact/tsconfig.spec.json",
-      "prefix": "con",
-      "serviceWorker": true,
-      "styles": [
-        "../node_modules/bootstrap/dist/css/bootstrap.css",
-        "../node_modules/font-awesome/css/font-awesome.min.css",
-        "../node_modules/primeng/resources/themes/omega/theme.css",
-        "../node_modules/primeng/resources/primeng.min.css",
-        "contact/styles/contact.scss"
-      ],
-      "scripts": [
-        "./shared/channels/common.js"
-      ],
-      "environmentSource": "./environments/environment.ts",
-      "environments": {
-        "dev": "./environments/environment.ts",
-        "prod": "./environments/environment.prod.ts",
-        "stag": "./environments/environment.stag.ts"
       }
     },
     {
@@ -349,7 +243,6 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "note",
-      "serviceWorker": true,
       "styles": [
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",

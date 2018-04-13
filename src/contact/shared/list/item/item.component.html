@@ -23,10 +23,10 @@
     <ul class="list-unstyled m0">
       <li *ngIf="data.emails && data.emails.length > 0">
         <img
-          *ngIf="(countriesCode$ | async) && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
-          src="assets/images/flags/{{data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
+          *ngIf="(countriesCode$ | async) && data.phones[0] && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
+          src="assets/images/flags/{{data.phones[0]?.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
           width="30" alt="">
-        {{ data.phones[0].value }}
+        {{ data.phones[0]?.value }}
       </li>
     </ul>
   </div>

@@ -1,6 +1,6 @@
 {
-  "short_name": "WTH Contact",
-  "name": "WTH Contact",
+  "short_name": "Portal",
+  "name": "WTH Portal",
   "start_url": "/",
 
   "theme_color": "#f48c5b",
@@ -8,25 +8,15 @@
 
   "display": "standalone",
   "orientation": "portrait",
-
-  "routing":{
-    "routes":{
-      "/": {
-        "match": true
-      },
-      "/login":{
-        "match": "prefix"
-      },
-      "/about":{
-        "match": "prefix"
-      }
-    }
-  },
-
   "icons": [
     {
       "src": "../assets/images/favicons/android-chrome-192x192.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../assets/images/favicons/android-chrome-512x512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
