@@ -88,7 +88,7 @@ export class SettingsComponent implements OnInit {
     this.filteredCountriesCode = [];
     for (let i = 0; i < this.countriesNameCode.length; i++) {
       let brand = this.countriesNameCode[i];
-      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
         this.filteredCountriesCode.push(brand);
       }
     }

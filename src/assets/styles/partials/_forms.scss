@@ -170,11 +170,26 @@ textarea {
   .ui-autocomplete-panel {
     min-width: 390px;
     font-size: 12px;
+    @media (max-width: $screen-xs-max) {
+      min-width: 260px;
+    }
+    .ui-autocomplete-list {
+      li .clearfix {
+        @include flexbox;
+        @include align-items(start);
+        span {
+          &.pull-left {
+            @include flex(1);
+          }
+        }
+      }
+    }
     img {
       margin-right: 5px;
     }
     span {
       line-height: 20px;
+
     }
   }
   &.ng-invalid {

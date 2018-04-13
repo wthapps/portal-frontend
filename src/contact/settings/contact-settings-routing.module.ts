@@ -16,4 +16,4 @@ import { AuthGuard } from '@wth/shared/services';
   ],
   exports: [RouterModule]
 })
-export class ZContactSettingsRoutingModule {}
+export class ZContactSettingsRoutingModule { }

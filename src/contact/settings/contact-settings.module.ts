@@ -19,4 +19,4 @@ import { WthCommonModule } from '@wth/shared/common/wth-common.module';
   exports: [SettingsComponent],
   providers: []
 })
-export class SettingsModule {}
+export class SettingsModule { }

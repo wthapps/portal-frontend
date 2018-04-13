@@ -48,6 +48,7 @@ import { FileModule } from '@wth/shared/shared/components/file/file.module';
 import { CheckForUpdateService } from '@contacts/shared/services/check-for-update.service';
 import { LogUpdateService } from '@contacts/shared/services/log-update.service';
 import { PromptUpdateService } from '@contacts/shared/services/prompt-update.service';
+import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -122,6 +123,7 @@ import { PromptUpdateService } from '@contacts/shared/services/prompt-update.ser
     WMediaSelectionModule,
     ComponentsModule,
     ZSharedMenuModule,
+    BoxNoDataModule,
 
     // third party libs
     TagInputModule,

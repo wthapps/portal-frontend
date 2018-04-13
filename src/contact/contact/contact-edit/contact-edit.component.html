@@ -7,10 +7,10 @@
           </div>
           <div class="media-body content-overflow-visible">
             <div class="row row-10">
-              <div class="col-xs-12 mb10">
+              <div class="col-sm-12 mb10">
                 <div class="form-group no-label mb0" [ngClass]="{'has-error': (!name.valid && name.touched),
         'has-success': (name.valid && name.touched)}">
-                  <input [formControl]="name" type="text" class="form-control" placeholder="Full name">
+                  <input autofocus [formControl]="name" type="text" class="form-control" placeholder="Full name">
                   <div *ngIf="!name.valid && name.touched">
                     <span *ngIf="!name.valid && name.errors.required" class="help-block">
                       Name is required

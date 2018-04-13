@@ -1,4 +1,4 @@
-@import "../../../scss/global";
+@import '../../../scss/global';
 
 /**
 <div class="box-no-data">
@@ -33,5 +33,18 @@
     font-size: 24px;
     margin: 0 0 30px;
     font-weight: 400;
+  }
+  @media (max-width: $screen-xs-max) {
+    h2 {
+      i {
+        font-size: 80px;
+      }
+    }
+    h3 {
+      font-size: 24px;
+    }
+    h4 {
+      font-size: 16px;
+    }
   }
 }

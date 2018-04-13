@@ -23,7 +23,10 @@
      (scrolled)="onLoadMore()">
 
   <div class="page-body-content-in" *ngIf="loaded && contacts.length==0">
-    There is no contact in your contact book
+    <box-no-data [icon]="'fa fa-address-book-o'"
+                 [title]="'There are no Contacts!'"
+                 [subTitle]="'Upload or import contact.'">
+    </box-no-data>
   </div>
   <ng-container *ngIf="contacts.length>=1">
     <z-contact-shared-list [data]="contacts"></z-contact-shared-list>
