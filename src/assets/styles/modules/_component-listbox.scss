@@ -18,6 +18,12 @@
   }
   .component-listbox-body {
     display: table-row-group;
+    &:last-child, &:nth-last-child(2) {
+      .dropdown-menu {
+        top: auto;
+        bottom: 100%;
+      }
+    }
   }
   .component-listbox-row {
     display: table-row;

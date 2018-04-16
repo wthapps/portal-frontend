@@ -1,5 +1,9 @@
 @import '../assets/styles/global';
 
+.main-page-body {
+  padding-bottom: 50px;
+}
+
 @media (max-width: $screen-xs-max) {
   .page-body-control-nav {
     .btn-min, .btn-min-sm {
@@ -17,8 +21,10 @@
       }
     }
   }
-  .main-page-body .page-body-content-in {
-    padding: 15px;
+  .main-page-body {
+    .page-body-content-in {
+      padding: 15px;
+    }
   }
 }
 

@@ -123,6 +123,12 @@ $ui-inputswitch-w: 24px;
 
 .ui-tooltip {
   z-index: 1090 !important;
+
+  @media (max-width: $screen-xs-max) {
+    display: none !important;
+    z-index: -1;
+  }
+
   .ui-tooltip-text {
     background-color: rgba(#000, 0.6);
     font-size: 10px;
