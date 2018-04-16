@@ -21,10 +21,6 @@
     "resources": {
       "files": [
         "/assets/**"
-      ],
-      "urls": [
-        "https://apis.google.com/js/api.js",
-        "https://cdnjs.cloudflare.com/ajax/libs/lazysizes/4.0.1/lazysizes.min.js"
       ]
     }
   }]
