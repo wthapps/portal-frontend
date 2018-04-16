@@ -2,7 +2,7 @@
   <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
     <media-shared-header class="header-nav-left"></media-shared-header>
   </w-header>
-  <main class="main">
+  <main class="main gray-light">
     <div class="main-page-left">
       <aside class="main-page-left-in aside-menu">
         <z-shared-menu>
@@ -10,7 +10,7 @@
         </z-shared-menu>
       </aside>
     </div>
-    <div class="main-page-body gray-light">
+    <div class="main-page-body">
       <router-outlet></router-outlet>
       <router-outlet name="modal"></router-outlet>
       <router-outlet name="detail"></router-outlet>

@@ -9,14 +9,14 @@
         <!--<i class="fa fa-share-alt"></i>-->
       <!--</a>-->
     <!--</li>-->
-    <li>
+    <li *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" href="javascript:;" draggable="false"
          (click)="toolbar.doAction({action: 'deleteMedia', payload: {selectedObjects: toolbar.selectedObjects}})"
          pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
         <i class="fa fa-trash-o"></i></a>
     </li>
 
-    <li class="dropdown action">
+    <li class="dropdown action" *ngIf="toolbar.hasOneObject">
       <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
          pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
         <i class="fa fa-ellipsis-v"></i>
@@ -37,7 +37,7 @@
             <i class="fa fa-download"></i> Download
           </a>
         </li>
-        <li *ngIf="toolbar.hasOneObject">
+        <li>
           <a (click)="toolbar.doAction({
             action: 'viewDetails',
             payload: { selectedObject: toolbar.selectedObjects[0] }
