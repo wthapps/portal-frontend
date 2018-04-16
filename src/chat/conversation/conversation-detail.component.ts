@@ -18,7 +18,6 @@ import { CHAT_ACTIONS, FORM_MODE } from '@wth/shared/constant';
 import { Store } from '@ngrx/store';
 import * as fromConversations from './../../core/store/chat/conversations.reducer';
 import { User } from '@shared/shared/models';
-import { ChatGroupModel } from '@shared/shared/models/chat/chat-group.model';
 
 declare var _: any;
 declare var $: any;

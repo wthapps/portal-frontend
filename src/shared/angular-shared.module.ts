@@ -9,7 +9,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 
 @NgModule({
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
-  declarations: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],
-  exports: []
+  declarations: [],
+  exports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule]
 })
 export class AngularSharedModule {}

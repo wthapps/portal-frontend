@@ -1,4 +1,4 @@
-import { ConstantsBase } from "@shared/constant";
+import { ConstantsBase } from '@shared/constant';
 
 export class NoteConstants extends ConstantsBase {
   PAGE_MY_NOTE: any = 'MY_NOTE';
@@ -17,23 +17,23 @@ export class NoteConstants extends ConstantsBase {
   PAGE_PERMISSIONS: any = {
     MY_NOTE: {
       edit: true,
-      enableEdit: true,
+      enableEdit: true
     },
     SHARED_WITH_ME: {
       edit: false,
-      enableEdit: true,
+      enableEdit: true
     },
     SHARED_BY_ME: {
       edit: false,
-      enableEdit: true,
+      enableEdit: true
     },
     FAVOURITE: {
       edit: false,
-      enableEdit: true,
+      enableEdit: true
     },
     RECENT: {
       edit: false,
-      enableEdit: true,
+      enableEdit: true
     }
   };
 
@@ -42,27 +42,27 @@ export class NoteConstants extends ConstantsBase {
       icon: 'fa fa-sticky-note',
       title: 'There is no note!',
       subTitle: 'Try to create one',
-      newNode: true,
+      newNode: true
     },
     SHARED_WITH_ME: {
       icon: 'wthico-shared-with-me',
       title: 'There is no note shared with you!',
-      subTitle: 'Note can be shared by your connected contact',
+      subTitle: 'Note can be shared by your connected contact'
     },
     SHARED_BY_ME: {
       icon: 'fa fa-share-alt',
       title: 'There is no note shared by you!',
-      subTitle: 'Note can be shared to your connected contact',
+      subTitle: 'Note can be shared to your connected contact'
     },
     FAVOURITE: {
       icon: 'fa fa-share-alt',
       title: 'There is no note favourite by you!',
-      subTitle: 'Favourite Note',
+      subTitle: 'Favourite Note'
     },
     RECENT: {
       icon: 'fa fa-clock-o',
       title: 'There is no recent note accessed by you!',
-      subTitle: 'Recent Note',
+      subTitle: 'Recent Note'
     }
   };
 
@@ -72,11 +72,16 @@ export class NoteConstants extends ConstantsBase {
     3: ' Uploaded'
   };
 
+  OBJECT_TYPE: any = {
+    NOTE: 'Note::Note',
+    FOLDER: 'Note::Folder'
+  };
+
   DATE_MAP: any = {
-    'created_at': 'Create date',
-    'updated_at': 'Last modified',
-    'shared_date': 'Share date'
+    created_at: 'Create date',
+    updated_at: 'Last modified',
+    shared_date: 'Share date'
   };
 }
 let noteConstants: NoteConstants = new NoteConstants();
-export {noteConstants};
+export { noteConstants };

@@ -21,7 +21,8 @@ import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE } from '@wth/shared/constant';
 import {
   PhotoModalDataService,
-  PhotoUploadService
+  PhotoUploadService,
+  ApiBaseService
 } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
@@ -30,17 +31,23 @@ import { takeUntil, filter, mergeMap, map } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { ChatNoteListModalComponent } from '@chat/shared/modal/note-list/note-list-modal.component';
+import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { NotesSelectMixin } from '@shared/components/note-list/chat-module/notes-select.mixin';
+import { Store } from '@ngrx/store';
+import { log } from 'util';
+import { noteConstants } from '@notes/shared/config/constants';
 
 declare var $: any;
 
+@Mixin([NotesSelectMixin])
 @Component({
   selector: 'message-editor',
   templateUrl: 'message-editor.component.html',
   styleUrls: ['message-editor.component.scss']
 })
-export class MessageEditorComponent implements OnInit, OnDestroy {
+export class MessageEditorComponent implements OnInit, OnDestroy, NotesSelectMixin {
   @ViewChild(MiniEditor) editor: MiniEditor;
-  @ViewChild('noteList') noteList: ChatNoteListModalComponent;
+  @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
 
   tooltip: any = Constants.tooltip;
   emojiData: any = [];
@@ -61,7 +68,8 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     // private photoSelectDataService: PhotoModalDataService,
     private mediaSelectionService: WMediaSelectionService,
-    // private photoUploadService: PhotoUploadService,
+    private apiBaseService: ApiBaseService,
+    private store: Store<any>,
     private fb: FormBuilder
   ) {
     this.createForm();
@@ -72,16 +80,22 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     // this.photoModal.action = 'UPLOAD';
   }
 
+  noteSelectOpen: () => void;
+  noteSelectOnInsert() {
+    this.store.select('notes').take(1).subscribe(state => {
+      const note: any = state.objects.filter(item => item.object_type == noteConstants.OBJECT_TYPE.NOTE)[0];
+      this.notesListModal.close();
+      this.apiBaseService.post('zone/chat/message', {data: {type: 'file', id: note.object_id, object: note.object_type}, group_id: this.chatService.getContactSelect().value.group_id}).subscribe(res => {
+      })
+    })
+  }
+
   createForm() {
     // Form controls
     this.messageEditorForm = new FormGroup({
       message: new FormControl(this.message.message, Validators.required) //[this.message.message, null]
     });
     this.messageCtrl = <FormControl>this.messageEditorForm.controls['message'];
-  }
-
-  onOpenNotes() {
-    this.noteList.modal.open();
   }
 
   handleKeyUp(e: any) {

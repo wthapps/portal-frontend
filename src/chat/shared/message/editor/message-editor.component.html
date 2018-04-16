@@ -11,7 +11,7 @@
                 pTooltip="{{ tooltip.sendMedia }}" tooltipPosition="top">
           <i class="fa fa-camera"></i>
         </button>
-        <button class="btn btn-default" (click)="onOpenNotes()"
+        <button class="btn btn-default" (click)="noteSelectOpen()"
                 pTooltip="{{ tooltip.sendFile }}" tooltipPosition="top">
           <i class="fa fa-file"></i>
         </button>
@@ -40,6 +40,8 @@
       </div>
     </div>
   </form>
-<chat-note-list-modal #noteList></chat-note-list-modal>
+<chat-note-list-modal #noteList (insertNoteEvent)="noteSelectOnInsert()">
+
+</chat-note-list-modal>
 </div>
 <!-- <chat-note-list-modal #noteList></chat-note-list-modal> -->
