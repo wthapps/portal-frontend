@@ -9,7 +9,7 @@
         <i class="fa fa-eye"></i>
       </a>
     </li>
-    <li>
+    <li *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
          href="javascript:void(0);"
          (click)="toolbar.doAction({action: 'openModal',
@@ -18,7 +18,7 @@
       </a>
     </li>
 
-    <li>
+    <li *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" href="javascript:void(0);" draggable="false"
          *ngIf="toolbar.favoriteAll"
          (click)="toolbar.doAction({
@@ -42,27 +42,27 @@
         <i class="fa fa-star-o"></i>
       </a>
     </li>
-    <li>
+    <li *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" href="javascript:;" draggable="false"
          (click)="toolbar.doAction({action: 'openModal',
          payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})"
          pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
         <i class="fa fa-tag"></i></a>
     </li>
-    <li>
+    <li *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" href="javascript:;" draggable="false"
          (click)="toolbar.doAction({action: 'deleteMedia', payload: {selectedObjects: toolbar.selectedObjects}})"
          pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
         <i class="fa fa-trash-o"></i></a>
     </li>
 
-    <li class="dropdown action">
+    <li class="dropdown action" *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
          pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
         <i class="fa fa-ellipsis-v"></i>
       </a>
       <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-        <li>
+        <li *ngIf="!!toolbar.selectedObjects.length">
           <a href="javascript:void(0);" draggable="false"
              (click)="toolbar.doAction({action: 'openModal',
              payload: {modalName: 'addToAlbumModal', selectedObjects: toolbar.selectedObjects}})"
@@ -70,8 +70,7 @@
             <i class="fa fa-plus-square"></i> Add to Album
           </a>
         </li>
-
-        <li>
+        <li *ngIf="!!toolbar.selectedObjects.length">
           <a href="javascript:void(0);" draggable="false"
              (click)="toolbar.doAction({action: 'download', payload: {selectedObjects: toolbar.selectedObjects}})">
             <i class="fa fa-download"></i> Download</a>
@@ -92,7 +91,6 @@
             <i class="fa fa-info-circle"></i> View Detail
           </a>
         </li>
-
       </ul>
     </li>
   </ul>

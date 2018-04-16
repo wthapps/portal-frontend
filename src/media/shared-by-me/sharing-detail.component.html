@@ -159,7 +159,7 @@
                 <i class="fa fa-trash-o"></i> Delete
               </a>
             </li>
-            <li>
+            <li *ngIf="toolbar.hasOneObject">
               <a href="javascript:void(0);" draggable="false"
                  (click)="doEvent({action: 'viewDetails',
                     payload: { selectedObject: toolbar.selectedObjects[0] }})">
