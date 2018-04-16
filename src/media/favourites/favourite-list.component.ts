@@ -84,16 +84,8 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
     if (object.object_type === 'album') {
       this.router.navigate(['albums', object.id], {queryParams: {returnUrl: this.router.url}});
     } else {
-      this.router.navigate([{
-          outlets: {
-            ['modal']: [
-              `photos`,
-              object.id,
-              {ids: [object.id], mode: 0}
-            ]
-          }
-        }], {queryParamsHandling: 'preserve', preserveFragment: true}
-      );
+      this.router.navigate([`photos`,
+        object.id, {ids: [object.id], mode: 0}], {queryParams: {returnUrl: this.router.url}});
     }
   }
 }

@@ -117,7 +117,15 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
         break;
       // add photos to current sharing
       case 'addToParent':
-        this.store.dispatch(new AddToDetailObjects({sharing: this.sharing, objects: event.payload.photos}));
+        if (event.payload.uploading) {
+          this.photoUploadService.uploadPhotos(event.payload.photos).subscribe((response: any) => {
+            this.store.dispatch(new AddToDetailObjects({sharing: this.sharing, objects: [response.data]}));
+          }, (err: any) => {
+            console.error('Error when uploading files ', err);
+          });
+        } else {
+          this.store.dispatch(new AddToDetailObjects({sharing: this.sharing, objects: event.payload.photos}));
+        }
         break;
       case 'removeFromParent':
         this.store.dispatch(new RemoveFromDetailObjects(event.payload));
@@ -166,19 +174,8 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
   }
 
   private viewDetails(payload: any) {
-    this.router.navigate(
-      [
-        {
-          outlets: {
-            modal: [
-              'photos',
-              payload.selectedObject.id,
-              { ids: [payload.selectedObject.id], mode: 0 }
-            ]
-          }
-        }
-      ],
-      { queryParamsHandling: 'preserve', preserveFragment: true }
-    );
+    const object = payload.selectedObject;
+    this.router.navigate([`photos`,
+      object.id, {ids: [object.id], mode: 0}], {queryParams: {returnUrl: this.router.url}});
   }
 }

@@ -324,5 +324,8 @@ export class PhotoDetailPartialComponent
       modalComponentFactory
     );
     this.modal = this.modalComponent.instance;
+    this.modal.event.takeUntil(this.ngOnDestroy).subscribe((event: any) => {
+      this.doAction(event);
+    });
   }
 }

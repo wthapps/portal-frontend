@@ -82,8 +82,10 @@ export class MediaActionHandler {
           .subscribe(photos => {
             this.doEvent({action: 'addToParent', payload: {photos: photos }});
           });
-        mediaSelectionService.uploadingMedias$.subscribe((photos: any) => {
-          this.doEvent({action: 'addToParent', payload: {photos: photos }});
+        mediaSelectionService.uploadingMedias$
+          .map(([file, dataUrl]) => [file])
+          .subscribe((photos: any) => {
+          this.doEvent({action: 'addToParent', payload: {photos: photos, uploading: true }});
         });
         break;
       default:

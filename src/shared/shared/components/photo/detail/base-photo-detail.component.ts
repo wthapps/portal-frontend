@@ -151,7 +151,6 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   }
 
   refreshUpdatedPhoto(payload: any) {
-    console.debug('refresh Photo: ', payload);
     this.photo = payload;
     this.photoService.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
   }
