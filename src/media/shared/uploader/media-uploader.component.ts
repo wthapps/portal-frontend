@@ -162,7 +162,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
           // newPhoto.thumbnail_url = this.current_photo;
           // this.events.next(returnData);
-          this.onAction({action: 'updateMediaList', params: { data: returnData}});
+          this.onAction({action: 'updateMediaList', payload: {data: returnData}});
 
           if (this.uploaded_num == this.files_num) {
             this.step = this.uploadSteps.uploaded;

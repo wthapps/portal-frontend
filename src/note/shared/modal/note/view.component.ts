@@ -17,6 +17,7 @@ import { Constants } from '@shared/constant/config/constants';
 declare let $: any;
 declare let jsPDF: any;
 declare let saveAs: any;
+declare let window: any;
 
 // declare let printJS: any;
 

@@ -6,8 +6,7 @@
         <li> <a href="javascript:void" (click)="tabFavourites()"> Favourites </a> </li>
         <li> <a href="javascript:void" (click)="tabSharedWithMe()"> Shared with me </a> </li>
         <li> <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)"
-                        [placeholder]="'Search something'"
-                        (onSearchAdvancedEvent)="onSearchAdvanced($event)"></textbox-search> </li>
+                        [placeholder]="'Search something'"></textbox-search> </li>
       </ul>
       <button type="button" name="button" (click)="insertNotes()"> Insert </button>
     </bs-modal-header>
