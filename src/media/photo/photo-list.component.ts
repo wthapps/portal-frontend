@@ -89,9 +89,6 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
       case 'download':
         this.store.dispatch(new Download(event.payload));
         break;
-      case 'editInfo':
-        console.log('editing information:::', this.event);
-        break;
     }
   }
 

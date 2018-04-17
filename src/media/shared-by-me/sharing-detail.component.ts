@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ComponentFactoryResolver } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { ApiBaseService, CommonEventService } from '@shared/services';
+import { ApiBaseService, CommonEventService, PhotoUploadService } from '@shared/services';
 import {
   GetAll,
   GetMore,
@@ -52,7 +52,8 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
     private router: Router,
     private route: ActivatedRoute,
     protected mediaSelectionService: WMediaSelectionService,
-    private confirmService: WthConfirmService
+    private confirmService: WthConfirmService,
+    private photoUploadService: PhotoUploadService
   ) {
     super(resolver, store, mediaSelectionService);
     this.photos$ = this.store.select(appStore.selectDetailObjects);

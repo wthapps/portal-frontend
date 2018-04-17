@@ -7,7 +7,7 @@
 <!--</w-toolbar>-->
 <ng-content select="w-toolbar"></ng-content>
 
-<ng-container *ngIf="objects.length > 0; else loadingScreen">
+<ng-container *ngIf="objects.length > 0">
   <div class="page-body-content has-page-body-control gray-light"
        infinite-scroll
        [infiniteScrollDistance]="2"
