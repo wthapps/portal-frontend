@@ -54,6 +54,7 @@ import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
+declare let window: any;
 
 @Component({
   selector: 'z-note-detail-edit',
