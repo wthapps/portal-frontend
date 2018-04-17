@@ -53,12 +53,12 @@
   <span class="dropdown">
     <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle"
             data-toggle="dropdown" type="button" style="margin-right: 10px; border: none; background: none">
-      {{ field }}
+      {{ groupBy }}
     </button>
     <ul class="dropdown-menu dropdown-menu-right">
-      <li><a (click)="changeView('timeline', 'date');" href="javascript:void(0);"> Date</a></li>
-      <li><a (click)="changeView('timeline', 'month')" href="javascript:void(0);"> Month</a></li>
-      <li><a (click)="changeView('timeline', 'year')" href="javascript:void(0)"> Year</a></li>
+      <li><a (click)="changeView('timeline', 'Date');" href="javascript:void(0);"> Date</a></li>
+      <li><a (click)="changeView('timeline', 'Month')" href="javascript:void(0);"> Month</a></li>
+      <li><a (click)="changeView('timeline', 'Year')" href="javascript:void(0)"> Year</a></li>
     </ul>
   </span>
   <i class="fa can-click" [ngClass]="{'fa-arrow-up': (direction == 'asc'), 'fa-arrow-down': (direction == 'desc')}"

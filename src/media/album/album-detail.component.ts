@@ -31,6 +31,7 @@ import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.compone
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MediaActionHandler } from '@media/shared/media';
 import {  } from '@media/../../shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { PhotoUploadService } from '@wth/shared/services';
 
 @Component({
   selector: 'me-album-detail',
@@ -64,7 +65,8 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
     private router: Router,
     private route: ActivatedRoute,
     private albumService: AlbumService,
-    protected mediaSelectionService: WMediaSelectionService
+    protected mediaSelectionService: WMediaSelectionService,
+    private photoUploadService: PhotoUploadService
   ) {
     super(resolver, store, mediaSelectionService);
     this.photos = this.store.select(appStore.selectDetailObjects);
@@ -147,7 +149,15 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
         break;
       // add photos to album
       case 'addToParent':
-        this.store.dispatch(new AddToDetailObjects({album: this.album, photos: event.payload.photos}));
+        if (event.payload.uploading) {
+          this.photoUploadService.uploadPhotos(event.payload.photos).subscribe((response: any) => {
+            this.store.dispatch(new AddToDetailObjects({album: this.album, photos: [response.data]}));
+          }, (err: any) => {
+            console.error('Error when uploading files ', err);
+          });
+        } else {
+          this.store.dispatch(new AddToDetailObjects({album: this.album, photos: event.payload.photos}));
+        }
         break;
       case 'removeFromParent':
         this.store.dispatch(new RemoveFromDetailObjects(event.payload));
@@ -186,19 +196,8 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
   }
 
   private viewDetails(payload: any) {
-    this.router.navigate(
-      [
-        {
-          outlets: {
-            modal: [
-              'photos',
-              payload.selectedObject.id,
-              { ids: [payload.selectedObject.id], mode: 0 }
-            ]
-          }
-        }
-      ],
-      { queryParamsHandling: 'preserve', preserveFragment: true }
-    );
+    const object = payload.selectedObject;
+    this.router.navigate([`photos`,
+      object.id, {ids: [object.id], mode: 0}], {queryParams: {returnUrl: this.router.url}});
   }
 }

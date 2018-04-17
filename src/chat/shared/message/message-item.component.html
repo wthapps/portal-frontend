@@ -26,17 +26,16 @@
 
           <!--text message menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
-            <li *ngIf="!message.file_json"><a href="javascript:;" (click)="copy()">Copy</a></li>
+            <li *ngIf="!message.file"><a href="javascript:;" (click)="copy()">Copy</a></li>
             <!--comment out this menu because this function is not working now-->
-            <!--<li *ngIf="!message.file_json"><a href="javascript:;" (click)="quote()">Quote Message</a></li>-->
-            <li *ngIf="!message.file_json && message.byMe"><a href="javascript:;" (click)="edit()">Edit</a></li>
-            <li *ngIf="!message.file_json && message.byMe"><a href="javascript:;" (click)="delete()">Delete</a></li>
+            <li *ngIf="!message.file && message.byMe"><a href="javascript:;" (click)="edit()">Edit</a></li>
+            <li *ngIf="!message.file && message.byMe"><a href="javascript:;" (click)="delete()">Delete</a></li>
           </ul>
 
           <!--photos menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Media::Photo'">
-            <li *ngIf="message.file_json && message.message_type !== 'message_deleted'">
-              <a [href]="message.file_json.url" target="_blank" download>
+            <li *ngIf="message.file && message.message_type !== 'message_deleted'">
+              <a [href]="message.file.url" target="_blank" download>
                 Download
               </a>
             </li>
@@ -54,8 +53,8 @@
 
           <!--other menu -->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Common::GenericFile'">
-            <li *ngIf="message.file_json && message.message_type !== 'message_deleted' && message.message_type !== 'message_cancel'">
-              <a [href]="message.file_json.url" target="_blank" download>
+            <li *ngIf="message.file && message.message_type !== 'message_deleted' && message.message_type !== 'message_cancel'">
+              <a [href]="message.file.url" target="_blank" download>
                 Download
               </a>
             </li>
@@ -81,7 +80,6 @@
               </div>
               <div class="media-div-body">
                 <div class="media-div-heading">{{ message.message }}</div>
-                <!--<div class="text-fade">{{ message.file_json.size | bytes:3 }}</div>-->
               </div>
             </a>
           </div>
@@ -102,21 +100,25 @@
           <div class="message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
             <figure>
               <a href="javascript:;" (click)="onPreviewPhoto(message)">
-                <img [src]="message.file_json.url" alt="">
+                <img [src]="message.file?.url" alt="">
               </a>
             </figure>
-            {{ message.to_json }}
           </div>
           <div class="message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
-            <a class="media-div link-text" [href]="message.file_json?.url" target="_blank" download>
+            <a class="media-div link-text" [href]="message.file?.url" target="_blank" download>
               <div class="pull-left">
                 <i class="fa fa-file-o"></i>
               </div>
               <div class="media-div-body">
-                <div class="media-div-heading">{{ message.file_json.full_name }}</div>
-                <div class="text-fade">{{ message.file_json.size | bytes:3 }}</div>
+                <div class="media-div-heading">{{ message.file?.full_name }}</div>
+                <div class="text-fade">{{ message.file?.size | bytes:3 }}</div>
               </div>
             </a>
+          </div>
+
+          <div *ngIf="message.file_type == 'Note::Note'" class="note-display p10">
+            <h5><i class="fa fa-file"></i> {{message.file?.name}}</h5>
+            <div [innerHTML]="message.file?.content"></div>
           </div>
         </ng-template>
 
@@ -214,7 +216,7 @@
 
       </div>
       <div class="message-item-action"
-           *ngIf="(message.message_type == 'text' || message.message_type == 'Media::Photo' || message.message_type == 'FileMedium')">
+           *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'Common::GenericFile')">
         <div class="message-item-time">
           <small>{{ message.created_at | timeFormat: "time_only" }}</small>
         </div>

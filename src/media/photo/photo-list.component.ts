@@ -89,6 +89,9 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
       case 'download':
         this.store.dispatch(new Download(event.payload));
         break;
+      case 'editInfo':
+        console.log('editing information:::', this.event);
+        break;
     }
   }
 
@@ -106,21 +109,11 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
         }
       }], {queryParamsHandling: 'preserve', preserveFragment: true}
     );
+    this.router.navigate([`photos`, objects[0].id, {ids: ids, mode: 0}]);
   }
 
   viewDetails(payload: any) {
     const object = payload.selectedObject;
-
-    this.router.navigate([{
-        outlets: {
-          ['modal']: [
-            `photos`,
-            object.id,
-            {ids: [object.id], mode: 0}
-          ]
-        }
-      }], {queryParamsHandling: 'preserve', preserveFragment: true}
-    );
-
+    this.router.navigate([`photos`, object.id, {ids: [object.id], mode: 0}]);
   }
 }

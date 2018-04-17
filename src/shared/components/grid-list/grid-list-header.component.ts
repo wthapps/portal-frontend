@@ -16,7 +16,7 @@ export class WGridListHeaderComponent {
 
   field: any = 'Date';
   direction: any = 'asc';
-
+  groupBy = 'Date';
   sliderVal: number = Constants.mediaSliderViewNumber.default;
   sliderMin: number = Constants.mediaSliderViewNumber.min;
   sliderMax: number = Constants.mediaSliderViewNumber.max;
@@ -27,10 +27,10 @@ export class WGridListHeaderComponent {
   }
 
 
-  sort(field: string, direction: string = '', groupBy: string = '') {
-    if (this.view !== 'list') {
-      this.field = 'Date';
-    }
+  sort(field: string, direction: string = 'asc', groupBy: string = '') {
+    // if (this.view !== 'list') {
+    //   this.field = 'Date';
+    // }
     if (field === this.field) {
       this.direction = this.direction === 'asc' ? 'desc' : 'asc';
       // return;
@@ -41,11 +41,13 @@ export class WGridListHeaderComponent {
     if (this.field === 'Date' || this.field === 'Month' || this.field === 'Year') {
       this.event.emit({action: 'sort', payload: {queryParams: {sort: this.direction, sort_name: 'created_at'}}});
     } else {
-      this.event.emit({action: 'sort', payload: {queryParams: {sort: this.direction, sort_name: this.field}}});
+      this.event.emit({action: 'sort',
+        payload: {queryParams: {sort: this.direction, sort_name: this.field.toLowerCase()}}});
     }
   }
 
   changeView(view: string, groupBy: string) {
-    this.event.emit({action: 'changeView', payload: { view: view, groupBy: groupBy }});
+    this.groupBy = groupBy;
+    this.event.emit({action: 'changeView', payload: { view: view, groupBy: groupBy.toLowerCase() }});
   }
 }

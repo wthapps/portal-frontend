@@ -34,8 +34,8 @@ declare let _: any;
   encapsulation: ViewEncapsulation.None,
   entryComponents: [
     SharingModalComponent,
-    PhotoEditModalComponent,
-    AddToAlbumModalComponent,
+    // PhotoEditModalComponent,
+    // AddToAlbumModalComponent,
     TaggingModalComponent
   ]
 })
@@ -324,5 +324,8 @@ export class PhotoDetailPartialComponent
       modalComponentFactory
     );
     this.modal = this.modalComponent.instance;
+    this.modal.event.takeUntil(this.ngOnDestroy).subscribe((event: any) => {
+      this.doAction(event);
+    });
   }
 }

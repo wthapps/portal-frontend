@@ -80,9 +80,9 @@ export class PhotoEditModalComponent implements OnChanges, WthAppsBaseModal {
   onSubmit(values: any) {
     if (this.form.valid) {
       this.modal.close();
-      this.data.name = values.name;
+      this.data.name = this.name.value;
       this.data.created_at = new Date(values.date);
-      this.data.description = values.description;
+      this.data.description = values.description || '';
 
       this.event.emit({action: 'editInfo', params: {selectedObject: this.data}});
     }

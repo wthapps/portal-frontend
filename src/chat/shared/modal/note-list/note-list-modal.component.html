@@ -1,0 +1,22 @@
+<form>
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
+      <ul>
+        <li> <a href="javascript:void" (click)="tabMyNote()"> My Note </a> </li>
+        <li> <a href="javascript:void" (click)="tabFavourites()"> Favourites </a> </li>
+        <li> <a href="javascript:void" (click)="tabSharedWithMe()"> Shared with me </a> </li>
+        <li> <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)"
+                        [placeholder]="'Search something'"
+                        (onSearchAdvancedEvent)="onSearchAdvanced($event)"></textbox-search> </li>
+      </ul>
+      <button type="button" name="button" (click)="insertNotes()"> Insert </button>
+    </bs-modal-header>
+    <bs-modal-body>
+      <div class="content-overflow" style="max-height: 600px;">
+        <div>
+          <share-chat-note-list></share-chat-note-list>
+        </div>
+      </div>
+    </bs-modal-body>
+  </bs-modal>
+</form>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { PhotoService, UserService } from '@wth/shared/services';
@@ -28,6 +28,8 @@ import { SharingService } from '@wth/shared/shared/components/photo/modal/sharin
     PhotoEditModalComponent]
 })
 export class PhotoDetailComponent extends BasePhotoDetailComponent {
+  returnUrl: string;
+
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
@@ -46,8 +48,11 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent {
       userService,
       sharingService
     );
-    console.log(this.isOwner);
-    console.log(this.isOwner);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'photos';
   }
 
   doEvent(event: any) {
@@ -64,6 +69,30 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent {
         break;
       case 'media:photo:update_recipients':
         this.photo.json_shares = event.payload.data;
+        break;
+      case 'editInfo':
+        this.loadingService.start();
+          const selectedObject = event.params.selectedObject;
+          const updated_at = new Date(selectedObject.created_at);
+          const body = JSON.stringify({
+            name: selectedObject.name,
+            created_day: updated_at.getDate(),
+            created_month: updated_at.getMonth() + 1,
+            created_year: updated_at.getUTCFullYear(),
+            description: selectedObject.description
+          });
+        this.photoService.updateInfo(selectedObject.id, body)
+          .toPromise().then(
+          (res: any) => {
+            this.loadingService.stop();
+          },
+          (error: any) => {
+            this.loadingService.stop();
+          }
+        );
+        break;
+      case 'goBack':
+        this.router.navigateByUrl(this.returnUrl);
         break;
       default:
         super.doEvent(event);
