@@ -235,13 +235,25 @@ export class MediaEffects {
     .ofType(mediaActions.ActionTypes.FAVORITE)
     .map((action: mediaActions.Favorite) => action.payload)
     .flatMap(payload => {
-      return this.mediaObjectService.favourite({objects: payload.selectedObjects, mode: payload.mode})
-        .map(response => {
-            return new mediaActions.FavoriteSuccess({...payload, data: response.data });
-          },
-          (error: any) => {
-            console.log('error: ', error);
-          }
-        );
+      // return this.mediaObjectService.favourite({objects: payload.selectedObjects, mode: payload.mode})
+      if (payload.mode === 'add') {
+        return this.mediaObjectService.favorite({objects: payload.selectedObjects, mode: payload.mode})
+          .map(response => {
+              return new mediaActions.FavoriteSuccess({...payload, data: response.data });
+            },
+            (error: any) => {
+              console.log('error: ', error);
+            }
+          );
+      } else {
+        return this.mediaObjectService.unfavorite({objects: payload.selectedObjects, mode: payload.mode})
+          .map(response => {
+              return new mediaActions.FavoriteSuccess({...payload, data: response.data });
+            },
+            (error: any) => {
+              console.log('error: ', error);
+            }
+          );
+      }
     });
 }

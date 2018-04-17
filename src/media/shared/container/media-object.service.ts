@@ -66,6 +66,14 @@ export class MediaObjectService extends BaseEntityService<any> {
     return this.api.post('media/media/favourite', body);
   }
 
+  favorite(body: any): any {
+    return this.api.post('media/favorites/favorite', body);
+  }
+
+  unfavorite(body: any): any {
+    return this.api.post('media/favorites/unfavorite', body);
+  }
+
   download(body: any): any {
     return this.api.download('media/files/download', body);
   }
