@@ -1,4 +1,9 @@
-import { Component, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  OnDestroy,
+  ViewEncapsulation
+} from '@angular/core';
 import { ZContactService } from '../services/contact.service';
 import { Subscription } from 'rxjs/Subscription';
 import { GoogleApiService } from '../services/google-api.service';
@@ -13,7 +18,6 @@ import { CommonEvent } from '../../../shared/services/common-event/common-event'
   styleUrls: ['merge-progress.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-
 export class ZContactShareMergeProgressComponent implements OnDestroy {
   @ViewChild('modalDock') modalDock: ModalDockComponent;
 
@@ -28,35 +32,38 @@ export class ZContactShareMergeProgressComponent implements OnDestroy {
 
   mergeSubscription: Subscription;
   status: any;
-  successfulNum: number = 0;
-  failedNum: number = 0;
+  successfulNum: Number = 0;
+  failedNum: Number = 0;
 
   constructor(
     private contactService: ZContactService,
     public loadingService: LoadingService,
     private commonEventService: CommonEventService
   ) {
-
-    this.mergeSubscription = this.commonEventService.filter(
-      (event: CommonEvent) => event.channel == 'contact:contact:actions:merge').subscribe((event: CommonEvent) => {
-      this.doEvent(event);
-    });
+    this.mergeSubscription = this.commonEventService
+      .filter(
+        (event: CommonEvent) => event.channel === 'contact:contact:actions:merge'
+      )
+      .subscribe((event: CommonEvent) => {
+        this.doEvent(event);
+      });
   }
 
   doEvent(event: any) {
-    console.debug('doEvent: ', event);
+    console.log('doEvent: ', event);
 
     switch (event.action) {
       case 'open': {
         this.status = this.STATUS.processing;
         this.modalDock.open();
 
-        this.contactService.mergeDuplicateContacts()
+        this.contactService
+          .mergeDuplicateContacts()
           .then((res: any) => {
-          this.status = this.STATUS.done;
-          console.log('merge duplicate is DONE');
-        }).catch(err => this.status = this.STATUS.error);
-        ;
+            this.status = this.STATUS.done;
+            console.log('merge duplicate is DONE');
+          })
+          .catch(err => (this.status = this.STATUS.error));
         break;
       }
     }
@@ -67,9 +74,17 @@ export class ZContactShareMergeProgressComponent implements OnDestroy {
   }
 
   undo() {
-    this.contactService.undoMerge()
-      .then(res => this.status = this.STATUS.undoed)
-      .then(() => setTimeout(() => { this.modalDock.close(); }, 5000))
-      .catch(err => { console.warn(err); this.status = this.STATUS.error; });
+    this.contactService
+      .undoMerge()
+      .then(res => (this.status = this.STATUS.undoed))
+      .then(() =>
+        setTimeout(() => {
+          this.modalDock.close();
+        }, 5000)
+      )
+      .catch(err => {
+        console.warn(err);
+        this.status = this.STATUS.error;
+      });
   }
 }

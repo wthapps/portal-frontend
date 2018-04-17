@@ -1,29 +1,24 @@
 <wth-modal-dock #modalDock>
-  <wth-modal-dock-header [loading]="(importStatus==IMPORT_STATUS.importing)" [failed]="(importStatus==IMPORT_STATUS.cancelled || importStatus==IMPORT_STATUS.error)"
+  <wth-modal-dock-header [loading]="(importStatus==IMPORT_STATUS.importing)"
+                         [failed]="(importStatus==IMPORT_STATUS.cancelled || importStatus==IMPORT_STATUS.error)"
                          [done]="(importStatus==IMPORT_STATUS.done)">
     <span *ngIf="importStatus==IMPORT_STATUS.importing">Importing</span>
     <span *ngIf="importStatus==IMPORT_STATUS.done">Imported</span>
     <span *ngIf="importStatus==IMPORT_STATUS.cancelled">Import cancelled</span>
   </wth-modal-dock-header>
   <wth-modal-dock-body>
-    <div class="media" *ngIf="importStatus==IMPORT_STATUS.importing || importStatus==IMPORT_STATUS.cancelled  || importStatus==IMPORT_STATUS.done ">
-      <div class="media-left">
-        <div class="row-img-item">
-          <div class="photo-box">
-            <div class="photo-box-action">
-            </div>
-            <div class="photo-box-figure">
-              <figure class="img-center-dv photo-item-uploading loading">
-                <span class="photo-box-figure-in"></span>
-              </figure>
-            </div>
-          </div>
-        </div>
+    <div class="media"
+         *ngIf="importStatus==IMPORT_STATUS.importing || importStatus==IMPORT_STATUS.cancelled  || importStatus==IMPORT_STATUS.done ">
+      <div *ngIf="importStatus==IMPORT_STATUS.importing">
+        Importing {{ gapi.totalImporting > 0 ? 'total ' + gapi.totalImporting + ' contacts' : '' }} ...
       </div>
-      <div class="media-body">
-        <div *ngIf="importStatus==IMPORT_STATUS.importing">Importing {{ gapi.totalImporting > 0 ? 'total ' + gapi.totalImporting + ' contacts' : '' }}  ...</div>
-        <div *ngIf="importStatus==IMPORT_STATUS.done">{{ successfulNum }} contacts imported</div>
-        <div *ngIf="importStatus==IMPORT_STATUS.cancelled">{{ gapi.totalImporting }} contacts cancelled</div>
+      <div *ngIf="importStatus==IMPORT_STATUS.done">
+        Contacts imported
+        <h3 class="mt-0 mb-0">{{ successfulNum }}</h3>
+      </div>
+      <div *ngIf="importStatus==IMPORT_STATUS.cancelled">
+        Contacts cancelled
+        <h3 class="mt-0 mb-0">{{ gapi.totalImporting }}</h3>
       </div>
     </div>
 
@@ -37,15 +32,14 @@
     </div>
 
   </wth-modal-dock-body>
-  <wth-modal-dock-footer [inline]="true">
-    <div>
-      <a *ngIf="importStatus==IMPORT_STATUS.done || importStatus==IMPORT_STATUS.cancelled" href="javascript:;" (click)="addToGroup($event)">
-        Add to Group
-      </a>
-      <a *ngIf="importStatus==IMPORT_STATUS.importing" href="javascript:;" (click)="stop($event)">
-        Stop
-      </a>
-    </div>
+  <wth-modal-dock-footer [inline]="false">
+    <a *ngIf="importStatus==IMPORT_STATUS.done || importStatus==IMPORT_STATUS.cancelled" href="javascript:;"
+       (click)="addToGroup($event)">
+      Add to Group
+    </a>
+    <a *ngIf="importStatus==IMPORT_STATUS.importing" href="javascript:;" (click)="stop($event)">
+      Stop
+    </a>
   </wth-modal-dock-footer>
 </wth-modal-dock>
-<contact-add-group-modal #addGroup ></contact-add-group-modal>
+<contact-add-group-modal #addGroup></contact-add-group-modal>
