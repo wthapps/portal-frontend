@@ -3,9 +3,7 @@ import {
 } from '@ngrx/store';
 
 import * as fromNote from './../note';
-import * as fromFolder from './../folder';
 import * as context from './../context';
-import { noteConstants, NoteConstants } from "@notes/shared/config/constants";
 import { AppState } from "@notes/shared/reducers/state";
 
 export const getNotesState = (state: AppState) => state.notes;
@@ -19,8 +17,7 @@ const FIELD_MAP = {'owner': 'user.name'};
 export const getNotes = createSelector(getNotesEntities, context.getSortOptionContext,
   (notes: any, sort: any) => {
   let cloneNotes: any[] = Object.keys(notes).map(o => notes[o]);
-  // Object.keys(notes).forEach((idx: any) => cloneNotes.push(notes[idx]));
-  let sortField = ['name', 'title'].includes(sort.field) ? 'title' : sort.field;
+  let sortField = ['name', 'title'].includes(sort.field) ? 'name' : sort.field;
   sortField = FIELD_MAP[sort.field] || sortField;
   return cloneNotes.sort((a: any, b: any) => compareBy(a, b, sort.desc, sortField));
 });
@@ -28,7 +25,6 @@ export const getNotes = createSelector(getNotesEntities, context.getSortOptionCo
 export const getFolders = createSelector(getFolderEntities, context.getSortOptionContext,
   (notes: any, sort: any) => {
   let cloneNotes: any[] = Object.keys(notes).map(o => notes[o]);
-  // Object.keys(notes).forEach((idx: any) => cloneNotes.push(notes[idx]));
   let sortField = ['name', 'title'].includes(sort.field) ? 'name' : sort.field;
   sortField = FIELD_MAP[sort.field] || sortField;
   return cloneNotes.sort((a: any, b: any) => compareBy(a, b, sort.desc, sortField));
@@ -42,7 +38,7 @@ export const getAllItems = createSelector(getNotesEntities, getFolderEntities, c
 });
 
 
-function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'title'): number {
+function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'name'): number {
   if (!objA || !objB) return;
   let o = orderDesc ? 1 : -1;
 
