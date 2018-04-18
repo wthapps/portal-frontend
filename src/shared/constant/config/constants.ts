@@ -95,7 +95,7 @@ export class ConstantsBase {
   ];
   notePageType: any = {
     MY_NOTE: 'MY_NOTE',
-    TRASH: 'TRASH',
+    TRASH: 'NOTE_TRASH',
     SHARED_WITH_ME: 'SHARED_WITH_ME',
     MY_SHARINGS: 'MY_SHARINGS'
   };

@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
 import { ZNoteService } from '../shared/services/note.service';
@@ -10,7 +9,6 @@ import * as fromRoot from '../shared/reducers/index';
 import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
-import { Constants } from '@shared/constant/config/constants';
 import * as listReducer from '../shared/reducers/features/list-mixed-entities';
 import { noteConstants } from '@notes/shared/config/constants';
 
@@ -27,9 +25,12 @@ export class ZNoteTrashComponent implements OnInit {
   nodeState$: Observable<any>;
   selectedObjects$: Observable<any[]>;
   isSelectAll$: Observable<boolean>;
+  allItems$: Observable<any[]>;
+  context$: Observable<any>;
+  currentFolder$: Observable<any>;
   loading$: Observable<any>;
 
-  readonly PAGE_TYPE: any = Constants.notePageType;
+  readonly PAGE_TYPE: any = noteConstants.PAGE_TRASH;
 
   constructor(
     private router: Router,
@@ -41,10 +42,11 @@ export class ZNoteTrashComponent implements OnInit {
   ngOnInit() {
     this.noteItems$ = this.store.select(listReducer.getNotes);
     this.folderItems$ = this.store.select(listReducer.getFolders);
-    this.sortOption$ = this.store.select(fromRoot.getSortOption);
-    this.nodeState$ = this.store.select(fromRoot.getNotesState);
+    this.allItems$ = this.store.select(listReducer.getAllItems);
     this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
+    this.context$ = this.store.select(context.getContext);
+    this.currentFolder$ = this.store.select(fromRoot.getCurrentFolder);
     this.loading$ = this.store.select(fromRoot.getLoading);
 
     this.store.dispatch({

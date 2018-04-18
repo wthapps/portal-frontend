@@ -75,7 +75,7 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
       acceptLabel: 'Delete',
       rejectLabel: 'Cancel',
       message: `All notes and folders in your trash will be permanently deleted.
-      <br/>&emsp;<b>This action cannot be undo</b>
+      <br/>&emsp;<b>This action cannot be undoed</b>
       `,
       header: 'Empty Trash',
       accept: () => {

@@ -8,7 +8,7 @@ export class NoteConstants extends ConstantsBase {
   PAGE_INSIDE_FOLDER: any = 'INSIDE_FOLDER';
   PAGE_NOTE_EDIT: any = 'NOTE_EDIT';
   PAGE_NOTE_FAVOURITE: any = 'NOTE_FAVOURITE';
-  PAGE_TRASH: any = 'NOTE_TRASH';
+  PAGE_TRASH: string = 'NOTE_TRASH';
 
   /*
     edit: Can add new items to current list
