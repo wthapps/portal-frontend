@@ -24,7 +24,6 @@ import { ZNoteTrashModule } from './trash/trash.module';
 import { ZNotePhotoModule } from './photo/photo.module';
 import { environment } from '@env/environment';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpModule } from '@angular/http';
 import { ZNoteDetailModule } from './detail/detail.module';
 import { ZNoteSharedByMeModule } from './shared-by-me/shared-by-me.module';
 import { ModalModule } from '@wth/shared/modals/modals.module';
@@ -34,7 +33,6 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpModule,
     HttpClientModule,
 
     AppRoutingModule,

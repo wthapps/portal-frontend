@@ -27,8 +27,7 @@ export class ZNoteService extends BaseEntityService<any> {
 
   private apiUrl = '/api/zone/note/note.json';
 
-  constructor(protected apiBaseService: ApiBaseService,
-              private http: Http) {
+  constructor(protected apiBaseService: ApiBaseService) {
     super(apiBaseService);
     this.url = 'note/notes';
 
@@ -51,7 +50,7 @@ export class ZNoteService extends BaseEntityService<any> {
     this.isSelectAllSubject.next(false);
 
     // return this.apiBaseService.get(this.apiUrl)
-    return this.http.get(this.apiUrl)
+    return this.apiBaseService.get(this.apiUrl)
       .map((response: Response) => <any[]> response.json())
       .do(notes => {
         this.notesSubject.next(notes);
