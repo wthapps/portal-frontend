@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { ZNoteDetailEditComponent } from './edit.component';
 import { AuthGuard } from '@wth/shared/services';
+import { ZNotePublicViewComponent } from '@notes/detail/public-view.component';
 
 @NgModule({
   imports: [
@@ -14,13 +15,13 @@ import { AuthGuard } from '@wth/shared/services';
         canActivate: [AuthGuard]
       },
       {
-        path: 'notes/:id',
-        component: ZNoteDetailEditComponent,
+        path: 'note_public/:id',
+        component: ZNotePublicViewComponent,
         outlet: 'detail',
         canActivate: [AuthGuard]
       },
       {
-        path: 'notes/public/:uuid',
+        path: 'notes/:id',
         component: ZNoteDetailEditComponent,
         outlet: 'detail',
         canActivate: [AuthGuard]

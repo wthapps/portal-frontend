@@ -1,0 +1,26 @@
+<div class="page-body-control-nav page-body-control-nav-right">
+  <ul class="page-body-control-menu">
+    <li class="dropdown action">
+      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.changeView }}" tooltipPosition="bottom">
+        <i class="fa" [ngClass]="{'fa-th-list': viewMode == 'list', 'fa-th-large': viewMode == 'grid', 'fa-align-left': viewMode == 'time'}"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right text-right">
+        <li>
+          <a (click)="onChangeView('grid')" href="javascript:;" draggable="false">
+            <i class="fa fa-th-large"></i> Grid
+          </a>
+        </li>
+        <li>
+          <a (click)="onChangeView('list')" href="javascript:;" draggable="false">
+            <i class="fa fa-th-list"></i> List
+          </a>
+        </li>
+        <li>
+          <a (click)="onChangeView('time')" href="javascript:;" draggable="false">
+            <i class="fa fa-align-left"></i> Timeline
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

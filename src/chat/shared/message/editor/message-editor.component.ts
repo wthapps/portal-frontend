@@ -30,22 +30,20 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { takeUntil, filter, mergeMap, map } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
-import { ChatNoteListModalComponent } from '@chat/shared/modal/note-list/note-list-modal.component';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
-import { NotesSelectMixin } from '@shared/components/note-list/chat-module/notes-select.mixin';
 import { Store } from '@ngrx/store';
 import { log } from 'util';
 import { noteConstants } from '@notes/shared/config/constants';
+import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
 
 declare var $: any;
 
-@Mixin([NotesSelectMixin])
 @Component({
   selector: 'message-editor',
   templateUrl: 'message-editor.component.html',
   styleUrls: ['message-editor.component.scss']
 })
-export class MessageEditorComponent implements OnInit, OnDestroy, NotesSelectMixin {
+export class MessageEditorComponent implements OnInit, OnDestroy {
   @ViewChild(MiniEditor) editor: MiniEditor;
   @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
 
@@ -80,13 +78,20 @@ export class MessageEditorComponent implements OnInit, OnDestroy, NotesSelectMix
     // this.photoModal.action = 'UPLOAD';
   }
 
-  noteSelectOpen: () => void;
+  noteSelectOpen() {
+    this.notesListModal.open();
+  };
   noteSelectOnInsert() {
     this.store.select('notes').take(1).subscribe(state => {
-      const note: any = state.objects.filter(item => item.object_type == noteConstants.OBJECT_TYPE.NOTE)[0];
+      const notes: any = state.objects.filter(item => item.object_type == noteConstants.OBJECT_TYPE.NOTE && item.selected == true);
       this.notesListModal.close();
-      this.apiBaseService.post('zone/chat/message', {data: {type: 'file', id: note.object_id, object: note.object_type}, group_id: this.chatService.getContactSelect().value.group_id}).subscribe(res => {
+      notes.forEach(note => {
+        this.apiBaseService.post('zone/chat/message', {data: {type: 'file', id: note.object_id, object: note.object_type}, group_id: this.chatService.getContactSelect().value.group_id})
+        .subscribe(res => {
+          // Not implements because channel will get message automacticaly
+        })
       })
+
     })
   }
 

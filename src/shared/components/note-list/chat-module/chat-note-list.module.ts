@@ -6,10 +6,30 @@ import { FolderItemComponent } from '@shared/components/note-list/chat-module/it
 import { AngularSharedModule } from '@shared/angular-shared.module';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { NoteItemComponent } from '@shared/components/note-list/chat-module/item/note-item.component';
+import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
+import { BsModalModule } from 'ng2-bs3-modal';
+import { TextBoxSearchComponent } from '@shared/partials/search-box';
+import { PartialModule } from '@shared/partials';
+import { ChatNoteSharedToolBarComponent } from '@shared/components/note-list/chat-module/toolbar/toolbar.component';
+import { TooltipModule } from 'primeng/primeng';
+import { ZSharedBreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 
 @NgModule({
-  imports: [AngularSharedModule, PipeModule],
-  declarations: [ChatNoteListComponent, FolderItemComponent, NoteItemComponent],
-  exports: [ChatNoteListComponent]
+  imports: [
+    AngularSharedModule,
+    PipeModule,
+    BsModalModule,
+    PartialModule,
+    TooltipModule
+  ],
+  declarations: [
+    ChatNoteListComponent,
+    FolderItemComponent,
+    NoteItemComponent,
+    ChatNoteSharedToolBarComponent,
+    ZSharedBreadcrumbComponent,
+    ChatNoteListModalComponent
+  ],
+  exports: [ChatNoteListComponent, ChatNoteListModalComponent]
 })
 export class ChatNoteListModule {}

@@ -15,8 +15,10 @@ import { Constants } from '@shared/constant/config/constants';
 
 import { Subscription } from 'rxjs/Subscription';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { UrlService, UserService } from '@shared/services';
+import { UrlService, UserService, ApiBaseService } from '@shared/services';
 import { noteConstants } from '@notes/shared/config/constants';
+import * as fromChatNote from './../../../../../core/store/chat/note.reducer';
+
 
 declare var _: any;
 
@@ -44,6 +46,7 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   constructor(
     public userService: UserService,
     private store: Store<any>,
+    private apiBaseService: ApiBaseService,
     private wthConfirm: WthConfirmService,
     private urlService: UrlService,
     private router: Router
@@ -68,45 +71,19 @@ export class FolderItemComponent implements OnInit, OnDestroy {
   }
 
   onClick() {
-    this.selected = !this.selected;
-    if (this.pressingCtrlKey) {
-      // this.store.dispatch(new note.Select(this.data));
-    } else {
-      // this.store.dispatch({
-      //   type: note.SELECT_ONE,
-      //   payload: this.data
-      // });
-    }
+    this.store.dispatch({type: fromChatNote.SET_OBJECTS, payload: []});
+    this.apiBaseService
+      .get('note/v1/mixed_entities?parent_id=' + this.data.object_id)
+      .subscribe(res => {
+        this.store.dispatch({
+          type: fromChatNote.SET_OBJECTS,
+          payload: res.data
+        });
+      });
+
   }
 
   onClickMulti() {
-    // this.store.dispatch(new note.Select(this.data));
-  }
-
-  onView() {
-    if (!this.data.deleted_at) {
-      if (this.urls.paths[0] == 'shared-by-me') {
-        this.router.navigate([`shared-by-me/folders`, this.data.id]);
-        return;
-      }
-      if (
-        this.urls.paths[0] == 'shared-with-me' ||
-        this.data.permission != 'owner'
-      ) {
-        this.router.navigate([`shared-with-me/folders`, this.data.id]);
-        return;
-      }
-      this.router.navigate([`folders`, this.data.id]);
-    } else {
-      this.wthConfirm.confirm({
-        acceptLabel: 'Restore',
-        rejectLabel: 'Cancel',
-        message: `To view this folder, you'll need to restore it from your trash`,
-        header: 'This folder is in your trash',
-        accept: () => {
-          // this.store.dispatch({ type: note.RESTORE, payload: [this.data] });
-        }
-      });
-    }
+    this.store.dispatch({type: fromChatNote.SELECT_MULTIPLE, payload: this.data});
   }
 }

@@ -3,4 +3,9 @@
 .note-display {
   background-color: #ffffff;
   border: 1px solid $line;
+  max-height: 200px;
+  overflow: hidden;
+  a {
+    color: inherit;
+  }
 }

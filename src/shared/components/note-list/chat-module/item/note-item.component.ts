@@ -17,6 +17,7 @@ import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import { UserService } from '@wth/shared/services';
 import { noteConstants, NoteConstants } from '@notes/shared/config/constants';
+import * as fromChatNote from './../../../../../core/store/chat/note.reducer';
 
 @Component({
   selector: 'note-item',
@@ -74,17 +75,10 @@ export class NoteItemComponent implements OnInit, OnDestroy {
   }
 
   onClick() {
-    this.onSelected();
+    this.store.dispatch({type: fromChatNote.SELECT_ONE, payload: this.data});
   }
 
   onClickMulti() {
-    // this.store.dispatch(new note.Select(this.data));
-  }
-
-  onView() {
-    this.router.navigate([{ outlets: { detail: ['notes', this.data.id] } }], {
-      queryParamsHandling: 'preserve',
-      preserveFragment: true
-    });
+    this.store.dispatch({type: fromChatNote.SELECT_MULTIPLE, payload: this.data});
   }
 }

@@ -1,0 +1,30 @@
+<form>
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" cssClass="modal-media-selection">
+    <bs-modal-header [showDismiss]="true">
+      <ul>
+        <li>
+          <a href="javascript:void" (click)="tabMyNote()"> My Note </a>
+        </li>
+        <li>
+          <a href="javascript:void" (click)="tabFavourites()"> Favourites </a>
+        </li>
+        <li>
+          <a href="javascript:void" (click)="tabSharedWithMe()"> Shared with me </a>
+        </li>
+        <li>
+          <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)" [placeholder]="'Search something'"></textbox-search>
+        </li>
+      </ul>
+      <button type="button" name="button" (click)="insertNotes()"> Insert </button>
+    </bs-modal-header>
+    <bs-modal-body>
+      <z-shared-breadcrumb [models]="[{label: 'name1'}, {label: 'name2'}]" class="note-breadcrumb"></z-shared-breadcrumb>
+      <chat-note-shared-toolbar #toolbar (events)="doEvent(event)"></chat-note-shared-toolbar>
+      <div class="content-overflow" style="max-height: 600px; clear: both; margin-right: 0px">
+        <div>
+          <share-chat-note-list [viewOption]="toolbar.viewMode" class="wobject-grid has-scrollbar"></share-chat-note-list>
+        </div>
+      </div>
+    </bs-modal-body>
+  </bs-modal>
+</form>

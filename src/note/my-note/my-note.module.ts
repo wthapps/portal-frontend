@@ -8,6 +8,7 @@ import { ZNoteMyNoteRoutingModule } from './my-note-routing.module';
 // import { ZNoteCreateComponent } from './notes/note-create.component';
 // import { ZNoteEditComponent } from './notes/note-edit.component';
 import { ModalModule } from '@wth/shared/modals/modals.module';
+import { ZNotePublicViewComponent } from '@notes/detail/public-view.component';
 
 @NgModule({
   imports: [ModalModule, ZNoteMyNoteRoutingModule, ZNoteSharedModule],
@@ -15,11 +16,12 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
     ZNoteMyNoteComponent,
     // ZNoteMyNoteFoldersComponent,
     // ZNoteMyNoteNotesComponent
+    ZNotePublicViewComponent
     // ZNoteCreateComponent,
     // ZNoteEditComponent
   ],
   exports: [
-    ZNoteMyNoteComponent,
+    ZNoteMyNoteComponent
     // ZNoteMyNoteFoldersComponent,
     // ZNoteMyNoteNotesComponent
     // ZNoteCreateComponent,

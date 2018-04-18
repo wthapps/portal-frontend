@@ -1,0 +1,14 @@
+@import '../../../../scss/global';
+
+:host {
+  display: block;
+}
+
+.note-breadcrumb {
+  float: left;
+}
+
+chat-note-shared-toolbar {
+  float: right;
+}
+
