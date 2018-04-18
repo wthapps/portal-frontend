@@ -408,24 +408,24 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             });
           });
         break;
-      case 'note:mixed_entity:favourite':
-        let objects: any = event.payload.objects.map((object: any) => {
-          return {
-            id: object.id,
-            object_type: object.object_type,
-            favourite: object.favourite
-          };
-        });
-        this.apiBaseService
-          .post('note/mixed_entities/favourites', { objects: objects })
-          .subscribe((res: any) => {
-            this.store.dispatch(new note.MultiNotesUpdated(res.data));
-            this.commonEventService.broadcast({
-              action: 'note:toolbar_change',
-              channel: 'noteActionsBar'
-            });
-          });
-        break;
+      // case 'note:mixed_entity:favourite':
+      //   let objects: any = event.payload.objects.map((object: any) => {
+      //     return {
+      //       id: object.id,
+      //       object_type: object.object_type,
+      //       favourite: object.favourite
+      //     };
+      //   });
+      //   this.apiBaseService
+      //     .post('note/mixed_entities/favourites', { objects: objects })
+      //     .subscribe((res: any) => {
+      //       this.store.dispatch(new note.MultiNotesUpdated(res.data));
+      //       this.commonEventService.broadcast({
+      //         action: 'note:toolbar_change',
+      //         channel: 'noteActionsBar'
+      //       });
+      //     });
+      //   break;
       case 'note:folder:delete':
         this.wthConfirmService.confirm({
           message: 'Are you sure you want to delete this folder?',

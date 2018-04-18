@@ -20,6 +20,7 @@ export class MessageItemComponent implements OnInit {
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   tooltip:any = Constants.tooltip;
+  noteUrl:any = Constants.baseUrls.note;
 
   actions = CHAT_ACTIONS;
 

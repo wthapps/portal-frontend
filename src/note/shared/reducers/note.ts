@@ -28,13 +28,13 @@ export interface Filters {
 export interface State {
   notes: { [id: number]: Note };
   currentNote: Note | null;
-  noteHistory: { id: number | string; stackId: number; stack: Note[] }; // Lastest note is at index 0 in Note Undo stack
+  noteHistory: { id: number | string, stackId: number, stack: Note[] }; // Lastest note is at index 0 in Note Undo stack
   folders: { [id: number]: Folder }; //{1 :{id: 1, name: "abc"}, 2 :{id: 2, name: "sdfsdf"}  }
   pageNo: number;
   orderDesc: boolean;
-  sortOption: { field: string; desc: boolean };
+  sortOption: { field: string, desc: boolean };
   group: string;
-  selectedObjects: { id: string; object_type: string; parent_id: number }[];
+  selectedObjects: { id: string, object_type: string, parent_id: number }[];
   selectAll: boolean;
   viewMode: string;
   loading: boolean;
@@ -93,9 +93,9 @@ export function reducer(
       const notes: any = { ...state.notes };
       const folders: any = { ...state.folders };
       action.payload.forEach((item: any) => {
-        if (item.object_type === 'note') {
+        if (item.object_type === 'Note::Note') {
           notes[item.id] = { ...notes[item.id], ...item };
-        } else if (item.object_type === 'folder') {
+        } else if (item.object_type === 'Note::Folder') {
           folders[item.id] = { ...folders[item.id], ...item };
         }
       });
@@ -343,10 +343,10 @@ export function reducer(
     }
     case note.REMOVED_SHARE_WITH_ME: {
       const foldersDeleted = action.payload.filter((f: any) => {
-        return f.object_type === 'folder';
+        return f.object_type === 'Note::Folder';
       });
       const notesDeleted = action.payload.filter((n: any) => {
-        return n.object_type === 'note';
+        return n.object_type === 'Note::Note';
       });
       const notes = { ...state.notes };
       notesDeleted.forEach((n: any) => delete notes[n.id]);

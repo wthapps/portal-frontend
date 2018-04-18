@@ -2,17 +2,14 @@
   <div class="note-editor-header">
     <div class="note-editor-header-content">
       <div class="note-editor-header-action note-editor-header-action-right component-listbox-action">
-        <z-note-shared-actions-bar class="action" [selectedObjects]="[note]" [subPage]="subPage"
-                                   [selectedObjects]="[note]"></z-note-shared-actions-bar>
-        <button type="button" (click)="onSubmit(form.value)" [disabled]="!form.valid"
-                class="btn btn-outline-primary btn-min">Done
+        <z-note-shared-actions-bar class="action" [selectedObjects]="[note]" [subPage]="subPage"></z-note-shared-actions-bar>
+        <button type="button" (click)="onSubmit(form.value)" [disabled]="!form.valid" class="btn btn-outline-primary btn-min">Done
         </button>
       </div>
 
       <div class="note-editor-header-input">
         <input *ngIf="note.permission !== 'view'" tabindex="1" autofocus (keypress)="onToEditor($event)" [formControl]="name" type="text"
-               class="form-control fz18" id="note_form_title"
-               placeholder="Title">
+          class="form-control fz18" id="note_form_title" placeholder="Title">
         <h4 *ngIf="note.permission == 'view'">{{note.name}}</h4>
       </div>
     </div>
@@ -21,11 +18,12 @@
     <nav class="nav-tabs-wrap nav-tabs-wrap-sm">
       <ul class="nav nav-tabs list-unstyled clearfix">
         <li [ngClass]="{'active': currentTab == 'note'}">
-          <a (click)="currentTab = 'note'" href="javascript:;"><i class="fa fa-sticky-note"></i> Note</a>
+          <a (click)="currentTab = 'note'" href="javascript:;">
+            <i class="fa fa-sticky-note"></i> Note</a>
         </li>
         <li [ngClass]="{'active': currentTab == 'attachment'}">
-          <a (click)="currentTab = 'attachment'" href="javascript:;"><i class="fa fa-paperclip"></i> Attachment
-            ({{ note?.attachments?.length || 0 }})</a>
+          <a (click)="currentTab = 'attachment'" href="javascript:;">
+            <i class="fa fa-paperclip"></i> Attachment ({{ note?.attachments?.length || 0 }})</a>
         </li>
         <li class="pull-right">
           <a (click)="hasShowComment = !hasShowComment" href="javascript:;">
@@ -56,7 +54,7 @@
             <div class="ql-formats no-right-margin">
               <select class="ql-header left-border-radius" title="Styles">
                 <option value="0" selected="">Normal</option>
-                <option value="1" >Heading 1</option>
+                <option value="1">Heading 1</option>
                 <option value="2">Heading 2</option>
                 <option value="3">Heading 3</option>
                 <option value="4">Heading 4</option>
@@ -162,14 +160,10 @@
             </div>
 
             <div class="ql-formats">
-              <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold"
-                      aria-label="Bold"></button>
-              <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic"
-                      aria-label="Italic"></button>
-              <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom" class="ql-underline"
-                      aria-label="Underline"></button>
-              <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike"
-                      aria-label="Strikethrough"></button>
+              <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold" aria-label="Bold"></button>
+              <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic" aria-label="Italic"></button>
+              <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom" class="ql-underline" aria-label="Underline"></button>
+              <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike" aria-label="Strikethrough"></button>
             </div>
             <div tooltipPosition="bottom" class="ql-formats">
               <button pTooltip="Left align" tooltipPosition="bottom" class="ql-align" value=""></button>
@@ -193,8 +187,7 @@
             </div>
 
             <div class="ql-formats">
-              <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom"
-                      class="ql-link"></button>
+              <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom" class="ql-link"></button>
               <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
               <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
               <!--<button class="ql-video"></button>-->
@@ -216,17 +209,16 @@
             <button type="button" class="btn btn-outline-default" (click)="selectPhotos()" [disabled]="note.permission == 'view'">
               <i class="fa fa-plus"></i> Photo
             </button>
-            <button class="btn btn-outline-default can-click btn-style-1 fileinput-button"
-                    pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top" [disabled]="note.permission == 'view'">
+            <button class="btn btn-outline-default can-click btn-style-1 fileinput-button" pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top"
+              [disabled]="note.permission == 'view'">
               <i class="fa fa-paperclip"></i> Attachment
-              <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';"
-                     (change)="selectFiles($event)"/>
+              <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';" (change)="selectFiles($event)"
+              />
             </button>
           </div>
 
           <div class="btn-group ml10">
-            <button class="btn btn-outline-default" [disabled]="note.attachments.length === 0"
-                    (click)="downloadAttachments()">
+            <button class="btn btn-outline-default" [disabled]="note.attachments.length === 0" (click)="downloadAttachments()">
               <i class="fa fa-download"></i> Download all
             </button>
           </div>
@@ -243,38 +235,37 @@
         <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-editor"></div>
         <div [ngClass]="{'hidden': currentTab !== 'attachment'}" class="attachment-list-wrap">
 
-          <table class="table table-middle wth-table table-hover"
-                 *ngIf="note.attachments && note.attachments.length > 0">
+          <table class="table table-middle wth-table table-hover" *ngIf="note.attachments && note.attachments.length > 0">
             <thead>
-            <tr>
-              <th class="can-click" (click)="onSort('name')">
-                Name <i *ngIf="hasSortBy" class="fa"
-                        [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
-              </th>
-              <th>File size</th>
-              <th>Date Modified</th>
-              <th>&nbsp;</th>
-            </tr>
+              <tr>
+                <th class="can-click" (click)="onSort('name')">
+                  Name
+                  <i *ngIf="hasSortBy" class="fa" [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
+                </th>
+                <th>File size</th>
+                <th>Date Modified</th>
+                <th>&nbsp;</th>
+              </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let att of note.attachments">
-              <td [ngClass]="{'can-click': att.object_type == 'photo'}" (click)="fileAttachmentClick(att)">
-                <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
-                <i *ngIf="att.thumbnail_url && att.object_type !== 'photo'" class="fa fa-file"></i>
-                <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
-                {{ att.name }}
-              </td>
-              <td>{{ att.size | bytes:3 }}</td>
-              <td>{{ (att.updated_at || att.created_at) | date: 'MMM dd yyyy' }}</td>
-              <td class="text-right">
-                <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
-                  <i class="fa fa-download"></i>
-                </button>
-                <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button" [disabled]="note.permission == 'view'">
-                  <i class="fa fa-trash-o"></i>
-                </button>
-              </td>
-            </tr>
+              <tr *ngFor="let att of note.attachments">
+                <td [ngClass]="{'can-click': att.object_type == 'photo'}" (click)="fileAttachmentClick(att)">
+                  <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
+                  <i *ngIf="att.thumbnail_url && att.object_type !== 'photo'" class="fa fa-file"></i>
+                  <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+                  {{ att.name }}
+                </td>
+                <td>{{ att.size | bytes:3 }}</td>
+                <td>{{ (att.updated_at || att.created_at) | date: 'MMM dd yyyy' }}</td>
+                <td class="text-right">
+                  <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
+                    <i class="fa fa-download"></i>
+                  </button>
+                  <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button" [disabled]="note.permission == 'view'">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>

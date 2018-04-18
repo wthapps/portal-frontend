@@ -18,6 +18,12 @@ import { AuthGuard } from '@wth/shared/services';
         component: ZNoteDetailEditComponent,
         outlet: 'detail',
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'notes/public/:uuid',
+        component: ZNoteDetailEditComponent,
+        outlet: 'detail',
+        canActivate: [AuthGuard]
       }
     ])
   ],

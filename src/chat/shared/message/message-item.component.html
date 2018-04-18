@@ -1,5 +1,4 @@
-<div *ngIf="message.message_type != 'notification'" class="message-item"
-     [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
+<div *ngIf="message.message_type != 'notification'" class="message-item" [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
   <div class="message-item-date" *ngIf="hasShowDate()">
     <span>{{ message.created_at | timeFormat:'day' }}</span>
   </div>
@@ -19,17 +18,21 @@
       <div class="message-item-content-main">
 
         <!--mesasge menu-->
-        <div class="message-item-menu dropdown"
-             *ngIf="message.message_type !== 'message_deleted' &&  message.message_type !== 'message_cancel'">
-          <i class="fa fa-sort-down" data-toggle="dropdown"
-             pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
+        <div class="message-item-menu dropdown" *ngIf="message.message_type !== 'message_deleted' &&  message.message_type !== 'message_cancel'">
+          <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
 
           <!--text message menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
-            <li *ngIf="!message.file"><a href="javascript:;" (click)="copy()">Copy</a></li>
+            <li *ngIf="!message.file">
+              <a href="javascript:;" (click)="copy()">Copy</a>
+            </li>
             <!--comment out this menu because this function is not working now-->
-            <li *ngIf="!message.file && message.byMe"><a href="javascript:;" (click)="edit()">Edit</a></li>
-            <li *ngIf="!message.file && message.byMe"><a href="javascript:;" (click)="delete()">Delete</a></li>
+            <li *ngIf="!message.file && message.byMe">
+              <a href="javascript:;" (click)="edit()">Edit</a>
+            </li>
+            <li *ngIf="!message.file && message.byMe">
+              <a href="javascript:;" (click)="delete()">Delete</a>
+            </li>
           </ul>
 
           <!--photos menu-->
@@ -39,7 +42,9 @@
                 Download
               </a>
             </li>
-            <li *ngIf="message.byMe"><a href="javascript:;" (click)="delete()">Remove</a></li>
+            <li *ngIf="message.byMe">
+              <a href="javascript:;" (click)="delete()">Remove</a>
+            </li>
           </ul>
 
           <!--sending message menu-->
@@ -58,7 +63,9 @@
                 Download
               </a>
             </li>
-            <li *ngIf="message.byMe"><a href="javascript:;" (click)="delete()">Remove</a></li>
+            <li *ngIf="message.byMe">
+              <a href="javascript:;" (click)="delete()">Remove</a>
+            </li>
 
           </ul>
 
@@ -104,6 +111,8 @@
               </a>
             </figure>
           </div>
+
+          <!-- file type-->
           <div class="message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
             <a class="media-div link-text" [href]="message.file?.url" target="_blank" download>
               <div class="pull-left">
@@ -116,9 +125,13 @@
             </a>
           </div>
 
-          <div *ngIf="message.file_type == 'Note::Note'" class="note-display p10">
-            <h5><i class="fa fa-file"></i> {{message.file?.name}}</h5>
-            <div [innerHTML]="message.file?.content"></div>
+          <!-- note type-->
+          <div *ngIf="message.file_type == 'Note::Note'" class="note-display p10 can-click">
+            <a [href]="noteUrl + '/notes/publish/' + message.file.uuid" target="_blank">
+              <h5>
+                <i class="fa fa-file"></i> {{message.file?.name}}</h5>
+              <div [innerHTML]="message.file?.content"></div>
+            </a>
           </div>
         </ng-template>
 
@@ -134,32 +147,22 @@
           <blockquote>
             <strong>David Nguyen</strong>
             <span>4:37 PM</span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque aut cupiditate doloremque, ea esse
-              eveniet illum incidunt itaque molestias nisi non quae recusandae, sequi sint sunt suscipit tenetur ullam
-              voluptatibus?</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque aut cupiditate doloremque, ea esse eveniet illum
+              incidunt itaque molestias nisi non quae recusandae, sequi sint sunt suscipit tenetur ullam voluptatibus?
+            </p>
           </blockquote>
         </div>
 
         <!--share contact type-->
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'share_contact_message'">
           <!-- Sender -->
-          <message-actions-item
-            *ngIf="message.byMe"
-            [avatar]=message?.display?.share_contact?.profile_image
-            [url]="'profile/' + message.display.share_contact.uuid"
-            [name]=message.display.share_contact.name
-            [status]="'Share contact'"
-            [actions]="[{text: 'Resend', id: 'resend'}, {text: '', class:'fa fa-times', id: 'cancel', btnClass:'btn-default'}]"
+          <message-actions-item *ngIf="message.byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message.display.share_contact.uuid"
+            [name]=message.display.share_contact.name [status]="'Share contact'" [actions]="[{text: 'Resend', id: 'resend'}, {text: '', class:'fa fa-times', id: 'cancel', btnClass:'btn-default'}]"
             (eventOut)=onShareContact($event)>
           </message-actions-item>
           <!-- Receiver -->
-          <message-actions-item
-            *ngIf="!message.byMe"
-            [avatar]=message?.display?.share_contact?.profile_image
-            [url]="'profile/' + message.display.share_contact.uuid"
-            [name]=message.display.share_contact.name
-            [status]="'Share contact'"
-            [actions]="[{text: 'Add Contact', id: 'add_contact', class:'fa fa-plus'}]"
+          <message-actions-item *ngIf="!message.byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message.display.share_contact.uuid"
+            [name]=message.display.share_contact.name [status]="'Share contact'" [actions]="[{text: 'Add Contact', id: 'add_contact', class:'fa fa-plus'}]"
             (eventOut)=onAdd($event)>
           </message-actions-item>
         </div>
@@ -168,23 +171,13 @@
         <!--requested contact type-->
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'request'">
           <!-- sent_request -->
-          <message-actions-item
-            *ngIf="message.byMe && contactItem.value.status == 'sent_request'"
-            [avatar]=message.receiver?.profile_image
-            [url]="'profile/' + message.receiver.uuid"
-            [name]=message.receiver.name
-            [status]="'Requested'"
-            [actions]="[{text: 'Resend', id: 'CONTACT_REQUEST_CREATE'}, {text: '', class:'fa fa-times', id: 'CONTACT_REQUEST_CANCEL', btnClass:'btn-default'}]"
+          <message-actions-item *ngIf="message.byMe && contactItem.value.status == 'sent_request'" [avatar]=message.receiver?.profile_image
+            [url]="'profile/' + message.receiver.uuid" [name]=message.receiver.name [status]="'Requested'" [actions]="[{text: 'Resend', id: 'CONTACT_REQUEST_CREATE'}, {text: '', class:'fa fa-times', id: 'CONTACT_REQUEST_CANCEL', btnClass:'btn-default'}]"
             (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- contact already accepted -->
-          <message-actions-item
-            *ngIf="message.byMe && contactItem.value.status == 'accepted'"
-            [avatar]=message.receiver?.profile_image
-            [url]="'profile/' + message.receiver.uuid"
-            [name]=message.receiver.name
-            [status]="'accepted your request'"
-            (eventOut)=doEvent($event)>
+          <message-actions-item *ngIf="message.byMe && contactItem.value.status == 'accepted'" [avatar]=message.receiver?.profile_image
+            [url]="'profile/' + message.receiver.uuid" [name]=message.receiver.name [status]="'accepted your request'" (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- Receiver -->
           <message-simple-item *ngIf="!message.byMe" [data]="'Hello! You are now connected on Chat.'"></message-simple-item>
@@ -215,14 +208,15 @@
         </div>
 
       </div>
-      <div class="message-item-action"
-           *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'Common::GenericFile')">
+      <div class="message-item-action" *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'Common::GenericFile')">
         <div class="message-item-time">
           <small>{{ message.created_at | timeFormat: "time_only" }}</small>
         </div>
       </div>
       <div class="message-item-status" *ngIf="message.byMe">
-        <span>Sent <i class="fa fa-check-circle-o"></i></span>
+        <span>Sent
+          <i class="fa fa-check-circle-o"></i>
+        </span>
       </div>
     </div>
   </div>
@@ -230,7 +224,7 @@
 
 <div class="p20 text-center" *ngIf="message.links && message.links.length > 0" [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
   <div *ngFor="let link of message.links">
-    <div *ngIf="link.image && link.title" class="message-item-content-main" >
+    <div *ngIf="link.image && link.title" class="message-item-content-main">
       <display-link [data]="link" *ngIf="link.image && link.title"></display-link>
     </div>
   </div>
@@ -238,7 +232,8 @@
 
 
 <div *ngIf="message.message_type == 'notification'" class="p20 text-center">
-  <div><span class="text-bold">{{ message.display.name }}</span> {{ message.message }}</div>
+  <div>
+    <span class="text-bold">{{ message.display.name }}</span> {{ message.message }}</div>
   <div class="text-fade">
     <small>{{ message.created_at | timeFormat: "time_only" }}</small>
   </div>

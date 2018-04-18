@@ -1,5 +1,4 @@
-<div *ngIf="data" class="component-listbox-row"
-     [ngClass]="{'item-folder': data.object_type == 'Note::Folder', 'active': selected}">
+<div *ngIf="data" class="component-listbox-row" [ngClass]="{'item-folder': data.object_type == 'Note::Folder', 'active': selected}">
   <div class="component-listbox-input">
     <i (click)="onClickMulti()" class="fa fa-check"></i>
   </div>
@@ -25,10 +24,8 @@
   </div>
 
 
-  <div class="component-listbox-action" >
-
-    <z-note-shared-actions-bar *ngIf="page !== PAGE_TYPE.TRASH" class="action" [page]="page"
-                               [selectedObjects]="[data]" [toolbarPosition]="'inline'"></z-note-shared-actions-bar>
+  <div class="component-listbox-action">
+    <z-note-shared-actions-bar *ngIf="page !== PAGE_TYPE.TRASH" class="action" [page]="page" [selectedObjects]="[data]" [toolbarPosition]="'inline'"></z-note-shared-actions-bar>
     <z-note-shared-trash-actions-bar [selectedObjects]="[data]" *ngIf="page === PAGE_TYPE.TRASH"></z-note-shared-trash-actions-bar>
   </div>
 </div>

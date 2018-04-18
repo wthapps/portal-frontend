@@ -9,7 +9,7 @@ export class Note extends BaseEntity {
   user_id: number;
   folder: any;
   parent_id: number = null;
-  object_type: string = 'note';
+  object_type: string = 'Note::Note';
   permission: string;
   favourite: any;
 

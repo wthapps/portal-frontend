@@ -137,7 +137,7 @@ export class ZNoteSharedActionBarComponent
     private wthConfirm: WthConfirmService,
     private urlService: UrlService,
     private store: Store<any>,
-    private api: ApiBaseService,
+    private apiBaseService: ApiBaseService,
     private router: Router,
     public commonEventService: CommonEventService
   ) {
@@ -147,16 +147,14 @@ export class ZNoteSharedActionBarComponent
   ngOnInit() {
     // Inline toolbar only
     this.validatePermission(this.selectedObjects);
-    this.commonEventService
-      .filter(
-        (e: any) =>
-          e.channel == 'noteActionsBar' && this.toolbarPosition == 'top'
-      )
-      .subscribe((e: any) => {
-        if (e.action == 'note:toolbar_change') {
-          this.validatePermission(this.selectedObjects);
-        }
-      });
+  }
+
+  ngOnChanges(e: any) {
+    // top change only
+    // setup toolbar (position, show or not)
+    this.toolbarSetup(e);
+    // On Off toolbar menu actions
+    this.toolbarActionsSetup(e);
   }
 
   validatePermission(objects) {
@@ -253,22 +251,17 @@ export class ZNoteSharedActionBarComponent
       objects.map((object: any) => {
         if (action.title == 'Favourite') {
           if (object.favourite == false) {
-            this.detectMenu = !this.detectMenu;
-            action.iconClass = 'fa fa-star-o';
-            allFavorite = false;
-          }
-          if (object.favourite == true) {
-            this.detectMenu = !this.detectMenu;
-            action.iconClass = 'fa fa-star';
             allFavorite = false;
           }
         }
       });
     };
-    if (allFavorite) this.actionsMenu.favourite.iconClass = 'fa fa-star';
     Object.keys(this.actionsMenu).map((action: any) =>
       permissonValidateFavourites(this.actionsMenu[action], objects)
     );
+    if (allFavorite) this.actionsMenu.favourite.iconClass = 'fa fa-star';
+    if (!allFavorite) this.actionsMenu.favourite.iconClass = 'fa fa-star-o';
+
     // After All
     this.disableDropDown = true;
     for (let key of Object.keys(this.actionsMenu)) {
@@ -282,13 +275,6 @@ export class ZNoteSharedActionBarComponent
       this.destroySubject.next('');
       this.destroySubject.unsubscribe();
     }
-  }
-
-  ngOnChanges(e: any) {
-    // setup toolbar (position, show or not)
-    this.toolbarSetup(e);
-    // On Off toolbar menu actions
-    this.toolbarActionsSetup(e);
   }
 
   toolbarSetup(e: any) {
@@ -436,15 +422,19 @@ export class ZNoteSharedActionBarComponent
   }
 
   favourite() {
-    this.commonEventService.broadcast({
-      channel: 'noteActionsBar',
-      action: 'note:mixed_entity:favourite',
-      payload: { objects: this.selectedObjects }
+    let objects: any = this.selectedObjects.map((object: any) => {
+      return {
+        id: object.id,
+        object_type: object.object_type,
+        favourite: object.favourite
+      };
     });
-    // hard code to change
-    this.selectedObjects = this.selectedObjects.map(o => {
-      o.favourite = !o.favourite;
-      return o;
+    this.apiBaseService
+      .post('note/mixed_entities/favourites', { objects: objects })
+      .subscribe((res: any) => {
+        this.selectedObjects = res.data;
+        this.validatePermission(this.selectedObjects);
+        this.store.dispatch(new note.MultiNotesUpdated(res.data));
     });
   }
 }
