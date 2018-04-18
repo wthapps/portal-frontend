@@ -254,9 +254,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         toolbar: {
           container: '#quill-toolbar'
         },
-        keyboard: {
-          bindings: bindings
-        },
+        // keyboard: {
+        //   bindings: bindings
+        // },
         counter: {
           container: '#counter',
           unit: 'word'

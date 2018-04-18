@@ -5,7 +5,7 @@
   </div>
   <div class="component-listbox-name can-click" (click)="onClick()" (dblclick)="onView()">
     <span>
-      <i class="fa" [ngClass]="{'fa-folder-o': data.object_type == 'Note::Folder', 'fa-file': data.object_type == 'Note::Note'}"></i> {{ data.name || 'Untitled' }}
+      <i class="fa" [ngClass]="{'fa-folder-o': data.object_type == 'Note::Folder', 'fa-file': data.object_type == 'Note::Note'}"></i> {{ (data.name | maxLength: 100) || 'Untitled' }}
     </span>
   </div>
   <div class="component-listbox-owner can-click" (click)="onClick()" (dblclick)="onView()">
