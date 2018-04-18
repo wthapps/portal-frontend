@@ -1,10 +1,9 @@
 import { Component, ViewChild, Output, EventEmitter, OnInit, Input, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/operator/switchMap';
-import 'rxjs/add/operator/debounceTime';
-
+import { switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
+
 import { ListComponent } from '../../ng2-hd/list/components/list.component';
 import { ApiBaseService } from '../../../services/apibase.service';
 
@@ -73,9 +72,12 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
     // if (this.termSubscription && !this.termSubscription.closed)
     //   this.term$.unsubscribe();
     this.termSubscription = this.term$
-      .debounceTime(DEBOUNCE_TIME)
-      .distinctUntilChanged()
-      .switchMap(term => this.apiService.get(this.url, {'search_name': (term == undefined ? '' : term)}))
+      .pipe(
+        debounceTime(DEBOUNCE_TIME),
+        distinctUntilChanged(),
+        switchMap(term => this.apiService.get(this.url, {'search_name': (term == undefined ? '' : term)}))
+
+      )
       .subscribe((res: any) => {
           this.updateData(res['data']);
         }, (error: any)=> {
