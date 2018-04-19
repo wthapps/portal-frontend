@@ -1,16 +1,15 @@
 import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
-
-import { BsModalComponent } from 'ng2-bs3-modal';
-import { SharingService } from './sharing.service';
 import { Router } from '@angular/router';
+
+import { Subject } from 'rxjs/Subject';
+import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
+import { BsModalComponent } from 'ng2-bs3-modal';
+
+
+import { SharingService } from './sharing.service';
 import { ApiBaseService, CommonEventService } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@wth/shared/constant';
-
 declare var $: any;
 declare var _: any;
 
@@ -59,12 +58,14 @@ export class SharingModalComponent implements OnDestroy {
     private commonEventService: CommonEventService,
     private wthConfirmService: WthConfirmService) {
 
-    this.contactTerm$
-      .debounceTime(Constants.searchDebounceTime)
-      .distinctUntilChanged()
-      .switchMap((term: any) => this.mediaSharingService.getContacts(term.query))
-      .subscribe((res: any) => {
-          this.filteredContacts = res['data'];
+    this.contactTerm$.pipe(
+      debounceTime(Constants.searchDebounceTime),
+      distinctUntilChanged(),
+      switchMap((term: any) => this.mediaSharingService.getContacts(term.query))
+      ).subscribe((res: any) => {
+          const selectedContactIds = this.selectedContacts.map(ct => ct.id);
+          const sharedContactIds = this.sharedContacts.map(sc => sc.id);
+          this.filteredContacts = res['data'].filter(ct => ct.wthapps_user && !selectedContactIds.includes(ct.id) && !sharedContactIds.includes(ct.id));
         }, (error: any)=> {
           console.log('error', error);
         }

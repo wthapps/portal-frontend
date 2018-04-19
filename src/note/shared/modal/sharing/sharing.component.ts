@@ -1,8 +1,7 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
+import { Subscription } from 'rxjs/Subscription';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
@@ -12,9 +11,6 @@ import { Store } from '@ngrx/store';
 import * as fromShareModal from '../../reducers/share-modal';
 import { AutoComplete } from 'primeng/primeng';
 import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
-
-
-declare var $: any;
 
 @Component({
   selector: 'z-note-shared-modal-sharing',
@@ -26,27 +22,28 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('auto') auto: AutoComplete;
 
-  operation: any = {
-    read: 0,
-    edit: 2,
-    editing: 20,
-    create: 1,
-    creating: 10,
-    delete: 9,
-    deleting: 90
-  };
+  // operation: any = {
+  //   read: 0,
+  //   edit: 2,
+  //   editing: 20,
+  //   create: 1,
+  //   creating: 10,
+  //   delete: 9,
+  //   deleting: 90
+  // };
 
   filteredContacts: any = [];
   selectedContacts: any = [];
   sharedSharings: any = [];
   sharedObjects: any = [];
-  subscription: any;
   changed: boolean = false;
   showCancelButton: boolean = false;
   mode: string = 'create';
 
   contactTerm$ = new Subject<string>();
 
+  subscription: Subscription<any>;
+  searchSubscription: Subscription<any>;
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
 
   constructor(private commonEventService: CommonEventService,
@@ -61,24 +58,27 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
       if(this.auto) {
         this.auto.value = this.selectedContacts;
         this.auto.onModelChange(this.auto.value);
-      }
-    });
-    this.contactTerm$
-      .debounceTime(Constants.searchDebounceTime)
-      .distinctUntilChanged()
-      .switchMap((term: any) => this.mediaSharingService.getContacts(term.query))
-      .subscribe((res: any) => {
-          console.log(res)
-
-          this.filteredContacts = [];
-          for(let i in res.data) {
-            if(res.data[i].wthapps_user) {
-              this.filteredContacts.push(res.data[i].wthapps_user);
-            }
-          }
-        }, (error: any)=> {
-          console.log('error', error);
         }
+      });
+    this.searchSubscription = this.contactTerm$.pipe(
+      debounceTime(Constants.searchDebounceTime),
+      distinctUntilChanged(),
+      switchMap((term: any) => this.mediaSharingService.getContacts(term.query))
+    ).subscribe((res: any) => {
+      console.log(res);
+      const selectedContactIds = this.selectedContacts.map(ct => ct.id);
+      const sharedContactIds = this.sharedSharings.map(ss => ss.recipient.id);
+      if(res.data)
+        this.filteredContacts = res.data.filter(ct => ct.wthapps_user && !selectedContactIds.includes(ct.id) && !sharedContactIds.includes(ct.wthapps_user.id));
+      // this.filteredContacts = [];
+      // for(let i in res.data) {
+      //   if(res.data[i].wthapps_user && !this.selectedContacts.some(ct => ct.id === res.data[i].id)) {
+      //     this.filteredContacts.push(res.data[i].wthapps_user);
+      //   }
+      // }
+      }, (error: any)=> {
+        console.log('error', error);
+      }
       );
 
   }
@@ -88,6 +88,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.searchSubscription.unsubscribe();
   }
 
   open() {
