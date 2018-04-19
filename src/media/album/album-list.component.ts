@@ -88,6 +88,6 @@ export class AlbumListComponent extends MediaActionHandler implements OnInit {
   }
 
   viewDetails(payload: any) {
-    this.router.navigate(['albums', payload.selectedObject.id]);
+    this.router.navigate(['albums', payload.selectedObject.uuid]);
   }
 }

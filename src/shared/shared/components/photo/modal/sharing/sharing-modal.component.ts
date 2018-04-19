@@ -45,7 +45,8 @@ export class SharingModalComponent implements OnDestroy {
 
   selectedContacts: any = [];
   removedContacts: any = [];
-  hasChanged: boolean = false;
+  roles: any = [];
+  hasChanged = false;
   sharing: any;
 
   contactTerm$ = new Subject<string>();
@@ -83,7 +84,9 @@ export class SharingModalComponent implements OnDestroy {
       this.sharing = options.sharing;
     } else {
       this.selectedItems = options['selectedObjects'];
-      this.modal.open(options).then((res: any) => this.getShared());
+      this.modal.open(options).then((res: any) => {
+        this.getShared();
+      });
     }
   }
 
@@ -97,6 +100,14 @@ export class SharingModalComponent implements OnDestroy {
     this.modal.close().then();
   }
 
+  getRoles() {
+    if (!this.roles.length) {
+      this.apiBaseService.get('common/roles', {module_name: 'Media'}).subscribe((response) => {
+        this.roles = response.data;
+      });
+    }
+  }
+
   getShared() {
     let body = {objects: _.map(this.selectedItems, 'id')};
 
@@ -105,6 +116,12 @@ export class SharingModalComponent implements OnDestroy {
     });
   }
 
+  changeRole(role: any) {
+    if (this.sharing.role_id === role.id) {
+      return;
+    }
+    this.sharing.role_id = role.id;
+  }
   toggleRemoving(event: any, id: number) {
     event.preventDefault();
     let index = this.removedContacts.indexOf(id);

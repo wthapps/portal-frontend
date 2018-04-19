@@ -3,21 +3,42 @@
     <h4 class="modal-title">Sharing</h4>
   </bs-modal-header>
   <bs-modal-body>
-    <div class="form-group">
-      <p-autoComplete *ngIf="mode!=operation.editing" [(ngModel)]="textContacts"
-                      [suggestions]="filteredContacts"
-                      [multiple]="true"
-                      [minLength]="1"
-                      field="name"
-                      (onSelect)="selectContact($event)"
-                      (onUnselect)="unSelectContact($event)"
-                      (completeMethod)="contactTerm$.next($event)">
-      </p-autoComplete>
-      <p *ngIf="mode==operation.editing" class="text-left changing padding8 rounded border border-danger border-1">
-        <i class="fa fa-exclamation-triangle text-danger"></i>
-        You have made changes that you need to save!
-      </p>
+    <div class="row pl20 pr20">
+      <div class="input-group">
+        <p-autoComplete *ngIf="mode!=operation.editing" [(ngModel)]="textContacts"
+                        [suggestions]="filteredContacts"
+                        [multiple]="true"
+                        [minLength]="1"
+                        field="name"
+                        (onSelect)="selectContact($event)"
+                        (onUnselect)="unSelectContact($event)"
+                        (completeMethod)="contactTerm$.next($event)">
+        </p-autoComplete>
 
+        <!--[ngClass]="{'fa fa-check': (!sharing.permission || sharing.permission == 'view')}"></i> View only</a></li>-->
+
+
+        <!--edit mode-->
+        <div *ngIf="mode==operation.editing" class="text-left changing padding8 rounded border border-danger border-1">
+          <i class="fa fa-exclamation-triangle text-danger"></i>
+          You have made changes that you need to save!
+        </div>
+
+        <div class="input-group-btn">
+          <!-- Single button -->
+          <div class="btn-group">
+            <button  (click)="getRoles()" type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              View <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li *ngFor="let role of roles" (click)="changeRole(role)">
+                <a href="javascript:void(0);"> {{ role.display_name }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
     </div>
     <div class="modal-body-collapse" *ngIf="sharedContacts?.length">
       <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"

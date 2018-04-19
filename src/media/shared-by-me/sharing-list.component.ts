@@ -86,6 +86,6 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
   }
 
   viewDetails(payload: any) {
-    this.router.navigate(['shared-by-me', payload.selectedObject.id]);
+    this.router.navigate(['shared-by-me', payload.selectedObject.uuid]);
   }
 }

@@ -71,6 +71,10 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
       });
     this.route.params.subscribe((params: any) => {
       this.apiBaseService.get(`media/sharings/${params.id}`).subscribe((response: any) => {
+        this.sharing = response.data;
+      });
+
+      this.apiBaseService.get(`media/sharings/${params.id}/full_details`).subscribe((response: any) => {
         this.sharing = response.sharing;
         this.photos = response.data;
         this.params = response;
