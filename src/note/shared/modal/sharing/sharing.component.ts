@@ -42,8 +42,8 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
 
   contactTerm$ = new Subject<string>();
 
-  subscription: Subscription<any>;
-  searchSubscription: Subscription<any>;
+  subscription: Subscription;
+  searchSubscription: Subscription;
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
 
   constructor(private commonEventService: CommonEventService,
@@ -69,13 +69,11 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
       const selectedContactIds = this.selectedContacts.map(ct => ct.id);
       const sharedContactIds = this.sharedSharings.map(ss => ss.recipient.id);
       if(res.data)
-        this.filteredContacts = res.data.filter(ct => ct.wthapps_user && !selectedContactIds.includes(ct.id) && !sharedContactIds.includes(ct.wthapps_user.id));
-      // this.filteredContacts = [];
-      // for(let i in res.data) {
-      //   if(res.data[i].wthapps_user && !this.selectedContacts.some(ct => ct.id === res.data[i].id)) {
-      //     this.filteredContacts.push(res.data[i].wthapps_user);
-      //   }
-      // }
+        this.filteredContacts = res.data.reduce((acc, ct) => {
+            if (ct.wthapps_user && !selectedContactIds.includes(ct.id) && !sharedContactIds.includes(ct.wthapps_user.id))
+              acc.push(ct.wthapps_user);
+              return acc;
+        }, []);
       }, (error: any)=> {
         console.log('error', error);
       }
