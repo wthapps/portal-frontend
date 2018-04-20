@@ -47,8 +47,7 @@
 
 <ng-container *ngFor="let social of socialMenu">
   <div *ngIf="social.name != ''" class="menuleft-item" [routerLinkActive]="['active']">
-    <a [routerLink]="['/profile', uuid]" href="javascript:;" *ngIf="social.link == '/profile'"
-       (click)="onSubMenu('/profile/' + uuid)">
+    <a [routerLink]="['/profile', uuid, 'post']" href="javascript:;" *ngIf="social.link == '/profile'" >
       <i class="{{ social.icon }}"></i> {{ social.name }}
     </a>
 

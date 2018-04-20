@@ -2,15 +2,11 @@ import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, switchMap } from 'rxjs/operators';
 
 import { SocialService } from '../../shared/services/social.service';
 
-
-
-
 @Component({
-
   selector: 'z-social-profile-friend',
   templateUrl: 'friend.component.html'
 })
@@ -23,8 +19,8 @@ export class ZSocialProfileFriendComponent implements OnInit, OnDestroy {
   constructor(private socialService: SocialService,
               private route: ActivatedRoute) {
     this.route.params
-      .switchMap((params: any) => this.socialService.user.getFriends(params['id']))
       .pipe(
+        switchMap((params: any) => this.socialService.user.getFriends(params['id'])),
         takeUntil(this.destroySubject.asObservable())
       )
       .subscribe(

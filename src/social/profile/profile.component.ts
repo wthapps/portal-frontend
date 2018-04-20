@@ -1,18 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { switchMap } from 'rxjs/operators';
-
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 import { SocialService } from '../shared/services/social.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ZSocialProfileDataService } from './profile-data.service';
 import { AuthService, UserService } from '@wth/shared/services';
-
-export let PROFILE_TAB = {
-  posts: 'posts',
-  about: 'about',
-  friend: 'friends'
-};
 
 @Component({
   selector: 'z-social-profile',
@@ -37,19 +30,19 @@ export class ZSocialProfileComponent implements OnInit {
     this.route.params
       .pipe(
         switchMap((params: any) =>
-          Observable.forkJoin(
+          forkJoin(
             this.socialService.user.get(params['id']),
             this.getRelationship(params['id'])
           )
         )
       )
-      .subscribe((res: any) => {
-        this.userInfo = res[0].data;
+      .subscribe(([user, relationship]) => {
+        this.userInfo = user.data;
         this.userInfo.canEdit =
           this.userInfo.uuid === this.authService.user.uuid;
 
-        this.actions = _.get(res[0], 'actions', []);
-        this.relationships = res[1].relationships;
+        this.actions = _.get(user, 'actions', []);
+        this.relationships = relationship.relationships;
 
         this.profileDataService.addData({
           userInfo: this.userInfo,
