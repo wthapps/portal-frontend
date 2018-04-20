@@ -6,7 +6,6 @@ import {
 } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import 'rxjs/add/operator/take';
 
 import * as note from '../../actions/note';
 import * as fromRoot from '../../reducers/index';

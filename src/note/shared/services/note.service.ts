@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/do';
+import { map, tap, catchError } from 'rxjs/operators';
 
 import { BaseEntityService } from '@shared/services/base-entity-service';
 import { Note } from '@shared/shared/models/note.model';
@@ -51,11 +52,13 @@ export class ZNoteService extends BaseEntityService<any> {
 
     // return this.apiBaseService.get(this.apiUrl)
     return this.apiBaseService.get(this.apiUrl)
-      .map((response: Response) => <any[]> response.json())
-      .do(notes => {
-        this.notesSubject.next(notes);
-      })
-      .catch(this.handleError);
+      .pipe(
+        map((response: Response) => <any[]> response.json()),
+        tap(notes => {
+            this.notesSubject.next(notes);
+          }),
+      catchError(this.handleError)
+      );
   }
 
   getNoteAvailable(id: any) {
