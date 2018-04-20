@@ -1,14 +1,18 @@
 <ng-template #objectActionsTemplate>
   <ul class="page-body-control-menu" [ngClass]="{'text-disable': noSelectedObjects}"
       [class.disabled]="noSelectedObjects">
-    <!--<li>-->
-      <!--<a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"-->
-         <!--href="javascript:void(0);"-->
-         <!--(click)="toolbar.doAction({action: 'openModal',-->
-         <!--payload: {modalName: 'sharingModal', selectedObjects: toolbar.selectedObjects}})">-->
-        <!--<i class="fa fa-share-alt"></i>-->
-      <!--</a>-->
-    <!--</li>-->
+    <li *ngIf="toolbar.hasOneObject && toolbar.selectedObjects[0].capabilities.canEdit">
+      <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
+         href="javascript:void(0);"
+         (click)="toolbar.doAction({action: 'openModal',
+         payload: {
+         modalName: 'sharingModal',
+         selectedObjects: toolbar.selectedObjects,
+         mode: 2, sharing: toolbar.selectedObjects[0]
+         }})">
+        <i class="fa fa-share-alt"></i>
+      </a>
+    </li>
     <li *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" href="javascript:;" draggable="false"
          (click)="toolbar.doAction({action: 'deleteMedia', payload: {selectedObjects: toolbar.selectedObjects}})"

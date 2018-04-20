@@ -46,8 +46,9 @@ export class SharingModalComponent implements OnDestroy {
   selectedContacts: any = [];
   removedContacts: any = [];
   roles: any = [];
+  role: any = {name: 'view', display_name: 'View'};
   hasChanged = false;
-  sharing: any;
+  sharing: any = null;
 
   contactTerm$ = new Subject<string>();
 
@@ -78,16 +79,17 @@ export class SharingModalComponent implements OnDestroy {
   }
 
   open(options: any) {
-    if(options.sharing) {
-      this.modal.open();
-      this.sharedContacts = options.recipients;
-      this.sharing = options.sharing;
-    } else {
-      this.selectedItems = options['selectedObjects'];
-      this.modal.open(options).then((res: any) => {
-        this.getShared();
-      });
-    }
+    this.mode = options.mode || this.operation.create;
+    this.sharedContacts = options.recipients || [];
+    this.sharing = options.sharing || null;
+
+    this.modal.open(options).then((res: any) => {
+      if (!!this.sharing) {
+        // this.getShared();
+        this.getRecipients();
+      }
+      this.getRoles();
+    });
   }
 
   close(options?: any) {
@@ -103,7 +105,8 @@ export class SharingModalComponent implements OnDestroy {
   getRoles() {
     if (!this.roles.length) {
       this.apiBaseService.get('common/roles', {module_name: 'Media'}).subscribe((response) => {
-        this.roles = response.data;
+        this.roles = response.data.sort((a, b) => a.id - b.id);
+        this.role = this.roles.filter(r => r.id === this.sharing.role_id)[0];
       });
     }
   }
@@ -116,11 +119,18 @@ export class SharingModalComponent implements OnDestroy {
     });
   }
 
+  getRecipients() {
+    this.apiBaseService.get(`media/sharings/${this.sharing.uuid}/recipients`).subscribe((response) => {
+      this.sharedContacts = response.data;
+    });
+  }
+
   changeRole(role: any) {
     if (this.sharing.role_id === role.id) {
       return;
     }
-    this.sharing.role_id = role.id;
+    this.role = this.roles.filter(r => r.id === role.id)[0];
+    this.hasChanged = true;
   }
   toggleRemoving(event: any, id: number) {
     event.preventDefault();
@@ -225,6 +235,15 @@ export class SharingModalComponent implements OnDestroy {
         });
       }
     }
+    if (this.sharing && this.mode === this.operation.edit) {
+      this.sharing.role_id = this.role.id;
+
+      this.event.emit({
+        action: 'editInfo',
+        params: {selectedObject: this.sharing}
+      });
+      this.resetData();
+    }
 
     if (this.mode == this.operation.read) {
       this.modal.close().then(() =>
@@ -274,6 +293,7 @@ export class SharingModalComponent implements OnDestroy {
     this.removedContacts = [];
     this.selectedContacts = [];
     this.textContacts = [];
+    this.role = this.roles.filter(r => r.id === this.sharing.role_id)[0];
   }
 
   private setMode() {

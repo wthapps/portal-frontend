@@ -83,6 +83,8 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
     const object = payload.selectedObject;
     if (object.object_type === 'album') {
       this.router.navigate(['albums', object.uuid], {queryParams: {returnUrl: this.router.url}});
+    } if (object.object_type === 'sharing') {
+      this.router.navigate(['shared', object.uuid], {queryParams: {returnUrl: this.router.url}});
     } else {
       this.router.navigate([`photos`,
         object.id, {ids: [object.id], mode: 0}], {queryParams: {returnUrl: this.router.url}});

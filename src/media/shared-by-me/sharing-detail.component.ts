@@ -41,6 +41,16 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
   detail = true;
   returnUrl: string;
   photos: Array<any>;
+  role: any = {name: 'view'};
+  capabilities: any = {
+    canView: false,
+    canFave: false,
+    canDownload: false,
+    canShare: false,
+    canTag: false,
+    canEdit: false,
+    canDelete: false
+  };
   private path = 'media/media';
   private type = 'photo';
 
@@ -72,6 +82,8 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
     this.route.params.subscribe((params: any) => {
       this.apiBaseService.get(`media/sharings/${params.id}`).subscribe((response: any) => {
         this.sharing = response.data;
+        this.capabilities = this.sharing.capabilities;
+        this.role = this.sharing.role;
       });
 
       this.apiBaseService.get(`media/sharings/${params.id}/full_details`).subscribe((response: any) => {

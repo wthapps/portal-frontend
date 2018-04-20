@@ -27,12 +27,23 @@
         <div class="input-group-btn">
           <!-- Single button -->
           <div class="btn-group">
-            <button  (click)="getRoles()" type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              View <span class="caret"></span>
+            <button  type="button" class="btn btn-outline-default dropdown-toggle"
+                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            [title]="role.display_name">
+              <i class="fa"
+                 [ngClass]="role.name == 'view'? 'fa-eye' :
+                            role.name == 'download'? 'fa-download' :
+                            role.name == 'edit'? 'fa-pencil' : 'fa-unlock'
+                           ">
+              </i>
+              <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
               <li *ngFor="let role of roles" (click)="changeRole(role)">
-                <a href="javascript:void(0);"> {{ role.display_name }}</a>
+                <a href="javascript:void(0);"> {{ role.display_name }}
+                  <i class="pull-right"
+                     [ngClass]="{'fa fa-check': (this.sharing && this.sharing.role_id === role.id)}"></i>
+                </a>
               </li>
             </ul>
           </div>

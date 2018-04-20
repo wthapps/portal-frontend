@@ -71,6 +71,6 @@ export class ZMediaSharedWithMeComponent extends MediaActionHandler implements O
 
   viewDetails(payload: any) {
     const object = payload.selectedObject;
-      this.router.navigate(['shared-with-me', object.uuid], {queryParams: {returnUrl: this.router.url}});
+      this.router.navigate(['shared', object.uuid], {queryParams: {returnUrl: this.router.url}});
   }
 }

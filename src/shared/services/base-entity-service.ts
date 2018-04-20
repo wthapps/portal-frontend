@@ -35,7 +35,7 @@ export class BaseEntityService<T> {
     if (multiple) {
       return this.apiBaseService.put(`${url}/multiple`, body);
     } else {
-      return this.apiBaseService.put(`${url}/${body.id}`, body);
+      return this.apiBaseService.put(`${url}/${body.uuid}`, body);
     }
   }
 

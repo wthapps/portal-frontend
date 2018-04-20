@@ -51,7 +51,11 @@ export class MediaActionHandler {
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);
-        options = {selectedObjects: payload.selectedObjects};
+        options = {
+          selectedObjects: payload.selectedObjects,
+          mode: payload.mode || 0,
+          sharing: payload.sharing || undefined
+        };
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);

@@ -95,7 +95,7 @@ export class AlbumCreateModalComponent implements OnInit {
         this.doneFormModal.emit(this.album);
         this.event.emit({action: 'addAlbumSuccessful', payload: res });
 
-        this.viewAlbumDetail(this.album.id );
+        this.viewAlbumDetail(this.album.uuid);
 
         this.modal.close().then();
       });
