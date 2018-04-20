@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/finally';
+import { take, finalize } from 'rxjs/operators';
 
 import { SocialService } from '../shared/services/social.service';
 import { SocialFavoriteService } from '../shared/services/social-favorites.service';
@@ -67,8 +66,10 @@ export class ZSocialMembersComponent implements OnInit {
       case FRIEND_TABS.friends:
         this.socialService.user
           .getFriends()
-          .take(1)
-          .finally(() => this.stopLoading())
+          .pipe(
+            take(1),
+            finalize(() => this.stopLoading())
+          )
           .subscribe((res: any) => {
             this.list = res.data;
             this.totalFriends = this.list.length;
@@ -84,8 +85,10 @@ export class ZSocialMembersComponent implements OnInit {
       case FRIEND_TABS.followers:
         this.socialService.user
           .getFollowerList()
-          .take(1)
-          .finally(() => this.stopLoading())
+          .pipe(
+            take(1),
+            finalize(() => this.stopLoading())
+          )
           .subscribe((res: any) => {
             this.list = res.data;
             this.totalFollowers = this.list.length;
@@ -94,8 +97,10 @@ export class ZSocialMembersComponent implements OnInit {
       case FRIEND_TABS.followings:
         this.socialService.user
           .getFollowingList()
-          .take(1)
-          .finally(() => this.stopLoading())
+          .pipe(
+            take(1),
+            finalize(() => this.stopLoading())
+          )
           .subscribe((res: any) => {
             this.list = res.data;
             this.totalFollowings = this.list.length;

@@ -7,13 +7,12 @@ import {
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 
 import { SocialService } from '../../../shared/services/social.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { UserService } from '@wth/shared/services';
-
 
 
 
@@ -57,7 +56,10 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   }
 
   ngOnInit() {
-    this.form.valueChanges.takeUntil(this.destroySubject.asObservable())
+    this.form.valueChanges
+      .pipe(
+        takeUntil(this.destroySubject.asObservable())
+      )
       .subscribe(data => {
       this.hasChange = true;
       // console.log('form changes', data);

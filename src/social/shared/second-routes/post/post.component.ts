@@ -10,15 +10,7 @@ import {
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/switchMap';
-
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/merge';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import { CommentEditorMode, CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
@@ -77,8 +69,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     super();
 
     this.photoService.modifiedPhotos$
-      .filter((object: any) => _.get(object, 'payload.post_uuid', -99) == this.item.uuid || _.get(object, 'payload.post_uuid', -99) == _.get(this.item, 'parentItem.uuid'))
-      .takeUntil(this.destroySubject.asObservable())
+      .pipe(
+        filter((object: any) => _.get(object, 'payload.post_uuid', -99) == this.item.uuid || _.get(object, 'payload.post_uuid', -99) == _.get(this.item, 'parentItem.uuid')),
+        takeUntil(this.destroySubject.asObservable())
+      )
       .subscribe((object: any) => {
         console.debug('modifiedPhotos - post: ', object);
         let post: SoPost = _.get(object, 'payload.post');
@@ -455,34 +449,4 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       }
     });
   }
-
-
-  // private subscribePhotoEvents() {
-  //   // Subscribe actions corresponding with photo modal actions
-  //   let closeObs$ = Observable.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$, this.photoSelectDataService.closeObs$, this.destroySubject.asObservable());
-  //
-  //   this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
-  //       (photos: any) => {
-  //         this.commentEditor.setCommentAttributes({photo: photos[0]});
-  //       },
-  //       (error: any) => {
-  //         console.error(error);
-  //       }
-  //     );
-  //
-  //   this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
-  //     .mergeMap((files: any) => {
-  //       this.commentEditor.updateAttributes({hasUploadingPhoto: true, files: files});
-  //       return this.photoUploadService.uploadPhotos(files);
-  //     }).subscribe(
-  //       (response: any) => {
-  //         console.log('response data: ', response.data);
-  //         this.commentEditor.setCommentAttributes({photo: response.data});
-  //         this.commentEditor.updateAttributes({hasUploadingPhoto: false});
-  //       },
-  //       (error: any) => {
-  //         console.error(error);
-  //       }
-  //     );
-  // }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import 'rxjs/add/operator/debounceTime';
+import { debounceTime } from 'rxjs/operators';
+
 import { ApiBaseService, UserService } from '@wth/shared/services';
 
 /**
@@ -25,7 +26,8 @@ export class SoPostService {
   }
 
   getSettings(uuid: string) {
-    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`).debounceTime(250);
+    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`).pipe(
+      debounceTime(250));
   }
 
   togglePostNotification(uuid: string) {

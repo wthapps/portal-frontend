@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import 'rxjs/add/operator/debounceTime';
 
 import { SoCommunityService } from './community.service';
 import { SoUserService } from './social-user.service';

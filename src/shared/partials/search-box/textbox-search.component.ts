@@ -1,12 +1,13 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild, ViewEncapsulation, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/debounceTime';
+import { debounceTime } from 'rxjs/operators';
+
 import { Constants } from '../../constant/config/constants';
 
 declare let _: any;
 
 @Component({
-    selector: 'textbox-search',
+  selector: 'textbox-search',
   templateUrl: 'textbox-search.component.html',
   styleUrls: ['textbox-search.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -32,7 +33,9 @@ export class TextBoxSearchComponent implements OnInit {
 
   ngOnInit() {
     Observable.fromEvent(this.input.nativeElement, 'keyup')
-      .debounceTime(this.debounceTime)
+      .pipe(
+        debounceTime(this.debounceTime)
+      )
       .subscribe((keyboardEvent: any) => {
         this.onKeyUp(keyboardEvent);
       });
@@ -53,7 +56,9 @@ export class TextBoxSearchComponent implements OnInit {
   }
 
   onEnter() {
-    this.onEnterEvent.emit({search: this.search});
+    if(this.search) {
+      this.onEnterEvent.emit({search: this.search});
+    }
   }
 
   onEscape() {

@@ -1,9 +1,6 @@
 import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-
 import { SocialService } from '../../shared/services/social.service';
 
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';

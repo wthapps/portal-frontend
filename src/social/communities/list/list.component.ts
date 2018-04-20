@@ -1,18 +1,17 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 
-
-
 import { SocialService } from '../../shared/services/social.service';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
 import { ZSocialShareCommunityFormEditComponent } from '../../shared/form/edit-community.component';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { UserService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
+import { fadeInAnimation } from '@wth/shared/shared/animations/route.animation';
 
 @Component({
-
   selector: 'z-social-community-list',
-  templateUrl: 'list.component.html'
+  templateUrl: 'list.component.html',
+  animations: [fadeInAnimation]
 })
 
 export class ZSocialCommunityListComponent implements OnInit, OnDestroy {

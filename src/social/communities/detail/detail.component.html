@@ -6,7 +6,6 @@
   [scrollWindow]="true"
   (scrolled)="onLoadMore()">
   <div class="page-body-content-in zone-social">
-
     <div class="zone-social-in">
       <div class="zone-social-cover">
         <cover-profile [item]="community" (outEvent)="onCoverAction($event)">
@@ -154,7 +153,7 @@
       </div>
 
       <!--post list-->
-      <so-post-list *ngIf="isPostTab" #posts
+      <so-post-list *ngIf="activeTabs.post" #posts
                     [user]="authService.user$|async"
                     [type]="'community'"
                     [canCreatePost]="isMember"
@@ -191,7 +190,7 @@
         <entity-select #users type='member_invite' (onSelected)="inviteMembers($event)"></entity-select>
       </div>
 
-      <div class="panel panel-default" *ngIf="isMember && !isAboutTab && !isPostTab">
+      <div class="panel panel-default" *ngIf="isMember && !activeTabs.about && !activeTabs.post">
         <ul class="list-group" *ngIf="selectedTab == 'members'">
           <ng-template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
             <li class="list-group-item" >
@@ -219,7 +218,7 @@
           </ng-template>
         </ul>
 
-        <ul class="list-group" *ngIf="selectedTab == 'invitations'">
+        <ul class="list-group" *ngIf="activeTabs.invitations">
           <ng-template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
             <li class="list-group-item" data-id="invitation_{{ item.id }}">
                 <div class="dropdown pull-right">
@@ -233,7 +232,7 @@
           </ng-template>
         </ul>
 
-        <ul class="list-group" *ngIf="selectedTab == 'join_requests'">
+        <ul class="list-group" *ngIf="activeTabs.joinRequests">
           <ng-template ngFor let-item [ngForOf]="tabItems">
             <li class="list-group-item" data-id="invitation_{{ item.id }}">
               <div class="dropdown pull-right">

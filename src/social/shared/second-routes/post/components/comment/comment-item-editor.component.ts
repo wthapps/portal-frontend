@@ -15,12 +15,15 @@ import { SoComment, User } from '@wth/shared/shared/models';
 import { UserService, PhotoUploadService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { Router } from '@angular/router';
+
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { takeUntil, filter, map, mergeMap, take } from 'rxjs/operators';
+
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
-import { Subject, Subscription } from 'rxjs';
 
 
 export enum CommentEditorMode {

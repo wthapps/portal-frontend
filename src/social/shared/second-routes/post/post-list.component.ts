@@ -4,11 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/withLatestFrom';
-import 'rxjs/add/operator/combineLatest';
-import 'rxjs/add/operator/finally';
+import { combineLatest, takeUntil } from 'rxjs/operators';
 
 
 import { PostEditComponent } from './post-edit.component';
@@ -66,12 +62,13 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.showLoading = document.getElementById('post-list-loading') !== null;
 
     this.route.paramMap
-      .combineLatest(parentRouteParams, reloadQueryParam)
-      .takeUntil(this.destroySubject)
-      .map(([paramMap, parentParamMap]: any) => {
-        this.startLoading();
-        return paramMap.get('id') || parentParamMap.get('id');
-    })
+      .pipe(
+        combineLatest(parentRouteParams, reloadQueryParam, (paramMap, parentParamMap) => {
+          this.startLoading();
+          return paramMap.get('id') || parentParamMap.get('id');
+        }),
+        takeUntil(this.destroySubject)
+      )
       .subscribe((id: any) => {
           this.uuid = id;
         // Load if items empty
@@ -230,7 +227,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   viewMorePosts() {
     if (this.nextLink) {
-      this.apiBaseService.get(this.nextLink).take(1)
+      this.apiBaseService.get(this.nextLink)
         .toPromise().then((res: any)=> {
         _.map(res.data, (v: any)=> {
           this.items.push(this.mapPost(v));

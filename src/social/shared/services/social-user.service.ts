@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-
-import 'rxjs/add/operator/debounceTime';
 
 import { ApiBaseService } from '@wth/shared/services';
 import { UserService } from '@shared/services/user.service';

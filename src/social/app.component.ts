@@ -8,10 +8,9 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/do';
+import { filter } from 'rxjs/operators';
+
 import { Config } from '@wth/shared/constant';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { AuthService } from '@wth/shared/services';
@@ -42,7 +41,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.routerSubscription = this.router.events
-      .filter(event => event instanceof NavigationEnd)
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });

@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
+import { switchMap } from 'rxjs/operators';
 
-import 'rxjs/add/observable/forkJoin';
 
 import { SocialService } from '../shared/services/social.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,10 +35,12 @@ export class ZSocialProfileComponent implements OnInit {
 
   ngOnInit() {
     this.route.params
-      .switchMap((params: any) =>
-        Observable.forkJoin(
-          this.socialService.user.get(params['id']),
-          this.getRelationship(params['id'])
+      .pipe(
+        switchMap((params: any) =>
+          Observable.forkJoin(
+            this.socialService.user.get(params['id']),
+            this.getRelationship(params['id'])
+          )
         )
       )
       .subscribe((res: any) => {

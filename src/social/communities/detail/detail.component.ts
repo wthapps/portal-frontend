@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/combineLatest';
+import { Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs/operators';
 
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
@@ -19,17 +19,25 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { Constants } from '@wth/shared/constant';
 import { SHORTCUT_ADD_MULTI_DONE } from '../../shared/reducers/index';
-import { Store } from '@ngrx/store';
+import { fadeInAnimation } from '@wth/shared/shared/animations/route.animation';
 
 declare let _: any;
 declare let $: any;
 
+const EMPTY_DEFAULT_TABS: any = {
+  post: false,
+  about: false,
+  members: false,
+  invitations: false,
+  joinRequests: false,
+  blacklist: false
+};
+
 @Component({
   selector: 'z-social-community-detail',
-  templateUrl: 'detail.component.html'
+  templateUrl: 'detail.component.html',
+  animations: [fadeInAnimation]
 })
-
-
 export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
 
@@ -40,7 +48,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     about: 'about',
     members: 'members',
     invitations: 'invitations',
-    joinRequests: 'join_requests',
+    join_requests: 'join_requests',
     blacklist: 'blacklist'
   };
 
@@ -80,12 +88,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   favourite: any;
   userSettings: any;
 
-  isPostTab: boolean = true;
-  isAboutTab: boolean = false;
-  isMemberTab: boolean = false;
-  isInvitationTab: boolean = false;
-  isJoinRequestTab: boolean = false;
-  isBlacklistTab: boolean = false;
+  activeTabs: any = EMPTY_DEFAULT_TABS;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
 
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
@@ -93,7 +96,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   @ViewChild('users') users: EntitySelectComponent;
   @ViewChild('posts') posts: PostListComponent;
 
-  closeObs$: Observable<any>;
   profile$: Observable<User>;
 
   private destroySubject: Subject<any> = new Subject<any>();
@@ -104,31 +106,28 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private wthConfirmService: WthConfirmService,
               private toastsService: ToastsService,
-              // private photoSelectDataService: PhotoModalDataService,
               private zoneReportService: ZSharedReportService,
               public favoriteService: SocialFavoriteService,
               private store: Store<any>,
               private socialService: SocialService) {
-
-    // All subscriptions to photo select modal should be closed when 1 of following events are emitted
-    // this.closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
     this.profile$ = this.userService.getAsyncProfile();
   }
 
   ngOnInit() {
     this.selectedTabTitle = _.find(this.tabData, ['key', this.selectedTab]);
 
-    this.route.params.combineLatest(this.route.queryParams)
-      .map(([param, queryParam]: any) => {
-      if(this.uuid !== param['id']) {
-        this.uuid = param['id'];
-        this.getCommunity(this.uuid);
-      }
-      this.selectedTab = queryParam['tab'] ;
-      this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
-
-      // (!this.selectedTab || this.selectedTab === this.tab.post) && this.store.dispatch({type: SHORTCUT_LOAD});
-    }).subscribe(() => {
+    this.route.paramMap.pipe(
+      combineLatest(this.route.queryParamMap, (paramMap, queryParamMap) => {
+        if(this.uuid !== paramMap.get('id')) {
+          this.uuid = paramMap.get('id');
+          this.getCommunity(this.uuid);
+        }
+        this.selectedTab = queryParamMap.get('tab') ;
+        this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
+        console.debug(paramMap, queryParamMap, this.selectedTab);
+        return [this.uuid, this.selectedTab];
+      })
+    ).subscribe(() => {
       this.setTabVisibility();
       if (this.selectedTab !== undefined)
         this.getTabItems(this.uuid, this.selectedTab);
@@ -270,7 +269,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   deleteMember(user: any) {
     this.user = user;
-    console.debug('user: ', user);
     this.wthConfirmService.confirm({
       acceptLabel: 'Delete',
       rejectLabel: 'Cancel',
@@ -352,7 +350,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   onLoadMore() {
-    if (this.isPostTab)
+    if (this.activeTabs.post)
       this.posts.viewMorePosts();
   }
 
@@ -372,7 +370,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         //  Grant edit profile / cover image privilege to community admins
         this.community.canEdit = this.isAdmin;
 
-        console.debug('result: ', res);
         if (res.shortcut) {
           this.store.dispatch({type: SHORTCUT_ADD_MULTI_DONE, payload: res.shortcut});
         }
@@ -386,7 +383,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   private getTabItems(uuid: string, tabName: string): void {
     this.tabItems.length = 0;
-    if (tabName === undefined)
+    if (!tabName)
       return;
 
     this.socialService.community.getTabItems(uuid, tabName)
@@ -415,65 +412,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   private setTabVisibility() {
-    switch (this.selectedTab) {
-      case this.tab.post:
-        this.isPostTab = true;
-        this.isAboutTab = false;
-        this.isMemberTab = false;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = false;
-        break;
-      case this.tab.about:
-        this.isPostTab = false;
-        this.isAboutTab = true;
-        this.isMemberTab = false;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = false;
-        break;
-      case this.tab.members:
-        this.isPostTab = false;
-        this.isAboutTab = false;
-        this.isMemberTab = true;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = false;
-        break;
-      case this.tab.invitations:
-        this.isPostTab = false;
-        this.isAboutTab = false;
-        this.isMemberTab = false;
-        this.isInvitationTab = true;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = false;
-        break;
-      case this.tab.joinRequests:
-        this.isPostTab = false;
-        this.isAboutTab = false;
-        this.isMemberTab = false;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = true;
-        this.isBlacklistTab = false;
-        break;
-      case this.tab.blacklist:
-        this.isPostTab = false;
-        this.isAboutTab = false;
-        this.isMemberTab = false;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = true;
-        break;
-      default:
-        this.selectedTab = undefined;
-        this.isPostTab = true;
-        this.isAboutTab = false;
-        this.isMemberTab = false;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = false;
-        break;
-    }
+    this.activeTabs = { ...EMPTY_DEFAULT_TABS, [this.selectedTab || this.tab.post]: true};
   }
 
 }
