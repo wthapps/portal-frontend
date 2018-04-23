@@ -18,8 +18,7 @@ export class ZSharedBreadcrumbComponent implements OnInit, OnDestroy {
 
   @Output() onBreadcrumbAction: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     // console.log(this.models);
@@ -45,11 +44,7 @@ export class ZSharedBreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   onClick(item: any) {
-    if (item) this.router.navigate([item.routerLink]);
-  }
-
-  onMenu(event: string) {
-    this.onBreadcrumbAction.emit(event);
+    this.onBreadcrumbAction.emit({action: 'click', payload: item});
   }
 
   ngOnDestroy() {

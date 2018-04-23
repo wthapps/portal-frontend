@@ -2,11 +2,15 @@ export const SET_OBJECTS = '[CHAT NOTE] SET_OBJECTS';
 export const SELECT_MULTIPLE = '[CHAT NOTE] SELECT_MULTIPLE';
 export const SELECT_ALL = '[CHAT NOTE] SELECT_ALL';
 export const SELECT_ONE = '[CHAT NOTE] SELECT_ONE';
+export const SET_CURRENT_TAB = '[CHAT NOTE] SET_CURRENT_TAB';
+export const SET_BREADCRUMB = '[CHAT NOTE] SET_BREADCRUMB';
 
 declare let _: any;
 const empty: any = function(): any {
   return {
-    objects: []
+    // note list objects
+    objects: [],
+    breadcrumb: []
   };
 };
 
@@ -38,6 +42,10 @@ export function reducer(state: any = empty(), action: any) {
         if (item.id == action.payload.id) item.selected = !item.selected;
         return item;
       });
+      return stateClone;
+    // Set Breadcrumb
+    case SET_BREADCRUMB:
+      stateClone.breadcrumb = action.payload;
       return stateClone;
     default:
       return state;

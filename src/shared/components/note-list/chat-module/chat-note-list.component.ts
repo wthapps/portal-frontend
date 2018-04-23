@@ -31,10 +31,19 @@ export class ChatNoteListComponent implements OnInit {
     this.store.select('notes').subscribe((state: any) => {
       this.selectedAll = false;
       this.allItems = state.objects;
-      if (state.objects.length > 0) this.selectedAll = state.objects.every(item => {
-        if(item.object_type == 'Note::Folder') return true;
-        return item.selected == true;
-      });
+      if (state.objects.length > 0) {
+        const allFolders = state.objects.every(item => {
+          return item.object_type == 'Note::Folder';
+        });
+        if(allFolders) {
+          this.selectedAll = false;
+        } else {
+          this.selectedAll = state.objects.every(item => {
+            if(item.object_type == 'Note::Folder') return true;
+            return item.selected == true;
+          });
+        }
+      }
       this.folders = state.objects.filter(
         ob => ob.object_type === noteConstants.OBJECT_TYPE.FOLDER
       );

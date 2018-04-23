@@ -18,6 +18,7 @@ import { WthConfirmService } from '@shared/shared/components/confirmation/wth-co
 import { UrlService, UserService, ApiBaseService } from '@shared/services';
 import { noteConstants } from '@notes/shared/config/constants';
 import * as fromChatNote from './../../../../../core/store/chat/note.reducer';
+import { chatNoteConstants } from '@shared/components/note-list/chat-module/constants';
 
 
 declare var _: any;
@@ -72,15 +73,28 @@ export class FolderItemComponent implements OnInit, OnDestroy {
 
   onClick() {
     this.store.dispatch({type: fromChatNote.SET_OBJECTS, payload: []});
+    const shared = this.data.role == 'owner' ? '' : 'shared_with_me=true';
     this.apiBaseService
-      .get('note/v1/mixed_entities?parent_id=' + this.data.object_id)
+      .get('note/v1/mixed_entities?parent_id=' + this.data.object_id + `&${shared}`)
       .subscribe(res => {
         this.store.dispatch({
           type: fromChatNote.SET_OBJECTS,
           payload: res.data
         });
       });
-
+      chatNoteConstants
+    const page = this.data.role == 'owner' ? chatNoteConstants.PAGE_MY_NOTE : chatNoteConstants.PAGE_SHARED_WITH_ME;
+    this.apiBaseService.get(`note/folders/get_folder_path/${this.data.object_id}`, {page: page}).subscribe(res => {
+      let breadcrumb = res.data.map(i => {
+        i.label = i.name;
+        return i;
+      })
+      breadcrumb.unshift({label: page == chatNoteConstants.PAGE_MY_NOTE ? chatNoteConstants.PAGE_MY_NOTE_DISPLAY : chatNoteConstants.PAGE_SHARED_WITH_ME_DISPLAY});
+      this.store.dispatch({
+        type: fromChatNote.SET_BREADCRUMB,
+        payload: breadcrumb
+      });
+    });
   }
 
   onClickMulti() {
