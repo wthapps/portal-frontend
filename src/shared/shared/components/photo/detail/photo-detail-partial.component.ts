@@ -64,6 +64,17 @@ export class PhotoDetailPartialComponent
   cropper: any;
   image: any;
   loadingImg: boolean = true;
+  defaultCapabilities: any = {
+    canView: true,
+    canDownload: false,
+    canFave: false,
+    canShare: false,
+    canTag: false,
+    canEdit: false,
+    canDelete: false
+  };
+
+  capabilities: any = this.defaultCapabilities;
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -81,6 +92,7 @@ export class PhotoDetailPartialComponent
     if (this.photo && changes.photo) {
       this.currentIndex = _.indexOf(this.ids, this.photo.id);
       this.stop();
+      this.capabilities = this.photo.capabilities || this.defaultCapabilities;
     }
     this.loadMenu();
   }
@@ -102,12 +114,14 @@ export class PhotoDetailPartialComponent
         toolTip: Constants.tooltip.share,
         iconClass: 'fa fa-share-alt',
         action: 'openModal',
+        display: this.capabilities.canShare,
         params: { modalName: 'sharingModal' }
       },
       {
         text: 'Favourite',
         toolTip: Constants.tooltip.favourite,
         iconClass: 'fa fa-star',
+        display: this.capabilities.canFave,
         action: 'favourite'
       },
       {
@@ -115,6 +129,7 @@ export class PhotoDetailPartialComponent
         toolTip: Constants.tooltip.tag,
         iconClass: 'fa fa-tag',
         action: 'openModal',
+        display: this.capabilities.canTag,
         params: { modalName: 'taggingModal' }
       },
       // {
@@ -136,6 +151,7 @@ export class PhotoDetailPartialComponent
             toolTip: Constants.tooltip.addToAlbum,
             iconClass: 'fa fa-plus-square',
             action: 'openModal',
+            display: this.capabilities.canEdit,
             params: { modalName: 'addToAlbumModal' }
           },
           {
@@ -143,13 +159,15 @@ export class PhotoDetailPartialComponent
             toolTip: Constants.tooltip.download,
             iconClass: 'fa fa-download',
             action: 'download',
+            display: this.capabilities.canDownload,
             params: {}
           },
           {
             text: 'View Info',
             toolTip: Constants.tooltip.viewInfo,
             iconClass: 'fa fa-info-circle',
-            action: 'viewInfo'
+            action: 'viewInfo',
+            display: this.capabilities.canView
           }
         ]
       }
@@ -160,7 +178,8 @@ export class PhotoDetailPartialComponent
         text: 'Edit',
         toolTip: Constants.tooltip.edit,
         iconClass: 'fa fa-edit',
-        action: 'editPhoto'
+        action: 'editPhoto',
+        display: this.capabilities.canEdit
       });
     }
 
@@ -170,6 +189,7 @@ export class PhotoDetailPartialComponent
         toolTip: Constants.tooltip.delete,
         iconClass: 'fa fa-trash-o',
         action: 'confirmDelete',
+        display: this.capabilities.canDelete,
         params: {}
       });
     }

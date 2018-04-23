@@ -9,7 +9,7 @@
     </div>
     <div class="image-viewer-header-right">
       <ng-container *ngFor="let menu of menus">
-        <button *ngIf="!menu?.dropdown" (click)="doAction({action: menu?.action, params: menu?.params})"
+        <button *ngIf="!menu?.dropdown && menu.display" (click)="doAction({action: menu?.action, params: menu?.params})"
                 pTooltip="{{ menu.toolTip }}"
                 tooltipPosition="bottom" class="btn btn-default" type="button">
           <i *ngIf="menu?.action=='favourite'" class="fa" [ngClass]="!photo.favorite ? 'fa-star-o': 'fa-star'"></i>
@@ -23,7 +23,7 @@
           </button>
           <ul *ngIf="menu?.parent" class="dropdown-menu dropdown-menu-right">
             <li *ngFor="let subMenu of menu.menus">
-              <a href="javascript:;" (click)="doAction({action: subMenu?.action, params: subMenu?.params})">
+              <a *ngIf="subMenu.display" href="javascript:;" (click)="doAction({action: subMenu?.action, params: subMenu?.params})">
                 <i [ngClass]="subMenu.iconClass"></i> {{ subMenu.text }}
               </a>
             </li>

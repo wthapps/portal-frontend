@@ -48,7 +48,6 @@ export class WToolbarComponent {
       this.updateSelectedObjects(event.payload.selectedObjects);
     }
     if (event.action === 'deselectAll') {
-      console.log('deselectAll:::');
       this.selectedObjects.length = 0;
       this.updateSelectedObjects([]);
     }
@@ -68,7 +67,6 @@ export class WToolbarComponent {
     objects.forEach(object => {
       if (object.favorite === false) {
         result = false;
-        return;
       }
     });
     return result;
