@@ -186,7 +186,7 @@ export class MediaEffects {
         .map(response => {
           this.loading.stop();
           this.toastsService.success('You deleted items successful!');
-          return new mediaActions.DeleteManySuccess({data: payload.selectedObjects});
+          return new mediaActions.DeleteManySuccess(payload);
         });
     });
 

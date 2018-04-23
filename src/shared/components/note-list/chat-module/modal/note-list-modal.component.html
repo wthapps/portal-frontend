@@ -4,15 +4,15 @@
       <div class="nav-tabs-wrap">
         <ul class="nav nav-tabs">
           <li [ngClass]="actives[0]? 'active' : ''">
-            <a href="javascript:void" (click)="tabMyNote($event)">
+            <a href="javascript:void(0)" (click)="tabMyNote($event)">
               <i class="fa fa-file"></i> My Note </a>
           </li>
           <li [ngClass]="actives[1]? 'active' : ''">
-            <a href="javascript:void" (click)="tabFavourites()">
+            <a href="javascript:void(0)" (click)="tabFavourites()">
               <i class="fa fa-star"></i>Favourites </a>
           </li>
           <li [ngClass]="actives[2]? 'active' : ''">
-            <a href="javascript:void" (click)="tabSharedWithMe()">
+            <a href="javascript:void(0)" (click)="tabSharedWithMe()">
               <i class="fw fw-shared-with-me"></i> Shared with me </a>
           </li>
           <li>
@@ -26,7 +26,7 @@
     <bs-modal-body>
       <div class="clearfix" style="position: relative; z-index: 99999">
         <z-shared-breadcrumb [models]="breadcrumb" class="note-breadcrumb" (onBreadcrumbAction)="onBreadcrumbAction($event)"></z-shared-breadcrumb>
-        <chat-note-shared-toolbar #toolbar (events)="doEvent(event)"></chat-note-shared-toolbar>
+        <chat-note-shared-toolbar #toolbar (events)="doEvent($event)"></chat-note-shared-toolbar>
       </div>
 
       <div class="content-overflow" style="max-height: 600px;margin-right: 0px">

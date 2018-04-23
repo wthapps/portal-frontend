@@ -41,14 +41,15 @@ export class MessageItemComponent implements OnInit {
     if (this.message.display && this.message.display.id) {
       this.message.byMe = this.chatService.userService.getSyncProfile().id == this.message.display.id;
     } else {
-      this.message.file_json = {};
-      this.message.file_json.thumbnail_url = 'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/thumbnails/generic_files_upload_default.png';
+      this.message.file = {
+        thumbnail_url: 'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/thumbnails/generic_files_upload_default.png'
+      };
     }
 
   }
 
   onPreviewPhoto(message: any) {
-    this.router.navigate([{outlets: {modal: ['photos', message.file_json.id, {ids: [message.file_json.id], message: message.id, prevUrl: '/conversations'}]}}]);
+    this.router.navigate([{outlets: {modal: ['photos', message.file.id, {ids: [message.file.id], message: message.id, prevUrl: '/conversations'}]}}]);
   }
 
   doAction(event: CommonEvent) {

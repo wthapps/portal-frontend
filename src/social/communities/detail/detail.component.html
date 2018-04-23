@@ -160,7 +160,7 @@
                     [community]="community"></so-post-list>
 
       <!--about-->
-      <div class="panel panel-default" *ngIf="isAboutTab">
+      <div class="panel panel-default" *ngIf="activeTabs.about">
         <div class="panel-heading">
           <div class="pull-right">
             <a href="javascript:;" (click)="onEdit()" class="btn btn-outline-default pull-right" *ngIf="isAdmin">

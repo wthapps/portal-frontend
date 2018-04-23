@@ -4,6 +4,8 @@ import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+
 
 import { Photo } from '../../../models/photo.model';
 import { PhotoService } from '../../../../services/photo.service';
@@ -76,7 +78,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         // this.loadItem(this.id);
         return params['id'];
       })
-      .switchMap((id: any ) => {
+      .mergeMap((id: any ) => {
         this.loading = true;
         return this.photoService.getPhoto(id);
       })

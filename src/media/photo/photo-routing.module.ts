@@ -16,13 +16,13 @@ import { PhotoDetailComponent } from './photo-detail.component';
         path: 'photos/:id',
         component: PhotoDetailComponent,
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'photos/:id',
+        component: PhotoDetailComponent,
+        outlet: 'modal',
+        canActivate: [AuthGuard]
       }
-      // {
-      //   path: 'photos/:id',
-      //   component: PhotoDetailComponent,
-      //   outlet: 'modal',
-      //   canActivate: [AuthGuard]
-      // }
     ])
   ],
   exports: [RouterModule]

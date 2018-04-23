@@ -83,7 +83,7 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
           acceptLabel: 'Delete',
           message: `Are you sure to delete ${event.payload.selectedObjects.length} photos`,
           accept: () => {
-            this.store.dispatch(new DeleteMany({...event.payload}));
+            this.store.dispatch(new DeleteMany(event.payload));
           }});
         break;
       case 'download':
