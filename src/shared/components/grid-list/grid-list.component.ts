@@ -128,12 +128,14 @@ export class WGridListComponent implements OnInit, OnDestroy {
           if (event.payload.clearAll) {
             this.selectedObjects.length = 0;
           }
-
-
+        }
+        if (event.action === 'select') {
           event.payload.selectedObjects.forEach(obj => {
             this.selectedObjects.push(obj);
           });
-        } else if (event.action === 'deselect') {
+        }
+
+        if (event.action === 'deselect') {
           event.payload.selectedObjects.forEach(obj => {
             this.selectedObjects.splice(this.selectedObjects.indexOf(obj.id), 1);
           });
