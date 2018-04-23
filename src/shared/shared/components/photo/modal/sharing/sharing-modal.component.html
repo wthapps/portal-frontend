@@ -1,11 +1,14 @@
-<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'"
+          style="display: inline;">
   <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title">Sharing</h4>
   </bs-modal-header>
   <bs-modal-body>
     <div class="row pl20 pr20">
       <div class="input-group">
-        <p-autoComplete *ngIf="mode!=operation.editing" [(ngModel)]="textContacts"
+        <p-autoComplete *ngIf="mode!=operation.editing"
+                        placeholder="Search contacts"
+                        [(ngModel)]="textContacts"
                         [suggestions]="filteredContacts"
                         [multiple]="true"
                         [minLength]="1"
@@ -39,10 +42,10 @@
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li *ngFor="let role of roles" (click)="changeRole(role)">
-                <a href="javascript:void(0);"> {{ role.display_name }}
+              <li *ngFor="let r of roles" (click)="changeRole(r)">
+                <a href="javascript:void(0);"> {{ r.display_name }}
                   <i class="pull-right"
-                     [ngClass]="{'fa fa-check': (this.sharing && this.sharing.role_id === role.id)}"></i>
+                     [ngClass]="{'fa fa-check': (r.id === role.id)}"></i>
                 </a>
               </li>
             </ul>
@@ -51,36 +54,40 @@
 
       </div>
     </div>
-    <div class="modal-body-collapse" *ngIf="sharedContacts?.length">
-      <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
-         aria-controls="collapseExample">
-        Shared with {{ sharedContacts?.length }} Contacts
-      </a>
-      <div class="collapse in pre-scrollable" id="collapseContact">
-        <div class="modal-body-collapse-in">
-          <div class="media-list-item" *ngFor="let contact of sharedContacts">
-            <div class="media" [ngClass]="isDeletedItem(contact.id) ? 'remove': ''">
-              <div class="media-left">
-                <figure>
-                  <img [src]="contact.profile_image" alt="">
-                </figure>
-              </div>
-              <div class="media-body">
-                {{ contact.name }}
-              </div>
+    <div class="modal-fixed-height">
 
-              <div class="media-right">
-                <a class="btn btn-default" (click)="toggleRemoving($event, contact.id)"
-                   [title]="isDeletedItem(contact.id) ? 'Undo removing':'Remove'"
-                   href="javascript:void(0)">
-                  <i *ngIf="!isDeletedItem(contact.id)" class="fa fa-times" title="remove"></i>
-                  <i *ngIf="isDeletedItem(contact.id)" class="fa fa-undo" title="Undo removing"></i>
-                </a>
+      <div class="modal-body-collapse" *ngIf="sharedContacts?.length">
+        <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
+           aria-controls="collapseExample">
+          Shared with {{ sharedContacts?.length }} Contacts
+        </a>
+        <div class="collapse in pre-scrollable" id="collapseContact">
+          <div class="modal-body-collapse-in">
+            <div class="media-list-item" *ngFor="let contact of sharedContacts">
+              <div class="media" [ngClass]="isDeletedItem(contact.id) ? 'remove': ''">
+                <div class="media-left">
+                  <figure>
+                    <img [src]="contact.profile_image" alt="">
+                  </figure>
+                </div>
+                <div class="media-body">
+                  {{ contact.name }}
+                </div>
+
+                <div class="media-right">
+                  <a class="btn btn-default" (click)="toggleRemoving($event, contact.id)"
+                     [title]="isDeletedItem(contact.id) ? 'Undo removing':'Remove'"
+                     href="javascript:void(0)">
+                    <i *ngIf="!isDeletedItem(contact.id)" class="fa fa-times" title="remove"></i>
+                    <i *ngIf="isDeletedItem(contact.id)" class="fa fa-undo" title="Undo removing"></i>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </bs-modal-body>
   <bs-modal-footer>

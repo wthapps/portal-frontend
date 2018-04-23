@@ -81,10 +81,16 @@ export class SharingModalComponent implements OnDestroy {
   open(options: any) {
     this.mode = options.mode || this.operation.create;
     this.sharedContacts = options.recipients || [];
-    this.sharing = options.sharing || null;
+    this.selectedItems = options.selectedObjects || [];
+    this.sharing = options.sharing || {
+      name: '',
+      role_id: 1,
+      objects: [],
+      recipients: []
+    };
 
     this.modal.open(options).then((res: any) => {
-      if (!!this.sharing) {
+      if (this.mode !== this.operation.create) {
         // this.getShared();
         this.getRecipients();
       }
@@ -94,7 +100,7 @@ export class SharingModalComponent implements OnDestroy {
 
   close(options?: any) {
     // cancel removing items
-    if (this.mode == this.operation.editing || this.mode == this.operation.deleting) {
+    if (this.mode === this.operation.editing || this.mode === this.operation.deleting) {
       this.removedContacts = [];
       this.mode = this.operation.read;
       return;
@@ -106,7 +112,9 @@ export class SharingModalComponent implements OnDestroy {
     if (!this.roles.length) {
       this.apiBaseService.get('common/roles', {module_name: 'Media'}).subscribe((response) => {
         this.roles = response.data.sort((a, b) => a.id - b.id);
-        this.role = this.roles.filter(r => r.id === this.sharing.role_id)[0];
+        if (!!this.sharing) {
+          this.role = this.roles.filter(r => r.id === this.sharing.role_id)[0];
+        }
       });
     }
   }
@@ -126,7 +134,7 @@ export class SharingModalComponent implements OnDestroy {
   }
 
   changeRole(role: any) {
-    if (this.sharing.role_id === role.id) {
+    if (this.role.id === role.id) {
       return;
     }
     this.role = this.roles.filter(r => r.id === role.id)[0];
@@ -149,15 +157,17 @@ export class SharingModalComponent implements OnDestroy {
   }
 
   save() {
+    let body: any;
     // create new sharing with selected contacts
     if (this.mode == this.operation.creating && this.selectedItems && this.selectedItems.length > 0) {
       if (this.selectedItems[0].object_type == 'album') {
         this.selectedItems.forEach((item: any) => {
-          let body = {
+          body = {
+            role_id: this.role.id,
             objects: [item],
             recipients: _.map(this.selectedContacts, 'id')
           };
-          this.mediaSharingService.add(body).take(1).subscribe((response: any) => {
+          this.mediaSharingService.create(body).take(1).subscribe((response: any) => {
               this.sharedContacts.push(...this.selectedContacts);
               this.resetData();
               this.updateSelectedItems({contacts: this.sharedContacts});
@@ -167,15 +177,15 @@ export class SharingModalComponent implements OnDestroy {
             });
         });
       } else {
-        let body = {
-          objects: _.map(this.selectedItems, (item: any) => {
-            return {id: item.id, object_type: item.object_type};
-          }),
-          recipients: _.map(this.selectedContacts, 'id')
-        };
-
+          body = {
+            role_id: this.role.id,
+            objects: _.map(this.selectedItems, (item: any) => {
+              return {id: item.id, object_type: item.object_type};
+            }),
+            recipients: _.map(this.selectedContacts, 'id')
+          };
         // Only subscribe to this action once`
-        this.mediaSharingService.add(body).take(1).subscribe((response: any) => {
+        this.mediaSharingService.create(body).take(1).subscribe((response: any) => {
             this.sharedContacts.push(...this.selectedContacts);
             this.resetData();
             this.updateSelectedItems({contacts: this.sharedContacts});
@@ -184,6 +194,8 @@ export class SharingModalComponent implements OnDestroy {
             console.log('error', error);
           });
       }
+
+
     }
 
     if (!this.sharing && this.mode == this.operation.editing) {
@@ -245,7 +257,7 @@ export class SharingModalComponent implements OnDestroy {
       this.resetData();
     }
 
-    if (this.mode == this.operation.read) {
+    if (this.mode === this.operation.read) {
       this.modal.close().then(() =>
         console.log('Item shared')
       );
