@@ -310,14 +310,15 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         detailObjects: [...state.detailObjects]
       };
       if (state.detail) {
-        action.payload.data.forEach(obj => {
+        action.payload.selectedObjects.forEach(obj => {
           cloneState.detailObjects = cloneState.detailObjects.filter(object => object.id !== obj.id);
         });
       } else {
-        action.payload.data.forEach(obj => {
+        action.payload.selectedObjects.forEach(obj => {
           cloneState.objects = cloneState.objects.filter(object => object.id !== obj.id);
         });
       }
+      action.payload.selectedObjects.length = 0;
       return  Object.assign({}, state, cloneState);
     }
 

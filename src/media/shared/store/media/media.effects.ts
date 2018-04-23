@@ -125,7 +125,7 @@ export class MediaEffects {
         })
           .map(response => {
             this.toastsService.success('You removed item(s) successful!');
-            return new mediaActions.DeleteManySuccess({data: payload.selectedObjects});
+            return new mediaActions.DeleteManySuccess(payload);
           });
       } else {
         return this.sharingService.removeObjects({
@@ -135,7 +135,7 @@ export class MediaEffects {
         })
           .map(response => {
             this.toastsService.success('You removed item(s) successful!');
-            return new mediaActions.DeleteManySuccess({data: payload.selectedObjects});
+            return new mediaActions.DeleteManySuccess(payload);
           });
       }
     });
