@@ -20,7 +20,7 @@ export const getNotes = createSelector(getNotesEntities, context.getSortOptionCo
   let cloneNotes: any[] = Object.keys(notes).map(o => notes[o]);
   let sortField = ['name', 'title'].includes(sort.field) ? 'name' : sort.field;
   sortField = FIELD_MAP[sort.field] || sortField;
-  return cloneNotes.sort((a: any, b: any) => compareBy(a, b, sort.desc, sortField));
+  return cloneNotes.sort((a: any, b: any) => _wu.compareBy(a, b, sort.desc, sortField));
 });
 
 export const getFolders = createSelector(getFolderEntities, context.getSortOptionContext,

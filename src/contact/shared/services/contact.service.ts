@@ -272,11 +272,6 @@ export class ZContactService extends BaseEntityService<any> {
       contacts = this.contacts;
     }
 
-    // let orderedContacts: any[] = _.orderBy(
-    //   contacts,
-    //   ['name'],
-    //   [this.orderDescSubject.getValue() ? 'asc' : 'desc']
-    // );
     let orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a,b, this.orderDescSubject.getValue()));
     let selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
     let orderedContactsWSelected: any[] = _.map(orderedContacts, (ct: any) => {
@@ -293,8 +288,6 @@ export class ZContactService extends BaseEntityService<any> {
     );
     this.checkSelectAll();
   }
-
-
 
   sendRequest(contact: any) {
     this.apiBaseService
