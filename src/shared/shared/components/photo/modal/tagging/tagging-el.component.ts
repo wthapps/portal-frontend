@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 import { ZMediaTaggingService } from './tagging.service';
 
@@ -20,6 +21,9 @@ export class TaggingElComponent {
   }
 
   requestAutocompleteItems = (text: string): Observable<Response> => {
-    return this.taggingService.getTags(text).map((res:any) => _.map(res.data, 'name'));
+    return this.taggingService.getTags(text)
+      .pipe(
+        map((res:any) => res.data.name)
+      );
   }
 }

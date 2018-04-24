@@ -350,4 +350,22 @@ export module _wu {
       arr.splice(index, 1);
     }
   }
+
+  export function getValue(obj: any, field: any) {
+    let val = obj && obj[field];
+    return (typeof val === 'string') ? val.toLowerCase() : val;
+  }
+
+  export function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'name'): number {
+    if (!objA || !objB) return;
+    let o = orderDesc ? 1 : -1;
+
+    if(getValue(objA, field) > getValue(objB, field))
+      return 1*o;
+    if(getValue(objA, field) < getValue(objB, field))
+      return -1*o;
+
+    return 0;
+  }
+
 }

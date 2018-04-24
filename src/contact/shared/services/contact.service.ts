@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { map } from 'rxjs/operators';
 
 import { GroupService } from '../../group/group.service';
 import { Router } from '@angular/router';
@@ -10,10 +11,8 @@ import { BaseEntityService } from '../../../shared/services/base-entity-service'
 import { SuggestionService } from '../../../shared/services/suggestion.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '../../../shared/shared/components/confirmation/wth-confirm.service';
-import { FileUploaderService } from '@shared/services/file/file-uploader.service';
-import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
-import * as Boom from 'boom';
 import { ApiBaseService } from '@wth/shared/services';
+import { _wu } from '@wth/shared/shared/utils/utils';
 
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
@@ -24,7 +23,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   // orderDesc: boolean = false;
   readonly startIndex: number = 0;
-  readonly ITEM_PER_PAGE: number = 20;
+  readonly ITEM_PER_PAGE: number = 50;
 
   listenToList: any;
   listenToItem: any;
@@ -55,7 +54,6 @@ export class ZContactService extends BaseEntityService<any> {
     public groupService: GroupService,
     private suggestService: SuggestionService,
     private toastsService: ToastsService,
-    private fileUploaderService: FileUploaderService,
     public router: Router,
     private wthConfirmService: WthConfirmService
   ) {
@@ -97,15 +95,17 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   addMoreContacts(data: any[]) {
-    // this.contacts = _.uniqBy(_.flatten([this.contacts, data]), 'id');
     this.contacts.push(...data);
     this.notifyContactsObservers();
   }
 
   delete(contact: any): Observable<any> {
-    return super.delete(`${contact.id}`).map((response: any) => {
-      this.deleteCallback(response.data);
-    });
+    return super.delete(`${contact.id}`)
+      .pipe(
+        map((response: any) => {
+          this.deleteCallback(response.data);
+        })
+      );
   }
 
   confirmDeleteContacts(contacts: any[] = this.selectedObjects): Promise<any> {
@@ -163,21 +163,26 @@ export class ZContactService extends BaseEntityService<any> {
   updateMultiple(body: any): Observable<any> {
     return this.apiBaseService
       .post(`${this.url}/update_multiple`, body)
-      .map((response: any) => {
-        let contacts = response.data;
+      .pipe(
+        map((response: any) => {
+          let contacts = response.data;
 
-        _.forEach(contacts, (contact: any) => {
-          this.updateCallback(contact);
-        });
-        return response;
-      });
+          _.forEach(contacts, (contact: any) => {
+            this.updateCallback(contact);
+          });
+          return response;
+        })
+      );
   }
 
   updateSingle(body: any): Observable<any> {
-    return super.update(body).map((res: any) => {
-      this.updateCallback(res.data);
-      return res;
-    });
+    return super.update(body)
+      .pipe(
+        map((res: any) => {
+          this.updateCallback(res.data);
+          return res;
+        })
+      );
   }
 
   update(data: any): Observable<any> {
@@ -193,10 +198,13 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   create(body: any): Observable<any> {
-    return super.create(body).map((res: any) => {
-      this.createCallback(res.data);
-      return res;
-    });
+    return super.create(body)
+      .pipe(
+        map((res: any) => {
+          this.createCallback(res.data);
+          return res;
+        })
+      );
   }
 
   import(payload: any): Observable<any> {
@@ -264,11 +272,12 @@ export class ZContactService extends BaseEntityService<any> {
       contacts = this.contacts;
     }
 
-    let orderedContacts: any[] = _.orderBy(
-      contacts,
-      ['name'],
-      [this.orderDescSubject.getValue() ? 'asc' : 'desc']
-    );
+    // let orderedContacts: any[] = _.orderBy(
+    //   contacts,
+    //   ['name'],
+    //   [this.orderDescSubject.getValue() ? 'asc' : 'desc']
+    // );
+    let orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a,b, this.orderDescSubject.getValue()));
     let selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
     let orderedContactsWSelected: any[] = _.map(orderedContacts, (ct: any) => {
       if (selectedIds.indexOf(ct.uuid) > -1)
@@ -284,6 +293,8 @@ export class ZContactService extends BaseEntityService<any> {
     );
     this.checkSelectAll();
   }
+
+
 
   sendRequest(contact: any) {
     this.apiBaseService
@@ -319,12 +330,6 @@ export class ZContactService extends BaseEntityService<any> {
           // _.set(this.contacts, idx, updated_contacts[i]);
           this.contacts[idx] = updated_contacts[i];
         }
-        console.log(
-          'merge duplicate contacts, updated: ',
-          this.contacts,
-          updated_contacts,
-          delete_ids
-        );
         this.notifyContactsObservers();
         this.groupService.updateGroupCount(this.contacts);
       });
