@@ -12,3 +12,25 @@ chat-note-shared-toolbar {
   float: right;
 }
 
+.modal-media-selection {
+  .nav-tabs-wrap {
+    float: none;
+  }
+}
+.modal-header {
+  padding: 0px;
+  margin: 15px;
+  .close {
+    padding: 8px;
+  }
+}
+
+.searchHeader {
+  float: left;
+  textbox-search {
+    .input-group-search-header .input-group {
+      width: 600px;
+      margin-left: 200px;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 <form>
   <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" cssClass="modal-media-selection">
     <bs-modal-header [showDismiss]="true">
-      <div class="nav-tabs-wrap">
+      <div *ngIf="navEnable" class="nav-tabs-wrap">
         <ul class="nav nav-tabs">
           <li [ngClass]="actives[0]? 'active' : ''">
             <a href="javascript:void(0)" (click)="tabMyNote($event)">
@@ -15,13 +15,23 @@
             <a href="javascript:void(0)" (click)="tabSharedWithMe()">
               <i class="fw fw-shared-with-me"></i> Shared with me </a>
           </li>
-          <li>
-            <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)" [placeholder]="'Search something'"></textbox-search>
+          <li style="float: right;">
+            <button class="btn btn-default" type="button" (click)="searchClick()" tooltipPosition="bottom">
+              <i class="fa fa-search"></i>
+            </button>
           </li>
         </ul>
       </div>
-
-      <button type="button" name="button" (click)="insertNotes()"> Insert </button>
+      <div *ngIf="searchEnable" class="searchHeader">
+        <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)" [placeholder]="'Search something'"
+          [showSearchClearText]="true"></textbox-search>
+      </div>
+      <!-- <div *ngIf="insertEnable" class="insertHeader">
+        <button type="button" name="button" (click)="insertNotes()"> Insert </button>
+      </div> -->
+      <w-object-toolbar-selected *ngIf="insertEnable">
+        <button (click)="insertNotes()" class="btn btn-outline-default" type="button">Insert</button>
+      </w-object-toolbar-selected>
     </bs-modal-header>
     <bs-modal-body>
       <div class="clearfix" style="position: relative; z-index: 99999">

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 declare let _: any;
@@ -25,6 +25,8 @@ export class WObjectListService {
 
   objectsDisabled$: any;
   private objectsDisabledSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+
+  selectedEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() {
     this.view$ = this.viewSubject.asObservable();
@@ -55,6 +57,10 @@ export class WObjectListService {
     }
   }
 
+  setSelectedObjects(items: any) {
+    this.selectedObjectsSubject.next(items);
+  }
+
   setGroupBy(groupBy: string) {
     this.groupBySubject.next(groupBy);
   }
@@ -81,6 +87,7 @@ export class WObjectListService {
 
   clear() {
     this.selectedObjectsSubject.next([]);
+    this.selectedEvent.emit({ type: 'close' });
   }
 
   getSelectedObjects() {

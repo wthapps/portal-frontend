@@ -13,6 +13,7 @@ import { PartialModule } from '@shared/partials';
 import { ChatNoteSharedToolBarComponent } from '@shared/components/note-list/chat-module/toolbar/toolbar.component';
 import { TooltipModule } from 'primeng/primeng';
 import { ZSharedBreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
+import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { ZSharedBreadcrumbComponent } from '@shared/components/breadcrumb/breadc
     PipeModule,
     BsModalModule,
     PartialModule,
+    WObjectListModule,
     TooltipModule
   ],
   declarations: [

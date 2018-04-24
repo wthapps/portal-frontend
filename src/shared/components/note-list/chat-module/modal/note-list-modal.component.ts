@@ -3,8 +3,9 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { ApiBaseService } from '@shared/services';
 import { Store } from '@ngrx/store';
 import * as fromChatNote from './../../../../../core/store/chat/note.reducer';
-import { chatNoteConstants } from '@shared/components/note-list/chat-module/constants';
+import { chatNoteConstants, ChatNoteConstants } from '@shared/components/note-list/chat-module/constants';
 import { log } from 'util';
+import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 
 @Component({
   selector: 'chat-note-list-modal',
@@ -18,16 +19,36 @@ export class ChatNoteListModalComponent implements OnInit {
   actives: any = [true, false, false];
 
   breadcrumb: any;
+  tooltip: any = chatNoteConstants.tooltip;
+  navEnable: any = true;
+  searchEnable: any = false;
+  insertEnable: any = false;
+  objects: any = false;
 
   constructor(
     private apiBaseService: ApiBaseService,
+    private wObjectListService: WObjectListService,
     private store: Store<any>
   ) {}
 
   ngOnInit() {
-    // this.store.dispatch()
     this.store.select('notes').subscribe(state => {
       this.breadcrumb = state.breadcrumb;
+      this.objects = state.objects;
+      const selectedObjects = state.objects.filter(ob => ob.selected == true);
+        if (selectedObjects.length > 0) {
+        this.insertEnable = true;
+      } else {
+        this.insertEnable = false;
+      }
+      this.wObjectListService.setSelectedObjects(selectedObjects);
+    });
+    this.wObjectListService.selectedEvent.subscribe(res => {
+      if (res.type == 'close') {
+        this.insertEnable = false;
+        this.objects = this.objects.map(ob => {ob.selected = false; return ob})
+        this.store.dispatch({type: fromChatNote.SET_OBJECTS, payload: this.objects})
+      }
     })
   }
 
@@ -42,6 +63,9 @@ export class ChatNoteListModalComponent implements OnInit {
       type: fromChatNote.SET_BREADCRUMB,
       payload: [{label: chatNoteConstants.PAGE_MY_NOTE_DISPLAY}]
     });
+    this.navEnable = true;
+    this.searchEnable = false;
+    this.insertEnable = false;
     this.modal.open();
   }
 
@@ -50,8 +74,6 @@ export class ChatNoteListModalComponent implements OnInit {
   }
 
   tabMyNote(e: any) {
-    console.log(e);
-
     this.apiBaseService.get('note/v1/mixed_entities').subscribe(res => {
       this.store.dispatch({
         type: fromChatNote.SET_OBJECTS,
@@ -112,10 +134,12 @@ export class ChatNoteListModalComponent implements OnInit {
 
   tabClick(e: any) {
     console.log(e);
-
   }
 
-  onEscape(e: any) {}
+  onEscape(e: any) {
+    this.searchEnable = false;
+    this.navEnable = true;
+  }
 
   insertNotes() {
     this.insertNoteEvent.emit();
@@ -123,6 +147,13 @@ export class ChatNoteListModalComponent implements OnInit {
 
   doEvent(e: any) {
 
+  }
+
+  searchClick() {
+    if (!this.insertEnable) {
+      this.navEnable = false;
+      this.searchEnable = true;
+    }
   }
 
   onBreadcrumbAction(e: any) {
