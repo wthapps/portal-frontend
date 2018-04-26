@@ -209,12 +209,13 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       Observable.fromEvent(this.customEditor, 'text-change')
     )
       .pipe(
-        tap(() => (this.noteChanged = true)),
+        // tap(() => (this.noteChanged = true)),
         takeUntil(Observable.merge(this.noSave$, this.closeSubject)),
         debounceTime(DEBOUNCE_MS),
         takeUntil(Observable.merge(this.noSave$, this.closeSubject))
       )
       .subscribe(() => {
+        this.noteChanged = true;
         if (this.editMode == Constants.modal.add && !this.note.id) {
           this.onFirstSave();
         } else {

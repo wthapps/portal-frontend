@@ -47,7 +47,8 @@ export class NoteEffects {
     .ofType(note.UPDATE)
     .pipe(
       withLatestFrom(this.store, (action: any, state: any) => [action, state.context]),
-      concatMap(([action, context]: any) => { return this.noteService.update(action['payload'])
+      concatMap(([action, context]: any) => {
+        return this.noteService.update(action['payload'])
         .pipe(
           map((res: any) => {
             // this.toastsService.success('Note updated successfully, yay');
@@ -168,7 +169,7 @@ export class NoteEffects {
       .ofType(note.REMOVE_SHARE_WITH_ME)
       .pipe(
         map((action: any) => action['payload']),
-        switchMap((payload: any) => {
+        concatMap((payload: any) => {
           return this.apiBaseService.post(`note/sharings/remove_share_with_me`,
             {objects: payload.map((i: any) => {return {id: i.id, object_type: i.object_type}})})
         }),
