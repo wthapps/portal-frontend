@@ -181,7 +181,7 @@ export class ZContactService extends BaseEntityService<any> {
           // _.forEach(contacts, (contact: any) => {
           //   this.updateCallback(contact);
           // });
-          contacts.forEach(this.updateCallback);
+          contacts.forEach(this.updateCallback.bind(this));
           return response;
         })
       );
