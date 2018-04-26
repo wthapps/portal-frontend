@@ -24,6 +24,7 @@ export class ChatNoteListModalComponent implements OnInit {
   searchEnable: any = false;
   insertEnable: any = false;
   objects: any = false;
+  nextLink: any = '';
 
   constructor(
     private apiBaseService: ApiBaseService,
@@ -58,6 +59,10 @@ export class ChatNoteListModalComponent implements OnInit {
         type: fromChatNote.SET_OBJECTS,
         payload: res.data
       });
+      console.log(res);
+      console.log(res.meta.links);
+
+      this.nextLink = res.meta.links.next;
     });
     this.store.dispatch({
       type: fromChatNote.SET_BREADCRUMB,
@@ -79,6 +84,7 @@ export class ChatNoteListModalComponent implements OnInit {
         type: fromChatNote.SET_OBJECTS,
         payload: res.data
       });
+      this.nextLink = res.meta.links.next;
     });
     this.store.dispatch({
       type: fromChatNote.SET_BREADCRUMB,
@@ -95,6 +101,7 @@ export class ChatNoteListModalComponent implements OnInit {
           type: fromChatNote.SET_OBJECTS,
           payload: res.data
         });
+      this.nextLink = res.meta.links.next;
       });
     this.store.dispatch({
       type: fromChatNote.SET_BREADCRUMB,
@@ -111,6 +118,7 @@ export class ChatNoteListModalComponent implements OnInit {
           type: fromChatNote.SET_OBJECTS,
           payload: res.data
         });
+        this.nextLink = res.meta.links.next;
       });
     this.store.dispatch({
       type: fromChatNote.SET_BREADCRUMB,
@@ -128,12 +136,9 @@ export class ChatNoteListModalComponent implements OnInit {
             type: fromChatNote.SET_OBJECTS,
             payload: res.data
           });
+          this.nextLink = res.meta.links.next;
         });
     }
-  }
-
-  tabClick(e: any) {
-    console.log(e);
   }
 
   onEscape(e: any) {
@@ -204,6 +209,21 @@ export class ChatNoteListModalComponent implements OnInit {
           payload: [{label: item.label}]
         });
       this.actives = shared == '' ? [true, false, false] : [false, false, true]
+    }
+  }
+
+  loadMore() {
+    console.log(this.nextLink);
+
+    if (this.nextLink) {
+      this.apiBaseService.get(this.nextLink).subscribe(res => {
+      this.objects = [...this.objects, ...res.data]
+      this.store.dispatch({
+        type: fromChatNote.SET_OBJECTS,
+        payload: this.objects
+      });
+      this.nextLink = res.meta.links.next;
+    });
     }
   }
 }

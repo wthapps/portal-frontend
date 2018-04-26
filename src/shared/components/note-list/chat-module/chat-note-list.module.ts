@@ -14,6 +14,7 @@ import { ChatNoteSharedToolBarComponent } from '@shared/components/note-list/cha
 import { TooltipModule } from 'primeng/primeng';
 import { ZSharedBreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { WObjectListModule } from '@shared/components/w-object-list/w-object-lis
     BsModalModule,
     PartialModule,
     WObjectListModule,
+    InfiniteScrollModule,
     TooltipModule
   ],
   declarations: [
