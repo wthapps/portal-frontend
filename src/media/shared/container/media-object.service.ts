@@ -1,5 +1,6 @@
  import { Injectable } from '@angular/core';
  import { ApiBaseService, BaseEntityService } from '@wth/shared/services';
+ import {Observable} from "rxjs/Observable";
 
 declare var _: any;
 const MEDIA_PATH:string = 'media';
@@ -18,6 +19,19 @@ export class MediaObjectService extends BaseEntityService<any> {
     console.log('this path', path, queryString);
     this.path = `${MEDIA_PATH}/${path}`;
     return this.api.get(this.path, queryString).take(1); // This subscription should take 1 input ONLY
+  }
+
+  update(
+    body: any,
+    multiple: boolean = false,
+    path: string = ''
+  ): Observable<any> {
+    const url = path === '' ? this.url : `${this.url}/${path}`;
+    if (multiple) {
+      return this.apiBaseService.put(`${url}/multiple`, body);
+    } else {
+      return this.apiBaseService.put(`${url}/${body.uuid}`, body);
+    }
   }
 
   // Delete multiple objects: photos, albums

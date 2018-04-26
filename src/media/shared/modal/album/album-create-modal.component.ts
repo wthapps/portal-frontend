@@ -68,6 +68,7 @@ export class AlbumCreateModalComponent implements OnInit {
 
   close(options?: any) {
     this.modal.close(options);
+    $('div.modal-backdrop.in.modal-stack').remove();
   }
 
   createAlbum() {
@@ -94,10 +95,8 @@ export class AlbumCreateModalComponent implements OnInit {
         this.album = res.data;
         this.doneFormModal.emit(this.album);
         this.event.emit({action: 'addAlbumSuccessful', payload: res });
-
         this.viewAlbumDetail(this.album.uuid);
-
-        this.modal.close().then();
+        this.close();
       });
   }
 

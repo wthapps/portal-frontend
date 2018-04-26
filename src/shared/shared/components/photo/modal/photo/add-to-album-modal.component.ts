@@ -43,6 +43,7 @@ export class AddToAlbumModalComponent implements OnInit {
 
   close(options?: any) {
     this.modal.close();
+    $('div.modal-backdrop.in.modal-stack').remove();
   }
 
   getAlbum() {
@@ -55,7 +56,7 @@ export class AddToAlbumModalComponent implements OnInit {
   onLoadMore(event: any) {
     event.preventDefault();
     this.apiBaseService.get(this.nextLink).subscribe((res: any)=> {
-      _.map(res.data, (v: any)=> {
+      _.map(res.data, (v: any) => {
         this.dataAlbums.push(v);
       });
       this.nextLink = res.page_metadata.links.next;
@@ -67,7 +68,7 @@ export class AddToAlbumModalComponent implements OnInit {
 
     this.apiBaseService.post(`media/albums/${album.id}/photos`, {photos: this.selectedPhotos}).subscribe((res: any)=> {
       this.dataAlbums[index].photo_number = res.data.length;
-      this.modal.close();
+      this.close();
       this.showToast = true;
     });
   }

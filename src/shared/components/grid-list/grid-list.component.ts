@@ -87,7 +87,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.selectedObjects = [];
+    this.selectedObjects = this.objects.filter(o => o.selected === true);
   }
 
   ngOnDestroy() {
