@@ -5,6 +5,7 @@ import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 declare var _: any;
 declare var gapi: any;
+declare var Promise: any;
 
 @Injectable()
 export class GoogleApiService {
@@ -22,7 +23,8 @@ export class GoogleApiService {
     'phones': 'gd$phoneNumber',
     'emails': 'gd$email',
     'organization': 'gd$organization',
-    'postalAddress': 'gd$postalAddress'
+    'addresses': 'gd$postalAddress',
+    'notes': 'content.$t'
   };
 
   GDATA_LVL_2: any = {
@@ -35,6 +37,10 @@ export class GoogleApiService {
       'category': 'rel',
       'value': 'address',
       'primary': 'primary'
+    },
+    'addresses': {
+      'category': 'rel',
+      'address_line1': '$t'
     }
   };
   PARSE_FIELDS = ['rel'];
@@ -95,9 +101,11 @@ export class GoogleApiService {
     console.log('user: ', user);
     if (_.get(user, 'Zi.access_token') != undefined && isAuthorized) {
       try {
-        const data = await this.getGoogleContactsList(user.Zi.access_token)
+        const data = await this.getGoogleContactsList(user.Zi.access_token);
+        console.debug(data);
         this.totalImporting = _.get(data, 'feed.entry', []).length;
         const mapped_data = this.mappingParams(_.get(data, 'feed.entry', []));
+        console.debug(mapped_data);
         const importedContacts = await this.importContactsToDb({
           import_info: {provider: 'google'},
           contacts: mapped_data

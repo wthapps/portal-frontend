@@ -16,7 +16,6 @@ import { ContactAddGroupModalComponent } from './modal/contact-add-group/contact
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ZContactShareImportContactComponent } from './modal/import-contact/import-contact.component';
 import { ZContactShareImportProgressComponent } from './progress/import-progress.component';
-import { ContactImportContactDataService } from './modal/import-contact/import-contact-data.service';
 import { ZContactSharedSettingsComponent } from './modal/settings/settings.component';
 import { ZContactMenuService } from './services/contact-menu.service';
 import { ZContactSharedActionsBarComponent } from './toolbar/actions-bar.component';
@@ -163,7 +162,6 @@ export class ContactSharedModule {
         ZContactService,
         GoogleApiService,
         ZContactMenuService,
-        ContactImportContactDataService,
 
         // Service Workers services
         CheckForUpdateService,

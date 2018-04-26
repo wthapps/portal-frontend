@@ -9,5 +9,6 @@
   </wth-modal-dock-header>
   <wth-modal-dock-body *ngIf="status==STATUS.done">
     <a class="merge-contact-undo" href="javascript:;" (click)="undo()">Undo</a>
+    <a class="merge-contact-close" href="javascript:;" (click)="modalDock.close()">Close</a>
   </wth-modal-dock-body>
 </wth-modal-dock>

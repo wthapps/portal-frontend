@@ -6,6 +6,7 @@ import { GroupService } from '../../group/group.service';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
 import { Constants } from '@shared/constant';
 import { CustomValidator } from '@shared/shared/validator/custom.validator';
+import { ZContactService } from '@contacts/shared/services/contact.service';
 
 declare let _: any;
 
@@ -67,6 +68,7 @@ export class ZContactEditComponent implements OnChanges, OnInit {
 
   constructor(private fb: FormBuilder,
               private groupService: GroupService,
+              private contactService: ZContactService,
               private countryService: CountryService) {
     this.groupService.getAllGroups().then((res: any) => {
       this.originalGroups = res;
@@ -175,13 +177,13 @@ export class ZContactEditComponent implements OnChanges, OnInit {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
             category: [item.category, Validators.compose([Validators.required])],
-            country_alpha_code: [item.country_alpha_code],
+            country_alpha_code: [item.country_alpha_code || this.contactService.defaultCountryCode ],
             value: [item.value, Validators.compose([CustomValidator.phoneFormat])]
           };
         } else {
           formGroup = {
             category: [data.category, Validators.compose([Validators.required])],
-            country_alpha_code: [''],
+            country_alpha_code: [this.contactService.defaultCountryCode ],
             value: [data.value, Validators.compose([CustomValidator.phoneFormat])]
           };
         }

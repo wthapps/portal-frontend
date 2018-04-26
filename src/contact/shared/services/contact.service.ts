@@ -13,6 +13,7 @@ import { ToastsService } from '../../../shared/shared/components/toast/toast-mes
 import { WthConfirmService } from '../../../shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService } from '@wth/shared/services';
 import { _wu } from '@wth/shared/shared/utils/utils';
+import { DEFAULT_SETTING } from '@contacts/shared/config/constants';
 
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
@@ -20,6 +21,7 @@ export class ZContactService extends BaseEntityService<any> {
   contacts: Array<any> = new Array<any>();
   mergingObjects: any[] = [];
   page: number = 1;
+  userSettings: any = DEFAULT_SETTING;
 
   // orderDesc: boolean = false;
   readonly startIndex: number = 0;
@@ -150,8 +152,17 @@ export class ZContactService extends BaseEntityService<any> {
 
   checkSelectAll() {
     let isSelectAll =
-      this.contactsSubject.getValue().length === this.selectedObjects.length;
+      this.contactsSubject.getValue().length <= this.selectedObjects.length;
     this.isSelectAllSubject.next(isSelectAll);
+  }
+
+  selectAllObjects(selected: boolean) {
+    if (!selected)
+      this.selectedObjects.length = 0;
+    else if (_.get(this.filterOption, 'search') || _.get(this.filterOption, 'group')) {
+      this.selectedObjects = [...this.contactsSubject.getValue()];
+    } else
+      this.selectedObjects = [...this.contacts];
   }
 
   sendListToItem(event: any) {
@@ -167,9 +178,10 @@ export class ZContactService extends BaseEntityService<any> {
         map((response: any) => {
           let contacts = response.data;
 
-          _.forEach(contacts, (contact: any) => {
-            this.updateCallback(contact);
-          });
+          // _.forEach(contacts, (contact: any) => {
+          //   this.updateCallback(contact);
+          // });
+          contacts.forEach(this.updateCallback);
           return response;
         })
       );
@@ -224,7 +236,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   filter(options: any) {
     this.resetPageNumber();
-    let group = _.get(options, 'group', 'undefined');
+    let group = _.get(options, 'group');
     this.filterOption = { group: group };
 
     this.notifyContactsObservers();
@@ -355,6 +367,14 @@ export class ZContactService extends BaseEntityService<any> {
         this.nextLink = _.get(res, 'page_metadata.links.next');
         this.followingLoad(this.nextLink);
       });
+  }
+
+  setUserSettings(settings) {
+    this.userSettings = settings;
+  }
+
+  get defaultCountryCode() {
+    return this.userSettings.phone_default_code;
   }
 
   private searchContact(name: string): any[] {

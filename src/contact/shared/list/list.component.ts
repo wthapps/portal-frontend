@@ -32,22 +32,17 @@ export class ZContactSharedListComponent {
       this.contactService.changeSortOption('asc');
       this.currentSort = event;
     }
-    // this.data = _.orderBy(this.data, [this.currentSort], [(this.descending ? 'desc' : 'asc')]);
-
     return false;
   }
 
   onSelectedAll() {
     if (this.contactService.isSelectAll()) {
       this.contactService.sendListToItem(false);
-      this.contactService.selectedObjects.length = 0;
+      this.contactService.selectAllObjects(false);
+      // this.contactService.selectedObjects.length = 0;
     } else {
       this.contactService.sendListToItem(true);
-      this.contactService.selectedObjects.length = 0;
-
-      _.map(this.data, (v: any) => {
-        this.contactService.selectedObjects.push(v);
-      });
+      this.contactService.selectAllObjects(true);
     }
   }
 

@@ -4,13 +4,10 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
+import { ZContactService } from '@contacts/shared/services/contact.service';
+import { DEFAULT_SETTING } from '@contacts/shared/config/constants';
 
 declare var _: any;
-
-const DEFAULT_SETTING: any = {
-  phone_default_code: 'Canada (+1)',
-  contacts_sort_by: 'first_name'
-};
 
 @Component({
   selector: 'z-contact-setting',
@@ -28,6 +25,7 @@ export class SettingsComponent implements OnInit {
     private fb: FormBuilder,
     private countryService: CountryService,
     private apiBaseService: ApiBaseService,
+    private contactService: ZContactService,
     private wthConfirmService: WthConfirmService
   ) {
     // Init default
@@ -54,7 +52,8 @@ export class SettingsComponent implements OnInit {
       .post(`contact/contacts/update_settings`, {
         contact_setting_attributes: this.form.value
       })
-      .toPromise();
+      .toPromise()
+      .then(res => this.setSettingForm(res.data));
   }
 
   cancel() {
@@ -96,11 +95,14 @@ export class SettingsComponent implements OnInit {
 
   private setSettingForm(data: any) {
     if (data && data.phone_default_code) {
-      this.form = this.fb.group({
+      const settings = {
         id: data.id,
         phone_default_code: data.phone_default_code,
         contacts_sort_by: data.contacts_sort_by
-      });
+      };
+      this.form = this.fb.group(settings);
+
+      this.contactService.setUserSettings(settings);
     }
   }
 }

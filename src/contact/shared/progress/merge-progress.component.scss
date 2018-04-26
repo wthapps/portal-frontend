@@ -4,6 +4,14 @@
 
 .merge-contact-undo{
   position: absolute;
+  top: 5px;right:50px;
+  line-height: 30px;
+  font-weight: bold;
+  z-index: 10;
+}
+
+.merge-contact-close{
+  position: absolute;
   top: 5px;right:10px;
   line-height: 30px;
   font-weight: bold;
