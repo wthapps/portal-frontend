@@ -6,7 +6,7 @@ import { CountryService } from '../../../../shared/shared/components/countries/c
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-contact-shared-item',
   templateUrl: 'item.component.html'
 })

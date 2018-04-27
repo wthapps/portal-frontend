@@ -11,7 +11,6 @@ import { ZContactService } from '@contacts/shared/services/contact.service';
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'contact-edit',
   templateUrl: 'contact-edit.component.html',
   styleUrls: ['contact-edit.component.scss']

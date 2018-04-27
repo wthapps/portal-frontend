@@ -14,6 +14,8 @@ import { ConversationApiCommands } from "@shared/commands/chat/coversation-comma
 import { StorageService } from "@shared/services/storage.service";
 import { HandlerService } from "@shared/services/handler.service";
 
+declare var $: any;
+
 @Component({
   selector: 'chat-notification',
   templateUrl: './chat-notification.component.html',

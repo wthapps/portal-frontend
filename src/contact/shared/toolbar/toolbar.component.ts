@@ -9,7 +9,6 @@ import { Constants } from '../../../shared/constant/config/constants';
 declare var _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'z-contact-shared-toolbar',
   templateUrl: 'toolbar.component.html',
   styleUrls: ['toolbar.component.scss']

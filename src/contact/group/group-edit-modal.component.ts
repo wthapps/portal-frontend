@@ -15,7 +15,7 @@ import { GroupService } from './group.service';
 declare var $: any;
 
 @Component({
-  moduleId: module.id,
+
   selector: 'group-edit-modal',
   templateUrl: 'group-edit-modal.component.html',
   styleUrls: ['group-edit-modal.component.scss']

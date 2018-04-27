@@ -7,7 +7,7 @@ import { CountryService } from '../../../../shared/shared/components/countries/c
 declare var _: any;
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-contact-shared-setting',
   templateUrl: 'settings.component.html'
 })

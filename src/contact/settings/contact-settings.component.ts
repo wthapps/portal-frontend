@@ -41,7 +41,7 @@ export class SettingsComponent implements OnInit {
       });
     this.countryService.getCountries().subscribe((res: any) => {
       this.countriesCode = res;
-      this.countriesNameCode = _.map(res, (v: any) => {
+      this.countriesNameCode = res.map((v: any) => {
         return v.name + ' (' + v.dial_code + ')';
       });
     });

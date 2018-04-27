@@ -35,7 +35,7 @@ import { takeUntil } from 'rxjs/operators';
 
 declare var _: any;
 @Component({
-  moduleId: module.id,
+
   selector: 'z-contact-list',
   templateUrl: 'contact-list.component.html'
   // animations: [routeAnimation]

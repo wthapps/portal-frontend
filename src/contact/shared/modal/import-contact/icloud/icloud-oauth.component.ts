@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/cor
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'icloud-oauth-modal',
   templateUrl: 'icloud-oauth.component.html'
 })

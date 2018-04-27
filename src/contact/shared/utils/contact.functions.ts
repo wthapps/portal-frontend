@@ -1,6 +1,5 @@
 import { _wu } from '../../../shared/shared/utils/utils';
 import { Config } from '../../../shared/constant/config/env.config';
-
 declare let _: any;
 
 export module _contact {

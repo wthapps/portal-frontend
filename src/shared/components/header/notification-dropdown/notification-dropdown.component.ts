@@ -9,6 +9,8 @@ import { ConnectionNotificationService } from "@shared/services/connection-notif
 import { NotificationService } from "@shared/services/notification.service";
 import { NotificationListComponent } from "@shared/shared/components/notification-list/notification-list.component";
 
+declare var $: any;
+
 @Component({
   selector: 'notification-dropdown',
   templateUrl: './notification-dropdown.component.html',

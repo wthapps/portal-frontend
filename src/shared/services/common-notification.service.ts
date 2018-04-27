@@ -11,6 +11,8 @@ import { AuthService } from '@wth/shared/services';
  * Created by phat on 18/11/2016.
  */
 
+declare var _: any;
+
 export class CommonNotificationInterface {
   notifications: Array<any> = new Array<any>();
   latestNotifId: number = 0;

@@ -75,6 +75,8 @@
     "@ngrx/schematics": "5.2.0",
     "@ngrx/store": "5.2.0",
     "@ngrx/store-devtools": "5.2.0",
+    "@types/jquery": "^3.3.1",
+    "@types/lodash": "^4.14.108",
     "actioncable": "5.1.2",
     "angular2-hotkeys": "2.0.3",
     "angular2-recaptcha": "0.6.0",

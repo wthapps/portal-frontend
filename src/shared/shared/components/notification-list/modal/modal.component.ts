@@ -5,6 +5,8 @@ import { takeUntil } from 'rxjs/operators';
 
 import { UserService } from '@wth/shared/services';
 
+declare var _: any;
+
 @Component({
   selector: 'app-partials-notification-setting-modal',
   templateUrl: 'modal.component.html'

@@ -15,6 +15,8 @@ import { ApiBaseService } from '@wth/shared/services';
 import { _wu } from '@wth/shared/shared/utils/utils';
 import { DEFAULT_SETTING } from '@contacts/shared/config/constants';
 
+declare var _: any;
+
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];

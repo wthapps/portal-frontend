@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/cor
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-contact-share-icloud-indicate',
   templateUrl: 'icloud-indicate.component.html'
 })

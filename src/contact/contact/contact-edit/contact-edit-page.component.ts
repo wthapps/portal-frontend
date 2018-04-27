@@ -10,7 +10,7 @@ import { ZContactEditComponent } from '@contacts/contact/contact-edit/contact-ed
 // import { ZContactEditComponent } from './contact-edit.component';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'contact-edit-page',
   templateUrl: 'contact-edit-page.component.html'
 })

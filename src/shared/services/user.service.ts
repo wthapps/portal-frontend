@@ -13,6 +13,8 @@ import { User } from '../shared/models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { WindowService } from '@wth/shared/services/window.service';
 
+declare var _: any;
+
 @Injectable()
 export class UserService {
   loggedIn: boolean = false;

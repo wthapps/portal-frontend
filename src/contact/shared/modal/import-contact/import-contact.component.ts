@@ -11,7 +11,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@shared/services';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-contact-share-import-contact',
   templateUrl: 'import-contact.component.html',
   styleUrls: ['import-contact.component.scss'],
