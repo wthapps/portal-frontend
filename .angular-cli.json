@@ -222,7 +222,7 @@
         "styles/contact.scss"
       ],
       "scripts": [
-        "../../node_modules/lodash/lodash.js",
+        "../../node_modules/lodash/lodash.min.js",
         "../../src/shared/channels/common.js"
       ],
       "environmentSource": "../environments/environment.ts",
