@@ -55,6 +55,8 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
   tooltip: any = Constants.tooltip;
   detail = true;
   returnUrl: string;
+  links$: Observable<any>;
+  currentQuery: string;
 
   private type = 'photo';
   private path = 'media/media';
@@ -70,6 +72,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
   ) {
     super(resolver, store, mediaSelectionService);
     this.photos = this.store.select(appStore.selectDetailObjects);
+    this.links$ = this.store.select(appStore.selectLinks);
   }
 
   ngOnInit() {
@@ -101,6 +104,12 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
         );
         this.detailInfo.updateProperties({ object: this.album });
       });
+
+    this.links$.subscribe(links => {
+      if (links) {
+        this.currentQuery = links.self;
+      }
+    });
   }
 
   doEvent(event: any) {
@@ -195,9 +204,14 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
     this.detailInfo.updateProperties({ object: this.album });
   }
 
-  private viewDetails(payload: any) {
+  private viewDetails(payload: any, ids = []) {
     const object = payload.selectedObject;
-    this.router.navigate([`photos`,
-      object.id, {ids: [object.id], mode: 0}], {queryParams: {returnUrl: this.router.url}});
+    this.router.navigate([
+      `photos`,
+      object.uuid, {
+        batchQuery: ids.length > 0 ? `${this.currentQuery}&ids=${ids}` : this.currentQuery,
+        mode: 0
+      }
+    ], {queryParams: {returnUrl: `${this.returnUrl}/${this.album.uuid}`}});
   }
 }

@@ -79,7 +79,18 @@ export class PostBodyComponent implements OnChanges {
       case this.actions.onShowPhotoDetail:
         let post = _.get(data, 'parentItem', this.originalPost);
         let photoIds = _.map(post.photos, 'id');
-        this.router.navigate([{outlets: {modal: ['photos', data.id, {module: 'social', ids: photoIds, post_uuid: post.uuid}]}}], { queryParamsHandling: 'preserve', preserveFragment: true });
+        this.router.navigate([{
+          outlets: {
+            modal: [
+              'photos',
+              data.uuid,
+              { batchQuery: `/media/media?type=photo&parentable_id=${post.id}&parentable_type=SocialNetwork::Post`,
+                module: 'social',
+                post_uuid: post.uuid
+              }
+            ]
+          }
+        }], { queryParamsHandling: 'preserve', preserveFragment: true });
         break;
       case this.actions.onShowPostDetail:
         let parentUuid = data;

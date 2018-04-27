@@ -57,6 +57,7 @@ export const selectObjects = createSelector(selectMediaState, fromMedia.getObjec
 export const selectObject = createSelector(selectMediaState, fromMedia.getObject);
 export const selectDetailObjects = createSelector(selectMediaState, fromMedia.getDetailObjects);
 export const selectDetailObject = createSelector(selectMediaState, fromMedia.getDetailObject);
+export const selectLinks = createSelector(selectMediaState, fromMedia.getLinks);
 export const selectNextLink = createSelector(selectMediaState, fromMedia.getNextLink);
 export const selectLoading = createSelector(selectMediaState, fromMedia.getLoading);
 

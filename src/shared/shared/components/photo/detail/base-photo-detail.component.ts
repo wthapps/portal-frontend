@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
+import {Component, OnDestroy, OnInit, HostListener, AfterViewInit} from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
@@ -11,7 +11,7 @@ import { Photo } from '../../../models/photo.model';
 import { PhotoService } from '../../../../services/photo.service';
 import { LoadingService } from '../../loading/loading.service';
 import { WthConfirmService } from '../../confirmation/wth-confirm.service';
-import { UserService } from '@wth/shared/services';
+import {ApiBaseService, UserService} from '@wth/shared/services';
 import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 declare let _: any;
@@ -23,12 +23,13 @@ declare let saveAs: any;
   entryComponents: []
 })
 
-export class BasePhotoDetailComponent implements OnInit, OnDestroy {
+export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
   module: string = 'media';
   photo: Photo;
   id: number;
   ids: Array<number> = [];
+  batchQuery: string;
   post_uuid: any;
   prevUrl: string;
   loading: boolean;
@@ -36,6 +37,8 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   showDetail: boolean;
   isOwner: boolean;
   recipients: Array<any> = [];
+  photos: Array<any> = [];
+  links: any;
 
   // private routeSub: any;
   private destroySubject: Subject<any> = new Subject<any>();
@@ -53,7 +56,8 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
               protected loadingService: LoadingService,
               protected photoService: PhotoService,
               protected userService: UserService,
-              protected sharingService?: SharingService
+              protected sharingService?: SharingService,
+              protected api?: ApiBaseService
   ) {
     // this.router = router;
     // this.route = route;
@@ -64,18 +68,20 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
     this.route.params
       .takeUntil(this.destroySubject.asObservable())
       .map((params: any) => {
-        console.debug('base-photo-detail route params: ', params);
         this.id = +params['id'];
         this.prevUrl = params['prevUrl'];
-        if(params['ids']) {
+        if (params['ids']) {
           this.ids = params['ids'].split(',').map(Number) || [];
         }
-        if(params['post_uuid'])
+        if (params['post_uuid'])
           this.post_uuid = params['post_uuid'];
         this.module = params['module'] || this.module;
         this.mode = params['mode'] || 0;
         this.showDetail = params['showDetail'] || false;
         // this.loadItem(this.id);
+
+        // get batchQuery
+        this.batchQuery = params['batchQuery'] || '';
         return params['id'];
       })
       .mergeMap((id: any ) => {
@@ -84,13 +90,22 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
       })
       .subscribe((response: any) => {
           this.photo = response.data;
-          this.isOwner = (response.data.owner.id == this.userService.getSyncProfile().id);
+          this.isOwner = (response.data.owner.id === this.userService.getSyncProfile().id);
           this.loading = false;
         },
         (error: any) => {
           this.loading = false;
           console.error('Error when loading photo ', error);
         });
+  }
+
+  ngAfterViewInit() {
+    if (this.batchQuery !== '') {
+      this.api.get(this.batchQuery).subscribe(response => {
+        this.photos = response.data;
+        this.links = response.page_metadata.links;
+      });
+    }
   }
 
   doEvent(payload: any) {
@@ -104,7 +119,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         break;
       case 'loadItem':
         const tree: UrlTree = this.router.parseUrl(this.router.url);
-        if(tree.root.children.modal)
+        if (tree.root.children.modal)
           tree.root.children.modal.segments[1].path = payload.id;
         else
           tree.root.children.primary.segments[1].path = payload.id;

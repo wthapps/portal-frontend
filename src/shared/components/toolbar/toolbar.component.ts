@@ -3,8 +3,6 @@ import {
   Input,
   EventEmitter,
   Output,
-  OnChanges,
-  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';

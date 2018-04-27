@@ -27,6 +27,9 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
   photos$: Observable<any>;
   loading$: Observable<any>;
   nextLink$: Observable<any>;
+  links$: Observable<any>;
+  currentQuery: string;
+
   tooltip: any = Constants.tooltip;
   type = 'photo';
   path = 'media/media';
@@ -43,11 +46,18 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
     this.photos$ = this.store.select(appStore.selectObjects);
     this.nextLink$ = this.store.select(appStore.selectNextLink);
     this.loading$ = this.store.select(appStore.selectLoading);
+    this.links$ = this.store.select(appStore.selectLinks);
 
     this.mediaUploaderDataService.action$
       .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         this.doEvent(event);
+    });
+
+    this.links$.subscribe(links => {
+      if (links) {
+        this.currentQuery = links.self;
+      }
     });
   }
 
@@ -97,24 +107,22 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
   }
 
   preview(payload: any) {
-    const objects = payload.selectedObjects;
-    const ids = _.map(objects, 'id');
-
-    this.router.navigate([{
-        outlets: {
-          modal: [
-            'photos',
-            objects[0].id,
-            {ids: ids, mode: 0}
-          ]
-        }
-      }], {queryParamsHandling: 'preserve', preserveFragment: true}
-    );
-    this.router.navigate([`photos`, objects[0].id, {ids: ids, mode: 0}]);
+    if (payload.selectedObjects.length > 1) {
+      this.viewDetails({selectedObject: payload.selectedObjects[0]}, _.map(payload.selectedObjects, 'id'));
+    } else if (payload.selectedObjects.length === 1) {
+      this.viewDetails({selectedObject: payload.selectedObjects[0]});
+    } else if (payload.selectedObjects.length === 0) {
+      this.viewDetails({selectedObject: payload.selectedObject});
+    }
   }
-
-  viewDetails(payload: any) {
+  viewDetails(payload: any, ids = []) {
     const object = payload.selectedObject;
-    this.router.navigate([`photos`, object.id, {ids: [object.id], mode: 0}]);
+    this.router.navigate([
+      `photos`,
+      object.uuid, {
+        batchQuery: ids.length > 0 ? `${this.currentQuery}&ids=${ids}` : this.currentQuery,
+        mode: 0
+      }
+    ]);
   }
 }

@@ -41,7 +41,7 @@ export class WGridListComponent implements OnInit, OnDestroy {
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedObjectsChanged: EventEmitter<any> = new EventEmitter<any>();
 
-  selectedObjects: Array<any> = new Array<any>();
+  selectedObjects: Array<any> = [];
 
   viewSize: number = Constants.mediaSliderViewNumber.default;
   groupByTime: string = 'date';
@@ -87,8 +87,17 @@ export class WGridListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.selectedObjects = this.objects.filter(o => o.selected === true);
+    if (this.objects.length > 0) {
+      this.selectedObjects = this.objects.filter(o => o.selected === true);
+    }
   }
+
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['objects'] && changes['objects'].firstChange && changes['objects'].currentValue) {
+  //     const objects = changes['objects'].currentValue;
+  //     this.selectedObjects = objects.filter(o => o.selected === true);
+  //   }
+  // }
 
   ngOnDestroy() {
     this.destroySubject.next('');

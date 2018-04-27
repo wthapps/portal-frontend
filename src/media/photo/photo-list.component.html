@@ -3,8 +3,8 @@
       [class.disabled]="noSelectedObjects">
     <li>
       <a class="btn btn-default" href="javascript:void(0);" draggable="false"
-         (click)="toolbar.doAction({action: 'preview',
-         payload: {selectedObjects: toolbar.selectedObjects.length > 0 ? toolbar.selectedObjects : gridlist.objects}})"
+         (click)="doEvent({action: 'preview',
+         payload: {selectedObjects: toolbar.selectedObjects, selectedObject: gridlist.objects[0]}})"
          pTooltip="{{ tooltip.preview}}" tooltipPosition="bottom">
         <i class="fa fa-eye"></i>
       </a>

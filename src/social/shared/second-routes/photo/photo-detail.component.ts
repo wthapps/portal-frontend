@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BasePhotoDetailComponent } from '@wth/shared/shared/components/photo/detail/base-photo-detail.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
-import { PhotoService, UserService } from '@wth/shared/services';
+import {ApiBaseService, PhotoService, UserService} from '@wth/shared/services';
 
 @Component({
   selector: 'photo-detail',
@@ -20,9 +20,10 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent {
     protected wthConfirmService: WthConfirmService,
     protected loadingService: LoadingService,
     protected photoService: PhotoService,
-    protected userService: UserService
+    protected userService: UserService,
+    protected api: ApiBaseService
   ) {
-    super(route, router, wthConfirmService, loadingService, photoService, userService);
+    super(route, router, wthConfirmService, loadingService, photoService, userService, null, api);
   }
 
 }

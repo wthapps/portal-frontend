@@ -47,6 +47,9 @@ export class PhotoDetailPartialComponent
   @Input() ids: Array<number>;
   @Input() mode: number;
   @Input() showDetail: boolean;
+  @Input() hasPreviousItem: boolean;
+  @Input() hasNextItem: boolean;
+  @Input() batchItems: Array<any> = [];
   @Input() isOwner: boolean;
   @Input() recipients: Array<any> = [];
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
@@ -59,11 +62,11 @@ export class PhotoDetailPartialComponent
   modalComponent: any;
   modal: any;
 
-  hasEditPhoto: boolean = false;
-  currentIndex: number = 0;
+  hasEditPhoto = false;
+  currentIndex = 0;
   cropper: any;
   image: any;
-  loadingImg: boolean = true;
+  loadingImg = true;
   defaultCapabilities: any = {
     canView: true,
     canDownload: false,
@@ -90,14 +93,41 @@ export class PhotoDetailPartialComponent
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.photo && changes.photo) {
-      this.currentIndex = _.indexOf(this.ids, this.photo.id);
+      // this.currentIndex = _.indexOf(this.ids, this.photo.id);
       this.stop();
       this.capabilities = this.photo.capabilities || this.defaultCapabilities;
     }
+    if (this.batchItems.length > 0) {
+      this.batchItems.forEach((item, i) => {
+        if (this.photo.id === item.id) {
+          this.currentIndex = i;
+          return;
+        }
+      });
+    }
+
+    if (this.batchItems.length > 1) {
+      let index = -1;
+      this.batchItems.forEach((item, i) => {
+        if (item.id === this.photo.id) {
+          index = i;
+        }
+      });
+
+      if (index > 0 && index <= this.batchItems.length) {
+        this.hasPreviousItem = true;
+      }
+      if (index >= 0 && index < this.batchItems.length) {
+        this.hasNextItem = true;
+      }
+    }
+
     this.loadMenu();
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+
+  }
 
   ngOnDestroy() {
     this.renderer.removeClass(document.body, 'modal-open');
@@ -262,12 +292,19 @@ export class PhotoDetailPartialComponent
 
     if (direction) {
       index =
-        this.currentIndex < this.ids.length - 1 ? this.currentIndex + 1 : 0;
+        this.currentIndex < this.batchItems.length - 1 ? this.currentIndex + 1 : 0;
+      if (index >= 0 && index < this.batchItems.length) {
+        this.hasPreviousItem = true;
+      }
     } else {
       index =
-        this.currentIndex > 0 ? this.currentIndex - 1 : this.ids.length - 1;
+        this.currentIndex > 0 ? this.currentIndex - 1 : this.batchItems.length - 1;
+      if (index > 0 && index <= this.batchItems.length) {
+        this.hasNextItem = true;
+      }
     }
-    this.event.emit({ action: 'loadItem', id: this.ids[index] });
+    // this.event.emit({ action: 'loadItem', id: this.ids[index] });
+    this.event.emit({ action: 'loadItem', id: this.batchItems[index].uuid });
   }
 
   onZoomIn() {

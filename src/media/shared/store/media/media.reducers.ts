@@ -13,11 +13,13 @@ export interface State  extends EntityState<any> {
   objects:  Array<any>;
   currentLink: string;
   nextLink: string;
+  links: any;
   query: string;
   detailObject: any;
   detailObjects: Array<any>;
   currentLinkDetail: null;
   nextLinkDetail: null;
+  linksDetail: any;
   queryDetail: null;
 }
 
@@ -35,11 +37,13 @@ const INITIAL_STATE: State = mediaAdapter.getInitialState({
   objects:  [],
   currentLink: null,
   nextLink: null,
+  links: null,
   query: null,
   detailObject: null,
   detailObjects: [],
   currentLinkDetail: null,
   nextLinkDetail: null,
+  linksDetail: null,
   queryDetail: null,
 });
 
@@ -90,7 +94,8 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           detailObjects: action.payload.data,
           detailObject: null,
           currentLinkDetail: action.payload.page_metadata.links.self,
-          nextLinkDetail: action.payload.page_metadata.links.next
+          nextLinkDetail: action.payload.page_metadata.links.next,
+          linksDetail: action.payload.page_metadata.links
         });
       } else {
         result = Object.assign({}, state, {
@@ -101,7 +106,8 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           detailObjects: [],
           detailObject: null,
           currentLink: action.payload.page_metadata.links.self,
-          nextLink: action.payload.page_metadata.links.next
+          nextLink: action.payload.page_metadata.links.next,
+          links: action.payload.page_metadata.links
         });
       }
       return result;
@@ -114,7 +120,9 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         currentLink: state.currentLink,
         nextLink: state.nextLink,
         currentLinkDetail: state.currentLinkDetail,
-        nextLinkDetail: state.nextLinkDetail
+        nextLinkDetail: state.nextLinkDetail,
+        links: state.links,
+        linksDetail: state.linksDetail
       };
 
       action.payload.data.map(obj => {
@@ -123,10 +131,12 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           cloneState.detailObjects.push(obj);
           cloneState.currentLinkDetail = action.payload.page_metadata.links.self;
           cloneState.nextLinkDetail = action.payload.page_metadata.links.next;
+          cloneState.linksDetail = action.payload.page_metadata.links;
         } else {
           cloneState.objects.push(obj);
           cloneState.currentLink = action.payload.page_metadata.links.self;
           cloneState.nextLink = action.payload.page_metadata.links.next;
+          cloneState.links = action.payload.page_metadata.links;
         }
       });
 
@@ -346,6 +356,8 @@ export const getObject    = (state: State) => state.object;
 export const getDetailObjects    = (state: State) => state.detailObjects;
 export const getDetailObject    = (state: State) => state.detailObject;
 export const getNextLink    = (state: State) => state.nextLink;
+export const getLinks    = (state: State) => state.detail ? state.linksDetail : state.links;
+
 
 export const {
   selectIds,

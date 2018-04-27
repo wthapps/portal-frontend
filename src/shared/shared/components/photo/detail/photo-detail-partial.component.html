@@ -42,12 +42,12 @@
       <img id="image-viewer" [src]="photo.url" (load)="onStart($event)" alt="">
     </div>
 
-    <div *ngIf="(ids.length>1)" class="image-viewer-content-nav">
-      <a draggable="false" href="javascript:;" (click)="onMove(false)"
+    <div class="image-viewer-content-nav">
+      <a *ngIf="hasPreviousItem" draggable="false" href="javascript:void(0);" (click)="onMove(false)"
          pTooltip="{{ tooltip.previous }}" tooltipPosition="bottom">
         <i class="fa fa-angle-left"></i>
       </a>
-      <a draggable="false" href="javascript:;" (click)="onMove()"
+      <a *ngIf="hasNextItem" draggable="false" href="javascript:void(0);" (click)="onMove()"
          pTooltip="{{ tooltip.next }}" tooltipPosition="bottom">
         <i class="fa fa-angle-right"></i>
       </a>
