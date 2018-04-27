@@ -20,6 +20,7 @@ export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
   contacts: Array<any> = new Array<any>();
   mergingObjects: any[] = [];
+  mergedObjects: any[] = [];
   page: number = 1;
   userSettings: any = DEFAULT_SETTING;
 
@@ -320,35 +321,29 @@ export class ZContactService extends BaseEntityService<any> {
       .toPromise()
       .then((res: any) => {
         let delete_ids: any[] = res.delete_ids;
-        let updated_contacts: any[] = res.data;
-        _.remove(this.contacts, (c: any) => delete_ids.indexOf(c.id) > -1);
-        _.remove(
-          this.selectedObjects,
-          (c: any) => delete_ids.indexOf(c.id) > -1
-        );
+        let updated_contacts: any[] = res.data.map(ct => {return {...ct, selected: true}});
+        _.remove(this.contacts, (c: any) => delete_ids.includes(c.id));
+        this.selectedObjects = [...updated_contacts];
+        this.mergedObjects = [...updated_contacts];
 
-        for (let i = 0; i < updated_contacts.length; i++) {
-          let idx: any = _.findIndex(this.contacts, [
-            'id',
-            updated_contacts[i].id
-          ]);
-          // _.set(this.contacts, idx, updated_contacts[i]);
-          this.contacts[idx] = updated_contacts[i];
-        }
+        this.contacts = [...updated_contacts, ...this.contacts];
         this.notifyContactsObservers();
         this.groupService.updateGroupCount(this.contacts);
       });
   }
 
-  undoMerge(contacts: any[] = this.mergingObjects): Promise<any> {
+  undoMerge(contacts: any[] = this.mergingObjects, mergedContacts: any[] = this.mergedObjects): Promise<any> {
+    const restore_ids = contacts.map(ct => ct.id);
+    const remove_ids = mergedContacts.map(ct => ct.id);
     return this.apiBaseService
-      .post(`${this.url}/undo_merge`, { contacts })
+      .post(`${this.url}/undo_merge`, { restore_ids, remove_ids })
       .toPromise()
       .then((res: any) => {
-        let restoreContacts: any[] = res.data;
-        let ids = _.map(restoreContacts, 'id');
-        let contacts = this.contacts.filter(c => !ids.includes(c.id));
-        this.contacts = [...contacts, ...restoreContacts];
+        console.debug(res, remove_ids);
+        const restoredContacts = res.data.map(ct => {return {...ct, selected: true}; });
+        this.selectedObjects = [...restoredContacts];
+        this.contacts = [...this.contacts.filter(ct => !remove_ids.includes(ct.id)), ...restoredContacts];
+        console.debug('Contacts after undo merge: ', this.contacts);
         this.notifyContactsObservers();
       });
   }

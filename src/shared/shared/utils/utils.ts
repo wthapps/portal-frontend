@@ -362,10 +362,11 @@ export module _wu {
 
     if(getValue(objA, field) > getValue(objB, field))
       return 1*o;
-    if(getValue(objA, field) < getValue(objB, field))
+    else if(getValue(objA, field) < getValue(objB, field))
       return -1*o;
 
-    return 0;
+    // Compare by id
+    return compareBy(objA, objB, orderDesc, 'id');
   }
 
 }
