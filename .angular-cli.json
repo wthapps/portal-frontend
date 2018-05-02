@@ -222,7 +222,10 @@
         "styles/contact.scss"
       ],
       "scripts": [
+        "../../node_modules/jquery/dist/jquery.slim.js",
+        "../../node_modules/jquery/dist/jquery.min.js",
         "../../node_modules/lodash/lodash.min.js",
+        "../../node_modules/bootstrap/dist/js/bootstrap.js",
         "../../src/shared/channels/common.js"
       ],
       "environmentSource": "../environments/environment.ts",

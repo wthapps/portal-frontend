@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil, filter } from 'rxjs/operators';
+import { timer } from 'rxjs/observable/timer';
 import { ConfirmDialogModel } from '../shared/shared/models/confirm-dialog.model';
 import { Constants } from '../shared/constant/config/constants';
 
@@ -33,6 +34,8 @@ import {
 } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+
+const GAPI_TIMEOUT = 2000;
 
 @Component({
   selector: 'app-root',
@@ -102,7 +105,7 @@ export class AppComponent
       .getAllGroups()
       .then((groups: any[]) => console.debug('getAllGroups: ', groups))
       .then(() => this.contactService.initialLoad())
-      .then(() => this.googleApiService.handleClientLoad());
+      .then(() => timer(GAPI_TIMEOUT).subscribe(_ => this.googleApiService.handleClientLoad()));
   }
 
   ngAfterViewInit() {

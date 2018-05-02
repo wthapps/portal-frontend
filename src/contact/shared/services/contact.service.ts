@@ -78,6 +78,17 @@ export class ZContactService extends BaseEntityService<any> {
 
       console.log('input: ', input, ' - result: ', contacts);
     });
+
+    this.loadUserSetttings();
+  }
+
+  loadUserSetttings() {
+    this.apiBaseService
+      .get(`contact/contacts/settings`)
+      .toPromise()
+      .then((res: any) => {
+        this.userSettings = res.data;
+      });
   }
 
   resetPageNumber() {
