@@ -36,12 +36,14 @@ export class TaggingModalComponent {
   }
 
   update(res: any) {
-    if (res.data && this.selectedObjects && this.selectedObjects.length > 0 && this.updateListObjects && this.updateListObjects.length > 0) {
-      if (this.selectedObjects.length == 1) {
+    // if (res.data && this.selectedObjects && this.selectedObjects.length > 0 && this.updateListObjects && this.updateListObjects.length > 0) {
+    if (res.data && this.selectedObjects && this.selectedObjects.length > 0) {
+      if (this.selectedObjects.length === 1) {
         res.data = [res.data];
       }
       for (let i = 0; i < this.selectedObjects.length; i++) {
         if (res.data[i]) {
+          this.selectedObjects[i].json_tags = res.data[i].json_tags;
           if (this.updateListObjects) {
             for(let j = 0; j < this.updateListObjects.length; j++) {
               for(let k = 0; k < this.updateListObjects[j].length; k++) {

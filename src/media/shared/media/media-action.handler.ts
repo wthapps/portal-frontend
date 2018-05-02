@@ -59,7 +59,7 @@ export class MediaActionHandler {
         break;
       case 'taggingModal':
         this.loadModalComponent(TaggingModalComponent);
-        options = {selectedObjects: payload.selectedObjects};
+        options = payload;
         break;
       case 'editInfoModal':
         if (payload.selectedObject.object_type === 'album') {
