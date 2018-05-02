@@ -62,10 +62,8 @@ export class MediaEffects {
     .ofType(mediaActions.ActionTypes.GET_ALL)
     .map((action: mediaActions.GetAll) => action.payload)
     .switchMap(payload => {
-        this.loading.start();
         return this.mediaObjectService.getAll(payload.queryParams, payload.path)
           .map(response => {
-            this.loading.stop();
             return new mediaActions.GetAllSuccess({...response, ...payload})
           });
     });

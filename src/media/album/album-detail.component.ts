@@ -56,6 +56,8 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
   detail = true;
   returnUrl: string;
   links$: Observable<any>;
+  loading$: Observable<any>;
+
   currentQuery: string;
 
   private type = 'photo';
@@ -73,6 +75,8 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
     super(resolver, store, mediaSelectionService);
     this.photos = this.store.select(appStore.selectDetailObjects);
     this.links$ = this.store.select(appStore.selectLinks);
+    this.loading$ = this.store.select(appStore.selectLoading);
+
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ComponentFactoryResolver } from '@angular/core';
+import {Component, OnInit, ComponentFactoryResolver, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -23,17 +23,17 @@ declare var _: any;
   selector: 'me-photo-list',
   templateUrl: 'photo-list.component.html'
 })
-export class ZMediaPhotoListComponent extends MediaActionHandler implements OnInit {
+export class ZMediaPhotoListComponent extends MediaActionHandler implements OnInit, OnDestroy {
   photos$: Observable<any>;
-  loading$: Observable<any>;
   nextLink$: Observable<any>;
   links$: Observable<any>;
   currentQuery: string;
 
+  loading$: Observable<any>;
   tooltip: any = Constants.tooltip;
   type = 'photo';
   path = 'media/media';
-
+  private sub: any;
   constructor(
     public store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
@@ -48,7 +48,7 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
     this.loading$ = this.store.select(appStore.selectLoading);
     this.links$ = this.store.select(appStore.selectLinks);
 
-    this.mediaUploaderDataService.action$
+    this.sub = this.mediaUploaderDataService.action$
       .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         this.doEvent(event);
@@ -100,8 +100,8 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
         this.store.dispatch(new Download(event.payload));
         break;
       case 'updateMediaList':
-        this.doEvent({ action: 'getAll', payload: {path: this.path,
-          queryParams: {type: this.type, sort: 'desc', sort_name: 'created_at'}}});
+          this.doEvent({ action: 'getAll', payload: {path: this.path,
+            queryParams: {type: this.type, sort: 'desc', sort_name: 'created_at'}}});
         break;
     }
   }
@@ -134,5 +134,9 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
         }
       ]);
     // }
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

@@ -333,7 +333,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
         break;
       case 'updateMediaList':
-        this.updateMediaList(event.params.data);
+        // this.updateMediaList(event.params.data);
         break;
       case 'updateDetailObject':
         this.updateDetailObject(event.params.properties);

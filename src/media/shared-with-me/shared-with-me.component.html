@@ -101,6 +101,10 @@
              (event)="doEvent($event)"
              (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)">
 
+  <!--loading icon-->
+  <div class="page-body-content has-page-body-control gray-light" *ngIf="loading$|async">
+    <box-loading></box-loading>
+  </div>
 
 </w-grid-list>
 <!--no data region-->

@@ -208,6 +208,11 @@
                  (event)="doEvent($event)"
                  (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)">
 
+      <!--loading icon-->
+      <div class="page-body-content has-page-body-control gray-light" *ngIf="loading$|async">
+        <box-loading></box-loading>
+      </div>
+
       <!--no data region-->
       <div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length">
         <div>
@@ -220,6 +225,7 @@
           </p>
         </div>
       </div>
+
     </w-grid-list>
     <ng-template #modalContainer></ng-template>
 

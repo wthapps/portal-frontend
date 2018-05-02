@@ -36,6 +36,7 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
 
   photos$: Observable<any>;
   nextLink: Observable<any>;
+  loading$: Observable<any>;
 
   tooltip: any = Constants.tooltip;
   detail = true;
@@ -67,6 +68,8 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
   ) {
     super(resolver, store, mediaSelectionService);
     this.photos$ = this.store.select(appStore.selectDetailObjects);
+    this.loading$ = this.store.select(appStore.selectLoading);
+
   }
 
   ngOnInit() {
