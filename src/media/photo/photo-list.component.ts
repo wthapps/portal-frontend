@@ -108,7 +108,7 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
 
   preview(payload: any) {
     if (payload.selectedObjects.length > 1) {
-      this.viewDetails({selectedObject: payload.selectedObjects[0]}, _.map(payload.selectedObjects, 'id'));
+      this.viewDetails({selectedObject: payload.selectedObjects[0]}, _.map(payload.selectedObjects, 'uuid'));
     } else if (payload.selectedObjects.length === 1) {
       this.viewDetails({selectedObject: payload.selectedObjects[0]});
     } else if (payload.selectedObjects.length === 0) {
@@ -117,12 +117,22 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
   }
   viewDetails(payload: any, ids = []) {
     const object = payload.selectedObject;
-    this.router.navigate([
-      `photos`,
-      object.uuid, {
-        batchQuery: ids.length > 0 ? `${this.currentQuery}&ids=${ids}` : this.currentQuery,
-        mode: 0
-      }
-    ]);
+    // if (ids.length > 0) {
+    //   this.router.navigate([
+    //     `photos`,
+    //     object.uuid, {
+    //       ids: ,
+    //       mode: 0
+    //     }
+    //   ]);
+    // } else {
+      this.router.navigate([
+        `photos`,
+        object.uuid, {
+          batchQuery: ids.length > 0 ? `[${ids}]` : this.currentQuery,
+          mode: 0
+        }
+      ]);
+    // }
   }
 }

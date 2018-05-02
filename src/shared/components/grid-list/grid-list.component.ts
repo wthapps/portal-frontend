@@ -8,7 +8,7 @@ import {
   OnDestroy,
   ViewEncapsulation,
   ContentChild,
-  TemplateRef
+  TemplateRef, OnChanges, SimpleChanges
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
@@ -29,7 +29,7 @@ declare var $: any;
   ]
 })
 
-export class WGridListComponent implements OnInit, OnDestroy {
+export class WGridListComponent implements OnDestroy, OnChanges {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
   @Input() moreActionsTemplate: TemplateRef<any>;
@@ -86,18 +86,17 @@ export class WGridListComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
-    if (this.objects.length > 0) {
-      this.selectedObjects = this.objects.filter(o => o.selected === true);
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['objects'] && changes['objects'].currentValue.length > 0) {
+      this.selectedObjects.length = 0;
+      changes['objects'].currentValue.forEach(o => {
+        if (o.selected === true) {
+          this.selectedObjects.push(o);
+        }
+      });
     }
   }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if (changes['objects'] && changes['objects'].firstChange && changes['objects'].currentValue) {
-  //     const objects = changes['objects'].currentValue;
-  //     this.selectedObjects = objects.filter(o => o.selected === true);
-  //   }
-  // }
 
   ngOnDestroy() {
     this.destroySubject.next('');

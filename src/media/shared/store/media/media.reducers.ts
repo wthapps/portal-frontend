@@ -56,6 +56,8 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
   switch (action.type) {
     case actions.ActionTypes.GET: {
       return Object.assign({}, state, {
+        objects: [],
+        detailObjects: [],
         loading: true
       });
     }
@@ -76,6 +78,8 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
 
     case actions.ActionTypes.GET_ALL: {
       return Object.assign({}, state, {
+        objects: [],
+        detailObjects: [],
         loading: true
       });
     }
