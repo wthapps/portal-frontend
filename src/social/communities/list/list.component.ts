@@ -13,10 +13,10 @@ import { fadeInAnimation } from '@wth/shared/shared/animations/route.animation';
   templateUrl: 'list.component.html',
   animations: [fadeInAnimation]
 })
-
 export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   @ViewChild('modalEdit') modalEdit: ZSocialShareCommunityFormEditComponent;
-  @ViewChild('modalPreference') modalPreference: ZSocialCommunityFormPreferenceComponent;
+  @ViewChild('modalPreference')
+  modalPreference: ZSocialCommunityFormPreferenceComponent;
 
   errorMessage: string = '';
   myList: any = [];
@@ -27,17 +27,17 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
   // readonly soCommunitiesUrl: string = '/' + Constants.urls.zoneSoCommunities;
 
-  constructor(private loadingService: LoadingService,
-              private socialService: SocialService,
-              private userService: UserService) {
-  }
+  constructor(
+    private loadingService: LoadingService,
+    private socialService: SocialService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.getList();
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   getList() {
     this.loadingService.start('#communites-list');
@@ -45,25 +45,27 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
     let myuuid = this.userService.getSyncProfile().uuid;
     // var _this_community = this;
 
-    this.socialService.community.getCommunitiesList().toPromise()
+    this.socialService.community
+      .getCommunitiesList()
+      .toPromise()
       .then(
-      (res: any)=> {
-        this.myList.length = 0;
-        this.list.length = 0;
-        _.map(res.data, (v: any)=> {
-          if (v.admin.uuid == myuuid) {
-            this.myList.push(v);
-          } else {
-            this.list.push(v);
-          }
-        });
-        this.loadingService.stop('#communites-list');
-      },
-      (error: any) => {
-        this.errorMessage = <any>error;
-        this.loadingService.stop('#communites-list');
-      }
-    );
+        (res: any) => {
+          this.myList.length = 0;
+          this.list.length = 0;
+          _.map(res.data, (v: any) => {
+            if (v.admin.uuid == myuuid) {
+              this.myList.push(v);
+            } else {
+              this.list.push(v);
+            }
+          });
+          this.loadingService.stop('#communites-list');
+        },
+        (error: any) => {
+          this.errorMessage = <any>error;
+          this.loadingService.stop('#communites-list');
+        }
+      );
   }
 
   onCreate() {

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeUntil';
@@ -15,7 +15,9 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 @Component({
   selector: 'cover-profile',
-  templateUrl: 'cover-profile.component.html'
+  templateUrl: 'cover-profile.component.html',
+  styleUrls: ['cover-profile.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CoverProfileComponent implements OnDestroy {
   @Input() item: any;
@@ -70,7 +72,7 @@ export class CoverProfileComponent implements OnDestroy {
     this.mediaSelectionService.selectedMedias$.pipe(
       takeUntil(close$),
       filter((items: any[]) => items.length > 0)
-      ).subscribe((items) => {
+    ).subscribe((items) => {
       if (items.length > 0)
         callback(items);
     }, (err: any) => console.error('cover profile selectPhoto error: ', err));

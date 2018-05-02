@@ -19,9 +19,11 @@
   .component-listbox-body {
     display: table-row-group;
     &:last-child, &:nth-last-child(2) {
-      .dropdown-menu {
-        top: auto;
-        bottom: 100%;
+      &:not(:first-child) {
+        .dropdown-menu {
+          top: auto;
+          bottom: 100%;
+        }
       }
     }
   }

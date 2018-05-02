@@ -1,0 +1,167 @@
+@import '../../../assets/styles/global';
+.social-cover {
+  position: relative;
+  .cover-img {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    position: relative;
+    padding-bottom: 50%;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: auto;
+      @include center();
+      z-index: 1;
+    }
+
+    &:after {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 2;
+      content: '';
+      background: -moz-linear-gradient(
+          45deg,
+          transparent 40%,
+          rgba(0, 0, 0, 0.5) 100%
+      ),
+      -moz-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: -webkit-gradient(
+          linear,
+          left top,
+          right bottom,
+          color-stop(40%, transparent),
+          color-stop(100%, rgba(0, 0, 0, 0.5))
+      ),
+      -webkit-gradient(linear, left top, left bottom, color-stop(10%, transparent), color-stop(100%, rgba(0, 0, 0, 0.3)));
+      background: -webkit-linear-gradient(
+          -135deg,
+          transparent 40%,
+          rgba(0, 0, 0, 0.5) 100%
+      ),
+      -webkit-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: -o-linear-gradient(
+          45deg,
+          transparent 40%,
+          rgba(0, 0, 0, 0.5) 100%
+      ),
+      -o-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: -ms-linear-gradient(
+          45deg,
+          transparent 40%,
+          rgba(0, 0, 0, 0.5) 100%
+      ),
+      -ms-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: linear-gradient(
+          -135deg,
+          transparent 40%,
+          rgba(0, 0, 0, 0.5) 100%
+      ),
+      linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+    }
+
+    .cover-img-edit {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 3;
+      .btn {
+        color: #ffffff;
+        border-color: #ffffff;
+        background-color: rgba(255, 255, 255, .3);
+        @include box-shadow(0 0 2px rgba(0, 0, 0, .5));
+      }
+    }
+  }
+  .cover-info {
+    z-index: 10;
+    position: relative;
+    margin-top: -50px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  .cover-avatar {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    img {
+      width: 100%;
+      height: auto;
+      @include center();
+      margin: auto;
+    }
+    .btn {
+      border-width: 0;
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0;
+      position: absolute;
+      background-color: rgba(#FFF, 0.2);
+      opacity: 0;
+      @include transition($transition-base);
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      i {
+        color: #ffffff;
+        font-size: 36px;
+        @include center();
+      }
+    }
+    &:hover {
+      .btn {
+        opacity: 1;
+      }
+    }
+  }
+  .cover-name {
+    h2 {
+      font-size: 18px;
+      margin: 0;
+    }
+  }
+  .cover-action {
+    margin-top: 10px;
+  }
+
+}
+@media (min-width: $screen-sm-min) {
+  .social-cover {
+    .cover-info {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      right: 15px;
+      margin: 0;
+      @include flexbox;
+      color: #ffffff;
+      text-align: left;
+    }
+    .cover-avatar {
+      margin-right: 10px;
+      margin-bottom: 0;
+    }
+    .cover-name {
+      @include flex(1);
+      h2 {
+        font-size: 24px;
+      }
+    }
+    .cover-action {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 2;
+    }
+  }
+}
+

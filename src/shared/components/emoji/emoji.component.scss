@@ -13,6 +13,9 @@
   }
   .emoji-wrap {
     width: 420px;
+    @media (max-width: $screen-xs-max) {
+      width: 280px;
+    }
   }
   .emoji-content {
     height: 300px;
@@ -44,6 +47,9 @@
         i {
           margin-left: auto;
           margin-right: auto;
+        }
+        @media (max-width: $screen-xs-max) {
+          width: percentage(1/6);
         }
       }
     }

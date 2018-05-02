@@ -1,27 +1,30 @@
 <div *ngIf="showNavSearch" class="nav-tabs-wrap nav-tabs-wrap-search">
   <ul class="nav nav-tabs" role="tablist">
-    <li [routerLink]="['/search/all']"
-        [queryParams]="{q:params}"
-        [ngClass]="{'active': (term === 'all')}">
-      <a href="javascript:;">All</a>
+    <li [ngClass]="{'active': (term === 'all')}">
+      <a [routerLink]="['/search/all']" [queryParams]="{q:params}" href="#">All</a>
     </li>
-    <li [routerLink]="['/search/members']"
-        [queryParams]="{q:params}"
-        [ngClass]="{'active': (term === 'members')}">
-      <a href="javascript:;">Members</a>
+    <li [ngClass]="{'active': (term === 'members')}">
+      <a [routerLink]="['/search/members']" [queryParams]="{q:params}" href="#">Members</a>
     </li>
-    <li [routerLink]="['/search/communities']"
-        [queryParams]="{q:params}"
-        [ngClass]="{'active': (term === 'communities')}">
-      <a href="javascript:;">Communities</a>
+    <li [ngClass]="{'active': (term === 'communities')}">
+      <a [routerLink]="['/search/communities']" [queryParams]="{q:params}" href="#">Communities</a>
     </li>
-    <li [routerLink]="['/search/posts']"
-        [queryParams]="{q:params}"
-        [ngClass]="{'active': (term === 'posts')}">
-      <a href="javascript:;">Posts</a>
+    <li class="hidden-xs" [ngClass]="{'active': (term === 'posts')}">
+      <a [routerLink]="['/search/posts']" [queryParams]="{q:params}" href="#">Posts</a>
+    </li>
+    <li class="visible-xs-inline-block">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-ellipsis-h"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li><a [routerLink]="['/search/posts']" [queryParams]="{q:params}" href="#">Posts</a></li>
+        </ul>
+      </div>
     </li>
   </ul>
 </div>
+
 
 <div class="page-body-content gray-light page-body-content-search"
   lockYOffset="10"

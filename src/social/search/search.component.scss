@@ -2,10 +2,13 @@
 
 $nav-tabs-wrap-search-h: 60px;
 .nav-tabs-wrap-search {
-  padding: 15px 0 0 45px;
-  position: relative;
-  z-index: 100;
-  height: $nav-tabs-wrap-search-h;
+  background-color: #ffffff;
+  @media (min-width: $screen-sm-min) {
+    padding: 15px 0 0 45px;
+    position: relative;
+    z-index: 100;
+    height: $nav-tabs-wrap-search-h;
+  }
   @include box-shadow($box-shadow-bottom);
   .nav-tabs {
     a {
@@ -26,6 +29,21 @@ $nav-tabs-wrap-search-h: 60px;
     //    height: 3px;
     //  }
     //}
+  }
+  @media (max-width: $screen-xs-max) {
+    &.nav-tabs-wrap .nav-tabs {
+      @include flexbox;
+      > li {
+        @include flex(1 1 auto);
+        text-align: center;
+        > a {
+          height: auto;
+        }
+        > a, .btn-group {
+          padding: 10px;
+        }
+      }
+    }
   }
 }
 

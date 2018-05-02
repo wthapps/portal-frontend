@@ -1,0 +1,16 @@
+@import "../../../assets/styles/global";
+
+.panel {
+  @media (max-width: $screen-xs-max) {
+    .media-no-hidden {
+      .media-right {
+        display: block !important;
+        &:before, &:after {
+          clear: both;
+          content: '';
+          display: block;
+        }
+      }
+    }
+  }
+}

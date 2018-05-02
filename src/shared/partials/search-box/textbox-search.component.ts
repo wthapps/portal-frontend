@@ -1,4 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnInit, ViewChild, ViewEncapsulation, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+  Renderer2
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { debounceTime } from 'rxjs/operators';
 
@@ -12,7 +21,6 @@ declare let _: any;
   styleUrls: ['textbox-search.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-
 export class TextBoxSearchComponent implements OnInit {
   @Input() search: string = '';
   @Input() placeholder: string = '';
@@ -29,13 +37,13 @@ export class TextBoxSearchComponent implements OnInit {
 
   searchAdvanced: boolean = false;
 
-  tooltip:any = Constants.tooltip;
+  tooltip: any = Constants.tooltip;
+
+  constructor(private renderer: Renderer2) {}
 
   ngOnInit() {
     Observable.fromEvent(this.input.nativeElement, 'keyup')
-      .pipe(
-        debounceTime(this.debounceTime)
-      )
+      .pipe(debounceTime(this.debounceTime))
       .subscribe((keyboardEvent: any) => {
         this.onKeyUp(keyboardEvent);
       });
@@ -52,18 +60,22 @@ export class TextBoxSearchComponent implements OnInit {
       this.onEscape();
       return;
     }
-    this.onKeyUpEvent.emit({search: this.search});
+    this.onKeyUpEvent.emit({ search: this.search });
   }
 
   onEnter() {
-    if(this.search) {
-      this.onEnterEvent.emit({search: this.search});
+    if (this.search) {
+      this.onEnterEvent.emit({ search: this.search });
     }
   }
 
   onEscape() {
     this.search = '';
-    this.onEscapeEvent.emit({search: this.search});
+    this.onEscapeEvent.emit({ search: this.search });
+
+    const headerNav = document.querySelector('.header-nav');
+
+    this.renderer.removeClass(headerNav, 'header-nav-xs-show-search');
   }
 
   onShowSearchAdvanced() {

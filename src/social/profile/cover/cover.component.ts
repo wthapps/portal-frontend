@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { SocialService } from '../../shared/services/social.service';
@@ -14,7 +14,9 @@ import { Constants } from '@wth/shared/constant';
 
 @Component({
   selector: 'z-social-profile-cover',
-  templateUrl: 'cover.component.html'
+  templateUrl: 'cover.component.html',
+  styleUrls: ['cover.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class ZSocialProfileCoverComponent implements OnInit {

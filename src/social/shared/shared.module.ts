@@ -32,6 +32,7 @@ import { ZSocialLeftMenuComponent } from './component/social-left-menu.component
 import { SoShortcutService } from './services/shortcut.service';
 import { ZSocialShortcutSettingComponent } from './shortcut-setting/shortcut-setting.component';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
+import { ZSocialCoverComponent } from '@social/shared/cover/cover.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -71,7 +72,9 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
     ZSocialSharedNewsFeedComponent,
     ZSocialShortcutSettingComponent,
     //  Left menu
-    ZSocialLeftMenuComponent
+    ZSocialLeftMenuComponent,
+
+    ZSocialCoverComponent
   ],
   exports: [
     ZSocialFavoritesComponent,
@@ -95,7 +98,9 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
     MiniEditorModule,
 
     //  Left menu
-    ZSocialLeftMenuComponent
+    ZSocialLeftMenuComponent,
+
+    ZSocialCoverComponent
   ]
 })
 export class ZSocialSharedModule {

@@ -10,8 +10,9 @@
     <input #input autocomplete="off" type="text" name="search" class="form-control" [(ngModel)]="search"
            placeholder="{{ placeholder }}">
     <span class="input-group-btn">
-        <button *ngIf="showSearchClearText || (search && search.length > 0)" (click)="onEscape()"
-                class="btn btn-default" type="reset" pTooltip="{{ tooltip.reset }}"
+        <button (click)="onEscape()"
+                class="btn btn-default visible-xs-inline-block" type="reset" pTooltip="{{ tooltip.reset }}"
+                [ngClass]="{'show-button': showSearchClearText || (search && search.length > 0)}"
                 tooltipPosition="bottom">
           <i class="fa fa-times"></i>
         </button>

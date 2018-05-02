@@ -87,7 +87,7 @@
        infinite-scroll
        [infiniteScrollDistance]="2"
        [infiniteScrollThrottle]="500"
-       [scrollWindow]="true"
+       [scrollWindow]="false"
        (scrolled)="onLoadMore()">
 
     <ng-container *ngFor="let objects of data | groupByMap: groupBy : sortOrder : sortBy : sortOrder">

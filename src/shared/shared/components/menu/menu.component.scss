@@ -4,6 +4,7 @@
   @include flexbox;
   @include flex-direction(column);
   height: 100%;
+  overflow: auto;
   .menuleft-nav {
     @include flex(1);
   }

@@ -18,7 +18,7 @@
 }
 
 .modal-media-selection {
-  width: $container-md;
+
   .btn-search {
     margin: -5px 15px -15px;
   }
@@ -74,6 +74,31 @@
   //    white-space: nowrap;
   //  }
   //}
+
+  @media (min-width: $screen-md-min) {
+    width: $container-md;
+  }
+
+  @media (max-width: $screen-xs-max) {
+    .nav-tabs-wrap {
+      float: none !important;
+      margin-top: 35px;
+      .nav-tabs {
+        white-space: nowrap;
+        overflow: auto;
+        > li {
+          float: none !important;
+          display: inline-block;
+        }
+      }
+    }
+    .wobject-list {
+      .wobject-owner, .wobject-create-date, .wobject-file-size, .wobject-wobject-action {
+        display: none;
+      }
+    }
+  }
+
 }
 
 .media-selection-upload-wrap {

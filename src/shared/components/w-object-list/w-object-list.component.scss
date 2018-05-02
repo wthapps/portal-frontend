@@ -141,6 +141,9 @@ $wobject-checkbox: 30px;
       padding: 0 10px;
       position: relative;
       width: percentage(2/12);
+      @media (max-width: $screen-xs-max) {
+        width: percentage(6/12);
+      }
 
       .wobject-row-checkbox {
         width: 24px;
