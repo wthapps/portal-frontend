@@ -24,7 +24,7 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   currentItem: any = null;
   action: string = 'create';
   favourite: any;
-  loading: true;
+  loading: boolean = true;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
   // readonly soCommunitiesUrl: string = '/' + Constants.urls.zoneSoCommunities;
 
