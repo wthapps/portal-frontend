@@ -23,18 +23,12 @@ export class CoverProfileComponent implements OnDestroy {
   @Input() item: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  closeObs$: Observable<any>;
-  nextPhotoSubscription: Subscription;
-  uploadPhotoSubscription: Subscription;
-
   constructor(private loadingService: LoadingService,
               // private photoSelectDataService: PhotoModalDataService,
               private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService,
               private objectListService: WObjectListService) {
-
-    // this.closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
-  }
+ }
 
   ngOnDestroy() {
 
@@ -44,27 +38,6 @@ export class CoverProfileComponent implements OnDestroy {
    selectPhoto function Should work when there is 1 PhotoDataSelectComponent available in current view
    */
   selectPhoto(callback: any, loadingId?: string) {
-    // this.photoSelectDataService.open({'multipleSelect': false});
-    // this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
-    //   .take(1) // User can only select 1 photo to change profile avatar / cover image
-    //   .takeUntil(this.closeObs$).subscribe(
-    //     (photo: any) => {
-    //       callback(photo);
-    //     }, (err: any) => console.error('cover profile selectPhoto error: ', err));
-    //
-    // this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$
-    //   .take(1)
-    //   .takeUntil(this.closeObs$)
-    //   .switchMap((photos: any) => {
-    //     this.loadingService.start(loadingId);
-    //     return this.photoUploadService.uploadPhotos(photos);
-    //   })
-    //   .subscribe(
-    //     (res: any) => {
-    //       callback([res.data]);
-    //       this.loadingService.stop(loadingId);
-    //     }, (err: any) => this.loadingService.stop(loadingId));
-
     let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
 
     this.mediaSelectionService.setMultipleSelection(false);

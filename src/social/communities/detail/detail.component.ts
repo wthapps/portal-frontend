@@ -87,6 +87,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   is_close: boolean = true;
   favourite: any;
   userSettings: any;
+  loading: boolean = true;
 
   activeTabs: any = EMPTY_DEFAULT_TABS;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
@@ -355,10 +356,10 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   private getCommunity(uuid: string): Promise<any> {
-    // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}`).subscribe(
     return this.socialService.community.getCommunity(uuid).toPromise().then(
       (res: any)=> {
         // this.item = res.data;
+        this.loading = false;
         this.community = res.data;
         this.socialService.community.currentCommunity = this.community;
 
@@ -375,6 +376,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         }
       },
       error => {
+        this.loading = false;
         this.errorMessage = <any>error;
       }
     );

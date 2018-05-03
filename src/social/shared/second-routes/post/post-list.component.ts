@@ -33,10 +33,9 @@ export class PostListComponent implements OnInit, OnDestroy {
   uuid: string;
   commentBox: any;
   page_index: number = 0;
-  loading_done: boolean = false;
+  loading: boolean = false;
   nextLink: any;
 
-  // Subscription
   postIsEmpty: boolean = false;
   showLoading: boolean = true;
 
@@ -59,7 +58,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     // Support get route params from parent route as well as current route. Ex: Profile post page
     let parentRouteParams = this.route.parent.paramMap;
     let reloadQueryParam = this.route.queryParamMap; // .filter(queryParamM => !!queryParamM.get('r'));
-    this.showLoading = document.getElementById('post-list-loading') !== null;
+    // this.showLoading = document.getElementById('post-list-loading') !== null;
 
     this.route.paramMap
       .pipe(
@@ -81,13 +80,15 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   startLoading() {
-    if(this.showLoading)
-      this.loadingService.start('#post-list-loading');
+    this.loading = true;
+    // if(this.showLoading)
+    //   this.loadingService.start('#post-list-loading');
   }
 
   stopLoading() {
-    if(this.showLoading)
-      this.loadingService.stop('#post-list-loading');
+    this.loading = false;
+    // if(this.showLoading)
+    //   this.loadingService.stop('#post-list-loading');
   }
 
   viewProfile(uuid: string) {

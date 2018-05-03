@@ -17,6 +17,7 @@ import { NotificationUndoComponent } from '@shared/shared/components/notificatio
 import { NotificationSettingModalComponent } from '@shared/shared/components/notification-list/modal/modal.component';
 import { CommonNotificationsComponent } from '@wth/shared/shared/components/notification-list/notifications.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     TooltipModule,
     InputSwitchModule,
     InfiniteScrollModule,
+    BoxLoadingModule,
 
     PipeModule,
   ],

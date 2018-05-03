@@ -15,6 +15,8 @@ export class ZSocialNewsComponent implements OnInit {
   channels: any;
   feeds: any;
   link: any;
+  feedLoading: boolean;
+  channelLoading: boolean;
 
   constructor(
     private apiBaseService: ApiBaseService,
@@ -35,11 +37,13 @@ export class ZSocialNewsComponent implements OnInit {
     });
     this.loadChannels();
 
+    this.feedLoading = true;
     this.apiBaseService
       .get('zone/social_network/feeds')
       .subscribe((response: any) => {
         console.log('feeds response:::', response);
-      });
+        this.feedLoading = false
+      }, err => this.feedLoading = false);
   }
 
   doEvents(event: any) {
@@ -50,19 +54,23 @@ export class ZSocialNewsComponent implements OnInit {
   }
 
   searchFeeds(text: any) {
+    this.feedLoading = true;
     this.apiBaseService
       .post(`zone/social_network/feeds/search_feeds`, { q: text })
       .subscribe((res: any) => {
         this.feeds = res.data;
-      });
+        this.feedLoading = false;
+      }, err => this.feedLoading = false);
   }
 
   loadChannels() {
+    this.channelLoading = true;
     this.apiBaseService
       .get(`zone/social_network/feeds/get_my_channels`, { q: 'all' })
       .subscribe((res: any) => {
         this.channels = res.data;
-      });
+        this.channelLoading = false;
+      }, err => this.channelLoading = false);
   }
 
   openModalShare(feed: any) {

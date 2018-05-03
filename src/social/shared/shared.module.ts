@@ -33,6 +33,7 @@ import { SoShortcutService } from './services/shortcut.service';
 import { ZSocialShortcutSettingComponent } from './shortcut-setting/shortcut-setting.component';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
 import { ZSocialCoverComponent } from '@social/shared/cover/cover.component';
+import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -46,6 +47,7 @@ import { ZSocialCoverComponent } from '@social/shared/cover/cover.component';
     PostModule,
     ZSocialShareProfileModule,
     MiniEditorModule,
+    BoxLoadingModule,
     SharedModule
   ],
   declarations: [
@@ -83,6 +85,7 @@ import { ZSocialCoverComponent } from '@social/shared/cover/cover.component';
 
     Ng2HdModule,
     PostModule,
+    BoxLoadingModule,
     ZSocialShareProfileModule,
 
     StepByStepGuideModule,

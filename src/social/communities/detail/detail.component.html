@@ -8,7 +8,8 @@
   <div class="page-body-content-in zone-social">
     <div class="zone-social-in">
       <div class="zone-social-cover">
-        <cover-profile [item]="community" (outEvent)="onCoverAction($event)">
+        <box-loading *ngIf="loading"></box-loading>
+        <cover-profile [item]="community" (outEvent)="onCoverAction($event)" *ngIf="!loading">
           <so-information>
             <div class="z-social-media-body">
               <div class="z-heading">

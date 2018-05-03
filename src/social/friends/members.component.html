@@ -79,6 +79,7 @@
             </ul>
           </nav>
         </div>
+        <box-loading *ngIf="loading"></box-loading>
         <ng-template [ngIf]="!loading && list && list.length == 0">
           <div class="panel-body p40 text-center">
             <div *ngIf="currentState == friendTabs.friends">
@@ -116,7 +117,7 @@
             </div>
           </div>
         </ng-template>
-        <ng-template [ngIf]="list && list.length > 0">
+        <ng-template [ngIf]="!loading && list && list.length > 0">
           <z-social-share-profile-list [data]="list" [type]="'member'" (outEvent)="onAction($event)" *ngIf="![friendTabs.pending, friendTabs.received].includes(currentState)">
           </z-social-share-profile-list>
           <z-social-share-profile-list [data]="list" [type]="currentState" (outEvent)="onAction($event)" *ngIf="[friendTabs.pending, friendTabs.received].includes(currentState)">

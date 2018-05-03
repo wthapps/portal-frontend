@@ -28,20 +28,24 @@
 <!--List of post items-->
 
 <div id="post-list-component">
-  <div class="panel panel-default mb15" *ngFor="let item of items;">
-    <div class="panel-body">
-      <so-post [user]="user"
-        [item]="item"
-               [showComments]="showComments"
-               (onDeleted)="deletedPost($event, item)"
-               (onUpdated)="updatedPost($event)"
-               (modalOpened)="openEditModal($event)"
-               (photoModalOpened)="openPhotoModal($event)">
-      </so-post>
+  <ng-container *ngIf="!loading">
+    <div class="panel panel-default mb15" *ngFor="let item of items;">
+      <div class="panel-body">
+        <so-post [user]="user"
+                 [item]="item"
+                 [showComments]="showComments"
+                 (onDeleted)="deletedPost($event, item)"
+                 (onUpdated)="updatedPost($event)"
+                 (modalOpened)="openEditModal($event)"
+                 (photoModalOpened)="openPhotoModal($event)">
+        </so-post>
+      </div>
     </div>
-  </div>
+  </ng-container>
 
-  <div *ngIf="postIsEmpty" class="text-center text-fade">
+  <box-loading *ngIf="loading"></box-loading>
+
+  <div *ngIf="!loading && postIsEmpty" class="text-center text-fade">
     <i class="fa fa-newspaper-o" style="font-size: 80px;"></i>
     <h4>No posts to show</h4>
     <p *ngIf="canCreatePost">

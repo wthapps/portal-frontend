@@ -17,6 +17,7 @@ export class ZSocialProfileComponent implements OnInit {
   actions: Array<any>;
   relationships: any;
   items: any;
+  loading: boolean = true;
 
   constructor(
     public authService: AuthService,
@@ -37,6 +38,7 @@ export class ZSocialProfileComponent implements OnInit {
         )
       )
       .subscribe(([user, relationship]) => {
+        this.loading = false;
         this.userInfo = user.data;
         this.userInfo.canEdit =
           this.userInfo.uuid === this.authService.user.uuid;
@@ -49,7 +51,7 @@ export class ZSocialProfileComponent implements OnInit {
           actions: this.actions,
           relationships: this.relationships
         }); // Update userInfo to children in router-outlet
-      });
+      }, err => this.loading = false);
   }
 
   getRelationship(uuid: any): Promise<any> {

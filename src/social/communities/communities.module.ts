@@ -13,6 +13,7 @@ import { Ng2HdModule } from '@wth/shared/shared/ng2-hd';
 import { SharedModule } from '@wth/shared/shared.module';
 // import { CoreModule } from '@wth/core/core.module';
 import { CommunityRoutingModule } from './community-routing.module';
+import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { CommunityRoutingModule } from './community-routing.module';
     CommunityRoutingModule,
     ZSocialSharedModule,
     ZSocialCommunitySharedModule,
+    BoxLoadingModule,
     SharedModule
     // CoreModule
   ],
