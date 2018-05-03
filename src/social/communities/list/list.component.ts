@@ -24,6 +24,7 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   currentItem: any = null;
   action: string = 'create';
   favourite: any;
+  loading: true;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
   // readonly soCommunitiesUrl: string = '/' + Constants.urls.zoneSoCommunities;
 
@@ -40,11 +41,11 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {}
 
   getList() {
-    this.loadingService.start('#communites-list');
+    // this.loadingService.start('#communites-list');
 
     let myuuid = this.userService.getSyncProfile().uuid;
     // var _this_community = this;
-
+    this.loading = true;
     this.socialService.community
       .getCommunitiesList()
       .toPromise()
@@ -59,11 +60,13 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
               this.list.push(v);
             }
           });
-          this.loadingService.stop('#communites-list');
+          // this.loadingService.stop('#communites-list');
+          this.loading = false;
         },
         (error: any) => {
           this.errorMessage = <any>error;
-          this.loadingService.stop('#communites-list');
+          // this.loadingService.stop('#communites-list');
+          this.loading = false;
         }
       );
   }
