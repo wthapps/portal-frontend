@@ -35,7 +35,6 @@ export enum CommentEditorMode {
 
 declare let $: any;
 declare let _: any;
-declare let document: any;
 
 @Component({
   selector: 'comment-item-editor',
@@ -294,12 +293,13 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     return !!this.comment.content || !!this.comment.photo;
   }
 
-  hasChanged() {
-    if (this.comment.content === '' && !this.hasUpdatedContent && !this.comment.photo) {
-      return false;
-    }
-    return true;
-  }
+  // hasChanged() {
+  //   console.debug('hasChanged checking ...');
+  //   if (this.comment.content === '' && !this.hasUpdatedContent && !this.comment.photo) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   setCommentContent(value: any) {
     this.comment.content = value;

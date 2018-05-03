@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { takeUntil, filter, map, tap } from 'rxjs/operators';
+import { takeUntil, filter, map, tap, take } from 'rxjs/operators';
 
 import { SocialService } from '../../services/social.service';
 import { BsModalComponent } from 'ng2-bs3-modal';
@@ -30,6 +30,8 @@ import { Constants } from '@wth/shared/constant';
 import { PhotoUploadService, UserService } from '@wth/shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
+import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 
 @Component({
   selector: 'so-post-edit',
@@ -50,7 +52,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   @Input() showAddPhotosButton: boolean = true;
   @Input() link: any = null;
 
-  @ViewChild('textarea') textarea: ElementRef;
+  @ViewChild('textarea') textarea: ElementRef; // Replaced by MiniEditor
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
@@ -93,6 +95,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     private mediaSelectionService: WMediaSelectionService,
     // private photoSelectDataService: PhotoModalDataService,
     private photoUploadService: PhotoUploadService,
+    private emojiService: WTHEmojiService,
     private userService: UserService
   ) {}
 
@@ -111,8 +114,14 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges() {
+    console.debug('on changes ...');
     this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
     this.privacyName = this.getPrivacyName(this.post);
+  }
+
+  handleKeyUp(event: any) {
+    console.debug('on handleKeyUp ... ');
+    this.hasChange = true;
   }
 
   viewProfile(uuid: string = this.userService.getSyncProfile().uuid) {
@@ -122,6 +131,19 @@ export class PostEditComponent implements OnInit, OnDestroy {
         preserveFragment: true
       })
       .then(() => this.router.navigate(['profile', uuid]));
+  }
+
+  showEmojiBtn(event: any) {
+    this.emojiService.show(event);
+
+    this.emojiService.selectedEmoji$.pipe(
+      take(1)
+    ).subscribe(data => {
+      console.debug(data);
+      // this.editor.addEmoj(data.shortname);
+      // this.comment.content = this.commentDomValue + emoj;
+      this.hasChange = true;
+    });
   }
 
   ngOnDestroy() {
@@ -138,6 +160,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       parent: null
     }
   ) {
+    this.hasChange = false;
     this.post = new SoPost();
     if (this.socialService.community.currentCommunity) {
       this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
@@ -201,7 +224,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   done(item: any) {
-    this.setItemDescriptionFromDom();
+    // this.setItemDescriptionFromDom();
     let options: any = {
       mode: this.mode,
       item: {
@@ -342,10 +365,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
     console.log('tag remove', tag, this.post.tags);
   }
 
-  /**
-   * Privacy
-   */
-
   update(attr: any = {}, event: any) {
     if (event != null) {
       event.preventDefault();
@@ -385,9 +404,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.description = value;
   }
 
-  private setItemDescriptionFromDom() {
-    this.setItemDescription(this.textarea.nativeElement.innerHTML);
-  }
+  // private setItemDescriptionFromDom() {
+  //   this.setItemDescription(this.textarea.nativeElement.innerHTML);
+  // }
 
   private getPrivacyName(post: any): string {
     let privacy = !post || post.privacy == '' ? 'public' : post.privacy;

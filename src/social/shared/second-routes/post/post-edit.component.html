@@ -17,7 +17,7 @@
           Cancel
         </button>
         <button type="submit" class="btn btn-outline-primary"
-                [disabled]="!((hasChange) || (post.photos.length > 0)  || link) || (files.length > 0)">
+                [disabled]="!(hasChange || (post.photos.length > 0)  || link) || !description || (files.length > 0)">
           Done
         </button>
       </div>
@@ -101,13 +101,20 @@
         </div>
       </div>
       <div class="form-group">
-        <div contenteditable="true" class="form-control textarea-editor-input"
-             #textarea
-             [autofocus]
-             id="textarea-new-post"
-             placeholder="Share your ideas"
-             [innerHTML]="description"
-             (keyup)="hasChange = true"></div>
+        <!--<div contenteditable="true" class="form-control textarea-editor-input"-->
+             <!--#textarea-->
+             <!--[autofocus]-->
+             <!--id="textarea-new-post"-->
+             <!--placeholder="Share your ideas"-->
+             <!--[innerHTML]="description"-->
+             <!--(keyup)="hasChange = true"></div>-->
+
+
+        <mini-editor #textarea [autofocus] [(ngModel)]="description" [ngModelOptions]="{standalone: true}" placeholder="Share your ideas"
+                     [style]="{'height':'auto', 'min-height': '27px'}" (onTextChange)="hasChange = true">
+          <p-header>
+          </p-header>
+        </mini-editor>
       </div>
       <display-link *ngIf="link" [data]="link"></display-link>
       <div id="loading"></div>
@@ -166,7 +173,7 @@
           Cancel
         </button>
         <button type="submit" class="btn btn-outline-primary btn-min"
-                [disabled]="!((hasChange) || (post.photos.length > 0)  || link) || (files.length > 0)">
+                [disabled]="!(hasChange || (post.photos.length > 0)  || link) || !description || (files.length > 0)">
           Done
         </button>
       </div>
