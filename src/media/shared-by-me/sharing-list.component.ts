@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import {Component, ComponentFactoryResolver, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
@@ -21,7 +21,7 @@ import { SharingService } from '@wth/shared/shared/components/photo/modal/sharin
   selector: 'me-sharings',
   templateUrl: 'sharing-list.component.html'
 })
-export class ZMediaSharingListComponent extends MediaActionHandler implements OnInit {
+export class ZMediaSharingListComponent extends MediaActionHandler implements OnInit, OnDestroy {
   sharings$: Observable<any>;
   loading$: Observable<any>;
   nextLink$: Observable<any>;
@@ -29,7 +29,7 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
   tooltip: any = Constants.tooltip;
 
   private path = 'media/sharings';
-
+  private sub: any;
   constructor(
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
@@ -43,6 +43,12 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
     this.sharings$ = this.store.select(appStore.selectObjects);
     this.nextLink$ = this.store.select(appStore.selectNextLink);
     this.loading$ = this.store.select(appStore.selectLoading);
+
+    this.sub = this.mediaUploaderDataService.action$
+      .takeUntil(this.destroySubject)
+      .subscribe((event: any) => {
+        this.doEvent(event);
+      });
   }
 
   ngOnInit() {
@@ -88,5 +94,9 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
   viewDetails(payload: any) {
     const object = payload.selectedObject;
     this.router.navigate(['shared', object.uuid], {queryParams: {returnUrl: this.router.url}});
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

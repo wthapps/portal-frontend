@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import {Component, ComponentFactoryResolver, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -19,14 +19,14 @@ import { MediaActionHandler } from '@media/shared/media';
   selector: 'me-shared-with-me',
   templateUrl: 'shared-with-me.component.html'
 })
-export class ZMediaSharedWithMeComponent extends MediaActionHandler implements OnInit {
+export class ZMediaSharedWithMeComponent extends MediaActionHandler implements OnInit, OnDestroy {
   objects$: Observable<any>;
   loading$: Observable<any>;
   nextLink$: Observable<any>;
   tooltip: any = Constants.tooltip;
 
   private path = 'media/sharings/shared_with_me';
-
+  private sub: any;
   constructor(
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
@@ -38,6 +38,12 @@ export class ZMediaSharedWithMeComponent extends MediaActionHandler implements O
     this.objects$ = this.store.select(appStore.selectObjects);
     this.nextLink$ = this.store.select(appStore.selectNextLink);
     this.loading$ = this.store.select(appStore.selectLoading);
+
+    this.sub = this.mediaUploaderDataService.action$
+      .takeUntil(this.destroySubject)
+      .subscribe((event: any) => {
+        this.doEvent(event);
+      });
   }
 
   ngOnInit() {
@@ -72,5 +78,9 @@ export class ZMediaSharedWithMeComponent extends MediaActionHandler implements O
   viewDetails(payload: any) {
     const object = payload.selectedObject;
       this.router.navigate(['shared', object.uuid], {queryParams: {returnUrl: this.router.url}});
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

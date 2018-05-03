@@ -214,7 +214,7 @@
       </div>
 
       <!--no data region-->
-      <div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length">
+      <div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length && !(loading$|async)">
         <div>
           <h2><i class="fa fa-picture-o"></i></h2>
           <h3>There is no photo!</h3>

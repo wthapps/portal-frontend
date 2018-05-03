@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import {Component, ComponentFactoryResolver, OnDestroy, OnInit} from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
@@ -21,14 +21,14 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
   selector: 'me-favourite-list',
   templateUrl: 'favourite-list.component.html'
 })
-export class ZMediaFavoriteListComponent extends MediaActionHandler implements OnInit {
+export class ZMediaFavoriteListComponent extends MediaActionHandler implements OnInit, OnDestroy {
   favoriteObjects$: Observable<any>;
   loading$: Observable<any>;
   nextLink$: Observable<any>;
   tooltip: any = Constants.tooltip;
 
   private path = 'media/favorites';
-
+  private sub: any;
   constructor(
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
@@ -41,6 +41,12 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
     this.favoriteObjects$ = this.store.select(appStore.selectObjects);
     this.nextLink$ = this.store.select(appStore.selectNextLink);
     this.loading$ = this.store.select(appStore.selectLoading);
+
+    this.sub = this.mediaUploaderDataService.action$
+      .takeUntil(this.destroySubject)
+      .subscribe((event: any) => {
+        this.doEvent(event);
+      });
   }
 
   ngOnInit() {
@@ -89,5 +95,9 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
       this.router.navigate([`photos`,
         object.id, {ids: [object.id], mode: 0}], {queryParams: {returnUrl: this.router.url}});
     }
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

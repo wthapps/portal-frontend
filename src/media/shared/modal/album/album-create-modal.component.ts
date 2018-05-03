@@ -101,7 +101,7 @@ export class AlbumCreateModalComponent implements OnInit {
   }
 
   viewAlbumDetail(albumId: number) {
-    this.router.navigate(['albums', albumId]);
+    this.router.navigate(['albums', albumId], {queryParams: {returnUrl: this.router.url}});
   }
 
   onAction(action: string, data: any) {

@@ -117,23 +117,13 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
   }
   viewDetails(payload: any, ids = []) {
     const object = payload.selectedObject;
-    // if (ids.length > 0) {
-    //   this.router.navigate([
-    //     `photos`,
-    //     object.uuid, {
-    //       ids: ,
-    //       mode: 0
-    //     }
-    //   ]);
-    // } else {
-      this.router.navigate([
-        `photos`,
-        object.uuid, {
-          batchQuery: ids.length > 0 ? `[${ids}]` : this.currentQuery,
-          mode: 0
-        }
-      ]);
-    // }
+    this.router.navigate([
+      `photos`,
+      object.uuid, {
+        batchQuery: ids.length > 0 ? `[${ids}]` : this.currentQuery,
+        mode: 0
+      }
+    ]);
   }
 
   ngOnDestroy() {

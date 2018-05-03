@@ -110,7 +110,7 @@
 <!--no data region-->
 <!--<div class="page-body-content-in">-->
 
-<div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length">
+<div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length && !(loading$|async)">
   <div>
     <h2><i class="fw fw-shared-with-me"></i></h2>
     <h3>There are no shared photos or albums!</h3>

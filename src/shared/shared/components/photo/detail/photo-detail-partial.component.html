@@ -117,8 +117,10 @@
       <dd>
         <ul class="list-unstyled recipients" *ngIf="photo.json_shares.length > 0">
           <li *ngFor="let recipient of photo?.json_shares">
-            <!--<img [src]="recipient?.profile_image" title="{{ recipient?.name }}">-->
-            <!--{{ recipient.name }}-->
+            <a href="">
+              <img width="24" [src]="recipient?.profile_image" title="{{ recipient?.name }}">
+              {{ recipient.name }}
+            </a>
           </li>
         </ul>
       </dd>

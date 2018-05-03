@@ -60,6 +60,7 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent implements On
   doEvent(event: any) {
     switch (event.action) {
       // Handle all of event in child class here
+      case 'media:photo:update_recipients':
       case 'media:photo:load_sharing_info':
         this.sharingService
           .getShared({ objects: [this.id] })
@@ -69,9 +70,9 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent implements On
             this.photo.json_shares = response.data;
           });
         break;
-      case 'media:photo:update_recipients':
-        this.photo.json_shares = event.payload.data;
-        break;
+      // case 'media:photo:update_recipients':
+      //   this.photo.json_shares = event.payload.data;
+      //   break;
       case 'editInfo':
         this.loadingService.start();
           const selectedObject = event.params.selectedObject;

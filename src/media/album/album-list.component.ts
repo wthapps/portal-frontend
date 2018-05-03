@@ -1,6 +1,6 @@
 import {
   Component,
-  ComponentFactoryResolver,
+  ComponentFactoryResolver, OnDestroy,
   OnInit
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -24,7 +24,7 @@ import { AlbumService } from '@media/shared/service';
   selector: 'z-media-album-list',
   templateUrl: 'album-list.component.html'
 })
-export class AlbumListComponent extends MediaActionHandler implements OnInit {
+export class AlbumListComponent extends MediaActionHandler implements OnInit, OnDestroy {
 
   albums$: Observable<any>;
   loading$: Observable<any>;
@@ -33,7 +33,7 @@ export class AlbumListComponent extends MediaActionHandler implements OnInit {
   tooltip: any = Constants.tooltip;
   private type = 'album';
   private path = 'media/media';
-
+  private sub: any;
   constructor(
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
@@ -47,7 +47,7 @@ export class AlbumListComponent extends MediaActionHandler implements OnInit {
     this.nextLink$ = this.store.select(appStore.selectNextLink);
     this.loading$ = this.store.select(appStore.selectLoading);
 
-    this.mediaUploaderDataService.action$
+    this.sub = this.mediaUploaderDataService.action$
       .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         this.doEvent(event);
@@ -89,5 +89,9 @@ export class AlbumListComponent extends MediaActionHandler implements OnInit {
 
   viewDetails(payload: any) {
     this.router.navigate(['albums', payload.selectedObject.uuid]);
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
