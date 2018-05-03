@@ -171,6 +171,7 @@ export class SharingModalComponent implements OnDestroy {
               this.sharedContacts.push(...this.selectedContacts);
               this.resetData();
               this.updateSelectedItems({contacts: this.sharedContacts});
+              this.commonEventService.broadcast({channel: 'media:photo:update_recipients', payload: this.sharedContacts});
             },
             (error: any) => {
               console.log('error', error);
@@ -189,6 +190,7 @@ export class SharingModalComponent implements OnDestroy {
             this.sharedContacts.push(...this.selectedContacts);
             this.resetData();
             this.updateSelectedItems({contacts: this.sharedContacts});
+            this.commonEventService.broadcast({channel: 'media:photo:update_recipients', payload: this.sharedContacts});
           },
           (error: any) => {
             console.log('error', error);

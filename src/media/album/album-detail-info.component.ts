@@ -6,6 +6,7 @@ import {
   OnChanges
 } from '@angular/core';
 import { Album } from '../shared/model/album.model';
+import { Constants } from '@shared/constant';
 
 @Component({
   moduleId: module.id,
@@ -21,6 +22,8 @@ export class AlbumDetailInfoComponent implements OnChanges {
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   albumData: Album = null;
+
+  profileUrl = `${Constants.baseUrls.social}/profile/`;
 
   updateProperties(properties: any) {
     if (properties.hasOwnProperty('object')) {

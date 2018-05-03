@@ -35,7 +35,8 @@
       <li>
         <a class="btn btn-default" draggable="false" href="javascript:void(0);"
            pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
-           (click)="doEvent({action: 'openModal', payload: {modalName: 'sharingModal'}})">
+           (click)="doEvent({action: 'openModal', payload: {modalName: 'sharingModal',
+           selectedObjects: [toolbar.object]}})">
           <i class="fa fa-share-alt"></i>
         </a>
       </li>
@@ -133,7 +134,8 @@
       <li>
         <a class="btn btn-default" draggable="false" href="javascript:void(0);"
            pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
-           (click)="doEvent({action: 'openModal', payload: {modalName: 'sharingModal'}})">
+           (click)="doEvent({action: 'openModal', payload: {
+              modalName: 'sharingModal', selectedObjects: toolbar.selectedObjects}})">
           <i class="fa fa-share-alt"></i>
         </a>
       </li>

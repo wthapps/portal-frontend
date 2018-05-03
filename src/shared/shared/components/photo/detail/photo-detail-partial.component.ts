@@ -78,6 +78,7 @@ export class PhotoDetailPartialComponent
   };
 
   capabilities: any = this.defaultCapabilities;
+  profileUrl = `${Constants.baseUrls.social}/profile/`;
 
   constructor(
     private resolver: ComponentFactoryResolver,

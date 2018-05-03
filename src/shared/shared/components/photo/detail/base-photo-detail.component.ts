@@ -82,7 +82,6 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
 
         // get batchQuery
         this.batchQuery = params['batchQuery'] || '';
-        console.log('batchQuery:::', typeof this.batchQuery);
         return params['id'];
       })
       .mergeMap((id: any ) => {

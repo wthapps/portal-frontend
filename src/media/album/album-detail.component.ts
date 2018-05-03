@@ -31,7 +31,7 @@ import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.compone
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MediaActionHandler } from '@media/shared/media';
 import {  } from '@media/../../shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { PhotoUploadService } from '@wth/shared/services';
+import {CommonEventService, PhotoUploadService} from '@wth/shared/services';
 
 @Component({
   selector: 'me-album-detail',
@@ -62,6 +62,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
 
   private type = 'photo';
   private path = 'media/media';
+  private sub: any;
 
   constructor(
     protected store: Store<appStore.State>,
@@ -70,7 +71,8 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
     private route: ActivatedRoute,
     private albumService: AlbumService,
     protected mediaSelectionService: WMediaSelectionService,
-    private photoUploadService: PhotoUploadService
+    private photoUploadService: PhotoUploadService,
+    private commonEventService: CommonEventService
   ) {
     super(resolver, store, mediaSelectionService);
     this.photos = this.store.select(appStore.selectDetailObjects);
@@ -114,6 +116,13 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
         this.currentQuery = links.self;
       }
     });
+
+    this.sub = this.commonEventService.filter((e: any) => {
+      return e.channel === 'media:photo:update_recipients';
+    })
+      .subscribe((e: any) => {
+        this.doEvent({action: 'media:photo:update_recipients', payload: this.album});
+      });
   }
 
   doEvent(event: any) {
@@ -181,6 +190,12 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
       case 'goBack':
         this.router.navigateByUrl(this.returnUrl);
         break;
+      case 'media:photo:update_recipients':
+        this.albumService.getAlbum(this.album.uuid).subscribe((response: any) => {
+          this.album.json_shares = response.data.json_shares;
+          this.detailInfo.updateProperties({ object: this.album });
+        });
+        break;
     }
   }
 
@@ -193,7 +208,9 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
     );
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 
   private createDetailInfoComponent() {
     const detailInfoComponentFactory = this.resolver.resolveComponentFactory(

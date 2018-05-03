@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import {ApiBaseService, PhotoService, UserService} from '@wth/shared/services';
+import {ApiBaseService, CommonEventService, PhotoService, UserService} from '@wth/shared/services';
 import { BasePhotoDetailComponent } from '@wth/shared/shared/components/photo/detail/base-photo-detail.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
@@ -27,9 +27,10 @@ import { SharingService } from '@wth/shared/shared/components/photo/modal/sharin
     AddToAlbumModalComponent,
     PhotoEditModalComponent]
 })
-export class PhotoDetailComponent extends BasePhotoDetailComponent implements OnInit {
+export class PhotoDetailComponent extends BasePhotoDetailComponent implements OnInit, OnDestroy {
   returnUrl: string;
 
+  private sub: any;
   constructor(
     protected route: ActivatedRoute,
     protected router: Router,
@@ -38,7 +39,8 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent implements On
     protected photoService: PhotoService,
     protected userService: UserService,
     protected sharingService: SharingService,
-    protected api: ApiBaseService
+    protected api: ApiBaseService,
+    private commonEventService: CommonEventService
   ) {
     super(
       route,
@@ -55,24 +57,22 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent implements On
   ngOnInit() {
     super.ngOnInit();
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'photos';
+    this.sub = this.commonEventService.filter((e: any) => {
+        return e.channel === 'media:photo:update_recipients';
+      })
+      .subscribe((e: any) => {
+        this.doEvent({action: 'media:photo:update_recipients', payload: this.photo});
+      });
   }
 
   doEvent(event: any) {
     switch (event.action) {
       // Handle all of event in child class here
       case 'media:photo:update_recipients':
-      case 'media:photo:load_sharing_info':
-        this.sharingService
-          .getShared({ objects: [this.id] })
-          .toPromise()
-          .then((response: any) => {
-            this.recipients = response.data;
-            this.photo.json_shares = response.data;
-          });
+        this.photoService.getPhoto(this.photo.uuid).subscribe((response: any) => {
+          this.photo.json_shares = response.data.json_shares;
+        });
         break;
-      // case 'media:photo:update_recipients':
-      //   this.photo.json_shares = event.payload.data;
-      //   break;
       case 'editInfo':
         this.loadingService.start();
           const selectedObject = event.params.selectedObject;
@@ -101,5 +101,9 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent implements On
         super.doEvent(event);
         break;
     }
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

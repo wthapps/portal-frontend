@@ -46,21 +46,28 @@
     </h4>
   </div>
   <dl>
-    <!--<dt>Owner</dt>
+    <dt>Owner</dt>
     <dd>
       <ul class="list-unstyled recipients">
         <li>
-          <img width="24" src="https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/users/cbe518e0-4e8c-4dd8-961c-993651ebcd5b/photos/1f1ea-1f1e6.jpg" alt="John Tran" title="John Tran"> John Tran
+          <a [href]="profileUrl + object?.owner?.uuid">
+            <img width="24" [src]="object?.owner?.profile_image"
+                 [alt]="object?.owner?.name"
+                 [title]="object?.owner?.name">
+            {{ object?.owner.name }}
+          </a>
         </li>
       </ul>
-    </dd>-->
+    </dd>
 
     <dt>Shared with</dt>
     <dd>
       <ul class="list-unstyled recipients">
-        <li *ngFor="let contact of (object?.json_shares) ? object?.json_shares?.contacts : []">
-          <img src="assets/images/zone/img-group.png" title="{{ contact?.name }}">
-          {{ contact?.name }}
+        <li *ngFor="let contact of object?.json_shares">
+          <a [href]="profileUrl + contact?.uuid">
+            <img width="24" [src]="contact?.profile_image" title="{{ contact?.name }}">
+            {{ contact?.name }}
+          </a>
         </li>
       </ul>
     </dd>
