@@ -80,17 +80,13 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       return Object.assign({}, state, {
         objects: [],
         detailObjects: [],
+        selectedObjectId: null,
         loading: true
       });
     }
 
     case actions.ActionTypes.GET_ALL_SUCCESS: {
       let result: any;
-      // add selected attribute
-      action.payload.data.map(obj => {
-        obj['selected'] = state.selectedObjectId === obj.id ? true : false;
-        return obj;
-      });
       if (action.payload.detail) {
         result = Object.assign({}, state, {
           loading:  false,
