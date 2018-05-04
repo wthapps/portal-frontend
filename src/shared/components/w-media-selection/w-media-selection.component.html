@@ -16,7 +16,7 @@
       <i class="fa fa-search"></i>
     </button>
 
-    <w-nav-tab [tabs]="tabs" (currentTab)="tabAction($event)"></w-nav-tab>
+    <w-nav-tab [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)"></w-nav-tab>
 
     <w-object-toolbar-selected
       *ngIf="currentTab == 'photos' ||

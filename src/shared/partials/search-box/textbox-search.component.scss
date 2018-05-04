@@ -4,6 +4,9 @@
   &.input-group-wrap {
     position: relative;
   }
+  .show-button {
+    display: block !important;
+  }
 
   .input-group-suggestions {
     position: absolute;

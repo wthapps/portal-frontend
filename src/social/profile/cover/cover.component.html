@@ -114,24 +114,5 @@
     </so-information>
 
   </cover-profile>
-
-  <nav class="nav-tabs-wrap">
-    <ul class="nav nav-tabs list-unstyled clearfix">
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'post']">Post</a>
-      </li>
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'about']">About</a>
-      </li>
-      <li *ngIf="showFriends" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'friends']">Friends</a>
-      </li>
-      <li class="pull-right dropdown">
-
-      </li>
-      <!--<li *ngIf="relationships" class="pull-right mr10">-->
-
-      <!--</li>-->
-    </ul>
-  </nav>
+  <w-nav-tab [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)"></w-nav-tab>
 </div>

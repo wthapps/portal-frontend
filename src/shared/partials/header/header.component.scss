@@ -38,11 +38,11 @@
     }
 
     .navbar-searchTop {
-      @media (min-width: $screen-md-min) {
-        width: 400px;
-      }
       @media (min-width: $screen-sm-min) {
         width: 200px;
+      }
+      @media (min-width: $screen-md-min) {
+        width: 400px;
       }
     }
 

@@ -9,7 +9,7 @@ import { Media } from '@shared/shared/models/media.model';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import 'rxjs/add/operator/takeUntil';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
-import { WTab } from '@shared/components/w-nav-tab/w-nav-tab.component';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 
 @Component({
   selector: 'w-media-selection',
@@ -60,6 +60,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   multipleSelection$: Observable<boolean>;
 
   currentTab: string; // upload, photos, albums, albums_detail, favourites, shared_with_me
+
   nextLink: string;
   isLoading: boolean;
 

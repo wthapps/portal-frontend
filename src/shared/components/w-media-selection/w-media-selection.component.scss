@@ -25,7 +25,6 @@
   .nav-tabs-wrap {
     margin: -15px;
     padding: 0 15px;
-    float: left;
   }
   .modal-body {
     padding: 0;
@@ -81,7 +80,8 @@
 
   @media (max-width: $screen-xs-max) {
     .nav-tabs-wrap {
-      margin-top: 35px;
+      margin-top: -5px;
+      margin-bottom: -5px;
     }
     .wobject-list {
       .wobject-owner, .wobject-create-date, .wobject-file-size, .wobject-wobject-action {
