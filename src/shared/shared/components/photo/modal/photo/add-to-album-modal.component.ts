@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { ApiBaseService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
+import { Router } from '@angular/router';
 
 declare var $: any;
 declare var _: any;
@@ -27,7 +28,7 @@ export class AddToAlbumModalComponent implements OnInit {
 
   readonly urls = Constants.urls;
 
-  constructor(private apiBaseService: ApiBaseService) {
+  constructor(private apiBaseService: ApiBaseService, private router: Router) {
   }
 
   ngOnInit() {
@@ -79,6 +80,11 @@ export class AddToAlbumModalComponent implements OnInit {
 
   onCreateNewAlbum() {
     this.onAction({action: 'openModal', payload: {modalName: 'createAlbumModal', data: this.selectedPhotos}});
+  }
+
+  view() {
+    this.router.navigate(['albums', this.selectedAlbum.uuid],
+      {queryParams: {returnUrl: this.router.url}});
   }
 
 }

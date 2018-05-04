@@ -68,7 +68,7 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
         break;
       case 'favourite':
         this.store.dispatch(new Favorite(event.payload));
-        this.store.dispatch(new DeleteManySuccess({data: event.payload.selectedObjects}));
+        this.store.dispatch(new DeleteManySuccess(event.payload));
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);
@@ -89,7 +89,7 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
     const object = payload.selectedObject;
     if (object.object_type === 'album') {
       this.router.navigate(['albums', object.uuid], {queryParams: {returnUrl: this.router.url}});
-    } if (object.object_type === 'sharing') {
+    } else if (object.object_type === 'sharing') {
       this.router.navigate(['shared', object.uuid], {queryParams: {returnUrl: this.router.url}});
     } else {
       this.router.navigate([`photos`,
