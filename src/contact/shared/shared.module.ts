@@ -48,6 +48,7 @@ import { CheckForUpdateService } from '@contacts/shared/services/check-for-updat
 import { LogUpdateService } from '@contacts/shared/services/log-update.service';
 import { PromptUpdateService } from '@contacts/shared/services/prompt-update.service';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
+import { ZContactSearchSharedToolbarComponent } from '@contacts/shared/toolbar/search.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -83,9 +84,8 @@ import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-da
     RadioButtonModule,
     AutoCompleteModule,
     CalendarModule,
-    PanelMenuModule,
+    PanelMenuModule
     // BrowserAnimationsModule,
-
   ],
   declarations: [
     ZContactSharedListComponent,
@@ -99,11 +99,11 @@ import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-da
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
 
-
     //modal here
     ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,
     ZContactShareIcloudIndicateComponent,
+    ZContactSearchSharedToolbarComponent,
     ICloudOAuthComponent
   ],
   exports: [
@@ -143,6 +143,7 @@ import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-da
     ZContactSharedLeftMenuComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
+    ZContactSearchSharedToolbarComponent,
 
     // my profile
     ZMyProfileComponent,
@@ -167,7 +168,6 @@ export class ContactSharedModule {
         CheckForUpdateService,
         LogUpdateService,
         PromptUpdateService
-
       ]
     };
   }

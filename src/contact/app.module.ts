@@ -18,6 +18,7 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 import { environment } from '@env/environment';
+import { ContactSearchModule } from '@contacts/search/search.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { environment } from '@env/environment';
     HomeModule,
     ContactModule,
     MyProfileModule,
+    ContactSearchModule,
     GroupModule,
     SettingsModule,
     ModalModule,
@@ -40,7 +42,9 @@ import { environment } from '@env/environment';
     WthCommonModule,
     SharedServicesModule.forRoot(),
     CoreModule.forRoot(),
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: environment.production
+    })
   ],
   providers: [
     {

@@ -12,6 +12,7 @@ import { ZContactEditComponent } from './contact-edit/contact-edit.component';
 import { CoreModule } from '../../core/core.module';
 import { InvitationModule } from '../../shared/shared/components/invitation/invitation.module';
 import { WthCommonModule } from '@wth/shared/common/wth-common.module';
+import { ZContactUserDetailComponent } from '@contacts/contact/user-detail/contact-user-detail.component';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { WthCommonModule } from '@wth/shared/common/wth-common.module';
     ZContactListComponent,
     ZContactEditPageComponent,
     ZContactDetailComponent,
+    ZContactUserDetailComponent,
 
     //components
     ZContactEditComponent

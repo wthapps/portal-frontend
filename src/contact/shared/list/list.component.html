@@ -1,12 +1,12 @@
 <div class="component-listbox-list">
-  <div class="component-listbox-header">
+  <div class="component-listbox-header" *ngIf="showHeader">
     <div class="component-listbox-row" [ngClass]="{'active': (contactService.isSelectAll$ | async)}">
       <div class="component-listbox-input">
         <i (click)="onSelectedAll()" class="fa fa-check"></i>
       </div>
       <div class="component-listbox-name">
-        <span class="can-click contact-listbox-block-link" (click)="onSort('name')"
-           pTooltip="{{ tooltip.reverseSortDirection }}" tooltipPosition="top">Name
+        <span class="can-click contact-listbox-block-link" (click)="onSort('name')" pTooltip="{{ tooltip.reverseSortDirection }}"
+          tooltipPosition="top">Name
           <i class="fa" [ngClass]="{'fa-arrow-up': (desc$ | async), 'fa-arrow-down': !(desc$ | async)}"></i>
         </span>
       </div>

@@ -1,9 +1,8 @@
 <ng-container *ngIf="data">
   <z-contact-shared-toolbar [currentPage]="'detail'" [hasBack]="true">
     <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
-      <z-contact-shared-actions-bar [showViewDetail]="false" [showNumber]="false" [showTag]="false" [showSocial]="data | isContactInternal"
-        [showChat]="data | isContactInternal" [showInvitation]="false" [toggleFavourite]="_contact.isContactsHasGroupName([data], 'favourite')"
-        [toggleBlacklist]="_contact.isContactsHasGroupName([data], 'blacklist')" (eventOut)="doActionsToolbar($event)"></z-contact-shared-actions-bar>
+      <button class="btn btn-outline-default" type="button" tabindex="0" (click)="save()">
+        <i class="fa fa-plus"></i> Save to Contact </button>
     </div>
   </z-contact-shared-toolbar>
   <div class="page-body-content has-page-body-control">
@@ -21,9 +20,6 @@
                 <h4 class="bold">{{ data.name }}</h4>
                 <p>
                   <small>{{ data.job_title }}</small>
-                </p>
-                <p *ngIf="data.groups.length > 0">
-                  <span *ngFor="let group of data.groups" class="group group-default mr10">{{ group.name }}</span>
                 </p>
               </div>
             </div>
@@ -56,7 +52,7 @@
             <h3>Email</h3>
           </div>
           <div class="field-group-content">
-            <dl class="dl-horizontal" *ngIf="data.emails.length > 0">
+            <dl class="dl-horizontal" *ngIf="data.emails?.length > 0">
               <ng-template ngFor let-item [ngForOf]="data.emails">
                 <dt>{{ item.category | keyToValue:emailCategories:'value':'text' }}</dt>
                 <dd>
@@ -69,57 +65,7 @@
           </div>
         </div>
 
-        <div class="field-group">
-          <div class="field-group-title">
-            <h3>Address</h3>
-          </div>
-          <div class="field-group-content">
-            <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
-              <ng-template ngFor let-item [ngForOf]="data.addresses">
-                <dt>{{ item.category | keyToValue:addressCategories:'value':'text' }}</dt>
-                <dd>
-                  <p>
-                    {{ item.address_line1 }}
-                    <br> {{ item.address_line2 }}
-                    <br> {{ item.city }} {{ item.province }} {{ item.postcode }}
-                    <br> {{ item.country }}
-                    <br>
-                  </p>
-                </dd>
-              </ng-template>
-            </dl>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-group-title">
-            <h3>Media</h3>
-          </div>
-          <div class="field-group-content">
-            <dl class="dl-horizontal" *ngIf="data.media.length > 0">
-              <ng-template ngFor let-item [ngForOf]="data.media">
-                <dt>{{ item.category | keyToValue:mediaCategories:'value':'text' }}</dt>
-                <dd>
-                  <p>
-                    <a href="{{ item.value }}" target="_blank" rel="noopener">{{ item.value }}</a>
-                  </p>
-                </dd>
-              </ng-template>
-            </dl>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-group-title">
-            <h3>Note</h3>
-          </div>
-          <div class="field-group-content">
-            {{ data.notes }}
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
 </ng-container>
-<contact-add-group-modal #modal></contact-add-group-modal>

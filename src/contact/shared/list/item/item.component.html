@@ -22,28 +22,25 @@
   <div class="component-listbox-phone">
     <ul class="list-unstyled m0">
       <li *ngIf="data.emails && data.emails.length > 0">
-        <img
-          *ngIf="(countriesCode$ | async) && data.phones[0] && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
-          src="assets/images/flags/{{data.phones[0]?.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
-          width="30" alt="">
-        {{ data.phones[0]?.value }}
+        <img *ngIf="(countriesCode$ | async) && data.phones[0] && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
+          src="assets/images/flags/{{data.phones[0]?.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg" width="30"
+          alt=""> {{ data.phones[0]?.value }}
       </li>
     </ul>
   </div>
   <div class="component-listbox-description"></div>
   <div class="component-listbox-date"></div>
-  <div class="component-listbox-action">
-    <z-contact-shared-actions-bar
-      [data]="data"
-      [showQuickInvitation]="data.wthapps_user == null"
-      [showNumber]="false"
-      [showSocial]="data | isContactInternal"
-      [showChat]="data | isContactInternal"
-      [showInvitation]="data.wthapps_user == null"
-      [toggleFavourite]="data | contactHasGroup:'favourite'"
-      [toggleBlacklist]="data | contactHasGroup:'blacklist'"
-      (eventOut)="doActionsToolbar($event)">
+  <!-- Actions for contact -->
+  <div class="component-listbox-action" *ngIf="!data.settings">
+    <z-contact-shared-actions-bar [data]="data" [showQuickInvitation]="data.wthapps_user == null" [showNumber]="false" [showSocial]="data | isContactInternal"
+      [showChat]="data | isContactInternal" [showInvitation]="data.wthapps_user == null" [toggleFavourite]="data | contactHasGroup:'favourite'"
+      [toggleBlacklist]="data | contactHasGroup:'blacklist'" (eventOut)="doActionsToolbar($event)">
     </z-contact-shared-actions-bar>
   </div>
+  <!-- Actions for user -->
+  <div class="component-listbox-action" *ngIf="data.settings">
+    <button *ngIf="!saved" class="btn btn-outline-default" type="button" (click)="saveContact()">
+      <i class="fa fa-plus"></i> Save to Contact </button>
+    <span *ngIf="saved">Saved</span>
+  </div>
 </div>
-

@@ -13,6 +13,7 @@ import { Constants } from '../../../shared/constant/config/constants';
 })
 export class ZContactSharedListComponent {
   @Input() data: any;
+  @Input() showHeader: any = true;
 
   // descending: boolean = false;
   desc$: Observable<boolean>;
