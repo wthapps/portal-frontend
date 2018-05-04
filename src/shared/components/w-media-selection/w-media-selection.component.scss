@@ -81,16 +81,7 @@
 
   @media (max-width: $screen-xs-max) {
     .nav-tabs-wrap {
-      float: none !important;
       margin-top: 35px;
-      .nav-tabs {
-        white-space: nowrap;
-        overflow: auto;
-        > li {
-          float: none !important;
-          display: inline-block;
-        }
-      }
     }
     .wobject-list {
       .wobject-owner, .wobject-create-date, .wobject-file-size, .wobject-wobject-action {

@@ -1,0 +1,7 @@
+<nav class="nav-tabs-wrap">
+  <ul class="nav nav-tabs">
+    <li *ngFor="let tab of tabs" [ngClass]="{active: tab ==  tabActive}">
+      <a (click)="onTab(tab)" href="javascript:;"><i *ngIf="tab.icon" [class]="tab.icon"></i> {{ tab.name }}</a>
+    </li>
+  </ul>
+</nav>

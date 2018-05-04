@@ -9,6 +9,7 @@ import { Media } from '@shared/shared/models/media.model';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import 'rxjs/add/operator/takeUntil';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab.component';
 
 @Component({
   selector: 'w-media-selection',
@@ -19,6 +20,39 @@ import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 
 export class WMediaSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
+
+  tabs: WTab[] = [
+    {
+      name: 'Upload',
+      link: 'upload',
+      icon: 'fa fa-cloud-upload',
+      type: 'tab'
+    },
+    {
+      name: 'Photos',
+      link: 'photos',
+      icon: 'fa fa-photo',
+      type: 'tab'
+    },
+    {
+      name: 'Albums',
+      link: 'albums',
+      icon: 'fa fa-file-photo-o',
+      type: 'tab'
+    },
+    {
+      name: 'Favourites',
+      link: 'favourites',
+      icon: 'fa fa-star',
+      type: 'tab'
+    },
+    {
+      name: 'Shared with me',
+      link: 'shared_with_me',
+      icon: 'fw fw-shared-with-me',
+      type: 'tab'
+    }
+  ];
 
   medias$: Observable<Media[]>;
   mediaParent: Media;
@@ -107,9 +141,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  tabAction(action: string) {
+  tabAction(event: any) {
     this.mediaSelectionService.clear();
-    this.currentTab = action;
+    this.currentTab = event.link;
 
     if (this.currentTab !== 'upload') {
       this.nextLink = this.buildNextLink();
@@ -189,7 +223,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   onSearchEnter(e: any) {
     console.log(e);
     this.searchText = e.search;
-    this.tabAction('search');
+    this.tabAction({
+      link: 'search'
+    });
   }
 
   onSearchEscape(e?: any) {

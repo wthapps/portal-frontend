@@ -55,6 +55,7 @@ import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { ComponentsModule } from '@shared/components/components.module';
 import { AccordionModule } from 'primeng/components/accordion/accordion';
 import { ModalModule } from '@wth/shared/components/modal/modal.module';
+import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -75,7 +76,8 @@ import { ModalModule } from '@wth/shared/components/modal/modal.module';
     PartialModule,
     //Custom modules
     ModalModule,
-    WMediaSelectionModule
+    WMediaSelectionModule,
+    WNavTabModule
   ],
   declarations: [],
   exports: [
@@ -138,6 +140,7 @@ import { ModalModule } from '@wth/shared/components/modal/modal.module';
     // Custom modules
     ModalModule,
     WMediaSelectionModule,
+    WNavTabModule,
     ComponentsModule,
 
     // Pipe
