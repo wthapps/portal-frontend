@@ -37,7 +37,8 @@ const EMPTY_DEFAULT_TABS: any = {
 @Component({
   selector: 'z-social-community-detail',
   templateUrl: 'detail.component.html',
-  animations: [fadeInAnimation]
+  animations: [fadeInAnimation],
+  styleUrls: ['detail.component.scss']
 })
 export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
@@ -52,6 +53,40 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     join_requests: 'join_requests',
     blacklist: 'blacklist'
   };
+
+  tabs: WTab[] = [
+    {
+      name: 'Post',
+      link: 'post',
+      icon: null,
+      type: 'tab'
+    },
+    {
+      name: 'About',
+      link: 'about',
+      icon: null,
+      type: 'tab'
+    },
+    {
+      name: 'Members',
+      link: 'members',
+      icon: null,
+      type: 'tab'
+    },
+    {
+      name: 'Invitations',
+      link: 'invitations',
+      icon: null,
+      type: 'tab'
+    },
+    {
+      name: 'Join Requests',
+      link: 'join_requests',
+      icon: null,
+      type: 'tab'
+    }
+  ];
+
 
   tabData: any = [
     {
@@ -144,6 +179,10 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
+  }
+
+  tabAction(event: any) {
+    console.log(event);
   }
 
   onPreference() {
