@@ -12,10 +12,10 @@ declare var _: any;
 export class WGridListHeaderComponent {
   @Input() data: any;
   @Input() view: string;
+  @Input() field: string;
+  @Input() direction: string;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
-  field: any = 'Date';
-  direction: any = 'asc';
   groupBy = 'Date';
   sliderVal: number = Constants.mediaSliderViewNumber.default;
   sliderMin: number = Constants.mediaSliderViewNumber.min;
@@ -27,7 +27,7 @@ export class WGridListHeaderComponent {
   }
 
 
-  sort(field: string, direction: string = 'asc', groupBy: string = '') {
+  sort(field: string, groupBy: string = '') {
     // if (this.view !== 'list') {
     //   this.field = 'Date';
     // }
@@ -40,9 +40,10 @@ export class WGridListHeaderComponent {
 
     if (this.field === 'Date' || this.field === 'Month' || this.field === 'Year') {
       this.event.emit({action: 'sort', payload: {queryParams: {sort: this.direction, sort_name: 'created_at'}}});
+      return;
     } else {
       this.event.emit({action: 'sort',
-        payload: {queryParams: {sort: this.direction, sort_name: this.field.toLowerCase()}}});
+        payload: {queryParams: {sort: this.direction, sort_name: this.field}}});
     }
   }
 

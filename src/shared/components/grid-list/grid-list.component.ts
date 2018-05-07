@@ -61,8 +61,8 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   hasScrollbar: boolean;
   hasMultipleSelection: Boolean = true;
   groupBy: string = '';
-  sortBy: string;
-  sortOrder: string;
+  sortBy = 'Date';
+  sortOrder = 'asc';
 
   private pressingCtrlKey: boolean = false;
   private destroySubject: Subject<any> = new Subject<any>();
@@ -121,6 +121,10 @@ export class WGridListComponent implements OnDestroy, OnChanges {
         this.zoom(event.payload);
         break;
       default:
+        if (event.action === 'sort') {
+          this.sortBy = event.payload.queryParams.sort_name;
+          this.sortOrder = event.payload.queryParams.sort;
+        }
         if (event.action === 'getMore' && !event.payload.nextLink) {
           break;
         }
