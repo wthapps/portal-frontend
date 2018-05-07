@@ -155,7 +155,11 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   goBack() {
-    this.router.navigate([this.returnUrl]);
+    if (this.router.url.indexOf('modal:photos') > 0) {
+      this.router.navigate([{outlets: {modal: null}}]);
+    } else {
+      this.router.navigate([this.returnUrl]);
+    }
     this.photoService.closePreviewModal();
   }
 
