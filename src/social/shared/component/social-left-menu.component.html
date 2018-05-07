@@ -1,6 +1,6 @@
 <div class="menuleft-item" [routerLinkActive]="['active']">
   <a [routerLink]="[homeMenuItem.link]" [routerLinkActive]="['active']"
-     (click)="reloadHome()" href="javascript:void(0);">
+     (click)="reloadHome(); onCloseMenu()" href="javascript:void(0);">
     <i class="{{ homeMenuItem.icon }}"></i> {{ homeMenuItem.name }}
   </a>
   <div class="menuleft-item-action">
@@ -22,7 +22,7 @@
 <div class="menuleft-item-shortcuts" [ngClass]="{'expand': shortcutsExpand}">
   <div class="menuleft-item" *ngFor="let shortcut of shortcuts$ | async" [routerLinkActive]="['active']"
        (click)="onShortcutAccessed(shortcut)">
-    <a draggable="false" [routerLink]="[shortcut?.link]" (click)="onSubMenu(shortcut?.link)"
+    <a draggable="false" [routerLink]="[shortcut?.link]" (click)="onSubMenu(shortcut?.link); onCloseMenu()"
        pTooltip="{{ shortcut?.name }}" tooltipPosition="bottom" href="#">
       <i class="fa fa-users"></i> {{ shortcut?.name }}
     </a>
@@ -40,19 +40,19 @@
 </div>
 
 <div class="menuleft-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-  <a draggable="false" [routerLink]="[communitiesMenuItem.link]" href="#">
+  <a draggable="false" [routerLink]="[communitiesMenuItem.link]" (click)="onCloseMenu()" href="#">
     <i class="{{ communitiesMenuItem.icon }}"></i> {{ communitiesMenuItem.name }}
   </a>
 </div>
 
 <ng-container *ngFor="let social of socialMenu">
   <div *ngIf="social.name != ''" class="menuleft-item" [routerLinkActive]="['active']">
-    <a [routerLink]="['/profile', uuid, 'post']" href="javascript:;" *ngIf="social.link == '/profile'" >
+    <a [routerLink]="['/profile', uuid, 'post']" (click)="onCloseMenu()" href="javascript:;" *ngIf="social.link == '/profile'" >
       <i class="{{ social.icon }}"></i> {{ social.name }}
     </a>
 
     <a [routerLink]="[social.link]" href="javascript:;" *ngIf="social.link !== '/profile'"
-       (click)="onSubMenu(social.link)">
+       (click)="onSubMenu(social.link); onCloseMenu()">
       <i class="{{ social.icon }}"></i> {{ social.name }}
     </a>
   </div>

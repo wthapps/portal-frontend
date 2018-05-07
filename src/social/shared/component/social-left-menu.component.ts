@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Renderer2 } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WTHNavigateService, UserService } from '@wth/shared/services';
@@ -41,7 +41,8 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
               private router: Router,
               private route: ActivatedRoute,
               private navigateService: WTHNavigateService,
-              private store: Store<any> ) {
+              private renderer: Renderer2,
+              private store: Store<any>) {
     [this.homeMenuItem, this.communitiesMenuItem, ...this.socialMenu] = Constants.socialMenuItems;
     this.store.dispatch({type: fromRoot.SHORTCUT_LOAD});
     this.shortcuts$ = this.store.select(fromRoot.getShortcuts);
@@ -53,6 +54,10 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
   ngOnDestroy() {
     this.destroySubject.next();
     this.destroySubject.complete();
+  }
+
+  onCloseMenu() {
+    this.renderer.removeClass(document.body, 'left-sidebar-open');
   }
 
   onSubMenu(link: string) {
@@ -75,11 +80,11 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
   countNewPostsEvery1min() {
     interval(60000).pipe(
       takeUntil(this.destroySubject)
-      )
+    )
       .subscribe(() => {
-      console.debug('counting ...');
-      this.store.dispatch({type: POSTS_COUNT_LOAD});
-      this.store.dispatch({type: SHORTCUT_LOAD});
+        console.debug('counting ...');
+        this.store.dispatch({type: POSTS_COUNT_LOAD});
+        this.store.dispatch({type: SHORTCUT_LOAD});
       });
   }
 
