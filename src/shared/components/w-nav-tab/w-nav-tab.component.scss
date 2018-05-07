@@ -1,9 +1,12 @@
 @import "../../../assets/styles/global";
 
-.nav-tabs-between {
-  @include flexbox;
-  @include justify-content(space-between);
-  &:before, &:after {
-    display: none;
+@media (max-width: $screen-xs-max) {
+  .nav-tabs-between-xs {
+    @include flexbox;
+    @include justify-content(space-between);
+    &:before, &:after {
+      display: none;
+    }
   }
 }
+

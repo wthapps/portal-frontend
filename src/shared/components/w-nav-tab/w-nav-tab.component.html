@@ -13,7 +13,7 @@
     </ul>
   </div>
 
-  <ul [ngClass]="{'hidden-xs': tabs.length > 3, 'nav-tabs-between' : tabs.length <= 3}" class="nav nav-tabs">
+  <ul [ngClass]="{'hidden-xs': tabs.length > 3, 'nav-tabs-between-xs' : tabs.length <= 3}" class="nav nav-tabs">
     <li *ngFor="let tab of tabs" [ngClass]="{active: tab == tabActive}">
       <a (click)="onTab(tab)" href="javascript:;"><i *ngIf="tab.icon" [class]="tab.icon"></i> {{ tab.name }}</a>
     </li>
