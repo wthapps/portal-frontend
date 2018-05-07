@@ -215,7 +215,7 @@
 
 
   <w-grid-list #gridlist
-               [objects]="photos|async"
+               [objects]="photos$|async"
                (event)="doEvent($event)"
                (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)">
 
@@ -223,9 +223,8 @@
     <div class="page-body-content has-page-body-control gray-light" *ngIf="loading$|async">
       <box-loading></box-loading>
     </div>
-
     <!--no data region-->
-    <div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length && !(loading$|async)">
+    <div class="zone-no-photo text-center" *ngIf="loaded && !gridlist.objects.length">
       <div>
         <h2><i class="fa fa-picture-o"></i></h2>
         <h3>There is no photo!</h3>

@@ -52,6 +52,7 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
     canEdit: false,
     canDelete: false
   };
+  loaded = false;
   private path = 'media/media';
   private type = 'photo';
 
@@ -99,6 +100,7 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
           action: 'getAll',
           payload: {detail: this.detail, path: this.path, queryParams: {type: this.type, sharing: this.sharing.id}}
         });
+        this.loaded = true;
       });
     });
   }
