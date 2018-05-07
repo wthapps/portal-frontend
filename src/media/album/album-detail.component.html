@@ -79,12 +79,12 @@
               <!--<i class="fa fa-image"></i> Set Album Cover-->
             <!--</a>-->
           <!--</li>-->
-          <li>
-            <a draggable="false" href="javascript:void(0);"
-               (click)="doEvent({action: 'downloadAlbum', payload: {selectedObjects: [toolbar.object]}})">
-              <i class="fa fa-download"></i> Download
-            </a>
-          </li>
+          <!--<li>-->
+            <!--<a draggable="false" href="javascript:void(0);"-->
+               <!--(click)="doEvent({action: 'downloadAlbum', payload: {selectedObjects: [toolbar.object]}})">-->
+              <!--<i class="fa fa-download"></i> Download-->
+            <!--</a>-->
+          <!--</li>-->
           <li>
             <a draggable="false" href="javascript:void(0);"
                (click)="doEvent({
@@ -185,13 +185,7 @@
               <i class="fa fa-download"></i> Download
             </a>
           </li>
-          <li>
-            <a href="javascript:void(0);" draggable="false"
-            (click)="doEvent({action: 'deleteMedia',
-            payload: { selectedObjects: toolbar.selectedObjects, delete_child: true }})">
-              <i class="fa fa-trash-o"></i> Delete
-            </a>
-          </li>
+
           <li *ngIf="toolbar.hasOneObject">
             <a href="javascript:void(0);" draggable="false"
                (click)="doEvent({action: 'viewDetails',

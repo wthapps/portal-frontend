@@ -14,7 +14,7 @@
     <!--(dblclick)="doAction({action:'previewAllPhotos', payload: {selectedObject: object}})"-->
     <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
       <div class="photo-box-figure-in">
-        <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url" alt="">
+        <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url + '?t=' + time" alt="">
       </div>
     </figure>
     <div class="photo-box-name">

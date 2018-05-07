@@ -21,6 +21,7 @@ import {
   Download,
   AddSuccess,
   AddToDetailObjects,
+  DeleteMany,
   RemoveFromDetailObjects
 } from '../shared/store/media/media.actions';
 
@@ -188,6 +189,10 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
         break;
       case 'download':
         this.store.dispatch(new Download(event.payload));
+        break;
+      case 'deleteMedia':
+        this.store.dispatch(new DeleteMany({ ...event.payload }));
+        this.router.navigate([this.returnUrl]);
         break;
       case 'goBack':
         this.router.navigateByUrl(this.returnUrl);

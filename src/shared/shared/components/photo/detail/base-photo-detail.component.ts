@@ -181,6 +181,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
     // Ask for user confirmation before deleting selected PHOTOS
     return new Promise<any>((resolve: any) => {
       this.wthConfirmService.confirm({
+        header: 'Delete photo',
         message: `Are you sure to delete photo ${this.photo.name} ?`,
         accept: () => {
           this.loadingService.start();

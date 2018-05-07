@@ -365,6 +365,8 @@ export class PhotoDetailPartialComponent
     this.photoService.confirmUpdate(this.photo, dataImg).then((data: any) => {
       // this.event.emit({ action: 'photoUpdated', payload: data });
       this.photo.url = `${data.url}?t=${+new Date()}`;
+      $('.cropper-canvas')[0].childNodes[0].src = this.photo.url;
+
       this.hasEditPhoto = false;
     });
   }
