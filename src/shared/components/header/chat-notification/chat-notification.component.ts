@@ -72,7 +72,9 @@ export class ChatNotificationComponent implements OnInit {
 
   toggleViewNotifications() {
     this.apiBaseService.addCommand(ConversationApiCommands.mostRecentConversations()).subscribe((res: any) => {
-      this.links = res.page_metadata.links;
+      console.log(res);
+
+      this.links = res.meta.links;
       this.conversations = res.data;
     });
   }
@@ -150,7 +152,7 @@ export class ChatNotificationComponent implements OnInit {
     if(this.links && this.links.next) {
       this.apiBaseService.get(this.links.next).subscribe((res: any) => {
         this.conversations = [...this.conversations, ...res.data];
-        this.links = res.page_metadata.links;
+        this.links = res.meta.links;
       });
     }
   }

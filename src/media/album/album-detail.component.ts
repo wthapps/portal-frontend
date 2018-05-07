@@ -49,16 +49,16 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
   detailInfo: any;
   showDetailsInfo: boolean;
 
-  photos: Observable<any>;
-  nextLink: Observable<any>;
+  photos$: Observable<any>;
+  nextLink$: Observable<any>;
 
   tooltip: any = Constants.tooltip;
   detail = true;
   returnUrl: string;
   links$: Observable<any>;
   loading$: Observable<any>;
-
   currentQuery: string;
+  loaded = false;
 
   private type = 'photo';
   private path = 'media/media';
@@ -75,10 +75,10 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
     private commonEventService: CommonEventService
   ) {
     super(resolver, store, mediaSelectionService);
-    this.photos = this.store.select(appStore.selectDetailObjects);
+    this.photos$ = this.store.select(appStore.selectDetailObjects);
     this.links$ = this.store.select(appStore.selectLinks);
+    this.nextLink$ = this.store.select(appStore.selectNextLink);
     this.loading$ = this.store.select(appStore.selectLoading);
-
   }
 
   ngOnInit() {
@@ -109,6 +109,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
           })
         );
         this.detailInfo.updateProperties({ object: this.album });
+        this.loaded = true;
       });
 
     this.links$.subscribe(links => {
@@ -146,6 +147,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
         break;
       case 'favourite':
         this.store.dispatch(new Favorite(event.payload));
+        this.album.favorite = event.payload.mode === 'remove' ? false : true;
         break;
       case 'viewDetails':
         this.viewDetails(event.payload);

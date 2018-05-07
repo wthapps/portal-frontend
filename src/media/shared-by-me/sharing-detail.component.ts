@@ -52,6 +52,7 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
     canEdit: false,
     canDelete: false
   };
+  loaded = false;
   private path = 'media/media';
   private type = 'photo';
 
@@ -90,7 +91,7 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
       });
 
       this.apiBaseService.get(`media/sharings/${params.id}/full_details`).subscribe((response: any) => {
-        this.sharing = response.sharing;
+        // this.sharing = response.sharing;
         this.photos = response.data;
         this.params = response;
 
@@ -99,6 +100,7 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
           action: 'getAll',
           payload: {detail: this.detail, path: this.path, queryParams: {type: this.type, sharing: this.sharing.id}}
         });
+        this.loaded = true;
       });
     });
   }
@@ -180,17 +182,14 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
   private preview(payload: any) {
     const objects = payload.selectedObjects;
     const ids = _.map(objects, 'id');
+    const batchQuery = objects.length > 1 ? `media/media?type=photo&ids=${ids}` :
+      `media/media?type=photo&sharing=${this.sharing.id}`;
 
-    this.router.navigate([{
-        outlets: {
-          modal: [
-            'photos',
-            objects[0].id,
-            {ids: ids, mode: 0}
-          ]
-        }
-      }], {queryParamsHandling: 'preserve', preserveFragment: true}
-    );
+    this.router.navigate([`photos`,
+      objects[0].id, {
+      batchQuery: batchQuery,
+      ids: ids, mode: 0
+    }], {queryParams: {returnUrl: this.router.url}});
   }
 
   private viewDetails(payload: any) {

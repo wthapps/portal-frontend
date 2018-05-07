@@ -108,7 +108,7 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
 
   preview(payload: any) {
     if (payload.selectedObjects.length > 1) {
-      this.viewDetails({selectedObject: payload.selectedObjects[0]}, _.map(payload.selectedObjects, 'uuid'));
+      this.viewDetails({selectedObject: payload.selectedObjects[0]}, _.map(payload.selectedObjects, 'id'));
     } else if (payload.selectedObjects.length === 1) {
       this.viewDetails({selectedObject: payload.selectedObjects[0]});
     } else if (payload.selectedObjects.length === 0) {
@@ -120,7 +120,7 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
     this.router.navigate([
       `photos`,
       object.uuid, {
-        batchQuery: ids.length > 0 ? `[${ids}]` : this.currentQuery,
+        batchQuery: ids.length > 0 ? `${this.currentQuery}&ids=${ids}]` : this.currentQuery,
         mode: 0
       }
     ]);

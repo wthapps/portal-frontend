@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { TextBoxSearchComponent } from '../../../shared/partials/search-box/textbox-search.component';
 import { ServiceManager } from '../../../shared/services/service-manager';
 import { SuggestionService } from '../../../shared/services/suggestion.service';
+import { Router } from '@angular/router';
+import { ApiBaseService } from '@shared/services';
 
 declare var _: any;
 
@@ -25,12 +27,38 @@ export class ZContactSharedHeaderComponent {
   suggest$: Observable<any>;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
-  constructor(public serviceManager: ServiceManager,
+  constructor(public router: Router,
+              public apiBaseService: ApiBaseService,
               public suggestService: SuggestionService) {
     this.suggestService.suggest$.subscribe((suggestions: any[]) => {
       this.suggestions.length = 0;
       this.suggestions.push(...suggestions);
       console.log('suggestions received: ', this.suggestions);
+    });
+
+    this.suggestService.input$.subscribe((input: any) => {
+      this.apiBaseService.get(`contact/search/my_contacts`, {q: `name:${input}`, per_page: 5})
+      .subscribe(res => {
+        let items = res.data;
+        this.suggestService.setSuggestion(items);
+        this.apiBaseService.get(`contact/search/wth_users_suggest`, {q: `name:${input}`, per_page: 5})
+        .subscribe(res => {
+          // filter duplications
+          let hash = {};
+          const suggests = [...items, ...res.data].filter(item => {
+            // if contact
+            if (item.user_id) {
+              if (hash[item.id]) return false;
+              hash[item.id] = true; return true;
+            }
+            // else user
+            return true;
+          })
+          this.suggestService.setSuggestion(suggests);
+          // console.log(suggests);
+          // console.log([...items, ...res.data]);
+        });
+      });
     });
   }
 
@@ -49,11 +77,10 @@ export class ZContactSharedHeaderComponent {
 
   onEnter(e: any) {
     this.show = false;
-    this.serviceManager.getRouter().navigate(['/contacts', {search: this.search}]);
+    this.router.navigate(['search/all', {q: this.search}]);
   }
 
   onKey(e: any) {
-    console.log(e);
     if (!e.search) {
       this.show = false;
       return;
@@ -61,23 +88,20 @@ export class ZContactSharedHeaderComponent {
     this.show = true;
     this.search = e.search;
     this.suggestService.setInput(this.search);
-
-    // if(e.code = 'Enter') {
-    //   this.onEnter(e);
-    // }
-    // if(e.code = 'Esc') {
-    //   this.onEscape(e);
-    // }
   }
 
   onNavigation(data: any) {
     this.show = false;
-
-    this.serviceManager.getRouter().navigate([`/contacts/detail/${data.id}`]);
+    // if contact
+    if (data.user_id) {
+      this.router.navigate([`/contacts/detail/${data.id}`]);
+    } else {
+      // else users
+      this.router.navigate([`/contacts/user_detail/${data.id}`]);
+    }
   }
 
   onSearchAdvanced(e: any) {
-    console.log(e);
     this.searchAdvanced = e.searchAdvanced;
   }
 }

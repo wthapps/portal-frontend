@@ -4,6 +4,8 @@ import { ZContactService } from '../../services/contact.service';
 import { CommonEventService } from '../../../../shared/services/common-event/common-event.service';
 import { CountryService } from '../../../../shared/shared/components/countries/countries.service';
 import { Observable } from 'rxjs/Observable';
+import { ApiBaseService } from '@shared/services';
+import { Router } from '@angular/router';
 
 @Component({
 
@@ -14,7 +16,7 @@ export class ZContactSharedItemComponent implements OnInit {
   @Input() data: any;
   @HostBinding('class') cssClass:string = 'component-listbox-body';
 
-  // selected: boolean = false;
+  saved: boolean = false;
 
   emailType: any = Constants.emailType;
   countriesCode$: Observable<any>;
@@ -22,6 +24,8 @@ export class ZContactSharedItemComponent implements OnInit {
   constructor(
     private countryService: CountryService,
     private contactService: ZContactService,
+    private apiBaseService: ApiBaseService,
+    private router: Router,
     private commonEventService: CommonEventService
   ) {
 
@@ -44,6 +48,12 @@ export class ZContactSharedItemComponent implements OnInit {
       this.contactService.removeItemSelectedObjects(this.data);
       this.cssClass = 'component-listbox-body';
     }
+  }
+
+  saveContact() {
+    this.apiBaseService.post(`contact/contacts/save`, this.data).subscribe(res => {
+      this.saved = true;
+    })
   }
 
   doActionsToolbar(e: any) {
