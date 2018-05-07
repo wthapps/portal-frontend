@@ -93,35 +93,37 @@ export class PhotoDetailPartialComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.photo && changes.photo) {
+    if (this.photo) {
       // this.currentIndex = _.indexOf(this.ids, this.photo.id);
       this.stop();
       this.capabilities = this.photo.capabilities || this.defaultCapabilities;
-    }
-    if (this.batchItems.length > 0) {
-      this.batchItems.forEach((item, i) => {
-        if (this.photo.id === item.id) {
-          this.currentIndex = i;
-          return;
+
+      if (this.batchItems.length > 0) {
+        this.batchItems.forEach((item, i) => {
+          if (this.photo.id === item.id) {
+            this.currentIndex = i;
+            return;
+          }
+        });
+      }
+
+      if (this.batchItems.length > 1) {
+        let index = -1;
+        this.batchItems.forEach((item, i) => {
+          if (item.id === this.photo.id) {
+            index = i;
+          }
+        });
+
+        if (index > 0 && index <= this.batchItems.length) {
+          this.hasPreviousItem = true;
         }
-      });
+        if (index >= 0 && index < this.batchItems.length) {
+          this.hasNextItem = true;
+        }
+      }
     }
 
-    if (this.batchItems.length > 1) {
-      let index = -1;
-      this.batchItems.forEach((item, i) => {
-        if (item.id === this.photo.id) {
-          index = i;
-        }
-      });
-
-      if (index > 0 && index <= this.batchItems.length) {
-        this.hasPreviousItem = true;
-      }
-      if (index >= 0 && index < this.batchItems.length) {
-        this.hasNextItem = true;
-      }
-    }
 
     this.loadMenu();
   }
@@ -361,7 +363,8 @@ export class PhotoDetailPartialComponent
 
   private savePhoto(dataImg: any) {
     this.photoService.confirmUpdate(this.photo, dataImg).then((data: any) => {
-      this.event.emit({ action: 'photoUpdated', payload: data });
+      // this.event.emit({ action: 'photoUpdated', payload: data });
+      this.photo.url = `${data.url}?t=${+new Date()}`;
       this.hasEditPhoto = false;
     });
   }

@@ -41,6 +41,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
   links: any;
 
   // private routeSub: any;
+  returnUrl: string;
   private destroySubject: Subject<any> = new Subject<any>();
 
 
@@ -65,6 +66,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'photos';
     this.route.params
       .takeUntil(this.destroySubject.asObservable())
       .map((params: any) => {
@@ -147,14 +149,13 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
         );
         break;
       case 'confirmDelete':
-        console.debug('base-photo-detail: confirmDelete', payload);
         this.confirmDelete(payload);
         break;
     }
   }
 
   goBack() {
-    this.router.navigate([{outlets: {modal: null}}]);
+    this.router.navigate([this.returnUrl]);
     this.photoService.closePreviewModal();
   }
 

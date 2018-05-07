@@ -100,13 +100,12 @@ export class PhotoService {
         accept: () => {
           return this.update({
             id: photo.id,
-            name: photo.name + `.${photo.extension}`,
-            type: photo.content_type,
+            // name: photo.name + `.${photo.extension}`,
+            content_type: photo.content_type,
             file: payload
           })
             .toPromise()
             .then((response: any) => {
-              // this.photo = response.data;
               // this.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
               resolve(response.data);
             });
