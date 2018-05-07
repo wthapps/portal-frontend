@@ -9,11 +9,7 @@ import {
   ElementRef,
   ViewEncapsulation
 } from '@angular/core';
-import {
-  FormGroup,
-  FormBuilder,
-  AbstractControl
-} from '@angular/forms';
+import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { Router } from '@angular/router';
@@ -136,9 +132,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   showEmojiBtn(event: any) {
     this.emojiService.show(event);
 
-    this.emojiService.selectedEmoji$.pipe(
-      take(1)
-    ).subscribe(data => {
+    this.emojiService.selectedEmoji$.pipe(take(1)).subscribe(data => {
       console.debug(data);
       // this.editor.addEmoj(data.shortname);
       // this.comment.content = this.commentDomValue + emoj;

@@ -102,15 +102,16 @@
       </div>
       <div class="form-group">
         <!--<div contenteditable="true" class="form-control textarea-editor-input"-->
-             <!--#textarea-->
-             <!--[autofocus]-->
-             <!--id="textarea-new-post"-->
-             <!--placeholder="Share your ideas"-->
-             <!--[innerHTML]="description"-->
-             <!--(keyup)="hasChange = true"></div>-->
+        <!--#textarea-->
+        <!--[autofocus]-->
+        <!--id="textarea-new-post"-->
+        <!--placeholder="Share your ideas"-->
+        <!--[innerHTML]="description"-->
+        <!--(keyup)="hasChange = true"></div>-->
 
 
-        <mini-editor #textarea [autofocus] [(ngModel)]="description" [ngModelOptions]="{standalone: true}" placeholder="Share your ideas"
+        <mini-editor #textarea [autofocus] [(ngModel)]="description" [ngModelOptions]="{standalone: true}"
+                     placeholder="Share your ideas"
                      [style]="{'height':'auto', 'min-height': '27px'}" (onTextChange)="hasChange = true">
           <p-header>
           </p-header>
@@ -149,10 +150,9 @@
               </div>
               <div class="photo-box-figure">
                 <figure class="img-center-dv">
-                      <span class="photo-box-figure-in">
-                        <img class="img-center" draggable="false" [src]="p['thumbnail_url']"
-                             [alt]="'Image not found'">
-                      </span>
+                  <span class="photo-box-figure-in">
+                    <img class="img-center" draggable="false" [src]="p['thumbnail_url']" [alt]="'Image not found'">
+                  </span>
                 </figure>
               </div>
             </div>

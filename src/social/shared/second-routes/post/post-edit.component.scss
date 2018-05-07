@@ -4,6 +4,40 @@
   display: none;
 }
 
+.modal-post-edit {
+  .row-img {
+    @include clearfix;
+    margin-left: -10px;
+    margin-right: -10px;
+
+    .row-img-item {
+      float: left;
+      width: 50%;
+      padding: 0 10px 10px;
+
+      @media (min-width: $screen-sm-min) {
+        width: 25%;
+      }
+
+      .photo-box {
+        position: relative;
+      }
+      .photo-box-action {
+        position: absolute;
+        z-index: 3;
+        right: 5px;
+        top: 5px;
+        line-height: 1;
+        cursor: pointer;
+      }
+      .img-center-dv {
+        padding-bottom: 75%;
+      }
+
+    }
+  }
+}
+
 @media (max-width: $screen-xs-max) {
   .modal-post-edit {
     min-height: 100vh;
