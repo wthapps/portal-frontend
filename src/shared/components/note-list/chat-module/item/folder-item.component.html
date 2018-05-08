@@ -4,7 +4,7 @@
   </div>
   <div class="component-listbox-name can-click" (click)="onClick()">
     <span>
-      <i class="fa fa-folder-o"></i> {{ data.object.name }}
+      <i class="fa fa-folder-o"></i> {{ data.object.name? data.object.name : 'Untitled'}}
     </span>
   </div>
   <div class="component-listbox-owner can-click" (click)="onClick()">
@@ -16,4 +16,5 @@
   <div class="component-listbox-date can-click" (click)="onClick()">
     {{data.object.created_at | timeFormat}}
   </div>
+  <div class="component-listbox-action"></div>
 </div>

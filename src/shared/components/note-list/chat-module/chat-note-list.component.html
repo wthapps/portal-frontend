@@ -13,7 +13,7 @@
       </div> -->
       <div class="component-listbox-name">
         Name
-        <i class="fa fa-arrow-up"></i>
+        <!-- <i class="fa fa-arrow-up"></i> -->
       </div>
       <!-- <div class="component-listbox-owner" [ngClass]="{'can-click': page !== noteConstants.PAGE_RECENT}"  (click)="onSort('owner')">
         Owner <i *ngIf="page !== noteConstants.PAGE_RECENT && sortOption?.field == 'owner'" class="fa"
@@ -75,7 +75,7 @@
   <div class="clearfix"></div>
 
   <!-- Body -->
-  <ng-container>
+  <ng-container *ngIf="(folders || notes); else loadingBlock">
     <ng-container *ngIf="viewOption !== VIEW_MODE.TIMELINE">
       <!-- <h4 class="ml10" *ngIf="folders?.length > 0">Folders</h4> -->
       <!-- {{folders | json}} -->
@@ -87,8 +87,7 @@
 
       <h4 class="ml10" *ngIf="noteItems?.length > 0 && viewOption == VIEW_MODE.GRID">Notes</h4>
       <ng-container *ngFor="let item of notes">
-        <note-item [data]="item" class="component-listbox-body"></note-item>
-        <!-- <note-item [data]="item" [sortOption]="sortOption" [pressingCtrlKey]="pressingCtrlKey" class="component-listbox-body" [page]="page" *ngIf="(page !== noteConstants.PAGE_NOTE_FAVOURITE )|| (page == noteConstants.PAGE_NOTE_FAVOURITE && item.favourite)"></note-item> -->
+        <note-item [data]="item" class="component-listbox-body" [pressingCtrlKey]="pressingCtrlKey" class="component-listbox-body"></note-item>
       </ng-container>
 
     </ng-container>
