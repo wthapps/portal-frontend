@@ -25,10 +25,13 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
   favoriteObjects$: Observable<any>;
   loading$: Observable<any>;
   nextLink$: Observable<any>;
+  links$: Observable<any>;
   tooltip: any = Constants.tooltip;
 
   private path = 'media/favorites';
   private sub: any;
+  private currentQuery: string;
+
   constructor(
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
@@ -41,12 +44,19 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
     this.favoriteObjects$ = this.store.select(appStore.selectObjects);
     this.nextLink$ = this.store.select(appStore.selectNextLink);
     this.loading$ = this.store.select(appStore.selectLoading);
+    this.links$ = this.store.select(appStore.selectLinks);
 
     this.sub = this.mediaUploaderDataService.action$
       .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         this.doEvent(event);
       });
+
+    this.sub = this.links$.subscribe(links => {
+      if (links) {
+        this.currentQuery = links.self;
+      }
+    });
   }
 
   ngOnInit() {
@@ -92,8 +102,14 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
     } else if (object.object_type === 'sharing') {
       this.router.navigate(['shared', object.uuid], {queryParams: {returnUrl: this.router.url}});
     } else {
-      this.router.navigate([`photos`,
-        object.id, {ids: [object.id], mode: 0}], {queryParams: {returnUrl: this.router.url}});
+      this.router.navigate([
+        `photos`,
+        object.uuid, {
+          batchQuery: this.currentQuery.split('?').length > 1 ? `${this.currentQuery}&type=photo` :
+            `${this.currentQuery}?type=photo`,
+          mode: 0
+        }
+      ], {queryParams: {returnUrl: this.router.url}});
     }
   }
 
