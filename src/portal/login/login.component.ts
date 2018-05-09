@@ -62,15 +62,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loadingService.stop();
-
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-    if (this.authService.loggedIn && this.returnUrl.length > 0) {
-      if (this.returnUrl.indexOf(Constants.baseUrls.app) >= 0) {
-        this.router.navigate([this.returnUrl]);
-      } else {
-        window.location.href = this.returnUrl;
-      }
-    }
   }
 
   onSubmit(values: any): void {

@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 
 import { fadeInAnimation } from '../../shared/shared/animations/route.animation';
-import { Errors } from '../../shared/shared/models/errors.model';
 import { UserService } from '../../shared/services/user.service';
 import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
@@ -26,8 +25,6 @@ import { Constants } from '../../shared/constant/config/constants';
 })
 export class HomeComponent {
   @HostBinding('@fadeInAnimation') fadeInAnimation = true;
-
-  errorMessage: any;
 
   tooltip: any = Constants.tooltip;
   sex: number = 0;
@@ -121,16 +118,7 @@ export class HomeComponent {
         error => {
           // stop loading
           this.loadingService.stop();
-
-          console.log('error:', error);
-          let err: any = error;
-
-          this.errorMessage = err;
-          //TODO refactoring code check signup
-          if (error.status === 422) {
-            this.errorMessage = 'Email has already been taken';
-          }
-          this.toastsService.danger(this.errorMessage);
+          this.toastsService.danger(error.error.error);
         }
       );
     }
