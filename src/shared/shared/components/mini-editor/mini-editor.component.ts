@@ -75,7 +75,6 @@ export class MiniEditor implements AfterViewInit,ControlValueAccessor {
       formats: this.formats
     });
 
-
     let keyboard = this.quill.getModule('keyboard');
     delete keyboard.bindings['13'];
     this.quill.keyboard.addBinding({ key: 'enter'}, function(range, context) {
@@ -111,6 +110,10 @@ export class MiniEditor implements AfterViewInit,ControlValueAccessor {
     this.onInit.emit({
       editor: this.quill
     });
+  }
+
+  focus() {
+    this.quill.focus();
   }
 
   updateHtml2Model() {

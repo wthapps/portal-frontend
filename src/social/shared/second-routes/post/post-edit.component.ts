@@ -48,7 +48,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
   @Input() showAddPhotosButton: boolean = true;
   @Input() link: any = null;
 
-  @ViewChild('textarea') textarea: MiniEditor; // Replaced by MiniEditor
+
+  @ViewChild(MiniEditor) editor: MiniEditor;
+  // @ViewChild('editor') editor: MiniEditor; // Replaced by MiniEditor
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
@@ -132,7 +134,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   showEmojiBtn(event: any) {
     this.emojiService.show(event);
     this.emojiService.selectedEmoji$.take(1).subscribe(data => {
-      this.textarea.addEmoj(data.shortname);
+      this.editor.addEmoj(data.shortname);
       this.hasChange = true;
     });
   }
@@ -193,6 +195,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
     });
     // this.descCtrl = this.form.controls['description'];
     this.setItemDescription(this.post.description);
+
+    this.editor.focus();
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
     if (options.addingPhotos) {
@@ -394,10 +398,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
   private setItemDescription(value: any) {
     this.description = value;
   }
-
-  // private setItemDescriptionFromDom() {
-  //   this.setItemDescription(this.textarea.nativeElement.innerHTML);
-  // }
 
   private getPrivacyName(post: any): string {
     let privacy = !post || post.privacy == '' ? 'public' : post.privacy;

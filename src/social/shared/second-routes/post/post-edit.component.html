@@ -1,6 +1,6 @@
 <bs-modal #modal cssClass="modal-social modal-long modal-post-edit" [animation]="false">
   <bs-modal-body>
-    <form [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
+    <form #postForm="ngForm" [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
       <div class="clearfix text-right modal-post-edit-action-mobile">
 
         <div class="btn-group pull-left" role="group">
@@ -15,7 +15,7 @@
         <button type="button" class="btn btn-outline-default" data-dismiss="modal" (click)="dismiss(true)">
           Cancel
         </button>
-        <button type="submit" class="btn btn-outline-primary" [disabled]="!(hasChange || (post.photos.length > 0)  || link) || !description || (files.length > 0)">
+        <button type="submit" class="btn btn-outline-primary" [disabled]="!editor?.valid && post?.photos?.length <= 0 && !link">
           Done
         </button>
       </div>
@@ -116,17 +116,9 @@
           </div>
         </div>
       </div>
+
       <div class="form-group">
-        <!--<div contenteditable="true" class="form-control textarea-editor-input"-->
-        <!--#textarea-->
-        <!--[autofocus]-->
-        <!--id="textarea-new-post"-->
-        <!--placeholder="Share your ideas"-->
-        <!--[innerHTML]="description"-->
-        <!--(keyup)="hasChange = true"></div>-->
-
-
-        <mini-editor #textarea [autofocus] [(ngModel)]="description" [ngModelOptions]="{standalone: true}" placeholder="Share your ideas"
+        <mini-editor #editor="ngModel" required [autofocus] [(ngModel)]="description" [ngModelOptions]="{standalone: true}" placeholder="Share your ideas"
           [style]="{'height':'auto', 'min-height': '27px'}" (onTextChange)="hasChange = true">
           <p-header>
           </p-header>
@@ -186,7 +178,7 @@
         <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">
           Cancel
         </button>
-        <button type="submit" class="btn btn-outline-primary btn-min" [disabled]="!(hasChange || (post.photos.length > 0)  || link) || !description || (files.length > 0)">
+        <button type="submit" class="btn btn-outline-primary btn-min" [disabled]="!editor?.valid && post?.photos?.length <= 0 && !link">
           Done
         </button>
       </div>
