@@ -48,7 +48,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   @Input() showAddPhotosButton: boolean = true;
   @Input() link: any = null;
 
-  @ViewChild('textarea') textarea: ElementRef; // Replaced by MiniEditor
+  @ViewChild('textarea') textarea: MiniEditor; // Replaced by MiniEditor
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
@@ -131,11 +131,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   showEmojiBtn(event: any) {
     this.emojiService.show(event);
-
-    this.emojiService.selectedEmoji$.pipe(take(1)).subscribe(data => {
-      console.debug(data);
-      // this.editor.addEmoj(data.shortname);
-      // this.comment.content = this.commentDomValue + emoj;
+    this.emojiService.selectedEmoji$.take(1).subscribe(data => {
+      this.textarea.addEmoj(data.shortname);
       this.hasChange = true;
     });
   }
@@ -411,4 +408,5 @@ export class PostEditComponent implements OnInit, OnDestroy {
       return post.custom_objects[0].name;
     return privacy.replace('_', ' ');
   }
+
 }

@@ -14,8 +14,7 @@
             <ul>
               <li *ngFor="let emoji of item.value" (click)="onSelected(emoji)">
                 <i *ngIf="emoji.diversity" class="emojione-{{ size }}-diversity _{{ emoji.code_points.base }}"></i>
-                <i *ngIf="!emoji.diversity"
-                   class="emojione-{{ size }}-{{ emoji.category }} _{{ emoji.code_points.base }}"></i>
+                <i *ngIf="!emoji.diversity" class="emojione-{{ size }}-{{ emoji.category }} _{{ emoji.code_points.base }}"></i>
               </li>
             </ul>
           </dd>

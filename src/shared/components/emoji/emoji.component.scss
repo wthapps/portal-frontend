@@ -2,6 +2,7 @@
 @import '~emojione-assets/sprites/emojione-sprite-40.min.css';
 
 .emoji-overlayPanel {
+  z-index: 1100 !important;
   padding: 0;
   ul {
     margin: 0;
@@ -76,7 +77,7 @@
 }
 
 .emoji-wrap {
-  //z-index: 1000;
+  // z-index: 9999999999999;
   //background-color: #ffffff;
   //position: absolute;
   //width: 420px;

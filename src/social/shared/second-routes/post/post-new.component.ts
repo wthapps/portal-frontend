@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { PostEditComponent } from './post-edit.component';
+import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 
 @Component({
   selector: 'post-new',
@@ -17,7 +18,7 @@ export class PostNewComponent {
 
   tooltip:any = Constants.tooltip;
 
-  constructor(public userService: UserService) {
+  constructor(public userService: UserService, private emojiService: WTHEmojiService) {
     this.user$ =  this.userService.getAsyncProfile();
   }
 
@@ -41,5 +42,4 @@ export class PostNewComponent {
   post(event: any) {
     console.log('doing posting');
   }
-
 }
