@@ -52,11 +52,11 @@ export class ZSocialSharedHeaderComponent implements OnInit {
     let paths = location.pathname.toString().split('/');
     let term = 'all';
     if (paths[1] === 'search' && paths[2] !== '') {
-      term = paths[2];
+      term = paths[2].split(';')[0];
     }
-    console.log('actived link:::', this.router.isActive(this.router.createUrlTree(['search', term]), true));
+    // console.log('actived link:::', this.router.isActive(this.router.createUrlTree(['search', term]), true));
     this.router.createUrlTree(['search', term]);
-    this.router.navigate(['search', term], {queryParams: {q: this.search}});
+    this.router.navigate(['/search', term, {q: this.search}], {queryParams: {q: this.search}});
   }
 
   onKey(e: any) {

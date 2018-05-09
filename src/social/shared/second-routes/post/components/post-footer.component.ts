@@ -7,9 +7,6 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-
-
 import {
   DeleteCommentEvent,
   CancelEditCommentEvent,
@@ -24,11 +21,12 @@ import { SoComment, SoPost } from '@wth/shared/shared/models';
 import { PhotoService, UserService } from '@shared/services';
 import { Constants } from '@wth/shared/constant';
 
+declare var _: any;
+
 @Component({
   selector: 'so-post-footer',
   templateUrl: 'post-footer.component.html',
 })
-
 export class PostFooterComponent implements OnChanges {
   @Input() user: any;
   @Input() item: SoPost;
@@ -65,7 +63,7 @@ export class PostFooterComponent implements OnChanges {
       this.showInfo = true;
     }
     this.totalComment = +this.item.comment_count;
-    this.loadingDone = (this.totalComment === 0 ) || (this.totalComment <= this.item.comments.length);
+    this.loadingDone = (this.totalComment === 0 ) || (this.totalComment <= _.get(this.item, 'comments.length', 0));
   }
 
   viewProfile(uuid: string) {

@@ -21,11 +21,14 @@
     "start-contact": "ng serve --app contact --port 3025 --open",
     "start-note": "ng serve --app note --port 3030 --open",
     "prettier": "prettier {src,e2e}/**/**/*.{ts,scss} --write",
+    "anl-social": "webpack-bundle-analyzer dist/social/stats.json",
+    "stats-social": "ng build --app social --stats-json && webpack-bundle-analyzer dist/social/stats.json",
     "build-portal": "ng build --prod --app portal && http-server -p 3000 dist/portal",
     "build-deploy-portal": "ng build --prod --app portal && cp -R dist/portal/* ~/deployment/fe-portal",
     "build-my-account": "ng build --prod --app my-account && http-server -p 3005 dist/my-account",
     "build-note": "ng build --prod --app note && http-server -p 3030 dist/note",
     "build-contact": "ng build --prod --app contact && http-server -p 3025 dist/contact",
+    "build-social": "ng build --prod --app social && http-server -p 3015 dist/social",
     "build-deploy-contact": "ng build --prod --app contact && cp -R dist/contact/* ~/deployment/fe-contact",
     "build-contact-stag": "ng build --stag --app contact && http-server -p 3025 dist/contact",
     "ng build all": "build --prod --build-optimizer --aot --app portal && build --prod --build-optimizer --aot --app my-account && build --prod --build-optimizer --aot --app media && build --prod --build-optimizer --aot --app social && build --prod --build-optimizer --aot --app contact && build --prod --build-optimizer --aot --app note"
@@ -53,7 +56,8 @@
     "source-map-explorer": "^1.5.0",
     "ts-node": "~3.3.0",
     "tslint": "^5.7.0",
-    "typescript": "2.4.2"
+    "typescript": "2.4.2",
+    "webpack-bundle-analyzer": "^2.11.1"
   },
   "dependencies": {
     "@angular/animations": "5.2.0",

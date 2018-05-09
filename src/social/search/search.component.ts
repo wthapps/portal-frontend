@@ -14,15 +14,15 @@ export class ZSocialSearchResultComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.sub = this.route.queryParams.subscribe((params: any) => {
-      this.params = params['q'];
-    });
-
-    this.route.fragment.subscribe((f: any) => {
-    });
+    // this.sub = this.route.queryParams.subscribe((params: any) => {
+    //   this.params = params['q'];
+    // });
+    //
+    // this.route.fragment.subscribe((f: any) => {
+    // });
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    // this.sub.unsubscribe();
   }
 }

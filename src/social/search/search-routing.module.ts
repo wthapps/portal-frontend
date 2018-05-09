@@ -9,14 +9,15 @@ import { ZSocialSearchResultAllComponent } from './all/search-all.component';
       {
         path: '',
         children: [
-          { path: 'members', component: ZSocialSearchResultDetailComponent },
-          {
-            path: 'communities',
-            component: ZSocialSearchResultDetailComponent
-          },
-          { path: 'posts', component: ZSocialSearchResultDetailComponent },
           { path: 'all', component: ZSocialSearchResultAllComponent },
-          { path: '', component: ZSocialSearchResultAllComponent }
+          // { path: 'members', component: ZSocialSearchResultDetailComponent },
+          // {
+          //   path: 'communities',
+          //   component: ZSocialSearchResultDetailComponent
+          // },
+          // { path: 'posts', component: ZSocialSearchResultDetailComponent },
+          // { path: '', component: ZSocialSearchResultAllComponent},
+          { path: ':group', component: ZSocialSearchResultDetailComponent }
         ]
       }
     ])

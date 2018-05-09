@@ -1,16 +1,16 @@
 <div *ngIf="showNavSearch" class="nav-tabs-wrap nav-tabs-wrap-search">
   <ul class="nav nav-tabs" role="tablist">
     <li [ngClass]="{'active': (term === 'all')}">
-      <a [routerLink]="['/search/all']" [queryParams]="{q:params}" href="#">All</a>
+      <a [routerLink]="['/search/all', {q:params}]" [queryParams]="{q:params}">All</a>
     </li>
     <li [ngClass]="{'active': (term === 'members')}">
-      <a [routerLink]="['/search/members']" [queryParams]="{q:params}" href="#">Members</a>
+      <a [routerLink]="['/search/members', {q:params}]" [queryParams]="{q:params}" >Members</a>
     </li>
     <li [ngClass]="{'active': (term === 'communities')}">
-      <a [routerLink]="['/search/communities']" [queryParams]="{q:params}" href="#">Communities</a>
+      <a [routerLink]="['/search/communities', {q:params}]" [queryParams]="{q:params}" >Communities</a>
     </li>
     <li class="hidden-xs" [ngClass]="{'active': (term === 'posts')}">
-      <a [routerLink]="['/search/posts']" [queryParams]="{q:params}" href="#">Posts</a>
+      <a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}" >Posts</a>
     </li>
     <li class="visible-xs-inline-block">
       <div class="btn-group">
@@ -18,7 +18,7 @@
           <i class="fa fa-ellipsis-h"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li><a [routerLink]="['/search/posts']" [queryParams]="{q:params}" href="#">Posts</a></li>
+          <li><a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}" >Posts</a></li>
         </ul>
       </div>
     </li>
@@ -32,9 +32,9 @@
   infinite-scroll
   [scrollWindow]="true"
   (scrolled)="onLoadMore()">
-  <div class="page-body-content-in zone-social">
-    <div class="zone-social-in">
-      <div class="panel panel-default" *ngIf="result;else loadingBlock">
+  <div class="page-body-content-in zone-social" >
+    <div class="zone-social-in" *ngIf="!loading; else loadingBlock;">
+      <div class="panel panel-default" *ngIf="result;else noDataBlock">
         <div class="panel-heading">
           <h3 class="panel-title">{{ group | titleCase }}</h3>
         </div>
@@ -55,14 +55,24 @@
 
       </div>
 
-      <ng-template #loadingBlock>
-        <box-loading></box-loading>
-      </ng-template>
     </div>
     <div *ngIf="group == 'posts'" class="zone-social-sidebar">
-      <z-social-post-by></z-social-post-by>
-      <z-social-post-date></z-social-post-date>
+      <z-social-post-by (filterEvent)="onFilter($event)"></z-social-post-by>
+      <z-social-post-date (filterEvent)="onFilter($event)"></z-social-post-date>
     </div>
   </div>
 </div>
 
+
+<ng-template #loadingBlock>
+  <div class="zone-social-in">
+    <box-loading></box-loading>
+  </div>
+</ng-template>
+<ng-template #noDataBlock>
+  <div class="panel-body">
+    <h3 class="text-fade m0">
+      There is no result
+    </h3>
+  </div>
+</ng-template>
