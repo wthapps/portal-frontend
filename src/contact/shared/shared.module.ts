@@ -49,6 +49,7 @@ import { LogUpdateService } from '@contacts/shared/services/log-update.service';
 import { PromptUpdateService } from '@contacts/shared/services/prompt-update.service';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { ZContactSearchSharedToolbarComponent } from '@contacts/shared/toolbar/search.component';
+import { ZContactSharedListV1Component } from '@contacts/shared/list/v1/list.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -98,6 +99,7 @@ import { ZContactSearchSharedToolbarComponent } from '@contacts/shared/toolbar/s
     ZContactSharedLeftMenuComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
+    ZContactSharedListV1Component,
 
     //modal here
     ContactAddGroupModalComponent,
@@ -144,6 +146,7 @@ import { ZContactSearchSharedToolbarComponent } from '@contacts/shared/toolbar/s
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
     ZContactSearchSharedToolbarComponent,
+    ZContactSharedListV1Component,
 
     // my profile
     ZMyProfileComponent,

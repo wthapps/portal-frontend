@@ -16,6 +16,7 @@ import { _contact } from '@contacts/shared/utils/contact.functions';
 import { GroupService } from '@contacts/group/group.service';
 import { Config, Constants } from '@shared/constant';
 import { Recipient } from '@shared/shared/components/invitation/recipient.model';
+import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-add-group/contact-add-group-modal.component';
 
 declare var $: any;
 declare var _: any;
@@ -26,6 +27,8 @@ declare var _: any;
   styleUrls: ['search.component.scss']
 })
 export class ContactSearchComponent implements OnInit, OnDestroy{
+  @ViewChild('modal') modal: ContactAddGroupModalComponent;
+
   contacts: any;
   nextMine: any;
   nextWTH: any;
@@ -45,6 +48,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
     private apiBaseService: ApiBaseService
   ){
     this.route.params.subscribe(params => {
+
       if (!params['category'] || params['category'] == 'all') {
         this.getAll(params);
       }
@@ -63,7 +67,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
     this.sub = this.commonEventService
       .filter((event: CommonEvent) => event.channel == Constants.contactEvents.actionsToolbar)
       .subscribe((event: CommonEvent) => {
-        let tmp = _.cloneDeep(this.contactService.selectedObjects);
+        let tmp = [...this.contactService.selectedObjects];
         this.contactService.selectedObjects = [event.payload];
         this.doActionsToolbar(event);
         this.contactService.selectedObjects = tmp;
@@ -114,13 +118,17 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
     }
 
     if (event.action == 'tag') {
-      // this.doEvent({ action: 'open_add_group_modal' });
+      this.doEvent({ action: 'open_add_group_modal' });
     }
 
     if (event.action == 'delete') {
       this.contactService.confirmDeleteContacts(
         this.contactService.selectedObjects
       );
+    }
+
+    if (event.action == 'save') {
+      this.save();
     }
 
     if (event.action == 'social') {
@@ -181,7 +189,6 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
           });
         }
       });
-      // this.invitationModal.open({ data: recipients });
     }
   }
 
@@ -197,29 +204,81 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
         name
       );
     } else {
-      console.log(this.contactService.selectedObjects);
-
       _contact.addGroupContacts(this.contactService.selectedObjects, group);
     }
 
     this.contactService
       .update(this.contactService.selectedObjects)
       .subscribe((res: any) => {
-        console.log(res);
         // update contact
         this.contacts = this.contacts.map(contact => {
           // if contact
           if (!contact.settings) {
             if(Array.isArray(res.data)) {
               res.data.forEach(c => {
-                if (c.id == contact.id) contact = c;
+                if (c.id == contact.id) {c.selected = contact.selected; contact = c};
               })
             } else {
-              if (res.data.id == contact.id) contact = res.data;
+              if (res.data.id == contact.id) {res.data.selected = contact.selected; contact = res.data};
             }
           }
           return contact;
         })
       });
+  }
+
+  save() {
+    const tmp = [...this.contactService.selectedObjects];
+    this.contactService.selectedObjects = [];
+    tmp.forEach(data => {
+      this.apiBaseService.post(`contact/contacts/save`, data).subscribe(res => {
+        this.contacts = this.contacts.map(contact => {
+          if(contact.settings && contact.id == res.data.wthapps_user_id) {
+            res.data.selected = data.selected;
+            if (res.data.selected) this.contactService.selectedObjects.push(res.data);
+            this.contactService.createCallback(res.data);
+            return res.data;
+          }
+          return contact;
+        })
+      })
+    })
+  }
+
+  addTags(event: any) {
+    this.modal.open();
+  }
+
+  doEvent(event: any) {
+    switch (event.action) {
+      case 'open_add_group_modal':
+        let groups: any[] = [];
+        if (this.contactService.selectedObjects.length > 1) {
+          groups = _contact.getSameLables(this.contactService.selectedObjects);
+        } else if (this.contactService.selectedObjects.length == 1) {
+          groups = this.contactService.selectedObjects[0].groups;
+          event.mode = 'edit';
+        }
+
+        this.modal.open({
+          mode: event.mode,
+          groups: groups,
+          contacts: this.contactService.selectedObjects
+        });
+        break;
+
+      // this will handle all cases as: favourite, add to group
+      // after updating, deleting, importing we must update local CONTACT list data
+      case 'contact:contact:update':
+        let selectedObjects =
+          event.payload && event.payload.selectedObjects
+            ? event.payload.selectedObjects
+            : this.contactService.selectedObjects;
+        // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
+        this.contactService.update(selectedObjects).subscribe((res: any) => {
+          console.log(res);
+        });
+        break;
+    }
   }
 }

@@ -9,7 +9,14 @@
       font-weight: normal;
     }
   }
-  .page-body-control-nav {
-    // float: none;
-  }
+  li {
+      &.active {
+        > a {
+          color: $text-color;
+          &:after {
+            bottom: -15px;
+          }
+        }
+      }
+    }
 }

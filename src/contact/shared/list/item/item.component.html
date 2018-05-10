@@ -3,7 +3,8 @@
     <i (click)="onSelected()" class="fa fa-check"></i>
   </div>
   <div class="component-listbox-name">
-    <a href="javascript:;" class="link-text contact-listbox-block-link" [routerLink]="['/contacts/detail', data.id]">
+    <!-- Contact -->
+    <a *ngIf="!data.settings" href="javascript:;" class="link-text contact-listbox-block-link" [routerLink]="['/contacts/detail', data.id]">
       <figure class="avatar-xs media-user">
         <img [src]="data.profile_image" alt="">
 
@@ -11,6 +12,15 @@
       </figure>
       <span class="name">{{ data.name }}</span>
     </a>
+    <!-- User -->
+    <span *ngIf="data.settings" class="link-text contact-listbox-block-link">
+      <figure class="avatar-xs media-user">
+        <img [src]="data.profile_image" alt="">
+
+        <i class="media-user-status" [ngClass]="{'blacklist fa fa-ban': data | contactHasGroup:'blacklist'}"></i>
+      </figure>
+      <span class="name">{{ data.name }}</span>
+    </span>
   </div>
   <div class="component-listbox-email">
     <ul class="list-unstyled m0">
@@ -39,7 +49,7 @@
   </div>
   <!-- Actions for user -->
   <div class="component-listbox-action" *ngIf="data.settings">
-    <button *ngIf="!saved" class="btn btn-outline-default" type="button" (click)="saveContact()">
+    <button *ngIf="!saved" class="btn btn-outline-default pull-right" type="button" (click)="saveContact()">
       <i class="fa fa-plus"></i> Save to Contact </button>
     <span *ngIf="saved">Saved</span>
   </div>

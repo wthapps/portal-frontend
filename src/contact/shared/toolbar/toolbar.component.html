@@ -1,18 +1,20 @@
 <div class="page-body-control-nav">
   <ul class="page-body-control-menu" *ngIf="hasBack">
     <li>
-      <button type="button" class="btn btn-default mr10" [routerLink]="['/contacts']"
-              pTooltip="{{ tooltip.back }}" tooltipPosition="top">
+      <button type="button" class="btn btn-default mr10" pTooltip="{{ tooltip.back }}" tooltipPosition="top" (click)="back()">
         <i class="fa fa-arrow-left"></i>
       </button>
     </li>
   </ul>
-  <ul [ngClass]="{'hidden-xs': contactService.selectedObjects.length > 0 || currentPage === 'detail'}" class="page-body-control-menu" *ngIf="pageTitle==''">
+  <ul [ngClass]="{'hidden-xs': contactService.selectedObjects.length > 0 || currentPage === 'detail'}" class="page-body-control-menu"
+    *ngIf="pageTitle==''">
     <li>
-      <button type="button" class="btn btn-outline-primary" [routerLink]="['/contacts', 'new']"><i class="fa fa-plus"></i> New Contact</button>
+      <button type="button" class="btn btn-outline-primary" [routerLink]="['/contacts', 'new']">
+        <i class="fa fa-plus"></i> New Contact</button>
     </li>
     <li>
-      <button type="button" class="btn btn-outline-default" (click)="openImportContactModal()"><i class="fa fa-download"></i> Import</button>
+      <button type="button" class="btn btn-outline-default" (click)="openImportContactModal()">
+        <i class="fa fa-download"></i> Import</button>
     </li>
   </ul>
   <!--TODO remove-->

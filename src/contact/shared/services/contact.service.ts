@@ -434,7 +434,7 @@ export class ZContactService extends BaseEntityService<any> {
     else this.notifyContactsObservers();
   }
 
-  private createCallback(contact: any): void {
+  createCallback(contact: any): void {
     this.contacts.unshift(contact);
     this.notifyContactsObservers();
   }

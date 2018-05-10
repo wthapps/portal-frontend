@@ -5,6 +5,7 @@ import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oaut
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 
 import { Constants } from '../../../shared/constant/config/constants';
+import {Location} from '@angular/common';
 
 declare var _: any;
 
@@ -25,7 +26,11 @@ export class ZContactSharedToolbarComponent implements OnInit {
 
   tooltip: any = Constants.tooltip;
 
-  constructor(public contactService: ZContactService, private commonEventService: CommonEventService) {
+  constructor(
+    public contactService: ZContactService,
+    public location: Location,
+    private commonEventService: CommonEventService
+  ) {
   }
 
   ngOnInit() {
@@ -41,8 +46,11 @@ export class ZContactSharedToolbarComponent implements OnInit {
     this.importContactSelect.modal.open(options);
   }
 
-  onImportOptionSelected(event: any) {
+  back() {
+    this.location.back();
+  }
 
+  onImportOptionSelected(event: any) {
     switch (event.provider) {
       case 'google':
       case 'apple':

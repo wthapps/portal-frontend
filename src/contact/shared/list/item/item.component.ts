@@ -51,9 +51,7 @@ export class ZContactSharedItemComponent implements OnInit {
   }
 
   saveContact() {
-    this.apiBaseService.post(`contact/contacts/save`, this.data).subscribe(res => {
-      this.saved = true;
-    })
+    this.commonEventService.broadcast({ channel: Constants.contactEvents.actionsToolbar, action: 'save', payload: this.data });
   }
 
   doActionsToolbar(e: any) {
