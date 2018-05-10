@@ -26,7 +26,7 @@
 //   clickToClose: false
 // });
 
-import { Component } from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import { Message } from 'primeng/components/common/message';
 
 @Component({

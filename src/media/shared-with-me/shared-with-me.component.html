@@ -3,7 +3,7 @@
       [class.disabled]="noSelectedObjects">
     <li *ngIf="toolbar.hasOneObject">
       <a class="btn btn-default" href="javascript:void(0);" draggable="false"
-         (click)="toolbar.doAction({action: 'viewDetails', payload: {selectedObject: toolbar.selectedObjects}})"
+         (click)="toolbar.doAction({action: 'preview', payload: {selectedObject: toolbar.selectedObjects[0]}})"
          pTooltip="{{ tooltip.preview}}" tooltipPosition="bottom">
         <i class="fa fa-eye"></i>
       </a>

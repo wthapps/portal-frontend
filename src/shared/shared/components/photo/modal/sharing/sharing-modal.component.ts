@@ -10,6 +10,7 @@ import { SharingService } from './sharing.service';
 import { ApiBaseService, CommonEventService } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@wth/shared/constant';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 declare var $: any;
 declare var _: any;
 
@@ -54,11 +55,14 @@ export class SharingModalComponent implements OnDestroy {
 
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
 
-  constructor(private mediaSharingService: SharingService,
+  constructor(
+    private mediaSharingService: SharingService,
     private apiBaseService: ApiBaseService,
     private router: Router,
     private commonEventService: CommonEventService,
-    private wthConfirmService: WthConfirmService) {
+    private wthConfirmService: WthConfirmService,
+    private toastsService: ToastsService
+  ) {
 
     this.contactTerm$.pipe(
       debounceTime(Constants.searchDebounceTime),
@@ -168,7 +172,8 @@ export class SharingModalComponent implements OnDestroy {
             recipients: _.map(this.selectedContacts, 'id')
           };
           this.mediaSharingService.create(body).take(1).subscribe((response: any) => {
-              this.sharedContacts.push(...this.selectedContacts);
+            this.showMessage();
+            this.sharedContacts.push(...this.selectedContacts);
               this.resetData();
               this.updateSelectedItems({contacts: this.sharedContacts});
               this.commonEventService.broadcast({channel: 'media:photo:update_recipients', payload: this.sharedContacts});
@@ -187,7 +192,8 @@ export class SharingModalComponent implements OnDestroy {
           };
         // Only subscribe to this action once`
         this.mediaSharingService.create(body).take(1).subscribe((response: any) => {
-            this.sharedContacts.push(...this.selectedContacts);
+          this.showMessage();
+          this.sharedContacts.push(...this.selectedContacts);
             this.resetData();
             this.updateSelectedItems({contacts: this.sharedContacts});
             this.commonEventService.broadcast({channel: 'media:photo:update_recipients', payload: this.sharedContacts});
@@ -211,6 +217,7 @@ export class SharingModalComponent implements OnDestroy {
 
       this.mediaSharingService.update(body).take(1).subscribe(
         (response: any) => {
+          this.showMessage('You have just updated share successful');
           this.sharedContacts = response.data;
           this.resetData();
           this.updateSelectedItems({contacts: this.sharedContacts});
@@ -242,6 +249,7 @@ export class SharingModalComponent implements OnDestroy {
 
       } else {
         this.apiBaseService.post(`media/sharings/update_attributes`, body).subscribe((res: any) => {
+          this.showMessage('You have just updated share successful');
           this.sharedContacts = res.recipients;
           this.resetData();
           this.updateSelectedItems({contacts: this.sharedContacts});
@@ -318,6 +326,10 @@ export class SharingModalComponent implements OnDestroy {
       this.mode = this.selectedContacts.length > 0 ? this.operation.creating : this.operation.editing;
     }
     this.hasChanged = this.mode != this.operation.read ? true : false;
+  }
+
+  private showMessage(message: string = 'You have just created share successful') {
+    this.toastsService.success(message);
   }
 
 }

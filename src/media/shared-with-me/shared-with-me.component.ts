@@ -13,6 +13,7 @@ import {
   DeleteMany
 } from '../shared/store/media/media.actions';
 import { MediaActionHandler } from '@media/shared/media';
+import {ApiBaseService} from "@shared/services";
 
 @Component({
   moduleId: module.id,
@@ -31,7 +32,8 @@ export class ZMediaSharedWithMeComponent extends MediaActionHandler implements O
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
     private mediaUploaderDataService: MediaUploaderDataService,
-    private router: Router
+    private router: Router,
+    private apiBaseService: ApiBaseService
   ) {
     super(resolver, store);
 
@@ -69,6 +71,9 @@ export class ZMediaSharedWithMeComponent extends MediaActionHandler implements O
       case 'viewDetails':
         this.viewDetails(event.payload);
         break;
+      case 'preview':
+        this.preview(event.payload);
+        break;
       case 'deleteMedia':
         this.store.dispatch(new DeleteMany({ ...event.payload }));
         break;
@@ -78,6 +83,16 @@ export class ZMediaSharedWithMeComponent extends MediaActionHandler implements O
   viewDetails(payload: any) {
     const object = payload.selectedObject;
       this.router.navigate(['shared', object.uuid], {queryParams: {returnUrl: this.router.url}});
+  }
+
+  preview(payload: any) {
+    const object = payload.selectedObject;
+    this.apiBaseService.get(`media/sharings/${object.uuid}/full_details`).subscribe((response: any) => {
+      this.router.navigate(['photos', response.data[0].uuid, {
+        batchQuery: `media/media?type=photo&sharing=${object.id}`,
+        mode: 0
+      }], {queryParams: {returnUrl: this.router.url}});
+    });
   }
 
   ngOnDestroy() {
