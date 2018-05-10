@@ -116,4 +116,28 @@ export class ZMediaSearchComponent extends MediaActionHandler implements OnInit 
         object.id, {ids: [object.id], mode: 0}], {queryParams: {returnUrl: this.router.url}});
     }
   }
+
+  validateObjects(objects: Array<any>): boolean {
+    let result = true;
+    if (!!objects.length === false) {
+      return false;
+    }
+    if (objects.length === 1) {
+      if (objects[0].object_type === 'sharing') {
+        return false;
+      }
+    }
+
+    if (objects.length > 1) {
+      objects.forEach(object => {
+        if (object.object_type === 'album') {
+          result = false;
+          return;
+        }
+      });
+    }
+
+    return result;
+  }
+
 }
