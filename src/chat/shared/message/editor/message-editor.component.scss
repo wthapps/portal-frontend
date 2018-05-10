@@ -22,11 +22,6 @@
 }
 
 .chat-message-container {
-  position: fixed;
-  bottom: 0;
-  left: $main-page-left;
-  right: 0;
-  z-index: 9;
   padding: 15px 30px;
   background-color: #ffffff;
   border-top: 1px solid $line;

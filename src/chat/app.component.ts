@@ -3,7 +3,7 @@ import {
   OnInit,
   OnDestroy,
   ViewChild,
-  AfterViewInit
+  AfterViewInit, ViewEncapsulation
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -21,7 +21,8 @@ import { IntroductionModalComponent } from '@wth/shared/modals/introduction/intr
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  styleUrls: ['app.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('introduction') introduction: IntroductionModalComponent;

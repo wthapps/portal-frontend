@@ -9,7 +9,7 @@
   <div class="z-social-media-body">
     <form  novalidate>
 
-      <div class="z-social-media-inputpost">
+      <div class="z-social-media-inputpost form-group">
         <span class="z-social-media-inputpost-icon">
           <button class="btn btn-default" (click)="onOpenPhotoSelect()" pTooltip="{{ tooltip.addPhoto }}"
                   tooltipPosition="top">
@@ -37,6 +37,7 @@
         </mini-editor>
 
       </div>
+
 
       <photo-item-preview [photo]="comment?.photo"
                           [files]="files"

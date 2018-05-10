@@ -1,7 +1,8 @@
 @import "../../../assets/styles/global";
 
 .message-wrapper {
-  padding-bottom: 120px;
+  @include flex(1);
+  overflow: auto;
 }
 
 .message-item-wrapper {

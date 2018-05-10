@@ -95,7 +95,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
     private photoUploadService: PhotoUploadService,
     private emojiService: WTHEmojiService,
     private userService: UserService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.post = new SoPost();
@@ -124,7 +125,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   viewProfile(uuid: string = this.userService.getSyncProfile().uuid) {
     this.router
-      .navigate([{ outlets: { detail: null } }], {
+      .navigate([{outlets: {detail: null}}], {
         queryParamsHandling: 'preserve',
         preserveFragment: true
       })
@@ -274,6 +275,15 @@ export class PostEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  doEvents(response: any) {
+    switch (response.action) {
+      case 'remove':
+        this.backupPhotos = this.post.photos;
+        this.post.photos = _.pull(this.post.photos, response.data);
+        break;
+    }
+  }
+
   removePhoto(photo: any, event: any) {
     this.backupPhotos = this.post.photos;
     this.post.photos = _.pull(this.post.photos, photo);
@@ -332,14 +342,14 @@ export class PostEditComponent implements OnInit, OnDestroy {
     if (this.post.privacy !== type) mode = 'add';
 
     this.privacyCustomModal.open(
-      { type: type, data: this.post.custom_objects },
+      {type: type, data: this.post.custom_objects},
       mode
     );
   }
 
   selectedItems(response: any) {
     this.update(
-      { privacy: response.type, custom_objects: response.items },
+      {privacy: response.type, custom_objects: response.items},
       null
     );
     // this.custom_objects = response.items;
@@ -365,7 +375,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       event.preventDefault();
     }
 
-    this.post = { ...this.post, ...attr };
+    this.post = {...this.post, ...attr};
     this.privacyName = this.getPrivacyName(this.post);
   }
 

@@ -4,10 +4,11 @@
       <div class="clearfix text-right modal-post-edit-action-mobile">
 
         <div class="btn-group pull-left" role="group">
-          <button *ngIf="parent == null && showAddPhotosButton" (click)="addMorePhoto($event)" type="button" class="btn btn-outline-default">
+          <button *ngIf="parent == null && showAddPhotosButton" (click)="addMorePhoto($event)" type="button"
+                  class="btn btn-outline-default">
             <i class="fa fa-camera"></i>
           </button>
-          <button type="button" class="btn btn-outline-default">
+          <button type="button" class="btn btn-outline-default" (click)="showEmojiBtn($event)">
             <i class="fa fa-smile-o"></i>
           </button>
         </div>
@@ -15,7 +16,8 @@
         <button type="button" class="btn btn-outline-default" data-dismiss="modal" (click)="dismiss(true)">
           Cancel
         </button>
-        <button type="submit" class="btn btn-outline-primary" [disabled]="!editor?.valid && post?.photos?.length <= 0 && !link">
+        <button type="submit" class="btn btn-outline-primary"
+                [disabled]="!editor?.valid && post?.photos?.length <= 0 && !link">
           Done
         </button>
       </div>
@@ -36,8 +38,9 @@
               </div>
             </a>
             <div class="z-shared-with dropdown">
-              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;" aria-haspopup="true"
-                aria-expanded="true">
+              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
+                 aria-haspopup="true"
+                 aria-expanded="true">
                 <i class="fa" [ngClass]="privacyClassIcon"></i> {{ privacyName }} </a>
               <ul class="dropdown-menu">
                 <li>
@@ -57,7 +60,8 @@
                   <a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Share with Friends</a>
                 </li>
                 <li>
-                  <a href="#" (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Share in Communities</a>
+                  <a href="#" (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Share in
+                    Communities</a>
                 </li>
               </ul>
             </div>
@@ -84,8 +88,9 @@
         </div>
         <div class="z-social-media-right">
           <div class="dropdown pull-right">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-              pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="true"
+                    pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
               <i class="fa fa-ellipsis-v"></i>
             </button>
             <ul class="dropdown-menu">
@@ -118,8 +123,9 @@
       </div>
 
       <div class="form-group">
-        <mini-editor #editor="ngModel" required [autofocus] [(ngModel)]="description" [ngModelOptions]="{standalone: true}" placeholder="Share your ideas"
-          [style]="{'height':'auto', 'min-height': '27px'}" (onTextChange)="hasChange = true">
+        <mini-editor #editor="ngModel" required [autofocus] [(ngModel)]="description"
+                     [ngModelOptions]="{standalone: true}" placeholder="Share your ideas"
+                     [style]="{'height':'auto', 'min-height': '27px'}" (onTextChange)="hasChange = true">
           <p-header>
           </p-header>
         </mini-editor>
@@ -127,7 +133,8 @@
       <display-link *ngIf="link" [data]="link"></display-link>
       <div id="loading"></div>
       <div *ngIf="showTag" class="form-group">
-        <tag-input [maxItems]='100' [(ngModel)]="post.tags" (onRemove)="removeTag($event)" (onAdd)="addTag($event)" [formControl]="tagsCtrl">
+        <tag-input [maxItems]='100' [(ngModel)]="post.tags" (onRemove)="removeTag($event)" (onAdd)="addTag($event)"
+                   [formControl]="tagsCtrl">
           <tag-input-dropdown [autocompleteItems]="tags">
           </tag-input-dropdown>
         </tag-input>
@@ -166,21 +173,29 @@
         Shared from
         <a href="javascript:;" (click)="viewProfile(parent.owner.uuid)">{{ parent.owner.name }}</a>
       </div>
+
+
       <div class="clearfix text-right hidden-xs">
-        <!-- Single button -->
-        <button *ngIf="parent == null && showAddPhotosButton" (click)="addMorePhoto($event)" type="button" class="btn btn-outline-default pull-left">
-          <i class="fa fa-camera"></i>
-        </button>
-        <button type="button" class="btn btn-outline-default dropdown-toggle pull-left" data-toggle="dropdown" pTooltip="{{ tooltip.emoticons }}"
-          tooltipPosition="top" (click)="showEmojiBtn($event)">
-          <i class="fa fa-smile-o"></i>
-        </button>
-        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">
-          Cancel
-        </button>
-        <button type="submit" class="btn btn-outline-primary btn-min" [disabled]="!editor?.valid && post?.photos?.length <= 0 && !link">
-          Done
-        </button>
+        <div class="btn-group pull-left" role="group">
+          <button *ngIf="parent == null && showAddPhotosButton" (click)="addMorePhoto($event)" type="button"
+                  class="btn btn-outline-default pull-left">
+            <i class="fa fa-camera"></i>
+          </button>
+          <button type="button" class="btn btn-outline-default dropdown-toggle pull-left" data-toggle="dropdown"
+                  pTooltip="{{ tooltip.emoticons }}"
+                  tooltipPosition="top" (click)="showEmojiBtn($event)">
+            <i class="fa fa-smile-o"></i>
+          </button>
+        </div>
+        <div class="pull-right">
+          <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-outline-primary btn-min"
+                  [disabled]="!editor?.valid && post?.photos?.length <= 0 && !link">
+            Done
+          </button>
+        </div>
       </div>
     </form>
   </bs-modal-body>
