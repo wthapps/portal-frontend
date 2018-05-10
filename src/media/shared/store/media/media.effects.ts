@@ -92,7 +92,7 @@ export class MediaEffects {
   addToDetailObjects$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.ADD_TO_DETAIL_OBJECTS)
     .map((action: mediaActions.AddToDetailObjects) => action.payload)
-    .switchMap(payload => {
+    .mergeMap(payload => {
       if (payload.album) {
         this.toastsService.success('You added item(s) successful!');
         return this.albumService.addPhotos({...payload})
