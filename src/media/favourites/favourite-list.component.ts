@@ -126,7 +126,7 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
 
     if (objects.length > 1) {
       objects.forEach(object => {
-        if (object.object_type === 'album') {
+        if ((object.object_type === 'album') || (object.object_type === 'sharing')) {
           result = false;
           return;
         }

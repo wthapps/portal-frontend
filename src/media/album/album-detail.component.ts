@@ -32,7 +32,8 @@ import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.compone
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MediaActionHandler } from '@media/shared/media';
 import {  } from '@media/../../shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import {CommonEventService, PhotoUploadService} from '@wth/shared/services';
+import { CommonEventService, PhotoUploadService } from '@wth/shared/services';
+import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 
 @Component({
   selector: 'me-album-detail',
@@ -73,7 +74,8 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
     private albumService: AlbumService,
     protected mediaSelectionService: WMediaSelectionService,
     private photoUploadService: PhotoUploadService,
-    private commonEventService: CommonEventService
+    private commonEventService: CommonEventService,
+    private mediaUploaderDataService: MediaUploaderDataService,
   ) {
     super(resolver, store, mediaSelectionService);
     this.photos$ = this.store.select(appStore.selectDetailObjects);
@@ -121,10 +123,16 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
 
     this.sub = this.commonEventService.filter((e: any) => {
       return e.channel === 'media:photo:update_recipients';
-    })
-      .subscribe((e: any) => {
+    }).subscribe((e: any) => {
         this.doEvent({action: 'media:photo:update_recipients', payload: this.album});
-      });
+    });
+
+    this.sub = this.mediaUploaderDataService.action$
+      .takeUntil(this.destroySubject)
+      .subscribe((event: any) => {
+        this.doEvent(event);
+    });
+
   }
 
   doEvent(event: any) {
@@ -141,7 +149,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
         }));
         break;
       case 'openUploadModal':
-        // this.mediaUploaderDataService.onShowUp();
+        this.mediaUploaderDataService.onShowUp();
         break;
       case 'addAlbumSuccessful':
         this.store.dispatch(new AddSuccess(event.payload));
@@ -203,6 +211,10 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
           this.detailInfo.updateProperties({ object: this.album });
         });
         break;
+      case 'updateMediaList':
+        this.store.dispatch(new AddToDetailObjects({album: this.album, photos: [event.payload.data]}));
+        break;
+
     }
   }
 
