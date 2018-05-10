@@ -36,7 +36,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
   linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
 
   constructor(
-    private contactService: ZContactService,
+    public contactService: ZContactService,
     private route: ActivatedRoute,
     private router: Router,
     private urlService: UrlService,
