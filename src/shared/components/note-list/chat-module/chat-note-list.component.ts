@@ -17,6 +17,9 @@ export class ChatNoteListComponent implements OnInit {
   @Input() viewOption: any = 'list';
   allItems: any;
   pressingCtrlKey: boolean = false;
+  loading: boolean = false;
+  noData: boolean = false;
+  sort: any = {name: 'asc'};
 
   selectedAll: boolean = false;
 
@@ -65,6 +68,11 @@ export class ChatNoteListComponent implements OnInit {
       this.notes = state.objects.filter(
         ob => ob.object_type === noteConstants.OBJECT_TYPE.NOTE
       );
+      this.doSort();
+    });
+    this.store.select('context').subscribe(state => {
+      this.loading = state.loading;
+      this.noData = state.noData;
     });
   }
 
@@ -75,5 +83,32 @@ export class ChatNoteListComponent implements OnInit {
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {
     return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
+  }
+
+  toogleSorting() {
+    this.sort.name = this.sort.name == 'asc' ? 'decs' : 'asc';
+    this.doSort();
+  }
+
+  doSort() {
+    if (this.sort.name == 'asc') {
+      this.folders.sort((i1, i2) => {
+        if (i1.object.name.toLowerCase() > i2.object.name.toLowerCase()) return 1;
+        return -1;
+      });
+      this.notes.sort((i1, i2) => {
+        if (i1.object.name.toLowerCase() > i2.object.name.toLowerCase()) return 1;
+        return -1;
+      });
+    } else {
+      this.folders.sort((i1, i2) => {
+        if (i1.object.name.toLowerCase() > i2.object.name.toLowerCase()) return -1;
+        return 1;
+      });
+      this.notes.sort((i1, i2) => {
+        if (i1.object.name.toLowerCase() > i2.object.name.toLowerCase()) return -1;
+        return 1;
+      });
+    }
   }
 }

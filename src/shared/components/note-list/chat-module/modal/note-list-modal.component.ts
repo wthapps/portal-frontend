@@ -3,6 +3,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { ApiBaseService } from '@shared/services';
 import { Store } from '@ngrx/store';
 import * as fromChatNote from './../../../../../core/store/chat/note.reducer';
+import * as fromChatContext from './../../../../../core/store/chat/context.reducer';
 import { chatNoteConstants, ChatNoteConstants } from '@shared/components/note-list/chat-module/constants';
 import { log } from 'util';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
@@ -54,14 +55,19 @@ export class ChatNoteListModalComponent implements OnInit {
   }
 
   open() {
+    this.store.dispatch({
+        type: fromChatContext.SET_LOADING,
+        payload: true
+      });
     this.apiBaseService.get('note/v1/mixed_entities').subscribe(res => {
+      this.store.dispatch({
+        type: fromChatContext.SET_CONTEXT,
+        payload: {loading: false, noData: res.data.length == 0}
+      });
       this.store.dispatch({
         type: fromChatNote.SET_OBJECTS,
         payload: res.data
       });
-      console.log(res);
-      console.log(res.meta.links);
-
       this.nextLink = res.meta.links.next;
     });
     this.store.dispatch({
@@ -79,7 +85,15 @@ export class ChatNoteListModalComponent implements OnInit {
   }
 
   tabMyNote(e: any) {
+    this.store.dispatch({
+        type: fromChatContext.SET_LOADING,
+        payload: true
+      });
     this.apiBaseService.get('note/v1/mixed_entities').subscribe(res => {
+      this.store.dispatch({
+        type: fromChatContext.SET_CONTEXT,
+        payload: {loading: false, noData: res.data.length == 0}
+      });
       this.store.dispatch({
         type: fromChatNote.SET_OBJECTS,
         payload: res.data
@@ -94,9 +108,17 @@ export class ChatNoteListModalComponent implements OnInit {
   }
 
   tabFavourites() {
+    this.store.dispatch({
+        type: fromChatContext.SET_LOADING,
+        payload: true
+      });
     this.apiBaseService
       .get('note/v1/mixed_entities?favourite=true')
       .subscribe(res => {
+        this.store.dispatch({
+          type: fromChatContext.SET_CONTEXT,
+          payload: {loading: false, noData: res.data.length == 0}
+        });
         this.store.dispatch({
           type: fromChatNote.SET_OBJECTS,
           payload: res.data
@@ -111,9 +133,17 @@ export class ChatNoteListModalComponent implements OnInit {
   }
 
   tabSharedWithMe() {
+    this.store.dispatch({
+        type: fromChatContext.SET_LOADING,
+        payload: true
+      });
     this.apiBaseService
       .get('note/v1/mixed_entities?shared_with_me=true')
       .subscribe(res => {
+        this.store.dispatch({
+          type: fromChatContext.SET_CONTEXT,
+          payload: {loading: false, noData: res.data.length == 0}
+        });
         this.store.dispatch({
           type: fromChatNote.SET_OBJECTS,
           payload: res.data
@@ -133,10 +163,19 @@ export class ChatNoteListModalComponent implements OnInit {
         .post('note/v1/mixed_entities/search', { q: e.search })
         .subscribe(res => {
           this.store.dispatch({
+            type: fromChatContext.SET_CONTEXT,
+            payload: {loading: false, noData: res.data.length == 0}
+          });
+          this.store.dispatch({
             type: fromChatNote.SET_OBJECTS,
             payload: res.data
           });
           this.nextLink = res.meta.links.next;
+          this.actives = [false, false, false];
+          this.store.dispatch({
+            type: fromChatNote.SET_BREADCRUMB,
+            payload: [{label: 'Search result'}]
+          });
         });
     }
   }
@@ -169,8 +208,9 @@ export class ChatNoteListModalComponent implements OnInit {
 
   getNotesAndBreadcrumb(item: any) {
     this.store.dispatch({type: fromChatNote.SET_OBJECTS, payload: []});
+    this.store.dispatch({type: fromChatContext.SET_LOADING, payload: true});
     if (item.object_type) {
-      const parent = item.object_id ? 'parent_id=' + item.object_id : '';
+      const parent = item.id ? 'parent_id=' + item.id : '';
       const page = item.permission == 'owner' ? 'MY_NOTE' : 'SHARED_WITH_ME';
       const shared = item.permission == 'owner' ? '' : 'shared_with_me=true';
 
@@ -178,12 +218,20 @@ export class ChatNoteListModalComponent implements OnInit {
       .get('note/v1/mixed_entities?' + parent + `&${shared}`)
       .subscribe(res => {
         this.store.dispatch({
+            type: fromChatContext.SET_CONTEXT,
+            payload: {loading: false, noData: res.data.length == 0}
+          });
+        this.store.dispatch({
           type: fromChatNote.SET_OBJECTS,
           payload: res.data
         });
       });
 
       this.apiBaseService.get(`note/folders/get_folder_path/${item.id}`, {page: page}).subscribe(res => {
+        this.store.dispatch({
+            type: fromChatContext.SET_CONTEXT,
+            payload: {loading: false, noData: res.data.length == 0}
+          });
         let breadcrumb = res.data.map(i => {
           i.label = i.name;
           return i;
@@ -200,6 +248,10 @@ export class ChatNoteListModalComponent implements OnInit {
       .get('note/v1/mixed_entities?' + shared)
       .subscribe(res => {
         this.store.dispatch({
+            type: fromChatContext.SET_CONTEXT,
+            payload: {loading: false, noData: res.data.length == 0}
+          });
+        this.store.dispatch({
           type: fromChatNote.SET_OBJECTS,
           payload: res.data
         });
@@ -213,16 +265,14 @@ export class ChatNoteListModalComponent implements OnInit {
   }
 
   loadMore() {
-    console.log(this.nextLink);
-
     if (this.nextLink) {
       this.apiBaseService.get(this.nextLink).subscribe(res => {
-      this.objects = [...this.objects, ...res.data]
-      this.store.dispatch({
-        type: fromChatNote.SET_OBJECTS,
-        payload: this.objects
-      });
-      this.nextLink = res.meta.links.next;
+        this.objects = [...this.objects, ...res.data]
+        this.store.dispatch({
+          type: fromChatNote.SET_OBJECTS,
+          payload: this.objects
+        });
+        this.nextLink = res.meta.links.next;
     });
     }
   }

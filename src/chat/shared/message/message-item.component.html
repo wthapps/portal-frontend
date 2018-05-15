@@ -48,6 +48,11 @@
           </ul>
           <!--note menu actions-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Note::Note'">
+            <li>
+              <a [href]="noteUrl + '/notes/public/' + message.file.uuid" target="_blank">
+                Open
+              </a>
+            </li>
             <li *ngIf="message.byMe">
               <a href="javascript:;" (click)="delete()">Remove</a>
             </li>
@@ -132,7 +137,7 @@
           </div>
 
           <!-- note type-->
-          <div *ngIf="message.file_type == 'Note::Note'" class="note-display p10 can-click">
+          <div *ngIf="message.file_type == 'Note::Note'" class="note-display p15 can-click">
             <a [href]="noteUrl + '/notes/public/' + message.file.uuid" target="_blank">
               <h5>
                 <i class="fa fa-file"></i> {{message.file?.name}}</h5>

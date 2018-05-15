@@ -75,7 +75,11 @@ export class NoteItemComponent implements OnInit, OnDestroy {
   }
 
   onClick() {
-    this.store.dispatch({type: fromChatNote.SELECT_ONE, payload: this.data});
+    if (this.pressingCtrlKey) {
+      this.onClickMulti();
+    } else {
+      this.store.dispatch({type: fromChatNote.SELECT_ONE, payload: this.data});
+    }
   }
 
   onClickMulti() {

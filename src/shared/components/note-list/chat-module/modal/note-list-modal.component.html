@@ -41,8 +41,8 @@
 
       <!-- <div class="content-overflow" style="max-height: 600px;margin-right: 0px" infiniteScroll infiniteScrollDistance="1" infiniteScrollUpDistance="1"
         [scrollWindow]="true" (scrolled)="loadMore()" (scrolledUp)="loadMore()"> -->
-      <div class="content-overflow" style="max-height: 600px;margin-right: 0px" infiniteScroll [scrollWindow]="false" [infiniteScrollDistance]="1"
-        [infiniteScrollThrottle]="50" (scrolled)="loadMore()">
+      <div class="content-overflow" style="max-height: 600px;margin-right: 0px; background-color: #f6f6f6" infiniteScroll [scrollWindow]="false"
+        [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50" (scrolled)="loadMore()">
         <div>
           <share-chat-note-list [viewOption]="toolbar.viewMode" class="wobject-grid has-scrollbar"></share-chat-note-list>
         </div>

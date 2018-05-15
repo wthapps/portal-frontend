@@ -1,4 +1,3 @@
-<!-- <div class="component-listbox-list"> -->
 <div [ngClass]="{'component-listbox-list': viewOption == VIEW_MODE.LIST, 'component-listbox-grid': (viewOption == VIEW_MODE.GRID || viewOption == VIEW_MODE.TIMELINE)}">
   <div class="component-listbox-header">
     <div class="component-listbox-row" [ngClass]="selectedAll? 'active' : ''">
@@ -11,9 +10,9 @@
                   [ngClass]="{'fa-arrow-up': !sortOption?.desc, 'fa-arrow-down': sortOption?.desc }"></i>
         </span>
       </div> -->
-      <div class="component-listbox-name">
+      <div class="component-listbox-name can-click" (click)="toogleSorting()">
         Name
-        <!-- <i class="fa fa-arrow-up"></i> -->
+        <i class="fa" [ngClass]="{'fa-arrow-up': sort.name == 'asc', 'fa-arrow-down': sort.name == 'decs'}"></i>
       </div>
       <!-- <div class="component-listbox-owner" [ngClass]="{'can-click': page !== noteConstants.PAGE_RECENT}"  (click)="onSort('owner')">
         Owner <i *ngIf="page !== noteConstants.PAGE_RECENT && sortOption?.field == 'owner'" class="fa"
@@ -56,28 +55,17 @@
       <div class="component-listbox-action">&nbsp;</div>
     </div>
   </div>
-  <!-- <div class=" row action pull-right">
-    <span class="dropdown">
-      <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle"
-              data-toggle="dropdown" type="button" style="margin-right: 10px; border: none; background: none">
-        {{ groupBy | titleCase }}
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li><a (click)="group('date');" href="javascript:;"> Date</a></li>
-        <li><a (click)="group('month');" href="javascript:;"> Month</a></li>
-        <li><a (click)="group('year');" href="javascript:;"> Year</a></li>
-      </ul>
-    </span>
-      <i class="fa can-click" [ngClass]="{'fa-arrow-up': !sortOption?.desc, 'fa-arrow-down': sortOption?.desc }"
-         (click)="onReverseSort()"></i>
-  </div> -->
+  <div class="row action pull-right can-click" *ngIf="viewOption == VIEW_MODE.GRID" (click)="toogleSorting()">
+    Name
+    <i class="fa" [ngClass]="{'fa-arrow-up': sort.name == 'asc', 'fa-arrow-down': sort.name == 'decs'}"></i>
+  </div>
 
   <div class="clearfix"></div>
 
   <!-- Body -->
-  <ng-container *ngIf="(folders || notes); else loadingBlock">
+  <ng-container *ngIf="!loading && !noData">
     <ng-container *ngIf="viewOption !== VIEW_MODE.TIMELINE">
-      <!-- <h4 class="ml10" *ngIf="folders?.length > 0">Folders</h4> -->
+      <h5 class="ml10" *ngIf="folders?.length > 0 && viewOption == VIEW_MODE.GRID">Folders</h5>
       <!-- {{folders | json}} -->
       <ng-container *ngFor="let item of folders">
         <folder-item [data]="item" class="component-listbox-body"></folder-item>
@@ -85,7 +73,7 @@
 
       <div class="clearfix"></div>
 
-      <h4 class="ml10" *ngIf="noteItems?.length > 0 && viewOption == VIEW_MODE.GRID">Notes</h4>
+      <h5 class="ml10" *ngIf="notes?.length > 0 && viewOption == VIEW_MODE.GRID">Notes</h5>
       <ng-container *ngFor="let item of notes">
         <note-item [data]="item" class="component-listbox-body" [pressingCtrlKey]="pressingCtrlKey" class="component-listbox-body"></note-item>
       </ng-container>
@@ -110,6 +98,6 @@
       </div>
     </div>
   </ng-container>
-
-  <ng-template #loadingBlock>...Loading</ng-template>
 </div>
+<box-loading *ngIf="loading"></box-loading>
+<box-no-data *ngIf="noData" [title]="'There is no note!'"></box-no-data>

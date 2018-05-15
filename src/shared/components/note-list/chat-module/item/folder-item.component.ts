@@ -18,6 +18,7 @@ import { WthConfirmService } from '@shared/shared/components/confirmation/wth-co
 import { UrlService, UserService, ApiBaseService } from '@shared/services';
 import { noteConstants } from '@notes/shared/config/constants';
 import * as fromChatNote from './../../../../../core/store/chat/note.reducer';
+import * as fromChatContext from './../../../../../core/store/chat/context.reducer';
 import { chatNoteConstants } from '@shared/components/note-list/chat-module/constants';
 
 
@@ -77,6 +78,10 @@ export class FolderItemComponent implements OnInit, OnDestroy {
     this.apiBaseService
       .get('note/v1/mixed_entities?parent_id=' + this.data.object_id + `&${shared}`)
       .subscribe(res => {
+        this.store.dispatch({
+          type: fromChatContext.SET_CONTEXT,
+          payload: {loading: false, noData: res.data.length == 0}
+        });
         this.store.dispatch({
           type: fromChatNote.SET_OBJECTS,
           payload: res.data

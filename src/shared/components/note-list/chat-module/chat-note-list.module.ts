@@ -15,6 +15,8 @@ import { TooltipModule } from 'primeng/primeng';
 import { ZSharedBreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
+import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
 
 @NgModule({
   imports: [
@@ -24,6 +26,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     PartialModule,
     WObjectListModule,
     InfiniteScrollModule,
+    BoxNoDataModule,
+    BoxLoadingModule,
     TooltipModule
   ],
   declarations: [
