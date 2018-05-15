@@ -16,6 +16,7 @@ import { _wu } from '@wth/shared/shared/utils/utils';
 import { DEFAULT_SETTING } from '@contacts/shared/config/constants';
 
 declare var _: any;
+export const ITEM_PER_PAGE: number = 50;
 
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
@@ -28,7 +29,6 @@ export class ZContactService extends BaseEntityService<any> {
 
   // orderDesc: boolean = false;
   readonly startIndex: number = 0;
-  readonly ITEM_PER_PAGE: number = 50;
 
   listenToList: any;
   listenToItem: any;
@@ -300,16 +300,18 @@ export class ZContactService extends BaseEntityService<any> {
 
     let orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a,b, this.orderDescSubject.getValue()));
     let selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
-    let orderedContactsWSelected: any[] = _.map(orderedContacts, (ct: any) => {
-      if (selectedIds.indexOf(ct.uuid) > -1)
-        return Object.assign(ct, { selected: true });
-      else return Object.assign(ct, { selected: false });
-    });
+    // let orderedContactsWSelected: any[] = _.map(orderedContacts, (ct: any) => {
+    //   if (selectedIds.indexOf(ct.uuid) > -1)
+    //     return Object.assign(ct, { selected: true });
+    //   else return Object.assign(ct, { selected: false });
+    // });
+
+    let orderedContactsWSelected: any[] = orderedContacts.map(ct => { return {...ct, selected: selectedIds.includes(ct.uuid)}});
 
     this.contactsSubject.next(
       orderedContactsWSelected.slice(
         this.startIndex,
-        this.page * this.ITEM_PER_PAGE
+        this.page * ITEM_PER_PAGE
       )
     );
     this.checkSelectAll();

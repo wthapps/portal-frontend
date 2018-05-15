@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { ZContactService } from '../../shared/services/contact.service';
+import { ZContactService, ITEM_PER_PAGE } from '../../shared/services/contact.service';
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
 import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
@@ -45,7 +45,6 @@ export class ZContactListComponent
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
 
-  ITEM_PER_PAGE: number = 20;
   page: number = 1;
 
   contacts: any = [];
@@ -121,7 +120,7 @@ export class ZContactListComponent
     this.contactService.contacts$
       .pipe(takeUntil(this.destroySubject))
       .subscribe((contacts: any[]) => {
-        this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
+        this.contacts = contacts.slice(0, ITEM_PER_PAGE * this.page);
         this.loadingService.stop();
       });
   }
