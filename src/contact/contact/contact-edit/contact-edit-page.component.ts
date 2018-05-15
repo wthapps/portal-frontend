@@ -40,6 +40,7 @@ export class ZContactEditPageComponent implements OnInit {
   pageTitle: string;
 
   tooltip: any = Constants.tooltip;
+  formValid: boolean = false;
 
   constructor(private router: Router,
               private contactService: ZContactService,
@@ -68,6 +69,10 @@ export class ZContactEditPageComponent implements OnInit {
     } else {
       this.pageTitle = 'Edit contact';
     }
+  }
+
+  eventForm(event: any) {
+    this.formValid = event;
   }
 
   doEvent(event: any) {

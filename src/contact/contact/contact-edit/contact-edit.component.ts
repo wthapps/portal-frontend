@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 import { Contact } from '../contact.model';
@@ -15,11 +15,12 @@ declare let _: any;
   templateUrl: 'contact-edit.component.html',
   styleUrls: ['contact-edit.component.scss']
 })
-export class ZContactEditComponent implements OnChanges, OnInit {
+export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input('contact') contact: Contact;
   @Input() mode: string = 'create';
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
+  @Output() eventForm: EventEmitter<any> = new EventEmitter<any>();
 
   public avatarDefault: string = Constants.img.avatar;
 
@@ -81,6 +82,13 @@ export class ZContactEditComponent implements OnChanges, OnInit {
     this.deleteObjects['media'] = [];
 
     this.createForm();
+
+
+    this.form.valueChanges
+      .subscribe(() => {
+        this.eventForm.emit(this.form.valid);
+      });
+
   }
 
   ngOnInit(): void {
@@ -125,6 +133,9 @@ export class ZContactEditComponent implements OnChanges, OnInit {
       (<FormControl>this.notes).setValue(this.contact.notes);
       (<FormControl>this.groups).setValue(_.map(this.contact.groups, 'name'));
     }
+  }
+
+  ngOnDestroy() {
   }
 
   createForm() {
@@ -176,13 +187,13 @@ export class ZContactEditComponent implements OnChanges, OnInit {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
             category: [item.category, Validators.compose([Validators.required])],
-            country_alpha_code: [item.country_alpha_code || this.contactService.defaultCountryCode ],
+            country_alpha_code: [item.country_alpha_code || this.contactService.defaultCountryCode],
             value: [item.value, Validators.compose([CustomValidator.phoneFormat])]
           };
         } else {
           formGroup = {
             category: [data.category, Validators.compose([Validators.required])],
-            country_alpha_code: [this.contactService.defaultCountryCode ],
+            country_alpha_code: [this.contactService.defaultCountryCode],
             value: [data.value, Validators.compose([CustomValidator.phoneFormat])]
           };
         }
