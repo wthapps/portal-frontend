@@ -27,7 +27,7 @@ import { TooltipModule } from 'primeng/components/tooltip/tooltip';
     AppsNavigationComponent,
     NotificationDropDownComponent,
     ChatNotificationComponent,
-    ProfileDropDownComponent,
+    ProfileDropDownComponent
   ],
   exports: [
     AppsNavigationComponent,

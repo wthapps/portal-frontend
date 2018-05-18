@@ -22,3 +22,9 @@
     }
   }
 }
+
+.ui-fileupload {
+  .ui-fileupload-content, button {
+    display: none;
+  }
+}

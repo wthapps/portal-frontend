@@ -7,6 +7,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 
 @Component({
   selector: 'w-toolbar',
@@ -35,7 +36,7 @@ export class WToolbarComponent {
 
   tooltip: any = Constants.tooltip;
 
-  constructor() {}
+  constructor(private apiBaseService: ApiBaseService, private commonEventService: CommonEventService) {}
 
   doAction(event: any) {
     if (event.action === 'favourite') {
@@ -58,6 +59,24 @@ export class WToolbarComponent {
     this.hasManyObjects = this.selectedObjects.length > 1 ? true : false;
     this.hasOneObject = this.selectedObjects.length === 1 ? true : false;
     this.hasNoObject = this.selectedObjects.length === 0 ? true : false;
+  }
+
+  uploadHandler(files: any) {
+    const data = files.map(file => {
+      return {file: file.result, name: file.name, type: file.type};
+    });
+    this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'init', payload: files });
+    data.forEach(f => {
+      this.apiBaseService.post(`media/photos`, f).subscribe(res => {
+        this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+      })
+    })
+  }
+
+  errorHandler(error: any) {
+    if (error.statusCode == 406 && error.error == 'Not Acceptable') {
+      this.commonEventService.broadcast({ channel: 'LockMessage', payload: error.files });
+    }
   }
 
   private checkFavoriteAll(objects: Array<any>): boolean {

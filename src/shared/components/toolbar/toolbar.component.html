@@ -5,13 +5,17 @@
   <ng-template #leftActions>
     <ul class="page-body-control-menu">
       <li>
-        <button class="btn btn-outline-primary" (click)="doAction({action: 'openUploadModal'})">
+        <!-- <button class="btn btn-outline-primary" (click)="doAction({action: 'openUploadModal'})">
           <i class="fa fa-cloud-upload"></i> Upload Photo
-        </button>
+        </button> -->
+        <w-upload [mode]="'multiple'" (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
+          <span class="btn btn-outline-primary">
+            <i class="fa fa-cloud-upload"></i> Upload Photo
+          </span>
+        </w-upload>
       </li>
       <li>
-        <button class="btn btn-outline-primary"
-                (click)="doAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
+        <button class="btn btn-outline-primary" (click)="doAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
           <i class="fa fa-plus-circle"></i> Create Album
         </button>
       </li>
@@ -29,12 +33,9 @@
     <!--view option-->
     <ul class="page-body-control-menu">
       <li class="dropdown">
-        <a class="btn btn-default" href="javascript:void(0);"
-           data-toggle="dropdown"
-           draggable="false"
-           pTooltip="{{ tooltip.changeView}}" tooltipPosition="bottom">
-          <i class="fa"
-             [ngClass]="{
+        <a class="btn btn-default" href="javascript:void(0);" data-toggle="dropdown" draggable="false" pTooltip="{{ tooltip.changeView}}"
+          tooltipPosition="bottom">
+          <i class="fa" [ngClass]="{
              'fa-th-large': (view === 'grid'),
              'fa-th-list': (view === 'list'),
              'fa-align-left': (view === 'timeline')}">
@@ -42,20 +43,17 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
           <li *ngIf="view !== 'grid'">
-            <a (click)="doAction({action: 'changeView', payload: {view: grid}})" href="javascript:void(0);"
-               draggable="false">
+            <a (click)="doAction({action: 'changeView', payload: {view: grid}})" href="javascript:void(0);" draggable="false">
               <i class="fa fa-th-large"></i> Grid
             </a>
           </li>
           <li *ngIf="view !== 'list'">
-            <a (click)="doAction({action: 'changeView', payload: {view: list}})" href="javascript:void(0);"
-               draggable="false">
+            <a (click)="doAction({action: 'changeView', payload: {view: list}})" href="javascript:void(0);" draggable="false">
               <i class="fa fa-th-list"></i> List
             </a>
           </li>
           <li *ngIf="view !== 'timeline'">
-            <a (click)="doAction({action: 'changeView', payload: {view: timeline}})" href="javascript:void(0);"
-               draggable="false">
+            <a (click)="doAction({action: 'changeView', payload: {view: timeline}})" href="javascript:void(0);" draggable="false">
               <i class="fa fa-align-left"></i> Timeline
             </a>
           </li>
@@ -64,4 +62,3 @@
     </ul>
   </div>
 </div>
-
