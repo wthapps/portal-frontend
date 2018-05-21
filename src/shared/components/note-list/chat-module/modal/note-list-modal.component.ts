@@ -77,6 +77,7 @@ export class ChatNoteListModalComponent implements OnInit {
     this.navEnable = true;
     this.searchEnable = false;
     this.insertEnable = false;
+    this.actives = [true, false, false];
     this.modal.open();
   }
 
