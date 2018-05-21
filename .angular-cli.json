@@ -40,7 +40,8 @@
       "environments": {
         "dev": "../environments/environment.ts",
         "prod": "../environments/environment.prod.ts",
-        "stag": "../environments/environment.stag.ts"
+        "stag": "../environments/environment.stag.ts",
+        "test": "../environments/environment.test.ts"
       }
     },
     {
@@ -74,7 +75,8 @@
       "environments": {
         "dev": "../environments/environment.ts",
         "prod": "../environments/environment.prod.ts",
-        "stag": "../environments/environment.stag.ts"
+        "stag": "../environments/environment.stag.ts",
+        "test": "../environments/environment.test.ts"
       }
     },
     {
@@ -111,7 +113,8 @@
       "environments": {
         "dev": "../environments/environment.ts",
         "prod": "../environments/environment.prod.ts",
-        "stag": "../environments/environment.stag.ts"
+        "stag": "../environments/environment.stag.ts",
+        "test": "../environments/environment.test.ts"
       }
     },
     {
@@ -151,7 +154,8 @@
       "environments": {
         "dev": "../environments/environment.ts",
         "prod": "../environments/environment.prod.ts",
-        "stag": "../environments/environment.stag.ts"
+        "stag": "../environments/environment.stag.ts",
+        "test": "../environments/environment.test.ts"
       }
     },
     {
@@ -190,7 +194,8 @@
       "environments": {
         "dev": "../environments/environment.ts",
         "prod": "../environments/environment.prod.ts",
-        "stag": "../environments/environment.stag.ts"
+        "stag": "../environments/environment.stag.ts",
+        "test": "../environments/environment.test.ts"
       }
     },
     {
@@ -232,7 +237,8 @@
       "environments": {
         "dev": "../environments/environment.ts",
         "prod": "../environments/environment.prod.ts",
-        "stag": "../environments/environment.stag.ts"
+        "stag": "../environments/environment.stag.ts",
+        "test": "../environments/environment.test.ts"
       }
     },
     {
@@ -272,7 +278,8 @@
       "environments": {
         "dev": "../environments/environment.ts",
         "prod": "../environments/environment.prod.ts",
-        "stag": "../environments/environment.stag.ts"
+        "stag": "../environments/environment.stag.ts",
+        "test": "../environments/environment.test.ts"
       }
     }
   ],
