@@ -49,13 +49,13 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
   ){
     this.route.params.subscribe(params => {
 
-      if (!params['category'] || params['category'] == 'all') {
+      if (!params['id'] || params['id'] == 'all') {
         this.getAll(params);
       }
-      if (params['category'] == 'mine') {
+      if (params['id'] == 'mine') {
         this.getMine(params);
       }
-      if (params['category'] == 'wth') {
+      if (params['id'] == 'wth') {
         this.getWTH(params);
       }
 

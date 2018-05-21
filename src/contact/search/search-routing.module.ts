@@ -8,17 +8,7 @@ import { ContactSearchComponent } from '@contacts/search/search.component';
   imports: [
     RouterModule.forChild([
       {
-        path: 'search/all',
-        component: ContactSearchComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'search/mine',
-        component: ContactSearchComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'search/wth',
+        path: 'search/:id',
         component: ContactSearchComponent,
         canActivate: [AuthGuard]
       }

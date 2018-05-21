@@ -30,10 +30,15 @@ import { ServiceModule } from '@media/shared/service/service.module';
 import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { AlbumCreateModalComponent, AlbumDeleteModalComponent, AlbumEditModalComponent } from '@media/shared/modal';
+import {
+  AlbumCreateModalComponent,
+  AlbumDeleteModalComponent,
+  AlbumEditModalComponent
+} from '@media/shared/modal';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
+import { ZMediaVideoModule } from '@media/video/video.module';
 
 @NgModule({
   imports: [
@@ -49,6 +54,7 @@ import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.compone
     ZMediaSharingModule,
     ZMediaSearchModule,
     ZMediaMyProfileModule,
+    ZMediaVideoModule,
 
     AppRoutingModule,
     ModalModule,
@@ -80,6 +86,7 @@ import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.compone
     AlbumDeleteModalComponent,
     AlbumDetailInfoComponent,
     AddToAlbumModalComponent,
-    PhotoEditModalComponent]
+    PhotoEditModalComponent
+  ]
 })
 export class AppModule {}

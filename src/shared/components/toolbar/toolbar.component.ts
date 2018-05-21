@@ -67,9 +67,16 @@ export class WToolbarComponent {
     });
     this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'init', payload: files });
     data.forEach(f => {
-      this.apiBaseService.post(`media/photos`, f).subscribe(res => {
-        this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
-      })
+      if (f.type.includes('video')) {
+        this.apiBaseService.post(`media/videos`, f).subscribe(res => {
+          this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+        });
+      } else {
+        this.apiBaseService.post(`media/photos`, f).subscribe(res => {
+          this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+        });
+      }
+
     })
   }
 

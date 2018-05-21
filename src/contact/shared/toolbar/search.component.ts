@@ -30,7 +30,7 @@ export class ZContactSearchSharedToolbarComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      switch(params.category) {
+      switch(params.id) {
         case 'all':
         this.active = [true, false, false];
         break;
@@ -46,7 +46,7 @@ export class ZContactSearchSharedToolbarComponent implements OnInit {
 
   search(e: any, data: any) {
     this.route.params.take(1).subscribe(params => {
-      this.router.navigate([`search/${data}`, {q: params['q'], category: data}]);
+      this.router.navigate([`search/${data}`, {q: params['q']}]);
     });
   }
 }

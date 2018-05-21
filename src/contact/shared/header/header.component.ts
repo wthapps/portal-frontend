@@ -39,8 +39,6 @@ export class ZContactSharedHeaderComponent {
     });
     if (this.urlService.parse().id) {
       this.text = this.urlService.parse().id.split("q=")[1];
-      console.log(this.text);
-
     }
 
     this.suggestService.input$.subscribe((input: any) => {
