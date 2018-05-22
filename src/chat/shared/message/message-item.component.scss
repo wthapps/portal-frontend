@@ -5,7 +5,9 @@
   border: 1px solid $line;
   max-height: 200px;
   overflow: hidden;
-  width: 400px;
+  @media (min-width: $screen-md-min) {
+    width: 400px;
+  }
   a {
     color: inherit;
   }

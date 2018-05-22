@@ -5,7 +5,8 @@
   <div class="message-item-content">
     <div class="message-item-owner" *ngIf="hasShowOwner() && message.display">
       <h4 class="message-item-owner-name">
-        <a [routerLink]="[profileUrl, message.display.uuid]"> {{ message.display.name }} </a>
+        <a class="mr5" [routerLink]="[profileUrl, message.display.uuid]"> {{ message.display.name }} </a>
+        <small class="visible-xs-inline-block">{{ message.created_at | timeFormat: "time_only" }}</small>
       </h4>
       <figure class="message-item-owner-avatar">
         <span class="avatar-xs">

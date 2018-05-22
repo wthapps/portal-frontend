@@ -21,8 +21,8 @@
   }
 }
 
-
 $message-item-content-card-right: 85px;
+$message-item-content-card-right-xs: 25px;
 .message-item {
   margin-bottom: 15px;
   .message-item-date {
@@ -51,6 +51,9 @@ $message-item-content-card-right: 85px;
   .message-item-content {
     position: relative;
     padding-left: 50px;
+    @media (max-width: $screen-xs-max) {
+      padding-left: 30px;
+    }
   }
 
   .message-item-content-main {
@@ -66,6 +69,13 @@ $message-item-content-card-right: 85px;
     left: 0;
     top: 25px;
     width: 50px;
+    @media (max-width: $screen-xs-max) {
+      width: 30px;
+      .avatar-xs {
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
 
   .message-item-owner-name {
@@ -79,6 +89,9 @@ $message-item-content-card-right: 85px;
 
   .message-item-content-card {
     padding-right: $message-item-content-card-right;
+    @media (max-width: $screen-xs-max) {
+      padding-right: $message-item-content-card-right-xs;
+    }
     position: relative;
   }
 
@@ -119,6 +132,9 @@ $message-item-content-card-right: 85px;
       margin-left: 5px;
       font-size: 12px;
       @include opacity(0.7);
+      @media (max-width: $screen-xs-max) {
+        display: none;
+      }
     }
 
   }

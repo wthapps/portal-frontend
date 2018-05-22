@@ -11,3 +11,16 @@
   @include flex(1);
 }
 
+@media (max-width: $screen-xs-max) {
+  .page-body-nav-left {
+    .media-user {
+      height: 34px;
+      .media-user-avatar {
+        display: none;
+        & + .media-user-name {
+          left: 0 !important;
+        }
+      }
+    }
+  }
+}

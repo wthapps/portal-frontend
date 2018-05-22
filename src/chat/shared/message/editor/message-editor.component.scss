@@ -22,9 +22,12 @@
 }
 
 .chat-message-container {
-  padding: 15px 30px;
+  padding: 10px;
   background-color: #ffffff;
   border-top: 1px solid $line;
+  @media (min-width: $screen-sm-min) {
+    padding: 15px 30px;
+  }
   form {
     max-width: 750px;
     margin: auto;

@@ -1,37 +1,42 @@
 <div class="chat-message-container">
   <form [formGroup]="messageEditorForm" novalidate>
-    <mini-editor [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" placeholder="Type message here" [style]="{'height':'auto', 'min-height': '27px'}"
-      (onKeyUp)="handleKeyUp($event)">
+    <mini-editor [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" placeholder="Type message here"
+                 [style]="{'height':'auto', 'min-height': '27px'}"
+                 (onKeyUp)="handleKeyUp($event)">
       <p-header>
       </p-header>
     </mini-editor>
     <div class="chat-message-action">
       <div class="chat-message-action-left">
-        <button class="btn btn-default" (click)="onOpenSelectPhotos()" pTooltip="{{ tooltip.sendMedia }}" tooltipPosition="top">
+        <button class="btn btn-default" (click)="onOpenSelectPhotos()" pTooltip="{{ tooltip.sendMedia }}"
+                tooltipPosition="top">
           <i class="fa fa-camera"></i>
         </button>
         <button class="btn btn-default" (click)="noteSelectOpen()" pTooltip="Send notes" tooltipPosition="top">
           <i class="fa fa-file"></i>
         </button>
-        <span class="btn btn-default btn-style-1 fileinput-button" pTooltip="{{ tooltip.sendFile }}" tooltipPosition="top">
+        <span class="btn btn-default btn-style-1 fileinput-button" pTooltip="{{ tooltip.sendFile }}"
+              tooltipPosition="top">
           <i class="fa fa-paperclip"></i>
-          <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';" (change)="changeFiles($event)"
-          />
+          <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';"
+                 (change)="changeFiles($event)"/>
 
         </span>
         <div class="btn-group dropup">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.emoticons }}" tooltipPosition="top">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                  pTooltip="{{ tooltip.emoticons }}" tooltipPosition="top">
             <i class="fa fa-smile-o"></i>
           </button>
           <ul class="dropdown-menu wth-emoji-dropdown content-overflow p5">
             <li>
-              <i *ngFor="let emoji of emojiData" class="wth-emoji wth-emoji-{{emoji | wthEmojisClass}}" (click)="onEmojiClick(emoji)"></i>
+              <i *ngFor="let emoji of emojiData" class="wth-emoji wth-emoji-{{emoji | wthEmojisClass}}"
+                 (click)="onEmojiClick(emoji)"></i>
             </li>
           </ul>
         </div>
       </div>
       <div class="chat-message-action-right">
-        <span class="text-line-btn text-fade">Press enter to send message</span>
+        <span class="text-line-btn text-fade hidden-xs">Press enter to send message</span>
         <button class="btn btn-outline-primary ml10" (click)="send()">Send</button>
       </div>
     </div>
