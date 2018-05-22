@@ -6,7 +6,7 @@
   <bs-modal-body>
     <div class="row pl20 pr20">
       <div class="input-group">
-        <p-autoComplete *ngIf="mode!=operation.editing"
+        <p-autoComplete *ngIf="!deleting"
                         placeholder="Search contacts"
                         [(ngModel)]="textContacts"
                         [suggestions]="filteredContacts"
@@ -22,7 +22,7 @@
 
 
         <!--edit mode-->
-        <div *ngIf="mode==operation.editing" class="text-left changing padding8 rounded border border-danger border-1">
+        <div *ngIf="deleting" class="text-left changing padding8 rounded border border-danger border-1">
           <i class="fa fa-exclamation-triangle text-danger"></i>
           You have made changes that you need to save!
         </div>

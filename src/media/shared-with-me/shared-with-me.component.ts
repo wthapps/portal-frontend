@@ -13,7 +13,8 @@ import {
   DeleteMany
 } from '../shared/store/media/media.actions';
 import { MediaActionHandler } from '@media/shared/media';
-import {ApiBaseService} from "@shared/services";
+import { ApiBaseService } from '@shared/services';
+import { ConfirmationService } from 'primeng/primeng';
 
 @Component({
   moduleId: module.id,
@@ -33,7 +34,8 @@ export class ZMediaSharedWithMeComponent extends MediaActionHandler implements O
     protected resolver: ComponentFactoryResolver,
     private mediaUploaderDataService: MediaUploaderDataService,
     private router: Router,
-    private apiBaseService: ApiBaseService
+    private apiBaseService: ApiBaseService,
+    private confirmService: ConfirmationService
   ) {
     super(resolver, store);
 
@@ -74,8 +76,16 @@ export class ZMediaSharedWithMeComponent extends MediaActionHandler implements O
       case 'preview':
         this.preview(event.payload);
         break;
+      // this will remove selected items from current list
+      // Those item will disappear from the list
       case 'deleteMedia':
-        this.store.dispatch(new DeleteMany({ ...event.payload }));
+        this.confirmService.confirm({
+          header: 'Delete sharing',
+          acceptLabel: 'Delete',
+          message: `Are you sure to delete selected sharing(s). Those item(s) will disappear permanent in this page.`,
+          accept: () => {
+            this.store.dispatch(new DeleteMany({...event.payload}));
+          }});
         break;
     }
   }
