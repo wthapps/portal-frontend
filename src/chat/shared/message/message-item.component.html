@@ -119,7 +119,7 @@
           <div class="message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
             <figure>
               <a href="javascript:;" (click)="onPreviewPhoto(message)">
-                <img [src]="message.file?.url" alt="">
+                <img [src]="message.file?.url" alt="" (load)="onImgLoaded()">
               </a>
             </figure>
           </div>

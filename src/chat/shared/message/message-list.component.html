@@ -1,5 +1,5 @@
 <ng-container *ngIf="contactItem && contactItem.value">
-  <div #list *ngIf="contactItem.value.active"
+  <div #listEl *ngIf="contactItem.value.active"
        scrollToBottom [detectChange]="contactItem.value.group_id"
        class="message-wrapper"
        infiniteScrollDistance="1"

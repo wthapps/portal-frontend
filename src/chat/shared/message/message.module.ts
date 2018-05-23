@@ -12,6 +12,7 @@ import { SharedModule } from '@wth/shared/shared.module';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
+import { MessageService } from '@chat/shared/message/message.service';
 
 @NgModule({
   imports: [
@@ -40,6 +41,6 @@ import { ChatNoteListModule } from '@shared/components/note-list/chat-module/cha
     MessageItemSimpleComponent,
     MessageItemComponent
   ],
-  providers: []
+  providers: [MessageService]
 })
 export class ZChatMessageModule {}

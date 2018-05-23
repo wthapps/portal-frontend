@@ -35,6 +35,7 @@ import { Store } from '@ngrx/store';
 import { log } from 'util';
 import { noteConstants } from '@notes/shared/config/constants';
 import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
+import { MessageService } from '@chat/shared/message/message.service';
 
 declare var $: any;
 
@@ -68,7 +69,8 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     private mediaSelectionService: WMediaSelectionService,
     private apiBaseService: ApiBaseService,
     private store: Store<any>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private messageService: MessageService
   ) {
     this.createForm();
   }
@@ -80,19 +82,33 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   noteSelectOpen() {
     this.notesListModal.open();
-  };
+  }
   noteSelectOnInsert() {
-    this.store.select('notes').take(1).subscribe(state => {
-      const notes: any = state.objects.filter(item => item.object_type == noteConstants.OBJECT_TYPE.NOTE && item.selected == true);
-      this.notesListModal.close();
-      notes.forEach(note => {
-        this.apiBaseService.post('zone/chat/message', {data: {type: 'file', id: note.object_id, object: note.object_type}, group_id: this.chatService.getContactSelect().value.group_id})
-        .subscribe(res => {
-          // Not implements because channel will get message automacticaly
-        })
-      })
-
-    })
+    this.store
+      .select('notes')
+      .take(1)
+      .subscribe(state => {
+        const notes: any = state.objects.filter(
+          item =>
+            item.object_type == noteConstants.OBJECT_TYPE.NOTE &&
+            item.selected == true
+        );
+        this.notesListModal.close();
+        notes.forEach(note => {
+          this.apiBaseService
+            .post('zone/chat/message', {
+              data: {
+                type: 'file',
+                id: note.object_id,
+                object: note.object_type
+              },
+              group_id: this.chatService.getContactSelect().value.group_id
+            })
+            .subscribe(res => {
+              // Not implements because channel will get message automacticaly
+            });
+        });
+      });
   }
 
   createForm() {
@@ -157,6 +173,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
           this.resetEditor();
         });
     } else {
+      this.messageService.scrollToBottom();
       this.chatService.sendTextMessage(this.message.message, { toTop: true });
       this.resetEditor();
     }
