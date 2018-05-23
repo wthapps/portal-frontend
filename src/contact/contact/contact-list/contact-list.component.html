@@ -9,12 +9,8 @@
   </div>
 </z-contact-shared-toolbar>
 <div id="contact-list" class="page-body-content has-page-body-control" lockYOffset="10" observeAttributes="true" infinite-scroll
-  [scrollWindow]="true"
-     [infiniteScrollDistance]="1"
-     [infiniteScrollThrottle]="50"
-     (scrolled)="onLoadMore()">
+  [scrollWindow]="true" (scrolled)="onLoadMore()">
 
-  {{ contacts.length }}
   <div class="page-body-content-in" *ngIf="loaded && contacts.length==0">
     <box-no-data [icon]="'fa fa-address-book-o'" [title]="'There are no Contacts!'" [subTitle]="'Upload or import contact.'">
     </box-no-data>
