@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   ComponentFactoryResolver,
-  OnDestroy
+  OnDestroy,
+  ViewChild
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -20,6 +21,8 @@ import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { MediaActionHandler } from '@media/shared/media';
+import { ApiBaseService } from '@shared/services';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 declare var _: any;
 
@@ -28,4 +31,32 @@ declare var _: any;
   selector: 'me-video-list',
   templateUrl: 'video-list.component.html'
 })
-export class ZMediaVideoListComponent {}
+export class ZMediaVideoListComponent implements OnInit{
+  videos: any;
+  selectedObject: any;
+  @ViewChild('modal') modal: BsModalComponent;
+
+  constructor(private apiBaseService: ApiBaseService) {}
+
+  ngOnInit() {
+    this.load();
+  }
+
+  doEvent(e: any) {
+    switch(e.action) {
+      case 'updated':
+        this.load();
+      break;
+      case 'viewDetails':
+        this.modal.open();
+        this.selectedObject = e.payload.selectedObject;
+      break;
+    }
+  }
+
+  load() {
+    this.apiBaseService.get(`media/videos`).subscribe(res => {
+      this.videos = res.data;
+    });
+  }
+}

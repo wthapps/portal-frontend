@@ -1,1 +1,24 @@
-<p>demo</p>
+<w-toolbar #toolbar (event)="doEvent($event)">
+</w-toolbar>
+
+<w-grid-list #gridlist [objects]="videos" (event)="doEvent($event)">
+
+
+</w-grid-list>
+
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">
+      <i class="fa fa-weixin"></i> Video </h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <!-- <video *ngIf="selectedObject" [src]="selectedObject.url"></video> -->
+    <video width="500" height="450" controls>
+      <source *ngIf="selectedObject" [src]="selectedObject.url">
+    </video>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <!-- <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
+    <button type="submit" class="btn btn-outline-primary btn-min" (click)="add()">Done</button> -->
+  </bs-modal-footer>
+</bs-modal>

@@ -76,8 +76,8 @@ export class WToolbarComponent {
           this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
         });
       }
-
-    })
+    });
+    this.event.emit({action: 'uploaded', payload: [...files]});
   }
 
   errorHandler(error: any) {

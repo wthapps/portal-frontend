@@ -1,13 +1,11 @@
 <div class="photo-box" [ngClass]="{'selected': object.selected}" id="photo-box-img-{{ object.id }}">
   <div class="photo-box-action photo-box-action-right">
-    <i (click)="doAction({action:'favourite', payload: {mode: 'add', selectedObjects: [object] }})" class="fa fa-star-o"
-       *ngIf="!object.favorite"></i>
-    <i (click)="doAction({action:'favourite', payload: {mode: 'remove', selectedObjects: [object] }})" class="fa fa-star"
-       *ngIf="object.favorite"></i>
+    <i (click)="doAction({action:'favourite', payload: {mode: 'add', selectedObjects: [object] }})" class="fa fa-star-o" *ngIf="!object.favorite"></i>
+    <i (click)="doAction({action:'favourite', payload: {mode: 'remove', selectedObjects: [object] }})" class="fa fa-star" *ngIf="object.favorite"></i>
   </div>
-
   <!--type == 'photo'-->
-  <div *ngIf="object.object_type == 'photo'" class="photo-box-figure" (click)="select(object)">
+  <div *ngIf="object.object_type == 'photo' || (object.content_type && object.content_type.includes('video'))" class="photo-box-figure"
+    (click)="select(object)">
     <div class="photo-box-input" (click)="toggleSelection(object, $event)">
       <i class="fa fa-check"></i>
     </div>
@@ -18,8 +16,7 @@
       </div>
     </figure>
     <div class="photo-box-name">
-      <span class="can-click" title="Double click to edit name"
-            (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
+      <span class="can-click" title="Double click to edit name" (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
         <i class="fa fa-photo"></i> {{ object.name }}.{{ object.extension }}
       </span>
       <div class="hidden">
@@ -52,7 +49,7 @@
       </div>
     </figure>
     <div class="photo-box-name" title="Double click to edit name" (dblclick)="editName(object, $event)">
-      <span class="can-click" >
+      <span class="can-click">
         <i class="wthico-album"></i> {{ object.name }}
       </span>
       <div class="hidden">
@@ -68,37 +65,37 @@
 
 
   <!--sharing-->
-    <div *ngIf="object.object_type == 'sharing'" class="photo-box-figure" (click)="select(object)">
-      <div class="photo-box-input" (click)="toggleSelection(object, $event)">
-        <i class="fa fa-check"></i>
+  <div *ngIf="object.object_type == 'sharing'" class="photo-box-figure" (click)="select(object)">
+    <div class="photo-box-input" (click)="toggleSelection(object, $event)">
+      <i class="fa fa-check"></i>
+    </div>
+    <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
+      <div class="photo-box-figure-in">
+        <img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.photo_default" alt="">
       </div>
-      <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
-        <div class="photo-box-figure-in">
-          <img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.photo_default" alt="">
-        </div>
-        <div class="photo-box-info">
-          <!--{{ object.name }} <br>-->
-          <span *ngIf="object.photo_number>1">
+      <div class="photo-box-info">
+        <!--{{ object.name }} <br>-->
+        <span *ngIf="object.photo_number>1">
           {{ object.photo_number }} photos
         </span>
-          <span *ngIf="object.photo_number<=1">
+        <span *ngIf="object.photo_number<=1">
           {{ object.photo_number }} photo
         </span>
-        </div>
-      </figure>
-      <div class="photo-box-name" title="Double click to edit name" (dblclick)="editName(object, $event)">
+      </div>
+    </figure>
+    <div class="photo-box-name" title="Double click to edit name" (dblclick)="editName(object, $event)">
       <span class="can-click">
         <i class="wthico-album"></i> {{ object.name }}
       </span>
-        <div class="hidden">
-          <!--data return doesn't have json_shares-->
-          <!--<i *ngIf="object.json_shares" class="fa fa-user-plus"></i>-->
-          <i *ngIf="object.favorite" class="fa fa-star"></i>
-        </div>
+      <div class="hidden">
+        <!--data return doesn't have json_shares-->
+        <!--<i *ngIf="object.json_shares" class="fa fa-user-plus"></i>-->
+        <i *ngIf="object.favorite" class="fa fa-star"></i>
       </div>
-      <div class="photo-box-owner">{{ object.owner.name }}</div>
-      <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
-      <div class="photo-box-size">{{ object.photo_number }}</div>
     </div>
+    <div class="photo-box-owner">{{ object.owner.name }}</div>
+    <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
+    <div class="photo-box-size">{{ object.photo_number }}</div>
+  </div>
 
 </div>

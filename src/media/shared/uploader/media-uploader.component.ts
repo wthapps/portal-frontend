@@ -68,13 +68,6 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
               private mediaUploadDataService: MediaUploaderDataService,
               private photoUploadService: PhotoUploadService) {
     this.dragleave();
-    // this.events = new Subject();
-
-  //  Listen to summon command from other components
-    this.mediaUploadDataService.showUp$.subscribe(() => {
-      this.browseFiles(null);
-    });
-
   }
 
   ngOnInit() {
@@ -122,7 +115,6 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['files'].currentValue && changes['files'].currentValue.length > 0) {
-      this.uploadImages(changes['files'].currentValue);
       this.files_num = this.files.length;
       this.photos = [];
     }
@@ -161,56 +153,6 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     });
   }
 
-
-  uploadImages(files: any) {
-    // const filesNotAllow = FileUploadPolicy.allowMultiple(files).filter(file => file.allow == false);
-    // if (filesNotAllow && filesNotAllow.length > 0) {
-    //   this.commonEventService.broadcast({channel: 'LockMessage', payload: filesNotAllow});
-    //   return;
-    // }
-    // this.step = this.uploadSteps.init;
-    // this.modalDock.open();
-
-    // this.uploaded_num = 0;
-    // this.stopped_num = 0;
-    // this.files_num = files.length;
-    // this.photos.length = 0;
-
-    // // Convert fileList to array
-    // this.pending_files = Array.prototype.slice.call( files );
-
-    // this.photoUploadService.getPhoto(files[0]).then((res: any) => {
-    //   this.current_photo = res;
-    // });
-
-    // // Stop observable when finish uploading all files
-    // this.photoUploadService.uploadPhotos(files)
-    //   .takeWhile(() => this.step != this.uploadSteps.uploaded && this.step != this.uploadSteps.stop)
-    //   .subscribe((res: any) => {
-    //       this.uploaded_num++;
-    //       let returnData = res.data;
-    //       let originPhoto = res.originPhoto;
-    //       this.current_photo = returnData.thumbnail_url;
-    //       this.photos.push(returnData);
-
-    //       // Remove success photos from pending files
-    //       _.remove(this.pending_files, (file: any) => file.name === originPhoto.name && file.type === originPhoto.type);
-
-    //       // newPhoto.thumbnail_url = this.current_photo;
-    //       // this.events.next(returnData);
-    //       this.onAction({action: 'updateMediaList', payload: {data: returnData}});
-
-    //       if (this.uploaded_num == this.files_num) {
-    //         this.step = this.uploadSteps.uploaded;
-    //       }
-    //     }
-    //     , (err: any) => {
-    //       this.uploaded_num++;
-    //       // this.step = this.uploadSteps.error;
-    //       console.error('Error when uploading files ', err);
-    //     });
-  }
-
   onAction(options?: any): void {
     // close uploading form
     if ( _.get(options, 'action') !== 'updateMediaList') {
@@ -226,25 +168,14 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   //   this.createNewAlbum.emit(this.photos);
   // }
 
-  browseFiles(event: any) {
-    this.renderer.invokeElementMethod(this.inputFiles.nativeElement, 'click');
-  }
-
-  chooseFiles(event: any) {
-    this.files = event.target.files;
-    if (this.files.length == 0) {
-      return;
-    }
-    this.uploadImages(this.files);
-  }
-
   onDrop(event: any) {
-    $('body').removeClass('drag-active');
-    event.stopPropagation();
-    event.preventDefault();
-    this.files = event.dataTransfer.files;
-    if (this.files.length == 0) return;
-    this.uploadImages(this.files);
+    // Code does not work
+    // $('body').removeClass('drag-active');
+    // event.stopPropagation();
+    // event.preventDefault();
+    // this.files = event.dataTransfer.files;
+    // if (this.files.length == 0) return;
+    // this.uploadImages(this.files);
   }
 
   dragleave() {

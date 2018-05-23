@@ -88,7 +88,7 @@ export class WGridListComponent implements OnDestroy, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['objects'] && changes['objects'].currentValue.length > 0) {
+    if (changes['objects'] && changes['objects'].currentValue && changes['objects'].currentValue.length > 0) {
       this.selectedObjects.length = 0;
       changes['objects'].currentValue.forEach(o => {
         if (o.selected === true) {
