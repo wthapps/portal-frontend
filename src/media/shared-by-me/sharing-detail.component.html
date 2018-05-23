@@ -38,7 +38,7 @@
              (click)="toolbar.doAction({
            action: 'favourite',
            payload: { mode: 'remove',
-           selectedObjects: [toolbar.object] }})"
+           selectedObjects: [sharing] }})"
              pTooltip="{{ tooltip.removeFromFavourites }}"
              tooltipPosition="bottom">
             <i class="fa fa-star"></i>
@@ -48,7 +48,7 @@
              (click)="toolbar.doAction({
            action: 'favourite',
            payload: { mode: 'add',
-           selectedObjects: [toolbar.object] }})"
+           selectedObjects: [sharing] }})"
              pTooltip="{{ tooltip.addToFavorites }}"
              tooltipPosition="bottom">
             <i class="fa fa-star-o"></i>
@@ -63,7 +63,7 @@
         </li>
         <li *ngIf="!!capabilities.canEdit">
           <a class="btn btn-default" draggable="false" href="javascript:void(0);"
-             (click)="doEvent({action: 'openModal', payload: {modalName: 'editNameModal', selectedObjects: [object]}})"
+             (click)="doEvent({action: 'openModal', payload: {modalName: 'editNameModal', selectedObject: sharing}})"
              pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom">
             <i class="fa fa-pencil"></i>
           </a>
@@ -71,7 +71,9 @@
         <li *ngIf="capabilities.canEdit">
           <a class="btn btn-default" draggable="false" href="javascript:void(0);"
              pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
-             (click)="doEvent({action: 'openModal', payload: {modalName: 'sharingModal'}})">
+             (click)="doEvent({action: 'openModal', payload: {
+             modalName: 'sharingModal', mode: 2, sharing: sharing
+             }})">
             <i class="fa fa-share-alt"></i>
           </a>
         </li>

@@ -15,6 +15,12 @@ export class SharingService extends BaseEntityService<any> {
     return this.apiBaseService.get('contact/contacts', body);
   }
 
+  getRecipients(query: string = ''): any {
+    let body: any;
+    body = {'q': (query === 'undefined' ? '' : 'name:' + query)};
+    return this.apiBaseService.get('media/sharings/recipients', body);
+  }
+
   getContactGroups(): any {
     return this.apiBaseService.get('zone/contactgroups');
   }

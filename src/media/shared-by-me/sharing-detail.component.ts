@@ -19,6 +19,7 @@ import { Store } from '@ngrx/store';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { MediaActionHandler } from '@media/shared/media';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 @Component({
   moduleId: module.id,
@@ -65,7 +66,8 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
     private route: ActivatedRoute,
     protected mediaSelectionService: WMediaSelectionService,
     private confirmService: WthConfirmService,
-    private photoUploadService: PhotoUploadService
+    private photoUploadService: PhotoUploadService,
+    private toastsService: ToastsService
   ) {
     super(resolver, store, mediaSelectionService);
     this.photos$ = this.store.select(appStore.selectDetailObjects);
@@ -100,6 +102,9 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
           });
           this.loaded = true;
         });
+      },
+      error => {
+        this.toastsService.danger(error.error.error);
       });
     });
   }
@@ -153,11 +158,12 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
         break;
       case 'deleteMedia':
         this.confirmService.confirm({
-          header: 'Delete sharing',
+          header: event.payload.header || 'Delete sharing',
           acceptLabel: 'Delete',
-          message: `Are you sure to delete ${event.payload.selectedObjects.length} sharing`,
+          message: event.payload.message || `Are you sure to delete current sharing`,
           accept: () => {
             this.store.dispatch(new DeleteMany({...event.payload}));
+            this.router.navigate([this.returnUrl]);
           }});
         break;
       case 'goBack':

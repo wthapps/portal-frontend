@@ -48,13 +48,13 @@
          <!--pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">-->
         <!--<i class="fa fa-tag"></i></a>-->
     <!--</li>-->
-    <!--<li>-->
-      <!--<a class="btn btn-default" href="javascript:;" draggable="false"-->
-         <!--(click)="toolbar.doAction({action: 'openModal', payload: {-->
-         <!--modalName:'deleteModal', selectedObjects: toolbar.selectedObjects}})"-->
-         <!--pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">-->
-        <!--<i class="fa fa-trash-o"></i></a>-->
-    <!--</li>-->
+    <li *ngIf="!!toolbar.selectedObjects.length">
+      <a class="btn btn-default" href="javascript:void(0);" draggable="false"
+         (click)="toolbar.doAction({action: 'deleteMedia', payload: {
+         selectedObjects: toolbar.selectedObjects}})"
+         pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
+        <i class="fa fa-trash-o"></i></a>
+    </li>
 
     <!--<li class="dropdown action">-->
       <!--<a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"-->

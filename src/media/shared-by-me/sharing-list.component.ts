@@ -76,9 +76,9 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
         break;
       case 'deleteMedia':
         this.confirmService.confirm({
-          header: 'Delete sharing',
+          header: event.payload.header || 'Delete sharing',
           acceptLabel: 'Delete',
-          message: `Are you sure to delete ${event.payload.selectedObjects.length} sharing(s)`,
+          message: event.payload.message || `Are you sure to delete ${event.payload.selectedObjects.length} sharing(s)`,
           accept: () => {
             this.store.dispatch(new DeleteMany({...event.payload}));
           }});
