@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { WthAppsBaseModal } from '../../../../shared/shared/interfaces/wthapps-base-modal';
 import { CommonEventService } from '../../../../shared/services/common-event/common-event.service';
@@ -10,7 +10,6 @@ declare var $: any;
 declare var _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'contact-add-group-modal',
   templateUrl: 'contact-add-group-modal.component.html',
   styleUrls: ['contact-add-group-modal.component.scss']
@@ -20,7 +19,7 @@ export class ContactAddGroupModalComponent implements OnInit, WthAppsBaseModal {
   @Input() mode: string;
   @Input() contacts: any;
 
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   event: any;
   titleIcon: string;
 
@@ -70,7 +69,7 @@ export class ContactAddGroupModalComponent implements OnInit, WthAppsBaseModal {
     });
     this.modal.open(options).then(() => {
       this.groupService.getAllGroups().then((groups: any[]) => {
-        this.originalGroups = groups;
+        this.originalGroups = groups.filter(gr => !gr.system);
         this.groups = _.map(this.originalGroups, 'name');
       });
     });

@@ -7,14 +7,9 @@ import { AboutService } from './about.service';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [
-    AboutRoutingModule,
-    PortalSharedModule.forRoot(),
-    ReCaptchaModule
-  ],
+  imports: [AboutRoutingModule, PortalSharedModule, ReCaptchaModule],
   declarations: [AboutComponent],
   exports: [AboutComponent],
   providers: [AboutService]
 })
-export class AboutModule {
-}
+export class AboutModule {}

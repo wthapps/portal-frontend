@@ -5,7 +5,7 @@
     Author:     John <john@wthapps.com>
 
 -----------------------------------------------------------------------------------*/
-@import "custom-variables";
+@import 'custom-variables';
 //@import "variables";
 //  Bootstrap
 //  Fonts
@@ -18,17 +18,15 @@
 // =Bootstrap
 // --------------------------------------------------
 
-
 @import '../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 //
 // =Global
 // --------------------------------------------------
 
-
 //
-@import "general/mixin";
-@import "general/setting";
-@import "partials/constants";
+@import 'general/mixin';
+@import 'general/setting';
+@import 'partials/constants';
 /*
 //
 // =Fonts
@@ -110,7 +108,6 @@
 //
 // =Content
 // --------------------------------------------------
-@import "account/services-list";
 //
 // =Pages
 // --------------------------------------------------

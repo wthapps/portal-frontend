@@ -1,8 +1,5 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
 
 import { SocialService } from '../../shared/services/social.service';
 
@@ -12,18 +9,40 @@ import { UserService } from '@wth/shared/services';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { Constants } from '@wth/shared/constant';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 
-declare var _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'z-social-profile-cover',
-  templateUrl: 'cover.component.html'
+  templateUrl: 'cover.component.html',
+  styleUrls: ['cover.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class ZSocialProfileCoverComponent implements OnInit {
-
   @Input() data: any;
+
+  tabs: WTab[] = [
+    {
+      name: 'Post',
+      link: 'post',
+      icon: null,
+      type: 'link'
+    },
+    {
+      name: 'About',
+      link: 'about',
+      icon: null,
+      type: 'link'
+    },
+    {
+      name: 'Friends',
+      link: 'friends',
+      icon: null,
+      type: 'link'
+    }
+  ];
+  currentTab: string;
 
   errorMessage: string = '';
   item: any = [];
@@ -39,7 +58,9 @@ export class ZSocialProfileCoverComponent implements OnInit {
   readonly FRIEND_STATUS: any = {
     STRANGER: 0,
     REQUEST_SENT: 1,
-    FRIEND: 2
+    FRIEND: 2,
+    BE_REJECTED: 3,
+    BE_REQUESTED: 88,
   };
 
   constructor(private socialService: SocialService,
@@ -54,21 +75,32 @@ export class ZSocialProfileCoverComponent implements OnInit {
   ngOnInit() {
 
     this.profileDataService.profileData$
-      .subscribe((res: any) => { console.debug('profileData in cover: ', res);
-      this.userInfo = res.userInfo;
-      this.uuid = res.userInfo.uuid;
-      this.relationships = res.relationships;
+      .subscribe((res: any) => {
+        this.userInfo = res.userInfo;
+        this.uuid = res.userInfo.uuid;
+        this.relationships = res.relationships;
 
-      if (this.userInfo && this.userService.profile.uuid != this.userInfo.uuid) {
-        this.showFriends = _.get(this.userInfo, 'settings.show_friends.value', false);
-      }
-    });
+        this.currentTab = `/profile/${res.userInfo.uuid}/post`;
+
+        _.map(this.tabs, (v: WTab) => {
+          v.link = `/profile/${res.userInfo.uuid}/${v.link}`;
+        });
+
+        if (this.userInfo && this.userService.getSyncProfile().uuid != this.userInfo.uuid) {
+          this.showFriends = _.get(this.userInfo, 'settings.show_friends.value', false);
+        }
+      });
+  }
+
+  tabAction(event: any) {
+    console.log(event);
   }
 
   checkFavorite() {
     // Check favourite status
-    _.each(this.favoriteService.favorites, (f: any) => { if( f.friend && f.friend.uuid === this.uuid)
-      this.favourite = f.friend;
+    _.each(this.favoriteService.favorites, (f: any) => {
+      if (f.friend && f.friend.uuid === this.uuid)
+        this.favourite = f.friend;
     });
     console.debug('this.favoriteService.favorites: ', this.favoriteService.favorites, this.favourite);
   }
@@ -89,17 +121,17 @@ export class ZSocialProfileCoverComponent implements OnInit {
       this.socialService.user.update(event.body)
         .subscribe((result: any) => {
           console.log('update profile sucess: ', result);
-          let toastMsg:string = '';
+          let toastMsg: string = '';
           if (_.has(event.body, 'profile_image')) {
             toastMsg = 'You have updated profile image successfully';
             // Update user profile
             if (this.socialService.user.profile.uuid === _.get(result, 'data.uuid')) {
               Object.assign(this.socialService.user.profile, {'profile_image': result.data.profile_image});
-              Object.assign(this.userService.profile, {'profile_image': result.data.profile_image});
-              this.userService.updateProfile(this.userService.profile);
+              Object.assign(this.userService.getSyncProfile(), {'profile_image': result.data.profile_image});
+              this.userService.updateProfile(this.userService.getSyncProfile());
             }
           } else if (_.has(event.body, 'cover_image')) {
-                toastMsg = 'You have updated cover image of this community successfully';
+            toastMsg = 'You have updated cover image of this community successfully';
           } else {
             toastMsg = result.message;
           }
@@ -140,6 +172,22 @@ export class ZSocialProfileCoverComponent implements OnInit {
     );
   }
 
+  onAcceptRequest() {
+    this.socialService.user.acceptFriendRequest(this.userInfo.uuid).subscribe(
+      (res: any) => {
+        this.relationships = res.data;
+      },
+    );
+  }
+
+  onDecline() {
+    this.socialService.user.declineFriendRequest(this.userInfo.uuid).subscribe(
+      (res: any) => {
+        this.relationships = res.data;
+      },
+    );
+  }
+
 
   onReport() {
     this.zoneReportService.member(this.userInfo.uuid);
@@ -150,15 +198,15 @@ export class ZSocialProfileCoverComponent implements OnInit {
     // this.socialService.user.toggleFavourites(item.uuid, group).toPromise().then(
     this.favoriteService.addFavourite(item.uuid, group)
       .then(
-      (res: any) => {
-        console.log(res);
-        if (!_.isEmpty(this.favourite)) {
-          this.favourite = undefined;
-        } else {
-          this.favourite = res.data;
+        (res: any) => {
+          console.log(res);
+          if (!_.isEmpty(this.favourite)) {
+            this.favourite = undefined;
+          } else {
+            this.favourite = res.data;
+          }
         }
-      }
-    );
+      );
   }
 
   // TODO:

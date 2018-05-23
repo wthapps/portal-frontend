@@ -1,0 +1,30 @@
+@import "../../../assets/styles/global";
+
+.page-body-control {
+  &.sub-object-actions {
+    @include transition($transition-base);
+    @include box-shadow(none);
+    background-color: $theme-color;
+    color: #ffffff;
+    .btn {
+      color: #ffffff;
+      &:not(.btn-text) {
+        &:hover, &:focus {
+          color: $theme-color;
+        }
+      }
+    }
+    .divider {
+      border-right-color: #fff;
+    }
+    &.active {
+      top: 0;
+    }
+  }
+}
+
+.ui-fileupload {
+  .ui-fileupload-content, button {
+    display: none;
+  }
+}

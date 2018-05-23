@@ -1,15 +1,20 @@
-import { Component, Output, Input, EventEmitter, OnChanges } from '@angular/core';
+import {
+  Component,
+  Output,
+  Input,
+  EventEmitter,
+  OnChanges
+} from '@angular/core';
 import { Album } from '../shared/model/album.model';
+import { Constants } from '@shared/constant';
 
 @Component({
   moduleId: module.id,
   selector: 'album-detail-info',
   templateUrl: 'album-detail-info.component.html',
-  styleUrls: ['album-detail-info.component.scss'],
+  styleUrls: ['album-detail-info.component.scss']
 })
-
 export class AlbumDetailInfoComponent implements OnChanges {
-
   @Input() object: any;
   @Output() closeInfo: EventEmitter<any> = new EventEmitter<any>();
   @Output() tagEvent: EventEmitter<Album> = new EventEmitter<Album>();
@@ -17,6 +22,8 @@ export class AlbumDetailInfoComponent implements OnChanges {
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   albumData: Album = null;
+
+  profileUrl = `${Constants.baseUrls.social}/profile/`;
 
   updateProperties(properties: any) {
     if (properties.hasOwnProperty('object')) {
@@ -42,7 +49,7 @@ export class AlbumDetailInfoComponent implements OnChanges {
     this.tagEvent.emit(album);
   }
 
-  onAction(options?: any) {
+  doAction(options?: any) {
     this.event.emit(options);
   }
 }

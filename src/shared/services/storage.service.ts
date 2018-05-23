@@ -1,4 +1,4 @@
-import { Injectable }     from '@angular/core';
+import { Injectable } from '@angular/core';
 import { UserService } from './user.service';
 
 declare var _: any;
@@ -10,27 +10,27 @@ export class StorageService {
   reset: boolean = true;
 
   constructor(public userService: UserService) {
-    if (userService && userService.profile) {
-      this.storageId = userService.profile.id;
+    if (userService && userService.getSyncProfile()) {
+      this.storageId = userService.getSyncProfile().id;
     }
   }
 
   save(key: string, value: any) {
     // Convert StorageItem if need
     if (value instanceof StorageItem) {
-      value = value.value;
+      value = _.clone(value).value;
     }
     // Create new store if need
     let item = this.find(key);
     if (item) {
-      item.value = value;
+      item.value = _.clone(value);
     } else {
       this.saveNew(key, value);
     }
   }
 
   saveNew(key: string, value: any) {
-    let item = new StorageItem(key, value);
+    let item = new StorageItem(key, _.clone(value));
     _.remove(this.listItem, (i: any) => {
       return i.key == item.key;
     });
@@ -52,11 +52,16 @@ export class StorageService {
   }
 
   resetIfNeed() {
-    if (this.storageId && this.storageId != this.userService.profile.id && this.reset) {
+    if (
+      this.storageId &&
+      this.userService.getSyncProfile() &&
+      this.storageId != this.userService.getSyncProfile().id &&
+      this.reset
+    ) {
       for (let item of this.listItem) {
         item.value = null;
       }
-      this.storageId = this.userService.profile.id;
+      this.storageId = this.userService.getSyncProfile().id;
     }
   }
 
@@ -64,7 +69,6 @@ export class StorageService {
     return this.listItem;
   }
 }
-
 
 class StorageItem {
   key: string;
@@ -79,5 +83,3 @@ class StorageItem {
     console.log('save');
   }
 }
-
-

@@ -5,6 +5,7 @@ import { ApiBaseService } from '../../../shared/services/apibase.service';
 
 declare var _: any;
 declare var gapi: any;
+declare var Promise: any;
 
 @Injectable()
 export class GoogleApiService {
@@ -22,7 +23,8 @@ export class GoogleApiService {
     'phones': 'gd$phoneNumber',
     'emails': 'gd$email',
     'organization': 'gd$organization',
-    'postalAddress': 'gd$postalAddress'
+    'addresses': 'gd$postalAddress',
+    'notes': 'content.$t'
   };
 
   GDATA_LVL_2: any = {
@@ -35,6 +37,10 @@ export class GoogleApiService {
       'category': 'rel',
       'value': 'address',
       'primary': 'primary'
+    },
+    'addresses': {
+      'category': 'rel',
+      'address_line1': '$t'
     }
   };
   PARSE_FIELDS = ['rel'];
@@ -52,7 +58,8 @@ export class GoogleApiService {
 
   getGoogleApiConfig(): Promise<any> {
     if(_.isEmpty(this.CREDENTIAL_KEYS)) {
-      return this.contactService.getGoogleApiConfig().toPromise().then((res: any) => this.CREDENTIAL_KEYS = res.data);
+      return this.contactService.getGoogleApiConfig().toPromise()
+        .then((res: any) => this.CREDENTIAL_KEYS = res.data);
     }
     return Promise.resolve( this.CREDENTIAL_KEYS );
   }
@@ -71,6 +78,8 @@ export class GoogleApiService {
     }).then(() => {
       console.debug('inside initClient Promise, this: ', this);
       this.GoogleAuth = gapi.auth2.getAuthInstance();
+    }).catch(err => {
+      console.error(err);
     });
   }
 
@@ -85,35 +94,32 @@ export class GoogleApiService {
     }
   }
 
-  startImportContact(user1?: any): Promise<any> {
+  async startImportContact(user1?: any) {
     let user = user1 || this.GoogleAuth.currentUser.get();
     let isAuthorized = user.hasGrantedScopes(this.SCOPE);
     this.totalImporting = 0;
     console.log('user: ', user);
-    if (_.get(user, 'Zi.access_token') != undefined && isAuthorized)
-      return this.getGoogleContactsList(user.Zi.access_token)
-        .then((data: any) => {
-          console.log('client request result: ', data);
-          this.totalImporting = _.get(data, 'feed.entry', []).length;
-          return this.mappingParams(_.get(data, 'feed.entry', []));
-        },
-        (err: any) => {
-          return Promise.reject( err);
-        })
-        .then((mapped_data: any) => { return this.importContactsToDb({
-            import_info: {provider: 'google'},
-            contacts: mapped_data
-        }); }
-        , (err: any) => {
-          this.revokeAccess();
-          return Promise.reject( err);
-        })
-        .then((data: any) => {
-          this.revokeAccess();
-          return Promise.resolve(data);
+    if (_.get(user, 'Zi.access_token') != undefined && isAuthorized) {
+      try {
+        const data = await this.getGoogleContactsList(user.Zi.access_token);
+        console.debug(data);
+        this.totalImporting = _.get(data, 'feed.entry', []).length;
+        const mapped_data = this.mappingParams(_.get(data, 'feed.entry', []));
+        console.debug(mapped_data);
+        const importedContacts = await this.importContactsToDb({
+          import_info: {provider: 'google'},
+          contacts: mapped_data
         });
+
+        this.revokeAccess();
+        return importedContacts;
+      }
+      catch (err) {
+        this.revokeAccess();
+      }
+    }
     else
-      return Promise.reject(new Error(`access_token not found. Please recheck: ${user}`));
+      throw Error(`access_token not found. Please recheck: ${user}`);
   }
 
   revokeAccess() {
@@ -121,21 +127,22 @@ export class GoogleApiService {
     this.GoogleAuth.disconnect();
   }
 
-  private getGoogleContactsList(access_token: any): Promise<any> {
-    return gapi.client.request({
-      'path': this.GCONTACT_SCOPE,
-      'method': 'GET',
-      'params': {
-        'GData-Version': '3.0',
-        'alt': 'json',
-        'max-results': this.MAX_RESULTS,
-        'start-index': 1,
-        'Bearer': access_token}
-    })
-      .then((data: any) => JSON.parse(data.body)
-          ,(error: any) => {
-            console.error('getGoogleContactsList error', error); throw error;})
-      ;
+  private async getGoogleContactsList(access_token: any) {
+    try {
+      const data = await gapi.client.request({
+        'path': this.GCONTACT_SCOPE,
+        'method': 'GET',
+        'params': {
+          'GData-Version': '3.0',
+          'alt': 'json',
+          'max-results': this.MAX_RESULTS,
+          'start-index': 1,
+          'Bearer': access_token}
+      });
+      return JSON.parse(data.body);
+    } catch (err) {
+      console.warn('getGoogleContactsList error', err);
+    };
   }
 
   // Convert Google API params to comply WTH API format and filter out unnecessary data
@@ -176,11 +183,15 @@ export class GoogleApiService {
       return data;
   }
 
-  private importContactsToDb(json_data: any): Promise<any> {
-    return this.contactService.import(json_data).toPromise()
-      .then((res: any) => { console.log('import contacts to DB successfully', res); return res.data;}
-        ,(err: any) => { console.error('import contacts ERRORS ', err); return Promise.reject(err);}
-      );
+  private async importContactsToDb(json_data: any) {
+    try {
+      const res = await this.contactService.import(json_data).toPromise();
+      console.log('import contacts to DB successfully', res);
+      return res.data;
+    }
+    catch (err) {
+      console.warn('import contacts ERRORS ', err);
+    };
   }
 }
 

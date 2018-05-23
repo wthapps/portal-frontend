@@ -1,0 +1,14 @@
+@import "../../../assets/styles/global";
+
+.menuleft-item {
+  &.active > a {
+    color: $text-color;
+  }
+  .media-chat-user {
+    @include flexbox;
+    @include align-items(center);
+  }
+  .media-chat-user-item {
+    @include flex(1);
+  }
+}

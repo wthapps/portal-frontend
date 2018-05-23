@@ -15,5 +15,4 @@ import { ZChatHistoryComponent } from './history.component';
   ],
   exports: [RouterModule]
 })
-export class ZChatHistoryRoutingModule {
-}
+export class ZChatHistoryRoutingModule {}

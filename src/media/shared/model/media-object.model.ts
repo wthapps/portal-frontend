@@ -20,3 +20,5 @@ export class MediaObject {
   dislike_count: number;
   share_count: number;
 }
+
+

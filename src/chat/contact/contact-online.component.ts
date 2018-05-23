@@ -11,14 +11,18 @@ export class ZChatContactOnlineComponent implements OnInit {
   contactItem: any;
   count: any;
 
-  constructor(private chatService: ChatService, private apiBaseService: ApiBaseService) {
-  }
+  constructor(
+    private chatService: ChatService,
+    private apiBaseService: ApiBaseService
+  ) {}
 
   ngOnInit() {
     this.contactItem = this.chatService.getConversations();
     this.usersOnlineItem = this.chatService.getUsersOnline();
-    this.apiBaseService.post('zone/chat/contact/contact_tab_count').subscribe((res: any) => {
-      this.count = res.data;
-    });
+    this.apiBaseService
+      .post('zone/chat/contact/contact_tab_count')
+      .subscribe((res: any) => {
+        this.count = res.data;
+      });
   }
 }

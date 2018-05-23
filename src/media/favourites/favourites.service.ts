@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseService } from '@wth/shared/services';
 
-
-declare var _: any;
-
 @Injectable()
 export class ZMediaFavoriteService {
-
   url = 'media/favorites';
 
-  constructor(private apiBaseService: ApiBaseService) {
-  }
+  constructor(private apiBaseService: ApiBaseService) {}
 
-  list(body:any = {}): any {
+  list(body: any = {}): any {
     return this.apiBaseService.get(this.url, body);
   }
 

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { SocialService } from '../../../shared/services/social.service';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-privacy',
   templateUrl: 'privacy.component.html'
 })

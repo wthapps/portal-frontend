@@ -40,12 +40,12 @@ export class MyPreferencesComponent implements OnInit {
               private userService: UserService) {
 
     this.form = fb.group({
-      'language': [this.userService.profile.language,
+      'language': [this.userService.getSyncProfile().language,
         Validators.compose([Validators.required])
       ],
-      'subscribed': [this.userService.profile.subscribed],
-      'auto_update': [this.userService.profile.auto_update],
-      'use_diagnosis': [this.userService.profile.use_diagnosis],
+      'subscribed': [this.userService.getSyncProfile().subscribed],
+      'auto_update': [this.userService.getSyncProfile().auto_update],
+      'use_diagnosis': [this.userService.getSyncProfile().use_diagnosis],
     });
 
     this.language = this.form.controls['language'];
@@ -74,7 +74,7 @@ export class MyPreferencesComponent implements OnInit {
         use_diagnosis: values.use_diagnosis,
       });
 
-      this.userService.update(`users/${this.userService.profile.id}`, body)
+      this.userService.update(body)
         .subscribe(
           (result: any) => {
             this.loadingService.stop();

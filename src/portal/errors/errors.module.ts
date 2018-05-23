@@ -5,18 +5,8 @@ import { PageErrorsRoutingModule } from './errors-routing.module';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [
-    PageErrorsRoutingModule,
-    PortalSharedModule.forRoot()
-  ],
-  declarations: [
-    Page404Component,
-    Page500Component
-  ],
-  exports: [
-    Page404Component,
-    Page500Component
-  ]
+  imports: [PageErrorsRoutingModule, PortalSharedModule],
+  declarations: [Page404Component, Page500Component],
+  exports: [Page404Component, Page500Component]
 })
-export class PageErrorsModule {
-}
+export class PageErrorsModule {}

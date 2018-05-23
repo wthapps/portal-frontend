@@ -11,14 +11,14 @@
     </div>
   </div>
 
-  <div class="z-social-carousel">
+  <div *ngIf="item.photos.length>0" class="z-social-carousel">
     <ul class="{{ item.displayCss }}">
       <li *ngFor="let photo of item.photos;	let	i	=	index">
         <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, photo)">
-          <img class="img-full lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="photo.url" alt="">
+          <img class="img-full lazyload" [src]="photo.url" alt="">
         </figure>
         <figure *ngIf="i == 5 && item.remainPhotos == 0" (click)="onActions(actions.onShowPhotoDetail, photo)">
-          <img class="img-full lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="photo.url" alt="">
+          <img class="img-full lazyload" [src]="photo.url" alt="">
         </figure>
         <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, photo)"
            *ngIf="i == 5 && item.remainPhotos != 0">
@@ -26,7 +26,7 @@
                   + {{ item.remainPhotos }}
                 </span>
           <figure>
-            <img class="img-full lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="photo.url" alt="">
+            <img class="img-full lazyload" [src]="photo.url" alt="">
           </figure>
         </a>
       </li>
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <div class="z-social-carousel">
+    <div *ngIf="parentItem.photos.length>0" class="z-social-carousel">
       <ul class="carousel-thumb-style-6">
           <li *ngFor="let photo of parentItem.photos;	let	i	=	index">
             <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, {id: photo?.id, parentItem: originalParent})">

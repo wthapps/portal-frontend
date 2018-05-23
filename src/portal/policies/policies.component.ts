@@ -7,7 +7,6 @@ import { fadeInAnimation } from '../../shared/shared/animations/route.animation'
   templateUrl: 'policies.component.html',
   animations: [fadeInAnimation]
 })
-
 export class PoliciesComponent {
   @HostBinding('@fadeInAnimation') fadeInAnimation = true;
 }

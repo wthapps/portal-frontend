@@ -1,16 +1,16 @@
 import { Component, ViewChild, Input, OnDestroy } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { UserService } from '@wth/shared/services';
 
 
 @Component({
-  selector: 'introduction-modal',
+  selector: 'wth-introduction',
   styleUrls: ['introduction.component.css'],
   templateUrl: 'introduction.component.html'
 })
 
 export class IntroductionModalComponent implements OnDestroy {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() data: any;
   @Input() after: any;
   index: number = 0;
@@ -38,8 +38,10 @@ export class IntroductionModalComponent implements OnDestroy {
   }
 
   update() {
-    let introduction: any = {...this.userService.profile.introduction, ...this.after};
-    this.userService.update(`users/${this.userService.profile.id}`, {introduction: introduction}).subscribe((result: any) => {
+    if(!this.userService.getSyncProfile())
+      return;
+    let introduction: any = {...this.userService.getSyncProfile().introduction, ...this.after};
+    this.userService.update({introduction: introduction}).subscribe((result: any) => {
 
     });
   }

@@ -4,7 +4,6 @@ import {
   Output,
   EventEmitter,
   AfterViewInit,
-  OnInit,
   HostListener,
   ComponentFactoryResolver,
   OnDestroy,
@@ -16,23 +15,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/toPromise';
+
 
 import { MediaObjectService } from '../container/media-object.service';
-import { ZMediaAlbumService } from '../../album/album.service';
+import { AlbumService } from '../service/album.service';
 import { ZMediaStore } from '../store/media.store';
-import { BaseObjectEditNameModalComponent } from '@wth/shared/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { AlbumCreateModalComponent } from '@shared/shared/components/photo/modal/album-create-modal.component';
-import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo-edit-modal.component';
-import { AlbumEditModalComponent } from '@wth/shared/shared/components/photo/modal/album-edit-modal.component';
-import { AlbumDeleteModalComponent } from '@wth/shared/shared/components/photo/modal/album-delete-modal.component';
 import { PhotoDetailPartialComponent } from '@wth/shared/shared/components/photo/detail/photo-detail-partial.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { SharingModalComponent } from '@shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService, PhotoService } from '@shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
+import {
+  AlbumCreateModalComponent,
+  AlbumDeleteModalComponent,
+  AlbumEditModalComponent
+} from '@media/shared/modal';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 
 declare var _: any;
 declare var $: any;
@@ -47,7 +48,7 @@ declare var $: any;
     MediaObjectService
   ],
   entryComponents: [
-    BaseObjectEditNameModalComponent,
+    MediaRenameModalComponent,
     PhotoEditModalComponent,
     AlbumCreateModalComponent,
     AlbumEditModalComponent,
@@ -127,7 +128,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
               protected location: Location,
               protected mediaStore: ZMediaStore,
               protected cdr: ChangeDetectorRef,
-              protected albumService: ZMediaAlbumService) {
+              protected albumService: AlbumService) {
 
     this.photoService.modifiedPhotos$.takeUntil(this.destroySubject.asObservable()).subscribe((object: any) => {
       switch (object.action) {
@@ -344,7 +345,10 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         this.confirmDeleteMedia(event.params);
         break;
       case 'confirmRemoveSharing':
-        this.confirmRemoveSharing(event.params.selectedObjects);
+        this.confirmRemoveSharing(event.params);
+        break;
+      case 'deleteMedia':
+        this.deleteMedia(event.params);
         break;
       // Hide photos / albums present in shared-with-me screen
       case 'hideMedia':
@@ -362,6 +366,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         break;
       case 'viewInfo':
       case 'viewDetails':
+        // console.log("xxxxxx",this.selectedObjects[0])
         if (this.selectedObjects[0].object_type == 'album') {
           this.viewDetails();
         } else {
@@ -387,15 +392,23 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  confirmRemoveSharing(objects: any) {
-    let ids = objects.map((o: any) => {return o.id})
+  confirmRemoveSharing(params: any) {
+    let objects = params.selectedObjects;
+    let ids = objects.map((o: any) => {return o.id});
+    let message = params.object.sharing_type === 'Media::Album' ?
+      `You are removing selected photo(s) in Sharing Album
+      <br/>Remove selected photo also remove from this Sharing and Album!`
+      : `You are removing selected photo(s)from current sharing?
+      <br/>Your selected photo(s) still keep in your Pictures Library!`;
     this.wthConfirmService.confirm({
+      header: 'Remove sharing',
       acceptLabel: 'Remove',
-      message: 'Are you sure to remove ' + objects.length + ' sharings ?',
+      message: message,
       accept: () => {
         this.loadingService.start();
         this.apiBaseService.post(`media/sharings/destroy_objects`, {id: this.params.id, ids: ids}).subscribe((res: any) => {
           this.loadingService.stop();
+          this.deSelectObjects();
           this.refreshPrimaryList();
         });
       }
@@ -615,18 +628,26 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     let albums = _.filter(params.selectedObjects, (o: any) => o.object_type == 'album');
     let sharings = _.filter(params.selectedObjects, (o: any) => o.object_type == 'sharing');
     let photos_count = photos.length + (photos.length > 1 ? ' photos?' : ' photo?');
+    let message = params.selectedObjects[0].object_type === 'sharing' ?
+      `You are deleting sharing!
+      <br/>Deleting this sharing will stop other users from accessing your photos
+      <br/>Your photos remain safe in your Pictures Library`
+      : `Are you sure to delete selected photo(s)/album(s)?`;
     if (sharings.length > 0) {
-      let ids = sharings.map((s: any) => { return s.id })
+      let ids = sharings.map((s: any) => { return s.id });
       this.wthConfirmService.confirm({
+        header: 'Delete confirmation',
         acceptLabel: 'Delete',
-        message: 'Are you sure to delete ' + sharings.length + ' sharings ?',
+        message: message,
         accept: () => {
           this.apiBaseService.post(`media/sharings/destroy`, {ids: ids}).subscribe((res: any) => {
             if(params.page == 'sharing_detail') {
               this.router.navigate([{outlets: {detail: null}}]);
-              setTimeout(() => {this.refreshPrimaryList()}, 200);
+              setTimeout(() => {
+                this.deSelectObjects();
+                this.refreshPrimaryList();
+              }, 200);
             } else {
-              this.loadingService.stop();
               this.refreshPrimaryList();
             }
           });
@@ -646,7 +667,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
                 _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
               });
               this.loadingService.stop();
-
+              this.deSelectObjects();
               // Ask for user confirmation before deleting selected ALBUMS
               if (albums.length > 0)
                 this.onAction({action: 'openModal', params: {modalName: 'deleteModal', selectedObjects: albums}});
@@ -667,6 +688,23 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+
+  deleteMedia(params: any) {
+    let objects = params.selectedObjects;
+    this.mediaObjectService.deleteObjects(objects, params.child_destroy).toPromise().then(
+      (res: any) => {
+        _.map(objects, (obj: any) => {
+          _.remove(this.objects, {'id': obj.id, 'object_type': obj.object_type});
+        });
+        this.loadingService.stop();
+        this.deSelectObjects();
+        if (this.page === 'album_detail') {
+          this.router.navigate([{outlets: {detail: null}}]);
+        }
+      },
+      (error: any) => this.loadingService.stop());
+  }
+
   // Hide media present in shared with me screen
   hideMedia(params: any, callback?: any) {
     return;
@@ -681,7 +719,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
         this.albumService.removeFromAlbum(params.selectedObject.id, params.selectedObjects).toPromise().then(
           (response: any) => {
-            console.log('before', this.objects);
             _.remove(this.objects, (object: any) => {
               return (_.indexOf(ids, object.id) !== -1);
             });
@@ -708,16 +745,22 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
   }
 
   viewDetails() {
-    if (this.page != 'shared-with-me')
+    if (this.page != 'shared-with-me') {
       this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id]}}], {
         queryParamsHandling: 'preserve',
         preserveFragment: true
       });
-    else
-      this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}]}}], {
+    }
+    else {
+      // this.router.navigate([{outlets: {detail: ['albums', this.selectedObjects[0].id, {queryParams: {shared_with_me: true}}]}}], {
+      //   queryParamsHandling: 'preserve',
+      //   preserveFragment: true
+      // });
+      this.router.navigate([{outlets: {detail: ['shared-with-me', this.selectedObjects[0].id]}}], {
         queryParamsHandling: 'preserve',
         preserveFragment: true
       });
+    }
   }
 
   slideShow() {

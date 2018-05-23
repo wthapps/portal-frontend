@@ -1,0 +1,179 @@
+@import '../../../../../assets/styles/global';
+
+.zone-social-cover {
+
+  @include border-top-radius($border-radius-base);
+  border: 1px solid $line;
+  background-color: #ffffff;
+  margin-bottom: 15px;
+
+  .zone-social-cover-action {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 3;
+    .btn {
+      color: #ffffff;
+      border-color: #ffffff;
+      background-color: rgba(#FFF, 0.3);
+      @include box-shadow(0 0 2px rgba(#000, 0.5));
+    }
+  }
+  .zone-social-cover-img {
+    @include border-top-radius($border-radius-base);
+    position: relative;
+    padding-bottom: 50%;
+    overflow: hidden;
+    img {
+      @include center(false, true);
+      width: 100%;
+      z-index: 1;
+    }
+    &:after {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 2;
+      content: "";
+      background: -moz-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -moz-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: -webkit-gradient(linear, left top, right bottom, color-stop(40%, transparent), color-stop(100%, rgba(0, 0, 0, 0.5))), -webkit-gradient(linear, left top, left bottom, color-stop(10%, transparent), color-stop(100%, rgba(0, 0, 0, 0.3)));
+      background: -webkit-linear-gradient(-135deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -webkit-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: -o-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -o-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: -ms-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -ms-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background: linear-gradient(-135deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+    }
+  }
+
+  .zone-social-cover-in {
+    position: relative;
+    .zone-social-cover-info {
+
+      @media (min-width: $screen-sm-min) {
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+        right: 15px;
+        z-index: 3;
+        color: #ffffff;
+        .z-name {
+          color: #ffffff;
+        }
+        .z-social-media-body {
+          position: absolute;
+          top: 0;
+          left: 110px;
+          right: 150px;
+        }
+        .z-social-media-right {
+          position: absolute;
+          right: 0;
+          top: 0;
+          .btn {
+            border-width: 0;
+          }
+        }
+        .hd-item-action-right-bottom {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          height: 33px;
+          button {
+            background-color: #fff;
+          }
+        }
+      }
+      @media (max-width: $screen-xs-max) {
+        .z-social-media {
+          display: block;
+          text-align: center;
+          margin-top: -50px;
+          position: relative;
+          z-index: 10;
+          .avatar-md, .avatar-sm, .avatar-xs {
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 5px;
+          }
+          .z-name {
+            float: none !important;
+          }
+        }
+      }
+
+      .avatar-md {
+        border: 1px solid #FFF;
+      }
+    }
+  }
+
+  .zone-social-cover-info-profile {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(#ffffff, 0.5);
+    @include transition($transition-base);
+    @include opacity(0);
+    i {
+      font-size: 36px;
+      @include center();
+    }
+  }
+  .z-social-media-left {
+    &:hover, &:focus {
+      .zone-social-cover-info-profile {
+        @include opacity(1);
+      }
+    }
+  }
+
+  .zone-social-cover-nav {
+    border-top: 1px solid $line;
+    padding: 15px;
+    > ul {
+      margin: 0;
+      > li {
+        float: left;
+        > a {
+          display: inline-block;
+          line-height: 34px;
+          padding: 0 15px;
+          color: $light-slate;
+          position: relative;
+          text-transform: uppercase;
+          font-weight: bold;
+          text-decoration: none;
+          &:hover {
+            color: $text-color;
+          }
+          @media (max-width: $screen-md-max) and (min-width: $screen-sm-min) {
+            font-size: 12px;
+            padding-left: 5px;
+            padding-right: 5px;
+          }
+        }
+        &.active {
+          > a {
+            color: $text-color;
+            &:after {
+              content: "";
+              position: absolute;
+              left: 0;
+              bottom: -15px;
+              right: 0;
+              height: 5px;
+              background-color: $color-inverse;
+              @media (max-width: $screen-md-max) and (min-width: $screen-sm-min) {
+                bottom: -5px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

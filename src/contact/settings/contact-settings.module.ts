@@ -3,8 +3,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SettingsComponent } from './contact-settings.component';
 import { ZContactSettingsRoutingModule } from './contact-settings-routing.module';
 
-import { SharedModule } from '@shared/shared.module';
 import { AutoCompleteModule, RadioButtonModule } from 'primeng/primeng';
+import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 
 @NgModule({
   imports: [
@@ -13,16 +13,10 @@ import { AutoCompleteModule, RadioButtonModule } from 'primeng/primeng';
     RadioButtonModule,
     AutoCompleteModule,
     // CoreModule,
-    SharedModule
+    WthCommonModule
   ],
-  declarations: [
-    SettingsComponent
-  ],
-  exports: [
-    SettingsComponent
-  ],
+  declarations: [SettingsComponent],
+  exports: [SettingsComponent],
   providers: []
 })
-
-export class SettingsModule {
-}
+export class SettingsModule { }

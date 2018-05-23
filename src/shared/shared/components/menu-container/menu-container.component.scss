@@ -1,0 +1,117 @@
+@import "../../../scss/global";
+
+.page-menuleft {
+  @include flexbox;
+  @include flex-direction(column);
+  height: 100%;
+  .menuleft-nav {
+    @include flex(1);
+  }
+}
+
+.page-menuleft {
+  .menuleft-nav {
+    a {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      padding: 8px 15px;
+    }
+    .divider {
+      border-bottom: 1px solid $line;
+    }
+  }
+
+  .menuleft-bottom {
+    font-size: 12px;
+    padding: 5px 15px;
+  }
+
+  .menuleft-nav-sub {
+    display: none;
+    &.active {
+      display: block;
+    }
+  }
+
+  .menuleft-nav-item {
+    a {
+      font-weight: bold;
+    }
+    &.active {
+      background-color: #f6f6f6;
+      > a {
+        &, &:hover, &:focus {
+          background-color: $theme-color;
+          color: #ffffff;
+        }
+      }
+      .menuleft-nav-sub {
+        display: block;
+      }
+    }
+    > a {
+      &:hover {
+        color: $theme-color;
+        background-color: #e5e5e5;
+      }
+    }
+    &.has-action {
+      .menuleft-nav-sub-item {
+        @include flexbox();
+        @include align-items(flex-start);
+        > a {
+          @include flex(1);
+        }
+        .menuleft-nav-sub-action {
+          display: none;
+          span {
+            display: inline-block;
+            float: left;
+            margin: 0;
+            padding: 8px;
+            &:hover {
+              color: $color-inverse;
+            }
+          }
+        }
+        &:hover {
+          .menuleft-nav-sub-action {
+            display: block;
+          }
+        }
+      }
+    }
+    &.show {
+      display: block;
+    }
+  }
+
+  .menuleft-nav-sub-item {
+    a {
+      padding-left: 30px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: normal;
+      &:hover {
+        background-color: #e5e5e5;
+      }
+    }
+    &:hover {
+      background-color: #e5e5e5;
+    }
+    &.active {
+      a {
+        color: $theme-color;
+      }
+    }
+
+    .menuleft-nav-sub {
+      a {
+        padding-left: 45px;
+      }
+    }
+  }
+
+}

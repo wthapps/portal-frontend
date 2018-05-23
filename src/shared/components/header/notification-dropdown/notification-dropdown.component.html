@@ -1,0 +1,56 @@
+<div class="btn-group header-nav-notification visible-xs-inline-block">
+  <button (click)="viewAllNotifications()" type="button" class="btn btn-default dropdown-toggle"
+          pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
+    <i class="fa fa-bell-o"></i>
+    <span class="notification-num" *ngIf="(notificationService.newNotifCount + connectionService.newNotifCount) > 0">
+      {{ notificationService.newNotifCount + connectionService.newNotifCount }}
+    </span>
+  </button>
+</div>
+
+<div class="btn-group header-nav-notification hidden-xs">
+  <button (click)="toggleViewNotifications()" type="button" class="btn btn-default dropdown-toggle"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+          pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
+    <i class="fa fa-bell-o"></i>
+    <span class="notification-num" *ngIf="(notificationService.newNotifCount + connectionService.newNotifCount) > 0">
+      {{ notificationService.newNotifCount + connectionService.newNotifCount }}
+    </span>
+  </button>
+  <div id="nav-notification-list" class="nav-notification-list dropdown-menu dropdown-menu-right">
+    <div class="nav-notification-list-header">
+      <nav class="nav-tabs-wrap pl10 pr10 clearfix">
+        <div class="pull-right">
+          <button class="btn btn-default btn-default-no-border" type="button" (click)="onSettingModal()"><i class="fa fa-cog"></i></button>
+        </div>
+        <ul class="nav nav-tabs pull-left list-unstyled clearfix visible-md-block visible-lg-block">
+          <li [ngClass]="type==undefined || type == 'update' ? 'active': ''">
+            <a (click)="onSelectedTab('update')" href="javascript:;">
+              Update <span class="badge" [ngClass]="{'active': (notificationService.newNotifCount > 0)}"> {{ notificationService.newNotifCount }}</span>
+            </a>
+          </li>
+          <li [ngClass]="type=='connection'? 'active': ''">
+            <a (click)="onSelectedTab('connection')" href="javascript:;">
+              Connection <span class="badge" [ngClass]="{'active': (connectionService.newNotifCount > 0)}"> {{ connectionService.newNotifCount }}</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="nav-notification-list-content"
+         lockYOffset="30"
+         observeAttributes="true"
+         infinite-scroll
+         [scrollWindow]="true"
+         (scrolled)="getMoreNotifications()">
+      <app-partials-notification-list #notifications [size]="'xs'" [type]="type"></app-partials-notification-list>
+
+      <div *ngIf="notificationService.notifications.length == 0" class="p10">
+        Currently you have no notifications
+      </div>
+    </div>
+    <div class="nav-notification-list-footer">
+      <a href="javascript:;" (click)="viewAllNotifications()">View all {{ type == 'connection' ? 'connections' : 'updates'}}</a>
+    </div>
+  </div>
+</div>

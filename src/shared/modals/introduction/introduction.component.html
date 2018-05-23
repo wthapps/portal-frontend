@@ -1,9 +1,9 @@
 <form>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true" *ngIf="data && data[index]">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true" *ngIf="data && data[index]">
       <h4 class="text-center modal-title"> {{data[index].title}} </h4>
-    </modal-header>
-    <modal-body *ngIf="data && data[index]">
+    </bs-modal-header>
+    <bs-modal-body *ngIf="data && data[index]">
       <div class="text-center">
         <img *ngIf="data[index].icon" alt="" [src]="data[index].icon" style="width: 120px; padding: 25px">
       </div>
@@ -11,14 +11,19 @@
       <p *ngIf="data[index].content2">{{data[index].content2}}</p>
       <div style="padding: 25px"></div>
       <!-- <img alt="" src="../../assets/images_new/pricing/note.png"> -->
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <ul class="list-inline pull-left">
-        <li *ngFor="let d of data; let i = index" class="can-click" (click)="setIndex(i)"> <i class="fa fa-circle" [ngClass]="(i == index)? 'active' : 'normal'" aria-hidden="true"></i></li>
+        <li *ngFor="let d of data; let i = index" class="can-click" (click)="setIndex(i)">
+          <i class="fa fa-circle" [ngClass]="(i == index)? 'active' : 'normal'" aria-hidden="true"></i>
+        </li>
       </ul>
-      <button [disabled]="index == 0" type="button" class="btn btn-outline-default btn-min" (click)="setIndex(index-1)">Back</button>
-      <button *ngIf="data && index == data.length - 1" type="submit" class="btn btn-outline-primary btn-min" (click)="done()">Done</button>
-      <button *ngIf="data && index < data.length - 1" type="submit" class="btn btn-outline-primary btn-min" (click)="setIndex(index+1)">Next</button>
-    </modal-footer>
-  </modal>
+      <button [disabled]="index == 0" type="button" class="btn btn-outline-default btn-min"
+              (click)="setIndex(index-1)">Back</button>
+      <button *ngIf="data && index == data.length - 1" type="submit" class="btn btn-outline-primary btn-min"
+              (click)="done()">Done</button>
+      <button *ngIf="data && index < data.length - 1" type="submit" class="btn btn-outline-primary btn-min"
+              (click)="setIndex(index+1)">Next</button>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

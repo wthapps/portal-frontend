@@ -6,8 +6,8 @@ import {
   FormBuilder
 } from '@angular/forms';
 
-import 'rxjs/add/operator/toPromise';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { SoCommunityService } from '../services/community.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
@@ -15,13 +15,13 @@ import { UserService } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-share-community-form-preferences',
   templateUrl: 'preferences-community.component.html'
 })
 
 export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnChanges {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() data: any;
   @Output() setupDataUpdated: EventEmitter<any> = new EventEmitter<any>();
 
@@ -64,7 +64,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
 
     if (this.data.admin) {
       // check if admin
-      this.isAdmin = (this.data.admin.uuid == this.userService.profile.uuid) ? true : false;
+      this.isAdmin = (this.data.admin.uuid == this.userService.getSyncProfile().uuid) ? true : false;
     }
 
     /*(<FormControl>this.setting_notification_posts).setValue(this.data.setting_notification_posts);*/

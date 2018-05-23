@@ -5,10 +5,12 @@ import { Contact } from '../contact.model';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
 import { Constants } from '../../../shared/constant/config/constants';
-import { ZContactEditComponent } from './contact-edit.component';
+import { ZContactEditComponent } from '@contacts/contact/contact-edit/contact-edit.component';
+// import { ZContactEditComponent } from '@contacts/contact/contact-edit/contact-edit.component';
+// import { ZContactEditComponent } from './contact-edit.component';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'contact-edit-page',
   templateUrl: 'contact-edit-page.component.html'
 })
@@ -38,6 +40,7 @@ export class ZContactEditPageComponent implements OnInit {
   pageTitle: string;
 
   tooltip: any = Constants.tooltip;
+  formValid: boolean = false;
 
   constructor(private router: Router,
               private contactService: ZContactService,
@@ -66,6 +69,10 @@ export class ZContactEditPageComponent implements OnInit {
     } else {
       this.pageTitle = 'Edit contact';
     }
+  }
+
+  eventForm(event: any) {
+    this.formValid = event;
   }
 
   doEvent(event: any) {

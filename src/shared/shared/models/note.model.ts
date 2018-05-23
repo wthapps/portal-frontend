@@ -1,7 +1,6 @@
 import { BaseEntity } from './base-entity.model';
 export class Note extends BaseEntity {
-
-  title: string = '';
+  name: string = '';
   content: string = '';
 
   tags: Array<any> = [];
@@ -10,11 +9,11 @@ export class Note extends BaseEntity {
   user_id: number;
   folder: any;
   parent_id: number = null;
-  object_type: string = 'note';
+  object_type: string = 'Note::Note';
+  permission: string;
+  favourite: any;
 
-  constructor(attributes: any={}) {
+  constructor(attributes: any = {}) {
     super(attributes);
   }
 }
-
-

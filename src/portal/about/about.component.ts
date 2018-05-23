@@ -48,27 +48,31 @@ export class AboutComponent implements OnInit {
 
   _recaptchaResponse: any = '';
 
-  constructor(private fb: FormBuilder,
-              private aboutService: AboutService,
-              private loadingService: LoadingService,
-              private toastsService: ToastsService) {
-
+  constructor(
+    private fb: FormBuilder,
+    private aboutService: AboutService,
+    private loadingService: LoadingService,
+    private toastsService: ToastsService
+  ) {
     // if (this.userService.loggedIn) {
-    //   this.emailInput = this.userService.profile.email;
-    //   this.first_nameInput = this.userService.profile.first_name;
-    //   this.last_nameInput = this.userService.profile.last_name;
+    //   this.emailInput = this.userService.getSyncProfile().email;
+    //   this.first_nameInput = this.userService.getSyncProfile().first_name;
+    //   this.last_nameInput = this.userService.getSyncProfile().last_name;
     // }
 
     this.form = fb.group({
-      'first_name': [this.first_nameInput],
-      'last_name': [this.last_nameInput],
-      'email': [this.emailInput,
+      first_name: [this.first_nameInput],
+      last_name: [this.last_nameInput],
+      email: [
+        this.emailInput,
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'subject': ['',
+      subject: [
+        '',
         Validators.compose([Validators.required, Validators.minLength(3)])
       ],
-      'body': ['',
+      body: [
+        '',
         Validators.compose([Validators.required, Validators.minLength(5)])
       ]
     });
@@ -94,7 +98,6 @@ export class AboutComponent implements OnInit {
   onSubmit(values: any): void {
     this.submitted = true;
     if (this.form.valid) {
-
       // start loading
       this.loadingService.start();
 
@@ -102,18 +105,20 @@ export class AboutComponent implements OnInit {
       values.recaptcha_response = this._recaptchaResponse;
 
       let body = JSON.stringify(values);
-      this.aboutService.createFeedback(body)
-        .subscribe((result: any) => {
-            this.loadingService.stop();
-            this.toastsService.success('Message sent! Thanks for your email, we will answer you within 24 hours.');
-          },
-          (error: any) => {
-            // stop loading
-            this.loadingService.stop();
-            this.toastsService.danger(error);
-            //console.log('login error:', error);
-          }
-        );
+      this.aboutService.createFeedback(body).subscribe(
+        (result: any) => {
+          this.loadingService.stop();
+          this.toastsService.success(
+            'Message sent! Thanks for your email, we will answer you within 24 hours.'
+          );
+        },
+        (error: any) => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(error);
+          //console.log('login error:', error);
+        }
+      );
     }
 
     this.captcha.reset();

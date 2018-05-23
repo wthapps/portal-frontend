@@ -14,13 +14,15 @@ import { MyDNSService } from './dns/dns.service';
 import { MyAppsSharedModule } from '../apps/shared/shared.module';
 
 import { SharedModule } from '@wth/shared/shared.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
     MyAppsSharedModule.forRoot(),
     MyMyAppsRoutingModule,
     MySharedModule.forRoot(),
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    SharedServicesModule.forRoot()
   ],
   declarations: [
     MyMyAppsComponent,
@@ -38,11 +40,6 @@ import { SharedModule } from '@wth/shared/shared.module';
     MyDNSComponent,
     MyDNSEditComponent
   ],
-  providers: [
-    MyMyAppsService,
-    MyDNSService
-  ]
+  providers: [MyMyAppsService, MyDNSService]
 })
-
-export class MyMyAppsModule {
-}
+export class MyMyAppsModule {}

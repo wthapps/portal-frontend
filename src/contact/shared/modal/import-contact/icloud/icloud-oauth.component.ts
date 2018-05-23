@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'icloud-oauth-modal',
   templateUrl: 'icloud-oauth.component.html'
 })
 
 export class ICloudOAuthComponent {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Output() optionSelected: EventEmitter<any> = new EventEmitter<any>();
 
   readonly OAUTH_LIST: any = [

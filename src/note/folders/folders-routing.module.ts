@@ -7,10 +7,13 @@ import { AuthGuard } from '@wth/shared/services';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'folders/:id', component: ZNoteFoldersComponent, canActivate: [AuthGuard]}
+      {
+        path: 'folders/:id',
+        component: ZNoteFoldersComponent,
+        canActivate: [AuthGuard]
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class ZNoteFoldersRoutingModule {
-}
+export class ZNoteFoldersRoutingModule {}

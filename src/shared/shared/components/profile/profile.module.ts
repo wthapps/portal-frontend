@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalModule } from 'ng2-bs3-modal';
 import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
 
@@ -24,11 +24,12 @@ import { PartialsProfileEducationComponent } from './work-edu/education.componen
 import { CoverProfileModule } from '../cover-profile/cover-profile.module';
 import { FileModule } from '../file/file.module';
 import { PartialsBasicInfoComponent } from './basic-info/basic-info.component';
+import { ZMyProfileComponent } from "@shared/shared/components/profile/my-profile/my-profile.component";
 
 @NgModule({
   imports: [
     CommonModule,
-    Ng2Bs3ModalModule,
+    BsModalModule,
     AutoCompleteModule,
     RadioButtonModule,
     FormsModule,
@@ -51,6 +52,7 @@ import { PartialsBasicInfoComponent } from './basic-info/basic-info.component';
     PartialsProfileWorkComponent,
     PartialsProfileEducationComponent,
     PartialsProfileHobbyComponent,
+    ZMyProfileComponent,
 
     PartialsBasicInfoComponent
   ],
@@ -67,6 +69,7 @@ import { PartialsBasicInfoComponent } from './basic-info/basic-info.component';
     PartialsProfileWorkComponent,
     PartialsProfileEducationComponent,
     PartialsProfileHobbyComponent,
+    ZMyProfileComponent,
 
     PartialsBasicInfoComponent
   ],

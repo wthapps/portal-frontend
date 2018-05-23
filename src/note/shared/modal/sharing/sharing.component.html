@@ -1,10 +1,10 @@
 
 
-<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title">Sharing</h4>
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
     <!-- <div class="alert alert-danger" *ngIf="!changed">
       <i class="fa fa-exclamation-triangle"></i> You have made changes that you need to save!
     </div> -->
@@ -24,7 +24,7 @@
     <div class="modal-body-collapse">
       <a *ngIf="sharedObjects.length == 1" role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
          aria-controls="collapseExample">
-        Shared with {{ sharedContacts.length }} Contacts
+        Shared with {{ sharedSharings.length }} Contacts
       </a>
       <div class="collapse in" id="collapseContact">
         <div class="modal-body-collapse-in">
@@ -33,49 +33,34 @@
               <div class="media-body">
                 Shared users
               </div>
-              <div class="media-right">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-default dropdown-toggle" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                    View only <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="#"><i class="fa fa-check"></i> View only</a></li>
-                    <!-- <li><a href="#">Can re-share</a></li>
-                    <li><a href="#">Can edit &amp; re-share</a></li> -->
-                  </ul>
-                </div>
-
-              </div>
             </div>
           </div>
           <!--Loop-->
-          <div class="media-list-item" *ngFor="let user of sharedContacts">
+          <div class="media-list-item" *ngFor="let sharing of sharedSharings">
             <div class="media">
               <div class="media-left">
                 <span class="avatar-xxs">
-                  <img [src]="user.profile_image" alt="">
+                  <img [src]="sharing.recipient.profile_image" alt="">
                 </span>
               </div>
               <div class="media-body">
-                {{ user.name }}
+                {{ sharing?.recipient?.name }}
               </div>
               <div class="media-right">
 
-                <div class="btn-group" *ngIf="!user._destroy">
+                <div class="btn-group" *ngIf="!sharing._destroy">
                   <button type="button" class="btn btn-sm btn-outline-default dropdown-toggle" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
-                    View only <span class="caret"></span>
+                    {{(!sharing.permission || sharing.permission == 'view')? 'View Only': 'Can Edit'}} <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="javascript:;"><i class="fa fa-check"></i> View only</a></li>
-                    <!-- <li><a href="#">Can re-share</a></li>
-                    <li><a href="#">Can edit &amp; re-share</a></li> -->
+                    <li><a href="javascript:;" (click)="changePermission(sharing, 'view')"><i [ngClass]="{'fa fa-check': (!sharing.permission || sharing.permission == 'view')}"></i> View only</a></li>
+                    <li><a href="javascript:;" (click)="changePermission(sharing, 'edit')"><i [ngClass]="{'fa fa-check': (sharing.permission == 'edit')}"></i> Can Edit </a></li>
                   </ul>
                 </div>
 
-                <button *ngIf="!user._destroy" class="btn btn-sm btn-outline-default" (click)="remove(user)"><i class="fa fa-times"></i> Remove </button>
-                <button *ngIf="user._destroy" class="btn btn-sm btn-outline-default" (click)="cancelRemove(user)"><i class="fa fa-times"></i> Cancel </button>
+                <button *ngIf="!sharing._destroy" class="btn btn-sm btn-outline-default" (click)="remove(sharing)"><i class="fa fa-times"></i> Remove </button>
+                <button *ngIf="sharing._destroy" class="btn btn-sm btn-outline-default" (click)="cancelRemove(sharing)"><i class="fa fa-times"></i> Cancel </button>
               </div>
             </div>
           </div>
@@ -83,15 +68,15 @@
         </div>
       </div>
     </div>
-  </modal-body>
-  <modal-footer>
+  </bs-modal-body>
+  <bs-modal-footer>
     <button *ngIf="showCancelButton && changed" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
     <button *ngIf="changed" type="button" [ngClass]="{'text-disable': !changed}"
             [disabled]="!changed" (click)="save()"
-            class="btn btn-outline-primary btn-min">Save changes
+            class="btn btn-outline-primary btn-min">Save
     </button>
     <button *ngIf="!changed" type="button" (click)="close()"
             class="btn btn-outline-primary btn-min"> Done
     </button>
-  </modal-footer>
-</modal>
+  </bs-modal-footer>
+</bs-modal>

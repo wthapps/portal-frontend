@@ -1,6 +1,6 @@
-import { Component, ViewChild, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Output, EventEmitter, OnDestroy, ElementRef } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Subscription } from 'rxjs/Subscription';
 
 import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
@@ -15,7 +15,7 @@ declare var _: any;
 })
 
 export class FileSelectComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: any;
   @ViewChild('photoList') photoList: FileSelectListComponent;
   @Input() selectedItems: Array<any>;
   @Output() onUpload: EventEmitter<any> = new EventEmitter<any>();
@@ -80,6 +80,7 @@ export class FileSelectComponent implements OnInit, OnDestroy {
 
     this.photoList.loadPhotos();
     this.modal.open().then();
+    this.modal.element.nativeElement.style.display = 'inline';
   }
 
   close() {

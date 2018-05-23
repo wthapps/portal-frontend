@@ -10,7 +10,8 @@
 
   .display-link-img {
     .img-center-dv {
-      padding-bottom: 70%;
+      //padding-bottom: 70%;
+      padding-bottom: 50%;
     }
     img {
       max-width: 100%;
@@ -25,6 +26,8 @@
     a {
       color: $text-color;
       text-decoration: none;
+      -ms-word-break: break-word;
+      word-break: break-word;
       &:after {
         content: '';
         position: absolute;
@@ -40,14 +43,14 @@
     }
   }
 
-  @media (min-width: $screen-lg-min) {
-    display: table;
-    .display-link-img, .display-link-txt {
-      display: table-cell;
-      vertical-align: top;
-    }
-    .display-link-img {
-      width: 45%;
-    }
-  }
+  // @media (min-width: $screen-lg-min) {
+  //   display: table;
+  //   .display-link-img, .display-link-txt {
+  //     display: table-cell;
+  //     vertical-align: top;
+  //   }
+  //   .display-link-img {
+  //     width: 45%;
+  //   }
+  // }
 }

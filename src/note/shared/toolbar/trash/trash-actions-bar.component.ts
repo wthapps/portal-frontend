@@ -1,7 +1,11 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectionStrategy
+} from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import 'rxjs/add/operator/take';
 
 import * as note from '../../actions/note';
 import * as fromRoot from '../../reducers/index';
@@ -25,14 +29,14 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
 
   readonly tooltip: any = Constants.tooltip;
 
-  constructor(public noteService: ZNoteService,
-              private wthConfirm: WthConfirmService,
-              private store: Store<fromRoot.State>,
-              public commonEventService: CommonEventService) {
-  }
+  constructor(
+    public noteService: ZNoteService,
+    private wthConfirm: WthConfirmService,
+    private store: Store<fromRoot.State>,
+    public commonEventService: CommonEventService
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   permanentDelete() {
     if (this.selectedObjects.length >= 1) {
@@ -49,14 +53,17 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
       }
 
       if (this.isOnlyFolder()) {
-        header = 'Delete Folder'
+        header = 'Delete Folder';
       }
 
       this.wthConfirm.confirm({
         message: message,
         header: header,
         accept: () => {
-          this.store.dispatch({type: note.PERMANENT_DELETE, payload: this.selectedObjects});
+          this.store.dispatch({
+            type: note.PERMANENT_DELETE,
+            payload: this.selectedObjects
+          });
         }
       });
     }
@@ -67,23 +74,27 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
       acceptLabel: 'Delete',
       rejectLabel: 'Cancel',
       message: `All notes and folders in your trash will be permanently deleted.
-      <br/>&emsp;<b>This action cannot be undo</b>
+      <br/>&emsp;<b>This action cannot be undoed</b>
       `,
       header: 'Empty Trash',
       accept: () => {
-        this.store.dispatch({type: note.EMPTY_ALL});
+        this.store.dispatch({ type: note.EMPTY_ALL });
       }
     });
   }
 
   restore() {
-    this.store.dispatch({type: note.RESTORE, payload: this.selectedObjects});
-    this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: this.selectedObjects});
+    this.store.dispatch({ type: note.RESTORE, payload: this.selectedObjects });
+    this.commonEventService.broadcast({
+      action: 'update',
+      channel: 'noteLeftMenu',
+      payload: this.selectedObjects
+    });
   }
   isOnlyNote(): boolean {
     let result = true;
     _.forEach(this.selectedObjects, (item: any) => {
-      if (item.object_type == 'folder') {
+      if (item.object_type == 'Note::Folder') {
         result = false;
         return;
       }
@@ -94,12 +105,11 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
   isOnlyFolder(): boolean {
     let result = true;
     _.forEach(this.selectedObjects, (item: any) => {
-      if (item.object_type == 'note') {
+      if (item.object_type == 'Note::Note') {
         result = false;
         return;
       }
     });
     return result;
   }
-
 }

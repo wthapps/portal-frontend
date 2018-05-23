@@ -7,7 +7,7 @@
       </button>
     </div>
   </div>
-  <div class="field-group-content">
+  <div *ngIf="data.phones" class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.phones.length > 0">
       <ng-template ngFor let-item [ngForOf]="data.phones" let-i="index" [ngForTrackBy]="trackByFn">
         <dt>{{ item.category | keyToValue:phoneType:'category':'name' }}</dt>
@@ -35,11 +35,11 @@
 </div>
 
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title">Phone</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div formArrayName="phones">
         <div *ngFor="let add_phone of getFormControls(); let i=index" class="media media-no-hidden mt0">
           <div class="media-body" [formGroupName]="i">
@@ -110,12 +110,12 @@
       <button type="button" class="btn btn-default" (click)="addItem()">
         <i class="fa fa-plus"></i> Add more
       </button>
-    </modal-body>
-    <modal-footer>
-      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min pull-right ml10"
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+      <button type="submit" class="btn btn-outline-primary btn-min pull-right ml10"
               (click)="onSubmit(form.value)">Done
       </button>
-      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

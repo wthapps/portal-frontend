@@ -11,15 +11,14 @@ import { PoliciesComponent } from './policies.component';
         path: 'policies',
         component: PoliciesComponent,
         children: [
-          {path: 'privacy', component: PrivacyComponent},
-          {path: 'terms', component: TermsComponent},
-          {path: '', component: PrivacyComponent},
-          {path: '*', component: PrivacyComponent}
+          { path: 'privacy', component: PrivacyComponent },
+          { path: 'terms', component: TermsComponent },
+          { path: '', component: PrivacyComponent },
+          { path: '*', component: PrivacyComponent }
         ]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class PoliciesRoutingModule {
-}
+export class PoliciesRoutingModule {}

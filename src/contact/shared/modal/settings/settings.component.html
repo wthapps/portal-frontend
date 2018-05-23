@@ -1,10 +1,10 @@
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
-    </modal-header>
+    </bs-modal-header>
 
-    <modal-body>
+    <bs-modal-body>
       <p class="bold">Default phone number country code</p>
       <div class="row">
         <div class="col-sm-6">
@@ -34,13 +34,14 @@
         </div>
       </div>
 
-    </modal-body>
+    </bs-modal-body>
 
-    <modal-footer>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+
       <button type="button" (click)="submit()" [disabled]="!form.valid || form.pristine"
               class="btn btn-outline-primary btn-min">Done
       </button>
-      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

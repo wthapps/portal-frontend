@@ -8,7 +8,7 @@
         </button>
       </div>
     </div>
-    <div class="field-group-content">
+    <div *ngIf="data.addresses" class="field-group-content">
       <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
         <ng-template ngFor let-item [ngForOf]="data.addresses">
           <dt>{{ item.category | keyToValue:addressType:'category':'name' }}</dt>
@@ -36,11 +36,11 @@
 
 
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title">Address</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div formArrayName="addresses">
         <div *ngFor="let add_address of getFormControls(); let i=index" class="media mt0">
           <div class="media-body" [formGroupName]="i">
@@ -66,7 +66,7 @@
                       'has-success': (add_address.controls.address_line1.valid
                       && add_address.controls.address_line1.touched
                       && form.value.addresses[i].address_line1.length>1)}">
-                      <input type="text" class="form-control" formControlName="address_line1" placeholder="">
+                      <input type="text" class="form-control" formControlName="address_line1" placeholder="Address Line 1">
                       <div
                         *ngIf="!add_address.controls.address_line1.valid && add_address.controls.address_line1.touched">
                         <span
@@ -116,12 +116,12 @@
       <button type="button" class="btn btn-default" (click)="addItem()">
         <i class="fa fa-plus"></i> Add more
       </button>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
-      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
+      <button type="submit" class="btn btn-outline-primary btn-min"
               (click)="onSubmit(form.value)">Done
       </button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/toPromise';
 import { ApiBaseService } from '@wth/shared/services';
 import { UserService } from '@shared/services/user.service';
 import { NotificationService } from '@shared/services/notification.service';
@@ -14,49 +11,21 @@ import { User } from '@wth/shared/shared/models';
  */
 
 declare  let _: any;
-export let soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
 export let soUsersUrl: string = Constants.urls.zoneSoUsers;
 export let soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
 export let soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
-export let soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
-export let soReportUrl: string = Constants.urls.zoneSoReportList;
-export let soReportEntity: any = Constants.soCommunityReportEntity;
 export let soFriendUrl: any = Constants.urls.soFriendUrl;
 
 @Injectable()
 export class SoUserService {
   profile: User = null;
 
-  // Cached friends data of current user
-  private ownFriendInfo: any =  {
-    totalFriends: undefined,
-    totalFollowers: undefined,
-    totalFollowings: undefined,
-    totalBlacklist: undefined
-  };
-
-
-  constructor(private apiBaseService: ApiBaseService, private user: UserService, private notificationService: NotificationService) {
-    this.profile = user.profile;
+  constructor(private apiBaseService: ApiBaseService, private userService: UserService, private notificationService: NotificationService) {
+    this.profile = this.userService.getSyncProfile();
   }
 
-  get(uuid: string = this.user.profile.uuid) {
+  get(uuid: string = this.userService.getSyncProfile().uuid) {
     return this.apiBaseService.get(`${soUsersUrl}/${uuid}`);
-  }
-
-  getOwnFriendInfo(): Promise<any> {
-    console.debug('ownFriendInfo: ', this.ownFriendInfo);
-    if(this.ownFriendInfo.totalFriends && this.ownFriendInfo.totalFollowers && this.ownFriendInfo.totalFollowings && this.ownFriendInfo.totalBlacklists)
-      return Promise.resolve(this.ownFriendInfo);
-
-    return this.get().toPromise().then(
-      (res: any) => {
-        _.set(this.ownFriendInfo, 'totalFriends', res.data.total_friends);
-        _.set(this.ownFriendInfo, 'totalFollowers', res.data.total_followers);
-        _.set(this.ownFriendInfo, 'totalFollowings', res.data.total_followings);
-        _.set(this.ownFriendInfo, 'totalBlacklist', res.data.total_blacklists);
-        return this.ownFriendInfo;
-      });
   }
 
   update(body: any) {
@@ -87,6 +56,14 @@ export class SoUserService {
     return this.apiBaseService.delete(`${soInvitationsUrl}/${uuid}`);
   }
 
+  acceptFriendRequest(uuid: any) {
+    return this.apiBaseService.post(`${soInvitationsUrl}/accept`, {uuid, show_status: true});
+  }
+
+  declineFriendRequest(uuid: any) {
+    return this.apiBaseService.post(`${soInvitationsUrl}/reject`, {uuid, show_status: true});
+  }
+
   getRelationShips(uuid?: string) {
     if (!uuid) {
       uuid = this.profile.uuid;
@@ -95,7 +72,6 @@ export class SoUserService {
   }
 
   getFavourites() {
-    console.log('soFavouriteUrl: ' + soFavouritesUrl);
     return this.apiBaseService.get(`${soFavouritesUrl}`);
   }
 
@@ -107,42 +83,26 @@ export class SoUserService {
     return this.apiBaseService.post(`${soFavouritesUrl}`, {uuid: uuid, type: type});
   }
 
-  getNotifications() {
-    return this.apiBaseService.get(`${soNotificationsUrl}`);
-  }
-
-  checkedNotifications() {
-    return this.apiBaseService.post(`${soNotificationsUrl}/checked`);
-  }
-
-  reportUser(body: any) {
-  // required params: report_entity_id, entity_type, reason, reporter_id, community_id
-    _.merge(body, {entity_type : soReportEntity.user});
-    return this.apiBaseService.post(`${soReportUrl}`, body);
-  }
-
-  reportCommuntity(body: any) {
-    _.merge(body, {entity_type : soReportEntity.user});
-    return this.apiBaseService.post(`${soReportUrl}`, body);
-  }
-
-  getReportList(community: any) {
-    let body = {'community_id': community.id};
-    return this.apiBaseService.get(`${soReportUrl}`, body);
-  }
-
   // ================= Friend ======================
-  getFriends(uuid: string = this.user.profile.uuid) {
+  getFriends(uuid: string = this.userService.getSyncProfile().uuid) {
     return this.apiBaseService.get(`${soFriendUrl}/${uuid}`);
   }
 
   // ================= Follower ======================
-  getFollowerList(uuid: string = this.user.profile.uuid ) {
+  getFollowerList(uuid: string = this.userService.getSyncProfile().uuid ) {
     return this.apiBaseService.get(`${soUsersUrl}/followers/${uuid}`);
   }
 
   // ================= Following ======================
-  getFollowingList(uuid: string = this.user.profile.uuid ) {
+  getFollowingList(uuid: string = this.userService.getSyncProfile().uuid ) {
     return this.apiBaseService.get(`${soUsersUrl}/followings/${uuid}`);
+  }
+
+  getReceivedRequests(uuid: string = this.userService.getSyncProfile().uuid) {
+    return this.apiBaseService.post(`${soUsersUrl}/get_received_invitations`);
+  }
+
+  getPendingRequests(uuid: string = this.userService.getSyncProfile().uuid) {
+    return this.apiBaseService.post(`${soUsersUrl}/get_pending_invitations`);
   }
 }

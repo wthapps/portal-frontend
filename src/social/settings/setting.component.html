@@ -5,28 +5,33 @@
         <div class="panel-heading">
           <h3 class="panel-title"><i class="fa fa-cog"></i> Settings</h3>
         </div>
-        <div class="panel-body" *ngIf="user.settings">
+        <box-loading *ngIf="loading"></box-loading>
+        <div class="panel-body" *ngIf="!loading && user.settings">
           <h3>General Settings</h3>
-          <div class="checkbox checkbox-switch">
-            <p-inputSwitch [(ngModel)]="user.settings.auto_import_from_contact.value"
-                           (ngModelChange)="updateSettings({auto_import_from_contact: user.settings.auto_import_from_contact})"></p-inputSwitch>
-            <label>
-              Auto import information from your contact profile
-            </label>
+          <div class="form-group">
+            <div class="inputSwitch-wrap">
+              <p-inputSwitch [(ngModel)]="user.settings.auto_import_from_contact.value"
+                             (ngModelChange)="updateSettings({auto_import_from_contact: user.settings.auto_import_from_contact})"></p-inputSwitch>
+              <span>Auto import information from your contact profile</span>
+            </div>
           </div>
-          <div class="checkbox checkbox-switch">
-            <p-inputSwitch [(ngModel)]="user.settings.allow_friend_import_contact.value"
-                           (ngModelChange)="updateSettings({allow_friend_import_contact: user.settings.allow_friend_import_contact})"></p-inputSwitch>
-            <label>
-              Allow friends to import my contact profile
-            </label>
+          <div class="form-group">
+            <div class="inputSwitch-wrap">
+              <p-inputSwitch [(ngModel)]="user.settings.allow_friend_import_contact.value"
+                             (ngModelChange)="updateSettings({allow_friend_import_contact: user.settings.allow_friend_import_contact})"></p-inputSwitch>
+              <span>
+                Allow friends to import my contact profile
+              </span>
+            </div>
           </div>
-          <div class="checkbox checkbox-switch">
-            <p-inputSwitch [(ngModel)]="user.settings.hide_adult_content.value"
-                           (ngModelChange)="updateSettings({hide_adult_content: user.settings.hide_adult_content})"></p-inputSwitch>
-            <label>
-              Hide all adult content
-            </label>
+          <div class="form-group">
+            <div class="inputSwitch-wrap">
+              <p-inputSwitch [(ngModel)]="user.settings.hide_adult_content.value"
+                             (ngModelChange)="updateSettings({hide_adult_content: user.settings.hide_adult_content})"></p-inputSwitch>
+              <span>
+                Hide all adult content
+              </span>
+            </div>
           </div>
 
           <hr>
@@ -75,19 +80,23 @@
             </div>
           </div>
 
-          <div class="checkbox checkbox-switch">
-            <p-inputSwitch [(ngModel)]="user.settings.show_communities.value"
-                           (ngModelChange)="updateSettings({show_communities: user.settings.show_communities})"></p-inputSwitch>
-            <label>
+          <div class="form-group">
+            <div class="inputSwitch-wrap">
+              <p-inputSwitch [(ngModel)]="user.settings.show_communities.value"
+                             (ngModelChange)="updateSettings({show_communities: user.settings.show_communities})"></p-inputSwitch>
+              <span>
               Show my communities
-            </label>
+            </span>
+            </div>
           </div>
-          <div class="checkbox checkbox-switch">
-            <p-inputSwitch [(ngModel)]="user.settings.show_friends.value"
-                           (ngModelChange)="updateSettings({show_friends: user.settings.show_friends})"></p-inputSwitch>
-            <label>
-              Show my friends list
-            </label>
+          <div class="form-group">
+            <div class="inputSwitch-wrap">
+              <p-inputSwitch [(ngModel)]="user.settings.show_friends.value"
+                             (ngModelChange)="updateSettings({show_friends: user.settings.show_friends})"></p-inputSwitch>
+              <span>
+                Show my friends list
+              </span>
+            </div>
           </div>
 
           <hr>
@@ -105,14 +114,15 @@
               <!--</select>-->
               <div>
                 <a href="javascript:;" data-toggle="dropdown" style="display: block; padding: 5px"><i
-                  class="fa fa-check"></i> {{ user.settings.viewable_post.value | titleCase }} <span class="caret"></span></a>
-                <ul class="dropdown-menu dropdown-menu-check" aria-labelledby="dropdownMenu">
-                  <li><a href="javascript:;"
-                         (click)="user.settings.viewable_post.value = 'public'; updateSettings({viewable_post: user.settings.viewable_post})">
-                    <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'public'"></i> Public</a></li>
-                  <li><a href="javascript:;"
-                         (click)="user.settings.viewable_post.value = 'friends'; updateSettings({viewable_post: user.settings.viewable_post})">
-                    <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'friends'"></i> Friends</a></li>
+                  class="fa fa-check"></i> {{ user.settings.viewable_post.value | titleCase }} <span
+                  class="caret"></span></a>
+                <ul class="dropdown-menu dropup-menu dropdown-menu-check" aria-labelledby="dropdownMenu">
+                  <li *ngFor="let pr of PRIVACIES"><a href="javascript:;"
+                         (click)="user.settings.viewable_post.value = pr; updateSettings({viewable_post: user.settings.viewable_post})">
+                    <i class="fa fa-check" *ngIf="user.settings.viewable_post.value == pr"></i> {{ PRIVACY_NAMES[pr] }}</a></li>
+                  <!--<li><a href="javascript:;"-->
+                         <!--(click)="user.settings.viewable_post.value = 'friends'; updateSettings({viewable_post: user.settings.viewable_post})">-->
+                    <!--<i class="fa fa-check" *ngIf="user.settings.viewable_post.value == 'friends'"></i> Friends</a></li>-->
                 </ul>
               </div>
             </div>

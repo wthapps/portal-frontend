@@ -8,7 +8,7 @@
 $note-name: auto;
 $note-owner: 200px;
 $note-description: 200px;
-$note-date: 130px;
+$note-date: 200px;
 $note-action: 200px;
 
 .component-listbox-list {
@@ -46,9 +46,24 @@ $note-action: 200px;
   }
 }
 
+.date-header {
+  text-align: left;
+}
+
 .component-listbox-list {
   .component-listbox-description {
     display: none !important;
+  }
+}
+
+.dropdown .caret-toggle {
+  i {
+    visibility: hidden;
+  }
+  &:hover {
+    i {
+      visibility: visible;
+    }
   }
 }
 
@@ -89,7 +104,7 @@ $note-action: 200px;
     .component-listbox-description {
       margin-bottom: 20px;
       overflow: hidden;
-      max-height: 96px;
+      height: 100px;
     }
     .item-folder {
       .component-listbox-name {

@@ -1,37 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
-import 'rxjs/add/operator/debounceTime';
+import { debounceTime } from 'rxjs/operators';
+
 import { ApiBaseService, UserService } from '@wth/shared/services';
-import { Constants } from '@wth/shared/constant';
 
 /**
  * Created by phat on 18/11/2016.
  */
 
 declare  let _: any;
-export let soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
-export let soUsersUrl: string = Constants.urls.zoneSoUsers;
-export let soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
-export let soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
-export let soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
-export let soReportUrl: string = Constants.urls.zoneSoReportList;
-export let soReportEntity: any = Constants.soCommunityReportEntity;
-export let soFriendUrl: any = Constants.urls.soFriendUrl;
 
 @Injectable()
 export class SoPostService {
   constructor(private apiBaseService: ApiBaseService,
-              private user: UserService,
-              private  router: Router) {
+              private userService: UserService) {
   }
 
-  getList(uuid: string = this.user.profile.uuid, type?: string) {
-    return this.getListSocialPosts(uuid, type);
+  getList(uuid: string = this.userService.getSyncProfile().uuid, type?: string) {
+    let uuid2: string = uuid || this.userService.getSyncProfile().uuid;
+    return this.getListSocialPosts(uuid2, type);
+  }
+
+  getNewPostsCount(uuid: string = this.userService.getSyncProfile().uuid) {
+    return this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/get_new_social_posts_count`);
   }
 
   getSettings(uuid: string) {
-    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`).debounceTime(250);
+    return this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${uuid}`).pipe(
+      debounceTime(250));
   }
 
   togglePostNotification(uuid: string) {

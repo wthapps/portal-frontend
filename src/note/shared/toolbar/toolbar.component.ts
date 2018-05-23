@@ -5,8 +5,10 @@ import { Observable } from 'rxjs/Observable';
 
 import * as note from '../actions/note';
 import * as fromRoot from '../reducers/index';
+import * as context from '../reducers/context';
 import { Constants } from '@shared/constant/config/constants';
 import { ZNoteService } from '../services/note.service';
+import { CommonEventService } from "@shared/services";
 
 @Component({
   selector: 'z-note-shared-toolbar',
@@ -26,19 +28,18 @@ export class ZNoteSharedToolBarComponent implements OnInit {
   viewMode$: Observable<string>;
   readonly PAGE_TYPE: any = Constants.notePageType;
 
-  constructor(private noteService: ZNoteService, private store: Store<fromRoot.State>) {
-    // this.noteService.viewOption$.subscribe((viewOption: any)=> {
-    //   this.viewOption = viewOption;
-    // });
+  constructor(private noteService: ZNoteService,
+    private commonEventService: CommonEventService,
+    private store: Store<fromRoot.State>) {
     this.viewMode$ = this.store.select(fromRoot.getViewMode);
   }
 
   ngOnInit() {
-
+    //
   }
 
   onChangeView(view: string) {
-    // this.noteService.changeModeView(view);
-    this.store.dispatch(new note.ChangeViewMode(view));
+
+    this.store.dispatch({type: context.SET_CONTEXT, payload: { viewMode: view }});
   }
 }

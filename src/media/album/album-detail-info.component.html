@@ -1,42 +1,76 @@
-<div class="media-page-detail-topbar">
-  <h3 class="m0">Information
-    <a href="javascript:;" class="pull-right text-inherit" (click)="onAction({action: 'toggleDetailInfo'})"><i
-      class="fa fa-times"></i></a>
-  </h3>
-</div>
-<div class="media-page-detail-info content-overflow-fixed" *ngIf="object">
-  <h4><i class="fa fa-info-circle"></i> Details
-    <a href="javascript:;" (click)="onAction({action: 'openModal', params: {modalName: 'editInfoModal' }})">Edit</a>
-  </h4>
-  <!--<dl class="dl-horizontal">
-    <dt>Name</dt>
-    <dd>{{ album.name }}</dd>
-    <dt>Files</dt>
-    <dd>{{ album.photo_number }} files</dd>
-    <dt>Description</dt>
-    <dd>{{ album.description }}</dd>
-    <dt>Created</dt>
-    <dd>{{ album.created_at | date }}</dd>
-  </dl>-->
-  <dl>
+<h3>
+  Information
+  <a href="javascript:void(0);" class="pull-right text-inherit" (click)="doAction({action: 'toggleDetailsInfo'})">
+    <i class="fa fa-times"></i>
+  </a>
+</h3>
+<ng-container *ngIf="object">
+  <div class="photo-detail-info-title">
+    <h4>
+      <i class="fa fa-info-circle"></i> Details
+      <a href="javascript:void(0);"
+         (click)="doAction({action: 'openModal', payload: {modalName: 'editInfoModal', selectedObject: object }})">Edit</a>
+    </h4>
+  </div>
+  <dl class="dl-horizontal">
     <dt>Description</dt>
     <dd>
       {{ object.description }}
     </dd>
   </dl>
-  <hr>
-  <h4><i class="fa fa-tag"></i> Tag <a href="javascript:;"
-                                       (click)="onAction({action: 'openModal', params: {modalName: 'taggingModal', selectedObjects: [object], updateListObjects: [object] }})">Edit</a>
-  </h4>
+  <div class="photo-detail-info-title">
+    <h4><i class="fa fa-tag"></i> Tag
+      <a href="javascript:void(0);"
+         (click)="doAction({
+          action: 'openModal',
+          payload: {
+              modalName: 'taggingModal',
+              selectedObjects: [object],
+              updateListObjects: [object]
+          }})">Edit</a>
+    </h4>
+  </div>
   <!--<div class="tags-text" *ngFor="let tag of album.json_tags">-->
   <!--<span>{{ tag }}</span>-->
   <!--</div>-->
-
-  <hr>
-  <h4><i class="fa fa-share"></i> Shared with <a href="javascript:;"
-                                                 (click)="onAction({action: 'openModal', params: {modalName: 'sharingModal', selectedObjects: [object], updateListObjects: [object] }})">Edit</a>
-  </h4>
-  <div class="tags-text" *ngFor="let contact of (object?.json_shares) ? object?.json_shares?.contacts : []">
-    <span><img src="assets/images/zone/img-group.png" title="{{ contact?.name }}"></span>
+  <div class="photo-detail-info-title">
+    <h4><i class="fa fa-share"></i> Sharing
+      <a href="javascript:void(0);"
+         (click)="doAction({
+       action: 'openModal',
+       payload: {
+          modalName: 'sharingModal',
+          selectedObjects: [object],
+          updateListObjects: [object]
+       }})">Edit</a>
+    </h4>
   </div>
-</div>
+  <dl>
+    <dt>Owner</dt>
+    <dd>
+      <ul class="list-unstyled recipients">
+        <li>
+          <a [href]="profileUrl + object?.owner?.uuid">
+            <img width="24" [src]="object?.owner?.profile_image"
+                 [alt]="object?.owner?.name"
+                 [title]="object?.owner?.name">
+            {{ object?.owner.name }}
+          </a>
+        </li>
+      </ul>
+    </dd>
+
+    <dt>Shared with</dt>
+    <dd>
+      <ul class="list-unstyled recipients">
+        <li *ngFor="let contact of object?.json_shares">
+          <a [href]="profileUrl + contact?.uuid">
+            <img width="24" [src]="contact?.profile_image" title="{{ contact?.name }}">
+            {{ contact?.name }}
+          </a>
+        </li>
+      </ul>
+    </dd>
+  </dl>
+
+</ng-container>

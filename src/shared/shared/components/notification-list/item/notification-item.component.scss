@@ -1,0 +1,13 @@
+@import "../../../../../assets/styles/global";
+
+#notiItemMenuEl {
+  position: absolute;
+  z-index: 1100;
+  .dropdown-menu {
+    display: block;
+    left: auto;
+    right: 100%;
+  }
+}
+
+

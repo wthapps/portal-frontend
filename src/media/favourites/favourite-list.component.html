@@ -1,0 +1,113 @@
+<ng-template #objectActionsTemplate>
+  <ul class="page-body-control-menu" [ngClass]="{'text-disable': noSelectedObjects}"
+      [class.disabled]="noSelectedObjects">
+    <li *ngIf="validateObjects(toolbar.selectedObjects)">
+      <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
+         href="javascript:void(0);"
+         (click)="toolbar.doAction({action: 'openModal',
+         payload: {modalName: 'sharingModal', selectedObjects: toolbar.selectedObjects}})">
+        <i class="fa fa-share-alt"></i>
+      </a>
+    </li>
+    <li *ngIf="!!toolbar.selectedObjects.length">
+      <a class="btn btn-default" href="javascript:void(0);" draggable="false"
+         *ngIf="toolbar.favoriteAll"
+         (click)="toolbar.doAction({
+           action: 'favourite',
+           payload: { mode: 'remove',
+           multiItem: true,
+           selectedObjects: toolbar.selectedObjects }})"
+         pTooltip="{{ tooltip.removeFromFavourites }}"
+         tooltipPosition="bottom">
+        <i class="fa fa-star"></i>
+      </a>
+      <a class="btn btn-default" href="javascript:void(0);" draggable="false"
+         *ngIf="!toolbar.favoriteAll"
+         (click)="toolbar.doAction({
+           action: 'favourite',
+           payload: { mode: 'add',
+           multiItem: true,
+           selectedObjects: toolbar.selectedObjects }})"
+         pTooltip="{{ tooltip.addToFavorites }}"
+         tooltipPosition="bottom">
+        <i class="fa fa-star-o"></i>
+      </a>
+    </li>
+    <li *ngIf="!!toolbar.selectedObjects.length">
+      <a class="btn btn-default" href="javascript:;" draggable="false"
+         (click)="toolbar.doAction({action: 'openModal',
+         payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})"
+         pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
+        <i class="fa fa-tag"></i></a>
+    </li>
+    <li *ngIf="!!toolbar.selectedObjects.length">
+      <a class="btn btn-default" href="javascript:;" draggable="false"
+         (click)="toolbar.doAction({action: 'deleteMedia', payload: {selectedObjects: toolbar.selectedObjects}})"
+         pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
+        <i class="fa fa-trash-o"></i></a>
+    </li>
+
+    <li class="dropdown action" *ngIf="!!toolbar.selectedObjects.length">
+      <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+         pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+        <li *ngIf="toolbar.hasOneObject">
+          <a (click)="toolbar.doAction({
+            action: 'openModal',
+            payload: {modalName: 'editInfoModal', selectedObject: toolbar.selectedObjects[0]}
+          })" href="javascript:void(0);" draggable="false" >
+            <i class="fa fa-edit"></i> Edit Information
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);" draggable="false" [ngClass]="{'text-disable': gridlist.selectedObjects.length != 1}"
+             (click)="toolbar.doAction({action: 'downloadAlbum', payload: {selectedObjects: selectedObjects}})">
+            <i class="fa fa-download"></i> Download
+          </a>
+        </li>
+        <li *ngIf="toolbar.hasOneObject">
+          <a (click)="toolbar.doAction({
+            action: 'viewDetails',
+            payload: { selectedObject: toolbar.selectedObjects[0] }
+          })" href="javascript:void(0);" draggable="false" >
+            <i class="fa fa-info-circle"></i> View Detail
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</ng-template>
+
+<w-toolbar #toolbar
+           [view]="gridlist.view"
+           [selectedObjects]="gridlist.selectedObjects"
+           [objectActionsTemplate]="objectActionsTemplate"
+           (event)="gridlist.doEvent($event)">
+</w-toolbar>
+
+<w-grid-list #gridlist
+             [objects]="favoriteObjects$|async"
+             [nextLink]="nextLink$|async"
+             (event)="doEvent($event)"
+             (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)">
+
+  <!--loading icon-->
+  <div class="page-body-content has-page-body-control gray-light" *ngIf="loading$|async">
+    <box-loading></box-loading>
+  </div>
+
+</w-grid-list>
+<!--no data region-->
+<div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length && !(loading$|async)">
+  <div>
+    <h2><i class="fa fa-star"></i></h2>
+    <h3>There are no favourited photos or albums.</h3>
+    <h4>Add star to a photo or album to find easier.</h4>
+  </div>
+</div>
+
+
+<ng-template #modalContainer></ng-template>
+

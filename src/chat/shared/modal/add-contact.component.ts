@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../services/chat.service';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 declare var _:any;
 
@@ -12,7 +12,7 @@ declare var _:any;
 
 export class ZChatShareAddContactComponent implements OnInit {
 
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   contacts: any;
   type: string = 'addContact';
   title: string = 'Message';

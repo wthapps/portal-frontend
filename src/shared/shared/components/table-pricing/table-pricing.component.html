@@ -17,16 +17,16 @@
               <small>per month*</small>
             </ng-template>
 
-            <ng-template [ngIf]="userService.profile">
+            <ng-template [ngIf]="userService.getSyncProfile()">
 
-              <ng-template [ngIf]="userService.profile.plan_id==pp.id"><span class="bold">Current Plan</span></ng-template>
-              <ng-template [ngIf]="userService.profile.plan_id!=pp.id">
+              <ng-template [ngIf]="userService.getSyncProfile()?.plan_id==pp.id"><span class="bold">Current Plan</span></ng-template>
+              <ng-template [ngIf]="userService.getSyncProfile()?.plan_id!=pp.id">
                 <button (click)="getStarted(pp)" class="btn btn-outline-primary btn-min">Get Started</button>
               </ng-template>
 
             </ng-template>
 
-            <ng-template [ngIf]="!userService.profile">
+            <ng-template [ngIf]="!userService.getSyncProfile()">
               <a [routerLink]="['/signup']" class="btn btn-default btn-min">Sign up</a>
             </ng-template>
 
@@ -46,16 +46,16 @@
       <tr>
         <td class="text-left">More Coming Soon</td>
         <td *ngFor="let pp of plans">
-          <ng-template [ngIf]="userService.profile">
+          <ng-template [ngIf]="userService.getSyncProfile()">
 
-            <ng-template [ngIf]="userService.profile.plan_id==pp.id"><span class="bold">Current Plan</span></ng-template>
-            <ng-template [ngIf]="userService.profile.plan_id!=pp.id">
+            <ng-template [ngIf]="userService.getSyncProfile()?.plan_id==pp.id"><span class="bold">Current Plan</span></ng-template>
+            <ng-template [ngIf]="userService.getSyncProfile()?.plan_id!=pp.id">
               <button (click)="getStarted(pp)" class="btn btn-outline-primary btn-min">Get Started</button>
             </ng-template>
 
           </ng-template>
 
-          <ng-template [ngIf]="!userService.profile">
+          <ng-template [ngIf]="!userService.getSyncProfile()">
             <a (click)="redirectTo('home', 'signup', $event)" class="btn btn-default btn-min">Sign up</a>
           </ng-template>
         </td>

@@ -1,20 +1,21 @@
 <div class="wrapper">
-  <wth-header-navbar class="header">
+  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
     <div class="header-nav-left">
       <a [routerLink]="['/']" class="navbar-brand" href="#">
         <img src="/assets/images_new/logo.png" alt="WTHApps">
       </a>
     </div>
-  </wth-header-navbar>
+  </w-header>
   <main class="main">
     <router-outlet></router-outlet>
     <ng-template #modalContainer></ng-template>
   </main>
-  <wth-footer></wth-footer>
+  <w-footer></w-footer>
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
-  <h-file-select></h-file-select>
+  <!--<h-file-select></h-file-select>-->
   <h-file-select-crop></h-file-select-crop>
+  <w-media-selection></w-media-selection>
   <wth-confirm></wth-confirm>
 
 </div>

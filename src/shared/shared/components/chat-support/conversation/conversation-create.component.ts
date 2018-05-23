@@ -36,7 +36,7 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
   }
 
   ngOnInit() {
-    this.currentUser = this.userService.profile;
+    this.currentUser = this.userService.getSyncProfile();
 
     this.notificationChannel.hasDataChanged
       .subscribe(
@@ -78,7 +78,7 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
 
     // create new conversation
 
-    // this.conversationService.create({users: this.userService.profile.uuid})
+    // this.conversationService.create({users: this.userService.getSyncProfile().uuid})
     //   .subscribe(
     //     (response: any) => {
     //       var conversation: any = response.data;

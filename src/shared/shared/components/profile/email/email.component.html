@@ -7,7 +7,7 @@
       </button>
     </div>
   </div>
-  <div class="field-group-content">
+  <div *ngIf="data.emails" class="field-group-content">
     <dl class="dl-horizontal" *ngIf="data.emails.length > 0">
       <ng-template ngFor let-item [ngForOf]="data.emails" let-i="index" [ngForTrackBy]="trackByFn">
         <dt>{{ item.category | keyToValue:emailType:'category':'name' }}</dt>
@@ -30,11 +30,11 @@
 </div>
 
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title">Email</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div formArrayName="emails">
         <div *ngFor="let add_email of getFormControls(); let i=index" class="media mt0">
           <div *ngIf="add_email" class="media-body" [formGroupName]="i">
@@ -81,12 +81,12 @@
       <button type="button" class="btn btn-default" (click)="addItem()">
         <i class="fa fa-plus"></i> Add more
       </button>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
-      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
+      <button type="submit" class="btn btn-outline-primary btn-min"
               (click)="onSubmit(form.value)">Done
       </button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

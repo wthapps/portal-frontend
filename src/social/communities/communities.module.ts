@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { ZSocialSharedModule } from '../shared/shared.module';
 
-import { ZSocialCommunityComponent } from './communities.component';
 import { ZSocialCommunityListComponent } from './list/list.component';
 import { ZSocialCommunityDetailComponent } from './detail/detail.component';
 import { ZSocialCommunitySharedModule } from './shared/shared.module';
@@ -12,21 +11,23 @@ import { ZSocialCommunityFormPreferenceComponent } from './shared/form/preferenc
 import { PostModule } from '../shared/second-routes/post/post.module';
 import { Ng2HdModule } from '@wth/shared/shared/ng2-hd';
 import { SharedModule } from '@wth/shared/shared.module';
-import { CoreModule } from '@wth/core/core.module';
+// import { CoreModule } from '@wth/core/core.module';
+import { CommunityRoutingModule } from './community-routing.module';
+import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 
 @NgModule({
   imports: [
     CommonModule,
     PostModule,
     Ng2HdModule,
+    CommunityRoutingModule,
     ZSocialSharedModule,
     ZSocialCommunitySharedModule,
-    SharedModule,
-    CoreModule
-
+    BoxLoadingModule,
+    SharedModule
+    // CoreModule
   ],
   declarations: [
-    ZSocialCommunityComponent,
     ZSocialCommunityListComponent,
     ZSocialCommunityDetailComponent,
     ZSocialCommunityFormEditComponent,
@@ -36,20 +37,17 @@ import { CoreModule } from '@wth/core/core.module';
     // ZSocialCommunityCoverComponent
 
     // Preferences
-    ZSocialCommunityFormPreferenceComponent,
+    ZSocialCommunityFormPreferenceComponent
 
     // // Notifications
     // ZSocialNotificationsComponent
-
   ],
   exports: [
     ZSocialSharedModule,
-    ZSocialCommunityComponent,
     ZSocialCommunityFormEditComponent,
     ZSocialCommunityDetailComponent,
     ZSocialCommunityFormPreferenceComponent
   ],
   providers: []
 })
-export class ZSocialCommunityModule {
-}
+export class ZSocialCommunityModule {}

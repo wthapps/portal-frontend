@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  AbstractControl,
+  FormBuilder,
+  Validators
+} from '@angular/forms';
 
 import { UserService } from '../../shared/services/user.service';
 import { CustomValidator } from '../../shared/shared/validator/custom.validator';
@@ -38,38 +43,39 @@ export class RegisterComponent {
   submitted: boolean = false;
   invitationUuid: string;
 
-  constructor(private fb: FormBuilder,
-              private router: Router,
-              private route: ActivatedRoute,
-              private userService: UserService,
-              private toastsService: ToastsService,
-              private loadingService: LoadingService) {
-
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private toastsService: ToastsService,
+    private loadingService: LoadingService
+  ) {
     /*if (this.userService.loggedIn) {
      this.router.navigateByUrl('/account/setting/dashboard');
      }*/
 
     this.form = fb.group({
-      'first_name': ['',
-        Validators.compose([Validators.required])
-      ],
-      'last_name': ['',
-        Validators.compose([Validators.required])
-      ],
-      'email': ['',
+      first_name: ['', Validators.compose([Validators.required])],
+      last_name: ['', Validators.compose([Validators.required])],
+      email: [
+        '',
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'password': ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(8),
-        CustomValidator.lowercaseUppercase,
-        CustomValidator.specialSymbolOrNumber
-      ])],
-      'birthday_day': ['0'],
-      'birthday_month': ['0'],
-      'birthday_year': ['0'],
+      password: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(8),
+          CustomValidator.lowercaseUppercase,
+          CustomValidator.specialSymbolOrNumber
+        ])
+      ],
+      birthday_day: ['0'],
+      birthday_month: ['0'],
+      birthday_year: ['0'],
       //'sex': [],
-      'accepted': [false, Validators.compose([Validators.nullValidator])]
+      accepted: [false, Validators.compose([Validators.nullValidator])]
     });
 
     this.first_name = this.form.controls['first_name'];
@@ -107,27 +113,27 @@ export class RegisterComponent {
         accepted_policies: values.accepted === true ? true : false
       });
 
-      this.userService.signup('users', body)
-        .subscribe((result) => {
-            this.loadingService.stop();
-            // this.router.navigateByUrl('/welcome');
-            window.location.href = Constants.baseUrls.myAccount;
-          },
-          error => {
-            // stop loading
-            this.loadingService.stop();
+      this.userService.signup('users', body).subscribe(
+        result => {
+          this.loadingService.stop();
+          // this.router.navigateByUrl('/welcome');
+          window.location.href = Constants.baseUrls.myAccount;
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
 
-            console.log('error:', error);
-            let err = error;
+          console.log('error:', error);
+          let err = error;
 
-            this.errorMessage = err.error;
-            //TODO refactoring code check signup
-            if (error.status === 422) {
-              this.errorMessage = 'Email has already been taken';
-            }
-            this.toastsService.danger(this.errorMessage);
-
-          });
+          this.errorMessage = err.error;
+          //TODO refactoring code check signup
+          if (error.status === 422) {
+            this.errorMessage = 'Email has already been taken';
+          }
+          this.toastsService.danger(this.errorMessage);
+        }
+      );
     }
   }
 }

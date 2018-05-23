@@ -8,7 +8,8 @@
     .row-img-item {
       float: left;
       width: 50%;
-      padding: 10px;
+      padding: 0 10px;
+      margin-bottom: 20px;
       @media (min-width: $screen-sm-min) {
         width: percentage(1/3);
       }
@@ -218,8 +219,8 @@
 }
 
 $photo-box-img-input: 25px;
-$photo-box-img-size: 60px;
-$photo-box-img-date: 100px;
+$photo-box-img-size: 100px;
+$photo-box-img-date: 110px;
 $photo-box-img-owner: 150px;
 
 .photo-box-nav, .row-img.list {

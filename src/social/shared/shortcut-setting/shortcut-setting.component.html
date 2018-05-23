@@ -1,0 +1,83 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Edit shortcuts</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p>Shortcuts allow quick access to some of your communities. Search your communities and click on toad them into
+      your shortcut list.</p>
+    <div class="form-group input-group-wrap input-group-search-header">
+      <p *ngIf="removeLength > 0" class="text-left text-danger">You have made changes that you need to save!</p>
+      <form *ngIf="removeLength == 0 " class="input-group" novalidate="">
+        <!--<span class="input-group-btn input-group-left">-->
+          <!--<button class="btn btn-default" type="button">-->
+            <!--<i class="fa fa-search"></i>-->
+          <!--</button>-->
+        <!--</span>-->
+        <!--<input autocomplete="off" class="form-control" name="search" type="text"-->
+               <!--placeholder="Search your communities by name">-->
+        <!--<span class="input-group-btn input-group-left">-->
+          <!--<button class="btn btn-default" type="button">-->
+          <!--<i class="fa fa-search"></i>-->
+          <!--</button>-->
+          <!--</span>-->
+        <div class="input-group-form">
+          <p-autoComplete placeholder="Search your communities by name"
+                          [(ngModel)]="selectedComs"
+                          [minLength]="1"
+                          field="name"
+                          [multiple]="true"
+                          name="shortcutSuggest"
+                          [suggestions]="suggestions"
+                          (onSelect)="selectCommunity($event)"
+                          (onUnselect)="unselect($event)"
+                          (onClear)="clear($event)"
+                          (completeMethod)="search($event)">
+            <ng-template let-com pTemplate="item">
+              <div class="media media-user-list media-middle">
+                <div class="media-left">
+                  <div class="media-user-avatar avatar-xs">
+                    <img alt="" [src]="com?.profile_image">
+                  </div>
+                </div>
+                <div class="media-body">
+                  {{ com?.name }}
+                </div>
+              </div>
+            </ng-template>
+
+          </p-autoComplete>
+        </div>
+      </form>
+    </div>
+    <hr>
+
+    <div class="form-group form-group-shortcuts">
+      <div *ngFor="let group of shortcuts$ | async" class="media media-user-list media-middle">
+        <div class="media-left">
+          <div class="media-user-avatar avatar-xs">
+            <img alt="" [src]="group.profile_image">
+          </div>
+        </div>
+        <div class="media-body">
+          {{ group.name }}
+        </div>
+        <div class="media-right">
+          <button *ngIf="!removeComsHash[group.id]" class="btn btn-default" type="button" (click)="remove(group.id)">
+            <i class="fa fa-times"></i>
+          </button>
+          {{ removeComsHash[group.id] ? 'Remove' : ''}}
+        </div>
+      </div>
+    </div>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button *ngIf="!hasChanged" type="submit" class="btn btn-outline-primary btn-min" (click)="done(null)">Done</button>
+
+    <ng-container *ngIf="hasChanged">
+      <button class="btn btn-secondary btn-min" (click)="cancel()">Cancel</button>
+      <button class="btn btn-outline-primary btn-min" (click)="save()">Save</button>
+
+    </ng-container>
+
+  </bs-modal-footer>
+</bs-modal>

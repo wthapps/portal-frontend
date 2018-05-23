@@ -3,8 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/operator/combineLatest';
+import { Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs/operators';
 
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
@@ -13,25 +13,33 @@ import { PostListComponent } from '../../shared/second-routes/post/post-list.com
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
 import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
 import { User } from '@wth/shared/shared/models';
-import { UserService } from '@shared/services';
-import { ApiBaseService } from '@wth/shared/services';
+import { AuthService, UserService } from '@shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { Constants } from '@wth/shared/constant';
+import { SHORTCUT_ADD_MULTI_DONE } from '../../shared/reducers/index';
+import { fadeInAnimation } from '@wth/shared/shared/animations/route.animation';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 
 declare let _: any;
 declare let $: any;
 
+const EMPTY_DEFAULT_TABS: any = {
+  post: false,
+  about: false,
+  members: false,
+  invitations: false,
+  joinRequests: false,
+  blacklist: false
+};
+
 @Component({
-  moduleId: module.id,
   selector: 'z-social-community-detail',
-  templateUrl: 'detail.component.html'
+  templateUrl: 'detail.component.html',
+  animations: [fadeInAnimation],
+  styleUrls: ['detail.component.scss']
 })
-
-
 export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
 
@@ -42,24 +50,63 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     about: 'about',
     members: 'members',
     invitations: 'invitations',
-    joinRequests: 'join_requests',
+    join_requests: 'join_requests',
     blacklist: 'blacklist'
   };
 
+  tabs: WTab[] = [
+    {
+      name: 'Post',
+      link: 'post',
+      icon: null,
+      type: 'tab'
+    },
+    {
+      name: 'About',
+      link: 'about',
+      icon: null,
+      type: 'tab'
+    },
+    {
+      name: 'Members',
+      link: 'members',
+      icon: null,
+      type: 'tab'
+    },
+    {
+      name: 'Invitations',
+      link: 'invitations',
+      icon: null,
+      type: 'tab'
+    },
+    {
+      name: 'Join Requests',
+      link: 'join_requests',
+      icon: null,
+      type: 'tab'
+    }
+  ];
+
+
   tabData: any = [
-    {key: 'post',
+    {
+      key: 'post',
       value: 'Post'
     },
-    {key: 'about',
+    {
+      key: 'about',
       value: 'About'
     },
-    {key: 'members',
+    {
+      key: 'members',
       value: 'Members'
     },
-    {key: 'invitations',
+    {
+      key: 'invitations',
       value: 'Invitations'
     },
-    {key: 'join_requests',
+    {
+      key: 'join_requests',
       value: 'Join Requests'
     }/*,
     {key: 'blacklist',
@@ -81,13 +128,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   is_close: boolean = true;
   favourite: any;
   userSettings: any;
+  loading: boolean = true;
 
-  isPostTab: boolean = true;
-  isAboutTab: boolean = false;
-  isMemberTab: boolean = false;
-  isInvitationTab: boolean = false;
-  isJoinRequestTab: boolean = false;
-  isBlacklistTab: boolean = false;
+  activeTabs: any = EMPTY_DEFAULT_TABS;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
 
   @ViewChild('modalEdit') modalEdit: ZSocialCommunityFormEditComponent;
@@ -95,40 +138,38 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   @ViewChild('users') users: EntitySelectComponent;
   @ViewChild('posts') posts: PostListComponent;
 
-  closeObs$: Observable<any>;
   profile$: Observable<User>;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
-  constructor(private apiBaseService: ApiBaseService,
+  constructor(public authService: AuthService,
               private route: ActivatedRoute,
               private router: Router,
               private userService: UserService,
               private wthConfirmService: WthConfirmService,
-              private loadingService: LoadingService,
               private toastsService: ToastsService,
-              private photoSelectDataService: PhotoModalDataService,
               private zoneReportService: ZSharedReportService,
               public favoriteService: SocialFavoriteService,
+              private store: Store<any>,
               private socialService: SocialService) {
-
-    // All subscriptions to photo select modal should be closed when 1 of following events are emitted
-    this.closeObs$ = this.photoSelectDataService.closeObs$.merge(this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
-    this.profile$ = this.userService.profile$;
+    this.profile$ = this.userService.getAsyncProfile();
   }
 
   ngOnInit() {
     this.selectedTabTitle = _.find(this.tabData, ['key', this.selectedTab]);
 
-    this.route.params.combineLatest(this.route.queryParams)
-      .map((p: any) => {
-      if(this.uuid !== p[0]['id']) {
-        this.uuid = p[0]['id'];
-        this.getCommunity(this.uuid);
-      }
-      this.selectedTab = p[1]['tab'] ;
-      this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
-    }).subscribe(() => {
+    this.route.paramMap.pipe(
+      combineLatest(this.route.queryParamMap, (paramMap, queryParamMap) => {
+        if (this.uuid !== paramMap.get('id')) {
+          this.uuid = paramMap.get('id');
+          this.getCommunity(this.uuid);
+        }
+        this.selectedTab = queryParamMap.get('tab');
+        this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
+        console.debug(paramMap, queryParamMap, this.selectedTab);
+        return [this.uuid, this.selectedTab];
+      })
+    ).subscribe(() => {
       this.setTabVisibility();
       if (this.selectedTab !== undefined)
         this.getTabItems(this.uuid, this.selectedTab);
@@ -138,6 +179,10 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
+  }
+
+  tabAction(event: any) {
+    console.log(event);
   }
 
   onPreference() {
@@ -163,7 +208,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   addFavourite(uuid: any) {
     this.favoriteService.addFavourite(uuid, 'community')
-      .then((res: any) => this.userSettings.favorite = !this.userSettings.favorite );
+      .then((res: any) => this.userSettings.favorite = !this.userSettings.favorite);
   }
 
   getUserSettings(uuid: any) {
@@ -189,7 +234,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   onCoverAction(event: any) {
-    if(event.action == 'updateItem') {
+    if (event.action == 'updateItem') {
       this.updateCommunity(event.body);
     }
   }
@@ -198,23 +243,23 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
     this.socialService.community.updateCommunity(this.community.uuid, body)
       .subscribe((result: any) => {
-        console.log('update community sucess: ', result);
-        let toastMsg = '';
-        if (_.has(body, 'profile_image') )
-          toastMsg = 'You have updated profile image successfully';
-        else if (_.has(body, 'cover_image') )
-          toastMsg = 'You have updated cover image of this community successfully';
-        else
-          toastMsg = result.message;
+          console.log('update community sucess: ', result);
+          let toastMsg = '';
+          if (_.has(body, 'profile_image'))
+            toastMsg = 'You have updated profile image successfully';
+          else if (_.has(body, 'cover_image'))
+            toastMsg = 'You have updated cover image of this community successfully';
+          else
+            toastMsg = result.message;
 
-      this.toastsService.success(toastMsg);
-      this.favoriteService.updateFavorite(result.data, 'community');
-    },
-    error => {
-      this.toastsService.danger(this.errorMessage);
-      console.log(error);
-    }
-    );
+          this.toastsService.success(toastMsg);
+          this.favoriteService.updateFavorite(result.data, 'community');
+        },
+        error => {
+          this.toastsService.danger(this.errorMessage);
+          console.log(error);
+        }
+      );
   }
 
   askToJoin() {
@@ -229,7 +274,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   cancelJoinRequest(joinRequestId: any) {
     this.socialService.community.cancelJoinRequest(this.uuid, joinRequestId).subscribe(
-      (res: any)=> {
+      (res: any) => {
         this.joinRequestId = undefined;
 
         // Update join request count
@@ -245,20 +290,20 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     $('#invitation_' + invitationId).remove();
     this.socialService.community.cancelInvitation(this.uuid, invitationId)
       .subscribe(
-      (res: any)=> {
-        // Update invitation count
-        this.community.invitation_count -= 1;
-      },
-      error => {
-        this.errorMessage = <any>error;
-      }
-    );
+        (res: any) => {
+          // Update invitation count
+          this.community.invitation_count -= 1;
+        },
+        error => {
+          this.errorMessage = <any>error;
+        }
+      );
   }
 
   acceptJoinRequest(item: any) {
     $('#invitation_' + item.id).remove();
     this.socialService.community.acceptJoinRequest(this.uuid, item.inviter.uuid).subscribe(
-      (res: any)=> {
+      (res: any) => {
         // Update join request count
         this.community.join_request_count -= 1;
       },
@@ -270,7 +315,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   deleteMember(user: any) {
     this.user = user;
-    console.debug('user: ', user);
     this.wthConfirmService.confirm({
       acceptLabel: 'Delete',
       rejectLabel: 'Cancel',
@@ -278,9 +322,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       header: 'Delete Member',
       accept: () => {
         this.socialService.community.deleteMember(this.uuid, user.uuid).subscribe(
-          (res: any)=> {
+          (res: any) => {
             this.toastsService.success('You deleted member successfully');
-            _.remove(this.tabItems, (item: any) => item.accepter.uuid === user.uuid);
+            _.remove(this.tabItems, (item: any) => item.user.uuid === user.uuid);
 
             // Update community member count
             this.community.member_count -= 1;
@@ -303,7 +347,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       header: 'Make admin',
       accept: () => {
         this.socialService.community.makeAdmin(this.uuid, user.uuid).subscribe(
-          (res: any)=> {
+          (res: any) => {
             this.toastsService.success(`You have changed ${this.user ? this.user.name : ''} role to ADMIN successfully`);
             $('#user_' + user.uuid).find('span.member-role').text('Admin');
             this.community.admin_count += 1;
@@ -339,28 +383,28 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   onReportMember(reportee_id: string, reason: string = '') {
     this.socialService.community.onReportMember(reportee_id, this.uuid, reason)
       .toPromise().then((result: any) => {
-          console.log('reported member');
-        },
-        error => {
-          console.log('error', error);
-        });
+        console.log('reported member');
+      },
+      error => {
+        console.log('error', error);
+      });
   }
 
   onDelete() {
     this.socialService.community.confirmDeleteCommunity(this.community)
-      .then((community: any)  => this.router.navigateByUrl(this.communitiesUrl));
+      .then((community: any) => this.router.navigateByUrl(this.communitiesUrl));
   }
 
   onLoadMore() {
-    if (this.isPostTab)
+    if (this.activeTabs.post)
       this.posts.viewMorePosts();
   }
 
   private getCommunity(uuid: string): Promise<any> {
-    // this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}`).subscribe(
     return this.socialService.community.getCommunity(uuid).toPromise().then(
-      (res: any)=> {
+      (res: any) => {
         // this.item = res.data;
+        this.loading = false;
         this.community = res.data;
         this.socialService.community.currentCommunity = this.community;
 
@@ -371,8 +415,13 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
         //  Grant edit profile / cover image privilege to community admins
         this.community.canEdit = this.isAdmin;
+
+        if (res.shortcut) {
+          this.store.dispatch({type: SHORTCUT_ADD_MULTI_DONE, payload: res.shortcut});
+        }
       },
       error => {
+        this.loading = false;
         this.errorMessage = <any>error;
       }
     );
@@ -381,94 +430,36 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   private getTabItems(uuid: string, tabName: string): void {
     this.tabItems.length = 0;
-    if (tabName === undefined)
+    if (!tabName)
       return;
 
     this.socialService.community.getTabItems(uuid, tabName)
       .toPromise()
       .then(
-      (res: any)=> {
-        if ([this.tab.about, this.tab.post].indexOf(this.selectedTab) == -1 )
-          this.tabItems = res.data;
-        // Update member_count, invitation_count, join_request_count
-        switch(this.selectedTab) {
-          case this.tab.members:
-            _.set(this.community, 'member_count', this.tabItems.length );
-            break;
-          case this.tab.invitations:
-            _.set(this.community, 'invitation_count', this.tabItems.length);
-            break;
-          case this.tab.joinRequests:
-            _.set(this.community, 'join_request_count', this.tabItems.length);
-            break;
+        (res: any) => {
+          if ([this.tab.about, this.tab.post].indexOf(this.selectedTab) == -1)
+            this.tabItems = res.data;
+          // Update member_count, invitation_count, join_request_count
+          switch (this.selectedTab) {
+            case this.tab.members:
+              _.set(this.community, 'member_count', this.tabItems.length);
+              break;
+            case this.tab.invitations:
+              _.set(this.community, 'invitation_count', this.tabItems.length);
+              break;
+            case this.tab.joinRequests:
+              _.set(this.community, 'join_request_count', this.tabItems.length);
+              break;
+          }
+        },
+        error => {
+          this.errorMessage = <any>error;
         }
-      },
-      error => {
-        this.errorMessage = <any>error;
-      }
-    );
+      );
   }
 
   private setTabVisibility() {
-    switch (this.selectedTab) {
-      case this.tab.post:
-        this.isPostTab = true;
-        this.isAboutTab = false;
-        this.isMemberTab = false;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = false;
-        break;
-      case this.tab.about:
-        this.isPostTab = false;
-        this.isAboutTab = true;
-        this.isMemberTab = false;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = false;
-        break;
-      case this.tab.members:
-        this.isPostTab = false;
-        this.isAboutTab = false;
-        this.isMemberTab = true;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = false;
-        break;
-      case this.tab.invitations:
-        this.isPostTab = false;
-        this.isAboutTab = false;
-        this.isMemberTab = false;
-        this.isInvitationTab = true;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = false;
-        break;
-      case this.tab.joinRequests:
-        this.isPostTab = false;
-        this.isAboutTab = false;
-        this.isMemberTab = false;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = true;
-        this.isBlacklistTab = false;
-        break;
-      case this.tab.blacklist:
-        this.isPostTab = false;
-        this.isAboutTab = false;
-        this.isMemberTab = false;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = true;
-        break;
-      default:
-        this.selectedTab = undefined;
-        this.isPostTab = true;
-        this.isAboutTab = false;
-        this.isMemberTab = false;
-        this.isInvitationTab = false;
-        this.isJoinRequestTab = false;
-        this.isBlacklistTab = false;
-        break;
-    }
+    this.activeTabs = {...EMPTY_DEFAULT_TABS, [this.selectedTab || this.tab.post]: true};
   }
 
 }

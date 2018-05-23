@@ -5,9 +5,9 @@ import {
   FormBuilder
 } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { takeUntil } from 'rxjs/operators';
 
 import { SocialService } from '../../../shared/services/social.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
@@ -15,18 +15,17 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { UserService } from '@wth/shared/services';
 
 
-declare var $: any;
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-community-form-preference',
   templateUrl: 'preferences.component.html'
 })
 
 export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChanges, OnDestroy {
 
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() data: any;
   @Output() updated: EventEmitter<any> = new EventEmitter<any>();
 
@@ -57,7 +56,10 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
   }
 
   ngOnInit() {
-    this.form.valueChanges.takeUntil(this.destroySubject.asObservable())
+    this.form.valueChanges
+      .pipe(
+        takeUntil(this.destroySubject.asObservable())
+      )
       .subscribe(data => {
       this.hasChange = true;
       // console.log('form changes', data);
@@ -76,7 +78,7 @@ export class ZSocialCommunityFormPreferenceComponent implements OnInit, OnChange
 
       if (this.data.admin) {
         // check if admin
-        this.isAdmin = (this.data.admin.uuid == this.userService.profile.uuid) ? true : false;
+        this.isAdmin = (this.data.admin.uuid == this.userService.getSyncProfile().uuid) ? true : false;
       }
 
       /*(<FormControl>this.setting_notification_posts).setValue(this.data.setting_notification_posts);*/

@@ -1,18 +1,17 @@
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
-
 import { CoreModule } from '../core/core.module';
-import { SharedModule } from '../shared/shared.module';
 import { PortalSharedModule } from './shared/shared.module';
 
+import {environment} from '@env/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AboutModule } from './about/about.module';
 import { HomeModule } from './home/home.module';
-import { ContactModule } from './contact/contact.module';
+import { AboutModule } from './about/about.module';
 import { PageErrorsModule } from './errors/errors.module';
 import { LoginModule } from './login/login.module';
 import { MyAccountModule } from './my-account/my-account.module';
@@ -23,20 +22,18 @@ import { RecoveryModule } from './recovery/recovery.module';
 import { RegisterModule } from './register/register.module';
 import { SubscribeModule } from './sub_unsub/subscribe.module';
 import { SupportModule } from './support/support.module';
-
+import { NotificationModule } from './notifications/notifications.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
 
     AppRoutingModule,
-    AboutModule,
     HomeModule,
-    ContactModule,
+    AboutModule,
     PageErrorsModule,
     LoginModule,
     MyAccountModule,
@@ -47,10 +44,12 @@ import { SupportModule } from './support/support.module';
     RegisterModule,
     SubscribeModule,
     SupportModule,
+    NotificationModule,
 
     PortalSharedModule.forRoot(),
     CoreModule.forRoot(),
-    SharedModule.forRoot()
+    SharedServicesModule.forRoot(),
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
   ],
   providers: [
     {
@@ -64,6 +63,5 @@ import { SupportModule } from './support/support.module';
     // }
   ],
   bootstrap: [AppComponent]
-
 })
-export class AppModule { }
+export class AppModule {}

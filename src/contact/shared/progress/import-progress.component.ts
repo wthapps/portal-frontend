@@ -8,10 +8,10 @@ import { ContactAddGroupModalComponent } from '../modal/contact-add-group/contac
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 import { CommonEvent } from '../../../shared/services/common-event/common-event';
 import { GenericFile } from '../../../shared/shared/models/generic-file.model';
-import { FileUploadHelper } from '../../../shared/shared/helpers/file/file-upload.helper';
+import { FileReaderUtil } from "@shared/shared/utils/file/file-reader.util";
+import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
 
 @Component({
-  moduleId: module.id,
   selector: 'z-contact-share-import-progress',
   templateUrl: 'import-progress.component.html'
 })
@@ -33,17 +33,12 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
   successfulNum: number = 0;
   failedNum: number = 0;
 
-  private fileUploadHelper: FileUploadHelper;
-
   constructor(
     private contactService: ZContactService,
     public gapi: GoogleApiService,
     public loadingService: LoadingService,
     private commonEventService: CommonEventService
   ) {
-
-    this.fileUploadHelper = new FileUploadHelper();
-
     this.importSubscription = this.commonEventService.filter(
       (event: CommonEvent) => event.channel == 'contact:contact:actions').subscribe((event: CommonEvent) => {
       this.doEvent(event);
@@ -70,42 +65,46 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
     }
   }
 
-  importGoogleContacts(): Promise<any> {
-    this.importStatus = undefined;
-    return this.gapi.isSignedIn()
-      .then((user: any) => {
-          this.modalDock.open();
-          this.importStatus = this.IMPORT_STATUS.importing;
-          return this.gapi.startImportContact(user);}
-        ,(err: any) => {
-          this.importStatus = this.IMPORT_STATUS.error;
-          return this.importDone(err);
-        })
-      .then((data: any) => {
-        if(data !== undefined) {
-          this.importedContacts = data;
-          this.successfulNum = this.gapi.totalImporting;
-          this.contactService.addMoreContacts(data);
-          return this.importDone();
-        } else {
-          let err: any = new Error('import contact have no data');
-          return this.importDone(err);
-        }
-      },(err: any) => {
-        console.log('importContact err: ', err);
-        return this.importDone(err);
-      });
+  async importGoogleContacts() {
+    try {
+      this.importStatus = undefined;
+      const user = await this.gapi.isSignedIn();
+      this.modalDock.open();
+      this.importStatus = this.IMPORT_STATUS.importing;
+      const data = await this.gapi.startImportContact(user);
+      let result = undefined;
+      console.debug(data);
+      if(data !== undefined) {
+        this.importedContacts = data;
+        this.successfulNum = this.gapi.totalImporting;
+        this.contactService.addMoreContacts(data);
+        result = await this.importDone();
+      } else {
+        let err: any = new Error('import contact have no data');
+        result = await this.importDone(err);
+      }
+      return result;
+    }
+    catch (err) {
+      console.warn('importContact err: ', err);
+      this.importStatus = this.IMPORT_STATUS.error;
+      return this.importDone(err);
+    };
   }
 
   importFile(payload: any) {
-    this.fileUploadHelper.upload(payload.event.files, (event: any, file: any) => {
+    FileReaderUtil.readMultiple(payload.event.files).then((events: any) => {
+      let file: any = payload.event.files[0];
       let genericFile = new GenericFile({
-        file: event.target['result'],
+        file: events[0].target.result,
         name: file.name,
         content_type: file.type,
         importing: true
       });
-
+      if (!FileUploadPolicy.isAllow(genericFile)) {
+        this.commonEventService.broadcast({channel: 'LockMessage', payload: [genericFile]});
+        return;
+      }
       this.modalDock.open();
       this.importStatus = this.IMPORT_STATUS.importing;
       // update current message and broadcast on server
@@ -120,7 +119,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
           this.importStatus = this.IMPORT_STATUS.error;
           this.importDone(error);
         });
-    });
+    })
   }
 
   open(options?: any) {
@@ -138,7 +137,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
         this.close();
         break;
       default:
-        console.error('Unhandled event action type: ', event.action);
+        console.warn('Unhandled event action type: ', event.action);
     }
   }
   close(options?: any) {
@@ -166,7 +165,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
       this.importStatus = this.IMPORT_STATUS.done;
       return Promise.resolve(this.importStatus);
     } else {
-      console.error('importDone w/ error: ', error);
+      console.warn('importDone w/ error: ', error);
       this.importStatus = this.IMPORT_STATUS.error;
       return Promise.reject(error);
     }

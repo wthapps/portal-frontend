@@ -7,10 +7,10 @@ import { Constants } from '@wth/shared/constant';
 import { SoPost } from '@wth/shared/shared/models';
 
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'so-post-body',
   templateUrl: 'post-body.component.html'
 })
@@ -57,8 +57,8 @@ export class PostBodyComponent implements OnChanges {
       this.parentItem = Object.assign(parentItem, {remainPhotos: remainPhotos});
     }
 
-    this.hasLike = _.findIndex(this.item.likes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
-    this.hasDislike = _.findIndex(this.item.dislikes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
+    this.hasLike = _.findIndex(this.item.likes, ['owner.uuid', this.userService.getSyncProfile().uuid] ) > -1;
+    this.hasDislike = _.findIndex(this.item.dislikes, ['owner.uuid', this.userService.getSyncProfile().uuid] ) > -1;
   }
 
 
@@ -79,7 +79,18 @@ export class PostBodyComponent implements OnChanges {
       case this.actions.onShowPhotoDetail:
         let post = _.get(data, 'parentItem', this.originalPost);
         let photoIds = _.map(post.photos, 'id');
-        this.router.navigate([{outlets: {modal: ['photos', data.id, {module: 'social', ids: photoIds, post_uuid: post.uuid}]}}], { queryParamsHandling: 'preserve', preserveFragment: true });
+        this.router.navigate([{
+          outlets: {
+            modal: [
+              'photos',
+              data.uuid,
+              { batchQuery: `/media/media?type=photo&parentable_id=${post.id}&parentable_type=SocialNetwork::Post`,
+                module: 'social',
+                post_uuid: post.uuid
+              }
+            ]
+          }
+        }], { queryParamsHandling: 'preserve', preserveFragment: true });
         break;
       case this.actions.onShowPostDetail:
         let parentUuid = data;

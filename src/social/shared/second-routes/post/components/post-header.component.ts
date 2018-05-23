@@ -2,7 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
+
 
 import { SocialService } from '../../../services/social.service';
 import { SoPost } from '@wth/shared/shared/models';
@@ -11,10 +11,9 @@ import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/
 import { Constants } from '@wth/shared/constant';
 import { PostComponent } from '../post.component';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
   selector: 'so-post-header',
   templateUrl: 'post-header.component.html'
 })
@@ -22,7 +21,7 @@ declare var _: any;
 export class PostHeaderComponent implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
-
+  @Input() user: any;
   tooltip: any = Constants.tooltip;
 
   showInfo: boolean = false;
@@ -31,16 +30,14 @@ export class PostHeaderComponent implements OnChanges {
   // user: User;
   readonly postUrl: string = Constants.urls.posts;
   readonly profileUrl: string = Constants.urls.profile;
-  profile$: Observable<any>;
-
+  privacyName: string;
+  privacyClassIcon: string;
 
   constructor(private postItem: PostComponent,
               private socialService: SocialService,
               private router: Router,
               public userService: UserService,
               private zoneReportService: ZSharedReportService) {
-    // this.user = this.socialService.user.profile;
-    this.profile$ = this.userService.profile$;
   }
 
   ngOnChanges(data: any) {
@@ -49,12 +46,19 @@ export class PostHeaderComponent implements OnChanges {
     } else if (this.type == 'detail') {
       this.showDetail = true;
     }
+    this.privacyName = this.getPrivacyName(this.item);
+    this.privacyClassIcon = this.getPrivacyClassIcon(this.item);
   }
 
   viewPostDetail(uuid: string) {
-    this.router.navigate([], {fragment: 'detail', preserveQueryParams: true}).then(() => {
-      this.router.navigate([{outlets: {detail: [this.postUrl, uuid]}}], {preserveQueryParams: true, preserveFragment: true});
+    this.router.navigate([], {fragment: 'detail', queryParamsHandling: 'preserve' }).then(() => {
+      this.router.navigate([{outlets: {detail: [this.postUrl, uuid]}}], {queryParamsHandling: 'preserve' , preserveFragment: true});
     });
+  }
+
+  viewProfile(uuid: string) {
+    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
+      .then(() => this.router.navigate([this.profileUrl, uuid]));
   }
 
   update(attr: any = {}, event: any) {
@@ -81,26 +85,6 @@ export class PostHeaderComponent implements OnChanges {
     this.postItem.delete();
   }
 
-  privacyName(post: any): string {
-    return post.privacy.replace('_', ' ');
-  }
-
-  privacyClassIcon(post: any): string {
-    switch (post.privacy) {
-      case Constants.soPostPrivacy.friends.data:
-        return 'fa-users';
-      case  Constants.soPostPrivacy.public.data:
-        return 'fa-globe';
-      case  Constants.soPostPrivacy.personal.data:
-        return 'fa-lock';
-      case  Constants.soPostPrivacy.customFriend.data:
-        return 'fa-user-times';
-      case  Constants.soPostPrivacy.customCommunity.data:
-        return 'fa-group';
-    }
-    return '';
-  }
-
   getSettings(e: any) {
     e.preventDefault();
 
@@ -124,5 +108,25 @@ export class PostHeaderComponent implements OnChanges {
       modal.open();
     }
   }
+  private getPrivacyName(post: any): string {
+    if(post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
+      return post.custom_objects[0].name;
+    return post.privacy.replace('_', ' ');
+  }
 
+  private getPrivacyClassIcon(post: any): string {
+    switch (post.privacy) {
+      case Constants.soPostPrivacy.friends.data:
+        return 'fa-users';
+      case  Constants.soPostPrivacy.public.data:
+        return 'fa-globe';
+      case  Constants.soPostPrivacy.personal.data:
+        return 'fa-lock';
+      case  Constants.soPostPrivacy.customFriend.data:
+        return 'fa-user-times';
+      case  Constants.soPostPrivacy.customCommunity.data:
+        return 'fa-group';
+    }
+    return '';
+  }
 }

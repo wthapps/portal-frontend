@@ -1,7 +1,7 @@
 import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 import { Constants } from '@wth/shared/constant/config/constants';
@@ -20,7 +20,7 @@ declare var $: any;
 export class AccountEditModalComponent implements OnInit {
   @Input() item: any;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   form: FormGroup;
   // name: AbstractControl;
@@ -46,7 +46,7 @@ export class AccountEditModalComponent implements OnInit {
     this.mode = options.mode || 'edit';
     this.item = options.data;
     this.initialize();
-    if(options.data) {
+    if (options.data) {
 
       // this.form.controls['name'].setValue(this.item.name);
       // this.form.controls['name'].setValue(this.item.name);
@@ -62,12 +62,11 @@ export class AccountEditModalComponent implements OnInit {
   }
 
   close(options?: any) {
-    this.mode = 'view';
     this.modal.close(options).then();
   }
 
   initialize() {
-    if(this.form == undefined) {
+    if (this.form == undefined) {
       this.form = this.fb.group({
         'id': [this.item.id, Validators.compose([
           Validators.required
@@ -77,13 +76,13 @@ export class AccountEditModalComponent implements OnInit {
         ])],
         'email': [this.item.email, Validators.compose([
           Validators.required
-        ])],
-        'password': [this.item.generated_password, Validators.compose([
-          Validators.required,
-          Validators.minLength(8),
-          CustomValidator.lowercaseUppercase,
-          CustomValidator.specialSymbolOrNumber
         ])]
+        // 'password': [this.item.generated_password, Validators.compose([
+        //   Validators.required,
+        //   Validators.minLength(8),
+        //   CustomValidator.lowercaseUppercase,
+        //   // CustomValidator.specialSymbolOrNumber
+        // ])]
       });
     }
   }
@@ -98,12 +97,13 @@ export class AccountEditModalComponent implements OnInit {
 
 
   save() {
-    this.mode = 'view';
+    // this.mode = 'view';
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:update',
       payload: {data: this.form.value}
     });
+    this.modal.close().then();
   }
 
   acceptRequestOwnership() {

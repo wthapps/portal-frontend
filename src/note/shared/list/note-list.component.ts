@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, OnInit, ChangeDetectionStrategy, HostListener } from '@angular/core';
+import { Component, Input, ViewEncapsulation, OnInit, ChangeDetectionStrategy, HostListener, OnChanges } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
@@ -6,8 +6,10 @@ import { Store } from '@ngrx/store';
 import { Note } from '@shared/shared/models/note.model';
 import { ZNoteService } from '../services/note.service';
 import * as fromRoot from '../reducers/index';
+import * as context from '../reducers/context';
 import * as note from '../actions/note';
 import { Folder } from '../reducers/folder';
+import { noteConstants, NoteConstants } from "../config/constants";
 
 declare var _: any;
 
@@ -16,32 +18,49 @@ declare var _: any;
   templateUrl: 'note-list.component.html',
   styleUrls: ['note-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteListComponent implements OnInit {
   @Input() data: any[];
   @Input() items: any[];
   @Input() noteItems: Note[];
   @Input() folderItems: Folder[];
+  @Input() allItems: any[];
   @Input() viewOption: string = 'grid';
   @Input() orderDesc: boolean;
   @Input() sortOption: any;
   @Input() isSelectAll: boolean;
   @Input() page: string;
+  @Input() groupBy: string = 'date';
 
+  noteConstants: NoteConstants = noteConstants;
   loading$: Observable<boolean>;
+  pressingCtrlKey: boolean;
+  readonly DATE_MAP: any = noteConstants.DATE_MAP;
+  readonly DATE_ARR: string[] = Object.keys(this.DATE_MAP);
+  readonly SHARE_PAGES: string[] = [noteConstants.PAGE_SHARED_WITH_ME, noteConstants.PAGE_SHARED_BY_ME];
 
   readonly VIEW_MODE = {
     GRID: 'grid',
-    LIST: 'list'
+    LIST: 'list',
+    TIMELINE: 'time'
   };
 
   @HostListener('document:keyup', ['$event'])
   onKeyUp(ke: KeyboardEvent) {
-
-    //if0 pressing ESC key
+    //if pressing ESC key
     if (ke.keyCode == 27) {
       this.deSelectObjects();
+    }
+    if (this.pressedCtrlKey(ke)) {
+      this.pressingCtrlKey = false;
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ke: KeyboardEvent) {
+    if (this.pressedCtrlKey(ke)) {
+      this.pressingCtrlKey = true;
     }
   }
 
@@ -53,18 +72,36 @@ export class NoteListComponent implements OnInit {
   }
 
   onSort(name: any) {
-    this.store.dispatch(new note.ChangeSortOrder(name));
+    if (this.page !== this.noteConstants.PAGE_RECENT)
+      // this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {field: name, desc: this.sortOption.desc}}});
+      if(this.sortOption.field === name)
+        if(this.DATE_ARR.includes(this.sortOption.field))
+          return;
+        else
+          this.onReverseSort();
+      else
+        this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {...this.sortOption, field: name}}});
+  }
+
+  onReverseSort() {
+    if (this.page !== this.noteConstants.PAGE_RECENT)
+      this.store.dispatch({type: context.SET_CONTEXT, payload: { sort:  {...this.sortOption, desc: !this.sortOption.desc}}});
+  }
+
+
+  group(groupBy: any) {
+    this.store.dispatch({type: context.SET_CONTEXT, payload: { groupBy }});
   }
 
   onSelectedAll() {
     this.store.dispatch(new note.SelectAll());
   }
 
-  private pressedCtrlKey(ke: KeyboardEvent): boolean {
-    return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
-  }
-
   private deSelectObjects() {
     this.store.dispatch({type: note.DESELECT_ALL});
+  }
+
+  private pressedCtrlKey(ke: KeyboardEvent): boolean {
+    return (ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ;
   }
 }

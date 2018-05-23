@@ -13,7 +13,7 @@ import { ConversationDetailComponent } from './conversation-detail.component';
         children: [
           {
             path: '',
-            component: ConversationListComponent,
+            component: ConversationListComponent
           },
           {
             path: ':id',
@@ -29,5 +29,4 @@ import { ConversationDetailComponent } from './conversation-detail.component';
   ],
   exports: [RouterModule]
 })
-export class ZChatConversationRoutingModule {
-}
+export class ZChatConversationRoutingModule {}

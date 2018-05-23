@@ -1,22 +1,6 @@
 import { Config } from './env.config';
-
-let getBarwidth = function () {
-  // Create the measurement node
-  let scrollDiv = document.createElement('div');
-  scrollDiv.className = 'scrollbar-measure';
-  document.body.appendChild(scrollDiv);
-
-  // Get the scrollbar width
-  let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-  //console.warn(scrollbarWidth); // Mac:  15
-
-  // Delete the DIV
-  document.body.removeChild(scrollDiv);
-  return scrollbarWidth;
-};
-
-export let Constants = {
-  baseUrls: {
+export class ConstantsBase {
+  baseUrls: any = {
     apiBaseService: Config.API + '/',
     domain: Config.DOMAIN,
     app: Config.SUB_DOMAIN.APP,
@@ -26,39 +10,39 @@ export let Constants = {
     chat: Config.SUB_DOMAIN.CHAT,
     contact: Config.SUB_DOMAIN.CONTACT,
     note: Config.SUB_DOMAIN.NOTE,
-    cdn: Config.CDN,
-  },
+    cdn: Config.CDN
+  };
+  cdn: any = Config.CDN;
+  currentVersion: string = '2018 WTHApps - v1.2.13';
+  useDefaultPage: any = true;
+  flagsRelease: any = false;
 
-  cdn: Config.CDN,
-
-  flagsRelease: false,
-
-  cookieOptionsArgs: {
+  cookieOptionsArgs: any = {
     path: '/',
     domain: Config.DOMAIN
-  },
-  cookieKeys: {
+  };
+  cookieKeys: any = {
     chatSupportId: 'wthapps-cs-id',
     chatSupportMemId: 'wthapps-cs-mem-id',
     chatSupportCurrentWindow: 'wthapps-cs-cw',
     clientToken: 'wthapps-ct',
     profile: 'wthapps-pro',
     payment: 'wthapps-pm'
-  },
-  operations: {
+  };
+  operations: any = {
     update: 'update',
     edit: 'edit',
     delete: 'delete',
     create: 'create',
     continue: 'continue'
-  },
-  params: {
+  };
+  params: any = {
     next: 'next'
-  },
-  string: {
+  };
+  string: any = {
     next: 'next'
-  },
-  HttpStatusCode: {
+  };
+  HttpStatusCode: any = {
     OK: 200,
     NotFound: 404,
     InternalServerError: 200,
@@ -66,105 +50,195 @@ export let Constants = {
     Conflict: 409,
     ExpectationFailed: 417,
     PaymentRequired: 402
-  },
-  errorMessage: {
+  };
+  errorMessage: any = {
     default: 'Internal Server Error'
-  },
-  patterns: {
+  };
+  patterns: any = {
     slash: '/',
     space: '%20'
-  },
-  img: {
+  };
+  img: any = {
     app: '/assets/images/apps/default.png',
     avatar: '/assets/images/avatar/default.png',
     logo: '/assets/images/logo.png',
     logoWhite: '/assets/images/logo-white.png',
     logoZone: '/assets/images/logo-zone.png',
     logoZoneWhite: '/assets/images/logo-zone-white.png',
-    default: '/assets/images/thumbnail/image_default.png',
-  },
-  windows: {
-    scrollBarWidth: getBarwidth()
-  },
+    default: '/assets/images/thumbnail/image_default.png'
+  };
+  windows: any = {
+    scrollBarWidth: () => {
+      // Create the measurement node
+      let scrollDiv = document.createElement('div');
+      scrollDiv.className = 'scrollbar-measure';
+      document.body.appendChild(scrollDiv);
 
-  noteMenuItems: [
-    {name: 'My Notes', value: 'My notes', link: '/my-note', icon: 'fa fa-sticky-note'},
-    {name: 'Shared With Me', value: 'shared with me', link: '/shared-with-me', icon: 'fw fw-shared-with-me'},
-    {name: 'Trash', value: 'Trash', link: '/trash', icon: 'fa fa-trash-o'},
+      // Get the scrollbar width
+      let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+      //console.warn(scrollbarWidth); // Mac:  15
+
+      // Delete the DIV
+      document.body.removeChild(scrollDiv);
+      return scrollbarWidth;
+    }
+  };
+
+  noteMenuItems: any = [
+    {
+      name: 'My Notes',
+      value: 'My notes',
+      link: '/my-note',
+      icon: 'fa fa-sticky-note'
+    },
+    { name: 'Recent', value: 'recent', link: '/recent', icon: 'fa fa-clock-o' },
+    {
+      name: 'Favourite',
+      value: 'favourite',
+      link: '/favourite',
+      icon: 'fa fa-star'
+    },
+    {
+      name: 'Shared With Me',
+      value: 'shared with me',
+      link: '/shared-with-me',
+      icon: 'fw fw-shared-with-me'
+    },
+    {
+      name: 'Shared By Me',
+      value: 'shared by me',
+      link: '/shared-by-me',
+      icon: 'fa fa-share-alt'
+    },
+    { name: 'Trash', value: 'Trash', link: '/trash', icon: 'fa fa-trash-o' }
     // {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},
-  ],
-
-
-  notePageType:{
+  ];
+  notePageType: any = {
     MY_NOTE: 'MY_NOTE',
-    TRASH: 'TRASH',
+    TRASH: 'NOTE_TRASH',
     SHARED_WITH_ME: 'SHARED_WITH_ME',
     MY_SHARINGS: 'MY_SHARINGS'
-  },
+  };
 
-  contactMenuItems: [
-    {name: 'All Contacts', value: 'all contacts', link: '/list', icon: 'fa fa-address-book-o', hasMenu: false},
-    {name: '', value: '', link: '', icon: ''},
-    {name: 'Labels', value: 'labels', link: '/list/labels', icon: 'fa fa-tags'},
-    {name: 'Favourites (2)', value: 'favourites', link: '/list/favourites', icon: 'fa fa-star'},
-    {name: 'Social (5)', value: 'social', link: '/list/social', icon: 'fa fa-globe'},
-    {name: 'Chat (2)', value: 'chat', link: '/list/chat', icon: 'fa fa-comments-o'},
-    {name: 'Custom label 01 (1)', value: '', link: '/list/custom-label-01', icon: 'fa fa-folder-o visibility-hidden'},
-    {name: 'Custom label 01 (2)', value: '', link: '/list/custom-label-02', icon: 'fa fa-folder-o visibility-hidden'},
-    {name: 'Blacklist', value: 'blacklist', link: '/list/blacklist', icon: 'fa fa-ban'},
-    {name: 'New label', value: 'new label', link: '#', icon: 'fa fa-plus', action: 'contact:label:create'}
-  ],
+  contactMenuItems: any = [
+    {
+      name: 'All Contacts',
+      value: 'all contacts',
+      link: '/list',
+      icon: 'fa fa-address-book-o',
+      hasMenu: false
+    },
+    { name: '', value: '', link: '', icon: '' },
+    {
+      name: 'Labels',
+      value: 'labels',
+      link: '/list/labels',
+      icon: 'fa fa-tags'
+    },
+    {
+      name: 'Favourites (2)',
+      value: 'favourites',
+      link: '/list/favourites',
+      icon: 'fa fa-star'
+    },
+    {
+      name: 'Social (5)',
+      value: 'social',
+      link: '/list/social',
+      icon: 'fa fa-globe'
+    },
+    {
+      name: 'Chat (2)',
+      value: 'chat',
+      link: '/list/chat',
+      icon: 'fa fa-comments-o'
+    },
+    {
+      name: 'Custom label 01 (1)',
+      value: '',
+      link: '/list/custom-label-01',
+      icon: 'fa fa-folder-o visibility-hidden'
+    },
+    {
+      name: 'Custom label 01 (2)',
+      value: '',
+      link: '/list/custom-label-02',
+      icon: 'fa fa-folder-o visibility-hidden'
+    },
+    {
+      name: 'Blacklist',
+      value: 'blacklist',
+      link: '/list/blacklist',
+      icon: 'fa fa-ban'
+    },
+    {
+      name: 'New label',
+      value: 'new label',
+      link: '#',
+      icon: 'fa fa-plus',
+      action: 'contact:label:create'
+    }
+  ];
 
-  contactEvents: {
+  contactEvents: any = {
     common: 'contactCommonEvent',
     actionsToolbar: 'contactActionsToolbarEvent',
     googleImport: 'contactGoogleImportEvent'
-  },
+  };
 
-  chatMenuItems: [
-    {name: 'Conversations', link: '/conversations', icon: 'fa fa-comments-o'},
-    {name: 'Contacts', link: '/contacts', icon: 'fa fa-address-book-o'},
-    {name: '', link: '', icon: ''},
-    {name: 'Settings', link: '/setting', icon: 'fa fa-cog'}
-  ],
+  chatMenuItems: any = [
+    // {name: 'Conversations', link: '/conversations', icon: 'fa fa-comments-o'},
+    { name: 'Contacts', link: '/contacts', icon: 'fa fa-address-book-o' },
+    { name: 'Settings', link: '/setting', icon: 'fa fa-cog' }
+  ];
 
-  pictureMenuItems: [
-    {name: 'Photos', link: '/photos', icon: 'fa fa-photo'},
-    {name: 'Albums', link: '/albums', icon: 'fa fa-file-photo-o'},
-    {name: 'Favourites', link: '/favourites', icon: 'fa fa-star'},
-    {name: 'Shared with me', link: '/shared-with-me', icon: 'fw fw-shared-with-me'},
-    {name: 'Shared by me', link: '/shared-by-me', icon: 'fa fa-share-alt'},
-    {name: 'Search', link: '/search', icon: 'fa fa-search'}
-  ],
+  pictureMenuItems: any = [
+    { name: 'Photos', link: '/photos', icon: 'fa fa-photo' },
+    { name: 'Albums', link: '/albums', icon: 'fa fa-file-photo-o' },
+    { name: 'Videos', link: '/videos', icon: 'fa fa-camera' },
+    { name: 'Favourites', link: '/favourites', icon: 'fa fa-star' },
+    {
+      name: 'Shared with me',
+      link: '/shared-with-me',
+      icon: 'fw fw-shared-with-me'
+    },
+    { name: 'Shared by me', link: '/shared-by-me', icon: 'fa fa-share-alt' },
+    { name: 'Search', link: '/search', icon: 'fa fa-search' }
+  ];
 
-  socialMenuItems: [
-    {name: 'Home', link: '/home', icon: 'fa fa-home'},
-    {name: 'Communities', link: '/communities', icon: 'fa fa-users'},
-    {name: 'Notifications', link: '/notifications', icon: 'fa fa-bell-o'},
-    {name: 'Friends', link: '/friends', icon: 'fa fa-user-plus'},
-    {name: 'My Page', link: '/profile', icon: 'fa fa-user-circle'},
-    {name: '', link: '', icon: ''},
-    {name: 'Settings', link: '/settings', icon: 'fa fa-cog'},
-    {name: 'Search', link: '/search', icon: 'fa fa-search'}
-  ],
+  socialMenuItems: any = [
+    { name: 'Home', link: '/home', icon: 'fa fa-home' },
+    { name: 'Communities', link: '/communities', icon: 'fa fa-users' },
+    { name: 'Notifications', link: '/notifications', icon: 'fa fa-bell-o' },
+    { name: 'Friends', link: '/friends', icon: 'fa fa-user-plus' },
+    { name: 'News', link: '/news', icon: 'fa fa-newspaper-o' },
+    { name: 'My Page', link: '/profile', icon: 'fa fa-user-circle' },
+    { name: '', link: '', icon: '' },
+    { name: 'Settings', link: '/settings', icon: 'fa fa-cog' },
+    { name: '', link: '/search', icon: 'fa fa-search' }
+  ];
 
-  pictureMenuActions: {
+  pictureMenuActions: any = {
     preview: true,
     share: true,
     addFavourite: true,
     tag: true,
     delete: true,
-    other: true,
-  },
+    other: true
+  };
 
-  mediaSliderViewNumber: {
-    min: 2,
+  mediaSliderViewNumber: any = {
+    min: 4,
     default: 8,
     max: 12
-  },
+  };
 
-  urls: {
-    afterLogin: Config.SUB_DOMAIN.SOCIAL,
+  user: any = {
+    minPassword: 8
+  };
+
+  urls: any = {
+    default: Config.SUB_DOMAIN.SOCIAL,
     zoneSoPosts: 'zone/social_network/posts',
     zoneSoComments: 'zone/social_network/comments',
     zoneSoMyPosts: 'zone/social_network/my_posts',
@@ -177,7 +251,9 @@ export let Constants = {
     zoneSoInvitations: 'zone/social_network/invitations',
     zoneSoFavourites: 'zone/social_network/favourites',
     zoneSoNotifications: 'zone/social_network/notifications',
+    zoneSoConnections: 'zone/social_network/connections',
     zoneSoReportList: 'zone/social_network/report_list',
+    zoneSoShortcuts: 'zone/social_network/shortcuts',
     zoneSoProfile: 'zone/social_network/profile',
     zoneSoPhotos: 'zone/social_network/photos',
     soFriendUrl: 'zone/social_network/friends',
@@ -188,30 +264,39 @@ export let Constants = {
     photo: 'photo',
     chatConversation: 'conversations',
     contacts: 'contact/contacts'
-  },
-  sex: ['', 'Male', 'Female', 'Other'],
-  communityRole: {
+  };
+  sex: any = ['', 'Male', 'Female', 'Other'];
+  communityRole: any = {
     admin: [1, 'Admin'],
     member: [2, 'Member']
-  },
-  notificationSetting: {
-    limit: 10
-  },
-  seenStatus: {
+  };
+  notificationType: any = {
+    connection: 1,
+    update: 2
+  };
+  seenStatus: any = {
     new: 'new',
     seen: 'seen',
     seen_and_took_action: 'seen_and_took_action'
-  },
-  soPostPrivacy: {
-    public: {css: 'fa fa-globe', text: 'Public', data: 'public'},
-    personal: {css: 'fa fa-lock', text: 'personal', data: 'personal'},
-    private: {css: 'fa fa-lock', text: 'private', data: 'private'},
-    friends: {css: 'fa fa-users', text: 'Friends', data: 'friends'},
-    customFriend: {css: 'fa fa-user-times', text: 'Custom Friends', data: 'custom_friend'},
-    customCommunity: {css: 'fa fa-group', text: 'Custom Community', data: 'custom_community'},
-    unknown: {css: '', text: '', data: ''}
-  },
-  soPostListType: {
+  };
+  soPostPrivacy: any = {
+    public: { css: 'fa fa-globe', text: 'Public', data: 'public' },
+    personal: { css: 'fa fa-lock', text: 'personal', data: 'personal' },
+    private: { css: 'fa fa-lock', text: 'private', data: 'private' },
+    friends: { css: 'fa fa-users', text: 'Friends', data: 'friends' },
+    customFriend: {
+      css: 'fa fa-user-times',
+      text: 'Custom Friends',
+      data: 'custom_friend'
+    },
+    customCommunity: {
+      css: 'fa fa-group',
+      text: 'Custom Community',
+      data: 'custom_community'
+    },
+    unknown: { css: '', text: '', data: '' }
+  };
+  soPostListType: any = {
     userOnly: 'user_only',
     strangeUser: 'strange_user',
     friend: 'friend',
@@ -219,62 +304,68 @@ export let Constants = {
     userAndFriend: 'user_and_friend',
     randomUser: 'random_user',
     public: 'public'
-  },
-  soCommunityPrivacy: {
-    open: {name: 'open'},
-    close: {name: 'close'}
-  },
-  soCommunityReportEntity: {
+  };
+  soCommunityPrivacy: any = {
+    open: { name: 'open' },
+    close: { name: 'close' }
+  };
+  soCommunityReportEntity: any = {
     user: 1,
     community: 2
-  },
-  soCommunityUserStatus: {
+  };
+  soCommunityUserStatus: any = {
     member: 1,
     joinRequestSent: 2,
     stranger: 3
-  },
+  };
 
-  friendStatus: {
+  friendStatus: any = {
     pending: 1,
     accepted: 2,
     rejected: 3,
     unfriend: 4,
     blocked: 5,
     stranger: 99
-  },
+  };
 
-  soPostLimit: 10,
-  soCommentLimit: 20,
+  contactConnectStatus: any = {
+    1: 'Not Connected',
+    2: 'Request Sent',
+    3: 'Connected',
+    4: 'Rejected'
+  };
 
-  searchDebounceTime: 250,
+  soPostLimit: any = 10;
+  soCommentLimit: any = 20;
 
+  searchDebounceTime: any = 250;
 
-  search: {
+  search: any = {
     config: {
       globalActive: true,
       photoActive: true,
       socialActive: true,
       chatActive: true,
-      contactActive: true,
+      contactActive: true
     }
-  },
+  };
 
-  mediaListDetailTypeMapping: {
-    'photos': 'photo',
-    'albums': 'album',
-    'favorites': 'mix',
+  mediaListDetailTypeMapping: any = {
+    photos: 'photo',
+    albums: 'album',
+    favorites: 'mix',
     'shared-with-me': 'mix'
-  },
-  mediaPageType: {
+  };
+  mediaPageType: any = {
     photos: 'photos',
     search: 'search',
     sharedWithMe: 'shared-with-me',
     favorites: 'favorites',
     albums: 'albums',
     album_detail: 'album_detail'
-  },
+  };
 
-  emailType: [
+  emailType: any = [
     {
       category: 'work',
       name: 'Work'
@@ -286,9 +377,9 @@ export let Constants = {
     {
       category: 'other',
       name: 'Other'
-    },
-  ],
-  phoneType: [
+    }
+  ];
+  phoneType: any = [
     {
       category: 'mobile',
       name: 'Mobile'
@@ -300,39 +391,40 @@ export let Constants = {
     {
       category: 'other',
       name: 'Other'
-    },
-  ],
-  phoneCategories: [
-    {value: 'mobile', text: 'Mobile'},
-    {value: 'home', text: 'Home'},
-    {value: 'work', text: 'Work'},
-    {value: 'main', text: 'Main'},
-    {value: 'fax', text: 'Fax'},
-    {value: 'other', text: 'Other'}
-  ],
-  emailCategories: [
-    {value: 'work', text: 'Work'},
-    {value: 'home', text: 'Home'},
-    {value: 'other', text: 'Other'}
-  ],
-  addressCategories: [
-    {value: 'work', text: 'Work'},
-    {value: 'home', text: 'Home'},
-    {value: 'other', text: 'Other'}
-  ],
-  mediaCategories: [
-    {value: 'wthapps', text: 'WTHApps'},
-    {value: 'facebook', text: 'Facebook'},
-    {value: 'googleplus', text: 'Google Plus'},
-    {value: 'twitter', text: 'Twitter'},
-    {value: 'other', text: 'Other'}
-  ],
+    }
+  ];
+  phoneCategories: any = [
+    { value: 'mobile', text: 'Mobile' },
+    { value: 'home', text: 'Home' },
+    { value: 'work', text: 'Work' },
+    { value: 'main', text: 'Main' },
+    { value: 'fax', text: 'Fax' },
+    { value: 'other', text: 'Other' }
+  ];
+  emailCategories: any = [
+    { value: 'work', text: 'Work' },
+    { value: 'home', text: 'Home' },
+    { value: 'other', text: 'Other' }
+  ];
+  addressCategories: any = [
+    { value: 'work', text: 'Work' },
+    { value: 'home', text: 'Home' },
+    { value: 'other', text: 'Other' }
+  ];
+  mediaCategories: any = [
+    { value: 'wthapps', text: 'WTHApps' },
+    { value: 'facebook', text: 'Facebook' },
+    { value: 'googleplus', text: 'Google Plus' },
+    { value: 'twitter', text: 'Twitter' },
+    { value: 'other', text: 'Other' }
+  ];
 
-  tooltip: {
+  tooltip: any = {
     add: 'Add',
     addLabel: 'Add label',
     addPeople: 'Add people',
     addPhoto: 'Add photo',
+    addMorePhotos: 'Add more photos',
     addTag: 'Add Tag',
     addToAlbum: 'Add to album',
     addToBlacklist: 'Add to blacklist',
@@ -358,6 +450,7 @@ export let Constants = {
     listView: 'List view',
     markAsRead: 'Mark as read',
     markAsUnread: 'Mark as unread',
+    mergeContacts: 'Merge duplicate contacts',
     moreAction: 'More action',
     new: 'New',
     next: 'Next',
@@ -385,6 +478,7 @@ export let Constants = {
     showPassword: 'Show password',
     tag: 'Tag',
     tags: 'Tags',
+    reset: 'Reset',
     resetZoom: 'Reset zoom',
     rotateLeft: 'Rotate left',
     rotateRight: 'Rotate right',
@@ -396,26 +490,44 @@ export let Constants = {
     zoomIn: 'Zoom in',
     zoomOut: 'Zoom out',
     restore: 'Restore',
-    permanentDelete: 'Permanent Delete'
-  },
+    permanentDelete: 'Permanent Delete',
+    removeFromSharing: 'Remove from sharing',
+    removeFromAlbum: 'Remove from Album',
+    previewSharing: 'Preview sharing',
+    deleteSharing: 'Delete Sharing',
+    doubleClickToEdit: 'Double click to edit',
+    addToSharing: 'Add to sharing'
+  };
 
-  confirmDialog: {
+  confirmDialog: any = {
     label: {
       accept: 'DONE',
       reject: 'CANCEL'
     }
-  },
+  };
 
-  modal: {
+  modal: any = {
     edit: 'edit',
     add: 'add'
-  }
-};
+  };
+
+  moduleMap: any = {
+    social: '1',
+    chat: '2',
+    media: '3',
+    portal: '4',
+    contact: '5',
+    note: '6',
+    myAccount: '7'
+  };
+}
+let Constants = new ConstantsBase();
+export { Constants };
 
 export let PhotoAction = {
   update: 'update',
   delete: 'delete'
-}
+};
 
 export let MediaType = {
   photo: 'photo',

@@ -50,10 +50,17 @@ body {
 [contenteditable=true]:empty:before {
   content: attr(placeholder);
   display: block; /* For Firefox */
+  color: $input-color-placeholder;
+  -ms-word-break: break-all;
+  word-break: break-all;
 }
 
 .word-break {
   word-break: break-all;
+}
+
+.text-white {
+  color: #ffffff;
 }
 
 .text-line-btn {

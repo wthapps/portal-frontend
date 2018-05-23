@@ -1,48 +1,48 @@
 <div *ngIf="showNavSearch" class="nav-tabs-wrap nav-tabs-wrap-search">
-  <ul class="nav nav-tabs" role="tablist" [routerLinkActive]="['active']">
-    <li [routerLink]="['/search/all']"
-        [queryParams]="{q:params}"
-        [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact:true}">
-      <a href="javascript:;">All</a>
+  <ul class="nav nav-tabs" role="tablist">
+    <li [ngClass]="{'active': (term === 'all')}">
+      <a [routerLink]="['/search/all', {q:params}]" [queryParams]="{q:params}">All</a>
     </li>
-    <li [routerLink]="['/search/member']"
-        [queryParams]="{q:params}"
-        [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact:true}">
-      <a href="javascript:;">Members</a>
+    <li [ngClass]="{'active': (term === 'members')}">
+      <a [routerLink]="['/search/members', {q:params}]" [queryParams]="{q:params}" >Members</a>
     </li>
-    <li [routerLink]="['/search/community']"
-        [queryParams]="{q:params}"
-        [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact:true}">
-      <a href="javascript:;">Communities</a>
+    <li [ngClass]="{'active': (term === 'communities')}">
+      <a [routerLink]="['/search/communities', {q:params}]" [queryParams]="{q:params}" >Communities</a>
     </li>
-    <li [routerLink]="['/search/post']"
-        [queryParams]="{q:params}"
-        [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact:true}">
-      <a href="javascript:;">Post</a>
+    <li class="hidden-xs" [ngClass]="{'active': (term === 'posts')}">
+      <a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}" >Posts</a>
+    </li>
+    <li class="visible-xs-inline-block">
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-ellipsis-h"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li><a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}" >Posts</a></li>
+        </ul>
+      </div>
     </li>
   </ul>
 </div>
+
+
 <div class="page-body-content gray-light page-body-content-search"
   lockYOffset="10"
   observeAttributes="true"
   infinite-scroll
-  [scrollWindow]="false"
+  [scrollWindow]="true"
   (scrolled)="onLoadMore()">
-  <div class="page-body-content-in zone-social">
-    <div class="zone-social-in">
-      <div class="panel panel-default" *ngIf="result;else loadingBlock">
+  <div class="page-body-content-in zone-social" >
+    <div class="zone-social-in" *ngIf="!loading; else loadingBlock;">
+      <div class="panel panel-default" *ngIf="result;else noDataBlock">
         <div class="panel-heading">
           <h3 class="panel-title">{{ group | titleCase }}</h3>
         </div>
 
-        <z-social-share-profile-list *ngIf="group=='member' || group=='community'"
+        <z-social-share-profile-list *ngIf="group=='members' || group=='communities'"
                                      [data]="result" [type]="group"></z-social-share-profile-list>
 
-        <so-post-list *ngIf="group == 'post'" #posts
+        <so-post-list *ngIf="group == 'posts'" #posts
                       [items]="result"
                       [type]="'search'">
         </so-post-list>
@@ -55,55 +55,24 @@
 
       </div>
 
-      <ng-template #loadingBlock>
-        <box-loading></box-loading>
-      </ng-template>
     </div>
-    <div *ngIf="group == 'post'" class="zone-social-sidebar">
-      <z-social-post-by></z-social-post-by>
-      <z-social-post-date></z-social-post-date>
+    <div *ngIf="group == 'posts'" class="zone-social-sidebar">
+      <z-social-post-by (filterEvent)="onFilter($event)"></z-social-post-by>
+      <z-social-post-date (filterEvent)="onFilter($event)"></z-social-post-date>
     </div>
   </div>
 </div>
 
 
-<div class="zone-social-in" *ngIf="result && groups">
-  <div class="panel panel-default" *ngFor="let group of groups">
-    <div class="panel-heading">
-      <h3 class="panel-title">
-        <a class="link-text"
-           [routerLink]="['/search', group=='members'?'member':group=='communities'?'community':'post']"
-           [queryParams]="{q:params}">
-          {{ group | titleCase }}
-        </a>
-      </h3>
-    </div>
-    <div class="panel-body" *ngIf="result[group] && result[group].length == 0">
-      <h3 class="text-fade">
-        There is no result
-      </h3>
-    </div>
-
-    <z-social-share-profile-list *ngIf="group=='members' || group=='communities'"
-                                 [data]="result[group]"
-                                 [type]="group">
-    </z-social-share-profile-list>
-
-    <so-post-list *ngIf="group == 'posts'" #posts
-                  [items]="result[group]"
-                  [type]="'search'"
-                  [showComments]="false">
-    </so-post-list>
-
-    <div *ngIf="group == 'posts' && show_more_posts" class="panel-footer">
-      <a [routerLink]="[show_more_posts.link]" [queryParams]="{q:params}">{{ show_more_posts.text }}</a>
-    </div>
-    <div *ngIf="group == 'communities' && show_more_communities" class="panel-footer">
-      <a [routerLink]="[show_more_communities.link]" [queryParams]="{q:params}">{{ show_more_communities.text }}</a>
-    </div>
-    <div *ngIf="group == 'members' && show_more_members" class="panel-footer">
-      <a [routerLink]="[show_more_members.link]" [queryParams]="{q:params}">{{ show_more_members.text }}</a>
-    </div>
+<ng-template #loadingBlock>
+  <div class="zone-social-in">
+    <box-loading></box-loading>
   </div>
-
-</div>
+</ng-template>
+<ng-template #noDataBlock>
+  <div class="panel-body">
+    <h3 class="text-fade m0">
+      There is no result
+    </h3>
+  </div>
+</ng-template>

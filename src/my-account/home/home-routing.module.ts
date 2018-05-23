@@ -6,10 +6,14 @@ import { AuthGuard } from '@shared/services';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: '', redirectTo: '/welcome', pathMatch: 'full', canActivate: [AuthGuard]}
+      {
+        path: '',
+        redirectTo: '/welcome',
+        pathMatch: 'full',
+        canActivate: [AuthGuard]
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class MyHomeRoutingModule {
-}
+export class MyHomeRoutingModule {}

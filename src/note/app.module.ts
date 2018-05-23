@@ -12,10 +12,8 @@ import { ZNoteSharedModule } from './shared/shared.module';
 import { SharedModule } from '@shared/shared.module';
 import { ZNoteSettingsModule } from './settings/settings.module';
 import { ZNoteMyNoteModule } from './my-note/my-note.module';
-import { ZNoteMySharingModule } from './my-sharing/my-sharing.module';
 import { ZNoteSearchModule } from './search/search.module';
 import { ZNoteSharedWithMeModule } from './shared-with-me/shared-with-me.module';
-import { ZNoteMyProfileModule } from './my-profile/my-profile.module';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -26,6 +24,10 @@ import { ZNoteTrashModule } from './trash/trash.module';
 import { ZNotePhotoModule } from './photo/photo.module';
 import { environment } from '@env/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { ZNoteDetailModule } from './detail/detail.module';
+import { ZNoteSharedByMeModule } from './shared-by-me/shared-by-me.module';
+import { ModalModule } from '@wth/shared/modals/modals.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
@@ -37,18 +39,20 @@ import { HttpClientModule } from '@angular/common/http';
     ZNoteHomeModule,
     ZNoteFoldersModule,
     ZNoteMyNoteModule,
-    ZNoteMySharingModule,
+    ZNoteDetailModule,
+    ZNoteSharedByMeModule,
     ZNoteSearchModule,
     ZNoteSharedWithMeModule,
     // ZNoteMyProfileModule,
     ZNoteSettingsModule,
     ZNoteTrashModule,
     ZNotePhotoModule,
+    ModalModule,
     SharedModule.forRoot(),
+    SharedServicesModule.forRoot(),
     ZNoteSharedModule.forRoot(),
 
     StoreModule.forRoot(AppStore),
-
 
     // StoreDevtoolsModule.instrument({ maxAge: 50 }),
 
@@ -56,7 +60,9 @@ import { HttpClientModule } from '@angular/common/http';
 
     // StoreDevtoolsModule.instrumentOnlyWithExtension(),
 
-    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+      : []
 
     // SharedModule.forRoot(),
   ],
@@ -74,4 +80,4 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

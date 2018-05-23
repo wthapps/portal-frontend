@@ -1,15 +1,15 @@
 <div class="z-social-media">
   <div class="z-social-media-left">
-    <a [routerLink]="['/profile/', parent?.owner?.uuid]" class="media-object">
+    <a href="javascript:;" (click)="viewProfile(parent?.owner?.uuid)" class="media-object">
       <span class="avatar-xs">
         <img [src]="(user$ | async )?.profile_image" alt="">
       </span>
     </a>
   </div>
   <div class="z-social-media-body">
-    <form [formGroup]="commentEditorForm" novalidate>
+    <form  novalidate>
 
-      <div class="z-social-media-inputpost">
+      <div class="z-social-media-inputpost form-group">
         <span class="z-social-media-inputpost-icon">
           <button class="btn btn-default" (click)="onOpenPhotoSelect()" pTooltip="{{ tooltip.addPhoto }}"
                   tooltipPosition="top">
@@ -18,37 +18,39 @@
           <div class="btn-group dropup">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                     pTooltip="{{ tooltip.emoticons }}"
-                    tooltipPosition="top" (click)="showEmoji = true">
+                    tooltipPosition="top" (click)="showEmojiBtn($event)">
               <i class="fa fa-smile-o"></i>
             </button>
-            <ul class="dropdown-menu wth-emoji-dropdown content-overflow p5" *ngIf="showEmoji">
-              <li>
-                <i *ngFor="let emoji of emojiData" class="wth-emoji wth-emoji-{{emoji | wthEmojisClass}}"
-                   (click)="onEmojiClick(emoji)"></i>
-              </li>
-            </ul>
           </div>
         </span>
 
-        <textarea #commentContent class="form-control comment-editor-input" placeholder="Add a comment"
-                  textAreaAutoHeight
-                  [formControl]="contentCtrl"
-                  (keyup)="onKey($event)"
-                  [(ngModel)]="comment.content"></textarea>
+        <!--<div contenteditable="true" #commentContent placeholder="Add a comment"-->
+             <!--class="form-control textarea-editor-input commentContent-editor-input"-->
+                  <!--[innerHTML]="comment.content"-->
+                  <!--(keyup)="onKey($event)">-->
+        <!--</div>-->
+
+        <mini-editor [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" placeholder="Add a comment"
+                     [style]="{'height':'auto', 'min-height': '27px'}" (onKeyUp)="handleKeyUp($event)">
+          <p-header>
+          </p-header>
+        </mini-editor>
+
       </div>
+
 
       <photo-item-preview [photo]="comment?.photo"
                           [files]="files"
                           [hasUploadingPhoto]="hasUploadingPhoto" (events)="doEvents($event)"></photo-item-preview>
 
       <div class="clearfix text-right comment-editor-button-region"
-           *ngIf="(hasChanged() && mode == 0) || (mode != 0)">
+           *ngIf="(!(this.comment.content === '' && !this.hasUpdatedContent && !this.comment.photo) && mode == 0) || (mode != 0)">
         <button class="btn btn-sm btn-outline-default" (click)="cancel()"
                 href="javascript:;">Cancel
         </button>
 
-        <button class="btn btn-sm btn-outline-default" href="javascript:;" (click)="post(commentEditorForm.value)"
-                [disabled]="!hasUpdatedContent || !hasChanged()">Post
+        <button class="btn btn-sm btn-outline-default" href="javascript:;" (click)="post()"
+                [disabled]="!(this.comment.content === '' && !this.hasUpdatedContent && !this.comment.photo)">Post
         </button>
       </div>
 

@@ -32,6 +32,16 @@
                     BLACKLIST <span *ngIf="totalBlacklist" class="text-fade">{{ totalBlacklist }}</span>
                   </a>
                 </li>
+                <li [ngClass]="{'active': currentState == friendTabs.received}">
+                  <a href="javascript:;">
+                    Received <span class="text-fade">{{ totalReceivedRequests }}</span>
+                  </a>
+                </li>
+                <li [ngClass]="{'active': currentState == friendTabs.pending}">
+                  <a href="javascript:;">
+                    Pending <span class="text-fade"> {{ totalPendingRequests }}</span>
+                  </a>
+                </li>
               </ul>
             </div>
             <!-- Nav tabs -->
@@ -56,10 +66,21 @@
                   Blacklist <span *ngIf="totalBlacklist" class="badge-right">{{ totalBlacklist }}</span>
                 </a>
               </li>
+              <li class="float-right" [ngClass]="{'active': currentState == friendTabs.received}">
+                <a (click)="getDataList('received')" href="javascript:;">
+                  Received <span class="text-fade"> {{ totalReceivedRequests }}</span>
+                </a>
+              </li>
+              <li (click)="getDataList('pending')" class="float-right" [ngClass]="{'active': currentState == friendTabs.pending}">
+                <a href="javascript:;">
+                  Pending <span class="text-fade">{{ totalPendingRequests }}</span>
+                </a>
+              </li>
             </ul>
           </nav>
         </div>
-        <ng-template [ngIf]="list && list.length == 0">
+        <box-loading *ngIf="loading"></box-loading>
+        <ng-template [ngIf]="!loading && list && list.length == 0">
           <div class="panel-body p40 text-center">
             <div *ngIf="currentState == friendTabs.friends">
               <h3 class="text-fade">
@@ -84,10 +105,22 @@
                 There is no blacklist
               </h3>
             </div>
+            <div *ngIf="currentState == friendTabs.received">
+              <h3 class="text-fade">
+                There is no received friend request
+              </h3>
+            </div>
+            <div *ngIf="currentState == friendTabs.pending">
+              <h3 class="text-fade">
+                There is no pending friend request
+              </h3>
+            </div>
           </div>
         </ng-template>
-        <ng-template [ngIf]="list && list.length > 0">
-          <z-social-share-profile-list [data]="list" [type]="'member'" (outEvent)="onAction($event)">
+        <ng-template [ngIf]="!loading && list && list.length > 0">
+          <z-social-share-profile-list [data]="list" [type]="'member'" (outEvent)="onAction($event)" *ngIf="![friendTabs.pending, friendTabs.received].includes(currentState)">
+          </z-social-share-profile-list>
+          <z-social-share-profile-list [data]="list" [type]="currentState" (outEvent)="onAction($event)" *ngIf="[friendTabs.pending, friendTabs.received].includes(currentState)">
           </z-social-share-profile-list>
         </ng-template>
       </div>

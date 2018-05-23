@@ -4,20 +4,10 @@ import { ZNoteSharedModule } from '../shared/shared.module';
 import { ZNoteTrashRoutingModule } from './trash-routing.module';
 import { ZNoteTrashComponent } from './trash.component';
 
-
 @NgModule({
-  imports: [
-    ZNoteTrashRoutingModule,
-    ZNoteSharedModule
-  ],
-  declarations: [
-    ZNoteTrashComponent
-  ],
-  exports: [
-    ZNoteTrashComponent
-  ],
+  imports: [ZNoteTrashRoutingModule, ZNoteSharedModule],
+  declarations: [ZNoteTrashComponent],
+  exports: [ZNoteTrashComponent],
   providers: []
 })
-
-export class ZNoteTrashModule {
-}
+export class ZNoteTrashModule {}

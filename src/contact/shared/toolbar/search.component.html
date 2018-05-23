@@ -1,0 +1,28 @@
+<div class="page-body-control-nav ">
+  <!-- <ul class="page-body-control-menu">
+    <li>
+      <button type="button" class="btn btn-default mr10" [routerLink]="['/contacts']" pTooltip="{{ tooltip.back }}" tooltipPosition="top">
+        <i class="fa fa-arrow-left"></i>
+      </button>
+    </li>
+  </ul> -->
+  <div class="nav-tabs-wrap pull-left">
+
+    <ul class="nav nav-tabs list-unstyled">
+      <li [ngClass]="active[0]? 'active': ''">
+        <a type="button" class="btn btn-outline-primary" (click)="search($event, 'all')">
+          All </a>
+      </li>
+      <li [ngClass]="active[1]? 'active': ''">
+        <a type="button" class="btn btn-outline-default" (click)="search($event, 'mine')">
+          My Contacts </a>
+      </li>
+      <li [ngClass]="active[2]? 'active': ''">
+        <a type="button" class="btn btn-outline-default" (click)="search($event, 'wth')">
+          WTH!Apps </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<ng-content></ng-content>

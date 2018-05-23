@@ -2,20 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import 'rxjs/add/operator/toPromise';
+
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { ApiBaseService, PhotoService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 
-declare var $: any;
-declare var _: any;
+
+
 const KEY_ESC = 27;
 
 /**
  * This class represents the lazy loaded HomeComponent.
  */
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-photo-detail',
   templateUrl: 'photo.component.html',
   styleUrls: ['photo.component.scss']

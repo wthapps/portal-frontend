@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../shared/services/chat.service';
+import { Store } from '@ngrx/store';
 
 @Component({
   moduleId: module.id,
@@ -8,13 +9,16 @@ import { ChatService } from '../shared/services/chat.service';
 export class ConversationListComponent implements OnInit {
   selectContact: any;
 
-  constructor(private chatService: ChatService) {
-  }
+  constructor(private chatService: ChatService) {}
 
   ngOnInit() {
     this.selectContact = this.chatService.getContactSelect();
     if (this.selectContact && this.selectContact.value) {
-      this.chatService.router.navigate([`${this.chatService.constant.conversationUrl}/${this.selectContact.value.id}`]);
+      this.chatService.router.navigate([
+        `${this.chatService.constant.conversationUrl}/${
+          this.selectContact.value.id
+        }`
+      ]);
     }
   }
 }

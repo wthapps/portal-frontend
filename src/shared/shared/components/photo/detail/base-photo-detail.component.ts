@@ -1,15 +1,18 @@
-import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
+import {Component, OnDestroy, OnInit, HostListener, AfterViewInit} from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+
 
 import { Photo } from '../../../models/photo.model';
 import { PhotoService } from '../../../../services/photo.service';
 import { LoadingService } from '../../loading/loading.service';
-import { ZMediaSharingService } from '../modal/sharing/sharing.service';
 import { WthConfirmService } from '../../confirmation/wth-confirm.service';
+import {ApiBaseService, UserService} from '@wth/shared/services';
+import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 declare let _: any;
 declare let saveAs: any;
@@ -20,20 +23,25 @@ declare let saveAs: any;
   entryComponents: []
 })
 
-export class BasePhotoDetailComponent implements OnInit, OnDestroy {
+export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
   module: string = 'media';
   photo: Photo;
   id: number;
   ids: Array<number> = [];
+  batchQuery: string;
   post_uuid: any;
   prevUrl: string;
   loading: boolean;
   mode: number;
   showDetail: boolean;
+  isOwner: boolean;
   recipients: Array<any> = [];
+  photos: Array<any> = [];
+  links: any;
 
   // private routeSub: any;
+  returnUrl: string;
   private destroySubject: Subject<any> = new Subject<any>();
 
 
@@ -48,7 +56,9 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
               protected wthConfirmService: WthConfirmService,
               protected loadingService: LoadingService,
               protected photoService: PhotoService,
-              protected sharingService?: ZMediaSharingService
+              protected userService: UserService,
+              protected sharingService?: SharingService,
+              protected api?: ApiBaseService
   ) {
     // this.router = router;
     // this.route = route;
@@ -56,35 +66,48 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'photos';
     this.route.params
       .takeUntil(this.destroySubject.asObservable())
       .map((params: any) => {
-        console.debug('base-photo-detail route params: ', params);
         this.id = +params['id'];
         this.prevUrl = params['prevUrl'];
-        if(params['ids']) {
+        if (params['ids']) {
           this.ids = params['ids'].split(',').map(Number) || [];
         }
-        if(params['post_uuid'])
+        if (params['post_uuid'])
           this.post_uuid = params['post_uuid'];
         this.module = params['module'] || this.module;
         this.mode = params['mode'] || 0;
         this.showDetail = params['showDetail'] || false;
         // this.loadItem(this.id);
+
+        // get batchQuery
+        this.batchQuery = params['batchQuery'] || '';
         return params['id'];
       })
-      .switchMap((id: any ) => {
+      .mergeMap((id: any ) => {
         this.loading = true;
         return this.photoService.getPhoto(id);
       })
       .subscribe((response: any) => {
           this.photo = response.data;
+          this.isOwner = (response.data.owner.id === this.userService.getSyncProfile().id);
           this.loading = false;
         },
         (error: any) => {
           this.loading = false;
           console.error('Error when loading photo ', error);
         });
+  }
+
+  ngAfterViewInit() {
+    if (this.batchQuery !== '') {
+      this.api.get(this.batchQuery).subscribe(response => {
+        this.photos = response.data;
+        this.links = response.page_metadata.links;
+      });
+    }
   }
 
   doEvent(payload: any) {
@@ -98,7 +121,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         break;
       case 'loadItem':
         const tree: UrlTree = this.router.parseUrl(this.router.url);
-        if(tree.root.children.modal)
+        if (tree.root.children.modal)
           tree.root.children.modal.segments[1].path = payload.id;
         else
           tree.root.children.primary.segments[1].path = payload.id;
@@ -117,8 +140,8 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
       case 'download':
         this.photoService.download({id: this.photo.id}).subscribe(
           (response: any) => {
-            var blob = new Blob([response.blob()], {type: this.photo.content_type});
-            saveAs(blob, this.photo.name);
+            var blob = new Blob([response], {type: this.photo.content_type});
+            saveAs(blob, `${this.photo.name}.${this.photo.extension}`);
           },
           (error: any) => {
             console.log(error);
@@ -126,14 +149,17 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
         );
         break;
       case 'confirmDelete':
-        console.debug('base-photo-detail: confirmDelete', payload);
         this.confirmDelete(payload);
         break;
     }
   }
 
   goBack() {
-    this.router.navigate([{outlets: {modal: null}}]);
+    if (this.router.url.indexOf('modal:photos') > 0) {
+      this.router.navigate([{outlets: {modal: null}}]);
+    } else {
+      this.router.navigate([this.returnUrl]);
+    }
     this.photoService.closePreviewModal();
   }
 
@@ -147,7 +173,6 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
   }
 
   refreshUpdatedPhoto(payload: any) {
-    console.debug('refresh Photo: ', payload);
     this.photo = payload;
     this.photoService.setModifiedPhotos({action: 'update', payload: {post_uuid: this.post_uuid, photo: this.photo}});
   }
@@ -160,6 +185,7 @@ export class BasePhotoDetailComponent implements OnInit, OnDestroy {
     // Ask for user confirmation before deleting selected PHOTOS
     return new Promise<any>((resolve: any) => {
       this.wthConfirmService.confirm({
+        header: 'Delete photo',
         message: `Are you sure to delete photo ${this.photo.name} ?`,
         accept: () => {
           this.loadingService.start();

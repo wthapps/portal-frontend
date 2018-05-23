@@ -9,18 +9,22 @@ import { ApiBaseService } from '@wth/shared/services';
   templateUrl: 'contact.component.html'
 })
 export class ZChatContactComponent implements OnInit {
-  contactItem:any;
+  contactItem: any;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   count: any;
 
-  constructor(private chatService: ChatService, public apiBaseService: ApiBaseService) {
-  }
+  constructor(
+    private chatService: ChatService,
+    public apiBaseService: ApiBaseService
+  ) {}
 
   ngOnInit() {
     this.contactItem = this.chatService.storage.find('chat_conversations');
-    this.apiBaseService.post('zone/chat/contact/contact_tab_count').subscribe((res: any) => {
-      this.count = res.data;
-    });
+    this.apiBaseService
+      .post('zone/chat/contact/contact_tab_count')
+      .subscribe((res: any) => {
+        this.count = res.data;
+      });
   }
 
   newContact() {

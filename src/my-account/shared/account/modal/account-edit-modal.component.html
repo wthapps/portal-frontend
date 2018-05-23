@@ -1,10 +1,10 @@
 <form [formGroup]="form" novalidate>
-  <modal #modal
+  <bs-modal #modal
          [cssClass]="'modal-account-edit'"
          [keyboard]="false"
          [animation]="false"
-         [backdrop]="'static'" >
-    <modal-header>
+         [backdrop]="'static'" style="display: inline;">
+    <bs-modal-header>
       <div class="float-right" style="float:right; position: relative; top:-6px;">
         <button *ngIf="mode=='view'" class="btn btn-default" (click)="edit()">
           <i class="fa fa-pencil"></i>
@@ -13,23 +13,24 @@
                 class="btn btn-default" (click)="delete()" >
           <i class="fa fa-trash"></i>
         </button>
-        <button aria-label="Close" class="btn btn-default" (click)="close()">
+        <button aria-label="Close" class="btn btn-default" (click)="modal.close()">
           <i class="fa fa-times"></i>
         </button>
       </div>
       <h4 class="modal-title">Edit Account</h4>
 
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
 
 
         <div class="row">
           <div class="col-xs-12 col-sm-12">
             <div class="form-group" [ngClass]="{'has-error': (!form.controls.name.valid && form.controls.name.touched)}">
               <label for="fullName">Full name</label>
-              <label *ngIf="item.parent_id == null && item.creator_id == null">Admin</label>
+              <label *ngIf="item.parent_id == null && item.creator_id == null" class="admin-mark">Master</label>
 
               <input [formControl]="form.controls.name" class="form-control" id="fullName"
+                     [readonly]="mode=='view' ? true: false"
                      [ngClass]="{'no-border': mode == 'view'}"
                      placeholder="Account full name">
               <div *ngIf="!form.controls.name.valid && form.controls.name.touched">
@@ -40,7 +41,7 @@
             <div class="form-group"
                  [ngClass]="{'has-error': (!form.controls.email.valid && form.controls.email.touched)}">
 
-              <label for="password">Email</label>
+              <label for="email">Email</label>
               <input [formControl]="form.controls.email" type="email" class="form-control" id="email" readonly
                      [ngClass]="{'no-border': mode == 'view'}"
                      placeholder="Account email">
@@ -53,81 +54,84 @@
 
             <div class="form-group">
               <label for="accountType">Account type</label>
-              <label id="accountType"> {{ item.parent_id == null ? 'Full account': 'Sub account' }} </label>
+              <label class="form-control" id="accountType" > {{ item.parent_id == null ? 'Full account': 'Sub account' }} </label>
 
             </div>
 
             <div class="form-group">
               <label>Last login</label>
-              <!--<input type="text" *ngIf="item.last_sign_in_at"> {{ item.last_sign_in_at | date: 'yMMMd' }} </input>-->
-              <!--<input type="text" *ngIf="!item.last_sign_in_at"> N/A </input>-->
-            </div>
-
-            <div *ngIf="item.parent_id != null">
-
-              <div class="form-group has-password"
-                   [ngClass]="{'has-error': (!form.controls.password.valid && form.controls.password.touched)}">
-                <label for="password">Current Password</label>
-                <input [formControl]="form.controls.password" type="password" class="form-control" id="password"
-                       placeholder="Input account password">
-                <span (click)="togglePassword($event)" class="hideShowPassword-toggle"
-                      pTooltip="{{ tooltip.showPassword }}" tooltipPosition="top"></span>
-                <div *ngIf="!form.controls.password.valid && form.controls.password.touched">
-                  <span *ngIf="!form.controls.password.valid && form.controls.password.errors.required"
-                        class="help-block">Current password is required</span>
-                </div>
-              </div>
-
-              <div class="col-xs-12 col-sm-12">
-                <p>New password must:</p>
-                <ul [ngClass]="{
-                'text-danger': (!form.controls.password.valid && form.controls.password.touched),
-                'text-success': (form.controls.password.valid && form.controls.password.touched)}">
-
-                  <ng-template [ngIf]="!form.controls.password.valid">
-                    <ng-template [ngIf]="form.controls.password.errors.required">
-                      <li>Contain at least 8 characters or more</li>
-                    </ng-template>
-                    <ng-template [ngIf]="form.controls.password.errors.minlength">
-                      <li class="text-danger">Contain at least 8 characters or more</li>
-                    </ng-template>
-                    <ng-template [ngIf]="!form.controls.password.errors.required && !form.controls.password.errors.minlength">
-                      <li class="text-success">Contain at least 8 characters or more</li>
-                    </ng-template>
-                    <li [ngClass]="{'text-success': (!form.controls.password.errors.lowercaseUppercase)}">Contain both uppercase and lowercase characters</li>
-                    <li [ngClass]="{'text-success': (!form.controls.password.errors.specialSymbolOrNumber)}">Contain at least one number or symbol</li>
-
-                  </ng-template>
-                  <ng-template [ngIf]="form.controls.password.valid">
-                    <li>Contain at least 8 characters or more</li>
-                    <li>Contain both uppercase and lowercase characters</li>
-                    <li>Contain at least one number or symbol</li>
-                  </ng-template>
-                </ul>
-              </div>
+              <label class="form-control" *ngIf="item.last_sign_in_at"> {{ item.last_sign_in_at | date: 'MMM d, y' }} </label>
+              <label class="form-control" *ngIf="!item.last_sign_in_at"> N/A </label>
 
             </div>
+
+            <!--<div *ngIf="item.parent_id != null">-->
+
+              <!--<div class="form-group has-password"-->
+                   <!--[ngClass]="{'has-error': (!form.controls.password.valid && form.controls.password.touched)}">-->
+                <!--<label for="password">Current Password</label>-->
+                <!--<input [formControl]="form.controls.password" type="password" class="form-control" id="password"-->
+                       <!--placeholder="Input account password">-->
+                <!--<span (click)="togglePassword($event)" class="hideShowPassword-toggle"-->
+                      <!--pTooltip="{{ tooltip.showPassword }}" tooltipPosition="top"></span>-->
+                <!--<div *ngIf="!form.controls.password.valid && form.controls.password.touched">-->
+                  <!--<span *ngIf="!form.controls.password.valid && form.controls.password.errors.required"-->
+                        <!--class="help-block">Current password is required</span>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <!--<div class="col-xs-12 col-sm-12">-->
+                <!--<p>New password must:</p>-->
+                <!--<ul [ngClass]="{-->
+                <!--'text-danger': (!form.controls.password.valid && form.controls.password.touched),-->
+                <!--'text-success': (form.controls.password.valid && form.controls.password.touched)}">-->
+
+                  <!--<ng-template [ngIf]="!form.controls.password.valid">-->
+                    <!--<ng-template [ngIf]="form.controls.password.errors.required">-->
+                      <!--<li>Contain at least 8 characters or more</li>-->
+                    <!--</ng-template>-->
+                    <!--<ng-template [ngIf]="form.controls.password.errors.minlength">-->
+                      <!--<li class="text-danger">Contain at least 8 characters or more</li>-->
+                    <!--</ng-template>-->
+                    <!--<ng-template [ngIf]="!form.controls.password.errors.required && !form.controls.password.errors.minlength">-->
+                      <!--<li class="text-success">Contain at least 8 characters or more</li>-->
+                    <!--</ng-template>-->
+                    <!--<li [ngClass]="{'text-success': (!form.controls.password.errors.lowercaseUppercase)}">Contain both uppercase and lowercase characters</li>-->
+                    <!--<li [ngClass]="{'text-success': (!form.controls.password.errors.specialSymbolOrNumber)}">Contain at least one number or symbol</li>-->
+
+                  <!--</ng-template>-->
+                  <!--<ng-template [ngIf]="form.controls.password.valid">-->
+                    <!--<li>Contain at least 8 characters or more</li>-->
+                    <!--<li>Contain both uppercase and lowercase characters</li>-->
+                    <!--<li>Contain at least one number or symbol</li>-->
+                  <!--</ng-template>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+
           </div>
         </div>
 
-    </modal-body>
+    </bs-modal-body>
 
-    <modal-footer>
+    <bs-modal-footer>
     <div>
 
         <button type="button" *ngIf="mode=='edit'" class="btn btn-outline-default btn-min"
                 (click)="close()">Cancel</button>
         <button type="button" *ngIf="mode=='edit'" class="btn btn-outline-primary btn-min pull-right"
+                [disabled]="!form.valid || form.pristine"
                 (click)="save()">Save
         </button>
 
         <!--<button type="button" *ngIf="mode=='view'" class="btn btn-outline-primary btn-min pull-left"-->
                 <!--(click)="acceptRequestOwnership()">Accept request ownership</button>-->
         <button type="button" *ngIf="mode=='view'" class="btn btn-outline-primary btn-min pull-right"
-                (click)="close()">Done
+
+                (click)="modal.close()">Done
         </button>
       </div>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 
 </form>

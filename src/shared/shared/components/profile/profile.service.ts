@@ -12,11 +12,11 @@ export class PartialsProfileService extends Communication {
   }
 
   getMyProfile() {
-    return this.apiBaseService.get(`zone/social_network/users/${this.userService.profile.uuid}`);
+    return this.apiBaseService.get(`zone/social_network/users/${this.userService.getSyncProfile().uuid}`);
   }
 
   updateMyProfile(body: any) {
-    return this.apiBaseService.put(`zone/social_network/users/${this.userService.profile.uuid}`, body);
+    return this.apiBaseService.put(`zone/social_network/users/${this.userService.getSyncProfile().uuid}`, body);
   }
 
   onLoad(url: string) {

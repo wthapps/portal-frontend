@@ -11,21 +11,25 @@ export class ZChatContactSentRequestComponent implements OnInit {
   contactItem: any;
   count: any;
 
-  constructor(private chatService: ChatService, private apiBaseService: ApiBaseService) {
-  }
+  constructor(
+    private chatService: ChatService,
+    private apiBaseService: ApiBaseService
+  ) {}
 
   ngOnInit() {
     this.contactItem = this.chatService.getConversations();
-    this.apiBaseService.post('zone/chat/contact/contact_tab_count').subscribe((res: any) => {
-      this.count = res.data;
-    });
+    this.apiBaseService
+      .post('zone/chat/contact/contact_tab_count')
+      .subscribe((res: any) => {
+        this.count = res.data;
+      });
   }
 
-  onResend(contact:any) {
+  onResend(contact: any) {
     this.chatService.chatContactService.addContact([contact.display.id]);
   }
 
-  onCancel(contact:any) {
+  onCancel(contact: any) {
     this.chatService.chatContactService.cancelContactRequest(contact);
   }
 }

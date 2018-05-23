@@ -5,11 +5,11 @@ import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oaut
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 
 import { Constants } from '../../../shared/constant/config/constants';
+import {Location} from '@angular/common';
 
 declare var _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'z-contact-shared-toolbar',
   templateUrl: 'toolbar.component.html',
   styleUrls: ['toolbar.component.scss']
@@ -21,11 +21,16 @@ export class ZContactSharedToolbarComponent implements OnInit {
 
   @Input() pageTitle: string = ''; // TODO will be removed
   @Input() hasBack: boolean = false;
+  @Input() currentPage: string;
   selectedContact: string;
 
   tooltip: any = Constants.tooltip;
 
-  constructor(private contactService: ZContactService, private commonEventService: CommonEventService) {
+  constructor(
+    public contactService: ZContactService,
+    public location: Location,
+    private commonEventService: CommonEventService
+  ) {
   }
 
   ngOnInit() {
@@ -41,8 +46,11 @@ export class ZContactSharedToolbarComponent implements OnInit {
     this.importContactSelect.modal.open(options);
   }
 
-  onImportOptionSelected(event: any) {
+  back() {
+    this.location.back();
+  }
 
+  onImportOptionSelected(event: any) {
     switch (event.provider) {
       case 'google':
       case 'apple':
@@ -56,7 +64,7 @@ export class ZContactSharedToolbarComponent implements OnInit {
         });
         break;
       default:
-        console.error('Unhandled import option: ', event.provider);
+        console.warn('Unhandled import option: ', event.provider);
         break;
     }
   }

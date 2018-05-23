@@ -1,10 +1,15 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 
-import { UserService } from '../shared/services/user.service';
-import { Config } from '../shared/constant/config/env.config';
+import { AuthService } from '@wth/shared/services';
 
 declare let $: any;
 
@@ -20,14 +25,12 @@ declare let $: any;
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
-  constructor(private router: Router,
-              private userService: UserService) {
-  }
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    if (this.userService.loggedIn && !this.userService.profile.took_a_tour) {
-      // window.location.href = Constants.baseUrls.myAccount;
-    }
+    // if (this.authService.loggedIn && this.authService.user && !this.authService.user.took_a_tour) {
+    //   window.location.href = Constants.baseUrls.myAccount;
+    // }
 
     this.routerSubscription = this.router.events
       .filter(event => event instanceof NavigationEnd)
@@ -37,6 +40,14 @@ export class AppComponent implements OnInit, OnDestroy {
         // auto close menu on mobile
         $('#wth-navbar-collapse-1').collapse('hide');
       });
+
+    // fix scroll to top after changing route
+    this.router.events.subscribe(evt => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      window.scrollTo(0, 0);
+    });
   }
 
   ngOnDestroy() {

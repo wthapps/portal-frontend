@@ -7,37 +7,37 @@ import { Location } from '@angular/common';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/toPromise';
+
 import 'rxjs/add/operator/withLatestFrom';
 
 import { MediaToolbarListComponent } from '../media/media-toolbar-list.component';
 import { MediaListComponent } from '../media/media-list.component';
 import { MediaObjectService } from './media-object.service';
 import { AlbumDetailInfoComponent } from '../../album/album-detail-info.component';
-import { ZMediaAlbumService } from '../../album/album.service';
+import { AlbumService } from '../service/album.service';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
 import { ZMediaStore } from '../store/media.store';
-import { TaggingModalComponent } from '@shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { BaseObjectEditNameModalComponent } from '@shared/shared/components/photo/modal/base-object-edit-name-modal.component';
-import { AlbumCreateModalComponent } from '@wth/shared/shared/components/photo/modal/album-create-modal.component';
-import { AlbumEditModalComponent } from '@shared/shared/components/photo/modal/album-edit-modal.component';
-import { AlbumDeleteModalComponent } from '@wth/shared/shared/components/photo/modal/album-delete-modal.component';
 import { FileSelectComponent } from '@wth/shared/shared/components/file/file-select/file-select.component';
 import { PhotoDetailPartialComponent } from '@shared/shared/components/photo/detail/photo-detail-partial.component';
-import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo-edit-modal.component';
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/add-to-album-modal.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 import { saveAs } from 'file-saver';
-// declare var saveAs: any;
+import { ApiBaseService } from '@wth/shared/services';
+import {
+  AlbumCreateModalComponent, AlbumDeleteModalComponent,
+  AlbumEditModalComponent
+} from '@media/shared/modal';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 declare var $: any;
 declare var _: any;
 
 
 @Component({
-  moduleId: module.id,
   selector: 'me-view-container',
   templateUrl: 'media-view-container.component.html',
   providers: [MediaObjectService],
@@ -48,7 +48,7 @@ declare var _: any;
     SharingModalComponent,
     TaggingModalComponent,
 
-    BaseObjectEditNameModalComponent,
+    MediaRenameModalComponent,
 
     AlbumCreateModalComponent,
     AlbumEditModalComponent,
@@ -118,10 +118,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
               private route: ActivatedRoute,
               private location: Location,
               private mediaObjectService: MediaObjectService,
-              private albumService: ZMediaAlbumService,
+              private albumService: AlbumService,
               private mediaUploaderDataService: MediaUploaderDataService,
               private mediaStore: ZMediaStore,
               private cdr: ChangeDetectorRef,
+              private api: ApiBaseService,
               private wthConfirmService: WthConfirmService) {
 
   }
@@ -132,7 +133,8 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     this.route.url
       .withLatestFrom(this.route.parent.url)
       .map((pair: any) => {
-        return _.find(pair, (url: any) => _.get(url, '0') != undefined);})
+        return _.find(pair, (url: any) => _.get(url, '0') != undefined);
+      })
       .map((url: any) => url[0].path)
       .takeUntil(this.destroySubject)
       .subscribe((url: any) => this.currentPath = url); // currentPath: photos, albums, shared-with-me
@@ -255,6 +257,11 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         this.selectedObjects = event.params.selectedObjects;
         this.toolbar.updateProperties({selectedObjects: this.selectedObjects});
         break;
+      case 'deselectAll':
+        this.selectedObjects.length = 0;
+        this.toolbar.updateProperties({selectedObjects: this.selectedObjects});
+        $('.photo-box').removeClass('selected');
+        break;
       case 'goBack':
         this.goBack();
         break;
@@ -279,11 +286,15 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         let ids2 = _.map(this.mediaStore.getSelectedObjects(), 'id');
         let selectedIdx = this.mediaStore.getCurrentSelectedIndex();
 
-        this.router.navigate([{outlets: {modal: [
-            'photos',
-            this.mediaStore.getSelectedObjects()[selectedIdx].id,
-            {ids: ids2, mode: 0}
-          ]}}], {queryParamsHandling: 'preserve', preserveFragment: true}
+        this.router.navigate([{
+            outlets: {
+              modal: [
+                'photos',
+                this.mediaStore.getSelectedObjects()[selectedIdx].id,
+                {ids: ids2, mode: 0}
+              ]
+            }
+          }], {queryParamsHandling: 'preserve', preserveFragment: true}
         );
 
         break;
@@ -292,12 +303,16 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'previewAllPhotosToolBar': {
         let ids = _.map(this.list.objects, 'id');
 
-        if(ids.length > 0) {
-          this.router.navigate([{outlets: {modal: [
-              'photos',
-              ids[0],
-              {ids: ids, mode: 0}
-            ]}}], {queryParamsHandling: 'preserve', preserveFragment: true}
+        if (ids.length > 0) {
+          this.router.navigate([{
+              outlets: {
+                modal: [
+                  'photos',
+                  ids[0],
+                  {ids: ids, mode: 0}
+                ]
+              }
+            }], {queryParamsHandling: 'preserve', preserveFragment: true}
           );
         }
         break;
@@ -305,22 +320,30 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
       case 'previewModal':
         let ids = _.map(this.selectedObjects, 'id');
-        this.router.navigate([{outlets: {modal: [
-            'photos',
-            this.selectedObjects[0].id,
-            {ids: ids, mode: 0}
-          ]}}], {queryParamsHandling: 'preserve', preserveFragment: true}
+        this.router.navigate([{
+            outlets: {
+              modal: [
+                'photos',
+                this.selectedObjects[0].id,
+                {ids: ids, mode: 0}
+              ]
+            }
+          }], {queryParamsHandling: 'preserve', preserveFragment: true}
         );
 
         break;
       case 'updateMediaList':
-        this.updateMediaList(event.params.data);
+        // this.updateMediaList(event.params.data);
         break;
       case 'updateDetailObject':
         this.updateDetailObject(event.params.properties);
         break;
       case 'download':
-        this.download(event.params.selectedObjects);
+        if (event.params.objectType === 'sharing') {
+          this.downloadSharing(event.params.selectedObject);
+        } else {
+          this.download(event.params.selectedObjects);
+        }
         break;
       case 'downloadAlbum':
         this.downloadAlbum(event.params.selectedObjects[0]);
@@ -409,6 +432,17 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     });
   }
 
+  downloadSharing(sharing: any) {
+    this.api.get(`media/sharings/${sharing.id}`).subscribe(
+      (response: any) => {
+        let files = response.data;
+        this.download(files);
+      },
+      (error: any) => {
+
+      });
+  }
+
   edit() {
     if (this.currentPath == 'photos') {
 
@@ -438,7 +472,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
 
   goBack() {
     const tree: UrlTree = this.router.parseUrl(this.router.url);
-    if( tree.root.children.detail )
+    if (tree.root.children.detail)
       this.router.navigate([{outlets: {detail: null}}]);
     else
       this.location.back();
@@ -449,7 +483,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
     let options: any;
     switch (params.modalName) {
       case 'editNameModal':
-        this.loadModalComponent(BaseObjectEditNameModalComponent);
+        this.loadModalComponent(MediaRenameModalComponent);
         options = {selectedObject: this.selectedObjects[0]};
         if (params.selectedObjects) options = {selectedObject: params.selectedObjects[0]};
         break;
@@ -465,14 +499,13 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         // switch (this.objectType) {
         switch (params.selectedObjects[0].object_type) {
           case 'album':
-            // this.loadModalComponent();
-            // options = {selectedObject: this.object};
             this.loadModalComponent(AlbumDeleteModalComponent);
             options = {selectedObjects: params.selectedObjects};
-            // options = {selectedObjects: _.filter(this.selectedObjects, (o: any) => o.object_type == 'album')};
-            console.log('deleteModal album');
             break;
         }
+        break;
+      case 'deleteMedia':
+        console.log('delete media');
         break;
       case 'sharingModal':
         this.loadModalComponent(SharingModalComponent);
@@ -495,30 +528,26 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
       case 'addToAlbumModal':
         this.loadModalComponent(AddToAlbumModalComponent);
         // Take selected photos from photo list screen OR uploaded photos from upload photo component
-        options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
+        options = {selectedObjects: (params.data != undefined) ? params.data : this.selectedObjects};
         break;
       case 'createAlbumModal':
         this.loadModalComponent(AlbumCreateModalComponent);
         // Take selected photos from photo list screen OR uploaded photos from upload photo component
-        options = {selectedObjects: ( params.data != undefined ) ? params.data : this.selectedObjects};
+        options = {selectedObjects: (params.data != undefined) ? params.data : this.selectedObjects};
         break;
       case 'previewDetailsModal':
         let ids: any[] = _.map(this.selectedObjects, 'id');
-        if (this.selectedObjects[0].object_type == 'album') {
-          this.router.navigate([{outlets: {detail: [
-              `${this.selectedObjects[0].object_type}s`,
-              this.selectedObjects[0].id,
-              {ids: ids, mode: 0, showDetail: true}
-            ]}}], {preserveQueryParams: true, preserveFragment: true}
-          );
-        } else {
-          this.router.navigate([{outlets: {modal: [
-              `${this.selectedObjects[0].object_type}s`,
-              this.selectedObjects[0].id,
-              {ids: ids, mode: 0, showDetail: true}
-            ]}}], {preserveQueryParams: true, preserveFragment: true}
-          );
-        }
+        let outlet = (this.selectedObjects[0].object_type == 'album') ? 'detail' : 'modal';
+        this.router.navigate([{
+            outlets: {
+              [outlet]: [
+                `${this.selectedObjects[0].object_type}s`,
+                this.selectedObjects[0].id,
+                {ids: ids, mode: 0, showDetail: true}
+              ]
+            }
+          }], {preserveQueryParams: true, preserveFragment: true}
+        );
 
 
         break;

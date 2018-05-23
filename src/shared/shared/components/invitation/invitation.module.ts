@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalModule } from 'ng2-bs3-modal';
 
 import { PipeModule } from '../../pipe/pipe.module';
 import { InvitationCreatePartialComponent } from './invitation-create-partial.component';
@@ -15,7 +15,7 @@ import { InvitationService } from './invitation.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    Ng2Bs3ModalModule,
+    BsModalModule,
     PipeModule
   ],
   declarations: [

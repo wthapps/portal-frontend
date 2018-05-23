@@ -1,19 +1,23 @@
 import { EnvConfig } from './env-config.interface';
+
 export const environment = {
-  production: true
+  production: true,
+  keys: {
+    recaptcha_site_key: '6LdCdU0UAAAAADLbZ8Vf6UoQ-TeyzZjhOEiwcXxJ'
+  }
 };
 
 console.log('environment:::', environment);
 
 // var hostname = '192.168.0.108';
-var protocol = 'https';
-var domain = 'wthapps.com';
-var subdomain = ``;
-var fullDomain = `${subdomain}.${domain}`;
+const protocol = 'https';
+const domain = 'wthapps.com';
+const subdomain = ``;
+const fullDomain = `${subdomain}.${domain}`;
 
 export const ConfigByEnv: EnvConfig = {
   CDN: `${protocol}://cdn-apps.${domain}`,
-  API:`${protocol}://api${fullDomain}`,
+  API: `${protocol}://api${fullDomain}`,
   ENV: 'PROD',
   DOMAIN: `${domain}`,
   SUB_DOMAIN: {
@@ -23,19 +27,17 @@ export const ConfigByEnv: EnvConfig = {
     SOCIAL: `${protocol}://social${fullDomain}`,
     CHAT: `${protocol}://chat${fullDomain}`,
     CONTACT: `${protocol}://contacts${fullDomain}`,
-    NOTE: `${protocol}://notes${fullDomain}`,
+    NOTE: `${protocol}://notes${fullDomain}`
   }
 };
 
-// console.log('environment:::', environment);
+// // const host = '192.168.0.116';
+// const host = 'localhost';
 //
 // export const ConfigByEnv: EnvConfig = {
-//   // API: 'http://54.213.41.54:4000',
-//   API: 'http://localhost:4000',
-//   // API: 'http://192.168.0.106:4000',
-//   // API: 'http://192.168.0.111:4000',
-//   // API: 'http://192.168.0.103:4000',
-//   ENV: 'PROD',
+//   CDN: `http://${host}:4000/assets`,
+//   API: `http://${host}:4000`,
+//   ENV: 'DEV',
 //   DOMAIN: 'localhost',
 //   SUB_DOMAIN: {
 //     APP: 'http://localhost:3000',

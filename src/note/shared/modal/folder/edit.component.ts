@@ -1,12 +1,13 @@
 import { Component, ViewChild, ViewEncapsulation, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
 import * as note from '../../actions/note';
 import * as folder from '../../actions/folder';
+import { withLatestFrom } from 'rxjs/operators';
 
 declare var $: any;
 declare var _: any;
@@ -18,7 +19,7 @@ declare var _: any;
 })
 
 export class ZNoteSharedModalFolderEditComponent implements OnInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   titleModal: string = 'New Folder';
 
@@ -58,7 +59,6 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
     this.folder.name = value.name;
     if (this.folder.id) {
       this.apiBaseService.put('note/folders/' + this.folder.id, this.folder).subscribe((res: any) => {
-        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: [res.data]});
         [new note.NoteUpdated(res.data), new folder.UpdateFolderPath(res.data)].forEach((a: any) => this.store.dispatch(a));
         this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [res.data]});
         this.modal.close();
@@ -67,12 +67,18 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
       if (this.currentFolder) {
         this.folder.parent_id = this.currentFolder.id;
       }
-      this.apiBaseService.post('note/folders', this.folder).subscribe((res: any) => {
-        this.commonEventService.broadcast({channel: 'noteFolderEvent', action: 'updateFolders', payload: [res.data]});
-        this.store.dispatch(new note.MultiNotesAdded([res.data]));
-        this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [res.data]});
-        this.modal.close();
-      });
+      this.apiBaseService.post('note/folders', this.folder)
+        .pipe(
+          withLatestFrom(this.store, (res: any, state: any) => {
+            return {res: res, state: state.context}
+          }))
+        .subscribe((combine: any) => {
+          if(combine.state.permissions.edit) {
+            this.store.dispatch(new note.MultiNotesAdded([combine.res.data]));
+          }
+          this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [combine.res.data]});
+          this.modal.close();
+        });
     }
   }
 }

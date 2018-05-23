@@ -1,26 +1,31 @@
-<div *ngIf="data" class="component-listbox-row"
-     [ngClass]="{'item-folder': data.object_type == 'folder', 'active': selected}">
+<div *ngIf="data" class="component-listbox-row" [ngClass]="{'item-folder': data.object_type == 'Note::Folder', 'active': selected}">
   <div class="component-listbox-input">
     <i (click)="onClickMulti()" class="fa fa-check"></i>
   </div>
   <div class="component-listbox-name can-click" (click)="onClick()" (dblclick)="onView()">
     <span>
-      <i class="fa" [ngClass]="{'fa-folder-o': data.object_type == 'folder', 'fa-file': data.object_type == 'note'}"></i> {{ data.title || 'Untitled' }}
+      <i class="fa" [ngClass]="{'fa-folder-o': data.object_type == 'Note::Folder', 'fa-file': data.object_type == 'Note::Note'}"></i> {{ (data.name | maxLength: 100) || 'Untitled' }}
     </span>
   </div>
   <div class="component-listbox-owner can-click" (click)="onClick()" (dblclick)="onView()">
-    {{ data.user?.name }}
+    {{ ((userService.profile$ | async).uuid === data.user?.uuid) ? 'me' : data.user?.name }}
   </div>
   <div class="component-listbox-description can-click" (click)="onClick()" (dblclick)="onView()" [innerHTML]="data?.content">
   </div>
-  <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
-    {{ data.created_at | date: 'MMM dd yyyy' }}
+  <ng-container *ngIf="page !== noteConstants.PAGE_RECENT">
+    <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
+      {{ (DATE_MAP[sortOption?.field] ? data[sortOption?.field] : data.created_at) | timeFormat }}
+    </div>
+
+  </ng-container>
+
+  <div class="component-listbox-date can-click" *ngIf="page === noteConstants.PAGE_RECENT" (click)="onClick()" (dblclick)="onView()">
+    {{ (data.accessed_date | timeFormat ) + ', ' + noteConstants.ACCESS_NAME[data?.accessed_date_type] }}
   </div>
 
-  <div class="component-listbox-action" >
 
-    <z-note-shared-actions-bar *ngIf="page !== PAGE_TYPE.TRASH" class="action" [page]="page"
-                               [data]="data" [selectedObjects]="[data]"></z-note-shared-actions-bar>
+  <div class="component-listbox-action">
+    <z-note-shared-actions-bar *ngIf="page !== PAGE_TYPE.TRASH" class="action" [page]="page" [selectedObjects]="[data]" [toolbarPosition]="'inline'"></z-note-shared-actions-bar>
     <z-note-shared-trash-actions-bar [selectedObjects]="[data]" *ngIf="page === PAGE_TYPE.TRASH"></z-note-shared-trash-actions-bar>
   </div>
 </div>

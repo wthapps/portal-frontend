@@ -1,0 +1,40 @@
+@import '../../../../assets/styles/global';
+
+.list-import-wrapper {
+  > li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $line;
+    position: relative;
+    .d-flex {
+      @include align-items(center);
+    }
+    .ui-button-text {
+      display: none;
+    }
+  }
+  i {
+    font-size: 24px;
+  }
+  .list-import-text {
+    @include flex(1);
+    padding: 0 10px;
+  }
+  .ui-fileupload-choose{
+    border-width: 0 !important;
+    position: static !important;
+    input{
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+    }
+  }
+  .ui-button-icon-left{
+    position: relative;
+    top: auto;
+    margin: 0;
+  }
+}

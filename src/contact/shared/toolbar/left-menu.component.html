@@ -1,0 +1,39 @@
+<div class="menuleft-logo">
+  <img src="/assets/images_new/logo-contact.png" alt="">
+</div>
+
+<div class="menuleft-item" [ngClass]="{'active' : ( currentGroup === 'all contacts')}">
+  <a href="javascript:;" [routerLink]="['contacts', {group: 'all contacts'}]"
+     (click)="doEvent({action: 'contacts', event: $event})">
+    <i class="fa fa-address-book-o"></i> All Contacts ({{ (contactService.contacts).length }})
+  </a>
+</div>
+
+<ng-container *ngFor="let group of groups">
+  <div class="menuleft-item" [ngClass]="{'active' : (currentGroup === group?.name)}">
+    <a [routerLink]="['contacts', {group: group.name}]" (click)="doEvent({action: group?.action, event: $event})">
+      <i class="{{ group.icon }}"></i> {{ group.name }} ({{ group?.count }})
+    </a>
+    <div *ngIf="group.hasSubMenu" class="menuleft-item-action">
+      <span class="can-click"
+            (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
+            title="edit group name">
+        <i class="fa fa-pencil"></i>
+      </span>
+      <span class="can-click" (click)="deleteGroup(group)" title="delete group">
+        <i class="fa fa-trash"></i>
+      </span>
+    </div>
+  </div>
+</ng-container>
+
+<div class="menuleft-item">
+  <a href="javascript:;" (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})">
+    <i class="fa fa-plus"></i> New Group
+  </a>
+</div>
+<div class="menuleft-item" [routerLinkActive]="['active']">
+  <a [routerLink]="['/settings']" (click)="doEvent(null)" href="#">
+    <i class="fa fa fa-cog"></i> Settings
+  </a>
+</div>

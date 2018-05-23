@@ -1,0 +1,49 @@
+<!--<w-toolbar #toolbar-->
+           <!--[view]="view"-->
+           <!--[selectedObjects]="selectedObjects"-->
+           <!--[leftActionsTemplate]="leftActionsTemplate ? leftActionsTemplate : leftActionsDefaultTemplate"-->
+           <!--[objectActionsTemplate]="objectActionsTemplate"-->
+           <!--(event)="doEvent($event)">-->
+<!--</w-toolbar>-->
+<ng-content select="w-toolbar"></ng-content>
+
+<ng-container *ngIf="objects.length > 0">
+  <div class="page-body-content has-page-body-control gray-light"
+       infinite-scroll
+       [infiniteScrollDistance]="2"
+       [infiniteScrollThrottle]="500"
+       [scrollWindow]="scrollWindow"
+       (scrolled)="doEvent({action: 'getMore', payload: { nextLink: nextLink }})">
+
+    <div class="page-body-content-in">
+      <w-grid-list-header [data]="objects"
+                          [view]="view"
+                          [field]="sortBy"
+                          [direction]="sortOrder"
+                          (event)="doEvent($event)"></w-grid-list-header>
+      <div id="list-photo" class="row-img row-img-{{ viewSize }}" [ngClass]="view"
+           (dragenter)="onDragenter($event)" (dragleave)="onDragleave($event)">
+        <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">
+          <p class="m15 fz15" *ngIf="group.key && (view !== 'grid')">
+            {{ group.key | titleCase }}
+          </p>
+          <div *ngIf="group.value" class="clearfix">
+              <w-grid-list-item *ngFor="let item of group.value;"
+                                [type]="item.object_type"
+                                [object]="item"
+                                (event)="doEvent($event)">
+              </w-grid-list-item>
+          </div>
+            <w-grid-list-item *ngIf="group && !group.value"
+                              [type]="group.object_type"
+                              [object]="group"
+                              (event)="doEvent($event)">
+            </w-grid-list-item>
+        </div>
+      </div>
+    </div>
+    <!--<div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>-->
+  </div>
+</ng-container>
+<ng-content select="div"></ng-content>
+

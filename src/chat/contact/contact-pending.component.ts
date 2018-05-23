@@ -11,21 +11,25 @@ export class ZChatContactPendingComponent implements OnInit {
   contactItem: any;
   count: any;
 
-  constructor(private chatService: ChatService, private apiBaseService: ApiBaseService) {
-  }
+  constructor(
+    private chatService: ChatService,
+    private apiBaseService: ApiBaseService
+  ) {}
 
   ngOnInit() {
     this.contactItem = this.chatService.getConversations();
-    this.apiBaseService.post('zone/chat/contact/contact_tab_count').subscribe((res: any) => {
-      this.count = res.data;
-    });
+    this.apiBaseService
+      .post('zone/chat/contact/contact_tab_count')
+      .subscribe((res: any) => {
+        this.count = res.data;
+      });
   }
 
-  onAccept(contact:any) {
+  onAccept(contact: any) {
     this.chatService.acceptRequest(contact);
   }
 
-  onDecline(contact:any) {
+  onDecline(contact: any) {
     this.chatService.declineRequest(contact, false);
   }
 }

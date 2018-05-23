@@ -1,0 +1,90 @@
+@import '../../../../shared/scss/global';
+
+$component-name: auto;
+$component-owner: 200px;
+$component-email: 200px;
+$component-phone: 200px;
+$component-action: 320px;
+
+.component-listbox-list {
+  .component-listbox-name {
+    width: $component-name;
+  }
+
+  .component-listbox-owner {
+    width: $component-owner;
+  }
+
+  .component-listbox-email {
+    width: $component-email;
+  }
+
+  .component-listbox-phone {
+    width: $component-email;
+  }
+
+  .component-listbox-action {
+    width: 110px;
+    @media (min-width: $screen-sm-min) {
+      width: $component-action;
+    }
+  }
+}
+
+.component-listbox-action {
+  @include clearfix;
+  .page-body-control-menu {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    @include clearfix;
+    text-align: right;
+    > li {
+      display: inline-block;
+    }
+  }
+}
+
+.component-listbox-list {
+  .component-listbox-name {
+    .contact-listbox-block-link {
+      @include flexbox;
+      @include align-items(center);
+      .media-user {
+        margin-right: 5px;
+      }
+      span {
+        @include flex(1);
+      }
+    }
+  }
+  .component-listbox-description {
+    display: none !important;
+  }
+  .component-listbox-date {
+    display: none !important;
+  }
+
+  @media (max-width: $screen-xs-max) {
+    .component-listbox-email,
+    .component-listbox-phone {
+      display: none !important;
+    }
+    .component-listbox-input {
+      width: 40px;
+    }
+    .page-body-control-menu {
+      > li:not(.dropdown) {
+        display: none;
+        &:nth-child(2) {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .media-user {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}

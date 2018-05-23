@@ -20,14 +20,21 @@ import { MyPlansModule } from './plans/plans.module';
 import { MyAdminModule } from './admin/admin.module';
 import { WelcomeModule } from './welcome/welcome.module';
 import { MyAccountMyProfileModule } from './my-profile/my-profile.module';
-import { FooterModule } from '@wth/shared/components/footer/footer.module';
-
-
+import { FooterModule } from '@wth/shared/partials/footer/footer.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { environment } from '@env/environment';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { appReducers, metaReducers, appEffects } from './store';
+import { ConfirmationModule } from './confirmation/confirmation.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpClientModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
 
     AppRoutingModule,
     MyHomeModule,
@@ -40,11 +47,19 @@ import { FooterModule } from '@wth/shared/components/footer/footer.module';
     MyAdminModule,
     MyAccountMyProfileModule,
     WelcomeModule,
+    ConfirmationModule,
 
     FooterModule,
     MySharedModule.forRoot(),
     SharedModule.forRoot(),
-    CoreModule.forRoot(),  ],
+    SharedServicesModule.forRoot(),
+    CoreModule.forRoot(),
+    StoreModule.forRoot(appReducers, { metaReducers }),
+    EffectsModule.forRoot(appEffects),
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+      : []
+  ],
   declarations: [AppComponent],
   providers: [
     {
@@ -53,6 +68,5 @@ import { FooterModule } from '@wth/shared/components/footer/footer.module';
     }
   ],
   bootstrap: [AppComponent]
-
 })
-export class AppModule { }
+export class AppModule {}

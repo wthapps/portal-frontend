@@ -1,16 +1,41 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/merge';
+import 'rxjs/add/observable/merge';
 
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-
+import {
+  FormGroup,
+  FormBuilder,
+  FormControl,
+  Validators
+} from '@angular/forms';
 
 import { ChatService } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE } from '@wth/shared/constant';
-import { PhotoModalDataService } from '@wth/shared/services';
+import {
+  PhotoModalDataService,
+  PhotoUploadService,
+  ApiBaseService
+} from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
+import { Observable } from 'rxjs/Observable';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { takeUntil, filter, mergeMap, map } from 'rxjs/operators';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
+import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Store } from '@ngrx/store';
+import { log } from 'util';
+import { noteConstants } from '@notes/shared/config/constants';
+import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
+import { MessageService } from '@chat/shared/message/message.service';
 
 declare var $: any;
 
@@ -19,12 +44,12 @@ declare var $: any;
   templateUrl: 'message-editor.component.html',
   styleUrls: ['message-editor.component.scss']
 })
-
 export class MessageEditorComponent implements OnInit, OnDestroy {
+  @ViewChild(MiniEditor) editor: MiniEditor;
+  @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
+
   tooltip: any = Constants.tooltip;
-
   emojiData: any = [];
-
   mode: string;
   // Subscription list
   nextPhotoSubscription: Subscription;
@@ -38,9 +63,15 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   private pressingShiftKey: boolean = false;
   private messageEditorId = '#chat-message-text';
 
-  constructor(private chatService: ChatService,
-              private photoSelectDataService: PhotoModalDataService,
-              private fb: FormBuilder) {
+  constructor(
+    private chatService: ChatService,
+    // private photoSelectDataService: PhotoModalDataService,
+    private mediaSelectionService: WMediaSelectionService,
+    private apiBaseService: ApiBaseService,
+    private store: Store<any>,
+    private fb: FormBuilder,
+    private messageService: MessageService
+  ) {
     this.createForm();
   }
 
@@ -49,63 +80,61 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     // this.photoModal.action = 'UPLOAD';
   }
 
+  noteSelectOpen() {
+    this.notesListModal.open();
+  }
+  noteSelectOnInsert() {
+    this.store
+      .select('notes')
+      .take(1)
+      .subscribe(state => {
+        const notes: any = state.objects.filter(
+          item =>
+            item.object_type == noteConstants.OBJECT_TYPE.NOTE &&
+            item.selected == true
+        );
+        this.notesListModal.close();
+        notes.forEach(note => {
+          this.apiBaseService
+            .post('zone/chat/message', {
+              data: {
+                type: 'file',
+                id: note.object_id,
+                object: note.object_type
+              },
+              group_id: this.chatService.getContactSelect().value.group_id
+            })
+            .subscribe(res => {
+              // Not implements because channel will get message automacticaly
+            });
+        });
+      });
+  }
+
   createForm() {
     // Form controls
-    // this.message.message = '';
     this.messageEditorForm = new FormGroup({
-      message: new FormControl(this.message.message, Validators.required)//[this.message.message, null]
-      // message: [this.message.message, Validators.required]//[this.message.message, null]
-
+      message: new FormControl(this.message.message, Validators.required) //[this.message.message, null]
     });
     this.messageCtrl = <FormControl>this.messageEditorForm.controls['message'];
   }
 
-  @HostListener('document:keydown', ['$event'])
-  onKeyDown(ev: KeyboardEvent) {
-
-    // if pressing Shift key
-    if (ev.keyCode == 16) {
-      this.pressingShiftKey = true;
-      // this.keyCtrlClass = 'active';
-    }
-
-    if (ev.keyCode == 13) {
-      if (!this.pressingShiftKey) {
-        ev.preventDefault();
-      }
-    }
-  }
-
-  @HostListener('document:keyup', ['$event'])
-  onKeyUp(ev: KeyboardEvent) {
-    if (ev.keyCode == 16) {
-      this.pressingShiftKey = false;
-    }
-    // pressed Enter Key
-    if (ev.keyCode == 13) {
-      if (!this.pressingShiftKey) {
-        // if (!this.pressingShiftKey && this.messageEditorForm.valid) {
-
-        this.send(true);
-      }
-    }
-
-    // pressed ESC
-    if (ev.keyCode == 27) {
+  handleKeyUp(e: any) {
+    if (e.keyCode === 13) {
+      this.send(true);
+    } else if (e.keyCode === 27) {
       this.cancelEditingMessage();
+      return;
     }
   }
-
 
   create(message: any) {
     this.mode = FORM_MODE.CREATE;
   }
 
-
   edit(message: any) {
     this.mode = FORM_MODE.EDIT;
   }
-
 
   updateAttributes(attributes: any) {
     if ('message' in attributes) {
@@ -136,29 +165,24 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   send(enter?: boolean) {
-
-    let message: string = $(this.messageEditorId).html();
-
-    if (enter) {
-      // message = message.replace('<div><br></div>', '');
-    }
-    this.message.message = message;
-
     if (this.mode == FORM_MODE.EDIT) {
-      this.chatService.updateMessage(this.message.group_id, this.message).subscribe(
-        (response: any) => {
+      this.chatService
+        .updateMessage(this.message.group_id, this.message)
+        .subscribe((response: any) => {
           this.mode = FORM_MODE.CREATE;
           this.resetEditor();
         });
     } else {
-      this.chatService.sendTextMessage(this.message.message, {toTop: true});
+      this.messageService.scrollToBottom();
+      this.chatService.sendTextMessage(this.message.message, { toTop: true });
       this.resetEditor();
     }
   }
 
   onEmojiClick(e: any) {
-    $('#chat-message-text').append(`${e.replace(/\\/gi, '')}`);
-    this.placeCaretAtEnd(document.getElementById('chat-message-text'));
+    // $('#chat-message-text').append(`${e.replace(/\\/gi, '')}`);
+    this.editor.addEmoj(`${e.replace(/\\/gi, '')}`);
+    // this.placeCaretAtEnd(document.getElementById('chat-message-text'));
   }
 
   onChangeValue(event: any) {
@@ -166,10 +190,24 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   onOpenSelectPhotos() {
-    // this.photoModal.open();
-    this.photoSelectDataService.open('');
+    this.mediaSelectionService.open();
+    this.mediaSelectionService.setMultipleSelection(true);
 
-    this.subscribePhotoEvents();
+    let close$: Observable<any> = Observable.merge(
+      this.mediaSelectionService.open$,
+      componentDestroyed(this)
+    );
+    this.mediaSelectionService.selectedMedias$
+      .pipe(takeUntil(close$), filter((items: any[]) => items.length > 0))
+      .subscribe(photos => {
+        this.chooseDone(photos);
+      });
+
+    this.mediaSelectionService.uploadingMedias$
+      .pipe(takeUntil(close$), map(([file, dataUrl]) => [file]))
+      .subscribe((photos: any) => {
+        this.uploadFile(photos);
+      });
   }
 
   chooseDone(e: any) {
@@ -191,12 +229,12 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     this.chatService.createUploadingFile(files);
   }
 
-
-
   placeCaretAtEnd(el: any) {
     el.focus();
-    if (typeof window.getSelection != 'undefined'
-      && typeof document.createRange != 'undefined') {
+    if (
+      typeof window.getSelection != 'undefined' &&
+      typeof document.createRange != 'undefined'
+    ) {
       let range: any = document.createRange();
       range.selectNodeContents(el);
       range.collapse(false);
@@ -208,35 +246,6 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unsubscribePhotoEvents();
-  }
-
-  private subscribePhotoEvents() {
-
-    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.closeObs$);
-    // Subscribe actions corresponding with photo modal actions
-
-    if (this.notAssignedSubscription(this.nextPhotoSubscription)) {
-      this.nextPhotoSubscription = this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
-        (photos: any) => {
-          this.chooseDone(photos);
-          // this.uploadPhoto(photos);
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
-    }
-
-    if (this.notAssignedSubscription(this.uploadPhotoSubscription)) {
-      this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$.takeUntil(closeObs$).subscribe(
-        (photos: any) => {
-          this.uploadFile(photos);
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
-    }
   }
 
   private buildQuoteMessage(message: any): string {
@@ -253,10 +262,10 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   private unsubscribePhotoEvents() {
-    [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub: Subscription) => {
-      if (sub && !sub.closed)
-        sub.unsubscribe();
-    });
+    // [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub: Subscription) => {
+    //   if (sub && !sub.closed)
+    //     sub.unsubscribe();
+    // });
   }
 
   private resetEditor() {

@@ -1,0 +1,41 @@
+<div class="page-body-content gray-light">
+  <div class="page-body-content-in zone-social">
+    <div class="zone-social-in">
+      <div class="news-list">
+        <ng-container *ngIf="!feedLoading; else loadingBlock">
+          <div class="news-item" *ngFor="let feed of feeds">
+          <div class="news-item-header">
+            <div class="news-item-nav">
+              <span>{{feed.feed_link_name}}</span> • <span>{{feed.published_date | timeFormat}}</span>
+            </div>
+            <div class="news-item-action">
+              <button (click)="openModalShare(feed)" class="btn btn-default"><i class="fa fa-share-alt"></i></button>
+            </div>
+          </div>
+          <div class="news-item-content">
+            <div class="news-item-body">
+              <div class="news-item-heading">
+                <a target="_blank" rel="nofollow"
+                   [href]="feed.link">
+                  {{feed.title}}
+                </a>
+              </div>
+              <div class="news-item-text">{{feed.description}}</div>
+            </div>
+          </div>
+        </div>
+        </ng-container>
+
+      </div>
+    </div>
+    <div class="zone-social-sidebar">
+      <app-social-shared-news-feed [channels]="channels" (events)="doEvents($event)" *ngIf="!channelLoading; else loadingBlock"></app-social-shared-news-feed>
+    </div>
+  </div>
+</div>
+<so-post-edit #postEditModal [link]="link" [showTag]="false" [showAddPhotosButton]="false" (saved)="save($event)" (dismissed)="dismiss($event)"></so-post-edit>
+<!-- <app-social-news-share #modalShare></app-social-news-share> -->
+
+<ng-template #loadingBlock>
+  <box-loading></box-loading>
+</ng-template>

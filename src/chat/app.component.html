@@ -1,20 +1,16 @@
 <div class="wrapper">
-  <wth-header-navbar class="header">
-    <div class="header-nav-left">
-      <a [routerLink]="['/']" class="navbar-brand" href="#">
-        <img src="/assets/images_new/logo.png" alt="WTHApps">
-      </a>
-      <chat-shared-header></chat-shared-header>
-    </div>
-  </wth-header-navbar>
+  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
+    <chat-shared-header class="header-nav-left"></chat-shared-header>
+  </w-header>
   <main class="main">
     <div class="main-page-left">
       <aside class="main-page-left-in aside-menu">
-        <z-shared-menu></z-shared-menu>
+        <z-shared-menu>
+          <z-chat-share-sidebar></z-chat-share-sidebar>
+        </z-shared-menu>
       </aside>
     </div>
     <div class="main-page-body">
-      <z-chat-share-sidebar class="main-page-left"></z-chat-share-sidebar>
       <router-outlet></router-outlet>
       <router-outlet name="modal"></router-outlet>
     </div>
@@ -25,5 +21,16 @@
 
 </div>
 
-<h-file-select></h-file-select>
-<h-file-select-crop></h-file-select-crop>
+<!--<h-file-select></h-file-select>-->
+<h-file-select-crop [useNewPhotoSelect]="true"></h-file-select-crop>
+<w-media-selection></w-media-selection>
+<wth-introduction #introduction
+  [after]="{chat: true}"
+  [data]="[
+  {
+    title: 'Welcome to WTH!Chat',
+    icon: '../../assets/icons/chat-50x50.png',
+    content: 'WTH!Chat allows you send message to your friends and family'
+  }
+  ]">
+</wth-introduction>

@@ -2,15 +2,13 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { PostListComponent } from '../../shared/second-routes/post/post-list.component';
 import { PostNewComponent } from '../../shared/second-routes/post/post-new.component';
 import { ZSocialProfileDataService } from '../profile-data.service';
-import { UserService } from '@wth/shared/services';
+import { AuthService, UserService } from '@wth/shared/services';
 
 
 @Component({
-  moduleId: module.id,
   selector: 'z-social-profile-post',
   templateUrl: 'post.component.html'
 })
-
 export class ZSocialProfilePostComponent implements OnInit {
   @ViewChild('posts') posts: PostListComponent;
   @ViewChild('postNew') postNew: PostNewComponent;
@@ -18,14 +16,14 @@ export class ZSocialProfilePostComponent implements OnInit {
   uuid: any;
   userInfo: any;
   relationships: any;
+  canCreate: boolean;
 
-  constructor(private profileDataService: ZSocialProfileDataService,
-              private userService: UserService) {
-  }
+  constructor(public authService: AuthService, private profileDataService: ZSocialProfileDataService) { }
 
   ngOnInit() {
     this.profileDataService.profileData$.subscribe((res: any) => {
-      this.userInfo = res.data;
+      this.userInfo = res.userInfo;
+      this.canCreate = (this.userInfo && this.authService.user && this.userInfo.uuid === this.authService.user.uuid);
       this.relationships = res.relationships;
     });
   }

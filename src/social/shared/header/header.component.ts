@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { TextBoxSearchComponent } from '@wth/shared/shared/components/header/search/components/textbox-search.component';
-import { ServiceManager } from '@wth/shared/services';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { TextBoxSearchComponent } from '@wth/shared/partials/search-box/textbox-search.component';
+import { ApiBaseService } from '@wth/shared/services';
 
-declare var _:any;
+declare var _: any;
 
 /**
  * This class represents the navigation bar component.
@@ -18,23 +17,46 @@ export class ZSocialSharedHeaderComponent implements OnInit {
   suggestions: any = [];
   show: boolean = false;
   search: string;
+  searchAdvanced: boolean = false;
+  objectType: any;
+
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
-  constructor(private router: Router, private route: ActivatedRoute, private location: Location,
-              public serviceManager: ServiceManager) {
-
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private api: ApiBaseService) {
   }
 
   ngOnInit() {
-
     this.route.queryParams.subscribe((params: Params) => {
       this.search = params['q'];
     });
   }
 
+  onSearchAdvanced(e: any) {
+    this.searchAdvanced = e.searchAdvanced;
+  }
+
+  clickedInside($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();  // <- that will stop propagation on lower layers
+  }
+
+  onEscape(e?: any) {
+    this.show = false;
+  }
+
   onEnter(e: any) {
     this.show = false;
-    this.router.navigate(['search','all'], {queryParams: {q: e.search}});
+    let paths = location.pathname.toString().split('/');
+    let term = 'all';
+    if (paths[1] === 'search' && paths[2] !== '') {
+      term = paths[2].split(';')[0];
+    }
+    // console.log('actived link:::', this.router.isActive(this.router.createUrlTree(['search', term]), true));
+    this.router.createUrlTree(['search', term]);
+    this.router.navigate(['/search', term, {q: this.search}], {queryParams: {q: this.search}});
   }
 
   onKey(e: any) {
@@ -44,13 +66,12 @@ export class ZSocialSharedHeaderComponent implements OnInit {
     }
     this.show = true;
     this.search = e.search;
-    this.serviceManager.getApi().post(`zone/social_network/search`, {
+    this.api.post(`zone/social_network/search`, {
       q: `${this.search}`,
-      types: ['member', 'community']
+      types: ['members', 'communities']
     }).subscribe(
       (res: any) => {
         this.suggestions.length = 0;
-        console.log(res);
         if (res.data.communities || res.data.members) {
           this.suggestions = _.concat(res.data['members'], res.data['communities']);
         }
@@ -62,9 +83,9 @@ export class ZSocialSharedHeaderComponent implements OnInit {
     this.show = false;
 
     if (data.user_name) {
-      this.serviceManager.getRouter().navigate([`/profile/${data.uuid}`]);
+      this.router.navigate([`/profile/${data.uuid}`]);
     } else if (data.admin) {
-      this.serviceManager.getRouter().navigate([`/communities/${data.uuid}`]);
+      this.router.navigate([`/communities/${data.uuid}`]);
     }
   }
 }

@@ -1,4 +1,4 @@
-@import "../../shared/scss/global";
+@import '../../shared/scss/global';
 
 .box-pricing-list {
   @include clearfix;
@@ -18,14 +18,14 @@
     border-radius: 4px;
     background-color: #ffffff;
     overflow: hidden;
-    border: 1px solid #D8D8D8;
-    @include box-shadow(0 2px 4px 0 rgba(74, 74, 74, 0.40));
+    border: 1px solid #d8d8d8;
+    @include box-shadow(0 2px 4px 0 rgba(74, 74, 74, 0.4));
     text-align: center;
   }
 }
 
 .pricing-item-header {
-  background-color: #9B9B9B;
+  background-color: #9b9b9b;
   color: #ffffff;
   @include border-top-radius(3px);
   font-size: 24px;
@@ -36,7 +36,7 @@
 
 .pricing-pro {
   .pricing-item-header {
-    background-color: #434A54;
+    background-color: #434a54;
   }
 }
 
@@ -57,7 +57,7 @@
     display: table-cell;
     width: 500px;
     vertical-align: middle;
-    background-color: #F7F7F7;
+    background-color: #f7f7f7;
     padding: 0 10px;
   }
   .list-styled {
@@ -96,7 +96,7 @@
         width: 20%;
       }
       @media (max-width: $screen-xs-max) {
-        &:nth-child(2n+1) {
+        &:nth-child(2n + 1) {
           clear: both;
         }
       }

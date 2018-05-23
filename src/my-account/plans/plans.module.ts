@@ -4,22 +4,17 @@ import { MySharedModule } from '../shared/shared.module';
 import { MyPlansComponent } from './plans.component';
 import { MyPlansService } from './plans.service';
 import { SharedModule } from '@wth/shared/shared.module';
-
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
     MyPlansRoutingModule,
     MySharedModule.forRoot(),
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    SharedServicesModule.forRoot()
   ],
-  declarations: [
-    MyPlansComponent
-  ],
-  exports: [
-    MyPlansComponent
-  ],
+  declarations: [MyPlansComponent],
+  exports: [MyPlansComponent],
   providers: [MyPlansService]
 })
-
-export class MyPlansModule {
-}
+export class MyPlansModule {}

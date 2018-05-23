@@ -1,0 +1,210 @@
+<div class="panel panel-default social-news-feeds">
+  <div class="panel-heading">
+    <div class="panel-heading-action">
+      <button (click)="openNewModal()" class="btn btn-default" type="button">
+        <i class="fa fa-plus"></i>
+      </button>
+      <button (click)="modalEdit.open()" class="btn btn-default" type="button">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
+    <h3 class="panel-title">News feeds</h3>
+  </div>
+  <div class="panel-body">
+
+    <div class="accordion-menu">
+
+      <div class="accordion-menu-header" [routerLinkActive]="['active']">
+        <a class="accordion-menu-icon" [routerLink]="['/news']" [queryParams]="{ q: 'category::all'}" href="#">
+          <i class="fa fa-newspaper-o"></i> &nbsp;
+        </a>
+        <a class="accordion-menu-text" [routerLink]="['/news']" [queryParams]="{ q: 'category::all'}" href="#">
+          All news
+        </a>
+      </div>
+
+      <ng-container *ngFor="let category of channels | groupBy :'category'">
+        <div class="accordion-menu-header" [routerLinkActive]="['active']">
+          <a class="accordion-menu-icon" data-toggle="collapse" href="#collapseFeed-{{ category.key | freeSpace }}">
+            <i class="fa fa-chevron-right"></i>
+          </a>
+
+          <a class="accordion-menu-text" [routerLink]="['/news']" [queryParams]="{ q: 'category::' + category.key}"
+             href="#">
+            {{(category.key || 'Invalid Link') | titleCase}}
+          </a>
+        </div>
+        <div class="accordion-menu-body collapse in" id="collapseFeed-{{ category.key | freeSpace }}">
+          <ul class="list-unstyled">
+            <li *ngFor="let channel of category.value">
+              <a [routerLink]="['/news']" [queryParams]="{ q: 'feed_link_id::' + channel.id}"
+                 [routerLinkActive]="['active']" href="#">
+                <img [src]="channel.logo || '/assets/images/thumbnail/image_default.png'" alt="" style="width: 20px; height: 20px">
+                <span>{{channel.name || (channel.link | maxLength:15)}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+    </div>
+
+  </div>
+</div>
+
+
+<bs-modal #modalNew [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Add Source</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p>Choose which channel you want to keep update with. You can search for news source by name or category</p>
+
+    <div class="form-group">
+      <div class="row row-10">
+        <div class="col-sm-8">
+          <textbox-search #textbox (onEnterEvent)="onEnter($event)"
+                          (onEscapeEvent)="onEscape($event)"
+                          (onKeyUpEvent)="onKey($event)"
+                          [placeholder]="'Search something'">
+          </textbox-search>
+        </div>
+        <div class="col-sm-4">
+          <select name="name" class="form-control" [(ngModel)]="newSelectedCategory">
+            <option value="all"> -- All Categories --</option>
+            <option *ngFor="let category of categories" [value]="category.name">
+              {{ category.name | titleCase }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="social-news-feeds-setting">
+
+      <ng-container *ngIf="addChannels;else templateLoading">
+        <div *ngIf="addChannels.length == 0">
+          <h4>
+            No search result match
+          </h4>
+          <div class="text-fade">
+            <p>Here are some suggestions:</p>
+            <ul>
+              <li>Make sure all words are spelled correctly.</li>
+              <li>Try different keywords.</li>
+              <li>Try more general keywords.</li>
+              <li>Source may not available.</li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="addChannels.length > 0">
+          <ng-container *ngFor="let channel of addChannels" >
+            <div class="media" *ngIf="newSelectedCategory == 'all' || channel.category == newSelectedCategory">
+              <div class="media-left">
+                <span class="avatar-xs"><img [src]="channel.logo || '/assets/images/thumbnail/image_default.png'" alt=""></span>
+              </div>
+              <div class="media-body">
+                <h5 class="media-heading m0">
+                  <a class="link-text" href="#">{{channel.name || channel.link}}</a>
+                </h5>
+                <small class="text-fade text-capitalize">
+                  {{ channel.category || 'Invalid Link'}}
+                </small>
+              </div>
+              <div class="media-right">
+                <button class="btn btn-sm btn-outline-default" type="button" (click)="toogleFollow(channel)">{{channel.subscription == null? 'Follow': 'Following'}}</button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <ng-template #templateLoading>
+        <box-loading></box-loading>
+      </ng-template>
+    </div>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSave()">Done</button>
+  </bs-modal-footer>
+</bs-modal>
+
+
+<bs-modal #modalEdit [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Edit Source</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p>Choose which channel you want to keep update with. You can search for news source by name or category</p>
+
+    <div class="form-group">
+      <div class="row row-10">
+        <div class="col-sm-8">
+          <textbox-search (onEnterEvent)="onEnter($event)"
+                          (onEscapeEvent)="onEscape($event)"
+                          (onKeyUpEvent)="onEditKey($event)"
+                          [placeholder]="'Search something'">
+          </textbox-search>
+        </div>
+        <div class="col-sm-4">
+          <select name="name" class="form-control" [(ngModel)]="editSelectedCategory">
+            <option value="all"> -- All Categories --</option>
+            <option *ngFor="let category of channels | groupBy :'category'" [value]="category.key">
+              {{ (category.key | titleCase) || 'Invalid Link' }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="social-news-feeds-setting">
+
+      <ng-container *ngIf="channels;else templateLoading">
+        <div *ngIf="channels.length == 0">
+          <h4>
+            No search result match
+          </h4>
+          <div class="text-fade">
+            <p>Here are some suggestions:</p>
+            <ul>
+              <li>Make sure all words are spelled correctly.</li>
+              <li>Try different keywords.</li>
+              <li>Try more general keywords.</li>
+              <li>Source may not available.</li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="channels.length > 0">
+          <ng-container *ngFor="let category of editChannels | groupBy :'category'">
+            <ng-container *ngFor="let channel of category.value">
+              <!-- To check invaild category (!category.key && editSelectedCategory == 'undefined') -->
+              <div class="media" *ngIf="(!category.key && editSelectedCategory == 'undefined') || editSelectedCategory == 'all' || channel.category == editSelectedCategory">
+                <div class="media-left">
+                  <span class="avatar-xs"><img [src]="channel.logo || '/assets/images/thumbnail/image_default.png'" alt=""></span>
+                </div>
+                <div class="media-body">
+                  <h5 class="media-heading m0">
+                    <a class="link-text" href="#">{{channel.name || channel.link}}</a>
+                  </h5>
+                  <small class="text-fade text-capitalize">
+                    {{ category.key || 'Invalid Link'}}
+                  </small>
+                </div>
+                <div class="media-right">
+                  <!-- <button class="btn btn-sm btn-outline-default" type="button">Following</button> -->
+                  <button class="btn btn-sm btn-outline-default" type="button" (click)="toogleFollow(channel)">{{channel.subscription == null? 'Follow': 'Following'}}</button>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <ng-template #templateLoading>
+        <box-loading></box-loading>
+      </ng-template>
+
+
+    </div>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSave()">Done</button>
+  </bs-modal-footer>
+</bs-modal>

@@ -15,5 +15,4 @@ import { AuthGuard } from '@wth/shared/services';
   ],
   exports: [RouterModule]
 })
-export class ZNoteSearchRoutingModule {
-}
+export class ZNoteSearchRoutingModule {}

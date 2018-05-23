@@ -1,22 +1,37 @@
  import { Injectable } from '@angular/core';
- import { ApiBaseService } from '@wth/shared/services';
+ import { ApiBaseService, BaseEntityService } from '@wth/shared/services';
+ import {Observable} from "rxjs/Observable";
 
 declare var _: any;
 const MEDIA_PATH:string = 'media';
 
 
 @Injectable()
-export class MediaObjectService {
+export class MediaObjectService extends BaseEntityService<any> {
 
   path = 'media';
-
-  constructor(private api: ApiBaseService) {
+  url = 'media';
+  constructor(protected api: ApiBaseService) {
+    super(api);
   }
 
   getObjects(path: string, queryString?: any): any {
     console.log('this path', path, queryString);
     this.path = `${MEDIA_PATH}/${path}`;
     return this.api.get(this.path, queryString).take(1); // This subscription should take 1 input ONLY
+  }
+
+  update(
+    body: any,
+    multiple: boolean = false,
+    path: string = ''
+  ): Observable<any> {
+    const url = path === '' ? this.url : `${this.url}/${path}`;
+    if (multiple) {
+      return this.apiBaseService.put(`${url}/multiple`, body);
+    } else {
+      return this.apiBaseService.put(`${url}/${body.uuid}`, body);
+    }
   }
 
   // Delete multiple objects: photos, albums
@@ -65,8 +80,19 @@ export class MediaObjectService {
     return this.api.post('media/media/favourite', body);
   }
 
+  favorite(body: any): any {
+    return this.api.post('media/favorites/favorite', body);
+  }
+
+  unfavorite(body: any): any {
+    return this.api.post('media/favorites/unfavorite', body);
+  }
+
   download(body: any): any {
     return this.api.download('media/files/download', body);
   }
 
+  getAllFavorite(queryString?: any): any {
+    return this.api.get('media/favorites', queryString).take(1); // This subscription should take 1 input ONLY
+  }
 }

@@ -8,7 +8,6 @@ import { fadeInAnimation } from '../../shared/shared/animations/route.animation'
   styleUrls: ['pricing.component.scss'],
   animations: [fadeInAnimation]
 })
-
 export class PricingComponent {
   @HostBinding('@fadeInAnimation') fadeInAnimation = true;
 }

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeUntil';
@@ -8,57 +8,63 @@ import { LoadingService } from '../../loading/loading.service';
 
 import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
+import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { take, takeUntil, switchMap, filter } from 'rxjs/operators';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 @Component({
-    selector: 'cover-profile',
-  templateUrl: 'cover-profile.component.html'
+  selector: 'cover-profile',
+  templateUrl: 'cover-profile.component.html',
+  styleUrls: ['cover-profile.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class CoverProfileComponent {
+export class CoverProfileComponent implements OnDestroy {
   @Input() item: any;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  closeObs$: Observable<any>;
-  nextPhotoSubscription: Subscription;
-  uploadPhotoSubscription: Subscription;
-
   constructor(private loadingService: LoadingService,
-              private photoSelectDataService: PhotoModalDataService,
-              private photoUploadService: PhotoUploadService) {
+              // private photoSelectDataService: PhotoModalDataService,
+              private mediaSelectionService: WMediaSelectionService,
+              private photoUploadService: PhotoUploadService,
+              private objectListService: WObjectListService) {
+ }
 
-    this.closeObs$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.dismissObs$, this.photoSelectDataService.openObs$);
+  ngOnDestroy() {
+
   }
-
 
   /*
    selectPhoto function Should work when there is 1 PhotoDataSelectComponent available in current view
    */
   selectPhoto(callback: any, loadingId?: string) {
-    this.photoSelectDataService.open({'multipleSelect': false});
-    this.nextPhotoSubscription = this.photoSelectDataService.nextObs$
-      .take(1) // User can only select 1 photo to change profile avatar / cover image
-      .takeUntil(this.closeObs$).subscribe(
-        (photo: any) => {
-          callback(photo);
-        }, (err: any) => console.error('cover profile selectPhoto error: ', err));
+    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
 
-    this.uploadPhotoSubscription = this.photoSelectDataService.uploadObs$
-      .take(1)
-      .takeUntil(this.closeObs$)
-      .switchMap((photos: any) => {
+    this.mediaSelectionService.setMultipleSelection(false);
+    this.mediaSelectionService.open();
+    this.mediaSelectionService.selectedMedias$.pipe(
+      takeUntil(close$),
+      filter((items: any[]) => items.length > 0)
+    ).subscribe((items) => {
+      if (items.length > 0)
+        callback(items);
+    }, (err: any) => console.error('cover profile selectPhoto error: ', err));
+
+    this.mediaSelectionService.uploadingMedias$.pipe(
+      takeUntil(close$),
+      switchMap(([file, dataUrl]) => {
         this.loadingService.start(loadingId);
-        return this.photoUploadService.uploadPhotos(photos);
+        return this.photoUploadService.uploadPhotos([file]);
       })
-      .subscribe(
-        (res: any) => {
-          callback([res.data]);
-          this.loadingService.stop(loadingId);
-        }, (err: any) => this.loadingService.stop(loadingId));
+    ).subscribe(res => {
+      callback([res.data]);
+      this.loadingService.stop(loadingId);
+    }, err => this.loadingService.stop(loadingId));
   }
 
 
   changeProfileImage(event: any) {
-    console.log('chnage Avatar image');
-    // this.loadingService.start('#profile_image');
+    console.log('change Avatar image');
     let loadingId: string = '#profile_image';
     this.selectPhoto((photos: any) => {
       // Update avatar image

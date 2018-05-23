@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalModule } from 'ng2-bs3-modal';
 
 import { MySharedMenuComponent } from './menu/menu.component';
 import { SubscriptionEditModalComponent } from './subscription/modal/subscription-edit-modal.component';
@@ -18,8 +18,7 @@ import { AccountService } from './account/account.service';
 import { SubscriptionService } from './subscription/subscription.service';
 import { SharedModule } from '@shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
+import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -33,8 +32,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RouterModule,
     BrowserAnimationsModule,
 
-    Ng2Bs3ModalModule,
-    SharedModule.forRoot()
+    BsModalModule,
+    SharedModule
   ],
   declarations: [
     MySharedMenuComponent,
@@ -64,10 +63,7 @@ export class MySharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: MySharedModule,
-      providers: [
-        AccountService,
-        SubscriptionService
-      ]
+      providers: [AccountService, SubscriptionService]
     };
   }
 }

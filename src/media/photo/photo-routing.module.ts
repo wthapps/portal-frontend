@@ -7,11 +7,24 @@ import { PhotoDetailComponent } from './photo-detail.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'photos', component: ZMediaPhotoListComponent, canActivate: [AuthGuard]},
-      {path: 'photos/:id', component: PhotoDetailComponent, outlet: 'modal', canActivate: [AuthGuard]},
+      {
+        path: 'photos',
+        component: ZMediaPhotoListComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'photos/:id',
+        component: PhotoDetailComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'photos/:id',
+        component: PhotoDetailComponent,
+        outlet: 'modal',
+        canActivate: [AuthGuard]
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class ZMediaPhotoRoutingModule {
-}
+export class ZMediaPhotoRoutingModule {}

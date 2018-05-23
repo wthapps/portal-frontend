@@ -1,21 +1,22 @@
 import { Component } from '@angular/core';
-import { UserService } from '../../../shared/services/user.service';
-import { Constants } from '../../../shared/constant/config/constants';
+import { AuthService } from '@shared/services';
+import { Observable } from 'rxjs/Observable';
+import { Constants } from '@shared/constant';
 
 /**
  * This class represents the navigation bar component.
  */
 @Component({
-  selector: 'portal-header',
+  moduleId: module.id,
+  selector: 'portal-shared-header',
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.scss'],
 })
-export class PortalHeaderComponent {
+export class PortalSharedHeaderComponent {
   logoUrl: string = Constants.baseUrls.cdn + '/logo/logo.png';
-  isLoggedIn:boolean = false;
+  loggedIn$: Observable<boolean>;
 
-  constructor(private userService: UserService) {
-    console.log('cdn link:::', Constants.baseUrls.cdn);
-    this.isLoggedIn = this.userService.loggedIn;
+  constructor(private authService: AuthService) {
+    this.loggedIn$ = this.authService.loggedIn$;
   }
 }

@@ -1,0 +1,148 @@
+@import "../../../assets/styles/global";
+@import '~dropzone/dist/min/dropzone.min.css';
+
+.modal-media-search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  padding: 10px 15px;
+  background-color: #ffffff;
+  .modal-media-search-in {
+    position: relative;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.modal-media-selection {
+
+  .btn-search {
+    margin: -5px 15px -15px;
+  }
+  .nav-tabs-wrap {
+    margin: -15px;
+    padding: 0 15px;
+  }
+  .modal-body {
+    padding: 0;
+  }
+  .media-selection-toolbar {
+    padding: 5px 15px;
+    position: relative;
+    @include clearfix;
+    @include box-shadow($box-shadow-bottom-sm);
+    .media-selection-toolbar-left {
+      ul {
+        margin: 0;
+        li {
+          display: inline-block;
+          &.divider {
+            margin: 0 10px 0 0;
+            padding-right: 10px;
+            border-right: 1px solid $text-color;
+          }
+        }
+      }
+    }
+  }
+  .media-selection-content {
+    height: 400px;
+    position: relative;
+    @include flexbox();
+    @include justify-content(space-around);
+    .wobject-view {
+      @include flex(1);
+    }
+  }
+
+  .wobject-selected-bar {
+    @include border-top-radius(5px);
+  }
+
+  //.wobject-box-name {
+  //  position: relative;
+  //  span {
+  //    @include flexbox();
+  //    width: 100%;
+  //    overflow: hidden;
+  //    -ms-text-overflow: ellipsis;
+  //    text-overflow: ellipsis;
+  //    white-space: nowrap;
+  //  }
+  //}
+
+  @media (min-width: $screen-md-min) {
+    width: $container-md;
+  }
+
+  @media (max-width: $screen-xs-max) {
+    .nav-tabs-wrap {
+      margin-top: -5px;
+      margin-bottom: -5px;
+    }
+    .wobject-list {
+      .wobject-owner, .wobject-create-date, .wobject-file-size, .wobject-wobject-action {
+        display: none;
+      }
+    }
+  }
+
+}
+
+.media-selection-upload-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  .dropzone-container > {
+    .dropzone {
+      &.dz-wrapper {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 0;
+        .dz-message {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          margin: 0;
+          max-width: none;
+          width: 100%;
+          padding: 0;
+          border-width: 0;
+          font-size: $font-size-base;
+          display: block !important;
+        }
+        .dz-text {
+          font-size: 16px;
+          color: #a1a1a1;
+
+          h3 {
+            margin-top: 0;
+            font-size: 30px;
+            i {
+              font-size: 120px;
+            }
+            span {
+              display: block;
+            }
+          }
+          div {
+            margin: 20px 0 0;
+          }
+        }
+        .dz-preview {
+          display: none;
+        }
+      }
+    }
+  }
+}

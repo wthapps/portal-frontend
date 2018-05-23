@@ -10,10 +10,7 @@ import { SupportRoutingModule } from './support-routing.module';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [
-    SupportRoutingModule,
-    PortalSharedModule.forRoot()
-  ],
+  imports: [SupportRoutingModule, PortalSharedModule],
   declarations: [
     SupportComponent,
     SupportProductComponent,
@@ -21,10 +18,6 @@ import { PortalSharedModule } from '../shared/shared.module';
     SupportLegalComponent,
     SupportSecurityComponent
   ],
-  exports: [
-    SupportComponent
-  ]
+  exports: [SupportComponent]
 })
-
-export class SupportModule {
-}
+export class SupportModule {}

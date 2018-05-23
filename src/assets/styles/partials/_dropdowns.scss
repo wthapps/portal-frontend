@@ -19,6 +19,10 @@
       }
     }
   }
+  &.dropup-menu {
+    bottom: 100%;
+    top: auto;
+  }
 }
 
 .dropdown-menu-min-width {

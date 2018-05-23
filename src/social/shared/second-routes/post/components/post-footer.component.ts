@@ -7,9 +7,6 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
-
 import {
   DeleteCommentEvent,
   CancelEditCommentEvent,
@@ -25,16 +22,13 @@ import { PhotoService, UserService } from '@shared/services';
 import { Constants } from '@wth/shared/constant';
 
 declare var _: any;
-declare var $: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'so-post-footer',
   templateUrl: 'post-footer.component.html',
 })
-
 export class PostFooterComponent implements OnChanges {
-
+  @Input() user: any;
   @Input() item: SoPost;
   @Input() type: string;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
@@ -49,14 +43,10 @@ export class PostFooterComponent implements OnChanges {
     onShowPhotoDetail: 7
   };
 
-  // hasLike: boolean = false;
-  // hasDislike: boolean = false;
   showInfo: boolean = false;
-  // showComments: boolean = false;
   totalComment: number = 1;
   commentPageIndex: number = 0;
   loadingDone: boolean = false;
-  user$: Observable<any>;
   readonly commentLimit: number = Constants.soCommentLimit;
 
   tooltip: any = Constants.tooltip;
@@ -66,24 +56,27 @@ export class PostFooterComponent implements OnChanges {
               public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
-    this.user$ = this.userService.profile$;
   }
 
   ngOnChanges(data: any) {
     if (this.type == 'info') {
       this.showInfo = true;
     }
-    this.totalComment = this.item.comment_count;
-    if (this.totalComment === 0 || this.totalComment <= this.item.comments.length)
-      this.loadingDone = true;
+    this.totalComment = +this.item.comment_count;
+    this.loadingDone = (this.totalComment === 0 ) || (this.totalComment <= _.get(this.item, 'comments.length', 0));
+  }
+
+  viewProfile(uuid: string) {
+    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
+      .then(() => this.router.navigate(['profile', uuid]));
   }
 
   hasLike(comment: any) {
-    return _.findIndex(comment.likes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
+    return _.findIndex(comment.likes, ['owner.uuid', this.userService.getSyncProfile().uuid] ) > -1;
   }
 
   hasDislike(comment: any) {
-    return _.findIndex(comment.dislikes, ['owner.uuid', this.userService.getProfileUuid()] ) > -1;
+    return _.findIndex(comment.dislikes, ['owner.uuid', this.userService.getSyncProfile().uuid] ) > -1;
   }
 
   onActions(action: any, params?: any) {
@@ -97,9 +90,6 @@ export class PostFooterComponent implements OnChanges {
       case this.actions.onEditComment:
         let currentComment = data;
         let commentType = type;
-
-        console.log('editing..........:', data);
-
         currentComment.isEditting = true;
         break;
       case this.actions.onDeleteReply:
@@ -108,9 +98,6 @@ export class PostFooterComponent implements OnChanges {
       case this.actions.onCreateComment:
         let parent = params.parent;
         let parentType = params.parentType;
-
-        console.log('replying..........:', parent);
-
         _.set(parent, 'isCreatingNewReply', true);
         break;
       case this.actions.openLikeDislike:
@@ -138,10 +125,6 @@ export class PostFooterComponent implements OnChanges {
     // this.viewAllComments();
   }
 
-  notAllCommentsLoaded() {
-    return ( this.totalComment > 0 && !this.loadingDone);
-  }
-
   mapComment(comment: any) {
     return new SoComment().from(comment);
   }
@@ -154,7 +137,6 @@ export class PostFooterComponent implements OnChanges {
     let body = {'post_uuid': this.item.uuid, 'page_index': this.commentPageIndex, 'limit': this.commentLimit};
     this.postService.loadComments(body)
       .toPromise().then((result: any) => {
-          console.log('Get more comments successfully');
           if (this.commentPageIndex == 0) {
             // this.item.comments.length = 0; // Clear comments data in the first loading
             this.item.comments = _.map(result.data.comments, this.mapComment);

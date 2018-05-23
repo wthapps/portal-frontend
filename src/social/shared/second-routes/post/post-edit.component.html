@@ -1,156 +1,204 @@
-<modal #modal cssClass="modal-social modal-long" [animation]="false">
-  <modal-body>
-    <div class="z-social-media mb15">
-      <div class="z-social-media-left pointer">
-        <a [routerLink]="['/profile', (profile$ | async)?.uuid]">
-        <div class="avatar-xs">
-          <img [src]="(profile$ | async)?.profile_image" alt="">
+<bs-modal #modal cssClass="modal-social modal-long modal-post-edit" [animation]="false">
+  <bs-modal-body>
+    <form #postForm="ngForm" [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
+      <div class="clearfix text-right modal-post-edit-action-mobile">
+
+        <div class="btn-group pull-left" role="group">
+          <button *ngIf="parent == null && showAddPhotosButton" (click)="addMorePhoto($event)" type="button"
+                  class="btn btn-outline-default">
+            <i class="fa fa-camera"></i>
+          </button>
+          <button type="button" class="btn btn-outline-default" (click)="showEmojiBtn($event)">
+            <i class="fa fa-smile-o"></i>
+          </button>
         </div>
-        </a>
+
+        <button type="button" class="btn btn-outline-default" data-dismiss="modal" (click)="dismiss(true)">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-outline-primary"
+                [disabled]="!editor?.valid && post?.photos?.length <= 0 && !link">
+          Done
+        </button>
       </div>
-      <div class="z-social-media-body">
-        <div class="z-heading">
-          <div class="z-name">
-            {{ (profile$ | async)?.first_name }}
+
+      <div class="z-social-media mb15">
+        <div class="z-social-media-left pointer">
+          <a href="javascript:;" (click)="viewProfile()">
+            <div class="avatar-xs">
+              <img [src]="(profile$ | async)?.profile_image" alt="">
+            </div>
+          </a>
+        </div>
+        <div class="z-social-media-body">
+          <div class="z-heading">
+            <a href="javascript:;" (click)="viewProfile()">
+              <div class="z-name">
+                {{ (profile$ | async)?.name }}
+              </div>
+            </a>
+            <div class="z-shared-with dropdown">
+              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
+                 aria-haspopup="true"
+                 aria-expanded="true">
+                <i class="fa" [ngClass]="privacyClassIcon"></i> {{ privacyName }} </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="#" (click)="update({privacy: soPostPrivacy.public.data}, $event)">
+                    <i class="fa fa-globe"></i> Public</a>
+                </li>
+                <li>
+                  <a href="#" (click)="update({privacy: soPostPrivacy.friends.data}, $event)">
+                    <i class="fa fa-users"></i> Friends</a>
+                </li>
+                <li>
+                  <a href="#" (click)="update({privacy: soPostPrivacy.personal.data}, $event)">
+                    <i class="fa fa-lock"></i> Personal</a>
+                </li>
+                <li role="separator" class="divider"></li>
+                <li>
+                  <a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Share with Friends</a>
+                </li>
+                <li>
+                  <a href="#" (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Share in
+                    Communities</a>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="z-shared-with dropdown">
-            <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
-               aria-haspopup="true" aria-expanded="true">
-              <i class="fa" [ngClass]="privacyClassIcon(post)"></i> {{ privacyName(post) }} </a>
-            <ul class="dropdown-menu">
-              <li><a href="#" (click)="update({privacy: soPostPrivacy.public.data}, $event)">
-                <i class="fa fa-globe"></i> Public</a></li>
-              <li><a href="#" (click)="update({privacy: soPostPrivacy.friends.data}, $event)">
-                <i class="fa fa-users"></i> Friends</a></li>
-              <li><a href="#" (click)="update({privacy: soPostPrivacy.personal.data}, $event)"><i
-                class="fa fa-lock"></i> Personal</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Share with Friends</a>
+          <div class="z-shared-info">
+            <ul>
+              <li class="z-time">
+                Jul 16 2016
               </li>
-              <li><a href="#"
-                     (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Share in Communities</a></li>
+              <li *ngIf="post.adult">
+                Adult content
+              </li>
+              <li *ngIf="post.mute">
+                Mute
+              </li>
+              <li *ngIf="post.disable_comment">
+                Disable comment
+              </li>
+              <li *ngIf="post.disable_share">
+                Disable share
+              </li>
             </ul>
           </div>
         </div>
-        <div class="z-shared-info">
-          <ul>
-            <li class="z-time">
-              Jul 16 2016
-            </li>
-            <li *ngIf="post.adult">
-              Adult content
-            </li>
-            <li *ngIf="post.mute">
-              Mute
-            </li>
-            <li *ngIf="post.disable_comment">
-              Disable comment
-            </li>
-            <li *ngIf="post.disable_share">
-              Disable share
-            </li>
-          </ul>
+        <div class="z-social-media-right">
+          <div class="dropdown pull-right">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="true"
+                    pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+              <i class="fa fa-ellipsis-v"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#" (click)="update({adult: !post.adult}, $event)">Adult content
+                  <i class="fa" [ngClass]="post.adult ? 'fa-check' : ''"></i>
+                </a>
+              </li>
+              <li>
+                <a href="#" (click)="update({mute: !post.mute}, $event)">Mute
+                  <i class="fa" [ngClass]="post.mute ? 'fa-check' : ''"></i>
+                </a>
+              </li>
+              <li role="separator" class="divider"></li>
+              <li *ngIf="!post.disable_comment">
+                <a href="#" (click)="update({disable_comment: true}, $event)">Disable comment</a>
+              </li>
+              <li *ngIf="post.disable_comment">
+                <a href="#" (click)="update({disable_comment: false}, $event)">Enable comment</a>
+              </li>
+              <li *ngIf="!post.disable_share">
+                <a href="#" (click)="update({disable_share: true}, $event)">Disable share</a>
+              </li>
+              <li *ngIf="post.disable_share">
+                <a href="#" (click)="update({disable_share: false}, $event)">Enable share</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div class="z-social-media-right">
-        <div class="dropdown pull-right">
-          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="true" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
-            <i class="fa fa-ellipsis-v"></i>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a href="#" (click)="update({adult: !post.adult}, $event)">Adult content
-              <i class="fa" [ngClass]="post.adult ? 'fa-check' : ''"></i></a></li>
-            <li><a href="#" (click)="update({mute: !post.mute}, $event)">Mute
-              <i class="fa" [ngClass]="post.mute ? 'fa-check' : ''"></i></a></li>
-            <li role="separator" class="divider"></li>
-            <li *ngIf="!post.disable_comment">
-              <a href="#" (click)="update({disable_comment: true}, $event)">Disable comment</a></li>
-            <li *ngIf="post.disable_comment">
-              <a href="#" (click)="update({disable_comment: false}, $event)">Enable comment</a></li>
-            <li *ngIf="!post.disable_share">
-              <a href="#" (click)="update({disable_share: true}, $event)">Disable share</a></li>
-            <li *ngIf="post.disable_share">
-              <a href="#" (click)="update({disable_share: false}, $event)">Enable share</a></li>
-          </ul>
-        </div>
+
+      <div class="form-group">
+        <mini-editor #editor="ngModel" required [autofocus] [(ngModel)]="description"
+                     [ngModelOptions]="{standalone: true}" placeholder="Share your ideas"
+                     [style]="{'height':'auto', 'min-height': '27px'}" (onTextChange)="hasChange = true">
+          <p-header>
+          </p-header>
+        </mini-editor>
       </div>
-    </div>
-
-    <form [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
-      <div class="row">
-        <div class="col-xs-6 col-sm-12">
-          <div class="form-group">
-            <textarea class="form-control textarea-autoheight"
-                      #textarea
-                      [autofocus]
-                      textAreaAutoHeight
-                      id="textarea-new-post"
-                      placeholder="Share your ideas"
-                      [formControl]="descCtrl"
-            >
-            </textarea>
-          </div>
-
-          <div class="form-group">
-            <tag-input [maxItems]='100'
-                       [(ngModel)]="post.tags"
-                       (onRemove)="removeTag($event)"
-                       (onAdd)="addTag($event)"
-                       [formControl]="tagsCtrl">
-              <tag-input-dropdown [autocompleteItems]="tags">
-              </tag-input-dropdown>
-            </tag-input>
-
-          </div>
-          <div class="form-group">
-            <div class="row-img row-img-10 grid">
-              <div class="row-img-item" *ngFor="let f of files">
-                <div class="photo-box">
-                  <div class="photo-box-action">
-                    <i class="fa fa-remove" (click)="cancelUploading(f)"></i>
-                  </div>
-                  <div class="photo-box-figure">
-                    <figure class="img-center-dv photo-item-uploading loading">
-                      <span class="photo-box-figure-in"></span>
-                    </figure>
-                  </div>
-                </div>
+      <display-link *ngIf="link" [data]="link"></display-link>
+      <div id="loading"></div>
+      <div *ngIf="showTag" class="form-group">
+        <tag-input [maxItems]='100' [(ngModel)]="post.tags" (onRemove)="removeTag($event)" (onAdd)="addTag($event)"
+                   [formControl]="tagsCtrl">
+          <tag-input-dropdown [autocompleteItems]="tags">
+          </tag-input-dropdown>
+        </tag-input>
+      </div>
+      <div class="form-group">
+        <div class="row-img row-img-10 grid">
+          <div class="row-img-item" *ngFor="let f of files">
+            <div class="photo-box">
+              <div class="photo-box-action">
+                <i class="fa fa-remove" (click)="cancelUploading(f)"></i>
               </div>
-              <div class="row-img-item" *ngFor="let p of post.photos">
-                <div class="photo-box">
-                  <div class="photo-box-action">
-                    <i class="fa fa-remove" (click)="removePhoto(p,$event)"></i>
-                  </div>
-                  <div class="photo-box-figure">
-                    <figure class="img-center-dv">
-                      <span class="photo-box-figure-in">
-                        <img class="img-center" draggable="false" [src]="p['thumbnail_url']"
-                             [alt]="(profile$ | async)?.profile_image">
-                      </span>
-                    </figure>
-                  </div>
-                </div>
+              <div class="photo-box-figure">
+                <figure class="img-center-dv photo-item-uploading loading">
+                  <span class="photo-box-figure-in"></span>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <div class="row-img-item" *ngFor="let p of post.photos">
+            <div class="photo-box">
+              <div class="photo-box-action">
+                <i class="fa fa-remove" (click)="removePhoto(p,$event)"></i>
+              </div>
+              <div class="photo-box-figure">
+                <figure class="img-center-dv">
+                  <span class="photo-box-figure-in">
+                    <img class="img-center" draggable="false" [src]="p['thumbnail_url']" [alt]="'Image not found'">
+                  </span>
+                </figure>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="form-group" *ngIf="parent != null">
-        Shared from <a [routerLink]="['/profile/', parent.owner.uuid, 'about']">{{ parent.owner.name }}</a>
+        Shared from
+        <a href="javascript:;" (click)="viewProfile(parent.owner.uuid)">{{ parent.owner.name }}</a>
       </div>
-      <div class="clearfix text-right">
-        <button type="button" class="btn btn-outline-default pull-left" *ngIf="parent == null" (click)="addMorePhoto($event)">
-          <i class="fa fa-camera"></i> Add Photo
-        </button>
-        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">Cancel
-        </button>
-        <button type="submit" class="btn btn-outline-primary btn-min"
-                [disabled]="!((descCtrl.value.length > 0) || (post.photos.length > 0)) || (files.length > 0)">Done
-        </button>
+
+
+      <div class="clearfix text-right hidden-xs">
+        <div class="btn-group pull-left" role="group">
+          <button *ngIf="parent == null && showAddPhotosButton" (click)="addMorePhoto($event)" type="button"
+                  class="btn btn-outline-default pull-left">
+            <i class="fa fa-camera"></i>
+          </button>
+          <button type="button" class="btn btn-outline-default dropdown-toggle pull-left" data-toggle="dropdown"
+                  pTooltip="{{ tooltip.emoticons }}"
+                  tooltipPosition="top" (click)="showEmojiBtn($event)">
+            <i class="fa fa-smile-o"></i>
+          </button>
+        </div>
+        <div class="pull-right">
+          <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-outline-primary btn-min"
+                  [disabled]="!editor?.valid && post?.photos?.length <= 0 && !link">
+            Done
+          </button>
+        </div>
       </div>
     </form>
-  </modal-body>
-</modal>
+  </bs-modal-body>
+</bs-modal>
 
 <entity-select #privacyCustomModal type='custom_friend' (onSelected)="selectedItems($event)"></entity-select>

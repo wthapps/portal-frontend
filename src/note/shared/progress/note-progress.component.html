@@ -1,0 +1,8 @@
+<wth-modal-dock #modalDock>
+  <wth-modal-dock-header [done]="(progess$ | async).done" [hasCloseIcon]="(progess$ | async).hasCloseIcon"
+  [loading]="(progess$ | async).loading" [failed]="(progess$ | async).failed" [hasCollapse]=false>
+    <a *ngIf="(progess$ | async).enableAction" href="javascript:;" (click)="doEvent()" class="dock-action">{{(progess$ | async).actionText}}</a>
+    <span>{{ (progess$ | async).textMessage }}</span>
+  </wth-modal-dock-header>
+
+</wth-modal-dock>

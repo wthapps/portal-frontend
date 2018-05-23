@@ -3,8 +3,6 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
-
 import { SocialService } from '../../services/social.service';
 import { SocialFavoriteService } from '../../services/social-favorites.service';
 import { ZSocialShareCommunityFormEditComponent } from '../../form/edit-community.component';
@@ -13,10 +11,7 @@ import { ServiceManager } from '@wth/shared/services';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { Constants } from '@wth/shared/constant';
 
-declare var _: any;
-
 @Component({
-  moduleId: module.id,
   selector: 'z-social-share-profile-community',
   templateUrl: 'community.component.html',
   styleUrls: ['community.component.scss'],

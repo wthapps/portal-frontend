@@ -1,21 +1,21 @@
 import { Component, ViewChild } from '@angular/core';
 
-import 'rxjs/add/operator/toPromise';
+
 import { WthAppsBaseModal } from '@wth/shared/shared/interfaces/wthapps-base-modal';
-import { HdModalComponent } from '@wth/shared/shared/ng2-hd';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { ApiBaseService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'post-activities',
   templateUrl: 'post-activities.component.html'
 })
 
 export class PostActivitiesComponent implements WthAppsBaseModal {
-  @ViewChild('modal') modal: HdModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   event: any;
   tooltip: any = Constants.tooltip;

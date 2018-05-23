@@ -1,27 +1,25 @@
-<div class="contact-listbox-wrap">
-  <div class="contact-listbox-header contact-listbox-row">
-    <div class="contact-listbox-input" [ngClass]="{'active': (contactService.isSelectAll$ | async)}">
-      <i (click)="onSelectedAll()" class="fa fa-check"></i>
+<div class="component-listbox-list">
+  <div class="component-listbox-header" *ngIf="showHeader">
+    <div class="component-listbox-row" [ngClass]="{'active': (contactService.isSelectAll$ | async)}">
+      <div class="component-listbox-input">
+        <i (click)="onSelectedAll()" class="fa fa-check"></i>
+      </div>
+      <div class="component-listbox-name">
+        <span class="can-click contact-listbox-block-link" (click)="onSort('name')" pTooltip="{{ tooltip.reverseSortDirection }}"
+          tooltipPosition="top">Name
+          <i class="fa" [ngClass]="{'fa-arrow-up': (desc$ | async), 'fa-arrow-down': !(desc$ | async)}"></i>
+        </span>
+      </div>
+      <div class="component-listbox-email">
+        Email
+      </div>
+      <div class="component-listbox-phone">
+        Phone Number
+      </div>
+      <div class="component-listbox-description"></div>
+      <div class="component-listbox-date"></div>
+      <div class="component-listbox-action"></div>
     </div>
-    <div class="contact-listbox-name">
-      <a href="#" class="contact-listbox-block-link" (click)="onSort('name')"
-         pTooltip="{{ tooltip.reverseSortDirection }}" tooltipPosition="top">Name
-        <i class="fa" [ngClass]="{'fa-arrow-up': (desc$ | async), 'fa-arrow-down': !(desc$ | async)}"></i> </a>
-    </div>
-    <div class="contact-listbox-email">
-      Email
-    </div>
-    <div class="contact-listbox-phone">
-      Phone Number
-    </div>
-    <div class="contact-listbox-action">&nbsp;</div>
   </div>
-  <z-contact-shared-item *ngFor="let item of data; trackBy: trackItem" [data]="item">
-  </z-contact-shared-item>
-
+  <z-contact-shared-item *ngFor="let item of data; trackBy: trackItem" [data]="item"></z-contact-shared-item>
 </div>
-
-<!--<p *ngFor="let contact of contactService.selectedObjects">-->
-  <!--{{ contact.name }}-->
-<!--</p>-->
-

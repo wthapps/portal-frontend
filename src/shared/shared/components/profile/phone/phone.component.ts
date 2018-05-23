@@ -6,7 +6,7 @@ import {
   FormArray
 } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '../../../validator/custom.validator';
 import { CountryService } from '../../countries/countries.service';
 import { ApiBaseService } from '../../../../services/apibase.service';
@@ -27,7 +27,7 @@ declare var _: any;
 
 export class PartialsProfilePhoneComponent implements OnInit, ProfileFormMixin {
   @Input() data: any;
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() editable: boolean;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();

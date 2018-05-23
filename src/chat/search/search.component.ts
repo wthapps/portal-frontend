@@ -17,7 +17,10 @@ export class ZChatSearchComponent {
     this.events = this.router.events
       .filter((event: any) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
-        let paths = event.url.toString().split('/')[1].split('?');
+        let paths = event.url
+          .toString()
+          .split('/')[1]
+          .split('?');
         if (paths[1]) {
           this.params = paths[1].substring(2, paths[1].length);
           this.getConversations();
@@ -26,17 +29,17 @@ export class ZChatSearchComponent {
   }
 
   getConversations() {
-    this.chatService.apiBaseService.get(`zone/chat/search`, {
-      q: this.params
-    }).subscribe(
-      (res: any) => {
+    this.chatService.apiBaseService
+      .get(`zone/chat/search`, {
+        q: this.params
+      })
+      .subscribe((res: any) => {
         this.conversations = res.data;
-      }
-    );
+      });
   }
 
   delayAndGetConversations() {
-    setTimeout(()=> {
+    setTimeout(() => {
       this.getConversations();
     }, 300);
   }

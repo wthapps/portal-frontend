@@ -24,6 +24,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.wthicon-social-lg:before {
+  content: url("../../icons/social-50x50.png");
+}
+
 .wthico-shared-with-me:before {
   content: "\e901";
   color: #9b9b9b;

@@ -1,0 +1,19 @@
+<div *ngIf="data" class="component-listbox-row" [ngClass]="data.selected ? 'active' : ''">
+  <div class="component-listbox-input">
+    <i (click)="onClickMulti()" class="fa fa-check"></i>
+  </div>
+  <div class="component-listbox-name can-click" (click)="onClick()" (dblclick)="onView()">
+    <span>
+      <i class="fa fa-file"></i> {{ data.object.name? data.object.name : 'Untitled' }}
+    </span>
+  </div>
+  <div class="component-listbox-owner can-click" (click)="onClick()" (dblclick)="onView()">
+    {{ (data.role === 'owner') ? 'me' : data.shareder.name }}
+  </div>
+  <div class="component-listbox-description can-click" (click)="onClick()" (dblclick)="onView()" [innerHTML]="data?.object?.content">
+  </div>
+  <div class="component-listbox-date can-click" (click)="onClick()" (dblclick)="onView()">
+    {{data.object.created_at | timeFormat}}
+  </div>
+  <div class="component-listbox-action"></div>
+</div>

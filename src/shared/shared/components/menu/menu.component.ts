@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnInit, OnChanges, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute, NavigationEnd, Params } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -11,13 +11,14 @@ import { WTHNavigateService } from '../../../services/wth-navigate.service';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { WthConfirmService } from '../confirmation/wth-confirm.service';
 import { CommonEventService } from '../../../../shared/services';
+import { NotificationService } from '@shared/services/notification.service';
 
 
 declare var $: any;
 declare var _: any;
 
 @Component({
-    selector: 'z-shared-menu',
+  selector: 'z-shared-menu',
   templateUrl: 'menu.component.html',
   styleUrls: ['menu.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -35,6 +36,7 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   socialMenu = Constants.socialMenuItems;
   chatMenu = Constants.chatMenuItems;
   noteMenu = Constants.noteMenuItems;
+  currentVersion: string = Constants.currentVersion;
   hostname: string = '';
   isProfileTab: boolean;
   currentGroup: string;
@@ -51,9 +53,9 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
               private location: Location,
               private apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService,
-              private commonEventService: CommonEventService
-  ) {
-    this.uuid = this.userService.getProfileUuid();
+              private notificationService: NotificationService,
+              private commonEventService: CommonEventService) {
+    this.uuid = this.userService.getSyncProfile().uuid;
     this.urls = Constants.baseUrls;
     this.constants = Constants;
   }
@@ -71,10 +73,16 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.currentGroup = this.extractLabel(event.url);
       });
-
+    // this.notificationService.getLatestNotifications();
   }
 
   ngAfterViewInit() {
+  }
+
+  clickedInside($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();  // <- that will stop propagation on lower layers
+    console.log('CLICKED INSIDE');
   }
 
   extractLabel(url: string) {
@@ -88,8 +96,8 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  clearOutlets() {
-    this.router.navigate([{outlets: {modal: null, detail: null}}]);
+  clearOutlets(): Promise<any> {
+    return this.router.navigate([{outlets: {modal: null, detail: null}}]);
   }
 
   onMenu(event: string) {
@@ -98,7 +106,10 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubMenu(link: string) {
-    this.navigateService.navigateOrRedirect(link);
+    if(this.urls.social == this.hostname)
+      this.clearOutlets().then(() => this.navigateService.navigateOrRedirect(link));
+    else
+      this.navigateService.navigateOrRedirect(link);
   }
 
   trackMenu(index: any, item: any) {
@@ -134,10 +145,10 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   redirect(key: any) {
-    if(key == 'term') {
-      window.location.href = Constants.baseUrls.app + "/policies/terms"
+    if (key == 'term') {
+      window.location.href = Constants.baseUrls.app + '/policies/terms';
     } else {
-      window.location.href = Constants.baseUrls.app + "/policies/privacy"
+      window.location.href = Constants.baseUrls.app + '/policies/privacy';
     }
   }
 }

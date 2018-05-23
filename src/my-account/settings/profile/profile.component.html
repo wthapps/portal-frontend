@@ -3,7 +3,7 @@
   <h4 class="box-panel-subtitle">Profile Picture</h4>
   <div class="media media-upload-profile">
     <div class="media-left">
-      <img width="70" [src]="defaultAvatar" [attr.data-src]="(userService.profile$ | async)?.profile_image" class="img-responsive lazyload" alt="">
+      <img width="70" [src]="defaultAvatar" [attr.data-src]="(userService.getAsyncProfile() | async)?.profile_image" class="img-responsive lazyload" alt="">
     </div>
     <div class="media-right">
       <p>Upload a photo (GIF, JPG or PNG) with the size of 150 X 150 or wider.</p>
@@ -48,6 +48,12 @@
         'has-success': (email.valid && email.touched)}">
           <label class="sr-only" for="email">Email address</label>
           <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
+
+          <ng-container *ngIf="verified; else sent_verify">
+            <div style="position: relative; top: -30px; right: 10px; float: right; color: green; font-size: 20px"><i class="fa fa-check-circle"></i></div>
+          </ng-container>
+
+          <ng-template #sent_verify><button type=button (click)="sendVerifyEmail()" class="verify" style="height: 34px; position: relative; top: -34px; float: right; border-radius: 0px 4px 4px 0px; background: #eeeeee;">Verify Email</button></ng-template>
           <div *ngIf="!email.valid && email.touched">
             <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
             <span *ngIf="!email.errors.required && email.errors.emailFormat" class="help-block">
@@ -114,7 +120,7 @@
         </div>
       </div>
     </div>
-    <button [disabled]="!form.valid || form.pristine" type="submit" class="btn btn-outline-primary btn-min">Update</button>
+    <button [disabled]="!form.valid || form.pristine" type="submit" class="btn btn-outline-primary btn-min mb20">Update</button>
   </form>
 </div>
 

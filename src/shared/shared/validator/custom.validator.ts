@@ -6,24 +6,30 @@ import {
 export class CustomValidator {
 
   public static emailFormat(c: AbstractControl) {
-    // tslint:disable-next-line
-    let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+    if (!c.value) {
+      return null;
+    }
 
-    /*return EMAIL_REGEXP.test(c.value) ? null : {
-     emailFormat: {
-     valid: false
-     }
-     };*/
-    return EMAIL_REGEXP.test(c.value) ? null : {'emailFormat': true};
+    // tslint:disable-next-line
+    let EMAIL_REGEXP = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return EMAIL_REGEXP.test(c.value) ? null : {emailFormat: true};
   }
 
   public static urlFormat(c: AbstractControl) {
+    if (!c.value) {
+      return null;
+    }
+
     // tslint:disable-next-line
     let REGEXP = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
     return REGEXP.test(c.value) ? null : {'url': true};
   }
 
   public static phoneFormat(c: AbstractControl) {
+    if (!c.value) {
+      return null;
+    }
+
     let REGEXP = /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i;
     return REGEXP.test(c.value) ? null : {'phoneFormat': true};
   }

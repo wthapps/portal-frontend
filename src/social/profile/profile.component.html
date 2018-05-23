@@ -1,8 +1,8 @@
-<div class="page-body-content gray-light"
-     >
+<div class="page-body-content gray-light">
   <div class="page-body-content-in zone-social">
     <div class="zone-social-in">
-      <z-social-profile-cover></z-social-profile-cover>
+      <box-loading *ngIf="loading"></box-loading>
+      <z-social-profile-cover *ngIf="!loading"></z-social-profile-cover>
       <router-outlet></router-outlet>
     </div>
     <z-social-favorites ></z-social-favorites>

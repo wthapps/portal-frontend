@@ -9,6 +9,7 @@ import { Folder } from '../shared/reducers/folder';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../shared/reducers/index';
 import * as fromNote from '../shared/actions/note';
+import * as listReducer from '../shared/reducers/features/list-mixed-entities';
 
 @Component({
   selector: 'z-note-search',
@@ -28,12 +29,14 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
   viewMode$: Observable<any>;
   loading$: Observable<boolean>;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private urlService: UrlService,
     private store: Store<any>,
-    private apiBaseService: ApiBaseService) {
-    this.noteItems$ = this.store.select(fromRoot.getSortedNotes);
-    this.folderItems$ = this.store.select(fromRoot.getSortedFolders);
+    private apiBaseService: ApiBaseService
+  ) {
+    this.noteItems$ = this.store.select(listReducer.getNotes);
+    this.folderItems$ = this.store.select(listReducer.getFolders);
     this.sortOption$ = this.store.select(fromRoot.getSortOption);
     this.viewMode$ = this.store.select(fromRoot.getViewMode);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
@@ -42,11 +45,11 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
     this.loading$ = this.store.select(fromRoot.getLoading);
 
     this.event = this.router.events
-    .filter((event: any) => event instanceof NavigationEnd)
-    .subscribe((event: NavigationEnd) => {
-      this.params = this.urlService.getQuery();
-      this.getSearchResult();
-    });
+      .filter((event: any) => event instanceof NavigationEnd)
+      .subscribe((event: NavigationEnd) => {
+        this.params = this.urlService.getQuery();
+        this.getSearchResult();
+      });
   }
 
   ngOnInit() {
@@ -54,20 +57,18 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(event) this.event.unsubscribe();
+    if (event) this.event.unsubscribe();
   }
 
   getSearchResult() {
-    this.apiBaseService.get(`note/search`, {q: this.params['q']}).subscribe((res: any) => {
-      this.store.dispatch(new fromNote.LoadSuccess(res.data));
-    });
+    this.apiBaseService
+      .get(`note/search`, { q: this.params['q'] })
+      .subscribe((res: any) => {
+        this.store.dispatch(new fromNote.LoadSuccess(res.data));
+      });
   }
 
-  onNewNote() {
+  onNewNote() {}
 
-  }
-
-  onFolder() {
-
-  }
+  onFolder() {}
 }

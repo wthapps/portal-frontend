@@ -2,8 +2,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({name: 'groupBy'})
 export class GroupByPipe implements PipeTransform {
-  transform(collection: Object[], term: string) {
+  transform(collection: Object[] = [], term: string = "") {
     if (!term || term == '') {
+      return collection;
+    }
+    if (!collection || collection.length == 0) {
+
       return collection;
     }
     let newValue = Array<any>();
@@ -38,4 +42,3 @@ export class GroupByPipe implements PipeTransform {
 
   }
 }
-

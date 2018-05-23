@@ -1,13 +1,15 @@
-import { Component, Input, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnDestroy, EventEmitter, Output, OnInit } from '@angular/core';
 import { NoteBreadcrumb } from './breadcrumb';
 import { Router } from '@angular/router';
+import { Observable } from "rxjs/Observable";
+import * as context from '../reducers/context';
 
 @Component({
   selector: 'z-note-shared-breadcrumb',
   templateUrl: 'breadcrumb.component.html',
   styleUrls: ['breadcrumb.component.scss']
 })
-export class ZNoteSharedBreadcrumbComponent implements OnDestroy {
+export class ZNoteSharedBreadcrumbComponent implements OnInit, OnDestroy {
 
   @Input() model: NoteBreadcrumb[];
 
@@ -17,7 +19,13 @@ export class ZNoteSharedBreadcrumbComponent implements OnDestroy {
 
   @Output() onBreadcrumbAction: EventEmitter<any> = new EventEmitter<any>();
 
+  @Input() permissions: any;
+
   constructor(private router: Router) {
+  }
+
+  ngOnInit() {
+    // this.context$ = this.store.select(context.getContext);
   }
 
   itemClick(event: any, item: NoteBreadcrumb) {

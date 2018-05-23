@@ -1,13 +1,15 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
+
 import { ApiBaseService, UserService } from '@wth/shared/services';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@wth/shared/constant';
+import { SHORTCUTS_REMOVE_DONE } from '../reducers/index';
+import { Store } from '@ngrx/store';
 
 declare let _: any;
 /**
@@ -20,10 +22,6 @@ export class SoCommunityService  {
   } ;
 
   readonly soCommunitiesUrl: string = Constants.urls.zoneSoCommunities;
-  readonly soUsersUrl: string = Constants.urls.zoneSoUsers;
-  readonly soInvitationsUrl: string = Constants.urls.zoneSoInvitations;
-  readonly soFavouritesUrl: string = Constants.urls.zoneSoFavourites;
-  readonly soNotificationsUrl: string = Constants.urls.zoneSoNotifications;
   readonly soReportList: string = Constants.urls.zoneSoReportList;
   currentCommunity: any;
 
@@ -31,6 +29,7 @@ export class SoCommunityService  {
               private router: Router,
               private userService: UserService,
               private loadingService: LoadingService,
+              private store: Store<any>,
               private toastsService: ToastsService,
               private wthConfirmService: WthConfirmService ) {
   }
@@ -50,15 +49,16 @@ export class SoCommunityService  {
 
 
   confirmLeaveCommunity(community: any): Promise<any> {
-    let enoughAdmins = community.admin_count > 1 ? true : false;
+    let enoughAdmins = community.admin_count > 1;
 
-    let pickAnotherAdmin = _.find(community.admins, (a: any) => a.id == this.userService.profile.id) != undefined  && !enoughAdmins;
+    let pickAnotherAdmin = community.admins.some((a: any) => a.id == this.userService.getSyncProfile().id)  && !enoughAdmins && (community.user_count > 1);
 
     return new Promise<any>((resolve, reject) => {
       this.wthConfirmService.confirm({
+        acceptLabel: 'OK',
         message: pickAnotherAdmin ?
           `Hi there, you need to pick another admin for the community ${community.name} before leaving.` :
-          `Are you sure to leave the community ${community.name}?`,
+          `Are you sure to leave the community ${community.name} ?`,
         header: 'Leave Community',
         accept: () => {
           if (pickAnotherAdmin) {
@@ -68,9 +68,12 @@ export class SoCommunityService  {
             this.loadingService.start();
             this.leaveCommunity(community.uuid)
               .toPromise()
-              .then(() => {
-              this.loadingService.stop();
-              resolve(community); })
+              .then((res) => {
+                this.loadingService.stop();
+                if(res.shortcut_id)
+                  this.store.dispatch({type: SHORTCUTS_REMOVE_DONE, payload: [res.shortcut_id]});
+                resolve(community);
+              })
               .catch((error: any) => {
                 reject(error);
                 this.toastsService.danger(error);
@@ -85,16 +88,20 @@ export class SoCommunityService  {
   confirmDeleteCommunity(community: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.wthConfirmService.confirm({
+        acceptLabel: 'OK',
         message: `Are you sure to delete the community ${community.name}`,
         header: 'Delete Community',
         accept: () => {
           this.loadingService.start();
           this.deleteCommunity(`${community.uuid}`)
             .toPromise()
-            .then(() => {
+            .then((res) => {
                   resolve(community);
                   this.toastsService.success(`Your community - ${community.name} - has been deleted successfully`);
-                  this.loadingService.stop();})
+                  this.loadingService.stop();
+                  if(res.shortcut_id)
+                    this.store.dispatch({type: SHORTCUTS_REMOVE_DONE, payload: [res.shortcut_id]});
+          })
             .catch((error: any) => {
                   reject(error);
                   this.toastsService.danger(error);
@@ -157,18 +164,8 @@ export class SoCommunityService  {
     return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}`).take(1);
   }
 
-
-
-  checkCurrentUser(uuid: string) {
-    return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/check_current_user/`);
-  }
-
   getTabItems(uuid: string, tabName: string) {
     return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/${tabName}`);
-  }
-
-  checkJoinRequestStatus(uuid: string) {
-    return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}/join_request_status`);
   }
 
   createCommunity(body: any) {

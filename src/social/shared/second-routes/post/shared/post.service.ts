@@ -46,32 +46,9 @@ export class PostService {
     return this.api.get(url);
   }
 
-  createComment(body: any) {
-    return this.api.post(`${this.api.urls.zoneSoComments}`, body);
-  }
-
   loadComments(body: any) {
     return this.api.get(`${this.api.urls.zoneSoComments}`, body);
   }
 
-  updateComment(body: any) {
-    return this.api.put(`${this.api.urls.zoneSoComments}/${body.uuid}`, body);
-  }
-
-  deleteComment(commentUuid: string) {
-    return this.api.delete(`${this.api.urls.zoneSoComments}/${commentUuid}`);
-  }
-
-  createReply(body: any) {
-    return this.api.post(`${this.api.urls.zoneSoComments}`, body);
-  }
-
-  updateReply(body: any) {
-    return this.api.put(`${this.api.urls.zoneSoComments}/${body.reply_uuid}`, body);
-  }
-
-  deleteReply(body: any) {
-    return this.api.delete(`${this.api.urls.zoneSoComments}/${body.reply_uuid}`);
-  }
 
 }

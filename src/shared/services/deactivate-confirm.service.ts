@@ -1,11 +1,10 @@
-import { Injectable }    from '@angular/core';
+import { Injectable } from '@angular/core';
 
 declare var _: any;
 
 @Injectable()
 export class DeactivateConfirmService {
-  constructor() {
-  }
+  constructor() {}
 
   activate(x: any, y: any): any {
     // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged

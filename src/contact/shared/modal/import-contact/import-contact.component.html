@@ -1,68 +1,49 @@
 <form>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
-      <h4 class="modal-title"> <i class="fa fa-plus"></i> Import Contact</h4>
-    </modal-header>
-    <modal-body>
-      <div>Import your contacts from other account</div>
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title">
+        <i class="fa fa-plus"></i> Import Contact</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+      <p>Import your contacts from other account</p>
 
-      <div class="content-overflow" style="max-height: 300px;">
-        <div class="pl30 pr30">
-          <div class="row-img list">
-            <div class="row-img-item" *ngFor="let p of PROVIDERS; let i = index;">
-              <div class="photo-box can-click"
-                   (click)="selectProvider({name: p?.name, provider: p?.provider, type: p?.type})">
-                <div class="photo-box-figure">
-                  <figure class="img-center-dv">
-                    <div class="">
-                      <i [ngClass]="p.class" style="font-size: 24px;"></i>
-                    </div>
-                  </figure>
-                  <div class="photo-box-name">
-                    <span>
-                      {{ p.text }}
-                    </span>
-                    <i *ngIf="p.name == 'apple'" class="pull-right fa fa-question-circle" style="font-size: 24px;" (click)="iCloudIntroduce($event)"></i>
-                  </div>
-                </div>
-              </div>
+      <ul class="list-unstyled list-import-wrapper" *ngFor="let p of PROVIDERS; let i = index;">
+        <li>
+          <div (click)="selectProvider({name: p?.name, provider: p?.provider, type: p?.type})" class="d-flex can-click">
+            <div>
+              <i [ngClass]="p.class"></i>
             </div>
-            <div class="row-img-item">
-              <div class="photo-box can-click">
-                <div class="photo-box-figure">
-                  <figure class="img-center-dv">
-                    <div >
-                      <!--<i class="fa fa-download"></i>-->
-                      <!--<input #fileBrowse type="file" hFileSelect-->
-                             <!--style="font-size: 200px; position: absolute; top: -20px; left: -30px;"-->
-                             <!--(uploadOutput)="selectedFiles($event)"-->
-                             <!--autofocus="true">-->
-                      <!--<span>   Import from file (.vcf, csv)</span>-->
-
-                      <h-file-upload #fileUpload styleClass="h-ui-file-upload"
-                                    customUpload="true"
-                                    mode="basic"
-                                    accept=".vcf,.csv,.xls,.xlsx"
-                                    [icon]="'fa-download'"
-                                    [chooseLabel]="'Import from file'"
-                                    (onSelect)="selectProvider({name: 'import_from_file', provider: 'import_from_file', event: $event}); fileUpload.clear();">
-                      </h-file-upload>
-                      <div class="file-extensions" style="padding-left: 50px;">vcard, csv, excel</div>
-                    </div>
-                  </figure>
-                </div>
-              </div>
+            <div class="list-import-text">{{ p.text }}</div>
+            <div>
+              <i *ngIf="p.name == 'apple'" class="fa fa-question-circle" (click)="iCloudIntroduce($event)"></i>
             </div>
-
-
           </div>
-        </div>
-      </div>
-    </modal-body>
-    <modal-footer>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-    </modal-footer>
-  </modal>
+        </li>
+      </ul>
+
+      <ul class="list-unstyled list-import-wrapper">
+        <li>
+          <div class="d-flex can-click">
+            <div>
+              <h-file-upload #fileUpload styleClass="h-ui-file-upload" customUpload="true" mode="basic" accept=".vcf,.csv,.xls,.xlsx" [icon]="'fa-download'"
+                [chooseLabel]="'Import from file'" (onSelect)="selectProvider({name: 'import_from_file', provider: 'import_from_file', event: $event}); fileUpload.clear();">
+              </h-file-upload>
+            </div>
+            <div class="list-import-text">
+              Import from file
+              <div class="text-fade">
+                <small>vcard, csv, excel</small>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel
+      </button>
+    </bs-modal-footer>
+  </bs-modal>
 </form>
 
 <z-contact-share-icloud-indicate #icloud></z-contact-share-icloud-indicate>

@@ -1,12 +1,16 @@
-import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges } from '@angular/core';
+import {
+  Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges,
+  AfterViewInit
+} from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 
 declare var _: any;
-declare let moment:any;
+declare var $: any;
+declare let moment: any;
 
 
 @Component({
@@ -16,10 +20,10 @@ declare let moment:any;
   styleUrls: ['account-list-edit-modal.component.scss']
 })
 
-export class AccountListEditModalComponent implements OnInit {
+export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   @Input() data: any;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
 
   form: FormGroup;
   deleteObjects: any = [];
@@ -28,13 +32,21 @@ export class AccountListEditModalComponent implements OnInit {
   userId: number = 0;
 
   accounts: Array<any>;
-  noOfMaster: number = 0;
-  noOfSub: number = 0;
+  fullAccountCount: number = 0;
+  subAccountCount: number = 0;
+  accountCount: number = this.fullAccountCount + this.subAccountCount;
+
   // These are get value form subscription and plan
-  masterPrice: any = 9.99;
+  fullPrice: any = 9.99;
   subPrice: any = 4.99;
+
+  fullAmount: any = this.fullAccountCount * this.fullPrice;
+  subAmount: any = this.subAccountCount * this.subPrice;
+  accountAmount: any = this.fullAmount + this.subAmount;
+
   defaultDate: string = moment().subtract(13, 'years').calendar(); // at least 13 year-old
   maxDate: Date = new Date(moment().subtract(13, 'years').calendar());
+  subscription: any;
 
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService) {
   }
@@ -43,15 +55,20 @@ export class AccountListEditModalComponent implements OnInit {
     this.initialize(new Array<any>());
   }
 
+  ngAfterViewInit() {
+
+  }
+
   /*
   * @parameter: option: object
   * @data: array of item
   * @mode: add or edit or view. default is add
   * */
-  open(options: any = {mode:'add', data: undefined}) {
-    this.noOfSub = 0;
-    this.noOfMaster = 0;
+  open(options: any = {mode:'add', data: undefined, subscription: {}}) {
+    this.subAccountCount = 0;
+    this.fullAccountCount = 0;
     this.accounts = options.accounts;
+    this.subscription = options.subscription;
     this.data = options.data;
     this.initialize(this.data);
     this.modal.open(options).then();
@@ -64,7 +81,7 @@ export class AccountListEditModalComponent implements OnInit {
 
   initialize(items: Array<any>) {
 
-    if(this.form == undefined) {
+    if (this.form === undefined) {
       this.form = this.fb.group({
         'items': this.fb.array([])
       });
@@ -73,16 +90,16 @@ export class AccountListEditModalComponent implements OnInit {
         for (let i = 0; i < items.length; i++) {
           this.add(items[i].parent_id != null? true: false, items[i]);
         }
-      } else if(items.length == 0) {
+      } else if(items.length === 0) {
         for (let i = 0; i < this.noOfCtrl; i++) {
-          this.add(i % 2 != 0? true : false);
+          this.add(i % 2 !== 0? true : false);
         }
       }
     }
   }
 
   create(subAccount: boolean, item?: any) {
-    let parentId = subAccount == false? null: this.userId;
+    let parentId = subAccount === false ? null : this.userId;
     let creatorId = parentId == null ? 0 : null;
 
     if (item) {
@@ -135,19 +152,23 @@ export class AccountListEditModalComponent implements OnInit {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:subscription:open_subscription_update_modal',
-      payload: {mode: 'edit',
+      payload: {
+        mode: 'edit',
         data: this.data,
         accountAction: 'add',
         accounts: this.accounts,
-        subscription: {
-          accountCount: this.noOfSub + this.noOfMaster,
-          accountAmount: this.noOfSub*4.99 + this.noOfMaster*9.99,
-          billingDate: moment()
-        }
+        editing: {
+          accountCount: this.subAccountCount,
+          accountPrice: this.subPrice
+        },
+        subscription: this.subscription
       }
     });
   }
 
+  hide(event: any) {
+    console.log('hide:::', event);
+  }
   done(values: any) {
     this.data = _.concat(this.deleteObjects, values);
     this.event.emit(this.data);
@@ -205,24 +226,30 @@ export class AccountListEditModalComponent implements OnInit {
 
   private countNoOfSubAndMaster(parent_id: any, countDown: boolean = false) {
 
-    if(parent_id == null) {
+    if (parent_id == null) {
       if(countDown)
-        this.noOfMaster--;
+        this.fullAccountCount--;
       else
-        this.noOfMaster++;
+        this.fullAccountCount++;
     }
-    if(parent_id == 0) {
-      if(countDown)
-        this.noOfSub--;
+    if (parent_id == 0) {
+      if (countDown)
+        this.subAccountCount--;
       else
-        this.noOfSub++;
+        this.subAccountCount++;
     }
 
-    if(this.noOfSub < 0)
-      this.noOfSub = 0;
+    if (this.subAccountCount < 0)
+      this.subAccountCount = 0;
 
-    if(this.noOfMaster < 0)
-      this.noOfMaster = 0;
+    if (this.fullAccountCount < 0)
+      this.fullAccountCount = 0;
+
+
+    this.subAmount = this.subAccountCount * this.subPrice;
+    this.fullAmount = this.fullAccountCount * this.fullPrice;
+    this.accountAmount = this.subAmount + this.fullAmount;
+    this.accountCount = this.subAccountCount + this.fullAccountCount;
   }
 
 }

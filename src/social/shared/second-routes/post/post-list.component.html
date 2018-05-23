@@ -3,17 +3,17 @@
   <div class="panel-body">
     <div class="z-social-media">
       <div class="z-social-media-left">
-        <a [routerLink]="['/profile', (profile$ | async )?.uuid]">
+        <a href="javascript:void(0);" (click)="viewProfile(user.uuid)">
         <div class="avatar-xs">
-          <img [src]="(profile$ | async)?.profile_image" alt="Avatar Image">
+          <img [src]="user.profile_image" alt="Avatar Image">
         </div>
         </a>
       </div>
       <div class="z-social-media-body">
         <div class="z-social-media-inputpost inputpost-new">
           <div class="mb10">
-            <textarea textAreaAutoHeight class="form-control" rows="3" placeholder="Share your ideas"
-                      (focus)="postEditModal.open()"></textarea>
+            <div contenteditable="true" class="form-control" rows="3" placeholder="Share your ideas"
+                      (focus)="postEditModal.open()"></div>
           </div>
           <button class="btn btn-outline-default" type="button"
                   (click)="postEditModal.open({community: community, mode: 'add', isShare: false})">
@@ -28,19 +28,24 @@
 <!--List of post items-->
 
 <div id="post-list-component">
-  <div class="panel panel-default mb15" *ngFor="let item of items;">
-    <div class="panel-body">
-      <so-post [item]="item"
-               [showComments]="showComments"
-               (onDeleted)="deletedPost($event, item)"
-               (onUpdated)="updatedPost($event)"
-               (modalOpened)="openEditModal($event)"
-               (photoModalOpened)="openPhotoModal($event)">
-      </so-post>
+  <ng-container *ngIf="!loading">
+    <div class="panel panel-default mb15" *ngFor="let item of items;">
+      <div class="panel-body">
+        <so-post [user]="user"
+                 [item]="item"
+                 [showComments]="showComments"
+                 (onDeleted)="deletedPost($event, item)"
+                 (onUpdated)="updatedPost($event)"
+                 (modalOpened)="openEditModal($event)"
+                 (photoModalOpened)="openPhotoModal($event)">
+        </so-post>
+      </div>
     </div>
-  </div>
+  </ng-container>
 
-  <div *ngIf="postIsEmpty" class="text-center text-fade">
+  <box-loading *ngIf="loading"></box-loading>
+
+  <div *ngIf="!loading && postIsEmpty" class="text-center text-fade">
     <i class="fa fa-newspaper-o" style="font-size: 80px;"></i>
     <h4>No posts to show</h4>
     <p *ngIf="canCreatePost">
@@ -48,11 +53,10 @@
     </p>
   </div>
 </div>
-<!--<div id="post-list-loading" class="pt20 pb20"></div>-->
 
 <div class="view-all" *ngIf="nextLink != undefined">
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>
 </div>
 <!--Edit post modal. This modal will handle add new, edit post and share-->
-<so-post-edit #postEditModal (saved)="save($event)" (onUpdated)="update($event)"
+<so-post-edit #postEditModal [soProfile]="soProfile$ | async" (saved)="save($event)" (onUpdated)="update($event)"
               (dismissed)="dismiss($event)"></so-post-edit>

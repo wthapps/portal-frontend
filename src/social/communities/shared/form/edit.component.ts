@@ -13,22 +13,18 @@ import { ApiBaseService, UserService } from '@wth/shared/services';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 import { Constants } from '@wth/shared/constant';
-
-
-
-
-declare var $: any;
-declare var _: any;
+import { Store } from '@ngrx/store';
+import { SHORTCUT_ADD_MULTI_DONE } from '../../../shared/reducers/index';
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-community-form-edit',
   templateUrl: 'edit.component.html'
 })
 
 export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
 
-  // @ViewChild('modal') modal: ModalComponent;
+  // @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('modal') modal: HdModalComponent;
   @Input() data: any;
   @Input() action: string;
@@ -49,6 +45,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder,
               private apiBaseService: ApiBaseService,
               private loadingService: LoadingService,
+              private store: Store<any>,
               private userService: UserService) {
     this.form = fb.group({
       'community_name': ['', Validators.compose([Validators.required])],
@@ -174,6 +171,7 @@ export class ZSocialCommunityFormEditComponent implements OnInit, OnChanges {
         .subscribe((result: any) => {
             // console.log(result);
             this.updated.emit(result.data);
+
           },
           (error: any) => {
             console.log(error);

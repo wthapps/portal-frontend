@@ -24,17 +24,21 @@ export class ResizeImage {
   ];
   img: any;
   change: any;
+  changing: boolean = false;
   currentX: any;
   currentY: any;
   x: any;
   y: any;
   timeInterval: any;
 
+  checkImageExist: boolean = false;
+  checkImageExistInterval: any;
+
   constructor(id: any) {
     this.id = id;
     document.addEventListener('DOMContentLoaded', this.onReady.bind(this));
     window.addEventListener('load', this.onReady.bind(this));
-    setTimeout(() => {this.onReady(), 1000});
+    setTimeout(() => {this.onReady(), 2000});
   }
 
   onReady() {
@@ -52,7 +56,7 @@ export class ResizeImage {
     this.resizeFrame = document.createElement('div');
     this.resizeFrame.setAttribute('id', 'ri-frame');
     this.area.appendChild(this.resizeFrame);
-    this.setStyle(this.area, {'user-select': 'none'})
+    // this.setStyle(this.area, {'user-select': 'none'})
     this.resizeFrame.style.display = 'none';
     // Add handlers
     for(let handle of this.handlers) {
@@ -77,9 +81,11 @@ export class ResizeImage {
           let bound = this.img.getBoundingClientRect();
           let deltaX = e.offsetX - bound.x;
           let deltaY = e.offsetY - (bound.y + this.area.scrollTop);
-          if (!$(this.resizeBorder).is(e.target) && $(this.resizeBorder).has(e.target).length == 0)
+          if (!$(this.resizeBorder).is(e.target) && $(this.resizeBorder).has(e.target).length == 0 && !this.changing)
           {
-              this.resizeFrame.style.display = 'none';
+              this.close();
+          } else {
+            this.changing = false
           }
         }
     });
@@ -89,29 +95,35 @@ export class ResizeImage {
     }, false);
   }
 
+  close() {
+    this.resizeFrame.style.display = 'none';
+    if(this.checkImageExistInterval) clearInterval(this.checkImageExistInterval);
+  }
+
   trigger(el: any) {
     this.timeInterval = setInterval(() => {this.resize(el)}, 3);
     this.currentX = this.x;
     this.currentY = this.y;
+    this.changing = true;
   }
 
   resize(el: any) {
     let deltaX = this.x - this.currentX;
     let deltaY = this.y - this.currentY;
     let rate = deltaX*this.img.offsetHeight/this.img.offsetWidth;
-    let bound = this.img.getBoundingClientRect();
+    // let bound = this.img.getBoundingClientRect();
     if( Math.abs(deltaX) + Math.abs(deltaY) > 10) {
       if(el.id == 'nw-handle') {
         if (this.img.offsetWidth - deltaX > this.constant.minBorderBox && this.img.offsetHeight - rate > this.constant.minBorderBox)
-          this.setStyle(this.resizeBorder, {left: this.x + 'px', top: this.area.scrollTop + bound.y + rate + 'px', width: this.img.offsetWidth - deltaX + 'px', height: this.img.offsetHeight - rate + 'px'});
+          this.setStyle(this.resizeBorder, {left: deltaX + this.img.offsetLeft + 'px', top: this.area.scrollTop + this.img.offsetTop + rate + 'px', width: this.img.offsetWidth - deltaX + 'px', height: this.img.offsetHeight - rate + 'px'});
       }
       if(el.id == 'n-handle') {
         if (this.img.offsetHeight - deltaY > this.constant.minBorderBox)
-          this.setStyle(this.resizeBorder, {top: this.y + this.area.scrollTop + 'px', height: this.img.offsetHeight - deltaY + 'px'});
+          this.setStyle(this.resizeBorder, {top: deltaY + this.img.offsetTop + this.area.scrollTop + 'px', height: this.img.offsetHeight - deltaY + 'px'});
       }
       if(el.id == 'ne-handle') {
         if (this.img.offsetWidth + deltaX > this.constant.minBorderBox && this.img.offsetHeight + rate > this.constant.minBorderBox)
-          this.setStyle(this.resizeBorder, {right: this.x + 'px', top: bound.y + this.area.scrollTop - rate + 'px', width: this.img.offsetWidth + deltaX + 'px', height: this.img.offsetHeight + rate + 'px'});
+          this.setStyle(this.resizeBorder, {right: this.x + 'px', top: this.img.offsetTop + this.area.scrollTop - rate + 'px', width: this.img.offsetWidth + deltaX + 'px', height: this.img.offsetHeight + rate + 'px'});
       }
       if(el.id == 'e-handle') {
         if (this.img.offsetWidth + deltaX > this.constant.minBorderBox)
@@ -127,11 +139,11 @@ export class ResizeImage {
       }
       if(el.id == 'sw-handle') {
         if (this.img.offsetWidth - deltaX > this.constant.minBorderBox && this.img.offsetHeight - rate > this.constant.minBorderBox)
-        this.setStyle(this.resizeBorder, {left: this.x + 'px', width: this.img.offsetWidth - deltaX + 'px', height: this.img.offsetHeight - rate + 'px'});
+        this.setStyle(this.resizeBorder, {left: deltaX + this.img.offsetLeft + 'px', width: this.img.offsetWidth - deltaX + 'px', height: this.img.offsetHeight - rate + 'px'});
       }
       if(el.id == 'w-handle') {
         if (this.img.offsetWidth - deltaX > this.constant.minBorderBox)
-        this.setStyle(this.resizeBorder, {left: this.x + 'px', width: this.img.offsetWidth - deltaX + 'px'});
+        this.setStyle(this.resizeBorder, {left: deltaX + this.img.offsetLeft + 'px', width: this.img.offsetWidth - deltaX + 'px'});
       }
       this.tick();
       this.change = true;
@@ -150,15 +162,22 @@ export class ResizeImage {
         el.style[property] = properties[property];
   }
 
-  edit(img: any) {
-    this.img = img;
-    this.resizeFrame.style.display = 'block';
-    this.relocation();
+  edit(img: any, options: any) {
+    setTimeout(() => {
+      this.img = img;
+      this.resizeFrame.style.display = 'block';
+      this.relocation();
+      // turn on checkImageExist
+      this.checkImageExist = true;
+      let check = () => { if($('img[data-id=' + this.img.dataset.id + ']').length == 0) this.close() };
+      this.checkImageExistInterval = setInterval(() => { check(); }, 20);
+    }, 100);
+
   }
 
   relocation() {
-    let bound = this.img.getBoundingClientRect();
-    this.setStyle(this.resizeBorder, {left: bound.x + 'px', top: bound.y + this.area.scrollTop + 'px', height: this.img.offsetHeight + 'px', width: this.img.offsetWidth + 'px'});
+    // let bound = this.img.getBoundingClientRect();
+    this.setStyle(this.resizeBorder, {left: this.img.offsetLeft + 'px', top: this.img.offsetTop + this.area.scrollTop + 'px', height: this.img.offsetHeight + 'px', width: this.img.offsetWidth + 'px'});
     this.tick();
   }
 

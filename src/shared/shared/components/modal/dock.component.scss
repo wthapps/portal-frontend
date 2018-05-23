@@ -9,6 +9,11 @@
   &.modal-dock-collapse {
     bottom: 0;
   }
+  @media (max-width: $screen-xs-max) {
+    right: 0;
+    left: 0;
+    bottom: 0;
+  }
 }
 
 .modal-dock-content {

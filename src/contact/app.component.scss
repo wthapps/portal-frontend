@@ -1,0 +1,31 @@
+@import '../assets/styles/global';
+
+.main-page-body {
+  padding-bottom: 50px;
+}
+
+@media (max-width: $screen-xs-max) {
+  .page-body-control-nav {
+    .btn-min, .btn-min-sm {
+      min-width: auto;
+    }
+    &.page-body-control-nav-action {
+      float: none;
+      .page-body-control-menu {
+        float: none;
+        text-align: right;
+        > li {
+          float: none;
+          display: inline-block;
+        }
+      }
+    }
+  }
+  .main-page-body {
+    .page-body-content-in {
+      padding: 15px;
+    }
+  }
+}
+
+

@@ -15,10 +15,27 @@
 
       <div class="hd-item-action-right-bottom" *ngIf="relationships">
         <div class="btn-group" role="group">
-          <ng-container *ngIf="relationships.status == FRIEND_STATUS.STRANGER">
+          <ng-container *ngIf="[FRIEND_STATUS.STRANGER, FRIEND_STATUS.BE_REJECTED].includes(relationships.status)">
             <button class="btn btn-outline-default" type="button" (click)="onAddfriend()">
               <i class="fa fa-user-plus"></i> Add Friend
             </button>
+          </ng-container>
+
+          <ng-container *ngIf="relationships.status == FRIEND_STATUS.BE_REQUESTED">
+            <div class="btn-group">
+              <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user-plus"></i> Respond to Request
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a href="javascript:;" (click)="onAcceptRequest()">Accept Friend Request</a>
+                </li>
+                <li>
+                  <a href="javascript:;" (click)="onDecline()">Decline</a>
+                </li>
+              </ul>
+            </div>
           </ng-container>
 
           <ng-container *ngIf="relationships.status == FRIEND_STATUS.FRIEND">
@@ -42,7 +59,7 @@
             <div class="btn-group">
               <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
                       aria-haspopup="true" aria-expanded="false">
-                Friend Requested <span class="caret"></span>
+                <i class="fa fa-user-plus"></i> Request Sent <span class="caret"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
                 <li>
@@ -52,7 +69,7 @@
             </div>
           </ng-container>
 
-          <ng-container *ngIf="userInfo.uuid !== userService.profile.uuid">
+          <ng-container *ngIf="userInfo.uuid !== userService.getSyncProfile().uuid">
 
             <button type="button" class="btn btn-outline-default" *ngIf="!relationships?.follow"
                     (click)="follow(userInfo.uuid)">
@@ -76,7 +93,7 @@
 
         </div>
         <!--menu-->
-        <div class="btn-group" *ngIf="userInfo.uuid !== userService.profile.uuid">
+        <div class="btn-group" *ngIf="userInfo.uuid !== userService.getSyncProfile().uuid">
           <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
             <i class="fa fa-ellipsis-v"></i>
@@ -97,24 +114,5 @@
     </so-information>
 
   </cover-profile>
-
-  <nav class="nav-tabs-wrap">
-    <ul class="nav nav-tabs list-unstyled clearfix">
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'post']">Post</a>
-      </li>
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'about']">About</a>
-      </li>
-      <li *ngIf="showFriends" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a [routerLink]="['/profile', uuid, 'friends']">Friends</a>
-      </li>
-      <li class="pull-right dropdown">
-
-      </li>
-      <!--<li *ngIf="relationships" class="pull-right mr10">-->
-
-      <!--</li>-->
-    </ul>
-  </nav>
+  <w-nav-tab [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)"></w-nav-tab>
 </div>

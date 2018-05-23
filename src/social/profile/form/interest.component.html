@@ -1,9 +1,9 @@
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [backdrop]="'static'" [animation]="false">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [backdrop]="'static'" [animation]="false">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> Hobby &amp; Interest</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <p>
         This section will atomatically update from your WTHApps contact profile.
       </p>
@@ -41,10 +41,11 @@
           </button>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
-      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit(form.value)">Done</button>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="onHideModal()">Cancel</button>
-    </modal-footer>
-  </modal>
+      <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
+              (click)="onSubmit(form.value)">Done</button>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

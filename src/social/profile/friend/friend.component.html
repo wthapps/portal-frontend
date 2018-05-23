@@ -12,29 +12,12 @@
   </div>
   <z-social-share-profile-list
     [data]="list"
-    [type]="'member'">
+    [type]="'member'"
+    *ngIf="!loading; else loadingBlock;"
+  >
   </z-social-share-profile-list>
 </div>
 
-<!--
-<div class="zone-social-container" lockYOffset="20"
-     observeAttributes="true"
-     infinite-scroll
-     [scrollWindow]="false"
-     (scrolled)="onLoadMore()">
-
-  <div class="z-social-box">
-    <div class="z-social-box-body">
-      {{ list|json }}
-
-      <z-social-share-profile-list
-        [layout]="'row'"
-        [class]="'col-xs-12 col-md-6 col-lg-6'"
-        [data]="list"
-        [type]="'member'">
-      </z-social-share-profile-list>
-    </div>
-  </div>
-
-</div>
--->
+<ng-template #loadingBlock>
+  <box-loading></box-loading>
+</ng-template>

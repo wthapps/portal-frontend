@@ -1,13 +1,13 @@
 import { Component, ViewChild, Input, OnChanges } from '@angular/core';
 import { WthAppsBaseModal } from '@wth/shared/shared/interfaces/wthapps-base-modal';
-import { HdModalComponent } from '@wth/shared/shared/ng2-hd';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'post-likedislike',
   templateUrl: 'post-likedislike.component.html'
 })
@@ -15,7 +15,7 @@ declare var _: any;
 export class PostLikeDislikeComponent implements OnChanges, WthAppsBaseModal {
   @Input() type: any;
   @Input() item: any;
-  @ViewChild('modal') modal: HdModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   event: any;
 
   ngOnChanges(data: any) {

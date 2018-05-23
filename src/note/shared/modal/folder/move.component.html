@@ -1,9 +1,9 @@
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [cssClass]="'modal-note-edit'" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title">{{ titleModal }}</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <p>Choose folder to move to</p>
       <div class="form-group">
         <div class="well-folder-move">
@@ -31,11 +31,12 @@
           </div>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
+              (click)="modal.close()">Cancel</button>
       <button type="button" [disabled]="!folder" (click)="onMove()" class="btn btn-outline-primary btn-min">Move
       </button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

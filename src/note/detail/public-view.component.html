@@ -1,0 +1,84 @@
+<form action="" class="note-editor-wrap">
+  <div class="note-editor-header">
+    <h4>{{note?.name ? note?.name : 'Untitled'}}</h4>
+  </div>
+  <div class="note-editor-nav">
+    <nav class="nav-tabs-wrap nav-tabs-wrap-sm">
+      <ul class="nav nav-tabs list-unstyled clearfix">
+        <li [ngClass]="{'active': currentTab == 'note'}">
+          <a (click)="currentTab = 'note'" href="javascript:;">
+            <i class="fa fa-sticky-note"></i> Note</a>
+        </li>
+        <li [ngClass]="{'active': currentTab == 'attachment'}">
+          <a (click)="currentTab = 'attachment'" href="javascript:;">
+            <i class="fa fa-paperclip"></i> Attachment ({{ note?.attachments?.length || 0 }})</a>
+        </li>
+        <!-- <li class="pull-right">
+          <a (click)="hasShowComment = !hasShowComment" href="javascript:;">
+            <i class="fa fa-comment"></i> Comment
+            <i *ngIf="!hasShowComment" class="fa fa-caret-right"></i>
+            <i *ngIf="hasShowComment" class="fa fa-caret-left"></i>
+          </a>
+        </li> -->
+      </ul>
+    </nav>
+  </div>
+  <div [ngClass]="{'hidden': currentTab !== 'attachment'}" class="quill-toolbar-attachment p20">
+    <div class="btn-group">
+      <button type="button" class="btn btn-outline-default" [disabled]="true">
+        <i class="fa fa-plus"></i> Photo
+      </button>
+    </div>
+
+    <div class="btn-group ml10">
+      <button class="btn btn-outline-default" [disabled]="note?.attachments.length === 0" (click)="downloadAttachments()">
+        <i class="fa fa-download"></i> Download all
+      </button>
+    </div>
+
+  </div>
+  <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-toolbar"></div>
+  <div class="note-editor-content">
+    <div class="note-editor-body" id="scrolling-container">
+      <div class="container" id="quill-container-wrapper">
+        <!--<div id="quill-content-body" style="position: relative; padding: 0">-->
+        <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-editor"></div>
+        <div [ngClass]="{'hidden': currentTab !== 'attachment'}" class="attachment-list-wrap">
+          <table class="table table-middle wth-table table-hover" *ngIf="note?.attachments && note?.attachments.length > 0">
+            <thead>
+              <tr>
+                <th class="can-click" (click)="onSort('name')">
+                  Name
+                  <i *ngIf="hasSortBy" class="fa" [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
+                </th>
+                <th>File size</th>
+                <th>Date Modified</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let att of note.attachments">
+                <td [ngClass]="{'can-click': att.object_type == 'photo'}" (click)="fileAttachmentClick(att)">
+                  <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
+                  <i *ngIf="att.thumbnail_url && att.object_type !== 'photo'" class="fa fa-file"></i>
+                  <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+                  {{ att.name }}
+                </td>
+                <td>{{ att.size | bytes:3 }}</td>
+                <td>{{ (att.updated_at || att.created_at) | date: 'MMM dd yyyy' }}</td>
+                <td class="text-right">
+                  <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
+                    <i class="fa fa-download"></i>
+                  </button>
+                  <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button" [disabled]="true">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

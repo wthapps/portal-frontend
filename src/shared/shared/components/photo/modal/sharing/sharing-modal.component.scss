@@ -8,3 +8,19 @@
     }
   }
 }
+
+.changing {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border: 1px solid red;
+  padding: 6px 0 6px 10px;
+  border-radius: 2px;
+  web-kit-border-radius: 2px;
+  margin-right: 1px;
+}
+
+.modal-fixed-height {
+  min-height: 300px;
+  max-height: 300px;
+}

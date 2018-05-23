@@ -1,9 +1,13 @@
 import { Component, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  AbstractControl,
+  FormBuilder,
+  Validators
+} from '@angular/forms';
 
 import { fadeInAnimation } from '../../shared/shared/animations/route.animation';
-import { Errors } from '../../shared/shared/models/errors.model';
 import { UserService } from '../../shared/services/user.service';
 import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
@@ -22,12 +26,7 @@ import { Constants } from '../../shared/constant/config/constants';
 export class HomeComponent {
   @HostBinding('@fadeInAnimation') fadeInAnimation = true;
 
-  errorMessage: any;
-
-  flagsRelease: boolean = Constants.flagsRelease;
-
   tooltip: any = Constants.tooltip;
-
   sex: number = 0;
   form: FormGroup;
   first_name: AbstractControl;
@@ -42,36 +41,34 @@ export class HomeComponent {
 
   submitted: boolean = false;
 
-  constructor(private router: Router,
-              private fb: FormBuilder,
-              private userService: UserService,
-              private toastsService: ToastsService,
-              private loadingService: LoadingService) {
-    if (this.flagsRelease) {
-      this.router.navigate(['/login']);
-    }
-
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private userService: UserService,
+    private toastsService: ToastsService,
+    private loadingService: LoadingService
+  ) {
     this.form = fb.group({
-      'first_name': ['',
-        Validators.compose([Validators.required])
-      ],
-      'last_name': ['',
-        Validators.compose([Validators.required])
-      ],
-      'email': ['',
+      first_name: ['', Validators.compose([Validators.required])],
+      last_name: ['', Validators.compose([Validators.required])],
+      email: [
+        '',
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'password': ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(8),
-        CustomValidator.lowercaseUppercase,
-        CustomValidator.specialSymbolOrNumber
-      ])],
-      'birthday_day': ['0'],
-      'birthday_month': ['0'],
-      'birthday_year': ['0'],
+      password: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(8),
+          CustomValidator.lowercaseUppercase,
+          CustomValidator.specialSymbolOrNumber
+        ])
+      ],
+      birthday_day: ['0'],
+      birthday_month: ['0'],
+      birthday_year: ['0'],
       //'sex': [],
-      'accepted': [false, Validators.compose([Validators.nullValidator])]
+      accepted: [false, Validators.compose([Validators.nullValidator])]
     });
 
     this.first_name = this.form.controls['first_name'];
@@ -81,8 +78,15 @@ export class HomeComponent {
   }
 
   gotoHashtag(link: string, prodID: string) {
-    this.router.navigate([`${link}`], {fragment: prodID});
+    this.router
+      .navigate([`${link}`], { fragment: prodID, preserveFragment: true })
+      .then(() => this.jump(prodID));
     return false;
+  }
+
+  jump(h) {
+    var top = document.getElementById(h).offsetTop;
+    window.scrollTo(0, top);
   }
 
   onSubmit(values: any): void {
@@ -105,27 +109,18 @@ export class HomeComponent {
         accepted_policies: values.accepted === true ? true : false
       });
 
-      this.userService.signup('users', body)
-        .subscribe((result) => {
-            this.loadingService.stop();
-            window.location.href = Constants.baseUrls.myAccount;
-            // this.router.navigateByUrl('/welcome');
-          },
-          error => {
-            // stop loading
-            this.loadingService.stop();
-
-            console.log('error:', error);
-            let err: any = error;
-
-            this.errorMessage = err;
-            //TODO refactoring code check signup
-            if (error.status === 422) {
-              this.errorMessage = 'Email has already been taken';
-            }
-            this.toastsService.danger(this.errorMessage);
-
-          });
+      this.userService.signup('users', body).subscribe(
+        result => {
+          this.loadingService.stop();
+          window.location.href = Constants.baseUrls.myAccount;
+          // this.router.navigateByUrl('/welcome');
+        },
+        error => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(error.error.error);
+        }
+      );
     }
   }
 }

@@ -6,8 +6,7 @@ import { ApiBaseService } from '../../shared/services/apibase.service';
 export class AboutService {
   url: string = 'feedbacks/';
 
-  constructor(private apiBaseService: ApiBaseService) {
-  }
+  constructor(private apiBaseService: ApiBaseService) {}
 
   createFeedback(body: any): any {
     return this.apiBaseService.post(`${this.url}`, body);

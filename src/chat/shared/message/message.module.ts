@@ -8,13 +8,18 @@ import { ZChatShareRequestContactComponent } from '../modal/request-contact.comp
 import { ZChatShareUserIconComponent } from '../user/user-icon.component';
 import { MessageItemSimpleComponent } from './messages/message-simple-item.component';
 import { MessageItemActionComponent } from './messages/message-actions-item.component';
-import { BlockUploadModal } from './modals/block-upload-modal.component';
 import { SharedModule } from '@wth/shared/shared.module';
+import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
+import { MessageService } from '@chat/shared/message/message.service';
 
 @NgModule({
   imports: [
-    CommonModule,
-    SharedModule.forRoot()
+    MiniEditorModule,
+    ChatNoteListModule,
+    SharedModule.forRoot(),
+    SharedServicesModule.forRoot()
   ],
   declarations: [
     MessageEditorComponent,
@@ -24,7 +29,6 @@ import { SharedModule } from '@wth/shared/shared.module';
     ZChatShareUserIconComponent,
     MessageItemActionComponent,
     MessageItemSimpleComponent,
-    BlockUploadModal,
     MessageItemComponent
   ],
   exports: [
@@ -35,13 +39,8 @@ import { SharedModule } from '@wth/shared/shared.module';
     ZChatShareUserIconComponent,
     MessageItemActionComponent,
     MessageItemSimpleComponent,
-    BlockUploadModal,
     MessageItemComponent
   ],
-  providers: [
-
-  ]
+  providers: [MessageService]
 })
-
-export class ZChatMessageModule {
-}
+export class ZChatMessageModule {}

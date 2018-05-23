@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Constants } from '@wth/shared/constant';
 
 /**
  * This class represents the navigation bar component.
@@ -9,7 +10,9 @@ import { Component } from '@angular/core';
   templateUrl: 'footer.component.html',
   styleUrls: ['footer.component.scss'],
 })
-export class PortalSharedFooterComponent { }
+export class PortalSharedFooterComponent {
+  currentVersion: string = Constants.currentVersion;
+}
 
 @Component({
   moduleId: module.id,

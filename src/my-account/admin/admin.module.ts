@@ -3,18 +3,17 @@ import { MySharedModule } from '../shared/shared.module';
 import { MyAdminRoutingModule } from './admin-routing.module';
 
 import { SharedModule } from '@wth/shared/shared.module';
-import { PipeModule } from   '@wth/shared/shared/pipe/pipe.module';
-
+import { PipeModule } from '@wth/shared/shared/pipe/pipe.module';
 
 import { MyAdminComponent } from './admin.component';
 import { AccountListComponent } from './accounts/account-list.component';
 import { MyInvitationsComponent } from './invitations/invitations.component';
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalModule } from 'ng2-bs3-modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AccountCreatePartialComponent } from './accounts/account-create-partial.component';
+import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
 // import { MatInputModule, MatNativeDateModule } from '@angular/material';
-
 
 @NgModule({
   imports: [
@@ -24,11 +23,11 @@ import { AccountCreatePartialComponent } from './accounts/account-create-partial
     // MatNativeDateModule, // TODO fix
     // MatInputModule,
 
-    Ng2Bs3ModalModule,
+    BsModalModule,
     PipeModule,
     MyAdminRoutingModule,
-    MySharedModule.forRoot(),
-    SharedModule.forRoot()
+    MySharedModule,
+    SharedModule
   ],
   declarations: [
     MyAdminComponent,
@@ -36,7 +35,8 @@ import { AccountCreatePartialComponent } from './accounts/account-create-partial
 
     // Account
     AccountListComponent,
-    AccountCreatePartialComponent
+    AccountCreatePartialComponent,
+    AccountRequestOwnershipModalComponent
   ],
   exports: [
     MyAdminComponent,
@@ -48,6 +48,4 @@ import { AccountCreatePartialComponent } from './accounts/account-create-partial
   ],
   providers: []
 })
-
-export class MyAdminModule {
-}
+export class MyAdminModule {}

@@ -118,85 +118,6 @@
   }
 }
 
-/*
-.navbar-searchTop {
-  position: relative;
-  .input-group {
-    border: 1px solid $input-border;
-    border-radius: $border-radius-base;
-    .btn {
-      height: 34px;
-      padding-top: 0;
-      padding-bottom: 0;
-      line-height: 32px;
-      border-color: transparent !important;
-      &:hover,
-      &:focus,
-      &.focus {
-        background-color: transparent;
-        @include box-shadow(none);
-      }
-    }
-    .form-control {
-      border-color: transparent !important;
-      padding-left: 0;
-      padding-right: 0;
-      @media (min-width: $screen-lg) {
-        min-width: 400px;
-      }
-      &:hover,
-      &:focus,
-      &.focus {
-        background-color: transparent;
-        @include box-shadow(none);
-      }
-    }
-  }
-  p-autocomplete {
-    input {
-      border: none !important;
-      width: 250px;
-      @media (min-width: $screen-lg-min) {
-        width: 350px;
-      }
-    }
-  }
-
-  .navbar-searchTop-advanced {
-    position: absolute;
-    top: 34px;
-    left: 0;
-    right: 0;
-    z-index: 2;
-    padding: 15px;
-    border: 1px solid $input-border;
-    border-radius: $border-radius-base;
-    background-color: #ffffff;
-    @include box-shadow($box-shadow-bottom);
-    .form-group {
-      display: block;
-      margin-bottom: 20px;
-      .form-control {
-        display: block;
-        width: 100%;
-      }
-    }
-    .control-label {
-      font-weight: normal;
-      margin-right: -10px;
-    }
-    .ui-calendar {
-      display: block;
-    }
-  }
-  .social-list-user {
-    li {
-      margin-bottom: 0px;
-    }
-
-  }
-}*/
-
 .textarea-autoheight {
   overflow: hidden;
   word-wrap: break-word;
@@ -217,6 +138,11 @@ textarea {
 
 .form-control-phone-country {
   background-color: red;
+
+  input.ui-autocomplete-input {
+    height: 34px !important;
+  }
+
   .ui-autocomplete {
     &.ui-widget {
       .ui-inputtext {
@@ -244,11 +170,26 @@ textarea {
   .ui-autocomplete-panel {
     min-width: 390px;
     font-size: 12px;
+    @media (max-width: $screen-xs-max) {
+      min-width: 260px;
+    }
+    .ui-autocomplete-list {
+      li .clearfix {
+        @include flexbox;
+        @include align-items(start);
+        span {
+          &.pull-left {
+            @include flex(1);
+          }
+        }
+      }
+    }
     img {
       margin-right: 5px;
     }
     span {
       line-height: 20px;
+
     }
   }
   &.ng-invalid {
@@ -261,3 +202,52 @@ textarea {
     }
   }
 }
+
+.textarea-editor-input {
+  min-height: 34px;
+  height: auto;
+  word-break: break-word;
+}
+
+.commentContent-editor-input {
+  &:before {
+    float: left;
+  }
+  &:after {
+    content: '';
+    height: 10px;
+    width: 85px;
+    display: inline-block;
+  }
+}
+
+.textarea-editor-view {
+  word-break: break-word;
+  > div > br {
+    display: none;
+  }
+}
+
+.input-group-search-header {
+
+  .input-group {
+    .input-group-btn {
+      min-width: 34px;
+    }
+  }
+
+  .input-group-form {
+    p-autocomplete {
+      .ui-autocomplete-multiple-container li {
+        display: inline-block;
+      }
+      input[type="text"] {
+        width: 100%;
+        display: block;
+        margin: 0;
+        min-width: 220px;
+      }
+    }
+  }
+}
+

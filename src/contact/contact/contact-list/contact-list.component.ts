@@ -1,13 +1,18 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  AfterViewInit,
+  ChangeDetectorRef
+} from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
 
-
-import { ZContactService } from '../../shared/services/contact.service';
+import { ZContactService, ITEM_PER_PAGE } from '../../shared/services/contact.service';
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
 import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
@@ -20,20 +25,26 @@ import { Recipient } from '../../../shared/shared/components/invitation/recipien
 
 import { Config } from '../../../shared/constant/config/env.config';
 import { Constants } from '../../../shared/constant/config/constants';
-import { CommonEvent, CommonEventAction, CommonEventService } from '@wth/shared/services';
+import {
+  CommonEvent,
+  CommonEventAction,
+  CommonEventService
+} from '@wth/shared/services';
+import { routeAnimation } from '@wth/shared/shared/animations/route.animation';
+import { takeUntil } from 'rxjs/operators';
 
 declare var _: any;
 @Component({
-  moduleId: module.id,
+
   selector: 'z-contact-list',
   templateUrl: 'contact-list.component.html'
+  // animations: [routeAnimation]
 })
-export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
+export class ZContactListComponent
+  implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
 
-
-  ITEM_PER_PAGE: number = 20;
   page: number = 1;
 
   contacts: any = [];
@@ -43,6 +54,7 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   tokensActionsBar: any;
   contact$: Observable<any>;
   originalContacts: any = [];
+  loaded: boolean = false;
 
   linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
   linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
@@ -62,8 +74,11 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     private invitationService: InvitationService,
     private toaster: ToastsService
   ) {
-    this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common)
-      .takeUntil(this.destroySubject)
+    this.commonEventService
+      .filter(
+        (event: CommonEvent) => event.channel == Constants.contactEvents.common
+      )
+      .pipe(takeUntil(this.destroySubject))
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
       });
@@ -72,8 +87,12 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   }
 
   ngOnInit() {
-    this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.actionsToolbar)
-      .takeUntil(this.destroySubject)
+    this.commonEventService
+      .filter(
+        (event: CommonEvent) =>
+          event.channel == Constants.contactEvents.actionsToolbar
+      )
+      .pipe(takeUntil(this.destroySubject))
       .subscribe((event: CommonEvent) => {
         let tmp = _.cloneDeep(this.contactService.selectedObjects);
         this.contactService.selectedObjects = [event.payload];
@@ -84,24 +103,24 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     this.route.params.forEach((params: Params) => {
       this.contactService.resetSelectedObjects();
       if (params['search']) {
-        this.contactService.search({search_value: params['search']});
+        this.contactService.search({ search_value: params['search'] });
       } else {
         switch (params['group']) {
           case 'all contacts':
           case 'undefined':
-            this.contactService.filter({group: undefined});
+            this.contactService.filter({ group: undefined });
             break;
           default:
-            this.contactService.filter({group: params['group']});
+            this.contactService.filter({ group: params['group'] });
             break;
         }
       }
     });
 
     this.contactService.contacts$
-      .takeUntil(this.destroySubject)
+      .pipe(takeUntil(this.destroySubject))
       .subscribe((contacts: any[]) => {
-        this.contacts = contacts.slice(0, this.ITEM_PER_PAGE * this.page);
+        this.contacts = contacts.slice(0, ITEM_PER_PAGE * this.page);
         this.loadingService.stop();
       });
   }
@@ -110,10 +129,12 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     this.loadingService.start('#contact-list');
 
     this.contactService.initLoad$
-      .takeUntil(this.destroySubject)
+      .pipe(takeUntil(this.destroySubject))
       .subscribe((data: any) => {
-        if (data === true)
+        if (data === true) {
+          this.loaded = true;
           this.loadingService.stop('#contact-list');
+        }
       });
     this.cdr.detectChanges();
   }
@@ -151,22 +172,33 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
           event.mode = 'edit';
         }
 
-        this.modal.open({mode: event.mode, groups: groups, contacts: this.contactService.selectedObjects});
+        this.modal.open({
+          mode: event.mode,
+          groups: groups,
+          contacts: this.contactService.selectedObjects
+        });
         break;
 
       // this will handle all cases as: favourite, add to group
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
-        let selectedObjects = (event.payload && event.payload.selectedObjects) ? event.payload.selectedObjects : this.contactService.selectedObjects;
+        let selectedObjects =
+          event.payload && event.payload.selectedObjects
+            ? event.payload.selectedObjects
+            : this.contactService.selectedObjects;
         // there are two cases must be handled: SINGLE selected object and MULTIPLE selected objects
         this.contactService.update(selectedObjects).subscribe((res: any) => {
           console.log(res);
         });
         break;
       case 'invitation:send_to_recipients':
-          this.invitationService.create({recipients: event.payload}).subscribe((response: any) => {
+        this.invitationService
+          .create({ recipients: event.payload })
+          .subscribe((response: any) => {
             // this.invitationModal.close();
-            this.toaster.success('You have just sent invitation(s) successfully!');
+            this.toaster.success(
+              'You have just sent invitation(s) successfully!'
+            );
           });
         break;
     }
@@ -176,14 +208,21 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
       return group.name == name;
     });
-    if (_contact.isContactsHasGroupName(this.contactService.selectedObjects, name)) {
-      _contact.removeGroupContactsByName(this.contactService.selectedObjects, name);
+    if (
+      _contact.isContactsHasGroupName(this.contactService.selectedObjects, name)
+    ) {
+      _contact.removeGroupContactsByName(
+        this.contactService.selectedObjects,
+        name
+      );
     } else {
       _contact.addGroupContacts(this.contactService.selectedObjects, group);
     }
-    this.contactService.update(this.contactService.selectedObjects).subscribe((res: any) => {
-      console.log(res);
-    });
+    this.contactService
+      .update(this.contactService.selectedObjects)
+      .subscribe((res: any) => {
+        console.log(res);
+      });
   }
 
   doActionsToolbar(event: any) {
@@ -197,22 +236,36 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     }
 
     if (event.action == 'tag') {
-      this.doEvent({action: 'open_add_group_modal'});
+      this.doEvent({ action: 'open_add_group_modal' });
     }
 
     if (event.action == 'delete') {
-      this.contactService.confirmDeleteContacts(this.contactService.selectedObjects);
+      this.contactService.confirmDeleteContacts(
+        this.contactService.selectedObjects
+      );
     }
 
     if (event.action == 'social') {
-      if (this.contactService.selectedObjects && this.contactService.selectedObjects[0].wthapps_user && this.contactService.selectedObjects[0].wthapps_user.uuid) {
-        window.location.href = this.linkSocial + this.contactService.selectedObjects[0].wthapps_user.uuid;
+      if (
+        this.contactService.selectedObjects &&
+        this.contactService.selectedObjects[0].wthapps_user &&
+        this.contactService.selectedObjects[0].wthapps_user.uuid
+      ) {
+        window.location.href =
+          this.linkSocial +
+          this.contactService.selectedObjects[0].wthapps_user.uuid;
       }
     }
 
     if (event.action == 'chat') {
-      if (this.contactService.selectedObjects && this.contactService.selectedObjects[0].wthapps_user && this.contactService.selectedObjects[0].wthapps_user.uuid) {
-        window.location.href = this.linkChat + this.contactService.selectedObjects[0].wthapps_user.uuid;
+      if (
+        this.contactService.selectedObjects &&
+        this.contactService.selectedObjects[0].wthapps_user &&
+        this.contactService.selectedObjects[0].wthapps_user.uuid
+      ) {
+        window.location.href =
+          this.linkChat +
+          this.contactService.selectedObjects[0].wthapps_user.uuid;
       }
     }
 
@@ -221,20 +274,36 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
     }
 
     if (event.action == 'edit_contact') {
-      this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, {mode: 'edit'}]).then();
+      this.router
+        .navigate([
+          'contacts',
+          this.contactService.selectedObjects[0].id,
+          { mode: 'edit' }
+        ])
+        .then();
     }
 
     if (event.action == 'invitation:open_modal') {
       let recipients: Array<Recipient> = new Array<Recipient>();
-      let objects: any[] = _.get(event, 'payload.objects', this.contactService.selectedObjects);
+      let objects: any[] = _.get(
+        event,
+        'payload.objects',
+        this.contactService.selectedObjects
+      );
       _.forEach(objects, (contact: any) => {
-        if(contact.wthapps_user == null) {
+        if (contact.wthapps_user == null) {
           _.forEach(contact.emails, (email: any) => {
-            recipients.push(new Recipient({email: email.value, fullName: contact.name, contactId: contact.id}));
+            recipients.push(
+              new Recipient({
+                email: email.value,
+                fullName: contact.name,
+                contactId: contact.id
+              })
+            );
           });
         }
       });
-      this.invitationModal.open({data: recipients});
+      this.invitationModal.open({ data: recipients });
     }
   }
 
@@ -256,5 +325,4 @@ export class ZContactListComponent implements OnInit, OnDestroy, AfterViewInit, 
   addTags(event: any) {
     this.modal.open();
   }
-
 }

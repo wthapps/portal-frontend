@@ -13,8 +13,8 @@ import { ZChatNewConversationComponent } from './new-conversation.component';
     ReactiveFormsModule,
     ModalModule,
     ZChatConversationRoutingModule,
-    ZChatSharedModule.forRoot(),
-    SharedModule.forRoot()
+    ZChatSharedModule,
+    SharedModule
   ],
   declarations: [
     ConversationListComponent,
@@ -28,6 +28,4 @@ import { ZChatNewConversationComponent } from './new-conversation.component';
   ],
   providers: []
 })
-
-export class ZChatConversationModule {
-}
+export class ZChatConversationModule {}

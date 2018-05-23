@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppComponent } from './app.component';
 
-import { SharedModule } from '../shared/shared.module';
 import { CoreModule } from '../core/core.module';
 import { HomeModule } from '../contact/home/home.module';
 import { ContactModule } from './contact/contact.module';
@@ -13,13 +13,15 @@ import { APP_BASE_HREF } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { HeaderNavbarModule } from '../shared/shared/components/navbar/navbar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalModule } from '@wth/shared/modals/modals.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { WthCommonModule } from '@wth/shared/common/wth-common.module';
+import { environment } from '@env/environment';
+import { ContactSearchModule } from '@contacts/search/search.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -30,14 +32,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HomeModule,
     ContactModule,
     MyProfileModule,
+    ContactSearchModule,
     GroupModule,
     SettingsModule,
+    ModalModule,
     ContactSharedModule.forRoot(),
 
     // WTHApps modules
-    HeaderNavbarModule,
-    SharedModule.forRoot(),
+    WthCommonModule,
+    SharedServicesModule.forRoot(),
     CoreModule.forRoot(),
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: environment.production
+    })
   ],
   providers: [
     {
@@ -52,4 +59,4 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

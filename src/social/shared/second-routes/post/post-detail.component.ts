@@ -1,21 +1,21 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { BaseZoneSocialItem } from '../../../shared/base/base-social-item';
-import { ApiBaseService } from '@wth/shared/services';
+import { ApiBaseService, AuthService } from '@wth/shared/services';
 import { SoPost } from '@wth/shared/shared/models';
 import { PostEditComponent } from './post-edit.component';
 import { PostService } from './shared/post.service';
 
-declare var _: any;
+
 
 @Component({
-  moduleId: module.id,
   selector: 'so-post-detail',
-  templateUrl: 'post-detail.component.html'
+  templateUrl: 'post-detail.component.html',
+  styleUrls: ['post-detail.component.scss']
 })
 
 export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
@@ -31,6 +31,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
               private route: ActivatedRoute,
               public router: Router,
               public location: Location,
+              public authService: AuthService,
               private postService: PostService) {
     super();
   }
@@ -58,7 +59,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   }
 
   goBack() {
-    this.router.navigate([{outlets: {detail: null}}], {preserveQueryParams: true}).then(() => {
+    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' }).then(() => {
 
     });
   }

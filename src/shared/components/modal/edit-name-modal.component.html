@@ -1,0 +1,26 @@
+<form [formGroup]="form" novalidate>
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title">Rename</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+      <div class="form-group" [ngClass]="{'has-error': (!name.valid && name.touched)}">
+        <p>Please enter a new name for the {{ objectType }}:</p>
+        <label for="edit-photo-album-name" class="sr-only">name</label>
+        <input [formControl]="name" value="selectedPhotos.name" type="text" id="edit-photo-album-name"
+               class="form-control" placeholder="">
+        <div *ngIf="!name.valid && name.touched">
+          <span *ngIf="!name.valid && name.errors.required" class="help-block">Name is required</span>
+        </div>
+      </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
+              (click)="modal.close()">Cancel</button>
+      <button [disabled]="!form.valid" (click)="onSubmit(form.value)" type="submit"
+              class="btn btn-outline-primary btn-min">Done
+      </button>
+    </bs-modal-footer>
+  </bs-modal>
+</form>

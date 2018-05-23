@@ -4,21 +4,10 @@ import { SharedModule } from '@shared/shared.module';
 import { NotePhotoDetailComponent } from './photo-detail.component';
 import { ZNotePhotoRoutingModule } from './photo-routing.module';
 
-
 @NgModule({
-  imports: [
-    ReactiveFormsModule,
-    ZNotePhotoRoutingModule,
-    SharedModule
-  ],
-  declarations: [
-    NotePhotoDetailComponent
-  ],
-  exports: [
-    NotePhotoDetailComponent
-  ],
+  imports: [ReactiveFormsModule, ZNotePhotoRoutingModule, SharedModule],
+  declarations: [NotePhotoDetailComponent],
+  exports: [NotePhotoDetailComponent],
   providers: []
 })
-
-export class ZNotePhotoModule {
-}
+export class ZNotePhotoModule {}

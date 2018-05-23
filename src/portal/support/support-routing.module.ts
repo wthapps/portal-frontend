@@ -13,16 +13,15 @@ import { SupportSecurityComponent } from './security/security.component';
         path: 'support',
         component: SupportComponent,
         children: [
-          {path: 'product', component: SupportProductComponent},
-          {path: 'billing', component: SupportBillingComponent},
-          {path: 'legal', component: SupportLegalComponent},
-          {path: 'security', component: SupportSecurityComponent},
-          {path: '', component: SupportProductComponent}
+          { path: 'product', component: SupportProductComponent },
+          { path: 'billing', component: SupportBillingComponent },
+          { path: 'legal', component: SupportLegalComponent },
+          { path: 'security', component: SupportSecurityComponent },
+          { path: '', component: SupportProductComponent }
         ]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class SupportRoutingModule {
-}
+export class SupportRoutingModule {}

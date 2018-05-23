@@ -3,13 +3,13 @@
   lockYOffset="20"
   observeAttributes="true"
   infinite-scroll
-  [scrollWindow]="false"
+  [scrollWindow]="true"
   (scrolled)="onLoadMore()">
   <div class="page-body-content-in zone-social">
-
     <div class="zone-social-in">
       <div class="zone-social-cover">
-        <cover-profile [item]="community" (outEvent)="onCoverAction($event)">
+        <box-loading *ngIf="loading"></box-loading>
+        <cover-profile [item]="community" (outEvent)="onCoverAction($event)" *ngIf="!loading">
           <so-information>
             <div class="z-social-media-body">
               <div class="z-heading">
@@ -98,10 +98,9 @@
 
         </cover-profile>
 
-
         <nav class="nav-tabs-wrap clearfix">
-          <div class="pull-left btn-group hidden-md hidden-lg">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          <div class="pull-left btn-group hidden-md hidden-lg mt10 mb10">
+            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
               {{ selectedTabTitle?.value }} <span class="caret"></span>
             </button>
@@ -154,10 +153,14 @@
       </div>
 
       <!--post list-->
-      <so-post-list *ngIf="isPostTab" #posts [type]="'community'" [canCreatePost]="isMember" [community]="community"></so-post-list>
+      <so-post-list *ngIf="activeTabs.post" #posts
+                    [user]="authService.user$|async"
+                    [type]="'community'"
+                    [canCreatePost]="isMember"
+                    [community]="community"></so-post-list>
 
       <!--about-->
-      <div class="panel panel-default" *ngIf="isAboutTab">
+      <div class="panel panel-default" *ngIf="activeTabs.about">
         <div class="panel-heading">
           <div class="pull-right">
             <a href="javascript:;" (click)="onEdit()" class="btn btn-outline-default pull-right" *ngIf="isAdmin">
@@ -174,7 +177,7 @@
           <ul *ngIf="community?.additional_links" class="list-unstyled">
             <li *ngFor="let link of community?.additional_links">
               <i class="fa fa-globe"></i>
-              <a target="_blank" href="{{ link.url | urlTransform }}">{{ link ? link.name : "" }}</a>
+              <a target="_blank" rel="noopener" href="{{ link.url | urlTransform }}">{{ link ? link.name : "" }}</a>
             </li>
           </ul>
         </div>
@@ -187,7 +190,7 @@
         <entity-select #users type='member_invite' (onSelected)="inviteMembers($event)"></entity-select>
       </div>
 
-      <div class="panel panel-default" *ngIf="isMember && !isAboutTab && !isPostTab">
+      <div class="panel panel-default" *ngIf="isMember && !activeTabs.about && !activeTabs.post">
         <ul class="list-group" *ngIf="selectedTab == 'members'">
           <ng-template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
             <li class="list-group-item" >
@@ -215,7 +218,7 @@
           </ng-template>
         </ul>
 
-        <ul class="list-group" *ngIf="selectedTab == 'invitations'">
+        <ul class="list-group" *ngIf="activeTabs.invitations">
           <ng-template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
             <li class="list-group-item" data-id="invitation_{{ item.id }}">
                 <div class="dropdown pull-right">
@@ -229,7 +232,7 @@
           </ng-template>
         </ul>
 
-        <ul class="list-group" *ngIf="selectedTab == 'join_requests'">
+        <ul class="list-group" *ngIf="activeTabs.joinRequests">
           <ng-template ngFor let-item [ngForOf]="tabItems">
             <li class="list-group-item" data-id="invitation_{{ item.id }}">
               <div class="dropdown pull-right">

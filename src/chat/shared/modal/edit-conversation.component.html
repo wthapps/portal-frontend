@@ -1,9 +1,9 @@
 <form *ngIf="item.value">
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title"><i class="fa fa-plus"></i> Edit Conversation </h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div class="media media-user-list">
         <div class="media-left">
           <z-chat-share-user [data]="item.value" [size]="'sm'" [displayUserName]=false></z-chat-share-user>
@@ -15,10 +15,11 @@
           </div>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
+              (click)="modal.close()">Cancel</button>
       <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit()">Done</button>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

@@ -1,0 +1,44 @@
+<div class="media media-no-hidden" *ngIf="data">
+  <div class="media-left can-click" (click)="viewProfile(data)">
+        <span class="avatar-sm">
+          <img [src]="data.profile_image" alt="{{ data.name }}">
+        </span>
+  </div>
+  <div class="media-body">
+    <h5 class="media-heading m0">
+      <a [routerLink]="['/profile', data.uuid]" class="link-text">{{ data.name }}</a>
+    </h5>
+
+    <div class="text-fade">
+      {{ data.friend_count }} friends - {{ data.follower_count }} followers - {{ data.following_count }} following
+    </div>
+  </div>
+  <div class="media-right" style="min-width: 275px;">
+    <div class="pull-right no-wrap">
+      <div class="btn-group" role="group" aria-label="">
+        <ng-template [ngIf]="type == REQUEST_TYPE.received && data.status == friendStatus.pending">
+
+          <button class="btn btn-outline-default red" type="button" (click)="acceptRequest()">
+            <i class="fa fa-check"></i> Accept
+          </button>
+          <button class="btn btn-outline-default" type="button" (click)="declineRequest()">
+            <i class="fa fa-times"></i> Decline
+          </button>
+        </ng-template>
+        <ng-template [ngIf]="type == REQUEST_TYPE.received && data.status == friendStatus.accepted">
+          <button type="button" class="btn btn-outline-light text-dark">
+            <i class="fa fa-check"></i> Accepted</button>
+        </ng-template>
+        <ng-template [ngIf]="type == REQUEST_TYPE.received && data.status == friendStatus.rejected">
+          <span class="btn-text btn-xs mr5 text-capitalize ng-star-inserted"><i class="fa fa-times"></i> Rejected</span>
+        </ng-template>
+        <ng-template [ngIf]="type == REQUEST_TYPE.pending">
+          <button class="btn btn-outline-default" type="button" (click)="cancelRequest()">
+            <i class="fa fa-times"></i> Cancel Request
+          </button>
+        </ng-template>
+      </div>
+
+    </div>
+  </div>
+</div>

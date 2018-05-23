@@ -1,0 +1,63 @@
+<div class="page-body-content gray-light"
+     lockYOffset="20"
+     observeAttributes="true"
+     infinite-scroll
+     [scrollWindow]="true"
+     (scrolled)="getMoreNotifications()">
+  <div class="page-body-content-in zone-social">
+
+    <div class="zone-social-in">
+      <div class="panel panel-default">
+        <div class="panel-heading p0">
+          <div class="pull-right p10">
+            <button class="btn btn-sm btn-outline-default" type="button" (click)="onSettingModal()" ><i class="fa fa-cog"></i> Settings</button>
+          </div>
+          <nav class="nav-tabs-wrap pl10 pr10 nav-tabs-wrap-md clearfix">
+            <ul class="nav nav-tabs pull-left list-unstyled clearfix">
+              <li [ngClass]="type==undefined || type == 'update' ? 'active': ''">
+                <a (click)="onSelectedTab('update')" href="javascript:;">Update <span class="badge" [ngClass]="{'active': (notificationService.newNotifCount > 0)}"> {{ notificationService.newNotifCount }}</span></a>
+              </li>
+              <li [ngClass]="type=='connection'? 'active': ''">
+                <a (click)="onSelectedTab('connection')" href="javascript:;">Connection <span class="badge" [ngClass]="{'active': (connectionService.newNotifCount > 0)}"> {{ connectionService.newNotifCount }}</span></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="panel-body p0">
+          <app-partials-notification-list #notifications [type]="type"></app-partials-notification-list>
+        </div>
+        <div class="panel-footer text-center">
+          <a href="javascript:;" class="bold text-bigger" (click)="getMoreNotifications()" *ngIf="!isLoadingDone()">
+            View more
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<bs-modal #settings [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p>Allow notification updates from</p>
+    <div>
+      <div>
+        <p-checkbox name="group1" value="social" label="Social Media"
+                    [(ngModel)]="selectedNotifications"></p-checkbox>
+      </div>
+      <div>
+        <p-checkbox name="group1" value="chat" label="Chat" [(ngModel)]="selectedNotifications"></p-checkbox>
+      </div>
+      <div>
+        <p-checkbox name="group1" value="note" label="Note" [(ngModel)]="selectedNotifications"></p-checkbox>
+      </div>
+    </div>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="settings.close()">Cancel</button>
+    <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal">Done</button>
+  </bs-modal-footer>
+</bs-modal>

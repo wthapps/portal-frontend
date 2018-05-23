@@ -58,7 +58,7 @@ export class MyReceiptComponent implements OnInit {
     );
 
     this.loadingService.start();
-    this.transactionService.detail(this.trans_id, this.userService.profile.id).subscribe(
+    this.transactionService.detail(this.trans_id, this.userService.getSyncProfile().id).subscribe(
       (response: any) => {
         this.transaction = response.data;
         this.transaction.created_at = new Date(response.data.created_at);
@@ -71,21 +71,21 @@ export class MyReceiptComponent implements OnInit {
   }
 
   printOut(): void {
-    //console.log(this.printOut);
-    let html = $(this._el.nativeElement).find('#printOut').html();
-    //var mywindow = window.open('', 'printOut', 'height=400,width=600');
-    var mywindow = window.open('', '_blank');
-    mywindow.document.write('<html><head><title></title>');
-    /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
-    mywindow.document.write('</head><body >');
-    mywindow.document.write(html);
-    mywindow.document.write('</body></html>');
-
-    mywindow.document.close(); // necessary for IE >= 10
-    mywindow.focus(); // necessary for IE >= 10
-
-    mywindow.print();
-    mywindow.close();
+    // //console.log(this.printOut);
+    // let html = $(this._el.nativeElement).find('#printOut').html();
+    // //var mywindow = window.open('', 'printOut', 'height=400,width=600');
+    // var mywindow = window.open('', '_blank');
+    // mywindow.document.write('<html><head><title></title>');
+    // /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+    // mywindow.document.write('</head><body >');
+    // mywindow.document.write(html);
+    // mywindow.document.write('</body></html>');
+    //
+    // mywindow.document.close(); // necessary for IE >= 10
+    // mywindow.focus(); // necessary for IE >= 10
+    //
+    // mywindow.print();
+    // mywindow.close();
     //console.log($(this._el.nativeElement).find('.printOut'));
   }
 }

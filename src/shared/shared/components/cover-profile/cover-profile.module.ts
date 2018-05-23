@@ -24,8 +24,8 @@ import { PhotoUploadService } from '../../../services/photo-upload.service';
     CoverProfileComponent
   ],
   providers: [
-    PhotoModalDataService,
-    PhotoUploadService
+    // PhotoModalDataService,
+    // PhotoUploadService
   ]
 })
 

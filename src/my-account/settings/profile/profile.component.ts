@@ -19,12 +19,12 @@ import { PhotoModalDataService } from '@wth/shared/services/photo-modal-data.ser
 import { PhotoUploadService } from '@wth/shared/services/photo-upload.service';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 import { Constants } from '@wth/shared/constant/config/constants';
+import { ApiBaseService, UrlService } from "@shared/services";
 
 declare var $: any;
 declare var _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'my-setting-profile',
   templateUrl: 'profile.component.html'
 })
@@ -62,45 +62,50 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   // validMonths: number[] = [];
   validYears: number[] = [];
   submitted: boolean = false;
+  verified: boolean = false;
+
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(public userService: UserService,
               private fb: FormBuilder,
               private countryService: CountryService,
               private toastsService: ToastsService,
+              private apiBaseService: ApiBaseService,
+              private urlService: UrlService,
               // private photoSelectDataService : PhotoModalDataService,
               // private photoUploadService: PhotoUploadService,
               private commonEventService: CommonEventService,
               private loadingService: LoadingService) {
 
-    this.sex = this.userService.profile.sex === null ? 0 : this.userService.profile.sex;
+    this.sex = this.userService.getSyncProfile().sex === null ? 0 : this.userService.getSyncProfile().sex;
     this.validDays = this.range(1, 31);
     this.validYears = this.range(2016, 1905);
 
-    if (!this.userService.profile.profile_image) {
-      this.userService.profile.profile_image = Constants.img.avatar;
+    if (!this.userService.getSyncProfile().profile_image) {
+      this.userService.getSyncProfile().profile_image = Constants.img.avatar;
     }
+    this.handleSelectCropEvent();
 
-    if (this.userService.profile.birthday !== null) {
-      let birthday = new Date(this.userService.profile.birthday);
+    if (this.userService.getSyncProfile().birthday !== null) {
+      let birthday = new Date(this.userService.getSyncProfile().birthday);
       this.birthdayDate.day = birthday.getDate();
       this.birthdayDate.month = birthday.getMonth() + 1;
       this.birthdayDate.year = birthday.getUTCFullYear();
     }
 
     this.form = fb.group({
-      'first_name': [this.userService.profile.first_name,
+      'first_name': [this.userService.getSyncProfile().first_name,
         Validators.compose([Validators.required])
       ],
-      'last_name': [this.userService.profile.last_name,
+      'last_name': [this.userService.getSyncProfile().last_name,
         Validators.compose([Validators.required])
       ],
       'email': [
-        {value: this.userService.profile.email, disabled: true},
+        {value: this.userService.getSyncProfile().email, disabled: true},
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'phone_prefix': [this.userService.profile.nationality],
-      'phone_number': [this.userService.profile.phone_number],
+      'phone_prefix': [this.userService.getSyncProfile().nationality],
+      'phone_number': [this.userService.getSyncProfile().phone_number],
       'birthday_day': [this.birthdayDate.day],
       'birthday_month': [this.birthdayDate.month],
       'birthday_year': [this.birthdayDate.year]
@@ -117,10 +122,20 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // verified email
+    if(this.urlService.getQuery() && this.urlService.getQuery().verified == 'true') {
+      this.toastsService.success('You have successfully verify your email address');
+    }
+    if(this.urlService.getQuery() && this.urlService.getQuery().verified == 'false') {
+      this.toastsService.danger('Cannot verify your email address. Please try again');
+    }
+    this.apiBaseService.post('users/get_user').subscribe((res: any) => {
+      this.verified = res.data.verified;
+    });
     // Set value before updating form (checking user leave this page)
     this.formValue = this.form.value;
 
-    this.profile_image = this.userService.profile.profile_image;
+    this.profile_image = this.userService.getSyncProfile().profile_image;
     this.countryService.getCountries().subscribe(
       (data: any) => this.countriesCode = data,
       (error: any) => this.errorMessage = <any>error);
@@ -156,7 +171,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
       //console.log(body);
 
-      this.userService.update(`users/${this.userService.profile.id}`, body)
+      this.userService.update(body)
         .subscribe((result: any) => {
             // stop loading
             this.loadingService.stop();
@@ -175,8 +190,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   uploadImage(event: any): void {
     event.preventDefault();
     // this.uploadProfile.modal.open();
-    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.profile.profile_image} });
-    this.handleSelectCropEvent();
+    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.getSyncProfile().profile_image} });
   }
 
   handleSelectCropEvent() {
@@ -192,7 +206,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     // console.log(event);
     switch (event.action) {
       case 'SELECT_CROP:DONE':
-        console.debug('inside doEvent - SELECT_CROP:DONE', event);
         // Change user profile
         this.updateProfileImageBase64(event.payload);
         break;
@@ -206,7 +219,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
 
   private updateUser(body: string): void {
-    this.userService.update(`users/${this.userService.profile.id}`, body)
+    this.userService.update(body)
       .subscribe((result: any) => {
           // stop loading
           this.loadingService.stop();
@@ -222,6 +235,12 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           console.log(error);
         }
       );
+  }
+
+  sendVerifyEmail() {
+    this.apiBaseService.post(`users/confirmation`).subscribe((res: any) => {
+      this.toastsService.success('A verification email was sent to your email address');
+    })
   }
 
   private range (start: number, end: number) {

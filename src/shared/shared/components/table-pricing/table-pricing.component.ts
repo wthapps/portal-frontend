@@ -79,7 +79,7 @@ export class TablePricingComponent implements OnInit {
       price: plan.price
     });
     this.cookieService.put('selected_plan', p, this.cookieOptionsArgs);
-    if (this.userService.profile && this.userService.profile.has_payment_info) {
+    if (this.userService.getSyncProfile() && this.userService.getSyncProfile().has_payment_info) {
       this.router.navigateByUrl('payment/confirm');
       // this.userService.getDefaultPayment()
       //   .subscribe((response: any) => {

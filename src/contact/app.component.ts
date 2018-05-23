@@ -1,16 +1,22 @@
-import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  ViewChild,
+  ViewContainerRef,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ViewEncapsulation
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/last';
+import { takeUntil, filter } from 'rxjs/operators';
+import { timer } from 'rxjs/observable/timer';
 import { ConfirmDialogModel } from '../shared/shared/models/confirm-dialog.model';
 import { Constants } from '../shared/constant/config/constants';
-
-
 
 import { ZContactService } from './shared/services/contact.service';
 import { Group } from './group/group.model';
@@ -20,22 +26,31 @@ import { GoogleApiService } from './shared/services/google-api.service';
 import { Config } from '../shared/constant/config/env.config';
 
 import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
-import { CommonEvent, CommonEventAction, CommonEventService } from '@wth/shared/services';
+import {
+  AuthService,
+  CommonEvent,
+  CommonEventAction,
+  CommonEventService
+} from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+
+const GAPI_TIMEOUT = 2000;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  entryComponents: [
-    GroupEditModalComponent,
-    ZContactSharedSettingsComponent
-  ]
+  styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  entryComponents: [GroupEditModalComponent, ZContactSharedSettingsComponent]
 })
-export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
+export class AppComponent
+  implements OnInit, OnDestroy, AfterViewInit, CommonEventAction {
+  @ViewChild('modalContainer', { read: ViewContainerRef })
+  modalContainer: ViewContainerRef;
+  @ViewChild('introduction') introduction: IntroductionModalComponent;
 
   routerSubscription: Subscription;
-  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
   groups: Group[] = [];
@@ -47,22 +62,30 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
 
   private destroySubject: Subject<any> = new Subject<any>();
 
-
-  constructor(private router: Router,
-              private resolver: ComponentFactoryResolver,
-              private commonEventService: CommonEventService,
-              public contactService: ZContactService,
-              private groupService: GroupService,
-              private googleApiService: GoogleApiService,
-              private wthConfirmService: WthConfirmService) {
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private resolver: ComponentFactoryResolver,
+    private commonEventService: CommonEventService,
+    public contactService: ZContactService,
+    private groupService: GroupService,
+    private googleApiService: GoogleApiService,
+    private wthConfirmService: WthConfirmService
+  ) {
     console.log('Environment config', Config, this.confirmDialog);
-    this.commonEventService.filter((event: CommonEvent) => event.channel == Constants.contactEvents.common)
-      .takeUntil(this.destroySubject)
+    this.commonEventService
+      .filter(
+        (event: CommonEvent) => event.channel == Constants.contactEvents.common
+      ).pipe(
+        takeUntil(this.destroySubject)
+      )
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
       });
     this.groupService.groups$
-      .takeUntil(this.destroySubject)
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
       .subscribe((groups: any[]) => {
         this.groups = groups;
       });
@@ -70,16 +93,28 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
 
   ngOnInit() {
     this.routerSubscription = this.router.events
-      .takeUntil(this.destroySubject)
-      .filter(event => event instanceof NavigationEnd)
+      .pipe(
+        takeUntil(this.destroySubject),
+        filter(event => event instanceof NavigationEnd)
+      )
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
 
-    this.groupService.getAllGroups()
+    this.groupService
+      .getAllGroups()
       .then((groups: any[]) => console.debug('getAllGroups: ', groups))
       .then(() => this.contactService.initialLoad())
-      .then(() => this.googleApiService.handleClientLoad());
+      .then(() => timer(GAPI_TIMEOUT).subscribe(_ => this.googleApiService.handleClientLoad()));
+  }
+
+  ngAfterViewInit() {
+    if (
+      !this.authService.user.introduction ||
+      !this.authService.user.introduction.contact
+    ) {
+      this.introduction.open();
+    }
   }
 
   ngOnDestroy() {
@@ -103,10 +138,9 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
         break;
       case 'contact:group:delete':
         let group = this.getGroup(event.payload.selectedItem);
-        this.groupService.delete(group.id).subscribe(
-          (res: any) => {
-            console.log(res);
-          });
+        this.groupService.delete(group.id).subscribe((res: any) => {
+          console.log(res);
+        });
         break;
     }
   }
@@ -116,9 +150,13 @@ export class AppComponent implements OnInit, OnDestroy, CommonEventAction {
   }
 
   private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    let modalComponentFactory = this.resolver.resolveComponentFactory(
+      component
+    );
     this.modalContainer.clear();
-    this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
+    this.modalComponent = this.modalContainer.createComponent(
+      modalComponentFactory
+    );
     this.modal = this.modalComponent.instance;
   }
 }

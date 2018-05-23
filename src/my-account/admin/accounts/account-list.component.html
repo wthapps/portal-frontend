@@ -1,3 +1,8 @@
+<!--<account-list-edit-modal #modal></account-list-edit-modal>-->
+
+
+<!--<div> {{ (user | async) | json }}</div>-->
+
 <div class="box-panel">
   <h3 class="box-panel-title">
     Accounts
@@ -28,7 +33,7 @@
   </div>
   <!--full account without sub-->
 
-  <div *ngIf="currentUser.parent_id > 0">
+  <div *ngIf="(authService.user$|async)?.parent_id != null">
 
     <div>
       Your account type dose not have the ability to create and manage additional accounts
@@ -37,18 +42,16 @@
       In order to create and manage additional accounts, please request to full ownership account to upgrade into pro account
     </div>
     <div class="box-panel-subtitle">
-
-      <a class="btn btn-outline-primary btn-min" (click)="openAccountAddModal()">
+      <a class="btn btn-outline-primary btn-min" (click)="openRequestOwnershipModal(modal)">
         Request ownership</a>
-
     </div>
   </div>
 
   <!--full account with sub-->
 
-  <div *ngIf="currentUser.parent_id == null">
+  <div *ngIf="(authService.user$ | async)?.parent_id == null">
     <div class="box-panel-subtitle">
-      <a class="btn btn-outline-primary btn-min" (click)="openAccountAddModal()">
+      <a class="btn btn-outline-primary btn-min" (click)="openAccountAddModal(modal)">
         <i class="fa fa-plus"></i> Add account</a>
       <!--<button class="btn btn-outline-secondary"-->
               <!--(click)="delete()" [disabled]="selectedItems.length === 0">-->
@@ -67,14 +70,13 @@
         <!--</th>-->
         <th>Full name</th>
         <th>Email</th>
-        <th>Account Type</th>
         <th>Last logged in</th>
-        <th>Action</th>
+        <th class="text-right">Action</th>
 
       </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of items">
+        <tr *ngFor="let item of (user | async)">
           <!--<th>-->
             <!--<div>-->
               <!--<p-checkbox value="" label=""-->
@@ -83,18 +85,25 @@
           <!--</th>-->
           <td>
             <a href="javascript:void(0);" (click)="view(item)">{{ item.name }}</a>
-            <label *ngIf="item.parent_id == null && item.creator_id == null" class="ql-bg-red ql-color-white">Admin</label>
+            <label *ngIf="item?.parent_id == null && item.creator_id == null" class="admin-mark">Master</label>
           </td>
           <td><a rel="nofollow" target="_top"
                  href="mailto:{{ item.email }}">{{ item.email }}</a></td>
-          <td> {{ item.parent_id == null ? 'Full account': 'Sub account' }} </td>
-          <td *ngIf="item.last_sign_in_at"> {{ item.last_sign_in_at | date: 'yMMMd' }} </td>
+          <td *ngIf="item.last_sign_in_at"> {{ item.last_sign_in_at | date: 'MMM d, y' }} </td>
           <td *ngIf="!item.last_sign_in_at"> N/A </td>
 
           <td>
-            <div>
-              <button class="btn btn-default" (click)="view(item)">View</button>
-              <button *ngIf="item.parent_id != null || item.creator_id != null" class="btn btn-default" (click)="delete(item)">Remove</button>
+            <div class="text-right">
+              <label *ngIf="item?.removing">Removed</label>
+              <button *ngIf="item?.requested_full_account && !item?.removing && item?.parent_id != null" class="btn btn-default"
+                      (click)="acceptRequest(item)" title="Accept Request">
+                <i class="fa fa-check-circle requested-full-account"></i></button>
+
+              <button *ngIf="!item?.removing" class="btn btn-default" (click)="edit(item)" title="Edit">
+                <i class="fa fa-pencil"></i></button>
+              <button *ngIf="!item?.removing" [disabled]="item?.parent_id == null"
+                      class="btn btn-default" title="Remove"
+                      (click)="delete(item)"><i class="fa fa-trash"></i></button>
             </div>
           </td>
         </tr>

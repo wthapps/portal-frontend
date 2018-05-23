@@ -16,7 +16,6 @@ import { LoadingService } from '../../shared/shared/components/loading/loading.s
 import { Constants } from '../../shared/constant/config/constants';
 import { Ng2Cable } from 'ng2-cable';
 
-
 declare var $: any;
 
 /**
@@ -34,36 +33,27 @@ export class LoginComponent implements OnInit {
   password: AbstractControl;
   submitted: boolean = false;
 
-  flagsRelease: boolean = Constants.flagsRelease;
-
   tooltip: any = Constants.tooltip;
 
   private returnUrl: string;
 
-  constructor(private fb: FormBuilder,
-              private router: Router,
-              private route: ActivatedRoute,
-              private userService: UserService,
-              private toastsService: ToastsService,
-              private loadingService: LoadingService,
-              private appearancesChannelService: AppearancesChannelService,
-              private ng2Cable: Ng2Cable,
-              private authService: AuthService) {
-    // if (this.userService.loggedIn) {
-    //   this.router.navigate(['/account/setting/profile']);
-    // }
-
-    if (this.userService.loggedIn && this.flagsRelease) {
-      window.location.href = Constants.urls.afterLogin;
-    }
-
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private toastsService: ToastsService,
+    private loadingService: LoadingService,
+    private appearancesChannelService: AppearancesChannelService,
+    private ng2Cable: Ng2Cable,
+    private authService: AuthService
+  ) {
     this.form = fb.group({
-      'email': ['',
+      email: [
+        '',
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
-      'password': ['',
-        Validators.compose([Validators.required])
-      ]
+      password: ['', Validators.compose([Validators.required])]
     });
 
     this.email = this.form.controls['email'];
@@ -72,10 +62,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loadingService.stop();
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
   }
 
   onSubmit(values: any): void {
-
     this.submitted = true;
     if (this.form.valid) {
       // start loading
@@ -83,36 +73,30 @@ export class LoginComponent implements OnInit {
 
       let email = values.email;
       let password = values.password;
-      let body = JSON.stringify({user: {email, password}});
+      let body = JSON.stringify({ user: { email, password } });
 
-      this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
-      this.userService.login('users/sign_in', body)
-        .subscribe((result) => {
-            if (result) {
-              // Initialize websocket
-              this.appearancesChannelService.subscribe();
-              // this.chatSupportAppearanceChannel.subscribe();
-
-              if (this.flagsRelease) {
-                window.location.href = Constants.urls.afterLogin;
-              } else {
-                // Redirect to previous url
-                if (this.returnUrl == undefined) {
-                  this.returnUrl = this.userService.profile.took_a_tour ? '' : Constants.baseUrls.myAccount;
-                }
-                window.location.href = this.returnUrl;
-
-                // TODO Store payment info
-              }
+      this.authService.login(body).subscribe(
+        (response: any) => {
+          this.loadingService.stop();
+          this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+          if (this.returnUrl.indexOf(Constants.baseUrls.app) >= 0) {
+            this.router.navigate([this.returnUrl]);
+          } else {
+            if (this.returnUrl === '' && Constants.useDefaultPage) {
+              window.location.href = Constants.urls.default;
+            } else if (this.returnUrl === '' && !Constants.useDefaultPage) {
+              this.router.navigate(['']);
+            } else {
+              window.location.href = this.returnUrl;
             }
-          },
-          error => {
-            // stop loading
-            this.loadingService.stop();
-            this.toastsService.danger('Invalid email or password');
-            //console.log('login error:', error);
           }
-        );
+        },
+        (error: any) => {
+          // stop loading
+          this.loadingService.stop();
+          this.toastsService.danger(error.error.error);
+        }
+      );
     }
   }
 }

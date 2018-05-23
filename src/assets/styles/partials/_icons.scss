@@ -1,0 +1,20 @@
+$zone-icons-list: 'social' 'note' 'chat' 'media' 'contact' 'profile';
+$zone-icons-width: 16;
+
+[class^="icon-zone-"], [class*=" icon-zone-"] {
+  width: $zone-icons-width + px;
+  height: $zone-icons-width + px;
+  display: inline-block;
+  vertical-align: middle;
+  background-image: url('/assets/icons/zone-icons.png');
+  background-repeat: no-repeat;
+  position: relative;
+  top: -1px;
+}
+
+@each $current-class in $zone-icons-list {
+  $i: index($zone-icons-list, $current-class);
+  .icon-zone-#{$current-class} {
+    background-position: center #{-(($i - 1) * $zone-icons-width) + px};
+  }
+}

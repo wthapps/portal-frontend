@@ -28,11 +28,11 @@
 </div>
 
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [backdrop]="'static'" [animation]="false">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title text-left">Work &amp; Education</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <h4>Employment</h4>
       <div class="form-group">
         <div class="content-overflow" style="max-height: 195px;" formArrayName="works">
@@ -67,12 +67,12 @@
           </button>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
-      <button type="button" class="btn btn-default btn-min" (click)="modal.close()">Cancel</button>
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
       <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min mr10"
               (click)="onCustomSubmit(form.value)">Done</button>
 
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

@@ -1,0 +1,55 @@
+<div class="image-cropper-wrap">
+  <div class="image-cropper-header">
+    <div class="image-cropper-header-left">
+      <span *ngIf="!editor.cropping" class="btn btn-text"><i class="fa fa-pencil"></i> Edit Photo</span>
+      <span *ngIf="editor.cropping" class="btn btn-text"><i class="fa fa-crop"></i> Cropping photo</span>
+    </div>
+    <div class="image-cropper-header-right">
+      <ng-container *ngIf="editor.cropping">
+        <button class="btn btn-default" (click)="onCropClear()" type="button">
+          Cancel
+        </button>
+        <button class="btn btn-default" (click)="onCropDone()" type="button">
+          Crop
+        </button>
+      </ng-container>
+      <ng-container *ngIf="!editor.cropping">
+        <button class="btn btn-default" (click)="onCrop()" type="button">
+          <i class="fa fa-crop"></i>
+        </button>
+        <button class="btn btn-default" (click)="onZoomOut()" type="button">
+          <i class="fa fa-search-minus"></i>
+        </button>
+        <button class="btn btn-default" (click)="onZoomIn()" type="button">
+          <i class="fa fa-search-plus"></i>
+        </button>
+        <button class="btn btn-default" (click)="onRotateLeft()" type="button">
+          <i class="fa fa-rotate-left"></i>
+        </button>
+        <button class="btn btn-default" (click)="onRotateRight()" type="button">
+          <i class="fa fa-rotate-right"></i>
+        </button>
+        <button [disabled]="!editor.edited" (click)="onReset()" class="btn btn-default" type="button">
+          Reset
+        </button>
+        <button (click)="onCancel()" class="btn btn-default" type="button">
+          Cancel
+        </button>
+        <button (click)="onSave()" class="btn btn-default" type="button">
+          Done
+        </button>
+      </ng-container>
+    </div>
+
+  </div>
+  <div class="image-cropper-content">
+    <div class="image-cropper-content-fixed">
+      <img id="image-cropper" [src]="data.imageData" (load)="onStart($event)" alt="">
+    </div>
+
+    <ng-container *ngIf="loading">
+      <box-loading></box-loading>
+    </ng-container>
+  </div>
+</div>
+

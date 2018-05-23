@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RouterModule } from '@angular/router';
 
@@ -14,19 +14,19 @@ import { PostNewComponent } from './post-new.component';
 import { PostEditComponent } from './post-edit.component';
 import { PostActivitiesComponent } from './post-activities.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
-import { PostPrivacyCustomComponent } from './post-privacy-custom.component';
 import { PostService } from './shared/post.service';
-
+import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
 @NgModule({
   imports: [
     RouterModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MiniEditorModule,
     Ng2HdModule,
     SharedModule,
     TagInputModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     InputTextareaModule
 
 
@@ -37,7 +37,6 @@ import { PostService } from './shared/post.service';
     PostNewComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
-    PostPrivacyCustomComponent,
     // MemberListInviteComponent,
     // Comments
     CommentItemEditorComponent
@@ -48,6 +47,7 @@ import { PostService } from './shared/post.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MiniEditorModule,
     Ng2HdModule,
 
     TagInputModule,
@@ -56,7 +56,6 @@ import { PostService } from './shared/post.service';
     PostNewComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
-    PostPrivacyCustomComponent,
     // MemberListInviteComponent,
 
 

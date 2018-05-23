@@ -9,29 +9,26 @@ import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { PhotoService } from '@wth/shared/services';
 import { ModalModule } from '@wth/shared/modals/modals.module';
+import { WGridListModule } from '@wth/shared/components/grid-list';
+import { WToolbarModule } from '@wth/shared/components/toolbar';
+// import { PhotoSandbox } from './photo.sandbox';
 
 @NgModule({
   imports: [
     ZMediaPhotoRoutingModule,
 
-    ZMediaSharedModule.forRoot(),
+    ZMediaSharedModule,
     ModalModule,
-    SharedModule.forRoot(),
-    CoreModule.forRoot()
-
+    SharedModule,
+    CoreModule,
+    WGridListModule,
+    WToolbarModule
   ],
-  declarations: [
-    ZMediaPhotoListComponent,
-    PhotoDetailComponent
-  ],
-  exports: [
-    ZMediaPhotoListComponent,
-    PhotoDetailComponent
-  ],
+  declarations: [ZMediaPhotoListComponent, PhotoDetailComponent],
+  exports: [ZMediaPhotoListComponent, PhotoDetailComponent],
   providers: [
     PhotoService
+    // PhotoSandbox
   ]
 })
-
-export class ZMediaPhotoModule {
-}
+export class ZMediaPhotoModule {}

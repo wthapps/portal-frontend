@@ -5,14 +5,14 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
 import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { Constants } from '../../../shared/constant/config/constants';
-import { Group } from '../../group/group.model';
 import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
+import { Observable } from 'rxjs/Observable';
+import { CountryService } from '@shared/shared/components/countries/countries.service';
 
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'z-contact-detail',
   templateUrl: 'contact-detail.component.html'
 })
@@ -27,11 +27,14 @@ export class ZContactDetailComponent implements OnInit {
   mediaCategories: any = Constants.mediaCategories;
   _contact: any = _contact;
 
+  countriesCode$: Observable<any>;
+
   constructor(private contactService: ZContactService,
               private route: ActivatedRoute,
-              private apiBaseService: ApiBaseService,
               private groupService: GroupService,
-              private router: Router) {
+              private router: Router,
+              private countryService: CountryService,) {
+    this.countriesCode$ = this.countryService.countriesCode$;
   }
 
   ngOnInit() {
@@ -41,10 +44,6 @@ export class ZContactDetailComponent implements OnInit {
       this.getContact(params['id']);
       this.contactId = params['id'];
     });
-  }
-
-  deleteContact() {
-    this.contactService.confirmDeleteContact(this.data);
   }
 
   toggleGroup(name: string) {
@@ -94,7 +93,7 @@ export class ZContactDetailComponent implements OnInit {
 
 
   private getContact(id: number) {
-    this.contactService.get(id).subscribe((response: any) => {
+    this.contactService.get(id).toPromise().then((response: any) => {
       this.data = response.data;
     });
   }

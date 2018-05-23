@@ -1,0 +1,22 @@
+@import '../../../shared/scss/global';
+
+:host {
+  display: block;
+  & /deep/ {
+    .btn-text {
+      line-height: 1.7;
+      color: #9b9b9b;
+      font-weight: normal;
+    }
+  }
+  li {
+      &.active {
+        > a {
+          color: $text-color;
+          &:after {
+            bottom: -15px;
+          }
+        }
+      }
+    }
+}

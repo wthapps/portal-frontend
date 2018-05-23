@@ -1,21 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/do';
 
 import { BaseEntityService } from '@shared/services/base-entity-service';
-import { Note } from '@shared/shared/models/note.model';
 import { ApiBaseService } from '@shared/services/apibase.service';
-import { Folder } from '../reducers/folder';
+import { Response } from '@angular/http';
 
 declare var _: any;
 
 @Injectable()
 export class ZFolderService extends BaseEntityService<any> {
 
-  constructor(protected apiBaseService: ApiBaseService,
-              private http: Http) {
+  constructor(protected apiBaseService: ApiBaseService) {
     super(apiBaseService);
     this.url = 'note/folders';
 
@@ -25,8 +20,8 @@ export class ZFolderService extends BaseEntityService<any> {
     return this.apiBaseService.post(`${this.url}/get_root`);
   }
 
-  getFolderPath(id: number): Observable<any> {
-    return this.apiBaseService.get(`${this.url}/get_folder_path/${id}`);
+  getFolderPath(params: any): Observable<any> {
+    return this.apiBaseService.get(`${this.url}/get_folder_path/${params.id}`, params);
   }
 
   private handleError(error: Response) {

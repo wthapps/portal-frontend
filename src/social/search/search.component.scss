@@ -1,25 +1,47 @@
-@import "../../assets/styles/global";
+@import '../../assets/styles/global';
 
-$nav-tabs-wrap-search-h: 64px;
+$nav-tabs-wrap-search-h: 60px;
 .nav-tabs-wrap-search {
-  padding-left: 45px;
-  position: relative;
-  z-index: 100;
-  height: $nav-tabs-wrap-search-h;
+  background-color: #ffffff;
+  @media (min-width: $screen-sm-min) {
+    padding: 15px 0 0 45px;
+    position: relative;
+    z-index: 100;
+    height: $nav-tabs-wrap-search-h;
+  }
   @include box-shadow($box-shadow-bottom);
-
+  .nav-tabs {
+    a {
+      height: 45px;
+    }
+  }
   .nav-tabs:not(.active) {
-    > li:first-child {
-      > a:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -15px;
-        color: #000000;
-        font-weight: bold;
-        background-color: #f54a59;
-        height: 3px;
+    //> li:first-child {
+    //  > a:after {
+    //    content: "";
+    //    position: absolute;
+    //    left: 0;
+    //    right: 0;
+    //    bottom: 0px;
+    //    color: #000000;
+    //    font-weight: bold;
+    //    background-color: #f54a59;
+    //    height: 3px;
+    //  }
+    //}
+  }
+  @media (max-width: $screen-xs-max) {
+    &.nav-tabs-wrap .nav-tabs {
+      @include flexbox;
+      > li {
+        @include flex(1 1 auto);
+        text-align: center;
+        > a {
+          height: auto;
+        }
+        > a, .btn-group {
+          padding: 10px;
+        }
       }
     }
   }
@@ -50,5 +72,4 @@ $nav-tabs-wrap-search-h: 64px;
       }
     }
   }
-
 }

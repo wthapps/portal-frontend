@@ -25,7 +25,7 @@ export class MyMyAppsListComponent implements OnInit {
   }
 
   getMyApps() {
-    this.myAppsService.list(this.userService.profile.id).subscribe(
+    this.myAppsService.list(this.userService.getSyncProfile().id).subscribe(
       (response: any) => {
         this.my_apps = response.data;
       },

@@ -1,8 +1,8 @@
-@import "zone/picture/list";
-@import "zone/picture/layout";
-@import "zone/picture/sortbar";
-@import "zone/picture/media-detail";
-@import "zone/chat/body-chat";
+//@import "zone/picture/list";
+//@import "zone/picture/layout";
+//@import "zone/picture/sortbar";
+//@import "zone/picture/media-detail";
+//@import "zone/chat/body-chat";
 @import "zone/social/layout";
 
 //
@@ -16,7 +16,8 @@
 
 .zone-no-photo {
   color: #9b9b9b;
-  padding-top: 50px;
+  padding-top: 100px;
+  height: calc(100vh - 50px);
   h2 {
     margin: 0;
     padding: 0;

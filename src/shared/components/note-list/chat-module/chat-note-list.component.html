@@ -1,0 +1,103 @@
+<div [ngClass]="{'component-listbox-list': viewOption == VIEW_MODE.LIST, 'component-listbox-grid': (viewOption == VIEW_MODE.GRID || viewOption == VIEW_MODE.TIMELINE)}">
+  <div class="component-listbox-header">
+    <div class="component-listbox-row" [ngClass]="selectedAll? 'active' : ''">
+      <div class="component-listbox-input">
+        <i (click)="onSelectedAll()" class="fa fa-check"></i>
+      </div>
+      <!-- <div class="component-listbox-name">
+        <span [ngClass]="{'can-click': page !== noteConstants.PAGE_RECENT}" (click)="onSort('name')">
+          Name <i *ngIf="page !== noteConstants.PAGE_RECENT && sortOption?.field == 'name'" class="fa"
+                  [ngClass]="{'fa-arrow-up': !sortOption?.desc, 'fa-arrow-down': sortOption?.desc }"></i>
+        </span>
+      </div> -->
+      <div class="component-listbox-name can-click" (click)="toogleSorting()">
+        Name
+        <i class="fa" [ngClass]="{'fa-arrow-up': sort.name == 'asc', 'fa-arrow-down': sort.name == 'decs'}"></i>
+      </div>
+      <!-- <div class="component-listbox-owner" [ngClass]="{'can-click': page !== noteConstants.PAGE_RECENT}"  (click)="onSort('owner')">
+        Owner <i *ngIf="page !== noteConstants.PAGE_RECENT && sortOption?.field == 'owner'" class="fa"
+                 [ngClass]="{'fa-arrow-up': !sortOption?.desc, 'fa-arrow-down': sortOption?.desc }"></i>
+      </div> -->
+      <div class="component-listbox-owner">
+        Owner
+        <!-- <i class="fa fa-arrow-up"></i> -->
+      </div>
+      <div class="component-listbox-description">
+        Description
+        <!-- <i class="fa fa-arrow-up"></i> -->
+      </div>
+      <div class="component-listbox-date clearfix sortbar-wrap">
+        Created Date
+        <!-- <i class="fa fa-arrow-up"></i> -->
+      </div>
+
+      <!-- <div class="component-listbox-date clearfix sortbar-wrap" *ngIf="page !== noteConstants.PAGE_RECENT">
+
+        <span *ngIf="DATE_MAP[sortOption?.field]" class="btn btn-text pull-right" (click)="onReverseSort()">
+            <i class="fa can-click" [ngClass]="!sortOption?.desc ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+          </span>
+        <div class="dropdown pull-left">
+            <span class="btn btn-text dropdown-toggle caret-toggle" data-toggle="dropdown">
+              {{ DATE_MAP[sortOption?.field] || 'Created date' }}
+              <i class="fa fa-caret-down can-click"></i>
+            </span>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="javascript:;" (click)="onSort('created_at')">Create date</a></li>
+            <li><a href="javascript:;" (click)="onSort('updated_at')">Last modified</a></li>
+            <li *ngIf="SHARE_PAGES.includes(page)"><a href="javascript:;" (click)="onSort('shared_date')">Share date</a></li>
+          </ul>
+        </div>
+      </div> -->
+      <!-- <div class="component-listbox-date" *ngIf="page === noteConstants.PAGE_RECENT">
+        <span>
+        </span>
+      </div> -->
+      <div class="component-listbox-action">&nbsp;</div>
+    </div>
+  </div>
+  <div class="row action pull-right can-click" *ngIf="viewOption == VIEW_MODE.GRID" (click)="toogleSorting()">
+    Name
+    <i class="fa" [ngClass]="{'fa-arrow-up': sort.name == 'asc', 'fa-arrow-down': sort.name == 'decs'}"></i>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <!-- Body -->
+  <ng-container *ngIf="!loading && !noData">
+    <ng-container *ngIf="viewOption !== VIEW_MODE.TIMELINE">
+      <h5 class="ml10" *ngIf="folders?.length > 0 && viewOption == VIEW_MODE.GRID">Folders</h5>
+      <!-- {{folders | json}} -->
+      <ng-container *ngFor="let item of folders">
+        <folder-item [data]="item" class="component-listbox-body"></folder-item>
+      </ng-container>
+
+      <div class="clearfix"></div>
+
+      <h5 class="ml10" *ngIf="notes?.length > 0 && viewOption == VIEW_MODE.GRID">Notes</h5>
+      <ng-container *ngFor="let item of notes">
+        <note-item [data]="item" class="component-listbox-body" [pressingCtrlKey]="pressingCtrlKey" class="component-listbox-body"></note-item>
+      </ng-container>
+
+    </ng-container>
+
+
+    <div *ngIf="viewOption == VIEW_MODE.TIMELINE">
+      <div *ngFor="let group of allItems | groupByMonthYear:'created_at' :groupBy :allItems.length" class="clearfix">
+        <p class="m15 fz15">{{ group.key }}</p>
+
+        <div *ngFor="let objectGroup of group.value | groupByObjectType: true ">
+          <ng-container *ngFor="let item of objectGroup.value">
+            <folder-item [data]="item" [sortOption]="sortOption" [pressingCtrlKey]="pressingCtrlKey" class="component-listbox-body" [page]="page"
+              *ngIf="item.object_type == 'Note:Folder'"></folder-item>
+            <note-item [data]="item" [sortOption]="sortOption" [pressingCtrlKey]="pressingCtrlKey" class="component-listbox-body" [page]="page"
+              *ngIf="item.object_type == 'Note::Note'"></note-item>
+          </ng-container>
+          <div class="clearfix"></div>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>
+</div>
+<box-loading *ngIf="loading"></box-loading>
+<box-no-data *ngIf="noData" [title]="'There is no note!'"></box-no-data>

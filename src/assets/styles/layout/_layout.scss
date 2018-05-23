@@ -1,11 +1,12 @@
 .wrapper {
   overflow: hidden;
-  min-height: 100vh;
   @include flexbox;
   @include flex-direction(column);
 }
 
 .main {
+  padding-top: $header-height;
+  min-height: 100vh;
   @include flex(1);
   @include flex-basis(auto);
   position: relative;
@@ -20,54 +21,56 @@
 
   }
   .main-page-left {
-    width: $main-page-left-sm;
+    display: none;
     @media (min-width: $screen-md-min) {
+      display: block;
       width: $main-page-left;
-    }
-    overflow: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 10;
-    background-color: #ffffff;
-    @include box-shadow(2px 2px 4px 0px rgba(73, 73, 73, 0.40));
-    .main-page-left-in {
-      position: absolute;
-      top: 0;
+      overflow: auto;
+      position: fixed;
+      top: $header-height;
       left: 0;
-      right: 0;
       bottom: 0;
+      z-index: 10;
+      background-color: #ffffff;
+      @include box-shadow(2px 2px 4px 0px rgba(73, 73, 73, 0.40));
+      .main-page-left-in {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
     }
   }
 }
 
 .main-page-body {
-  position: absolute;
-  top: 0;
-  left: $main-page-left-sm;
-  right: 0;
-  bottom: 0;
+  position: relative;
   @media (min-width: $screen-md-min) {
-    left: $main-page-left;
+    margin-left: $main-page-left;
   }
-
-  .main-page-left {
-    z-index: 9;
-  }
-
   .page-body-control {
     height: $page-body-control-height;
     background-color: #ffffff;
-    padding: 15px 30px;
-    position: relative;
+    padding: 15px 10px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: $header-height;
     display: block;
-    z-index: 3;
+    z-index: 30;
     @include clearfix;
     @include box-shadow($box-shadow-bottom);
-    & + .page-body-content {
-      top: $page-body-control-height;
+
+    @media (min-width: $screen-md-min) {
+      left: $main-page-left;
+      padding: 15px 30px;
     }
+
+    & + .page-body-content {
+      margin-top: $page-body-control-height;
+    }
+
     &.has-page-body-sidebar {
       margin-left: $main-page-left-sm;
       @media (min-width: $screen-md-min) {
@@ -96,30 +99,34 @@
     height: $page-body-control-sub-height;
   }
   .page-body-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: auto;
-    z-index: 1;
-    &.has-page-body-control {
-      top: $page-body-control-height;
-    }
     &.has-page-body-sidebar {
       left: $main-page-left-sm;
       @media (min-width: $screen-md-min) {
         left: $main-page-left;
       }
     }
+    &.has-page-body-control {
+      margin-top: $page-body-control-height;
+    }
   }
   .page-body-content-in {
     padding: 30px;
+    //height: calc(100vh - 114px);
+    background: inherit;
   }
 }
 
 .page-body-control-nav {
   float: left;
+
+  h4 {
+    margin: 0;
+    line-height: 34px;
+    @media (min-width: $screen-sm-min) {
+      font-size: 24px;
+    }
+  }
+
   .page-body-control-menu {
     margin: 0;
     padding: 0;
@@ -172,4 +179,25 @@
       }
     }
   }
+}
+
+.page-body-nav {
+  @include flexbox;
+  .page-body-nav-left {
+    @include flex(1);
+  }
+}
+
+.page-body-nav-sub {
+  padding: 5px 30px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 29;
+  background-color: #ffffff;
+  margin-top: 15px;
+  border-top: 1px solid $line;
+  @include flexbox;
+  @include flex-flow(row wrap);
+  @include box-shadow($box-shadow-bottom);
 }

@@ -1,4 +1,4 @@
-<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" page="TRASH">
+<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="PAGE_TYPE">
   <div class="btn-group">
     <button type="button" class="btn btn-primary btn-min dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
@@ -19,13 +19,16 @@
   <ng-container *ngIf="!(loading$ | async); else loadingBlock">
     <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
       <note-list [noteItems]="noteItems$ | async"
-        [folderItems]="folderItems$ | async"
-        [viewOption]="(nodeState$ | async)?.viewMode"
-        [sortOption]="sortOption$ | async"
-        [isSelectAll]="isSelectAll$ | async"
-        [page]="PAGE_TYPE.TRASH"
-      >
+                 [folderItems]="folderItems$ | async"
+                 [allItems]="allItems$ | async"
+                 [viewOption]="(context$ | async)?.viewMode"
+                 [sortOption]="(context$ | async)?.sort"
+                 [groupBy]="(context$ | async)?.groupBy"
+                 [page]="(context$ | async)?.page"
+                 [isSelectAll]="isSelectAll$ | async">
+
       </note-list>
+
     </ng-container>
   </ng-container>
 

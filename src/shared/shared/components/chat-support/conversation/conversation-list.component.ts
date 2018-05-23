@@ -34,7 +34,7 @@ export class ConversationListComponent implements ChatSupportBaseComponent, OnIn
   }
 
   ngOnInit() {
-    this.supporter = this.userService.profile.supporter == true ? true : false;
+    this.supporter = this.userService.getSyncProfile().supporter == true ;
   }
 
   ngAfterViewInit() {

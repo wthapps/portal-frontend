@@ -1,22 +1,19 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
-
 import { SocialService } from '../../services/social.service';
 import { SocialFavoriteService } from '../../services/social-favorites.service';
 import * as fromMember from '../../../shared/actions/member';
 import { Constants } from '@wth/shared/constant';
-
-declare var _: any;
+import { User } from '@wth/shared/shared/models';
 
 @Component({
-  moduleId: module.id,
   selector: 'z-social-share-profile-member',
   templateUrl: 'member.component.html'
 })
 export class ZSocialShareProfileMemberComponent {
   @Input() data: any;
+  @Input() user: User;
   @Output() outEvent: EventEmitter<any> = new EventEmitter();
 
   favourite: any; // toggle favourites status for members, communities

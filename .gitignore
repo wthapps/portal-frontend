@@ -49,7 +49,8 @@ docs
 lib
 test
 tmp
-*.lock
+package-lock.json
+yarn.lock
 
 gulpfile.js
 gulpfile.js.map
@@ -66,9 +67,6 @@ bower_components
 /tools/env/dev.ts
 /deploy-*.sh
 /src/client/assets/.tmp/
-
-*.js
-
 
 *_BAK*
 /src/html/

@@ -1,0 +1,27 @@
+@import "../../../assets/styles/global";
+
+.menuleft-item-shortcuts {
+  max-height: (36*8)+px;
+  overflow: hidden;
+  &.expand {
+    max-height: none;
+  }
+  .menuleft-item {
+    > a {
+      padding-left: 30px;
+    }
+  }
+}
+
+.menuleft-nav-shortcuts-more {
+  display: block;
+  a {
+    padding-left: 30px;
+    color: $text-color;
+    text-decoration: none;
+    &:hover {
+      color: $theme-color;
+    }
+  }
+}
+

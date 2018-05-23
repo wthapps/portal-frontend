@@ -1,3 +1,26 @@
-:host {
-  display: block;
+@import "../assets/styles/global";
+
+.main-page-body .page-body-content.has-page-body-control {
+  height: calc(100vh - #{$header-height} - #{$page-body-control-height});
+  @include flexbox;
+  @include flex-direction(column);
+}
+
+.message-list-body {
+  @include flexbox;
+  @include flex(1);
+}
+
+@media (max-width: $screen-xs-max) {
+  .page-body-nav-left {
+    .media-user {
+      height: 34px;
+      .media-user-avatar {
+        display: none;
+        & + .media-user-name {
+          left: 0 !important;
+        }
+      }
+    }
+  }
 }

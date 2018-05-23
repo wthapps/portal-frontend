@@ -7,10 +7,10 @@
           </div>
           <div class="media-body content-overflow-visible">
             <div class="row row-10">
-              <div class="col-xs-12 mb10">
+              <div class="col-sm-12 mb10">
                 <div class="form-group no-label mb0" [ngClass]="{'has-error': (!name.valid && name.touched),
         'has-success': (name.valid && name.touched)}">
-                  <input [formControl]="name" type="text" class="form-control" placeholder="Full name">
+                  <input autofocus [formControl]="name" type="text" class="form-control" placeholder="Full name">
                   <div *ngIf="!name.valid && name.touched">
                     <span *ngIf="!name.valid && name.errors.required" class="help-block">
                       Name is required
@@ -18,10 +18,10 @@
                   </div>
                 </div>
               </div>
-              <div class="col-xs-6 mb10">
+              <div class="col-sm-6 mb10">
                 <input [formControl]="company" type="text" class="form-control" placeholder="Company or organization">
               </div>
-              <div class="col-xs-6 mb10">
+              <div class="col-sm-6 mb10">
                 <input [formControl]="job_title" type="text" class="form-control" placeholder="Job title">
               </div>
               <div class="col-xs-12 mb10">
@@ -44,33 +44,56 @@
       </div>
       <div class="field-group-content">
         <div formArrayName="phones">
-          <div *ngFor="let add_phone of form.controls.phones.controls; let i=index" class="media mt0">
+          <div *ngFor="let add_phone of form.controls.phones.controls; let i=index" class="media media-no-hidden mt0">
             <div class="media-body" [formGroupName]="i">
               <div class="row row-10">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.phones.controls[i].controls.category.valid
-                  && form.controls.phones.controls[i].controls.category.touched),
-                  'has-success': (form.controls.phones.controls[i].controls.category.valid
-                  && form.controls.phones.controls[i].controls.category.touched
+                  'has-error': (!add_phone['controls'].category.valid
+                  && add_phone['controls'].category.touched),
+                  'has-success': (add_phone['controls'].category.valid
+                  && add_phone['controls'].category.touched
                   && form.value.phones[i].category.length > 1)}">
                     <select class="form-control" name="name" formControlName="category">
                       <option *ngFor="let et of phoneCategories" value="{{ et.value }}">{{ et.text }}</option>
                     </select>
                   </div>
                 </div>
-                <div class="col-sm-9">
+
+                <div class="col-sm-5">
                   <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.phones.controls[i].controls.value.valid
-                  && form.controls.phones.controls[i].controls.value.touched),
-                  'has-success': (form.controls.phones.controls[i].controls.value.valid
-                  && form.controls.phones.controls[i].controls.value.touched
+                  'has-error': (!add_phone['controls'].country_alpha_code.valid
+                  && add_phone['controls'].country_alpha_code.touched),
+                  'has-success': (add_phone['controls'].country_alpha_code.valid
+                  && add_phone['controls'].country_alpha_code.touched
+                  && form.value.phones[i].country_alpha_code && form.value.phones[i].country_alpha_code.length>1)}">
+
+                    <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
+                                    [suggestions]="filteredCountriesCode"
+                                    (completeMethod)="filterCountriesCode($event)" [size]="30"
+                                    [minLength]="1" placeholder="Select your country"
+                                    [dropdown]="true">
+                      <ng-template ngFor let-code let-i="index" pTemplate="item">
+                        <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
+                      </ng-template>
+                    </p-autoComplete>
+
+                  </div>
+                </div>
+
+
+                <div class="col-sm-5">
+                  <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!add_phone['controls'].value.valid
+                  && add_phone['controls'].value.touched),
+                  'has-success': (add_phone['controls'].value.valid
+                  && add_phone['controls'].value.touched
                   && form.value.phones[i].value.length > 1)}">
                     <input type="text" class="form-control" formControlName="value" placeholder="">
                     <div
-                      *ngIf="!form.controls.phones.controls[i].controls.value.valid && form.controls.phones.controls[i].controls.value.touched">
+                      *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched">
                       <span
-                        *ngIf="!form.controls.phones.controls[i].controls.value.valid && form.controls.phones.controls[i].controls.value.errors.phoneFormat"
+                        *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.errors.phoneFormat"
                         class="help-block text-danger">
                         Phone is not valid
                       </span>

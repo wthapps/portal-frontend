@@ -1,7 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, HostListener, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
-import { TextBoxSearchComponent } from '@wth/shared/shared/components/header/search/components/textbox-search.component';
+import { TextBoxSearchComponent } from '@wth/shared/partials/search-box/textbox-search.component';
 import { ServiceManager } from '@wth/shared/services';
+import { ActivatedRoute, Params } from '@angular/router';
 
 
 declare var _: any;
@@ -15,7 +16,7 @@ declare var _: any;
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.scss'],
 })
-export class ZMediaSharedHeaderComponent {
+export class ZMediaSharedHeaderComponent implements OnInit {
   constants: any;
   suggestions: any = [];
   show: boolean = false;
@@ -48,13 +49,32 @@ export class ZMediaSharedHeaderComponent {
   searchOwnerName: AbstractControl;
   searchAdvanced: boolean = false;
 
-  constructor(public serviceManager: ServiceManager) {
+  @HostListener('document:click', ['$event']) clickedOutside($event: any) {
+    // here you can hide your menu
+    this.searchAdvanced = false;
+  }
+
+  constructor(public serviceManager: ServiceManager, private route: ActivatedRoute,
+  ) {
     this.createForm();
+  }
+
+  ngOnInit() {
+    this.route.queryParams.subscribe((params: Params) => {
+      this.search = params['q'];
+      this.textbox.search = this.search;
+    });
+  }
+
+  clickedInside($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();  // <- that will stop propagation on lower layers
+    console.log('CLICKED INSIDE');
   }
 
   onEnter(e: any) {
     this.show = false;
-    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: e.search}});
+    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: this.search}});
   }
 
   onEscape(e?: any) {

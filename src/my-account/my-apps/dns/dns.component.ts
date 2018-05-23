@@ -43,7 +43,7 @@ export class MyDNSComponent implements OnInit {
       params => {
         this.app_id = +params['id'];
       });
-    this.getHost(this.userService.profile.id);
+    this.getHost(this.userService.getSyncProfile().id);
   }
 
   getHost(id: number) {
@@ -98,7 +98,7 @@ export class MyDNSComponent implements OnInit {
         header: 'My Hosts',
         accept: () => {
           this.loadingService.start();
-          this.dnsService.delete(id, this.userService.profile.id).subscribe(
+          this.dnsService.delete(id, this.userService.getSyncProfile().id).subscribe(
             record => {
               this.records = _.reject(this.records, {'id': id});
               this.loadingService.stop();

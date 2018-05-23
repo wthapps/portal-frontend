@@ -1,8 +1,6 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
-
 import { ZMediaFavoriteService } from './favourites.service';
 
 // import { LoadingService, ConfirmationService } from '../../../shared/index';
@@ -26,33 +24,38 @@ export class ZMediaFavoriteDetailComponent implements OnInit {
 
   type: string = '';
 
-  constructor(private favoriteService: ZMediaFavoriteService,
-              private route: ActivatedRoute,
-              private router: Router) {
-  }
+  constructor(
+    private favoriteService: ZMediaFavoriteService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.type = params['category'];
     });
 
-
-    this.favoriteService.list().toPromise().then((res: any)=> {
-      this.data = res.data;
-      // this.nextLink = res.page_metadata.links.next;
-    });
+    this.favoriteService
+      .list()
+      .toPromise()
+      .then((res: any) => {
+        this.data = res.data;
+        // this.nextLink = res.page_metadata.links.next;
+      });
   }
 
   onLoadMore(event: any) {
     event.preventDefault();
-    this.favoriteService.loadMore(this.nextLink).toPromise().then((res: any)=> {
-      _.map(res.data, (v: any)=> {
-        this.data.push(v);
+    this.favoriteService
+      .loadMore(this.nextLink)
+      .toPromise()
+      .then((res: any) => {
+        _.map(res.data, (v: any) => {
+          this.data.push(v);
+        });
+        // this.nextLink = res.page_metadata.links.next;
       });
-      // this.nextLink = res.page_metadata.links.next;
-    });
   }
-
 
   actionToolbar(event: any) {
     // console.log(event);
@@ -72,7 +75,10 @@ export class ZMediaFavoriteDetailComponent implements OnInit {
     switch (event.action) {
       case 'previewAll':
         console.log(event);
-        this.router.navigate([{outlets: {detail: ['/album', event.data.id]}}], {queryParamsHandling: 'preserve', preserveFragment: true});
+        this.router.navigate(
+          [{ outlets: { detail: ['/album', event.data.id] } }],
+          { queryParamsHandling: 'preserve', preserveFragment: true }
+        );
         break;
       default:
         break;

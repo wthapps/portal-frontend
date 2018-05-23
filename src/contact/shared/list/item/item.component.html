@@ -1,44 +1,56 @@
-<div class="contact-listbox-input" [ngClass]="{'active': data.selected}">
-  <i (click)="onSelected()" class="fa fa-check"></i>
-</div>
-<div class="contact-listbox-name">
-  <a href="javascript:;" class="link-text contact-listbox-block-link" [routerLink]="['/contacts/detail', data.id]">
-    <figure class="avatar-xs media-user">
-      <img [src]="data.profile_image" alt="">
+<div class="component-listbox-row" [ngClass]="{'active': data.selected}">
+  <div class="component-listbox-input">
+    <i (click)="onSelected()" class="fa fa-check"></i>
+  </div>
+  <div class="component-listbox-name">
+    <!-- Contact -->
+    <a *ngIf="!data.settings" href="javascript:;" class="link-text contact-listbox-block-link" [routerLink]="['/contacts/detail', data.id]">
+      <figure class="avatar-xs media-user">
+        <img [src]="data.profile_image" alt="">
 
-      <i class="media-user-status" [ngClass]="{'blacklist fa fa-ban': data | contactHasGroup:'blacklist'}"></i>
-    </figure>
-    <span class="name">{{ data.name }}</span>
-  </a>
+        <i class="media-user-status" [ngClass]="{'blacklist fa fa-ban': data | contactHasGroup:'blacklist'}"></i>
+      </figure>
+      <span class="name">{{ data.name }}</span>
+    </a>
+    <!-- User -->
+    <span *ngIf="data.settings" class="link-text contact-listbox-block-link">
+      <figure class="avatar-xs media-user">
+        <img [src]="data.profile_image" alt="">
+
+        <i class="media-user-status" [ngClass]="{'blacklist fa fa-ban': data | contactHasGroup:'blacklist'}"></i>
+      </figure>
+      <span class="name">{{ data.name }}</span>
+    </span>
+  </div>
+  <div class="component-listbox-email">
+    <ul class="list-unstyled m0">
+      <li *ngIf="data.emails && data.emails.length > 0">
+        {{ data.emails[0].value }}
+      </li>
+    </ul>
+  </div>
+  <div class="component-listbox-phone">
+    <ul class="list-unstyled m0">
+      <li *ngIf="data.emails && data.emails.length > 0">
+        <img *ngIf="(countriesCode$ | async) && data.phones[0] && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
+          src="assets/images/flags/{{data.phones[0]?.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg" width="30"
+          alt=""> {{ data.phones[0]?.value }}
+      </li>
+    </ul>
+  </div>
+  <div class="component-listbox-description"></div>
+  <div class="component-listbox-date"></div>
+  <!-- Actions for contact -->
+  <div class="component-listbox-action" *ngIf="!data.settings">
+    <z-contact-shared-actions-bar [data]="data" [showQuickInvitation]="data.wthapps_user == null" [showNumber]="false" [showSocial]="data | isContactInternal"
+      [showChat]="data | isContactInternal" [showInvitation]="data.wthapps_user == null" [toggleFavourite]="data | contactHasGroup:'favourite'"
+      [toggleBlacklist]="data | contactHasGroup:'blacklist'" (eventOut)="doActionsToolbar($event)">
+    </z-contact-shared-actions-bar>
+  </div>
+  <!-- Actions for user -->
+  <div class="component-listbox-action" *ngIf="data.settings">
+    <button *ngIf="!saved" class="btn btn-outline-default pull-right" type="button" (click)="saveContact()">
+      <i class="fa fa-plus"></i> Save to Contact </button>
+    <span *ngIf="saved">Saved</span>
+  </div>
 </div>
-<div class="contact-listbox-email">
-  <ul class="list-unstyled m0" *ngIf="data.emails && data.emails.length > 0">
-    <li>
-      {{ data.emails[0].value }}
-    </li>
-  </ul>
-</div>
-<div class="contact-listbox-phone">
-  <ul class="list-unstyled m0" *ngIf="data.phones && data.phones.length>0">
-    <li>
-      <img
-        *ngIf="(countriesCode$ | async) && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
-        src="assets/images/flags/{{data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
-        width="30" alt="">
-      {{ data.phones[0].value }}
-    </li>
-  </ul>
-</div>
-<!-- {{data | wthFilterBy:'groups' | json}} -->
-<z-contact-shared-actions-bar
-  class="contact-listbox-action"
-  [data]="data"
-  [showQuickInvitation]="data.wthapps_user == null"
-  [showNumber]="false"
-  [showSocial]="data | isContactInternal"
-  [showChat]="data | isContactInternal"
-  [showInvitation]="data.wthapps_user == null"
-  [toggleFavourite]="data | contactHasGroup:'favourite'"
-  [toggleBlacklist]="data | contactHasGroup:'blacklist'"
-  (eventOut)="doActionsToolbar($event)">
-</z-contact-shared-actions-bar>

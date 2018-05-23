@@ -11,7 +11,6 @@ export class ChatContactService {
   constructor(
     public storage: StorageService,
     public apiBaseService: ApiBaseService,
-    public user: UserService,
     public chatCommonService: ChatCommonService,
     public router: Router
   ) {

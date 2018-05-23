@@ -1,0 +1,7 @@
+<ng-container *ngFor="let media of mediaMenu">
+  <div *ngIf="media.name != ''" class="menuleft-item" [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
+    <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}">
+      <i class="{{ media.icon }}"></i> {{ media.name }}
+    </a>
+  </div>
+</ng-container>

@@ -1,4 +1,4 @@
-@import "../assets/styles/global";
+@import '../assets/styles/global';
 
 .hero-banner {
   background-image: url('../assets/images_new/home/hero-banner.jpg');
@@ -15,7 +15,7 @@
   padding-bottom: 5%;
 
   &:after {
-    content: "";
+    content: '';
     @include center(true, false);
     bottom: -19px;
     @include make-arrow(bottom, #191a1e, 20px, 20px);

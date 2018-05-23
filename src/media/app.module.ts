@@ -13,12 +13,32 @@ import { ZMediaFavoriteModule } from './favourites/favourites.module';
 import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZMediaSearchModule } from './search/search.module';
 import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
-import { ZMediaSharedByMeModule } from './shared-by-me/shared-by-me.module';
+import { ZMediaSharingModule } from './shared-by-me/sharing.module';
 import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '@env/environment';
+import { StoreModule } from '@ngrx/store';
 
+import { EffectsModule } from '@ngrx/effects';
+import { appStore, appEffects } from './shared/store';
+import { ModalModule } from '@wth/shared/modals/modals.module';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { ServiceModule } from '@media/shared/service/service.module';
+import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
+import {
+  AlbumCreateModalComponent,
+  AlbumDeleteModalComponent,
+  AlbumEditModalComponent
+} from '@media/shared/modal';
+import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
+import { ZMediaVideoModule } from '@media/video/video.module';
 
 @NgModule({
   imports: [
@@ -26,26 +46,47 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     BrowserAnimationsModule,
 
-    AppRoutingModule,
     ZMediaHomeModule,
     ZMediaAlbumModule,
     ZMediaPhotoModule,
     ZMediaFavoriteModule,
     ZMediaSharedWithMeModule,
-    ZMediaSharedByMeModule,
+    ZMediaSharingModule,
     ZMediaSearchModule,
     ZMediaMyProfileModule,
+    ZMediaVideoModule,
 
+    AppRoutingModule,
+    ModalModule,
+    ServiceModule,
     ZMediaSharedModule.forRoot(),
     CoreModule.forRoot(),
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    SharedServicesModule.forRoot(),
+    StoreModule.forRoot(appStore),
+    EffectsModule.forRoot(appEffects),
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+      : []
   ],
   declarations: [AppComponent],
-  providers: [{
-    provide: APP_BASE_HREF,
-    useValue: '/'
-  }],
-  bootstrap: [AppComponent]
-
+  providers: [
+    {
+      provide: APP_BASE_HREF,
+      useValue: '/'
+    }
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    MediaRenameModalComponent,
+    SharingModalComponent,
+    TaggingModalComponent,
+    AlbumCreateModalComponent,
+    AlbumEditModalComponent,
+    AlbumDeleteModalComponent,
+    AlbumDetailInfoComponent,
+    AddToAlbumModalComponent,
+    PhotoEditModalComponent
+  ]
 })
-export class AppModule { }
+export class AppModule {}

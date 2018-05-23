@@ -2,12 +2,9 @@ import { NgModule } from '@angular/core';
 import { ZChatHomeRoutingModule } from './home-routing.module';
 
 @NgModule({
-  imports: [
-    ZChatHomeRoutingModule
-  ],
+  imports: [ZChatHomeRoutingModule],
   declarations: [],
   exports: [],
   providers: []
 })
-export class ZChatHomeModule {
-}
+export class ZChatHomeModule {}

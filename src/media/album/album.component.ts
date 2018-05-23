@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   selector: 'z-media-album',
   template: `<router-outlet></router-outlet>`
 })
-export class ZMediaAlbumComponent {
-
-}
+export class ZMediaAlbumComponent {}

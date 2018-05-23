@@ -1,37 +1,44 @@
-import { Component, OnInit, HostBinding, Input, OnChanges, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostBinding,
+  Input,
+  OnChanges,
+  EventEmitter,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import * as fromMember from '../../shared/actions/member';
-
-
-declare var _: any;
+import { User } from '@wth/shared/shared/models';
 
 @Component({
-  moduleId: module.id,
   selector: 'z-social-share-profile-list',
-  templateUrl: 'list.component.html'
+  templateUrl: 'list.component.html',
+  styleUrls: ['list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ZSocialShareProfileListComponent implements OnInit, OnChanges {
   @Input() data: any;
   @Input() type: string; // members, member, communities, community
-  @Input() layout: string = 'list-group'; //row
-  @Input() class: string = 'list-group-item'; //col-xs-6
+  @Input() layout: string = 'list-group'; // row
+  @Input() user: User;
+  @Input() class: string = 'list-group-item'; // col-xs-6
   @Output() outEvent: EventEmitter<any> = new EventEmitter();
 
   @HostBinding('class') classHost = this.layout;
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(data: any) {
-    if (this.layout == 'row') {
+    if (this.layout === 'row') {
       this.classHost = this.layout + ' row-striped';
     }
   }
 
   onAction(event: any) {
-    switch (event.action) {
+    switch (event.action.toUpperCase()) {
       case fromMember.ACTIONS.DELETE:
         this.removeItem(event.data);
         break;

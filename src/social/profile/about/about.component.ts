@@ -12,7 +12,7 @@ import { Constants } from '@wth/shared/constant';
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-social-profile-about',
   templateUrl: 'about.component.html'
 })
@@ -41,5 +41,9 @@ export class ZSocialProfileAboutComponent implements OnInit {
       this.data = res.userInfo;
       this.actions = res.actions;
     });
+  }
+
+  onUpdateProfile(event: any) {
+    this.profileDataService.updateData({userInfo: event});
   }
 }

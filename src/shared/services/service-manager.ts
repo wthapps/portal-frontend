@@ -9,20 +9,24 @@ import { ChatCommonService } from './chat.common.service';
 import { NotificationService } from './notification.service';
 import { CommonEventService } from './common-event/common-event.service';
 import { UrlService } from './url.service';
+import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
+import { HandlerService } from '@shared/services/handler.service';
 
 @Injectable()
 export class ServiceManager {
-
-  constructor(public apiBaseService: ApiBaseService,
-              public fb: FormBuilder,
-              public route: ActivatedRoute,
-              public storageService: StorageService,
-              public router: Router,
-              public urlService: UrlService,
-              public chatCommonService: ChatCommonService,
-              public commonEventService: CommonEventService,
-              public notificationService: NotificationService) {
-  }
+  constructor(
+    public apiBaseService: ApiBaseService,
+    public fb: FormBuilder,
+    public route: ActivatedRoute,
+    public storageService: StorageService,
+    public router: Router,
+    public urlService: UrlService,
+    public chatCommonService: ChatCommonService,
+    public commonEventService: CommonEventService,
+    public handlerService: HandlerService,
+    public connectionService: ConnectionNotificationService,
+    public notificationService: NotificationService
+  ) {}
 
   getApi() {
     return this.apiBaseService;
@@ -58,6 +62,10 @@ export class ServiceManager {
 
   getCommonNotificationService() {
     return this.notificationService;
+  }
+
+  getConnetionNotificationService() {
+    return this.connectionService;
   }
 
   getCommonEventService() {

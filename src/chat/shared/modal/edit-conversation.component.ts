@@ -6,7 +6,7 @@ import {
   FormBuilder,
   Validators
 } from '@angular/forms';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { ChatService } from '../services/chat.service';
 
 
@@ -16,7 +16,7 @@ import { ChatService } from '../services/chat.service';
   templateUrl: 'edit-conversation.component.html'
 })
 export class ZChatShareEditConversationComponent implements OnInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   item:any;
   // chat_history_everyone: AbstractControl;
   // everyone_can_add: AbstractControl;

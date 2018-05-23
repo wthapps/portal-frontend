@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TextBoxSearchComponent } from '@shared/shared/components/header/search/components/textbox-search.component';
+import { TextBoxSearchComponent } from '@shared/partials/search-box';
 import { ServiceManager } from '@shared/services/service-manager';
 
 declare var _: any;
@@ -16,16 +16,27 @@ export class ZNoteSharedHeaderComponent {
   constants: any;
   suggestions: any;
   show: boolean = false;
-  showAdvanced: boolean = false;
+  searchAdvanced: boolean = false;
   search: string;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
   constructor(public serviceManager: ServiceManager) {
   }
 
+  clickedInside($event: Event) {
+    $event.preventDefault();
+    $event.stopPropagation();  // <- that will stop propagation on lower layers
+    console.log('CLICKED INSIDE');
+  }
+
+  onEscape(e?: any) {
+    console.log('inside onEscape', e);
+    this.show = false;
+  }
+
   onEnter(e: any) {
     this.show = false;
-    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: e.search}});
+    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: this.search}});
   }
 
   onKey(e: any) {
@@ -43,5 +54,10 @@ export class ZNoteSharedHeaderComponent {
   setText(data: any) {
     this.show = false;
     this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: this.textbox.search}});
+  }
+
+  onSearchAdvanced(e: any) {
+    console.log(e);
+    this.searchAdvanced = e.searchAdvanced;
   }
 }

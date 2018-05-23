@@ -1,16 +1,16 @@
-<modal #modal
+<bs-modal #modal
          [cssClass]="'modal-lg modal-account-add'"
          [keyboard]="false"
          [animation]="false"
-         [backdrop]="'static'" >
-  <modal-header>
+         [backdrop]="'static'" style="display: inline;">
+  <bs-modal-header>
     <button aria-label="Close" class="close" (click)="close()">
       <span aria-hidden="true">×</span>
     </button>
     <h4 class="modal-title"><i class="fa fa-plus"></i> Add account</h4>
 
-  </modal-header>
-  <modal-body>
+  </bs-modal-header>
+  <bs-modal-body>
 
 
     <div class="padding10">
@@ -32,9 +32,9 @@
 
     </div>
 
-  </modal-body>
+  </bs-modal-body>
 
-  <modal-footer>
+  <bs-modal-footer>
   <div>
       <button class="btn btn-outline-default btn-min"
               (click)="close()">Cancel</button>
@@ -42,7 +42,7 @@
               (click)="request()">Request ownership
       </button>
     </div>
-  </modal-footer>
-</modal>
+  </bs-modal-footer>
+</bs-modal>
 
 

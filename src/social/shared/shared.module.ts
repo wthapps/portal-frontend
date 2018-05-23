@@ -1,7 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { ZSocialFavoritesComponent } from './favorites/social-favorites.component';
 
-
 import { SocialService } from './services/social.service';
 import { SoCommunityService } from './services/community.service';
 
@@ -10,7 +9,6 @@ import { PostModule } from './second-routes/post/post.module';
 import { PostDetailComponent } from './second-routes/post/post-detail.component';
 import { PostDetailPhotoComponent } from './second-routes/post/post-detail-photo.component';
 import { PostListComponent } from './second-routes/post/post-list.component';
-import { ZSocialNotificationsComponent } from '../notifications/notifications.component';
 import { ZSocialMembersComponent } from '../friends/members.component';
 import { ZSocialProfileService } from '../profile/profile.service';
 import { SocialFavoriteService } from './services/social-favorites.service';
@@ -29,7 +27,13 @@ import { PostComponent } from './second-routes/post/post.component';
 import { PostHeaderComponent } from './second-routes/post/components/post-header.component';
 import { PostBodyComponent } from './second-routes/post/components/post-body.component';
 import { PostFooterComponent } from './second-routes/post/components/post-footer.component';
-
+import { ZSocialSharedNewsFeedComponent } from './news-feed/news-feed.component';
+import { ZSocialLeftMenuComponent } from './component/social-left-menu.component';
+import { SoShortcutService } from './services/shortcut.service';
+import { ZSocialShortcutSettingComponent } from './shortcut-setting/shortcut-setting.component';
+import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
+import { ZSocialCoverComponent } from '@social/shared/cover/cover.component';
+import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -42,6 +46,8 @@ import { PostFooterComponent } from './second-routes/post/components/post-footer
     CoverProfileModule,
     PostModule,
     ZSocialShareProfileModule,
+    MiniEditorModule,
+    BoxLoadingModule,
     SharedModule
   ],
   declarations: [
@@ -57,9 +63,6 @@ import { PostFooterComponent } from './second-routes/post/components/post-footer
     PostDetailComponent,
     PostDetailPhotoComponent,
 
-    // Notifications
-    ZSocialNotificationsComponent,
-
     // Search
     // ZSocialSearchResultComponent,
 
@@ -67,17 +70,22 @@ import { PostFooterComponent } from './second-routes/post/components/post-footer
     ZSocialShareCommunityFormEditComponent,
     ZSocialShareCommunityFormPreferenceComponent,
 
-    ZSocialSharedHeaderComponent
+    ZSocialSharedHeaderComponent,
+    ZSocialSharedNewsFeedComponent,
+    ZSocialShortcutSettingComponent,
+    //  Left menu
+    ZSocialLeftMenuComponent,
 
+    ZSocialCoverComponent
   ],
   exports: [
     ZSocialFavoritesComponent,
     PostListComponent,
     PostComponent,
-    ZSocialNotificationsComponent,
 
     Ng2HdModule,
     PostModule,
+    BoxLoadingModule,
     ZSocialShareProfileModule,
 
     StepByStepGuideModule,
@@ -86,7 +94,16 @@ import { PostFooterComponent } from './second-routes/post/components/post-footer
     ZSocialShareCommunityFormEditComponent,
     ZSocialShareCommunityFormPreferenceComponent,
 
-    ZSocialSharedHeaderComponent
+    ZSocialSharedHeaderComponent,
+    ZSocialSharedNewsFeedComponent,
+    ZSocialShortcutSettingComponent,
+
+    MiniEditorModule,
+
+    //  Left menu
+    ZSocialLeftMenuComponent,
+
+    ZSocialCoverComponent
   ]
 })
 export class ZSocialSharedModule {
@@ -100,7 +117,8 @@ export class ZSocialSharedModule {
         SoCommunityService,
         ZSocialProfileService,
         SocialFavoriteService,
-        SocialDataService
+        SocialDataService,
+        SoShortcutService
       ]
     };
   }

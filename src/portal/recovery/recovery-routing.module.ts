@@ -7,12 +7,14 @@ import { ResetEmailSentComponent } from './reset-email-sent.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: 'recovery/forgottenpassword', component: ForgottenPasswordComponent},
-      {path: 'recovery/newpassword', component: NewPasswordComponent},
-      {path: 'recovery/reset_email_sent', component: ResetEmailSentComponent}
+      {
+        path: 'recovery/forgottenpassword',
+        component: ForgottenPasswordComponent
+      },
+      { path: 'recovery/newpassword', component: NewPasswordComponent },
+      { path: 'recovery/reset_email_sent', component: ResetEmailSentComponent }
     ])
   ],
   exports: [RouterModule]
 })
-export class RecoveryRoutingModule {
-}
+export class RecoveryRoutingModule {}

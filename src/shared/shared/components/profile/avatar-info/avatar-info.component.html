@@ -11,7 +11,7 @@
     </div>
 
     <div class="media-body">
-      <div class="media-heading">{{ data.name }}</div>
+      <div class="media-heading">{{ data.first_name }} {{ data.last_name }}</div>
       <p>{{ data.nickname }}</p>
     </div>
 
@@ -24,20 +24,20 @@
 </div>
 
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title text-left">Information</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div *ngFor="let question of questions" class="form-row">
         <df-question [question]="question" [form]="form"></df-question>
       </div>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
       <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
               (click)="onSubmit(form.value)">Done
       </button>
-    </modal-footer>
-  </modal>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

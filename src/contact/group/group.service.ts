@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/toPromise';
 
 import { Group } from './group.model';
 import { BaseEntityService } from '../../shared/services/base-entity-service';
@@ -13,7 +12,9 @@ declare let _: any;
 export class GroupService extends BaseEntityService<Group> {
   groups$: Observable<Group[]>;
 
-  private groupsSubject: BehaviorSubject<Group[]> = new BehaviorSubject<Group[]>([]);
+  private groupsSubject: BehaviorSubject<Group[]> = new BehaviorSubject<
+    Group[]
+  >([]);
 
   constructor(protected apiBaseService: ApiBaseService) {
     super(apiBaseService);
@@ -25,10 +26,12 @@ export class GroupService extends BaseEntityService<Group> {
   getAllGroups(): Promise<Group[]> {
     console.debug('getAllGroups: ', this.groupsSubject.getValue());
     if (_.isEmpty(this.groupsSubject.getValue())) {
-
-      return this.getAll().toPromise()
+      return this.getAll()
+        .toPromise()
         .then((res: any) => {
-          let groups: Group[] = _.map(res.data, (l: any) => this.mapGroupToMenuItem(l));
+          let groups: Group[] = _.map(res.data, (l: any) =>
+            this.mapGroupToMenuItem(l)
+          );
           return this.notifyGroupObservers(groups);
         });
     }
@@ -40,24 +43,25 @@ export class GroupService extends BaseEntityService<Group> {
     return this.groupsSubject.getValue();
   }
 
-
   create(body: any): Observable<any> {
-    return super.create(body)
-      .mergeMap((res: any) => {
-        let group: any = this.mapGroupToMenuItem(res.data);
-        return this.notifyGroupObservers(this.groupsSubject.getValue().concat([group]));
-      });
+    return super.create(body).mergeMap((res: any) => {
+      let group: any = this.mapGroupToMenuItem(res.data);
+      return this.notifyGroupObservers(
+        this.groupsSubject.getValue().concat([group])
+      );
+    });
   }
 
-
   update(body: any): Observable<any> {
-    return super.update(body)
-      .mergeMap((res: any) => this.updateMenu(this.mapGroupToMenuItem(res.data)));
+    return super
+      .update(body)
+      .mergeMap((res: any) =>
+        this.updateMenu(this.mapGroupToMenuItem(res.data))
+      );
   }
 
   delete(id: any): Observable<any> {
-    return super.delete(id)
-      .mergeMap((res: any) => this.removeMenu(res.data));
+    return super.delete(id).mergeMap((res: any) => this.removeMenu(res.data));
   }
 
   getGroupByName(name: string) {
@@ -68,8 +72,7 @@ export class GroupService extends BaseEntityService<Group> {
     let menus: any = {};
     for (let ci = 0; ci < contacts.length; ci++) {
       _.each(contacts[ci].groups, (l: any) => {
-        if (!l)
-          return;
+        if (!l) return;
         if (menus[`${l.name}`]) {
           menus[`${l.name}`].count += 1;
         } else {
@@ -82,11 +85,10 @@ export class GroupService extends BaseEntityService<Group> {
     // Update group count
     let cMenus = _.map(this.groupsSubject.getValue(), (m: any) => {
       if (menus[m.name])
-        return Object.assign(m, {count: menus[m.name].count});
+        return Object.assign(m, { count: menus[m.name].count });
       else if (m.name === 'all contacts')
-        return Object.assign(m, {count: contacts.length});
-      else
-        return Object.assign(m, {count: 0});
+        return Object.assign(m, { count: contacts.length });
+      else return Object.assign(m, { count: 0 });
     });
 
     this.notifyGroupObservers(cMenus);
@@ -132,10 +134,8 @@ export class GroupService extends BaseEntityService<Group> {
 
   updateMenu(menu: any): Promise<any> {
     let menus: any[] = _.map(this.groupsSubject.getValue(), (m: any) => {
-      if (m.id === menu.id)
-        return Object.assign(m, menu);
-      else
-        return m;
+      if (m.id === menu.id) return Object.assign(m, menu);
+      else return m;
     });
 
     return this.notifyGroupObservers(menus);
@@ -152,8 +152,9 @@ export class GroupService extends BaseEntityService<Group> {
     return this.notifyGroupObservers(groups);
   }
 
-
-  notifyGroupObservers(groups: Group[] = this.groupsSubject.getValue()): Promise<any[]> {
+  notifyGroupObservers(
+    groups: Group[] = this.groupsSubject.getValue()
+  ): Promise<any[]> {
     let orderedGroups = _.orderBy(groups, ['order'], ['asc']);
     this.groupsSubject.next(orderedGroups);
 
@@ -177,15 +178,21 @@ export class GroupService extends BaseEntityService<Group> {
       name: group.name,
       link: '/contacts',
       hasSubMenu: !group.system,
+      system: group.system,
       count: 0,
-      order: group.system ? group.order : (100 + group.order),
-      icon: group.name == 'all contacts' ? 'fa fa-address-book-o'
-        : group.name == 'favourite' ? 'fa fa-star'
-          : group.name == 'groups' ? 'fa fa-users'
-            : group.name == 'blacklist' ? 'fa fa-ban'
-              : group.name == 'social' ? 'fa fa-globe'
-                : group.name == 'chat' ? 'fa fa-comments-o'
-                  : 'fa fa-folder-o'
+      order: group.system ? group.order : 100 + group.order,
+      icon:
+        group.name == 'all contacts'
+          ? 'fa fa-address-book-o'
+          : group.name == 'favourite'
+            ? 'fa fa-star'
+            : group.name == 'groups'
+              ? 'fa fa-users'
+              : group.name == 'blacklist'
+                ? 'fa fa-ban'
+                : group.name == 'social'
+                  ? 'fa fa-globe'
+                  : group.name == 'chat' ? 'fa fa-comments-o' : 'fa fa-folder-o'
     };
   }
 }

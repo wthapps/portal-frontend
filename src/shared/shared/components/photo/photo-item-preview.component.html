@@ -2,9 +2,9 @@
   <div *ngIf="photo||files" class="row-img-item">
     <ng-template [ngIf]="hasUploadingPhoto">
       <div class="photo-box">
-        <div class="photo-box-action">
+        <div class="photo-box-action"
+             (click)="onAction({action: 'cancelUpload', data: 'value of current file'})">
           <i class="fa fa-remove"
-             (click)="onAction({action: 'cancelUpload', data: 'value of current file'})"
              pTooltip="{{ tooltip.cancelUploading }}" tooltipPosition="top">
           </i>
         </div>
@@ -18,9 +18,9 @@
 
     <ng-template [ngIf]="!hasUploadingPhoto">
       <div class="photo-box">
-        <div class="photo-box-action">
+        <div class="photo-box-action"
+             (click)="onAction({action: 'remove', data: photo})">
           <i class="fa fa-remove"
-             (click)="onAction({action: 'remove', data: photo})"
              pTooltip="{{ tooltip.removeThisPhoto }}" tooltipPosition="top">
           </i>
         </div>

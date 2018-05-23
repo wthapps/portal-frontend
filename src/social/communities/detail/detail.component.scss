@@ -1,0 +1,8 @@
+@import "../../../assets/styles/global";
+
+@media (max-width: $screen-xs-max) {
+  :host {
+    min-height: 600px;
+    display: block;
+  }
+}

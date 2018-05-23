@@ -5,13 +5,8 @@ import { PricingRoutingModule } from './pricing-routing.module';
 import { PortalSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [
-    PricingRoutingModule,
-    PortalSharedModule.forRoot()
-  ],
+  imports: [PricingRoutingModule, PortalSharedModule],
   declarations: [PricingComponent],
   exports: [PricingComponent]
 })
-
-export class PricingModule {
-}
+export class PricingModule {}

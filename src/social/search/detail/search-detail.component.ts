@@ -1,12 +1,12 @@
 import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { SocialService } from '../../shared/services/social.service';
-import { ServiceManager, UrlService } from '@wth/shared/services';
+import { ServiceManager, UrlService, AuthService } from '@wth/shared/services';
+import { combineLatest } from 'rxjs/operators';
 
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'z-social-search-detail',
   templateUrl: 'search-detail.component.html',
   styleUrls: ['../search.component.scss'],
@@ -32,57 +32,68 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
   nextLink: any;
 
   showNavSearch:boolean = true;
+  term: string = '';
+  loading: boolean;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               public serviceManager: ServiceManager,
+              public authService: AuthService,
               private urlService: UrlService,
               private socialService: SocialService) {
-
-    this.events = this.router.events
-      .filter((event: any) => event instanceof NavigationEnd)
-      .subscribe((event: NavigationEnd) => {
-        this.group = this.urlService.getId();
-        this.params = this.urlService.getQuery()['q'];
-        this.filter = this.urlService.getQuery()['filter_post'];
-        this.filterDate = this.urlService.getQuery()['filter_date'];
-        if (this.params) {
-          let query: any = {q: this.params};
-          if (this.filter) {
-            query.filter = this.filter;
-          }
-          if (this.filterDate) {
-            query.filter_date = this.filterDate;
-          }
-          this.serviceManager.getApi().get(`zone/social_network/search/${this.group}`, query).subscribe(
-            (res: any) => {
-              this.result = res.data;
-              this.groups = Object.keys(this.result);
-              this.nextLink = res.page_metadata.links.next;
-            }
-          );
+    this.route.paramMap.pipe(
+      combineLatest(this.route.queryParamMap)
+    ) .subscribe(([paramMap, queryParamMap]) => {
+      this.group = paramMap.get('group').split(';')[0];
+      this.term = this.group;
+      this.params = paramMap.get('q') || queryParamMap.get('q');
+      this.filter = paramMap.get('filter_post') || queryParamMap.get('filter_post');
+      this.filterDate = paramMap.get('filter_date') || queryParamMap.get('filter_date');
+      if (this.params) {
+        let query: any = {q: this.params};
+        if (this.filter) {
+          query.filter = this.filter;
         }
-      });
-
+        if (this.filterDate) {
+          query.filter_date = this.filterDate;
+        }
+        this.loading = true;
+        this.serviceManager.getApi().get(`zone/social_network/search/${this.group}`, query).subscribe(
+          (res: any) => {
+            this.loading = false;
+            this.result = res.data;
+            this.groups = Object.keys(this.result);
+            this.nextLink = res.page_metadata.links.next;
+          },
+          err => this.loading = false
+        );
+      }
+    });
 
     this.route.fragment.subscribe((f: any) => {
-      console.debug('search fragment: ', f);
       this.showNavSearch = !(f=='detail');
     });
 
   }
 
   ngOnDestroy() {
-    this.events.unsubscribe();
+    this.events && this.events.unsubscribe();
+  }
+
+  onFilter(e) {
+    console.debug('on filter: ', e, this.route);
+    const queryParams = {...this.route.snapshot.queryParams, ...e};
+    this.router.navigate([this.route.snapshot.params], {queryParams, relativeTo: this.route});
   }
 
   onLoadMore() {
     if (this.nextLink) {
       this.serviceManager.getApi().get(this.nextLink).subscribe(
         (res: any) => {
-          _.map(res.data, (v: any)=> {
-            this.result.push(v);
-          });
+          // _.map(res.data, (v: any)=> {
+          //   this.result.push(v);
+          // });
+          this.result = [...this.result, ...res.data];
           this.nextLink = res.page_metadata.links.next;
         }
       );

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/empty';
+import { empty } from 'rxjs/observable/empty';
 
 import { SocialService } from '../services/social.service';
 
@@ -11,7 +11,6 @@ import { Constants } from '@wth/shared/constant';
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'z-social-favorites',
   templateUrl: 'social-favorites.component.html'
 })
@@ -19,7 +18,7 @@ declare let _: any;
 export class ZSocialFavoritesComponent {
   tooltip: any = Constants.tooltip;
 
-  favorites$: Observable<any> = Observable.empty();
+  favorites$: Observable<any> = empty();
   readonly profileUrl: string = '/' + Constants.urls.profile;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
 

@@ -8,24 +8,26 @@
               <i class="fa fa-plus"></i> New Community
             </button>
           </div>
-          <h3 class="panel-title">Communities You Manage</h3>
+          <h3 class="panel-title hidden-xs">Communities You Manage</h3>
+          <h3 class="panel-title visible-xs-block">Manage</h3>
         </div>
         <div class="panel-body">
-          <div *ngIf="myList.length==0" class="p40 text-center">
-            <h3 class="text-fade m0">
-              There is no Community you are managing
-            </h3>
-          </div>
+          <ng-container *ngIf="!loading; else loadingBlock;">
+            <div *ngIf="myList.length==0" class="p40 text-center">
+              <h3 class="text-fade m0">
+                There is no Community you are managing
+              </h3>
+            </div>
 
-          <ng-template [ngIf]="myList.length>0">
-            <z-social-share-profile-list
-              [layout]="'row'"
-              [class]="'col-xs-12 col-md-6 col-lg-4'"
-              [data]="myList"
-              [type]="'community'">
-            </z-social-share-profile-list>
-          </ng-template>
-
+            <ng-template [ngIf]="myList.length>0">
+              <z-social-share-profile-list
+                [layout]="'row'"
+                [class]="'col-xs-12 col-md-6 col-lg-4'"
+                [data]="myList"
+                [type]="'community'">
+              </z-social-share-profile-list>
+            </ng-template>
+          </ng-container>
         </div>
       </div>
 
@@ -35,20 +37,22 @@
           <h3 class="panel-title">Your Communities</h3>
         </div>
         <div class="panel-body">
-          <div *ngIf="list.length==0" class="p40 text-center">
-            <h3 class="text-fade m0">
-              There is no Your Community
-            </h3>
-          </div>
+          <ng-container *ngIf="!loading; else loadingBlock;">
+            <div *ngIf="list.length==0" class="p40 text-center">
+              <h3 class="text-fade m0">
+                There is no Your Community
+              </h3>
+            </div>
 
-          <ng-template [ngIf]="list.length>0">
-            <z-social-share-profile-list
-              [layout]="'row'"
-              [class]="'col-xs-12 col-md-6 col-lg-4'"
-              [data]="list"
-              [type]="'community'">
-            </z-social-share-profile-list>
-          </ng-template>
+            <ng-template [ngIf]="list.length>0">
+              <z-social-share-profile-list
+                [layout]="'row'"
+                [class]="'col-xs-12 col-md-6 col-lg-4'"
+                [data]="list"
+                [type]="'community'">
+              </z-social-share-profile-list>
+            </ng-template>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -58,3 +62,8 @@
   </z-social-share-community-form-edit>
   <wth-zone-report></wth-zone-report>
 </div>
+
+
+<ng-template #loadingBlock>
+  <box-loading></box-loading>
+</ng-template>

@@ -1,0 +1,38 @@
+<div class="btn-group header-nav-profile">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">
+    <span class="avatar-xxs">
+      <img alt="" width="30" [src]="user?.profile_image || defaultAvatar"
+           class="lazyload">
+    </span>
+    <i class="fa fa-caret-down ml10 hidden-xs"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-right">
+    <li>
+      <div class="media p10">
+        <div class="media-left">
+          <div class="avatar-md">
+            <img alt="" [src]="user?.profile_image || defaultAvatar">
+
+          </div>
+        </div>
+        <div class="media-body">
+          <p class="media-heading bold mb0">{{ user?.first_name }}
+            {{ user?.last_name }}</p>
+          <small class="text-fade">{{ user?.email }}</small>
+          <div class="navbar-nav-plan m">
+            <p class="media-heading bold">{{ user?.plan?.name }}</p>
+            <a [href]="urls.myAccount + '/plans'" class="btn btn-primary" *ngIf="user?.plan?.is_trial">
+              <i class="fa fa-arrow-circle-up"></i> Upgrade
+            </a>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li role="separator" class="divider"></li>
+    <li><a [href]="urls.myAccount + '/settings/profile'">Account</a></li>
+    <li><a [href]="urls.myAccount + '/admin/invitations'">Invitations</a></li>
+    <li><a (click)="logout()" href="javascript:void(0);">Sign Out</a></li>
+  </ul>
+</div>

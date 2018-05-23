@@ -6,18 +6,21 @@
 import { EnvConfig } from './env-config.interface';
 
 export const environment = {
-  production: false
+  production: false,
+  keys: {
+    recaptcha_site_key: '6Ld0dU0UAAAAAK5cM_IEAe5LhpzKT-a250aDMZPl'
+  }
 };
-
 
 console.log('environment:::', environment);
 
+// const host = '192.168.0.109';
+// const host = '192.168.0.106';
+const host = 'localhost';
+
 export const ConfigByEnv: EnvConfig = {
-  CDN: 'http://localhost:4000/assets',
-  API: 'http://localhost:4000',
-  // API: 'http://192.168.0.103:4000',
-  // API: 'http://192.168.0.111:4000',
-  // API: 'http://192.168.0.103:4000',
+  CDN: `http://${host}:4000/assets`,
+  API: `http://${host}:4000`,
   ENV: 'DEV',
   DOMAIN: 'localhost',
   SUB_DOMAIN: {
@@ -27,6 +30,6 @@ export const ConfigByEnv: EnvConfig = {
     SOCIAL: 'http://localhost:3015',
     CHAT: 'http://localhost:3020',
     CONTACT: 'http://localhost:3025',
-    NOTE: 'http://localhost:3030',
+    NOTE: 'http://localhost:3030'
   }
 };

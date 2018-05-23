@@ -1,22 +1,20 @@
 import { NgModule } from '@angular/core';
-import { ZSocialMyProfileComponent } from './my-profile.component';
-import { ZSocialSharedModule } from '../shared/shared.module';
+// import { ZSocialSharedModule } from '../shared/shared.module';
 import { SharedModule } from '@wth/shared/shared.module';
-
+import { MyProfileRoutingModule } from './my-profile-routing.module';
+import { CommonModule } from '@angular/common';
+import { ZSocialSharedModule } from '../shared/shared.module';
+import { ZMyProfileComponent } from '@shared/shared/components/profile/my-profile/my-profile.component';
 
 @NgModule({
   imports: [
+    CommonModule,
     ZSocialSharedModule,
-    SharedModule,
+    MyProfileRoutingModule,
+    SharedModule
   ],
-  declarations: [
-    ZSocialMyProfileComponent
-  ],
-  exports: [
-    ZSocialMyProfileComponent
-  ],
+  declarations: [],
+  exports: [],
   providers: []
 })
-
-export class ZSocialMyProfileModule {
-}
+export class ZSocialMyProfileModule {}

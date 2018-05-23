@@ -1,0 +1,46 @@
+<form novalidate>
+  <bs-modal #modal
+         [cssClass]="'modal-account-edit'"
+         [keyboard]="false"
+         [animation]="false"
+         [backdrop]="'static'" style="display: inline;" >
+    <bs-modal-header>
+        <button aria-label="Close" class="close" (click)="modal.close()">
+          <span aria-hidden="true">×</span>
+        </button>
+      <h4 class="modal-title">Request ownership</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+      <div class="padding10">
+        <div>
+          You are requesting ownership for your account from
+          <b><a rel="nofollow" target="_top" href="mailto:{{parent.email}}">{{ parent?.name}}</a></b>
+        </div>
+        <div>
+          Once your request is accepted, your account will be permanently removed from
+          <b><a rel="nofollow" target="_top" href="mailto:{{parent.email}}">{{ parent?.name}}</a></b> account
+        </div>
+        <div>
+          <b><a rel="nofollow" target="_top" href="mailto:{{parent.email}}">{{ parent?.name}}</a></b>
+          will no longer be able to access into our account or your personal information
+        </div>
+        <div>
+          In addition, you must be responsible for subscription fee starting at the next billing cycle to keep using WTHApps.
+          <br>
+          For the remaining of this billing cycle.
+          <b><a rel="nofollow" target="_top" href="mailto:{{parent.email}}">{{ parent?.name}}</a></b>
+          will be able to access to your accounts
+        </div>
+      </div>
+
+    </bs-modal-body>
+
+    <bs-modal-footer>
+    <div>
+        <button class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+        <button class="btn btn-outline-primary btn-min pull-right" (click)="send()">Send request</button>
+      </div>
+    </bs-modal-footer>
+  </bs-modal>
+
+</form>

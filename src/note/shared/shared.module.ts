@@ -10,7 +10,7 @@ import { NoteItemComponent } from './list/item/note-item.component';
 import { FolderItemComponent } from './list/item/folder-item.component';
 
 import { ZNoteService } from './services/note.service';
-import { NoteEditModalComponent } from './modal/note/note-edit-modal.component';
+// import { NoteEditModalComponent } from './modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './modal/note/view.component';
 
 import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.component';
@@ -24,27 +24,25 @@ import { ZNoteSharedBreadcrumbComponent } from './breadcrumb/breadcrumb.componen
 import { ZNoteSharedLeftMenuComponent } from './toolbar/left-menu.component';
 import { ZNoteSharedHeaderComponent } from './header/header.component';
 import { ModalModule } from '@shared/modals/modals.module';
-
+import { ZNoteContainerComponent } from '@notes/shared/containers/note-container.component';
+import { StoreModule } from '@ngrx/store/store';
+import { ZNoteShareProgressComponent } from '@notes/shared/progress/note-progress.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [
-    Ng2HdModule,
-    CommonModule,
-    ModalModule,
-    SharedModule
-  ],
+  imports: [Ng2HdModule, CommonModule, ModalModule, SharedModule],
   declarations: [
     ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
     NoteListComponent,
     NoteItemComponent,
     FolderItemComponent,
+    ZNoteContainerComponent,
 
-    NoteEditModalComponent,
+    // NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
@@ -52,6 +50,7 @@ import { ModalModule } from '@shared/modals/modals.module';
     ZNoteSharedModalSharingComponent,
     ZNoteSharedBreadcrumbComponent,
     ZNoteSharedHeaderComponent,
+    ZNoteShareProgressComponent,
     ZNoteSharedLeftMenuComponent
   ],
   exports: [
@@ -63,14 +62,16 @@ import { ModalModule } from '@shared/modals/modals.module';
     NoteItemComponent,
     FolderItemComponent,
     ZNoteSharedHeaderComponent,
+    ZNoteContainerComponent,
 
-    NoteEditModalComponent,
+    // NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
     ZNoteSharedTrashActionBarComponent,
     ZNoteSharedModalSharingComponent,
     ZNoteSharedBreadcrumbComponent,
+    ZNoteShareProgressComponent,
     ZNoteSharedLeftMenuComponent
   ]
 })
@@ -78,11 +79,7 @@ export class ZNoteSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZNoteSharedModule,
-      providers: [
-        ZNoteService,
-        ZFolderService,
-        MixedEntityService
-      ]
+      providers: [ZNoteService, ZFolderService, MixedEntityService]
     };
   }
 }

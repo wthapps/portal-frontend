@@ -1,10 +1,10 @@
-<modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <modal-header [show-close]="true">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
+  <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title"> {{ titleName }}</h4>
-  </modal-header>
+  </bs-modal-header>
 
   <form [formGroup]="form" novalidate>
-    <modal-body>
+    <bs-modal-body>
       <div class="row">
         <div class="col-sm-12">
           <div class="form-group"
@@ -20,15 +20,15 @@
         </div>
 
       </div>
-    </modal-body>
+    </bs-modal-body>
 
-    <modal-footer>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal">Cancel</button>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
       <button type="button" (click)="submit()" [disabled]="!form.valid || form.pristine"
               class="btn btn-outline-primary btn-min">
         Done
       </button>
-    </modal-footer>
+    </bs-modal-footer>
   </form>
 
-</modal>
+</bs-modal>

@@ -1,46 +1,63 @@
 import { ApiBaseService } from './apibase.service';
 import { Observable } from 'rxjs/Observable';
 
-
 export class BaseEntityService<T> {
-
   url = '';
 
-  constructor(protected api: ApiBaseService) {
+  constructor(protected apiBaseService: ApiBaseService) {}
 
+  getAll(options?: any, url?: any): Observable<any> {
+    const path = url || this.url;
+    return this.apiBaseService.get(path, options);
   }
 
-  getAll(options?: any): Observable<any> {
-    return this.api.get(this.url, options);
+  get(id: number, path: string = ''): Observable<any> {
+    let url = path === '' ? this.url : `${this.url}/${path}`;
+    return this.apiBaseService.get(`${url}/${id}`);
   }
 
-  get(id: number): Observable<any> {
-    return this.api.get(`${this.url}/${id}`);
-  }
-
-  create(body: any, multiple: boolean=false): Observable<any> {
-    if(multiple) {
+  create(body: any, multiple: boolean = false): Observable<any> {
+    if (multiple) {
       // this case body MUST be an array
-      let payload = {payload: body, multiple: true};
-      return this.api.post(this.url, payload);
+      let payload = { payload: body, multiple: true };
+      return this.apiBaseService.post(this.url, payload);
     } else {
-      return this.api.post(this.url, body);
+      return this.apiBaseService.post(this.url, body);
     }
   }
 
-  update(body: any, multiple: boolean=false): Observable<any> {
-    if(multiple) {
-      return this.api.put(`${this.url}/multiple`, body);
+  update(
+    body: any,
+    multiple: boolean = false,
+    path: string = ''
+  ): Observable<any> {
+    let url = path === '' ? this.url : `${this.url}/${path}`;
+    if (multiple) {
+      return this.apiBaseService.put(`${url}/multiple`, body);
     } else {
-      return this.api.put(`${this.url}/${body.id}`, body);
+      return this.apiBaseService.put(`${url}/${body.id}`, body);
     }
   }
 
-  delete(id: any, payload?: any): Observable<any> {
-    if(id == 0) {
-      return this.api.post(`${this.url}/0`, {multiple: true, payload: payload});
+  updateMany(payload: any, path: string = ''): Observable<any> {
+    let url = path === '' ? this.url : `${this.url}/${path}`;
+    return this.apiBaseService.post(`${url}/update_many`, payload);
+  }
+
+  delete(id: any, payload?: any, path: string = ''): Observable<any> {
+    let url = path === '' ? this.url : `${this.url}/${path}`;
+    if (id === 0) {
+      return this.apiBaseService.post(`${url}/0`, {
+        multiple: true,
+        payload: payload
+      });
     } else {
-      return this.api.delete(`${this.url}/${id}`);
+      return this.apiBaseService.delete(`${url}/${id}`);
     }
+  }
+
+  deleteMany(payload?: any, path: string = ''): Observable<any> {
+    let url = path === '' ? this.url : `${this.url}/${path}`;
+    return this.apiBaseService.post(`${url}/delete_many`, { ...payload });
   }
 }

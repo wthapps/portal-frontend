@@ -1,4 +1,4 @@
-<div class="page-body-content has-page-body-sidebar" *ngIf="setting">
+<div class="page-body-content" *ngIf="setting">
   <div class="page-body-content-in">
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
       <div class="panel panel-default">
@@ -8,17 +8,17 @@
         <ul class="list-group">
           <li class="list-group-item">
             <h3 class="list-group-item-heading">General Settings</h3>
-            <div class="checkbox checkbox-switch">
-              <p-inputSwitch [formControl]="import_information"></p-inputSwitch>
-              <label>
-                Import information from your Social and WTH Profile
-              </label>
+            <div class="form-group">
+              <div class="inputSwitch-wrap">
+                <p-inputSwitch [formControl]="import_information"></p-inputSwitch>
+                <span>Import information from your Social and WTH Profile</span>
+              </div>
             </div>
-            <div class="checkbox checkbox-switch">
-              <p-inputSwitch [formControl]="online"></p-inputSwitch>
-              <label>
-                Online
-              </label>
+            <div class="form-group">
+              <div class="inputSwitch-wrap">
+                <p-inputSwitch [formControl]="online"></p-inputSwitch>
+                <span>Online</span>
+              </div>
             </div>
           </li>
           <li class="list-group-item">

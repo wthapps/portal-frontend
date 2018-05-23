@@ -1,7 +1,10 @@
 <div lockYOffset="20"
      observeAttributes="true"
      infinite-scroll
-     [scrollWindow]="false"
+     [scrollWindow]="true"
      (scrolled)="onLoadMore()">
-<so-post-list #posts [type]="'random_user'" [canCreatePost]="false"></so-post-list>
+<so-post-list #posts
+              [user]="authService.user$|async"
+              [type]="'random_user'"
+              [canCreatePost]="canCreate"></so-post-list>
 </div>

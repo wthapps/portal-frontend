@@ -5,8 +5,9 @@
       <div class="media content-overflow-visible">
         <div class="media-left">
           <div class="avatar-md" (click)="changeProfileImage()">
-            <img *ngIf="(userService?.profile$ | async)?.profile_image" [src]="(userService?.profile$ | async)?.profile_image" class="no-user-selected">
-            <img *ngIf="!(userService?.profile$ | async)?.profile_image" [src]="avatarDefault" class="no-user-selected">
+            <img *ngIf="(profile$ | async)?.profile_image" [src]="(profile$ | async)?.profile_image"
+                 class="no-user-selected">
+            <img *ngIf="!(profile$ | async)?.profile_image" [src]="avatarDefault" class="no-user-selected">
             <span><i class="fa fa-camera"></i></span>
           </div>
         </div>

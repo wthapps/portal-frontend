@@ -18,17 +18,24 @@ export class ZChatProfileComponent implements OnInit {
   contact: any;
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
 
-  constructor(private route: ActivatedRoute,
-              private chatService: ChatService) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private chatService: ChatService
+  ) {}
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
-      this.chatService.apiBaseService.get('zone/social_network/users/' + params['id'], {module_name: 'chat'}).subscribe((res: any) => {
-        this.profile = res.data;
-        this.actions = res.actions;
-        this.contact = this.chatService.getContactByPartnerId(this.profile.id);
-      });
+      this.chatService.apiBaseService
+        .get('zone/social_network/users/' + params['id'], {
+          module_name: 'chat'
+        })
+        .subscribe((res: any) => {
+          this.profile = res.data;
+          this.actions = res.actions;
+          this.contact = this.chatService.getContactByPartnerId(
+            this.profile.id
+          );
+        });
     });
   }
 
@@ -46,12 +53,18 @@ export class ZChatProfileComponent implements OnInit {
   }
 
   onClose() {
-    setTimeout(()=> {
-      this.chatService.apiBaseService.get('zone/social_network/users/' + this.profile.uuid, {module_name: 'chat'}).subscribe((res: any) => {
-        this.profile = res.data;
-        this.actions = res.actions;
-        this.contact = this.chatService.getContactByPartnerId(this.profile.id);
-      });
+    setTimeout(() => {
+      this.chatService.apiBaseService
+        .get('zone/social_network/users/' + this.profile.uuid, {
+          module_name: 'chat'
+        })
+        .subscribe((res: any) => {
+          this.profile = res.data;
+          this.actions = res.actions;
+          this.contact = this.chatService.getContactByPartnerId(
+            this.profile.id
+          );
+        });
     }, 500);
   }
 }

@@ -23,7 +23,7 @@ export class ContentEditableDirective implements ControlValueAccessor {
   private onChangeCallback: (_: any) => void = noop;
 
   @Input()
-  public multiline: false;
+  public multiline: boolean = true;
 
   constructor(private elRef: ElementRef) {
   }
@@ -55,7 +55,7 @@ export class ContentEditableDirective implements ControlValueAccessor {
   setDisabledState?(isDisabled: boolean): void {}
 
   onKeyPress($event: any): void {
-    console.log($event, $event.keyCode, $event.keyIdentifier);
+    // console.log($event, $event.keyCode, $event.keyIdentifier);
     if (!this.multiline && $event.keyCode === 13) {
       $event.preventDefault();
     }

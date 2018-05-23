@@ -1,9 +1,9 @@
 <form [formGroup]="form" novalidate>
-  <modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <modal-header [show-close]="true">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title text-left"><i class="fa fa-pencil"></i> About</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
       <div class="form-group" [ngClass]="{'has-error': (!community_name.valid && community_name.touched),
         'has-success': (community_name.valid && community_name.touched)}">
         <label for="community_name">Community Name</label>
@@ -89,10 +89,10 @@
           </button>
         </div>
       </div>
-    </modal-body>
-    <modal-footer>
-      <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit(form.value)">Done</button>
+    </bs-modal-body>
+    <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
-    </modal-footer>
-  </modal>
+      <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit(form.value)">Done</button>
+    </bs-modal-footer>
+  </bs-modal>
 </form>

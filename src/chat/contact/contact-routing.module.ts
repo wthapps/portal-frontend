@@ -40,10 +40,9 @@ import { ZChatContactReceiveComponent } from './contact-receive.component';
             component: ZChatContactReceiveComponent
           }
         ]
-      },
+      }
     ])
   ],
   exports: [RouterModule]
 })
-export class ZChatContactRoutingModule {
-}
+export class ZChatContactRoutingModule {}

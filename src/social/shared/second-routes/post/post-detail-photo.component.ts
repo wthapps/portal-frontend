@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import 'rxjs/add/operator/toPromise';
+
 
 import { BaseZoneSocialItem } from '../../../shared/base/base-social-item';
 import { SoPost } from '@wth/shared/shared/models';
@@ -10,11 +10,11 @@ import { Constants } from '@wth/shared/constant';
 
 
 
-declare var $: any;
-declare var _: any;
+
+
 
 @Component({
-  moduleId: module.id,
+
   selector: 'so-post-detail-photo',
   templateUrl: 'post-detail-photo.component.html'
 })

@@ -6,7 +6,7 @@ import {
   FormArray
 } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '../../../validator/custom.validator';
 import { ApiBaseService } from '../../../../services/apibase.service';
 import { Constants } from '../../../../constant/config/constants';
@@ -26,8 +26,8 @@ declare var _: any;
 })
 
 export class PartialsProfileEmailComponent implements OnInit, ProfileFormMixin {
-  @Input('data') data: any;
-  @ViewChild('modal') modal: ModalComponent;
+  @Input() data: any;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() editable: boolean;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();

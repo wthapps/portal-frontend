@@ -1,17 +1,17 @@
 <div class="box-panel">
   <h3 class="box-panel-title">{{ pageTitle }}</h3>
   <h4 class="box-panel-subtitle">Plan</h4>
-  <div *ngIf="userService.profile.plan.is_trial">
-    <p class="p-plan-info"><span>{{ userService.profile.plan.name }}</span>
+  <div *ngIf="userService.getSyncProfile()?.plan?.is_trial">
+    <p class="p-plan-info"><span>{{ userService.getSyncProfile().plan.name }}</span>
       <!-- - 8 days left-->
     </p>
     <p>
       <a [routerLink]="['/account/plans']" class="btn btn-outline-primary btn-min"><i class="fa fa-arrow-circle-up"></i> Upgrade</a>
     </p>
   </div>
-  <div *ngIf="!userService.profile.plan.is_trial">
-    <p class="p-plan-info"><span>{{ userService.profile.plan.name }}</span>
-      - Activated on {{ userService.profile.plan_registered_at | date:'yMMMd' }}</p>
+  <div *ngIf="!userService.getSyncProfile()?.plan?.is_trial">
+    <p class="p-plan-info"><span>{{ userService.getSyncProfile().plan.name }}</span>
+      - Activated on {{ userService.getSyncProfile()?.plan_registered_at | date:'yMMMd' }}</p>
     <p>
       <button (click)="cancelPlan()" class="btn btn-default2 btn-min">Downgrade</button>
     </p>

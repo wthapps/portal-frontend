@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/do';
+import { map, tap, catchError } from 'rxjs/operators';
 
 import { BaseEntityService } from '@shared/services/base-entity-service';
 import { Note } from '@shared/shared/models/note.model';
@@ -27,8 +28,7 @@ export class ZNoteService extends BaseEntityService<any> {
 
   private apiUrl = '/api/zone/note/note.json';
 
-  constructor(protected apiBaseService: ApiBaseService,
-              private http: Http) {
+  constructor(protected apiBaseService: ApiBaseService) {
     super(apiBaseService);
     this.url = 'note/notes';
 
@@ -51,12 +51,18 @@ export class ZNoteService extends BaseEntityService<any> {
     this.isSelectAllSubject.next(false);
 
     // return this.apiBaseService.get(this.apiUrl)
-    return this.http.get(this.apiUrl)
-      .map((response: Response) => <any[]> response.json())
-      .do(notes => {
-        this.notesSubject.next(notes);
-      })
-      .catch(this.handleError);
+    return this.apiBaseService.get(this.apiUrl)
+      .pipe(
+        map((response: Response) => <any[]> response.json()),
+        tap(notes => {
+            this.notesSubject.next(notes);
+          }),
+      catchError(this.handleError)
+      );
+  }
+
+  getNoteAvailable(id: any) {
+    return this.apiBaseService.get(this.url + '/get_note_available/' + id)
   }
 
   deleteNote(body?: any) {

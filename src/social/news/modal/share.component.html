@@ -1,0 +1,67 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-body>
+    <div class="z-social-media mb15">
+      <div class="z-social-media-left pointer">
+        <a href="javascript:;" (click)="viewProfile()">
+          <div class="avatar-xs">
+            <img [src]="(profile$ | async)?.profile_image" alt="">
+          </div>
+        </a>
+      </div>
+      <div class="z-social-media-body">
+        <div class="z-heading">
+          <a href="javascript:;" (click)="viewProfile()">
+            <div class="z-name">
+              {{ (profile$ | async)?.name }}
+            </div>
+          </a>
+          <div class="z-shared-with dropdown">
+            <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
+               aria-haspopup="true" aria-expanded="true">
+              <i class="fa" [ngClass]="privacyClassIcon"></i> {{ privacyName }} </a>
+            <ul class="dropdown-menu">
+              <li><a href="#">
+                <i class="fa fa-globe"></i> Public</a></li>
+              <li><a href="#">
+                <i class="fa fa-users"></i> Friends</a></li>
+              <li><a href="#"><i
+                class="fa fa-lock"></i> Personal</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Share with Friends</a>
+              </li>
+              <li><a (click)="customPrivacy('', $event)" href="#">Share in Communities</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="z-social-media-right">
+        <div class="dropdown pull-right">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="true" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+            <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="#">test</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="done(form.value)" novalidate>
+      <div contenteditable="true" class="form-control textarea-editor-input"
+           #textarea
+           [autofocus]
+           id="textarea-new-post"
+           placeholder="Share your ideas"
+           [formControl]="descCtrl">
+      </div>
+    </form>
+    <div class="mt20">
+      <display-link [data]="article"></display-link>
+    </div>
+
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+    <button type="submit" class="btn btn-outline-primary btn-min" (click)="done(null)">Done</button>
+  </bs-modal-footer>
+</bs-modal>

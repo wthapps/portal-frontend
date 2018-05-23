@@ -1,15 +1,15 @@
 <div class="wrapper">
-  <portal-header></portal-header>
+  <w-header class="header" [hasSearch]="false" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
+    <portal-shared-header class="header-nav-left"></portal-shared-header>
+  </w-header>
 
   <main class="main">
-     <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
   </main>
   <portal-shared-footer></portal-shared-footer>
-
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
   <wth-confirm></wth-confirm>
+  <!--<w-media-selection></w-media-selection>-->
 
-  <!--<p-confirmDialog header="Confirmation" width="670"></p-confirmDialog>-->
-  <!--<wth-chat-support></wth-chat-support>-->
 </div>

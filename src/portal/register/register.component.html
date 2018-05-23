@@ -77,8 +77,8 @@
         </div>
         <div class="form-group">
           By signing up, you agree to the
-          <a [routerLink]="['/policies/terms']" target="_blank">Terms of Service</a>,
-          <a [routerLink]="['/policies/privacy']" target="_blank">Privacy &amp; Cookies Policy</a>
+          <a [routerLink]="['/policies/terms']" target="_blank" rel="noopener">Terms of Service</a>,
+          <a [routerLink]="['/policies/privacy']" target="_blank" rel="noopener">Privacy &amp; Cookies Policy</a>
         </div>
         <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-primary">Sign Up</button>
       </form>

@@ -1,5 +1,5 @@
 <ul class="page-body-control-menu">
-  <li *ngIf="showNumber">
+  <li *ngIf="showNumber" class="pull-left">
     <span style="line-height: 34px;" class="mr10">
       {{ number }} selected
     </span>
@@ -9,33 +9,41 @@
       <i class="fa fa-envelope-o" aria-hidden="true"></i> Invite
     </a>
   </li>
+  <li *ngIf="data?.wthapps_user">
+    <a href="javascript:;" class="btn btn-outline-default btn-sm" *ngIf="UNCONNECT_STATUS.includes(data?.connect_status)" (click)="sendRequest(data)">
+      <i class="fa fa-user-plus" aria-hidden="true"></i> Connect
+    </a>
+    <span class="text-fade" *ngIf="!UNCONNECT_STATUS.includes(data?.connect_status)">
+      <i class="fa fa-check-circle" aria-hidden="true"></i> {{ CONNECT_STATUS[data?.connect_status] }}
+    </span>
+  </li>
+  <li *ngIf="number > 1">
+    <a href="javascript:;" class="btn btn-default" (click)="mergeDuplicate()" pTooltip="{{ tooltip.mergeContacts }}" tooltipPosition="bottom">
+      <!--<img alt="" width="30" src="assets/images/icons/merge_icon.svg">-->
+      <i class="fa fa-compress" aria-hidden="true"></i>
+    </a>
+  </li>
   <li>
-    <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite'})"
-       pTooltip="{{ tooltip.favourite }}" tooltipPosition="bottom">
+    <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite'})" pTooltip="{{ tooltip.favourite }}"
+      tooltipPosition="bottom">
       <i class="fa" [ngClass]="toggleFavourite ? 'fa-star' : 'fa-star-o'"></i>
     </a>
   </li>
   <li>
     <a [ngClass]="{disabled: !showSocial}" href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'social'})"
-       pTooltip="{{ tooltip.goToSocial }}" tooltipPosition="bottom">
+      pTooltip="{{ tooltip.goToSocial }}" tooltipPosition="bottom">
       <i class="fa fa-globe"></i>
     </a>
   </li>
   <li>
-    <a [ngClass]="{disabled: !showChat}" href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'chat'})"
-       pTooltip="{{ tooltip.goToChat }}" tooltipPosition="bottom">
+    <a [ngClass]="{disabled: !showChat}" href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'chat'})" pTooltip="{{ tooltip.goToChat }}"
+      tooltipPosition="bottom">
       <i class="fa fa-comments-o"></i>
     </a>
   </li>
-  <li *ngIf="showTag">
-    <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'tag'})"
-       pTooltip="{{ tooltip.addGroup }}" tooltipPosition="bottom">
-      <i class="fa fa-users"></i>
-    </a>
-  </li>
   <li class="dropdown action">
-    <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-       pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom">
+    <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
+      tooltipPosition="bottom">
       <i class="fa fa-ellipsis-v"></i>
     </a>
     <ul class="dropdown-menu dropdown-menu-right text-right">
@@ -49,22 +57,22 @@
           <i class="fa fa-pencil"></i> Edit Contact
         </a>
       </li>
-      <li *ngIf="contactService.selectedObjects.length > 1">
-        <a href="javascript:;" (click)="mergeDuplicate()"><img alt="" width="30" src="assets/images/icons/merge_icon.svg">Merge duplicate contacts</a>
+      <li *ngIf="showTag">
+        <a href="javascript:;" (click)="emitEvent({action: 'tag'})">
+          <i class="fa fa-users"></i> Add to Group
+        </a>
       </li>
       <li>
-        <a href="javascript:;" (click)="emitEvent({action: 'delete'})"><i class="fa fa-trash"></i> Delete</a>
+        <a href="javascript:;" (click)="emitEvent({action: 'delete'})">
+          <i class="fa fa-trash"></i> Delete</a>
       </li>
       <li>
-        <a href="javascript:;" (click)="emitEvent({action: 'blacklist'})"
-           [title]="toggleBlacklist ? 'remove from blacklist' : 'add to blacklist'">
+        <a href="javascript:;" (click)="emitEvent({action: 'blacklist'})" [title]="toggleBlacklist ? 'remove from blacklist' : 'add to blacklist'">
           <i class="fa fa-ban"></i> Blacklist
         </a>
       </li>
       <li *ngIf="showInvitation">
-        <a href="javascript:void(0);"
-           (click)="emitEvent({action: 'invitation:open_modal'})"
-           title="Send invitation">
+        <a href="javascript:void(0);" (click)="emitEvent({action: 'invitation:open_modal'})" title="Send invitation">
           <i class="fa fa-send"></i> Send invitation
         </a>
       </li>

@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -6,7 +6,7 @@ import {
   FormArray, AbstractControl, FormControl
 } from '@angular/forms';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { PartialsProfileService } from '../profile.service';
 import { Constants } from '../../../../constant/config/constants';
 import { CountryService } from '../../countries/countries.service';
@@ -14,14 +14,15 @@ import { CountryService } from '../../countries/countries.service';
 declare var _: any;
 
 @Component({
-    selector: 'partials-profile-about',
+  selector: 'partials-profile-about',
   templateUrl: 'about.component.html'
 })
 
 export class PartialsProfileAboutComponent implements OnInit {
   @Input('data') data: any;
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @Input() editable: boolean;
+  @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constants = Constants;
   countriesCode: any;
@@ -68,12 +69,12 @@ export class PartialsProfileAboutComponent implements OnInit {
 
 
   onOpenModal() {
-    console.log(this.data);
+    // console.log(this.data);
 
     (<FormControl>this.about).setValue(this.data.about);
     (<FormControl>this.sex).setValue(this.data.sex);
 
-    console.log(this.data.birthday);
+    // console.log(this.data.birthday);
 
     if (this.data.birthday !== null) {
       let birthday = new Date(this.data.birthday);
@@ -100,8 +101,8 @@ export class PartialsProfileAboutComponent implements OnInit {
 
     this.profileService.updateMyProfile(body).subscribe((res: any) => {
       this.data = res.data;
+      this.outEvent.emit(res.data);
       console.log(res);
-      // (<FormControl>this.contact_note).setValue(this.data.contact_note);
       this.modal.close();
     });
   }

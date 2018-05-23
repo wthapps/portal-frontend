@@ -12,9 +12,18 @@ import {
   ReplyUpdateEvent
 } from '../../../../events/social-events';
 import { SoComment, User } from '@wth/shared/shared/models';
-import { UserService } from '@wth/shared/services';
-import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
+import { UserService, PhotoUploadService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
+import { Router } from '@angular/router';
+
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { takeUntil, filter, map, mergeMap, take } from 'rxjs/operators';
+
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
+import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 
 
 export enum CommentEditorMode {
@@ -26,16 +35,14 @@ export enum CommentEditorMode {
 
 declare let $: any;
 declare let _: any;
-declare let document: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'comment-item-editor',
   templateUrl: 'comment-item-editor.component.html',
   styleUrls: ['comment-item-editor.component.scss']
 })
 
-export class CommentItemEditorComponent implements OnInit {
+export class CommentItemEditorComponent implements OnInit, OnDestroy {
   // @Input() item: SoPost;
   @Input() parent: any; // parent is able to be Post or Comment or Photo or other object
   @Input() parentType: string = 'SocialNetwork::Post';  // 'SocialNetwork::Post' or 'SocialNetwork::Comment'
@@ -44,13 +51,13 @@ export class CommentItemEditorComponent implements OnInit {
   @Input() mode: any = CommentEditorMode.Add;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('commentContent') commentContent: ElementRef;
+  @ViewChild(MiniEditor) editor: MiniEditor;
 
   comment: SoComment = new SoComment(); // Clone comment
   commentEditorMode = CommentEditorMode;
   hasUploadingPhoto: boolean = false;
   hasUpdatedContent: boolean = false;
-  files: any;
-  emojiData: any[];
+  files: any[];
   user$: Observable<User>;
   showEmoji: boolean;
 
@@ -61,12 +68,18 @@ export class CommentItemEditorComponent implements OnInit {
   tooltip: any = Constants.tooltip;
 
   textContent = 'Let\'s try 1st sample';
+  cancelPhotoSubject: Subject<any> = new Subject<any>();
+  close$: Observable<any>;
+  uploadSubscription: Subscription;
 
   constructor(private fb: FormBuilder,
-              public userService: UserService) {
-    this.user$ = this.userService.profile$;
-
-    this.emojiData = ZChatEmojiService.emojis;
+              private router: Router,
+              private mediaSelectionService: WMediaSelectionService,
+              private photoUploadService: PhotoUploadService,
+              public userService: UserService,
+              private emojiService: WTHEmojiService) {
+    this.user$ = this.userService.getAsyncProfile();
+    this.close$ = Observable.merge(this.mediaSelectionService.open$, this.cancelPhotoSubject, componentDestroyed(this));
   }
 
   ngOnInit() {
@@ -80,65 +93,66 @@ export class CommentItemEditorComponent implements OnInit {
       'content': [this.comment.content, ''],
       'photo': [this.comment.photo, null]
     });
-    this.contentCtrl = this.commentEditorForm.controls['content'];
+    // this.contentCtrl = this.commentEditorForm.controls['content'];
+    this.setCommentContent(this.commentEditorForm.controls['content'].value);
     this.photosCtrl = this.commentEditorForm.controls['photo'];
   }
 
+  ngOnDestroy() {
 
-  onKey(e: any) {
-    // Create, Update, Reply
-    if (e.keyCode == 13 && !e.shiftKey) {
+  }
 
+  viewProfile(uuid: string) {
+    this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve', preserveFragment: true})
+      .then(() => this.router.navigate(['profile', uuid]));
+  }
+
+  handleKeyUp(e: any) {
+    if (e.keyCode === 13) {
       if (this.checkValidForm()) {
         // this.comment.content = this.commentEditorForm.value;
-        this.post(this.commentEditorForm.value);
+        this.post(this.comment.content);
       } else {
         this.cancel();
       }
       return;
-    } else if (e.keyCode == 13 && e.shiftKey) {
-      e.preventDefault();
-      return;
-    } else if (e.keyCode == 27) {
+    } else if (e.keyCode === 27) {
       this.cancel();
       return;
     }
-
-    this.showEmoji = false;
-    this.hasUpdatedContent = true;
   }
 
   /*
    * Now we just supports ONE photo
    * */
-  editComment(photo: any) {
-    this.comment.photo = photo;
-    this.commentEditorForm.controls['photo'].setValue(photo);
+  // editComment(photo: any) {
+  //   this.comment.photo = photo;
+  //   this.commentEditorForm.controls['photo'].setValue(photo);
+  //
+  // }
 
-  }
+  // setCommentAttributes(attributes: any) {
+  //   if ('photo' in attributes) {
+  //     this.comment.photo = attributes.photo;
+  //     this.commentEditorForm.controls['photo'].setValue(attributes.photo)
+  //   }
+  //   if ('content' in attributes) {
+  //     this.comment.content = attributes.content || '';
+  //   }
+  //
+  //   this.hasUpdatedContent = true;
+  // }
 
-  setCommentAttributes(attributes: any) {
-    if ('photo' in attributes) {
-      this.comment.photo = attributes.photo;
-      this.commentEditorForm.controls['photo'].setValue(attributes.photo)
-    }
-    if ('content' in attributes) {
-      this.comment.content = attributes.content || '';
-    }
-
-    this.hasUpdatedContent = true;
-  }
-
-  updateAttributes(options: any) {
-    if ('hasUploadingPhoto' in options) {
-      this.hasUploadingPhoto = options.hasUploadingPhoto;
-    }
-    if ('files' in options) {
-      this.files = options.files;
-    }
-
-    this.hasUpdatedContent = true;
-  }
+  // updateAttributes(options: any) {
+  //   if ('hasUploadingPhoto' in options) {
+  //     this.hasUploadingPhoto = options.hasUploadingPhoto;
+  //   }
+  //   if ('files' in options) {
+  //     this.files = options.files;
+  //   }
+  //
+  //   this.hasUpdatedContent = true;
+  // }
 
   commentAction(photos?: any) {
     let commentEvent: any;
@@ -168,21 +182,50 @@ export class CommentItemEditorComponent implements OnInit {
   }
 
   onOpenPhotoSelect() {
-    this.eventEmitter.emit(new OpenPhotoModalEvent(this));
+    // this.eventEmitter.emit(new OpenPhotoModalEvent(this));
 
+    this.mediaSelectionService.open();
+    this.mediaSelectionService.setMultipleSelection(false);
+
+    this.mediaSelectionService.selectedMedias$.pipe(
+      takeUntil(this.close$),
+      filter(items => items.length > 0)
+    ).subscribe((items) => {
+      // this.comment.photo = items[0];
+      this.setPhoto(items[0]);
+      this.hasUpdatedContent = true;
+    });
+
+    this.uploadSubscription = this.mediaSelectionService.uploadingMedias$.pipe(
+      takeUntil(this.close$),
+      map(([file, dataUrl]) => [file]),
+      mergeMap((files: any[]) => {
+        this.hasUploadingPhoto = true;
+        this.files = files;
+        return this.photoUploadService.uploadPhotos(files);
+      })
+    ).subscribe((res: any) => {
+      // this.comment.photo = res.data;
+      this.setPhoto(res.data);
+      this.hasUploadingPhoto = false;
+      this.hasUpdatedContent = true;
+    });
   }
 
   onEmojiClick(e: any) {
     let emoj: any = e.replace(/\\/gi, '');
-    this.comment.content += emoj;
+    this.editor.addEmoj(emoj);
+    // this.comment.content = this.commentDomValue + emoj;
     this.hasUpdatedContent = true;
   }
 
   cancel() {
-    this.comment.content = '';
-    this.comment.photo = null;
-    this.commentEditorForm.controls['content'].setValue('');
-    this.commentEditorForm.controls['photo'].setValue(null);
+    // this.comment.content = '';
+    // this.comment.photo = null;
+    // this.commentEditorForm.controls['content'].setValue('');
+    // this.commentEditorForm.controls['photo'].setValue(null);
+    this.setCommentContent('');
+    this.setPhoto(null);
     this.hasUpdatedContent = false;
     if (this.mode == CommentEditorMode.Add) {
       // add new comment/reply to post
@@ -196,28 +239,32 @@ export class CommentItemEditorComponent implements OnInit {
     }
   }
 
-  post(comment: any) {
+  post(comment?: any) {
     let event: any = null;
 
+    this.comment.content = comment || this.comment.content
     if (this.mode == CommentEditorMode.Add) {
       // add new comment/reply to post
       this.comment.parent = this.parent;
       this.comment.parentId = this.parent.uuid;
       this.comment.parentType = this.parentType;
 
+
       _.set(this.originComment, 'isCreatingNewReply', false);
-      event = new CommentCreateEvent(this.comment);
+      event = new CommentCreateEvent({...this.comment});
 
     } else if (this.mode == CommentEditorMode.Edit) {
 
       // update current comment/reply
-      this.comment.content = this.commentEditorForm.value.content;
+      // this.comment.content = this.commentEditorForm.value.content;
+      // this.commentContent.nativeElement.setInnerHTML(this.commentEditorForm.controls['content']);
       event = new CommentUpdateEvent(this.comment);
     }
     this.eventEmitter.emit(event);
     this.comment.content = '';
-    this.comment.photo = null;
-    this.commentEditorForm.controls['photo'].setValue(null);
+    this.setPhoto(null);
+    // this.comment.photo = null;
+    // this.commentEditorForm.controls['photo'].setValue(null);
     this.files = null;
     this.hasUpdatedContent = false;
   }
@@ -225,31 +272,58 @@ export class CommentItemEditorComponent implements OnInit {
   doEvents(response: any) {
     switch (response.action) {
       case 'remove':
-        this.comment.photo = null;
-        this.commentEditorForm.controls['photo'].setValue(null);
-        this.files = null;
-        if (this.comment.content != '')
-          this.hasUpdatedContent = true;
-        else
-          this.hasUpdatedContent = false;
-
-        break;
+        // this.setPhoto(null);
+        // this.files = null;
+        // this.hasUpdatedContent = (this.comment.content != '');
+        // break;
       case 'cancelUploadingPhoto':
+      case 'cancelUpload':
+        this.setPhoto(null);
+        if(this.uploadSubscription)
+          this.uploadSubscription.unsubscribe();
+        this.files = null;
+        this.hasUpdatedContent = (this.comment.content != '');
         break;
     }
   }
 
   checkValidForm(): boolean {
     // remove leading and trailing whitespaces: spaces, tabs, new lines from comment content before saving
-    return this.hasUpdatedContent && this.comment.content.replace(/^\s+|\s+$/g, '') !== '';
+    // return this.hasUpdatedContent && this.comment.content.replace(/^\s+|\s+$/g, '') !== '';
+    return !!this.comment.content || !!this.comment.photo;
   }
 
-  hasChanged() {
-    if (this.commentEditorForm.controls['content'].value == '' &&
-      this.commentEditorForm.controls['photo'].value == null) {
-      return false;
+  // hasChanged() {
+  //   console.debug('hasChanged checking ...');
+  //   if (this.comment.content === '' && !this.hasUpdatedContent && !this.comment.photo) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
+
+  setCommentContent(value: any) {
+    this.comment.content = value;
+  }
+
+  showEmojiBtn(event: any) {
+    this.emojiService.show(event);
+
+    this.emojiService.selectedEmoji$.pipe(
+      take(1)
+    ).subscribe(data => {
+      console.debug(data);
+      this.editor.addEmoj(data.shortname);
+      // this.comment.content = this.commentDomValue + emoj;
+      this.hasUpdatedContent = true;
+    });
+  }
+
+  private setPhoto(photo: any) {
+    this.comment.photo = photo;
+    this.commentEditorForm.controls['photo'].setValue(photo);
+
+    if(photo == null) {
+      this.cancelPhotoSubject.next('');
     }
-    return true;
   }
-
 }

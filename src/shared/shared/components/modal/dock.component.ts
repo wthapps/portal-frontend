@@ -13,8 +13,8 @@ export class ModalDockComponent {
   collapse: boolean = false;
   show: boolean = false;
 
-  open() {
-    this.cssClass = '';
+  open(cssClass:any = '') {
+    this.cssClass = cssClass
   }
 
   close() {

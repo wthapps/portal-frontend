@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { ZMediaTaggingService } from './tagging.service';
 import { TaggingElComponent } from './tagging-el.component';
 
@@ -12,7 +12,7 @@ declare var _: any;
   templateUrl: 'tagging-modal.component.html'
 })
 export class TaggingModalComponent {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('tag') tag: TaggingElComponent;
   @Input() selectedItems: any = [];
   @Input() mediaType: string = 'photo';
@@ -36,12 +36,14 @@ export class TaggingModalComponent {
   }
 
   update(res: any) {
-    if (res.data && this.selectedObjects && this.selectedObjects.length > 0 && this.updateListObjects && this.updateListObjects.length > 0) {
-      if (this.selectedObjects.length == 1) {
+    // if (res.data && this.selectedObjects && this.selectedObjects.length > 0 && this.updateListObjects && this.updateListObjects.length > 0) {
+    if (res.data && this.selectedObjects && this.selectedObjects.length > 0) {
+      if (this.selectedObjects.length === 1) {
         res.data = [res.data];
       }
       for (let i = 0; i < this.selectedObjects.length; i++) {
         if (res.data[i]) {
+          this.selectedObjects[i].json_tags = res.data[i].json_tags;
           if (this.updateListObjects) {
             for(let j = 0; j < this.updateListObjects.length; j++) {
               for(let k = 0; k < this.updateListObjects[j].length; k++) {

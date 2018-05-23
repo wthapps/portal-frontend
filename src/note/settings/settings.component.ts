@@ -5,10 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: 'settings.component.html'
 })
 export class ZNoteSettingsComponent implements OnInit {
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 }

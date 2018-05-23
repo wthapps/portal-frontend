@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/components/modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ApiBaseService } from '../../../../shared/services/apibase.service';
 import { CountryService } from '../../../../shared/shared/components/countries/countries.service';
@@ -7,13 +7,13 @@ import { CountryService } from '../../../../shared/shared/components/countries/c
 declare var _: any;
 
 @Component({
-  moduleId: module.id,
+
   selector: 'z-contact-shared-setting',
   templateUrl: 'settings.component.html'
 })
 
 export class ZContactSharedSettingsComponent implements OnInit {
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('modal') modal: BsModalComponent;
   item: any;
   form: FormGroup;
 

@@ -19,7 +19,13 @@ import { ZChatMyProfileModule } from './my-profile/my-profile.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '@wth/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ModalModule } from '@wth/shared/modals/modals.module';
+import { StoreModule } from '@ngrx/store';
+import { ChatStore } from '@chat/shared/chat-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '@env/environment';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
 
 @NgModule({
   imports: [
@@ -39,16 +45,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ZChatSearchModule,
     ZChatPhotoModule,
     ZChatMyProfileModule,
+    ChatNoteListModule,
 
+    ModalModule,
     ZChatSharedModule.forRoot(),
-    SharedModule.forRoot()
+    SharedServicesModule.forRoot(),
+    StoreModule.forRoot(ChatStore),
+    SharedModule.forRoot(),
+
+    !environment.production
+      ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+      : []
   ],
   declarations: [AppComponent],
-  providers: [{
-    provide: APP_BASE_HREF,
-    useValue: '/'
-  }],
+  providers: [
+    {
+      provide: APP_BASE_HREF,
+      useValue: '/'
+    }
+  ],
   bootstrap: [AppComponent]
-
 })
-export class AppModule { }
+export class AppModule {}

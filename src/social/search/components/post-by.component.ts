@@ -1,17 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiBaseService, UrlService, UserService } from '@wth/shared/services';
 
-
-declare var _: any;
-
 @Component({
-  moduleId: module.id,
   selector: 'z-social-post-by',
   templateUrl: 'post-by.component.html'
 })
-
 export class ZSocialPostByFilterComponent implements OnInit {
+  @Output() filterEvent: EventEmitter<any> = new EventEmitter();
+
   searchPostedBy: string = '';
   url:any;
   disableCustom:boolean = true;
@@ -40,22 +37,7 @@ export class ZSocialPostByFilterComponent implements OnInit {
   }
 
   filter(filter:any) {
-    let filterDate = '';
-    if (this.urlService.getQuery()['filter_date']) {
-      filterDate = decodeURIComponent(this.urlService.getQuery()['filter_date']);
-    }
-    let q = this.urlService.getQuery()['q'];
-    let body:any = {};
-    if (q) {
-      body.q = q;
-    }
-    if (filterDate) {
-      body.filter_date = filterDate;
-    }
-    if (filter) {
-      body.filter_post = filter;
-    }
-    this.router.navigate([this.urlService.getPatch()], {queryParams: body});
+    this.filterEvent.emit({filter_post: filter});
   }
 
   getSuggestions(e:any) {

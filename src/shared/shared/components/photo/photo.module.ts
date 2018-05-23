@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalModule } from 'ng2-bs3-modal';
 import { TagInputModule } from 'ngx-chips';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
@@ -17,24 +17,23 @@ import { ZMediaToolbarComponent } from './toolbar/toolbar.component';
 import { ZMediaToolbarPhotoComponent } from './toolbar/photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './toolbar/album/album.component';
 import { ZMediaToolbarAlbumDetailComponent } from './toolbar/album/album-detail.component';
-import { BaseObjectEditNameModalComponent } from './modal/base-object-edit-name-modal.component';
-import { PhotoEditModalComponent } from './modal/photo-edit-modal.component';
-import { AddToAlbumModalComponent } from './modal/add-to-album-modal.component';
-import { AlbumEditModalComponent } from './modal/album-edit-modal.component';
-import { AlbumDeleteModalComponent } from './modal/album-delete-modal.component';
-import { AlbumCreateModalComponent } from './modal/album-create-modal.component';
 import { ZMediaShareListComponent } from './list/list.component';
 import { MediaListHeaderComponent } from './list/media-list-header.component';
 import { ZMediaShareItemComponent } from './list/item/item.component';
 
 import { PhotoService } from '../../../services/photo.service';
 
-import { PartialsPhotoSharingModule } from './modal/sharing/sharing.module';
 import { SliderModule } from 'primeng/components/slider/slider';
 import { PhotoItemPreviewComponent } from './photo-item-preview.component';
-import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
 import { BasePhotoDetailComponent } from './detail/base-photo-detail.component';
 import { BoxLoadingModule } from '../box-loading/box-loading.module';
+import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
+
+import { PartialsPhotoSharingModule } from './modal/sharing/sharing.module';
+import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
+import { MediaRenameModalComponent } from './modal/media/media-rename-modal.component';
+import { PhotoEditModalComponent } from './modal/photo/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.component';
 
 
 @NgModule({
@@ -45,7 +44,7 @@ import { BoxLoadingModule } from '../box-loading/box-loading.module';
     ReactiveFormsModule,
     // BrowserAnimationsModule,
 
-    Ng2Bs3ModalModule,
+    BsModalModule,
     TagInputModule,
     CalendarModule,
     CheckboxModule,
@@ -54,20 +53,21 @@ import { BoxLoadingModule } from '../box-loading/box-loading.module';
     PipeModule,
     BoxLoadingModule,
     PartialsPhotoSharingModule,
-    PartialsPhotoTaggingModule
+    PartialsPhotoTaggingModule,
+    ImageCropperModule,
+    PartialsPhotoTaggingModule,
+    PartialsPhotoSharingModule
   ],
   declarations: [
+    MediaRenameModalComponent,
+    PhotoEditModalComponent,
+    AddToAlbumModalComponent,
+
     PhotoDetailPartialComponent,
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
     ZMediaToolbarAlbumDetailComponent,
-    BaseObjectEditNameModalComponent,
-    PhotoEditModalComponent,
-    AddToAlbumModalComponent,
-    AlbumEditModalComponent,
-    AlbumDeleteModalComponent,
-    AlbumCreateModalComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
     ZMediaShareItemComponent,
@@ -75,6 +75,12 @@ import { BoxLoadingModule } from '../box-loading/box-loading.module';
     BasePhotoDetailComponent
   ],
   exports: [
+    MediaRenameModalComponent,
+    PhotoEditModalComponent,
+    AddToAlbumModalComponent,
+    PartialsPhotoTaggingModule,
+    PartialsPhotoSharingModule,
+
     BoxLoadingModule,
     PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule,
@@ -84,12 +90,6 @@ import { BoxLoadingModule } from '../box-loading/box-loading.module';
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
     ZMediaToolbarAlbumDetailComponent,
-    BaseObjectEditNameModalComponent,
-    PhotoEditModalComponent,
-    AddToAlbumModalComponent,
-    AlbumEditModalComponent,
-    AlbumDeleteModalComponent,
-    AlbumCreateModalComponent,
     ZMediaShareListComponent,
     MediaListHeaderComponent,
     ZMediaShareItemComponent,

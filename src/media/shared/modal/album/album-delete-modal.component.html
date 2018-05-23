@@ -1,0 +1,16 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Confirmation</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p>Are you sure to delete {{ selectedAlbums.length }} album<span *ngIf="selectedAlbums.length > 1">s</span> ?</p>
+    <div>
+      <p-checkbox [(ngModel)]="checked" binary="true" label="Permanently delete all of photos in this album."></p-checkbox>
+    </div>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
+            (click)="modal.close()">Cancel</button>
+    <button type="button" (click)="onDelete()" class="btn btn-outline-primary btn-min">Delete</button>
+  </bs-modal-footer>
+</bs-modal>

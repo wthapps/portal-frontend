@@ -6,11 +6,10 @@ import { Page500Component } from './page500.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {path: '404', component: Page404Component},
-      {path: '500', component: Page500Component}
+      { path: '404', component: Page404Component },
+      { path: '500', component: Page500Component }
     ])
   ],
   exports: [RouterModule]
 })
-export class PageErrorsRoutingModule {
-}
+export class PageErrorsRoutingModule {}

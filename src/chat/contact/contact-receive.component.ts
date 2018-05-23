@@ -5,7 +5,6 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { ApiBaseService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 
-
 @Component({
   moduleId: module.id,
   selector: 'z-chat-contact-receive',
@@ -21,16 +20,20 @@ export class ZChatContactReceiveComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private wthConfirmService: WthConfirmService,
-    private apiBaseService: ApiBaseService) {
-  }
+    private apiBaseService: ApiBaseService
+  ) {}
 
   ngOnInit() {
-    this.chatService.apiBaseService.post('zone/chat/contact/get_share_contacts').subscribe((res: any) => {
-      this.users = res.data;
-    });
-    this.apiBaseService.post('zone/chat/contact/contact_tab_count').subscribe((res: any) => {
-      this.count = res.data;
-    });
+    this.chatService.apiBaseService
+      .post('zone/chat/contact/get_share_contacts')
+      .subscribe((res: any) => {
+        this.users = res.data;
+      });
+    this.apiBaseService
+      .post('zone/chat/contact/contact_tab_count')
+      .subscribe((res: any) => {
+        this.count = res.data;
+      });
   }
 
   onAddToContact(contact: any) {

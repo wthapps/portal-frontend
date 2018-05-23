@@ -21,7 +21,6 @@ declare let _: any;
 
 export class TakeATourComponent implements OnInit {
   @ViewChild('basicInfo') basicInfo: PartialsBasicInfoComponent;
-  soUserProfile: Observable<any>;
 
   isLoading: boolean = false;
 
@@ -37,7 +36,6 @@ export class TakeATourComponent implements OnInit {
               private invitationService: InvitationService,
               private router: Router,
               private fb: FormBuilder) {
-    this.soUserProfile = this.userService.soProfile$;
   }
 
   ngOnInit() {
@@ -99,7 +97,7 @@ export class TakeATourComponent implements OnInit {
     this.loadingContent = 'Your friends will receive your invitation shortly';
 
     this.apiBaseService
-      .put(`zone/social_network/users/${this.userService.profile.uuid}`, this.basicInfo.form.value)
+      .put(`zone/social_network/users/${this.userService.getSyncProfile().uuid}`, this.basicInfo.form.value)
       .subscribe(
         (res: any) => {
           console.log(res);

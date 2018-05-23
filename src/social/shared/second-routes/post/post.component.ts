@@ -10,14 +10,7 @@ import {
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/merge';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import { CommentEditorMode, CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
@@ -36,13 +29,9 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { Constants } from '@shared/constant';
 import { BaseEvent } from '@shared/shared/event/base-event';
 import { PostActivitiesComponent } from './post-activities.component';
-
-
-declare var $: any;
-declare var _: any;
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 
 @Component({
-  moduleId: module.id,
   selector: 'so-post',
   templateUrl: 'post.component.html'
 })
@@ -50,11 +39,10 @@ declare var _: any;
 export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChanges, OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
-
+  @Input() user: any;
   @Input() item: SoPost = new SoPost();
   @Input() type: string = '';
   @Input() showComments: boolean = true;
-  @Output() onEdited: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDeleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
 
@@ -62,11 +50,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   @Output() photoModalOpened: EventEmitter<any> = new EventEmitter<any>();
 
   commentEditor: CommentItemEditorComponent;
-  commentBoxType = CommentEditorMode;
 
   itemDisplay: any;
-  typeLikeDislike: any;
-  dataLikeDislike: any;
   modal: any;
 
   private destroySubject: Subject<any> = new Subject<any>();
@@ -76,6 +61,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
               private photoService: PhotoService,
               private loading: LoadingService,
               private photoSelectDataService: PhotoModalDataService,
+              private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private toast: ToastsService,
@@ -83,8 +69,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     super();
 
     this.photoService.modifiedPhotos$
-      .filter((object: any) => _.get(object, 'payload.post_uuid', -99) == this.item.uuid || _.get(object, 'payload.post_uuid', -99) == _.get(this.item, 'parentItem.uuid'))
-      .takeUntil(this.destroySubject.asObservable())
+      .pipe(
+        filter((object: any) => _.get(object, 'payload.post_uuid', -99) == this.item.uuid || _.get(object, 'payload.post_uuid', -99) == _.get(this.item, 'parentItem.uuid')),
+        takeUntil(this.destroySubject.asObservable())
+      )
       .subscribe((object: any) => {
         console.debug('modifiedPhotos - post: ', object);
         let post: SoPost = _.get(object, 'payload.post');
@@ -113,7 +101,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   ngOnInit() {
-    this.photoSelectDataService.init({multipleSelect: false});
+    // this.photoSelectDataService.init({multipleSelect: false});
+    this.mediaSelectionService.setMultipleSelection(false);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -228,13 +217,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   delete() {
-    // this.wthConfirmService.updateConfirmDialog({
-    //   label: {
-    //     accept: 'Delete',
-    //     reject: 'Cancel',
-    //   }
-    // });
-
     this.wthConfirmService.confirm({
       acceptLabel: 'Delete',
       rejectLabel: 'Cancel',
@@ -255,13 +237,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           );
       }
     });
-  }
-
-  editedPost(newPost: any) {
-    this.itemDisplay.description = newPost.description;
-    this.itemDisplay.tags = newPost.tags_json;
-    this.itemDisplay.photos = newPost.photos;
-    this.onUpdated.emit(newPost);
   }
 
   onActions(event: BaseEvent) {
@@ -367,26 +342,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     console.log('Synced comments', this.item);
   }
 
-  mapPost(post: any) {
-    return new SoPost().from(post);
-  }
-
-  mapComment(comment: any) {
-    return new SoComment().from(comment);
-  }
-
   openPhotoModal(data: any) {
-    this.photoSelectDataService.open(data);
-
-    this.subscribePhotoEvents();
-  }
-
-
-  onSelectPhotoComment(photos: any) {
-    if (this.commentEditor) {
-      this.commentEditor.commentAction(photos);
-    }
-    // this.photoModal.close();
+    // this.photoSelectDataService.open(data);
+    //
+    // this.subscribePhotoEvents();
   }
 
   openShare() {
@@ -489,35 +448,5 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         });
       }
     });
-  }
-
-
-  private subscribePhotoEvents() {
-    // Subscribe actions corresponding with photo modal actions
-    let closeObs$ = this.photoSelectDataService.dismissObs$.merge(this.photoSelectDataService.openObs$, this.photoSelectDataService.closeObs$, this.destroySubject.asObservable());
-
-    this.photoSelectDataService.nextObs$.takeUntil(closeObs$).subscribe(
-        (photos: any) => {
-          this.commentEditor.setCommentAttributes({photo: photos[0]});
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
-
-    this.photoSelectDataService.uploadObs$.takeUntil(closeObs$)
-      .mergeMap((files: any) => {
-        this.commentEditor.updateAttributes({hasUploadingPhoto: true, files: files});
-        return this.photoUploadService.uploadPhotos(files);
-      }).subscribe(
-        (response: any) => {
-          console.log('response data: ', response.data);
-          this.commentEditor.setCommentAttributes({photo: response.data});
-          this.commentEditor.updateAttributes({hasUploadingPhoto: false});
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
   }
 }
