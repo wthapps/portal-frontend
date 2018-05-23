@@ -140,7 +140,7 @@
           <div *ngIf="message.file_type == 'Note::Note'" class="note-display p15 can-click">
             <a [href]="noteUrl + '/notes/public/' + message.file.uuid" target="_blank">
               <h5>
-                <i class="fa fa-file"></i> {{message.file?.name}}</h5>
+                <i class="fa fa-file"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}</h5>
               <div [innerHTML]="message.file?.content"></div>
             </a>
           </div>

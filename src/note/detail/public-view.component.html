@@ -1,6 +1,6 @@
 <form action="" class="note-editor-wrap">
   <div class="note-editor-header">
-    <h4>{{note?.name | 'Untitled'}}</h4>
+    <h4>{{note?.name ? note?.name : 'Untitled'}}</h4>
   </div>
   <div class="note-editor-nav">
     <nav class="nav-tabs-wrap nav-tabs-wrap-sm">
