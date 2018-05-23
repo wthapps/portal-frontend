@@ -14,7 +14,7 @@ import {
 } from '../shared/store/media/media.actions';
 import { MediaActionHandler } from '@media/shared/media';
 import { ApiBaseService } from '@shared/services';
-import { ConfirmationService } from 'primeng/primeng';
+import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 
 @Component({
   moduleId: module.id,
@@ -35,7 +35,7 @@ export class ZMediaSharedWithMeComponent extends MediaActionHandler implements O
     private mediaUploaderDataService: MediaUploaderDataService,
     private router: Router,
     private apiBaseService: ApiBaseService,
-    private confirmService: ConfirmationService
+    private confirmService: WthConfirmService
   ) {
     super(resolver, store);
 
