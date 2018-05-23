@@ -3,13 +3,13 @@
   <img src="/assets/images_new/logo-chat.png" alt="">
 </div>
 <div class="menuleft-item">
-  <a href="javascript:;" (click)="onAddContact()">
+  <a href="javascript:;" (click)="onAddContact(); onCloseMenu()">
     <i class="fa fa-plus"></i> Message
   </a>
 </div>
 
 <div *ngFor="let chat of chatMenu" class="menuleft-item" [routerLinkActive]="['active']">
-  <a [routerLink]="[chat.link]" href="#">
+  <a [routerLink]="[chat.link]" href="#" (click)="onCloseMenu()">
     <i class="{{ chat.icon }}"></i> {{ chat.name }}
   </a>
 </div>
@@ -19,7 +19,7 @@
     Favourites
   </h4>
   <div *ngFor="let contact of favouriteContacts.value" class="menuleft-item" [routerLinkActive]="['active']">
-    <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)"
+    <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact); onCloseMenu()"
        href="javascript:;">
       <z-chat-share-user class="media-chat-user-item" [data]="contact"></z-chat-share-user>
       <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
@@ -32,7 +32,7 @@
     Recent
   </h4>
   <div *ngFor="let contact of recentContacts.value" class="menuleft-item" [routerLinkActive]="['active']">
-    <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact)"
+    <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact); onCloseMenu()"
        href="javascript:;">
       <z-chat-share-user class="media-chat-user-item" [data]="contact"></z-chat-share-user>
       <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
@@ -41,7 +41,7 @@
 </ng-container>
 
 <div class="menuleft-item">
-  <a [routerLink]="['/history']" href="#">
+  <a [routerLink]="['/history']" href="#" (click)="onCloseMenu()">
     <i class="fa fa-clock-o"></i> History
   </a>
 </div>

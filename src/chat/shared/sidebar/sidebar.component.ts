@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { ZChatToolbarComponent } from '../toolbar/toolbar.component';
@@ -31,7 +31,8 @@ export class ZChatSidebarComponent implements OnInit {
     private store: Store<any>,
     private handlerService: HandlerService,
     private urlService: UrlService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit() {
@@ -98,5 +99,9 @@ export class ZChatSidebarComponent implements OnInit {
 
   historyToggle() {
     this.historyShow = !this.historyShow;
+  }
+
+  onCloseMenu() {
+    this.renderer.removeClass(document.body, 'left-sidebar-open');
   }
 }
