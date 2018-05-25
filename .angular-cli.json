@@ -210,7 +210,8 @@
           "output": "./assets/",
           "allowOutsideOutDir": true
         },
-        "manifest.json"
+        "manifest.json",
+        "sw.js"
       ],
       "index": "index.html",
       "main": "main.ts",

@@ -82,6 +82,12 @@ export class ZContactService extends BaseEntityService<any> {
     this.loadUserSetttings();
   }
 
+  // Change get all URL to support caching by SW
+  getAll(options?: any, url?: any): Observable<any> {
+    const path = url || `${this.url}/all`;
+    return this.apiBaseService.post(path, options);
+  }
+
   loadUserSetttings() {
     this.apiBaseService
       .get(`contact/contacts/settings`)
@@ -93,6 +99,30 @@ export class ZContactService extends BaseEntityService<any> {
 
   resetPageNumber() {
     this.page = 1;
+  }
+
+  getLocalContact(id): Promise<any> {
+    const ct = this.contacts.find(ct => ct['id'] == id.toString() );
+    return Promise.resolve(ct);
+  }
+
+  getIdLocalThenNetwork(id): Observable<any> {
+    return Observable.create((obs) => {
+      this.getLocalContact(id).then(res => {
+        if(res)
+          obs.next(res)
+        return this.get(id).toPromise();
+      })
+      .then((response: any) => {
+        if(response.data)
+          obs.next(response.data);
+        obs.complete();
+      })
+      .catch(err => {
+        obs.error(err);
+        obs.complete();
+      });
+    });
   }
 
   onLoadMore(orderDesc?: boolean) {

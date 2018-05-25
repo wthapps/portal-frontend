@@ -42,7 +42,7 @@ import { ContactSearchModule } from '@contacts/search/search.module';
     WthCommonModule,
     SharedServicesModule.forRoot(),
     CoreModule.forRoot(),
-    ServiceWorkerModule.register('/ngsw-worker.js', {
+    ServiceWorkerModule.register('/combined-worker.js', {
       enabled: environment.production
     })
   ],

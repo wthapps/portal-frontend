@@ -101,9 +101,10 @@ export class ZContactEditPageComponent implements OnInit {
     this.pageTitle = 'Edit contact';
   }
 
+
+
   private get(id: number) {
-    this.contactService.get(id).subscribe((response: any) => {
-      this.contact = response.data;
-    });
+    this.contactService.getIdLocalThenNetwork(id)
+      .subscribe(ct => this.contact = Object.assign({}, ct));
   }
 }

@@ -23,6 +23,12 @@ export class GroupService extends BaseEntityService<Group> {
     this.groups$ = this.groupsSubject.asObservable();
   }
 
+  // Change get all URL to support caching by SW
+  getAll(options?: any, url?: any): Observable<any> {
+    const path = url || `${this.url}/all`;
+    return this.apiBaseService.post(path, options);
+  }
+
   getAllGroups(): Promise<Group[]> {
     console.debug('getAllGroups: ', this.groupsSubject.getValue());
     if (_.isEmpty(this.groupsSubject.getValue())) {

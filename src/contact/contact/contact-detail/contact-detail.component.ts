@@ -92,9 +92,8 @@ export class ZContactDetailComponent implements OnInit {
   }
 
 
-  private getContact(id: number) {
-    this.contactService.get(id).toPromise().then((response: any) => {
-      this.data = response.data;
-    });
+  private async getContact(id: number) {
+    this.contactService.getIdLocalThenNetwork(id)
+      .subscribe(ct => this.data = Object.assign({}, ct));
   }
 }
