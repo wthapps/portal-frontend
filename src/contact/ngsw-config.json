@@ -27,8 +27,6 @@
   "dataGroups": [{
     "name": "api-freshness",
     "urls": [
-      "/contact/contacts/all",
-      "/contact/groups/all",
       "/zone/social_network/notifications/get_new_notifications/count",
       "/zone/chat/notification/count"
     ],
@@ -42,6 +40,8 @@
     {
       "name": "api-performance",
       "urls": [
+        "/contact/contacts/all",
+        "/contact/groups/all",
         "/settings"
       ],
       "cacheConfig": {
