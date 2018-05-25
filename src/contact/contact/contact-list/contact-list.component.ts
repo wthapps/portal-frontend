@@ -28,7 +28,8 @@ import { Constants } from '../../../shared/constant/config/constants';
 import {
   CommonEvent,
   CommonEventAction,
-  CommonEventService
+  CommonEventService,
+  ApiBaseService
 } from '@wth/shared/services';
 import { routeAnimation } from '@wth/shared/shared/animations/route.animation';
 import { takeUntil } from 'rxjs/operators';
@@ -72,6 +73,7 @@ export class ZContactListComponent
     private loadingService: LoadingService,
     private commonEventService: CommonEventService,
     private invitationService: InvitationService,
+    private apiBaseService: ApiBaseService,
     private toaster: ToastsService
   ) {
     this.commonEventService

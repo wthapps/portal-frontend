@@ -9,6 +9,7 @@ import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
 import { Observable } from 'rxjs/Observable';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
+import { CommonEventService } from '@shared/services';
 
 declare let _: any;
 
@@ -34,6 +35,7 @@ export class ZContactUserDetailComponent implements OnInit {
               private apiBaseService: ApiBaseService,
               private groupService: GroupService,
               private router: Router,
+              private commonEventService: CommonEventService,
               private countryService: CountryService) {
     this.countriesCode$ = this.countryService.countriesCode$;
   }
@@ -92,6 +94,7 @@ export class ZContactUserDetailComponent implements OnInit {
 
   save() {
     this.apiBaseService.post(`contact/contacts/save`, this.data).subscribe(res => {
+      this.contactService.createCallback(res.data);
       this.router.navigate(['contacts/detail', res.data.id]);
     })
   }
