@@ -1,5 +1,5 @@
 <z-contact-shared-toolbar>
-  <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
+  <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action" *ngIf="contactService.selectedObjects && contactService.selectedObjects.length > 0">
 
     <z-contact-shared-actions-bar [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
       [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
