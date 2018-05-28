@@ -3,11 +3,8 @@
   <!--Left actions-->
   <!--default left actions-->
   <ng-template #leftActions>
-    <ul class="page-body-control-menu">
+    <!-- <ul class="page-body-control-menu">
       <li>
-        <!-- <button class="btn btn-outline-primary" (click)="doAction({action: 'openUploadModal'})">
-          <i class="fa fa-cloud-upload"></i> Upload Photo
-        </button> -->
         <w-upload [mode]="'multiple'" (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
           <span class="btn btn-outline-primary">
             <i class="fa fa-cloud-upload"></i> Upload Photo
@@ -19,7 +16,39 @@
           <i class="fa fa-plus-circle"></i> Create Album
         </button>
       </li>
-    </ul>
+    </ul> -->
+    <div class="dropdown">
+      <button aria-expanded="true" aria-haspopup="true" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" tooltipposition="bottom"
+        type="button">
+        <i class="fa fa-plus"> New</i>
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a style="padding: 0px">
+            <w-upload style="display: block; padding: 10px 15px" [mode]="'multiple'" [accept]="'image/*'" (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
+              <i class="fa fa-image"></i> Upload Photo
+            </w-upload>
+          </a>
+        </li>
+        <li>
+          <a style="padding: 0px">
+            <w-upload style="display: block; padding: 10px 15px" [mode]="'multiple'" [accept]="'video/*'" (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
+              <i class="fa fa-video-camera"></i> Upload Video
+            </w-upload>
+          </a>
+        </li>
+        <li>
+          <a (click)="doAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
+            <i class="fa fa-plus-circle"></i> Create Album
+          </a>
+          <!-- <a (click)="doAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})" disabled="disabled">
+            <i class="fa fa-plus-circle"></i> Create Playlist
+          </a> -->
+        </li>
+      </ul>
+    </div>
+
+
   </ng-template>
 
   <div class="page-body-control-nav">

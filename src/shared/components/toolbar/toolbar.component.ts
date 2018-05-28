@@ -70,6 +70,7 @@ export class WToolbarComponent {
       if (f.type.includes('video')) {
         this.apiBaseService.post(`media/videos`, f).subscribe(res => {
           this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+          this.event.emit({action: 'uploaded', payload: [...files]});
         });
       } else {
         this.apiBaseService.post(`media/photos`, f).subscribe(res => {
@@ -77,7 +78,6 @@ export class WToolbarComponent {
         });
       }
     });
-    this.event.emit({action: 'uploaded', payload: [...files]});
   }
 
   errorHandler(error: any) {

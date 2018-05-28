@@ -44,7 +44,7 @@ export class ZMediaVideoListComponent implements OnInit{
 
   doEvent(e: any) {
     switch(e.action) {
-      case 'updated':
+      case 'uploaded':
         this.load();
       break;
       case 'viewDetails':

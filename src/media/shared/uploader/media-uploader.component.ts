@@ -77,16 +77,15 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
       if (e.action == 'init') {
         this.step = this.uploadSteps.init;
         this.modalDock.open();
-
         this.uploaded_num = 0;
         this.stopped_num = 0;
         this.files_num = e.payload.length;
         this.photos.length = 0;
-
         // Convert fileList to array
         this.pending_files = e.payload;
-
-        this.current_photo = e.payload[0].result;
+        // Prevent maximum stack call
+        // this.current_photo = e.payload[0].result;
+        this.current_photo = "";
       };
       if (e.action == 'uploaded') {
         this.uploaded_num++;
