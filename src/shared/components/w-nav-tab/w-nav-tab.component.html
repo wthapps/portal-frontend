@@ -1,21 +1,26 @@
-
-
 <nav *ngIf="tabs" class="nav-tabs-wrap">
   <div *ngIf="tabs.length > 3" class="btn-group visible-xs-inline-block">
     <button *ngIf="tabActive" type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
-      <i *ngIf="tabActive?.icon" [class]="tabActive?.icon"></i> {{ tabActive?.name }} <span class="caret"></span>
+      <i *ngIf="tabActive?.icon" [class]="tabActive?.icon"></i> {{ tabActive?.name }}
+      <small *ngIf="tabActive.number">{{ tabActive.number }}</small>
+      <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
       <li *ngFor="let tab of tabs">
-        <a (click)="onTab(tab)" href="javascript:;"><i *ngIf="tab.icon" [class]="tab.icon"></i> {{ tab.name }}</a>
+        <a (click)="onTab(tab)" href="javascript:;">
+          <i *ngIf="tab.icon" [class]="tab.icon"></i> {{ tab.name }} <small *ngIf="tab.number">{{ tab.number }}</small>
+        </a>
       </li>
     </ul>
   </div>
 
   <ul [ngClass]="{'hidden-xs': tabs.length > 3, 'nav-tabs-between-xs' : tabs.length <= 3}" class="nav nav-tabs">
     <li *ngFor="let tab of tabs" [ngClass]="{active: tab == tabActive}">
-      <a (click)="onTab(tab)" href="javascript:;"><i *ngIf="tab.icon" [class]="tab.icon"></i> {{ tab.name }}</a>
+      <a (click)="onTab(tab)" href="javascript:;">
+        <i *ngIf="tab.icon" [class]="tab.icon"></i> {{ tab.name }}
+        <span *ngIf="tab.number" class="badge">{{ tab.number }}</span>
+      </a>
     </li>
   </ul>
 </nav>

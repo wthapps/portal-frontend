@@ -77,6 +77,15 @@
         margin-left: $main-page-left;
       }
     }
+    @media (min-width: $screen-sm-min) {
+      .nav-tabs-wrap {
+        margin: -15px;
+        padding: 0;
+        .nav-tabs > li > a {
+          padding: 15px;
+        }
+      }
+    }
 
     a {
       -moz-user-select: -moz-none;

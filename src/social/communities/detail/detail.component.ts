@@ -59,30 +59,35 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       name: 'Post',
       link: 'post',
       icon: null,
+      number: null,
       type: 'tab'
     },
     {
       name: 'About',
       link: 'about',
       icon: null,
+      number: null,
       type: 'tab'
     },
     {
       name: 'Members',
       link: 'members',
       icon: null,
+      number: null,
       type: 'tab'
     },
     {
       name: 'Invitations',
       link: 'invitations',
       icon: null,
+      number: null,
       type: 'tab'
     },
     {
       name: 'Join Requests',
       link: 'join_requests',
       icon: null,
+      number: null,
       type: 'tab'
     }
   ];

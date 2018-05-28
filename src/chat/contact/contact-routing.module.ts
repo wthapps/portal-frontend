@@ -20,6 +20,10 @@ import { ZChatContactReceiveComponent } from './contact-receive.component';
             component: ZChatContactComponent
           },
           {
+            path: 'all',
+            component: ZChatContactComponent
+          },
+          {
             path: 'online',
             component: ZChatContactOnlineComponent
           },

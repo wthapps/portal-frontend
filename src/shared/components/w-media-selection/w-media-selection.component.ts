@@ -26,30 +26,35 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       name: 'Upload',
       link: 'upload',
       icon: 'fa fa-cloud-upload',
+      number: null,
       type: 'tab'
     },
     {
       name: 'Photos',
       link: 'photos',
       icon: 'fa fa-photo',
+      number: null,
       type: 'tab'
     },
     {
       name: 'Albums',
       link: 'albums',
       icon: 'fa fa-file-photo-o',
+      number: null,
       type: 'tab'
     },
     {
       name: 'Favourites',
       link: 'favourites',
       icon: 'fa fa-star',
+      number: null,
       type: 'tab'
     },
     {
       name: 'Shared with me',
       link: 'shared_with_me',
       icon: 'fw fw-shared-with-me',
+      number: null,
       type: 'tab'
     }
   ];
