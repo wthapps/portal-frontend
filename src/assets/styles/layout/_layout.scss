@@ -119,9 +119,12 @@
     }
   }
   .page-body-content-in {
-    padding: 30px;
+    padding: 15px;
     //height: calc(100vh - 114px);
     background: inherit;
+    @media (min-width: $screen-sm-min) {
+      padding: 30px;
+    }
   }
 }
 
