@@ -47,7 +47,7 @@ export class ZContactService extends BaseEntityService<any> {
     false
   );
   private orderDescSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(
-    false
+    true
   );
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();

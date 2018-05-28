@@ -20,7 +20,7 @@ export function registerSw() {
   if (navigator.serviceWorker) {
     console.log('should register SW');
     navigator.serviceWorker
-      .register("/combined-worker.js")
+      .register("/ngsw-worker.js")
       .then(function(registration) {
         console.info(
           "ServiceWorker registration successful with scope:",
