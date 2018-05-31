@@ -1,9 +1,9 @@
 import { EnvConfig } from './env-config.interface';
 
 export const environment = {
-  production: true,
+  production: false,
   keys: {
-    recaptcha_site_key: '6LdCdU0UAAAAADLbZ8Vf6UoQ-TeyzZjhOEiwcXxJ'
+    recaptcha_site_key: '6LcFfVwUAAAAABWvRIJ5tIKD5vKOMnwFzdEJhdje'
   }
 };
 
