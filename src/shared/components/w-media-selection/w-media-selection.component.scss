@@ -55,6 +55,7 @@
     @include justify-content(space-around);
     .wobject-view {
       @include flex(1);
+      width: 100%;
     }
   }
 

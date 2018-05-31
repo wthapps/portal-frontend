@@ -159,6 +159,9 @@ $message-item-content-card-right-xs: 25px;
   .message-item-content-photo {
     img {
       max-width: 300px;
+      @media ($screen-xs-max) {
+        max-width: 200px;
+      }
     }
   }
 
@@ -185,6 +188,7 @@ $message-item-content-card-right-xs: 25px;
 
   &.message-item-left {
     .message-item-content-main {
+      overflow: hidden;
       &:before {
         @include make-arrow(left, #eff1f2, 6px, 6px);
         left: -6px;
