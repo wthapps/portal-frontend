@@ -9,6 +9,7 @@
 .message-list-body {
   @include flexbox;
   @include flex(1);
+  @include flex-direction(column);
 }
 
 @media (max-width: $screen-xs-max) {

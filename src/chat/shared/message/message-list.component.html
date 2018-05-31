@@ -9,12 +9,19 @@
        (scrolled)="scrollDown()"
        (scrolledUp)="onLoadMore()">
     <ng-container *ngIf="(item && item.value); else loadingBlock">
-      <div class="message-item-wrapper">
-        <div class="message-item-dv" *ngFor="let message of item.value.data; trackBy: message?.id">
-          <message-item [message]="message" [prevMessage]="getPrevMessage(message)"
-                        (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
+      <ng-container *ngIf="item.value.data.length>0;else templateNodata">
+        <div class="message-item-wrapper">
+          <div class="message-item-dv" *ngFor="let message of item.value.data; trackBy: message?.id">
+            <message-item [message]="message" [prevMessage]="getPrevMessage(message)"
+                          (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
+          </div>
         </div>
-      </div>
+      </ng-container>
+      <ng-template #templateNodata>
+        <box-no-data [title]="'Welcome to a new conversation'"
+                     [subTitle]="'Let start sharing your messages'"></box-no-data>
+      </ng-template>
+
     </ng-container>
     <ng-template class="message-item-wrapper" #loadingBlock>
       <box-loading class="message-item-dv"></box-loading>
