@@ -34,9 +34,8 @@ declare var _: any;
 export class ZMediaVideoListComponent implements OnInit{
   videos: any;
   selectedObject: any;
-  @ViewChild('modal') modal: BsModalComponent;
 
-  constructor(private apiBaseService: ApiBaseService) {}
+  constructor(private apiBaseService: ApiBaseService, private router: Router) {}
 
   ngOnInit() {
     this.load();
@@ -48,8 +47,7 @@ export class ZMediaVideoListComponent implements OnInit{
         this.load();
       break;
       case 'viewDetails':
-        this.modal.open();
-        this.selectedObject = e.payload.selectedObject;
+        this.router.navigate(['/videos', e.payload.selectedObject.id]);
       break;
     }
   }
