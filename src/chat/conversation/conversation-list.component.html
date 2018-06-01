@@ -1,0 +1,5 @@
+<box-no-data *ngIf="conversations && conversations.length == 0" [icon]="'fa fa-comments-o'" [title]="'Welcome to Chat'" [subTitle]="'Get started by searching for contact you know on WTH!Apps'">
+  <button class="btn btn-outline-primary" (click)="onAddContact()" href="javascript:;">
+    <i class="fa fa-plus" aria-hidden="true"></i> Add Contact
+  </button>
+</box-no-data>

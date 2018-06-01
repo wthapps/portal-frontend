@@ -4,6 +4,7 @@ import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.
 import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@wth/shared/constant';
+import { CommonEventService } from '@shared/services';
 
 
 declare let $: any;
@@ -29,6 +30,7 @@ export class ZChatToolbarComponent implements OnInit {
   tooltip: any = Constants.tooltip;
 
   constructor(private chatService: ChatService,
+              private commonEventService: CommonEventService,
               private wthConfirmService: WthConfirmService) {
     this.profileUrl = this.chatService.constant.profileUrl;
   }

@@ -3,24 +3,10 @@
   <!--Left actions-->
   <!--default left actions-->
   <ng-template #leftActions>
-    <!-- <ul class="page-body-control-menu">
-      <li>
-        <w-upload [mode]="'multiple'" (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
-          <span class="btn btn-outline-primary">
-            <i class="fa fa-cloud-upload"></i> Upload Photo
-          </span>
-        </w-upload>
-      </li>
-      <li>
-        <button class="btn btn-outline-primary" (click)="doAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
-          <i class="fa fa-plus-circle"></i> Create Album
-        </button>
-      </li>
-    </ul> -->
     <div class="dropdown">
-      <button aria-expanded="true" aria-haspopup="true" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" tooltipposition="bottom"
+      <button aria-expanded="true" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" tooltipposition="bottom"
         type="button">
-        <i class="fa fa-plus"> New</i>
+        <i class="fa fa-plus"></i> New
       </button>
       <ul class="dropdown-menu">
         <li>
@@ -41,9 +27,6 @@
           <a (click)="doAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
             <i class="fa fa-plus-circle"></i> Create Album
           </a>
-          <!-- <a (click)="doAction({action: 'openModal', payload: {modalName: 'createAlbumModal'}})" disabled="disabled">
-            <i class="fa fa-plus-circle"></i> Create Playlist
-          </a> -->
         </li>
       </ul>
     </div>

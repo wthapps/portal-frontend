@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../shared/services/chat.service';
 import { Store } from '@ngrx/store';
+import { CommonEventService } from '@shared/services';
+import { Router } from '@angular/router';
 
 @Component({
   moduleId: module.id,
@@ -8,8 +10,12 @@ import { Store } from '@ngrx/store';
 })
 export class ConversationListComponent implements OnInit {
   selectContact: any;
+  conversations: any;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService,
+    private router: Router,
+    private commonEventService: CommonEventService
+  ) {}
 
   ngOnInit() {
     this.selectContact = this.chatService.getContactSelect();
@@ -20,5 +26,13 @@ export class ConversationListComponent implements OnInit {
         }`
       ]);
     }
+
+    this.chatService.getConversationsAsync().subscribe((res: any) => {
+      this.conversations = res.value.data;
+    })
+  }
+
+  onAddContact() {
+    this.router.navigate(['search_new_contacts']);
   }
 }

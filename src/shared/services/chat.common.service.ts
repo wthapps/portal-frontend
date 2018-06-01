@@ -97,7 +97,7 @@ export class ChatCommonService {
     if (chatContacts) {
       let isSet = false;
       for (let i = 0; i < chatContacts.length; i++) {
-        if (chatContacts[i] && chatContacts[i].id == contactSelect.id) {
+        if (chatContacts[i] && contactSelect && chatContacts[i].id == contactSelect.id) {
           this.storage.save('conversation_select', chatContacts[i]);
           isSet = true;
         }
