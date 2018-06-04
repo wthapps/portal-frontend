@@ -54,8 +54,7 @@ export class ZSocialSharedHeaderComponent implements OnInit {
     if (paths[1] === 'search' && paths[2] !== '') {
       term = paths[2].split(';')[0];
     }
-    // console.log('actived link:::', this.router.isActive(this.router.createUrlTree(['search', term]), true));
-    this.router.createUrlTree(['search', term]);
+    this.search = e.search;
     this.router.navigate(['/search', term, {q: this.search}], {queryParams: {q: this.search}});
   }
 
