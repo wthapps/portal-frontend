@@ -121,7 +121,7 @@ export class ApiBaseService {
   private buildOptions(options: any = {}) {
     // Json web token
     if (!options.unauthen) {
-      let jwt = this.cookieService.get('jwt');
+      const jwt = this.cookieService.get(Constants.cookieKeys.jwt);
       this.headers = this.headers.delete('Authorization');
       if (jwt) {
         this.headers = this.headers.set('Authorization', 'Bearer ' + jwt);

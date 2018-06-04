@@ -13,7 +13,7 @@ export class ConstantsBase {
     cdn: Config.CDN
   };
   cdn: any = Config.CDN;
-  currentVersion: string = '2018 WTHApps - v1.2.13';
+  currentVersion: string = '2018 WTHApps - v1.2.14';
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
@@ -21,12 +21,15 @@ export class ConstantsBase {
     path: '/',
     domain: Config.DOMAIN
   };
+
   cookieKeys: any = {
     chatSupportId: 'wthapps-cs-id',
     chatSupportMemId: 'wthapps-cs-mem-id',
     chatSupportCurrentWindow: 'wthapps-cs-cw',
     clientToken: 'wthapps-ct',
-    profile: 'wthapps-pro',
+    profile: this.getKeyByEnv('profile'),
+    loggedIn: this.getKeyByEnv('logged_in'),
+    jwt: this.getKeyByEnv('jwt'),
     payment: 'wthapps-pm'
   };
   operations: any = {
@@ -519,6 +522,10 @@ export class ConstantsBase {
     contact: '5',
     note: '6',
     myAccount: '7'
+  };
+
+  private getKeyByEnv(key: string): string {
+    return (((Config.ENV !== 'STAG') && (Config.ENV !== 'TEST')) ? key : `${key}_${Config.ENV.toLowerCase()}`);
   };
 }
 let Constants = new ConstantsBase();

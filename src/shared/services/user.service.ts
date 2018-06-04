@@ -122,9 +122,9 @@ export class UserService {
   }
 
   deleteUserInfo() {
-    this.cookieService.remove('jwt', this.cookieOptionsArgs);
-    this.cookieService.remove('logged_in', this.cookieOptionsArgs);
-    this.cookieService.remove('profile', this.cookieOptionsArgs);
+    this.cookieService.remove(Constants.cookieKeys.jwt, this.cookieOptionsArgs);
+    this.cookieService.remove(Constants.cookieKeys.loggedIn, this.cookieOptionsArgs);
+    this.cookieService.remove(Constants.cookieKeys.profile, this.cookieOptionsArgs);
 
     // localStorage.removeItem('profile');
 
@@ -222,15 +222,15 @@ export class UserService {
     };
 
     // TODO move string constants to config file
-    this.cookieService.put('jwt', response.token, cookieOptionsArgs);
-    this.cookieService.put('logged_in', 'true', cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.jwt, response.token, cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.loggedIn, 'true', cookieOptionsArgs);
     this.cookieService.put(
       Constants.cookieKeys.chatSupportId,
       response.data.uuid,
       cookieOptionsArgs
     );
     this.cookieService.put(
-      'profile',
+      Constants.cookieKeys.profile,
       JSON.stringify(response.data),
       this.cookieOptionsArgs
     );
@@ -241,11 +241,11 @@ export class UserService {
   }
 
   private readUserInfo() {
-    if (this.cookieService.get('logged_in')) {
-      if (this.cookieService.get('profile'))
-        this.setProfile(JSON.parse(this.cookieService.get('profile')));
+    if (this.cookieService.get(Constants.cookieKeys.loggedIn)) {
+      if (this.cookieService.get(Constants.cookieKeys.profile))
+        this.setProfile(JSON.parse(this.cookieService.get(Constants.cookieKeys.profile)));
 
-      this.loggedIn = Boolean(this.cookieService.get('logged_in'));
+      this.loggedIn = Boolean(this.cookieService.get(Constants.cookieKeys.loggedIn));
     }
   }
 

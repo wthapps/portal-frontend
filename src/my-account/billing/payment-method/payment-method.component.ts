@@ -65,7 +65,7 @@ export class PaymentMethodComponent implements OnInit {
             this.userService.getSyncProfile().has_payment_info = false;
             this.userService.getSyncProfile().credit_cards = null;
             // Cookie.delete('profile');
-            this.cookieService.put('profile', JSON.stringify(this.userService.getSyncProfile()), this.cookieOptionsArgs);
+            this.cookieService.put(Constants.cookieKeys.profile, JSON.stringify(this.userService.getSyncProfile()), this.cookieOptionsArgs);
           },
           error => {
             this.loadingService.stop();

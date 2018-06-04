@@ -28,6 +28,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() loggedIn: boolean;
   @Input() hasSearch: Boolean = true;
+  @Input() auth: any;
+
   @ViewChild('notifications')
   notificationListComponent: NotificationListComponent;
 
@@ -54,7 +56,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public connectionService: ConnectionNotificationService,
     public notificationService: NotificationService,
     public authService: AuthService
-  ) {}
+  ) {
+    // console.log('authservice:::', this.authService.jwt, this.authService.user);
+    // if (this.authService.jwt) {
+    //   this.authService.validateToken();
+    // }
+  }
 
   ngOnInit(): void {
     this.channelService.subscribe();
