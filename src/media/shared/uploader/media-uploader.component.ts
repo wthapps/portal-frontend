@@ -40,6 +40,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   pending_request: any;
   photos: Array<any> = [];
   files: Array<any>;
+  isVideos: any;
   readonly uploadSteps: any = {
     closed: -1,
     begin: 0,
@@ -74,7 +75,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
     this.step = this.uploadSteps.begin;
     this.files = new Array<any>();
     this.commonEventService.filter(e => e.channel == 'MediaUploadDocker').subscribe((e: any) => {
-      if (e.action == 'init') {
+      if (e.action == 'init' || e.action == 'initVideos') {
         this.step = this.uploadSteps.init;
         this.modalDock.open();
         this.uploaded_num = 0;
@@ -86,7 +87,11 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
         // Prevent maximum stack call
         // this.current_photo = e.payload[0].result;
         this.current_photo = "";
+        if (e.action == 'initVideos') {
+          this.isVideos = true;
+        };
       };
+
       if (e.action == 'uploaded') {
         this.uploaded_num++;
         const returnData = e.payload.data;

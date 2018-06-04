@@ -55,8 +55,7 @@ import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.compo
     PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule,
     ImageCropperModule,
-    PartialsPhotoTaggingModule,
-    PartialsPhotoSharingModule
+    PartialsPhotoTaggingModule
   ],
   declarations: [
     MediaRenameModalComponent,
@@ -82,7 +81,6 @@ import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.compo
     PartialsPhotoSharingModule,
 
     BoxLoadingModule,
-    PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule,
 
     PhotoDetailPartialComponent,

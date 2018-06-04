@@ -244,41 +244,7 @@ export class SharingModalComponent implements OnDestroy {
           this.commonEventService.broadcast({channel: 'media:photo:update_recipients', payload: this.sharedContacts});
         });
       }
-
-
-      // if (!this.sharing) {
-      //
-      //   let body = {
-      //     multiple: true,
-      //     objects: _.map(this.selectedItems, 'id'),
-      //     recipients: _.xor(_.concat(_.map(this.sharedContacts, 'id'),
-      //       _.map(this.selectedContacts, 'id')), this.removedContacts)
-      //   };
-      //
-      //   this.mediaSharingService.update(body).take(1).subscribe(
-      //     (response: any) => {
-      //       this.showMessage('You have just updated share successful');
-      //       this.sharedContacts = response.data;
-      //       this.resetData();
-      //       this.updateSelectedItems({contacts: this.sharedContacts});
-      //       this.event.emit({action: 'media:photo:update_recipients', payload: {data: this.sharedContacts}});
-      //     },
-      //     (error: any) => {
-      //       console.log('error', error);
-      //     });
-      // }
     }
-
-
-    // if (this.sharing && this.mode === this.operation.edit) {
-    //   this.sharing.role_id = this.role.id;
-    //
-    //   this.event.emit({
-    //     action: 'editInfo',
-    //     params: {selectedObject: this.sharing}
-    //   });
-    //   this.resetData();
-    // }
 
     if (this.mode === this.operation.read) {
       this.modal.close().then(() =>

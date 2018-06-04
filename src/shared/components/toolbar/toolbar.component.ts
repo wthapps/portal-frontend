@@ -80,6 +80,19 @@ export class WToolbarComponent {
     });
   }
 
+  uploaVideodHandler(files: any) {
+    const data = files.map(file => {
+      return { file: file.result, name: file.name, type: file.type };
+    });
+    this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'initVideos', payload: files });
+    data.forEach(f => {
+      this.apiBaseService.post(`media/videos`, f).subscribe(res => {
+        this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+        this.event.emit({ action: 'uploaded', payload: [...files] });
+      });
+    });
+  }
+
   errorHandler(error: any) {
     if (error.statusCode == 406 && error.error == 'Not Acceptable') {
       this.commonEventService.broadcast({ channel: 'LockMessage', payload: error.files });

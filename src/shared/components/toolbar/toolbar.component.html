@@ -23,8 +23,7 @@
         </li>
         <li>
           <a style="padding: 0px">
-            <w-upload style="display: block; padding: 10px 15px" [mode]="'multiple'" [accept]="'video/*'"
-                      (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
+            <w-upload style="display: block; padding: 10px 15px" [mode]="'multiple'" [accept]="'video/*'" (uploadHandler)="uploaVideodHandler($event)" (errorHandler)="errorHandler($event)">
               <i class="fa fa-video-camera"></i> Upload Video
             </w-upload>
           </a>
