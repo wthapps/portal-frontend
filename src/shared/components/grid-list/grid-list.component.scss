@@ -4,13 +4,15 @@
   display: block;
 }
 
-.row-img {
-  &.grid {
-    @for $i from 1 through 12 {
-      &.row-img-#{$i} {
-        .row-img-item {
-          width: percentage(1/(14 - $i));
-          //width: percentage(24/$i);
+@media (min-width: $screen-sm-min) {
+  .row-img {
+    &.grid {
+      @for $i from 1 through 12 {
+        &.row-img-#{$i} {
+          .row-img-item {
+            width: percentage(1/(14 - $i));
+            //width: percentage(24/$i);
+          }
         }
       }
     }
@@ -367,4 +369,65 @@ $wobject-checkbox: 30px;
   }
 }
 
+@media (max-width: $screen-xs-max) {
+  .row-img {
+    &.grid {
+      .row-img-item {
+        width: 50%;
+      }
+    }
+  }
+  .sortbar-slider {
+    display: none;
+  }
+  .photo-box-nav {
+    margin-top: -15px;
+  }
 
+  .photo-box-nav, .row-img.list {
+    .photo-box {
+      position: relative;
+      .photo-box-action-right {
+        position: absolute;
+        right: 15px;
+        top: 0;
+        bottom: 0;
+        display: block;
+        width: 50px;
+        i {
+          width: 50px;
+          height: 50px;
+          position: relative;
+          cursor: pointer;
+          @include center();
+          &:before {
+            @include center();
+          }
+        }
+      }
+    }
+    .photo-box-figure {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      @include flexbox;
+      @include align-items(center);
+      cursor: pointer;
+      .photo-box-name {
+        @include flexbox;
+        @include align-items(center);
+        @include flex(1);
+        min-height: 30px;
+        > span {
+          @include flex(1);
+          margin-right: 50px;
+        }
+        .hidden {
+          display: none !important;
+        }
+      }
+      .photo-box-owner, .photo-box-date, .photo-box-size {
+        display: none;
+      }
+    }
+  }
+}

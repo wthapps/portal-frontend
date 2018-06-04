@@ -3,22 +3,28 @@
   <!--Left actions-->
   <!--default left actions-->
   <ng-template #leftActions>
-    <div class="dropdown">
-      <button aria-expanded="true" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" tooltipposition="bottom"
-        type="button">
-        <i class="fa fa-plus"></i> New
+    <span class="btn btn-text text-fade hidden" [ngClass]="{'visible-xs-block': selectedObjects.length>0}">
+      {{ selectedObjects.length }} Selected
+    </span>
+    <div class="dropdown" [ngClass]="{'hidden-xs': selectedObjects.length>0}">
+      <button aria-expanded="true" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+              tooltipposition="bottom"
+              type="button">
+        <i class="fa fa-plus"></i><span class="hidden-xs"> New</span>
       </button>
       <ul class="dropdown-menu">
         <li>
           <a style="padding: 0px">
-            <w-upload style="display: block; padding: 10px 15px" [mode]="'multiple'" [accept]="'image/*'" (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
+            <w-upload style="display: block; padding: 10px 15px" [mode]="'multiple'" [accept]="'image/*'"
+                      (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
               <i class="fa fa-image"></i> Upload Photo
             </w-upload>
           </a>
         </li>
         <li>
           <a style="padding: 0px">
-            <w-upload style="display: block; padding: 10px 15px" [mode]="'multiple'" [accept]="'video/*'" (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
+            <w-upload style="display: block; padding: 10px 15px" [mode]="'multiple'" [accept]="'video/*'"
+                      (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
               <i class="fa fa-video-camera"></i> Upload Video
             </w-upload>
           </a>
@@ -45,8 +51,9 @@
     <!--view option-->
     <ul class="page-body-control-menu">
       <li class="dropdown">
-        <a class="btn btn-default" href="javascript:void(0);" data-toggle="dropdown" draggable="false" pTooltip="{{ tooltip.changeView}}"
-          tooltipPosition="bottom">
+        <a class="btn btn-default" href="javascript:void(0);" data-toggle="dropdown" draggable="false"
+           pTooltip="{{ tooltip.changeView}}"
+           tooltipPosition="bottom">
           <i class="fa" [ngClass]="{
              'fa-th-large': (view === 'grid'),
              'fa-th-list': (view === 'list'),
@@ -55,17 +62,20 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
           <li *ngIf="view !== 'grid'">
-            <a (click)="doAction({action: 'changeView', payload: {view: grid}})" href="javascript:void(0);" draggable="false">
+            <a (click)="doAction({action: 'changeView', payload: {view: grid}})" href="javascript:void(0);"
+               draggable="false">
               <i class="fa fa-th-large"></i> Grid
             </a>
           </li>
           <li *ngIf="view !== 'list'">
-            <a (click)="doAction({action: 'changeView', payload: {view: list}})" href="javascript:void(0);" draggable="false">
+            <a (click)="doAction({action: 'changeView', payload: {view: list}})" href="javascript:void(0);"
+               draggable="false">
               <i class="fa fa-th-list"></i> List
             </a>
           </li>
           <li *ngIf="view !== 'timeline'">
-            <a (click)="doAction({action: 'changeView', payload: {view: timeline}})" href="javascript:void(0);" draggable="false">
+            <a (click)="doAction({action: 'changeView', payload: {view: timeline}})" href="javascript:void(0);"
+               draggable="false">
               <i class="fa fa-align-left"></i> Timeline
             </a>
           </li>

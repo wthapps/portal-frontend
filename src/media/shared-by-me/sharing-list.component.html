@@ -1,7 +1,8 @@
 <ng-template #objectActionsTemplate>
   <ul class="page-body-control-menu" [ngClass]="{'text-disable': noSelectedObjects}"
       [class.disabled]="noSelectedObjects">
-    <li *ngIf="toolbar.hasOneObject">
+    <!---Hide mobile--->
+    <li class="hidden-xs" *ngIf="toolbar.hasOneObject">
       <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
          href="javascript:void(0);"
          (click)="toolbar.doAction({action: 'openModal',
@@ -13,12 +14,13 @@
         <i class="fa fa-share-alt"></i>
       </a>
     </li>
-    <li *ngIf="!!toolbar.selectedObjects.length">
+    <li class="hidden-xs" *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" href="javascript:;" draggable="false"
          (click)="toolbar.doAction({action: 'deleteMedia', payload: {selectedObjects: toolbar.selectedObjects}})"
          pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
         <i class="fa fa-trash-o"></i></a>
     </li>
+    <!---end Hide mobile--->
 
     <li class="dropdown action" *ngIf="toolbar.hasOneObject">
       <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -26,11 +28,20 @@
         <i class="fa fa-ellipsis-v"></i>
       </a>
       <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+        <!---show mobile--->
+        <li class="visible-xs-block" *ngIf="toolbar.hasOneObject">
+          <a href="javascript:void(0);"
+             (click)="toolbar.doAction({action: 'openModal',payload: {modalName: 'sharingModal', selectedObjects: toolbar.selectedObjects, mode: 2, sharing: toolbar.selectedObjects[0] }})">
+            <i class="fa fa-share-alt"></i> Share
+          </a>
+        </li>
+        <!---end show mobile--->
+
         <li *ngIf="toolbar.hasOneObject">
           <a (click)="toolbar.doAction({
             action: 'openModal',
             payload: {modalName: 'editNameModal', selectedObject: toolbar.selectedObjects[0]}
-          })" href="javascript:void(0);" draggable="false" >
+          })" href="javascript:void(0);" draggable="false">
             <i class="fa fa-pencil"></i> Edit title
           </a>
         </li>
@@ -45,10 +56,18 @@
           <a (click)="toolbar.doAction({
             action: 'viewDetails',
             payload: { selectedObject: toolbar.selectedObjects[0] }
-          })" href="javascript:void(0);" draggable="false" >
+          })" href="javascript:void(0);" draggable="false">
             <i class="fa fa-info-circle"></i> View Detail
           </a>
         </li>
+        <!---show mobile--->
+        <li class="visible-xs-block" *ngIf="!!toolbar.selectedObjects.length">
+          <a href="javascript:;"
+             (click)="toolbar.doAction({action: 'deleteMedia', payload: {selectedObjects: toolbar.selectedObjects}})">
+            <i class="fa fa-trash-o"></i> Delete
+          </a>
+        </li>
+        <!---end show mobile--->
       </ul>
     </li>
   </ul>
@@ -82,8 +101,8 @@
 </div>
 
 <!--<div class="gray-light" *ngIf="loading$|async">-->
-  <!--<div class="text-center">-->
-    <!--<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>-->
-  <!--</div>-->
+<!--<div class="text-center">-->
+<!--<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>-->
+<!--</div>-->
 <!--</div>-->
 <ng-template #modalContainer></ng-template>

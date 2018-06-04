@@ -14,7 +14,7 @@
     <div class="page-body-content-in">
       <w-grid-list-header [data]="objects" [view]="view" [field]="sortBy" [direction]="sortOrder" (event)="doEvent($event)"></w-grid-list-header>
       <div id="list-photo" class="row-img row-img-{{ viewSize }}" [ngClass]="view" (dragenter)="onDragenter($event)" (dragleave)="onDragleave($event)">
-        <div *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">
+        <ng-container *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">
           <p class="m15 fz15" *ngIf="group.key && (view !== 'grid')">
             {{ group.key | titleCase }}
           </p>
@@ -24,7 +24,7 @@
           </div>
           <w-grid-list-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group" (event)="doEvent($event)">
           </w-grid-list-item>
-        </div>
+        </ng-container>
       </div>
     </div>
     <!--<div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>-->

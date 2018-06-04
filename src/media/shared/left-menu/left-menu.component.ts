@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Constants } from '@shared/constant/config/constants';
 
 @Component({
@@ -9,7 +9,7 @@ import { Constants } from '@shared/constant/config/constants';
 export class ZMediaSharedLeftMenuComponent implements OnInit, OnDestroy {
   mediaMenu = Constants.pictureMenuItems;
 
-  constructor() {
+  constructor(private renderer: Renderer2) {
 
   }
 
@@ -23,5 +23,10 @@ export class ZMediaSharedLeftMenuComponent implements OnInit, OnDestroy {
 
   doEvent(event: any) {
 
+  }
+
+
+  onCloseMenu() {
+    this.renderer.removeClass(document.body, 'left-sidebar-open');
   }
 }
