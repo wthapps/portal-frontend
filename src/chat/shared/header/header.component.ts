@@ -27,7 +27,6 @@ export class ZChatSharedHeaderComponent {
   clickedInside($event: Event) {
     $event.preventDefault();
     $event.stopPropagation();  // <- that will stop propagation on lower layers
-    console.log('CLICKED INSIDE');
   }
 
   onEscape(e?: any) {

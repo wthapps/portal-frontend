@@ -31,7 +31,6 @@ import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import { PhotoUploadService } from '@shared/services/photo-upload.service';
-import { GenericFile } from '@shared/shared/models/generic-file.model';
 import { GenericFileService } from '@shared/services/generic-file.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
@@ -135,7 +134,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       .subscribe((e: any) => {
         switch (e.action) {
           case 'note:note_edit:close':
-            this.router.navigate([{ outlets: { detail: null } }]);
+            this.router.navigate([{ outlets: { detail: null } }], { preserveQueryParams: true});
             break;
           case 'note:note_edit:print':
             this.print();
@@ -770,11 +769,13 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   onModalClose(options = null) {
-    if (options) {
-      this.router.navigate([{ outlets: { detail: null } }], options);
-    } else {
-      this.router.navigate([{ outlets: { detail: null } }]);
-    }
+    // if (options) {
+    //   this.router.navigate([{ outlets: { detail: null } }], options);
+    // } else {
+    //   this.router.navigate([{ outlets: { detail: null } }]);
+    // }
+    const qOptions = options ? {...options, preserveQueryParams: true} : {preserveQueryParams: true};
+    this.router.navigate([{ outlets: { detail: null } }], qOptions);
     this.closeSubject.next('');
   }
 

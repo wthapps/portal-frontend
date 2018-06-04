@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'box-loading',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['box-loading.component.scss']
 })
 export class BoxLoadingComponent {
-
+  @Input() outClass: string = '';
 }

@@ -9,4 +9,5 @@ export class BoxNoDataComponent {
   @Input() icon: string = '';
   @Input() title: string = '';
   @Input() subTitle: string = '';
+  @Input() outClass: string = '';
 }

@@ -37,12 +37,14 @@
   </ng-container>
 
   <ng-template #loadingBlock>
-    <box-loading></box-loading>
+    <box-loading outClass="long-height"></box-loading>
   </ng-template>
   <ng-template #noDataBlock>
     <box-no-data [icon]="(context$ | async).noData.icon"
                  [title]="(context$ | async).noData.title"
-                 [subTitle]="(context$ | async).noData.subTitle">
+                 [subTitle]="(context$ | async).noData.subTitle"
+                  outClass="long-height"
+    >
 
       <button *ngIf="(context$ | async).noData.newNode" class="btn btn-outline-primary" (click)="onNewNote()" href="javascript:;" [disabled]="!(context$ | async).permissions.enableEdit">
         <i class="fa fa-plus" aria-hidden="true"></i> New note

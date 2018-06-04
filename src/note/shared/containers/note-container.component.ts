@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
 import { ZNoteService } from '../services/note.service';
-import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../reducers/index';
@@ -17,7 +16,9 @@ declare var _: any;
 
 @Component({
   selector: 'z-note-container',
-  templateUrl: 'note-container.component.html'
+  templateUrl: 'note-container.component.html',
+  styleUrls: ['note-container.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ZNoteContainerComponent implements OnInit {
   @Input() breadcrumbs: any;
