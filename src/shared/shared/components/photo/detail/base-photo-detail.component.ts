@@ -105,7 +105,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
     if (this.batchQuery !== '') {
       this.api.get(this.batchQuery).subscribe(response => {
         this.photos = response.data;
-        this.links = response.page_metadata.links;
+        this.links = response.meta.links;
       });
     }
   }
