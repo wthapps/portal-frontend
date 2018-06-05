@@ -121,7 +121,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         (res: any) => {
           this.stopLoading();
           this.items = _.map(res.data, this.mapPost);
-          this.nextLink = res.page_metadata.links.next;
+          this.nextLink = res.meta.links.next;
           if (res.data.length == 0) {
             this.postIsEmpty = true;
           }
@@ -233,7 +233,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         _.map(res.data, (v: any)=> {
           this.items.push(this.mapPost(v));
         });
-        this.nextLink = res.page_metadata.links.next;
+        this.nextLink = res.meta.links.next;
       });
     }
   }

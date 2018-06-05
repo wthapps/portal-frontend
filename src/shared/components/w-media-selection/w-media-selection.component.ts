@@ -140,7 +140,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.isLoading = true;
       this.mediaSelectionService.getMedias(this.nextLink).subscribe(
         (res: ResponseMetaData) => {
-          this.nextLink = res.page_metadata.links.next;
+          this.nextLink = res.meta.links.next;
           this.isLoading = false;
         }
       );

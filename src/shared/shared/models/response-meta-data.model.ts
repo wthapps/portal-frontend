@@ -16,12 +16,12 @@ export interface ResponseMetaDataPage {
 
 export class ResponseMetaData {
   data: any;
-  page_metadata: ResponseMetaDataPage;
+  meta: ResponseMetaDataPage;
   success: boolean;
 
   constructor(fields: {
     data?: any,
-    page_metadata?: ResponseMetaDataPage,
+    meta?: ResponseMetaDataPage,
     success?: boolean,
   }) {
     if (fields) {

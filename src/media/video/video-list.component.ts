@@ -25,6 +25,8 @@ import { MediaActionHandler } from '@media/shared/media';
 import { ApiBaseService } from '@shared/services';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { SharingModalV1Component } from '@shared/shared/components/photo/modal/sharing/sharing-modal-v1.component';
+import { CreateCommonSharing } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 declare var _: any;
 
@@ -50,7 +52,10 @@ export class ZMediaVideoListComponent implements OnInit {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
 
-  constructor(private apiBaseService: ApiBaseService, private router: Router, private resolver: ComponentFactoryResolver) {}
+  constructor(private apiBaseService: ApiBaseService,
+    private router: Router,
+    private toastsService: ToastsService,
+    private resolver: ComponentFactoryResolver) {}
 
   ngOnInit() {
     this.load();
@@ -88,24 +93,36 @@ export class ZMediaVideoListComponent implements OnInit {
   }
 
   doAction(e: any) {
-    switch(e.action) {
-      case 'openModal':
-          this.loadModalComponent(SharingModalV1Component);
-          // var objects = _.get(params, 'selectedObjects', []).concat(this.selectedObjects);
-          // options = {selectedObjects: objects, updateListObjects: params.updateListObjects};
-          break;
-    }
+    // switch(e.action) {
+    //   case 'openModal':
+    //       this.loadModalComponent(SharingModalV1Component);
+    //       this.modal.open({is: 'new'});
+    //       // var objects = _.get(params, 'selectedObjects', []).concat(this.selectedObjects);
+    //       // options = {selectedObjects: objects, updateListObjects: params.updateListObjects};
+    //       break;
+    // }
   }
 
   openModal(e: any) {
     switch(e.action) {
       case 'share':
           this.loadModalComponent(SharingModalV1Component);
-          this.modal.init({isNew: true});
-          // var objects = _.get(params, 'selectedObjects', []).concat(this.selectedObjects);
-          // options = {selectedObjects: objects, updateListObjects: params.updateListObjects};
+          this.modal.open({isNew: true});
+          this.modal.onSave.subscribe(e => {
+            this.sharingHandler(e);
+          });
           break;
     }
+  }
+
+  sharingHandler(e: any) {
+    const selectedObjects = this.videos.filter(v => v.selected == true).map(v => { return {id: v.id, object_type: 'video'}});
+    const recipientIds = e.map(r => r.id);
+    const createCommonSharing: CreateCommonSharing = {role_id: 1, objects: selectedObjects, recipients: recipientIds};
+
+    this.apiBaseService.post(`media/sharings`, createCommonSharing).subscribe(res => {
+      this.toastsService.success('You have just created share successful')
+    })
   }
 
   private loadModalComponent(component: any) {

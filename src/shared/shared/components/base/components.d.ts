@@ -1,8 +1,7 @@
 export interface ModalComponent {
   modal: any;
 
-  init(config?: any): void;
   close(): void;
-  save(): void;
-  open(): void;
+  save(e?: any): void;
+  open(config?: any): void;
 }

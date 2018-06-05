@@ -50,7 +50,7 @@ export class AddToAlbumModalComponent implements OnInit {
   getAlbum() {
     this.apiBaseService.get('media/albums').subscribe((res: any)=> {
       this.dataAlbums = res.data;
-      this.nextLink = res.page_metadata.links.next;
+      this.nextLink = res.meta.links.next;
     });
   }
 
@@ -60,7 +60,7 @@ export class AddToAlbumModalComponent implements OnInit {
       _.map(res.data, (v: any) => {
         this.dataAlbums.push(v);
       });
-      this.nextLink = res.page_metadata.links.next;
+      this.nextLink = res.meta.links.next;
     });
   }
 

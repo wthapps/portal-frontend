@@ -63,7 +63,7 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
             this.loading = false;
             this.result = res.data;
             this.groups = Object.keys(this.result);
-            this.nextLink = res.page_metadata.links.next;
+            this.nextLink = res.meta.links.next;
           },
           err => this.loading = false
         );
@@ -94,7 +94,7 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
           //   this.result.push(v);
           // });
           this.result = [...this.result, ...res.data];
-          this.nextLink = res.page_metadata.links.next;
+          this.nextLink = res.meta.links.next;
         }
       );
     }

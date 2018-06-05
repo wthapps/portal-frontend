@@ -75,11 +75,11 @@
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->
-        <span *ngIf="object.photo_number>1">
-          {{ object.photo_number }} photos
+        <span *ngIf="object.count>1">
+          {{ object.count }} items
         </span>
-        <span *ngIf="object.photo_number<=1">
-          {{ object.photo_number }} photo
+        <span *ngIf="object.count<=1">
+          {{ object.count }} item
         </span>
       </div>
     </figure>

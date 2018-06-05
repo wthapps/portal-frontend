@@ -204,7 +204,7 @@ export class CommonNotificationInterface {
           // _.remove(this.notifications); // Make sure this.notifications has no value before assigning
           this.notifications = [...result.data];
           this.newNotifCount = 0;
-          this.nextLink = result.page_metadata.links.next;
+          this.nextLink = result.meta.links.next;
           if (_.isEmpty(this.nextLink)) this.loadingDone = true;
 
           // Get latest notification id
@@ -245,7 +245,7 @@ export class CommonNotificationInterface {
           this.newNotifCount -= result.data.length;
           this.newNotifCount = this.newNotifCount < 0 ? 0 : this.newNotifCount;
 
-          this.nextLink = result.page_metadata.links.next;
+          this.nextLink = result.meta.links.next;
           if (result.data.length == 0) {
             this.hasObjects = false;
           }

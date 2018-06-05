@@ -198,7 +198,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       .then((response: any)=> {
         this.loadingService.stop('#list-photo');
         this.objects = response.data;
-        this.nextLink = response.page_metadata.links.next;
+        this.nextLink = response.meta.links.next;
         if (response.data.length == 0) {
           this.hasObjects = false;
         }
@@ -217,7 +217,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         .then((response: any)=> {
           // this.loadingService.stop('#list-photo');
           this.objects.push(...response.data);
-          this.nextLink = response.page_metadata.links.next;
+          this.nextLink = response.meta.links.next;
         });
     }
 

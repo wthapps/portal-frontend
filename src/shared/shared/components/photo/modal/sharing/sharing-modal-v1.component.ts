@@ -11,12 +11,9 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { Constants } from '@wth/shared/constant';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { ModalComponent } from '@shared/shared/components/base/components';
+import { SharingModalConfig } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 declare var $: any;
 declare var _: any;
-
-interface SharingModalConfig {
-  isNew: boolean;
-}
 
 @Component({
   selector: 'sharing-modal-v1',
@@ -30,26 +27,28 @@ export class SharingModalV1Component implements OnDestroy, ModalComponent {
   sharedContacts: any = [];
   role: any = {name: 'view'};
   roles: any = [];
+  hasChanged: any = [];
+
+  @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
+
 
   constructor(private apiBaseService: ApiBaseService) {
   }
 
   ngOnDestroy() {}
 
-  init(config: SharingModalConfig) {
-    this.getRoles();
-  }
-
   close() {
-    this.modal.close();
+    this.modal.close().then();
   }
 
   save() {
-    this.modal.close();
+    this.onSave.emit(this.selectedContacts);
+    this.modal.close().then();
   }
 
-  open() {
-    this.modal.open();
+  open(config?: SharingModalConfig) {
+    this.getRoles();
+    this.modal.open().then();
   }
 
   complete(e: any) {
@@ -59,11 +58,12 @@ export class SharingModalV1Component implements OnDestroy, ModalComponent {
       const selectedContactIds = this.selectedContacts.map(ct => ct.id);
       const sharedContactIds = this.sharedContacts.map(sc => sc.id);
       this.filteredContacts = res['data'].filter(ct => !selectedContactIds.includes(ct.id) && !sharedContactIds.includes(ct.id));
-    })
+    });
   }
 
   selectContact(contact: any) {
     this.selectedContacts.push(contact);
+    this.hasChanged = true;
   }
 
   unSelectContact(contact: any) {

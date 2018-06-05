@@ -283,7 +283,7 @@ export class ChatService {
     let current = this.storage.find('current_chat_messages').value || {};
     let currentMessages: any = current.data || [];
     let page: any = 1;
-    if (current.page_metadata) page = parseInt(current.page_metadata.page) + 1;
+    if (current.meta) page = parseInt(current.meta.page) + 1;
     let body: any = { page: page };
     let groupId: any = this.storage.find('conversation_select').value.group_json
       .id;
@@ -305,7 +305,7 @@ export class ChatService {
     let currentMessages: any = this.storage.find('current_chat_messages').value
       .data;
     let page: any = parseInt(
-      this.storage.find('current_chat_messages').value.page_metadata.page
+      this.storage.find('current_chat_messages').value.meta.page
     );
     let body: any = { q: 'message:1' };
     let groupId: any = this.storage.find('conversation_select').value.group_json
@@ -324,7 +324,7 @@ export class ChatService {
           );
           this.storage.save('chat_messages_group_' + groupId, res);
           this.storage.save('current_chat_messages', res);
-          sequenceCall(parseInt(res.page_metadata.page) + 1, currentPage);
+          sequenceCall(parseInt(res.meta.page) + 1, currentPage);
         });
     };
 
@@ -334,7 +334,7 @@ export class ChatService {
         res.data = _chat.combineMessages(currentMessages, res.data);
         this.storage.save('chat_messages_group_' + groupId, res);
         this.storage.save('current_chat_messages', res);
-        sequenceCall(res.page_metadata.page, page);
+        sequenceCall(res.meta.page, page);
       });
   }
 

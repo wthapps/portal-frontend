@@ -404,7 +404,7 @@ export class ZContactService extends BaseEntityService<any> {
         this.contacts = res.data;
         this.notifyContactsObservers();
         this.initLoadSubject.next(true);
-        this.nextLink = _.get(res, 'page_metadata.links.next');
+        this.nextLink = _.get(res, 'meta.links.next');
         this.followingLoad(this.nextLink);
       });
   }
@@ -460,7 +460,7 @@ export class ZContactService extends BaseEntityService<any> {
         .toPromise()
         .then((res: any) => {
           this.contacts.push(...res['data']);
-          this.nextLink = _.get(res, 'page_metadata.links.next');
+          this.nextLink = _.get(res, 'meta.links.next');
           this.followingLoad(this.nextLink);
         });
     else this.notifyContactsObservers();
