@@ -406,3 +406,9 @@ $ui-inputswitch-w: 24px;
     right: 0 !important;
   }
 }
+
+.d-block {
+  .ui-calendar {
+    display: block;
+  }
+}

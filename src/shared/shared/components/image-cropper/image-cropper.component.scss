@@ -62,3 +62,23 @@
     }
   }
 }
+
+.image-cropper-header-action {
+  display: inline-block;
+}
+
+.image-cropper-header-right {
+  @media (max-width: $screen-sm-min) {
+    @include flex(1);
+    @include flexbox;
+    @include flex-wrap(wrap);
+    @include justify-content(center);
+    .image-cropper-header-action {
+      @include order(-1);
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+  }
+}
