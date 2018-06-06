@@ -68,7 +68,7 @@
             <i class="fa fa-pencil"></i>
           </a>
         </li>
-        <li *ngIf="capabilities.canEdit">
+        <li *ngIf="capabilities.canShare">
           <a class="btn btn-default" draggable="false" href="javascript:void(0);"
              pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
              (click)="doEvent({action: 'openModal', payload: {

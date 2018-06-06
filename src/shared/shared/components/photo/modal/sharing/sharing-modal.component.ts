@@ -147,7 +147,11 @@ export class SharingModalComponent implements OnDestroy {
       return;
     }
     this.role = this.roles.filter(r => r.id === role.id)[0];
-    this.hasChanged = true;
+    if (this.mode === this.operation.create) {
+      this.hasChanged = this.selectedContacts.length > 0 ? true : false;
+    } else {
+      this.hasChanged = true;
+    }
   }
 
   toggleRemoving(event: any, id: number) {
@@ -222,6 +226,7 @@ export class SharingModalComponent implements OnDestroy {
     } else if (this.mode === this.operation.edit) {
       let body = {
         id: this.sharing.id,
+        role_id: this.role.id,
         recipients: _.xor(_.concat(_.map(this.sharedContacts, 'id'),
           _.map(this.selectedContacts, 'id')), this.removedContacts)
       };
@@ -237,8 +242,9 @@ export class SharingModalComponent implements OnDestroy {
         });
       } else {
         this.apiBaseService.post(`media/sharings/update_attributes`, body).subscribe((res: any) => {
-          // this.showMessage('You have just updated share successful');
+          this.showMessage('You have just updated share successful');
           this.sharedContacts = res.recipients;
+          this.sharing.role_id = this.role.id;
           this.resetData();
           this.updateSelectedItems({contacts: this.sharedContacts});
           this.commonEventService.broadcast({channel: 'media:photo:update_recipients', payload: this.sharedContacts});
@@ -279,6 +285,7 @@ export class SharingModalComponent implements OnDestroy {
       return c['id'] == contact['id'];
     });
     this.setMode();
+
   }
 
   searchContact(event: any) {
@@ -298,9 +305,13 @@ export class SharingModalComponent implements OnDestroy {
   }
 
   private setMode() {
-    let count = this.removedContacts.length + this.selectedContacts.length;
+    const count = this.removedContacts.length + this.selectedContacts.length;
     this.deleting = this.removedContacts.length > 0 ? true: false;
-    this.hasChanged = this.mode != this.operation.read ? true : false;
+    if (this.mode === this.operation.create) {
+      this.hasChanged = count > 0 ? true: false;
+    } else {
+      this.hasChanged = this.mode != this.operation.read ? true : false;
+    }
   }
 
   private showMessage(message: string = 'You have just created share successful') {

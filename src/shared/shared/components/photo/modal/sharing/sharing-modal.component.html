@@ -4,7 +4,7 @@
     <h4 class="modal-title">Sharing</h4>
   </bs-modal-header>
   <bs-modal-body>
-    <div class="row pl20 pr20">
+      <div class="row pl20 pr20">
       <div class="input-group">
         <p-autoComplete *ngIf="!deleting"
                         placeholder="Search contacts"
@@ -36,8 +36,7 @@
               <i class="fa"
                  [ngClass]="role.name == 'view'? 'fa-eye' :
                             role.name == 'download'? 'fa-download' :
-                            role.name == 'edit'? 'fa-pencil' : 'fa-unlock'
-                           ">
+                            role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
               </i>
               <span class="caret"></span>
             </button>
@@ -100,3 +99,4 @@
     </button>
   </bs-modal-footer>
 </bs-modal>
+
