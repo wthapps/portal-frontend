@@ -159,9 +159,7 @@ $message-item-content-card-right-xs: 25px;
   .message-item-content-photo {
     img {
       max-width: 300px;
-      @media ($screen-xs-max) {
-        max-width: 200px;
-      }
+      width: 100%;
     }
   }
 
@@ -216,7 +214,10 @@ $message-item-content-card-right-xs: 25px;
     }
     .message-item-status {
       left: auto;
-      right: $message-item-content-card-right;
+      right: 25px;
+      @media (min-width: $screen-sm-min) {
+        right: $message-item-content-card-right;
+      }
     }
   }
 }

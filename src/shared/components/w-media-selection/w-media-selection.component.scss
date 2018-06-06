@@ -19,13 +19,6 @@
 
 .modal-media-selection {
 
-  .btn-search {
-    margin: -5px 15px -15px;
-  }
-  .nav-tabs-wrap {
-    margin: -15px;
-    padding: 0 15px;
-  }
   .modal-body {
     padding: 0;
   }
@@ -75,14 +68,24 @@
   //  }
   //}
 
+  @media (min-width: $screen-sm-min) {
+    .btn-search {
+      margin: -5px 15px -15px;
+    }
+    .nav-tabs-wrap {
+      margin: -15px;
+      padding: 0 15px;
+    }
+  }
+
   @media (min-width: $screen-md-min) {
     width: $container-md;
   }
 
   @media (max-width: $screen-xs-max) {
     .nav-tabs-wrap {
-      margin-top: -5px;
-      margin-bottom: -5px;
+      padding: 0;
+      margin-bottom: 10px;
     }
     .wobject-list {
       .wobject-owner, .wobject-create-date, .wobject-file-size, .wobject-wobject-action {
