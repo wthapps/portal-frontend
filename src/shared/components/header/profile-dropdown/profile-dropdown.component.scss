@@ -1,0 +1,11 @@
+.media-body {
+  word-break: break-all;
+  > .media-heading {
+    margin-bottom: 0;
+    font-weight: bold;
+    line-height: 18px;
+    max-height: 5 * 18px;
+    overflow: hidden;
+    word-break: break-word;
+  }
+}

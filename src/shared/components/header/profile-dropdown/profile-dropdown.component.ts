@@ -6,7 +6,7 @@ import { AuthService } from '@wth/shared/services';
 @Component({
   selector: 'profile-dropdown',
   templateUrl: './profile-dropdown.component.html',
-  styleUrls: ['./profile-dropdown.component.css']
+  styleUrls: ['./profile-dropdown.component.scss']
 })
 export class ProfileDropDownComponent implements OnInit {
   @Input() user: User;
