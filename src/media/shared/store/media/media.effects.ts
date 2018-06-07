@@ -235,7 +235,8 @@ export class MediaEffects {
     .flatMap(payload => {
       // return this.mediaObjectService.favourite({objects: payload.selectedObjects, mode: payload.mode})
       if (payload.mode === 'add') {
-        return this.mediaObjectService.favorite({objects: payload.selectedObjects, mode: payload.mode})
+        const data: FavouriteParams = payload.selectedObjects.map(item => {return {id: item.id, model: item.model}});
+        return this.mediaObjectService.favorite({objects: data, mode: payload.mode})
           .map(response => {
               return new mediaActions.FavoriteSuccess({...payload, data: response.data });
             },
@@ -244,7 +245,8 @@ export class MediaEffects {
             }
           );
       } else {
-        return this.mediaObjectService.unfavorite({objects: payload.selectedObjects, mode: payload.mode})
+        const data: FavouriteParams = payload.selectedObjects.map(item => {return {id: item.id, model: item.model}});
+        return this.mediaObjectService.unfavorite({objects: data, mode: payload.mode})
           .map(response => {
               return new mediaActions.FavoriteSuccess({...payload, data: response.data });
             },
@@ -254,4 +256,10 @@ export class MediaEffects {
           );
       }
     });
+}
+
+interface FavouriteParams {
+  // id object
+  // class name model
+  objects: Array<{id, model}>;
 }

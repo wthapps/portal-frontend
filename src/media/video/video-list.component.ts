@@ -48,6 +48,8 @@ export class ZMediaVideoListComponent implements OnInit {
   modal: any;
   // check has selected objects
   hasSelectedObjects: boolean = false;
+  selectedObjects: any = [];
+  favoriteAll: boolean = false;
 
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
@@ -55,6 +57,7 @@ export class ZMediaVideoListComponent implements OnInit {
   constructor(private apiBaseService: ApiBaseService,
     private router: Router,
     private toastsService: ToastsService,
+    private wthConfirmService: WthConfirmService,
     private resolver: ComponentFactoryResolver) {}
 
   ngOnInit() {
@@ -65,10 +68,47 @@ export class ZMediaVideoListComponent implements OnInit {
     switch(e.action) {
       case 'uploaded':
         this.load();
-      break;
+        break;
       case 'viewDetails':
         this.router.navigate(['/videos', e.payload.selectedObject.id]);
-      break;
+        break;
+      case 'preview':
+        this.router.navigate(['/videos', e.payload.selectedObject.id]);
+        break;
+      case 'favourite':
+        let selectedObjects = [];
+        if (e.payload) {
+          selectedObjects = e.payload.selectedObjects;
+        }
+        if (selectedObjects && selectedObjects.length == 0) {
+          selectedObjects = this.videos.filter(v => v.selected == true);
+        }
+        this.apiBaseService.post(`media/favorites/toggle`, {
+          objects: selectedObjects
+          .map(v => {return {id: v.id, object_type: 'Media::Video'}})}).subscribe(res => {
+            this.videos = this.videos.map(v => {
+              let tmp = res.data.filter(d => d.id == v.id);
+              if (tmp && tmp.length > 0) {
+                v.favorite = tmp[0].favorite;
+              }
+              return v;
+            })
+            this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+        })
+        break;
+      case 'deleteMedia':
+        this.wthConfirmService.confirm({
+          message: 'Are you sure to delete',
+          accept: () => {
+            let data = this.videos.filter(v => v.selected)
+            .map(v => {return {id: v.id, model: v.model}});
+            this.apiBaseService.post(`media/videos/delete`, {objects: data}).subscribe(res => {
+              this.videos = this.videos.filter(v => !v.selected)
+            });
+          }
+        })
+        break;
+
     }
   }
 
@@ -88,19 +128,11 @@ export class ZMediaVideoListComponent implements OnInit {
       } else {
         v.selected = false;
       }
+
       return v;
     })
-  }
-
-  doAction(e: any) {
-    // switch(e.action) {
-    //   case 'openModal':
-    //       this.loadModalComponent(SharingModalV1Component);
-    //       this.modal.open({is: 'new'});
-    //       // var objects = _.get(params, 'selectedObjects', []).concat(this.selectedObjects);
-    //       // options = {selectedObjects: objects, updateListObjects: params.updateListObjects};
-    //       break;
-    // }
+    this.selectedObjects = this.videos.filter(v => v.selected == true);
+    this.favoriteAll = this.selectedObjects.every(s => s.favorite);
   }
 
   openModal(e: any) {

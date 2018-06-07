@@ -36,7 +36,8 @@
     </div>
     <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
       <div class="photo-box-figure-in">
-        <img draggable="false" class="img-center lazyload" [src]="object.photo_default" alt="">
+        <!-- <img draggable="false" class="img-center lazyload" [src]="object.photo_default" alt=""> -->
+        <img draggable="false" class="img-center lazyload" [src]="object.thumbnail_url" alt="">
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->
@@ -71,7 +72,7 @@
     </div>
     <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
       <div class="photo-box-figure-in">
-        <img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.photo_default" alt="">
+        <img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.thumbnail_url" alt="">
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->
@@ -87,11 +88,10 @@
       <span class="can-click">
         <i class="wthico-album"></i> {{ object.name }}
       </span>
-      <div class="hidden">
-        <!--data return doesn't have json_shares-->
-        <!--<i *ngIf="object.json_shares" class="fa fa-user-plus"></i>-->
+      <!-- <div class="hidden">
+        data return doesn't have json_shares
         <i *ngIf="object.favorite" class="fa fa-star"></i>
-      </div>
+      </div> -->
     </div>
     <div class="photo-box-owner">{{ object.owner.name }}</div>
     <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
