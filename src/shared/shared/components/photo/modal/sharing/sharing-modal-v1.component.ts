@@ -28,6 +28,7 @@ export class SharingModalV1Component implements OnDestroy, ModalComponent {
   role: any = {name: 'view'};
   roles: any = [];
   hasChanged: any = [];
+  deleting: boolean;
 
   @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
 
