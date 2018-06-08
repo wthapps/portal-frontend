@@ -221,11 +221,11 @@
     <div class="zone-no-photo text-center" *ngIf="loaded && !gridlist.objects.length">
       <div>
         <h2><i class="fa fa-picture-o"></i></h2>
-        <h3>There is no photo!</h3>
-        <h4>There is no photo. Try to upload a file.</h4>
+        <h3>There is no photo in this album</h3>
+        <h4>Try to add some photos or upload some</h4>
         <p>
           <button class="btn btn-outline-primary" (click)="doEvent({action: 'openUploadModal'})">
-            <i class="fa fa-cloud-upload"></i> Upload File
+            <i class="fa fa-cloud-upload"></i> Add or upload
           </button>
         </p>
       </div>

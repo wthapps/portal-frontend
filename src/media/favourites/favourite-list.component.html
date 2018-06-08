@@ -97,7 +97,7 @@
         </li>
 
         <!---show mobile--->
-        <li class="hidden-xs" *ngIf="!!toolbar.selectedObjects.length">
+        <li class="visible-xs-block" *ngIf="!!toolbar.selectedObjects.length">
           <a href="javascript:;"
              (click)="toolbar.doAction({action: 'deleteMedia', payload: {selectedObjects: toolbar.selectedObjects}})">
             <i class="fa fa-trash-o"></i> Delete

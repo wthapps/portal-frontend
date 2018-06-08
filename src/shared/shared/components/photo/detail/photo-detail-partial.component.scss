@@ -162,7 +162,7 @@
         ul {
           @include clearfix;
           li {
-            float: left;
+            //float: left;
             margin: 0 5px 5px 0;
           }
         }
@@ -171,14 +171,13 @@
     .photo-detail-info-title {
       margin-bottom: 10px;
       padding-bottom: 10px;
-      border-bottom: 1px solid $line;
       @include clearfix;
       h4 {
         margin: 0;
         padding: 0;
         float: left;
       }
-      a {
+      a, button {
         float: right;
       }
     }
@@ -201,5 +200,35 @@
   }
 }
 
-
+.albums {
+  //max-height: 300px;
+  //overflow-y: auto;
+}
+.album-card {
+  height: 44px;
+  width: 100%;
+  display: flex;
+  .album-card-image, .album-card-content {
+    display: table-cell;
+    cursor: pointer;
+  }
+  .album-card-image, img {
+    height: 34px;
+    width: 34px;
+  }
+  .album-card-content {
+    padding: 0 0 0 5px;
+    .album-card-content-name {
+      span {
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+    .album-card-content-created-date {
+      span {
+        font-size: 10px;
+      }
+    }
+  }
+}
 

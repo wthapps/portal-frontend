@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import {ApiBaseService, CommonEventService, PhotoService, UserService} from '@wth/shared/services';
+import { ApiBaseService, CommonEventService, PhotoService, UserService } from '@wth/shared/services';
 import { BasePhotoDetailComponent } from '@wth/shared/shared/components/photo/detail/base-photo-detail.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
@@ -96,6 +96,12 @@ export class PhotoDetailComponent extends BasePhotoDetailComponent implements On
         break;
       case 'goBack':
         this.router.navigateByUrl(this.returnUrl);
+        break;
+      case 'viewAlbumDetails':
+          this.router.navigate([event.payload.item.object_type === 'album' ? 'albums' : 'shared', event.payload.item.uuid], {queryParams: {returnUrl: event.payload.returnUrl}});
+        break;
+      case 'loadMoreAlbums':
+        this.albums = this.albums.concat(this.albums);
         break;
       default:
         super.doEvent(event);

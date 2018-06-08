@@ -39,6 +39,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
   recipients: Array<any> = [];
   photos: Array<any> = [];
   links: any;
+  albums: Array<any> = [];
 
   // private routeSub: any;
   returnUrl: string;
@@ -70,7 +71,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
     this.route.params
       .takeUntil(this.destroySubject.asObservable())
       .map((params: any) => {
-        this.id = +params['id'];
+        this.id = params['id'];
         this.prevUrl = params['prevUrl'];
         if (params['ids']) {
           this.ids = params['ids'].split(',').map(Number) || [];
@@ -94,6 +95,19 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
           this.photo = response.data;
           this.isOwner = (response.data.owner.id === this.userService.getSyncProfile().id);
           this.loading = false;
+
+
+          this.api.get(`media/photos/${this.photo.uuid}/albums`).subscribe((res: any) => {
+            this.albums = res.data;
+            // this.api.get(`media/photos/${this.photo.id}/sharings`).subscribe((r: any) => {
+            //   this.albums = this.albums.concat(r.data);
+            // }, error => {
+            //
+            // });
+          }, error => {
+
+          });
+
         },
         (error: any) => {
           this.loading = false;

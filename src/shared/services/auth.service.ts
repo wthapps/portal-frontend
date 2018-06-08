@@ -36,8 +36,6 @@ export class AuthService {
     private userService: UserService // TODO will be remove after refactoring by AuthService
   ) {
 
-    console.log('auth service:::');
-
     this.loggedIn$ = this._loggedIn$.asObservable();
     this.user$ = this._user$.asObservable();
 

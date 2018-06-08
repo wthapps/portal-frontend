@@ -8,41 +8,44 @@
   <div class="photo-detail-info-title">
     <h4>
       <i class="fa fa-info-circle"></i> Details
-      <a href="javascript:void(0);"
-         (click)="doAction({action: 'openModal', payload: {modalName: 'editInfoModal', selectedObject: object }})">Edit</a>
+      <button class="btn btn-default"
+         (click)="doAction({action: 'openModal', payload: {modalName: 'editInfoModal', selectedObject: object }})">
+        <i class="fa fa-pencil"></i>
+      </button>
     </h4>
   </div>
-  <dl class="dl-horizontal">
+  <dl>
     <dt>Description</dt>
     <dd>
       {{ object.description }}
     </dd>
   </dl>
+  <hr/>
   <div class="photo-detail-info-title">
     <h4><i class="fa fa-tag"></i> Tag
-      <a href="javascript:void(0);"
+      <button class="btn btn-default"
          (click)="doAction({
           action: 'openModal',
           payload: {
               modalName: 'taggingModal',
               selectedObjects: [object],
               updateListObjects: [object]
-          }})">Edit</a>
+          }})"><i class="fa fa-pencil"></i></button>
     </h4>
   </div>
-  <!--<div class="tags-text" *ngFor="let tag of album.json_tags">-->
-  <!--<span>{{ tag }}</span>-->
-  <!--</div>-->
+  <div class="tags-text" *ngFor="let tag of object.json_tags">
+    <span>{{ tag.name }}</span>
+  </div>
+  <hr/>
   <div class="photo-detail-info-title">
     <h4><i class="fa fa-share"></i> Sharing
-      <a href="javascript:void(0);"
-         (click)="doAction({
+      <button class="btn btn-default" (click)="doAction({
        action: 'openModal',
        payload: {
           modalName: 'sharingModal',
           selectedObjects: [object],
           updateListObjects: [object]
-       }})">Edit</a>
+       }})"><i class="fa fa-pencil"></i></button>
     </h4>
   </div>
   <dl>

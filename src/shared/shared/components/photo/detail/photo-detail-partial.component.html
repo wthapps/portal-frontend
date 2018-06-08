@@ -71,13 +71,12 @@
       class="fa fa-times"></i></a></h3>
     <div class="photo-detail-info-title">
       <h4><i class="fa fa-file-text-o"></i> Details</h4>
-      <a href="javascript:;"
-         draggable="false"
+      <button class="btn btn-default"
          (click)="doAction({action: 'openModal', params: {modalName: 'editInfoModal'}, data: photo})">
-        Edit
-      </a>
+        <i class="fa fa-pencil"></i>
+      </button>
     </div>
-    <dl class="dl-horizontal">
+    <dl>
       <dt>Name</dt>
       <dd>{{ photo.name }}</dd>
       <dt>Description</dt>
@@ -91,44 +90,52 @@
       <dt>Uploaded</dt>
       <dd>{{ photo.created_at | timeFormat }}</dd>
     </dl>
+    <hr/>
+
     <div class="photo-detail-info-title">
       <h4><i class="fa fa-tag"></i> Tag </h4>
-      <a href="javascript:;" draggable="false"
-         (click)="doAction({action: 'openModal', params: {modalName: 'taggingModal' }})">Edit</a>
+      <button class="btn btn-default"
+         (click)="doAction({action: 'openModal', params: {modalName: 'taggingModal' }})">
+        <i class="fa fa-pencil"></i>
+      </button>
     </div>
     <div class="tags-text">
       <span *ngFor="let tag of photo.json_tags">{{ tag.name }}</span>
     </div>
 
-
-    <div class="photo-detail-info-title">
-      <h4>Sharing</h4>
-      <a href="javascript:;" draggable="false"
-         (click)="doAction({action: 'openModal', params: {modalName: 'sharingModal' }})">Edit</a>
-    </div>
+    <hr>
     <dl>
-      <dt>Owner</dt>
-      <dd>
-        <ul class="list-unstyled recipients">
-          <li>
-            <a [href]="profileUrl + photo?.owner?.uuid">
-              <img width="24" [src]="photo.owner.profile_image" alt="{{ photo.owner?.name }}"
-                   title="{{ photo.owner?.name }}"> {{ photo.owner?.name }}
-            </a>
-          </li>
-        </ul>
-      </dd>
 
-      <dt>Shared with</dt>
+      <dt><h4><i class="wthico-album"></i> Album</h4></dt>
       <dd>
-        <ul class="list-unstyled recipients" *ngIf="photo.json_shares.length > 0">
-          <li *ngFor="let recipient of photo?.json_shares">
-            <a [href]="profileUrl + recipient?.uuid">
-              <img width="24" [src]="recipient?.profile_image" title="{{ recipient?.name }}">
-              {{ recipient.name }}
-            </a>
+        <div>
+
+
+        <ul class="list-unstyled albums">
+          <li *ngFor="let album of objects">
+            <div class="album-card">
+              <div class="album-card-image"
+                   (click)="viewAlbumDetails(album)">
+                <img [src]="album.thumbnail_url" alt="{{ album.name }}"
+                       title="{{ album.name }}">
+              </div>
+              <div class="album-card-content">
+                <div class="album-card-content-name" (click)="viewAlbumDetails(album)">
+                  <span> {{ album.name }} </span>
+                </div>
+                <div class="album-card-content-created-date">
+                  <span> {{ album.created_at | date: 'MMM dd, yyyy'}} </span>
+                  <i *ngIf="album.object_type=='sharing'" class="fw fw-shared-with-me"></i>
+                </div>
+              </div>
+            </div>
           </li>
         </ul>
+
+          <div *ngIf="showMore">
+            <a href="javascript:void(0);" (click)="loadMoreAlbums(index)">more</a>
+          </div>
+        </div>
       </dd>
     </dl>
   </div>

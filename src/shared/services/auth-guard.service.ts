@@ -11,9 +11,7 @@ import { Constants } from '@wth/shared/constant';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private router: Router, private authService: AuthService) {
-    console.log('Auth guard:::');
-  }
+  constructor(private router: Router, private authService: AuthService) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,

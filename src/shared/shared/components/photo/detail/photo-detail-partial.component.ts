@@ -26,6 +26,7 @@ import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/mo
 
 declare let $: any;
 declare let _: any;
+const viewSize = 5;
 
 @Component({
   selector: 'photo-detail-partial',
@@ -52,6 +53,7 @@ export class PhotoDetailPartialComponent
   @Input() batchItems: Array<any> = [];
   @Input() isOwner: boolean;
   @Input() recipients: Array<any> = [];
+  @Input() albums: Array<any> = [];
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('modalContainer', { read: ViewContainerRef })
@@ -79,6 +81,10 @@ export class PhotoDetailPartialComponent
 
   capabilities: any = this.defaultCapabilities;
   profileUrl = `${Constants.baseUrls.social}/profile/`;
+  mediaUrl = Constants.baseUrls.media;
+  showMore = false;
+  index = 0;
+  objects = [];
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -124,11 +130,16 @@ export class PhotoDetailPartialComponent
       }
     }
 
+    if (this.albums.length > 0) {
+      this.loadMoreAlbums(this.index);
+    }
+
 
     this.loadMenu();
   }
 
   ngAfterViewInit() {
+
 
   }
 
@@ -346,6 +357,21 @@ export class PhotoDetailPartialComponent
         }
       }
     });
+  }
+
+  viewAlbumDetails(album: any) {
+    this.event.emit({ action: 'viewAlbumDetails', payload: {item: album, returnUrl: location.pathname}});
+  }
+
+  loadMoreAlbums(index: number) {
+    for (let i = index; (i < index + viewSize) && i < this.albums.length; i++) {
+      this.showMore = i < this.albums.length - 1 ? true : false;
+      if (i >= index+viewSize) {
+        break;
+      }
+      this.objects.push(this.albums[i]);
+      this.index ++;
+    }
   }
 
   private stop() {
