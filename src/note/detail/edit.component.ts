@@ -754,7 +754,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
           );
         }
       } else {
-        if (this.note.permission != 'view' && this.noteChanged) {
+        if (this.note.permission != 'view' ) {
           this.store.dispatch(
             new note.Update({
               ...value,
