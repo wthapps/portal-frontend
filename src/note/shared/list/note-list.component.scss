@@ -69,16 +69,23 @@ $note-action: 200px;
 
 .component-listbox-grid {
   display: block;
-  margin: 20px;
+  margin: 0;
   @include clearfix;
+  overflow: initial;
+  @media (min-width: $screen-sm-min) {
+    margin: 20px;
+  }
   .component-listbox-header {
     display: none !important;
   }
   .component-listbox-body {
     float: left;
-    width: 25%;
+    width: 50%;
     padding: 0 10px;
     margin-bottom: 20px;
+    @media (min-width: $screen-sm-min) {
+      width: 25%;
+    }
     .component-listbox-row {
       @include card();
       padding: 10px;
@@ -138,6 +145,14 @@ $note-action: 200px;
     .page-body-control-menu {
       position: relative;
       z-index: 20;
+      @media (max-width: $screen-xs-max) {
+        margin-left: -5px;
+        margin-right: -5px;
+        .btn {
+          padding: 3px 5px;
+          min-width: 28px;
+        }
+      }
     }
   }
 }

@@ -26,6 +26,14 @@
         }
       }
     }
+    @media (max-width: $screen-xs-max) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
   }
 
   .image-viewer-content {
@@ -204,6 +212,7 @@
   //max-height: 300px;
   //overflow-y: auto;
 }
+
 .album-card {
   height: 44px;
   width: 100%;
