@@ -78,18 +78,19 @@ export class ZContactSharedHeaderComponent {
     this.onEnter(e);
   }
 
-  onEnter(e: any) {
+  onEnter(search: any) {
     this.show = false;
-    this.router.navigate(['search/all', {q: e.search}]);
+    this.search = search;
+    this.router.navigate(['search/all', {q: this.search}]);
   }
 
-  onKey(e: any) {
-    if (!e.search) {
+  onKey(search: any) {
+    if (!search) {
       this.show = false;
       return;
     }
     this.show = true;
-    this.search = e.search;
+    this.search = search;
     this.suggestService.setInput(this.search);
   }
 

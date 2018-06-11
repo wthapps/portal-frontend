@@ -33,19 +33,20 @@ export class ZNoteSharedHeaderComponent {
     this.show = false;
   }
 
-  onEnter(e: any) {
+  onEnter(search: any) {
     this.show = false;
+    this.search = search;
     this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: this.search}});
   }
 
-  onKey(e: any) {
-    if (!e.search) {
+  onKey(search: any) {
+    if (!search) {
       this.show = false;
       return;
     }
     this.show = true;
-    this.search = e.search;
-    this.serviceManager.getApi().get('note/search', {q: e.search}).subscribe((res: any) => {
+    this.search = search;
+    this.serviceManager.getApi().get('note/search', {q: this.search}).subscribe((res: any) => {
       this.suggestions = res.data;
     });
   }
