@@ -10,6 +10,7 @@
   @include flexbox;
   @include flex(1);
   @include flex-direction(column);
+  overflow: auto;
 }
 
 @media (max-width: $screen-xs-max) {
