@@ -353,7 +353,7 @@ export class ZContactService extends BaseEntityService<any> {
       .toPromise()
       .then(res => {
         this.toastsService.success(`You sent connection request successfully`);
-        this.updateSingle(res.data);
+        this.updateCallback(res.data);
       })
       .catch(err => console.error(err));
   }
@@ -472,6 +472,8 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private updateCallback(contact: any): void {
+    if(contact && contact.length === 0)
+      return;
     this.contacts = _.map(this.contacts, (ct: any) => {
       if (contact.id === ct.id) return contact;
       else return ct;

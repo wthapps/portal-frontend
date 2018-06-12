@@ -37,7 +37,7 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
 
   tooltip: any = Constants.tooltip;
   readonly CONNECT_STATUS: any = Constants.contactConnectStatus;
-  readonly UNCONNECT_STATUS = [1, 2, 4];
+  readonly UNCONNECT_STATUS = [1, 4];
 
   constructor(public contactService: ZContactService,
               private commonService: CommonEventService) {

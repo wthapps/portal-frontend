@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { Contact } from '../contact.model';
 import { ZContactService } from '../../shared/services/contact.service';
@@ -44,6 +45,7 @@ export class ZContactEditPageComponent implements OnInit {
 
   constructor(private router: Router,
               private contactService: ZContactService,
+              private location: Location,
               private route: ActivatedRoute,
               private toastsService: ToastsService) {
   }
@@ -84,13 +86,15 @@ export class ZContactEditPageComponent implements OnInit {
           console.log(response);
           this.toastsService.success('Contact has been just created successfully!');
           this.router.navigate(['/contacts/detail', response.data.id]);
+          // this.location.back();
         });
         break;
       case 'contact:contact:update':
         this.contactService.update(event.payload.item).subscribe((response: any) => {
           console.log(response);
           this.toastsService.success('Contact has been just updated successfully!');
-          this.router.navigate(['/contacts/detail', response.data.id]);
+          // this.router.navigate(['/contacts/detail', response.data.id]);
+          this.location.back();
         });
         break;
     }
@@ -101,7 +105,9 @@ export class ZContactEditPageComponent implements OnInit {
     this.pageTitle = 'Edit contact';
   }
 
-
+  goBack()  {
+    this.location.back();
+  }
 
   private get(id: number) {
     this.contactService.getIdLocalThenNetwork(id)
