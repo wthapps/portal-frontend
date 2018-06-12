@@ -99,6 +99,17 @@ export class SharingModalComponent implements OnDestroy {
       recipients: []
     };
 
+    if (this.selectedItems.length > 0 && this.selectedItems[0].object_type === 'album') {
+      this.apiBaseService.get(`media/albums/${this.selectedItems[0].uuid}/share`)
+        .subscribe(response => {
+          this.sharing = response.data;
+          this.mode = this.operation.edit;
+          this.getRecipients();
+        }, error => {
+          this.mode = this.operation.create;
+        });
+    }
+
     this.modal.open(options).then((res: any) => {
       if (this.mode !== this.operation.create) {
         // this.getShared();

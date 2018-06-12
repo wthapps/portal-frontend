@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ComponentFactoryResolver } from '@angular/core';
+import {Component, OnInit, OnDestroy, ComponentFactoryResolver, ViewChild, ViewContainerRef} from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { ApiBaseService, CommonEventService, PhotoUploadService } from '@shared/services';
@@ -20,6 +20,7 @@ import { WMediaSelectionService } from '@wth/shared/components/w-media-selection
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { MediaActionHandler } from '@media/shared/media';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
 
 @Component({
   moduleId: module.id,
@@ -27,6 +28,11 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
   templateUrl: 'sharing-detail.component.html'
 })
 export class ZMediaSharingDetailComponent extends MediaActionHandler implements OnInit, OnDestroy {
+  @ViewChild('infoContainer', { read: ViewContainerRef }) infoContainer: ViewContainerRef;
+
+  detailInfoComponent: any;
+  detailInfo: any;
+
   object: any;
   sub: any;
   sharing: any;
@@ -77,6 +83,12 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
 
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'shared-by-me';
+    this.createDetailInfoComponent();
+    this.detailInfo.event
+      .takeUntil(this.destroySubject)
+      .subscribe((event: any) => {
+        this.doEvent(event);
+      });
 
     this.commonEventService
       .filter((e: any) => {
@@ -84,17 +96,22 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
       })
       .subscribe((e: any) => {
         this.params.recipients = e.payload;
+        this.detailInfo.updateProperties({ recipients: this.params.recipients });
+
       });
     this.route.params.subscribe((params: any) => {
       this.apiBaseService.get(`media/sharings/${params.id}`).subscribe((response: any) => {
         this.sharing = response.data;
         this.capabilities = this.sharing.capabilities;
         this.role = this.sharing.role;
-        this.apiBaseService.get(`media/sharings/${params.id}/full_details`).subscribe((response: any) => {
+
+          this.detailInfo.updateProperties({ object: this.sharing });
+
+          this.apiBaseService.get(`media/sharings/${params.id}/full_details`).subscribe((response: any) => {
           // this.sharing = response.sharing;
           this.photos = response.data;
           this.params = response;
-
+          this.detailInfo.updateProperties({ recipients: this.params.recipients });
           // get photos by sharing
           this.doEvent({
             action: 'getAll',
@@ -182,6 +199,13 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
 
   getMore(event: any) {
     this.store.dispatch(new GetMore({...event.payload, type: 'photo', detail: this.detail, object: this.sharing }));
+  }
+
+  private createDetailInfoComponent() {
+    const detailInfoComponentFactory = this.resolver.resolveComponentFactory(SharingDetailInfoComponent);
+    this.infoContainer.clear();
+    this.detailInfoComponent = this.infoContainer.createComponent(detailInfoComponentFactory);
+    this.detailInfo = <SharingDetailInfoComponent>this.detailInfoComponent.instance;
   }
 
   private preview(payload: any) {

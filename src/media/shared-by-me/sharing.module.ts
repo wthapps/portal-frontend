@@ -10,6 +10,7 @@ import { ZMediaSharingDetailComponent } from './sharing-detail.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { WGridListModule } from '@wth/shared/components/grid-list';
 import { WToolbarModule } from '@wth/shared/components/toolbar';
+import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
 
 @NgModule({
   imports: [
@@ -21,9 +22,13 @@ import { WToolbarModule } from '@wth/shared/components/toolbar';
   ],
   declarations: [
     ZMediaSharingListComponent,
-    ZMediaSharingDetailComponent
+    ZMediaSharingDetailComponent,
+    SharingDetailInfoComponent
   ],
-  exports: [ZMediaSharingListComponent],
+  exports: [
+    ZMediaSharingListComponent,
+    SharingDetailInfoComponent
+  ],
   providers: [ZMediaSharedByMeService]
 })
 export class ZMediaSharingModule {}

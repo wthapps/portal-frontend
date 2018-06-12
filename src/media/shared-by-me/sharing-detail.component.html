@@ -78,7 +78,7 @@
           </a>
         </li>
 
-        <li *ngIf="role.name !== 'view'" class="dropdown action">
+        <li class="dropdown action">
           <a class="btn btn-default" draggable="false" href="javascript:void(0);"
              data-toggle="dropdown"
              pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
@@ -98,6 +98,14 @@
                 <i class="fa fa-trash-o"></i> Delete
               </a>
             </li>
+
+            <li>
+              <a draggable="false" href="javascript:void(0);"
+                 (click)="doEvent({action: 'toggleDetailsInfo' })">
+                <i class="fa fa-info-circle"></i> View Details
+              </a>
+            </li>
+
           </ul>
         </li>
       </ul>

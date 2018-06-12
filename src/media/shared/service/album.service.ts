@@ -18,6 +18,10 @@ export class AlbumService extends BaseEntityService<any> {
     return this.apiBaseService.get(`${this.url}/${id}`);
   }
 
+  getShare(id: number): any {
+    return this.apiBaseService.get(`${this.url}/${id}/share`);
+  }
+
   getPhotosByAlbum(id: number, options?: any): any {
     let body = _.merge({ 'album': id}, options);
     return this.apiBaseService.get(`media/photos`, body);

@@ -39,6 +39,7 @@ import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/mo
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 import { ZMediaVideoModule } from '@media/video/video.module';
+import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
 
 @NgModule({
   imports: [
@@ -86,7 +87,8 @@ import { ZMediaVideoModule } from '@media/video/video.module';
     AlbumDeleteModalComponent,
     AlbumDetailInfoComponent,
     AddToAlbumModalComponent,
-    PhotoEditModalComponent
+    PhotoEditModalComponent,
+    SharingDetailInfoComponent
   ]
 })
 export class AppModule {}

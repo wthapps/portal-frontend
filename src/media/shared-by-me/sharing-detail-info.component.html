@@ -8,35 +8,20 @@
   <div class="photo-detail-info-title">
     <h4>
       <i class="fa fa-info-circle"></i> Details
-      <button class="btn btn-default"
-         (click)="doAction({action: 'openModal', payload: {modalName: 'editInfoModal', selectedObject: object }})">
+      <button class="btn btn-default" *ngIf="object?.capabilities?.canEdit"
+         (click)="doAction({action: 'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
         <i class="fa fa-pencil"></i>
       </button>
     </h4>
   </div>
   <dl>
-    <dt>Description</dt>
+    <dt>Name</dt>
     <dd>
-      {{ object.description }}
+      {{ object.name }}
     </dd>
   </dl>
   <hr/>
-  <div class="photo-detail-info-title">
-    <h4><i class="fa fa-tag"></i> Tag
-      <button class="btn btn-default"
-         (click)="doAction({
-          action: 'openModal',
-          payload: {
-              modalName: 'taggingModal',
-              selectedObjects: [object],
-              updateListObjects: [object]
-          }})"><i class="fa fa-pencil"></i></button>
-    </h4>
-  </div>
-  <div class="tags-text" *ngFor="let tag of object.json_tags">
-    <span>{{ tag.name }}</span>
-  </div>
-  <hr/>
+
   <div class="photo-detail-info-title">
     <h4><i class="fa fa-share"></i> Sharing</h4>
 
@@ -54,15 +39,15 @@
             <div class="vertical"></div>
           </li>
 
-          <li *ngFor="let contact of object?.json_shares">
+          <li *ngFor="let contact of recipients">
             <a href="javascript:void(0);" (click)="doAction({
                action: 'openModal',
                payload: {
                   modalName: 'sharingModal',
                   selectedObjects: [object],
                   updateListObjects: [object],
-                  mode: share ? 2 : 1,
-                  sharing: share
+                  mode: 2,
+                  sharing: object
                }})">
               <img width="34" [src]="contact?.profile_image" title="{{ contact?.name }}">
             </a>

@@ -98,6 +98,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
       .switchMap((params: Params) => {
         this.params = params;
         this.showDetail = params['showDetail'] || false;
+
         return this.albumService.getAlbum(params['id']);
       })
       .subscribe((res: any) => {
