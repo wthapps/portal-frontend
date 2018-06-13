@@ -3,6 +3,7 @@
     <i (click)="doAction({action:'favourite', payload: {mode: 'add', selectedObjects: [object] }})" class="fa fa-star-o" *ngIf="!object.favorite"></i>
     <i (click)="doAction({action:'favourite', payload: {mode: 'remove', selectedObjects: [object] }})" class="fa fa-star" *ngIf="object.favorite"></i>
   </div>
+
   <!--type == 'photo'-->
   <div *ngIf="object.object_type == 'photo' || (object.content_type && object.content_type.includes('video'))" class="photo-box-figure"
     (click)="select(object)">
@@ -13,6 +14,7 @@
     <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
       <div class="photo-box-figure-in">
         <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url + '?t=' + time" alt="">
+        <i *ngIf="object.model == 'Media::Video'" class="fa fa-play-circle-o"></i>
       </div>
     </figure>
     <div class="photo-box-name">
