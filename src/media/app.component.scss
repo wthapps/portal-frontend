@@ -104,6 +104,10 @@
     .page-over-full-info {
       right: 0;
     }
+
+    .page-body-control, .page-body-content {
+      padding-right: $photo-detail-info-width;
+    }
   }
 }
 
