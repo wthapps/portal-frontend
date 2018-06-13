@@ -9,9 +9,9 @@
        (scrolled)="scrollDown()"
        (scrolledUp)="onLoadMore()">
     <ng-container *ngIf="(item && item.value); else loadingBlock">
-      <ng-container *ngIf="item.value.data.length>0;else templateNodata">
+      <ng-container *ngIf="item?.value?.data && item?.value?.data?.length>0;else templateNodata">
         <div class="message-item-wrapper">
-          <div class="message-item-dv" *ngFor="let message of item.value.data; trackBy: message?.id">
+          <div class="message-item-dv" *ngFor="let message of item?.value?.data; trackBy: message?.id">
             <message-item [message]="message" [prevMessage]="getPrevMessage(message)"
                           (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
           </div>
@@ -27,7 +27,7 @@
       <box-loading class="message-item-dv"></box-loading>
     </ng-template>
   </div>
-  <z-chat-share-item-request *ngIf="!contactItem.value.active" [message]="item.value.data"></z-chat-share-item-request>
+  <z-chat-share-item-request *ngIf="!contactItem.value.active" [message]="item?.value?.data"></z-chat-share-item-request>
 </ng-container>
 <z-chat-share-request-contact #request></z-chat-share-request-contact>
 <lock-upload-modal></lock-upload-modal>

@@ -5,7 +5,6 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 declare var _:any;
 
 @Component({
-  moduleId: module.id,
   selector: 'z-chat-share-add-to-conversation',
   templateUrl: 'add-to-conversation.component.html'
 })

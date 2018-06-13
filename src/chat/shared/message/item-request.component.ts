@@ -3,7 +3,6 @@ import { ChatService } from '../services/chat.service';
 
 
 @Component({
-  moduleId: module.id,
   selector: 'z-chat-share-item-request',
   templateUrl: 'item-request.component.html'
 })
