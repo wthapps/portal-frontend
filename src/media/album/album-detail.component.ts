@@ -64,7 +64,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
 
   private type = 'photo';
   private path = 'media/media';
-  private sub: any;
+
 
   constructor(
     protected store: Store<appStore.State>,
@@ -192,6 +192,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
         } else {
           this.store.dispatch(new AddToDetailObjects({album: this.album, photos: event.payload.photos}));
         }
+        this.sub.unsubscribe();
         break;
       case 'removeFromParent':
         this.store.dispatch(new RemoveFromDetailObjects(event.payload));

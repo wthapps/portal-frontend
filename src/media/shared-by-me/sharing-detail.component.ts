@@ -34,7 +34,6 @@ export class ZMediaSharingDetailComponent extends MediaActionHandler implements 
   detailInfo: any;
 
   object: any;
-  sub: any;
   sharing: any;
   params: any;
   showDetail: boolean;

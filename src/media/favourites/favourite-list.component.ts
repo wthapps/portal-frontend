@@ -29,7 +29,6 @@ export class ZMediaFavoriteListComponent extends MediaActionHandler implements O
   tooltip: any = Constants.tooltip;
 
   private path = 'media/favorites';
-  private sub: any;
   private currentQuery: string;
 
   constructor(

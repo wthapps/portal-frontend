@@ -64,7 +64,7 @@ export class MediaEffects {
     .switchMap(payload => {
         return this.mediaObjectService.getAll(payload.queryParams, payload.path)
           .map(response => {
-            return new mediaActions.GetAllSuccess({...response, ...payload})
+            return new mediaActions.GetAllSuccess({...response, ...payload});
           });
     });
 
@@ -94,18 +94,16 @@ export class MediaEffects {
     .map((action: mediaActions.AddToDetailObjects) => action.payload)
     .mergeMap(payload => {
       if (payload.album) {
-        this.toastsService.success('You added item(s) successful!');
         return this.albumService.addPhotos({...payload})
-          .map(response => new mediaActions.AddManySuccess(...response))
-          .catch(error => {
-
+          .map(response => {
+            this.toastsService.success('You added item(s) successful!');
+            return new mediaActions.AddManySuccess(...response);
           });
       } else {
-        this.toastsService.success('You added item(s) successful!');
         return this.sharingService.addObjects({...payload})
-          .map(response => new mediaActions.AddManySuccess(...response))
-          .catch(error => {
-
+          .map(response => {
+            this.toastsService.success('You added item(s) successful!');
+            return new mediaActions.AddManySuccess(...response);
           });
       }
     });

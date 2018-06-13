@@ -28,7 +28,7 @@ export class ZMediaSharedWithMeComponent extends MediaActionHandler implements O
   tooltip: any = Constants.tooltip;
 
   private path = 'media/sharings/shared_with_me';
-  private sub: any;
+
   constructor(
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,

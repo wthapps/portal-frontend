@@ -33,7 +33,7 @@ export class ZMediaPhotoListComponent extends MediaActionHandler implements OnIn
   tooltip: any = Constants.tooltip;
   type = 'photo';
   path = 'media/media';
-  private sub: any;
+
   constructor(
     public store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,

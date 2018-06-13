@@ -29,7 +29,7 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
   tooltip: any = Constants.tooltip;
 
   private path = 'media/sharings';
-  private sub: any;
+
   constructor(
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,

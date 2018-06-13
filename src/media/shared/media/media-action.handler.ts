@@ -18,6 +18,7 @@ export class MediaActionHandler {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
+  sub: any;
 
   constructor(
     protected resolver: ComponentFactoryResolver,
@@ -82,14 +83,16 @@ export class MediaActionHandler {
         mediaSelectionService.open('photos');
         mediaSelectionService.setMultipleSelection(true);
 
-        mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
+        const sub = mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
           .subscribe(photos => {
             this.doEvent({action: 'addToParent', payload: {photos: photos }});
+            sub.unsubscribe();
           });
-        mediaSelectionService.uploadingMedias$
+        this.sub = mediaSelectionService.uploadingMedias$
           .map(([file, dataUrl]) => [file])
           .subscribe((photos: any) => {
           this.doEvent({action: 'addToParent', payload: {photos: photos, uploading: true }});
+          this.sub.unsubscribe();
         });
         break;
       default:
@@ -143,6 +146,6 @@ export class MediaActionHandler {
   }
 
   protected destroySubject() {
-
+    this.sub.unsubscribe();
   }
 }

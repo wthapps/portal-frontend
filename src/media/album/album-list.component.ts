@@ -33,7 +33,7 @@ export class AlbumListComponent extends MediaActionHandler implements OnInit, On
   tooltip: any = Constants.tooltip;
   private type = 'album';
   private path = 'media/media';
-  private sub: any;
+
   constructor(
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,

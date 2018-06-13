@@ -28,8 +28,8 @@ export class ZMediaSearchComponent extends MediaActionHandler implements OnInit 
   type = 'all';
   path = 'media/search';
   returnUrl = '';
-  sub: any;
   query = null;
+
   constructor(
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
