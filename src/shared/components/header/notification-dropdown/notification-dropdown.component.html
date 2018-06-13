@@ -1,14 +1,4 @@
-<div class="btn-group header-nav-notification visible-xs-inline-block">
-  <button (click)="viewAllNotifications()" type="button" class="btn btn-default dropdown-toggle"
-          pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
-    <i class="fa fa-bell-o"></i>
-    <span class="notification-num" *ngIf="(notificationService.newNotifCount + connectionService.newNotifCount) > 0">
-      {{ notificationService.newNotifCount + connectionService.newNotifCount }}
-    </span>
-  </button>
-</div>
-
-<div class="btn-group header-nav-notification hidden-xs">
+<div class="btn-group header-nav-notification">
   <button (click)="toggleViewNotifications()" type="button" class="btn btn-default dropdown-toggle"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
           pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
