@@ -4,10 +4,17 @@ import {
   EventEmitter,
   Output,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ViewContainerRef,
+  ViewChild,
+  ComponentFactoryResolver
 } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, CommonEventService } from '@shared/services';
+import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
+import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
+import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 
 @Component({
   selector: 'w-toolbar',
@@ -36,7 +43,11 @@ export class WToolbarComponent {
 
   tooltip: any = Constants.tooltip;
 
-  constructor(private apiBaseService: ApiBaseService, private commonEventService: CommonEventService) {}
+  constructor(private apiBaseService: ApiBaseService,
+    public resolver: ComponentFactoryResolver,
+    public playlistCreateModalService: PlaylistCreateModalService,
+    private commonEventService: CommonEventService) {}
+
 
   doAction(event: any) {
     if (event.action === 'favourite') {
@@ -49,6 +60,9 @@ export class WToolbarComponent {
     if (event.action === 'deselectAll') {
       this.selectedObjects.length = 0;
       this.updateSelectedObjects([]);
+    }
+    if (event.action === 'openModalCreatePlayListModal') {
+      this.playlistCreateModalService.open({selectedObjects: this.selectedObjects});
     }
     this.event.emit(event);
   }

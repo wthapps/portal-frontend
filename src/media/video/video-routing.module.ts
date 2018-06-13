@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { AuthGuard, ApiBaseService } from '@wth/shared/services';
 import { ZMediaVideoListComponent } from '@media/video/video-list.component';
 import { ZVideoDetailComponent } from '@media/video/video-detail.component';
+import { ZMediaPlaylistListComponent } from '@media/video/playlist-list.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,11 @@ import { ZVideoDetailComponent } from '@media/video/video-detail.component';
       {
         path: 'videos/:id',
         component: ZVideoDetailComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'playlists',
+        component: ZMediaPlaylistListComponent,
         canActivate: [AuthGuard]
       }
     ])

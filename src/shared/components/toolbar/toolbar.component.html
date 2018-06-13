@@ -33,6 +33,11 @@
             <i class="fa fa-plus-circle"></i> Create Album
           </a>
         </li>
+        <li>
+          <a (click)="doAction({action: 'openModalCreatePlayListModal'})">
+            <i class="fa fa-file-video-o"></i> Create Playlist
+          </a>
+        </li>
       </ul>
     </div>
 
@@ -83,3 +88,5 @@
     </ul>
   </div>
 </div>
+
+<ng-template #modalContainer></ng-template>

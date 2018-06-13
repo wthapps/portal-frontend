@@ -3,5 +3,11 @@ export interface ModalComponent {
 
   close(): void;
   save(e?: any): void;
-  open(config?: any): void;
+  open(options?: any): void;
+}
+
+export interface ModalActions {
+  close(): void;
+  save(e?: any): void;
+  open(options?: any): void;
 }

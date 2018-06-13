@@ -55,10 +55,10 @@
       </div>
     </div>
     <div *ngIf="(step==uploadSteps.uploaded || step==uploadSteps.stop) && isVideos">
-      <a class="mr20" href="javascript:void(0);" (click)="onAction({action: 'openModal', payload: {modalName: 'createAlbumModal', selectedObjects: photos }})">
+      <a class="mr20" href="javascript:;" (click)="createPlaylist()">
         Create Playlist
       </a>
-      <a href="javascript:void(0);" (click)="onAction({action: 'openModal', payload: {modalName: 'addToAlbumModal', selectedObjects: photos }})">
+      <a href="javascript:;" (click)="addPlaylist()">
         Add to Playlist
       </a>
       <div class="text-right mb10">

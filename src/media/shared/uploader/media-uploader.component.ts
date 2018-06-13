@@ -20,6 +20,8 @@ import { ModalDockComponent } from '@wth/shared/shared/components/modal/dock.com
 import { ApiBaseService, PhotoUploadService } from '@wth/shared/services';
 import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
 import { CommonEventService } from "@shared/services/common-event/common-event.service";
+import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
+import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
 
 declare var $: any;
 declare var _: any;
@@ -66,6 +68,8 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
               private router: Router,
               private apiBaseService: ApiBaseService,
               private commonEventService: CommonEventService,
+              private playlistCreateModalService: PlaylistCreateModalService,
+              private playlistModalService: PlaylistModalService,
               private mediaUploadDataService: MediaUploaderDataService,
               private photoUploadService: PhotoUploadService) {
     this.dragleave();
@@ -166,6 +170,14 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
     // this.outEvent.emit(options);
     this.mediaUploadDataService.onAction(options);
+  }
+
+  createPlaylist() {
+    this.playlistCreateModalService.open({selectedObjects: this.photos});
+  }
+
+  addPlaylist() {
+    this.playlistModalService.open({selectedObjects: this.photos});
   }
 
   // onCreateNewAlbum() {

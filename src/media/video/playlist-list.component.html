@@ -1,4 +1,4 @@
-<w-toolbar #toolbar (event)="doEvent($event)" [objectActionsTemplate]="objectActionsTemplate" [selectedObjects]="selectedObjects">
+<w-toolbar #toolbar (event)="doEvent($event)" [objectActionsTemplate]="objectActionsTemplate">
   <ng-template #objectActionsTemplate>
     <ul class="page-body-control-menu" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
       <li>
@@ -72,8 +72,9 @@
   </ng-template>
 </w-toolbar>
 
-<w-grid-list #gridlist [objects]="videos" (event)="doEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
+<w-grid-list #gridlist [objects]="objects" (event)="doEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
 
 
 </w-grid-list>
+<ng-template #modalContainer></ng-template>
 

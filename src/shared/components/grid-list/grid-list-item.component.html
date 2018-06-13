@@ -30,7 +30,7 @@
   </div>
 
   <!--type == 'album'-->
-  <div *ngIf="object.object_type == 'album'" class="photo-box-figure" (click)="select(object)">
+  <div *ngIf="object.object_type == 'album' || object.object_type == 'Media::PlayList'" class="photo-box-figure" (click)="select(object)">
     <div class="photo-box-input" (click)="toggleSelection(object, $event)">
       <i class="fa fa-check"></i>
     </div>
@@ -41,11 +41,11 @@
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->
-        <span *ngIf="object.photo_number>1">
-          {{ object.photo_number }} photos
+        <span *ngIf="object.child_count > 1">
+          {{ object.child_count }} photos
         </span>
-        <span *ngIf="object.photo_number<=1">
-          {{ object.photo_number }} photo
+        <span *ngIf="object.child_count <= 1">
+          {{ object.child_count }} photo
         </span>
       </div>
     </figure>
@@ -61,7 +61,7 @@
     </div>
     <div class="photo-box-owner">{{ object.owner.name }}</div>
     <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
-    <div class="photo-box-size">{{ object.photo_number }}</div>
+    <div class="photo-box-size">{{ object.child_count }}</div>
   </div>
 
 
@@ -95,7 +95,7 @@
     </div>
     <div class="photo-box-owner">{{ object.owner.name }}</div>
     <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
-    <div class="photo-box-size">{{ object.photo_number }}</div>
+    <div class="photo-box-size">{{ object.child_count }}</div>
   </div>
 
 </div>

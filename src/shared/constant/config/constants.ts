@@ -199,7 +199,8 @@ export class ConstantsBase {
     { name: 'Photos', link: '/photos', icon: 'fa fa-photo' },
     { name: 'Albums', link: '/albums', icon: 'wthico-album' },
     { name: 'Videos', link: '/videos', icon: 'fa fa-video-camera' },
-    { name: 'Playlist', link: '/playlists', icon: 'fa fa-file-video-o' },
+    { name: 'Playlists', link: '/playlists', icon: 'fa fa-file-video-o' },
+
     { name: 'Favourites', link: '/favourites', icon: 'fa fa-star' },
     {
       name: 'Shared with me',

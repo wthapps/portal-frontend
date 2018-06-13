@@ -34,6 +34,7 @@ import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
 import { MediaRenameModalComponent } from './modal/media/media-rename-modal.component';
 import { PhotoEditModalComponent } from './modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.component';
+import { PlaylistModalModule } from '@shared/shared/components/photo/modal/playlist/playlist-modal.module';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.compo
     PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule,
     ImageCropperModule,
+    PlaylistModalModule,
     PartialsPhotoTaggingModule
   ],
   declarations: [
@@ -79,6 +81,7 @@ import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.compo
     AddToAlbumModalComponent,
     PartialsPhotoTaggingModule,
     PartialsPhotoSharingModule,
+    PlaylistModalModule,
 
     BoxLoadingModule,
     PartialsPhotoTaggingModule,
@@ -94,10 +97,6 @@ import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.compo
     PhotoItemPreviewComponent,
     BasePhotoDetailComponent
   ],
-  providers: [
-    PhotoService
-  ]
+  providers: [PhotoService]
 })
-
-export class PartialsPhotoModule {
-}
+export class PartialsPhotoModule {}

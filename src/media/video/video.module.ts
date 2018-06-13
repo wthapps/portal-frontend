@@ -12,6 +12,7 @@ import { ZMediaVideoRoutingModule } from '@media/video/video-routing.module';
 import { ZMediaVideoListComponent } from '@media/video/video-list.component';
 import { BsModalModule } from 'ng2-bs3-modal';
 import { ZVideoDetailComponent } from '@media/video/video-detail.component';
+import { ZMediaPlaylistListComponent } from '@media/video/playlist-list.component';
 // import { PhotoSandbox } from './photo.sandbox';
 
 @NgModule({
@@ -25,7 +26,11 @@ import { ZVideoDetailComponent } from '@media/video/video-detail.component';
     WGridListModule,
     WToolbarModule
   ],
-  declarations: [ZMediaVideoListComponent, ZVideoDetailComponent],
+  declarations: [
+    ZMediaVideoListComponent,
+    ZVideoDetailComponent,
+    ZMediaPlaylistListComponent
+  ],
   exports: [ZMediaVideoListComponent],
   providers: [
     PhotoService
