@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() loggedIn: boolean;
   @Input() hasSearch: Boolean = true;
   @Input() auth: any;
+  @Input() showSideBar: Boolean = true;
 
   @ViewChild('notifications')
   notificationListComponent: NotificationListComponent;

@@ -57,9 +57,14 @@
   </div>
   <div class="image-viewer-content">
     <div class="image-viewer-content-fixed">
-      <video width="800" height="600" controls style="display: block; margin: 0px auto">
-        <source [src]="video.url">
-      </video>
+      <div class="video-viewer-content">
+        <div class="embed-responsive embed-responsive-16by9">
+          <video class="embed-responsive-item" width="800" height="600" controls>
+            <source [src]="video.url">
+          </video>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
