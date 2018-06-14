@@ -14,16 +14,16 @@
       </button>
       <ul class="dropdown-menu">
         <li>
-          <a style="padding: 0px">
-            <w-upload style="display: block; padding: 10px 15px" [mode]="'multiple'" [accept]="'image/*'"
+          <a class="p0" href="javascript:;">
+            <w-upload [mode]="'multiple'" [accept]="'image/*'"
                       (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
               <i class="fa fa-image"></i> Upload Photo
             </w-upload>
           </a>
         </li>
         <li>
-          <a style="padding: 0px">
-            <w-upload style="display: block; padding: 10px 15px" [mode]="'multiple'" [accept]="'video/*'" (uploadHandler)="uploaVideodHandler($event)" (errorHandler)="errorHandler($event)">
+          <a class="p0" href="javascript:;">
+            <w-upload [mode]="'multiple'" [accept]="'video/*'" (uploadHandler)="uploaVideodHandler($event)" (errorHandler)="errorHandler($event)">
               <i class="fa fa-video-camera"></i> Upload Video
             </w-upload>
           </a>
