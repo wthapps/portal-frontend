@@ -1,6 +1,6 @@
 <w-toolbar #toolbar (event)="doEvent($event)" [objectActionsTemplate]="objectActionsTemplate">
   <ng-template #objectActionsTemplate>
-    <ul class="page-body-control-menu" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
+    <!-- <ul class="page-body-control-menu" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
       <li>
         <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="doEvent({action: 'preview',
            payload: {selectedObjects: toolbar.selectedObjects, selectedObject: gridlist.objects[0]}})" pTooltip="{{ tooltip.preview}}"
@@ -68,7 +68,7 @@
           </li>
         </ul>
       </li>
-    </ul>
+    </ul> -->
   </ng-template>
 </w-toolbar>
 
@@ -78,3 +78,8 @@
 </w-grid-list>
 <ng-template #modalContainer></ng-template>
 
+<box-no-data *ngIf="objects && objects.length == 0" [title]="'There is no playlist!'" [icon]="'fa fa-file-video-o'" [subTitle]="'Try to upload a new playlist'"
+  style="margin-top: 50px; display: block;">
+  <button class="btn btn-outline-primary" (click)="createPlaylist()">
+    <i class="fa fa-cloud-upload"> </i> Create Playlist </button>
+</box-no-data>

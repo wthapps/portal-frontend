@@ -11,9 +11,6 @@ import {
 } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, CommonEventService } from '@shared/services';
-import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
-import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 
 @Component({
@@ -62,7 +59,7 @@ export class WToolbarComponent {
       this.updateSelectedObjects([]);
     }
     if (event.action === 'openModalCreatePlayListModal') {
-      this.playlistCreateModalService.open({selectedObjects: this.selectedObjects});
+      this.playlistCreateModalService.open.next({selectedObjects: this.selectedObjects});
     }
     this.event.emit(event);
   }

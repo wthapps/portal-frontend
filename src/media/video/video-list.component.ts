@@ -8,28 +8,13 @@ import {
 } from '@angular/core';
 import { Router, Resolve } from '@angular/router';
 
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import * as appStore from '../shared/store';
-import {
-  GetAll,
-  Favorite,
-  AddSuccess,
-  DeleteMany,
-  Download
-} from '../shared/store/media/media.actions';
-import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { MediaActionHandler } from '@media/shared/media';
-import { ApiBaseService } from '@shared/services';
-import { BsModalComponent } from 'ng2-bs3-modal';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import { SharingModalV1Component } from '@shared/shared/components/photo/modal/sharing/sharing-modal-v1.component';
 import { CreateCommonSharing } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { PlaylistModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-modal.component';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
-import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
 
@@ -57,6 +42,7 @@ export class ZMediaVideoListComponent implements OnInit {
 
   constructor(private apiBaseService: ApiBaseService,
     private router: Router,
+    private commonEventService: CommonEventService,
     private toastsService: ToastsService,
     private wthConfirmService: WthConfirmService,
     private playlistModalService: PlaylistModalService,
@@ -67,7 +53,7 @@ export class ZMediaVideoListComponent implements OnInit {
   }
 
   doEvent(e: any) {
-    switch(e.action) {
+  switch(e.action) {
       case 'uploaded':
         this.load();
         break;
@@ -114,7 +100,18 @@ export class ZMediaVideoListComponent implements OnInit {
     }
   }
 
-
+  uploaVideodHandler(files: any) {
+    const data = files.map(file => {
+      return { file: file.result, name: file.name, type: file.type };
+    });
+    this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'initVideos', payload: files });
+    data.forEach(f => {
+      this.apiBaseService.post(`media/videos`, f).subscribe(res => {
+        this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+        this.load();
+      });
+    });
+  }
 
   load() {
     this.apiBaseService.get(`media/videos`).subscribe(res => {
@@ -147,18 +144,15 @@ export class ZMediaVideoListComponent implements OnInit {
         // this.modalIns.onSave.subscribe(e => {
         //   this.sharingHandler(e);
         // });
-        // break;
+        break;
       case 'playlist':
-        this.playlistModalService.open({selectedObject: this.selectedObjects});
-        this.playlistModalService.events$.take(1).subscribe(e => {
-          switch(e.action) {
-            case 'add':
-              this.apiBaseService.post(`media/playlists/add_to_playlist`, {playlist: e.payload, videos: this.selectedObjects}).subscribe(res => {
-                // this.modalIns.close();
-              });
-              break;
-          }
+        this.playlistModalService.open.next({selectedObject: this.selectedObjects});
+        this.playlistModalService.onAdd$.subscribe(e => {
+          this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: e, videos: this.selectedObjects }).subscribe(res => {
+            // this.modalIns.close();
+          });
         });
+        break;
     }
   }
 

@@ -64,14 +64,11 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
   @ViewChild('modalDock') modalDock: ModalDockComponent;
 
-  constructor(private apiService: ApiBaseService, private renderer: Renderer,
-              private router: Router,
-              private apiBaseService: ApiBaseService,
+  constructor(private apiBaseService: ApiBaseService,
               private commonEventService: CommonEventService,
               private playlistCreateModalService: PlaylistCreateModalService,
               private playlistModalService: PlaylistModalService,
-              private mediaUploadDataService: MediaUploaderDataService,
-              private photoUploadService: PhotoUploadService) {
+              private mediaUploadDataService: MediaUploaderDataService) {
     this.dragleave();
   }
 
@@ -93,6 +90,8 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
         this.current_photo = "";
         if (e.action == 'initVideos') {
           this.isVideos = true;
+        } else {
+          this.isVideos = false;
         };
       };
 
@@ -173,11 +172,16 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   createPlaylist() {
-    this.playlistCreateModalService.open({selectedObjects: this.photos});
+    this.playlistCreateModalService.open.next({selectedObjects: this.photos});
   }
 
   addPlaylist() {
-    this.playlistModalService.open({selectedObjects: this.photos});
+    this.playlistModalService.open.next({selectedObjects: this.photos});
+    this.playlistModalService.onAdd$.subscribe(e => {
+      this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: e, videos: this.photos }).subscribe(res => {
+        // this.modalIns.close();
+      });
+    });
   }
 
   // onCreateNewAlbum() {

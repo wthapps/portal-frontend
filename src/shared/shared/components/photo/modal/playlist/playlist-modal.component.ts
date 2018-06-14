@@ -50,12 +50,8 @@ export class PlaylistModalComponent implements OnInit, ModalComponent {
   }
 
   ngOnInit() {
-    this.playlistModalService.events$.subscribe(e => {
-      switch (e.action) {
-        case 'open':
-          this.open(e.payload)
-          break;
-      }
+    this.playlistModalService.onOpen$.subscribe(e => {
+      this.open(e);
     })
   }
 
@@ -106,13 +102,15 @@ export class PlaylistModalComponent implements OnInit, ModalComponent {
 
 
   add(data: any) {
+    // short distance
     this.onAdd.emit(data);
-    this.playlistModalService.send({action: 'add', payload: data});
+    // long distance
+    this.playlistModalService.add.next(data);
     this.modal.close().then();
   }
 
   onCreateNew() {
     this.modal.close().then();
-    this.playlistCreateModalService.open({selectedObjects: this.selectedObjects});
+    this.playlistCreateModalService.open.next({selectedObjects: this.selectedObjects});
   }
 }

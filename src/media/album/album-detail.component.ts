@@ -31,7 +31,7 @@ import { Constants } from '@wth/shared/constant';
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MediaActionHandler } from '@media/shared/media';
-import {  } from '@media/../../shared/shared/components/photo/modal/tagging/tagging-modal.component';
+// import {  } from '@media/../../shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { CommonEventService, PhotoUploadService } from '@wth/shared/services';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 

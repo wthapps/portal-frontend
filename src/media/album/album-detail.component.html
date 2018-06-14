@@ -224,8 +224,8 @@
         <h3>There is no photo in this album</h3>
         <h4>Try to add some photos or upload some</h4>
         <p>
-          <button class="btn btn-outline-primary" (click)="doEvent({action: 'openUploadModal'})">
-            <i class="fa fa-cloud-upload"></i> Add or upload
+          <button class="btn btn-outline-primary"  (click)="doEvent({action: 'openModal', payload: {modalName: 'photosSelectModal'}})">
+            <i class="fa fa-cloud-upload"></i> Upload Photo
           </button>
         </p>
       </div>

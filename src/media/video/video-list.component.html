@@ -29,8 +29,8 @@
         </a>
       </li>
       <li *ngIf="hasSelectedObjects">
-        <a class="btn btn-default" href="javascript:;" draggable="false" (click)="doEvent({action: 'deleteMedia'})"
-          pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
+        <a class="btn btn-default" href="javascript:;" draggable="false" (click)="doEvent({action: 'deleteMedia'})" pTooltip="{{ tooltip.delete}}"
+          tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
@@ -74,6 +74,14 @@
 
 <w-grid-list #gridlist [objects]="videos" (event)="doEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
 
-
 </w-grid-list>
 
+<box-no-data *ngIf="videos && videos.length == 0" [title]="'There is no video!'" [icon]="'fa fa-video-camera'" [subTitle]="'Try to upload a new video'"
+  style="margin-top: 50px; display: block;">
+  <w-upload class="btn btn-outline-primary" [mode]="'multiple'" [accept]="'video/*'" (uploadHandler)="uploaVideodHandler($event)"
+    (errorHandler)="errorHandler($event)">
+    <i class="fa fa-cloud-upload"></i> Upload Video
+  </w-upload>
+'  <!-- <button class="btn btn-outline-primary">
+    <i class="fa fa-cloud-upload"> </i> Upload Video </button> -->'
+</box-no-data>

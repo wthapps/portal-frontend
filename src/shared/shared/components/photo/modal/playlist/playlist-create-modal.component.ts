@@ -53,12 +53,8 @@ export class PlaylistCreateModalComponent implements OnInit {
     this.description = this.form.controls['description'];
     this.tags = this.form.controls['tags'];
 
-    this.playlistCreateModalService.events$.subscribe(e => {
-      switch (e.action) {
-        case 'open':
-          this.open(e.payload)
-          break;
-      }
+    this.playlistCreateModalService.onOpen$.subscribe(e => {
+      this.open(e)
     })
   }
 
@@ -78,6 +74,7 @@ export class PlaylistCreateModalComponent implements OnInit {
   create(e: any) {
     this.apiBaseService.post(`media/playlists`, {playlist: e, videos: this.arrayItems}).subscribe(res => {
       this.modal.close().then();
+      this.playlistCreateModalService.created.next(res.data);
     });
   }
 
