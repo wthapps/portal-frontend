@@ -36,6 +36,8 @@ export class PlaylistModalComponent implements OnInit, ModalComponent {
   playlists: any = [];
   hasChanged: boolean;
   deleting: boolean;
+  nextLink: any;
+  showToast: boolean;
 
   @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
   @Output() onOpenCreate: EventEmitter<any> = new EventEmitter<any>();
