@@ -39,6 +39,7 @@ export class ZMediaVideoListComponent implements OnInit {
   hasSelectedObjects: boolean = false;
   selectedObjects: any = [];
   favoriteAll: boolean = false;
+  links: any = {};
 
   constructor(private apiBaseService: ApiBaseService,
     private router: Router,
@@ -96,7 +97,14 @@ export class ZMediaVideoListComponent implements OnInit {
           }
         })
         break;
-
+      case 'getMore':
+        if (this.links && this.links.next) {
+          this.apiBaseService.get(this.links.next).subscribe(res => {
+            this.videos = [...this.videos, ...res.data];
+            this.links = res.meta.links;
+          })
+        }
+        break;
     }
   }
 
@@ -115,6 +123,7 @@ export class ZMediaVideoListComponent implements OnInit {
 
   load() {
     this.apiBaseService.get(`media/videos`).subscribe(res => {
+      this.links = res.meta.links;
       this.videos = res.data;
     });
   }

@@ -46,6 +46,7 @@ export class ZMediaPlaylistListComponent implements OnInit, LoadModalAble {
   hasSelectedObjects: boolean = false;
   selectedObjects: any = [];
   favoriteAll: boolean = false;
+  links: any;
 
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
@@ -105,6 +106,14 @@ export class ZMediaPlaylistListComponent implements OnInit, LoadModalAble {
             });
           }
         })
+        break;
+      case 'getMore':
+        if (this.links && this.links.next) {
+          this.apiBaseService.get(this.links.next).subscribe(res => {
+            this.objects = [...this.objects, ...res.data];
+            this.links = res.meta.links;
+          })
+        }
         break;
     }
   }

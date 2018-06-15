@@ -125,9 +125,9 @@ export class WGridListComponent implements OnDestroy, OnChanges {
           this.sortBy = event.payload.queryParams.sort_name;
           this.sortOrder = event.payload.queryParams.sort;
         }
-        if (event.action === 'getMore' && !event.payload.nextLink) {
-          break;
-        }
+        // if (event.action === 'getMore' && !event.payload.nextLink) {
+        //   break;
+        // }
         if (event.action === 'deselectAll') {
           this.selectedObjects.length = 0;
         }

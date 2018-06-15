@@ -73,9 +73,17 @@ export class MediaEffects {
     .ofType(mediaActions.ActionTypes.GET_MORE)
     .map((action: mediaActions.GetMore) => action.payload)
     .switchMap(payload => {
-      return this.mediaObjectService.loadMore(payload.nextLink.replace(/^\//, ''))
-        .map(response => new mediaActions.GetMoreSuccess({...response}))
-        .catch(error => {});
+      if (payload.nextLink) {
+        return this.mediaObjectService.loadMore(payload.nextLink.replace(/^\//, ''))
+          .map(response => new mediaActions.GetMoreSuccess({...response}))
+          .catch(error => {});
+      } else {
+        return new Observable((observer) => {
+          observer.next = (x) => {
+            return [];
+          }
+        })
+      }
     });
 
   @Effect()
