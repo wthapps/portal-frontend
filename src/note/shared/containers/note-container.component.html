@@ -2,24 +2,30 @@
   <!-- <pre>
     {{userService.getSyncProfile() | json}}
   </pre> -->
-  <div class="btn-group">
-    <button type="button" class="btn btn-primary dropdown-toggle visible-xs" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false" [disabled]="!(context$ | async).permissions.enableEdit">
-      <i class="fa fa-plus" aria-hidden="true"></i>
-    </button>
-    <button type="button" class="btn btn-primary btn-min dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false" [disabled]="!(context$ | async).permissions.enableEdit">
-      New
-    </button>
-    <ul class="dropdown-menu dropdown-menu-sm">
-      <li><a (click)="onNewNote()" href="javascript:;"><i class="fa fa-sticky-note"></i> New note</a></li>
-      <li><a (click)="onFolder()" href="javascript:;"><i class="fa fa-folder-o"></i> New folder</a></li>
-    </ul>
-  </div>
+  <ng-container *ngIf="(selectedObjects$ | async) as selectedObjects">
+    <div class="btn-group" [ngClass]="{'hidden-xs': selectedObjects.length>0}">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false" [disabled]="!(context$ | async).permissions.enableEdit">
+        <i class="fa fa-plus visible-xs" aria-hidden="true"></i> <span class="hidden-xs">New</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-sm">
+        <li><a (click)="onNewNote()" href="javascript:;"><i class="fa fa-sticky-note"></i> New note</a></li>
+        <li><a (click)="onFolder()" href="javascript:;"><i class="fa fa-folder-o"></i> New folder</a></li>
+      </ul>
+    </div>
 
-  <span *ngIf="(context$ | async).pathTitle !== ''" class="btn-text no-wrap ml10">
-    {{(context$ | async).pathTitle}}
-  </span>
+    <span [ngClass]="{'hidden-xs': selectedObjects.length>0}" *ngIf="(context$ | async).pathTitle !== ''"
+          class="btn-text no-wrap ml10">{{(context$ | async).pathTitle}}</span>
+
+
+    <span class="btn btn-text text-fade hidden" [ngClass]="{'visible-xs-block': selectedObjects.length>0}">
+        {{ selectedObjects.length }} Selected
+      </span>
+
+  </ng-container>
+
+
   <z-note-shared-breadcrumb class="note-breadcrumb" [model]="breadcrumbs" [permissions]="(context$ | async).permissions"
                             (onBreadcrumbAction)="onBreadcrumbAction($event)">
   </z-note-shared-breadcrumb>
@@ -47,10 +53,11 @@
     <box-no-data [icon]="(context$ | async).noData.icon"
                  [title]="(context$ | async).noData.title"
                  [subTitle]="(context$ | async).noData.subTitle"
-                  outClass="long-height"
+                 outClass="long-height"
     >
 
-      <button *ngIf="(context$ | async).noData.newNode" class="btn btn-outline-primary" (click)="onNewNote()" href="javascript:;" [disabled]="!(context$ | async).permissions.enableEdit">
+      <button *ngIf="(context$ | async).noData.newNode" class="btn btn-outline-primary" (click)="onNewNote()"
+              href="javascript:;" [disabled]="!(context$ | async).permissions.enableEdit">
         <i class="fa fa-plus" aria-hidden="true"></i> New note
       </button>
     </box-no-data>

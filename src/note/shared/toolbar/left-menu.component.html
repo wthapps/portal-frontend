@@ -1,9 +1,12 @@
+<div class="menuleft-logo">
+  <img src="/assets/images_new/logo-note.png" alt="">
+</div>
 <div class="menuleft-item" [routerLinkActive]="['active']">
   <span *ngIf="noteFoldersTree.length > 0" (click)="showFolderTree = !showFolderTree" class="can-click menuleft-item-open">
     <i class="fa" [ngClass]="{'fa-chevron-right': !showFolderTree, 'fa-chevron-down' : showFolderTree}"></i>
   </span>
   <a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']"
-     (click)="onNoteClick($event)" href="javascript:void(0);">
+     (click)="onNoteClick($event); onCloseMenu()" href="javascript:void(0);">
     <i class="{{ noteMenu[0].icon }}"></i> {{ noteMenu[0].name }}
   </a>
 </div>
@@ -15,11 +18,11 @@
 <ng-container *ngFor="let note of noteMenu;let i = index;">
   <div class="menuleft-item" *ngIf="note.name != '' && i > 0" [routerLinkActive]="['active']"
        [ngClass]="{'hidden': note.link == '/search'}">
-    <a *ngIf="note.link != '#'" [routerLink]="[note.link]" [queryParams]="{}" (click)="onNoteClick($event)"
+    <a *ngIf="note.link != '#'" [routerLink]="[note.link]" [queryParams]="{}" (click)="onNoteClick($event); onCloseMenu()"
        href="javascript:;">
       <i class="{{ note.icon }}"></i> {{ note.name }}
     </a>
-    <a *ngIf="note.link == '#'" (click)="doEvent({action: note.action})" href="javascript:;">
+    <a *ngIf="note.link == '#'" (click)="doEvent({action: note.action}); onCloseMenu()" href="javascript:;">
       <i class="{{ note.icon }}"></i> {{ note.name }}
     </a>
   </div>

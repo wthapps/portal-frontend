@@ -4,7 +4,7 @@ import {
   HostBinding,
   Input,
   OnDestroy,
-  ChangeDetectorRef
+  ChangeDetectorRef, Renderer2
 } from '@angular/core';
 import { Constants } from '@shared/constant/config/constants';
 import { ZNoteService } from '../services/note.service';
@@ -38,7 +38,8 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     private store: Store<any>,
     private apiBaseService: ApiBaseService,
     private router: Router,
-    private commonEventService: CommonEventService
+    private commonEventService: CommonEventService,
+    private renderer: Renderer2
   ) {
     this.sub = this.store
       .select(fromRoot.getFoldersTree)
@@ -140,6 +141,8 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       $(htmlTarget)
         .closest('a')
         .addClass('active');
+
+      this.onCloseMenu();
     }
   }
 
@@ -196,7 +199,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
   }
 
   sort(folders: any) {
-    folders.sort(function(a, b) {
+    folders.sort(function (a, b) {
       var nameA = a.name.toUpperCase(); // ignore upper and lowercase
       var nameB = b.name.toUpperCase(); // ignore upper and lowercase
       if (nameA < nameB) {
@@ -224,5 +227,9 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       }
       this.destroy(target, folder.items);
     }
+  }
+
+  onCloseMenu() {
+    this.renderer.removeClass(document.body, 'left-sidebar-open');
   }
 }

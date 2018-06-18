@@ -9,7 +9,7 @@ $note-name: auto;
 $note-owner: 200px;
 $note-description: 200px;
 $note-date: 200px;
-$note-action: 200px;
+$note-action: 170px;
 
 .component-listbox-list {
   .component-listbox-name {
@@ -39,10 +39,7 @@ $note-action: 200px;
     margin: 0;
     padding: 0;
     list-style-type: none;
-    @include clearfix;
-    > li {
-      float: left;
-    }
+    @include flexbox;
   }
 }
 
@@ -56,16 +53,16 @@ $note-action: 200px;
   }
 }
 
-.dropdown .caret-toggle {
-  i {
-    visibility: hidden;
-  }
-  &:hover {
-    i {
-      visibility: visible;
-    }
-  }
-}
+//.dropdown .caret-toggle {
+//  i {
+//    visibility: hidden;
+//  }
+//  &:hover {
+//    i {
+//      visibility: visible;
+//    }
+//  }
+//}
 
 .component-listbox-grid {
   display: block;
@@ -151,6 +148,33 @@ $note-action: 200px;
         .btn {
           padding: 3px 5px;
           min-width: 28px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  .component-listbox-list {
+    .component-listbox-row {
+      .component-listbox-date, .component-listbox-owner, .component-listbox-description {
+        display: none;
+      }
+      .component-listbox-input {
+        width: 40px;
+      }
+      .component-listbox-name {
+        position: relative;
+        span {
+          display: block;
+          white-space: nowrap;
+          overflow: hidden;
+          -ms-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+          position: absolute;
+          @include center(false, true);
+          left: 0;
+          right: 0;
         }
       }
     }
