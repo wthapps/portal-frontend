@@ -2,7 +2,6 @@ import {
   Component, OnInit, Output, Input, EventEmitter, AfterViewInit
 } from '@angular/core';
 import { ChatSupportBaseComponent } from '../chat-support-base.component';
-import { ChatSupportChannel } from '../shared/channel/chat-support.channel';
 
 declare let $: any;
 
@@ -15,7 +14,7 @@ export class ConversationEditComponent implements ChatSupportBaseComponent, Afte
   @Input() supporters: Array<any>;
   @Output() actionEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private chatSupportChannel: ChatSupportChannel) {
+  constructor() {
   }
 
   ngAfterViewInit() {
@@ -25,7 +24,6 @@ export class ConversationEditComponent implements ChatSupportBaseComponent, Afte
       slidesToScroll: 3
     });
 
-    // this.chatSupportChannel.subscribe();
   }
 
   onBack() {

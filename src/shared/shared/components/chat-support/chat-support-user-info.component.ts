@@ -4,7 +4,6 @@ import {
 import { ChatSupportBaseComponent } from './chat-support-base.component';
 import { MessageService } from './message/message.service';
 import { ConversationService } from './conversation/conversation.service';
-import { ChatSupportChannel } from './shared/channel/chat-support.channel';
 import { UserService } from '../../../services/user.service';
 
 
@@ -28,8 +27,7 @@ export class ChatSupportUserInfoComponent implements OnInit, AfterViewInit, Chat
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
               private messageService: MessageService,
               private conversationService: ConversationService,
-              private userService: UserService,
-              private chatSupportChannel: ChatSupportChannel) {
+              private userService: UserService) {
   }
 
   ngOnInit() {

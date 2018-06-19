@@ -13,7 +13,7 @@ export class ConstantsBase {
     cdn: Config.CDN
   };
   cdn: any = Config.CDN;
-  currentVersion: string = '2018 WTHApps - v1.2.14';
+  currentVersion: string = '2018 WTHApps - v1.2.15';
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
@@ -24,7 +24,6 @@ export class ConstantsBase {
 
   cookieKeys: any = {
     chatSupportId: 'wthapps-cs-id',
-    chatSupportMemId: 'wthapps-cs-mem-id',
     chatSupportCurrentWindow: 'wthapps-cs-cw',
     clientToken: 'wthapps-ct',
     profile: this.getKeyByEnv('profile'),

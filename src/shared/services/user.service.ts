@@ -225,11 +225,6 @@ export class UserService {
     this.cookieService.put(Constants.cookieKeys.jwt, response.token, cookieOptionsArgs);
     this.cookieService.put(Constants.cookieKeys.loggedIn, 'true', cookieOptionsArgs);
     this.cookieService.put(
-      Constants.cookieKeys.chatSupportId,
-      response.data.uuid,
-      cookieOptionsArgs
-    );
-    this.cookieService.put(
       Constants.cookieKeys.profile,
       JSON.stringify(response.data),
       this.cookieOptionsArgs
