@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { SocialService } from '../../shared/services/social.service';
 
@@ -72,6 +72,7 @@ export class ZSocialProfileCoverComponent implements OnInit {
     private favoriteService: SocialFavoriteService,
     private toastsService: ToastsService,
     private profileDataService: ZSocialProfileDataService,
+    private router: Router,
     private route: ActivatedRoute
   ) {}
 
@@ -81,7 +82,7 @@ export class ZSocialProfileCoverComponent implements OnInit {
       this.uuid = res.userInfo.uuid;
       this.relationships = res.relationships;
 
-      this.currentTab = `/profile/${res.userInfo.uuid}/post`;
+      this.currentTab = this.router.url || `/profile/${res.userInfo.uuid}/post`;
 
       _.map(this.tabs, (v: WTab) => {
         v.link = `/profile/${res.userInfo.uuid}/${v.link}`;
