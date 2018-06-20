@@ -20,7 +20,7 @@ export class UserService {
   loggedIn: boolean = false;
 
   defaultPayment: any;
-  profile$: Observable<any>;
+  profile$: Observable<User>;
   notificationSetting$: Observable<any>;
 
   public cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;

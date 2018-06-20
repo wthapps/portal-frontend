@@ -3,15 +3,16 @@
     <!-- TAB NAVIGATION -->
     <div class="nav-tabs-wrap">
       <ul class="nav nav-tabs" role="tablist">
-        <li class="active"><a href="javascript:;">Friends</a></li>
-        <li><a href="javascript:;">Follower</a></li>
-        <li><a href="javascript:;">Following</a></li>
+        <li [ngClass]="{'active': activeTab?.friends}"><a [routerLink]="['../', FRIEND]" >Friends</a></li>
+        <li [ngClass]="{'active': activeTab?.follower}"><a [routerLink]="['../', FOLLOWER]" >Follower</a></li>
+        <li [ngClass]="{'active': activeTab?.following}"><a [routerLink]="['../', FOLLOWING]" >Following</a></li>
       </ul>
 
     </div>
   </div>
   <z-social-share-profile-list
     [data]="list"
+    [user]="userService?.profile$ | async"
     [type]="'member'"
     *ngIf="!loading; else loadingBlock;"
   >

@@ -15,7 +15,7 @@ import { ZSocialProfileFriendComponent } from './friend/friend.component';
           { path: '', component: ZSocialProfilePostComponent },
           { path: 'about', component: ZSocialProfileAboutComponent },
           { path: 'post', component: ZSocialProfilePostComponent },
-          { path: 'friends', component: ZSocialProfileFriendComponent }
+          { path: ':connection', component: ZSocialProfileFriendComponent }
         ]
       }
     ])

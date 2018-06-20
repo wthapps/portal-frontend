@@ -118,9 +118,9 @@
           </div>
         </ng-template>
         <ng-template [ngIf]="!loading && list && list.length > 0">
-          <z-social-share-profile-list [data]="list" [type]="'member'" (outEvent)="onAction($event)" *ngIf="![friendTabs.pending, friendTabs.received].includes(currentState)">
+          <z-social-share-profile-list [data]="list" [user]="userService.profile$ | async" [type]="'member'" (outEvent)="onAction($event)" *ngIf="![friendTabs.pending, friendTabs.received].includes(currentState)">
           </z-social-share-profile-list>
-          <z-social-share-profile-list [data]="list" [type]="currentState" (outEvent)="onAction($event)" *ngIf="[friendTabs.pending, friendTabs.received].includes(currentState)">
+          <z-social-share-profile-list [data]="list" [user]="userService.profile$ | async" [type]="currentState" (outEvent)="onAction($event)" *ngIf="[friendTabs.pending, friendTabs.received].includes(currentState)">
           </z-social-share-profile-list>
         </ng-template>
       </div>

@@ -9,8 +9,9 @@ import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { SoUser } from '@wth/shared/shared/models';
 import { Constants } from '@wth/shared/constant';
+import { UserService } from '@wth/shared/services';
 
-export let FRIEND_TABS: any = {
+const FRIEND_TABS: any = {
   friends: 'friends',
   followers: 'followers',
   followings: 'followings',
@@ -42,15 +43,16 @@ export class ZSocialMembersComponent implements OnInit {
   totalBlacklist: number;
   totalReceivedRequests: number;
   totalPendingRequests: number;
-  readonly friendTabs = FRIEND_TABS;
   showLoading: boolean;
   loading: boolean;
+  readonly friendTabs = FRIEND_TABS;
 
   constructor(
     private socialService: SocialService,
     private zoneReportService: ZSharedReportService,
     private favoriteService: SocialFavoriteService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    public userService: UserService
   ) {}
 
   ngOnInit() {

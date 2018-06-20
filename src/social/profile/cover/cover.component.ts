@@ -77,12 +77,11 @@ export class ZSocialProfileCoverComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.currentTab = this.toFriendTabs(this.router.url);
     this.profileDataService.profileData$.subscribe((res: any) => {
       this.userInfo = res.userInfo;
       this.uuid = res.userInfo.uuid;
       this.relationships = res.relationships;
-
-      this.currentTab = this.router.url || `/profile/${res.userInfo.uuid}/post`;
 
       _.map(this.tabs, (v: WTab) => {
         v.link = `/profile/${res.userInfo.uuid}/${v.link}`;
@@ -230,4 +229,9 @@ export class ZSocialProfileCoverComponent implements OnInit {
   importToContacts(item: any) {
     console.log(item);
   }
+
+  private toFriendTabs(url: string) {
+    return url.replace(/(friends|follower|following)$/, 'friends');
+  }
+
 }
