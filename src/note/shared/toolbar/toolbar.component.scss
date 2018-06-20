@@ -37,6 +37,19 @@
             }
           }
         }
+        @media (max-width: $screen-sm-max) {
+          display: none;
+          &:before {
+            display: none;
+          }
+          &:last-child {
+            display: block;
+            .dropdown-menu-right {
+              left: 0;
+              right: auto;
+            }
+          }
+        }
       }
     }
   }

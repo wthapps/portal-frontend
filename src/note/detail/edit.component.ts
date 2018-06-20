@@ -62,6 +62,7 @@ declare let _: any;
 })
 export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   @ViewChild(BsModalComponent) modal: BsModalComponent;
+  @ViewChild('modalEditName') modalEditName: BsModalComponent;
 
   note: Note = new Note();
   currentTab: any = 'note';
@@ -71,6 +72,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   noteChanged: boolean = false;
   customEditor: any;
   tooltip: any = Constants.tooltip;
+
+  showFormatGroupMobile: boolean = false;
 
   subPage: string = noteConstants.PAGE_NOTE_EDIT;
 

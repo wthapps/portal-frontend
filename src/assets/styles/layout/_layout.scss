@@ -138,6 +138,11 @@
       font-size: 24px;
     }
   }
+  .btn {
+    i {
+      line-height: inherit;
+    }
+  }
 
   .page-body-control-menu {
     margin: 0;
