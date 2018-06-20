@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This class provides the ZSocialProfileService service with methods to read info and add info.
@@ -12,16 +12,16 @@ export class ZSocialProfileService {
    * @param {Http} http - The injected Http.
    * @constructor
    */
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
-  /**
+  /**F
    *
    * @returns {Observable<R>}
    */
   getInfo(): Observable<any> {
     return this.http
       .get('/api/zone/social/user/info.json')
-      .map((res: Response) => res.json())
+      .map((res: any) => res.json())
       .catch(this.handleError);
   }
 

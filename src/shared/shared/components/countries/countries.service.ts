@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -25,8 +24,8 @@ export class CountryService {
   private countriesCodeSubject: BehaviorSubject<ICountry[]> = new BehaviorSubject<ICountry[]>([]);
 
   /**
-   * Creates a new CountryService with the injected Http.
-   * @param {Http} http - The injected Http.
+   * Creates a new CountryService with the injected HttpClient.
+   * @param {HttpClient} http - The injected HttpClient.
    * @constructor
    */
   constructor(private http: HttpClient) {
