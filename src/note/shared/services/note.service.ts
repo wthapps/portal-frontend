@@ -1,7 +1,6 @@
-
-import {throwError as observableThrowError,  Observable ,  BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
+import { throwError,  Observable ,  BehaviorSubject } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
 
 import { BaseEntityService } from '@shared/services/base-entity-service';
@@ -169,6 +168,6 @@ export class ZNoteService extends BaseEntityService<any> {
 
   private handleError(error: Response) {
     console.error(error);
-    return observableThrowError(error.json().error || 'Server error');
+    return throwError(error.json().error || 'Server error');
   }
 }
