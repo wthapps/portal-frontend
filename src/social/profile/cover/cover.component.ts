@@ -11,6 +11,30 @@ import { ToastsService } from '@wth/shared/shared/components/toast/toast-message
 import { Constants } from '@wth/shared/constant';
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 
+const DEFAULT_TABS: WTab[] = [
+  {
+    name: 'Post',
+    link: 'post',
+    icon: null,
+    number: null,
+    type: 'link'
+  },
+  {
+    name: 'About',
+    link: 'about',
+    icon: null,
+    number: null,
+    type: 'link'
+  },
+  {
+    name: 'Friends',
+    link: 'friends',
+    icon: null,
+    number: null,
+    type: 'link'
+  }
+];
+
 @Component({
   selector: 'z-social-profile-cover',
   templateUrl: 'cover.component.html',
@@ -20,29 +44,7 @@ import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 export class ZSocialProfileCoverComponent implements OnInit {
   @Input() data: any;
 
-  tabs: WTab[] = [
-    {
-      name: 'Post',
-      link: 'post',
-      icon: null,
-      number: null,
-      type: 'link'
-    },
-    {
-      name: 'About',
-      link: 'about',
-      icon: null,
-      number: null,
-      type: 'link'
-    },
-    {
-      name: 'Friends',
-      link: 'friends',
-      icon: null,
-      number: null,
-      type: 'link'
-    }
-  ];
+  tabs: WTab[] = DEFAULT_TABS;
 
   currentTab: string;
 
@@ -77,15 +79,13 @@ export class ZSocialProfileCoverComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.currentTab = this.toFriendTabs(this.router.url);
     this.profileDataService.profileData$.subscribe((res: any) => {
       this.userInfo = res.userInfo;
       this.uuid = res.userInfo.uuid;
       this.relationships = res.relationships;
+      this.currentTab = this.toFriendTabs(this.router.url);
 
-      _.map(this.tabs, (v: WTab) => {
-        v.link = `/profile/${res.userInfo.uuid}/${v.link}`;
-      });
+      this.tabs = DEFAULT_TABS.map(v => { return {...v, link: `/profile/${res.userInfo.uuid}/${v.link}`};});
 
       if (
         this.userInfo &&

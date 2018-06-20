@@ -12,7 +12,7 @@ import { ZSocialProfileFriendComponent } from './friend/friend.component';
         path: ':id',
         component: ZSocialProfileComponent,
         children: [
-          { path: '', component: ZSocialProfilePostComponent },
+          { path: '', pathMatch: 'full', redirectTo: 'post' },
           { path: 'about', component: ZSocialProfileAboutComponent },
           { path: 'post', component: ZSocialProfilePostComponent },
           { path: ':connection', component: ZSocialProfileFriendComponent }
