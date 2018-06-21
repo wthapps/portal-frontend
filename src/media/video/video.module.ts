@@ -14,6 +14,8 @@ import { BsModalModule } from 'ng2-bs3-modal';
 import { ZVideoDetailComponent } from '@media/video/video-detail.component';
 import { ZMediaPlaylistListComponent } from '@media/video/playlist-list.component';
 import { WUploadModule } from '@shared/components/upload/upload.module';
+import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
+import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
 // import { PhotoSandbox } from './photo.sandbox';
 
 @NgModule({
@@ -26,6 +28,7 @@ import { WUploadModule } from '@shared/components/upload/upload.module';
     WUploadModule,
     CoreModule,
     WGridListModule,
+    WObjectListModule,
     WToolbarModule
   ],
   declarations: [

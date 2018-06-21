@@ -33,6 +33,7 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
   @Input() moreActionsTemplate: TemplateRef<any>;
+  @Input() girdItemTemplate: TemplateRef<any>;
   @Input() scrollWindow: Boolean = true;
 
   @Input() view: string = 'grid';
@@ -176,6 +177,10 @@ export class WGridListComponent implements OnDestroy, OnChanges {
         this.event.emit(event);
         break;
     }
+  }
+
+  toggleFavourite() {
+
   }
 
   zoom(payload: any) {

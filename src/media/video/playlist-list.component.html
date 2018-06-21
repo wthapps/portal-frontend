@@ -1,36 +1,35 @@
 <w-toolbar #toolbar (event)="doEvent($event)" [objectActionsTemplate]="objectActionsTemplate">
   <ng-template #objectActionsTemplate>
-    <!-- <ul class="page-body-control-menu" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
+    <ul class="page-body-control-menu" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
       <li>
-        <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="doEvent({action: 'preview',
-           payload: {selectedObjects: toolbar.selectedObjects, selectedObject: gridlist.objects[0]}})" pTooltip="{{ tooltip.preview}}"
+        <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="preview()" pTooltip="{{ tooltip.preview}}"
           tooltipPosition="bottom">
           <i class="fa fa-eye"></i>
         </a>
       </li>
       <li *ngIf="hasSelectedObjects">
         <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom" href="javascript:void(0);"
-          (click)="openModal({action: 'share'})">
+          (click)="openModalShare()">
           <i class="fa fa-share-alt"></i>
         </a>
       </li>
 
       <li *ngIf="hasSelectedObjects">
-        <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="doEvent({
-             action: 'favourite'})" pTooltip="{{ tooltip.addToFavorites }}" tooltipPosition="bottom">
+        <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="favourite()" pTooltip="{{ tooltip.addToFavorites }}"
+          tooltipPosition="bottom">
           <i class="fa" [ngClass]="favoriteAll ? 'fa-star': 'fa-star-o'"></i>
         </a>
       </li>
       <li *ngIf="hasSelectedObjects">
         <a class="btn btn-default" href="javascript:;" draggable="false" (click)="toolbar.doAction({action: 'openModal',
-           payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})" pTooltip="{{ tooltip.tag}}"
+             payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})" pTooltip="{{ tooltip.tag}}"
           tooltipPosition="bottom">
           <i class="fa fa-tag"></i>
         </a>
       </li>
       <li *ngIf="hasSelectedObjects">
-        <a class="btn btn-default" href="javascript:;" draggable="false" (click)="doEvent({action: 'deleteMedia'})"
-          pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
+        <a class="btn btn-default" href="javascript:;" draggable="false" (click)="doEvent({action: 'deleteMedia'})" pTooltip="{{ tooltip.delete}}"
+          tooltipPosition="bottom">
           <i class="fa fa-trash-o"></i>
         </a>
       </li>
@@ -42,7 +41,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
           <li *ngIf="hasSelectedObjects">
-            <a href="javascript:void(0);" draggable="false" (click)="openModal({action: 'playlist'})">
+            <a href="javascript:void(0);" draggable="false" (click)="openModalAddToPlaylist()">
               <i class="fa fa-plus-square"></i> Add to PlayList
             </a>
           </li>
@@ -52,31 +51,45 @@
           </li>
           <li *ngIf="toolbar.hasOneObject" href="javascript:void(0);" draggable="false">
             <a (click)="toolbar.doAction({
-              action: 'openModal',
-              payload: {modalName: 'editInfoModal', selectedObject: toolbar.selectedObjects[0]}
-            })">
+                action: 'openModal',
+                payload: {modalName: 'editInfoModal', selectedObject: toolbar.selectedObjects[0]}
+              })">
               <i class="fa fa-edit"></i> Edit Information
             </a>
           </li>
           <li *ngIf="toolbar.hasOneObject" href="javascript:void(0);" draggable="false">
             <a (click)="toolbar.doAction({
-              action: 'viewDetails',
-              payload: { selectedObject: toolbar.selectedObjects[0] }
-            })">
+                action: 'viewDetails',
+                payload: { selectedObject: toolbar.selectedObjects[0] }
+              })">
               <i class="fa fa-info-circle"></i> View Detail
             </a>
           </li>
         </ul>
       </li>
-    </ul> -->
+    </ul>
   </ng-template>
 </w-toolbar>
 
-<w-grid-list #gridlist [objects]="objects" (event)="doEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
-
-
-</w-grid-list>
-<ng-template #modalContainer></ng-template>
+<w-object-list class="media-selection-content gray-light" [data]="objects" [sortInline]="false" (completeSort)="onCompleteSort($event)"
+  (completeLoadMore)="onCompleteLoadMore($event)" (completeDoubleClick)="onCompleteDoubleClick($event)" style="margin: 20px 40px">
+  <ng-template #columnBox let-item>
+    <ng-container>
+      <div class="wobject-box-img">
+        <img [src]="item.thumbnail_url" alt="">
+        <div class="wmedia-box-info">{{ item.child_count }} videos
+          <span *ngIf="item.photo_number>1">s</span>
+        </div>
+      </div>
+      <div class="wobject-box-name">
+        <span>{{ item.name }}</span>
+        <div class="wobject-box-action can-click" (click)="favourite()">
+          <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}" (click)="favourite()"></i>
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
+</w-object-list>
 
 <box-no-data *ngIf="objects && objects.length == 0" [title]="'There is no playlist!'" [icon]="'fa fa-file-video-o'" [subTitle]="'Try to upload a new playlist'"
   style="margin-top: 50px; display: block;">

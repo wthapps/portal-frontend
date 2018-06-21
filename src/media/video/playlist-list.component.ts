@@ -19,6 +19,9 @@ import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
+import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
+import { SharingModalV1Service } from '@shared/shared/components/photo/modal/sharing/sharing-modal-v1.service';
+import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 
 declare var _: any;
 
@@ -26,96 +29,99 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'me-playlist-list',
-  entryComponents: [
-    SharingModalV1Component,
-    PlaylistCreateModalComponent,
-    PlaylistModalComponent
-  ],
   templateUrl: 'playlist-list.component.html'
 })
 
-export class ZMediaPlaylistListComponent implements OnInit, LoadModalAble {
+export class ZMediaPlaylistListComponent implements OnInit {
   // display objects on screen
   objects: any;
   // tooltip to introduction
   tooltip: any = Constants.tooltip;
-  // modal component to load
-  modalRef: any;
-  modalIns: any;
+
   // check has selected objects
   hasSelectedObjects: boolean = false;
   selectedObjects: any = [];
   favoriteAll: boolean = false;
   links: any;
+  subAddPlaylist: any;
+  subOpenShare: any;
 
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
 
   constructor(private apiBaseService: ApiBaseService,
     private router: Router,
     private playlistCreateModalService: PlaylistCreateModalService,
+    private playlistModalService: PlaylistModalService,
+    private sharingModalService: SharingModalV1Service,
+    private objectListService: WObjectListService,
     private toastsService: ToastsService,
     private wthConfirmService: WthConfirmService,
     public resolver: ComponentFactoryResolver) {}
 
   ngOnInit() {
+    this.objectListService.selectedObjects$.subscribe(ob => {
+      this.selectedObjectsChanged(ob);
+    });
     this.load();
   }
 
-  loadModalComponent: (component: any) => void;
-
   doEvent(e: any) {
-    switch(e.action) {
-      case 'uploaded':
-        this.load();
-        break;
-      case 'viewDetails':
-        this.router.navigate(['/videos', e.payload.selectedObject.id]);
-        break;
-      case 'preview':
-        this.router.navigate(['/videos', e.payload.selectedObject.id]);
-        break;
-      case 'favourite':
-        let selectedObjects = [];
-        if (e.payload) {
-          selectedObjects = e.payload.selectedObjects;
-        }
-        if (selectedObjects && selectedObjects.length == 0) {
-          selectedObjects = this.objects.filter(v => v.selected == true);
-        }
-        this.apiBaseService.post(`media/favorites/toggle`, {
-          objects: selectedObjects
-          .map(v => {return {id: v.id, object_type: 'Media::Video'}})}).subscribe(res => {
-            this.objects = this.objects.map(v => {
-              let tmp = res.data.filter(d => d.id == v.id);
-              if (tmp && tmp.length > 0) {
-                v.favorite = tmp[0].favorite;
-              }
-              return v;
-            })
-            this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-        });
-        break;
-      case 'deleteMedia':
-        this.wthConfirmService.confirm({
-          message: 'Are you sure to delete',
-          accept: () => {
-            let data = this.objects.filter(v => v.selected)
-            .map(v => {return {id: v.id, model: v.model}});
-            this.apiBaseService.post(`media/videos/delete`, {objects: data}).subscribe(res => {
-              this.objects = this.objects.filter(v => !v.selected)
-            });
-          }
-        })
-        break;
-      case 'getMore':
-        if (this.links && this.links.next) {
-          this.apiBaseService.get(this.links.next).subscribe(res => {
-            this.objects = [...this.objects, ...res.data];
-            this.links = res.meta.links;
-          })
-        }
-        break;
-    }
+    // switch(e.action) {
+    //   case 'uploaded':
+    //     this.load();
+    //     break;
+    //   case 'viewDetails':
+    //     this.router.navigate(['/videos', e.payload.selectedObject.id]);
+    //     break;
+    //   case 'preview':
+    //     this.router.navigate(['/videos', e.payload.selectedObject.id]);
+    //     break;
+    //   case 'favourite':
+    //     let selectedObjects = [];
+    //     if (e.payload) {
+    //       selectedObjects = e.payload.selectedObjects;
+    //     }
+    //     if (selectedObjects && selectedObjects.length == 0) {
+    //       selectedObjects = this.objects.filter(v => v.selected == true);
+    //     }
+    //     this.apiBaseService.post(`media/favorites/toggle`, {
+    //       objects: selectedObjects
+    //       .map(v => {return {id: v.id, object_type: 'Media::Video'}})}).subscribe(res => {
+    //         this.objects = this.objects.map(v => {
+    //           let tmp = res.data.filter(d => d.id == v.id);
+    //           if (tmp && tmp.length > 0) {
+    //             v.favorite = tmp[0].favorite;
+    //           }
+    //           return v;
+    //         })
+    //         this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+    //     });
+    //     break;
+    //   case 'deleteMedia':
+    //     this.wthConfirmService.confirm({
+    //       message: 'Are you sure to delete',
+    //       accept: () => {
+    //         let data = this.objects.filter(v => v.selected)
+    //         .map(v => {return {id: v.id, model: v.model}});
+    //         this.apiBaseService.post(`media/videos/delete`, {objects: data}).subscribe(res => {
+    //           this.objects = this.objects.filter(v => !v.selected);
+    //         });
+    //       }
+    //     })
+    //     break;
+    //   case 'getMore':
+    //     if (this.links && this.links.next) {
+    //       this.apiBaseService.get(this.links.next).subscribe(res => {
+    //         this.objects = [...this.objects, ...res.data];
+    //         this.links = res.meta.links;
+    //       })
+    //     }
+    //     break;
+    // }
+  }
+
+  preview(){
+    this.router.navigate(['/playlists', this.objects.filter(ob => ob.selected)[0].uuid]);
   }
 
   load() {
@@ -124,48 +130,29 @@ export class ZMediaPlaylistListComponent implements OnInit, LoadModalAble {
     });
   }
 
-  selectedObjectsChanged(e: any) {
-    this.hasSelectedObjects = true;
-    if(e && e.length == 0) this.hasSelectedObjects = false;
-
-    this.objects = this.objects.map(v => {
-      if(e.some(ob => ob.id == v.id)) {
-        v.selected = true;
-      } else {
-        v.selected = false;
-      }
-
-      return v;
-    })
-    this.selectedObjects = this.objects.filter(v => v.selected == true);
-    this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+  openModalAddToPlaylist() {
+    if (this.subAddPlaylist) this.subAddPlaylist.unsubscribe();
+    this.playlistModalService.open.next({ selectedObjects: this.selectedObjects });
+    this.subAddPlaylist = this.playlistModalService.onAdd$.take(1).subscribe(e => {
+      this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: e, videos: this.selectedObjects }).subscribe(res => {
+        this.toastsService.success('You just added to Playlist success');
+      });
+    });
   }
 
-  openModal(e: any) {
-    switch(e.action) {
-      case 'share':
-          this.loadModalComponent(SharingModalV1Component);
-          this.modalIns.open({isNew: true});
-          this.modalIns.onSave.take(1).subscribe(e => {
-            // console.log('onSave1');
-            // this.sharingHandler(e);
-          });
-          break;
-      case 'playlist':
-          // this.loadModalComponent(PlaylistModalComponent);
-          // this.modalIns.open();
-          // this.modalIns.onSave.take(1).subscribe(e => {
-          //   console.log('onSave');
-
-          //   // this.sharingHandler(e);
-          // });
-          // this.modalIns.onOpenCreate.take(1).subscribe(e => {
-          //   this.modalIns.close().then();
-          //   this.loadModalComponent(PlaylistCreateModalComponent);
-          //   this.modalIns.open();
-          // });
-          break;
-    }
+  openModalShare() {
+    if (this.subOpenShare) this.subOpenShare.unsubscribe();
+    this.sharingModalService.open.next();
+    this.subOpenShare = this.sharingModalService.onSave$.take(1).subscribe(e => {
+      const data: SharingCreateParams = {
+        recipients: e.selectedContacts.map(c => { return { id: c.id } }),
+        objects: this.selectedObjects.map(ob => { return { id: ob.id, model: ob.model } }),
+        role_id: e.role.id
+      };
+      this.apiBaseService.post('media/sharings', data).subscribe(res => {
+        this.toastsService.success('You have just created sharing successful');
+      })
+    })
   }
 
   createPlaylist() {
@@ -175,13 +162,45 @@ export class ZMediaPlaylistListComponent implements OnInit, LoadModalAble {
     })
   }
 
-  private sharingHandler(e: any) {
-    const selectedObjects = this.objects.filter(v => v.selected == true).map(v => { return {id: v.id, object_type: 'video'}});
-    const recipientIds = e.map(r => r.id);
-    const createCommonSharing: CreateCommonSharing = {role_id: 1, objects: selectedObjects, recipients: recipientIds};
-
-    this.apiBaseService.post(`media/sharings`, createCommonSharing).subscribe(res => {
-      this.toastsService.success('You have just created sharing successful');
-    })
+  favourite() {
+    this.apiBaseService.post(`media/favorites/toggle`, {
+      objects: this.selectedObjects
+        .map(ob => { return { id: ob.id, object_type: ob.model } })
+    }).subscribe(res => {
+      this.objects = this.objects.map(v => {
+        let tmp = res.data.filter(d => d.id == v.id);
+        if (tmp && tmp.length > 0) {
+          v.favorite = tmp[0].favorite;
+        }
+        return v;
+      })
+      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+    });
   }
+
+  selectedObjectsChanged(e: any) {
+    this.hasSelectedObjects = true;
+    if (e && e.length == 0) this.hasSelectedObjects = false;
+    if (this.objects) {
+      this.objects = this.objects.map(v => {
+        if (e.some(ob => ob.id == v.id)) {
+          v.selected = true;
+        } else {
+          v.selected = false;
+        }
+        return v;
+      })
+      this.selectedObjects = this.objects.filter(o => o.selected == true);
+      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+    }
+  }
+
+  onCompleteDoubleClick(e: any){
+    console.log(e);
+  }
+}
+interface SharingCreateParams {
+  objects: Array<{ id, model }>[];
+  recipients: Array<{ id }>[];
+  role_id: number;
 }

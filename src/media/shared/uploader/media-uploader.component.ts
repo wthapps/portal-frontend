@@ -43,6 +43,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   photos: Array<any> = [];
   files: Array<any>;
   isVideos: any;
+  subAddPlaylist: any;
   readonly uploadSteps: any = {
     closed: -1,
     begin: 0,
@@ -176,8 +177,9 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   }
 
   addPlaylist() {
+    if (this.subAddPlaylist) this.subAddPlaylist.unsubscribe();
     this.playlistModalService.open.next({selectedObjects: this.photos});
-    this.playlistModalService.onAdd$.subscribe(e => {
+    this.subAddPlaylist = this.playlistModalService.onAdd$.take(1).subscribe(e => {
       this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: e, videos: this.photos }).subscribe(res => {
         // this.modalIns.close();
       });

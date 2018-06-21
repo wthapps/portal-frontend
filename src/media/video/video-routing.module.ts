@@ -22,6 +22,11 @@ import { ZMediaPlaylistListComponent } from '@media/video/playlist-list.componen
         path: 'playlists',
         component: ZMediaPlaylistListComponent,
         canActivate: [AuthGuard]
+      },
+      {
+        path: 'playlists/:id',
+        component: ZMediaPlaylistListComponent,
+        canActivate: [AuthGuard]
       }
     ])
   ],
