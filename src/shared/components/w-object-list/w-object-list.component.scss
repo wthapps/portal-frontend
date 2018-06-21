@@ -325,8 +325,14 @@ $wobject-checkbox: 30px;
         @include align-items(center);
         .wobject-box-img {
           margin-right: 5px;
+          height: 30px;
+          width: 30px;
+          position: relative;
+          overflow: hidden;
           img {
-            height: 30px;
+            width: 100%;
+            height: auto;
+            @include center();
           }
         }
         .wobject-box-name {

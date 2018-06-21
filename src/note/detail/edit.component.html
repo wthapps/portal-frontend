@@ -16,6 +16,9 @@
         <h4 *ngIf="note.permission == 'view'">{{note.name}}</h4>
       </div>
 
+      <button (click)="onSubmit(form.value)" class="btn btn-text visible-xs-block" type="button">
+        <i class="fa bold fa-angle-left"></i>
+      </button>
       <div class="note-editor-header-input visible-xs-block">
         <h4 *ngIf="note.permission == 'view'">{{note.name}}</h4>
         <h4 *ngIf="note.permission !== 'view'" class="can-click" (click)="modalEditName.open()">

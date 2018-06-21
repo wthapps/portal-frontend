@@ -4,7 +4,9 @@ import {
   SimpleChanges,
   OnInit,
   ViewEncapsulation,
-  AfterViewInit
+  AfterViewInit,
+  OnDestroy,
+  Renderer2
 } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
@@ -60,7 +62,8 @@ declare let _: any;
   styleUrls: ['edit.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
+export class ZNoteDetailEditComponent
+  implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BsModalComponent) modal: BsModalComponent;
   @ViewChild('modalEditName') modalEditName: BsModalComponent;
 
@@ -105,6 +108,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
+    private renderer: Renderer2,
     private noteService: ZNoteService,
     protected router: Router,
     private route: ActivatedRoute,
@@ -118,6 +122,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     private fileUploaderService: FileUploaderService,
     private commonEventService: CommonEventService
   ) {
+    this.renderer.addClass(document.body, 'modal-open');
     this.noSave$ = Observable.merge(
       this.noSaveSubject.asObservable(),
       this.destroySubject,
@@ -137,7 +142,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       .subscribe((e: any) => {
         switch (e.action) {
           case 'note:note_edit:close':
-            this.router.navigate([{ outlets: { detail: null } }], { preserveQueryParams: true});
+            this.router.navigate([{ outlets: { detail: null } }], {
+              preserveQueryParams: true
+            });
             break;
           case 'note:note_edit:print':
             this.print();
@@ -190,10 +197,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       '.ql-editor img',
       this.doubleClickImage.bind(this)
     );
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log('ngOnChanges:', changes);
   }
 
   ngOnDestroy() {
@@ -757,7 +760,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
           );
         }
       } else {
-        if (this.note.permission != 'view' ) {
+        if (this.note.permission != 'view') {
           this.store.dispatch(
             new note.Update({
               ...value,
@@ -777,9 +780,13 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     // } else {
     //   this.router.navigate([{ outlets: { detail: null } }]);
     // }
-    const qOptions = options ? {...options, preserveQueryParams: true} : {preserveQueryParams: true};
+    const qOptions = options
+      ? { ...options, preserveQueryParams: true }
+      : { preserveQueryParams: true };
     this.router.navigate([{ outlets: { detail: null } }], qOptions);
     this.closeSubject.next('');
+
+    this.renderer.removeClass(document.body, 'modal-open');
   }
 
   /**

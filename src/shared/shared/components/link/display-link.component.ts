@@ -1,11 +1,9 @@
-import {
-  Component, Input, OnInit
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'display-link',
   templateUrl: 'display-link.component.html',
-  styleUrls: ['display-link.component.scss'],
+  styleUrls: ['display-link.component.scss']
 })
 export class DisplayLinkComponent implements OnInit {
   @Input() data: any;
@@ -14,7 +12,11 @@ export class DisplayLinkComponent implements OnInit {
   ngOnInit() {
     const id = this.getId(this.data.link);
     if (id) {
-      this.embedCode = '<iframe *ngIf="embedCode" width="560" height="315" src="//www.youtube.com/embed/' + id + '" frameborder="0" allowfullscreen></iframe>';
+      this.embedCode =
+        '<div class="embed-responsive embed-responsive-16by9">\n' +
+        '  <iframe class="embed-responsive-item" src="//www.youtube.com/embed/' + id + '">' +
+        '</iframe>\n' +
+        '</div>';
     }
   }
 
