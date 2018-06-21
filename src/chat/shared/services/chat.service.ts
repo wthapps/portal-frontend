@@ -60,6 +60,8 @@ export class ChatService {
 
   initalize() {
     this.subscribeNotification();
+    // Init get data
+    this.getConversationsAsync().subscribe();
     // this.apiBaseService
     //   .addCommand(ConversationApiCommands.getConversations())
     //   .subscribe(res => {
@@ -95,6 +97,7 @@ export class ChatService {
       const res: any = this.storage.find('chat_conversations');
       if (res && res.value && !option.forceFromApi) {
         observer.next(res);
+        observer.complete();
       } else {
         this.apiBaseService.get('zone/chat/contacts').subscribe((res: any) => {
           this.storage.save('chat_conversations', res);
@@ -102,6 +105,7 @@ export class ChatService {
           this.chatCommonService.setFavouriteConversations();
           this.chatCommonService.setHistoryConversations();
           observer.next(this.storage.find('chat_conversations'));
+          observer.complete();
         });
       }
     });
