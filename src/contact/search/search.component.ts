@@ -155,11 +155,11 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
       }
     }
 
-    if (event.action == 'view_detail') {
-      this.router.navigate(['contacts/detail/' + this.contactService.selectedObjects[0].id]).then();
+    if (event.action === 'view_detail') {
+      this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, {mode: 'view'}]).then();
     }
 
-    if (event.action == 'edit_contact') {
+    if (event.action === 'edit_contact') {
       this.router
         .navigate([
           'contacts',

@@ -7,6 +7,7 @@ import { CountryService } from '@shared/shared/components/countries/countries.se
 import { Constants } from '@shared/constant';
 import { CustomValidator } from '@shared/shared/validator/custom.validator';
 import { ZContactService } from '@contacts/shared/services/contact.service';
+import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
 
 declare let _: any;
 
@@ -18,7 +19,7 @@ declare let _: any;
 export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input('contact') contact: Contact;
-  @Input() mode: string = 'create';
+  @Input() mode = 'create';
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @Output() eventForm: EventEmitter<any> = new EventEmitter<any>();
 
@@ -64,7 +65,8 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
   filteredGroupsMultiple: any = [];
   originalGroups: Object[];
-  disableEdit: boolean = true;
+  disableEdit = true;
+  sub: any;
 
   constructor(private fb: FormBuilder,
               private groupService: GroupService,
@@ -84,11 +86,21 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     this.createForm();
 
 
-    this.form.valueChanges
-      .subscribe(() => {
-        this.eventForm.emit(this.form.valid);
-      });
+    this.sub = this.form.valueChanges
+      .subscribe((e) => {
+        this.eventForm.emit(this.form);
 
+        this.form.get('emails')['controls'].forEach((control, index) => {
+          if (control.valid && control.value.value !== '' && !control.pristine) {
+            let sub = control.valueChanges.pipe(debounceTime(250)).subscribe(ctrl => {
+              const emails = this.form.get('emails')['controls'];
+              this.event.emit({action: 'contact:contact:edit_email', payload: {item: emails[index].value, emails: emails}});
+              sub.unsubscribe();
+              // this.sub.unsubscribe();
+            });
+          }
+        });
+      });
   }
 
   ngOnInit(): void {
@@ -105,9 +117,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnChanges() {
 
-    if (this.contact && this.mode == 'edit') {
-      console.log(this.contact);
-
+    if (this.contact && this.mode !== 'create') {
       this.removeAll();
 
       _.map(this.contact.phones, (v: any) => {
@@ -287,6 +297,10 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
       this.contact[type][i]._destroy = true;
       this.deleteObjects[type].push(this.contact[type][i]);
     }
+
+    if (type === 'emails') {
+      this.event.emit({action: 'contact:contact:remove_email', payload: this.form.controls[type]['controls'][i].value});
+    }
     control.removeAt(i);
   }
 
@@ -313,10 +327,10 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
     this.contact.notes = values.notes;
 
-    if (this.mode == 'create') {
+    if (this.mode === 'create') {
       this.event.emit({action: 'contact:contact:create', payload: {item: this.contact}});
     }
-    if (this.mode == 'edit') {
+    if (this.mode === 'edit') {
       this.event.emit({action: 'contact:contact:update', payload: {item: this.contact}});
     }
   }

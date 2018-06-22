@@ -30,6 +30,11 @@
   content: url("../../assets/icons/notes-50x50.png");
 }
 
+.wthicon-chat:before {
+  content: url("../../assets/icons/chat-50x50.png");
+  transform: scale(.3)
+}
+
 .wthicon-chat-lg:before {
   content: url("../../assets/icons/chat-50x50.png");
 }

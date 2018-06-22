@@ -1,0 +1,12 @@
+
+.user-card-content {
+  .user-card-email {
+    &.only-email {
+      vertical-align: middle;
+    }
+  }
+}
+
+i {
+  cursor: pointer;
+}

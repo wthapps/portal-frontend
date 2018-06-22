@@ -13,6 +13,7 @@ import { CoreModule } from '../../core/core.module';
 import { InvitationModule } from '../../shared/shared/components/invitation/invitation.module';
 import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 import { ZContactUserDetailComponent } from '@contacts/contact/user-detail/contact-user-detail.component';
+import { ZContactViewComponent } from '@contacts/contact/contact-edit/contact-view.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,9 @@ import { ZContactUserDetailComponent } from '@contacts/contact/user-detail/conta
     ZContactUserDetailComponent,
 
     //components
+    ZContactViewComponent,
     ZContactEditComponent
+
   ],
   exports: [
     ZContactListComponent,
@@ -40,6 +43,7 @@ import { ZContactUserDetailComponent } from '@contacts/contact/user-detail/conta
     ZContactDetailComponent,
 
     //components
+    ZContactViewComponent,
     ZContactEditComponent
   ],
   providers: []

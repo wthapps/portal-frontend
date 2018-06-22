@@ -98,7 +98,7 @@ export class ZContactSharedHeaderComponent {
     this.show = false;
     // if contact
     if (data.user_id) {
-      this.router.navigate([`/contacts/detail/${data.id}`]);
+      this.router.navigate([`/contacts/${data.id}`, {mode: 'view'}]);
     } else {
       // else users
       this.router.navigate([`/contacts/user_detail/${data.id}`]);

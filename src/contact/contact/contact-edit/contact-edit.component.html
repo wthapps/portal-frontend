@@ -1,5 +1,7 @@
 <ng-template [ngIf]="contact">
   <form [formGroup]="form" novalidate>
+    <div>
+
     <div class="field-group">
       <div class="field-group-content">
         <div class="media content-overflow-visible">
@@ -109,7 +111,7 @@
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-outline-default" (click)="addItem('phones')">
+        <button *ngIf="mode !== 'view'" type="button" class="btn btn-outline-default" (click)="addItem('phones')">
           <i class="fa fa-plus"></i> Add more
         </button>
       </div>
@@ -157,14 +159,14 @@
                 </div>
               </div>
             </div>
-            <div class="media-right">
+            <div class="media-right" *ngIf="mode !== 'view'">
               <button type="button" class="btn btn-outline-default" (click)="removeItem('emails', i)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-outline-default" (click)="addItem('emails')">
+        <button *ngIf="mode !== 'view'" type="button" class="btn btn-outline-default" (click)="addItem('emails')">
           <i class="fa fa-plus"></i> Add more
         </button>
       </div>
@@ -234,7 +236,7 @@
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-outline-default" (click)="addItem('addresses')">
+        <button *ngIf="mode !== 'view'" type="button" class="btn btn-outline-default" (click)="addItem('addresses')">
           <i class="fa fa-plus"></i> Add more
         </button>
       </div>
@@ -288,7 +290,7 @@
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-outline-default" (click)="addItem('media')">
+        <button *ngIf="mode !== 'view'" type="button" class="btn btn-outline-default" (click)="addItem('media')">
           <i class="fa fa-plus"></i> Add more
         </button>
       </div>
@@ -303,10 +305,7 @@
       </div>
     </div>
 
-    <!-- <div class="form-group pb50">
-      <button *ngIf="mode == 'edit'" [disabled]="!name.valid && name.errors.required" type="button" (click)="onSubmit(form.value)" class="btn btn-outline-primary btn-min mr10">Save</button>
-      <button *ngIf="mode == 'create'" [disabled]="!name.valid && name.errors.required" type="button" (click)="onSubmit(form.value)" class="btn btn-outline-primary btn-min mr10">Create</button>
-      <button type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts/detail', contact.id]">Cancel</button>
-    </div> -->
+    </div>
+
   </form>
 </ng-template>

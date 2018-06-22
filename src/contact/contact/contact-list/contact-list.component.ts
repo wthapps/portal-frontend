@@ -156,7 +156,7 @@ export class ZContactListComponent
   }
 
   viewContactDetail(contactId: any) {
-    this.router.navigate(['contacts/detail/' + contactId]).then();
+    this.router.navigate([`contacts/${contactId}`, { mode: 'view' }]).then();
   }
 
   editContact(contactId: any) {

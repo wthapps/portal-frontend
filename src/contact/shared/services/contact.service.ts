@@ -125,6 +125,10 @@ export class ZContactService extends BaseEntityService<any> {
     });
   }
 
+  checkEmails(payload: any) {
+    return this.apiBaseService.post(`contact/contacts/check_emails`, payload);
+  }
+
   onLoadMore(orderDesc?: boolean) {
     this.page += 1;
     let order: boolean = orderDesc || this.orderDescSubject.getValue();

@@ -7,8 +7,13 @@ import { ZContactService } from '../../shared/services/contact.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
 import { Constants } from '../../../shared/constant/config/constants';
 import { ZContactEditComponent } from '@contacts/contact/contact-edit/contact-edit.component';
-// import { ZContactEditComponent } from '@contacts/contact/contact-edit/contact-edit.component';
-// import { ZContactEditComponent } from './contact-edit.component';
+
+import { _contact } from '../../shared/utils/contact.functions';
+import { GroupService } from '@contacts/group/group.service';
+import { InvitationCreateModalComponent } from '@shared/shared/components/invitation/invitation-create-modal.component';
+import { ZContactViewComponent } from '@contacts/contact/contact-edit/contact-view.component';
+
+declare var _: any;
 
 @Component({
 
@@ -17,6 +22,9 @@ import { ZContactEditComponent } from '@contacts/contact/contact-edit/contact-ed
 })
 export class ZContactEditPageComponent implements OnInit {
   @ViewChild('contactEdit') contactEdit: ZContactEditComponent;
+
+  @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
+
 
   contact: Contact = new Contact({
       phones: [{
@@ -37,14 +45,20 @@ export class ZContactEditPageComponent implements OnInit {
       }]
     }
   );
+
+  emails = [];
   mode: string = 'view';
   pageTitle: string;
 
   tooltip: any = Constants.tooltip;
   formValid: boolean = false;
+  _contact: any = _contact;
+  hasBack = false;
+  urls = Constants.baseUrls;
 
   constructor(private router: Router,
               private contactService: ZContactService,
+              private groupService: GroupService,
               private location: Location,
               private route: ActivatedRoute,
               private toastsService: ToastsService) {
@@ -66,38 +80,113 @@ export class ZContactEditPageComponent implements OnInit {
 
     if (this.mode === 'view') {
       this.pageTitle = 'Contact details';
-    } else if (this.mode == 'create') {
+      this.hasBack = true;
+    } else if (this.mode === 'create') {
       this.pageTitle = 'Create contact';
     } else {
+      this.hasBack = false;
       this.pageTitle = 'Edit contact';
     }
   }
 
-  eventForm(event: any) {
-    this.formValid = event;
+  eventForm(form: any) {
+    this.formValid = form.valid;
+  }
+
+  toggleGroup(name: string) {
+    let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
+      return group.name == name;
+    });
+
+    if (_contact.isContactsHasGroupName([this.contact], name)) {
+      _contact.removeGroupContactsByName([this.contact], name);
+    } else {
+      _contact.addGroupContacts([this.contact], group);
+    }
+    this.contactService.update([this.contact]).subscribe((res: any) => {
+      this.contact = res.data;
+    });
+  }
+
+  doActionsToolbar(event: any) {
+    if (event.action === 'favourite') {
+      this.toggleGroup('favourite');
+    }
+
+    if (event.action === 'blacklist') {
+      this.toggleGroup('blacklist');
+    }
+
+    if (event.action === 'delete') {
+      this.contactService.confirmDeleteContacts([this.contact]);
+    }
+
+    if (event.action === 'social') {
+      if (this.contact && this.contact.wthapps_user && this.contact.wthapps_user.uuid) {
+        window.location.href = _contact.getSocialLink(this.contact.wthapps_user.uuid);
+      }
+    }
+
+    if (event.action === 'chat') {
+      if (this.contact && this.contact.wthapps_user && this.contact.wthapps_user.uuid) {
+        window.location.href = _contact.getChatLink(this.contact.wthapps_user.uuid);
+      }
+    }
+
+    if (event.action === 'edit_contact') {
+      this.router.navigate(['contacts/', this.contact.id, {mode: 'edit'}]).then();
+      this.hasBack = false;
+      this.mode = 'edit';
+    }
   }
 
   doEvent(event: any) {
-    console.log('doing event::::', event.payload.item);
-
     switch (event.action) {
       case 'contact:contact:create':
         this.contactService.create(event.payload.item).subscribe((response: any) => {
-          console.log(response);
           this.toastsService.success('Contact has been just created successfully!');
-          this.router.navigate(['/contacts/detail', response.data.id]);
-          // this.location.back();
+          this.router.navigate(['contacts', response.data.id, {mode: 'view'}]);
         });
         break;
       case 'contact:contact:update':
         this.contactService.update(event.payload.item).subscribe((response: any) => {
-          console.log(response);
           this.toastsService.success('Contact has been just updated successfully!');
-          // this.router.navigate(['/contacts/detail', response.data.id]);
           this.location.back();
         });
         break;
-    }
+      case 'contact:contact:remove_email':
+        _.remove(this.emails, email => {
+          return email.value === event.payload.value;
+        });
+        break;
+      case 'contact:contact:edit_email':
+
+          this.contactService.checkEmails({emails_attributes: [event.payload.item]}).subscribe(response => {
+
+            const currentEmails = _.map(event.payload.emails, 'value.value');
+            _.remove(this.emails, e => {
+              return (currentEmails.indexOf(e.value) < 0);
+            });
+
+            // this.emails = this.emails.concat(response.data);
+            const emails = _.map(this.emails, 'value');
+            response.data.forEach(email => {
+              if (emails.indexOf(email.value) < 0) {
+                this.emails = this.emails.concat(email);
+              }
+            });
+          });
+        break;
+        }
+
+  }
+
+  invite(email: any) {
+    this.invitationModal.open({ data: [{
+      contactId: this.contact.id,
+      email: email.value,
+      fullName: this.contact.name
+    }] });
   }
 
   gotoEdit() {
@@ -106,11 +195,20 @@ export class ZContactEditPageComponent implements OnInit {
   }
 
   goBack()  {
+    this.hasBack = true;
     this.location.back();
   }
 
   private get(id: number) {
     this.contactService.getIdLocalThenNetwork(id)
-      .subscribe(ct => this.contact = Object.assign({}, ct));
+      .subscribe(ct => {
+        this.contact = Object.assign({}, ct);
+        const emails = this.contact.emails.filter(email => email.value !== '');
+        if (emails.length > 0) {
+          this.contactService.checkEmails({emails_attributes: emails}).subscribe(response => {
+            this.emails = response.data;
+          });
+        }
+      });
   }
 }
