@@ -115,12 +115,10 @@ export class ChatCommonService {
     this.updateContactSelect();
   }
 
-  updateConversationBroadcast(groupId: any) {
-    this.apiBaseService
+  updateConversationBroadcast(groupId: any): Promise<any> {
+    return this.apiBaseService
       .post('zone/chat/notification/broadcard_contact', { group_id: groupId })
-      .subscribe((res: any) => {
-        // code goto core/shared/channels/actions/chat_notification.ts
-      });
+      .toPromise();
   }
 
   setDefaultSelectContact() {

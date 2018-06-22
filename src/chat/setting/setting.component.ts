@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { takeUntil } from 'rxjs/operators';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators/takeUntil';
 
 import { ChatService } from '../shared/services/chat.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
@@ -19,6 +19,8 @@ export class ZChatSettingComponent implements OnInit, OnDestroy {
   time_to_history: AbstractControl;
   privacy: string;
   setting: any;
+
+  private destroySubject: Subject<any>;
 
   constructor(
     private fb: FormBuilder,
@@ -42,13 +44,15 @@ export class ZChatSettingComponent implements OnInit, OnDestroy {
       this.privacy = this.setting.privacy;
 
       this.form.valueChanges.pipe(
-        takeUntil(componentDestroyed(this))
+        takeUntil(this.destroySubject)
       ).subscribe(val => this.onSubmit(val));
     });
 
   }
 
   ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   onSubmit(value: any) {

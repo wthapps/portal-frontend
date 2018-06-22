@@ -369,8 +369,9 @@ export class ChatService {
   }
 
   updateDisplay(contact: any, data: any) {
-    this.updateGroupUser(contact.group_id, data, (res: any) => {
-      this.updateDisplayNotification(contact.group_json.id);
+    this.updateGroupUser(contact.group_id, data)
+      .then((res: any) => {
+      return this.updateDisplayNotification(contact.group_json.id);
     });
   }
 
@@ -378,8 +379,9 @@ export class ChatService {
     this.updateGroupUser(contact.group_id, { history: false });
   }
 
-  leaveConversation(contact: any) {
-    this.updateGroupUser(contact.group_id, { leave: true }, (res: any) => {
+  leaveConversation(contact: any): Promise<any> {
+    return this.updateGroupUser(contact.group_id, { leave: true })
+      .then((res: any) => {
       this.chatCommonService.updateConversationBroadcast(contact.group_id);
     });
   }
@@ -387,22 +389,20 @@ export class ChatService {
   removeFromConversation(contact: any, userId: any) {
     this.updateGroupUser(
       contact.group_id,
-      { remove_from_conversation: true, user_id: userId },
-      (res: any) => {
-        this.chatCommonService.updateConversationBroadcast(contact.group_id);
+      { remove_from_conversation: true, user_id: userId })
+      .then((res: any) => {
+        return this.chatCommonService.updateConversationBroadcast(contact.group_id);
       }
     );
   }
 
-  updateGroupUser(groupId: any, data: any, callback?: any) {
-    this.apiBaseService
+  updateGroupUser(groupId: any, data: any) {
+    return this.apiBaseService
       .put('zone/chat/group_user/' + groupId, data)
-      .subscribe((res: any) => {
+      .toPromise().then((res: any) => {
         this.storage.save('chat_conversations', res);
         this.chatCommonService.updateAll();
-        if (callback) {
-          callback(res);
-        }
+        return res;
       });
   }
 
@@ -442,8 +442,8 @@ export class ChatService {
   acceptRequest(contact: any) {
     this.updateGroupUser(
       contact.group_id,
-      { accept_friend: true },
-      (res: any) => {
+      { accept_friend: true })
+      .then((res: any) => {
         contact.active = true;
       }
     );
@@ -452,8 +452,8 @@ export class ChatService {
   declineRequest(contact: any, setDefaultOnSelect: boolean = true) {
     this.updateGroupUser(
       contact.group_id,
-      { status: 'decline' },
-      (res: any) => {
+      { status: 'decline' })
+      .then((res: any) => {
         if (setDefaultOnSelect) {
           this.chatCommonService.setDefaultSelectContact();
         }
@@ -505,14 +505,12 @@ export class ChatService {
       });
   }
 
-  updateDisplayNotification(groupId: any) {
-    this.apiBaseService
+  updateDisplayNotification(groupId: any): Promise<any> {
+    return this.apiBaseService
       .post('zone/chat/notification/broadcard_group_user_display', {
         group_id: groupId
       })
-      .subscribe((res: any) => {
-        // console.log(res);
-      });
+      .toPromise();
   }
 
   getOwnUserProfile() {

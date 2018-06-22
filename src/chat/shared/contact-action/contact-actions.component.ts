@@ -5,6 +5,7 @@ import { ChatService } from '../services/chat.service';
 import { ZChatShareAddToConversationComponent } from '../modal/add-to-conversation.component';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 
 
 declare let $: any;
@@ -20,6 +21,7 @@ export class ZChatContactActionsComponent implements OnInit {
   profileUrl: any;
   @ViewChild('addConversation') addConversation: ZChatShareAddToConversationComponent;
   @Output() updateEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() editEvent: EventEmitter<any> = new EventEmitter<any>();
   // Config component
   @Input() config: any = {
     history: false
@@ -27,6 +29,7 @@ export class ZChatContactActionsComponent implements OnInit {
 
   constructor(private router: Router,
               private chatService: ChatService,
+              private toastsService: ToastsService,
               private zoneReportService: ZSharedReportService,
               private wthConfirmService: WthConfirmService) {
     this.conversationUrl = this.chatService.constant.conversationUrl;
@@ -89,5 +92,19 @@ export class ZChatContactActionsComponent implements OnInit {
 
   report(uuid: any) {
     this.zoneReportService.friend(uuid);
+  }
+
+  viewConversation() {
+    this.router.navigate([this.conversationUrl, this.contact.id]);
+  }
+
+  editConversation() {
+    this.editEvent.emit(this.contact);
+  }
+
+  leaveConversation() {
+    console.debug(this.contact);
+    this.chatService.leaveConversation(this.contact)
+      .then(_ => this.toastsService.success(`You have left conversation '${this.contact.display.name}' successfully`));
   }
 }

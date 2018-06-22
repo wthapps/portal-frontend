@@ -5,6 +5,7 @@
     </button>
     <ul class="dropdown-menu dropdown-menu-right" *ngIf="!config.history">
       <li><a href="javascript:;" (click)="onSelect(contact)">Send Message</a></li>
+      <li *ngIf="contact.group_type == 'multiple'"><a href="javascript:;" (click)="viewConversation()">View Conversation</a></li>
       <!--<li><a href="#">Send Contact</a></li>-->
       <li *ngIf="contact.group_type == 'couple'"><a href="javascript:;" (click)="addToConversation()">Add to Conversation</a></li>
       <li class="divider" role="separator"></li>
@@ -12,6 +13,8 @@
       <li *ngIf="contact.group_type == 'couple'"><a href="javascript:;" (click)="report(contact.display.uuid)">Report Member</a></li>
       <li *ngIf="contact.group_type == 'couple'"><a href="javascript:;" (click)="addBlackList()">Blacklist</a></li>
       <li *ngIf="contact.group_type == 'couple'"><a href="javascript:;" (click)="deleteContact()">Delete Contact</a></li>
+      <li *ngIf="contact.group_type == 'multiple'"><a href="javascript:;" (click)="editConversation()">Edit Conversation</a></li>
+      <li *ngIf="contact.group_type == 'multiple'"><a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a></li>
       <li *ngIf="contact.group_type == 'multiple'"><a href="javascript:;" (click)="deleteContact()">Delete Conversation</a></li>
       <li class="divider" role="separator"></li>
       <li *ngIf="contact.notification"><a href="javascript:;" (click)="disableNotification()">Disable Notification</a></li>
