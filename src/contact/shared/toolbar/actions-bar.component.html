@@ -29,15 +29,6 @@
       <i class="fa" [ngClass]="toggleFavourite ? 'fa-star' : 'fa-star-o'"></i>
     </a>
   </li>
-  <!--<li *ngIf="showEdit">-->
-    <!--<a class="btn btn-default"-->
-       <!--pTooltip="{{ tooltip.edit }}" tooltipPosition="bottom"-->
-       <!--href="javascript:void(0);"-->
-       <!--(click)="emitEvent({action: 'edit_contact'})">-->
-      <!--<i class="fa fa-pencil"></i>-->
-    <!--</a>-->
-  <!--</li>-->
-
 
   <li class="dropdown action">
     <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
@@ -46,19 +37,19 @@
     </a>
     <ul class="dropdown-menu dropdown-menu-right text-right">
       <li *ngIf="showViewDetail">
-        <a href="javascript:;" (click)="emitEvent({action: 'view_detail'})">
+        <a href="javascript:void(0);" (click)="emitEvent({action: 'view_detail'})">
           <i class="fa fa-eye"></i> View Contact
         </a>
       </li>
 
       <li *ngIf="showEdit">
-        <a href="javascript:;" (click)="emitEvent({action: 'edit_contact'})">
+        <a href="javascript:void(0);" (click)="emitEvent({action: 'edit_contact'})">
           <i class="fa fa-pencil"></i> Edit Contact
         </a>
       </li>
 
       <li *ngIf="showTag">
-        <a href="javascript:;" (click)="emitEvent({action: 'tag'})">
+        <a href="javascript:void(0);" (click)="emitEvent({action: 'tag'})">
           <i class="fa fa-users"></i> Add to Group
         </a>
       </li>

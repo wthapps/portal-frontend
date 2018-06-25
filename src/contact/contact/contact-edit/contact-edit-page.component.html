@@ -1,22 +1,21 @@
 <z-contact-shared-toolbar [pageTitle]="pageTitle" [hasBack]="hasBack" [currentPage]="'detail'">
   <div class="page-body-control-nav page-body-control-nav-right">
-    <button *ngIf="mode == 'create' && contactEdit"
-            [disabled]="!contactEdit.name.valid && contactEdit.name.errors.required || !formValid"
-            type="button"
-            (click)="contactEdit.onSubmit(contactEdit.form.value)"
+    <button *ngIf="mode === 'create'" type="button"
+            [disabled]="!contactEdit?.name?.valid && contactEdit?.name?.errors?.required || !formValid"
+            (click)="contactEdit.onSubmit(contactEdit?.form?.value)"
             class="btn btn-outline-primary btn-min mr10">Create</button>
 
-    <button *ngIf="mode == 'create' && contactEdit" type="reset"
+    <button *ngIf="mode === 'create'" type="reset"
             class="btn btn-outline-default btn-min"
             [routerLink]="['/contacts']">Cancel</button>
 
-    <button *ngIf="mode == 'edit' && contactEdit"
-            [disabled]="(!contactEdit.name.valid && contactEdit.name.errors.required) || contactEdit.disableEdit || !formValid"
-            type="button"
-            (click)="contactEdit.onSubmit(contactEdit.form.value)"
+    <button *ngIf="mode === 'edit'" type="button"
+            [disabled]="(!contactEdit?.name?.valid && contactEdit?.name?.errors?.required)
+            || contactEdit?.disableEdit || !formValid"
+            (click)="contactEdit.onSubmit(contactEdit?.form?.value)"
             class="btn btn-outline-primary btn-min mr10">Save</button>
 
-    <button *ngIf="mode == 'edit' && contactEdit" type="reset"
+    <button *ngIf="mode === 'edit'" type="reset"
             class="btn btn-outline-default btn-min"
             (click)="goBack()">Cancel</button>
 
@@ -40,10 +39,10 @@
                       [contact]="contact" [mode]="mode"
                       (eventForm)="eventForm($event)"
                       (event)="doEvent($event)"></contact-edit>
+      <ng-container *ngIf="mode==='view'">
+        <contact-view [contact]="contact"></contact-view>
+      </ng-container>
 
-      <!--<ng-container *ngIf="mode==='view'">-->
-        <!--<contact-view></contact-view>-->
-      <!--</ng-container>-->
     </div>
   </div>
 
@@ -116,4 +115,6 @@
   </div>
 
 </div>
+<contact-add-group-modal #modal></contact-add-group-modal>
+
 <invitation-create-modal #invitationModal (event)="doEvent($event)"></invitation-create-modal>

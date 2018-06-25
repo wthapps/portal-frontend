@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -15,10 +15,8 @@ declare let _: any;
   selector: 'contact-view',
   templateUrl: 'contact-view.component.html'
 })
-export class ZContactViewComponent implements OnInit {
-  @ViewChild('modal') modal: ContactAddGroupModalComponent;
-  contactId: number;
-  data: any;
+export class ZContactViewComponent {
+  @Input() contact: any;
 
   phoneCategories: any = Constants.phoneCategories;
   emailCategories: any = Constants.emailCategories;
@@ -28,59 +26,9 @@ export class ZContactViewComponent implements OnInit {
 
   countriesCode$: Observable<any>;
 
-  constructor(private contactService: ZContactService,
-              private route: ActivatedRoute,
-              private groupService: GroupService,
-              private router: Router,
-              private countryService: CountryService,) {
+  constructor(private countryService: CountryService) {
     this.countriesCode$ = this.countryService.countriesCode$;
   }
 
-  ngOnInit() {
-    this.route.params.forEach((params: Params) => {
-      //
-      console.log('current contact id:::::', params['id']);
-      this.getContact(params['id']);
-      this.contactId = params['id'];
-    });
-  }
 
-  toggleGroup(name: string) {
-    let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
-      return group.name == name;
-    });
-
-    if (_contact.isContactsHasGroupName([this.data], name)) {
-      _contact.removeGroupContactsByName([this.data], name);
-    } else {
-      _contact.addGroupContacts([this.data], group);
-    }
-    this.contactService.update([this.data]).subscribe((res: any) => {
-      this.data = res.data;
-    });
-  }
-
-  doActionsToolbar(event: any) {
-    if (event.action == 'favourite') {
-      this.toggleGroup('favourite');
-    }
-
-    if (event.action == 'blacklist') {
-      this.toggleGroup('blacklist');
-    }
-
-    if (event.action == 'delete') {
-      this.contactService.confirmDeleteContacts([this.data]);
-    }
-
-    if (event.action == 'edit_contact') {
-      this.router.navigate(['contacts/', this.data.id, {mode: 'edit'}]).then();
-    }
-  }
-
-
-  private async getContact(id: number) {
-    this.contactService.getIdLocalThenNetwork(id)
-      .subscribe(ct => this.data = Object.assign({}, ct));
-  }
 }

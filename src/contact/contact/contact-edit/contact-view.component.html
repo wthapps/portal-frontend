@@ -4,16 +4,16 @@
         <div class="media">
           <div class="media-left">
             <span class="avatar-md">
-              <img [src]="data.profile_image" alt="">
+              <img [src]="contact?.profile_image" alt="">
             </span>
           </div>
           <div class="media-body">
-            <h4 class="bold">{{ data.name }}</h4>
+            <h4 class="bold">{{ contact?.name }}</h4>
             <p>
-              <small>{{ data.job_title }}</small>
+              <small>{{ contact?.job_title }}</small>
             </p>
-            <p *ngIf="data.groups.length > 0">
-              <span *ngFor="let group of data.groups" class="group group-default mr10">{{ group.name }}</span>
+            <p *ngIf="contact?.groups?.length > 0">
+              <span *ngFor="let group of contact.groups" class="group group-default mr10">{{ group.name }}</span>
             </p>
           </div>
         </div>
@@ -25,13 +25,13 @@
         <h3>Phone</h3>
       </div>
       <div class="field-group-content">
-        <dl class="dl-horizontal" *ngIf="data.phones?.length > 0">
-          <ng-template ngFor let-item [ngForOf]="data.phones">
+        <dl class="dl-horizontal" *ngIf="contact?.phones?.length > 0">
+          <ng-template ngFor let-item [ngForOf]="contact.phones">
             <dt>{{ item.category | keyToValue:phoneCategories:'value':'text' }}</dt>
             <dd>
               {{ item.country_alpha_code | phoneCodeFlag:countriesCode | json }}
               <p>
-                <img *ngIf="(countriesCode$ | async) && data.phones[0]?.country_alpha_code && item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
+                <img *ngIf="(countriesCode$ | async) && contact.phones[0]?.country_alpha_code && item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
                   src="assets/images/flags/{{ item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg" width="30"
                   alt=""> {{ item.value }}
               </p>
@@ -46,8 +46,8 @@
         <h3>Email</h3>
       </div>
       <div class="field-group-content">
-        <dl class="dl-horizontal" *ngIf="data.emails.length > 0">
-          <ng-template ngFor let-item [ngForOf]="data.emails">
+        <dl class="dl-horizontal" *ngIf="contact?.emails?.length > 0">
+          <ng-template ngFor let-item [ngForOf]="contact.emails">
             <dt>{{ item.category | keyToValue:emailCategories:'value':'text' }}</dt>
             <dd>
               <p>
@@ -64,8 +64,8 @@
         <h3>Address</h3>
       </div>
       <div class="field-group-content">
-        <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
-          <ng-template ngFor let-item [ngForOf]="data.addresses">
+        <dl class="dl-horizontal" *ngIf="contact?.addresses?.length > 0">
+          <ng-template ngFor let-item [ngForOf]="contact.addresses">
             <dt>{{ item.category | keyToValue:addressCategories:'value':'text' }}</dt>
             <dd>
               <p>
@@ -86,8 +86,8 @@
         <h3>Media</h3>
       </div>
       <div class="field-group-content">
-        <dl class="dl-horizontal" *ngIf="data.media.length > 0">
-          <ng-template ngFor let-item [ngForOf]="data.media">
+        <dl class="dl-horizontal" *ngIf="contact?.media?.length > 0">
+          <ng-template ngFor let-item [ngForOf]="contact.media">
             <dt>{{ item.category | keyToValue:mediaCategories:'value':'text' }}</dt>
             <dd>
               <p>
@@ -104,10 +104,9 @@
         <h3>Note</h3>
       </div>
       <div class="field-group-content">
-        {{ data.notes }}
+        {{ contact.notes }}
       </div>
     </div>
 
   </div>
 
-<contact-add-group-modal #modal></contact-add-group-modal>

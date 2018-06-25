@@ -11,7 +11,7 @@ import { ZContactEditComponent } from '@contacts/contact/contact-edit/contact-ed
 import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '@contacts/group/group.service';
 import { InvitationCreateModalComponent } from '@shared/shared/components/invitation/invitation-create-modal.component';
-import { ZContactViewComponent } from '@contacts/contact/contact-edit/contact-view.component';
+import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-add-group/contact-add-group-modal.component';
 
 declare var _: any;
 
@@ -21,7 +21,7 @@ declare var _: any;
   templateUrl: 'contact-edit-page.component.html'
 })
 export class ZContactEditPageComponent implements OnInit {
-  @ViewChild('contactEdit') contactEdit: ZContactEditComponent;
+  @ViewChild('modal') modal: ContactAddGroupModalComponent;
 
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
 
@@ -73,6 +73,9 @@ export class ZContactEditPageComponent implements OnInit {
         this.mode = 'create';
       }
 
+      if (this.mode === 'view') {
+        this.hasBack = true;
+      }
       if (id !== undefined && id !== 'new') {
         this.get(id);
       }
@@ -121,22 +124,17 @@ export class ZContactEditPageComponent implements OnInit {
       this.contactService.confirmDeleteContacts([this.contact]);
     }
 
-    if (event.action === 'social') {
-      if (this.contact && this.contact.wthapps_user && this.contact.wthapps_user.uuid) {
-        window.location.href = _contact.getSocialLink(this.contact.wthapps_user.uuid);
-      }
-    }
-
-    if (event.action === 'chat') {
-      if (this.contact && this.contact.wthapps_user && this.contact.wthapps_user.uuid) {
-        window.location.href = _contact.getChatLink(this.contact.wthapps_user.uuid);
-      }
-    }
-
     if (event.action === 'edit_contact') {
       this.router.navigate(['contacts/', this.contact.id, {mode: 'edit'}]).then();
       this.hasBack = false;
       this.mode = 'edit';
+    }
+    if (event.action === 'tag') {
+      this.modal.open({
+        mode: 'edit',
+        groups: this.contact.groups,
+        contacts: [this.contact]
+      });
     }
   }
 
