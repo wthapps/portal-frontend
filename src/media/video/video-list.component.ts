@@ -17,7 +17,7 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { PlaylistModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-modal.component';
 import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
-import { SharingModalV1Service } from '@shared/shared/components/photo/modal/sharing/sharing-modal-v1.service';
+import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 
 declare var _: any;
 
@@ -47,7 +47,7 @@ export class ZMediaVideoListComponent implements OnInit {
   constructor(private apiBaseService: ApiBaseService,
     private router: Router,
     private commonEventService: CommonEventService,
-    private sharingModalService: SharingModalV1Service,
+    private sharingModalService: SharingModalService,
     private toastsService: ToastsService,
     private wthConfirmService: WthConfirmService,
     private playlistModalService: PlaylistModalService,

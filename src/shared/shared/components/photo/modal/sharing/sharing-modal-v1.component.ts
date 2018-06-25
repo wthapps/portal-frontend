@@ -7,8 +7,8 @@ import { ApiBaseService, CommonEventService } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@wth/shared/constant';
 import { ModalComponent } from '@shared/shared/components/base/components';
-import { SharingModalConfig } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { SharingModalV1Service } from '@shared/shared/components/photo/modal/sharing/sharing-modal-v1.service';
+import { SharingModalOptions } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 declare var $: any;
 declare var _: any;
 
@@ -31,7 +31,7 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
 
 
-  constructor(private apiBaseService: ApiBaseService, private sharingModalService: SharingModalV1Service) {
+  constructor(private apiBaseService: ApiBaseService, private sharingModalService: SharingModalService) {
   }
 
   ngOnInit(){
@@ -47,7 +47,7 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   }
 
   save() {
-    const data = {selectedContacts: this.selectedContacts, role: this.role};
+    const data = {selectedContacts: this.selectedContacts, recipients: this.sharedContacts, role: this.role};
     // short distance
     this.onSave.emit(data);
     // long distance
@@ -55,15 +55,19 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
     this.modal.close().then();
   }
 
-  open(config?: SharingModalConfig) {
+  open(options: SharingModalOptions = {sharedContacts: []}) {
     this.getRoles();
+    this.sharedContacts = options.sharedContacts;
+    // reset textContacts, selectedContacts
+    this.textContacts = [];
+    this.selectedContacts = [];
     this.modal.open().then();
   }
 
   complete(e: any) {
     let body: any;
     body = {'q': (e.query === 'undefined' ? '' : 'name:' + e.query)};
-    this.apiBaseService.get('media/sharings/recipients', body).subscribe(res => {
+    this.apiBaseService.post('users/search', body).subscribe(res => {
       const selectedContactIds = this.selectedContacts.map(ct => ct.id);
       const sharedContactIds = this.sharedContacts.map(sc => sc.id);
       this.filteredContacts = res['data'].filter(ct => !selectedContactIds.includes(ct.id) && !sharedContactIds.includes(ct.id));
@@ -87,6 +91,15 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
       this.roles = response.data.sort((a, b) => a.id - b.id);
       this.role = this.roles[0];
     });
+  }
+
+  isDeletedItem() {
+
+  }
+
+  toggleRemoving(contact: any) {
+    this.hasChanged = true;
+    contact._deleted = !contact._deleted;
   }
 
   changeRole(e: any) {

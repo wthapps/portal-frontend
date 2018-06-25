@@ -50,21 +50,20 @@
         <div class="collapse in pre-scrollable" id="collapseContact">
           <div class="modal-body-collapse-in">
             <div class="media-list-item" *ngFor="let contact of sharedContacts">
-              <div class="media" [ngClass]="isDeletedItem(contact.id) ? 'remove': ''">
+              <div class="media" [ngClass]="contact._deleted ? 'remove': ''">
                 <div class="media-left">
                   <figure>
-                    <img [src]="contact.profile_image" alt="">
+                    <img [src]="contact.user.profile_image" alt="">
                   </figure>
                 </div>
                 <div class="media-body">
-                  {{ contact.name }}
+                  {{ contact.user.name }}
                 </div>
 
                 <div class="media-right">
-                  <a class="btn btn-default" (click)="toggleRemoving($event, contact.id)" [title]="isDeletedItem(contact.id) ? 'Undo removing':'Remove'"
-                    href="javascript:void(0)">
-                    <i *ngIf="!isDeletedItem(contact.id)" class="fa fa-times" title="remove"></i>
-                    <i *ngIf="isDeletedItem(contact.id)" class="fa fa-undo" title="Undo removing"></i>
+                  <a class="btn btn-default" (click)="toggleRemoving(contact)" [title]="contact._deleted ? 'Undo removing':'Remove'" href="javascript:void(0)">
+                    <i *ngIf="!contact._deleted" class="fa fa-times" title="remove"></i>
+                    <i *ngIf="contact._deleted" class="fa fa-undo" title="Undo removing"></i>
                   </a>
                 </div>
               </div>

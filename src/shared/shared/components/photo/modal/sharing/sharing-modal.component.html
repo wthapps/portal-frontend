@@ -1,21 +1,13 @@
-<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'"
-          style="display: inline;">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
   <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title">Sharing</h4>
   </bs-modal-header>
   <bs-modal-body>
-      <div class="row pl20 pr20">
+    <div class="row pl20 pr20">
       <div class="input-group">
-        <p-autoComplete *ngIf="!deleting"
-                        placeholder="Search contacts"
-                        [(ngModel)]="textContacts"
-                        [suggestions]="filteredContacts"
-                        [multiple]="true"
-                        [minLength]="1"
-                        field="name"
-                        (onSelect)="selectContact($event)"
-                        (onUnselect)="unSelectContact($event)"
-                        (completeMethod)="contactTerm$.next($event)">
+        <p-autoComplete *ngIf="!deleting" placeholder="Search contacts" [(ngModel)]="textContacts" [suggestions]="filteredContacts"
+          [multiple]="true" [minLength]="1" field="name" (onSelect)="selectContact($event)" (onUnselect)="unSelectContact($event)"
+          (completeMethod)="contactTerm$.next($event)">
         </p-autoComplete>
 
         <!--[ngClass]="{'fa fa-check': (!sharing.permission || sharing.permission == 'view')}"></i> View only</a></li>-->
@@ -30,11 +22,9 @@
         <div class="input-group-btn">
           <!-- Single button -->
           <div class="btn-group">
-            <button type="button" class="btn btn-outline-default dropdown-toggle"
-                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-            [title]="role.display_name">
-              <i class="fa"
-                 [ngClass]="role.name == 'view'? 'fa-eye' :
+            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+              [title]="role.display_name">
+              <i class="fa" [ngClass]="role.name == 'view'? 'fa-eye' :
                             role.name == 'download'? 'fa-download' :
                             role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
               </i>
@@ -43,8 +33,7 @@
             <ul class="dropdown-menu dropdown-menu-right">
               <li *ngFor="let r of roles" (click)="changeRole(r)">
                 <a href="javascript:void(0);"> {{ r.display_name }}
-                  <i class="pull-right"
-                     [ngClass]="{'fa fa-check': (r.id === role.id)}"></i>
+                  <i class="pull-right" [ngClass]="{'fa fa-check': (r.id === role.id)}"></i>
                 </a>
               </li>
             </ul>
@@ -56,8 +45,7 @@
     <div class="modal-fixed-height">
 
       <div class="modal-body-collapse" *ngIf="sharedContacts?.length">
-        <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
-           aria-controls="collapseExample">
+        <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false" aria-controls="collapseExample">
           Shared with {{ sharedContacts?.length }} Contacts
         </a>
         <div class="collapse in pre-scrollable" id="collapseContact">
@@ -74,9 +62,8 @@
                 </div>
 
                 <div class="media-right">
-                  <a class="btn btn-default" (click)="toggleRemoving($event, contact.id)"
-                     [title]="isDeletedItem(contact.id) ? 'Undo removing':'Remove'"
-                     href="javascript:void(0)">
+                  <a class="btn btn-default" (click)="toggleRemoving($event, contact.id)" [title]="isDeletedItem(contact.id) ? 'Undo removing':'Remove'"
+                    href="javascript:void(0)">
                     <i *ngIf="!isDeletedItem(contact.id)" class="fa fa-times" title="remove"></i>
                     <i *ngIf="isDeletedItem(contact.id)" class="fa fa-undo" title="Undo removing"></i>
                   </a>
@@ -92,11 +79,8 @@
   <bs-modal-footer>
 
     <button *ngIf="hasChanged" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
-    <button *ngIf="!hasChanged" type="button" (click)="close()"
-            class="btn btn-outline-primary btn-min">Done    </button>
-    <button *ngIf="hasChanged" type="button" (click)="save()"
-            class="btn btn-outline-primary btn-min">Save
+    <button *ngIf="!hasChanged" type="button" (click)="close()" class="btn btn-outline-primary btn-min">Done </button>
+    <button *ngIf="hasChanged" type="button" (click)="save()" class="btn btn-outline-primary btn-min">Save
     </button>
   </bs-modal-footer>
 </bs-modal>
-

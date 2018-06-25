@@ -3,7 +3,7 @@ import { Communication } from "@shared/shared/helpers/communication/communicatio
 import { Subject, Observable } from "rxjs";
 
 @Injectable()
-export class SharingModalV1Service {
+export class SharingModalService {
   open: Subject<any> = new Subject<any>();
   onOpen$: Observable<any> = this.open.asObservable();
 

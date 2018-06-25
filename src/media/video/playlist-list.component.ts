@@ -20,7 +20,7 @@ import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
-import { SharingModalV1Service } from '@shared/shared/components/photo/modal/sharing/sharing-modal-v1.service';
+import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { Media } from '@shared/shared/models/media.model';
 import { Observable } from 'rxjs/Observable';
@@ -66,7 +66,7 @@ export class ZMediaPlaylistListComponent implements OnInit {
     private router: Router,
     private playlistCreateModalService: PlaylistCreateModalService,
     private playlistModalService: PlaylistModalService,
-    private sharingModalService: SharingModalV1Service,
+    private sharingModalService: SharingModalService,
     private objectListService: WObjectListService,
     private toastsService: ToastsService,
     private wthConfirmService: WthConfirmService,

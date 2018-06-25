@@ -7,12 +7,12 @@ import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete
 import { SharingModalComponent } from './sharing-modal.component';
 import { SharingModalV1Component } from './sharing-modal-v1.component';
 import { SharingService } from './sharing.service';
-import { SharingModalV1Service } from '@shared/shared/components/photo/modal/sharing/sharing-modal-v1.service';
+import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 
 @NgModule({
   imports: [CommonModule, FormsModule, BsModalModule, AutoCompleteModule],
   declarations: [SharingModalComponent, SharingModalV1Component],
   exports: [SharingModalComponent, SharingModalV1Component],
-  providers: [SharingService, SharingModalV1Service]
+  providers: [SharingService, SharingModalService]
 })
 export class PartialsPhotoSharingModule {}

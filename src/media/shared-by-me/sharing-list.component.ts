@@ -16,6 +16,8 @@ import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { MediaActionHandler } from '@media/shared/media';
 import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
+import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
+import { ApiBaseService } from '@shared/services';
 
 @Component({
   selector: 'me-sharings',
@@ -25,6 +27,11 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
   sharings$: Observable<any>;
   loading$: Observable<any>;
   nextLink$: Observable<any>;
+  objects: any;
+  hasSelectedObjects: any;
+  selectedObjects: any;
+  favoriteAll: any;
+  subShareModal: any;
 
   tooltip: any = Constants.tooltip;
 
@@ -34,6 +41,8 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
     protected store: Store<appStore.State>,
     protected resolver: ComponentFactoryResolver,
     private mediaUploaderDataService: MediaUploaderDataService,
+    private sharingModalService: SharingModalService,
+    private apiBaseService: ApiBaseService,
     private router: Router,
     private confirmService: WthConfirmService,
     private sharingService: SharingService
@@ -52,7 +61,9 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
   }
 
   ngOnInit() {
-    this.doEvent({ action: 'getAll', payload: {path: this.path, queryParams: {}} });
+    this.apiBaseService.get('media/sharings').subscribe(res => {
+      this.objects = res.data;
+    })
   }
 
   doEvent(event: any) {
@@ -89,6 +100,36 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
         });
         break;
     }
+  }
+
+  openModalSharing() {
+    if(this.subShareModal) this.subShareModal.unsubscribe();
+    this.sharingModalService.open.next();
+    this.apiBaseService.get(`media/sharings/recipients`, {id: this.selectedObjects[0].id}).subscribe(res => {
+      this.sharingModalService.open.next({sharedContacts: res.data});
+    });
+    this.subShareModal = this.sharingModalService.onSave$.take(1).subscribe(e => {
+      console.log(e);
+
+      this.apiBaseService.post('media/sharings/add_remove_recipients', {id: this.selectedObjects[0].id, role_id: e.role.id, recipients: e.selectedContacts}).subscribe(res => {
+        console.log(res);
+      })
+    })
+  }
+
+  selectedObjectsChanged(e: any) {
+    this.hasSelectedObjects = true;
+    if (e && e.length == 0) this.hasSelectedObjects = false;
+    this.objects = this.objects.map(v => {
+      if (e.some(ob => ob.id == v.id)) {
+        v.selected = true;
+      } else {
+        v.selected = false;
+      }
+      return v;
+    })
+    this.selectedObjects = this.objects.filter(v => v.selected == true);
+    this.favoriteAll = this.selectedObjects.every(s => s.favorite);
   }
 
   viewDetails(payload: any) {
