@@ -29,6 +29,16 @@ export class StorageService {
     }
   }
 
+  remove(key: string, item: any) {
+    console.debug(key, item);
+    this.listItem = this.listItem.filter(item => item.key !== key);
+  }
+
+  update(key: string, item: any) {
+    console.debug(key, item);
+    // this.listItem = [...this.listItem].map(item => (item.key !== key) ? item : value);
+  }
+
   saveNew(key: string, value: any) {
     let item = new StorageItem(key, _.clone(value));
     _.remove(this.listItem, (i: any) => {

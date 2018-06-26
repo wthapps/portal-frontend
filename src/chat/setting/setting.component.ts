@@ -20,7 +20,7 @@ export class ZChatSettingComponent implements OnInit, OnDestroy {
   privacy: string;
   setting: any;
 
-  private destroySubject: Subject<any>;
+  private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(
     private fb: FormBuilder,

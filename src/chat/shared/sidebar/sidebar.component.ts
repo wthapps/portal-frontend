@@ -66,8 +66,8 @@ export class ZChatSidebarComponent implements OnInit {
           } else {
             this.chatService
               .getConversationsAsync()
-              .take(1)
-              .subscribe((res: any) => {
+              .toPromise()
+              .then((res: any) => {
                 if (res.value && res.value.data && res.value.data[0]) {
                   this.chatService.router.navigate([
                     `${this.chatService.constant.conversationUrl}/${
