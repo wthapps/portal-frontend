@@ -5,6 +5,7 @@ import { ZChatToolbarComponent } from '../toolbar/toolbar.component';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { StorageService, UrlService, HandlerService } from '@shared/services';
 import { Store } from '@ngrx/store';
+import { CONVERSATION_SELECT } from '@wth/shared/constant';
 
 declare var $: any;
 
@@ -57,7 +58,7 @@ export class ZChatSidebarComponent implements OnInit {
                     if (
                       contact.id === parseInt(this.urlService.parse().paths[1])
                     ) {
-                      this.storageService.save('conversation_select', contact);
+                      this.storageService.save(CONVERSATION_SELECT, contact);
                       this.chatService.getMessages(contact.group_json.id);
                     }
                   });

@@ -3,7 +3,7 @@ import { ChatService } from '../services/chat.service';
 import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { Constants } from '@wth/shared/constant';
+import { Constants, CHAT_CONVERSATIONS } from '@wth/shared/constant';
 import { CommonEventService } from '@shared/services';
 
 
@@ -107,7 +107,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   checkSendMessage(user: any) {
-    let conversations: any = this.chatService.storage.find('chat_conversations').value;
+    let conversations: any = this.chatService.storage.find(CHAT_CONVERSATIONS).value;
     let contact: any = _.find(conversations.data, {'partner_id': user.id});
     if (contact) {
       this.showSendMessage = true;
@@ -117,7 +117,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   inContact(user: any) {
-    let conversations: any = this.chatService.storage.find('chat_conversations').value;
+    let conversations: any = this.chatService.storage.find(CHAT_CONVERSATIONS).value;
     let contact: any = _.find(conversations.data, {'partner_id': user.id});
     if (contact) {
       return true;

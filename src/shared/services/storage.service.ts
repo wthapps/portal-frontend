@@ -29,14 +29,20 @@ export class StorageService {
     }
   }
 
-  remove(key: string, item: any) {
-    console.debug(key, item);
-    this.listItem = this.listItem.filter(item => item.key !== key);
+  removeItemOfKey(key: string, item: any): void {
+    let value: any = this.get(key);
+    if(Array.isArray(value)) {
+      value = value.filter(i => i.id !== item.id);
+      this.save(key, value);
+    }
   }
 
-  update(key: string, item: any) {
-    console.debug(key, item);
-    // this.listItem = [...this.listItem].map(item => (item.key !== key) ? item : value);
+  updateItemOfKey(key: string, item: any) {
+    let value: any = this.get(key);
+    if(Array.isArray(value)) {
+      value = value.map(i => (i.id !== item.id ? i : item));
+      this.save(key, _.clone(value));
+    }
   }
 
   saveNew(key: string, value: any) {

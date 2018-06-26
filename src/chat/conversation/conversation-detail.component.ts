@@ -23,7 +23,6 @@ declare var _: any;
 declare var $: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'conversation-detail',
   templateUrl: 'conversation-detail.component.html'
 })
