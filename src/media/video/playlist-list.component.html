@@ -71,28 +71,33 @@
   </ng-template>
 </w-toolbar>
 
-<w-object-list class="media-selection-content gray-light" [data]="objects" [sortInline]="false" (completeSort)="onCompleteSort($event)"
-  (completeLoadMore)="onCompleteLoadMore($event)" (completeDoubleClick)="onCompleteDoubleClick($event)" style="margin: 20px 40px">
-  <ng-template #columnBox let-item>
-    <ng-container>
-      <div class="wobject-box-img">
-        <img [src]="item.thumbnail_url" alt="">
-        <div class="wmedia-box-info">{{ item.child_count }} videos
-          <span *ngIf="item.photo_number>1">s</span>
-        </div>
-      </div>
-      <div class="wobject-box-name">
-        <span>{{ item.name }}</span>
-        <div class="wobject-box-action can-click" (click)="favourite()">
-          <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}" (click)="favourite()"></i>
-        </div>
-      </div>
-    </ng-container>
-  </ng-template>
-</w-object-list>
+<div class="page-body-content has-page-body-control gray-light">
+  <div class="page-body-content-in">
+    <w-object-list [data]="objects" [sortInline]="false" (completeSort)="onCompleteSort($event)"
+                   (completeLoadMore)="onCompleteLoadMore($event)" (completeDoubleClick)="onCompleteDoubleClick($event)">
+      <ng-template #columnBox let-item>
+        <ng-container>
+          <div class="wobject-box-img">
+            <img [src]="item.thumbnail_url" alt="">
+            <div class="wmedia-box-info">{{ item.child_count }} videos
+              <span *ngIf="item.photo_number>1">s</span>
+            </div>
+          </div>
+          <div class="wobject-box-name">
+            <span>{{ item.name }}</span>
+            <div class="wobject-box-action can-click" (click)="favourite()">
+              <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}" (click)="favourite()"></i>
+            </div>
+          </div>
+        </ng-container>
+      </ng-template>
+    </w-object-list>
 
-<box-no-data *ngIf="objects && objects.length == 0" [title]="'There is no playlist!'" [icon]="'fa fa-file-video-o'" [subTitle]="'Try to upload a new playlist'"
-  style="margin-top: 50px; display: block;">
-  <button class="btn btn-outline-primary" (click)="createPlaylist()">
-    <i class="fa fa-cloud-upload"> </i> Create Playlist </button>
-</box-no-data>
+    <box-no-data *ngIf="objects && objects.length == 0" [title]="'There is no playlist!'" [icon]="'fa fa-file-video-o'" [subTitle]="'Try to upload a new playlist'"
+                 style="margin-top: 50px; display: block;">
+      <button class="btn btn-outline-primary" (click)="createPlaylist()">
+        <i class="fa fa-cloud-upload"> </i> Create Playlist </button>
+    </box-no-data>
+
+  </div>
+</div>

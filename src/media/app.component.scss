@@ -358,3 +358,16 @@ $photo-box-img-owner: 150px;
     }
   }
 }
+
+.page-body-content-in {
+  .wobject-view {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+  @media (min-width: $screen-lg-min) {
+    .wobject-row-toolbar {
+      margin-top: -15px;
+    }
+  }
+
+}
