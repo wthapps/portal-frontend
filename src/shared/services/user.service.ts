@@ -22,14 +22,17 @@ export class UserService {
   defaultPayment: any;
   profile$: Observable<User>;
   notificationSetting$: Observable<any>;
+  EXP_TIME = 24 * 60 * 60 * 365 * 1000;
 
-  public cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;
+  cookieOptionsArgs: CookieOptions = {
+    ...Constants.cookieOptionsArgs,
+    expires: new Date(new Date().getTime() + this.EXP_TIME)
+  };
   // Please use getSyncProfile
   private profile: User = null;
   // Please use getAsyncProfile
 
   private readonly NOTIFICATION_SETTING_URL: string = 'users/notification_settings';
-  private readonly EXP_TIME_MS = 24 * 60 * 60 * 365 * 1000;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
   private _notificationSetting: BehaviorSubject<any> = new BehaviorSubject<any>(
     {}
@@ -126,8 +129,6 @@ export class UserService {
     this.cookieService.remove(Constants.cookieKeys.loggedIn, this.cookieOptionsArgs);
     this.cookieService.remove(Constants.cookieKeys.profile, this.cookieOptionsArgs);
 
-    // localStorage.removeItem('profile');
-
     this.loggedIn = false;
     this.profile = null;
   }
@@ -158,9 +159,8 @@ export class UserService {
   }
 
   updateProfile(profile: any) {
-    // localStorage.removeItem('profile');
     this.cookieService.put(
-      'profile',
+      Constants.cookieKeys.profile,
       JSON.stringify(profile),
       this.cookieOptionsArgs
     );
@@ -210,14 +210,8 @@ export class UserService {
       response.data.profile_image = Constants.img.avatar;
     }
 
-    let cookieOptionsArgs = {
-      ...this.cookieOptionsArgs,
-      expires: new Date(new Date().getTime() + this.EXP_TIME_MS)
-    };
-
-    // TODO move string constants to config file
-    this.cookieService.put(Constants.cookieKeys.jwt, response.token, cookieOptionsArgs);
-    this.cookieService.put(Constants.cookieKeys.loggedIn, 'true', cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.jwt, response.token, this.cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.loggedIn, 'true', this.cookieOptionsArgs);
     this.cookieService.put(
       Constants.cookieKeys.profile,
       JSON.stringify(response.data),
