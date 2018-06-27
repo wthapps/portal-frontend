@@ -16,6 +16,7 @@ import { _wu } from '@wth/shared/shared/utils/utils';
 import { DEFAULT_SETTING } from '@contacts/shared/config/constants';
 
 declare var _: any;
+declare var Promise: any;
 export const ITEM_PER_PAGE: number = 50;
 
 @Injectable()
@@ -159,15 +160,13 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   confirmDeleteContacts(contacts: any[] = this.selectedObjects): Promise<any> {
-    let contact_names: string = _.map(contacts, (ct: any) => ct.name).join(
-      ', '
-    );
+    let contact_names: string = contacts.reduce((acc, ct) => ( ct.name.trim().length ?  `${acc},${ct.name}` : acc), '').substring(1, 300).concat(' ...');
     let contact_length: number = contacts.length;
     return new Promise(resolve => {
       this.wthConfirmService.confirm({
         acceptLabel: 'Delete',
         rejectLabel: 'Cancel',
-        message: `Are you sure to delete following ${contact_length} contact(s)? ${contact_names}`,
+        message: `Are you sure to delete following ${contact_length} contact(s)? <br/> ${contact_names}`,
         header: 'Delete Contacts',
         accept: () => {
           this.deleteSelectedContacts(contacts).then(() => {
@@ -381,6 +380,24 @@ export class ZContactService extends BaseEntityService<any> {
       });
   }
 
+  mergeContacts(contacts: any[] = this.selectedObjects): Promise<any> {
+    let ids: any[] = _.map(contacts, 'id');
+    this.mergingObjects = [...contacts];
+    return this.apiBaseService
+      .post(`${this.url}/merge_contacts`, { ids })
+      .toPromise()
+      .then((res: any) => {
+        const merged_contact: any = {...res.data, selected: true};
+        this.contacts = this.contacts.filter((c: any) => !ids.includes(c.id));
+        this.selectedObjects = [merged_contact];
+        this.mergedObjects = [merged_contact];
+
+        this.contacts = [merged_contact, ...this.contacts];
+        this.notifyContactsObservers();
+        this.groupService.updateGroupCount(this.contacts);
+      });
+  }
+
   undoMerge(contacts: any[] = this.mergingObjects, mergedContacts: any[] = this.mergedObjects): Promise<any> {
     const restore_ids = contacts.map(ct => ct.id);
     const remove_ids = mergedContacts.map(ct => ct.id);
@@ -388,7 +405,6 @@ export class ZContactService extends BaseEntityService<any> {
       .post(`${this.url}/undo_merge`, { restore_ids, remove_ids })
       .toPromise()
       .then((res: any) => {
-        console.debug(res, remove_ids);
         const restoredContacts = res.data.map(ct => {return {...ct, selected: true}; });
         this.selectedObjects = [...restoredContacts];
         this.contacts = [...this.contacts.filter(ct => !remove_ids.includes(ct.id)), ...restoredContacts];

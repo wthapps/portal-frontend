@@ -44,7 +44,7 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
 
   }
 
-  mergeDuplicate() {
+  mergeContacts() {
     this.commonService.broadcast({channel: 'contact:contact:actions:merge', action: 'open'});
     // this.contactService.mergeDuplicateContacts().then((res: any) => console.log('merge duplicate is DONE'));
   }

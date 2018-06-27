@@ -6,7 +6,6 @@ import {
 } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
 import { Subscription } from 'rxjs/Subscription';
-import { GoogleApiService } from '../services/google-api.service';
 import { ModalDockComponent } from '../../../shared/shared/components/modal/dock.component';
 import { LoadingService } from '../../../shared/shared/components/loading/loading.service';
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
@@ -50,22 +49,22 @@ export class ZContactShareMergeProgressComponent implements OnDestroy {
   }
 
   doEvent(event: any) {
-    console.log('doEvent: ', event);
-
     switch (event.action) {
       case 'open': {
         this.status = this.STATUS.processing;
         this.modalDock.open();
 
         this.contactService
-          .mergeDuplicateContacts()
+          .mergeContacts()
           .then((res: any) => {
             this.status = this.STATUS.done;
-            console.log('merge duplicate is DONE');
           })
           .catch(err => (this.status = this.STATUS.error));
         break;
       }
+      default:
+        console.warn(`Unhandled event: ${event.action}`);
+        break;
     }
   }
 
