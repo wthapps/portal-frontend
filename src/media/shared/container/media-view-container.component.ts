@@ -544,7 +544,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
                 {ids: ids, mode: 0, showDetail: true}
               ]
             }
-          }], {preserveQueryParams: true, preserveFragment: true}
+          }], {queryParamsHandling: true, preserveFragment: true}
         );
 
 

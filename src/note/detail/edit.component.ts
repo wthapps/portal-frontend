@@ -125,7 +125,7 @@ export class ZNoteDetailEditComponent
         switch (e.action) {
           case 'note:note_edit:close':
             this.router.navigate([{ outlets: { detail: null } }], {
-              preserveQueryParams: true
+              queryParamsHandling: true
             });
             break;
           case 'note:note_edit:print':
