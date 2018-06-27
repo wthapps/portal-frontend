@@ -106,12 +106,10 @@ export class ZMediaSharingListComponent extends MediaActionHandler implements On
     if(this.subShareModal) this.subShareModal.unsubscribe();
     this.sharingModalService.open.next();
     this.apiBaseService.get(`media/sharings/recipients`, {id: this.selectedObjects[0].id}).subscribe(res => {
-      this.sharingModalService.open.next({sharedContacts: res.data});
+      this.sharingModalService.open.next({sharingRecipients: res.data});
     });
     this.subShareModal = this.sharingModalService.onSave$.take(1).subscribe(e => {
-      console.log(e);
-
-      this.apiBaseService.post('media/sharings/add_remove_recipients', {id: this.selectedObjects[0].id, role_id: e.role.id, recipients: e.selectedContacts}).subscribe(res => {
+      this.apiBaseService.post('media/sharings/edit_recipients', {id: this.selectedObjects[0].id, role_id: e.role.id, recipients: e.sharingRecipients, user: e.selectedContacts}).subscribe(res => {
         console.log(res);
       })
     })

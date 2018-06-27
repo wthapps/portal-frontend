@@ -1,13 +1,10 @@
 import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter, OnInit } from '@angular/core';
-import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 
-import { ApiBaseService, CommonEventService } from '@wth/shared/services';
-import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { Constants } from '@wth/shared/constant';
+import { ApiBaseService } from '@wth/shared/services';
 import { ModalComponent } from '@shared/shared/components/base/components';
-import { SharingModalOptions } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { SharingModalOptions, SharingRecipient } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 declare var $: any;
 declare var _: any;
@@ -21,7 +18,7 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   @ViewChild('modal') modal: BsModalComponent;
   filteredContacts: any = [];
   selectedContacts: any = [];
-  sharedContacts: any = [];
+  sharingRecipients: any = [];
   role: any = {name: 'view'};
   roles: any = [];
   hasChanged: boolean;
@@ -47,7 +44,8 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   }
 
   save() {
-    const data = {selectedContacts: this.selectedContacts, recipients: this.sharedContacts, role: this.role};
+    const newRecipients: Array<SharingRecipient> = this.selectedContacts.map(s => { return { role_id: this.role.id, user: s}})
+    const data = { sharingRecipients: [...this.sharingRecipients, ...newRecipients], role: this.role};
     // short distance
     this.onSave.emit(data);
     // long distance
@@ -55,9 +53,13 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
     this.modal.close().then();
   }
 
-  open(options: SharingModalOptions = {sharedContacts: []}) {
+  open(options: SharingModalOptions = {sharingRecipients: []}) {
     this.getRoles();
-    this.sharedContacts = options.sharedContacts;
+    if (options) {
+      this.sharingRecipients = options.sharingRecipients;
+    } else {
+      this.sharingRecipients = [];
+    }
     // reset textContacts, selectedContacts
     this.textContacts = [];
     this.selectedContacts = [];
@@ -69,8 +71,8 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
     body = {'q': (e.query === 'undefined' ? '' : 'name:' + e.query)};
     this.apiBaseService.post('users/search', body).subscribe(res => {
       const selectedContactIds = this.selectedContacts.map(ct => ct.id);
-      const sharedContactIds = this.sharedContacts.map(sc => sc.id);
-      this.filteredContacts = res['data'].filter(ct => !selectedContactIds.includes(ct.id) && !sharedContactIds.includes(ct.id));
+      const sharingRecipientIds = this.sharingRecipients.map(sc => sc.user.id);
+      this.filteredContacts = res['data'].filter(ct => !selectedContactIds.includes(ct.id) && !sharingRecipientIds.includes(ct.id));
     });
   }
 
@@ -93,16 +95,18 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
     });
   }
 
-  isDeletedItem() {
-
-  }
-
   toggleRemoving(contact: any) {
     this.hasChanged = true;
-    contact._deleted = !contact._deleted;
+    contact._destroy = !contact._destroy;
   }
 
   changeRole(e: any) {
     this.role = e;
+  }
+
+  changeRecipientRole(recipient: any, r: any) {
+    recipient.role_id = r.id;
+    recipient.role = r;
+    this.hasChanged = true;
   }
 }

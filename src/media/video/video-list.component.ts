@@ -2,27 +2,26 @@ import {
   Component,
   OnInit,
   ComponentFactoryResolver,
-  OnDestroy,
-  ViewChild,
-  ViewContainerRef
 } from '@angular/core';
-import { Router, Resolve } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { SharingModalV1Component } from '@shared/shared/components/photo/modal/sharing/sharing-modal-v1.component';
-import { CreateCommonSharing } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { PlaylistModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-modal.component';
 import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
+import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
+import { MediaListMixin } from '@media/shared/mixin/media-list.mixin';
+import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
 
 declare var _: any;
-
+@Mixin([SharingModalMixin, MediaListMixin, MediaViewMixin])
 @Component({
-  moduleId: module.id,
   selector: 'me-video-list',
   entryComponents: [
     SharingModalV1Component,
@@ -31,56 +30,49 @@ declare var _: any;
   ],
   templateUrl: 'video-list.component.html'
 })
-export class ZMediaVideoListComponent implements OnInit {
+export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, MediaListMixin, MediaViewMixin {
   // display videos on screen
   objects: any;
   // tooltip to introduction
   tooltip: any = Constants.tooltip;
-  // check has selected objects
+  // MediaListMixin
   hasSelectedObjects: boolean = false;
   selectedObjects: any = [];
+  loading: boolean = false;
   favoriteAll: boolean = false;
   links: any = {};
   subAddPlaylist: any;
-  subOpenShare: any;
+  subShareSave: any;
+  // MediaViewMixin
+  viewModes: any = {
+    grid: 'grid',
+    list: 'list',
+    timeline: 'timeline'
+  };
+  viewMode: any = this.viewModes.grid;
 
-  constructor(private apiBaseService: ApiBaseService,
+
+  constructor(public apiBaseService: ApiBaseService,
     private router: Router,
     private commonEventService: CommonEventService,
-    private sharingModalService: SharingModalService,
-    private toastsService: ToastsService,
+    public sharingModalService: SharingModalService,
+    public toastsService: ToastsService,
+    public confirmService: WthConfirmService,
     private wthConfirmService: WthConfirmService,
     private playlistModalService: PlaylistModalService,
     public resolver: ComponentFactoryResolver) {}
 
   ngOnInit() {
-    this.load();
+    this.loadObjects();
   }
 
-  doEvent(e: any) {
+  doListEvent(e: any) {
     switch(e.action) {
       case 'uploaded':
-        this.load();
+        this.loadObjects();
         break;
       case 'viewDetails':
         this.router.navigate(['/videos', e.payload.selectedObject.id]);
-        break;
-      case 'preview':
-        this.router.navigate(['/videos', e.payload.selectedObject.id]);
-        break;
-      case 'favourite':
-        this.apiBaseService.post(`media/favorites/toggle`, {
-          objects: this.selectedObjects
-          .map(v => {return {id: v.id, object_type: 'Media::Video'}})}).subscribe(res => {
-            this.objects = this.objects.map(v => {
-              let tmp = res.data.filter(d => d.id == v.id);
-              if (tmp && tmp.length > 0) {
-                v.favorite = tmp[0].favorite;
-              }
-              return v;
-            })
-            this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-        });
         break;
       case 'deleteMedia':
         this.wthConfirmService.confirm({
@@ -94,13 +86,19 @@ export class ZMediaVideoListComponent implements OnInit {
           }
         })
         break;
+      case 'objectsChange':
+        this.selectedObjectsChanged(e.payload);
+        break;
       case 'getMore':
-        if (this.links && this.links.next) {
-          this.apiBaseService.get(this.links.next).subscribe(res => {
-            this.objects = [...this.objects, ...res.data];
-            this.links = res.meta.links;
-          })
-        }
+        this.loadMoreObjects();
+        break;
+    }
+  }
+
+  doToolbarEvent(e: any) {
+    switch(e.action) {
+      case 'changeView':
+        this.changeViewMode(e.payload);
         break;
     }
   }
@@ -113,32 +111,11 @@ export class ZMediaVideoListComponent implements OnInit {
     data.forEach(f => {
       this.apiBaseService.post(`media/videos`, f).subscribe(res => {
         this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
-        this.load();
+        this.loadObjects();
       });
     });
   }
 
-  load() {
-    this.apiBaseService.get(`media/videos`).subscribe(res => {
-      this.links = res.meta.links;
-      this.objects = res.data;
-    });
-  }
-
-  selectedObjectsChanged(e: any) {
-    this.hasSelectedObjects = true;
-    if(e && e.length == 0) this.hasSelectedObjects = false;
-    this.objects = this.objects.map(v => {
-      if(e.some(ob => ob.id == v.id)) {
-        v.selected = true;
-      } else {
-        v.selected = false;
-      }
-      return v;
-    })
-    this.selectedObjects = this.objects.filter(v => v.selected == true);
-    this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-  }
 
   openModalAddToPlaylist() {
     if (this.subAddPlaylist) this.subAddPlaylist.unsubscribe();
@@ -149,25 +126,38 @@ export class ZMediaVideoListComponent implements OnInit {
       });
     });
   }
+  /* SharingModalMixin This is methods to sharing, to
+  custom method to overwirte any method*/
+  openModalShare: () => void;
+  onSaveShare: (e: any) => void;
+  // ========== SharingModalMixin ==============
 
-  openModalShare(){
-    if (this.subOpenShare) this.subOpenShare.unsubscribe();
-    this.sharingModalService.open.next();
-    this.subOpenShare = this.sharingModalService.onSave$.take(1).subscribe(e => {
-      const data: SharingCreateParams = {
-        recipients: e.selectedContacts.map(c => { return { id: c.id } }),
-        objects: this.selectedObjects.map(ob => { return { id: ob.id, model: ob.model } }),
-        role_id: e.role.id
-      };
-      this.apiBaseService.post('media/sharings', data).subscribe(res => {
-        this.toastsService.success('You have just created sharing successful');
-      })
-    })
+  /* MediaListMixin This is media list methods, to
+  custom method please overwirte any method*/
+  selectedObjectsChanged: (e: any) => void;
+  toggleFavorite: () => void;
+  deleteObjects: (term: any) => void;
+  loadObjects() {
+    this.apiBaseService.get(`media/videos`).subscribe(res => {
+      this.links = res.meta.links;
+      this.objects = res.data;
+    });
   }
-}
+  viewDetail(id: number) {
+    this.router.navigate(['/videos', id]);
+  }
+  loadMoreObjects(input?: any) {
+    if (this.links && this.links.next) {
+      this.apiBaseService.get(this.links.next).subscribe(res => {
+        this.objects = [...this.objects, ...res.data];
+        this.links = res.meta.links;
+      })
+    }
+  }
+  // ============= End MediaListMixin ===============
+  /* MediaViewMixin This is media view methods, to
+custom method please overwirte any method*/
+  changeViewMode:(mode: any) => void;
+  // ============= End MediaViewMixin ===============
 
-interface SharingCreateParams {
-  objects: Array<{id, model}>[];
-  recipients: Array<{id}>[];
-  role_id: number;
 }

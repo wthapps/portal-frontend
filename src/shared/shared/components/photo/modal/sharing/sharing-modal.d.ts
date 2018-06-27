@@ -8,4 +8,15 @@ export interface CreateCommonSharing {
   recipients: Array<number>;
 }
 
-export interface SharingModalOptions { sharedContacts: Array<any> }
+export interface SharingModalOptions { sharingRecipients: Array<any> }
+export interface SharingRecipient {
+  role_id: number;
+  recipient_id?: number;
+  recipient_type?: string;
+  user?: any;
+}
+interface SharingCreateParams {
+  objects: Array<{ id, model }>[];
+  recipients: Array<{ role_id, recipient_id }>[];
+  role_id: number;
+}

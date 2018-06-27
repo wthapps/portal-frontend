@@ -23,9 +23,11 @@ declare let _: any;
 export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentChecked {
   @Input() data: Media[];
   @Input() sortInline: Boolean = true;
+  @Input() scrollWindow: Boolean = false;
   @Output() completeLoadMore: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   @Output() completeSort: EventEmitter<any> = new EventEmitter<any>(null);
   @Output() completeDoubleClick: EventEmitter<any> = new EventEmitter<any>(null);
+  @Output() selectedObjectsChanged: EventEmitter<any> = new EventEmitter<any>(null);
 
   @ContentChild('columnBox') columnBoxTmpl: TemplateRef<any>;
   @ContentChild('columnFileSize') columnFileSizeTmpl: TemplateRef<any>;
@@ -53,7 +55,10 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
 
     this.objectListService.selectedObjects$
       .takeUntil(componentDestroyed(this))
-      .subscribe(res => this.selectedObjects = res);
+      .subscribe(res => {
+        this.selectedObjects = res;
+        this.selectedObjectsChanged.emit(this.selectedObjects);
+      });
 
     this.objectListService.groupBy$
       .takeUntil(componentDestroyed(this))
@@ -83,6 +88,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   ngOnDestroy(): void {
+    this.objectListService.clear();
   }
 
   ngAfterContentChecked(): void {
@@ -179,7 +185,6 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onLoadMore() {
-    console.log('onLoadMore');
     this.completeLoadMore.emit(true);
   }
 
@@ -210,7 +215,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   isActive(item: any) {
-    return (_.find(this.selectedObjects, {'id': item.id}));
+    return (_.find(this.selectedObjects, {'id': item.id}) || item.selected);
   }
 
   isSelected(item: any) {

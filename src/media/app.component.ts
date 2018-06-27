@@ -39,8 +39,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public authService: AuthService,
     private router: Router,
-    private wthConfirmService: WthConfirmService,
-    mediaStore: Store<State>
+    private wthConfirmService: WthConfirmService
   ) {
     this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
       this.confirmDialog = res;
@@ -53,6 +52,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
+    // fix scroll to top after changing route
+    this.router.events.subscribe(evt => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      window.scrollTo(0, 0);
+    });
   }
 
   ngAfterViewInit() {

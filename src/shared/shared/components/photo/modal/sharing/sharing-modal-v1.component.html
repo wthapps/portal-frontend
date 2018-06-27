@@ -43,27 +43,45 @@
     </div>
     <div class="modal-fixed-height">
 
-      <div class="modal-body-collapse" *ngIf="sharedContacts?.length">
-        <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false" aria-controls="collapseExample">
-          Shared with {{ sharedContacts?.length }} Contacts
-        </a>
+      <div class="modal-body-collapse" *ngIf="sharingRecipients?.length">
+        <!-- <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false" aria-controls="collapseExample">
+          Shared with {{ sharingRecipients?.length }} Contacts
+        </a> -->
         <div class="collapse in pre-scrollable" id="collapseContact">
           <div class="modal-body-collapse-in">
-            <div class="media-list-item" *ngFor="let contact of sharedContacts">
-              <div class="media" [ngClass]="contact._deleted ? 'remove': ''">
+            <div class="media-list-item" *ngFor="let recipient of sharingRecipients">
+              <div class="media" [ngClass]="recipient._destroy ? 'remove': ''">
                 <div class="media-left">
                   <figure>
-                    <img [src]="contact.user.profile_image" alt="">
+                    <img [src]="recipient.user.profile_image" alt="">
                   </figure>
                 </div>
                 <div class="media-body">
-                  {{ contact.user.name }}
+                  {{ recipient.user.name }}
                 </div>
 
                 <div class="media-right">
-                  <a class="btn btn-default" (click)="toggleRemoving(contact)" [title]="contact._deleted ? 'Undo removing':'Remove'" href="javascript:void(0)">
-                    <i *ngIf="!contact._deleted" class="fa fa-times" title="remove"></i>
-                    <i *ngIf="contact._deleted" class="fa fa-undo" title="Undo removing"></i>
+                  <div class="dropdown" style="position: absolute; right: 70px">
+                    <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                      [title]="recipient.role.display_name" aria-haspopup="true">
+                      <i class="fa" [ngClass]="recipient.role.name == 'view'? 'fa-eye' :
+                                                                   recipient.role.name == 'download'? 'fa-download' :
+                                                                   recipient.role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
+                      </i>
+                      <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                      <li *ngFor="let r of roles" (click)="changeRecipientRole(recipient, r)">
+                        <a href="javascript:void(0);"> {{ r.display_name }}
+                          <i class="pull-right" [ngClass]="{'fa fa-check': (recipient.role_id == r.id)}"></i>
+                        </a>
+                      </li>
+                    </div>
+                  </div>
+
+                  <a class="btn btn-default" (click)="toggleRemoving(recipient)" [title]="recipient._destroy ? 'Undo removing':'Remove'" href="javascript:void(0)">
+                    <i *ngIf="!recipient._destroy" class="fa fa-times" title="remove"></i>
+                    <i *ngIf="recipient._destroy" class="fa fa-undo" title="Undo removing"></i>
                   </a>
                 </div>
               </div>

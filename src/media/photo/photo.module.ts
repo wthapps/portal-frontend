@@ -11,7 +11,8 @@ import { PhotoService } from '@wth/shared/services';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { WGridListModule } from '@wth/shared/components/grid-list';
 import { WToolbarModule } from '@wth/shared/components/toolbar';
-// import { PhotoSandbox } from './photo.sandbox';
+import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
+import { WUploadModule } from '@shared/components/upload/upload.module';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { WToolbarModule } from '@wth/shared/components/toolbar';
     SharedModule,
     CoreModule,
     WGridListModule,
+    WUploadModule,
     WToolbarModule
   ],
   declarations: [ZMediaPhotoListComponent, PhotoDetailComponent],

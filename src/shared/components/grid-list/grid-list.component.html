@@ -5,12 +5,11 @@
 <!--[objectActionsTemplate]="objectActionsTemplate"-->
 <!--(event)="doEvent($event)">-->
 <!--</w-toolbar>-->
-<ng-content select="w-toolbar"></ng-content>
+<!-- <ng-content select="w-toolbar"></ng-content> -->
 
 <ng-container *ngIf="objects && objects.length > 0">
   <div class="page-body-content has-page-body-control gray-light" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
     [scrollWindow]="scrollWindow" (scrolled)="doEvent({action: 'getMore', payload: { nextLink: nextLink }})">
-
     <div class="page-body-content-in">
       <w-grid-list-header [data]="objects" [view]="view" [field]="sortBy" [direction]="sortOrder" (event)="doEvent($event)"></w-grid-list-header>
       <div id="list-photo" class="row-img row-img-{{ viewSize }}" [ngClass]="view" (dragenter)="onDragenter($event)" (dragleave)="onDragleave($event)">

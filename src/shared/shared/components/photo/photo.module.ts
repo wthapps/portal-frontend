@@ -35,7 +35,7 @@ import { MediaRenameModalComponent } from './modal/media/media-rename-modal.comp
 import { PhotoEditModalComponent } from './modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.component';
 import { PlaylistModalModule } from '@shared/shared/components/photo/modal/playlist/playlist-modal.module';
-
+import { MediaModalModule } from '@shared/shared/components/photo/modal/media/media-modal.module';
 
 @NgModule({
   imports: [
@@ -57,6 +57,7 @@ import { PlaylistModalModule } from '@shared/shared/components/photo/modal/playl
     PartialsPhotoTaggingModule,
     ImageCropperModule,
     PlaylistModalModule,
+    MediaModalModule,
     PartialsPhotoTaggingModule
   ],
   declarations: [
@@ -82,6 +83,7 @@ import { PlaylistModalModule } from '@shared/shared/components/photo/modal/playl
     PartialsPhotoTaggingModule,
     PartialsPhotoSharingModule,
     PlaylistModalModule,
+    MediaModalModule,
 
     BoxLoadingModule,
     PartialsPhotoTaggingModule,

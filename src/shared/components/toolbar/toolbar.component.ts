@@ -12,7 +12,11 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
+import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
+import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 
+@Mixin([MediaViewMixin])
 @Component({
   selector: 'w-toolbar',
   exportAs: 'wToolbar',
@@ -20,28 +24,31 @@ import { PlaylistCreateModalService } from '@shared/shared/components/photo/moda
   styleUrls: ['toolbar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class WToolbarComponent {
+export class WToolbarComponent implements MediaViewMixin {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
   @Input() moreActionsTemplate: TemplateRef<any>;
 
   @Input() object; // detail object
   @Input() selectedObjects: Array<any> = new Array<any>();
-  @Input() view;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
-
-  grid: string = 'grid';
-  list: string = 'list';
-  timeline: string = 'timeline';
+  viewModes: any = {
+    grid: 'grid',
+    list: 'list',
+    timeline: 'timeline'
+  };
+  @Input() viewMode: any = this.viewModes.grid;
   favoriteAll: boolean = false;
   hasOneObject: boolean = false;
   hasManyObjects: boolean = false;
   hasNoObject: boolean = false;
+  subCreateAlbum: any;
 
   tooltip: any = Constants.tooltip;
 
   constructor(private apiBaseService: ApiBaseService,
     public resolver: ComponentFactoryResolver,
+    public mediaCreateModalService: MediaCreateModalService,
     public playlistCreateModalService: PlaylistCreateModalService,
     private commonEventService: CommonEventService) {}
 
@@ -60,6 +67,12 @@ export class WToolbarComponent {
     }
     if (event.action === 'openModalCreatePlayListModal') {
       this.playlistCreateModalService.open.next({selectedObjects: this.selectedObjects});
+    }
+    if (event.action === 'openModalCreateAlbumModal') {
+      this.mediaCreateModalService.open.next({ selectedObjects: this.selectedObjects, title: 'Create Album', namePlaceholder: 'Untitled Album' });
+      this.subCreateAlbum = this.mediaCreateModalService.onCreate$.take(1).subscribe(e => {
+        console.log(e);
+      });
     }
     this.event.emit(event);
   }
@@ -108,6 +121,10 @@ export class WToolbarComponent {
     if (error.statusCode == 406 && error.error == 'Not Acceptable') {
       this.commonEventService.broadcast({ channel: 'LockMessage', payload: error.files });
     }
+  }
+
+  changeViewMode(mode: any) {
+    this.event.emit({action: 'changeView', payload: mode})
   }
 
   private checkFavoriteAll(objects: Array<any>): boolean {

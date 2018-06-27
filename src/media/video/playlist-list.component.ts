@@ -25,17 +25,17 @@ import { WObjectListService } from '@shared/components/w-object-list/w-object-li
 import { Media } from '@shared/shared/models/media.model';
 import { Observable } from 'rxjs/Observable';
 import { PlaylistListService } from '@media/video/playlist-list.service';
-import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
+import { MediaListMixin } from '@media/shared/mixin/media-list.mixin';
 
 declare var _: any;
 
-@Mixin([LoadModalAble])
+@Mixin([MediaListMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-playlist-list',
   templateUrl: 'playlist-list.component.html'
 })
-export class ZMediaPlaylistListComponent implements OnInit {
+export class ZMediaPlaylistListComponent implements OnInit, MediaListMixin {
   // display objects on screen
   objects: any;
   // tooltip to introduction
@@ -48,6 +48,7 @@ export class ZMediaPlaylistListComponent implements OnInit {
   links: any;
   subAddPlaylist: any;
   subOpenShare: any;
+  loading: boolean;
 
   @ViewChild('modalContainer', { read: ViewContainerRef })
   modalContainer: ViewContainerRef;
@@ -62,14 +63,14 @@ export class ZMediaPlaylistListComponent implements OnInit {
   isLoading: boolean;
 
   constructor(
-    private apiBaseService: ApiBaseService,
+    public apiBaseService: ApiBaseService,
     private router: Router,
     private playlistCreateModalService: PlaylistCreateModalService,
     private playlistModalService: PlaylistModalService,
     private sharingModalService: SharingModalService,
-    private objectListService: WObjectListService,
     private toastsService: ToastsService,
-    private wthConfirmService: WthConfirmService,
+    public confirmService: WthConfirmService,
+    public objectListService: WObjectListService,
     private playlistListService: PlaylistListService,
     public resolver: ComponentFactoryResolver
   ) {
@@ -77,21 +78,7 @@ export class ZMediaPlaylistListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.objectListService.selectedObjects$.subscribe(ob => {
-      this.selectedObjectsChanged(ob);
-    });
-    this.load();
-
-    this.getObjects();
-  }
-  favourites() {
-    console.log('testasasfd');
-
-    let objects = this.selectedObjects.map(ob => {
-      return { id: ob.id, object_type: ob.model };
-    });
-
-    this.playlistListService.favourites(objects).subscribe();
+    this.loadObjects();
   }
 
   getObjects() {
@@ -214,45 +201,23 @@ export class ZMediaPlaylistListComponent implements OnInit {
       this.load();
     });
   }
-
-  favourite() {
-    this.apiBaseService
-      .post(`media/favorites/toggle`, {
-        objects: this.selectedObjects.map(ob => {
-          return { id: ob.id, object_type: ob.model };
-        })
-      })
-      .subscribe(res => {
-        this.objects = this.objects.map(v => {
-          let tmp = res.data.filter(d => d.id == v.id);
-          if (tmp && tmp.length > 0) {
-            v.favorite = tmp[0].favorite;
-          }
-          return v;
-        });
-        this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-      });
+  /* MediaListMixin This is media list methods, to
+  custom method please overwirte any method*/
+  selectedObjectsChanged:(e: any) => void;
+  toggleFavorite: (items?: any) => void;
+  deleteObjects: (term: any) => void;
+  loadObjects() {
+    this.apiBaseService.get(`media/playlists`).subscribe(res => {
+      this.objects = res.data;
+      this.links = res.meta.links;
+    });
   }
-
-  selectedObjectsChanged(e: any) {
-    this.hasSelectedObjects = true;
-    if (e && e.length == 0) this.hasSelectedObjects = false;
-    if (this.objects) {
-      this.objects = this.objects.map(v => {
-        if (e.some(ob => ob.id == v.id)) {
-          v.selected = true;
-        } else {
-          v.selected = false;
-        }
-        return v;
-      });
-      this.selectedObjects = this.objects.filter(o => o.selected == true);
-      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-    }
+  viewDetail(id: number) {
+    this.router.navigate(['/videos', id]);
   }
-
-  onCompleteDoubleClick(e: any) {
-    console.log(e);
+  loadMoreObjects(input?: any) {
+    /* this method is load objects to display on init */
+    throw new Error('should overwrite this method');
   }
 }
 

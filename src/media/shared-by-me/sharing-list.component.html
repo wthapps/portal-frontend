@@ -63,7 +63,7 @@
   </ul>
 </ng-template>
 
-<w-toolbar #toolbar [view]="gridlist.view" [selectedObjects]="gridlist.selectedObjects" [objectActionsTemplate]="objectActionsTemplate"
+<w-toolbar #toolbar [viewMode]="gridlist.view" [selectedObjects]="gridlist.selectedObjects" [objectActionsTemplate]="objectActionsTemplate"
   (event)="gridlist.doEvent($event)">
 </w-toolbar>
 

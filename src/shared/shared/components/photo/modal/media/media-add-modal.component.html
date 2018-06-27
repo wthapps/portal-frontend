@@ -1,0 +1,44 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title"> {{title}}</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <a class="btn btn-outline-primary" data-toggle="dropdown" href="#" (click)="onCreateNew()">
+      <i class="fa fa-plus"></i> {{buttonTitle}}
+    </a>
+    <hr>
+    <div class="content-overflow" style="max-height: 300px;">
+      <div class="pl30 pr30">
+        <div class="row-img list" *ngIf="parents">
+          <div class="row-img-item" *ngFor="let data of parents; let i = index;">
+            <div class="photo-box can-click" id="photo-box-img-{{ data.id }}" (click)="add(data)">
+              <div class="photo-box-figure">
+                <figure class="img-center-dv">
+                  <div class="photo-box-figure-in">
+                    <img alt="" class="img-center" draggable="false" [src]="data.thumbnail_url">
+                  </div>
+                </figure>
+                <div class="photo-box-name">
+                  <span>
+                    {{ data.name }}
+                  </span>
+                </div>
+                <div class="photo-box-size no-wrap">
+                  <span *ngIf="data.child_count > 1">{{ data.child_count }} {{unit}}s</span>
+                  <span *ngIf="data.child_count <= 1">{{ data.child_count || 0 }} {{unit}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="text-center p20">
+      <button class="btn btn-outline-primary" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">
+        Load more
+      </button>
+    </div>
+  </bs-modal-body>
+</bs-modal>
