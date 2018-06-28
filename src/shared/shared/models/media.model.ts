@@ -19,6 +19,7 @@ export class Media {
   json_shares: any;
   content_type: string;
   object_type: string;
+  child_count: number;
 
   constructor(fields: {
     id?: number,
@@ -40,7 +41,8 @@ export class Media {
     url?: string,
     json_shares?: any,
     content_type?: string,
-    object_type?: string
+    object_type?: string,
+    child_count?: number
   }) {
     if (fields) {
       Object.assign(this, fields);

@@ -16,6 +16,7 @@ import { ZMediaPlaylistListComponent } from '@media/video/playlist-list.componen
 import { WUploadModule } from '@shared/components/upload/upload.module';
 import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
 import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
+import { PlaylistListService } from '@media/video/playlist-list.service';
 // import { PhotoSandbox } from './photo.sandbox';
 
 @NgModule({
@@ -38,7 +39,8 @@ import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-me
   ],
   exports: [ZMediaVideoListComponent],
   providers: [
-    PhotoService
+    PhotoService,
+    PlaylistListService
     // PhotoSandbox
   ]
 })

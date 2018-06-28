@@ -22,6 +22,10 @@ import { PlaylistCreateModalService } from '@shared/shared/components/photo/moda
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
 import { SharingModalV1Service } from '@shared/shared/components/photo/modal/sharing/sharing-modal-v1.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
+import { Media } from '@shared/shared/models/media.model';
+import { Observable } from 'rxjs/Observable';
+import { PlaylistListService } from '@media/video/playlist-list.service';
+import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 
 declare var _: any;
 
@@ -31,7 +35,6 @@ declare var _: any;
   selector: 'me-playlist-list',
   templateUrl: 'playlist-list.component.html'
 })
-
 export class ZMediaPlaylistListComponent implements OnInit {
   // display objects on screen
   objects: any;
@@ -46,9 +49,20 @@ export class ZMediaPlaylistListComponent implements OnInit {
   subAddPlaylist: any;
   subOpenShare: any;
 
-  @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
+  @ViewChild('modalContainer', { read: ViewContainerRef })
+  modalContainer: ViewContainerRef;
+  medias$: Observable<Media[]>;
+  mediaParent: Media;
+  selectedMedias$: Observable<Media[]>;
+  multipleSelection$: Observable<boolean>;
 
-  constructor(private apiBaseService: ApiBaseService,
+  currentTab: string; // upload, photos, albums, albums_detail, favourites, shared_with_me
+
+  nextLink: string;
+  isLoading: boolean;
+
+  constructor(
+    private apiBaseService: ApiBaseService,
     private router: Router,
     private playlistCreateModalService: PlaylistCreateModalService,
     private playlistModalService: PlaylistModalService,
@@ -56,13 +70,32 @@ export class ZMediaPlaylistListComponent implements OnInit {
     private objectListService: WObjectListService,
     private toastsService: ToastsService,
     private wthConfirmService: WthConfirmService,
-    public resolver: ComponentFactoryResolver) {}
+    private playlistListService: PlaylistListService,
+    public resolver: ComponentFactoryResolver
+  ) {
+    this.medias$ = this.playlistListService.medias$;
+  }
 
   ngOnInit() {
     this.objectListService.selectedObjects$.subscribe(ob => {
       this.selectedObjectsChanged(ob);
     });
     this.load();
+
+    this.getObjects();
+  }
+  favourites() {
+    console.log('testasasfd');
+
+    let objects = this.selectedObjects.map(ob => {
+      return { id: ob.id, object_type: ob.model };
+    });
+
+    this.playlistListService.favourites(objects).subscribe();
+  }
+
+  getObjects() {
+    this.playlistListService.getMedias().subscribe();
   }
 
   doEvent(e: any) {
@@ -120,8 +153,11 @@ export class ZMediaPlaylistListComponent implements OnInit {
     // }
   }
 
-  preview(){
-    this.router.navigate(['/playlists', this.objects.filter(ob => ob.selected)[0].uuid]);
+  preview() {
+    this.router.navigate([
+      '/playlists',
+      this.objects.filter(ob => ob.selected)[0].uuid
+    ]);
   }
 
   load() {
@@ -132,50 +168,70 @@ export class ZMediaPlaylistListComponent implements OnInit {
 
   openModalAddToPlaylist() {
     if (this.subAddPlaylist) this.subAddPlaylist.unsubscribe();
-    this.playlistModalService.open.next({ selectedObjects: this.selectedObjects });
-    this.subAddPlaylist = this.playlistModalService.onAdd$.take(1).subscribe(e => {
-      this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: e, videos: this.selectedObjects }).subscribe(res => {
-        this.toastsService.success('You just added to Playlist success');
-      });
+    this.playlistModalService.open.next({
+      selectedObjects: this.selectedObjects
     });
+    this.subAddPlaylist = this.playlistModalService.onAdd$
+      .take(1)
+      .subscribe(e => {
+        this.apiBaseService
+          .post(`media/playlists/add_to_playlist`, {
+            playlist: e,
+            videos: this.selectedObjects
+          })
+          .subscribe(res => {
+            this.toastsService.success('You just added to Playlist success');
+          });
+      });
   }
 
   openModalShare() {
     if (this.subOpenShare) this.subOpenShare.unsubscribe();
     this.sharingModalService.open.next();
-    this.subOpenShare = this.sharingModalService.onSave$.take(1).subscribe(e => {
-      const data: SharingCreateParams = {
-        recipients: e.selectedContacts.map(c => { return { id: c.id } }),
-        objects: this.selectedObjects.map(ob => { return { id: ob.id, model: ob.model } }),
-        role_id: e.role.id
-      };
-      this.apiBaseService.post('media/sharings', data).subscribe(res => {
-        this.toastsService.success('You have just created sharing successful');
-      })
-    })
+    this.subOpenShare = this.sharingModalService.onSave$
+      .take(1)
+      .subscribe(e => {
+        const data: SharingCreateParams = {
+          recipients: e.selectedContacts.map(c => {
+            return { id: c.id };
+          }),
+          objects: this.selectedObjects.map(ob => {
+            return { id: ob.id, model: ob.model };
+          }),
+          role_id: e.role.id
+        };
+        this.apiBaseService.post('media/sharings', data).subscribe(res => {
+          this.toastsService.success(
+            'You have just created sharing successful'
+          );
+        });
+      });
   }
 
   createPlaylist() {
     this.playlistCreateModalService.open.next();
     this.playlistCreateModalService.onCreated$.subscribe(res => {
       this.load();
-    })
+    });
   }
 
   favourite() {
-    this.apiBaseService.post(`media/favorites/toggle`, {
-      objects: this.selectedObjects
-        .map(ob => { return { id: ob.id, object_type: ob.model } })
-    }).subscribe(res => {
-      this.objects = this.objects.map(v => {
-        let tmp = res.data.filter(d => d.id == v.id);
-        if (tmp && tmp.length > 0) {
-          v.favorite = tmp[0].favorite;
-        }
-        return v;
+    this.apiBaseService
+      .post(`media/favorites/toggle`, {
+        objects: this.selectedObjects.map(ob => {
+          return { id: ob.id, object_type: ob.model };
+        })
       })
-      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-    });
+      .subscribe(res => {
+        this.objects = this.objects.map(v => {
+          let tmp = res.data.filter(d => d.id == v.id);
+          if (tmp && tmp.length > 0) {
+            v.favorite = tmp[0].favorite;
+          }
+          return v;
+        });
+        this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+      });
   }
 
   selectedObjectsChanged(e: any) {
@@ -189,18 +245,19 @@ export class ZMediaPlaylistListComponent implements OnInit {
           v.selected = false;
         }
         return v;
-      })
+      });
       this.selectedObjects = this.objects.filter(o => o.selected == true);
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
     }
   }
 
-  onCompleteDoubleClick(e: any){
+  onCompleteDoubleClick(e: any) {
     console.log(e);
   }
 }
+
 interface SharingCreateParams {
-  objects: Array<{ id, model }>[];
+  objects: Array<{ id; model }>[];
   recipients: Array<{ id }>[];
   role_id: number;
 }
