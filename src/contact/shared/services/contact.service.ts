@@ -76,8 +76,6 @@ export class ZContactService extends BaseEntityService<any> {
     this.suggestService.input$.subscribe((input: any) => {
       let contacts: any[] = _.cloneDeep(this.searchContact(input));
       this.suggestService.setSuggestion(contacts);
-
-      console.log('input: ', input, ' - result: ', contacts);
     });
 
     this.loadUserSetttings();
@@ -224,10 +222,6 @@ export class ZContactService extends BaseEntityService<any> {
       .pipe(
         map((response: any) => {
           let contacts = response.data;
-
-          // _.forEach(contacts, (contact: any) => {
-          //   this.updateCallback(contact);
-          // });
           contacts.forEach(this.updateCallback.bind(this));
           return response;
         })
@@ -333,11 +327,6 @@ export class ZContactService extends BaseEntityService<any> {
 
     let orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a,b, this.orderDescSubject.getValue()));
     let selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
-    // let orderedContactsWSelected: any[] = _.map(orderedContacts, (ct: any) => {
-    //   if (selectedIds.indexOf(ct.uuid) > -1)
-    //     return Object.assign(ct, { selected: true });
-    //   else return Object.assign(ct, { selected: false });
-    // });
 
     let orderedContactsWSelected: any[] = orderedContacts.map(ct => { return {...ct, selected: selectedIds.includes(ct.uuid)}});
 

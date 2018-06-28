@@ -92,7 +92,7 @@ export class ZContactDetailComponent implements OnInit {
   }
 
 
-  private async getContact(id: number) {
+  private getContact(id: number): void {
     this.contactService.getIdLocalThenNetwork(id)
       .subscribe(ct => this.data = Object.assign({}, ct));
   }

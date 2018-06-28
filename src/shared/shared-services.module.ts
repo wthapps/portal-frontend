@@ -4,10 +4,7 @@ import {
   SkipSelf,
   Optional
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CookieService, CookieModule } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
 import { ApiBaseService } from './services/apibase.service';
@@ -34,7 +31,6 @@ import { CommonEventService } from './services/common-event/common-event.service
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { GenericFileService } from './services/generic-file.service';
-import { HttpClientModule } from '@angular/common/http';
 import { WthInterceptor } from './services/wth-interceptor';
 import { ClientDetectorService } from './services/client-detector.service';
 import { WthConfirmService } from './shared/components/confirmation/wth-confirm.service';
@@ -48,18 +44,7 @@ import { WMediaSelectionService } from '@wth/shared/components/w-media-selection
 import { WindowService } from '@wth/shared/services/window.service';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { ApiProxyService } from '@shared/services/apiproxy.service';
-import { DirectiveModule } from '@wth/shared/shared/directive/directive.module';
-import { PipeModule } from '@wth/shared/shared/pipe/pipe.module';
-import { LoadingModule } from '@wth/shared/shared/components/loading/loading.module';
-import { ToastsModule } from '@wth/shared/shared/components/toast/toast-message.module';
-import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
-import { TooltipModule } from 'primeng/components/tooltip/tooltip';
-import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
-import { WthConfirmModule } from '@wth/shared/shared/components/confirmation/wth-confirm.module';
-import { Ng2CableModule } from 'ng2-cable';
-import { WthCommonModule } from '@wth/shared/common/wth-common.module';
+import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -120,6 +105,7 @@ export class SharedServicesModule {
         ToastsService,
         MessageService,
         WObjectListService,
+        WTHEmojiService,
         WMediaSelectionService,
         DomService,
         ApiProxyService,

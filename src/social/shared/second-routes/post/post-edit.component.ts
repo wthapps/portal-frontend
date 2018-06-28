@@ -6,7 +6,6 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
-  ElementRef,
   ViewEncapsulation
 } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
@@ -16,7 +15,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { takeUntil, filter, map, tap, take } from 'rxjs/operators';
+import { takeUntil, filter, map, tap } from 'rxjs/operators';
 
 import { SocialService } from '../../services/social.service';
 import { BsModalComponent } from 'ng2-bs3-modal';

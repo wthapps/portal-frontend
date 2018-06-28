@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { WTHEmojiClassPipe, WTHEmojiPipe } from './emoji.pipe';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 
-import { WTHEmojiService } from './emoji.service';
 import { HttpClientModule } from '@angular/common/http';
 import { TooltipModule, OverlayPanelModule } from 'primeng/primeng';
 import { AppWTHEmojiComponent } from './emoji.component';
@@ -18,6 +17,6 @@ import { AppWTHEmojiComponent } from './emoji.component';
   ],
   declarations: [WTHEmojiClassPipe, WTHEmojiPipe, AppWTHEmojiComponent],
   exports: [WTHEmojiClassPipe, WTHEmojiPipe, AppWTHEmojiComponent],
-  providers: [WTHEmojiService]
+  providers: []
 })
 export class WTHEmojiModule {}

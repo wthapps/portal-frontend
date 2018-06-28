@@ -15,6 +15,8 @@ import { LoadingService } from '@shared/shared/components/loading/loading.servic
 import { PostService } from './shared/post.service';
 import { getSoProfile, SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE } from '../../reducers/index';
 
+const DEFAULT_PRIVACY_SETTINGS = ['public', 'personal', 'friends'];
+
 @Component({
   selector: 'so-post-list',
   templateUrl: 'post-list.component.html'
@@ -58,7 +60,6 @@ export class PostListComponent implements OnInit, OnDestroy {
     // Support get route params from parent route as well as current route. Ex: Profile post page
     let parentRouteParams = this.route.parent.paramMap;
     let reloadQueryParam = this.route.queryParamMap; // .filter(queryParamM => !!queryParamM.get('r'));
-    // this.showLoading = document.getElementById('post-list-loading') !== null;
 
     this.route.paramMap
       .pipe(
@@ -81,14 +82,10 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   startLoading() {
     this.loading = true;
-    // if(this.showLoading)
-    //   this.loadingService.start('#post-list-loading');
   }
 
   stopLoading() {
     this.loading = false;
-    // if(this.showLoading)
-    //   this.loadingService.stop('#post-list-loading');
   }
 
   viewProfile(uuid: string) {
@@ -148,7 +145,8 @@ export class PostListComponent implements OnInit, OnDestroy {
             this.items.unshift(..._.map([response.data], this.mapPost)); // Adding new post at the beginning of posts array
             this.postEditModal.close();
             this.postIsEmpty = false;
-            this.store.dispatch({type: SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE, payload: response.data.privacy });
+            if(DEFAULT_PRIVACY_SETTINGS.includes(response.data.privacy))
+              this.store.dispatch({type: SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE, payload: response.data.privacy });
           },
           (error: any) => {
             console.log('error', error);
@@ -168,7 +166,8 @@ export class PostListComponent implements OnInit, OnDestroy {
               this.items[idx] = editedItem;
             }
 
-            this.store.dispatch({type: SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE, payload: response.data.privacy });
+            if(DEFAULT_PRIVACY_SETTINGS.includes(response.data.privacy))
+              this.store.dispatch({type: SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE, payload: response.data.privacy });
 
           },
           (error: any) => {
