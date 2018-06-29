@@ -1,8 +1,10 @@
  import { Injectable } from '@angular/core';
  import { ApiBaseService, BaseEntityService } from '@wth/shared/services';
- import {Observable} from "rxjs/Observable";
+ import {Observable} from 'rxjs';
+ import { take } from 'rxjs/operators';
 
-declare var _: any;
+
+ declare var _: any;
 const MEDIA_PATH:string = 'media';
 
 
@@ -18,7 +20,7 @@ export class MediaObjectService extends BaseEntityService<any> {
   getObjects(path: string, queryString?: any): any {
     console.log('this path', path, queryString);
     this.path = `${MEDIA_PATH}/${path}`;
-    return this.api.get(this.path, queryString).take(1); // This subscription should take 1 input ONLY
+    return this.api.get(this.path, queryString).pipe(take(1)); // This subscription should take 1 input ONLY
   }
 
   update(
@@ -40,7 +42,7 @@ export class MediaObjectService extends BaseEntityService<any> {
   //  { objects: [{id: <value>, object_type: <value>}], child_destroy: <true/false> }
   deleteObjects(objects: Array<any>, child_destroy: boolean = false) {
     let body = {objects: objects, child_destroy: child_destroy};
-    return this.api.post(`${MEDIA_PATH}/media/delete`, body).take(1); // apiBaseService does not support DELETE methods with a body parameter, so a POST method should be used
+    return this.api.post(`${MEDIA_PATH}/media/delete`, body).pipe(take(1)); // apiBaseService does not support DELETE methods with a body parameter, so a POST method should be used
   }
 
   listPhoto(body: any = {}): any {
@@ -93,6 +95,6 @@ export class MediaObjectService extends BaseEntityService<any> {
   }
 
   getAllFavorite(queryString?: any): any {
-    return this.api.get('media/favorites', queryString).take(1); // This subscription should take 1 input ONLY
+    return this.api.get('media/favorites', queryString).pipe(take(1)); // This subscription should take 1 input ONLY
   }
 }

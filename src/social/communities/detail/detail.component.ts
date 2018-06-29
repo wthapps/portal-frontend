@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Observable ,  Subject } from 'rxjs';
+import { combineLatest, take } from 'rxjs/operators';
+
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { AuthService, UserService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -10,10 +13,6 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { User } from '@wth/shared/shared/models';
-
-import { Observable } from 'rxjs/Observable';
-import { combineLatest } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 import { SHORTCUT_ADD_MULTI_DONE } from '../../shared/reducers/index';
 import { PostListComponent } from '../../shared/second-routes/post/post-list.component';
 import { SocialFavoriteService } from '../../shared/services/social-favorites.service';

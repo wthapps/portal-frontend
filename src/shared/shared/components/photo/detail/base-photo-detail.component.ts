@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit, HostListener, AfterViewInit} from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
+import { Subject } from 'rxjs';
+import { takeUntil, map, mergeMap } from 'rxjs/operators';
+
+
 
 
 import { Photo } from '../../../models/photo.model';
@@ -68,9 +68,9 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'photos';
-    this.route.params
-      .takeUntil(this.destroySubject.asObservable())
-      .map((params: any) => {
+    this.route.params.pipe(
+      takeUntil(this.destroySubject.asObservable()),
+      map((params: any) => {
         this.id = params['id'];
         this.prevUrl = params['prevUrl'];
         if (params['ids']) {
@@ -86,11 +86,11 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
         // get batchQuery
         this.batchQuery = params['batchQuery'] || '';
         return params['id'];
-      })
-      .mergeMap((id: any ) => {
+      }),
+      mergeMap((id: any ) => {
         this.loading = true;
         return this.photoService.getPhoto(id);
-      })
+      }))
       .subscribe((response: any) => {
           this.photo = response.data;
           this.isOwner = (response.data.owner.id === this.userService.getSyncProfile().id);

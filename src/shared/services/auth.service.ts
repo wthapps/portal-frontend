@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Observable ,  BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie';
 
 import { UserService } from './user.service';
-import { CookieService } from 'ngx-cookie';
 import { ApiBaseService } from './apibase.service';
-import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { WindowService } from '@wth/shared/services/window.service';
 
 const PPROFILE = 'pProfile'; // public profile
@@ -84,14 +84,14 @@ export class AuthService {
   }
 
   login(payload: any): Observable<any> {
-    return this.api.post('users/sign_in', payload).map((response: any) => {
+    return this.api.post('users/sign_in', payload).pipe(map((response: any) => {
       this.jwt = response.token;
       this.loggedIn = true;
       this._loggedIn$.next(true);
       this.user = response.data;
       this._user$.next(this.user);
       this.storeAuthInfo();
-    });
+    }));
   }
 
   logout(): void {

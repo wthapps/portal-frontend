@@ -1,14 +1,14 @@
 import { Component, Input, Output, EventEmitter, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/observable/merge';
+import { Observable, merge } from 'rxjs';
+
+
 
 import { LoadingService } from '../../loading/loading.service';
 
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { takeUntil, switchMap, filter } from 'rxjs/operators';
+import { take, takeUntil, switchMap, filter } from 'rxjs/operators';
 import { CommonEventService } from '@shared/services';
 
 @Component({
@@ -40,7 +40,7 @@ export class CoverProfileComponent implements OnDestroy {
    selectPhoto function Should work when there is 1 PhotoDataSelectComponent available in current view
    */
   selectPhoto(callback: any, loadingId?: string) {
-    const close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, this.destroySubject);
+    const close$: Observable<any> = merge(this.mediaSelectionService.open$, this.destroySubject);
 
     this.mediaSelectionService.open({ allowSelectMultiple: false, hiddenTabs: ['videos', 'playlists']});
     this.mediaSelectionService.selectedMedias$.pipe(

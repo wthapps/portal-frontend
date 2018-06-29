@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  of } from 'rxjs';
 import { Action, Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { delayWhen, filter, map, concatMap, catchError, tap, retry } from 'rxjs/operators';
@@ -10,7 +10,6 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 
 import * as fromRoot from '../reducers/index';
 import { SoShortcutService } from '../services/shortcut.service';
-import { of } from 'rxjs/observable/of';
 import { AuthService } from '@wth/shared/services';
 
 

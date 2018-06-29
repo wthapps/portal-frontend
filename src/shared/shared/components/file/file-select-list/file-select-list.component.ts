@@ -1,8 +1,9 @@
 import { Component, ElementRef, ViewChild, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { take } from 'rxjs/operators';
+
 import { LoadingService } from '../../loading/loading.service';
 import { ApiBaseService } from '../../../../services/apibase.service';
-import 'rxjs/add/operator/take';
-import { CommonEventService } from '../../../../services/common-event/common-event.service';
+
 
 declare var _: any;
 declare var $: any;
@@ -54,7 +55,7 @@ export class FileSelectListComponent {
   loadPhotos() {
     this.loading.start();
     console.log('photo list loadPhotos: ');
-    this.apiService.get(`media/photos`).take(1).subscribe(
+    this.apiService.get(`media/photos`).pipe(take(1)).subscribe(
       (response: any) => {
         this.photos = response['data'];
         this.loading.stop();

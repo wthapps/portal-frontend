@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
+import { Observable ,  of ,  EMPTY,  defer } from 'rxjs';
+import { map, concatMap, withLatestFrom, catchError, mergeMap } from 'rxjs/operators';
 
-import { Observable } from 'rxjs/Observable';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-import { empty } from 'rxjs/observable/empty';
-import { defer } from 'rxjs/observable/defer';
-import { map, concatMap, withLatestFrom, catchError } from 'rxjs/operators';
 
 
 import * as folder from '../actions/folder';
 import * as context from '../reducers/context';
 import { ZFolderService } from '../services/folder.service';
+
 
 @Injectable()
 export class FolderEffects {
@@ -23,13 +22,13 @@ export class FolderEffects {
       map((action: any) => action['payload']),
       concatMap((payload: any) => this.folderService.create(payload)),
       withLatestFrom(this.store, (res: any, state: any) => {
-        if(state.context.permissions.edit) {
+        if (state.context.permissions.edit) {
           return ({type: folder.FolderAdded, payload: [res['data']]});
         } else {
-          return empty();
+          return EMPTY;
         }
       }),
-      catchError(() => empty()));
+      catchError(() => EMPTY));
 
   @Effect() init$: Observable<any> = defer(() => {
       return this.folderService.getRootFolders();
@@ -39,14 +38,14 @@ export class FolderEffects {
         return [
           new folder.LoadSuccess(res.data),
         ];}),
-      catchError(() => empty()));
+      catchError(() => EMPTY));
 
   @Effect() loadAll = this.actions
     .ofType(folder.LOAD_ALL)
     .pipe(
       concatMap(() => this.folderService.getAll()),
       map((res: any) => new folder.LoadSuccess(res['data'])),
-      catchError(() => empty())
+      catchError(() => EMPTY)
     );
 
   @Effect() setCurrentFolder = this.actions

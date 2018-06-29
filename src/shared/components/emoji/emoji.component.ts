@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { WTHEmojiService } from './emoji.service';
 import { OverlayPanel } from 'primeng/components/overlaypanel/overlaypanel';
 

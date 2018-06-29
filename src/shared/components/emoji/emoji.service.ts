@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { WTHEmoji, WTHEmojiCateCode } from '@shared/components/emoji/emoji';
-import { Subject } from 'rxjs/Subject';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 declare let _: any;
 
@@ -58,17 +58,17 @@ export class WTHEmojiService {
   // }
 
   getAll() {
-    return this.http
-      .get('/assets/data/emoji.json')
-      .map(data => Object.values(data));
+    return this.http.get('/assets/data/emoji.json').pipe(map(data => Object.values(data)));
   }
 
   getByCat() {
     return this.http
       .get('/assets/data/emoji.json')
-      .map(data => Object.values(data))
-      .map(data => _.orderBy(data, ['order'], ['asc']))
-      .map(data => _.groupBy(data, 'category'));
+      .pipe(
+        map(data => Object.values(data)),
+        map(data => _.orderBy(data, ['order'], ['asc'])),
+        map(data => _.groupBy(data, 'category'))
+      );
   }
 
   // emojify(str) {

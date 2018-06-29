@@ -1,11 +1,8 @@
 import { Injectable }             from '@angular/core';
+import {throwError as observableThrowError,  Observable ,  of, from } from 'rxjs';
+import { map, switchMap, mergeMap, flatMap, catchError } from 'rxjs/operators';
 import { Effect, Actions }        from '@ngrx/effects';
 import { Action }                 from '@ngrx/store';
-import { Observable }             from 'rxjs/Observable';
-import { of }                     from 'rxjs/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
 
 import * as mediaActions         from './media.actions';
 import { AlbumService } from '@media/shared/service/album.service';
@@ -50,180 +47,217 @@ export class MediaEffects {
   @Effect()
   get$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.GET)
-    .map((action: mediaActions.Get) => action.payload)
-    .switchMap((state: any) => {
-      return this.albumService.getAlbum(state)
-        .map(response => new mediaActions.GetSuccess(response))
-        .catch(error => of(new mediaActions.GetFail()));
-    });
+    .pipe(
+      map((action: mediaActions.Get) => action.payload),
+      switchMap((state: any) => {
+        return this.albumService.getAlbum(state)
+          .pipe(
+            map(response => new mediaActions.GetSuccess(response)),
+            catchError(error => of(new mediaActions.GetFail()))
+          );
+      })
+    );
 
   @Effect()
   getAll$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.GET_ALL)
-    .map((action: mediaActions.GetAll) => action.payload)
-    .switchMap(payload => {
+    .pipe(
+      map((action: mediaActions.GetAll) => action.payload),
+      switchMap(payload => {
         return this.mediaObjectService.getAll(payload.queryParams, payload.path)
-          .map(response => {
+        .pipe(
+          map(response => {
             return new mediaActions.GetAllSuccess({...response, ...payload});
-          });
-    });
+          })
+        );
+      })
+    );
 
   @Effect()
   getMore$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.GET_MORE)
-    .map((action: mediaActions.GetMore) => action.payload)
-    .switchMap(payload => {
+    .pipe(
+      map((action: mediaActions.GetMore) => action.payload),
+      switchMap(payload => {
       if (payload.nextLink) {
         return this.mediaObjectService.loadMore(payload.nextLink.replace(/^\//, ''))
-          .map(response => new mediaActions.GetMoreSuccess({...response}))
-          .catch(error => {});
+          .pipe(
+            map(response => new mediaActions.GetMoreSuccess({...response})),
+            catchError(error => null)
+          );
       } else {
         return new Observable((observer) => {
           observer.next = (x) => {
             return [];
-          }
-        })
-      }
-    });
+          };
+        });
+      }})
+    );
 
   @Effect()
   search$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.SEARCH)
-    .map((action: mediaActions.Search) => action.payload)
-    .switchMap(payload => {
+    .pipe(
+      map((action: mediaActions.Search) => action.payload),
+      switchMap(payload => {
       return this.searchService.search(payload.path, payload.queryParams)
-        .map(response => new mediaActions.GetAllSuccess({...response, ...payload}));
-    });
+        .pipe(map(response => new mediaActions.GetAllSuccess({...response, ...payload})));
+      })
+    );
 
 
   @Effect()
   addToDetailObjects$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.ADD_TO_DETAIL_OBJECTS)
-    .map((action: mediaActions.AddToDetailObjects) => action.payload)
-    .mergeMap(payload => {
+    .pipe(
+      map((action: mediaActions.AddToDetailObjects) => action.payload),
+      mergeMap(payload => {
       if (payload.album) {
         return this.albumService.addPhotos({...payload})
-          .map(response => {
-            this.toastsService.success('You added item(s) successful!');
-            return new mediaActions.AddManySuccess(...response);
-          });
+          .pipe(
+            map((response: any) => {
+              this.toastsService.success('You added item(s) successful!');
+              return new mediaActions.AddManySuccess(...response);
+            })
+          );
       } else {
         return this.sharingService.addObjects({...payload})
-          .map(response => {
+          .pipe(map((response: any) => {
             this.toastsService.success('You added item(s) successful!');
             return new mediaActions.AddManySuccess(...response);
-          });
-      }
-    });
+          })
+          );
+      }})
+    );
 
   @Effect()
   removeFromDetailObjects$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.REMOVE_FROM_DETAIL_OBJECTS)
-    .map((action: mediaActions.RemoveFromDetailObjects) => action.payload)
-    .mergeMap(payload => {
-      if (payload.album) {
-        return this.albumService.removePhotos({
-          album: payload.album,
-          photos: payload.selectedObjects,
-          delete_child: payload.delete_child || false
-        })
-          .map(response => {
-            this.toastsService.success('You removed item(s) successful!');
-            return new mediaActions.DeleteManySuccess(payload);
-          });
-      } else {
-        return this.sharingService.removeObjects({
-          sharing: payload.object,
-          objects: payload.selectedObjects,
-          delete_child: payload.delete_child || false
-        })
-          .map(response => {
-            this.toastsService.success('You removed item(s) successful!');
-            return new mediaActions.DeleteManySuccess(payload);
-          });
-      }
-    });
+    .pipe(
+      map((action: mediaActions.RemoveFromDetailObjects) => action.payload),
+      mergeMap(payload => {
+        if (payload.album) {
+          return this.albumService.removePhotos({
+            album: payload.album,
+            photos: payload.selectedObjects,
+            delete_child: payload.delete_child || false
+          })
+            .map(response => {
+              this.toastsService.success('You removed item(s) successful!');
+              return new mediaActions.DeleteManySuccess(payload);
+            });
+        } else {
+          return this.sharingService.removeObjects({
+            sharing: payload.object,
+            objects: payload.selectedObjects,
+            delete_child: payload.delete_child || false
+          })
+            .map(response => {
+              this.toastsService.success('You removed item(s) successful!');
+              return new mediaActions.DeleteManySuccess(payload);
+            });
+        }
+      })
+    );
 
   @Effect()
   update$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.UPDATE)
-    .map((action: mediaActions.Update) => action.payload)
-    .mergeMap(state => {
-      return this.mediaObjectService.update(state, false, 'media')
-        .map(response => {
-          this.toastsService.success('You updated item successful!');
-          return new mediaActions.UpdateSuccess({...response});
-        });
-    });
+    .pipe(
+      map((action: mediaActions.Update) => action.payload),
+      mergeMap(state => {
+        return this.mediaObjectService.update(state, false, 'media')
+          .pipe(
+            map(response => {
+              this.toastsService.success('You updated item successful!');
+              return new mediaActions.UpdateSuccess({...response});
+            })
+          );
+      })
+    );
 
   @Effect()
   updateMany$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.UPDATE_MANY)
-    .map((action: mediaActions.UpdateMany) => action.payload)
-    .mergeMap(state => {
-      return this.mediaObjectService.update(state, false, 'media')
-        .map(response => {
-          this.toastsService.success('You updated items successful!');
-          return new mediaActions.UpdateManySuccess({...response});
-        });
-    });
+    .pipe(
+      map((action: mediaActions.UpdateMany) => action.payload),
+      mergeMap(state => {
+        return this.mediaObjectService.update(state, false, 'media')
+          .pipe(
+            map(response => {
+              this.toastsService.success('You updated items successful!');
+              return new mediaActions.UpdateManySuccess({...response});
+            })
+          );
+      })
+    );
 
   @Effect()
   delete$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.DELETE)
-    .map((action: mediaActions.Delete) => action.payload)
-    .mergeMap(state => {
+    .pipe(
+      map((action: mediaActions.Delete) => action.payload),
+      mergeMap(state => {
       return this.mediaObjectService.delete(state, false, 'media')
-        .map(response => {
-          this.toastsService.success('You deleted item successful!');
-          return new mediaActions.DeleteSuccess({...response});
-        });
-    });
+        .pipe(
+          map(response => {
+            this.toastsService.success('You deleted item successful!');
+            return new mediaActions.DeleteSuccess({...response});
+          })
+        );
+      })
+    );
 
   @Effect()
   deleteMany$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.DELETE_MANY)
-    .map((action: mediaActions.Delete) => action.payload)
-    .mergeMap(payload => {
+    .pipe(
+      map((action: mediaActions.Delete) => action.payload),
+      mergeMap(payload => {
       this.loading.start();
       return this.mediaObjectService.deleteMany({objects: payload.selectedObjects}, 'media')
-        .map(response => {
-          this.loading.stop();
-          this.toastsService.success('You deleted items successful!');
-          return new mediaActions.DeleteManySuccess(payload);
-        });
-    });
+        .pipe(
+          map(response => {
+            this.loading.stop();
+            this.toastsService.success('You deleted items successful!');
+            return new mediaActions.DeleteManySuccess(payload);
+          })
+        );
+      })
+    );
 
   @Effect()
   download$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.DOWNLOAD)
-    .map((action: mediaActions.Download) => action.payload)
-    .switchMap(payload => {
-      if (payload.selectedObjects && payload.selectedObjects.length > 0) {
-        const result = [];
-        payload.selectedObjects.forEach(file => {
-          this.mediaObjectService.download({id: file.id}).subscribe(
-            (response: any) => {
-              const blob = new Blob([response], {type: file.content_type});
-              saveAs(blob, file.name + '.' + file.extension);
-              result.push(response);
-            },
-            (error: any) => {
-              return Observable.throw(error);
-            }
-          );
-        });
-        return Observable.from(result);
+    .pipe(
+      map((action: mediaActions.Download) => action.payload),
+      switchMap(payload => {
+        if (payload.selectedObjects && payload.selectedObjects.length > 0) {
+          const result = [];
+          payload.selectedObjects.forEach(file => {
+            this.mediaObjectService.download({id: file.id}).subscribe(
+              (response: any) => {
+                const blob = new Blob([response], {type: file.content_type});
+                saveAs(blob, file.name + '.' + file.extension);
+                result.push(response);
+              },
+              (error: any) => {
+                return observableThrowError(error);
+              }
+            );
+          });
+        return from(result);
       } else {
         return null;
-      }
-    });
+      }})
+    );
 
   @Effect()
   getAllFavorite: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.GET_ALL_FAVORITE)
-    .map((action: mediaActions.GetAllFavorite) => action.payload)
-    .switchMap(payload => {
+    .pipe(
+      map((action: mediaActions.GetAllFavorite) => action.payload),
+      switchMap(payload => {
       return this.mediaObjectService.getAllFavorite({...payload.queryParams})
         .map(response => {
             return new mediaActions.GetAllSuccess({...payload, ...response});
@@ -232,13 +266,15 @@ export class MediaEffects {
             console.log('error: ', error);
           }
         );
-    });
+      })
+    );
 
   @Effect()
   favorite$: Observable<Action> = this.actions$
     .ofType(mediaActions.ActionTypes.FAVORITE)
-    .map((action: mediaActions.Favorite) => action.payload)
-    .flatMap(payload => {
+    .pipe(
+      map((action: mediaActions.Favorite) => action.payload),
+      flatMap(payload => {
       // return this.mediaObjectService.favourite({objects: payload.selectedObjects, mode: payload.mode})
       if (payload.mode === 'add') {
         const data: FavouriteParams = payload.selectedObjects.map(item => {return {id: item.id, model: item.model}});
@@ -260,8 +296,8 @@ export class MediaEffects {
               console.log('error: ', error);
             }
           );
-      }
-    });
+      }})
+    );
 }
 
 interface FavouriteParams {

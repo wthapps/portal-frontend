@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
-import 'rxjs/add/operator/catch';
 import { HttpClient } from '@angular/common/http';
+import {throwError as observableThrowError,  Observable ,  BehaviorSubject } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+
 
 
 declare var _: any;
@@ -43,18 +43,17 @@ export class CountryService {
    * Returns an Observable for the HTTP GET request for the JSON resource.
    * @return {string[]} The Observable for the HTTP request.
    */
-  getCountries(): Observable<ICountry[]> {
+  getCountries(): Observable<any> {
     if (this.countriesCodeSubject.getValue().length > 1)
       return this.countriesCode$;
 
-    return this.http.get('assets/data/countries.json')
-      .catch(this.handleError);
+    return this.http.get('assets/data/countries.json').pipe(catchError(this.handleError));
   }
 
   getCountry(code: string): Observable<ICountry> {
-    return this.getCountries()
-      .map((products: ICountry[]) => products.find(p => p.code === code))
-      .catch(this.handleError);
+    return this.getCountries().pipe(
+      map((products: ICountry[]) => products.find(p => p.code === code)),
+      catchError(this.handleError));
   }
 
   getCountryNameToCode(name: any, dataCountries: any) {
@@ -85,7 +84,7 @@ export class CountryService {
     let errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg); // log to console instead
-    return Observable.throw(errMsg);
+    return observableThrowError(errMsg);
   }
 }
 

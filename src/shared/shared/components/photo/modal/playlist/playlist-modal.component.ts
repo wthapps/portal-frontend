@@ -1,7 +1,7 @@
 import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter, ViewContainerRef, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 

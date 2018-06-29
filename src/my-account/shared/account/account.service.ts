@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BaseEntityService } from '@wth/shared/services/base-entity-service';
 import { ApiBaseService } from '@wth/shared/services/apibase.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AccountService extends BaseEntityService<any> {

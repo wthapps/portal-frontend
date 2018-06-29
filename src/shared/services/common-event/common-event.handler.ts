@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CommonEvent } from './common-event';
 
 export interface CommonEventHandler {

@@ -8,12 +8,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { combineLatest } from 'rxjs/operators/combineLatest';
-import { map } from 'rxjs/operators/map';
+import { Subscription ,  Observable ,  Subject, BehaviorSubject } from 'rxjs';
+import { takeUntil, combineLatest, map } from 'rxjs/operators';
 
 import { ZContactService, ITEM_PER_PAGE, MY_CONTACTS, OTHER_CONTACTS } from '../../shared/services/contact.service';
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';

@@ -2,7 +2,7 @@
  * Created by anvo on 14/06/2017.
  */
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class MediaUploaderDataService {

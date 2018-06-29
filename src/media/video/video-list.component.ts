@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
@@ -176,7 +177,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   openModalAddToPlaylist() {
     if (this.subAddPlaylist) this.subAddPlaylist.unsubscribe();
     this.playlistModalService.open.next({ selectedObjects: this.selectedObjects });
-    this.subAddPlaylist = this.playlistModalService.onAdd$.take(1).subscribe(e => {
+    this.subAddPlaylist = this.playlistModalService.onAdd$.pipe(take(1)).subscribe(e => {
       this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: e, videos: this.selectedObjects }).subscribe(res => {
         this.toastsService.success('You just added to Playlist success');
       });

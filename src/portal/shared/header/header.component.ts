@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@shared/services';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Constants } from '@shared/constant';
 
 /**

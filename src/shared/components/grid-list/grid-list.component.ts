@@ -11,8 +11,8 @@ import {
   TemplateRef, OnChanges, SimpleChanges
 } from '@angular/core';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
+
 
 
 import { Constants } from '@wth/shared/constant';

@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { tap } from 'rxjs/operators/tap';
+import { BehaviorSubject ,  Observable ,  Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { Media } from '@shared/shared/models/media.model';
 import { ApiBaseService } from '@shared/services';

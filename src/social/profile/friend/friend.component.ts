@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject ,  Observable ,  of } from 'rxjs';
 import { takeUntil, switchMap, tap, combineLatest } from 'rxjs/operators';
 
 import { SocialService } from '../../shared/services/social.service';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 import { UserService } from '@wth/shared/services';
 
 export interface FTAB {

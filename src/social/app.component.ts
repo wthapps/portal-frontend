@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { Config } from '@wth/shared/constant';

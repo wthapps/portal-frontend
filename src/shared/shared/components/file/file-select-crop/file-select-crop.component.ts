@@ -1,16 +1,13 @@
 import { Component, ViewChild, OnInit, Output, EventEmitter, OnDestroy, Input } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/observable/merge';
+import { Observable ,  Subject, merge } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
+
 
 import { CommonEventService } from '../../../../services/common-event/common-event.service';
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
-import { Subject } from 'rxjs/Subject';
 import { CropImageComponent } from '@wth/shared/shared/components/file/file-crop/crop-image.component';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { takeUntil, map } from 'rxjs/operators';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 
@@ -24,7 +21,7 @@ declare let _: any;
 
 export class FileSelectCropComponent implements OnInit, OnDestroy {
   @ViewChild('cropImage') cropImage: CropImageComponent;
-  @Input() useNewPhotoSelect = true;
+  @Input() useNewPhotoSelect: boolean = true;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   currentImage: string;
@@ -85,7 +82,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     } else {
       this.mediaSelectionService.open({ allowSelectMultiple: false });
 
-      const close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+      const close$: Observable<any> = merge(this.mediaSelectionService.open$, componentDestroyed(this));
       this.mediaSelectionService.selectedMedias$.pipe(
         takeUntil(close$)
       ).subscribe((items) => {
@@ -110,8 +107,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     if (files.length < 1) {
       console.warn('file-select-crop: next error: files should have at least 1 element');
     } else {
-      console.log('inside file-select-crop - next handling ...', files);
-      const img: string = files[0].thumbnail_url;
+      let img: string = files[0].thumbnail_url;
       this.cropImage.open(img);
       this.mediaSelectionService.close();
     }
@@ -121,7 +117,6 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     if (files.length < 1) {
       console.warn('file-select-crop: handleLocalImage error: files should have at least 1 element');
     } else {
-      console.log('handle local image: ', files);
       this.photoUploadService.getPhoto(files[0])
         .then((image: any) => {
           this.cropImage.open(image);

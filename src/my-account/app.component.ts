@@ -9,8 +9,8 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/filter';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import {
   AccountListEditModalComponent,
@@ -81,7 +81,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.currentUser = this.userService.getSyncProfile();
 
     this.routerSubscription = this.router.events
-      .filter(event => event instanceof NavigationEnd)
+      .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });

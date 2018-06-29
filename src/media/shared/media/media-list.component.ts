@@ -13,8 +13,8 @@ import {
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 
 import { MediaObjectService } from '../container/media-object.service';
@@ -127,7 +127,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
               protected cdr: ChangeDetectorRef,
               protected albumService: AlbumService) {
 
-    this.photoService.modifiedPhotos$.takeUntil(this.destroySubject.asObservable()).subscribe((object: any) => {
+    this.photoService.modifiedPhotos$.pipe(takeUntil(this.destroySubject.asObservable())).subscribe((object: any) => {
       switch (object.action) {
         case 'update':
           let updatedPhoto = object.payload.photo;
@@ -149,7 +149,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.route.queryParams
-      .filter(() => this.currentPath != undefined)
+      .pipe(filter(() => this.currentPath != undefined))
       .subscribe(
         (queryParams: any) => {
           this.getObjects(queryParams);

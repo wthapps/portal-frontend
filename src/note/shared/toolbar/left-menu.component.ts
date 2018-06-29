@@ -1,23 +1,16 @@
 import {
   Component,
-  OnInit,
-  HostBinding,
-  Input,
-  OnDestroy,
-  ChangeDetectorRef, Renderer2
+  OnDestroy, Renderer2
 } from '@angular/core';
+import { take } from 'rxjs/operators';
 import { Constants } from '@shared/constant/config/constants';
-import { ZNoteService } from '../services/note.service';
-import * as fromFolder from '../actions/folder';
 import * as fromRoot from '../reducers/index';
 import { Store } from '@ngrx/store';
 
-import * as note from '../actions/note';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Router } from '@angular/router';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import * as folder from '../actions/folder';
-import { Folder } from '../reducers/folder';
 
 declare let $: any;
 declare let _: any;
@@ -86,7 +79,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
             // folders changes many times to reaches end state
             this.store
               .select(fromRoot.getNotesState)
-              .take(3)
+              .pipe(take(3))
               .subscribe((state: any) => {
                 Object.keys(state.folders).forEach((k: any) => {
                   this.update(state.folders[k], this.noteFoldersTree);
@@ -95,7 +88,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
             // folder path changes 2 times to reaches end state
             this.store
               .select(fromRoot.getCurrentFolderPath)
-              .take(2)
+              .pipe(take(2))
               .subscribe((folders: any) => {
                 folders.forEach((folder: any) => {
                   folder.expanded = true;

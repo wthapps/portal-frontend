@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-import { of } from 'rxjs/observable/of';
-import { empty } from 'rxjs/observable/empty';
+import { ApiBaseService } from '@shared/services/apibase.service';
+import { of,  EMPTY } from 'rxjs';
 import { ZNoteService } from '../services/note.service';
-import { map, withLatestFrom, catchError, concatMap } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, catchError, concatMap, mergeMap } from 'rxjs/operators';
 
 
 import * as note from '../actions/note';
 import * as context from '../reducers/context';
-import { ApiBaseService } from '@shared/services/apibase.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from "@shared/shared/components/confirmation/wth-confirm.service";
 import { Router } from "@angular/router";
@@ -80,7 +79,7 @@ export class NoteEffects {
                 }
               });
             }
-            return empty();})
+            return EMPTY;})
         )
       }),
     );
@@ -128,7 +127,7 @@ export class NoteEffects {
             }
           });
         }
-        return empty();})
+        return EMPTY;})
     );
 
 
@@ -165,7 +164,7 @@ export class NoteEffects {
     .pipe(
       concatMap(() => this.apiBaseService.post(`note/trashs/empty_all`)),
       map((res: any) => ({type: note.ALL_DELETED})),
-      catchError(() => empty())
+      catchError(() => EMPTY)
     );
 
 
@@ -178,5 +177,6 @@ export class NoteEffects {
             {objects: payload.map((i: any) => {return {id: i.id, object_type: i.object_type}})})
         }),
         map((res: any) => ({type: note.REMOVED_SHARE_WITH_ME, payload: res.data})),
-        catchError(() => empty()));
+        catchError(() => EMPTY)
+      );
 }

@@ -9,11 +9,8 @@ import {
 import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subject ,  Subscription ,  of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs/observable/of';
 import {
   takeUntil,
   switchMap,

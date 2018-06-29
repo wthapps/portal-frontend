@@ -3,7 +3,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { ApiBaseService } from '../../../../services/apibase.service';
 

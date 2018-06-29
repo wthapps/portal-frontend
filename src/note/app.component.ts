@@ -10,9 +10,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-// import './operators';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  Subject } from 'rxjs';
 
 import { ZNoteService } from './shared/services/note.service';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';

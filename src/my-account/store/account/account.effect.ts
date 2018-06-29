@@ -1,13 +1,8 @@
 import { Injectable }             from '@angular/core';
 import { Effect, Actions }        from '@ngrx/effects';
 import { Action }                 from '@ngrx/store';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-
-
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable,  of } from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
 import {
   ActionTypes,
   Get, GetSuccess, GetFail,
@@ -51,99 +46,102 @@ export class AccountEffects {
   @Effect()
   get$: Observable<Action> = this.actions$
     .ofType(ActionTypes.GET)
-    .map((action: Get) => action.payload)
-    .switchMap((state: any) => {
-      return this.accountService.get(state)
-        .map(response => new GetSuccess(response))
-        .catch(error  => of(new GetFail(error)));
-    });
+    .pipe(
+      map((action: Get) => action.payload),
+      switchMap((state: any) => {
+        return this.accountService.get(state)
+          .pipe(
+            map(response => new GetSuccess(response)),
+            catchError(error  => of(new GetFail(error)))
+          );
+      }));
 
   @Effect()
   getAccounts$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.GET_ACCOUNTS)
-    .map((action: GetAccounts) => action.payload)
-    .switchMap(state => {
+    .ofType(ActionTypes.GET_ACCOUNTS).pipe(
+    map((action: GetAccounts) => action.payload),
+    switchMap(state => {
       this.loadingService.start();
-      return this.accountService.getAccounts(state)
-        .map(response => {
+      return this.accountService.getAccounts(state).pipe(
+        map(response => {
           this.loadingService.stop();
           return new GetAccountsSuccess(response);
-        })
-        .catch(response  => {
+        }),
+        catchError(response  => {
           this.loadingService.stop();
           this.toastsService.danger(response.error.error);
           return of(new GetAccountsFail(response));
-        });
-    });
+        }));
+    }));
 
   @Effect()
   add$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.ADD)
-    .map((action: Add) => action.payload)
-    .switchMap((state: any) => {
-      return this.accountService.create(state)
-        .map(response => {
+    .ofType(ActionTypes.ADD).pipe(
+    map((action: Add) => action.payload),
+    switchMap((state: any) => {
+      return this.accountService.create(state).pipe(
+        map(response => {
           this.toastsService.success('You added account successfully!');
           return new AddSuccess(response);
-        })
-        .catch(error  => of(new AddFail(error)));
-    });
+        }),
+        catchError(error  => of(new AddFail(error))));
+    }));
 
   @Effect()
   addMany$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.ADD_MANY)
-    .map((action: AddMany) => action.payload)
-    .switchMap((state: any) => {
+    .ofType(ActionTypes.ADD_MANY).pipe(
+    map((action: AddMany) => action.payload),
+    switchMap((state: any) => {
       this.loadingService.start();
-      return this.accountService.create(state, true)
-        .map(response => {
+      return this.accountService.create(state, true).pipe(
+        map(response => {
           this.loadingService.stop();
           this.toastsService.success('You added account successfully!');
           return new AddManySuccess(response);
-        })
-        .catch(response  => {
+        }),
+        catchError(response  => {
           this.loadingService.stop();
           this.toastsService.danger(response.error.error);
           return of(new AddManyFail(response));
-        });
-    });
+        }));
+    }));
 
   @Effect()
   update$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.UPDATE)
-    .map((action: Update) => action.payload)
-    .switchMap((state: any) => {
+    .ofType(ActionTypes.UPDATE).pipe(
+    map((action: Update) => action.payload),
+    switchMap((state: any) => {
       this.loadingService.start();
-      return this.accountService.update(state)
-        .map(response => {
+      return this.accountService.update(state).pipe(
+        map(response => {
           this.loadingService.stop();
           this.toastsService.success('You updated account successfully!');
           return new UpdateSuccess(response);
-        })
-        .catch(response  => {
+        }),
+        catchError(response  => {
           this.loadingService.stop();
           this.toastsService.success(response.error.error);
           return of(new UpdateFail(response));
-        });
-    });
+        }));
+    }));
 
   @Effect()
   delete$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.DELETE)
-    .map((action: Delete) => action.payload)
-    .switchMap((state: any) => {
+    .ofType(ActionTypes.DELETE).pipe(
+    map((action: Delete) => action.payload),
+    switchMap((state: any) => {
       this.loadingService.start();
-      return this.accountService.delete(0, state)
-        .map(response => {
+      return this.accountService.delete(0, state).pipe(
+        map(response => {
           this.loadingService.stop();
           this.toastsService.success('You deleted account successfully!');
           return new DeleteSuccess(response);
-        })
-        .catch(response  => {
+        }),
+        catchError(response  => {
           this.loadingService.stop();
           this.toastsService.danger(response.error.error);
           return of(new DeleteFail(response));
-        });
-    });
+        }));
+    }));
 
 }

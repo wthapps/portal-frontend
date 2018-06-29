@@ -1,8 +1,8 @@
 import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input, OnChanges } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/observable/merge';
+import { Subscription,  Observable } from 'rxjs';
+import { filter, map, take, takeUntil, merge, mergeMap } from 'rxjs/operators';
+
 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -11,9 +11,7 @@ import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE } from '@wth/shared/constant';
 import { ApiBaseService, WMessageService, AuthService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
-import { Observable } from 'rxjs/Observable';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { filter, map, take, takeUntil, mergeMap } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { Store } from '@ngrx/store';
@@ -23,7 +21,6 @@ import { WUploader } from '@shared/services/w-uploader';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { LongMessageModalComponent } from '@shared/components/modal/long-message-modal.component';
-import { from } from 'rxjs/observable/from';
 
 
 declare var $: any;
@@ -92,7 +89,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   noteSelectOnInsert() {
     this.store
       .select('notes')
-      .take(1)
+      .pipe(take(1))
       .subscribe(state => {
         const notes: any = state.objects.filter(
           item =>
@@ -216,7 +213,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   onOpenSelectPhotos() {
     this.mediaSelectionService.open({ allowSelectMultiple: true});
 
-    const close$: Observable<any> = Observable.merge(
+    const close$: Observable<any> = merge(
       this.mediaSelectionService.open$,
       componentDestroyed(this)
     );

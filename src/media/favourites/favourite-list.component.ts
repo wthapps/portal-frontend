@@ -8,7 +8,7 @@ import {
 import { Store } from '@ngrx/store';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Constants } from '@wth/shared/constant';
 import * as appStore from '../shared/store';
 import {

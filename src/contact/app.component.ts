@@ -9,12 +9,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Subscription ,  Observable ,  Subject ,  timer } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
-import { timer } from 'rxjs/observable/timer';
 import { ConfirmDialogModel } from '../shared/shared/models/confirm-dialog.model';
 import { Constants } from '../shared/constant/config/constants';
 

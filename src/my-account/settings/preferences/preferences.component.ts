@@ -1,5 +1,5 @@
 import { Component, OnInit }          from '@angular/core';
-import 'rxjs/add/observable/fromPromise';
+
 import {
   FormGroup,
   AbstractControl,

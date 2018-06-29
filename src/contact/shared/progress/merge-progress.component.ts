@@ -5,7 +5,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ModalDockComponent } from '../../../shared/shared/components/modal/dock.component';
 import { LoadingService } from '../../../shared/shared/components/loading/loading.service';
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';

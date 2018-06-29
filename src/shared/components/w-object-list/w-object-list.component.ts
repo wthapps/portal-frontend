@@ -2,9 +2,9 @@ import {
   Component, Input, Output, ContentChild, TemplateRef, AfterViewInit,
   AfterContentChecked, ViewEncapsulation, EventEmitter, OnDestroy, OnChanges, SimpleChanges
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import 'rxjs/add/operator/takeUntil';
+
 
 import * as DragSelect from 'dragselect/dist/DragSelect.js';
 

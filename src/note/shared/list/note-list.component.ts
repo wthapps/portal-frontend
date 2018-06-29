@@ -1,6 +1,6 @@
 import { Component, Input, ViewEncapsulation, OnInit, ChangeDetectionStrategy, HostListener, OnChanges } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { Note } from '@shared/shared/models/note.model';

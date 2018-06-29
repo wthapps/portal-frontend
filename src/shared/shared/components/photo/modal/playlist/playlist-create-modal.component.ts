@@ -2,8 +2,8 @@ import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angu
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ApiBaseService } from '@wth/shared/services';
 import { TaggingElComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-el.component';
 import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
@@ -92,8 +92,9 @@ export class PlaylistCreateModalComponent implements OnInit {
 
   autoCompleteTags = (text: string): Observable<any> => {
     return this.tagService.getTags(text)
-      .map(data => data.json().map((item: any) => item.name))
-      .do(console.log);
+      .pipe(
+        map(data => data.json(),
+        map((item: any) => item.name)));
   }
 
   remove(photo: any, event: any): void {

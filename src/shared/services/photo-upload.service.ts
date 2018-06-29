@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
+import { throwError, Observable, from } from 'rxjs';
+import { filter, delay, take, mergeMap } from 'rxjs/operators';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/delay';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/mergeMap';
+
+
+
+
 
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../constant/config/constants';
@@ -17,7 +16,7 @@ declare let _: any;
 declare let Promise: any;
 declare let window: any;
 
-// export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 
+// export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp',
 // 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
 
 @Injectable()
@@ -66,12 +65,11 @@ export class PhotoUploadService {
   uploadPhotos(photos: Array<any>): Observable<any> {
     if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
       const err_msg = 'The File APIs are not fully supported in this browser.';
-      return Observable.throw(err_msg);
+      return throwError(err_msg);
     }
 
     // ONLY Process 4 photos at a time
-    return Observable.from(photos)
-      .mergeMap(
+    return from(photos).pipe(mergeMap(
         (photo: any) => this.readFile(photo),
         (photo: any, data: any) => {
           // below code handles rename when pasting on Notes
@@ -87,14 +85,14 @@ export class PhotoUploadService {
           };
         },
         this.MAX_FILES
-      )
-      .mergeMap((combinedData: any) =>
+      ),
+      mergeMap((combinedData: any) =>
           this.apiService.post('media/photos', combinedData),
         (combinedData: any, returnData: any) => {
           return { originPhoto: combinedData, data: returnData.data };
         },
         this.MAX_FILES
-      );
+      ));
   }
 
   readFile(file: any): Promise<any> {

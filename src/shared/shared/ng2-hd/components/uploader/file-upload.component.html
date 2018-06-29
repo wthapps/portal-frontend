@@ -21,7 +21,6 @@
             (click)="clear()"
             [disabled]="!hasFiles()"></button>
 
-    <p-templateLoader [template]="toolbarTemplate"></p-templateLoader>
   </div>
 
   <div #content [ngClass]="{'ui-fileupload-content ui-widget-content ui-corner-bottom':true}"
@@ -43,7 +42,6 @@
         <ng-template ngFor [ngForOf]="files" [ngForTemplate]="fileTemplate"></ng-template>
       </div>
     </div>
-    <p-templateLoader [template]="contentTemplate"></p-templateLoader>
   </div>
 </div>
 <span class="ui-button ui-fileupload-choose ui-widget ui-state-default ui-corner-all ui-button-text-icon-left"

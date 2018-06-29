@@ -2,7 +2,7 @@ import {
   Component, ViewEncapsulation, OnDestroy, ChangeDetectorRef, AfterViewInit,
   ChangeDetectionStrategy, Input, Output, EventEmitter
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { Media } from '@shared/shared/models/media.model';
 

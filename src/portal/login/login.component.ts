@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Ng2Cable } from 'ng2-cable';
 
 import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
 import { Constants } from '../../shared/constant/config/constants';
@@ -39,7 +38,6 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private loadingService: LoadingService,
     private appearancesChannelService: AppearancesChannelService,
-    private ng2Cable: Ng2Cable,
     private authService: AuthService
   ) {
     this.form = fb.group({

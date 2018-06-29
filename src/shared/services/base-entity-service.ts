@@ -1,5 +1,5 @@
 import { ApiBaseService } from './apibase.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export class BaseEntityService<T> {
   url = '';

@@ -7,7 +7,7 @@
     "types": []
   },
   "angularCompilerOptions": {
-    "preserveWhitespaces": 'off'
+    "preserveWhitespaces": "off"
   },
   "exclude": ["test.ts", "**/*.spec.ts"]
 }

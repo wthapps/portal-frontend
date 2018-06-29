@@ -2,8 +2,7 @@ import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Subject ,  Observable } from 'rxjs';
 import { combineLatest, takeUntil } from 'rxjs/operators';
 
 

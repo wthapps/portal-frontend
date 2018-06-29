@@ -15,10 +15,9 @@ import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/m
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { Observable } from 'rxjs/Observable';
-import { filter, take, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subject ,  Subscription, merge } from 'rxjs';
+import { takeUntil, filter, map, tap, take } from 'rxjs/operators';
+
 
 import { SocialService } from '../../services/social.service';
 import { MODEL_TYPE } from './../../../../shared/constant/config/constants';
@@ -355,7 +354,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   selectedItems(response: any) {
-    console.log(response);
     this.update(
       { privacy: response.type, custom_objects: response.items },
       null

@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Component, OnInit, ViewChild, OnDestroy }    from '@angular/core';
 
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import {
   FormGroup,
   AbstractControl,
@@ -188,7 +189,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
   handleSelectCropEvent() {
     this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
-      .takeUntil(this.destroySubject)
+      .pipe(takeUntil(this.destroySubject))
       .subscribe((event: any) => {
         this.doEvent(event);
       });

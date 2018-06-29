@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators/takeUntil';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ChatService } from '../shared/services/chat.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';

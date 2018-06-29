@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, Input, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subject ,  Subscription, merge } from 'rxjs';
 
 import {
   CommentCreateEvent,
@@ -14,9 +14,6 @@ import { SoComment, User } from '@wth/shared/shared/models';
 import { UserService, PhotoUploadService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { Router } from '@angular/router';
-
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { takeUntil, filter, map, mergeMap, take } from 'rxjs/operators';
 
@@ -89,7 +86,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
               private emojiService: WTHEmojiService,
               private uploader: WUploader) {
     this.user$ = this.userService.getAsyncProfile();
-    this.close$ = Observable.merge(this.mediaSelectionService.open$, this.cancelPhotoSubject, componentDestroyed(this));
+    this.close$ = merge(this.mediaSelectionService.open$, this.cancelPhotoSubject, componentDestroyed(this));
   }
 
   ngOnInit() {

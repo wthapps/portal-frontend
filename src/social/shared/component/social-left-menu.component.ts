@@ -1,14 +1,12 @@
 import { Component, OnDestroy, Renderer2 } from '@angular/core';
-import { Constants } from '@wth/shared/constant';
 import { Router, ActivatedRoute } from '@angular/router';
-import { WTHNavigateService, UserService } from '@wth/shared/services';
 
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { interval } from 'rxjs/observable/interval';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  interval ,  Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 
+import { Constants } from '@wth/shared/constant';
+import { WTHNavigateService, UserService } from '@wth/shared/services';
 
 import * as fromRoot from '../reducers/index';
 import { SocialFavoriteService } from './../services/social-favorites.service';

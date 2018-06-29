@@ -1,6 +1,6 @@
 import { Component, Input, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ZContactService } from '../services/contact.service';
 import { Constants } from '../../../shared/constant/config/constants';

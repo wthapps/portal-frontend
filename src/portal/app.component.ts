@@ -6,8 +6,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/filter';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { AuthService } from '@wth/shared/services';
 
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // }
 
     this.routerSubscription = this.router.events
-      .filter(event => event instanceof NavigationEnd)
+      .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
 

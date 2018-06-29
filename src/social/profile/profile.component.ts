@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { forkJoin } from 'rxjs';
 
 import { SocialService } from '../shared/services/social.service';
 import { ActivatedRoute, Router } from '@angular/router';

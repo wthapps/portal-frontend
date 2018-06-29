@@ -42,7 +42,6 @@ import { WObjectListService } from '@wth/shared/components/w-object-list/w-objec
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WindowService } from '@wth/shared/services/window.service';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
-import { ApiProxyService } from '@shared/services/apiproxy.service';
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 import { WMessageService } from '@wth/shared/services/message.service';
 import { WUploader } from '@shared/services/w-uploader';
@@ -110,7 +109,6 @@ export class SharedServicesModule {
         WTHEmojiService,
         WMediaSelectionService,
         DomService,
-        ApiProxyService,
         FileUploaderService,
         WindowService,
         WUploader,

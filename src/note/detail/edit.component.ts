@@ -2,12 +2,17 @@ import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild, View
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { Store } from '@ngrx/store';
-import { of } from 'rxjs/observable/of';
-import { combineLatest, debounceTime, filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
+import { Observable ,  Subject ,  Subscription ,  of, fromEvent, merge } from 'rxjs';
+import {
+  takeUntil,
+  switchMap,
+  combineLatest,
+  filter,
+  mergeMap,
+  map,
+  debounceTime,
+  tap
+} from 'rxjs/operators';
 
 import * as fromRoot from '../shared/reducers/index';
 import * as context from '../shared/reducers/context';
@@ -105,7 +110,7 @@ export class ZNoteDetailEditComponent
     private commonEventService: CommonEventService
   ) {
     this.renderer.addClass(document.body, 'modal-open');
-    this.noSave$ = Observable.merge(
+    this.noSave$ = merge(
       this.noSaveSubject.asObservable(),
       this.destroySubject,
       this.closeSubject
@@ -125,7 +130,7 @@ export class ZNoteDetailEditComponent
         switch (e.action) {
           case 'note:note_edit:close':
             this.router.navigate([{ outlets: { detail: null } }], {
-              queryParamsHandling: true
+              queryParamsHandling: 'preserve' , preserveFragment: true
             });
             break;
           case 'note:note_edit:print':
@@ -145,11 +150,11 @@ export class ZNoteDetailEditComponent
           this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
           if (!!noteId) {
             if (ctx.page === noteConstants.PAGE_TRASH) {
-              return this.noteService.get(noteId).map(res => res.data);
+              return this.noteService.get(noteId).pipe(map(res => res.data));
             } else {
               return this.noteService
                 .getNoteAvailable(noteId)
-                .map(res => res.data);
+                .pipe(map(res => res.data));
             }
           } else {
             return of(new Note());
@@ -191,14 +196,14 @@ export class ZNoteDetailEditComponent
 
   registerAutoSave() {
     // Auto save
-    Observable.merge(
+    merge(
       this.form.valueChanges,
-      Observable.fromEvent(this.customEditor, 'text-change')
+      fromEvent(this.customEditor, 'text-change')
     )
       .pipe(
         takeUntil(Observable.merge(this.noSave$, this.closeSubject)),
         debounceTime(DEBOUNCE_MS),
-        takeUntil(Observable.merge(this.noSave$, this.closeSubject))
+        takeUntil(merge(this.noSave$, this.closeSubject))
       )
       .subscribe(() => {
         this.noteChanged = true;
@@ -473,7 +478,7 @@ export class ZNoteDetailEditComponent
     this.mediaSelectionService.open();
     this.mediaSelectionService.setMultipleSelection(true);
 
-    const close$: Observable<any> = Observable.merge(
+    const close$: Observable<any> = merge(
       this.mediaSelectionService.open$,
       componentDestroyed(this)
     );
@@ -615,10 +620,10 @@ export class ZNoteDetailEditComponent
   updateCurrentNote(): void {
     this.store
       .select(fromRoot.getCurrentNote)
-      .pipe(takeUntil(Observable.merge(this.closeSubject, this.destroySubject)))
-      .subscribe((lnote: Note) => {
-        if (lnote !== undefined) {
-          this.updateFormValue(lnote);
+      .pipe(takeUntil(merge(this.closeSubject, this.destroySubject)))
+      .subscribe((note: Note) => {
+        if (note !== undefined) {
+          this.updateFormValue(note);
         }
       });
   }
@@ -849,7 +854,7 @@ export class ZNoteDetailEditComponent
   private selectPhotos4Attachments() {
     this.mediaSelectionService.open({ allowSelectMultiple: true });
 
-    const close$: Observable<any> = Observable.merge(
+    let close$: Observable<any> = merge(
       this.mediaSelectionService.open$,
       componentDestroyed(this)
     );

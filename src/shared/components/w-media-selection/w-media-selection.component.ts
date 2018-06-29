@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy, AfterViewInit } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { Media } from '@shared/shared/models/media.model';
 
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import 'rxjs/add/operator/takeUntil';
+
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { WUploader } from '@shared/services/w-uploader';

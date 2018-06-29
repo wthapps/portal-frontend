@@ -2,10 +2,15 @@ import { Injectable } from '@angular/core';
 import { FileReaderUtil } from '@shared/shared/utils/file/file-reader.util';
 import { GenericFileService } from '@shared/services';
 import { GenericFile } from '@shared/shared/models/generic-file.model';
-import { Observable } from 'rxjs/Observable';
+import {
+  Observer,
+  Observable,
+  of,
+  throwError as _throw,
+  from } from "rxjs";
+import { map, concatAll, catchError, mergeAll, mergeMap } from "rxjs/operators";
+
 import * as Boom from 'boom';
-import { of } from 'rxjs/observable/of';
-import { map, concatAll, catchError, mergeAll, mergeMap } from 'rxjs/operators';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { _throw } from 'rxjs/observable/throw';
 import { from } from 'rxjs/observable/from';

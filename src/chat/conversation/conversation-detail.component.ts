@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 
-// import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
+import { Subscription, Observable } from 'rxjs';
+
 
 import { ChatService } from '../shared/services/chat.service';
 import { MessageListComponent } from '../shared/message/message-list.component';

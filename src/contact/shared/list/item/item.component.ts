@@ -3,7 +3,7 @@ import { Constants } from '../../../../shared/constant/config/constants';
 import { ZContactService } from '../../services/contact.service';
 import { CommonEventService } from '../../../../shared/services/common-event/common-event.service';
 import { CountryService } from '../../../../shared/shared/components/countries/countries.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ApiBaseService } from '@shared/services';
 import { Router } from '@angular/router';
 

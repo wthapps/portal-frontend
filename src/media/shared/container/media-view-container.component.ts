@@ -5,10 +5,10 @@ import {
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
 
-import 'rxjs/add/operator/withLatestFrom';
+
+
 
 import { MediaToolbarListComponent } from '../media/media-toolbar-list.component';
 import { MediaListComponent } from '../media/media-list.component';
@@ -128,14 +128,14 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
   ngOnInit() {
     // this.currentPath = `${this.objectType}s`;
     // this.currentPath = this.router.url.toString().split('/')[1].split('?')[0]; // currentPath: photos, albums, shared-with-me
-    this.route.url
-      .withLatestFrom(this.route.parent.url)
-      .map((pair: any) => {
-        return _.find(pair, (url: any) => _.get(url, '0') != undefined);
-      })
-      .map((url: any) => url[0].path)
-      .takeUntil(this.destroySubject)
-      .subscribe((url: any) => this.currentPath = url); // currentPath: photos, albums, shared-with-me
+    // this.route.url
+    //   .withLatestFrom(this.route.parent.url)
+    //   .map((pair: any) => {
+    //     return _.find(pair, (url: any) => _.get(url, '0') != undefined);
+    //   })
+    //   .map((url: any) => url[0].path)
+    //   .takeUntil(this.destroySubject)
+    //   .subscribe((url: any) => this.currentPath = url); // currentPath: photos, albums, shared-with-me
 
     this.currentPage = `${this.objectType}_${this.pageType}`;
 
@@ -544,7 +544,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
                 {ids: ids, mode: 0, showDetail: true}
               ]
             }
-          }], {queryParamsHandling: true, preserveFragment: true}
+          }], { queryParamsHandling: 'preserve', preserveFragment: true }
         );
 
 

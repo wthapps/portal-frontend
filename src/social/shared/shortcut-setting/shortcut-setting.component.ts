@@ -1,13 +1,12 @@
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 // import { AutoCompleteModule } from 'primeng/autocomplete';
 
 import * as fromRoot from '../../shared/reducers';
 import { SoShortcutService } from '../services/shortcut.service';
-import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { SHORTCUT_ADD_MULTI } from '../reducers/index';
 import { SHORTCUTS_REMOVE } from '../reducers/index';

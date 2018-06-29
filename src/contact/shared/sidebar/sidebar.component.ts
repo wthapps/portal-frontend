@@ -1,13 +1,17 @@
 import { Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+
 import { ZContactSharedSettingsComponent } from '@contacts/shared/modal/settings/settings.component';
 import { ApiBaseService, CommonEventService, WthConfirmService } from '@shared/services';
-import { Subject } from 'rxjs/Subject';
 import { Group } from '../../group/group.model';
 import { GroupService } from '../../group/group.service';
 import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oauth.component';
 import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
 import { ZContactService } from '../services/contact.service';
+
 
 declare var _: any;
 
@@ -34,7 +38,7 @@ export class ZContactSharedSidebarComponent implements OnInit, OnDestroy {
               private renderer: Renderer2,
               private commonEventService: CommonEventService) {
     this.groupService.groups$
-      .takeUntil(this.destroySubject)
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(
         (res: any) => this.groups = res
       );
@@ -43,8 +47,9 @@ export class ZContactSharedSidebarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.hostname = window.location.origin;
     this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .takeUntil(this.destroySubject)
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroySubject))
       .subscribe((event: any) => {
         this.currentGroup = this.extractLabel(event.url);
       });

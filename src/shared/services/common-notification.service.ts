@@ -1,9 +1,8 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { filter } from 'rxjs/operators';
 
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../constant/config/constants';
-import { NotificationChannelService } from '../channels/notification-channel.service';
-import { UserService } from './user.service';
 import { WTHNavigateService } from './wth-navigate.service';
 import { AuthService } from '@wth/shared/services';
 
@@ -32,7 +31,7 @@ export class CommonNotificationInterface {
   ) {}
 
   get() {
-    return this.api.get(`${this.url}`).filter(() => this.authService.loggedIn); // Do not call this API if user is not logged in
+    return this.api.get(`${this.url}`).pipe(filter(() => this.authService.loggedIn)); // Do not call this API if user is not logged in
   }
 
   doAction(action: any, notif_id: string) {
@@ -122,7 +121,7 @@ export class CommonNotificationInterface {
     if (!(this.authService.loggedIn && this.authService.user)) return;
     return this.api
       .post(`${this.url}/mark_as_seen`, body)
-      .filter(() => this.authService.loggedIn) // Do not call this API if user is not logged in
+      .pipe(filter(() => this.authService.loggedIn)) // Do not call this API if user is not logged in
       .subscribe(
         (result: any) => {
           this.countNewNotifications();
@@ -152,7 +151,7 @@ export class CommonNotificationInterface {
     let body = { ids: this.currentNotifId };
     return this.api
       .post(`${this.url}/toggle_read_status`, body)
-      .filter(() => this.authService.loggedIn) // Do not call this API if user is not logged in
+      .pipe(filter(() => this.authService.loggedIn)) // Do not call this API if user is not logged in
       .toPromise()
       .then(
         (result: any) => {
@@ -175,7 +174,7 @@ export class CommonNotificationInterface {
   markAllAsRead() {
     this.api
       .post(`${this.url}/mark_all_as_read`, [])
-      .filter(() => this.authService.loggedIn) // Do not call this API if user is not logged in
+      .pipe(filter(() => this.authService.loggedIn)) // Do not call this API if user is not logged in
       .toPromise()
       .then(
         (result: any) => {

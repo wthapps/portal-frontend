@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Subject ,  Observable } from 'rxjs';
 import { CommonEvent } from './common-event';
-import { CommonEventHandler } from './common-event.handler';
-
+import { filter } from 'rxjs/operators';
 
 /**
  * @service CommonEventService
@@ -22,7 +20,7 @@ export class CommonEventService {
   }
 
   filter(func: any) {
-    return this.event.filter(func);
+    return this.event.pipe(filter(func));
   }
 
   subscribe(func: any) {

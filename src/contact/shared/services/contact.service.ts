@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { map } from 'rxjs/operators/map';
+import { Observable ,  Subject ,  BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { GroupService } from '../../group/group.service';
 import { Router } from '@angular/router';

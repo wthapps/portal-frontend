@@ -1,8 +1,8 @@
 import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
-import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { distinctUntilChanged, debounceTime, switchMap, take } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 
@@ -199,7 +199,7 @@ export class SharingModalComponent implements OnDestroy {
             objects: [item],
             recipients: _.map(this.selectedContacts, 'id')
           };
-          this.mediaSharingService.create(body).take(1).subscribe((response: any) => {
+          this.mediaSharingService.create(body).pipe(take(1)).subscribe((response: any) => {
             this.showMessage();
             this.sharedContacts.push(...this.selectedContacts);
               this.resetData();
@@ -220,7 +220,7 @@ export class SharingModalComponent implements OnDestroy {
             recipients: _.map(this.selectedContacts, 'id')
           };
         // Only subscribe to this action once`
-        this.mediaSharingService.create(body).take(1).subscribe((response: any) => {
+        this.mediaSharingService.create(body).pipe(take(1)).subscribe((response: any) => {
           this.showMessage();
           this.sharedContacts.push(...this.selectedContacts);
             this.resetData();

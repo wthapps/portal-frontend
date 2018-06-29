@@ -3,7 +3,8 @@ import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { ApiBaseService } from '@wth/shared/services';
 import { TaggingElComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-el.component';
 import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
@@ -122,11 +123,11 @@ export class AlbumCreateModalComponent implements OnInit, OnDestroy {
 
   autoCompleteTags = (text: string): Observable<any> => {
     return this.tagService.getTags(text)
-      // .map(data => { console.log('autocompleteTags: ', data.json()); return data.json().map((t: any) => t.name)})
-      .map(data => data.json().map((item: any) => item.name))
-      // .do(result => console.log('data: ', result))
-      // .map(result => result['data'])
-      .do(console.log);
+      .pipe(
+        map(data => data.json(),
+        map((item: any) => item.name)),
+        tap(console.log)
+      );
   }
 
   removePhoto(photo: any, event: any): void {

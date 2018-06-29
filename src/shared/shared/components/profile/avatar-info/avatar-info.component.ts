@@ -1,15 +1,10 @@
 import { Component, Input, ViewChild, Output, EventEmitter, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
-import {
-  FormGroup
-} from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { Observable ,  Subscription ,  Subject } from 'rxjs';
+import { merge, take, takeUntil } from 'rxjs/operators';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/takeUntil';
+
 
 
 import { QuestionBase } from '../../form/base/question-base';
@@ -150,7 +145,7 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
 
   handleSelectCropEvent() {
     this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
-      .takeUntil(this.destroySubject)
+      .pipe(takeUntil(this.destroySubject))
       .subscribe((event: any) => {
         this.doEvent(event);
       });

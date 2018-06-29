@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { switchMap, takeUntil, map } from 'rxjs/operators';
 
 import { InvitationService } from '@wth/shared/shared/components/invitation/invitation.service';

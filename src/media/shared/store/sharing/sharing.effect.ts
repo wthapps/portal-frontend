@@ -1,13 +1,14 @@
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
+
+
+
 import { Injectable }             from '@angular/core';
 import { Effect, Actions }        from '@ngrx/effects';
 import { Action }                 from '@ngrx/store';
 import { Store }                  from '@ngrx/store';
 
-import { Observable }             from 'rxjs/Observable';
-import { of }                     from 'rxjs/observable/of';
+import { Observable,  of }             from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
+
 import * as photoActions         from './sharing.action';
 import * as store                 from '../index';
 import { PhotoService } from '@wth/shared/services';
@@ -40,21 +41,25 @@ export class SharingEffects {
    */
   @Effect()
   get$: Observable<Action> = this.actions$
-    .ofType(photoActions.ActionTypes.GET)
-    .map((action: photoActions.Get) => action.payload)
-    .switchMap((state: any) => {
-      return this.photoService.getPhoto(state)
-        .map(photo => new photoActions.GetSuccess(photo))
-        .catch(error  => of(new photoActions.GetFail()));
-    });
+    .ofType(photoActions.ActionTypes.GET).pipe(
+    map((action: photoActions.Get) => action.payload),
+    switchMap((state: any) => {
+      return this.photoService.getPhoto(state).pipe(
+        map(photo => new photoActions.GetSuccess(photo)),
+        catchError(error  => of(new photoActions.GetFail())));
+    }));
 
   @Effect()
   getAll$: Observable<Action> = this.actions$
     .ofType(photoActions.ActionTypes.GET_ALL)
-    .map((action: photoActions.GetAll) => action.payload)
-    .switchMap(state => {
-      return this.photoService.listPhoto(state)
-        .map(response => new photoActions.GetAllSuccess(...response))
-        .catch(error  => of(new photoActions.GetAllFail()));
-    });
+    .pipe(
+      map((action: photoActions.GetAll) => action.payload),
+      switchMap(state => {
+        return this.photoService.listPhoto(state)
+          .pipe(
+            map(response => new photoActions.GetAllSuccess(...response)),
+            catchError(error  => of(new photoActions.GetAllFail()))
+          );
+      })
+    );
 }

@@ -1,6 +1,7 @@
 import { Component, HostBinding, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { take, filter } from 'rxjs/operators';
 
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
@@ -56,7 +57,7 @@ export class ZChatSidebarComponent implements OnInit {
 
   ngOnInit() {
     this.router.events
-      .filter(event => event instanceof NavigationEnd)
+      .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         if (this.urlService.parse().paths[0] === 'conversations') {
           const conversationId = this.urlService.parse().paths[1];

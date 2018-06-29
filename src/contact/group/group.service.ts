@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject ,  Observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 import { Group } from './group.model';
 import { BaseEntityService } from '../../shared/services/base-entity-service';
@@ -53,24 +53,24 @@ export class GroupService extends BaseEntityService<Group> {
   }
 
   create(body: any): Observable<any> {
-    return super.create(body).mergeMap((res: any) => {
+    return super.create(body).pipe(mergeMap((res: any) => {
       const group: any = this.mapGroupToMenuItem(res.data);
       return this.notifyGroupObservers(
         this.groupsSubject.getValue().concat([group])
       );
-    });
+    }));
   }
 
   update(body: any): Observable<any> {
     return super
       .update(body)
-      .mergeMap((res: any) =>
+      .pipe(mergeMap((res: any) =>
         this.updateMenu(this.mapGroupToMenuItem(res.data))
-      );
+      ));
   }
 
   delete(id: any): Observable<any> {
-    return super.delete(id).mergeMap((res: any) => this.removeMenu(res.data));
+    return super.delete(id).pipe(mergeMap((res: any) => this.removeMenu(res.data)));
   }
 
   getGroupByName(name: string) {

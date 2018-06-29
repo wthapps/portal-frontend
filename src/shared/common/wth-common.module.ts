@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +15,7 @@ import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 import { WthConfirmModule } from '@wth/shared/shared/components/confirmation/wth-confirm.module';
-import { Ng2CableModule } from 'ng2-cable';
+//import { Ng2CableModule } from 'ng2-cable';
 import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.module';
 
 /**
@@ -29,7 +29,7 @@ import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.modu
     FormsModule,
     // BrowserModule,
     HttpClientModule,
-    Ng2CableModule,
+    //Ng2CableModule,
 
     CookieModule.forRoot()
   ],
@@ -48,7 +48,7 @@ import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.modu
     // CheckboxModule,
     // RadioButtonModule,
     AutoCompleteModule,
-    Ng2CableModule,
+    //Ng2CableModule,
 
     TooltipModule,
 

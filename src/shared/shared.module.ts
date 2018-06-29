@@ -45,7 +45,6 @@ import { BoxLoadingModule } from './shared/components/box-loading/box-loading.mo
 import { BoxNoDataModule } from './shared/components/box-no-data/box-no-data.module';
 import { DirectiveModule } from './shared/directive/directive.module';
 import { HttpClientModule } from '@angular/common/http';
-import { Ng2CableModule } from 'ng2-cable';
 import { DataTableModule } from 'primeng/components/datatable/datatable';
 import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
 import { MenuContainerModule } from '@shared/shared/components/menu-container/menu-container.module';
@@ -78,7 +77,6 @@ import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.modu
     // BrowserAnimationsModule,
     CookieModule.forRoot(),
     InfiniteScrollModule,
-    Ng2CableModule,
 
     PartialModule,
     // Custom modules
@@ -99,7 +97,6 @@ import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.modu
 
     // Third parties modules
     BsModalModule,
-    Ng2CableModule,
 
     // WTHApps modules
     LoadingModule,

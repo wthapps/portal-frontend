@@ -9,7 +9,7 @@ import {
   EventEmitter, OnDestroy, ViewContainerRef, ComponentFactoryResolver
 } from '@angular/core';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 
 import { SoStorageService } from './../../services/social-storage.service';

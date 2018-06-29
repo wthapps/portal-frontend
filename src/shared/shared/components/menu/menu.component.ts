@@ -2,9 +2,9 @@ import { Component, Input, OnDestroy, OnInit, AfterViewInit, ViewEncapsulation }
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/do';
+import { Observable ,  Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+
 import { Constants } from '../../../constant/config/constants';
 import { UserService } from '../../../services/user.service';
 import { WTHNavigateService } from '../../../services/wth-navigate.service';
@@ -62,9 +62,9 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.hostname = window.location.origin;
-    this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .takeUntil(this.destroySubject)
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      takeUntil(this.destroySubject))
       .subscribe((event: any) => {
         if (event.url.indexOf('my-profile') !== -1) {
           this.isProfileTab = true;
@@ -105,10 +105,11 @@ export class ZSharedMenuComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubMenu(link: string) {
-    if(this.urls.social == this.hostname)
+    if (this.urls.social === this.hostname) {
       this.clearOutlets().then(() => this.navigateService.navigateOrRedirect(link));
-    else
+    } else {
       this.navigateService.navigateOrRedirect(link);
+    }
   }
 
   trackMenu(index: any, item: any) {

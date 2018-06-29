@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable ,  BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CookieService, CookieOptions } from 'ngx-cookie';
 
 import { Constants } from '../constant/config/constants';
@@ -17,7 +17,7 @@ declare var _: any;
 
 @Injectable()
 export class UserService {
-  loggedIn: boolean = false;
+  loggedIn = false;
 
   defaultPayment: any;
   profile$: Observable<User>;
@@ -51,32 +51,32 @@ export class UserService {
   }
 
   login(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.post(path, body, { unauthen: true }).map(res => {
+    return this.apiBaseService.post(path, body, { unauthen: true }).pipe(map(res => {
       if (res) {
         this.storeUserInfo(res);
       }
       return res;
-    });
+    }));
   }
 
   logout(path: string): Observable<Response> {
     // public logout(path: string) {
-    return this.apiBaseService.delete(path).map(res => {
+    return this.apiBaseService.delete(path).pipe(map(res => {
       this.deleteUserInfo();
       return res;
-    });
+    }));
   }
 
   /*
    * `sign up` new an account.
    */
   signup(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.post(path, body, { unauthen: true }).map(res => {
+    return this.apiBaseService.post(path, body, { unauthen: true }).pipe(map(res => {
       if (res) {
         this.storeUserInfo(res);
       }
       return res;
-    });
+    }));
   }
 
   /*
@@ -86,42 +86,42 @@ export class UserService {
   update(body: any): Observable<Response> {
     return this.apiBaseService
       .patch(`users/${this.getSyncProfile().id}`, body)
-      .map((res: any) => {
+      .pipe(map((res: any) => {
         if (res) {
           this.updateProfile(res.data);
           this.windowService.setItem({ profile: res.data });
           this.readUserInfo();
         }
         return res;
-      });
+      }));
   }
 
   validateSession(): Observable<any> {
-    return this.apiBaseService.post('users/get_user').map(() => {
+    return this.apiBaseService.post('users/get_user').pipe(map(() => {
       return { valid: true };
-    });
+    }));
   }
 
   /*
    * change current password
    */
   changePassword(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.patch(path, body).map(res => {
+    return this.apiBaseService.patch(path, body).pipe(map(res => {
       if (res) {
         console.log('changePassword:', res);
       }
       return res;
-    });
+    }));
   }
 
   choosePlan(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.put(path, body).map((res: any) => {
+    return this.apiBaseService.put(path, body).pipe(map((res: any) => {
       if (res) {
         this.updateProfile(res.data);
         this.readUserInfo();
       }
       return res;
-    });
+    }));
   }
 
   deleteUserInfo() {
@@ -137,12 +137,12 @@ export class UserService {
     let userId = 1;
     let path = 'users/' + userId + '/payments';
 
-    return this.apiBaseService.post(path, []).map((res: any) => {
+    return this.apiBaseService.post(path, []).pipe(map((res: any) => {
       if (res) {
         this.storeDefaultPayment(res);
       }
       return res;
-    });
+    }));
   }
 
   getSyncProfile() {
@@ -154,7 +154,7 @@ export class UserService {
   }
 
   validProfile() {
-    let profile: any = this._profile.getValue();
+    const profile = this._profile.getValue();
     return profile && Object.keys(profile).length > 0;
   }
 
@@ -179,21 +179,21 @@ export class UserService {
     }
     this.apiBaseService
       .post(`${this.NOTIFICATION_SETTING_URL}/index`)
-      .map(res => res.data)
+      .pipe(map(res => res.data))
       .subscribe(this._notificationSetting);
   }
 
   updateNotificationSetting(body: any) {
     this.apiBaseService
       .post(`${this.NOTIFICATION_SETTING_URL}/update`, body)
-      .map(res => res.data)
+      .pipe(map(res => res.data))
       .subscribe(this._notificationSetting);
   }
 
   resetNotificationSetting() {
     this.apiBaseService
       .post(`${this.NOTIFICATION_SETTING_URL}/reset`)
-      .map(res => res.data)
+      .pipe(map(res => res.data))
       .subscribe(this._notificationSetting);
   }
 
@@ -225,9 +225,9 @@ export class UserService {
 
   private readUserInfo() {
     if (this.cookieService.get(Constants.cookieKeys.loggedIn)) {
-      if (this.cookieService.get(Constants.cookieKeys.profile))
+      if (this.cookieService.get(Constants.cookieKeys.profile)) {
         this.setProfile(JSON.parse(this.cookieService.get(Constants.cookieKeys.profile)));
-
+      }
       this.loggedIn = Boolean(this.cookieService.get(Constants.cookieKeys.loggedIn));
     }
   }

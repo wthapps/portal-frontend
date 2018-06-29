@@ -1,11 +1,9 @@
 import { EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { Subscriber } from 'rxjs/Subscriber';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/map';
+import { Observable,  Subscription, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+
+
+
 
 export interface BlobFile extends Blob {
   name: string;
@@ -140,10 +138,10 @@ export class Uploader {
           if (!files.length) {
             return;
           }
-          Observable.of(...files)
-            .mergeMap(file => {
+          of(...files).pipe(
+            mergeMap(file => {
               return this.uploadFile(file, event);
-            }, concurrency)
+            }, concurrency))
             .subscribe(data => {
               this.serviceEvents.emit(data);
             });

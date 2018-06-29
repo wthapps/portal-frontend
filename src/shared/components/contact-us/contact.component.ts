@@ -20,7 +20,7 @@ import { CustomValidator } from '@shared/shared/validator/custom.validator';
 import { environment } from '@env/environment';
 
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import 'rxjs/add/operator/takeUntil';
+
 
 /**
  * This class represents the lazy loaded AboutComponent.

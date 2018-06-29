@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding, Input, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 ;
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import * as note from '../actions/note';
 import * as fromRoot from '../reducers/index';

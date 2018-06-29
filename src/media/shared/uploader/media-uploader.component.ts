@@ -9,6 +9,10 @@ import {
   ViewChild,
   ElementRef, OnDestroy
 } from '@angular/core';
+import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+
+
 
 import { MediaUploaderDataService } from './media-uploader-data.service';
 import { ModalDockComponent } from '@wth/shared/shared/components/modal/dock.component';
@@ -149,7 +153,7 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
   addPlaylist() {
     if (this.subAddPlaylist) this.subAddPlaylist.unsubscribe();
     this.playlistModalService.open.next({selectedObjects: this.photos});
-    this.subAddPlaylist = this.playlistModalService.onAdd$.take(1).subscribe(e => {
+    this.subAddPlaylist = this.playlistModalService.onAdd$.pipe(take(1)).subscribe(e => {
       this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: e, videos: this.photos }).subscribe(res => {
         // this.modalIns.close();
       });

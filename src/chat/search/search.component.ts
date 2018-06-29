@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatShareEditConversationComponent } from '@chat/shared/modal/edit-conversation.component';
@@ -18,7 +19,7 @@ export class ZChatSearchComponent {
 
   constructor(private chatService: ChatService, private router: Router) {
     this.events = this.router.events
-      .filter((event: any) => event instanceof NavigationEnd)
+      .pipe(filter((event: any) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         const paths = event.url
           .toString()

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 
 import { Constants } from '../../../shared/constant/config/constants';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
 import { ZContactService } from '@contacts/shared/services/contact.service';
 

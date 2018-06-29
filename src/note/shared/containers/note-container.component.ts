@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../reducers/index';
 import * as listReducer from '../reducers/features/list-mixed-entities';
 import * as context from '../reducers/context';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Folder } from '../reducers/folder';
 import { noteConstants, NoteConstants } from '../config/constants';
 import { Note } from '@shared/shared/models/note.model';

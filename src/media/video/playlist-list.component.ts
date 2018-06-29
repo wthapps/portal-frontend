@@ -7,6 +7,8 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Router, Resolve } from '@angular/router';
+import { take } from 'rxjs/operators';
+
 
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
@@ -293,7 +295,7 @@ MediaModalMixin {
       selectedObjects: this.selectedObjects
     });
     this.subAddPlaylist = this.playlistModalService.onAdd$
-      .take(1)
+      .pipe(take(1))
       .subscribe(e => {
         this.apiBaseService
           .post(`media/playlists/add_to_playlist`, {

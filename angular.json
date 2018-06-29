@@ -1,0 +1,1110 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "portal": {
+      "root": "src",
+      "sourceRoot": "src/portal",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/portal",
+            "index": "src/portal/index.html",
+            "main": "src/portal/main.ts",
+            "tsConfig": "src/portal/tsconfig.app.json",
+            "polyfills": "src/portal/polyfills.ts",
+            "assets": [
+
+            ],
+            "styles": [
+              "src/portal/styles/styles-app-loading.scss",
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/cropperjs/dist/cropper.min.css",
+              "src/portal/styles/portal.scss"
+            ],
+            "scripts": [
+              "node_modules/cropperjs/dist/cropper.min.js",
+              "src/shared/channels/common.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "serviceWorker": false,
+              "ngswConfigPath": "/src/ngsw-config.json",
+              "fileReplacements": [
+                {
+                  "replace": "src/portal/../environments/environment.ts",
+                  "with": "src/portal/../environments/environment.prod.ts"
+                }
+              ]
+            },
+            "stag": {
+              "fileReplacements": [
+                {
+                  "replace": "src/portal/../environments/environment.ts",
+                  "with": "src/portal/../environments/environment.stag.ts"
+                }
+              ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/portal/../environments/environment.ts",
+                  "with": "src/portal/../environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "portal:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "portal:build:production"
+            },
+            "stag": {
+              "browserTarget": "portal:build:stag"
+            },
+            "test": {
+              "browserTarget": "portal:build:test"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "portal:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/portal/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/portal/polyfills.ts",
+            "tsConfig": "src/portal/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/cropperjs/dist/cropper.min.js",
+              "src/shared/channels/common.js"
+            ],
+            "styles": [
+              "src/portal/styles/styles-app-loading.scss",
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/cropperjs/dist/cropper.min.css",
+              "src/portal/styles/portal.scss"
+            ],
+            "assets": [
+
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "portal-e2e": {
+      "root": "src",
+      "sourceRoot": "src/e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "portal:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "my-account": {
+      "root": "src",
+      "sourceRoot": "src/my-account",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/my-account",
+            "index": "src/my-account/index.html",
+            "main": "src/my-account/main.ts",
+            "tsConfig": "src/my-account/tsconfig.app.json",
+            "polyfills": "src/my-account/polyfills.ts",
+            "assets": [],
+            "styles": [
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "src/my-account/styles/my-account.scss"
+            ],
+            "scripts": [
+              "src/shared/channels/common.js",
+              "node_modules/moment/min/moment.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/my-account/../environments/environment.ts",
+                  "with": "src/my-account/../environments/environment.prod.ts"
+                }
+              ]
+            },
+            "stag": {
+              "fileReplacements": [
+                {
+                  "replace": "src/my-account/../environments/environment.ts",
+                  "with": "src/my-account/../environments/environment.stag.ts"
+                }
+              ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/my-account/../environments/environment.ts",
+                  "with": "src/my-account/../environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "my-account:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "my-account:build:production"
+            },
+            "stag": {
+              "browserTarget": "my-account:build:stag"
+            },
+            "test": {
+              "browserTarget": "my-account:build:test"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "my-account:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/my-account/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/my-account/polyfills.ts",
+            "tsConfig": "src/my-account/tsconfig.spec.json",
+            "scripts": [
+              "src/shared/channels/common.js",
+              "node_modules/moment/min/moment.min.js"
+            ],
+            "styles": [
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "src/my-account/styles/my-account.scss"
+            ],
+            "assets": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "my-account-e2e": {
+      "root": "src",
+      "sourceRoot": "src/e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "my-account:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "media": {
+      "root": "src",
+      "sourceRoot": "src/media",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/media",
+            "index": "src/media/index.html",
+            "main": "src/media/main.ts",
+            "tsConfig": "src/media/tsconfig.app.json",
+            "polyfills": "src/media/polyfills.ts",
+            "assets": [],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "src/media/styles/media.scss"
+            ],
+            "scripts": [
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/file-saver/FileSaver.js",
+              "src/shared/channels/common.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/media/../environments/environment.ts",
+                  "with": "src/media/../environments/environment.prod.ts"
+                }
+              ]
+            },
+            "stag": {
+              "fileReplacements": [
+                {
+                  "replace": "src/media/../environments/environment.ts",
+                  "with": "src/media/../environments/environment.stag.ts"
+                }
+              ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/media/../environments/environment.ts",
+                  "with": "src/media/../environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "media:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "media:build:production"
+            },
+            "stag": {
+              "browserTarget": "media:build:stag"
+            },
+            "test": {
+              "browserTarget": "media:build:test"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "media:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/media/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/media/polyfills.ts",
+            "tsConfig": "src/media/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/file-saver/FileSaver.js",
+              "src/shared/channels/common.js"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "src/media/styles/media.scss"
+            ],
+            "assets": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "media-e2e": {
+      "root": "src",
+      "sourceRoot": "src/e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "media:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "social": {
+      "root": "src",
+      "sourceRoot": "src/social",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/social",
+            "index": "src/social/index.html",
+            "main": "src/social/main.ts",
+            "tsConfig": "src/social/tsconfig.app.json",
+            "polyfills": "src/social/polyfills.ts",
+            "assets": [],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "src/social/styles/social.scss"
+            ],
+            "scripts": [
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/file-saver/FileSaver.js",
+              "node_modules/quill/dist/quill.js",
+              "src/shared/channels/common.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/social/../environments/environment.ts",
+                  "with": "src/social/../environments/environment.prod.ts"
+                }
+              ]
+            },
+            "stag": {
+              "fileReplacements": [
+                {
+                  "replace": "src/social/../environments/environment.ts",
+                  "with": "src/social/../environments/environment.stag.ts"
+                }
+              ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/social/../environments/environment.ts",
+                  "with": "src/social/../environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "social:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "social:build:production"
+            },
+            "stag": {
+              "browserTarget": "social:build:stag"
+            },
+            "test": {
+              "browserTarget": "social:build:test"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "social:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/social/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/social/polyfills.ts",
+            "tsConfig": "src/social/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/file-saver/FileSaver.js",
+              "node_modules/quill/dist/quill.js",
+              "src/shared/channels/common.js"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "src/social/styles/social.scss"
+            ],
+            "assets": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "social-e2e": {
+      "root": "src",
+      "sourceRoot": "src/e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "social:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "chat": {
+      "root": "src",
+      "sourceRoot": "src/chat",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/chat",
+            "index": "src/chat/index.html",
+            "main": "src/chat/main.ts",
+            "tsConfig": "src/chat/tsconfig.app.json",
+            "polyfills": "src/chat/polyfills.ts",
+            "assets": [],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "src/chat/styles/chat.scss"
+            ],
+            "scripts": [
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/file-saver/FileSaver.js",
+              "node_modules/quill/dist/quill.js",
+              "src/shared/channels/common.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/chat/../environments/environment.ts",
+                  "with": "src/chat/../environments/environment.prod.ts"
+                }
+              ]
+            },
+            "stag": {
+              "fileReplacements": [
+                {
+                  "replace": "src/chat/../environments/environment.ts",
+                  "with": "src/chat/../environments/environment.stag.ts"
+                }
+              ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/chat/../environments/environment.ts",
+                  "with": "src/chat/../environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "chat:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "chat:build:production"
+            },
+            "stag": {
+              "browserTarget": "chat:build:stag"
+            },
+            "test": {
+              "browserTarget": "chat:build:test"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "chat:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/chat/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/chat/polyfills.ts",
+            "tsConfig": "src/chat/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/file-saver/FileSaver.js",
+              "node_modules/quill/dist/quill.js",
+              "src/shared/channels/common.js"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "src/chat/styles/chat.scss"
+            ],
+            "assets": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "chat-e2e": {
+      "root": "src",
+      "sourceRoot": "src/e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "chat:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "contact": {
+      "root": "src",
+      "sourceRoot": "src/contact",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/contact",
+            "index": "src/contact/index.html",
+            "main": "src/contact/main.ts",
+            "tsConfig": "src/contact/tsconfig.app.json",
+            "polyfills": "src/contact/polyfills.ts",
+            "assets": [
+              "src/contact/manifest.json",
+              "src/contact/sw.js"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "src/contact/styles/contact.scss"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.slim.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/lodash/lodash.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "src/shared/channels/common.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "serviceWorker": false,
+              "ngswConfigPath": "/src/ngsw-config.json",
+              "fileReplacements": [
+                {
+                  "replace": "src/contact/../environments/environment.ts",
+                  "with": "src/contact/../environments/environment.prod.ts"
+                }
+              ]
+            },
+            "stag": {
+              "fileReplacements": [
+                {
+                  "replace": "src/contact/../environments/environment.ts",
+                  "with": "src/contact/../environments/environment.stag.ts"
+                }
+              ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/contact/../environments/environment.ts",
+                  "with": "src/contact/../environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "contact:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "contact:build:production"
+            },
+            "stag": {
+              "browserTarget": "contact:build:stag"
+            },
+            "test": {
+              "browserTarget": "contact:build:test"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "contact:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/contact/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/contact/polyfills.ts",
+            "tsConfig": "src/contact/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/jquery/dist/jquery.slim.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/lodash/lodash.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "src/shared/channels/common.js"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "src/contact/styles/contact.scss"
+            ],
+            "assets": [
+              "src/contact/manifest.json",
+              "src/contact/sw.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "contact-e2e": {
+      "root": "src",
+      "sourceRoot": "src/e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "contact:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "note": {
+      "root": "src",
+      "sourceRoot": "src/note",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/note",
+            "index": "src/note/index.html",
+            "main": "src/note/main.ts",
+            "tsConfig": "src/note/tsconfig.app.json",
+            "polyfills": "src/note/polyfills.ts",
+            "assets": [],
+            "styles": [
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/font-awesome/scss/font-awesome.scss",
+              {
+                "input": "node_modules/quill/dist/quill.core.css",
+                "lazy": false
+              },
+              {
+                "input": "node_modules/quill/dist/quill.snow.css",
+                "lazy": false
+              },
+              "src/note/styles/note.scss"
+            ],
+            "scripts": [
+              {
+                "input": "node_modules/quill/dist/quill.js",
+                "lazy": false
+              },
+              {
+                "input": "node_modules/file-saver/FileSaver.js",
+                "lazy": false
+              },
+              {
+                "input": "node_modules/moment/moment.js",
+                "lazy": false
+              },
+              {
+                "input": "node_modules/quill-image-resize-module/image-resize.min.js",
+                "lazy": false
+              },
+              "src/shared/channels/common.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/note/../environments/environment.ts",
+                  "with": "src/note/../environments/environment.prod.ts"
+                }
+              ]
+            },
+            "stag": {
+              "fileReplacements": [
+                {
+                  "replace": "src/note/../environments/environment.ts",
+                  "with": "src/note/../environments/environment.stag.ts"
+                }
+              ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/note/../environments/environment.ts",
+                  "with": "src/note/../environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "note:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "note:build:production"
+            },
+            "stag": {
+              "browserTarget": "note:build:stag"
+            },
+            "test": {
+              "browserTarget": "note:build:test"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "note:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/note/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/note/polyfills.ts",
+            "tsConfig": "src/note/tsconfig.spec.json",
+            "scripts": [
+              {
+                "input": "node_modules/quill/dist/quill.js",
+                "lazy": false
+              },
+              {
+                "input": "node_modules/file-saver/FileSaver.js",
+                "lazy": false
+              },
+              {
+                "input": "node_modules/moment/moment.js",
+                "lazy": false
+              },
+              {
+                "input": "node_modules/quill-image-resize-module/image-resize.min.js",
+                "lazy": false
+              },
+              "src/shared/channels/common.js"
+            ],
+            "styles": [
+              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/font-awesome/scss/font-awesome.scss",
+              {
+                "input": "node_modules/quill/dist/quill.core.css",
+                "lazy": false
+              },
+              {
+                "input": "node_modules/quill/dist/quill.snow.css",
+                "lazy": false
+              },
+              "src/note/styles/note.scss"
+            ],
+            "assets": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "note-e2e": {
+      "root": "src",
+      "sourceRoot": "src/e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "note:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "portal-frontend",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "",
+      "styleext": "scss"
+    },
+    "@schematics/angular:directive": {
+      "prefix": ""
+    }
+  }
+}

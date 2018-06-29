@@ -9,7 +9,7 @@ import {
   Search
 } from '../shared/store/media/media.actions';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Constants } from '@wth/shared/constant';

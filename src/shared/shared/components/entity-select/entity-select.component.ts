@@ -1,6 +1,5 @@
 import { Component, ViewChild, Output, EventEmitter, OnInit, Input, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject ,  Subscription } from 'rxjs';
 import { switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 

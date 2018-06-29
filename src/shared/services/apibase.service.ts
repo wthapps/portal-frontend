@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import { take } from 'rxjs/operators/take';
-import { switchMap } from 'rxjs/operators/switchMap';
-import { catchError } from 'rxjs/operators/catchError';
-import 'rxjs/add/observable/throw';
+import { throwError,  Observable } from 'rxjs';
+import { take, catchError, switchMap } from 'rxjs/operators';
+
 
 import { CookieService } from 'ngx-cookie';
 import { Constants } from '../constant/config/constants';
@@ -156,6 +154,6 @@ export class ApiBaseService {
       }
     }
 
-    return Observable.throw(error);
+    return throwError(error);
   }
 }
