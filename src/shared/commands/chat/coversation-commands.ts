@@ -1,4 +1,5 @@
 import { ApiCommand } from '@shared/commands/common/api-command';
+import { Observable ,  concat } from 'rxjs';
 
 export class ConversationApiCommands extends ApiCommand {
   static markAsRead(id: any) {

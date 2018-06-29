@@ -1,6 +1,9 @@
 import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+
+import { Observable } from 'rxjs';
+import { Constants } from '@wth/shared/constant';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import * as appStore from '../shared/store';
 import {

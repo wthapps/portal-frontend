@@ -201,7 +201,7 @@ export class ZNoteDetailEditComponent
       fromEvent(this.customEditor, 'text-change')
     )
       .pipe(
-        takeUntil(Observable.merge(this.noSave$, this.closeSubject)),
+        takeUntil(merge(this.noSave$, this.closeSubject)),
         debounceTime(DEBOUNCE_MS),
         takeUntil(merge(this.noSave$, this.closeSubject))
       )
