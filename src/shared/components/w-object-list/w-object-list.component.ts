@@ -3,6 +3,7 @@ import {
   AfterContentChecked, ViewEncapsulation, EventEmitter, OnDestroy, OnChanges, SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 
@@ -54,30 +55,30 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
     // this.view$ = this.objectListService.view$;
 
     this.objectListService.objectsDisabled$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.objectsDisabled = res);
 
     this.objectListService.selectedObjects$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => {
         this.selectedObjects = res;
         this.selectedObjectsChanged.emit(this.selectedObjects);
       });
 
     this.objectListService.groupBy$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.groupBy = res);
 
     this.objectListService.sortBy$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.sortBy = res);
 
     this.objectListService.sortOrder$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.sortOrder = res);
 
     this.objectListService.multipleSelection$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.hasMultipleSelection = res);
 
   }

@@ -2,11 +2,11 @@
  * Created by anvo on 14/06/2017.
  */
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable()
 export class MediaUploaderDataService {
-  showUp$: any;
+  showUp$: Observable<any>;
   action$: any;
   private showUpSource = new Subject<any>();
   private actionSource = new Subject<string>();

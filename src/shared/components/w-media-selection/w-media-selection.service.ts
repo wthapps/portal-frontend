@@ -1,36 +1,34 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { BehaviorSubject ,  Observable ,  Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 import { Media } from '@shared/shared/models/media.model';
 import { ApiBaseService } from '@shared/services';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { map } from 'rxjs/operators/map';
-import { HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators/catchError';
 
 declare let _: any;
 
 @Injectable()
 export class WMediaSelectionService {
-  medias$: any;
-  private mediasSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>([]);
+  medias$: Observable<any>;
+  private mediasSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>(null);
 
-  uploadingMedias$: any;
+  uploadingMedias$: Observable<any>;
   private uploadingMediaSubject: Subject<any[]> = new Subject<any[]>();
 
   selectedMedias$: Observable<any[]>;
   private selectedMediasSubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
-  mediaParent$: any;
+  mediaParent$: Observable<any>;
   private mediaParentSubject: BehaviorSubject<Media> = new BehaviorSubject<Media>(null);
 
-  open$: any;
+  open$: Observable<any>;
   private openSubject: Subject<any> = new Subject<any>();
 
-  multipleSelection$: any;
+  multipleSelection$: Observable<any>;
   private multipleSelectionSubject: Subject<boolean> = new Subject<boolean>();
 
   private defaultOptions: any = {

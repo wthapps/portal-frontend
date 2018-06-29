@@ -6,14 +6,12 @@ import {
   Observer,
   Observable,
   of,
-  throwError as _throw,
+  throwError,
   from } from "rxjs";
 import { map, concatAll, catchError, mergeAll, mergeMap } from "rxjs/operators";
 
 import * as Boom from 'boom';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
-import { _throw } from 'rxjs/observable/throw';
-import { from } from 'rxjs/observable/from';
 import { BlackListPolicy } from '@shared/policies/black-list-policy';
 
 @Injectable()
@@ -23,7 +21,7 @@ export class FileUploaderService {
 
   uploadGenericFile(genFile: any): Observable<any> {
     if (!genFile) {
-      return _throw(Boom.badData('file is empty'));
+      return throwError('file is empty');
     }
     return of(genFile).pipe(
       mergeMap(file => FileReaderUtil.read(file), (file, event) => {
@@ -39,7 +37,8 @@ export class FileUploaderService {
   }
 
   uploadMultipleGenericFiles(files: any): Observable<any> {
-    if (!files || files.length < 1) throw Boom.badData('files are empty');
+    // if (!files || files.length < 1) throw Boom.badData('files are empty');
+    if (!files || files.length < 1) throwError('files are empty');
     const source = from(Object.keys(files).map((key: any) => files[key]));
     const uploadFiles = source.pipe(
       map((file: any) => this.uploadGenericFile(file)),
@@ -53,12 +52,14 @@ export class FileUploaderService {
     if (FileUploadPolicy.isAllow(file, policies)) {
       return this.uploadGenericFile(file);
     } else {
-      return _throw(Boom.notAcceptable('file does not accept'));
+      // return _throw(Boom.notAcceptable('file does not accept'));
+      return throwError('file does not accept');
     }
   }
 
   uploadMultipleGenericFilesPolicy(files: any, policies: any = [new BlackListPolicy()]) {
-    if (!files || files.length < 1) throw Boom.badData('files are empty');
+    // if (!files || files.length < 1) throw Boom.badData('files are empty');
+    if (!files || files.length < 1) throwError('files are empty');
     const source = from(Object.keys(files).map((key: any) => files[key]));
     const uploadFilesPolicy = source.pipe(
       map((file: any) => this.uploadGenericFilePolicy(file, policies).pipe(catchError(error => of(error.output.payload)))),

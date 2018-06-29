@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 declare let _: any;
 
@@ -8,22 +8,22 @@ export class WObjectListService {
   view$: any;
   private viewSubject: BehaviorSubject<string> = new BehaviorSubject<string>('grid');
 
-  selectedObjects$: any;
-  private selectedObjectsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  selectedObjects$: Observable<any>;
+  private selectedObjectsSubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
-  groupBy$: any;
+  groupBy$: Observable<any>;
   private groupBySubject: BehaviorSubject<any> = new BehaviorSubject<any>('object_type');
 
-  sortBy$: any;
+  sortBy$: Observable<any>;
   private sortBySubject: BehaviorSubject<any> = new BehaviorSubject<any>('created_at');
 
-  sortOrder$: any;
+  sortOrder$: Observable<any>;
   private sortOrderSubject: BehaviorSubject<any> = new BehaviorSubject<any>('desc');
 
-  multipleSelection$: any;
+  multipleSelection$: Observable<any>;
   private multipleSelectionSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  objectsDisabled$: any;
+  objectsDisabled$: Observable<any>;
   private objectsDisabledSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   selectedEvent: EventEmitter<any> = new EventEmitter<any>();

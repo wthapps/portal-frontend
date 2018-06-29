@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
-import { Observable } from 'rxjs';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { Media } from '@shared/shared/models/media.model';
@@ -19,7 +21,7 @@ import { WUploader } from '@shared/services/w-uploader';
   encapsulation: ViewEncapsulation.None
 })
 
-export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestroy {
+export class WMediaSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
 
   tabs: WTab[] = [
@@ -119,18 +121,18 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
     this.view$ = this.objectListService.view$;
 
     this.mediaSelectionService.mediaParent$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe((res: Media) => this.mediaParent = res);
 
 
     this.objectListService.multipleSelection$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.dropzoneConfig.maxFiles = (!res ? 1 : null));
   }
 
   ngOnInit(): void {
     this.mediaSelectionService.open$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe((res: any) => {
         if (res) {
           // this.initialState(res);
@@ -138,10 +140,6 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
           this.getObjects(true);
         }
       });
-  }
-
-  ngAfterViewInit() {
-
   }
 
   ngOnDestroy(): void {
