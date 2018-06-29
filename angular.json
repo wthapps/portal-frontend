@@ -7,6 +7,8 @@
       "root": "src",
       "sourceRoot": "src/portal",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -14,10 +16,10 @@
             "outputPath": "dist/portal",
             "index": "src/portal/index.html",
             "main": "src/portal/main.ts",
-            "tsConfig": "src/portal/tsconfig.app.json",
             "polyfills": "src/portal/polyfills.ts",
+            "tsConfig": "src/portal/tsconfig.app.json",
             "assets": [
-
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
             ],
             "styles": [
               "src/portal/styles/styles-app-loading.scss",
@@ -46,8 +48,10 @@
               "ngswConfigPath": "/src/ngsw-config.json",
               "fileReplacements": [
                 {
-                  "replace": "src/portal/../environments/environment.ts",
-                  "with": "src/portal/../environments/environment.prod.ts"
+                  "replace":
+                  "src/portal/../environments/environment.ts",
+                  "with":
+                  "src/portal/../environments/environment.prod.ts"
                 }
               ]
             },
@@ -158,6 +162,8 @@
       "root": "src",
       "sourceRoot": "src/my-account",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -167,7 +173,9 @@
             "main": "src/my-account/main.ts",
             "tsConfig": "src/my-account/tsconfig.app.json",
             "polyfills": "src/my-account/polyfills.ts",
-            "assets": [],
+            "assets": [
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+            ],
             "styles": [
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
@@ -299,6 +307,8 @@
       "root": "src",
       "sourceRoot": "src/media",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -308,7 +318,9 @@
             "main": "src/media/main.ts",
             "tsConfig": "src/media/tsconfig.app.json",
             "polyfills": "src/media/polyfills.ts",
-            "assets": [],
+            "assets": [
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+            ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
@@ -446,6 +458,8 @@
       "root": "src",
       "sourceRoot": "src/social",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -455,7 +469,9 @@
             "main": "src/social/main.ts",
             "tsConfig": "src/social/tsconfig.app.json",
             "polyfills": "src/social/polyfills.ts",
-            "assets": [],
+            "assets": [
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+            ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
@@ -599,6 +615,8 @@
       "root": "src",
       "sourceRoot": "src/chat",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -608,7 +626,9 @@
             "main": "src/chat/main.ts",
             "tsConfig": "src/chat/tsconfig.app.json",
             "polyfills": "src/chat/polyfills.ts",
-            "assets": [],
+            "assets": [
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+            ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
@@ -752,6 +772,8 @@
       "root": "src",
       "sourceRoot": "src/contact",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -762,6 +784,7 @@
             "tsConfig": "src/contact/tsconfig.app.json",
             "polyfills": "src/contact/polyfills.ts",
             "assets": [
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
               "src/contact/manifest.json",
               "src/contact/sw.js"
             ],
@@ -911,6 +934,8 @@
       "root": "src",
       "sourceRoot": "src/note",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -920,7 +945,9 @@
             "main": "src/note/main.ts",
             "tsConfig": "src/note/tsconfig.app.json",
             "polyfills": "src/note/polyfills.ts",
-            "assets": [],
+            "assets": [
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+            ],
             "styles": [
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",

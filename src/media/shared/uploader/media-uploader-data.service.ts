@@ -7,7 +7,7 @@ import { Subject, Observable } from 'rxjs';
 @Injectable()
 export class MediaUploaderDataService {
   showUp$: Observable<any>;
-  action$: any;
+  action$: Observable<any>;
   private showUpSource = new Subject<any>();
   private actionSource = new Subject<string>();
 
