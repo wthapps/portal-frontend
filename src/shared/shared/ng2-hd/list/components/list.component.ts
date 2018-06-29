@@ -94,7 +94,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @desc sets if searchable is enabled. By default it's not.
    * @type {boolean}
    */
-  @Input() searchable: boolean = false;
+  @Input() searchable = false;
 
   /**
    * @name searchItems
@@ -116,7 +116,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name onlyFromAutocomplete
    * @type {Boolean}
    */
-  @Input() onlyFromAutocomplete: boolean = false;
+  @Input() onlyFromAutocomplete = false;
 
   /**
    * @name errorMessages
@@ -128,14 +128,14 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name theme
    * @type {string}
    */
-  @Input() theme: string = 'default';
+  @Input() theme = 'default';
 
   /**
    * - show autocomplete dropdown if the value of input is empty
    * @name showDropdownIfEmpty
    * @type {boolean}
    */
-  @Input() showDropdownIfEmpty: boolean = false;
+  @Input() showDropdownIfEmpty = false;
 
   // outputs
 
@@ -143,7 +143,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name onTextChangeDebounce
    * @type {number}
    */
-  @Input() onTextChangeDebounce: number = 250;
+  @Input() onTextChangeDebounce = 250;
 
   /**
    * - custom id assigned to the input
@@ -265,9 +265,9 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @type []
    */
   private listeners = {
-    [KEYDOWN]: <{ (fun: any): any }[]>[],
-    [KEYUP]: <{ (fun: any): any }[]>[],
-    change: <{ (fun: any): any }[]>[]
+    [KEYDOWN]: <((fun: any) => any)[]>[],
+    [KEYUP]: <((fun: any) => any)[]>[],
+    change: <((fun: any) => any)[]>[]
   };
 
   constructor(private element: ElementRef, private renderer: Renderer, private apiService: ApiBaseService) {
@@ -288,7 +288,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   removeItem(item: any): void {
 
     // remove selected item from list item
-    if (_.find(this.itemsSearching, item) != undefined) {
+    if (_.find(this.itemsSearching, item) !== undefined) {
       item.selected = false;
     }
 
@@ -517,7 +517,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   // }
 
   toggleSelectItem(item: any, event: any): void {
-    if (_.find(this.selectedItems, item) == undefined) {
+    if (_.find(this.selectedItems, item) === undefined) {
       this.selectedItems.push(item);
       item.selected = true;
     } else {

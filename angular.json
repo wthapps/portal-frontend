@@ -16,17 +16,17 @@
             "outputPath": "dist/portal",
             "index": "src/portal/index.html",
             "main": "src/portal/main.ts",
-            "polyfills": "src/portal/polyfills.ts",
             "tsConfig": "src/portal/tsconfig.app.json",
+            "polyfills": "src/portal/polyfills.ts",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+
             ],
             "styles": [
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/cropperjs/dist/cropper.min.css",
-              "src/portal/styles/portal.scss",
-              "src/assets/styles/styles-app-loading.scss"
+              "src/portal/styles/portal.scss"
             ],
             "scripts": [
               "node_modules/cropperjs/dist/cropper.min.js",
@@ -45,12 +45,11 @@
               "vendorChunk": false,
               "buildOptimizer": true,
               "serviceWorker": false,
+              "ngswConfigPath": "/src/ngsw-config.json",
               "fileReplacements": [
                 {
-                  "replace":
-                  "src/portal/../environments/environment.ts",
-                  "with":
-                  "src/portal/../environments/environment.prod.ts"
+                  "replace": "src/portal/../environments/environment.ts",
+                  "with": "src/portal/../environments/environment.prod.ts"
                 }
               ]
             },
