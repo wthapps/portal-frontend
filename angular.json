@@ -16,10 +16,10 @@
             "outputPath": "dist/portal",
             "index": "src/portal/index.html",
             "main": "src/portal/main.ts",
-            "tsConfig": "src/portal/tsconfig.app.json",
             "polyfills": "src/portal/polyfills.ts",
+            "tsConfig": "src/portal/tsconfig.app.json",
             "assets": [
-
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
@@ -48,8 +48,10 @@
               "ngswConfigPath": "/src/ngsw-config.json",
               "fileReplacements": [
                 {
-                  "replace": "src/portal/../environments/environment.ts",
-                  "with": "src/portal/../environments/environment.prod.ts"
+                  "replace":
+                  "src/portal/../environments/environment.ts",
+                  "with":
+                  "src/portal/../environments/environment.prod.ts"
                 }
               ]
             },
