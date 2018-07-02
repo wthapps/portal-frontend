@@ -9,4 +9,7 @@ export class MediaCreateModalService {
 
   open: Subject<any> = new Subject<any>();
   onOpen$: Observable<any> = this.open.asObservable();
+
+  close: Subject<any> = new Subject<any>();
+  onClose$: Observable<any> = this.close.asObservable();
 }

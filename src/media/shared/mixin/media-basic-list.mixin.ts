@@ -1,12 +1,14 @@
 import { ApiBaseService, WthConfirmService } from "@shared/services";
 /* MediaListMixin This is media list methods, to
 custom method please overwirte any method*/
-export class MediaListMixin {
+export class MediaBasicListMixin {
   objects: any;
-  hasSelectedObjects: any;
-  selectedObjects: any;
+  hasSelectedObjects: boolean;
+  selectedObjects: any = [];
   favoriteAll: any;
   loading: boolean;
+  viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
+  viewMode: any = this.viewModes.grid;
 
   constructor(public apiBaseService: ApiBaseService, public confirmService: WthConfirmService) {}
 
@@ -72,5 +74,9 @@ export class MediaListMixin {
         })
       }
     })
+  }
+
+  changeViewMode(mode: any) {
+    this.viewMode = mode;
   }
 };

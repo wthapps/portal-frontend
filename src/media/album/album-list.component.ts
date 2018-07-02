@@ -1,7 +1,9 @@
 import {
   Component,
   ComponentFactoryResolver, OnDestroy,
-  OnInit
+  OnInit,
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -19,79 +21,119 @@ import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-
 import { Constants } from '@wth/shared/constant';
 import { MediaActionHandler } from '@media/shared/media';
 import { AlbumService } from '@media/shared/service';
+import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
+import { ApiBaseService, WthConfirmService } from '@shared/services';
+import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
+import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
+import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 
+@Mixin([MediaBasicListMixin, MediaViewMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
 @Component({
   selector: 'z-media-album-list',
   templateUrl: 'album-list.component.html'
 })
-export class AlbumListComponent extends MediaActionHandler implements OnInit, OnDestroy {
-
-  albums$: Observable<any>;
-  loading$: Observable<any>;
-
-  nextLink$: Observable<any>;
+export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixin, MediaViewMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin {
+  objects: any;
+  loading: boolean;
+  links: any;
   tooltip: any = Constants.tooltip;
-  private type = 'album';
-  private path = 'media/media';
+  hasSelectedObjects: boolean;
+  favoriteAll: boolean;
+  selectedObjects: any = [];
+  viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
+  viewMode: any = this.viewModes.grid;
+  subShareSave: any;
+  modalIns: any;
+  modalRef: any;
+  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+
 
   constructor(
     protected store: Store<appStore.State>,
-    protected resolver: ComponentFactoryResolver,
+    public resolver: ComponentFactoryResolver,
+    public apiBaseService: ApiBaseService,
+    public confirmService: WthConfirmService,
+    public sharingModalService: SharingModalService,
+    public mediaCreateModalService: MediaCreateModalService,
+    public toastsService: ToastsService,
     private router: Router,
-    private mediaUploaderDataService: MediaUploaderDataService,
-    private albumService: AlbumService
   ) {
-    super(resolver, store);
 
-    this.albums$ = this.store.select(appStore.selectObjects);
-    this.nextLink$ = this.store.select(appStore.selectNextLink);
-    this.loading$ = this.store.select(appStore.selectLoading);
-
-    this.sub = this.mediaUploaderDataService.action$
-      .takeUntil(this.destroySubject)
-      .subscribe((event: any) => {
-        this.doEvent(event);
-      });
   }
 
   ngOnInit() {
-    this.doEvent({action: 'getAll', payload: {path: this.path, queryParams: {type: this.type}}});
-  }
-
-  doEvent(event: any) {
-    super.doEvent(event);
-
-    switch (event.action) {
-      case 'sort':
-        this.store.dispatch(new GetAll({path: this.path, queryParams: {type: this.type, ...event.payload.queryParams}}));
-        break;
-      case 'openUploadModal':
-        this.mediaUploaderDataService.onShowUp();
-        break;
-      case 'addAlbumSuccessful':
-        this.store.dispatch(new AddSuccess(event.payload));
-        break;
-      case 'favourite':
-        this.store.dispatch(new Favorite(event.payload));
-        break;
-      case 'viewDetails':
-        this.viewDetails(event.payload);
-        break;
-      case 'deleteMedia':
-        this.store.dispatch(new DeleteMany({ ...event.payload }));
-        break;
-      case 'download':
-        this.albumService.getPhotosByAlbum(event.payload.selectedObjects[0].id).subscribe(response => {
-          this.store.dispatch(new Download({selectedObjects: response.data}));
-        });
-    }
-  }
-
-  viewDetails(payload: any) {
-    this.router.navigate(['albums', payload.selectedObject.uuid]);
+    this.loadObjects();
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    // this.sub.unsubscribe();
   }
+
+  loadObjects(input?: any) {
+    this.loading = true;
+    this.apiBaseService.get('/media/media?type=album').subscribe(res => {
+      this.objects = res.data;
+      this.links = res.meta.links;
+      this.loading = false;
+    });
+  }
+
+  loadMoreObjects(input?: any) {
+    this.loading = true;
+    this.apiBaseService.get('/media/media?type=album').subscribe(res => {
+      this.objects = res.data;
+      this.links = res.meta.links;
+      this.loading = false;
+    });
+  }
+
+  doToolbarEvent(e: any) {
+    switch (e.action) {
+      case 'changeView':
+        this.changeViewMode(e.payload);
+        break;
+    }
+  }
+
+
+  doListEvent(event: any) {
+    switch (event.action) {
+      case 'sort':
+        // this.store.dispatch(new GetAll({path: this.path, queryParams: {type: this.type, ...event.payload.queryParams}}));
+        break;
+      case 'viewDetails':
+        this.viewDetail(event.payload.selectedObject)
+        break;
+    }
+  }
+
+  downloadAlbum() {
+    this.apiBaseService.get(`media/media?type=photo&album=${this.selectedObjects[0].id}`).subscribe(res => {
+      this.downloadMedia(res.data);
+    })
+  }
+
+  downloadMedia:(media: any) => void;
+
+  viewDetail(e: any) {
+    this.router.navigate(['albums', e.uuid]);
+  }
+
+  selectedObjectsChanged:(objectsChanged: any) => void;
+  toggleFavorite:(items: any) => void;
+  deleteObjects:(items: any) => void;
+
+  changeViewMode:(mode: any) => void;
+
+  openModalShare: (input: any) => void;
+  onSaveShare: (input: any) => void;
+
+  loadModalComponent: (component: any) => void;
+
+  openEditModal:(object: any) => void;
 }

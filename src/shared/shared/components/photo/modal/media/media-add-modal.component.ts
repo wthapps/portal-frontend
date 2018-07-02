@@ -1,17 +1,9 @@
 import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter, ViewContainerRef, ComponentFactoryResolver, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { Subject } from 'rxjs/Subject';
-import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
-import { ApiBaseService, CommonEventService } from '@wth/shared/services';
-import { ModalComponent } from '@shared/shared/components/base/components';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
-import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
-import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 declare var $: any;

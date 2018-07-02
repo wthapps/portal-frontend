@@ -11,31 +11,24 @@ import { Router, Resolve } from '@angular/router';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService } from '@shared/services';
-import { SharingModalV1Component } from '@shared/shared/components/photo/modal/sharing/sharing-modal-v1.component';
-import { CreateCommonSharing } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { PlaylistModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-modal.component';
-import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
-import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { Media } from '@shared/shared/models/media.model';
-import { Observable } from 'rxjs/Observable';
-import { PlaylistListService } from '@media/video/playlist-list.service';
-import { MediaListMixin } from '@media/shared/mixin/media-list.mixin';
+import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
 
 declare var _: any;
 
-@Mixin([MediaListMixin])
+@Mixin([MediaBasicListMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-playlist-list',
+  // templateUrl: '../shared/list/list.component.html'
   templateUrl: 'playlist-list.component.html'
 })
-export class ZMediaPlaylistListComponent implements OnInit, MediaListMixin {
+export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin {
   // display objects on screen
   objects: any;
   // tooltip to introduction
@@ -49,18 +42,10 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaListMixin {
   subAddPlaylist: any;
   subOpenShare: any;
   loading: boolean;
+  viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
+  viewMode: any = this.viewModes.grid;
 
-  @ViewChild('modalContainer', { read: ViewContainerRef })
-  modalContainer: ViewContainerRef;
-  medias$: Observable<Media[]>;
-  mediaParent: Media;
-  selectedMedias$: Observable<Media[]>;
-  multipleSelection$: Observable<boolean>;
-
-  currentTab: string; // upload, photos, albums, albums_detail, favourites, shared_with_me
-
-  nextLink: string;
-  isLoading: boolean;
+  menuActions: any = {};
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -71,86 +56,40 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaListMixin {
     private toastsService: ToastsService,
     public confirmService: WthConfirmService,
     public objectListService: WObjectListService,
-    private playlistListService: PlaylistListService,
     public resolver: ComponentFactoryResolver
   ) {
-    this.medias$ = this.playlistListService.medias$;
   }
 
   ngOnInit() {
     this.loadObjects();
+    this.menuActions = this.getMenuActions();
   }
 
-  getObjects() {
-    this.playlistListService.getMedias().subscribe();
-  }
-
-  doEvent(e: any) {
-    // switch(e.action) {
-    //   case 'uploaded':
-    //     this.load();
-    //     break;
-    //   case 'viewDetails':
-    //     this.router.navigate(['/videos', e.payload.selectedObject.id]);
-    //     break;
-    //   case 'preview':
-    //     this.router.navigate(['/videos', e.payload.selectedObject.id]);
-    //     break;
-    //   case 'favourite':
-    //     let selectedObjects = [];
-    //     if (e.payload) {
-    //       selectedObjects = e.payload.selectedObjects;
-    //     }
-    //     if (selectedObjects && selectedObjects.length == 0) {
-    //       selectedObjects = this.objects.filter(v => v.selected == true);
-    //     }
-    //     this.apiBaseService.post(`media/favorites/toggle`, {
-    //       objects: selectedObjects
-    //       .map(v => {return {id: v.id, object_type: 'Media::Video'}})}).subscribe(res => {
-    //         this.objects = this.objects.map(v => {
-    //           let tmp = res.data.filter(d => d.id == v.id);
-    //           if (tmp && tmp.length > 0) {
-    //             v.favorite = tmp[0].favorite;
-    //           }
-    //           return v;
-    //         })
-    //         this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-    //     });
-    //     break;
-    //   case 'deleteMedia':
-    //     this.wthConfirmService.confirm({
-    //       message: 'Are you sure to delete',
-    //       accept: () => {
-    //         let data = this.objects.filter(v => v.selected)
-    //         .map(v => {return {id: v.id, model: v.model}});
-    //         this.apiBaseService.post(`media/videos/delete`, {objects: data}).subscribe(res => {
-    //           this.objects = this.objects.filter(v => !v.selected);
-    //         });
-    //       }
-    //     })
-    //     break;
-    //   case 'getMore':
-    //     if (this.links && this.links.next) {
-    //       this.apiBaseService.get(this.links.next).subscribe(res => {
-    //         this.objects = [...this.objects, ...res.data];
-    //         this.links = res.meta.links;
-    //       })
-    //     }
-    //     break;
-    // }
-  }
-
-  preview() {
-    this.router.navigate([
-      '/playlists',
-      this.objects.filter(ob => ob.selected)[0].uuid
-    ]);
-  }
-
-  load() {
-    this.apiBaseService.get(`media/playlists`).subscribe(res => {
-      this.objects = res.data;
-    });
+  getMenuActions() {
+    return {
+      share: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: this.openModalShare.bind(this),
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.share,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      favourite: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: this.toggleFavorite.bind(this),
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.addToFavorites,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-star'
+      }
+    }
   }
 
   openModalAddToPlaylist() {
@@ -198,12 +137,30 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaListMixin {
   createPlaylist() {
     this.playlistCreateModalService.open.next();
     this.playlistCreateModalService.onCreated$.subscribe(res => {
-      this.load();
+      this.loadObjects();
     });
   }
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
-  selectedObjectsChanged:(e: any) => void;
+  selectedObjectsChanged(objectsChanged: any) {
+    if(this.objects) {
+      this.hasSelectedObjects = (objectsChanged && objectsChanged.length > 0) ? true : false;
+      this.objects.forEach(ob => {
+        if (objectsChanged.some(el => el.id == ob.id && (el.object_type == ob.object_type || el.model == ob.model))) {
+          ob.selected = true;
+        } else {
+          ob.selected = false;
+        }
+      });
+      this.selectedObjects = this.objects.filter(v => v.selected == true);
+      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+    }
+    if (this.favoriteAll) {
+      this.menuActions.favourite.iconClass = 'fa fa-star';
+    } else {
+      this.menuActions.favourite.iconClass = 'fa fa-star-o'
+    }
+  };
   toggleFavorite: (items?: any) => void;
   deleteObjects: (term: any) => void;
   loadObjects() {
@@ -219,6 +176,7 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaListMixin {
     /* this method is load objects to display on init */
     throw new Error('should overwrite this method');
   }
+  changeViewMode:(mode: any) => void;
 }
 
 interface SharingCreateParams {

@@ -11,6 +11,7 @@ export class SharingModalMixin {
 
   constructor(public sharingModalService: SharingModalService, public apiBaseService: ApiBaseService, public toastsService: ToastsService) {}
 
+  // openModalShare:(input: any) => void;
   openModalShare(input: any = null) {
     if (this.subShareSave) this.subShareSave.unsubscribe();
     this.sharingModalService.open.next(input);
@@ -20,6 +21,7 @@ export class SharingModalMixin {
   }
 
   // Overwrite this in parent class
+  // onSaveShare: (input: any) => void;
   onSaveShare(e: any) {
     const data: SharingCreateParams = {
       objects: this.selectedObjects.map(s => { return {id: s.id, model: s.model}}),

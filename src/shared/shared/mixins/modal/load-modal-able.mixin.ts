@@ -1,7 +1,5 @@
-import { Input, Output, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import {ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 
-import { BsModalComponent } from 'ng2-bs3-modal';
 
 
 declare let _: any;

@@ -16,11 +16,11 @@ import { PlaylistModalService } from '@shared/shared/components/photo/modal/play
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { MediaListMixin } from '@media/shared/mixin/media-list.mixin';
+import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
 import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
 
 declare var _: any;
-@Mixin([SharingModalMixin, MediaListMixin, MediaViewMixin])
+@Mixin([SharingModalMixin, MediaBasicListMixin, MediaViewMixin])
 @Component({
   selector: 'me-video-list',
   entryComponents: [
@@ -30,7 +30,7 @@ declare var _: any;
   ],
   templateUrl: 'video-list.component.html'
 })
-export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, MediaListMixin, MediaViewMixin {
+export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, MediaBasicListMixin, MediaViewMixin {
   // display videos on screen
   objects: any;
   // tooltip to introduction

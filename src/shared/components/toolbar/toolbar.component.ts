@@ -7,7 +7,9 @@ import {
   ViewEncapsulation,
   ViewContainerRef,
   ViewChild,
-  ComponentFactoryResolver
+  ComponentFactoryResolver,
+  OnInit,
+  OnDestroy
 } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, CommonEventService } from '@shared/services';
@@ -15,8 +17,14 @@ import { PlaylistCreateModalService } from '@shared/shared/components/photo/moda
 import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { AlbumCreateMixin } from '@media/shared/mixin/album/album-create.mixin';
+import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
+import { Router } from '@angular/router';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
+import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 
-@Mixin([MediaViewMixin])
+@Mixin([MediaViewMixin, AlbumAddMixin, AlbumCreateMixin])
 @Component({
   selector: 'w-toolbar',
   exportAs: 'wToolbar',
@@ -24,7 +32,7 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
   styleUrls: ['toolbar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class WToolbarComponent implements MediaViewMixin {
+export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin, AlbumAddMixin, AlbumCreateMixin {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
   @Input() moreActionsTemplate: TemplateRef<any>;
@@ -43,15 +51,42 @@ export class WToolbarComponent implements MediaViewMixin {
   hasManyObjects: boolean = false;
   hasNoObject: boolean = false;
   subCreateAlbum: any;
+  subAddAlbum: any;
+  subOpenCreateAlbum: any;
+  subUploader: any;
 
   tooltip: any = Constants.tooltip;
 
-  constructor(private apiBaseService: ApiBaseService,
+  constructor(
+    public apiBaseService: ApiBaseService,
     public resolver: ComponentFactoryResolver,
+    public toastsService: ToastsService,
+    public router: Router,
+    public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
+    public mediaUploaderDataService: MediaUploaderDataService,
     public playlistCreateModalService: PlaylistCreateModalService,
-    private commonEventService: CommonEventService) {}
+    private commonEventService: CommonEventService) {
 
+    }
+
+  ngOnInit() {
+    this.subUploader = this.mediaUploaderDataService.action$.subscribe(e => {
+      switch (e.action) {
+        case 'openModal':
+          if (e.payload.modalName == 'createAlbumModal') {
+            this.openCreateAlbumModal(e.payload.selectedObjects);
+          }
+          if (e.payload.modalName == 'addToAlbumModal') {
+            this.openModalAddToAlbum(e.payload.selectedObjects);
+          }
+          break;
+      }
+    });
+  }
+  ngOnDestroy() {
+    if (this.subUploader) this.subUploader.unsubscribe();
+  }
 
   doAction(event: any) {
     if (event.action === 'favourite') {
@@ -69,10 +104,7 @@ export class WToolbarComponent implements MediaViewMixin {
       this.playlistCreateModalService.open.next({selectedObjects: this.selectedObjects});
     }
     if (event.action === 'openModalCreateAlbumModal') {
-      this.mediaCreateModalService.open.next({ selectedObjects: this.selectedObjects, title: 'Create Album', namePlaceholder: 'Untitled Album' });
-      this.subCreateAlbum = this.mediaCreateModalService.onCreate$.take(1).subscribe(e => {
-        console.log(e);
-      });
+      this.openCreateAlbumModal(this.selectedObjects);
     }
     this.event.emit(event);
   }
@@ -126,6 +158,30 @@ export class WToolbarComponent implements MediaViewMixin {
   changeViewMode(mode: any) {
     this.event.emit({action: 'changeView', payload: mode})
   }
+
+  /* AlbumCreateMixin This is album create methods, to
+custom method please overwirte any method*/
+  openCreateAlbumModal: (selectedObjects: any) => void;
+  onDoneAlbum(e: any) {
+    this.apiBaseService.post(`media/albums`, { name: e.parents[0].name, description: e.parents[0].description, photos: e.children.map(el => el.id) }).subscribe(res => {
+      this.router.navigate(['albums', res.data.uuid]);
+    })
+  }
+  /* ================================== */
+
+  /* AlbumAddMixin This is album add methods, to
+custom method please overwirte any method*/
+  openModalAddToAlbum: (selectedObjects: any) => void;
+  onAddToAlbum(e: any) {
+    this.apiBaseService
+      .post(`media/albums/${e.parents[0].id}/photos`, {
+        photos: e.children
+      })
+      .subscribe(res => {
+        this.toastsService.success('You just added to Album success');
+      });
+  }
+  /* ================================== */
 
   private checkFavoriteAll(objects: Array<any>): boolean {
     let result = true;

@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
 import { saveAs } from 'file-saver';
+import { Location } from '@angular/common';
 
 import { AlbumService } from '../shared/service/album.service';
 import * as appStore from '../shared/store';
@@ -75,6 +76,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
     protected mediaSelectionService: WMediaSelectionService,
     private photoUploadService: PhotoUploadService,
     private commonEventService: CommonEventService,
+    private location: Location,
     private mediaUploaderDataService: MediaUploaderDataService,
   ) {
     super(resolver, store, mediaSelectionService);
@@ -85,6 +87,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
   }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'albums';
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'albums';
 
     this.createDetailInfoComponent();
@@ -205,7 +208,7 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
         this.router.navigate([this.returnUrl]);
         break;
       case 'goBack':
-        this.router.navigateByUrl(this.returnUrl);
+        this.location.back();
         break;
       case 'media:photo:update_recipients':
         this.albumService.getAlbum(this.album.uuid).subscribe((response: any) => {

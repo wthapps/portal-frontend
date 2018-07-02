@@ -52,6 +52,9 @@ export class MediaCreateModalComponent implements OnInit {
     this.mediaCreateModalService.onOpen$.subscribe(e => {
       this.open(e)
     })
+    this.mediaCreateModalService.onClose$.subscribe(e => {
+      this.close(e)
+    })
   }
 
   open(options: any = {}) {
@@ -59,6 +62,7 @@ export class MediaCreateModalComponent implements OnInit {
     if(options) {
       ({title: this.title, namePlaceholder: this.namePlaceholder, selectedObjects: this.arrayItems} = options);
     }
+    this.form.setControl('edit', this.name);
   }
 
   close(options?: any) {
@@ -70,7 +74,7 @@ export class MediaCreateModalComponent implements OnInit {
     //   this.modal.close().then();
     //   this.mediaCreateModalService.created.next(res.data);
     // });
-    this.mediaCreateModalService.create.next({parents: [e], childrent: this.arrayItems});
+    this.mediaCreateModalService.create.next({parents: [e], children: this.arrayItems});
   }
 
   onAction(action: string, data: any) {
