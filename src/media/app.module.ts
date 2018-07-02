@@ -40,6 +40,7 @@ import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/mod
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 import { ZMediaVideoModule } from '@media/video/video.module';
 import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
+import { PhotoHtmlModule } from '@media/html/photo-html.module';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-i
     ZMediaSearchModule,
     ZMediaMyProfileModule,
     ZMediaVideoModule,
+    PhotoHtmlModule,
 
     AppRoutingModule,
     ModalModule,

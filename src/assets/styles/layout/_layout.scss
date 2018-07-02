@@ -30,7 +30,7 @@
       top: $header-height;
       left: 0;
       bottom: 0;
-      z-index: 10;
+      z-index: 40;
       background-color: #ffffff;
       @include box-shadow(2px 2px 4px 0px rgba(73, 73, 73, 0.40));
       .main-page-left-in {
