@@ -178,8 +178,8 @@ export class MessageItemComponent implements OnInit {
   }
 
   onImgLoaded() {
-    setTimeout(() => {
-      this.messageService.scrollToBottom();
-    }, 200);
+    // setTimeout(() => {
+    //   this.messageService.scrollToBottom();
+    // }, 200);
   }
 }

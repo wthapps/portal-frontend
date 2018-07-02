@@ -41,6 +41,6 @@ import { MessageService } from '@chat/shared/message/message.service';
     MessageItemSimpleComponent,
     MessageItemComponent
   ],
-  providers: [MessageService]
+  providers: []
 })
 export class ZChatMessageModule {}

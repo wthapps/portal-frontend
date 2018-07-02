@@ -54,7 +54,12 @@ export class MessageListComponent implements OnInit {
   }
 
   onLoadMore() {
-    this.chatService.loadMoreMessages();
+    console.log('onLoadMore ...',  this.listEl.nativeElement.scrollTop);
+    this.chatService.loadMoreMessages()
+      .then(res => {
+        if(res.data && res.data.length > 0)
+          this.listEl.nativeElement.scrollTop += 100
+      });
   }
 
   scrollDown() {

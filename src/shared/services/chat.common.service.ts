@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { ApiBaseService } from './apibase.service';
 import { HandlerService } from './handler.service';
+import { MessageService } from '@chat/shared/message/message.service';
+import { UserService } from '@wth/shared/services/user.service';
 
 declare var _: any;
 
@@ -10,7 +12,9 @@ export class ChatCommonService {
   constructor(
     public storage: StorageService,
     public apiBaseService: ApiBaseService,
-    public handler: HandlerService
+    public handler: HandlerService,
+    private messageService: MessageService,
+    private userService: UserService
   ) {}
 
   setRecentConversations() {
@@ -76,6 +80,9 @@ export class ChatCommonService {
         if (!contactSelect.favourite) {
           this.moveFristRecentList();
         }
+        // Scroll to bottom when user's own messages are arrived
+        if(message.user_id === this.userService.getSyncProfile().id)
+          this.messageService.scrollToBottom();
       }
     }
   }
@@ -89,6 +96,9 @@ export class ChatCommonService {
         }
       }
     }
+
+    if(data && data.byMe)
+      this.messageService.scrollToBottom();
   }
 
   updateContactSelect() {

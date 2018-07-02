@@ -5,7 +5,7 @@
        infiniteScrollDistance="1"
        infiniteScrollUpDistance="2"
        infiniteScroll
-       [scrollWindow]="true"
+       [scrollWindow]="false"
        (scrolled)="scrollDown()"
        (scrolledUp)="onLoadMore()">
     <ng-container *ngIf="(item && item.value); else loadingBlock">

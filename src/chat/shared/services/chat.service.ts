@@ -29,8 +29,10 @@ import { ConversationApiCommands } from '@shared/commands/chat/coversation-comma
 import { Store } from '@ngrx/store';
 import * as fromConversations from './../../../core/store/chat/conversations.reducer';
 import * as fromConversationsUsers from './../../../core/store/chat/conversations_users.reducer';
+import { MessageService } from '@chat/shared/message/message.service';
 
 declare var _: any;
+declare var Promise: any;
 
 @Injectable()
 export class ChatService {
@@ -48,6 +50,7 @@ export class ChatService {
     public store: Store<any>,
     public handler: HandlerService,
     public fileUploaderService: FileUploaderService,
+    private messageService: MessageService,
     private fileService: GenericFileService
   ) {
     // =============================
@@ -269,9 +272,10 @@ export class ChatService {
           };
           this.fileUploaderService
             .uploadGenericFile(file)
-            .subscribe((res: any) =>
-              console.log('send file successfully', res)
-            );
+            .subscribe((res: any) => {
+                console.log('send file successfully', res);
+                this.messageService.scrollToBottom();
+            });
         });
       }
     });
@@ -287,17 +291,20 @@ export class ChatService {
     return this.storage.find(USERS_ONLINE);
   }
 
-  loadMoreMessages(callback: any = null) {
+  loadMoreMessages(): Promise<any> {
     let current = this.storage.find(CURRENT_CHAT_MESSAGES).value || {};
     let currentMessages: any = current.data || [];
     let page: any = 1;
-    if (current.meta) page = parseInt(current.meta.page) + 1;
+    if (current.meta && +current.meta.page < +current.meta.page_count)
+      page = parseInt(current.meta.page) + 1;
+    else
+      return Promise.resolve({data: []});
     let body: any = { page: page };
     let groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
       .id;
-    this.apiBaseService
+    return this.apiBaseService
       .get('zone/chat/message/' + groupId, body)
-      .subscribe((res: any) => {
+      .toPromise().then((res: any) => {
         res.data = _chat.combineMessages(currentMessages, res.data);
         this.storage.save('chat_messages_group_' + groupId, res);
         if (
@@ -305,7 +312,7 @@ export class ChatService {
         ) {
           this.storage.save(CURRENT_CHAT_MESSAGES, res);
         }
-        if (callback) callback();
+        return res;
       });
   }
 
