@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
-import { MessageService } from '@chat/shared/message/message.service';
+import { WMessageService } from '@wth/shared/services';
 
 declare var _: any;
 declare var $: any;
@@ -36,7 +36,7 @@ export class MessageListComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private ref: ChangeDetectorRef,
-    private messageService: MessageService
+    private messageService: WMessageService
   ) {
     this.messageService.scrollToBottom$.subscribe((res: boolean) => {
       if (res) {

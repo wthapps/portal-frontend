@@ -45,6 +45,7 @@ import { WindowService } from '@wth/shared/services/window.service';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { ApiProxyService } from '@shared/services/apiproxy.service';
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
+import { WMessageService } from '@wth/shared/services/message.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -104,6 +105,7 @@ export class SharedServicesModule {
         GenericFileService,
         ToastsService,
         MessageService,
+        WMessageService,
         WObjectListService,
         WTHEmojiService,
         WMediaSelectionService,

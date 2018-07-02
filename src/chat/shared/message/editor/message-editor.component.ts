@@ -22,7 +22,7 @@ import { Constants, FORM_MODE } from '@wth/shared/constant';
 import {
   PhotoModalDataService,
   PhotoUploadService,
-  ApiBaseService
+  ApiBaseService, WMessageService
 } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
@@ -35,7 +35,6 @@ import { Store } from '@ngrx/store';
 import { log } from 'util';
 import { noteConstants } from '@notes/shared/config/constants';
 import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
-import { MessageService } from '@chat/shared/message/message.service';
 
 declare var $: any;
 
@@ -70,7 +69,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     private apiBaseService: ApiBaseService,
     private store: Store<any>,
     private fb: FormBuilder,
-    private messageService: MessageService
+    private messageService: WMessageService
   ) {
     this.createForm();
   }

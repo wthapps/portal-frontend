@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { ApiBaseService } from './apibase.service';
 import { HandlerService } from './handler.service';
-import { MessageService } from '@chat/shared/message/message.service';
 import { UserService } from '@wth/shared/services/user.service';
+import { WMessageService } from '@wth/shared/services/message.service';
 
 declare var _: any;
 
@@ -13,7 +13,7 @@ export class ChatCommonService {
     public storage: StorageService,
     public apiBaseService: ApiBaseService,
     public handler: HandlerService,
-    private messageService: MessageService,
+    private messageService: WMessageService,
     private userService: UserService
   ) {}
 

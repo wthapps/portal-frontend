@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
 import { Constants, CHAT_ACTIONS } from '@wth/shared/constant';
-import { CommonEvent, CommonEventService } from '@wth/shared/services';
-import { MessageService } from '@chat/shared/message/message.service';
+import { CommonEvent, CommonEventService, WMessageService } from '@wth/shared/services';
 
 declare var _: any;
 
@@ -33,7 +32,7 @@ export class MessageItemComponent implements OnInit {
     private router: Router,
     private chatService: ChatService,
     private pubSubEventService: CommonEventService,
-    private messageService: MessageService
+    private messageService: WMessageService
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
   }

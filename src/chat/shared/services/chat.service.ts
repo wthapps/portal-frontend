@@ -14,7 +14,7 @@ import {
   HandlerService,
   PhotoUploadService,
   StorageService,
-  UserService
+  UserService, WMessageService
 } from '@wth/shared/services';
 import {
   ChatConstant, CHAT_CONVERSATIONS, CHAT_RECENT_CONVERSATIONS,
@@ -29,7 +29,7 @@ import { ConversationApiCommands } from '@shared/commands/chat/coversation-comma
 import { Store } from '@ngrx/store';
 import * as fromConversations from './../../../core/store/chat/conversations.reducer';
 import * as fromConversationsUsers from './../../../core/store/chat/conversations_users.reducer';
-import { MessageService } from '@chat/shared/message/message.service';
+
 
 declare var _: any;
 declare var Promise: any;
@@ -50,7 +50,7 @@ export class ChatService {
     public store: Store<any>,
     public handler: HandlerService,
     public fileUploaderService: FileUploaderService,
-    private messageService: MessageService,
+    private messageService: WMessageService,
     private fileService: GenericFileService
   ) {
     // =============================
