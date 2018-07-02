@@ -1,7 +1,7 @@
 .media-user-list {
   overflow: visible;
 
-  a {
+  a:not(.text-link) {
     color: inherit;
   }
   .media-body {
@@ -13,8 +13,12 @@
     vertical-align: top;
   }
 
-  &.media-middle, &.media-middle, &.media-user-list-middle {
-    .media-left, .media-body, .media-right {
+  &.media-middle,
+  &.media-middle,
+  &.media-user-list-middle {
+    .media-left,
+    .media-body,
+    .media-right {
       vertical-align: middle;
     }
   }
@@ -25,11 +29,11 @@
     border-top: 1px solid $line;
   }
   &.active {
-    background: rgba(#ECECEC, 1);
+    background: rgba(#ececec, 1);
   }
   &.media-user-list-hover {
     &:hover {
-      background: rgba(#ECECEC, 0.5);
+      background: rgba(#ececec, 0.5);
     }
   }
 }
@@ -45,7 +49,7 @@ dl.media-user-list-group {
     .media-user-list {
       margin-bottom: 10px;
       padding-bottom: 10px;
-      border-bottom: 1px solid $line;;
+      border-bottom: 1px solid $line;
     }
   }
 }
@@ -55,7 +59,7 @@ dl.media-user-list-group {
     .media-user-list {
       margin-bottom: 10px;
       padding-bottom: 10px;
-      border-bottom:1px solid $line;
+      border-bottom: 1px solid $line;
     }
   }
 }
@@ -63,8 +67,26 @@ dl.media-user-list-group {
 .page-body-control {
   .media-user-list {
     overflow: visible;
-    &:hover, &.active {
+    &:hover,
+    &.active {
       background-color: transparent;
     }
+  }
+}
+
+.user-row {
+  @include flexbox;
+  @include align-items(center);
+  .avatar {
+    margin-right: 10px;
+  }
+  .name {
+    @include flex(1);
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+  }
+  .action {
+    margin-left: 10px;
   }
 }

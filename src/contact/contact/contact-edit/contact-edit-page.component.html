@@ -3,21 +3,25 @@
     <button *ngIf="mode === 'create'" type="button"
             [disabled]="!contactEdit?.name?.valid && contactEdit?.name?.errors?.required || !formValid"
             (click)="contactEdit.onSubmit(contactEdit?.form?.value)"
-            class="btn btn-outline-primary btn-min mr10">Create</button>
+            class="btn btn-outline-primary btn-min mr10">Create
+    </button>
 
     <button *ngIf="mode === 'create'" type="reset"
             class="btn btn-outline-default btn-min"
-            [routerLink]="['/contacts']">Cancel</button>
+            [routerLink]="['/contacts']">Cancel
+    </button>
 
     <button *ngIf="mode === 'edit'" type="button"
             [disabled]="(!contactEdit?.name?.valid && contactEdit?.name?.errors?.required)
             || contactEdit?.disableEdit || !formValid"
             (click)="contactEdit.onSubmit(contactEdit?.form?.value)"
-            class="btn btn-outline-primary btn-min mr10">Save</button>
+            class="btn btn-outline-primary btn-min mr10">Save
+    </button>
 
     <button *ngIf="mode === 'edit'" type="reset"
             class="btn btn-outline-default btn-min"
-            (click)="goBack()">Cancel</button>
+            (click)="goBack()">Cancel
+    </button>
 
     <z-contact-shared-actions-bar *ngIf="mode === 'view'"
                                   [showViewDetail]="false"
@@ -32,87 +36,68 @@
 </z-contact-shared-toolbar>
 
 
-<div class="page-body-content has-page-body-control d-flex">
-  <div class="page-body-content-in zone-social mr-auto">
-    <div class="zone-social-in">
+<div class="page-body-content has-page-body-control">
+  <div class="contact-edit-page page-body-content-in">
+    <div class="contact-edit-content">
       <contact-edit #contactEdit
-                      [contact]="contact" [mode]="mode"
-                      (eventForm)="eventForm($event)"
-                      (event)="doEvent($event)"></contact-edit>
+                    [contact]="contact" [mode]="mode"
+                    (eventForm)="eventForm($event)"
+                    (event)="doEvent($event)"></contact-edit>
       <ng-container *ngIf="mode==='view'">
         <contact-view [contact]="contact"></contact-view>
       </ng-container>
-
     </div>
-  </div>
-
-  <div style="min-width: 275px; padding-top: 17px;">
-    <div>
+    <div class="contact-edit-aside">
       <h4>WTH Profiles
         <i class="fa fa-info-circle"
            pTooltip="Profiles were found in WTHApps using contact info entered"
            tooltipPosition="bottom"></i>
       </h4>
-      <div>
-        <ul class="list-unstyled">
-          <li *ngFor="let email of emails">
-            <div *ngIf="email.wthapps_user" class="user-card row pt10">
-              <div class="user-card-avatar col-md-2">
-                <a [href]="urls.social + '/profile/' + email.wthapps_user.uuid" target="_blank">
-                  <img class="img-circle" width="34" height="34" [src]="email.wthapps_user.profile_image">
-                </a>
-              </div>
-              <div class="user-card-content col-md-7 pl10">
-                <div class="user-card-content-name">
-                  <a [href]="urls.social + '/profile/' + email.wthapps_user?.uuid" target="_blank">
-                    <span> {{ email.wthapps_user.name}} </span>
-                  </a>
-                </div>
-                <div class="user-card-content-email">
-                  <span> {{ email.value }} </span>
-                </div>
-
-              </div>
-
-              <div class="user-card-actions col-md-2">
-                <a class="btn btn-outline-default" [href]="urls.chat" target="_blank"
-                        pTooltip="Send message"
-                        tooltipPosition="left"> <i class="fa fa-comments-o"></i></a>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div>
-      <h4 class="regular-email">Regular email <i class="fa fa-info-circle"
-                                                 pTooltip="Entered information didn't match any WTHApps profiles"
-                                                 tooltipPosition="bottom"></i></h4>
-      <div>
-        <ul class="list-unstyled">
-          <li *ngFor="let email of emails">
-            <div *ngIf="email.wthapps_user == null" class="user-card row pt10">
-              <div class="user-card-avatar col-md-2">
-                <div class="img-circle"></div>
-              </div>
-              <div class="user-card-content col-md-7 pl10 pt5">
-                <div class="user-card-content-email only-email">
-                  <span> {{ email.value }} </span>
-                </div>
-              </div>
-              <div class="user-card-actions col-md-2">
-                <button class="btn btn-outline-default"
-                        pTooltip="Invite to join WTHApps"
-                        tooltipPosition="left" (click)="invite(email)"> <i class="fa fa-envelope-o"></i></button>
-              </div>
-
-            </div>
-          </li>
-        </ul>
-      </div>
+      <ng-container *ngFor="let email of emails">
+        <div *ngIf="email.wthapps_user" class="user-row">
+          <div class="avatar">
+            <a [href]="urls.social + '/profile/' + email.wthapps_user.uuid" target="_blank">
+              <img class="img-circle" width="34" alt="" [src]="email.wthapps_user.profile_image">
+            </a>
+          </div>
+          <div class="name">
+            <a class="text-link" [href]="urls.social + '/profile/' + email.wthapps_user?.uuid" target="_blank">
+              <p class="mb0">{{ email.wthapps_user.name}}</p>
+            </a>
+            <span>{{ email.value }}</span>
+          </div>
+          <div class="action">
+            <a class="btn btn-outline-default" [href]="urls.chat" target="_blank"
+               pTooltip="Send message" tooltipPosition="left">
+              <i class="fa fa-comments-o"></i>
+            </a>
+          </div>
+        </div>
+      </ng-container>
+      <h4 class="regular-email">
+        Regular email
+        <i class="fa fa-info-circle" pTooltip="Entered information didn't match any WTHApps profiles"
+           tooltipPosition="bottom"></i>
+      </h4>
+      <ng-container *ngFor="let email of emails">
+        <div *ngIf="email.wthapps_user == null" class="user-row">
+          <div class="avatar">
+            <img class="img-circle" width="34" alt="" [src]="avatarDefault">
+          </div>
+          <div class="name">
+            <span>{{ email.value }}</span>
+          </div>
+          <div class="action">
+            <button class="btn btn-outline-default" pTooltip="Invite to join WTHApps" tooltipPosition="left"
+                    (click)="invite(email)">
+              <i class="fa fa-envelope-o"></i>
+            </button>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
+
 
 </div>
 <contact-add-group-modal #modal></contact-add-group-modal>

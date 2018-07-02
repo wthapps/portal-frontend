@@ -8,7 +8,7 @@ $ui-inputswitch-w: 24px;
 
 .ui-inputswitch {
   overflow: visible;
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
   height: $ui-inputswitch-w;
   -webkit-border-radius: $ui-inputswitch-w/2;
   -moz-border-radius: $ui-inputswitch-w/2;
@@ -17,13 +17,14 @@ $ui-inputswitch-w: 24px;
   .ui-inputswitch-handle {
     visibility: hidden;
   }
-  .ui-inputswitch-on, .ui-inputswitch-off {
+  .ui-inputswitch-on,
+  .ui-inputswitch-off {
     width: ($ui-inputswitch-w - 2) !important;
     height: ($ui-inputswitch-w - 2) !important;
     display: inline-block;
-    background: #F6F6F6;
+    background: #f6f6f6;
     border: 1px solid $line;
-    @include box-shadow(0px 0px 4px 0px rgba(0, 0, 0, 0.50));
+    @include box-shadow(0px 0px 4px 0px rgba(0, 0, 0, 0.5));
 
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -76,17 +77,21 @@ $ui-inputswitch-w: 24px;
 
 .ui-chkbox-box,
 .ui-radiobutton-box {
-  &.ui-state-active, &.ui-state-focus, &.ui-state-active.ui-state-focus {
+  &.ui-state-active,
+  &.ui-state-focus,
+  &.ui-state-active.ui-state-focus {
     background-color: $color-success;
     border-color: $color-success;
   }
 }
 
-.ui-radiobutton, .ui-radiobutton-label {
+.ui-radiobutton,
+.ui-radiobutton-label {
   margin-bottom: 0;
 }
 
-.ui-chkbox, .ui-chkbox-label {
+.ui-chkbox,
+.ui-chkbox-label {
   margin-bottom: 0;
 }
 
@@ -114,7 +119,7 @@ $ui-inputswitch-w: 24px;
       -moz-border-radius: 50%;
       border-radius: 50%;
       background-color: #ffffff;
-      @include box-shadow(0px 0px 4px 0px rgba(0, 0, 0, 0.50));
+      @include box-shadow(0px 0px 4px 0px rgba(0, 0, 0, 0.5));
     }
   }
 }
@@ -132,7 +137,8 @@ $ui-inputswitch-w: 24px;
   .ui-tooltip-text {
     background-color: rgba(#000, 0.6);
     font-size: 10px;
-    line-height: 22px;
+    line-height: 1.4;
+    padding: 5px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -154,7 +160,8 @@ $ui-inputswitch-w: 24px;
 
 // autocomplete
 .ui-autocomplete {
-  &, &.ui-autocomplete-multiple {
+  &,
+  &.ui-autocomplete-multiple {
     display: block;
     width: 100%;
     .ui-inputtext {
@@ -163,13 +170,21 @@ $ui-inputswitch-w: 24px;
       line-height: 1.4;
 
       &.ui-state-focus {
-        $color-rgba: rgba(red($input-border-focus), green($input-border-focus), blue($input-border-focus), .6);
+        $color-rgba: rgba(
+          red($input-border-focus),
+          green($input-border-focus),
+          blue($input-border-focus),
+          0.6
+        );
         border-color: $input-border-focus;
         outline: 0;
-        @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px $color-rgba);
+        @include box-shadow(
+          inset 0 1px 1px rgba(0, 0, 0, 0.075),
+          0 0 8px $color-rgba
+        );
       }
       .ui-state-highlight {
-        background-color: #D8D8D8;
+        background-color: #d8d8d8;
         color: $text-color;
         margin-right: 10px;
         .ui-autocomplete-token-icon {
@@ -179,7 +194,7 @@ $ui-inputswitch-w: 24px;
     }
     .ui-autocomplete-list-item {
       &.ui-state-highlight {
-        background-color: #D8D8D8;
+        background-color: #d8d8d8;
         color: $text-color;
       }
     }
@@ -193,7 +208,8 @@ $ui-inputswitch-w: 24px;
     .ql-formats {
       margin-right: 3px;
       margin-bottom: 8px;
-      > button, .ql-picker {
+      > button,
+      .ql-picker {
         -webkit-border-radius: 0;
         -moz-border-radius: 0;
         border-radius: 0;
@@ -201,11 +217,13 @@ $ui-inputswitch-w: 24px;
         min-width: 34px;
         height: 34px;
         width: auto;
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
           outline-style: none;
         }
 
-        & + button, & + .ql-picker {
+        & + button,
+        & + .ql-picker {
           margin-left: -1px;
         }
         &:first-child {
@@ -257,7 +275,8 @@ $ui-inputswitch-w: 24px;
           -moz-border-bottom-right-radius: 4px;
         }
       }
-      .ql-color-picker, .ql-icon-picker {
+      .ql-color-picker,
+      .ql-icon-picker {
         width: 34px;
         .ql-picker-label {
           padding-top: 5px;
@@ -278,11 +297,12 @@ $ui-inputswitch-w: 24px;
         }
       }
 
-      button, .ql-picker {
+      button,
+      .ql-picker {
         border: 1px solid $btn-default-border;
         background-color: #ffffff;
         &:hover {
-          background-color: #F6F6F6;
+          background-color: #f6f6f6;
         }
       }
       &.no-margin {
@@ -313,49 +333,58 @@ $ui-inputswitch-w: 24px;
 }
 
 /* Set dropdown font-families */
-[quill-editor-toolbar] .ql-font span[data-label="Lato"]:before {
-  font-family: "Lato";
+[quill-editor-toolbar] .ql-font span[data-label='Lato']:before {
+  font-family: 'Lato';
 }
 
 /* Set content font-families */
 .ql-font-lato {
-  font-family: "Lato";
+  font-family: 'Lato';
 }
 
-.ql-font-gotham, .ql-font span[data-value="gotham"]:before {
+.ql-font-gotham,
+.ql-font span[data-value='gotham']:before {
   font-family: 'gotham', 'Gotham', 'helvetica', 'arial', 'sans-serif';
 }
 
-.ql-font-georgia, .ql-font span[data-value="georgia"]:before {
+.ql-font-georgia,
+.ql-font span[data-value='georgia']:before {
   font-family: 'georgia', 'Georgia', 'palatina', 'serif';
 }
 
-.ql-font-helvetica, .ql-font span[data-value="helvetica"]:before {
+.ql-font-helvetica,
+.ql-font span[data-value='helvetica']:before {
   font-family: 'helvetica', 'Helvetica', 'arial', 'sans-serif';
 }
 
-.ql-font-courier-new, .ql-font span[data-value="courier-new"]:before {
+.ql-font-courier-new,
+.ql-font span[data-value='courier-new']:before {
   font-family: 'courier new', 'Courier New', 'courier', 'monospace';
 }
 
-.ql-font-times-new-roman, .ql-font span[data-value="times-new-roman"]:before {
+.ql-font-times-new-roman,
+.ql-font span[data-value='times-new-roman']:before {
   font-family: 'times new roman', 'Times New Roman', 'times', 'serif';
 }
 
-.ql-font-trebuchet-ms, .ql-font span[data-value="trebuchet-ms"]:before {
+.ql-font-trebuchet-ms,
+.ql-font span[data-value='trebuchet-ms']:before {
   font-family: 'trebuchet ms', 'Trebuchet MS', 'geneva', 'sans-serif';
 }
 
-.ql-font-verdana, .ql-font span[data-value="verdana"]:before {
+.ql-font-verdana,
+.ql-font span[data-value='verdana']:before {
   font-family: 'verdana', 'Verdana', 'helvetica', 'sans-serif';
 }
 
 .ql-editor {
   overflow: hidden;
   min-height: 320px;
-  ol, ul {
+  ol,
+  ul {
     padding-left: 0;
-    ol, ul {
+    ol,
+    ul {
       padding-left: 20px;
     }
   }
@@ -364,7 +393,8 @@ $ui-inputswitch-w: 24px;
     padding-left: 14px;
   }
 
-  ul[data-checked=false], ul[data-checked=true] {
+  ul[data-checked='false'],
+  ul[data-checked='true'] {
     padding-left: 16px;
 
     > li {
@@ -376,12 +406,12 @@ $ui-inputswitch-w: 24px;
       }
     }
   }
-  ul[data-checked=false] {
+  ul[data-checked='false'] {
     > li:before {
       content: $fa-var-square-o;
     }
   }
-  ul[data-checked=true] {
+  ul[data-checked='true'] {
     > li {
       text-decoration: line-through;
       &:before {

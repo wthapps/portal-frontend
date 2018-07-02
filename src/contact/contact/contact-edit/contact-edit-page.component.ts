@@ -16,35 +16,41 @@ import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-ad
 declare var _: any;
 
 @Component({
-
   selector: 'contact-edit-page',
-  templateUrl: 'contact-edit-page.component.html'
+  templateUrl: 'contact-edit-page.component.html',
+  styleUrls: ['contact-edit-page.component.scss']
 })
 export class ZContactEditPageComponent implements OnInit {
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
 
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
 
-
   contact: Contact = new Contact({
-      phones: [{
-        category: 'mobile',
-      }],
-      emails: [{
-        category: 'work',
-      }],
+    phones: [
+      {
+        category: 'mobile'
+      }
+    ],
+    emails: [
+      {
+        category: 'work'
+      }
+    ],
 
-      addresses: [{
-        category: 'work',
+    addresses: [
+      {
+        category: 'work'
       },
-        {
-          category: 'home',
-        }],
-      social_media: [{
-        category: 'wthapps',
-      }]
-    }
-  );
+      {
+        category: 'home'
+      }
+    ],
+    social_media: [
+      {
+        category: 'wthapps'
+      }
+    ]
+  });
 
   emails = [];
   mode: string = 'view';
@@ -56,12 +62,16 @@ export class ZContactEditPageComponent implements OnInit {
   hasBack = false;
   urls = Constants.baseUrls;
 
-  constructor(private router: Router,
-              private contactService: ZContactService,
-              private groupService: GroupService,
-              private location: Location,
-              private route: ActivatedRoute,
-              private toastsService: ToastsService) {
+  avatarDefault: any = Constants.img.avatar;
+
+  constructor(
+    private router: Router,
+    private contactService: ZContactService,
+    private groupService: GroupService,
+    private location: Location,
+    private route: ActivatedRoute,
+    private toastsService: ToastsService
+  ) {
   }
 
   ngOnInit() {
@@ -125,7 +135,9 @@ export class ZContactEditPageComponent implements OnInit {
     }
 
     if (event.action === 'edit_contact') {
-      this.router.navigate(['contacts/', this.contact.id, {mode: 'edit'}]).then();
+      this.router
+        .navigate(['contacts/', this.contact.id, {mode: 'edit'}])
+        .then();
       this.hasBack = false;
       this.mode = 'edit';
     }
@@ -141,16 +153,28 @@ export class ZContactEditPageComponent implements OnInit {
   doEvent(event: any) {
     switch (event.action) {
       case 'contact:contact:create':
-        this.contactService.create(event.payload.item).subscribe((response: any) => {
-          this.toastsService.success('Contact has been just created successfully!');
-          this.router.navigate(['contacts', response.data.id, {mode: 'view'}]);
-        });
+        this.contactService
+          .create(event.payload.item)
+          .subscribe((response: any) => {
+            this.toastsService.success(
+              'Contact has been just created successfully!'
+            );
+            this.router.navigate([
+              'contacts',
+              response.data.id,
+              {mode: 'view'}
+            ]);
+          });
         break;
       case 'contact:contact:update':
-        this.contactService.update(event.payload.item).subscribe((response: any) => {
-          this.toastsService.success('Contact has been just updated successfully!');
-          this.location.back();
-        });
+        this.contactService
+          .update(event.payload.item)
+          .subscribe((response: any) => {
+            this.toastsService.success(
+              'Contact has been just updated successfully!'
+            );
+            this.location.back();
+          });
         break;
       case 'contact:contact:remove_email':
         _.remove(this.emails, email => {
@@ -158,12 +182,12 @@ export class ZContactEditPageComponent implements OnInit {
         });
         break;
       case 'contact:contact:edit_email':
-
-          this.contactService.checkEmails({emails_attributes: [event.payload.item]}).subscribe(response => {
-
+        this.contactService
+          .checkEmails({emails_attributes: [event.payload.item]})
+          .subscribe(response => {
             const currentEmails = _.map(event.payload.emails, 'value.value');
             _.remove(this.emails, e => {
-              return (currentEmails.indexOf(e.value) < 0);
+              return currentEmails.indexOf(e.value) < 0;
             });
 
             // this.emails = this.emails.concat(response.data);
@@ -175,16 +199,19 @@ export class ZContactEditPageComponent implements OnInit {
             });
           });
         break;
-        }
-
+    }
   }
 
   invite(email: any) {
-    this.invitationModal.open({ data: [{
-      contactId: this.contact.id,
-      email: email.value,
-      fullName: this.contact.name
-    }] });
+    this.invitationModal.open({
+      data: [
+        {
+          contactId: this.contact.id,
+          email: email.value,
+          fullName: this.contact.name
+        }
+      ]
+    });
   }
 
   gotoEdit() {
@@ -192,21 +219,22 @@ export class ZContactEditPageComponent implements OnInit {
     this.pageTitle = 'Edit contact';
   }
 
-  goBack()  {
+  goBack() {
     this.hasBack = true;
     this.location.back();
   }
 
   private get(id: number) {
-    this.contactService.getIdLocalThenNetwork(id)
-      .subscribe(ct => {
-        this.contact = Object.assign({}, ct);
-        const emails = this.contact.emails.filter(email => email.value !== '');
-        if (emails.length > 0) {
-          this.contactService.checkEmails({emails_attributes: emails}).subscribe(response => {
+    this.contactService.getIdLocalThenNetwork(id).subscribe(ct => {
+      this.contact = Object.assign({}, ct);
+      const emails = this.contact.emails.filter(email => email.value !== '');
+      if (emails.length > 0) {
+        this.contactService
+          .checkEmails({emails_attributes: emails})
+          .subscribe(response => {
             this.emails = response.data;
           });
-        }
-      });
+      }
+    });
   }
 }
