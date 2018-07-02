@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { Media } from '@shared/shared/models/media.model';
@@ -32,14 +32,24 @@ import { Media } from '@shared/shared/models/media.model';
   encapsulation: ViewEncapsulation.None
 })
 
-export class WObjectToolbarSelectedComponent {
+export class WObjectToolbarSelectedComponent implements AfterViewInit, OnDestroy {
   selectedObjects$: Observable<Media[]>;
 
-  constructor(private objectListService: WObjectListService) {
+  constructor(private objectListService: WObjectListService,
+              private cdr: ChangeDetectorRef
+  ) {
     this.selectedObjects$ = this.objectListService.selectedObjects$;
   }
 
   clearSelected() {
     this.objectListService.clear();
+  }
+
+  ngAfterViewInit() {
+    this.cdr.detectChanges();
+  }
+
+  ngOnDestroy() {
+
   }
 }
