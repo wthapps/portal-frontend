@@ -10,11 +10,12 @@ import { Constants } from '../../../../constant/config/constants';
                 <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
                 <i *ngIf="done" class="fa fa-check-circle"></i>
                 <i *ngIf="failed" class="fa fa-exclamation-triangle"></i>
-                <ng-content> </ng-content>
+                <ng-content > </ng-content>
               </div>
               <div class="modal-dock-header-action">
                 <i *ngIf="hasCloseIcon" class="fa fa-times" (click)="modalDock.close()"
                 pTooltip="{{tooltip.close}}" tooltipPosition="top"></i>
+                <ng-content select="[dock-header-action]"></ng-content>
               </div>
             </div>`,
   styleUrls: ['dock-header.component.scss']
