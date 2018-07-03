@@ -75,7 +75,7 @@ $note-editor-aside-w: 400px;
   @include flex(1);
   @include flexbox;
   @include flex-direction(column);
-
+  overflow: hidden;
   position: relative;
   background-color: #f6f6f6;
   .container-fluid {
