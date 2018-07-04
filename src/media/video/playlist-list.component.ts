@@ -193,7 +193,7 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
     }
   }
 
-  doToolbarEvent() {
+  doToolbarEvent(e: any) {
 
   }
 

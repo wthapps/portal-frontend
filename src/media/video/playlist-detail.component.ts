@@ -31,6 +31,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaBasicListMixin, Me
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
   links: any;
+  showDetailsInfo: any;
   menuActions: any = {};
 
   constructor(public apiBaseService: ApiBaseService, public confirmService: WthConfirmService) { }
@@ -282,11 +283,11 @@ export class ZPlaylistDetailComponent implements OnInit, MediaBasicListMixin, Me
     }
   }
 
-  doListEvent() {
+  doListEvent(e: any) {
 
   }
 
-  doToolbarEvent() {
+  doToolbarEvent(e: any) {
 
   }
 
