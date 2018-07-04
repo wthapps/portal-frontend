@@ -1,5 +1,6 @@
 import { ApiBaseService } from "@shared/services";
 import { Observable } from "rxjs";
+import { saveAs } from 'file-saver';
 
 /* MediaDownloadMixin This is media download methods, to
 custom method please overwirte any method*/

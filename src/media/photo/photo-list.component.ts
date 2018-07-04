@@ -29,13 +29,13 @@ import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 
 declare var _: any;
-@Mixin([SharingModalMixin, MediaBasicListMixin, MediaViewMixin, MediaSortMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
+@Mixin([SharingModalMixin, MediaBasicListMixin, MediaSortMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-photo-list',
   templateUrl: 'photo-list.component.html'
 })
-export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModalMixin, MediaBasicListMixin, MediaViewMixin, MediaSortMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin {
+export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModalMixin, MediaBasicListMixin, MediaSortMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin {
   currentQuery: string;
   tooltip: any = Constants.tooltip;
   type = 'photo';

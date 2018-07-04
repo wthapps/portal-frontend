@@ -32,12 +32,12 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 
-@Mixin([MediaBasicListMixin, MediaViewMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
+@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
 @Component({
   selector: 'z-media-album-list',
   templateUrl: 'album-list.component.html'
 })
-export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixin, MediaViewMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin {
+export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin {
   objects: any;
   loading: boolean;
   links: any;

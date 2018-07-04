@@ -1,12 +1,15 @@
 import { ApiBaseService, WthConfirmService } from "@shared/services";
+import { Constants } from "@shared/constant";
 /* MediaListMixin This is media list methods, to
 custom method please overwirte any method*/
 export class MediaBasicListMixin {
   objects: any;
+  links: any;
   hasSelectedObjects: boolean;
   selectedObjects: any = [];
   favoriteAll: any;
   loading: boolean;
+  tooltip: any = Constants.tooltip;
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
 

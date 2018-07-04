@@ -25,8 +25,8 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'me-playlist-list',
-  // templateUrl: '../shared/list/list.component.html'
-  templateUrl: 'playlist-list.component.html'
+  templateUrl: '../shared/list/list.component.html'
+  // templateUrl: 'playlist-list.component.html'
 })
 export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin {
   // display objects on screen
@@ -44,7 +44,6 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
   loading: boolean;
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
-
   menuActions: any = {};
 
   constructor(
@@ -78,6 +77,18 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-share-alt'
       },
+      shareMobile: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Inside dropdown list
+        action: this.openModalShare.bind(this),
+        class: '',
+        liclass: 'visible-xs-block',
+        tooltip: this.tooltip.share,
+        title: 'Share',
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
       favourite: {
         active: true,
         // needPermission: 'view',
@@ -88,8 +99,102 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
         tooltip: this.tooltip.addToFavorites,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
+      },
+      tag: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: () => {},
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.tag,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-tag'
+      },
+      tagMobile: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Inside dropdown list
+        action: () => {},
+        class: '',
+        liclass: 'visible-xs-block',
+        title: 'Tag',
+        tooltip: this.tooltip.tag,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-tag'
+      },
+      delete: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: () => {},
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.tag,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      },
+      edit: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: () => {},
+        class: '',
+        liclass: '',
+        title: 'Edit Information',
+        tooltip: this.tooltip.edit,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-edit'
+      },
+      detail: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: () => {},
+        class: '',
+        liclass: '',
+        title: 'View Detail',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-info-circle'
+      },
+      download: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: () => {},
+        class: '',
+        liclass: '',
+        title: 'Download',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-download'
+      },
+      deleteMobile: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Inside dropdown list
+        action: () => {},
+        class: '',
+        liclass: 'visible-xs-block',
+        title: 'Delete',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
       }
     }
+  }
+
+  doListEvent(e: any) {
+    switch(e.action) {
+      case 'viewDetails':
+      this.viewDetail(e.payload.selectedObject.uuid);
+      break;
+    }
+  }
+
+  doToolbarEvent() {
+
   }
 
   openModalAddToPlaylist() {
@@ -161,7 +266,29 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
       this.menuActions.favourite.iconClass = 'fa fa-star-o'
     }
   };
-  toggleFavorite: (items?: any) => void;
+  toggleFavorite(items?: any) {
+    let data = this.selectedObjects;
+    if (items) data = items;
+
+    this.apiBaseService.post(`media/favorites/toggle`, {
+      objects: data
+        .map(v => { return { id: v.id, object_type: v.model } })
+    }).subscribe(res => {
+      this.objects = this.objects.map(v => {
+        let tmp = res.data.filter(d => d.id == v.id);
+        if (tmp && tmp.length > 0) {
+          v.favorite = tmp[0].favorite;
+        }
+        return v;
+      })
+      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+      if (this.favoriteAll) {
+        this.menuActions.favourite.iconClass = 'fa fa-star';
+      } else {
+        this.menuActions.favourite.iconClass = 'fa fa-star-o'
+      }
+    });
+  }
   deleteObjects: (term: any) => void;
   loadObjects() {
     this.apiBaseService.get(`media/playlists`).subscribe(res => {
@@ -169,8 +296,8 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
       this.links = res.meta.links;
     });
   }
-  viewDetail(id: number) {
-    this.router.navigate(['/videos', id]);
+  viewDetail(uuid: string) {
+    this.router.navigate(['/playlists', uuid]);
   }
   loadMoreObjects(input?: any) {
     /* this method is load objects to display on init */

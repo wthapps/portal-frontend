@@ -4,6 +4,7 @@ import { AuthGuard, ApiBaseService } from '@wth/shared/services';
 import { ZMediaVideoListComponent } from '@media/video/video-list.component';
 import { ZVideoDetailComponent } from '@media/video/video-detail.component';
 import { ZMediaPlaylistListComponent } from '@media/video/playlist-list.component';
+import { ZPlaylistDetailComponent } from '@media/video/playlist-detail.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,7 @@ import { ZMediaPlaylistListComponent } from '@media/video/playlist-list.componen
       },
       {
         path: 'playlists/:id',
-        component: ZMediaPlaylistListComponent,
+        component: ZPlaylistDetailComponent,
         canActivate: [AuthGuard]
       }
     ])
