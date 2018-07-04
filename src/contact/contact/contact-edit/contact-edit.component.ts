@@ -59,7 +59,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   form: FormGroup;
   name: AbstractControl;
   company: AbstractControl;
-  groups: AbstractControl;
+  // groups: AbstractControl;
   job_title: AbstractControl;
   notes: AbstractControl;
 
@@ -141,7 +141,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
       (<FormControl>this.company).setValue(this.contact.company);
       (<FormControl>this.job_title).setValue(this.contact.job_title);
       (<FormControl>this.notes).setValue(this.contact.notes);
-      (<FormControl>this.groups).setValue(_.map(this.contact.groups, 'name'));
+      // (<FormControl>this.groups).setValue(_.map(this.contact.groups, 'name'));
     }
   }
 
@@ -156,14 +156,14 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
       'media': this.fb.array([this.initItem('media')]),
       'name': ['', Validators.compose([Validators.required])],
       'company': [''],
-      'groups': [''],
+      // 'groups': [''],
       'job_title': [''],
       'notes': ['']
     });
 
     this.name = this.form.controls['name'];
     this.company = this.form.controls['company'];
-    this.groups = this.form.controls['groups'];
+    // this.groups = this.form.controls['groups'];
     this.job_title = this.form.controls['job_title'];
     this.notes = this.form.controls['notes'];
     setTimeout(() => {
@@ -313,17 +313,17 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     this.contact.media = _.concat(values.media, this.deleteObjects['media']);
     this.contact.addresses = _.concat(values.addresses, this.deleteObjects['addresses']);
 
-    if (values.groups && values.groups.length > 0) {
-      let groups: any = [];
-      _.forEach(values.groups, (group: any) => {
-        if (_.isObject(group)) {
-          groups.push(_.filter(this.originalGroups, ['name', group.value])[0]);
-        } else {
-          groups.push(_.filter(this.originalGroups, ['name', group])[0]);
-        }
-      });
-      this.contact.groups = groups;
-    }
+    // if (values.groups && values.groups.length > 0) {
+    //   let groups: any = [];
+    //   _.forEach(values.groups, (group: any) => {
+    //     if (_.isObject(group)) {
+    //       groups.push(_.filter(this.originalGroups, ['name', group.value])[0]);
+    //     } else {
+    //       groups.push(_.filter(this.originalGroups, ['name', group])[0]);
+    //     }
+    //   });
+    //   this.contact.groups = groups;
+    // }
 
     this.contact.notes = values.notes;
 

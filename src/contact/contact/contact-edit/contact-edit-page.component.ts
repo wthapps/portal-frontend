@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -20,7 +20,7 @@ declare var _: any;
   templateUrl: 'contact-edit-page.component.html',
   styleUrls: ['contact-edit-page.component.scss']
 })
-export class ZContactEditPageComponent implements OnInit {
+export class ZContactEditPageComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
 
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
@@ -71,36 +71,38 @@ export class ZContactEditPageComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute,
     private toastsService: ToastsService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.route.params.subscribe((params: any) => {
-      let id = params['id'];
-      if (params['mode'] !== undefined) {
-        this.mode = params['mode'];
-      } else {
-        this.mode = 'create';
-      }
+    this.route.params
+      .subscribe((params: any) => {
+        let id = params['id'];
+        if (params['mode'] !== undefined) {
+          this.mode = params['mode'];
+        } else {
+          this.mode = 'create';
+        }
 
-      if (this.mode === 'view') {
-        this.hasBack = true;
-      }
-      if (id !== undefined && id !== 'new') {
-        this.get(id);
-      }
-    });
+        if (this.mode === 'view') {
+          this.hasBack = true;
+        }
+        if (id !== undefined && id !== 'new') {
+          this.get(id);
+        }
 
-    if (this.mode === 'view') {
-      this.pageTitle = 'Contact details';
-      this.hasBack = true;
-    } else if (this.mode === 'create') {
-      this.pageTitle = 'Create contact';
-    } else {
-      this.hasBack = false;
-      this.pageTitle = 'Edit contact';
-    }
+        if (this.mode === 'view') {
+          this.pageTitle = 'Contact details';
+          this.hasBack = true;
+        } else if (this.mode === 'create') {
+          this.pageTitle = 'Create contact';
+        } else {
+          this.hasBack = false;
+          this.pageTitle = 'Edit contact';
+        }
+      });
   }
+
+  ngOnDestroy(): void {}
 
   eventForm(form: any) {
     this.formValid = form.valid;
@@ -136,7 +138,7 @@ export class ZContactEditPageComponent implements OnInit {
 
     if (event.action === 'edit_contact') {
       this.router
-        .navigate(['contacts/', this.contact.id, {mode: 'edit'}])
+        .navigate(['contacts/', this.contact.id, { mode: 'edit' }])
         .then();
       this.hasBack = false;
       this.mode = 'edit';
@@ -162,7 +164,7 @@ export class ZContactEditPageComponent implements OnInit {
             this.router.navigate([
               'contacts',
               response.data.id,
-              {mode: 'view'}
+              { mode: 'view' }
             ]);
           });
         break;
@@ -183,7 +185,7 @@ export class ZContactEditPageComponent implements OnInit {
         break;
       case 'contact:contact:edit_email':
         this.contactService
-          .checkEmails({emails_attributes: [event.payload.item]})
+          .checkEmails({ emails_attributes: [event.payload.item] })
           .subscribe(response => {
             const currentEmails = _.map(event.payload.emails, 'value.value');
             _.remove(this.emails, e => {
@@ -215,7 +217,7 @@ export class ZContactEditPageComponent implements OnInit {
   }
 
   gotoEdit() {
-    this.router.navigate(['/contacts', this.contact.id, {mode: 'edit'}]);
+    this.router.navigate(['/contacts', this.contact.id, { mode: 'edit' }]);
     this.pageTitle = 'Edit contact';
   }
 
@@ -230,7 +232,7 @@ export class ZContactEditPageComponent implements OnInit {
       const emails = this.contact.emails.filter(email => email.value !== '');
       if (emails.length > 0) {
         this.contactService
-          .checkEmails({emails_attributes: emails})
+          .checkEmails({ emails_attributes: emails })
           .subscribe(response => {
             this.emails = response.data;
           });
