@@ -31,12 +31,10 @@ import {
   CommonEventService,
   ApiBaseService
 } from '@wth/shared/services';
-import { routeAnimation } from '@wth/shared/shared/animations/route.animation';
 import { takeUntil } from 'rxjs/operators';
 
 declare var _: any;
 @Component({
-
   selector: 'z-contact-list',
   templateUrl: 'contact-list.component.html'
   // animations: [routeAnimation]
@@ -50,9 +48,6 @@ export class ZContactListComponent
 
   contacts: any = [];
   filteredContacts: Array<any> = new Array<any>();
-  actionsToolbarEvent: Subscription;
-  tokens: any;
-  tokensActionsBar: any;
   contact$: Observable<any>;
   originalContacts: any = [];
   loaded: boolean = false;
@@ -68,12 +63,10 @@ export class ZContactListComponent
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private wthConfirmService: WthConfirmService,
     private groupService: GroupService,
     private loadingService: LoadingService,
     private commonEventService: CommonEventService,
     private invitationService: InvitationService,
-    private apiBaseService: ApiBaseService,
     private toaster: ToastsService
   ) {
     this.commonEventService
@@ -308,22 +301,6 @@ export class ZContactListComponent
       this.invitationModal.open({ data: recipients });
     }
   }
-
-  // showInvitation(): boolean {
-  //   let result = true;
-  //   _.forEach(this.contactService.selectedObjects, (contact: any) => {
-  //       if (contact.wthapps_user != null) {
-  //         result = false;
-  //         return;
-  //       }
-  //       if (contact.emails.length == 0 || contact.emails[0].value == '') {
-  //         result = false;
-  //         return;
-  //       }
-  //   });
-  //   return result;
-  // }
-
   addTags(event: any) {
     this.modal.open();
   }

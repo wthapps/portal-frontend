@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../shared/services/chat.service';
-import { Store } from '@ngrx/store';
 import { CommonEventService } from '@shared/services';
 import { Router } from '@angular/router';
 
 @Component({
-  moduleId: module.id,
   templateUrl: 'conversation-list.component.html'
 })
 export class ConversationListComponent implements OnInit {

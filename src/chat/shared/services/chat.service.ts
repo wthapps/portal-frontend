@@ -21,14 +21,9 @@ import {
   CHAT_FAVOURITE_CONVERSATIONS, CHAT_HISTORY_CONVERSATIONS, CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, USERS_ONLINE,
   NUMBER_MESSAGE
 } from '@wth/shared/constant';
-import { GenericFile } from '@wth/shared/shared/models/generic-file.model';
-import { FileReaderUtil } from '@shared/shared/utils/file/file-reader.util';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
-import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
 import { Store } from '@ngrx/store';
-import * as fromConversations from './../../../core/store/chat/conversations.reducer';
-import * as fromConversationsUsers from './../../../core/store/chat/conversations_users.reducer';
 
 
 declare var _: any;
@@ -99,7 +94,7 @@ export class ChatService {
     }
   }
 
-  getConversationsAsync(option: any = {}) {
+  getConversationsAsync(option: any = {}): Observable<any> {
     return new Observable((observer: any) => {
       const res: any = this.storage.find(CHAT_CONVERSATIONS);
       if (res && res.value && !option.forceFromApi) {
@@ -397,12 +392,13 @@ export class ChatService {
           this.storage.removeItemOfKey(CHAT_RECENT_CONVERSATIONS, contact);
           // this.selectContact(nextRecentConversation);
           const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
-          return this.router.navigate([ChatConstant.conversationUrl, nextRecentConversation.id]);
+          return nextRecentConversation ? this.router.navigate([ChatConstant.conversationUrl, nextRecentConversation.id])
+            : this.router.navigate([ChatConstant.conversationUrl]);
         });
   }
 
-  removeFromConversation(contact: any, userId: any) {
-    this.updateGroupUser(
+  removeFromConversation(contact: any, userId: any): Promise<any> {
+    return this.updateGroupUser(
       contact.group_id,
       { remove_from_conversation: true, user_id: userId })
       .then((res: any) => {
@@ -473,7 +469,7 @@ export class ChatService {
         //   this.chatCommonService.setDefaultSelectContact();
         // }
         const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
-        return this.router.navigate([ChatConstant.conversationUrl, nextRecentConversation.id]);
+        return this.router.navigate([ChatConstant.conversationUrl, _.get(nextRecentConversation, 'id', '')]);
       }
     );
   }
