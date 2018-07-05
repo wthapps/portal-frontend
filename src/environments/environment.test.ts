@@ -7,16 +7,13 @@ export const environment = {
   }
 };
 
-console.log('environment:::', environment);
-
-// var hostname = '192.168.0.108';
 const protocol = 'https';
 const domain = 'wthapps.com';
 const subdomain = `test`;
 const fullDomain = `${subdomain}.${domain}`;
 
 export const ConfigByEnv: EnvConfig = {
-  CDN: `${protocol}://cdn-apps.${domain}`,
+  CDN: `${protocol}://cdn-apps-test.${domain}`,
   API: `${protocol}://api-${fullDomain}`,
   ENV: 'TEST',
   DOMAIN: `${domain}`,
