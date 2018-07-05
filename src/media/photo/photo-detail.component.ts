@@ -1,20 +1,28 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ApiBaseService, CommonEventService, PhotoService, UserService } from '@wth/shared/services';
+import {
+  ApiBaseService,
+  CommonEventService,
+  PhotoService,
+  UserService
+} from '@wth/shared/services';
 import { BasePhotoDetailComponent } from '@wth/shared/shared/components/photo/detail/base-photo-detail.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
-import {
-  AlbumCreateModalComponent
-} from '@media/shared/modal';
+import { AlbumCreateModalComponent } from '@media/shared/modal';
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
-
+import { Location } from '@angular/common';
+import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
+import { Constants } from '@shared/constant';
+import { MediaDetailMixin } from '@media/shared/mixin/media-detail.mixin';
+import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+@Mixin([MediaDetailMixin])
 @Component({
   selector: 'photo-detail',
   templateUrl: 'photo-detail.component.html',
@@ -25,91 +33,80 @@ import { SharingService } from '@wth/shared/shared/components/photo/modal/sharin
     TaggingModalComponent,
     AlbumCreateModalComponent,
     AddToAlbumModalComponent,
-    PhotoEditModalComponent]
+    PhotoEditModalComponent
+  ]
 })
-export class PhotoDetailComponent extends BasePhotoDetailComponent implements OnInit, OnDestroy {
-  returnUrl: string;
+export class PhotoDetailComponent implements OnInit, MediaDetailMixin {
+  object: any;
+  loading: any;
+  ids: any;
+  mode: any;
+  showDetail: any;
+  isOwner: any;
+  recipients: any;
 
-  private sub: any;
-  constructor(
-    protected route: ActivatedRoute,
-    protected router: Router,
-    protected wthConfirmService: WthConfirmService,
-    protected loadingService: LoadingService,
-    protected photoService: PhotoService,
-    protected userService: UserService,
-    protected sharingService: SharingService,
-    protected api: ApiBaseService,
-    private commonEventService: CommonEventService
-  ) {
-    super(
-      route,
-      router,
-      wthConfirmService,
-      loadingService,
-      photoService,
-      userService,
-      sharingService,
-      api
-    );
-  }
+  constructor(public apiBaseService: ApiBaseService,
+    public confirmService: WthConfirmService,
+    public route: ActivatedRoute,
+    public photoService: PhotoService,
+    public location: Location) { }
 
   ngOnInit() {
-    super.ngOnInit();
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'photos';
-    this.sub = this.commonEventService.filter((e: any) => {
-        return e.channel === 'media:photo:update_recipients';
-      })
-      .subscribe((e: any) => {
-        this.doEvent({action: 'media:photo:update_recipients', payload: this.photo});
+    this.route.params.subscribe(p => {
+      this.photoService.getPhoto(p.id).subscribe(res => {
+        this.object = res.data;
       });
+    })
   }
-
-  doEvent(event: any) {
-    switch (event.action) {
-      // Handle all of event in child class here
-      case 'media:photo:update_recipients':
-        this.photoService.getPhoto(this.photo.uuid).subscribe((response: any) => {
-          this.photo.json_shares = response.data.json_shares;
-        });
-        break;
-      case 'editInfo':
-        this.loadingService.start();
-          const selectedObject = event.params.selectedObject;
-          const updated_at = new Date(selectedObject.created_at);
-          const body = JSON.stringify({
-            name: selectedObject.name,
-            created_day: updated_at.getDate(),
-            created_month: updated_at.getMonth() + 1,
-            created_year: updated_at.getUTCFullYear(),
-            description: selectedObject.description
-          });
-        this.photoService.updateInfo(selectedObject.id, body)
-          .toPromise().then(
-          (res: any) => {
-            this.loadingService.stop();
-          },
-          (error: any) => {
-            this.loadingService.stop();
-          }
-        );
-        break;
-      case 'goBack':
-        this.router.navigateByUrl(this.returnUrl);
-        break;
-      case 'viewAlbumDetails':
-          this.router.navigate([event.payload.item.object_type === 'album' ? 'albums' : 'shared', event.payload.item.uuid], {queryParams: {returnUrl: event.payload.returnUrl}});
-        break;
-      case 'loadMoreAlbums':
-        this.albums = this.albums.concat(this.albums);
-        break;
+  doEvent(e: any) {
+    console.log(e);
+    switch (e.action) {
+      case 'goBack' :
+        this.back();
       default:
-        super.doEvent(event);
         break;
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+  loadObject(input?: any) {
+    throw new Error('should overwrite this method');
+  }
+
+  toggleFavorite(item?: any) {
+    let data = this.object;
+    if (item) data = item;
+
+    this.apiBaseService
+      .post(`media/favorites/toggle`, {
+        objects: data.map(v => {
+          return { id: v.id, object_type: v.model };
+        })
+      })
+      .subscribe(res => {
+        this.onToggleFavorite(res.data);
+      });
+  }
+
+  onToggleFavorite(input: any) {
+    throw new Error('should overwrite this method');
+  }
+
+  deleteObject(term: any = 'photo') {
+    this.confirmService.confirm({
+      header: 'Delete',
+      acceptLabel: 'Delete',
+      message: `Are you sure to delete this ${term}`,
+      accept: () => {
+        this.loading = true;
+        this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
+          this.back();
+          this.loading = false;
+        })
+      }
+    })
+  }
+
+  back() {
+    this.location.back();
   }
 }

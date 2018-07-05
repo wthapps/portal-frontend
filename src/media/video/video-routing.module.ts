@@ -25,7 +25,7 @@ import { ZPlaylistDetailComponent } from '@media/video/playlist-detail.component
         canActivate: [AuthGuard]
       },
       {
-        path: 'playlists/:id',
+        path: 'playlists/:uuid',
         component: ZPlaylistDetailComponent,
         canActivate: [AuthGuard]
       }

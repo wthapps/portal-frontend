@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "=== USAGE: ENV='stag/prod' sh deploy_all.sh ===="
+echo "=== USAGE: ENV='stag/prod' sh build_all.sh ===="
 
 case $ENV in
   prod)

@@ -21,7 +21,6 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
 import { MediaSortMixin } from '@media/shared/mixin/media-sort.mixin';
 import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
 import { AlbumCreateMixin } from '@media/shared/mixin/album/album-create.mixin';
@@ -91,6 +90,9 @@ export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModal
     switch (e.action) {
       case 'changeView':
         this.changeViewMode(e.payload);
+        break;
+      case 'uploaded':
+        this.loadObjects();
         break;
     }
   }

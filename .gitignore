@@ -66,6 +66,7 @@ bower_components
 /src/html/assets/.tmp/
 /tools/env/dev.ts
 /deploy-*.sh
+/deploy/*local.sh
 /src/client/assets/.tmp/
 
 *_BAK*

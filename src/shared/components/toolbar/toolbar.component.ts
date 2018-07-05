@@ -126,11 +126,12 @@ export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin, Alb
       if (f.type.includes('video')) {
         this.apiBaseService.post(`media/videos`, f).subscribe(res => {
           this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
-          this.event.emit({action: 'uploaded', payload: [...files]});
+          this.event.emit({ action: 'uploaded', payload: res.data});
         });
       } else {
         this.apiBaseService.post(`media/photos`, f).subscribe(res => {
           this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+          this.event.emit({ action: 'uploaded', payload: [...files] });
         });
       }
     });

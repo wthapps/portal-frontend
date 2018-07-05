@@ -12,7 +12,6 @@ import {
   SimpleChanges,
   OnDestroy,
   ViewEncapsulation,
-  ElementRef,
   Renderer2
 } from '@angular/core';
 
@@ -35,8 +34,6 @@ const viewSize = 5;
   encapsulation: ViewEncapsulation.None,
   entryComponents: [
     SharingModalComponent,
-    // PhotoEditModalComponent,
-    // AddToAlbumModalComponent,
     TaggingModalComponent
   ]
 })

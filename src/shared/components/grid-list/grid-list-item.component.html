@@ -1,4 +1,4 @@
-<div class="photo-box" [ngClass]="{'selected': object.selected}" id="photo-box-img-{{ object.id }}">
+<div class="photo-box" *ngIf="object" [ngClass]="{'selected': object.selected}" id="photo-box-img-{{ object.id }}">
   <div class="photo-box-action photo-box-action-right">
     <i (click)="doAction({action:'favourite', payload: {mode: 'add', selectedObjects: [object] }}); toggleFavourite({selectedObjects: [object]})"
       class="fa fa-star-o" *ngIf="!object.favorite"></i>
@@ -28,7 +28,7 @@
         <i *ngIf="object.favorite" class="fa fa-star"></i>
       </div>
     </div>
-    <div class="photo-box-owner">{{ object.owner.name }}</div>
+    <div class="photo-box-owner">{{ object.owner?.name }}</div>
     <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
     <div class="photo-box-size">{{ object.size | bytes:0 }}</div>
   </div>

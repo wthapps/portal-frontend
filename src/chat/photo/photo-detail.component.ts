@@ -48,7 +48,6 @@ export class ChatPhotoDetailComponent extends BasePhotoDetailComponent
   ngOnInit() {
     super.ngOnInit();
     this.route.params.subscribe((params: any) => {
-      console.debug('photo detail - params: ', params);
       this.messageId = params.message;
     });
   }

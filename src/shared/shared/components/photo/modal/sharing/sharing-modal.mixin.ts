@@ -12,7 +12,7 @@ export class SharingModalMixin {
   constructor(public sharingModalService: SharingModalService, public apiBaseService: ApiBaseService, public toastsService: ToastsService) {}
 
   // openModalShare:(input: any) => void;
-  openModalShare(input: any = null) {
+  openModalShare(input?: any) {
     if (this.subShareSave) this.subShareSave.unsubscribe();
     this.sharingModalService.open.next(input);
     this.subShareSave = this.sharingModalService.onSave$.take(1).subscribe(e => {

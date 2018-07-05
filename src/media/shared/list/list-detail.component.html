@@ -1,16 +1,15 @@
 <ng-template #leftMenuTemplate>
   <ul class="page-body-control-menu">
     <li class="divider">
-      <a class="btn btn-default" draggable="false" href="javascript:void(0);" (click)="doEvent({action: 'goBack'})" pTooltip="{{ tooltip.back }}"
-        tooltipPosition="bottom">
+      <a class="btn btn-default" draggable="false" href="javascript:void(0);" (click)="back()" pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
         <i class="fa fa-arrow-left"></i>
       </a>
     </li>
 
     <li class="hidden-xs hidden-sm">
       <!-- (dblclick)="" -->
-      <a class="btn btn-inline" draggable="false" href="javascript:void(0);" title="Double click to edit">
-        Name Object
+      <a class="btn btn-inline" draggable="false" href="javascript:void(0);" title="Double click to edit" (dblclick)="editName(object)">
+        {{object?.name}}
       </a>
     </li>
   </ul>
@@ -60,33 +59,21 @@
     </ng-template>
 
     <w-toolbar #toolbar [object]="object" [viewMode]="viewMode" [selectedObjects]="selectedObjects" [objectActionsTemplate]="objectActionsTemplate"
-      [leftActionsTemplate]="subMenu? leftSubMenuTemplate : leftMenuTemplate" (event)="doToolbarEvent($event)">
+      [leftActionsTemplate]="hasSelectedObjects? leftSubMenuTemplate : leftMenuTemplate" (event)="doToolbarEvent($event)">
     </w-toolbar>
 
     <w-grid-list #gridlist [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
-
-      <!--loading icon-->
-      <div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
-        <box-loading></box-loading>
-      </div>
-
-      <!--no data region-->
-      <div class="zone-no-photo text-center" *ngIf="objects && objects.length == 0 && !loading">
-        <div>
-          <h2>
-            <i class="icon-album"></i>
-          </h2>
-          <h3>There are no albums!</h3>
-          <p>
-            <button class="btn btn-outline-primary" (click)="doEvent({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
-              <i class="fa fa-plus-circle"></i> Create an album
-            </button>
-          </p>
-        </div>
-      </div>
     </w-grid-list>
-
-
+    <div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
+      <box-loading></box-loading>
+    </div>
+    <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="'fa fa-video-camera'" [subTitle]="subTitleNoData"
+      style="margin-top: 50px; display: block;">
+      <w-upload class="btn btn-outline-primary" [mode]="uploadMode" [accept]="uploadType" (uploadHandler)="toolbar.uploadHandler($event)"
+        (errorHandler)="errorHandler($event)">
+        <i class="fa fa-cloud-upload"></i> {{actionNoData}}
+      </w-upload>
+    </box-no-data>
     <ng-template #modalContainer></ng-template>
   </div>
 </div>

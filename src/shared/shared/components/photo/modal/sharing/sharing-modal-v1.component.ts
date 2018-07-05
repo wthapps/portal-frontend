@@ -55,7 +55,7 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
 
   open(options: SharingModalOptions = {sharingRecipients: []}) {
     this.getRoles();
-    if (options) {
+    if (options && options.sharingRecipients) {
       this.sharingRecipients = options.sharingRecipients;
     } else {
       this.sharingRecipients = [];

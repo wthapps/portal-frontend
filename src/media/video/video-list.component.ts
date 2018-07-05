@@ -68,9 +68,6 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
 
   doListEvent(e: any) {
     switch(e.action) {
-      case 'uploaded':
-        this.loadObjects();
-        break;
       case 'viewDetails':
         this.router.navigate(['/videos', e.payload.selectedObject.id]);
         break;
@@ -99,6 +96,9 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
     switch(e.action) {
       case 'changeView':
         this.changeViewMode(e.payload);
+        break;
+      case 'uploaded':
+        this.loadObjects();
         break;
     }
   }
