@@ -1,7 +1,7 @@
+#!/usr/bin/env bash
 # TODO: put PEM key to a secret variable
 echo "=== Start deploy all modules to ENV: $ENV ==="
-echo "=== Should update PEM_KEY location before using ===="
-echo "=== USAGE: ENV='stag/prod' sh deploy_all.sh ===="
+echo "=== USAGE: PEM_KEY='location' ENV='stag/prod' sh deploy_all.sh ===="
 
 case $ENV in
   prod)
@@ -9,6 +9,12 @@ case $ENV in
     PEM_KEY=~/working/keys/productionwthappscom.pem
     TARGET_MACHINE=centos@34.211.124.230
     TARGET_FOLDER=/var/wthapps/web-ui
+    ;;
+   test)
+    ENV=test
+    PEM_KEY=~/working/keys/staging_wthapps_rsa.pem
+    TARGET_MACHINE=root@206.189.88.173
+    TARGET_FOLDER=/var/wthapps/test
     ;;
    *)
     ENV=stag
@@ -18,8 +24,7 @@ case $ENV in
 
 esac
 
-# MODULES="portal chat contact media my-account note social"
-MODULES="portal social"
+MODULES="portal chat contact media my-account note social"
 for var in $MODULES
 do
    echo " ===== Start deploying folder [$var] from /dist/$var/* to $TARGET_MACHINE:$TARGET_FOLDER/$var ... "

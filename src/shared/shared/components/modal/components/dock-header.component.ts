@@ -13,9 +13,9 @@ import { Constants } from '../../../../constant/config/constants';
                 <ng-content > </ng-content>
               </div>
               <div class="modal-dock-header-action">
+                <ng-content select="[dock-header-action]"></ng-content>
                 <i *ngIf="hasCloseIcon" class="fa fa-times" (click)="modalDock.close()"
                 pTooltip="{{tooltip.close}}" tooltipPosition="top"></i>
-                <ng-content select="[dock-header-action]"></ng-content>
               </div>
             </div>`,
   styleUrls: ['dock-header.component.scss']
