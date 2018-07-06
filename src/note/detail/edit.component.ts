@@ -1,7 +1,6 @@
 import {
   Component,
   ViewChild,
-  SimpleChanges,
   OnInit,
   ViewEncapsulation,
   AfterViewInit,
@@ -33,7 +32,6 @@ import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import { PhotoUploadService } from '@shared/services/photo-upload.service';
-import { GenericFileService } from '@shared/services/generic-file.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
@@ -48,8 +46,8 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import ImageBlot from '@wth/core/quill/blots/image';
 import IconBlot from '@wth/core/quill/blots/icon';
-import DividerBlot from '@wth/core/quill/blots/divider';
-import { Font, Size } from '@wth/core/quill/blots/font-size';
+// import DividerBlot from '@wth/core/quill/blots/divider';
+// import { Font, Size } from '@wth/core/quill/blots/font-size';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 
@@ -113,7 +111,6 @@ export class ZNoteDetailEditComponent
     protected router: Router,
     private route: ActivatedRoute,
     private store: Store<any>,
-    private fileService: GenericFileService,
     private apiBaseService: ApiBaseService,
     private clientDetectorService: ClientDetectorService,
     private photoService: PhotoService,
@@ -214,7 +211,6 @@ export class ZNoteDetailEditComponent
       Observable.fromEvent(this.customEditor, 'text-change')
     )
       .pipe(
-        // tap(() => (this.noteChanged = true)),
         takeUntil(Observable.merge(this.noSave$, this.closeSubject)),
         debounceTime(DEBOUNCE_MS),
         takeUntil(Observable.merge(this.noSave$, this.closeSubject))
@@ -237,16 +233,32 @@ export class ZNoteDetailEditComponent
     });
 
     var bindings = {
-      enter: {
-        key: 13,
-        collapsed: true,
+      'custom_enter': {
+        key: 'Enter',
+        shiftKey: null,
         prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b\/?/,
-        handler: function h(range, context) {
+        handler: (range, context) => {
           this.addHyperLink(range, context);
           return true;
-        }.bind(this)
+        }
       }
     };
+
+    let Font = Quill.import('formats/font');
+    Font.whitelist = ['gotham', 'georgia', 'helvetica', 'courier-new', 'times-new-roman', 'trebuchet', 'verdana'];
+
+    let Size = Quill.import('attributors/style/size');
+    Size.whitelist = [
+      '8px', '10px', '12px', '14px', '18px', '24px', '36px'
+    ];
+
+    let BlockEmbed = Quill.import('blots/block/embed');
+
+    class DividerBlot extends BlockEmbed {
+    }
+
+    DividerBlot.blotName = 'divider';
+    DividerBlot.tagName = 'hr';
 
     Quill.register(Font, true);
     Quill.register(Size, true);
@@ -257,12 +269,10 @@ export class ZNoteDetailEditComponent
 
     let modules: any = {
       modules: {
-        toolbar: {
-          container: '#quill-toolbar'
+        toolbar: '#quill-toolbar',
+        keyboard: {
+          bindings: bindings
         },
-        // keyboard: {
-        //   bindings: bindings
-        // },
         counter: {
           container: '#counter',
           unit: 'word'
@@ -346,9 +356,6 @@ export class ZNoteDetailEditComponent
           let range = this.quill.getSelection();
           let delta = new Delta().retain(range.index);
           console.debug('onPaste: ', e);
-          // let scrollTop = this.quill.scrollingContainer.scrollTop;
-          // this.scrollTop = scrollTop;
-          // this.container.focus(); // comment out to prevent scroll to top
           this.quill.selection.update(Quill.sources.SILENT);
           setTimeout(() => {
             if (dataClipboard1[0].match('text/*')) {
@@ -361,8 +368,6 @@ export class ZNoteDetailEditComponent
               // this.quill.selection.scrollIntoView();
             } else {
               if (fileClipboard.type.match('image/*')) {
-                // var reader = new FileReader();
-                // reader.onload = (e: any) => {
                 let ids = [];
                 const randId = `img_${new Date().getTime()}`;
                 self.insertFakeImage(randId);
@@ -401,9 +406,9 @@ export class ZNoteDetailEditComponent
       key: ' ',
       collapsed: true,
       prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b\/?$/,
-      handler: function(range, context) {
+      handler: (range, context) => {
         this.addHyperLink(range, context);
-      }.bind(this)
+      }
     });
   }
 
@@ -585,8 +590,6 @@ export class ZNoteDetailEditComponent
   doubleClickImage(event: any) {
     let photoId: string = event.target.dataset.id;
     if (photoId && photoId !== 'null') {
-      // $('#modal-note-edit').css('z-index', '0');
-      // $('.modal-backdrop').css('z-index', '0');
       this.router.navigate(
         [
           {

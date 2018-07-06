@@ -51,6 +51,9 @@ test
 tmp
 package-lock.json
 yarn.lock
+deploy/build_all.sh
+deploy/deploy_all.sh
+
 
 gulpfile.js
 gulpfile.js.map

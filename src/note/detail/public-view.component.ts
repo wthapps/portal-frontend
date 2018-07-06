@@ -47,8 +47,6 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import ImageBlot from '@wth/core/quill/blots/image';
 import IconBlot from '@wth/core/quill/blots/icon';
-import DividerBlot from '@wth/core/quill/blots/divider';
-import { Font, Size } from '@wth/core/quill/blots/font-size';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 
