@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { of } from 'rxjs/observable/of';
 import { empty } from 'rxjs/observable/empty';
 import { ZNoteService } from '../services/note.service';
-import { map, switchMap, withLatestFrom, catchError, concatMap, mergeMap } from 'rxjs/operators';
+import { map, withLatestFrom, catchError, concatMap, mergeMap } from 'rxjs/operators';
 
 
 import * as note from '../actions/note';
-import * as fromRoot from '../reducers/index';
 import * as context from '../reducers/context';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from "@shared/shared/components/confirmation/wth-confirm.service";
 import { Router } from "@angular/router";
 import { noteConstants } from "@notes/shared/config/constants";
+import { HttpErrorResponse } from '@angular/common/http';
+import { FORBIDDEN } from 'http-status-codes';
 
 
 @Injectable()
@@ -54,29 +55,32 @@ export class NoteEffects {
             // this.toastsService.success('Note updated successfully, yay');
             return ({type: note.NOTE_UPDATED, payload: res['data']});
           } ),
-          catchError(() => {
+          catchError((err: HttpErrorResponse) => {
             // this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
-            this.wthConfirmService.confirm({
-              message: 'The file you are looking for was deleted or you do not have permission to access',
-              header: 'Note not found',
-              rejectLabel: null,
-              accept: () => {
-                if (context.page == noteConstants.PAGE_SHARED_WITH_ME) {
-                  this.store.dispatch({type: note.LOAD, payload: {parent_id: null, shared_with_me: true}});
-                } else {
-                  this.store.dispatch({type: note.LOAD, payload: {parent_id: null}});
+
+            if (err.status == FORBIDDEN) {
+              this.wthConfirmService.confirm({
+                message: 'The file you are looking for was deleted or you do not have permission to access',
+                header: 'Note not found',
+                rejectLabel: null,
+                accept: () => {
+                  if (context.page == noteConstants.PAGE_SHARED_WITH_ME) {
+                    this.store.dispatch({type: note.LOAD, payload: {parent_id: null, shared_with_me: true}});
+                  } else {
+                    this.store.dispatch({type: note.LOAD, payload: {parent_id: null}});
+                  }
+                  return this.router.navigate([{outlets: {detail: null}}]);
+                },
+                reject: () => {
+                  if (context.page == noteConstants.PAGE_SHARED_WITH_ME) {
+                    this.store.dispatch({type: note.LOAD, payload: {parent_id: null, shared_with_me: true}});
+                  } else {
+                    this.store.dispatch({type: note.LOAD, payload: {parent_id: null}});
+                  }
+                  return this.router.navigate([{outlets: {detail: null}}]);
                 }
-                this.router.navigate([{outlets: {detail: null}}]);
-              },
-              reject: () => {
-                if (context.page == noteConstants.PAGE_SHARED_WITH_ME) {
-                  this.store.dispatch({type: note.LOAD, payload: {parent_id: null, shared_with_me: true}});
-                } else {
-                  this.store.dispatch({type: note.LOAD, payload: {parent_id: null}});
-                }
-                this.router.navigate([{outlets: {detail: null}}]);
-              }
-            });
+              });
+            }
             return empty();})
         )
       }),
@@ -111,19 +115,20 @@ export class NoteEffects {
         {type: note.LOAD_SUCCESS, payload: res.data},
         {type: context.SET_CONTEXT, payload: {loading: false}},
         {type: note.SET_LIST_PERMISSION, payload: {canAdd: true}}]; }),
-      catchError(() => {
-        // this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
-        this.wthConfirmService.confirm({
-          message: 'The folder you are looking for was deleted or you do not have permission to access',
-          header: 'Folder not found',
-          rejectLabel: null,
-          accept: () => {
-            this.router.navigate(["my-note"]);
-          },
-          reject: () => {
-            this.router.navigate(["my-note"]);
-          }
-        });
+      catchError((err: HttpErrorResponse) => {
+        if(err.status == FORBIDDEN) {
+          this.wthConfirmService.confirm({
+            message: 'The folder you are looking for was deleted or you do not have permission to access',
+            header: 'Folder not found',
+            rejectLabel: null,
+            accept: () => {
+              return this.router.navigate(["my-note"]);
+            },
+            reject: () => {
+              return this.router.navigate(["my-note"]);
+            }
+          });
+        }
         return empty();})
     );
 

@@ -775,17 +775,11 @@ export class ZNoteDetailEditComponent
   }
 
   onModalClose(options = null) {
-    // if (options) {
-    //   this.router.navigate([{ outlets: { detail: null } }], options);
-    // } else {
-    //   this.router.navigate([{ outlets: { detail: null } }]);
-    // }
     const qOptions = options
-      ? { ...options, preserveQueryParams: true }
-      : { preserveQueryParams: true };
+      ? { ...options, queryParamsHandling: "merge" }
+      : { queryParamsHandling: "merge" };
     this.router.navigate([{ outlets: { detail: null } }], qOptions);
     this.closeSubject.next('');
-
     this.renderer.removeClass(document.body, 'modal-open');
   }
 
@@ -805,7 +799,7 @@ export class ZNoteDetailEditComponent
           this.note = res.data;
           this.editMode = Constants.modal.edit;
           this.store.dispatch(new note.MultiNotesAdded([res['data']]));
-          this.router.navigate([
+          return this.router.navigate([
             { outlets: { detail: ['notes', this.note.id] } }
           ]);
         });
