@@ -129,10 +129,10 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   onLoadMore(orderDesc?: boolean) {
-    this.page += 1;
-    let order: boolean = orderDesc || this.orderDescSubject.getValue();
-    if (order !== undefined) this.orderDescSubject.next(order);
-    this.notifyContactsObservers();
+    // this.page += 1;
+    // let order: boolean = orderDesc || this.orderDescSubject.getValue();
+    // if (order !== undefined) this.orderDescSubject.next(order);
+    // this.notifyContactsObservers();
   }
 
   changeSortOption(order?: string) {
@@ -331,10 +331,11 @@ export class ZContactService extends BaseEntityService<any> {
     let orderedContactsWSelected: any[] = orderedContacts.map(ct => { return {...ct, selected: selectedIds.includes(ct.uuid)}});
 
     this.contactsSubject.next(
-      orderedContactsWSelected.slice(
-        this.startIndex,
-        this.page * ITEM_PER_PAGE
-      )
+      orderedContactsWSelected
+      // orderedContactsWSelected.slice(
+      //   this.startIndex,
+      //   this.page * ITEM_PER_PAGE
+      // )
     );
     this.checkSelectAll();
   }

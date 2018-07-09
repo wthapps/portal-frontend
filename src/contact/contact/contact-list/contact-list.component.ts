@@ -8,9 +8,11 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { combineLatest } from 'rxjs/operators/combineLatest';
 
 import { ZContactService, ITEM_PER_PAGE } from '../../shared/services/contact.service';
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
@@ -28,10 +30,8 @@ import { Constants } from '../../../shared/constant/config/constants';
 import {
   CommonEvent,
   CommonEventAction,
-  CommonEventService,
-  ApiBaseService
+  CommonEventService
 } from '@wth/shared/services';
-import { takeUntil } from 'rxjs/operators';
 
 declare var _: any;
 @Component({
@@ -44,7 +44,6 @@ export class ZContactListComponent
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
 
-  page: number = 1;
 
   contacts: any = [];
   filteredContacts: Array<any> = new Array<any>();
@@ -55,6 +54,7 @@ export class ZContactListComponent
   linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
   linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
   _contact: any = _contact;
+  private pageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -77,7 +77,7 @@ export class ZContactListComponent
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
       });
-    this.page = 1;
+    // this.page = 1;
     this.contact$ = this.contactService.contacts$;
   }
 
@@ -113,9 +113,11 @@ export class ZContactListComponent
     });
 
     this.contactService.contacts$
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe((contacts: any[]) => {
-        this.contacts = contacts.slice(0, ITEM_PER_PAGE * this.page);
+      .pipe(
+        combineLatest(this.pageSubject),
+        takeUntil(this.destroySubject))
+      .subscribe(([contacts, page]) => {
+        this.contacts = contacts.slice(0, ITEM_PER_PAGE * page);
         this.loadingService.stop();
       });
   }
@@ -144,8 +146,9 @@ export class ZContactListComponent
   }
 
   onLoadMore() {
-    this.page += 1;
-    this.contactService.onLoadMore();
+    this.pageSubject.next(this.pageSubject.getValue() + 1);
+    // this.page += 1;
+    // this.contactService.onLoadMore();
   }
 
   viewContactDetail(contactId: any) {
