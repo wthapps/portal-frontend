@@ -56,6 +56,7 @@ import { ComponentsModule } from '@shared/components/components.module';
 import { AccordionModule } from 'primeng/components/accordion/accordion';
 import { ModalModule } from '@wth/shared/components/modal/modal.module';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
+import { WEditorModule } from '@shared/components/w-editor/w-editor.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -77,7 +78,8 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
     //Custom modules
     ModalModule,
     WMediaSelectionModule,
-    WNavTabModule
+    WNavTabModule,
+    WEditorModule
   ],
   declarations: [],
   exports: [
@@ -142,7 +144,7 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
     WMediaSelectionModule,
     WNavTabModule,
     ComponentsModule,
-
+    WEditorModule,
     // Pipe
     PipeModule,
 
