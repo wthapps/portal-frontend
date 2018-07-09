@@ -21,7 +21,8 @@
     </figure>
     <div class="photo-box-name">
       <span class="can-click" title="Double click to edit name" (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
-        <i class="fa fa-photo"></i> {{ object.name }}.{{ object.extension }}
+        <i *ngIf="object.model == 'Media::Photo'" class="fa fa-photo"></i>
+        <i *ngIf="object.model == 'Media::Video'" class="fa fa-video-camera"></i> {{ object.name }}.{{ object.extension }}
       </span>
       <div class="hidden">
         <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>

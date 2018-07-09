@@ -1,5 +1,5 @@
 <ng-template #objectActionsTemplate>
-  <ul class="page-body-control-menu" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
+  <ul class="page-body-control-menu" *ngIf="hasSelectedObjects" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
     <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
       <li *ngIf="!action.val.inDropDown" class="{{action.val.liclass}}">
         <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false" pTooltip="{{action.val.tooltip}}"

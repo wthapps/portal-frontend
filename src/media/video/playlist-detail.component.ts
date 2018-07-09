@@ -23,14 +23,15 @@ import { SharingCreateParams } from '@shared/shared/components/photo/modal/shari
 import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 
-@Mixin([MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, LoadModalAble, SharingModalMixin, PlaylistAddMixin])
+@Mixin([MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, LoadModalAble, SharingModalMixin, PlaylistAddMixin, MediaDownloadMixin])
 @Component({
   selector: 'playlist-detail',
   templateUrl: '../shared/list/list-detail.component.html',
   styleUrls: ['playlist-detail.component.scss']
 })
-export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, MediaBasicListMixin, MediaAdditionalListMixin, LoadModalAble, SharingModalMixin, PlaylistAddMixin {
+export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, MediaBasicListMixin, MediaAdditionalListMixin, LoadModalAble, SharingModalMixin, PlaylistAddMixin, MediaDownloadMixin {
   objects: any;
   object: any;
   hasSelectedObjects: boolean;
@@ -144,7 +145,6 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
 
   selectedObjectsChanged(objectsChanged: any) {
     if (this.objects) {
-      this.hasSelectedObjects = (objectsChanged && objectsChanged.length > 0) ? true : false;
       this.objects.forEach(ob => {
         if (objectsChanged.some(el => el.id == ob.id && (el.object_type == ob.object_type || el.model == ob.model))) {
           ob.selected = true;
@@ -153,6 +153,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
         }
       });
       this.selectedObjects = this.objects.filter(v => v.selected == true);
+      this.hasSelectedObjects = (this.selectedObjects && this.selectedObjects.length > 0) ? true : false;
       this.menuActions = this.hasSelectedObjects? this.subMenuActions : this.parentMenuActions;
       this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
     }
@@ -215,6 +216,8 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
     this.apiBaseService.post(`media/playlists/remove_from_playlist`, {playlist: {id: this.object.id}, videos: this.selectedObjects.map(ob => {return {id: ob.id, model: ob.model}})}).subscribe(res => {
       this.toastsService.success('You removed videos successfully!');
       this.loadObjects(this.object.uuid);
+      this.selectedObjects = [];
+      this.hasSelectedObjects = false;
     });
   }
 
@@ -253,6 +256,14 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       });
   }
 
+  downloadMediaCustom() {
+    if (this.selectedObjects && this.selectedObjects.length > 0) {
+      this.downloadMedia(this.selectedObjects);
+    }
+  }
+
+  downloadMedia:(media: any) => void;
+
   openCreatePlaylistModal: (selectedObjects: any) => void;
 
   onDonePlaylist(e: any) {
@@ -261,6 +272,17 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
 
   getMenuActions() {
     return {
+      add: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: () => {},
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.share,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-plus-square'
+      },
       share: {
         active: true,
         // needPermission: 'view',
@@ -322,7 +344,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
         active: true,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
-        action: () => { },
+        action: () => {console.log('delete');},
         class: 'btn btn-default',
         liclass: 'hidden-xs',
         tooltip: this.tooltip.tag,
@@ -462,6 +484,18 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-edit'
       },
+      download: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: this.downloadMediaCustom.bind(this),
+        class: '',
+        liclass: '',
+        title: 'Download',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-download'
+      },
       detail: {
         active: true,
         // needPermission: 'view',
@@ -473,18 +507,6 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
         tooltip: this.tooltip.info,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-info-circle'
-      },
-      download: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Outside dropdown list
-        action: () => { },
-        class: '',
-        liclass: '',
-        title: 'Download',
-        tooltip: this.tooltip.info,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-download'
       },
       deleteMobile: {
         active: true,

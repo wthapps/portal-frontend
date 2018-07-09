@@ -2,6 +2,8 @@ import {
   Component,
   OnInit,
   ComponentFactoryResolver,
+  ViewContainerRef,
+  ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -18,9 +20,11 @@ import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
 import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
+import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
+import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
 
 declare var _: any;
-@Mixin([SharingModalMixin, MediaBasicListMixin, MediaViewMixin])
+@Mixin([SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble])
 @Component({
   selector: 'me-video-list',
   entryComponents: [
@@ -30,7 +34,7 @@ declare var _: any;
   ],
   templateUrl: 'video-list.component.html'
 })
-export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, MediaBasicListMixin, MediaViewMixin {
+export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble {
   // display videos on screen
   objects: any;
   // tooltip to introduction
@@ -50,7 +54,9 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
     timeline: 'timeline'
   };
   viewMode: any = this.viewModes.grid;
-
+  modalIns: any;
+  modalRef: any;
+  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(public apiBaseService: ApiBaseService,
     private router: Router,
@@ -66,7 +72,11 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
     this.loadObjects();
   }
 
+  loadModalComponent:(component: any) => void;
+
   doListEvent(e: any) {
+    console.log(e);
+
     switch(e.action) {
       case 'viewDetails':
         this.router.navigate(['/videos', e.payload.selectedObject.id]);
@@ -85,6 +95,14 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
         break;
       case 'objectsChange':
         this.selectedObjectsChanged(e.payload);
+        break;
+      case 'openModal':
+        let options: any;
+        if (e.payload.modalName == 'editNameModal') {
+          this.loadModalComponent(MediaRenameModalComponent);
+          options = { selectedObject: e.payload.selectedObject };
+        }
+        this.modalIns.open(options);
         break;
       case 'getMore':
         this.loadMoreObjects();

@@ -153,12 +153,21 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   // Retry upload pending files
   retryUpload(event: any) {
     event.preventDefault();
-    this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'init', payload: this.pending_files });
-    this.pending_files.forEach(f => {
-      this.apiBaseService.post(`media/photos`, f).subscribe(res => {
-        this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+    if(this.pending_files[0].type.includes('video/')) {
+      this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'initVideos', payload: this.pending_files });
+      this.pending_files.forEach(f => {
+        this.apiBaseService.post(`media/videos`, f).subscribe(res => {
+          this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+        });
       });
-    });
+    } else {
+      this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'init', payload: this.pending_files });
+      this.pending_files.forEach(f => {
+        this.apiBaseService.post(`media/photos`, f).subscribe(res => {
+          this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+        });
+      });
+    }
   }
 
   onAction(options?: any): void {
