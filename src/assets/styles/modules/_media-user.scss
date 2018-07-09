@@ -79,6 +79,14 @@ dl.media-user-list-group {
   @include align-items(center);
   .avatar {
     margin-right: 10px;
+    .img-circle {
+      height: 34px;
+      width: 34px;
+      &.small {
+        height: 24px;
+        width: 24px;
+      }
+    }
   }
   .name {
     @include flex(1);
@@ -89,4 +97,19 @@ dl.media-user-list-group {
   .action {
     margin-left: 10px;
   }
+}
+
+.text-color {
+  color: $text-color;
+}
+
+.text-color-light {
+  color: $text-color-light;
+}
+.text-normal {
+  font-size: 14px;
+}
+
+.text-small {
+  font-size: 12px;
 }

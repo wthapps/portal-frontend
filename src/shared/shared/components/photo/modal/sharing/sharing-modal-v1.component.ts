@@ -16,14 +16,14 @@ declare var _: any;
 })
 export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponent {
   @ViewChild('modal') modal: BsModalComponent;
-  filteredContacts: any = [];
-  selectedContacts: any = [];
-  sharingRecipients: any = [];
+  users: any = [];
+  selectedUsers: any = [];
+  sharedUsers: any = [];
   role: any = {name: 'view'};
   roles: any = [];
   hasChanged: boolean;
   deleting: boolean;
-  textContacts = [];
+  textUsers = [];
 
   @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -31,7 +31,7 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   constructor(private apiBaseService: ApiBaseService, private sharingModalService: SharingModalService) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.sharingModalService.onOpen$.subscribe(e => {
       this.open(e);
     });
@@ -44,8 +44,8 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   }
 
   save() {
-    const newRecipients: Array<SharingRecipient> = this.selectedContacts.map(s => { return { role_id: this.role.id, user: s}})
-    const data = { sharingRecipients: [...this.sharingRecipients, ...newRecipients], role: this.role};
+    const newRecipients: Array<SharingRecipient> = this.selectedUsers.map(s => { return { role_id: this.role.id, user: s}})
+    const data = { sharingRecipients: [...this.sharedUsers, ...newRecipients], role: this.role};
     // short distance
     this.onSave.emit(data);
     // long distance
@@ -56,34 +56,32 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   open(options: SharingModalOptions = {sharingRecipients: []}) {
     this.getRoles();
     if (options && options.sharingRecipients) {
-      this.sharingRecipients = options.sharingRecipients;
+      this.sharedUsers = options.sharingRecipients;
     } else {
-      this.sharingRecipients = [];
+      this.sharedUsers = [];
     }
     // reset textContacts, selectedContacts
-    this.textContacts = [];
-    this.selectedContacts = [];
+    this.textUsers = [];
+    this.selectedUsers = [];
     this.modal.open().then();
   }
 
   complete(e: any) {
-    let body: any;
-    body = {'q': (e.query === 'undefined' ? '' : 'name:' + e.query)};
-    this.apiBaseService.post('users/search', body).subscribe(res => {
-      const selectedContactIds = this.selectedContacts.map(ct => ct.id);
-      const sharingRecipientIds = this.sharingRecipients.map(sc => sc.user.id);
-      this.filteredContacts = res['data'].filter(ct => !selectedContactIds.includes(ct.id) && !sharingRecipientIds.includes(ct.id));
+    this.apiBaseService.get(`account/search?q=${e.query}`).subscribe(res => {
+      const selectedIds = this.selectedUsers.map(ct => ct.id);
+      const sharedIds = this.sharedUsers.map(sc => sc.user.id);
+      this.users = res.data.filter(ct => !selectedIds.includes(ct.id) && !sharedIds.includes(ct.id));
     });
   }
 
-  selectContact(contact: any) {
-    this.selectedContacts.push(contact);
+  selectUser(user: any) {
+    this.selectedUsers.push(user);
     this.hasChanged = true;
   }
 
-  unSelectContact(contact: any) {
-    _.remove(this.selectedContacts, (c: any) => {
-      return c['id'] == contact['id'];
+  unSelectUser(user: any) {
+    _.remove(this.selectedUsers, (selectedUser: any) => {
+      return selectedUser.id === user.id;
     });
     this.hasChanged = true;
   }
@@ -95,9 +93,9 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
     });
   }
 
-  toggleRemoving(contact: any) {
+  toggleRemoving(user: any) {
     this.hasChanged = true;
-    contact._destroy = !contact._destroy;
+    user._destroy = !user._destroy;
   }
 
   changeRole(e: any) {

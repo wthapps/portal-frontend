@@ -4,13 +4,11 @@ import { Subscription } from 'rxjs/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Constants } from '@shared/constant/config/constants';
 import { Store } from '@ngrx/store';
 import * as fromShareModal from '../../reducers/share-modal';
 import { AutoComplete } from 'primeng/primeng';
-import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 
 @Component({
   selector: 'z-note-shared-modal-sharing',
@@ -32,13 +30,13 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   //   deleting: 90
   // };
 
-  filteredContacts: any = [];
-  selectedContacts: any = [];
+  users: any = [];
+  selectedUsers: any = [];
   sharedSharings: any = [];
   sharedObjects: any = [];
-  changed: boolean = false;
-  showCancelButton: boolean = false;
-  mode: string = 'create';
+  changed = false;
+  showCancelButton = false;
+  mode = 'create';
 
   contactTerm$ = new Subject<string>();
 
@@ -46,38 +44,30 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   searchSubscription: Subscription;
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
 
-  constructor(private commonEventService: CommonEventService,
-              private apiBaseService: ApiBaseService,
-              private store: Store<any>,
-              private mediaSharingService: SharingService) {
+  constructor(private apiBaseService: ApiBaseService, private store: Store<any>) {
     this.subscription = store.select('share').subscribe((state: any) => {
-      this.selectedContacts = state.current.selectedContacts;
+      this.selectedUsers = state.current.selectedContacts;
       this.sharedSharings = state.current.sharedSharings;
       this.changed = state.changed;
       this.showCancelButton = state.showCancelButton;
-      if(this.auto) {
-        this.auto.value = this.selectedContacts;
+      if (this.auto) {
+        this.auto.value = this.selectedUsers;
         this.auto.onModelChange(this.auto.value);
         }
       });
     this.searchSubscription = this.contactTerm$.pipe(
       debounceTime(Constants.searchDebounceTime),
       distinctUntilChanged(),
-      switchMap((term: any) => this.mediaSharingService.getContacts(term.query))
-    ).subscribe((res: any) => {
-      console.log(res);
-      const selectedContactIds = this.selectedContacts.map(ct => ct.id);
-      const sharedContactIds = this.sharedSharings.map(ss => ss.recipient.id);
-      if(res.data)
-        this.filteredContacts = res.data.reduce((acc, ct) => {
-            if (ct.wthapps_user && !selectedContactIds.includes(ct.id) && !sharedContactIds.includes(ct.wthapps_user.id))
-              acc.push(ct.wthapps_user);
-              return acc;
-        }, []);
-      }, (error: any)=> {
+      switchMap((term: any) => this.apiBaseService.get(`account/search?q=${term.query}`)))
+      .subscribe((res: any) => {
+        const selectedIds = this.selectedUsers.map(ct => ct.id);
+        const sharedIds = this.sharedSharings.map(ss => ss.recipient.id);
+        this.users = res.data.filter(ct => !selectedIds.includes(ct.id) && !sharedIds.includes(ct.id));
+      },
+(error: any) => {
         console.log('error', error);
       }
-      );
+    );
 
   }
 
@@ -91,7 +81,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
 
   open() {
     this.modal.open();
-    if (this.sharedObjects.length == 1) {
+    if (this.sharedObjects.length === 1) {
       this.apiBaseService.post(`note/sharings/get_sharing_info_object`, {object_id: this.sharedObjects[0].id, object_type: this.sharedObjects[0].object_type}).subscribe((res: any) => {
         this.store.dispatch({type: fromShareModal.SET_SHARED_SHARINGS, payload: res.data});
         if (res.data.length > 0) {
@@ -107,8 +97,8 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
     this.modal.close();
   }
 
-  selectContact(contact: any) {
-    this.store.dispatch({type: fromShareModal.ADD_SELECTED_CONTACT, payload: contact});
+  selectContact(user: any) {
+    this.store.dispatch({type: fromShareModal.ADD_SELECTED_CONTACT, payload: user});
   }
 
   remove(sharing: any) {
@@ -116,8 +106,8 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
     this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: sharing});
   }
 
-  removeSelected(contact: any) {
-    this.store.dispatch({type: fromShareModal.REMOVE_SELECTED_CONTACT, payload: contact});
+  removeSelected(user: any) {
+    this.store.dispatch({type: fromShareModal.REMOVE_SELECTED_CONTACT, payload: user});
   }
 
   cancel() {
