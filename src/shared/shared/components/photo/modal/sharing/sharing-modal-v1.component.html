@@ -5,14 +5,8 @@
   <bs-modal-body>
     <div class="row pl20 pr20">
       <div class="input-group">
-        <p-autoComplete placeholder="Enter name or email"
-                        [(ngModel)]="textUsers"
-                        [suggestions]="users"
-                        [multiple]="true"
-                        [minLength]="1" field="name"
-                        (onSelect)="selectUser($event)"
-                        (onUnselect)="unSelectUser($event)"
-                        (completeMethod)="complete($event)">
+        <p-autoComplete placeholder="Enter name or email" [(ngModel)]="textUsers" [suggestions]="users" [multiple]="true" [minLength]="1"
+          field="name" (onSelect)="selectUser($event)" (onUnselect)="unSelectUser($event)" (completeMethod)="complete($event)">
           <ng-template let-user pTemplate="item">
             <div class="ui-help-clearfix user-row">
               <div class="avatar">
@@ -64,13 +58,10 @@
     </div>
     <div class="modal-fixed-height">
 
-      <div class="modal-body-collapse" *ngIf="sharingRecipients?.length">
-        <!-- <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false" aria-controls="collapseExample">
-          Shared with {{ sharingRecipients?.length }} Contacts
-        </a> -->
+      <div class="modal-body-collapse" *ngIf="sharedUsers?.length">
         <div class="collapse in pre-scrollable" id="collapseContact">
           <div class="modal-body-collapse-in">
-            <div class="media-list-item" *ngFor="let recipient of sharingRecipients">
+            <div class="media-list-item" *ngFor="let recipient of sharedUsers">
               <div class="media" [ngClass]="recipient._destroy ? 'remove': ''">
                 <div class="media-left">
                   <figure>
