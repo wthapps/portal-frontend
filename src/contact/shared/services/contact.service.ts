@@ -466,7 +466,7 @@ export class ZContactService extends BaseEntityService<any> {
   private followingLoad(url: string) {
     if (!_.isEmpty(url))
       this.apiBaseService
-        .get(url)
+        .post(url)
         .toPromise()
         .then((res: any) => {
           this.contacts.push(...res['data']);
