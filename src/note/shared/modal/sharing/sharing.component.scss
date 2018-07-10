@@ -4,8 +4,10 @@
   display: block;
 }
 
-.modal-body-collapse-in {
+.w-list-scroll {
   min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
   .media, .media-body {
     overflow: visible;
   }

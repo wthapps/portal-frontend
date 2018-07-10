@@ -33,6 +33,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   users: any = [];
   selectedUsers: any = [];
   sharedSharings: any = [];
+  deletedUsers: any = [];
   sharedObjects: any = [];
   changed = false;
   showCancelButton = false;
@@ -104,6 +105,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   remove(sharing: any) {
     sharing = {...sharing, _destroy: true};
     this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: sharing});
+    this.deletedUsers.push(sharing);
   }
 
   removeSelected(user: any) {
@@ -112,6 +114,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
 
   cancel() {
     this.store.dispatch({type: fromShareModal.CANCEL_ACTIONS});
+    this.deletedUsers = [];
   }
 
   cancelRemove(sharing: any) {
@@ -125,7 +128,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    if(this.mode == 'create') {
+    if (this.mode === 'create') {
       this.store.dispatch({type: fromShareModal.SAVE});
       this.apiBaseService.post(`note/sharings`, {objects: this.sharedObjects, sharings: this.sharedSharings}).subscribe((res: any) => {
         if (res.data.length > 0) {

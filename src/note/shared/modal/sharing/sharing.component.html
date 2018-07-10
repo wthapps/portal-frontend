@@ -10,7 +10,7 @@
     </div> -->
 
     <div class="form-group">
-      <p-autoComplete #auto placeholder="Enter name or email"
+      <p-autoComplete *ngIf="deletedUsers.length === 0" #auto placeholder="Enter name or email"
                       [(ngModel)]="selectedUsers"
                       [suggestions]="users"
                       [multiple]="true"
@@ -35,6 +35,13 @@
           </div>
         </ng-template>
       </p-autoComplete>
+
+      <!--edit mode-->
+      <div *ngIf="deletedUsers.length > 0" class="text-left changing padding8 rounded border bg-warning border-1">
+        <i class="fa fa-exclamation-triangle text-warning"></i>
+        Your sharing list has changes that you need to be saved.
+      </div>
+
     </div>
 
     <div class="modal-body-collapse">
@@ -43,7 +50,7 @@
         <!--Shared with {{ sharedSharings.length }} Contacts-->
       <!--</a>-->
       <div class="collapse in" id="collapseContact">
-        <div class="modal-body-collapse-in">
+        <div class="w-list-scroll">
 
           <!--Loop-->
           <div class="media-list-item" *ngFor="let sharing of sharedSharings">
@@ -83,9 +90,13 @@
   </bs-modal-body>
   <bs-modal-footer>
     <button *ngIf="showCancelButton && changed" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
-    <button *ngIf="changed" type="button" [ngClass]="{'text-disable': !changed}"
+    <button *ngIf="changed && deletedUsers.length > 0" type="button" [ngClass]="{'text-disable': !changed}"
             [disabled]="!changed" (click)="save()"
-            class="btn btn-outline-primary btn-min">Save
+            class="btn btn-outline-primary btn-min">Save Changes
+    </button>
+    <button *ngIf="changed && deletedUsers.length === 0" type="button" [ngClass]="{'text-disable': !changed}"
+            [disabled]="!changed" (click)="save()"
+            class="btn btn-outline-primary btn-min">Share
     </button>
     <button *ngIf="!changed" type="button" (click)="close()"
             class="btn btn-outline-primary btn-min"> Done
