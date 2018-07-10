@@ -42,26 +42,32 @@ export class MediaBasicListMixin {
       });
       this.selectedObjects = this.objects.filter(v => v.selected == true);
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+      this.onListChanges({ action: 'selectedObjectsChanged', payload: objectsChanged});
     }
   }
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
     if (items) data = items;
-
     this.apiBaseService.post(`media/favorites/toggle`, {
       objects: data
         .map(v => { return { id: v.id, object_type: v.model } })
     }).subscribe(res => {
-      this.objects = this.objects.map(v => {
-        let tmp = res.data.filter(d => d.id == v.id);
+      this.objects = this.objects.map(ob => {
+        let tmp = res.data.filter(d => d.id == ob.id);
         if (tmp && tmp.length > 0) {
-          v.favorite = tmp[0].favorite;
+          ob.favorite = tmp[0].favorite;
         }
-        return v;
+        return ob;
       })
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+      this.onListChanges({action: 'favorite', payload: res.data});
     });
+  }
+
+  onListChanges(e: any) {
+    /* this method is load detail object */
+    throw new Error('should overwrite this method');
   }
 
   deleteObjects(term: any = 'items') {

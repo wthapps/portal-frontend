@@ -64,6 +64,19 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
     this.menuActions = this.getMenuActions();
   }
 
+  onListChanges(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      case 'selectedObjectsChanged':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      default:
+        break;
+    }
+  }
+
   getMenuActions() {
     return {
       share: {
@@ -89,7 +102,7 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-share-alt'
       },
-      favourite: {
+      favorite: {
         active: true,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
@@ -130,7 +143,7 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
         action: () => {},
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
+        tooltip: this.tooltip.delete,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       },
@@ -178,7 +191,7 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
         class: '',
         liclass: 'visible-xs-block',
         title: 'Delete',
-        tooltip: this.tooltip.info,
+        tooltip: this.tooltip.delete,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       }
@@ -188,8 +201,11 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
   doListEvent(e: any) {
     switch(e.action) {
       case 'viewDetails':
-      this.viewDetail(e.payload.selectedObject.uuid);
-      break;
+        this.viewDetail(e.payload.selectedObject.uuid);
+        break;
+      case 'favorite':
+        this.toggleFavorite(e.payload);
+        break;
     }
   }
 
@@ -261,9 +277,9 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
     }
     if (this.favoriteAll) {
-      this.menuActions.favourite.iconClass = 'fa fa-star';
+      this.menuActions.favorite.iconClass = 'fa fa-star';
     } else {
-      this.menuActions.favourite.iconClass = 'fa fa-star-o'
+      this.menuActions.favorite.iconClass = 'fa fa-star-o'
     }
   };
   toggleFavorite(items?: any) {
@@ -283,9 +299,9 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
       })
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
       if (this.favoriteAll) {
-        this.menuActions.favourite.iconClass = 'fa fa-star';
+        this.menuActions.favorite.iconClass = 'fa fa-star';
       } else {
-        this.menuActions.favourite.iconClass = 'fa fa-star-o'
+        this.menuActions.favorite.iconClass = 'fa fa-star-o'
       }
     });
   }

@@ -129,8 +129,8 @@ custom method please overwirte any method*/
       case 'addAlbumSuccessful':
         this.store.dispatch(new AddSuccess(event.payload));
         break;
-      case 'favourite':
-        this.toggleFavorite(event.payload.selectedObjects)
+      case 'favorite':
+        this.toggleFavorite(event.payload)
         break;
       case 'viewDetails':
         this.viewDetail([event.payload.selectedObject]);
@@ -143,6 +143,19 @@ custom method please overwirte any method*/
         break;
       case 'getMore':
         this.loadMoreObjects();
+        break;
+    }
+  }
+
+  onListChanges(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      case 'selectedObjectsChanged':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      default:
         break;
     }
   }

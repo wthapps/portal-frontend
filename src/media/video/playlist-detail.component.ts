@@ -88,8 +88,11 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
   doListEvent(e: any) {
     switch(e.action) {
       case 'viewDetails':
-      this.viewDetail();
-      break;
+        this.viewDetail();
+        break;
+      case 'favorite':
+        this.toggleFavorite(e.payload);
+        break;
     }
   }
 
@@ -102,6 +105,19 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       case 'changeView':
         this.changeViewMode(e.payload);
       break;
+    }
+  }
+
+  onListChanges(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      case 'selectedObjectsChanged':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      default:
+        break;
     }
   }
 

@@ -1,4 +1,4 @@
-<w-toolbar [viewMode]="viewMode" #toolbar (event)="doEvent($event)" [objectActionsTemplate]="objectActionsTemplate">
+<!-- <w-toolbar [viewMode]="viewMode" #toolbar (event)="doEvent($event)" [objectActionsTemplate]="objectActionsTemplate">
   <ng-template #objectActionsTemplate>
     <ul class="page-body-control-menu" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
       <li>
@@ -78,7 +78,6 @@
         <w-object-list class="media-selection-content gray-light" [data]="objects" [sortInline]="false" (completeSort)="onCompleteSort($event)"
           (completeLoadMore)="onCompleteLoadMore($event)" (completeDoubleClick)="onCompleteDoubleClick($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
           <ng-template #columnBox let-item="$implicit">
-            <!-- ------------ PlayList view ------------- -->
             <ng-container *ngIf="item.object_type == 'Media::PlayList'">
               <div class="wobject-box-img">
                 <img [src]="item.thumbnail_url" alt="">
@@ -115,4 +114,4 @@
       </div>
     </ng-template>
   </div>
-</div>
+</div> -->

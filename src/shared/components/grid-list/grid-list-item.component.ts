@@ -13,7 +13,6 @@ export class WGridListItemComponent {
   @Input() object: any;
 
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
-  @Output() toggleFavouriteEvent: EventEmitter<any> = new EventEmitter<any>();
 
   time = +new Date();
   readonly DEFAULT_IMAGE = Constants.img.default;
@@ -28,10 +27,6 @@ export class WGridListItemComponent {
 
   doAction(event: any) {
     this.event.emit(event);
-  }
-
-  toggleFavourite(event: any) {
-    this.toggleFavouriteEvent.emit(event);
   }
 
   select(item: any) {

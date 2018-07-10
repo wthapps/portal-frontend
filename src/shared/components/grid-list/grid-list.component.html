@@ -18,10 +18,10 @@
             {{ group.key | titleCase }}
           </p>
           <div *ngIf="group.value" class="clearfix">
-            <w-grid-list-item *ngFor="let item of group.value;" [type]="item.object_type" [object]="item" (event)="doEvent($event)" (toggleFavouriteEvent)="toggleFavourite($event)">
+            <w-grid-list-item *ngFor="let item of group.value;" [type]="item.object_type" [object]="item" (event)="doEvent($event)">
             </w-grid-list-item>
           </div>
-          <w-grid-list-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group" (event)="doEvent($event)" (toggleFavouriteEvent)="toggleFavourite($event)">
+          <w-grid-list-item *ngIf="group && !group.value" [type]="group.object_type" [object]="group" (event)="doEvent($event)">
           </w-grid-list-item>
         </ng-container>
       </div>

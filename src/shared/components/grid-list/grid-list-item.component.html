@@ -1,9 +1,10 @@
 <div class="photo-box" *ngIf="object" [ngClass]="{'selected': object.selected}" id="photo-box-img-{{ object.id }}">
   <div class="photo-box-action photo-box-action-right">
-    <i (click)="doAction({action:'favourite', payload: {mode: 'add', selectedObjects: [object] }}); toggleFavourite({selectedObjects: [object]})"
+    <!-- <i (click)="doAction({action:'favorite', payload: {mode: 'add', selectedObjects: [object] }}); toggleFavorite({selectedObjects: [object]})"
       class="fa fa-star-o" *ngIf="!object.favorite"></i>
-    <i (click)="doAction({action:'favourite', payload: {mode: 'remove', selectedObjects: [object] }}); toggleFavourite({selectedObjects: [object]})"
-      class="fa fa-star" *ngIf="object.favorite"></i>
+    <i (click)="doAction({action:'favorite', payload: {mode: 'remove', selectedObjects: [object] }}); toggleFavorite({selectedObjects: [object]})"
+      class="fa fa-star" *ngIf="object.favorite"></i> -->
+    <i (click)="doAction({action:'favorite', payload: [object]})" class="fa" [ngClass]="object.favorite? 'fa-star': 'fa-star-o'"></i>
   </div>
 
   <!--type == 'photo'-->

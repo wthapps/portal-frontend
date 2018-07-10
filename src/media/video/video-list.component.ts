@@ -75,8 +75,6 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   loadModalComponent:(component: any) => void;
 
   doListEvent(e: any) {
-    console.log(e);
-
     switch(e.action) {
       case 'viewDetails':
         this.router.navigate(['/videos', e.payload.selectedObject.id]);
@@ -103,9 +101,38 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
           options = { selectedObject: e.payload.selectedObject };
         }
         this.modalIns.open(options);
+        this.modalIns.event.subscribe(e => this.doModalAction(e))
+        break;
+      case 'favorite':
+        this.toggleFavorite(e.payload);
         break;
       case 'getMore':
         this.loadMoreObjects();
+        break;
+    }
+  }
+
+  doModalAction(e: any) {
+    switch (e.action) {
+      case 'editName' :
+        this.apiBaseService.put(`media/videos/${e.params.selectedObject.id}`, e.params.selectedObject).subscribe(res => {
+          // console.log(e);
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
+  onListChanges(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      case 'selectedObjectsChanged':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      default:
         break;
     }
   }
@@ -153,7 +180,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
   selectedObjectsChanged: (e: any) => void;
-  toggleFavorite: () => void;
+  toggleFavorite: (input?: any) => void;
   deleteObjects: (term: any) => void;
   loadObjects() {
     this.apiBaseService.get(`media/videos`).subscribe(res => {

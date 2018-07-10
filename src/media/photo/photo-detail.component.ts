@@ -59,7 +59,6 @@ export class PhotoDetailComponent implements OnInit, MediaDetailMixin {
     })
   }
   doEvent(e: any) {
-    console.log(e);
     switch (e.action) {
       case 'goBack' :
         this.back();

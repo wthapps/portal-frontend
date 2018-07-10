@@ -100,7 +100,6 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
     }
   }
 
-
   doListEvent(event: any) {
     switch (event.action) {
       case 'sort':
@@ -108,6 +107,22 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
         break;
       case 'viewDetails':
         this.viewDetail(event.payload.selectedObject)
+        break;
+      case 'favorite':
+        this.toggleFavorite(event.payload);
+        break;
+    }
+  }
+
+  onListChanges(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      case 'selectedObjectsChanged':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      default:
         break;
     }
   }

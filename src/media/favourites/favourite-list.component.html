@@ -1,6 +1,6 @@
 <ng-template #objectActionsTemplate>
   <ul class="page-body-control-menu" [ngClass]="{'text-disable': noSelectedObjects}" [class.disabled]="noSelectedObjects">
-    <!---Hide mobile--->
+    <!-- -Hide mobile- -->
     <li class="hidden-xs" *ngIf="validateObjects(toolbar.selectedObjects)">
       <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom" href="javascript:void(0);"
         (click)="toolbar.doAction({action: 'openModal',
@@ -8,7 +8,7 @@
         <i class="fa fa-share-alt"></i>
       </a>
     </li>
-    <!---end Hide mobile--->
+    <!-- -end Hide mobile- -->
     <li *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" href="javascript:void(0);" draggable="false" *ngIf="toolbar.favoriteAll" (click)="toolbar.doAction({
            action: 'favourite',
@@ -25,7 +25,7 @@
         <i class="fa fa-star-o"></i>
       </a>
     </li>
-    <!---Hide mobile--->
+    <!-- -Hide mobile- -->
     <li class="hidden-xs" *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" href="javascript:;" draggable="false" (click)="toolbar.doAction({action: 'openModal',
          payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})" pTooltip="{{ tooltip.tag}}"
@@ -39,7 +39,7 @@
         <i class="fa fa-trash-o"></i>
       </a>
     </li>
-    <!---end Hide mobile--->
+    <!-- -end Hide mobile- -->
 
     <li class="dropdown action" *ngIf="!!toolbar.selectedObjects.length">
       <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction}}"
@@ -47,7 +47,7 @@
         <i class="fa fa-ellipsis-v"></i>
       </a>
       <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-        <!---show mobile--->
+        <!-- -show mobile- -->
         <li class="visible-xs-block" *ngIf="validateObjects(toolbar.selectedObjects)">
           <a href="javascript:void(0);" (click)="toolbar.doAction({action: 'openModal', payload: {modalName: 'sharingModal', selectedObjects: toolbar.selectedObjects}})">
             <i class="fa fa-share-alt"></i> Share
@@ -58,7 +58,7 @@
             <i class="fa fa-tag"></i> Tag
           </a>
         </li>
-        <!---end show mobile--->
+        <!-- -end show mobile- -->
 
         <li *ngIf="toolbar.hasOneObject">
           <a (click)="toolbar.doAction({
@@ -82,13 +82,13 @@
           </a>
         </li>
 
-        <!---show mobile--->
+        <!-- -show mobile- -->
         <li class="visible-xs-block" *ngIf="!!toolbar.selectedObjects.length">
           <a href="javascript:;" (click)="toolbar.doAction({action: 'deleteMedia', payload: {selectedObjects: toolbar.selectedObjects}})">
             <i class="fa fa-trash-o"></i> Delete
           </a>
         </li>
-        <!---end show mobile--->
+        <!-- -end show mobile- -->
       </ul>
     </li>
   </ul>

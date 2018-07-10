@@ -164,23 +164,19 @@ export class WGridListComponent implements OnDestroy, OnChanges {
         }
 
         // Update favorite status for toolbar when hit favorite action on item
-        if (event.action === 'favourite' && !event.payload.multiItem) {
-          this.selectedObjects.map(object => {
-            if (object.id === event.payload.selectedObjects[0].id ) {
-              object.favorite = event.payload.mode === 'add' ? true : false;
-            }
-            return object;
-          });
-          this.selectedObjectsChanged.emit(this.selectedObjects);
-        }
+        // if (event.action === 'favorite' && !event.payload.multiItem) {
+        //   this.selectedObjects.map(object => {
+        //     if (object.id === event.payload.selectedObjects[0].id ) {
+        //       object.favorite = event.payload.mode === 'add' ? true : false;
+        //     }
+        //     return object;
+        //   });
+        //   this.selectedObjectsChanged.emit(this.selectedObjects);
+        // }
 
         this.event.emit(event);
         break;
     }
-  }
-
-  toggleFavourite() {
-
   }
 
   zoom(payload: any) {
