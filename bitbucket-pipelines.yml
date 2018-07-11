@@ -3,10 +3,21 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
+
+### file validator
+# https://bitbucket-pipelines.prod.public.atl-paas.net/validator
+###
+
+### file configure
+# https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html
+#
 image: node:10.5.0
 
 pipelines:
   default:
+    - step:
+        caches:
+          - node
     - step:
         name: Global tasks
         script:
@@ -22,7 +33,7 @@ pipelines:
       - step:
           name: Building
           script:
-            ng build --prod --app portal
+            - ng build --prod --env test --app portal
 
 #  default:
 #    - step:
