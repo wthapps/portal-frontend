@@ -79,6 +79,10 @@ dl.media-user-list-group {
   @include align-items(center);
   .avatar {
     margin-right: 10px;
+    &.normal {
+      max-height: 34px;
+      max-width: 34px;
+    }
     .img-circle {
       height: 34px;
       width: 34px;
@@ -93,6 +97,7 @@ dl.media-user-list-group {
     overflow: hidden;
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
+    padding-left: 0px;
   }
   .action {
     margin-left: 10px;
