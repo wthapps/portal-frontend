@@ -6,6 +6,11 @@
 image: node:10.5.0
 
 pipelines:
+  default:
+    - step:
+        name: Global tasks
+        script:
+          - echo "This script runs on all branches"
   branches:
     development:
       - step:
