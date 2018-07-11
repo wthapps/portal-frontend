@@ -10,13 +10,25 @@ export interface CreateCommonSharing {
 
 export interface SharingModalOptions { sharingRecipients: Array<any> }
 export interface SharingRecipient {
+  id?: number;
   role_id: number;
   recipient_id?: number;
   recipient_type?: string;
+  _destroy?: boolean;
   user?: any;
 }
 interface SharingCreateParams {
-  objects: Array<{ id, model }>[];
-  recipients: Array<{ role_id, recipient_id }>[];
+  objects: Array<{ id, model }>;
+  recipients: Array<SharingRecipient>;
   role_id: number;
+}
+interface SharingEditParams {
+  recipients: Array<SharingRecipient>;
+  users: Array<SharingRecipient>;
+  id: number;
+}
+interface SharingModalResult {
+  recipients: Array<SharingRecipient>;
+  users: Array<SharingRecipient>;
+  role: any;
 }

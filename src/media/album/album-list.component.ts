@@ -31,6 +31,7 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 
 @Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
 @Component({
@@ -147,6 +148,7 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
 
   openModalShare: (input: any) => void;
   onSaveShare: (input: any) => void;
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
 
   loadModalComponent: (component: any) => void;
 

@@ -4,7 +4,6 @@ import { AuthGuard } from '@wth/shared/services';
 import { ZMediaSharingListComponent } from './sharing-list.component';
 import { ZMediaSharingDetailComponent } from './sharing-detail.component';
 
-
 @NgModule({
   imports: [
     RouterModule.forChild([
@@ -15,6 +14,11 @@ import { ZMediaSharingDetailComponent } from './sharing-detail.component';
       },
       {
         path: 'shared-by-me/:id',
+        component: ZMediaSharingDetailComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'shared/:uuid',
         component: ZMediaSharingDetailComponent,
         canActivate: [AuthGuard]
       }

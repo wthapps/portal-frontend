@@ -22,6 +22,7 @@ import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin'
 import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 
 declare var _: any;
 @Mixin([SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble])
@@ -174,7 +175,8 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   /* SharingModalMixin This is methods to sharing, to
   custom method to overwirte any method*/
   openModalShare: () => void;
-  onSaveShare: (e: any) => void;
+  onSaveShare: (e: SharingModalResult) => void;
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
   // ========== SharingModalMixin ==============
 
   /* MediaListMixin This is media list methods, to
@@ -183,9 +185,11 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   toggleFavorite: (input?: any) => void;
   deleteObjects: (term: any) => void;
   loadObjects() {
+    this.loading = true;
     this.apiBaseService.get(`media/videos`).subscribe(res => {
       this.links = res.meta.links;
       this.objects = res.data;
+      this.loading = false;
     });
   }
   viewDetail(id: number) {

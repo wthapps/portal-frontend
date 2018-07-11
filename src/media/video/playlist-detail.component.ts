@@ -19,7 +19,7 @@ import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { SharingCreateParams } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { SharingCreateParams, SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
@@ -254,6 +254,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       this.toastsService.success('You have just create sharing successful');
     });
   }
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
 
   openModalAddToPlaylistCustom() {
     this.openModalAddToPlaylist(this.selectedObjects);

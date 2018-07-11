@@ -1,5 +1,5 @@
 import { SharingModalService } from "@shared/shared/components/photo/modal/sharing/sharing-modal.service";
-import { SharingCreateParams } from "@shared/shared/components/photo/modal/sharing/sharing-modal";
+import { SharingCreateParams, SharingEditParams, SharingModalResult } from "@shared/shared/components/photo/modal/sharing/sharing-modal";
 import { ApiBaseService } from "@shared/services";
 import { ToastsService } from "@shared/shared/components/toast/toast-message.service";
 
@@ -12,23 +12,48 @@ export class SharingModalMixin {
   constructor(public sharingModalService: SharingModalService, public apiBaseService: ApiBaseService, public toastsService: ToastsService) {}
 
   // openModalShare:(input: any) => void;
-  openModalShare(input?: any) {
+  openModalShare(array?: any) {
     if (this.subShareSave) this.subShareSave.unsubscribe();
-    this.sharingModalService.open.next(input);
-    this.subShareSave = this.sharingModalService.onSave$.take(1).subscribe(e => {
-      this.onSaveShare(e);
-    })
+    this.sharingModalService.open.next();
+    let data: any = this.selectedObjects;
+    if (array) {
+      data = array;
+    }
+    if (data && data.length == 1 && data[0].model == 'Common::Sharing') {
+      this.apiBaseService.get(`media/sharings/recipients`, { id: data[0].id }).subscribe(res => {
+        this.sharingModalService.open.next({ sharingRecipients: res.data });
+      });
+      this.subShareSave = this.sharingModalService.onSave$.take(1).subscribe(e => {
+        this.onEditShare(e, data[0]);
+      });
+    } else {
+      this.subShareSave = this.sharingModalService.onSave$.take(1).subscribe(e => {
+        this.onSaveShare(e);
+      });
+    }
   }
 
   // Overwrite this in parent class
   // onSaveShare: (input: any) => void;
-  onSaveShare(e: any) {
+  onSaveShare(e: SharingModalResult) {
     const data: SharingCreateParams = {
       objects: this.selectedObjects.map(s => { return {id: s.id, model: s.model}}),
-      recipients: e.sharingRecipients.map(s => { return {role_id: s.role_id, recipient_id: s.user.id}}),
+      recipients: e.users.map(u => { return {role_id: u.role_id, recipient_id: u.user.id}}),
       role_id: e.role.id
     }
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
+      this.toastsService.success('You have just create sharing successful');
+    });
+  }
+  // onEditShare: (e: SharingModalResult, sharing: any) => void;
+  onEditShare(e: SharingModalResult, sharing: any) {
+
+    const data: SharingEditParams = {
+      recipients: e.recipients.map(s => { return { id: s.id, role_id: s.role_id, recipient_id: s.user.id, _destroy: s._destroy}}),
+      users: e.users.map(s => { return {role_id: s.role_id, recipient_id: s.user.id}}),
+      id: sharing.id
+    }
+    this.apiBaseService.post('media/sharings/edit_recipients', data).subscribe(res => {
       this.toastsService.success('You have just create sharing successful');
     });
   }

@@ -1,7 +1,7 @@
 <ng-template #objectActionsTemplate>
   <ul class="page-body-control-menu" *ngIf="hasSelectedObjects" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
     <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
-      <li *ngIf="!action.val.inDropDown" class="{{action.val.liclass}}">
+      <li *ngIf="!action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
         <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false" pTooltip="{{action.val.tooltip}}"
           tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
           <i class="{{action.val.iconClass}}"></i>
@@ -16,7 +16,7 @@
       </a>
       <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
         <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
-          <li *ngIf="action.val.inDropDown" class="{{action.val.liclass}}">
+          <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
             <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"
               href="javascript:void(0);" (click)="action.val.action()">
               <i class="{{action.val.iconClass}}"></i> {{action.val.title}}

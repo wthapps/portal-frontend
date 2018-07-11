@@ -18,17 +18,19 @@ import { PlaylistModalService } from '@shared/shared/components/photo/modal/play
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
+import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
+import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 
 declare var _: any;
 
-@Mixin([MediaBasicListMixin])
+@Mixin([MediaBasicListMixin, SharingModalMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-playlist-list',
   templateUrl: '../shared/list/list.component.html'
   // templateUrl: 'playlist-list.component.html'
 })
-export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin {
+export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin, SharingModalMixin {
   // display objects on screen
   objects: any;
   // tooltip to introduction
@@ -45,14 +47,15 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
+  subShareSave: any;
 
   constructor(
     public apiBaseService: ApiBaseService,
     private router: Router,
     private playlistCreateModalService: PlaylistCreateModalService,
     private playlistModalService: PlaylistModalService,
-    private sharingModalService: SharingModalService,
-    private toastsService: ToastsService,
+    public sharingModalService: SharingModalService,
+    public toastsService: ToastsService,
     public confirmService: WthConfirmService,
     public objectListService: WObjectListService,
     public resolver: ComponentFactoryResolver
@@ -232,28 +235,9 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
       });
   }
 
-  openModalShare() {
-    if (this.subOpenShare) this.subOpenShare.unsubscribe();
-    this.sharingModalService.open.next();
-    this.subOpenShare = this.sharingModalService.onSave$
-      .take(1)
-      .subscribe(e => {
-        const data: SharingCreateParams = {
-          recipients: e.selectedContacts.map(c => {
-            return { id: c.id };
-          }),
-          objects: this.selectedObjects.map(ob => {
-            return { id: ob.id, model: ob.model };
-          }),
-          role_id: e.role.id
-        };
-        this.apiBaseService.post('media/sharings', data).subscribe(res => {
-          this.toastsService.success(
-            'You have just created sharing successful'
-          );
-        });
-      });
-  }
+  openModalShare:(input?: any) => void;
+  onSaveShare:(e: any) => void;
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
 
   createPlaylist() {
     this.playlistCreateModalService.open.next();
@@ -307,9 +291,11 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin 
   }
   deleteObjects: (term: any) => void;
   loadObjects() {
+    this.loading = true;
     this.apiBaseService.get(`media/playlists`).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
+      this.loading = false;
     });
   }
   viewDetail(uuid: string) {

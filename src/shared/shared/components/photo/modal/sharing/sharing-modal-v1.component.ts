@@ -4,7 +4,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { ApiBaseService } from '@wth/shared/services';
 import { ModalComponent } from '@shared/shared/components/base/components';
-import { SharingModalOptions, SharingRecipient } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { SharingModalOptions, SharingRecipient, SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
@@ -30,6 +30,9 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   deleting: boolean;
   textUsers = [];
   loading = false;
+  get updating(): boolean {
+    return (this.updatedUsers.length + this.deletedUsers.length) > 0 ? true : false;
+  }
 
   @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -78,9 +81,15 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   }
 
   save() {
+// <<<<<<< 77f499c0b3e71755314c88c9b04af746d20497b4
     const newRecipients: Array<SharingRecipient> = this.newUsers.map(s => { return { role_id: this.role.id, user: s}})
-    const data = this.updating ? { sharingRecipients: [...this.sharedUsers], role: this.role}
-                               : { sharingRecipients: [...this.sharedUsers, ...newRecipients], role: this.role};
+    const data: SharingModalResult = this.updating ? { recipients: this.sharedUsers, users: [], role: this.role}
+      : { recipients: this.sharedUsers, users: newRecipients, role: this.role};
+// =======
+    // const newRecipients: Array<SharingRecipient> = this.selectedUsers.map(s => { return { role_id: this.role.id, user: s}})
+    // // const data = { sharingRecipients: [...this.sharedUsers, ...newRecipients], role: this.role};
+    // const data: SharingModalResult = { recipients: this.sharedUsers, users: newRecipients, role: this.role };
+// >>>>>>> update: media loading WTHZONE-766
     // short distance
     this.onSave.emit(data);
     // long distance
@@ -184,9 +193,5 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
     this.updatedUsers = [];
     this.deletedUsers = [];
     this.hasChanged = false;
-  }
-
-  get updating(): boolean {
-    return (this.updatedUsers.length + this.deletedUsers.length) > 0 ? true : false;
   }
 }

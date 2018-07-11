@@ -16,11 +16,6 @@ import { ZMediaSharingDetailComponent } from '@media/shared-by-me/sharing-detail
         path: 'shared-with-me/:id',
         component: ZMediaSharingDetailComponent,
         canActivate: [AuthGuard]
-      },
-      {
-        path: 'shared/:id',
-        component: ZMediaSharingDetailComponent,
-        canActivate: [AuthGuard]
       }
     ])
   ],

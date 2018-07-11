@@ -26,6 +26,7 @@ import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
 import { AlbumCreateMixin } from '@media/shared/mixin/album/album-create.mixin';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 
 declare var _: any;
 @Mixin([SharingModalMixin, MediaBasicListMixin, MediaSortMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
@@ -203,6 +204,7 @@ custom method please overwirte any method*/
 custom method please overwirte any method*/
   openModalShare: () => void;
   onSaveShare: (e: any) => void;
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
   deleteObjects: (term: any) => void;
   // ========== SharingModalMixin ==============
 

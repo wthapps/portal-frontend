@@ -65,7 +65,7 @@
         <i *ngIf="object.favorite" class="fa fa-star"></i>
       </div>
     </div>
-    <div class="photo-box-owner">{{ object.owner.name }}</div>
+    <div class="photo-box-owner">{{ object.owner?.name }}</div>
     <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
     <div class="photo-box-size">{{ object.child_count }}</div>
   </div>
@@ -99,7 +99,7 @@
         <i *ngIf="object.favorite" class="fa fa-star"></i>
       </div> -->
     </div>
-    <div class="photo-box-owner">{{ object.owner.name }}</div>
+    <div class="photo-box-owner">{{ object.owner?.name }}</div>
     <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
     <div class="photo-box-size">{{ object.child_count }}</div>
   </div>

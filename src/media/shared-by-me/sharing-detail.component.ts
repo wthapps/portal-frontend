@@ -1,7 +1,18 @@
-import {Component, OnInit, OnDestroy, ComponentFactoryResolver, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ComponentFactoryResolver,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { ApiBaseService, CommonEventService, PhotoUploadService } from '@shared/services';
+import {
+  ApiBaseService,
+  CommonEventService,
+  PhotoUploadService
+} from '@shared/services';
 import {
   GetAll,
   GetMore,
@@ -21,208 +32,550 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { MediaActionHandler } from '@media/shared/media';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
+import { MediaListDetailMixin } from '@media/shared/mixin/media-list-detail.mixin';
+import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
+import { MediaAdditionalListMixin } from '@media/shared/mixin/media-additional-list.mixin';
+import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
+import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
+import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
+import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { SharingCreateParams, SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
+import { Location } from '@angular/common';
 
+@Mixin([
+  MediaBasicListMixin,
+  MediaAdditionalListMixin,
+  MediaListDetailMixin,
+  LoadModalAble,
+  SharingModalMixin,
+  PlaylistAddMixin,
+  MediaDownloadMixin
+])
 @Component({
   moduleId: module.id,
   selector: 'me-sharing-detail',
-  templateUrl: 'sharing-detail.component.html'
+  templateUrl: '../shared/list/list-detail.component.html'
 })
-export class ZMediaSharingDetailComponent extends MediaActionHandler implements OnInit, OnDestroy {
-  @ViewChild('infoContainer', { read: ViewContainerRef }) infoContainer: ViewContainerRef;
-
-  detailInfoComponent: any;
-  detailInfo: any;
-
+export class ZMediaSharingDetailComponent
+  implements
+    OnInit,
+    MediaListDetailMixin,
+    MediaBasicListMixin,
+    MediaAdditionalListMixin,
+    LoadModalAble,
+    SharingModalMixin,
+    PlaylistAddMixin,
+    MediaDownloadMixin {
+  objects: any;
   object: any;
-  sharing: any;
-  params: any;
-  showDetail: boolean;
-
-  showDetailsInfo: boolean;
-
-  photos$: Observable<any>;
-  nextLink: Observable<any>;
-  loading$: Observable<any>;
-
+  hasSelectedObjects: boolean;
+  selectedObjects: any = [];
+  favoriteAll: any;
+  loading: boolean;
   tooltip: any = Constants.tooltip;
-  detail = true;
-  returnUrl: string;
-  photos: Array<any>;
-  role: any = {name: 'view'};
-  capabilities: any = {
-    canView: false,
-    canFave: false,
-    canDownload: false,
-    canShare: false,
-    canTag: false,
-    canEdit: false,
-    canDelete: false
-  };
-  loaded = false;
-  private path = 'media/media';
-  private type = 'photo';
+  viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
+  viewMode: any = this.viewModes.grid;
+  links: any;
+  showDetailsInfo: any;
+  // ============
+  titleNoData: any = 'There is no videos!';
+  subTitleNoData: any = 'Try to upload a new video';
+  actionNoData: any = 'Create an video';
+  uploadMode: any = 'multiple';
+  uploadType: any = 'video/*';
+  // ===========
+  menuActions: any = {};
+  parentMenuActions: any = {};
+  subMenuActions: any = {};
+  modalIns: any;
+  modalRef: any;
+  subShareSave: any;
+  // ============
+  subAddPlaylist: any;
+  subOpenCreatePlaylist: any;
+  subCreatePlaylist: any;
+  // ============
+  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
-  constructor(
-    private apiBaseService: ApiBaseService,
-    private commonEventService: CommonEventService,
-    protected store: Store<appStore.State>,
-    protected resolver: ComponentFactoryResolver,
-    private router: Router,
-    private route: ActivatedRoute,
-    protected mediaSelectionService: WMediaSelectionService,
-    private confirmService: WthConfirmService,
-    private photoUploadService: PhotoUploadService,
-    private toastsService: ToastsService
-  ) {
-    super(resolver, store, mediaSelectionService);
-    this.photos$ = this.store.select(appStore.selectDetailObjects);
-    this.loading$ = this.store.select(appStore.selectLoading);
 
-  }
+  constructor(public mediaAddModalService: MediaAddModalService,
+    public mediaCreateModalService: MediaCreateModalService,
+    public sharingModalService: SharingModalService,
+    public toastsService: ToastsService,
+    public apiBaseService: ApiBaseService,
+    public resolver: ComponentFactoryResolver,
+    public confirmService: WthConfirmService,
+    public router: Router,
+    public route: ActivatedRoute,
+    public location: Location) { }
 
   ngOnInit() {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'shared-by-me';
-    this.createDetailInfoComponent();
-    this.detailInfo.event
-      .takeUntil(this.destroySubject)
-      .subscribe((event: any) => {
-        this.doEvent(event);
-      });
+    this.route.params.subscribe(p => {
+      this.parentMenuActions = this.getMenuActions();
+      this.subMenuActions = this.getSubMenuActions();
+      this.menuActions = this.parentMenuActions;
+      this.loadObjects(p.uuid);
+      this.loadObject(p.uuid);
+    })
+  }
 
-    this.commonEventService
-      .filter((e: any) => {
-        return e.channel === 'media:photo:update_recipients';
-      })
-      .subscribe((e: any) => {
-        this.params.recipients = e.payload;
-        this.detailInfo.updateProperties({ recipients: this.params.recipients });
+  doListEvent(e: any) {
+    switch (e.action) {
+      case 'viewDetails':
+        this.viewDetail();
+        break;
+      case 'favorite':
+        this.toggleFavorite(e.payload);
+        break;
+    }
+  }
 
-      });
-    this.route.params.subscribe((params: any) => {
-      this.apiBaseService.get(`media/sharings/${params.id}`).subscribe((response: any) => {
-        this.sharing = response.data;
-        this.capabilities = this.sharing.capabilities;
-        this.role = this.sharing.role;
+  doToolbarEvent(e: any) {
+    switch (e.action) {
+      case 'uploaded':
+        this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: { id: this.object.id }, videos: [e.payload] }).subscribe(res => {
+          this.loadObjects(this.object.uuid);
+        })
+      case 'changeView':
+        this.changeViewMode(e.payload);
+        break;
+    }
+  }
 
-          this.detailInfo.updateProperties({ object: this.sharing });
+  onListChanges(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      case 'selectedObjectsChanged':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      default:
+        break;
+    }
+  }
 
-          this.apiBaseService.get(`media/sharings/${params.id}/full_details`).subscribe((response: any) => {
-          // this.sharing = response.sharing;
-          this.photos = response.data;
-          this.params = response;
-          this.detailInfo.updateProperties({ recipients: this.params.recipients });
-          // get photos by sharing
-          this.doEvent({
-            action: 'getAll',
-            payload: {detail: this.detail, path: this.path, queryParams: {type: this.type, sharing: this.sharing.id}}
-          });
-          this.loaded = true;
-        });
-      },
-      error => {
-        this.toastsService.danger(error.error.error);
-      });
+  loadObjects(input: any) {
+    this.loading = true;
+    this.apiBaseService.get(`media/sharings/${input}/objects`).subscribe(res => {
+      this.objects = res.data;
+      this.links = res.meta.links;
+      this.loading = false;
     });
   }
 
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
+  loadObject(input: any) {
+    this.apiBaseService.get(`media/sharings/${input}`).subscribe(res => {
+      this.object = res.data;
+      // this.parentMenuActions.favorite.iconClass = res.data.favorite ? 'fa fa-star' : 'fa fa-star-o';
+    });
+  }
+
+  loadMoreObjects(input?: any) {
+    /* this method is load objects to display on init */
+    throw new Error('should overwrite this method');
+  }
+
+  viewDetail(input?: any) {
+    this.router.navigate([`videos/`, this.selectedObjects[0].id]);
+  }
+
+  doNoData() {
+    throw new Error('should overwrite this method');
+  }
+
+  back() {
+    this.location.back();
+  }
+
+  editName(object: any) {
+    this.loadModalComponent(MediaRenameModalComponent);
+    this.modalIns.open({ selectedObject: this.object });
+  }
+
+  selectedObjectsChanged(objectsChanged: any) {
+    if (this.objects) {
+      this.objects.forEach(ob => {
+        if (objectsChanged.some(el => el.id == ob.id && (el.object_type == ob.object_type || el.model == ob.model))) {
+          ob.selected = true;
+        } else {
+          ob.selected = false;
+        }
+      });
+      this.selectedObjects = this.objects.filter(v => v.selected == true);
+      this.hasSelectedObjects = (this.selectedObjects && this.selectedObjects.length > 0) ? true : false;
+      this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
+      this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
     }
   }
 
-  doEvent(event: any) {
-    super.doEvent(event);
+  loadModalComponent: (component: any) => void;
 
-    switch (event.action) {
-      case 'sort':
-        this.store.dispatch(new GetAll({detail: this.detail, path: this.path,
-          queryParams: {...event.payload.queryParams, type: this.type, sharing: this.sharing.id}}));
-        break;
-      case 'openUploadModal':
-        // this.mediaUploaderDataService.onShowUp();
-        break;
-      case 'addAlbumSuccessful':
-        this.store.dispatch(new AddSuccess(event.payload));
-        break;
-      case 'favourite':
-        this.store.dispatch(new Favorite(event.payload));
-        break;
-      case 'viewDetails':
-        this.viewDetails(event.payload);
-        break;
-      case 'preview':
-        this.preview(event.payload);
-        break;
-      case 'toggleDetailsInfo':
-        this.showDetailsInfo = !this.showDetailsInfo;
-        break;
-      // add photos to current sharing
-      case 'addToParent':
-        if (event.payload.uploading) {
-          this.photoUploadService.uploadPhotos(event.payload.photos).subscribe((response: any) => {
-            this.store.dispatch(new AddToDetailObjects({sharing: this.sharing, objects: [response.data]}));
-          }, (err: any) => {
-            console.error('Error when uploading files ', err);
-          });
-        } else {
-          this.store.dispatch(new AddToDetailObjects({sharing: this.sharing, objects: event.payload.photos}));
+  toggleFavorite(items?: any) {
+    let data = this.selectedObjects;
+    if (items) data = items;
+    this.apiBaseService.post(`media/favorites/toggle`, {
+      objects: data
+        .map(v => { return { id: v.id, object_type: v.model } })
+    }).subscribe(res => {
+      this.objects = this.objects.map(v => {
+        let tmp = res.data.filter(d => d.id == v.id);
+        if (tmp && tmp.length > 0) {
+          v.favorite = tmp[0].favorite;
         }
-        break;
-      case 'removeFromParent':
-        this.store.dispatch(new RemoveFromDetailObjects(event.payload));
-        break;
-      case 'deleteMedia':
-        this.confirmService.confirm({
-          header: event.payload.header || 'Delete sharing',
-          acceptLabel: 'Delete',
-          message: event.payload.message || `Are you sure to delete current sharing`,
-          accept: () => {
-            this.store.dispatch(new DeleteMany({...event.payload}));
-            this.router.navigate([this.returnUrl]);
-          }});
-        break;
-      case 'goBack':
-        this.router.navigate([this.returnUrl]);
-        break;
-      case 'download':
-        // download sharing
-        if (event.payload.selectedObjects[0].object_type === 'sharing') {
-          this.store.dispatch(new Download({selectedObjects: this.photos}));
-        } else {
-          this.store.dispatch(new Download(event.payload));
-        }
-        break;
+        return v;
+      })
+      this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
+    });
+  }
+
+  deSelect() {
+    this.objects.forEach(ob => {
+      ob.selected = false;
+    })
+    this.selectedObjects = [];
+    this.hasSelectedObjects = false;
+  }
+
+  deleteObjects(term: any = 'items') {
+    this.confirmService.confirm({
+      header: 'Delete',
+      acceptLabel: 'Delete',
+      message: `Are you sure to delete ${this.selectedObjects.length} ${term}`,
+      accept: () => {
+        this.loading = true;
+        this.apiBaseService.post(`media/media/delete`, { objects: this.selectedObjects }).subscribe(res => {
+          this.loadObjects(this.object.uuid);
+          this.loading = false;
+        })
+      }
+    })
+  }
+
+  changeViewMode(mode: any) {
+    this.viewMode = mode;
+  }
+
+  toggleFavoriteParent() {
+    this.toggleFavorite([this.object]);
+    this.object.favorite = !this.object.favorite;
+    this.menuActions.favorite.iconClass = this.object.favorite ? 'fa fa-star' : 'fa fa-star-o';
+  }
+
+  removeFromParent() {
+    this.apiBaseService.post(`media/playlists/remove_from_playlist`, { playlist: { id: this.object.id }, videos: this.selectedObjects.map(ob => { return { id: ob.id, model: ob.model } }) }).subscribe(res => {
+      this.toastsService.success('You removed videos successfully!');
+      this.loadObjects(this.object.uuid);
+      this.selectedObjects = [];
+      this.hasSelectedObjects = false;
+    });
+  }
+
+  openModalShareParent() {
+    this.openModalShare({ selectedObjects: [this.object] });
+  }
+
+  openModalShare: (input: any) => void;
+
+  onSaveShare(e: any) {
+    const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
+    const data: SharingCreateParams = {
+      objects: objects.map(s => { return { id: s.id, model: s.model } }),
+      recipients: e.sharingRecipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id } }),
+      role_id: e.role.id
+    }
+    this.apiBaseService.post('media/sharings', data).subscribe(res => {
+      this.toastsService.success('You have just create sharing successful');
+    });
+  }
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
+
+  openModalAddToPlaylistCustom() {
+    this.openModalAddToPlaylist(this.selectedObjects);
+  }
+
+  openModalAddToPlaylist: (selectedObjects: any) => void;
+
+  onAddToPlaylist(e) {
+    this.apiBaseService
+      .post(`media/playlists/add_to_playlist`, {
+        playlist: { id: e.parents[0].id },
+        videos: e.children.map(c => { return { id: c.id, model: c.model } })
+      })
+      .subscribe(res => {
+        this.toastsService.success('You just added to Playlist success');
+      });
+  }
+
+  downloadMediaCustom() {
+    if (this.selectedObjects && this.selectedObjects.length > 0) {
+      this.downloadMedia(this.selectedObjects);
     }
   }
 
-  getMore(event: any) {
-    this.store.dispatch(new GetMore({...event.payload, type: 'photo', detail: this.detail, object: this.sharing }));
+  downloadMedia: (media: any) => void;
+
+  openCreatePlaylistModal: (selectedObjects: any) => void;
+
+  onDonePlaylist(e: any) {
+    console.log('You should overwrite this one', e);
   }
 
-  private createDetailInfoComponent() {
-    const detailInfoComponentFactory = this.resolver.resolveComponentFactory(SharingDetailInfoComponent);
-    this.infoContainer.clear();
-    this.detailInfoComponent = this.infoContainer.createComponent(detailInfoComponentFactory);
-    this.detailInfo = <SharingDetailInfoComponent>this.detailInfoComponent.instance;
+  getMenuActions() {
+    return {
+      add: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: () => { },
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.share,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-plus-square'
+      },
+      share: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: this.openModalShareParent.bind(this),
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.share,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      shareMobile: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Inside dropdown list
+        action: () => { },
+        class: '',
+        liclass: 'visible-xs-block',
+        tooltip: this.tooltip.share,
+        title: 'Share',
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      favorite: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: this.toggleFavoriteParent.bind(this),
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.addToFavorites,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-star'
+      },
+      tag: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: () => { },
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.tag,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-tag'
+      },
+      tagMobile: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Inside dropdown list
+        action: () => { },
+        class: '',
+        liclass: 'visible-xs-block',
+        title: 'Tag',
+        tooltip: this.tooltip.tag,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-tag'
+      },
+      delete: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: () => { console.log('delete'); },
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.tag,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      },
+      edit: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: () => { },
+        class: '',
+        liclass: '',
+        title: 'Edit Information',
+        tooltip: this.tooltip.edit,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-edit'
+      },
+      detail: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: () => { },
+        class: '',
+        liclass: '',
+        title: 'View Detail',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-info-circle'
+      },
+      download: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: () => { },
+        class: '',
+        liclass: '',
+        title: 'Download',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-download'
+      },
+      deleteMobile: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Inside dropdown list
+        action: () => { },
+        class: '',
+        liclass: 'visible-xs-block',
+        title: 'Delete',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      }
+    }
   }
 
-  private preview(payload: any) {
-    const objects = payload.selectedObjects;
-    const ids = _.map(objects, 'id');
-    const batchQuery = objects.length > 1 ? `media/media?type=photo&ids=${ids}` :
-      `media/media?type=photo&sharing=${this.sharing.id}`;
-
-    this.router.navigate([`photos`,
-      objects[0].id, {
-      batchQuery: batchQuery,
-      ids: ids, mode: 0
-    }], {queryParams: {returnUrl: this.router.url}});
+  getSubMenuActions() {
+    return {
+      share: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: this.openModalShare.bind(this),
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.share,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      shareMobile: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Inside dropdown list
+        action: () => { },
+        class: '',
+        liclass: 'visible-xs-block',
+        tooltip: this.tooltip.share,
+        title: 'Share',
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      favorite: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: this.toggleFavorite.bind(this),
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.addToFavorites,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-star'
+      },
+      tag: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: () => { },
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.tag,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-tag'
+      },
+      tagMobile: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Inside dropdown list
+        action: () => { },
+        class: '',
+        liclass: 'visible-xs-block',
+        title: 'Tag',
+        tooltip: this.tooltip.tag,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-tag'
+      },
+      delete: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: this.removeFromParent.bind(this),
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.tag,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      },
+      edit: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: this.openModalAddToPlaylistCustom.bind(this),
+        class: '',
+        liclass: '',
+        title: 'Add To Playlist',
+        tooltip: this.tooltip.add,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-edit'
+      },
+      download: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: this.downloadMediaCustom.bind(this),
+        class: '',
+        liclass: '',
+        title: 'Download',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-download'
+      },
+      detail: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: this.viewDetail.bind(this),
+        class: '',
+        liclass: '',
+        title: 'View Detail',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-info-circle'
+      },
+      deleteMobile: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Inside dropdown list
+        action: () => { },
+        class: '',
+        liclass: 'visible-xs-block',
+        title: 'Delete',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      }
+    }
   }
-
-  private viewDetails(payload: any) {
-    const object = payload.selectedObject;
-    this.router.navigate([`photos`,
-      object.id, {ids: [object.id], mode: 0}], {queryParams: {returnUrl: this.router.url}});
-  }
-}
+    }

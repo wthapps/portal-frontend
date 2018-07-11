@@ -93,7 +93,10 @@
 <w-grid-list #gridlist [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
 
 </w-grid-list>
-
+<!--loading icon-->
+<div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
+  <box-loading></box-loading>
+</div>
 <box-no-data *ngIf="objects && objects.length == 0" [title]="'There is no photos!'" [icon]="'fa fa-file-video-o'" [subTitle]="'Try to upload a new photos'"
   style="margin-top: 50px; display: block;">
   <w-upload class="btn btn-outline-primary" [mode]="'multiple'" [accept]="'image/*'" (uploadHandler)="uploadHandler($event)"

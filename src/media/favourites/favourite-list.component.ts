@@ -26,6 +26,7 @@ import { ApiBaseService } from '@shared/services';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
+import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 
 @Mixin([MediaBasicListMixin, SharingModalMixin])
 @Component({
@@ -68,7 +69,6 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
   }
 
   doListEvent(e: any) {
-    console.log(e);
     switch (e.action) {
       case 'viewDetails':
         this.viewDetails(e.payload);
@@ -97,7 +97,8 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
   }
 
   openModalShare:() => void;
-  onSaveShare:(input?: any) => void;
+  onSaveShare: (e: SharingModalResult) => void;
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
 
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
@@ -122,9 +123,11 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
   }
   deleteObjects: (term: any) => void;
   loadObjects() {
+    this.loading = true;
     this.apiBaseService.get(`media/favorites`).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
+      this.loading = false;
     });
   }
   viewDetail(uuid: string) {
