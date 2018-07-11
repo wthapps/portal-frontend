@@ -58,6 +58,8 @@ export class ConversationDetailComponent
         if (contact.history) {
           this.chatService.updateHistory(contact);
         }
+      } else {
+        this.router.navigate(['/']);
       }
     });
 

@@ -49,7 +49,8 @@ export class ZChatShareAddContactComponent implements OnInit {
     if(this.type == 'shareContact') {
       this.title = 'Share Contact';
     }
-    this.chatService.getUserContacts().subscribe((res:any) => {
+    this.chatService.getUserContacts().toPromise()
+      .then((res:any) => {
       this.contacts = res.data;
       if(this.title == 'Add To Conversation') {
         this.conversationSelect = this.chatService.getContactSelect().value;
@@ -62,7 +63,7 @@ export class ZChatShareAddContactComponent implements OnInit {
               if(contact.id == user.id) {
                 contact.checked = true;
                 contact.inConversation = true;
-                break
+                break;
               }
             }
             return contact;
@@ -72,6 +73,7 @@ export class ZChatShareAddContactComponent implements OnInit {
     });
 
     this.modal.open();
+
   }
 
   checkBox(contact: any) {

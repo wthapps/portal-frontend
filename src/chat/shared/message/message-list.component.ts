@@ -13,6 +13,7 @@ import {
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
 import { WMessageService } from '@wth/shared/services';
+import { Router } from '@angular/router';
 
 declare var _: any;
 declare var $: any;
@@ -36,6 +37,7 @@ export class MessageListComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private ref: ChangeDetectorRef,
+    private router: Router,
     private messageService: WMessageService
   ) {
     this.messageService.scrollToBottom$.subscribe((res: boolean) => {
@@ -79,7 +81,11 @@ export class MessageListComponent implements OnInit {
         this.requestModal.modal.open();
         break;
       case 'CONTACT_REQUEST_CANCEL':
-        this.chatService.chatContactService.cancelContactRequest(event.data);
+        this.chatService.chatContactService.cancelContactRequest(event.data)
+          .then(conversationId => {
+            const id = conversationId ? conversationId : '';
+            this.router.navigate(['/conversations', id]);
+          });
         break;
     }
   }

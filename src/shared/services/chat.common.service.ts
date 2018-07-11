@@ -4,8 +4,11 @@ import { ApiBaseService } from './apibase.service';
 import { HandlerService } from './handler.service';
 import { UserService } from '@wth/shared/services/user.service';
 import { WMessageService } from '@wth/shared/services/message.service';
+import { Router } from '@angular/router';
+import { CONVERSATION_SELECT } from '@wth/shared/constant';
 
 declare var _: any;
+declare var Promise: any;
 
 @Injectable()
 export class ChatCommonService {
@@ -14,6 +17,7 @@ export class ChatCommonService {
     public apiBaseService: ApiBaseService,
     public handler: HandlerService,
     private messageService: WMessageService,
+    private router: Router,
     private userService: UserService
   ) {}
 
@@ -131,14 +135,21 @@ export class ChatCommonService {
       .toPromise();
   }
 
-  setDefaultSelectContact() {
+  setDefaultSelectContact(): Promise<any> {
     let res: any = this.storage.find('chat_conversations');
     if (res && res.value && res.value.data && res.value.data[0]) {
-      this.storage.save('conversation_select', res.value.data[0]);
+      const defaultContact = res.value.data[0];
+      this.storage.save(CONVERSATION_SELECT, defaultContact);
       this.handler.triggerEvent(
         'on_default_conversation_select',
-        res.value.data[0]
+        defaultContact
       );
+      // Resolve default select contact id
+      return Promise.resolve(defaultContact.id);
+    } else {
+      // Resolve NO default select contact
+      this.storage.save(CONVERSATION_SELECT, null);
+      return Promise.resolve(null);
     }
   }
 }

@@ -25,12 +25,10 @@ export class ChatContactService {
     );
   }
 
-  cancelContactRequest(contact: any) {
+  cancelContactRequest(contact: any): Promise<boolean> {
     let groupId = contact.group_id;
-    this.apiBaseService.post('zone/chat/contact/cancel', {group_id: groupId}).subscribe(
-      (res: any) => {
-        this.chatCommonService.setDefaultSelectContact();
-      }
-    );
+    return this.apiBaseService.post('zone/chat/contact/cancel', {group_id: groupId}).toPromise()
+      .then(_ => this.chatCommonService.setDefaultSelectContact())
+    ;
   }
 }
