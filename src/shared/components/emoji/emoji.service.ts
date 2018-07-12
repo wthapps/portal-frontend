@@ -43,17 +43,17 @@ export class WTHEmojiService {
       });
   }
 
-  get(emoji) {
-    // TODO Fix performance
-    for (let data of this.EMOJI_DB) {
-      for (let e of data.aliases) {
-        if (emoji === e) {
-          return data.emoji;
-        }
-      }
-    }
-    return emoji;
-  }
+  // get(emoji) {
+  //   // TODO Fix performance
+  //   for (let data of this.EMOJI_DB) {
+  //     for (let e of data.aliases) {
+  //       if (emoji === e) {
+  //         return data.emoji;
+  //       }
+  //     }
+  //   }
+  //   return emoji;
+  // }
 
   getAll() {
     return this.http
@@ -69,18 +69,18 @@ export class WTHEmojiService {
       .map(data => _.groupBy(data, 'category'));
   }
 
-  emojify(str) {
-    return str
-      .split(this.PARSE_REGEX)
-      .map((emoji, index) => {
-        // Return every second element as an emoji
-        if (index % 2 === 0) {
-          return emoji;
-        }
-        return this.get(emoji);
-      })
-      .join('');
-  }
+  // emojify(str) {
+  //   return str
+  //     .split(this.PARSE_REGEX)
+  //     .map((emoji, index) => {
+  //       // Return every second element as an emoji
+  //       if (index % 2 === 0) {
+  //         return emoji;
+  //       }
+  //       return this.get(emoji);
+  //     })
+  //     .join('');
+  // }
 
   setEmoji(emoji: WTHEmoji) {
     this.selectedEmojiSubject.next(emoji);

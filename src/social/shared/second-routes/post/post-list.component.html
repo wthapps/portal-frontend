@@ -10,15 +10,29 @@
         </a>
       </div>
       <div class="z-social-media-body">
-        <div class="z-social-media-inputpost inputpost-new">
+        <div class="z-social-media-inputpost form-group">
           <div class="mb10">
             <div contenteditable="true" class="form-control" rows="3" placeholder="Share your ideas"
                       (focus)="postEditModal.open()"></div>
           </div>
-          <button class="btn btn-outline-default" type="button"
-                  (click)="postEditModal.open({community: community, mode: 'add', isShare: false})">
-            <i class="fa fa-camera"></i> Add Photo
-          </button>
+
+          <span class="z-social-media-inputpost-icon">
+            <button class="btn btn-default" (click)="postEditModal.open({community: community, mode: 'add', isShare: false})" pTooltip="{{ tooltip.addPhoto }}"
+                    tooltipPosition="top">
+              <i class="fa fa-camera"></i>
+            </button>
+            <div class="btn-group dropup">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                      pTooltip="{{ tooltip.emoticons }}"
+                      tooltipPosition="top" >
+                <i class="fa fa-smile-o"></i>
+              </button>
+            </div>
+          </span>
+          <!--<button class="btn btn-outline-default" type="button"-->
+                  <!--(click)="postEditModal.open({community: community, mode: 'add', isShare: false})">-->
+            <!--<i class="fa fa-camera"></i> Add Photo-->
+          <!--</button>-->
         </div>
       </div>
     </div>

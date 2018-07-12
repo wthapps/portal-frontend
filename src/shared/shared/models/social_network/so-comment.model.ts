@@ -25,6 +25,7 @@ export class SoComment extends BaseInput implements FromData {
   parentId: string = '';
   parentType: string = ''; // value is SocialNetwork::Post or SocialNetwork::Comment
   owner: SoUser = new SoUser();
+  transformedContent?: string = '';
 
   from(fields: any) {
     if (fields) {

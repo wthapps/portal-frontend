@@ -171,7 +171,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         }
         this.selectedTab = queryParamMap.get('tab');
         this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
-        console.debug(paramMap, queryParamMap, this.selectedTab);
         return [this.uuid, this.selectedTab];
       })
     ).subscribe(() => {

@@ -10,13 +10,29 @@
         <div class="z-social-media-inputpost inputpost-new">
           <div class="form-group">
             <input type="text" class="form-control" placeholder="Share your ideas" (click)="postAddModal.open()">
-            <span class="z-social-media-inputpost-icon">
-              <button class="btn btn-outline-default" (click)="postAddModal.open({addingPhotos: true})" pTooltip="{{ tooltip.addPhoto }}"
-                tooltipPosition="top">
-                <i class="fa fa-camera"></i>
-              </button>
+            <!--<span class="z-social-media-inputpost-icon">-->
+              <!--<button class="btn btn-outline-default" (click)="postAddModal.open({addingPhotos: true})" pTooltip="{{ tooltip.addPhoto }}"-->
+                <!--tooltipPosition="top">-->
+                <!--<i class="fa fa-camera"></i>-->
+              <!--</button>-->
+              <!---->
+              <!---->
 
-            </span>
+            <!--</span>-->
+
+            <span class="z-social-media-inputpost-icon">
+            <button class="btn btn-default" (click)="postAddModal.open({addingPhotos: true})" pTooltip="{{ tooltip.addPhoto }}"
+                    tooltipPosition="top">
+              <i class="fa fa-camera"></i>
+            </button>
+            <div class="btn-group dropup">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                      pTooltip="{{ tooltip.emoticons }}"
+                      tooltipPosition="top" >
+                <i class="fa fa-smile-o"></i>
+              </button>
+            </div>
+          </span>
           </div>
         </div>
       </div>

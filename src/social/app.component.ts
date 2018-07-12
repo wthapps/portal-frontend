@@ -73,7 +73,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onDeactivate(event) {
     if(!event || !event.route) {
-      console.warn('Hmm, shall not deactivate primary route: ', event);
       return;
     }
     this.activeOutlets[event.route.outlet] = false;

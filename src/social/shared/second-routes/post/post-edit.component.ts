@@ -246,7 +246,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.modal.close();
 
     // this.textarea.nativeElement.style.heigth = '50px';
-    // console.log(this.textarea.nativeElement.style.heigth);
   }
 
   uploadFiles(files: Array<any>) {
@@ -366,7 +365,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.post.tags,
       _.find(this.post.tags, ['name', tag])
     );
-    console.log('tag remove', tag, this.post.tags);
   }
 
   update(attr: any = {}, event: any) {

@@ -1,4 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
+import { filter } from 'rxjs/operators/filter';
+import { take } from 'rxjs/operators/take';
+
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@wth/shared/components/emoji/emoji';
 
@@ -9,7 +13,9 @@ export class WTHEmojiPipe implements PipeTransform {
   private map: {[name: string]: WTHEmojiCateCode} = {};
 
   constructor(public wthEmojiService: WTHEmojiService) {
-    this.wthEmojiService.name2baseCodeMap$.subscribe((map) => {
+    this.wthEmojiService.name2baseCodeMap$.pipe(
+      filter(map => Object.keys(map).length > 1),
+      take(1)).subscribe((map) => {
       this.map = map
     });
   }

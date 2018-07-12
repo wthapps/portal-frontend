@@ -7,6 +7,10 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { filter } from 'rxjs/operators/filter';
+import { Subject } from 'rxjs/Subject';
+import { take } from 'rxjs/operators/take';
+
 import {
   DeleteCommentEvent,
   CancelEditCommentEvent,
@@ -22,10 +26,6 @@ import { PhotoService, UserService } from '@shared/services';
 import { Constants } from '@wth/shared/constant';
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 import { WTHEmojiPipe } from '@wth/shared/components/emoji/emoji.pipe';
-import { filter } from 'rxjs/operators/filter';
-import { takeUntil } from 'rxjs/operators/takeUntil';
-import { Subject } from 'rxjs';
-import { take } from 'rxjs/operators/take';
 
 declare var _: any;
 

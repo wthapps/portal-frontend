@@ -14,6 +14,7 @@ import { ApiBaseService } from '@wth/shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
 import { PostService } from './shared/post.service';
 import { getSoProfile, SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE } from '../../reducers/index';
+import { Constants } from '@wth/shared/constant';
 
 const DEFAULT_PRIVACY_SETTINGS = ['public', 'personal', 'friends'];
 
@@ -40,6 +41,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   postIsEmpty: boolean = false;
   showLoading: boolean = true;
+  tooltip: any = Constants.tooltip;
 
   soProfile$: Observable<any>;
 
