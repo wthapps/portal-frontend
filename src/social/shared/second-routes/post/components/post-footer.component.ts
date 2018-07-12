@@ -3,7 +3,7 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnChanges
+  OnChanges, OnInit, OnDestroy
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -20,6 +20,12 @@ import { PostService } from '../shared/post.service';
 import { SoComment, SoPost } from '@wth/shared/shared/models';
 import { PhotoService, UserService } from '@shared/services';
 import { Constants } from '@wth/shared/constant';
+import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
+import { WTHEmojiPipe } from '@wth/shared/components/emoji/emoji.pipe';
+import { filter } from 'rxjs/operators/filter';
+import { takeUntil } from 'rxjs/operators/takeUntil';
+import { Subject } from 'rxjs';
+import { take } from 'rxjs/operators/take';
 
 declare var _: any;
 
@@ -27,7 +33,7 @@ declare var _: any;
   selector: 'so-post-footer',
   templateUrl: 'post-footer.component.html',
 })
-export class PostFooterComponent implements OnChanges {
+export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() user: any;
   @Input() item: SoPost;
   @Input() type: string;
@@ -48,14 +54,27 @@ export class PostFooterComponent implements OnChanges {
   commentPageIndex: number = 0;
   loadingDone: boolean = false;
   readonly commentLimit: number = Constants.soCommentLimit;
+  readonly tooltip: any = Constants.tooltip;
 
-  tooltip: any = Constants.tooltip;
+  private emojiPipe: WTHEmojiPipe;
+  private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private router: Router,
               private postService: PostService,
+              private wthEmojiService: WTHEmojiService,
               public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
+    this.emojiPipe = new WTHEmojiPipe(this.wthEmojiService);
+  }
+
+  ngOnInit() {
+    this.emojifyData();
+  }
+
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   ngOnChanges(data: any) {
@@ -64,6 +83,22 @@ export class PostFooterComponent implements OnChanges {
     }
     this.totalComment = +this.item.comment_count;
     this.loadingDone = (this.totalComment === 0 ) || (this.totalComment <= _.get(this.item, 'comments.length', 0));
+    this.emojifyData();
+  }
+
+  emojifyData() {
+    this.wthEmojiService.name2baseCodeMap$.pipe(
+      filter(map => Object.keys(map).length > 0),
+      take(1)
+    ).subscribe(map => {
+      this.item.comments.forEach(comment => {
+        comment.transformedContent = this.emojiPipe.transform(comment.content);
+
+        comment.comments.forEach(reply => {
+          reply.transformedContent = this.emojiPipe.transform(reply.content);
+        });
+      })
+    });
   }
 
   viewProfile(uuid: string) {

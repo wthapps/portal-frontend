@@ -1,21 +1,23 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { filter } from 'rxjs/operators/filter';
+import { take } from 'rxjs/operators/take';
+import { Subject } from 'rxjs/Subject';
 
 import { PostComponent } from '../post.component';
 import { PhotoService, UserService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { SoPost } from '@wth/shared/shared/models';
-
-
-
+import { WTHEmojiPipe } from '@wth/shared/components/emoji/emoji.pipe';
+import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 
 @Component({
-
   selector: 'so-post-body',
   templateUrl: 'post-body.component.html'
 })
 
-export class PostBodyComponent implements OnChanges {
+export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
   @Input() item: SoPost;
   @Input() type: string;
   @Input() originalPost: SoPost;
@@ -33,15 +35,24 @@ export class PostBodyComponent implements OnChanges {
   };
   hasLike: boolean;
   hasDislike: boolean;
+  transformedDescription: string;
+  private emojiPipe: WTHEmojiPipe;
+  private destroySubject: Subject<any> = new Subject<any>();
   readonly DEFAULT_IMAGE: string = Constants.img.default;
 
   constructor(private router: Router,
+              private wthEmojiService: WTHEmojiService,
               public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
-
+    this.emojiPipe = new WTHEmojiPipe(this.wthEmojiService);
   }
 
+  ngOnInit() {
+    if(this.item)
+      this.transformedDescription = this.item.description;
+    this.emojifyData();
+  }
   ngOnChanges(changes: SimpleChanges) {
     if (this.type == 'info') {
       this.showInfo = true;
@@ -59,8 +70,23 @@ export class PostBodyComponent implements OnChanges {
 
     this.hasLike = _.findIndex(this.item.likes, ['owner.uuid', this.userService.getSyncProfile().uuid] ) > -1;
     this.hasDislike = _.findIndex(this.item.dislikes, ['owner.uuid', this.userService.getSyncProfile().uuid] ) > -1;
+    this.emojifyData();
   }
 
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
+  }
+
+  emojifyData() {
+    this.wthEmojiService.name2baseCodeMap$.pipe(
+      filter(map => Object.keys(map).length > 0),
+      take(1)
+      // takeUntil(this.destroySubject)
+    ).subscribe(map => {
+      this.transformedDescription = this.emojiPipe.transform(this.item.description);
+    });
+  }
 
   onActions(action: any, data?: any, type?: any) {
     switch (action) {

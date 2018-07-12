@@ -322,13 +322,13 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       );
     }
 
-    // Open photo modal
-    if (event instanceof OpenPhotoModalEvent) {
-      this.commentEditor = event.data;
-      Object.assign(this.commentEditor, {multipleSelect: false});
-      this.openPhotoModal(event.data);
-
-    }
+    // // Open photo modal
+    // if (event instanceof OpenPhotoModalEvent) {
+    //   this.commentEditor = event.data;
+    //   Object.assign(this.commentEditor, {multipleSelect: false});
+    //   this.openPhotoModal(event.data);
+    //
+    // }
 
     // View more comments
     if (event instanceof ViewMoreCommentsEvent) {
@@ -339,14 +339,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   syncComments(post: any) {
     _.merge(this.item, post);
-    console.log('Synced comments', this.item);
+    this.mapDisplay();
   }
 
-  openPhotoModal(data: any) {
-    // this.photoSelectDataService.open(data);
-    //
-    // this.subscribePhotoEvents();
-  }
 
   openShare() {
     this.modalOpened.emit({mode: 'add', parent: this.item, isShare: true});

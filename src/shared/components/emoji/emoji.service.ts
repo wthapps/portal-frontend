@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { WTHEmoji } from '@shared/components/emoji/emoji';
+import { WTHEmoji, WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { Subject } from 'rxjs/Subject';
 
 declare let _: any;
@@ -10,18 +10,37 @@ declare let _: any;
 @Injectable()
 export class WTHEmojiService {
   EMOJI_DB: any = [];
-  PARSE_REGEX = /:([a-zA-Z0-9_\-\+]+):/g;
+  readonly PARSE_REGEX = /:([a-zA-Z0-9_\-\+]+):/g;
 
   showEmoji$: Observable<any>;
   selectedEmoji$: Observable<any>;
+  name2baseCodeMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
 
   private showEmojiSubject: Subject<any> = new Subject<any>();
 
   private selectedEmojiSubject: Subject<WTHEmoji> = new Subject<WTHEmoji>();
+  private name2baseCodeSubject: BehaviorSubject<{[name: string]: WTHEmojiCateCode}> = new BehaviorSubject({});
 
   constructor(private http: HttpClient) {
     this.showEmoji$ = this.showEmojiSubject.asObservable();
     this.selectedEmoji$ = this.selectedEmojiSubject.asObservable();
+    this.name2baseCodeMap$ = this.name2baseCodeSubject.asObservable();
+
+    this.mapName2BaseCode();
+  }
+
+  mapName2BaseCode(): Promise<{[name: string]: WTHEmojiCateCode}> {
+    return this.http
+      .get('/assets/data/emoji.json')
+      .toPromise()
+      .then(data => {
+        let name2Code: {[name: string]: WTHEmojiCateCode} = {};
+        Object.entries(data).forEach(([k, v]) => {
+          name2Code[v.shortname] = {category: v.category, code: k};
+        });
+        this.name2baseCodeSubject.next(name2Code);
+        return name2Code;
+      });
   }
 
   get(emoji) {
