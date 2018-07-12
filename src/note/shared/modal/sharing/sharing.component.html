@@ -63,19 +63,13 @@
 
 
       <!--edit mode-->
-      <div *ngIf="updating" class="text-left changing padding8 rounded border bg-warning border-1">
+      <div *ngIf="updating" class="text-left padding8 rounded border bg-warning border-1">
         <i class="fa fa-exclamation-triangle text-warning"></i>
         Your sharing list has changes that you need to be saved.
       </div>
 
     </div>
 
-    <!--<div class="modal-body-collapse">-->
-      <!--<a *ngIf="sharedObjects.length == 1" role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"-->
-         <!--aria-controls="collapseExample">-->
-        <!--Shared with {{ sharedSharings.length }} Contacts-->
-      <!--</a>-->
-      <!--<div class="collapse in" id="collapseContact">-->
     <ng-container *ngIf="!loading; else loadingBlock">
 
         <div class="w-list-scroll">

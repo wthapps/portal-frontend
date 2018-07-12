@@ -6,6 +6,8 @@ import { ApiBaseService } from '@wth/shared/services';
 import { ModalComponent } from '@shared/shared/components/base/components';
 import { SharingModalOptions, SharingRecipient } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+
 declare var $: any;
 declare var _: any;
 
@@ -17,40 +19,73 @@ declare var _: any;
 export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponent {
   @ViewChild('modal') modal: BsModalComponent;
   users: any = [];
-  selectedUsers: any = [];
+  // newUsers: Array<any> [];
+  updatedUsers: Array<any> = [];
+  deletedUsers: Array<any> = [];
+  newUsers: Array<any> = [];
   sharedUsers: any = [];
   role: any = {name: 'view'};
   roles: any = [];
   hasChanged: boolean;
   deleting: boolean;
   textUsers = [];
+  loading = false;
 
   @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
 
 
-  constructor(private apiBaseService: ApiBaseService, private sharingModalService: SharingModalService) {
+  constructor(
+    private apiBaseService: ApiBaseService,
+    private sharingModalService: SharingModalService,
+    private toastsService: ToastsService
+    ) {
   }
 
   ngOnInit() {
     this.sharingModalService.onOpen$.subscribe(e => {
       this.open(e);
     });
+
+    this.sharingModalService.update$.subscribe((recipients: Array<any>) => {
+      this.update(recipients);
+    });
   }
 
   ngOnDestroy() {}
 
   close() {
+    this.cancel();
     this.modal.close().then();
   }
 
+  cancel() {
+    // reset removed users
+    this.sharedUsers.forEach(user => {
+      user._destroy = null;
+    });
+
+    // reset update users
+    this.updatedUsers.forEach(recipient => {
+      const updatedIndex = this.sharedUsers.map((item: any) => { return item.id; }).indexOf(recipient.id);
+      if (updatedIndex >= 0) {
+        this.sharedUsers[updatedIndex].role = recipient.role;
+        this.sharedUsers[updatedIndex].role_id = recipient.role_id;
+      }
+    });
+
+
+    this.resetUserLists();
+  }
+
   save() {
-    const newRecipients: Array<SharingRecipient> = this.selectedUsers.map(s => { return { role_id: this.role.id, user: s}})
-    const data = { sharingRecipients: [...this.sharedUsers, ...newRecipients], role: this.role};
+    const newRecipients: Array<SharingRecipient> = this.newUsers.map(s => { return { role_id: this.role.id, user: s}})
+    const data = this.updating ? { sharingRecipients: [...this.sharedUsers], role: this.role}
+                               : { sharingRecipients: [...this.sharedUsers, ...newRecipients], role: this.role};
     // short distance
     this.onSave.emit(data);
     // long distance
     this.sharingModalService.save.next(data);
-    this.modal.close().then();
+
   }
 
   open(options: SharingModalOptions = {sharingRecipients: []}) {
@@ -62,28 +97,44 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
     }
     // reset textContacts, selectedContacts
     this.textUsers = [];
-    this.selectedUsers = [];
+    this.resetUserLists();
     this.modal.open().then();
+  }
+
+
+  update(recipients: Array<any> = []) {
+    if (this.newUsers.length > 0 && this.sharedUsers.length === 0) {
+      this.modal.close().then();
+      this.toastsService.success(`You created a share for ${this.newUsers.length} user(s) successful!`);
+    } else {
+      this.sharedUsers = recipients;
+      this.toastsService.success(`You updated sharing user(s) successful!`);
+    }
+    this.resetUserLists();
+    this.hasChanged = false;
   }
 
   complete(e: any) {
     this.apiBaseService.get(`account/search?q=${e.query}`).subscribe(res => {
-      const selectedIds = this.selectedUsers.map(ct => ct.id);
+      const selectedIds = this.newUsers.map(ct => ct.id);
       const sharedIds = this.sharedUsers.map(sc => sc.user.id);
       this.users = res.data.filter(ct => !selectedIds.includes(ct.id) && !sharedIds.includes(ct.id));
     });
   }
 
   selectUser(user: any) {
-    this.selectedUsers.push(user);
+    this.newUsers.push(user);
     this.hasChanged = true;
   }
 
   unSelectUser(user: any) {
-    _.remove(this.selectedUsers, (selectedUser: any) => {
+    _.remove(this.newUsers, (selectedUser: any) => {
       return selectedUser.id === user.id;
     });
-    this.hasChanged = true;
+    _.remove(this.textUsers, (selectedUser: any) => {
+      return selectedUser.id === user.id;
+    });
+    this.hasChanged = this.newUsers.length > 0 ? true : false;
   }
 
   getRoles() {
@@ -93,18 +144,49 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
     });
   }
 
-  toggleRemoving(user: any) {
-    this.hasChanged = true;
-    user._destroy = !user._destroy;
+  toggleRemoving(recipient: any) {
+    recipient._destroy = !recipient._destroy;
+
+    const deletedIndex = this.deletedUsers.map((item: any) => {
+      return item.id;
+    }).indexOf(recipient.user.id);
+
+    if (recipient._destroy) {
+      if (deletedIndex < 0) {
+        this.deletedUsers.push(recipient.user);
+      }
+    } else {
+      this.deletedUsers.splice(deletedIndex, 1);
+    }
+    this.hasChanged = this.deletedUsers.length > 0 ? true : false;
   }
 
-  changeRole(e: any) {
-    this.role = e;
+  changeRole(role: any, recipient: any = null) {
+    if (!recipient) {
+      this.role = role;
+    } else if (role.id !== recipient.role_id) {
+      const updatedIndex = this.updatedUsers.map((item: any) => {
+        return item.id;
+      }).indexOf(recipient.id);
+      if (updatedIndex < 0) {
+        this.updatedUsers.push({...recipient});
+      }
+      recipient.role_id = role.id;
+      recipient.role = role;
+
+      this.hasChanged = this.updatedUsers.length > 0 ? true : false;
+    }
   }
 
-  changeRecipientRole(recipient: any, r: any) {
-    recipient.role_id = r.id;
-    recipient.role = r;
-    this.hasChanged = true;
+  resetUserLists() {
+    this.textUsers = [];
+    this.newUsers = [];
+    this.updatedUsers = [];
+    this.deletedUsers = [];
+    this.hasChanged = false;
+  }
+
+  get updating(): boolean {
+    return (this.updatedUsers.length + this.deletedUsers.length) > 0 ? true : false;
   }
 }

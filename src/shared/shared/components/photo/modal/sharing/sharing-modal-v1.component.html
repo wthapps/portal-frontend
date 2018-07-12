@@ -4,111 +4,122 @@
   </bs-modal-header>
   <bs-modal-body>
     <div class="row pl20 pr20">
-      <div class="input-group">
-        <p-autoComplete placeholder="Enter name or email" [(ngModel)]="textUsers" [suggestions]="users" [multiple]="true" [minLength]="1"
-          field="name" (onSelect)="selectUser($event)" (onUnselect)="unSelectUser($event)" (completeMethod)="complete($event)">
-          <ng-template let-user pTemplate="item">
-            <div class="ui-help-clearfix user-row">
-              <div class="avatar">
-                <a href="javascript:void(0)">
-                  <img class="img-circle small" [alt]="user.name" [src]="user.profile_image">
-                </a>
-              </div>
-              <div class="name">
-                <a class="text-link" href="javascript:void(0)">
-                  <p class="mb0">{{ user.name }}</p>
-                </a>
-                <span *ngIf="!user.is_contact" class="text-color-light text-small"> not in WTHContacts</span>
-              </div>
-            </div>
-          </ng-template>
-        </p-autoComplete>
-
-        <!--[ngClass]="{'fa fa-check': (!sharing.permission || sharing.permission == 'view')}"></i> View only</a></li>-->
-
-
-        <!--edit mode-->
-        <!-- <div *ngIf="!hasChanged" class="text-left changing padding8 rounded border border-danger border-1">
-          <i class="fa fa-exclamation-triangle text-danger"></i>
-          You have made changes that you need to save!
-        </div> -->
-
-        <div class="input-group-btn">
-          <!-- Single button -->
-          <div class="btn-group">
-            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-              [title]="'role.display_name'">
-              <i class="fa" [ngClass]="role.name == 'view'? 'fa-eye' :
-                            role.name == 'download'? 'fa-download' :
-                            role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
-              </i>
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li *ngFor="let r of roles" (click)="changeRole(r)">
-                <a href="javascript:void(0);"> {{ r.display_name }}
-                  <i class="pull-right" [ngClass]="{'fa fa-check': (r.id === role.id)}"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </div>
-    <div class="modal-fixed-height">
-
-      <div class="modal-body-collapse" *ngIf="sharedUsers?.length">
-        <div class="collapse in pre-scrollable" id="collapseContact">
-          <div class="modal-body-collapse-in">
-            <div class="media-list-item" *ngFor="let recipient of sharedUsers">
-              <div class="media" [ngClass]="recipient._destroy ? 'remove': ''">
-                <div class="media-left">
-                  <figure>
-                    <img [src]="recipient.user.profile_image" alt="">
-                  </figure>
-                </div>
-                <div class="media-body">
-                  {{ recipient.user.name }}
-                </div>
-
-                <div class="media-right">
-                  <div class="dropdown" style="position: absolute; right: 70px">
-                    <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                      [title]="recipient.role.display_name" aria-haspopup="true">
-                      <i class="fa" [ngClass]="recipient.role.name == 'view'? 'fa-eye' :
-                                                                   recipient.role.name == 'download'? 'fa-download' :
-                                                                   recipient.role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
-                      </i>
-                      <span class="caret"></span>
-                    </button>
-                    <div class="dropdown-menu">
-                      <li *ngFor="let r of roles" (click)="changeRecipientRole(recipient, r)">
-                        <a href="javascript:void(0);"> {{ r.display_name }}
-                          <i class="pull-right" [ngClass]="{'fa fa-check': (recipient.role_id == r.id)}"></i>
-                        </a>
-                      </li>
-                    </div>
-                  </div>
-
-                  <a class="btn btn-default" (click)="toggleRemoving(recipient)" [title]="recipient._destroy ? 'Undo removing':'Remove'" href="javascript:void(0)">
-                    <i *ngIf="!recipient._destroy" class="fa fa-times" title="remove"></i>
-                    <i *ngIf="recipient._destroy" class="fa fa-undo" title="Undo removing"></i>
+      <div class="form-group">
+        <div *ngIf="!updating" class="input-group">
+          <p-autoComplete placeholder="Enter name or email" [(ngModel)]="textUsers" [suggestions]="users" [multiple]="true" [minLength]="1"
+            field="name" (onSelect)="selectUser($event)" (onUnselect)="unSelectUser($event)" (completeMethod)="complete($event)">
+            <ng-template let-user pTemplate="item">
+              <div class="ui-help-clearfix user-row">
+                <div class="avatar">
+                  <a href="javascript:void(0)">
+                    <img class="img-circle small" [alt]="user.name" [src]="user.profile_image">
                   </a>
                 </div>
+                <div class="name">
+                  <a class="text-link" href="javascript:void(0)">
+                    <p class="mb0">{{ user.name }}</p>
+                  </a>
+                  <span *ngIf="!user.is_contact" class="text-color-light text-small"> not in WTHContacts</span>
+                </div>
               </div>
+            </ng-template>
+          </p-autoComplete>
+
+          <div class="input-group-btn" style="vertical-align: top;">
+            <!-- Single button -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                [title]="'role.display_name'">
+                <i class="fa" [ngClass]="role.name == 'view'? 'fa-eye' :
+                              role.name == 'download'? 'fa-download' :
+                              role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
+                </i>
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li *ngFor="let r of roles" (click)="changeRole(r)">
+                  <a href="javascript:void(0);"> {{ r.display_name }}
+                    <i class="pull-right" [ngClass]="{'fa fa-check': (r.id === role.id)}"></i>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-      </div>
 
+        <div *ngIf="updating" class="text-left changing padding8 rounded border bg-warning border-1">
+          <i class="fa fa-exclamation-triangle text-warning"></i>
+          Your sharing list has changes that you need to be saved.
+        </div>
+
+      </div>
     </div>
+    <!--<div class="modal-fixed-height">-->
+
+      <ng-container>
+
+        <!--<div class="modal-body-collapse" *ngIf="sharedUsers?.length">-->
+          <!--<div class="collapse in pre-scrollable" id="collapseContact">-->
+            <div class="w-list-scroll">
+              <div class="media-list-item" *ngFor="let recipient of sharedUsers">
+                <div class="media" [ngClass]="recipient._destroy ? 'remove': ''">
+                  <div class="media-left">
+                    <figure>
+                      <img class="img-circle" [src]="recipient.user.profile_image" alt="">
+                    </figure>
+                  </div>
+                  <div class="media-body pl0">
+                    {{ recipient.user.name }}
+                  </div>
+
+                  <div class="media-right">
+                    <div class="btn-group" *ngIf="!recipient._destroy">
+                      <button type="button" class="btn btn-outline-default dropdown-toggle"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        [title]="recipient.role.display_name" aria-haspopup="true">
+                        <i class="fa" [ngClass]="recipient.role.name == 'view'? 'fa-eye' :
+                                                                     recipient.role.name == 'download'? 'fa-download' :
+                                                                     recipient.role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
+                        </i>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right">
+                        <li *ngFor="let r of roles" (click)="changeRole(r, recipient)">
+                          <a href="javascript:void(0);"> {{ r.display_name }}
+                            <i class="pull-right" [ngClass]="{'fa fa-check': (recipient.role_id == r.id)}"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <button *ngIf="recipient._destroy" class="btn btn-sm btn-default"> Removed </button>
+
+                    <a class="btn btn-default" (click)="toggleRemoving(recipient)"
+                       [title]="recipient._destroy ? 'Undo removing':'Remove'" href="javascript:void(0)">
+                      <i *ngIf="!recipient._destroy" class="fa fa-times" title="remove"></i>
+                      <i *ngIf="recipient._destroy" class="fa fa-undo" title="Undo removing"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!--</div>-->
+        <!--</div>-->
+
+      </ng-container>
+
+      <!--<ng-template #loadingBlock>-->
+        <!--<box-loading></box-loading>-->
+      <!--</ng-template>-->
+
+    <!--</div>-->
   </bs-modal-body>
   <bs-modal-footer>
 
-    <button *ngIf="hasChanged" type="button" class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
+    <button *ngIf="hasChanged" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
     <button *ngIf="!hasChanged" type="button" (click)="close()" class="btn btn-outline-primary btn-min">Done </button>
-    <button *ngIf="hasChanged" type="button" (click)="save()" class="btn btn-outline-primary btn-min">Save
-    </button>
+    <button *ngIf="hasChanged && updating" type="button" (click)="save()" class="btn btn-outline-primary btn-min">Save Changes</button>
+    <button *ngIf="hasChanged && !updating" type="button" class="btn btn-outline-primary btn-min"
+            [ngClass]="{'text-disable': !hasChanged}" [disabled]="!hasChanged" (click)="save()">Share</button>
   </bs-modal-footer>
 </bs-modal>

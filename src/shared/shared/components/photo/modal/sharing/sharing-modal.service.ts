@@ -12,4 +12,7 @@ export class SharingModalService {
 
   save: Subject<any> = new Subject<any>();
   onSave$: Observable<any> = this.save.asObservable();
+
+  update: Subject<any> = new Subject<any>();
+  update$: Observable<any> = this.update.asObservable();
 }

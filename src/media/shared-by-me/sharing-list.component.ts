@@ -123,11 +123,11 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
     this.apiBaseService.get(`media/sharings/recipients`, {id: this.selectedObjects[0].id}).subscribe(res => {
       this.sharingModalService.open.next({sharingRecipients: res.data});
     });
-    this.subShareSave = this.sharingModalService.onSave$.take(1).subscribe(e => {
+    this.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
       this.apiBaseService.post('media/sharings/edit_recipients', {id: this.selectedObjects[0].id, role_id: e.role.id, recipients: e.sharingRecipients, user: e.selectedContacts}).subscribe(res => {
-        console.log(res);
-      })
-    })
+        this.sharingModalService.update.next(res.data);
+      });
+    });
   }
 
   onSaveShare: (input: any) => void;

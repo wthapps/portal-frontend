@@ -22,14 +22,14 @@ pipelines:
         name: Global tasks
         script:
           - echo "This script runs on all branches"
+
   branches:
     development:
       - step:
           name: Installation
-          caches:
-            - node
           script:
-            - npm install
+            - yarn
+            - yarn add global @angular/cli@1.7.4
       - step:
           name: Building
           script:

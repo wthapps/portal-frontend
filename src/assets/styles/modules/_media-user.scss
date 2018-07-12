@@ -77,6 +77,7 @@ dl.media-user-list-group {
 .user-row {
   @include flexbox;
   @include align-items(center);
+  min-height: 34px;
   .avatar {
     margin-right: 10px;
     &.normal {
@@ -113,6 +114,19 @@ dl.media-user-list-group {
   border-radius: 2px;
   web-kit-border-radius: 2px;
   margin-right: 1px;
+}
+
+.w-list-scroll {
+  min-height: 300px;
+  max-height: 300px;
+  height: 300px;
+  overflow-y: auto;
+  .media, .media-body {
+    overflow: visible;
+  }
+  .media-right {
+    white-space: nowrap;
+  }
 }
 
 .text-color {

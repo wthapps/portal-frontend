@@ -113,8 +113,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
   }
 
   open() {
-    this.newUsers = [];
-    this.deletedUsers = [];
+    this.resetUserLists();
     this.users = [];
     this.modal.open();
     this.loading = true;
