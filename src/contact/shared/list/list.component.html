@@ -1,6 +1,6 @@
 <ng-container *ngIf="data | groupByMap:'first_character':'asc':'name':'asc' as newData">
   <div class="contact-bar">
-    <a *ngFor="let objects of newData"
+    <a *ngFor="let objects of newData; trackBy: trackByGroup"
        [ngx-scroll-to]="'#contact-' + objects.key"
        [ngx-scroll-to-offset]="-64"
        href="javascript:;">
@@ -9,10 +9,10 @@
   </div>
 
 
-  <dl *ngFor="let objects of newData" id="contact-{{ objects.key }}" class="contact-dl">
+  <dl *ngFor="let objects of newData; trackBy: trackByGroup" id="contact-{{ objects.key }}" class="contact-dl">
     <!--<dt sticky [sticky-offset-top]="114"><span>{{ objects.key }}</span></dt>-->
     <dt><span>{{ objects.key }}</span></dt>
-    <dd *ngFor="let item of objects.value; trackBy: trackItem" [ngClass]="{active: item.selected}">
+    <dd *ngFor="let item of objects.value; trackBy: trackByItem " [ngClass]="{active: item.selected}">
       <div class="contact-dl-input">
         <i (click)="onSelected(item)" class="fa fa-check"></i>
       </div>

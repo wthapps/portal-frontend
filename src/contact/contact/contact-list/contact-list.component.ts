@@ -153,9 +153,7 @@ export class ZContactListComponent
   }
 
   onLoadMore() {
-    // this.pageSubject.next(this.pageSubject.getValue() + 1);
-    // this.page += 1;
-    // this.contactService.onLoadMore();
+    this.pageSubject.next(this.pageSubject.getValue() + 1);
   }
 
   viewContactDetail(contactId: any) {
