@@ -115,10 +115,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  testasasfd() {
-    console.log('testasasfd');
-  }
-
   initialState(initialState: any) {
     this.mediaSelectionService.clear();
     this.currentTab = initialState.currentTab; // 'upload', 'photos';

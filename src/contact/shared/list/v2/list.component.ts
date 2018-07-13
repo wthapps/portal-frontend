@@ -2,9 +2,8 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ZContactService } from '../services/contact.service';
-import { Constants } from '../../../shared/constant/config/constants';
-import { CommonEventService } from '@shared/services/common-event/common-event.service';
+import { ZContactService } from '../../services/contact.service';
+import { Constants } from '@shared/constant';
 
 @Component({
   selector: 'z-contact-shared-list',
@@ -22,8 +21,7 @@ export class ZContactSharedListComponent {
 
   tooltip: any = Constants.tooltip;
 
-  constructor(public contactService: ZContactService,
-              private commonEventService: CommonEventService) {
+  constructor(public contactService: ZContactService) {
     this.desc$ = this.contactService.orderDesc$;
   }
 
@@ -36,10 +34,6 @@ export class ZContactSharedListComponent {
       this.currentSort = event;
     }
     return false;
-  }
-
-  onSelected(item: any) {
-    item.selected = this.contactService.toggleSelectedObjects(item);
   }
 
   onSelectedAll() {
@@ -55,9 +49,5 @@ export class ZContactSharedListComponent {
 
   trackItem(index: any, item: any) {
     return item ? item.id : undefined;
-  }
-
-  doActionsToolbar(e: any) {
-    this.commonEventService.broadcast({ channel: Constants.contactEvents.actionsToolbar, action: e.action, payload: this.data });
   }
 }

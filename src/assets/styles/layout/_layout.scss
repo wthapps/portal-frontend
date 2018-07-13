@@ -135,7 +135,7 @@
     margin: 0;
     line-height: 34px;
     @media (min-width: $screen-sm-min) {
-      font-size: 24px;
+      font-size: 18px;
     }
   }
   .btn {
@@ -152,6 +152,7 @@
     > li {
       float: left;
       margin-right: 10px;
+      margin-left: 0;
       &:last-child {
         margin-right: 0;
       }

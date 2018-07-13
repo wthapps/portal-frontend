@@ -38,12 +38,8 @@ export class ZContactService extends BaseEntityService<any> {
   orderDesc$: Observable<boolean>;
   isSelectAll$: Observable<boolean>;
 
-  private isSelectAllSubject: BehaviorSubject<boolean> = new BehaviorSubject<
-    boolean
-  >(false);
-  private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<
-    Array<any>
-  >([]);
+  private isSelectAllSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private initLoadSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(
     false
   );
@@ -101,26 +97,26 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   getLocalContact(id): Promise<any> {
-    const ct = this.contacts.find(ct => ct['id'] == id.toString() );
+    const ct = this.contacts.find(ct => ct['id'] == id.toString());
     return Promise.resolve(ct);
   }
 
   getIdLocalThenNetwork(id): Observable<any> {
     return Observable.create((obs) => {
       this.getLocalContact(id).then(res => {
-        if(res)
-          obs.next(res)
+        if (res)
+          obs.next(res);
         return this.get(id).toPromise();
       })
-      .then((response: any) => {
-        if(response.data)
-          obs.next(response.data);
-        obs.complete();
-      })
-      .catch(err => {
-        obs.error(err);
-        obs.complete();
-      });
+        .then((response: any) => {
+          if (response.data)
+            obs.next(response.data);
+          obs.complete();
+        })
+        .catch(err => {
+          obs.error(err);
+          obs.complete();
+        });
     });
   }
 
@@ -158,7 +154,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   confirmDeleteContacts(contacts: any[] = this.selectedObjects): Promise<any> {
-    let contact_names: string = contacts.reduce((acc, ct) => ( ct.name.trim().length ?  `${acc},${ct.name}` : acc), '').substring(1, 300).concat(' ...');
+    let contact_names: string = contacts.reduce((acc, ct) => (ct.name.trim().length ? `${acc},${ct.name}` : acc), '').substring(1, 300).concat(' ...');
     let contact_length: number = contacts.length;
     return new Promise(resolve => {
       this.wthConfirmService.confirm({
@@ -189,6 +185,19 @@ export class ZContactService extends BaseEntityService<any> {
       uuid: item.uuid
     });
     this.checkSelectAll();
+  }
+
+  toggleSelectedObjects(item: any) {
+    let index = _.findIndex(this.selectedObjects, ['id', item.id]);
+    if (index >= 0) {
+      _.remove(this.selectedObjects, {
+        uuid: item.uuid
+      });
+    } else {
+      this.selectedObjects.push(item);
+    }
+    this.checkSelectAll();
+    return !(index >= 0);
   }
 
   isSelectAll(): boolean {
@@ -325,10 +334,12 @@ export class ZContactService extends BaseEntityService<any> {
       contacts = this.contacts;
     }
 
-    let orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a,b, this.orderDescSubject.getValue()));
+    let orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a, b, this.orderDescSubject.getValue()));
     let selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
 
-    let orderedContactsWSelected: any[] = orderedContacts.map(ct => { return {...ct, selected: selectedIds.includes(ct.uuid)}});
+    let orderedContactsWSelected: any[] = orderedContacts.map(ct => {
+      return { ...ct, selected: selectedIds.includes(ct.uuid) };
+    });
 
     this.contactsSubject.next(
       orderedContactsWSelected
@@ -359,7 +370,9 @@ export class ZContactService extends BaseEntityService<any> {
       .toPromise()
       .then((res: any) => {
         let delete_ids: any[] = res.delete_ids;
-        let updated_contacts: any[] = res.data.map(ct => {return {...ct, selected: true}});
+        let updated_contacts: any[] = res.data.map(ct => {
+          return { ...ct, selected: true };
+        });
         _.remove(this.contacts, (c: any) => delete_ids.includes(c.id));
         this.selectedObjects = [...updated_contacts];
         this.mergedObjects = [...updated_contacts];
@@ -377,7 +390,7 @@ export class ZContactService extends BaseEntityService<any> {
       .post(`${this.url}/merge_contacts`, { ids })
       .toPromise()
       .then((res: any) => {
-        const merged_contact: any = {...res.data, selected: true};
+        const merged_contact: any = { ...res.data, selected: true };
         this.contacts = this.contacts.filter((c: any) => !ids.includes(c.id));
         this.selectedObjects = [merged_contact];
         this.mergedObjects = [merged_contact];
@@ -395,7 +408,9 @@ export class ZContactService extends BaseEntityService<any> {
       .post(`${this.url}/undo_merge`, { restore_ids, remove_ids })
       .toPromise()
       .then((res: any) => {
-        const restoredContacts = res.data.map(ct => {return {...ct, selected: true}; });
+        const restoredContacts = res.data.map(ct => {
+          return { ...ct, selected: true };
+        });
         this.selectedObjects = [...restoredContacts];
         this.contacts = [...this.contacts.filter(ct => !remove_ids.includes(ct.id)), ...restoredContacts];
         console.debug('Contacts after undo merge: ', this.contacts);
@@ -482,7 +497,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private updateCallback(contact: any): void {
-    if(contact && contact.length === 0)
+    if (contact && contact.length === 0)
       return;
     this.contacts = _.map(this.contacts, (ct: any) => {
       if (contact.id === ct.id) return contact;

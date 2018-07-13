@@ -1,24 +1,32 @@
 <z-contact-search-shared-toolbar class="page-body-control">
   <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
 
-    <z-contact-shared-actions-bar *ngIf="contactService.selectedObjects | isAll:'contact':contactService.selectedObjects.length"
+    <z-contact-shared-actions-bar
+      *ngIf="contactService.selectedObjects | isAll:'contact':contactService.selectedObjects.length"
       [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
       [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
-      [showViewDetail]="false" [showEdit]="false" [showInvitation]="false" [number]="contactService.selectedObjects.length"
-      [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects,'blacklist')" [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')"
+      [showViewDetail]="false"
+      [showEdit]="false"
+      [showInvitation]="false"
+      [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects,'blacklist')"
+      [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')"
       (eventOut)="doActionsToolbar($event)"></z-contact-shared-actions-bar>
 
-    <button *ngIf="contactService.selectedObjects | isAll:'user':contactService.selectedObjects.length" class="btn btn-outline-default pull-right"
-      type="button" (click)="save()">
-      <i class="fa fa-plus"></i> Save to Contact </button>
+    <button *ngIf="contactService.selectedObjects | isAll:'user':contactService.selectedObjects.length"
+            class="btn btn-outline-default pull-right"
+            type="button" (click)="save()">
+      <i class="fa fa-plus"></i> Save to Contact
+    </button>
   </div>
 
 </z-contact-search-shared-toolbar>
-<div id="contact-list" class="page-body-content has-page-body-control" lockYOffset="10" observeAttributes="true" infinite-scroll
-  [scrollWindow]="true" (scrolled)="onLoadMore()">
+<div id="contact-list" class="page-body-content has-page-body-control" lockYOffset="10" observeAttributes="true"
+     infinite-scroll
+     [scrollWindow]="true" (scrolled)="onLoadMore()">
 
   <div class="page-body-content-in" *ngIf="contacts && contacts.length == 0">
-    <box-no-data [icon]="'fa fa-address-book-o'" [title]="'There are no Contacts!'" [subTitle]="'Upload or import contact.'">
+    <box-no-data [icon]="'fa fa-address-book-o'" [title]="'There are no Contacts!'"
+                 [subTitle]="'Upload or import contact.'">
     </box-no-data>
   </div>
   <ng-container *ngIf="contacts && contacts.length >= 1">

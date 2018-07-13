@@ -50,6 +50,8 @@ import { PromptUpdateService } from '@contacts/shared/services/prompt-update.ser
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { ZContactSearchSharedToolbarComponent } from '@contacts/shared/toolbar/search.component';
 import { ZContactSharedListV1Component } from '@contacts/shared/list/v1/list.component';
+import { StickyModule } from 'ng2-sticky-kit';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -85,7 +87,9 @@ import { ZContactSharedListV1Component } from '@contacts/shared/list/v1/list.com
     RadioButtonModule,
     AutoCompleteModule,
     CalendarModule,
-    PanelMenuModule
+    PanelMenuModule,
+    StickyModule,
+    ScrollToModule
     // BrowserAnimationsModule,
   ],
   declarations: [

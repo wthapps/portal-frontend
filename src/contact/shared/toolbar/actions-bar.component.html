@@ -1,15 +1,10 @@
 <ul class="page-body-control-menu">
-  <li *ngIf="showNumber" class="pull-left">
-    <span style="line-height: 34px;" class="mr10">
-      {{ number }} selected
-    </span>
-  </li>
-  <li *ngIf="showInvitation && !showNumber">
+  <li class="hidden-xs" *ngIf="showInvitation && !showNumber">
     <a href="javascript:;" class="btn btn-outline-default btn-sm" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})">
       <i class="fa fa-envelope-o" aria-hidden="true"></i> Invite
     </a>
   </li>
-  <li *ngIf="data?.wthapps_user">
+  <li class="hidden-xs" *ngIf="data?.wthapps_user">
     <a href="javascript:;" class="btn btn-outline-default btn-sm" *ngIf="UNCONNECT_STATUS.includes(data?.connect_status)" (click)="sendRequest(data)">
       <i class="fa fa-user-plus" aria-hidden="true"></i> Connect
     </a>
@@ -17,13 +12,13 @@
       <i class="fa fa-check-circle" aria-hidden="true"></i> {{ CONNECT_STATUS[data?.connect_status] }}
     </span>
   </li>
-  <li *ngIf="number > 1">
+  <li class="hidden-xs" *ngIf="contactService.selectedObjects.length > 1 && showMergeContacts">
     <a href="javascript:;" class="btn btn-default" (click)="mergeContacts()" pTooltip="{{ tooltip.mergeContacts }}" tooltipPosition="bottom">
       <!--<img alt="" width="30" src="assets/images/icons/merge_icon.svg">-->
       <i class="fa fa-compress" aria-hidden="true"></i>
     </a>
   </li>
-  <li>
+  <li class="hidden-xs">
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite'})" pTooltip="{{ tooltip.favourite }}"
       tooltipPosition="bottom">
       <i class="fa" [ngClass]="toggleFavourite ? 'fa-star' : 'fa-star-o'"></i>
@@ -53,6 +48,33 @@
           <i class="fa fa-users"></i> Add to Group
         </a>
       </li>
+
+      <ng-container *ngIf="showViewDetail">
+        <li class="visible-xs-block" *ngIf="showInvitation && !showNumber">
+          <a href="javascript:;" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})">
+            <i class="fa fa-envelope-o" aria-hidden="true"></i> Invite
+          </a>
+        </li>
+        <li class="visible-xs-block" *ngIf="data?.wthapps_user">
+          <a href="javascript:;" *ngIf="UNCONNECT_STATUS.includes(data?.connect_status)" (click)="sendRequest(data)">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> Connect
+          </a>
+          <a class="text-fade disabled" *ngIf="!UNCONNECT_STATUS.includes(data?.connect_status)">
+            <i class="fa fa-check-circle" aria-hidden="true"></i> {{ CONNECT_STATUS[data?.connect_status] }}
+          </a>
+        </li>
+        <li class="visible-xs-block" *ngIf="number > 1">
+          <a href="javascript:;" (click)="mergeContacts()">
+            <i class="fa fa-compress" aria-hidden="true"></i> Merge duplicate contacts
+          </a>
+        </li>
+        <li class="visible-xs-block">
+          <a href="javascript:;" (click)="emitEvent({action: 'favourite'})">
+            <i class="fa" [ngClass]="toggleFavourite ? 'fa-star' : 'fa-star-o'"></i> Favourite
+          </a>
+        </li>
+      </ng-container>
+
       <li>
         <a href="javascript:;" (click)="emitEvent({action: 'delete'})">
           <i class="fa fa-trash"></i> Delete</a>

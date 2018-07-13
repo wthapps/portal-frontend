@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Group } from '@contacts/group/group.model';
 import { GroupService } from '@contacts/group/group.service';
@@ -7,6 +7,8 @@ import { CommonEventService } from '@shared/services';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { Subject } from 'rxjs/Subject';
+import { ICloudOAuthComponent } from '@contacts/shared/modal/import-contact/icloud/icloud-oauth.component';
+import { ZContactShareImportContactComponent } from '@contacts/shared/modal/import-contact/import-contact.component';
 
 declare var _: any;
 
@@ -16,6 +18,9 @@ declare var _: any;
   styleUrls: ['left-menu.component.scss']
 })
 export class ZContactSharedLeftMenuComponent implements OnInit, OnDestroy {
+  @ViewChild('importContactSelect') importContactSelect: ZContactShareImportContactComponent;
+  @ViewChild('iCloudOAuthModal') iCloudOAuthModal: ICloudOAuthComponent;
+
   groups: Group[];
   hostname: String = '';
   currentGroup: string;
@@ -53,11 +58,15 @@ export class ZContactSharedLeftMenuComponent implements OnInit, OnDestroy {
   }
 
   doEvent(event: any) {
-    this.renderer.removeClass(document.body, 'left-sidebar-open');
+    this.onCloseSidebar();
     if (event) {
-      this.commonEventService.broadcast({channel: 'contactCommonEvent', action: event.action, payload: event.payload});
-      this.commonEventService.broadcast({channel: 'menuCommonEvent', action: event.action, payload: event.payload});
+      this.commonEventService.broadcast({ channel: 'contactCommonEvent', action: event.action, payload: event.payload });
+      this.commonEventService.broadcast({ channel: 'menuCommonEvent', action: event.action, payload: event.payload });
     }
+  }
+
+  onCloseSidebar() {
+    this.renderer.removeClass(document.body, 'left-sidebar-open');
   }
 
   deleteGroup(group: any) {
@@ -75,6 +84,29 @@ export class ZContactSharedLeftMenuComponent implements OnInit, OnDestroy {
       }
     });
 
+  }
+
+  openImportContactModal(options?: any) {
+    this.importContactSelect.modal.open(options);
+  }
+
+  onImportOptionSelected(event: any) {
+    switch (event.provider) {
+      case 'google':
+      case 'apple':
+      case 'microsoft':
+      case 'linkedin':
+      case 'import_from_file':
+        this.commonEventService.broadcast({
+          channel: 'contact:contact:actions',
+          action: 'contact:contact:import_contact',
+          payload: event
+        });
+        break;
+      default:
+        console.warn('Unhandled import option: ', event.provider);
+        break;
+    }
   }
 
   private extractLabel(url: string) {

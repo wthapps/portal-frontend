@@ -1,10 +1,18 @@
 @import '../../../shared/scss/global';
 
 :host {
-  li {
-    min-width: 40px;
-  }
   .disabled {
     opacity: 0.3;
+  }
+  .page-body-control-menu {
+    @include flexbox;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    > li {
+      @include inline-flex;
+      @include align-items(center);
+      margin-left: 5px;
+    }
   }
 }

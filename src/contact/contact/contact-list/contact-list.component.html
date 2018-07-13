@@ -1,10 +1,15 @@
-<z-contact-shared-toolbar>
+<z-contact-shared-toolbar [pageTitle]="'All Contacts'">
   <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action" *ngIf="contactService.selectedObjects && contactService.selectedObjects.length > 0">
 
-    <z-contact-shared-actions-bar [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
+    <z-contact-shared-actions-bar
+      [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
       [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
-      [showViewDetail]="false" [showEdit]="false" [showInvitation]="false" [number]="contactService.selectedObjects.length"
-      [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')" [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'blacklist')"
+      [showViewDetail]="false"
+      [showEdit]="false"
+      [showInvitation]="false"
+      [showMergeContacts]="true"
+      [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')"
+      [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'blacklist')"
       (eventOut)="doActionsToolbar($event)"></z-contact-shared-actions-bar>
   </div>
 </z-contact-shared-toolbar>
@@ -17,9 +22,9 @@
     <box-no-data [icon]="'fa fa-address-book-o'" [title]="'There are no Contacts!'" [subTitle]="'Upload or import contact.'">
     </box-no-data>
   </div>
-  <ng-container *ngIf="contacts.length>=1">
+  <div class="page-body-content-in" *ngIf="contacts.length>=1">
     <z-contact-shared-list [data]="contacts"></z-contact-shared-list>
-  </ng-container>
+  </div>
 </div>
 
 

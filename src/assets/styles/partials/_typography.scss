@@ -2,6 +2,11 @@ body {
   font-family: $font-base;
 }
 
+a.disabled {
+  text-decoration: none;
+  cursor: text;
+}
+
 .ml-a {
   margin-left: auto;
 }

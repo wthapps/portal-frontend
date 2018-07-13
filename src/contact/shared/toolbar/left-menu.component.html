@@ -2,6 +2,12 @@
   <img src="/assets/images_new/logo-contact.png" alt="">
 </div>
 
+<div class="menuleft-item" [routerLinkActive]="['active']">
+  <a href="javascript:;" [routerLink]="['/contacts', 'new']" (click)="onCloseSidebar()">
+    <i class="fa fa-plus"></i> New Contact
+  </a>
+</div>
+
 <div class="menuleft-item" [ngClass]="{'active' : ( currentGroup === 'all contacts')}">
   <a href="javascript:;" [routerLink]="['contacts', {group: 'all contacts'}]"
      (click)="doEvent({action: 'contacts', event: $event})">
@@ -27,6 +33,12 @@
   </div>
 </ng-container>
 
+<div class="menuleft-item" [routerLinkActive]="['active']">
+  <a href="javascript:;" (click)="openImportContactModal()">
+    <i class="fa fa-download"></i> Import
+  </a>
+</div>
+
 <div class="menuleft-item">
   <a href="javascript:;" (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})">
     <i class="fa fa-plus"></i> New Group
@@ -37,3 +49,8 @@
     <i class="fa fa fa-cog"></i> Settings
   </a>
 </div>
+
+
+<z-contact-share-import-contact #importContactSelect (optionSelected)="onImportOptionSelected($event)"></z-contact-share-import-contact>
+
+<icloud-oauth-modal #iCloudOAuthModal></icloud-oauth-modal>

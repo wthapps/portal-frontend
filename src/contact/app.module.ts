@@ -19,6 +19,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 import { environment } from '@env/environment';
 import { ContactSearchModule } from '@contacts/search/search.module';
+import { ContactHtmlModule } from '@contacts/html/contact-html.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +37,7 @@ import { ContactSearchModule } from '@contacts/search/search.module';
     GroupModule,
     SettingsModule,
     ModalModule,
+    ContactHtmlModule,
     ContactSharedModule.forRoot(),
 
     // WTHApps modules

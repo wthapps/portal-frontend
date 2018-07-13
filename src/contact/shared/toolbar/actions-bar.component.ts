@@ -19,6 +19,7 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   @Input() showChat: boolean = true;
   @Input() showNumber: boolean = true;
   @Input() showViewDetail: boolean = true;
+  @Input() showMergeContacts: boolean = false;
   @Input() showEdit: boolean = true;
   @Input() showTag: boolean = true;
   @Input() showInvitation: boolean = true;
@@ -26,8 +27,6 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   // Toggle
   @Input() toggleFavourite: boolean = false;
   @Input() toggleBlacklist: boolean = false;
-  // Number
-  @Input() number: number;
   // Order
   @Input() order: boolean = false;
   @Input() data: any = {};

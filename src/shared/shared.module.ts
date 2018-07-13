@@ -57,6 +57,8 @@ import { AccordionModule } from 'primeng/components/accordion/accordion';
 import { ModalModule } from '@wth/shared/components/modal/modal.module';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 import { WEditorModule } from '@shared/components/w-editor/w-editor.module';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { StickyModule } from 'ng2-sticky-kit';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -79,7 +81,8 @@ import { WEditorModule } from '@shared/components/w-editor/w-editor.module';
     ModalModule,
     WMediaSelectionModule,
     WNavTabModule,
-    WEditorModule
+    WEditorModule,
+    ScrollToModule.forRoot()
   ],
   declarations: [],
   exports: [
@@ -138,6 +141,8 @@ import { WEditorModule } from '@shared/components/w-editor/w-editor.module';
     MenuContainerModule,
     NotificationListModule,
     WTHEmojiModule,
+    ScrollToModule,
+    StickyModule,
 
     // Custom modules
     ModalModule,

@@ -1,12 +1,13 @@
 <div class="page-body-control-nav">
   <ul class="page-body-control-menu" *ngIf="hasBack">
     <li>
-      <button type="button" class="btn btn-default mr10" pTooltip="{{ tooltip.back }}" tooltipPosition="top" (click)="back()">
+      <button type="button" class="btn btn-default mr10" pTooltip="{{ tooltip.back }}" tooltipPosition="top"
+              (click)="back()">
         <i class="fa fa-arrow-left"></i>
       </button>
     </li>
   </ul>
-  <ul [ngClass]="{'hidden-xs': contactService.selectedObjects.length > 0 || currentPage === 'detail'}" class="page-body-control-menu"
+  <!--<ul [ngClass]="{'hidden-xs': contactService.selectedObjects.length > 0 || currentPage === 'detail'}" class="page-body-control-menu"
     *ngIf="pageTitle==''">
     <li>
       <button type="button" class="btn btn-outline-primary" [routerLink]="['/contacts', 'new']">
@@ -16,17 +17,17 @@
       <button type="button" class="btn btn-outline-default" (click)="openImportContactModal()">
         <i class="fa fa-download"></i> Import</button>
     </li>
-  </ul>
+  </ul>-->
   <!--TODO remove-->
   <ul class="page-body-control-menu" *ngIf="pageTitle!=''">
     <li>
-      <h4>{{ pageTitle }}</h4>
+      <h4 *ngIf="contactService.selectedObjects.length == 0;else templateShowSelected">{{ pageTitle }}</h4>
+      <ng-template #templateShowSelected>
+        <button (click)="onClearSelected()" type="button" class="btn"><i class="fa fa-times"></i></button>
+        <span class="btn btn-text">{{ contactService.selectedObjects.length }} selected</span>
+      </ng-template>
     </li>
   </ul>
 </div>
 
 <ng-content></ng-content>
-
-<z-contact-share-import-contact #importContactSelect (optionSelected)="onImportOptionSelected($event)"></z-contact-share-import-contact>
-
-<icloud-oauth-modal #iCloudOAuthModal></icloud-oauth-modal>

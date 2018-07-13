@@ -117,6 +117,13 @@ export class ZContactListComponent
         combineLatest(this.pageSubject),
         takeUntil(this.destroySubject))
       .subscribe(([contacts, page]) => {
+
+        _.map(contacts, (v: any) => {
+          let alias = v.name.charAt(0).toLowerCase();
+          v.first_character = alias;
+          return v;
+        });
+
         this.contacts = contacts.slice(0, ITEM_PER_PAGE * page);
         this.loadingService.stop();
       });
@@ -146,7 +153,7 @@ export class ZContactListComponent
   }
 
   onLoadMore() {
-    this.pageSubject.next(this.pageSubject.getValue() + 1);
+    // this.pageSubject.next(this.pageSubject.getValue() + 1);
     // this.page += 1;
     // this.contactService.onLoadMore();
   }
