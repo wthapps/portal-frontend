@@ -14,17 +14,17 @@
 image: node:10.5.0
 
 pipelines:
-  default:
-    - step:
-        caches:
-          - node
-    - step:
-        name: Global tasks
-        script:
-          - echo "This script runs on all branches"
+#  default:
+#    - step:
+#        caches:
+#          - node
+#    - step:
+#        name: Global tasks
+#        script:
+#          - echo "This script runs on all branches"
 
   branches:
-    development:
+    test:
       - step:
           name: Installation
           script:
