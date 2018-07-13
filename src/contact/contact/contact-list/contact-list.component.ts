@@ -120,7 +120,7 @@ export class ZContactListComponent
 
         _.map(contacts, (v: any) => {
           let alias = v.name.charAt(0).toLowerCase();
-          v.first_character = alias;
+          v.first_character = (this.isAlphaOrParen(alias)) ? alias : '#';
           return v;
         });
 
@@ -313,5 +313,9 @@ export class ZContactListComponent
   }
   addTags(event: any) {
     this.modal.open();
+  }
+
+  private isAlphaOrParen(str) {
+    return /^[a-zA-Z()]+$/.test(str);
   }
 }
