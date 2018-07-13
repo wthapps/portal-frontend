@@ -257,6 +257,20 @@ export class ZMediaSharingDetailComponent
     })
   }
 
+  deleteParent() {
+    this.confirmService.confirm({
+      header: 'Delete',
+      acceptLabel: 'Delete',
+      message: `Are you sure to delete ${this.selectedObjects.length} sharing`,
+      accept: () => {
+        this.loading = true;
+        this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
+          this.back();
+        })
+      }
+    })
+  }
+
   changeViewMode(mode: any) {
     this.viewMode = mode;
   }
@@ -277,7 +291,7 @@ export class ZMediaSharingDetailComponent
   }
 
   openModalShareParent() {
-    this.openModalShare({ selectedObjects: [this.object] });
+    this.openModalShare([this.object]);
   }
 
   openModalShare: (input: any) => void;
@@ -328,17 +342,17 @@ export class ZMediaSharingDetailComponent
 
   getMenuActions() {
     return {
-      add: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: () => { },
-        class: 'btn btn-default',
-        liclass: 'hidden-xs',
-        tooltip: this.tooltip.share,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-plus-square'
-      },
+      // add: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: false, // Outside dropdown list
+      //   action: () => { },
+      //   class: 'btn btn-default',
+      //   liclass: 'hidden-xs',
+      //   tooltip: this.tooltip.share,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-plus-square'
+      // },
       share: {
         active: true,
         // needPermission: 'view',
@@ -373,17 +387,17 @@ export class ZMediaSharingDetailComponent
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
       },
-      tag: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: () => { },
-        class: 'btn btn-default',
-        liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
-      },
+      // tag: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: false, // Outside dropdown list
+      //   action: () => { },
+      //   class: 'btn btn-default',
+      //   liclass: 'hidden-xs',
+      //   tooltip: this.tooltip.tag,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-tag'
+      // },
       tagMobile: {
         active: true,
         // needPermission: 'view',
@@ -400,10 +414,10 @@ export class ZMediaSharingDetailComponent
         active: true,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
-        action: () => { console.log('delete'); },
+        action: this.deleteParent.bind(this),
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
+        tooltip: this.tooltip.delete,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       },

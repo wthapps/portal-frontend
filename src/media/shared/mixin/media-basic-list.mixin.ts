@@ -80,6 +80,8 @@ export class MediaBasicListMixin {
         this.apiBaseService.post(`media/media/delete`, {objects: this.selectedObjects}).subscribe(res => {
           this.loadObjects();
           this.loading = false;
+          this.hasSelectedObjects = false;
+          this.selectedObjects = [];
         })
       }
     })

@@ -19,7 +19,7 @@
     </a>
   </li>
   <li class="hidden-xs">
-    <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite'})" pTooltip="{{ tooltip.favourite }}"
+    <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite', payload: data})" pTooltip="{{ tooltip.favourite }}"
       tooltipPosition="bottom">
       <i class="fa" [ngClass]="toggleFavourite ? 'fa-star' : 'fa-star-o'"></i>
     </a>
@@ -32,19 +32,19 @@
     </a>
     <ul class="dropdown-menu dropdown-menu-right text-right">
       <li *ngIf="showViewDetail">
-        <a href="javascript:void(0);" (click)="emitEvent({action: 'view_detail'})">
+        <a href="javascript:void(0);" (click)="emitEvent({action: 'view_detail', payload: data})">
           <i class="fa fa-eye"></i> View Contact
         </a>
       </li>
 
       <li *ngIf="showEdit">
-        <a href="javascript:void(0);" (click)="emitEvent({action: 'edit_contact'})">
+        <a href="javascript:void(0);" (click)="emitEvent({action: 'edit_contact', payload: data})">
           <i class="fa fa-pencil"></i> Edit Contact
         </a>
       </li>
 
       <li *ngIf="showTag">
-        <a href="javascript:void(0);" (click)="emitEvent({action: 'tag'})">
+        <a href="javascript:void(0);" (click)="emitEvent({action: 'tag', payload: data})">
           <i class="fa fa-users"></i> Add to Group
         </a>
       </li>
@@ -69,18 +69,18 @@
           </a>
         </li>
         <li class="visible-xs-block">
-          <a href="javascript:;" (click)="emitEvent({action: 'favourite'})">
+          <a href="javascript:;" (click)="emitEvent({action: 'favourite', payload: data})">
             <i class="fa" [ngClass]="toggleFavourite ? 'fa-star' : 'fa-star-o'"></i> Favourite
           </a>
         </li>
       </ng-container>
 
       <li>
-        <a href="javascript:;" (click)="emitEvent({action: 'delete'})">
+        <a href="javascript:;" (click)="emitEvent({action: 'delete', payload: data})">
           <i class="fa fa-trash"></i> Delete</a>
       </li>
       <li>
-        <a href="javascript:;" (click)="emitEvent({action: 'blacklist'})" [title]="toggleBlacklist ? 'remove from blacklist' : 'add to blacklist'">
+        <a href="javascript:;" (click)="emitEvent({action: 'blacklist', payload: data})" [title]="toggleBlacklist ? 'remove from blacklist' : 'add to blacklist'">
           <i class="fa fa-ban"></i> Blacklist
         </a>
       </li>

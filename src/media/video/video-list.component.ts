@@ -23,9 +23,10 @@ import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 
 declare var _: any;
-@Mixin([SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble])
+@Mixin([SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble, MediaDownloadMixin])
 @Component({
   selector: 'me-video-list',
   entryComponents: [
@@ -35,7 +36,7 @@ declare var _: any;
   ],
   templateUrl: 'video-list.component.html'
 })
-export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble {
+export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble, MediaDownloadMixin {
   // display videos on screen
   objects: any;
   // tooltip to introduction
@@ -74,6 +75,8 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   }
 
   loadModalComponent:(component: any) => void;
+
+  downloadMedia:(media: any) => void;
 
   doListEvent(e: any) {
     switch(e.action) {

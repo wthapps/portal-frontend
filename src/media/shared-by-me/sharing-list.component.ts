@@ -21,13 +21,14 @@ import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 
-@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin])
+@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
 @Component({
   selector: 'me-sharings',
   templateUrl: '../shared/list/list.component.html'
 })
-export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, SharingModalMixin, MediaModalMixin {
+export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin {
   objects: any;
   links: any;
   hasSelectedObjects: boolean;
@@ -121,13 +122,20 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         break;
       case 'openModal':
         this.openEditModal(e.payload.selectedObject)
-        this.modalIns.event.subscribe(e => this.doModalAction(e))
+        this.modalIns.event.subscribe(e => this.doModalAction(e));
         break;
     }
   }
 
   doModalAction(e: any) {
-
+    switch (e.action) {
+      case 'editName' :
+        this.apiBaseService.put(`media/sharings/${e.params.selectedObject.id}`, e.params.selectedObject).subscribe(res => {
+          this.toastsService.success('Updated successfully')
+        })
+      default:
+        break;
+    }
   }
 
   doToolbarEvent(e: any) {
@@ -138,6 +146,13 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         break;
     }
   }
+
+  downloadMediaCustom() {
+    this.apiBaseService.get(`media/sharings/${this.selectedObjects[0].uuid}/objects`).subscribe(res => {
+      this.downloadMedia(res.data);
+    });
+  }
+  downloadMedia:(media) => void;
 
   openModalShare:(array?: any) => void;
 
@@ -158,6 +173,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   openEditModalCustom() {
     if(this.selectedObjects && this.selectedObjects.length == 1) {
       this.openEditModal(this.selectedObjects[0]);
+      this.modalIns.event.subscribe(e => this.doModalAction(e));
     }
   };
 
@@ -247,7 +263,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Outside dropdown list
-        action: () => { },
+        action: this.downloadMediaCustom.bind(this),
         class: '',
         liclass: '',
         title: 'Download',
