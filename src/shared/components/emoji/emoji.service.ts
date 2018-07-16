@@ -7,6 +7,8 @@ import { Subject } from 'rxjs/Subject';
 
 declare let _: any;
 
+export const iconSize: number = 40;
+
 @Injectable()
 export class WTHEmojiService {
   EMOJI_DB: any = [];
@@ -36,7 +38,7 @@ export class WTHEmojiService {
       .then(data => {
         let name2Code: {[name: string]: WTHEmojiCateCode} = {};
         Object.entries(data).forEach(([k, v]) => {
-          name2Code[v.shortname] = {category: v.category, code: k};
+          name2Code[v.shortname] = {category: v.category, code: k, diversity: v.diversity};
         });
         this.name2baseCodeSubject.next(name2Code);
         return name2Code;

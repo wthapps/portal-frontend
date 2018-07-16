@@ -40,4 +40,5 @@ export interface WTHEmojiCategory {
 export interface WTHEmojiCateCode {
   category: string;
   code: string;
+  diversity?: string;
 }
