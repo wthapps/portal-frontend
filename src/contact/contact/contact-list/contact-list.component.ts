@@ -50,6 +50,7 @@ export class ZContactListComponent
   contact$: Observable<any>;
   originalContacts: any = [];
   loaded: boolean = false;
+  pageTitle: string;
 
   linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
   linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
@@ -82,6 +83,8 @@ export class ZContactListComponent
   }
 
   ngOnInit() {
+    this.pageTitle = location.pathname === '/others' ? 'Other contacts' : 'All contacts';
+
     this.commonEventService
       .filter(
         (event: CommonEvent) =>
@@ -160,7 +163,7 @@ export class ZContactListComponent
   }
 
   viewContactDetail(contactId: any) {
-    this.router.navigate([`contacts/${contactId}`, { mode: 'view' }]).then();
+    this.router.navigate([`contacts/${contactId}`, 'view']).then();
   }
 
   editContact(contactId: any) {
@@ -270,7 +273,7 @@ export class ZContactListComponent
         break;
 
       case 'edit_contact':
-        this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, {mode: 'edit'}]).then();
+        this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, 'edit']).then();
         break;
       case 'invitation:open_modal':
         const recipients: Array<Recipient> = new Array<Recipient>();
@@ -292,17 +295,31 @@ export class ZContactListComponent
         this.invitationModal.open({ data: recipients });
         break;
       case 'add_to_contacts':
-
-        // this.contactService
-        //   .update(event.payload.item)
-        //   .subscribe((response: any) => {
-            this.toaster.success('You added others to your contacts successful!', event.payload);
-        //   });
+        if (this.contactService.selectedObjects.length > 0) {
+          const contacts = this.contactService.selectedObjects.map(contact => {
+            contact.my_contact = true;
+              return { ...contact };
+          });
+          this.contactService.updateMultiple({contacts: contacts}).subscribe(response => {
+            this.toaster.success('You added others to your contacts successful!');
+          });
+        }
         break;
     }
   }
   addTags(event: any) {
     this.modal.open();
+  }
+
+  get validOthers(): boolean {
+    let result = true;
+    this.contactService.selectedObjects.forEach(contact => {
+      if (contact.my_contact) {
+        result = false;
+        return;
+      }
+    });
+    return result;
   }
 
   private isAlphaOrParen(str) {

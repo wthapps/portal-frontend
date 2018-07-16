@@ -35,6 +35,7 @@
                                       [showSocial]="item | isContactInternal"
                                       [showChat]="item | isContactInternal"
                                       [showInvitation]="item.wthapps_user == null"
+                                      [showAddToContacts]="!item.my_contact"
                                       [toggleFavourite]="item | contactHasGroup:'favourite'"
                                       [toggleBlacklist]="item | contactHasGroup:'blacklist'"
                                       (eventOut)="doActionsToolbar($event)">

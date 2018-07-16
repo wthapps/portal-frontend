@@ -1,4 +1,4 @@
-<z-contact-shared-toolbar [pageTitle]="'All Contacts'">
+<z-contact-shared-toolbar [pageTitle]="pageTitle">
   <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action" *ngIf="contactService.selectedObjects && contactService.selectedObjects.length > 0">
 
     <z-contact-shared-actions-bar
@@ -7,6 +7,7 @@
       [showViewDetail]="false"
       [showEdit]="false"
       [showInvitation]="false"
+      [showAddToContacts]="validOthers"
       [showMergeContacts]="true"
       [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')"
       [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'blacklist')"

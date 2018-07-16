@@ -9,6 +9,7 @@ import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
 import { Observable } from 'rxjs/Observable';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 declare let _: any;
 
@@ -33,22 +34,22 @@ export class ZContactDetailComponent implements OnInit {
               private route: ActivatedRoute,
               private groupService: GroupService,
               private router: Router,
-              private countryService: CountryService,) {
+              private countryService: CountryService,
+              private toaster: ToastsService
+  ) {
     this.countriesCode$ = this.countryService.countriesCode$;
   }
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
-      //
-      console.log('current contact id:::::', params['id']);
       this.getContact(params['id']);
       this.contactId = params['id'];
     });
   }
 
   toggleGroup(name: string) {
-    let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
-      return group.name == name;
+    const group = _.find(this.groupService.getAllGroupSyn(), (g: any) => {
+      return g.name === name;
     });
 
     if (_contact.isContactsHasGroupName([this.data], name)) {
@@ -62,32 +63,46 @@ export class ZContactDetailComponent implements OnInit {
   }
 
   doActionsToolbar(event: any) {
-    if (event.action == 'favourite') {
-      this.toggleGroup('favourite');
-    }
+    switch (event.action) {
+      case 'favourite':
+        this.toggleGroup('favourite');
+        break;
 
-    if (event.action == 'blacklist') {
-      this.toggleGroup('blacklist');
-    }
+      case 'blacklist':
+        this.toggleGroup('blacklist');
+        break;
 
-    if (event.action == 'delete') {
-      this.contactService.confirmDeleteContacts([this.data]);
-    }
+      case 'delete':
+          this.contactService.confirmDeleteContacts([this.data]);
+        break;
 
-    if (event.action == 'social') {
-      if (this.data && this.data.wthapps_user && this.data.wthapps_user.uuid) {
-        window.location.href = _contact.getSocialLink(this.data.wthapps_user.uuid);
-      }
-    }
+      case 'social':
+        if (this.data && this.data.wthapps_user && this.data.wthapps_user.uuid) {
+          window.location.href = _contact.getSocialLink(this.data.wthapps_user.uuid);
+        }
+        break;
 
-    if (event.action == 'chat') {
-      if (this.data && this.data.wthapps_user && this.data.wthapps_user.uuid) {
-        window.location.href = _contact.getChatLink(this.data.wthapps_user.uuid);
-      }
-    }
+      case 'chat':
+        if (this.data && this.data.wthapps_user && this.data.wthapps_user.uuid) {
+          window.location.href = _contact.getChatLink(this.data.wthapps_user.uuid);
+        }
+        break;
 
-    if (event.action == 'edit_contact') {
-      this.router.navigate(['contacts/', this.data.id, {mode: 'edit'}]).then();
+      case 'edit_contact':
+        this.router.navigate(['contacts/', this.data.id, {mode: 'edit'}]).then();
+        break;
+
+      case 'add_to_contacts':
+        if (this.contactService.selectedObjects.length > 0) {
+          const contacts = this.contactService.selectedObjects.map(contact => {
+            contact.my_contact = true;
+            return { ...contact };
+          });
+          this.contactService.updateMultiple({contacts: contacts}).subscribe(response => {
+            this.toaster.success('You added others to your contacts successful!');
+          });
+        }
+        break;
     }
   }
 

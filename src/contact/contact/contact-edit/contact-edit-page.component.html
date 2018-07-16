@@ -27,6 +27,7 @@
                                   [showViewDetail]="false"
                                   [showNumber]="false"
                                   [showInvitation]="false"
+                                  [showAddToContacts]="!contact.my_contact"
                                   [toggleFavourite]="_contact.isContactsHasGroupName([contact], 'favourite')"
                                   [toggleBlacklist]="_contact.isContactsHasGroupName([contact], 'blacklist')"
                                   (eventOut)="doActionsToolbar($event)">

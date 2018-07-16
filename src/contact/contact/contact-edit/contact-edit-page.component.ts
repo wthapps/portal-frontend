@@ -74,9 +74,8 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.route.params
-      .subscribe((params: any) => {
-        let id = params['id'];
+    this.route.params.subscribe((params: any) => {
+        const id = params['id'];
         if (params['mode'] !== undefined) {
           this.mode = params['mode'];
         } else {
@@ -124,31 +123,41 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   }
 
   doActionsToolbar(event: any) {
-    if (event.action === 'favourite') {
-      this.toggleGroup('favourite');
-    }
+    switch (event.action) {
+      case 'favourite':
+        this.toggleGroup('favourite');
+        break;
 
-    if (event.action === 'blacklist') {
-      this.toggleGroup('blacklist');
-    }
+      case 'blacklist':
+        this.toggleGroup('blacklist');
+        break;
 
-    if (event.action === 'delete') {
-      this.contactService.confirmDeleteContacts([this.contact]);
-    }
+      case 'delete':
+        this.contactService.confirmDeleteContacts([this.contact]);
+        break;
 
-    if (event.action === 'edit_contact') {
-      this.router
-        .navigate(['contacts/', this.contact.id, { mode: 'edit' }])
-        .then();
-      this.hasBack = false;
-      this.mode = 'edit';
-    }
-    if (event.action === 'tag') {
-      this.modal.open({
-        mode: 'edit',
-        groups: this.contact.groups,
-        contacts: [this.contact]
-      });
+      case 'edit_contact':
+        this.router
+          .navigate(['contacts/', this.contact.id, 'edit'])
+          .then();
+        this.hasBack = false;
+        this.mode = 'edit';
+        break;
+
+      case 'tag':
+        this.modal.open({
+          mode: 'edit',
+          groups: this.contact.groups,
+          contacts: [this.contact]
+        });
+        break;
+
+      case 'add_to_contacts':
+        this.contact.my_contact = true;
+          this.contactService.updateMultiple({contacts: [this.contact]}).subscribe(response => {
+            this.toastsService.success('You added others to your contacts successful!');
+          });
+        break;
     }
   }
 
