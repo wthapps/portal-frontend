@@ -42,9 +42,15 @@
   <div class="component-listbox-date"></div>
   <!-- Actions for contact -->
   <div class="component-listbox-action" *ngIf="!data.settings">
-    <z-contact-shared-actions-bar [data]="data" [showQuickInvitation]="data.wthapps_user == null" [showNumber]="false" [showSocial]="data | isContactInternal"
-      [showChat]="data | isContactInternal" [showInvitation]="data.wthapps_user == null" [toggleFavourite]="data | contactHasGroup:'favourite'"
-      [toggleBlacklist]="data | contactHasGroup:'blacklist'" (eventOut)="doActionsToolbar($event)">
+    <z-contact-shared-actions-bar [data]="data"
+                                  [showQuickInvitation]="data.wthapps_user == null"
+                                  [showNumber]="false"
+                                  [showSocial]="data | isContactInternal"
+                                  [showChat]="data | isContactInternal"
+                                  [showInvitation]="data.wthapps_user == null"
+                                  [toggleFavourite]="data | contactHasGroup:'favourite'"
+                                  [toggleBlacklist]="data | contactHasGroup:'blacklist'"
+                                  (eventOut)="doActionsToolbar($event)">
     </z-contact-shared-actions-bar>
   </div>
   <!-- Actions for user -->

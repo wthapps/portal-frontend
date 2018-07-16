@@ -1,16 +1,10 @@
 <ul class="page-body-control-menu">
-  <li class="hidden-xs" *ngIf="showInvitation && !showNumber">
-    <a href="javascript:;" class="btn btn-outline-default btn-sm" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})">
-      <i class="fa fa-envelope-o" aria-hidden="true"></i> Invite
+  <li class="hidden-xs" *ngIf="!data.my_contact">
+    <a href="javascript:void(0);" class="btn btn-default"
+       (click)="emitEvent({action: 'add_to_contacts', payload: {objects: [data]}})"
+       pTooltip="{{ tooltip.addToContacts }}" tooltipPosition="bottom">
+      <i class="fa fa-user-plus" aria-hidden="true"></i>
     </a>
-  </li>
-  <li class="hidden-xs" *ngIf="data?.wthapps_user">
-    <a href="javascript:;" class="btn btn-outline-default btn-sm" *ngIf="UNCONNECT_STATUS.includes(data?.connect_status)" (click)="sendRequest(data)">
-      <i class="fa fa-user-plus" aria-hidden="true"></i> Connect
-    </a>
-    <span class="text-fade" *ngIf="!UNCONNECT_STATUS.includes(data?.connect_status)">
-      <i class="fa fa-check-circle" aria-hidden="true"></i> {{ CONNECT_STATUS[data?.connect_status] }}
-    </span>
   </li>
   <li class="hidden-xs" *ngIf="contactService.selectedObjects.length > 1 && showMergeContacts">
     <a href="javascript:;" class="btn btn-default" (click)="mergeContacts()" pTooltip="{{ tooltip.mergeContacts }}" tooltipPosition="bottom">
@@ -50,22 +44,14 @@
       </li>
 
       <ng-container *ngIf="showViewDetail">
-        <li class="visible-xs-block" *ngIf="showInvitation && !showNumber">
-          <a href="javascript:;" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})">
-            <i class="fa fa-envelope-o" aria-hidden="true"></i> Invite
-          </a>
-        </li>
-        <li class="visible-xs-block" *ngIf="data?.wthapps_user">
-          <a href="javascript:;" *ngIf="UNCONNECT_STATUS.includes(data?.connect_status)" (click)="sendRequest(data)">
-            <i class="fa fa-user-plus" aria-hidden="true"></i> Connect
-          </a>
-          <a class="text-fade disabled" *ngIf="!UNCONNECT_STATUS.includes(data?.connect_status)">
-            <i class="fa fa-check-circle" aria-hidden="true"></i> {{ CONNECT_STATUS[data?.connect_status] }}
-          </a>
-        </li>
+        <!--<li class="visible-xs-block" *ngIf="showInvitation && !showNumber">-->
+          <!--<a href="javascript:;" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})">-->
+            <!--<i class="fa fa-envelope-o" aria-hidden="true"></i> Invite-->
+          <!--</a>-->
+        <!--</li>-->
         <li class="visible-xs-block" *ngIf="number > 1">
           <a href="javascript:;" (click)="mergeContacts()">
-            <i class="fa fa-compress" aria-hidden="true"></i> Merge duplicate contacts
+            <i class="fa fa-compress" aria-hidden="true"></i> Merge duplicated contacts
           </a>
         </li>
         <li class="visible-xs-block">

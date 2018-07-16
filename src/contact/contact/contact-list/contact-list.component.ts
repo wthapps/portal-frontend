@@ -100,15 +100,18 @@ export class ZContactListComponent
       if (params['search']) {
         this.contactService.search({ search_value: params['search'] });
       } else {
+        const category = location.pathname === '/others' ? 'others' : 'myContacts';
+        let group = '';
         switch (params['group']) {
           case 'all contacts':
           case 'undefined':
-            this.contactService.filter({ group: undefined });
+            group = undefined;
             break;
           default:
-            this.contactService.filter({ group: params['group'] });
+            group = params['group'];
             break;
         }
+        this.contactService.filter({ category: category, group: group });
       }
     });
 
@@ -229,84 +232,73 @@ export class ZContactListComponent
   }
 
   doActionsToolbar(event: any) {
-    if (event.action == 'favourite') {
-      // this.toggleGroupB(this.contactService.selectedObjects, 'favourite');
-      this.toggleGroup('favourite');
-    }
-
-    if (event.action == 'blacklist') {
-      this.toggleGroup('blacklist');
-    }
-
-    if (event.action == 'tag') {
-      this.doEvent({ action: 'open_add_group_modal' });
-    }
-
-    if (event.action == 'delete') {
-      this.contactService.confirmDeleteContacts(
-        this.contactService.selectedObjects
-      );
-    }
-
-    if (event.action == 'social') {
-      if (
-        this.contactService.selectedObjects &&
-        this.contactService.selectedObjects[0].wthapps_user &&
-        this.contactService.selectedObjects[0].wthapps_user.uuid
-      ) {
-        window.location.href =
+    switch (event.action) {
+      case 'favourite':
+        this.toggleGroup('favourite');
+        break;
+      case 'blacklist':
+        this.toggleGroup('blacklist');
+        break;
+      case 'tag':
+        this.doEvent({ action: 'open_add_group_modal' });
+        break;
+      case 'delete':
+        this.contactService.confirmDeleteContacts(this.contactService.selectedObjects);
+        break;
+      case 'social':
+        if (this.contactService.selectedObjects &&
+            this.contactService.selectedObjects[0].wthapps_user &&
+            this.contactService.selectedObjects[0].wthapps_user.uuid) {
+          window.location.href =
           this.linkSocial +
           this.contactService.selectedObjects[0].wthapps_user.uuid;
-      }
-    }
+        }
+        break;
 
-    if (event.action == 'chat') {
-      if (
-        this.contactService.selectedObjects &&
-        this.contactService.selectedObjects[0].wthapps_user &&
-        this.contactService.selectedObjects[0].wthapps_user.uuid
-      ) {
-        window.location.href =
+      case 'chat':
+        if (this.contactService.selectedObjects &&
+            this.contactService.selectedObjects[0].wthapps_user &&
+            this.contactService.selectedObjects[0].wthapps_user.uuid) {
+          window.location.href =
           this.linkChat +
           this.contactService.selectedObjects[0].wthapps_user.uuid;
-      }
-    }
-
-    if (event.action == 'view_detail') {
-      this.viewContactDetail(this.contactService.selectedObjects[0].id);
-    }
-
-    if (event.action == 'edit_contact') {
-      this.router
-        .navigate([
-          'contacts',
-          this.contactService.selectedObjects[0].id,
-          { mode: 'edit' }
-        ])
-        .then();
-    }
-
-    if (event.action == 'invitation:open_modal') {
-      let recipients: Array<Recipient> = new Array<Recipient>();
-      let objects: any[] = _.get(
-        event,
-        'payload.objects',
-        this.contactService.selectedObjects
-      );
-      _.forEach(objects, (contact: any) => {
-        if (contact.wthapps_user == null) {
-          _.forEach(contact.emails, (email: any) => {
-            recipients.push(
-              new Recipient({
-                email: email.value,
-                fullName: contact.name,
-                contactId: contact.id
-              })
-            );
-          });
         }
-      });
-      this.invitationModal.open({ data: recipients });
+        break;
+
+      case 'view_detail':
+        this.viewContactDetail(this.contactService.selectedObjects[0].id);
+        break;
+
+      case 'edit_contact':
+        this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, {mode: 'edit'}]).then();
+        break;
+      case 'invitation:open_modal':
+        const recipients: Array<Recipient> = new Array<Recipient>();
+        const objects: any[] = _.get(event, 'payload.objects', this.contactService.selectedObjects);
+
+        _.forEach(objects, (contact: any) => {
+          if (contact.wthapps_user == null) {
+            _.forEach(contact.emails, (email: any) => {
+              recipients.push(
+                new Recipient({
+                  email: email.value,
+                  fullName: contact.name,
+                  contactId: contact.id
+                })
+              );
+            });
+          }
+        });
+        this.invitationModal.open({ data: recipients });
+        break;
+      case 'add_to_contacts':
+
+        // this.contactService
+        //   .update(event.payload.item)
+        //   .subscribe((response: any) => {
+            this.toaster.success('You added others to your contacts successful!', event.payload);
+        //   });
+        break;
     }
   }
   addTags(event: any) {

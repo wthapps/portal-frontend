@@ -15,7 +15,17 @@ import { ZContactUserDetailComponent } from '@contacts/contact/user-detail/conta
         canActivate: [AuthGuard]
       },
       {
+        path: 'others',
+        component: ZContactListComponent,
+        canActivate: [AuthGuard]
+      },
+      {
         path: 'contacts/:id',
+        component: ZContactEditPageComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'others/:id',
         component: ZContactEditPageComponent,
         canActivate: [AuthGuard]
       },

@@ -24,7 +24,7 @@
                 <a class="text-link" href="javascript:void(0)">
                   <p class="mb0">{{ user.name }}</p>
                 </a>
-                <span *ngIf="!user.is_contact" class="text-color-light text-small"> not in WTHContacts</span>
+                <span *ngIf="user.new" class="text-color-light text-small"> not in WTHContacts</span>
               </div>
             </div>
           </ng-template>

@@ -500,7 +500,8 @@ export class ConstantsBase {
     previewSharing: 'Preview sharing',
     deleteSharing: 'Delete Sharing',
     doubleClickToEdit: 'Double click to edit',
-    addToSharing: 'Add to sharing'
+    addToSharing: 'Add to sharing',
+    addToContacts: 'Add to contacts'
   };
 
   confirmDialog: any = {

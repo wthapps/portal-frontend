@@ -247,9 +247,8 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
     const objects = this.hasSelectedObjects? this.selectedObjects : [this.object];
     const data: SharingCreateParams = {
       objects: objects.map(s => { return { id: s.id, model: s.model } }),
-      recipients: e.sharingRecipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id } }),
-      role_id: e.role.id
-    }
+      recipients: e.sharingRecipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id } })
+    };
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
       this.toastsService.success('You have just create sharing successful');
     });

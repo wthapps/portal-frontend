@@ -23,11 +23,11 @@ export class SharingModalMixin {
       this.apiBaseService.get(`media/sharings/recipients`, { id: data[0].id }).subscribe(res => {
         this.sharingModalService.open.next({ sharingRecipients: res.data });
       });
-      this.subShareSave = this.sharingModalService.onSave$.take(1).subscribe(e => {
+      this.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
         this.onEditShare(e, data[0]);
       });
     } else {
-      this.subShareSave = this.sharingModalService.onSave$.take(1).subscribe(e => {
+      this.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
         this.onSaveShare(e);
       });
     }
@@ -38,11 +38,11 @@ export class SharingModalMixin {
   onSaveShare(e: SharingModalResult) {
     const data: SharingCreateParams = {
       objects: this.selectedObjects.map(s => { return {id: s.id, model: s.model}}),
-      recipients: e.users.map(u => { return {role_id: u.role_id, recipient_id: u.user.id}}),
-      role_id: e.role.id
-    }
+      recipients: e.users
+    };
+
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
-      this.toastsService.success('You have just create sharing successful');
+      this.sharingModalService.update.next(res.data);
     });
   }
   // onEditShare: (e: SharingModalResult, sharing: any) => void;
@@ -50,11 +50,11 @@ export class SharingModalMixin {
 
     const data: SharingEditParams = {
       recipients: e.recipients.map(s => { return { id: s.id, role_id: s.role_id, recipient_id: s.user.id, _destroy: s._destroy}}),
-      users: e.users.map(s => { return {role_id: s.role_id, recipient_id: s.user.id}}),
+      users: e.users,
       id: sharing.id
-    }
+    };
     this.apiBaseService.post('media/sharings/edit_recipients', data).subscribe(res => {
-      this.toastsService.success('You have just create sharing successful');
+      this.sharingModalService.update.next(res.data);
     });
   }
 }

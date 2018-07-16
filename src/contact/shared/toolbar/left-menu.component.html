@@ -11,7 +11,7 @@
 <div class="menuleft-item" [ngClass]="{'active' : ( currentGroup === 'all contacts')}">
   <a href="javascript:;" [routerLink]="['contacts', {group: 'all contacts'}]"
      (click)="doEvent({action: 'contacts', event: $event})">
-    <i class="fa fa-address-book-o"></i> All Contacts ({{ (contactService.contacts).length }})
+    <i class="fa fa-address-book-o"></i> All Contacts ({{ contactService.myContactCount }})
   </a>
 </div>
 
@@ -33,20 +33,25 @@
   </div>
 </ng-container>
 
-<div class="menuleft-item" [routerLinkActive]="['active']">
-  <a href="javascript:;" (click)="openImportContactModal()">
-    <i class="fa fa-download"></i> Import
-  </a>
-</div>
-
 <div class="menuleft-item">
-  <a href="javascript:;" (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})">
+  <a (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})"
+     href="javascript:void(0)" >
     <i class="fa fa-plus"></i> New Group
   </a>
 </div>
 <div class="menuleft-item" [routerLinkActive]="['active']">
-  <a [routerLink]="['/settings']" (click)="doEvent(null)" href="#">
-    <i class="fa fa fa-cog"></i> Settings
+  <a [routerLink]="['/others']" (click)="doEvent(null)" href="javascript:void(0)">
+    <i class="fa fa-inbox"></i> Other contacts ({{ contactService.otherContactCount }})
+  </a>
+</div>
+<div class="menuleft-item" [routerLinkActive]="['active']">
+  <a (click)="openImportContactModal()" href="javascript:void(0)" >
+    <i class="fa fa-download"></i> Import
+  </a>
+</div>
+<div class="menuleft-item" [routerLinkActive]="['active']">
+  <a [routerLink]="['/settings']" (click)="doEvent(null)" href="javascript:void(0)">
+    <i class="fa fa-cog"></i> Settings
   </a>
 </div>
 

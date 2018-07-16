@@ -42,26 +42,26 @@ export class ZContactSharedHeaderComponent {
     }
 
     this.suggestService.input$.subscribe((input: any) => {
-      this.apiBaseService.get(`contact/search/my_contacts`, {q: `name:${input}`, per_page: 5})
-      .subscribe(res => {
-        let items = res.data;
-        this.suggestService.setSuggestion(items);
-        this.apiBaseService.get(`contact/search/wth_users_suggest`, {q: `name:${input}`, per_page: 5})
-        .subscribe(res => {
-          // filter duplications
-          let hash = {};
-          const suggests = [...items, ...res.data].filter(item => {
-            // if contact
-            if (item.user_id) {
-              if (hash[item.id]) return false;
-              hash[item.id] = true; return true;
-            }
-            // else user
-            return true;
-          })
-          this.suggestService.setSuggestion(suggests);
-        });
-      });
+      // this.apiBaseService.get(`contact/search/my_contacts`, {q: `name:${input}`, per_page: 5})
+      // .subscribe(res => {
+      //   let items = res.data;
+      //   this.suggestService.setSuggestion(items);
+      //   this.apiBaseService.get(`contact/search/wth_users_suggest`, {q: `name:${input}`, per_page: 5})
+      //   .subscribe(res => {
+      //     // filter duplications
+      //     let hash = {};
+      //     const suggests = [...items, ...res.data].filter(item => {
+      //       // if contact
+      //       if (item.user_id) {
+      //         if (hash[item.id]) return false;
+      //         hash[item.id] = true; return true;
+      //       }
+      //       // else user
+      //       return true;
+      //     })
+      //     this.suggestService.setSuggestion(suggests);
+      //   });
+      // });
     });
 
 

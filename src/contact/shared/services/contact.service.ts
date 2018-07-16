@@ -77,6 +77,22 @@ export class ZContactService extends BaseEntityService<any> {
     this.loadUserSetttings();
   }
 
+  get myContactCount(): number {
+    return this.contacts.filter(contact => contact.my_contact === true).length;
+  }
+
+  get otherContactCount(): number {
+    return this.contacts.filter(contact => contact.my_contact === false).length;
+  }
+
+  get myContacts(): Array<any> {
+    return this.contacts.filter(contact => contact.my_contact === true);
+  }
+
+  get otherContacts(): Array<any> {
+    return this.contacts.filter(contact => contact.my_contact === false);
+  }
+
   // Change get all URL to support caching by SW
   getAll(options?: any, url?: any): Observable<any> {
     const path = url || `${this.url}/all`;
@@ -286,18 +302,23 @@ export class ZContactService extends BaseEntityService<any> {
 
   filter(options: any) {
     this.resetPageNumber();
-    let group = _.get(options, 'group');
-    this.filterOption = { group: group };
-
+    // let group = _.get(options, 'group');
+    // this.filterOption = { group: group };
+    this.filterOption = options;
     this.notifyContactsObservers();
   }
 
-  filterByGroup(group?: string) {
+  filterByGroup(options: any) {
     let contacts: any[] = [];
-    if (group === undefined || group === 'undefined') contacts = this.contacts;
-    else {
+    const category = options.category || 'myContacts';
+    const group = options.group || 'undefined';
+
+    if (group === undefined || group === 'undefined') {
+      contacts = category === 'others' ? this.contacts.filter(contact => !contact.my_contact) :
+                                        this.contacts.filter(contact => contact.my_contact);
+    } else {
       contacts = _.filter(this.contacts, (contact: any) => {
-        let cgroups = _.map(contact.groups, 'name');
+        const cgroups = _.map(contact.groups, 'name');
         if (_.indexOf(cgroups, group) > -1) return contact;
       });
     }
@@ -329,7 +350,7 @@ export class ZContactService extends BaseEntityService<any> {
     if (_.has(this.filterOption, 'search')) {
       contacts = this.searchContact(this.filterOption.search);
     } else if (_.has(this.filterOption, 'group')) {
-      contacts = this.filterByGroup(this.filterOption.group);
+      contacts = this.filterByGroup(this.filterOption);
     } else {
       contacts = this.contacts;
     }

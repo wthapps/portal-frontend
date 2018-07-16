@@ -30,7 +30,6 @@ export class GroupService extends BaseEntityService<Group> {
   }
 
   getAllGroups(): Promise<Group[]> {
-    console.debug('getAllGroups: ', this.groupsSubject.getValue());
     if (_.isEmpty(this.groupsSubject.getValue())) {
       return this.getAll()
         .toPromise()
@@ -171,7 +170,7 @@ export class GroupService extends BaseEntityService<Group> {
     let filtered: any[] = [];
     for (let i = 0; i < groups.length; i++) {
       let group = groups[i];
-      if (group.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+      if (group.name.toLowerCase().indexOf(query.toLowerCase()) === 0) {
         filtered.push(group.name);
       }
     }
@@ -188,17 +187,17 @@ export class GroupService extends BaseEntityService<Group> {
       count: 0,
       order: group.system ? group.order : 100 + group.order,
       icon:
-        group.name == 'all contacts'
+        group.name === 'all contacts'
           ? 'fa fa-address-book-o'
-          : group.name == 'favourite'
+          : group.name === 'favourite'
             ? 'fa fa-star'
-            : group.name == 'groups'
+            : group.name === 'groups'
               ? 'fa fa-users'
-              : group.name == 'blacklist'
+              : group.name === 'blacklist'
                 ? 'fa fa-ban'
-                : group.name == 'social'
+                : group.name === 'social'
                   ? 'fa fa-globe'
-                  : group.name == 'chat' ? 'fa fa-comments-o' : 'fa fa-folder-o'
+                  : group.name === 'chat' ? 'fa fa-comments-o' : 'fa fa-folder-o'
     };
   }
 }

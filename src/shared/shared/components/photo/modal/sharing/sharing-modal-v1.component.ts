@@ -30,9 +30,7 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   deleting: boolean;
   textUsers = [];
   loading = false;
-  get updating(): boolean {
-    return (this.updatedUsers.length + this.deletedUsers.length) > 0 ? true : false;
-  }
+  sub: any;
 
   @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
 
@@ -49,12 +47,18 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
       this.open(e);
     });
 
-    this.sharingModalService.update$.subscribe((recipients: Array<any>) => {
+    this.sub = this.sharingModalService.update$.subscribe((recipients: Array<any>) => {
       this.update(recipients);
     });
   }
 
-  ngOnDestroy() {}
+  get updating(): boolean {
+    return (this.updatedUsers.length + this.deletedUsers.length) > 0 ? true : false;
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 
   close() {
     this.cancel();
@@ -81,15 +85,9 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   }
 
   save() {
-// <<<<<<< 77f499c0b3e71755314c88c9b04af746d20497b4
-    const newRecipients: Array<SharingRecipient> = this.newUsers.map(s => { return { role_id: this.role.id, user: s}})
-    const data: SharingModalResult = this.updating ? { recipients: this.sharedUsers, users: [], role: this.role}
-      : { recipients: this.sharedUsers, users: newRecipients, role: this.role};
-// =======
-    // const newRecipients: Array<SharingRecipient> = this.selectedUsers.map(s => { return { role_id: this.role.id, user: s}})
-    // // const data = { sharingRecipients: [...this.sharedUsers, ...newRecipients], role: this.role};
-    // const data: SharingModalResult = { recipients: this.sharedUsers, users: newRecipients, role: this.role };
-// >>>>>>> update: media loading WTHZONE-766
+    const data = this.updating ? { recipients: this.sharedUsers, users: []} :
+                                 { recipients: this.sharedUsers, users: this.newUsers};
+
     // short distance
     this.onSave.emit(data);
     // long distance
@@ -132,7 +130,7 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   }
 
   selectUser(user: any) {
-    this.newUsers.push(user);
+    this.newUsers.push({...user, role_id: this.role.id});
     this.hasChanged = true;
   }
 
