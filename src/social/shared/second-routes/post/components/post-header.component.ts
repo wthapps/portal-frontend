@@ -1,9 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-
-
 import { SocialService } from '../../../services/social.service';
 import { SoPost } from '@wth/shared/shared/models';
 import { UserService } from '@wth/shared/services';
@@ -11,13 +8,10 @@ import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/
 import { Constants } from '@wth/shared/constant';
 import { PostComponent } from '../post.component';
 
-
-
 @Component({
   selector: 'so-post-header',
   templateUrl: 'post-header.component.html'
 })
-
 export class PostHeaderComponent implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
@@ -30,8 +24,10 @@ export class PostHeaderComponent implements OnChanges {
   // user: User;
   readonly postUrl: string = Constants.urls.posts;
   readonly profileUrl: string = Constants.urls.profile;
+  readonly postPrivacy: any = Constants.soPostPrivacy;
   privacyName: string;
-  privacyClassIcon: string;
+  // privacyClassIcon: string;
+
 
   constructor(private postItem: PostComponent,
               private socialService: SocialService,
@@ -47,7 +43,7 @@ export class PostHeaderComponent implements OnChanges {
       this.showDetail = true;
     }
     this.privacyName = this.getPrivacyName(this.item);
-    this.privacyClassIcon = this.getPrivacyClassIcon(this.item);
+    // this.privacyClassIcon = this.getPrivacyClassIcon(this.item);
   }
 
   viewPostDetail(uuid: string) {
@@ -114,19 +110,19 @@ export class PostHeaderComponent implements OnChanges {
     return post.privacy.replace('_', ' ');
   }
 
-  private getPrivacyClassIcon(post: any): string {
-    switch (post.privacy) {
-      case Constants.soPostPrivacy.friends.data:
-        return 'fa-users';
-      case  Constants.soPostPrivacy.public.data:
-        return 'fa-globe';
-      case  Constants.soPostPrivacy.personal.data:
-        return 'fa-lock';
-      case  Constants.soPostPrivacy.customFriend.data:
-        return 'fa-user-times';
-      case  Constants.soPostPrivacy.customCommunity.data:
-        return 'fa-group';
-    }
-    return '';
-  }
+  // private getPrivacyClassIcon(post: any): string {
+  //   // switch (post.privacy) {
+  //   //   case Constants.soPostPrivacy.friends.data:
+  //   //     return 'fa-users';
+  //   //   case  Constants.soPostPrivacy.public.data:
+  //   //     return 'fa-globe';
+  //   //   case  Constants.soPostPrivacy.personal.data:
+  //   //     return 'fa-lock';
+  //   //   case  Constants.soPostPrivacy.customFriend.data:
+  //   //     return 'fa-user-times';
+  //   //   case  Constants.soPostPrivacy.customCommunity.data:
+  //   //     return 'fa-group';
+  //   // }
+  //   return '';
+  // }
 }

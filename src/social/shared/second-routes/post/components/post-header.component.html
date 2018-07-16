@@ -17,7 +17,7 @@
       </a>
       <div class="z-shared-with dropdown">
         <a class="text-capitalize" href="#" (click)="viewPrivacyCustom(item, modal)" data-toggle="dropdown">
-          <i class="fa {{ privacyClassIcon}}">
+          <i class="{{ postPrivacy[item?.privacy]?.css }}">
           </i> {{ privacyName }}</a>
 
         <bs-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">

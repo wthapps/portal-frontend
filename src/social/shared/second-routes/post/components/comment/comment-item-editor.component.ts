@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 
 import {
   CommentCreateEvent,
-  OpenPhotoModalEvent,
   CommentUpdateEvent,
   CancelEditCommentEvent,
   ReplyCreateEvent,
@@ -69,8 +68,10 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   textContent = 'Let\'s try 1st sample';
   cancelPhotoSubject: Subject<any> = new Subject<any>();
+  destroySubject: Subject<any> = new Subject<any>();
   close$: Observable<any>;
   uploadSubscription: Subscription;
+  selectEmojiSub: Subscription;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -99,7 +100,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   viewProfile(uuid: string) {
@@ -121,38 +123,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       return;
     }
   }
-
-  /*
-   * Now we just supports ONE photo
-   * */
-  // editComment(photo: any) {
-  //   this.comment.photo = photo;
-  //   this.commentEditorForm.controls['photo'].setValue(photo);
-  //
-  // }
-
-  // setCommentAttributes(attributes: any) {
-  //   if ('photo' in attributes) {
-  //     this.comment.photo = attributes.photo;
-  //     this.commentEditorForm.controls['photo'].setValue(attributes.photo)
-  //   }
-  //   if ('content' in attributes) {
-  //     this.comment.content = attributes.content || '';
-  //   }
-  //
-  //   this.hasUpdatedContent = true;
-  // }
-
-  // updateAttributes(options: any) {
-  //   if ('hasUploadingPhoto' in options) {
-  //     this.hasUploadingPhoto = options.hasUploadingPhoto;
-  //   }
-  //   if ('files' in options) {
-  //     this.files = options.files;
-  //   }
-  //
-  //   this.hasUpdatedContent = true;
-  // }
 
   commentAction(photos?: any) {
     let commentEvent: any;
@@ -182,8 +152,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   onOpenPhotoSelect() {
-    // this.eventEmitter.emit(new OpenPhotoModalEvent(this));
-
     this.mediaSelectionService.open();
     this.mediaSelectionService.setMultipleSelection(false);
 
@@ -220,10 +188,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    // this.comment.content = '';
-    // this.comment.photo = null;
-    // this.commentEditorForm.controls['content'].setValue('');
-    // this.commentEditorForm.controls['photo'].setValue(null);
     this.setCommentContent('');
     this.setPhoto(null);
     this.hasUpdatedContent = false;
@@ -256,8 +220,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     } else if (this.mode == CommentEditorMode.Edit) {
 
       // update current comment/reply
-      // this.comment.content = this.commentEditorForm.value.content;
-      // this.commentContent.nativeElement.setInnerHTML(this.commentEditorForm.controls['content']);
       event = new CommentUpdateEvent(this.comment);
     }
     this.eventEmitter.emit(event);
@@ -293,14 +255,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     return !!this.comment.content || !!this.comment.photo;
   }
 
-  // hasChanged() {
-  //   console.debug('hasChanged checking ...');
-  //   if (this.comment.content === '' && !this.hasUpdatedContent && !this.comment.photo) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
   setCommentContent(value: any) {
     this.comment.content = value;
   }
@@ -308,7 +262,9 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   showEmojiBtn(event: any) {
     this.emojiService.show(event);
 
-    this.emojiService.selectedEmoji$.pipe(
+    if(this.selectEmojiSub && !this.selectEmojiSub.closed)
+      this.selectEmojiSub.unsubscribe();
+    this.selectEmojiSub = this.emojiService.selectedEmoji$.pipe(
       take(1)
     ).subscribe(data => {
       console.debug(data);

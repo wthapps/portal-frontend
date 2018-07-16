@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { takeUntil, filter, map, tap } from 'rxjs/operators';
+import { takeUntil, filter, map, tap, take } from 'rxjs/operators';
 
 import { SocialService } from '../../services/social.service';
 import { BsModalComponent } from 'ng2-bs3-modal';
@@ -56,7 +56,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
   @Output() saved: EventEmitter<any> = new EventEmitter<any>();
   @Output() dismissed: EventEmitter<any> = new EventEmitter<any>();
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
+  readonly postPrivacy: any = Constants.soPostPrivacy;
 
   post: SoPost;
   files: Array<any> = new Array<any>();
@@ -78,6 +79,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   privacyClassIcon: string;
   privacyName: string;
   profile$: Observable<any>;
+  selectEmojiSub: Subscription;
 
   readonly soPostPrivacy: any = Constants.soPostPrivacy;
 
@@ -90,7 +92,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
     private loadingService: LoadingService,
     private socialService: SocialService,
     private mediaSelectionService: WMediaSelectionService,
-    // private photoSelectDataService: PhotoModalDataService,
     private photoUploadService: PhotoUploadService,
     private emojiService: WTHEmojiService,
     private userService: UserService
@@ -112,13 +113,11 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges() {
-    console.debug('on changes ...');
-    this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
+    // this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
     this.privacyName = this.getPrivacyName(this.post);
   }
 
   handleKeyUp(event: any) {
-    console.debug('on handleKeyUp ... ');
     this.hasChange = true;
   }
 
@@ -133,7 +132,13 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   showEmojiBtn(event: any) {
     this.emojiService.show(event);
-    this.emojiService.selectedEmoji$.take(1).subscribe(data => {
+
+    if(this.selectEmojiSub && !this.selectEmojiSub.closed)
+      this.selectEmojiSub.unsubscribe();
+    this.selectEmojiSub = this.emojiService.selectedEmoji$
+      .pipe(
+      take(1))
+      .subscribe(data => {
       this.editor.addEmoj(data.shortname);
       this.hasChange = true;
     });
@@ -185,7 +190,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     if (options.parent != null) {
       this.parent = options.parent;
     }
-    this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
+    // this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
     this.privacyName = this.getPrivacyName(this.post);
 
     this.form = this.fb.group({
@@ -200,7 +205,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
     if (options.addingPhotos) {
-      // this.photoSelectDataService.open({return: false});
       this.mediaSelectionService.setMultipleSelection(true);
       this.mediaSelectionService.open();
     } else {
@@ -214,8 +218,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
   close() {
     this.modal.close();
     this.mediaSelectionService.close();
-    // this.photoSelectDataService.close();
-    // $('.modal-backdrop').remove();
   }
 
   done(item: any) {
@@ -241,11 +243,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
     this.saved.emit(options);
     this.mediaSelectionService.close();
-    // this.photoSelectDataService.close();
 
     this.modal.close();
-
-    // this.textarea.nativeElement.style.heigth = '50px';
   }
 
   uploadFiles(files: Array<any>) {
@@ -328,7 +327,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   dismiss(photos: any) {
-    // this.photos.length = 0;
     this.dismissed.emit(photos);
     this.modal.close(null).then();
     this.mediaSelectionService.close();
@@ -350,7 +348,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
       {privacy: response.type, custom_objects: response.items},
       null
     );
-    // this.custom_objects = response.items;
   }
 
   /**
@@ -376,23 +373,23 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.privacyName = this.getPrivacyName(this.post);
   }
 
-  private getPrivacyClassIcon(post: any): string {
-    let privacy = !post || post.privacy == '' ? 'public' : post.privacy;
-    switch (privacy) {
-      case Constants.soPostPrivacy.friends.data:
-        return 'fa-users';
-      case Constants.soPostPrivacy.public.data:
-        return 'fa-globe';
-      case Constants.soPostPrivacy.personal.data:
-        return 'fa-lock';
-      case Constants.soPostPrivacy.customFriend.data:
-        return 'fa-user-times';
-      case Constants.soPostPrivacy.customCommunity.data:
-        return 'fa-group';
-    }
-    return '';
-    // return `Constants.soPostPrivacy.${post.privacy}.class`;
-  }
+  // private getPrivacyClassIcon(post: any): string {
+  //   let privacy = !post || post.privacy == '' ? 'public' : post.privacy;
+  //   switch (privacy) {
+  //     case Constants.soPostPrivacy.friends.data:
+  //       return 'fa-users';
+  //     case Constants.soPostPrivacy.public.data:
+  //       return 'fa-globe';
+  //     case Constants.soPostPrivacy.personal.data:
+  //       return 'fa-lock';
+  //     case Constants.soPostPrivacy.customFriend.data:
+  //       return 'fa-user-times';
+  //     case Constants.soPostPrivacy.customCommunity.data:
+  //       return 'fa-group';
+  //   }
+  //   return '';
+  //   // return `Constants.soPostPrivacy.${post.privacy}.class`;
+  // }
 
   loading() {
     this.loadingService.start('#loading');
