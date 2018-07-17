@@ -126,6 +126,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
         this.loading = false;
       });
     } else {
+      this.loading = false;
       this.store.dispatch({type: fromShareModal.SET_SHARED_SHARINGS, payload: []});
     }
   }
