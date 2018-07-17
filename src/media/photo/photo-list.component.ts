@@ -69,6 +69,7 @@ export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModal
     public mediaCreateModalService: MediaCreateModalService,
     public resolver: ComponentFactoryResolver,
     private router: Router,
+    private commonEventService: CommonEventService,
     public confirmService: WthConfirmService
   ) {}
 
@@ -123,13 +124,9 @@ custom method please overwirte any method*/
   /* ================================== */
 
   doListEvent(event: any) {
+    console.log(event);
+
     switch (event.action) {
-      case 'sort':
-        this.store.dispatch(new GetAll({ path: this.path, queryParams: { type: this.type, ...event.payload.queryParams } }));
-        break;
-      case 'addAlbumSuccessful':
-        this.store.dispatch(new AddSuccess(event.payload));
-        break;
       case 'favorite':
         this.toggleFavorite(event.payload)
         break;
@@ -145,8 +142,27 @@ custom method please overwirte any method*/
       case 'getMore':
         this.loadMoreObjects();
         break;
+      case 'openModal':
+        if (event.payload.modalName == "editNameModal") {
+          this.openEditModal(event.payload.selectedObject)
+        };
+        break;
     }
   }
+
+  uploadHandler(files: any) {
+    const data = files.map(file => {
+      return { file: file.result, name: file.name, type: file.type };
+    });
+    this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'init', payload: files });
+    data.forEach(f => {
+      this.apiBaseService.post(`media/photos`, f).subscribe(res => {
+        this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
+        this.loadObjects();
+      });
+    });
+  }
+
 
   onListChanges(e: any) {
     switch (e.action) {
@@ -171,6 +187,8 @@ custom method please overwirte any method*/
       }
     ]);
   }
+
+
 
   ngOnDestroy() {
     // this.sub.unsubscribe();
@@ -221,4 +239,12 @@ custom method please overwirte any method*/
   loadModalComponent: (component: any) => void;
 
   openEditModal:(object: any) => void;
+  onAfterEditModal() {
+    /* this method is load objects to display on init */
+    const sub = this.modalIns.event.subscribe(event => {
+      this.apiBaseService.put(`media/photos/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
+        if(sub) sub.unsubscribe();
+      })
+    });
+  }
 }

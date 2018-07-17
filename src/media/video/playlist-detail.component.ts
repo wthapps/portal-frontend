@@ -286,6 +286,8 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
     console.log('You should overwrite this one', e);
   }
 
+  toggleInfo:() => void;
+
   getMenuActions() {
     return {
       add: {

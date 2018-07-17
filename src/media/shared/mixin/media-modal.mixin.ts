@@ -20,7 +20,7 @@ export class MediaModalMixin implements LoadModalAble {
       this.loadModalComponent(PhotoEditModalComponent);
       options = {selectedObject: object}
     }
-    if(object.model == 'Media::Album') {
+    if (object.model == 'Media::Album' || object.model == 'Media::Playlist') {
       this.loadModalComponent(AlbumEditModalComponent);
       options = {selectedObject: object}
     }
@@ -28,9 +28,14 @@ export class MediaModalMixin implements LoadModalAble {
       this.loadModalComponent(MediaRenameModalComponent);
       options = {selectedObject: object}
     }
-
     if (this.modalIns) {
       this.modalIns.open(options);
     }
+    this.onAfterEditModal();
+  }
+
+  onAfterEditModal(){
+    /* this method is load objects to display on init */
+    throw new Error('should overwrite this method');
   }
 }

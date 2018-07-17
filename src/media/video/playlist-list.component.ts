@@ -20,17 +20,18 @@ import { WObjectListService } from '@shared/components/w-object-list/w-object-li
 import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 
 declare var _: any;
 
-@Mixin([MediaBasicListMixin, SharingModalMixin])
+@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-playlist-list',
   templateUrl: '../shared/list/list.component.html'
   // templateUrl: 'playlist-list.component.html'
 })
-export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin, SharingModalMixin {
+export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin, SharingModalMixin, MediaModalMixin {
   // display objects on screen
   objects: any;
   // tooltip to introduction
@@ -48,6 +49,9 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin,
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
   subShareSave: any;
+  modalIns: any;
+  modalRef: any;
+  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -201,13 +205,18 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin,
     }
   }
 
-  doListEvent(e: any) {
-    switch(e.action) {
+  doListEvent(event: any) {
+    switch (event.action) {
       case 'viewDetails':
-        this.viewDetail(e.payload.selectedObject.uuid);
+        this.viewDetail(event.payload.selectedObject.uuid);
         break;
       case 'favorite':
-        this.toggleFavorite(e.payload);
+        this.toggleFavorite(event.payload);
+        break;
+      case 'openModal':
+        if (event.payload.modalName == "editNameModal") {
+          this.openEditModal(event.payload.selectedObject)
+        };
         break;
     }
   }
@@ -306,10 +315,14 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin,
     throw new Error('should overwrite this method');
   }
   changeViewMode:(mode: any) => void;
-}
 
-interface SharingCreateParams {
-  objects: Array<{ id; model }>[];
-  recipients: Array<{ id }>[];
-  role_id: number;
+  loadModalComponent: (component: any) => void;
+  openEditModal:(object: any) => void;
+  onAfterEditModal() {
+    const sub = this.modalIns.event.subscribe(event => {
+      this.apiBaseService.put(`media/playlists/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
+        if (sub) sub.unsubscribe();
+      })
+    });
+  }
 }

@@ -195,7 +195,6 @@ export class ZMediaAlbumDetailComponent extends MediaActionHandler implements On
         } else {
           this.store.dispatch(new AddToDetailObjects({album: this.album, photos: event.payload.photos}));
         }
-        this.sub.unsubscribe();
         break;
       case 'removeFromParent':
         this.store.dispatch(new RemoveFromDetailObjects(event.payload));

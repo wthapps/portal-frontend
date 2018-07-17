@@ -113,7 +113,7 @@ export class PhotoHtmlComponent implements OnInit, OnDestroy {
   }
 
   onUploadThumbnail(args: any) {
-    console.log('onUploadThumbnail:', args);
+    // console.log('onUploadThumbnail:', args);
     this.mediaSelectionService.upload(args);
   }
 

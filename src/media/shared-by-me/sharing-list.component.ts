@@ -169,6 +169,9 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   loadModalComponent: (component: any) => void;
 
   openEditModal:(object: any) => void;
+  onAfterEditModal() {
+
+  };
 
   openEditModalCustom() {
     if(this.selectedObjects && this.selectedObjects.length == 1) {
@@ -213,29 +216,6 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
       },
-      // tag: {
-      //   active: true,
-      //   // needPermission: 'view',
-      //   inDropDown: false, // Outside dropdown list
-      //   action: () => { },
-      //   class: 'btn btn-default',
-      //   liclass: 'hidden-xs',
-      //   tooltip: this.tooltip.tag,
-      //   tooltipPosition: 'bottom',
-      //   iconClass: 'fa fa-tag'
-      // },
-      // tagMobile: {
-      //   active: true,
-      //   // needPermission: 'view',
-      //   inDropDown: true, // Inside dropdown list
-      //   action: () => { },
-      //   class: '',
-      //   liclass: 'visible-xs-block',
-      //   title: 'Tag',
-      //   tooltip: this.tooltip.tag,
-      //   tooltipPosition: 'bottom',
-      //   iconClass: 'fa fa-tag'
-      // },
       delete: {
         active: true,
         // needPermission: 'view',

@@ -67,13 +67,16 @@
     <div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
       <box-loading></box-loading>
     </div>
-    <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="'fa fa-video-camera'" [subTitle]="subTitleNoData"
-      style="margin-top: 50px; display: block;">
-      <w-upload class="btn btn-outline-primary" [mode]="uploadMode" [accept]="uploadType" (uploadHandler)="toolbar.uploadHandler($event)"
+    <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
+      [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
+      <w-upload *ngIf="actionNoData" class="btn btn-outline-primary" [mode]="uploadMode" [accept]="uploadType" (uploadHandler)="toolbar.uploadHandler($event)"
         (errorHandler)="errorHandler($event)">
         <i class="fa fa-cloud-upload"></i> {{actionNoData}}
       </w-upload>
     </box-no-data>
     <ng-template #modalContainer></ng-template>
+  </div>
+  <div class="page-over-full-info">
+    <media-detail-info #mediaInfo (event)="doToolbarEvent($event)"></media-detail-info>
   </div>
 </div>

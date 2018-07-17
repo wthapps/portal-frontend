@@ -262,11 +262,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   onUploadThumbnail(args: any) {
-    console.log('onUploadThumbnail:', args);
-    // console.log('onUploadThumbnail:', args[0]['dataURL']);
     this.mediaSelectionService.upload(args);
     this.modal.close().then();
-    // this.close();
   }
 
 

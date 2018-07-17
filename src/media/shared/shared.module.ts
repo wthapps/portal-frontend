@@ -18,6 +18,7 @@ import { MediaObjectService } from './container/media-object.service';
 import { SharingItemComponent } from './media/sharing-item.component';
 import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
 import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
+import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 
 TagInputModule.withDefaults({
   tagInput: {
@@ -43,6 +44,7 @@ TagInputModule.withDefaults({
     MediaItemComponent,
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
+    MediaDetailInfoComponent,
     // ZMediaAlbumDetailComponent,
 
     // new components
@@ -57,6 +59,7 @@ TagInputModule.withDefaults({
     MediaItemComponent,
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
+    MediaDetailInfoComponent,
     // ZMediaAlbumDetailComponent,
 
     //

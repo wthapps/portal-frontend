@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
 import {
   AlbumCreateModalComponent,
   AlbumDeleteModalComponent,
@@ -14,11 +14,12 @@ import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/mod
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 
-export class MediaActionHandler {
+export class MediaActionHandler implements OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
   sub: any;
+  subSelect: any;
 
   constructor(
     protected resolver: ComponentFactoryResolver,
@@ -37,6 +38,11 @@ export class MediaActionHandler {
     this.modal.event.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doEvent(event);
     });
+  }
+
+  ngOnDestroy(){
+    if(this.sub) this.sub.unsubscribe();
+    if (this.subSelect) this.subSelect.unsubscribe();
   }
 
   openModal(payload: any, mediaSelectionService: any) {
@@ -82,17 +88,16 @@ export class MediaActionHandler {
       case 'photosSelectModal':
         mediaSelectionService.open('photos');
         mediaSelectionService.setMultipleSelection(true);
-
-        const sub = mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
+        if (this.subSelect) this.subSelect.unsubscribe();
+        this.subSelect = mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
           .subscribe(photos => {
             this.doEvent({action: 'addToParent', payload: {photos: photos }});
-            sub.unsubscribe();
           });
+        if(this.sub)  this.sub.unsubscribe();
         this.sub = mediaSelectionService.uploadingMedias$
           .map(([file, dataUrl]) => [file])
           .subscribe((photos: any) => {
           this.doEvent({action: 'addToParent', payload: {photos: photos, uploading: true }});
-          this.sub.unsubscribe();
         });
         break;
       default:

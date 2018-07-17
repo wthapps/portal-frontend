@@ -1,6 +1,6 @@
 <h3>
   Information
-  <a href="javascript:void(0);" class="pull-right text-inherit" (click)="doAction({action: 'toggleDetailsInfo'})">
+  <a href="javascript:void(0);" class="pull-right text-inherit" (click)="doAction({action: 'toggleInfo'})">
     <i class="fa fa-times"></i>
   </a>
 </h3>
@@ -19,24 +19,23 @@
       {{ object.description }}
     </dd>
   </dl>
-  <hr/>
   <div class="photo-detail-info-title">
     <h4>
       <i class="fa fa-tag"></i> Tag
-      <button class="btn btn-default" (click)="doAction({
+      <!-- <button class="btn btn-default" (click)="doAction({
           action: 'openModal',
           payload: {
               modalName: 'taggingModal',
               selectedObjects: [object],
               updateListObjects: [object]
           }})">
-        <i class="fa fa-pencil"></i>
-      </button>
+        <i class="fa fa-pencil"></i> -->
+      <!-- </button> -->
     </h4>
   </div>
-  <div class="tags-text" *ngFor="let tag of object.json_tags">
+  <!-- <div class="tags-text" *ngFor="let tag of object.json_tags">
     <span>{{ tag.name }}</span>
-  </div>
+  </div> -->
   <hr/>
   <div class="photo-detail-info-title">
     <h4>
@@ -54,7 +53,7 @@
             <div class="vertical"></div>
           </li>
 
-          <li *ngFor="let contact of object?.json_shares">
+          <li *ngFor="let contact of users">
             <a href="javascript:void(0);" (click)="doAction({
                action: 'openModal',
                payload: {
@@ -72,6 +71,4 @@
       </dd>
     </dl>
   </div>
-
-
 </ng-container>

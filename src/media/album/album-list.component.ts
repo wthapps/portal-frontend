@@ -17,14 +17,10 @@ import {
   DeleteMany,
   Download
 } from '../shared/store/media/media.actions';
-import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import { Constants } from '@wth/shared/constant';
-import { MediaActionHandler } from '@media/shared/media';
-import { AlbumService } from '@media/shared/service';
 import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
 import { ApiBaseService, WthConfirmService } from '@shared/services';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
-import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -32,13 +28,14 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { AlbumCreateMixin } from '@media/shared/mixin/album/album-create.mixin';
 
-@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
+@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin])
 @Component({
   selector: 'z-media-album-list',
   templateUrl: 'album-list.component.html'
 })
-export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin {
+export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin {
   objects: any;
   loading: boolean;
   links: any;
@@ -51,6 +48,7 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
   subShareSave: any;
   modalIns: any;
   modalRef: any;
+  subCreateAlbum: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
 
@@ -112,6 +110,13 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
       case 'favorite':
         this.toggleFavorite(event.payload);
         break;
+      case 'openModal':
+        if (event.payload.modalName == "editNameModal") {
+          this.openEditModal(event.payload.selectedObject)
+        };
+        if (event.payload.modalName == "createAlbumModal") {
+          this.openCreateAlbumModal([]);
+        };
     }
   }
 
@@ -153,4 +158,20 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
   loadModalComponent: (component: any) => void;
 
   openEditModal:(object: any) => void;
+  onAfterEditModal() {
+    /* this method is load objects to display on init */
+    const sub = this.modalIns.event.subscribe(event => {
+      this.apiBaseService.put(`media/albums/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
+        if (sub) sub.unsubscribe();
+      })
+    })
+  }
+
+  openCreateAlbumModal:(selectedObjects: any) => void;
+
+  onDoneAlbum(e: any) {
+    this.apiBaseService.post(`media/albums`, { name: e.parents[0].name, description: e.parents[0].description, photos: e.children.map(el => el.id) }).subscribe(res => {
+      this.loadObjects();
+    })
+  }
 }

@@ -10,8 +10,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import {
   ApiBaseService,
-  CommonEventService,
-  PhotoUploadService
+  CommonEventService
 } from '@shared/services';
 import {
   GetAll,
@@ -23,15 +22,9 @@ import {
   Download,
   DeleteMany
 } from '../shared/store/media/media.actions';
-import * as appStore from '../shared/store';
-import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
-import { Store } from '@ngrx/store';
-import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { MediaActionHandler } from '@media/shared/media';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
 import { MediaListDetailMixin } from '@media/shared/mixin/media-list-detail.mixin';
 import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
 import { MediaAdditionalListMixin } from '@media/shared/mixin/media-additional-list.mixin';
@@ -46,6 +39,7 @@ import { MediaAddModalService } from '@shared/shared/components/photo/modal/medi
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { Location } from '@angular/common';
+import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 
 @Mixin([
   MediaBasicListMixin,
@@ -73,6 +67,7 @@ export class ZMediaSharingDetailComponent
     MediaDownloadMixin {
   objects: any;
   object: any;
+  recipients: any;
   hasSelectedObjects: boolean;
   selectedObjects: any = [];
   favoriteAll: any;
@@ -83,11 +78,8 @@ export class ZMediaSharingDetailComponent
   links: any;
   showDetailsInfo: any;
   // ============
-  titleNoData: any = 'There is no videos!';
-  subTitleNoData: any = 'Try to upload a new video';
-  actionNoData: any = 'Create an video';
-  uploadMode: any = 'multiple';
-  uploadType: any = 'video/*';
+  titleNoData: any = 'There is no sharing!';
+  iconNoData: any = 'fa fa-share-alt';
   // ===========
   menuActions: any = {};
   parentMenuActions: any = {};
@@ -101,7 +93,7 @@ export class ZMediaSharingDetailComponent
   subCreatePlaylist: any;
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
-
+  @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
 
   constructor(public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
@@ -144,6 +136,9 @@ export class ZMediaSharingDetailComponent
       case 'changeView':
         this.changeViewMode(e.payload);
         break;
+      case 'toggleInfo':
+        this.toggleInfo();
+        break;
     }
   }
 
@@ -172,7 +167,6 @@ export class ZMediaSharingDetailComponent
   loadObject(input: any) {
     this.apiBaseService.get(`media/sharings/${input}`).subscribe(res => {
       this.object = res.data;
-      // this.parentMenuActions.favorite.iconClass = res.data.favorite ? 'fa fa-star' : 'fa fa-star-o';
     });
   }
 
@@ -215,6 +209,15 @@ export class ZMediaSharingDetailComponent
   }
 
   loadModalComponent: (component: any) => void;
+  toggleInfo: () => void;
+  toggleInfoCustom() {
+    this.apiBaseService.get(`media/sharings/${this.object.id}/recipients`).subscribe(res => {
+      this.recipients = res.data.map(r => r.user);
+      this.mediaInfo.users = [...this.recipients];
+      this.mediaInfo.object = {...this.object};
+    });
+    this.toggleInfo();
+  };
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
@@ -261,7 +264,7 @@ export class ZMediaSharingDetailComponent
     this.confirmService.confirm({
       header: 'Delete',
       acceptLabel: 'Delete',
-      message: `Are you sure to delete ${this.selectedObjects.length} sharing`,
+      message: `Are you sure to delete this sharing`,
       accept: () => {
         this.loading = true;
         this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
@@ -296,11 +299,12 @@ export class ZMediaSharingDetailComponent
 
   openModalShare: (input: any) => void;
 
-  onSaveShare(e: any) {
+  onSaveShare(e: SharingModalResult) {
     const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
     const data: SharingCreateParams = {
       objects: objects.map(s => { return { id: s.id, model: s.model } }),
-      recipients: e.sharingRecipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id } })
+      recipients: e.recipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id } }),
+      role_id: e.role.id
     };
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
       // this.toastsService.success('You have just create sharing successful');
@@ -329,6 +333,8 @@ export class ZMediaSharingDetailComponent
   downloadMediaCustom() {
     if (this.selectedObjects && this.selectedObjects.length > 0) {
       this.downloadMedia(this.selectedObjects);
+    } else {
+      this.downloadMedia(this.objects);
     }
   }
 
@@ -387,29 +393,6 @@ export class ZMediaSharingDetailComponent
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
       },
-      // tag: {
-      //   active: true,
-      //   // needPermission: 'view',
-      //   inDropDown: false, // Outside dropdown list
-      //   action: () => { },
-      //   class: 'btn btn-default',
-      //   liclass: 'hidden-xs',
-      //   tooltip: this.tooltip.tag,
-      //   tooltipPosition: 'bottom',
-      //   iconClass: 'fa fa-tag'
-      // },
-      tagMobile: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Inside dropdown list
-        action: () => { },
-        class: '',
-        liclass: 'visible-xs-block',
-        title: 'Tag',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
-      },
       delete: {
         active: true,
         // needPermission: 'view',
@@ -433,14 +416,14 @@ export class ZMediaSharingDetailComponent
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-edit'
       },
-      detail: {
+      info: {
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Outside dropdown list
-        action: () => { },
+        action: this.toggleInfoCustom.bind(this),
         class: '',
         liclass: '',
-        title: 'View Detail',
+        title: 'View Information',
         tooltip: this.tooltip.info,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-info-circle'
@@ -449,7 +432,7 @@ export class ZMediaSharingDetailComponent
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Outside dropdown list
-        action: () => { },
+        action: this.downloadMediaCustom.bind(this),
         class: '',
         liclass: '',
         title: 'Download',
@@ -507,29 +490,6 @@ export class ZMediaSharingDetailComponent
         tooltip: this.tooltip.addToFavorites,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
-      },
-      tag: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: () => { },
-        class: 'btn btn-default',
-        liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
-      },
-      tagMobile: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Inside dropdown list
-        action: () => { },
-        class: '',
-        liclass: 'visible-xs-block',
-        title: 'Tag',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
       },
       delete: {
         active: true,

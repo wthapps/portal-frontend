@@ -45,10 +45,10 @@
     </div>
 
     <div *ngIf="(step==uploadSteps.uploaded || step==uploadSteps.stop) && !isVideos">
-      <a class="mr20" href="javascript:void(0);" (click)="onAction({action: 'openModal', payload: {modalName: 'createAlbumModal', selectedObjects: photos }})">
+      <a *ngIf="step==uploadSteps.uploaded" class="mr20" href="javascript:void(0);" (click)="onAction({action: 'openModal', payload: {modalName: 'createAlbumModal', selectedObjects: photos }})">
         Create Album
       </a>
-      <a href="javascript:void(0);" (click)="onAction({action: 'openModal', payload: {modalName: 'addToAlbumModal', selectedObjects: photos }})">
+      <a *ngIf="step==uploadSteps.uploaded" href="javascript:void(0);" (click)="onAction({action: 'openModal', payload: {modalName: 'addToAlbumModal', selectedObjects: photos }})">
         Add to Album
       </a>
       <div class="text-right mb10">

@@ -1,4 +1,4 @@
-<div class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
+<!-- <div class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
   <div class="page-over-full-header">
     <ng-template #leftSharingActionsTemplate>
       <ul class="page-body-control-menu">
@@ -93,9 +93,6 @@
       </ul>
     </ng-template>
 
-
-    <!--photo actions-->
-
     <ng-template #leftPhotoActionsTemplate>
       <ul class="page-body-control-menu">
         <li class="divider">
@@ -184,12 +181,10 @@
 
     <w-grid-list #gridlist [objects]="photos$|async" (event)="doEvent($event)" (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)">
 
-      <!--loading icon-->
       <div class="page-body-content has-page-body-control gray-light" *ngIf="loading$|async">
         <box-loading></box-loading>
       </div>
 
-      <!--no data region-->
       <div class="zone-no-photo text-center" *ngIf="loaded && !gridlist.objects.length ">
         <div>
           <h2>
@@ -209,6 +204,6 @@
 
   </div>
   <div class="page-over-full-info">
-    <ng-template #infoContainer></ng-template>
+    <media-detail-info [object]="object"></media-detail-info>
   </div>
-</div>
+</div> -->
