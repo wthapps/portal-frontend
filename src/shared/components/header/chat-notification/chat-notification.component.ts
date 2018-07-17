@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
-import { Constants } from "@shared/constant";
+import { Constants, CHAT_CONVERSATIONS } from "@shared/constant";
 import { User } from "@shared/shared/models";
 import { AuthService } from '@wth/shared/services';
 import { WTHNavigateService } from "@shared/services/wth-navigate.service";
@@ -13,6 +13,7 @@ import { ApiProxyService } from "@shared/services/apiproxy.service";
 import { ConversationApiCommands } from "@shared/commands/chat/coversation-commands";
 import { StorageService } from "@shared/services/storage.service";
 import { HandlerService } from "@shared/services/handler.service";
+import { Observable, BehaviorSubject } from 'rxjs';
 
 declare var $: any;
 
@@ -23,12 +24,15 @@ declare var $: any;
 })
 export class ChatNotificationComponent implements OnInit {
 
-  tooltip: any = Constants.tooltip;
-  defaultAvatar: string = Constants.img.avatar;
+  readonly tooltip: any = Constants.tooltip;
+  readonly defaultAvatar: string = Constants.img.avatar;
   urls: any = Constants.baseUrls;
   conversations: any = [];
+  visibleConversationIds: number[] = [];
+  visibleConversations: any[];
   notificationCount: any;
   links: any;
+
 
   constructor(private navigateService: WTHNavigateService,
               private apiBaseService: ApiBaseService,
@@ -63,6 +67,15 @@ export class ChatNotificationComponent implements OnInit {
     this.handlerService.addListener('add_notification', 'on_notification_come', (res: any) => {
       this.notificationCount += res.count;
     });
+
+
+    // // Remove a group user ASAP
+    this.handlerService.addListener('update_conversations', 'on_conversation_changes', (list: any[]) => {
+      if(!list)
+        return;
+      this.visibleConversationIds = list.map(d => d.id);
+      this.visibleConversations = this.conversations.filter(c => this.visibleConversationIds.includes(c.group_user.id));
+    })
   }
 
   gotoChat() {
@@ -76,6 +89,7 @@ export class ChatNotificationComponent implements OnInit {
 
       this.links = res.meta.links;
       this.conversations = res.data;
+      this.visibleConversations = this.conversations.filter(c => this.visibleConversationIds.includes(c.group_user.id));
     });
   }
 

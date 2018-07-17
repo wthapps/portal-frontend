@@ -24,6 +24,7 @@ import {
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators/map';
 
 
 declare var _: any;
@@ -49,33 +50,19 @@ export class ChatService {
     private fileService: GenericFileService
   ) {
     // =============================
-    // this.storage.save(CHAT_CONVERSATIONS, null);
-    // this.storage.save(CHAT_RECENT_CONVERSATIONS, null);
-    // this.storage.save(CHAT_FAVOURITE_CONVERSATIONS, null);
-    // this.storage.save(CHAT_HISTORY_CONVERSATIONS, null);
-    // this.storage.save(CONVERSATION_SELECT, null);
-    // this.storage.save(CURRENT_CHAT_MESSAGES, null);
-    // this.storage.save(USERS_ONLINE, []);
-    // this.storage.save(NUMBER_MESSAGE, 20);
     this.constant = ChatConstant;
+
+    // trigger changes in chat notification data
+    this.storage.getAsync(CHAT_CONVERSATIONS).subscribe((value: any) => {
+      if(value && value.data)
+        this.handler.triggerEvent('on_conversation_changes', value.data);
+    });
   }
 
   initalize() {
     this.subscribeNotification();
     // Init get data
     this.getConversationsAsync().subscribe();
-    // this.apiBaseService
-    //   .addCommand(ConversationApiCommands.getConversations())
-    //   .subscribe(res => {
-    //     this.store.dispatch({
-    //       type: fromConversations.SET_CHAT_CONVERSATIONS,
-    //       payload: res.data
-    //     });
-    //     this.store.dispatch({
-    //       type: fromConversationsUsers.SET_CHAT_CONVERSATIONS_USERS,
-    //       payload: res.included
-    //     });
-    //   });
   }
 
   getConversations(option: any = {}) {
@@ -190,8 +177,8 @@ export class ChatService {
     }
   }
 
-  getCurrentMessages() {
-    return this.storage.find(CURRENT_CHAT_MESSAGES);
+  getCurrentMessagesAsync() {
+    return this.storage.getAsync(CURRENT_CHAT_MESSAGES);
   }
 
   isExistingData(key: string) {
@@ -217,27 +204,22 @@ export class ChatService {
     return this.apiBaseService.get('zone/chat/message/' + groupId);
   }
 
-  sendMessage(groupId: any, data: any, option: any = {}, callback?: any) {
-    this.apiBaseService
+  sendMessage(groupId: any, data: any, option: any = {}): Promise<any> {
+    return this.apiBaseService
       .post('zone/chat/message', { group_id: groupId, data: data })
-      .subscribe((res: any) => {
-        if (callback) {
-          callback(res);
-        }
-      });
+      .toPromise();
   }
 
-  sendTextMessage(message: any, option: any = {}, callback?: any) {
+  sendTextMessage(message: any, option: any = {}): Promise<any> {
     let item = this.storage.find(CONVERSATION_SELECT);
     if (item && item.value && message) {
-      let item = this.storage.find(CONVERSATION_SELECT);
-      this.sendMessage(
+      return this.sendMessage(
         item.value.group_json.id,
         { message: message, type: 'text' },
-        option,
-        callback
+        option
       );
     }
+    return Promise.resolve(null);
   }
 
   updateMessage(conversationId: any, message: any): Observable<any> {
@@ -263,7 +245,8 @@ export class ChatService {
         content_type: 'media/generic'
       });
       if (file.allow) {
-        this.sendMessage(groupId, message, null, (response: any) => {
+        this.sendMessage(groupId, message, null)
+          .then((response: any) => {
           file.parent = {
             id: response.data.id,
             uuid: '',

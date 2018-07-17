@@ -244,7 +244,6 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribePhotoEvents();
   }
 
   private buildQuoteMessage(message: any): string {
@@ -254,17 +253,6 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     <p [innerHtml]="#{message.message}"></p>
       </blockquote>
       <br>`;
-  }
-
-  private notAssignedSubscription(sub: Subscription) {
-    return !sub || sub.closed;
-  }
-
-  private unsubscribePhotoEvents() {
-    // [this.nextPhotoSubscription, this.uploadPhotoSubscription].forEach((sub: Subscription) => {
-    //   if (sub && !sub.closed)
-    //     sub.unsubscribe();
-    // });
   }
 
   private resetEditor() {

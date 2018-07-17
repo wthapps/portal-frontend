@@ -64,22 +64,22 @@ export class ChatCommonService {
   addMessage(groupId: any, data: any) {
     let message = data.message;
     message.links = data.links;
-    let item = this.storage.find('chat_messages_group_' + groupId);
+    let currentMessageList = this.storage.getValue('chat_messages_group_' + groupId);
     if (this.storage.find('conversation_select')) {
       let contactSelect = this.storage.find('conversation_select').value;
-      if (item && item.value) {
+      if (currentMessageList) {
         let isReplace = false;
-        for (let i = 0; i < item.value.data.length; i++) {
-          if (item.value.data[i].id == message.id) {
+        for (let i = 0; i < currentMessageList.data.length; i++) {
+          if (currentMessageList.data[i].id == message.id) {
             isReplace = true;
-            item.value.data[i] = message;
+            currentMessageList.data[i] = message;
           }
         }
         if (!isReplace) {
-          item.value.data.push(message);
+          currentMessageList.data.push(message);
         }
         if (contactSelect.group_json.id == groupId) {
-          this.storage.save('current_chat_messages', item);
+          this.storage.save('current_chat_messages', currentMessageList);
         }
         if (!contactSelect.favourite) {
           this.moveFristRecentList();

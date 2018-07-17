@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import { empty } from 'rxjs/observable/empty';
 
 import { UserService } from './user.service';
 import {
   CHAT_CONVERSATIONS, CHAT_RECENT_CONVERSATIONS, CHAT_FAVOURITE_CONVERSATIONS,
   CHAT_HISTORY_CONVERSATIONS, CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, USERS_ONLINE, NUMBER_MESSAGE
 } from '@wth/shared/constant';
-import { Observable } from 'rxjs';
-import { empty } from 'rxjs/observable/empty';
 
 declare var _: any;
 
@@ -26,7 +26,7 @@ const DEFAULT_STORAGES: {[name: string]: BehaviorSubject<any>} = {
 @Injectable()
 export class StorageService {
   // listItem: Array<StorageItem> = [];
-  private listItem: {[name: string]: any} = DEFAULT_STORAGES;
+  private listItem: {[name: string]: BehaviorSubject<any>} = DEFAULT_STORAGES;
   storageId: any;
   reset: boolean = true;
 

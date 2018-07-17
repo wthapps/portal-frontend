@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { tap } from 'rxjs/operators/tap';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ChatService } from '../shared/services/chat.service';
@@ -14,8 +17,6 @@ import {
   PhotoService
 } from '@wth/shared/services';
 import { CHAT_ACTIONS, FORM_MODE } from '@wth/shared/constant';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 
 declare var _: any;
 declare var $: any;
@@ -28,11 +29,11 @@ export class ConversationDetailComponent
   implements CommonEventAction, OnInit, OnDestroy {
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
-  item: any;
   events: any;
 
   commonEventSub: Subscription;
   contactSelect$: Observable<any>;
+  currentMessages$: Observable<any>;
   tokens: any;
 
   constructor(
@@ -47,10 +48,17 @@ export class ConversationDetailComponent
     // this.store.select('conversations').subscribe((state: any) => {
     //   console.log(state);
     // });
+
+
   }
 
   ngOnInit() {
-    this.contactSelect$ = this.chatService.getContactSelectAsync();
+    this.contactSelect$ = this.chatService.getContactSelectAsync().pipe(
+      tap(res => console.log(res))
+    );
+    this.currentMessages$ = this.chatService.getCurrentMessagesAsync().pipe(
+      tap(res => console.log('currentMessages$: ' ,res))
+    );;
     this.route.params.forEach((params: any) => {
       let contact = this.chatService.getContactSelect().value;
       if (contact) {
@@ -68,7 +76,6 @@ export class ConversationDetailComponent
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
       });
-    this.item = this.chatService.getCurrentMessages();
   }
 
   doEvent(event: CommonEvent) {

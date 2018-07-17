@@ -29,8 +29,8 @@ export class MessageListComponent implements OnInit {
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
   @ViewChild('listEl') listEl: ElementRef;
 
-  item: any;
-  contactItem: any;
+  @Input() currentMessages: any;
+  @Input() contactItem: any;
   prevMessage: any;
   scrollDistance: number = 1000;
 
@@ -41,18 +41,18 @@ export class MessageListComponent implements OnInit {
     private messageService: WMessageService
   ) {
     this.messageService.scrollToBottom$.subscribe((res: boolean) => {
-      if (res) {
+      if (res && this.listEl) {
         this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
       }
     });
   }
 
   ngOnInit() {
-    setInterval(() => {
-      this.item = this.chatService.getCurrentMessages();
-      this.contactItem = this.chatService.getContactSelect();
-      this.ref.markForCheck();
-    }, 200);
+    // setInterval(() => {
+    //   this.item = this.chatService.getCurrentMessages();
+    //   this.contactItem = this.chatService.getContactSelect();
+    //   this.ref.markForCheck();
+    // }, 200);
   }
 
   onLoadMore() {
@@ -91,9 +91,9 @@ export class MessageListComponent implements OnInit {
   }
 
   getPrevMessage(currentMessage: any) {
-    let curMsgIndex = _.findIndex(this.item.value.data, {
+    let curMsgIndex = _.findIndex(this.currentMessages.data, {
       id: currentMessage.id
     });
-    return curMsgIndex <= 0 ? null : this.item.value.data[curMsgIndex - 1];
+    return curMsgIndex <= 0 ? null : this.currentMessages.data[curMsgIndex - 1];
   }
 }

@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs/Observable';
-import { concat } from 'rxjs/observable/concat';
 import { ApiCommand } from '@shared/commands/common/api-command';
 
 export class ConversationApiCommands extends ApiCommand {

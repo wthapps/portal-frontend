@@ -117,6 +117,7 @@ export class ZChatToolbarComponent implements OnInit {
     }
   }
 
+  // TODO: Inefficient dirty check - SHould update later
   inContact(user: any) {
     let conversations: any = this.chatService.storage.find(CHAT_CONVERSATIONS).value;
     let contact: any = _.find(conversations.data, {'partner_id': user.id});
