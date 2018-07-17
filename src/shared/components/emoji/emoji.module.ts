@@ -6,6 +6,7 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { HttpClientModule } from '@angular/common/http';
 import { TooltipModule, OverlayPanelModule } from 'primeng/primeng';
 import { AppWTHEmojiComponent } from './emoji.component';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { AppWTHEmojiComponent } from './emoji.component';
     HttpClientModule,
     PipeModule,
     TooltipModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    ScrollToModule
   ],
   declarations: [WTHEmojiClassPipe, WTHEmojiPipe, AppWTHEmojiComponent],
   exports: [WTHEmojiClassPipe, WTHEmojiPipe, AppWTHEmojiComponent],
