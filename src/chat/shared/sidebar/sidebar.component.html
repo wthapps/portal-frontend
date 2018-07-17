@@ -14,11 +14,11 @@
   </a>
 </div>
 
-<ng-container *ngIf="favouriteContacts.value">
+<ng-container *ngIf="favouriteContacts$ | async as favouriteContacts">
   <h4 class="p15">
     Favourites
   </h4>
-  <div *ngFor="let contact of favouriteContacts.value" class="menuleft-item" [routerLinkActive]="['active']">
+  <div *ngFor="let contact of favouriteContacts" class="menuleft-item" [routerLinkActive]="['active']">
     <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact); onCloseMenu()"
        href="javascript:;">
       <z-chat-share-user class="media-chat-user-item" [data]="contact"></z-chat-share-user>
@@ -26,12 +26,11 @@
     </a>
   </div>
 </ng-container>
-
-<ng-container *ngIf="recentContacts.value">
+<ng-container *ngIf="recentContacts$ | async as recentContacts">
   <h4 class="p15">
     Recent
   </h4>
-  <div *ngFor="let contact of recentContacts.value" class="menuleft-item" [routerLinkActive]="['active']">
+  <div *ngFor="let contact of recentContacts" class="menuleft-item" [routerLinkActive]="['active']">
     <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact); onCloseMenu()"
        href="javascript:;">
       <z-chat-share-user class="media-chat-user-item" [data]="contact"></z-chat-share-user>

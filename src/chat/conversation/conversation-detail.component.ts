@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/toPromise';
 
 import { ChatService } from '../shared/services/chat.service';
 import { MessageListComponent } from '../shared/message/message-list.component';
@@ -16,8 +15,7 @@ import {
 } from '@wth/shared/services';
 import { CHAT_ACTIONS, FORM_MODE } from '@wth/shared/constant';
 import { Store } from '@ngrx/store';
-import * as fromConversations from './../../core/store/chat/conversations.reducer';
-import { User } from '@shared/shared/models';
+import { Observable } from 'rxjs/Observable';
 
 declare var _: any;
 declare var $: any;
@@ -34,6 +32,7 @@ export class ConversationDetailComponent
   events: any;
 
   commonEventSub: Subscription;
+  contactSelect$: Observable<any>;
   tokens: any;
 
   constructor(
@@ -51,6 +50,7 @@ export class ConversationDetailComponent
   }
 
   ngOnInit() {
+    this.contactSelect$ = this.chatService.getContactSelectAsync();
     this.route.params.forEach((params: any) => {
       let contact = this.chatService.getContactSelect().value;
       if (contact) {

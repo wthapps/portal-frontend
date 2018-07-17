@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChatService } from '../services/chat.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'z-chat-share-user',
@@ -10,12 +11,12 @@ export class ZChatShareUserComponent implements OnInit {
   @Input() data: any;
   @Input() size: string = 'xs'; //xs, xsm, sm, md, lg
   @Input() displayUserName: boolean = true;
-  usersOnlineItem: any;
+  usersOnlineItem$: Observable<any>;
 
   constructor(private chatService: ChatService) {
   }
 
   ngOnInit() {
-    this.usersOnlineItem = this.chatService.getUsersOnline();
+    this.usersOnlineItem$ = this.chatService.getUsersOnline();
   }
 }

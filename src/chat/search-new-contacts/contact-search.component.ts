@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatShareRequestContactComponent } from '../shared/modal/request-contact.component';
 import { Constants } from '@wth/shared/constant';
@@ -9,9 +12,9 @@ import { Constants } from '@wth/shared/constant';
   styleUrls: ['contact-search.component.scss']
 })
 export class ZChatContactSearchComponent implements OnInit {
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
 
-  contactItem: any;
+  contactItem$: Observable<any>;
   name: any;
   newContacts: any;
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
@@ -19,7 +22,7 @@ export class ZChatContactSearchComponent implements OnInit {
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
-    this.contactItem = this.chatService.getConversations();
+    this.contactItem$ = this.chatService.getConversationsAsync();
   }
 
   search() {

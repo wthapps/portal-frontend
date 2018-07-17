@@ -6,6 +6,7 @@ import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { StorageService, UrlService, HandlerService } from '@shared/services';
 import { Store } from '@ngrx/store';
 import { CONVERSATION_SELECT } from '@wth/shared/constant';
+import { Observable } from 'rxjs';
 
 declare var $: any;
 
@@ -17,10 +18,10 @@ declare var $: any;
 export class ZChatSidebarComponent implements OnInit {
   chatMenu = Constants.chatMenuItems;
 
-  usersOnlineItem: any;
-  favouriteContacts: any;
-  historyContacts: any;
-  recentContacts: any;
+  usersOnlineItem$:  Observable<any>;
+  favouriteContacts$:  Observable<any>;
+  historyContacts$:  Observable<any>;
+  recentContacts$: Observable<any>;
   historyShow: any = true;
   isRedirect: boolean;
   @ViewChild('chatToolbar') chatToolbar: ZChatToolbarComponent;
@@ -51,7 +52,6 @@ export class ZChatSidebarComponent implements OnInit {
           if (this.urlService.parse().paths[1]) {
             this.chatService
               .getConversationsAsync()
-              .take(1)
               .subscribe((res: any) => {
                 if (res.value && res.value.data) {
                   res.value.data.forEach(contact => {
@@ -83,10 +83,10 @@ export class ZChatSidebarComponent implements OnInit {
         }
       });
 
-    this.recentContacts = this.chatService.getRecentConversations();
-    this.favouriteContacts = this.chatService.getFavouriteConversations();
-    this.historyContacts = this.chatService.getHistoryConversations();
-    this.usersOnlineItem = this.chatService.getUsersOnline();
+    this.recentContacts$ = this.chatService.getRecentConversations();
+    this.favouriteContacts$ = this.chatService.getFavouriteConversations();
+    this.historyContacts$ = this.chatService.getHistoryConversations();
+    this.usersOnlineItem$ = this.chatService.getUsersOnline();
   }
 
   onSelect(contact: any) {

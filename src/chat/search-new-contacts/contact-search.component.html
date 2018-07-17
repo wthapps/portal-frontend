@@ -17,7 +17,7 @@
   <div class="page-body-content-in">
     <div class="row media-user-list-group" *ngIf="newContacts">
       <div class="col-sm-12"
-           *ngFor="let contact of newContacts | chatUserNew:contactItem">
+           *ngFor="let contact of newContacts | chatUserNew:(contactItem$ | async)">
         <div class="media media-user-list">
           <div class="media-body">
             <z-chat-share-user-icon [image]="contact?.profile_image" [name]="contact.name" [size]="'xs'"

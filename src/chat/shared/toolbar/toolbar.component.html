@@ -1,23 +1,23 @@
-<ng-container *ngIf="item.value">
+<ng-container *ngIf="contactSelect">
   <div class="page-body-nav">
     <div class="page-body-nav-left">
-      <z-chat-share-user [data]="item.value">
-        <small *ngIf="item.value.group_json.member_count > 2" [attr.title]="item.value.group_json | chatGroupMembers"
+      <z-chat-share-user [data]="contactSelect">
+        <small *ngIf="contactSelect.group_json.member_count > 2" [attr.title]="contactSelect.group_json | chatGroupMembers"
                class="can-click" (click)="onShowMemberBar()">
-          {{ item.value.group_json.member_count }} people <i
+          {{ contactSelect.group_json.member_count }} people <i
           [ngClass]="{'fa-angle-right': !showMemberBar, 'fa-angle-down': showMemberBar}" class="fa"></i>
         </small>
       </z-chat-share-user>
     </div>
     <div class="page-body-nav-right">
-      <button *ngIf="item.value.group_json.group_type == 'multiple'" type="button" class="btn btn-default"
+      <button *ngIf="contactSelect.group_json.group_type == 'multiple'" type="button" class="btn btn-default"
               (click)="onAddMember()" pTooltip="{{ tooltip.addPeople }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
       <button type="button" class="btn btn-default" (click)="onFavorite()"
-              pTooltip="{{ (item.value.favourite) ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
+              pTooltip="{{ (contactSelect.favourite) ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
               tooltipPosition="top">
-        <i class="fa" [ngClass]="item.value.favourite? 'fa-star': 'fa-star-o'"></i>
+        <i class="fa" [ngClass]="contactSelect.favourite? 'fa-star': 'fa-star-o'"></i>
       </button>
       <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
@@ -33,7 +33,7 @@
           <!--show if current isn't one user-->
 
           <li><a href="javascript:;" (click)="onEditConversation()">Edit Conversation</a></li>
-          <li *ngIf="item.value.group_json.group_type == 'multiple'">
+          <li *ngIf="contactSelect.group_json.group_type == 'multiple'">
             <a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a>
           </li>
           <!--show if current isn't one user-->
@@ -42,17 +42,17 @@
 
           <!--show if current is one user-->
           <!--<li role="separator" class="divider"></li>-->
-          <li *ngIf="item.value.group_json.group_type == 'couple'"><a
-            [routerLink]="[profileUrl, item.value.display.uuid]">View Profile</a></li>
+          <li *ngIf="contactSelect.group_json.group_type == 'couple'"><a
+            [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a></li>
           <!--<li><a href="#">View in Contact</a></li>-->
           <!--show if current is one user-->
 
 
           <li role="separator" class="divider"></li>
-          <li *ngIf="item.value.notification">
+          <li *ngIf="contactSelect.notification">
             <a href="javascript:;" (click)="disableNotification()">Disable Notification</a>
           </li>
-          <li *ngIf="!item.value.notification">
+          <li *ngIf="!contactSelect.notification">
             <a href="javascript:;" (click)="enableNotification()">Enable Notification</a>
           </li>
         </ul>
@@ -60,15 +60,15 @@
     </div>
   </div>
   <ng-container *ngIf="showMemberBar">
-    <div *ngIf="item.value.group_json.group_type == 'multiple' || item.value.group_json.group_type == 'support'"
+    <div *ngIf="contactSelect.group_json.group_type == 'multiple' || contactSelect.group_json.group_type == 'support'"
          class="page-body-nav-sub">
-      <div *ngFor="let user_in_group of item.value.group_json.users_json" class="dropdown">
+      <div *ngFor="let user_in_group of contactSelect.group_json.users_json" class="dropdown">
         <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)"
                 class="btn btn-sm btn-default dropdown-toggle" type="button"
                 data-toggle="dropdown">
-        <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) != -1"
+        <span *ngIf="inContact(user_in_group) && (usersOnlineItem$ | async)?.includes(user_in_group.id)"
               class="fa fa-circle online"></span>
-          <span *ngIf="inContact(user_in_group) && usersOnlineItem.value.indexOf(user_in_group.id) == -1"
+          <span *ngIf="inContact(user_in_group) && !(usersOnlineItem$ | async)?.includes(user_in_group.id)"
                 class="fa fa-circle"></span>
           <span *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true"></span>
           {{ user_in_group.name }} <span class="caret"></span>
@@ -78,7 +78,7 @@
           <!--<li class="divider"></li>-->
           <li><a [routerLink]="[profileUrl, user_in_group.uuid]">View Profile</a></li>
           <li *ngIf="showBlacklist"><a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a></li>
-          <li *ngIf="item.value.role == 'admin'"><a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove
+          <li *ngIf="contactSelect.role == 'admin'"><a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove
             From Conversation</a></li>
         </ul>
       </div>

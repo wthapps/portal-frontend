@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChatService } from '../services/chat.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'z-chat-share-user-icon',
@@ -12,12 +13,12 @@ export class ZChatShareUserIconComponent implements OnInit {
   @Input() groupType: any;
   @Input() userId: any;
   @Input() size: string = 'xs'; //xs, xsm, sm, md, lg
-  usersOnlineItem: any;
+  usersOnlineItem$: Observable<any>;
 
   constructor(private chatService: ChatService) {
   }
 
   ngOnInit() {
-    this.usersOnlineItem = this.chatService.getUsersOnline();
+    this.usersOnlineItem$ = this.chatService.getUsersOnline();
   }
 }

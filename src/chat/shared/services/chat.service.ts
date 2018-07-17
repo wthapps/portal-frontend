@@ -49,14 +49,14 @@ export class ChatService {
     private fileService: GenericFileService
   ) {
     // =============================
-    this.storage.save(CHAT_CONVERSATIONS, null);
-    this.storage.save(CHAT_RECENT_CONVERSATIONS, null);
-    this.storage.save(CHAT_FAVOURITE_CONVERSATIONS, null);
-    this.storage.save(CHAT_HISTORY_CONVERSATIONS, null);
-    this.storage.save(CONVERSATION_SELECT, null);
-    this.storage.save(CURRENT_CHAT_MESSAGES, null);
-    this.storage.save(USERS_ONLINE, []);
-    this.storage.save(NUMBER_MESSAGE, 20);
+    // this.storage.save(CHAT_CONVERSATIONS, null);
+    // this.storage.save(CHAT_RECENT_CONVERSATIONS, null);
+    // this.storage.save(CHAT_FAVOURITE_CONVERSATIONS, null);
+    // this.storage.save(CHAT_HISTORY_CONVERSATIONS, null);
+    // this.storage.save(CONVERSATION_SELECT, null);
+    // this.storage.save(CURRENT_CHAT_MESSAGES, null);
+    // this.storage.save(USERS_ONLINE, []);
+    // this.storage.save(NUMBER_MESSAGE, 20);
     this.constant = ChatConstant;
   }
 
@@ -83,7 +83,7 @@ export class ChatService {
     if (res && res.value && !option.forceFromApi) {
       return res;
     } else {
-      this.apiBaseService.get('zone/chat/contacts').subscribe((res: any) => {
+      this.apiBaseService.get('zone/chat/contacts').toPromise().then((res: any) => {
         this.storage.save(CHAT_CONVERSATIONS, res);
         this.chatCommonService.setRecentConversations();
         this.chatCommonService.setFavouriteConversations();
@@ -113,21 +113,21 @@ export class ChatService {
     });
   }
 
-  getUserContacts(option: any = {}) {
+  getUserContacts(option: any = {}): Observable<any> {
     return this.apiBaseService.get('contact/contacts/internal_contacts');
   }
 
-  getRecentConversations() {
-    return this.storage.find(CHAT_RECENT_CONVERSATIONS);
+  getRecentConversations(): Observable<any> {
+    return this.storage.getAsync(CHAT_RECENT_CONVERSATIONS);
   }
 
-  getFavouriteConversations() {
-    return this.storage.find(CHAT_FAVOURITE_CONVERSATIONS);
+  getFavouriteConversations(): Observable<any> {
+    return this.storage.getAsync(CHAT_FAVOURITE_CONVERSATIONS);
   }
 
-  getHistoryConversations() {
+  getHistoryConversations(): Observable<any> {
     // return this.storage.find('chat_history_conversations');
-    return this.storage.find(CHAT_CONVERSATIONS);
+    return this.storage.getAsync(CHAT_CONVERSATIONS);
   }
 
   selectContact(contact: any) {
@@ -160,8 +160,12 @@ export class ChatService {
     return _.find(conversations.data, { partner_id: id });
   }
 
-  getContactSelect() {
+  getContactSelect(): any {
     return this.storage.find(CONVERSATION_SELECT);
+  }
+
+  getContactSelectAsync(): Observable<any> {
+    return this.storage.getAsync(CONVERSATION_SELECT);
   }
 
   getMessages(groupId: number, options: any = {}) {
@@ -282,8 +286,8 @@ export class ChatService {
       });
   }
 
-  getUsersOnline() {
-    return this.storage.find(USERS_ONLINE);
+  getUsersOnline(): Observable<any> {
+    return this.storage.getAsync(USERS_ONLINE);
   }
 
   loadMoreMessages(): Promise<any> {
@@ -469,12 +473,14 @@ export class ChatService {
         //   this.chatCommonService.setDefaultSelectContact();
         // }
         const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
+
+        this.chatCommonService.updateAll();
         return this.router.navigate([ChatConstant.conversationUrl, _.get(nextRecentConversation, 'id', '')]);
       }
     );
   }
 
-  searchUsers(name: any) {
+  searchUsers(name: any): Observable<any> {
     return this.apiBaseService.post('users/search', { q: `name:${name}` });
   }
 

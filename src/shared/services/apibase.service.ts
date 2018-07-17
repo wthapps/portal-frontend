@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/take';
+import { take } from 'rxjs/operators/take';
+import { switchMap } from 'rxjs/operators/switchMap';
+import { catchError } from 'rxjs/operators/catchError';
 import 'rxjs/add/observable/throw';
 
 import { CookieService } from 'ngx-cookie';
@@ -81,16 +83,22 @@ export class ApiBaseService {
   }
 
   addCommand(command: Observable<any>): Observable<any> {
-    return Observable.create((observer: any) => {
-      command.take(1).subscribe((c: any) => {
-        this.call(c.method, c.path, c.body, c.options)
-          .take(1)
-          .catch(this.handleError)
-          .subscribe((res: any) => {
-            observer.next(res);
-          });
-      });
-    });
+    // return Observable.create((observer: any) => {
+    //   command.take(1).subscribe((c: any) => {
+    //     this.call(c.method, c.path, c.body, c.options)
+    //       .take(1)
+    //       .catch(this.handleError)
+    //       .subscribe((res: any) => {
+    //         observer.next(res);
+    //       });
+    //   });
+    // });
+
+    return command.pipe(
+      take(1),
+      switchMap(c => this.call(c.method, c.path, c.body, c.options)),
+      catchError(this.handleError)
+    );
   }
 
   protected call(
@@ -104,17 +112,19 @@ export class ApiBaseService {
       return this.http[method](
         this.baseUrl + path + UrlConverterUtil.objectToUrl(body),
         this.options
-      )
-        .take(1)
-        .catch(this.handleError);
+      ).pipe(
+          take(1),
+          catchError(this.handleError)
+      );
     } else {
       return this.http[method](
         this.baseUrl + path,
         JsonConverterUtil.objectToString(body),
         this.options
-      )
-        .take(1)
-        .catch(this.handleError);
+      ).pipe(
+        take(1),
+        catchError(this.handleError)
+      );
     }
   }
 

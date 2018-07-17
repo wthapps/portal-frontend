@@ -7,5 +7,5 @@
     <ng-content></ng-content>
   </div>
   <span *ngIf="groupType == 'couple'" class="media-user-status"
-        [ngClass]="{'online': usersOnlineItem.value.indexOf(userId) != -1}"></span>
+        [ngClass]="{'online': (usersOnlineItem$ | async).includes(userId)}"></span>
 </div>

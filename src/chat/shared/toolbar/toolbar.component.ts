@@ -1,10 +1,11 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, Input } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants, CHAT_CONVERSATIONS } from '@wth/shared/constant';
 import { CommonEventService } from '@shared/services';
+import { Observable } from 'rxjs';
 
 
 declare let $: any;
@@ -20,9 +21,9 @@ declare let window: any;
 export class ZChatToolbarComponent implements OnInit {
   @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
-  item: any;
+  @Input() contactSelect: any;
   showMemberBar: boolean = false;
-  usersOnlineItem: any;
+  usersOnlineItem$: Observable<any>;
   profileUrl: any;
   showSendMessage: boolean = false;
   showBlacklist: boolean = false;
@@ -36,8 +37,8 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.item = this.chatService.getContactSelect();
-    this.usersOnlineItem = this.chatService.getUsersOnline();
+    // this.item = this.chatService.getContactSelect();
+    this.usersOnlineItem$ = this.chatService.getUsersOnline();
   }
 
   onAddContact() {
@@ -56,15 +57,15 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   onFavorite() {
-    this.chatService.addGroupUserFavorite(this.item.value);
+    this.chatService.addGroupUserFavorite(this.contactSelect);
   }
 
   disableNotification() {
-    this.chatService.updateNotification(this.item.value, {notification: false});
+    this.chatService.updateNotification(this.contactSelect, {notification: false});
   }
 
   enableNotification() {
-    this.chatService.updateNotification(this.item.value, {notification: true});
+    this.chatService.updateNotification(this.contactSelect, {notification: true});
   }
 
   sendContact() {
@@ -73,11 +74,11 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   leaveConversation() {
-    this.chatService.leaveConversation(this.item.value);
+    this.chatService.leaveConversation(this.contactSelect);
   }
 
   onRemoveFromConversation(user: any) {
-    this.chatService.removeFromConversation(this.item.value, user.id);
+    this.chatService.removeFromConversation(this.contactSelect, user.id);
   }
 
   onShowMemberBar() {
@@ -97,7 +98,7 @@ export class ZChatToolbarComponent implements OnInit {
       message: 'Are you sure you want to delete this conversation ?',
       header: 'Delete Conversation',
       accept: () => {
-        this.chatService.deleteContact(this.item.value);
+        this.chatService.deleteContact(this.contactSelect);
       }
     });
   }

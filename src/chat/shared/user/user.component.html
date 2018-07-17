@@ -13,5 +13,5 @@
     <ng-content></ng-content>
   </div>
   <span *ngIf="data.display?.id" class="media-user-status"
-        [ngClass]="{'online': usersOnlineItem?.value?.indexOf(data.display?.id) != -1}"></span>
+        [ngClass]="{'online': (usersOnlineItem$ | async)?.includes(data.display?.id)}"></span>
 </div>
