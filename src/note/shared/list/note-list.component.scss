@@ -154,7 +154,30 @@ $note-action: 170px;
   }
 }
 
+.component-listbox-click-mobile {
+  display: none;
+}
+
 @media (max-width: $screen-xs-max) {
+  .component-listbox-input {
+    position: relative;
+    .component-listbox-click-mobile {
+      display: block;
+      position: absolute;
+      left: 0;
+      width: 2000px;
+      top: 0;
+      bottom: 0;
+      z-index: 10;
+    }
+  }
+  .component-listbox-input i,
+  .component-listbox-action button,
+  .component-listbox-action a {
+    position: relative;
+    z-index: 20;
+  }
+
   .component-listbox-list {
     .component-listbox-row {
       .component-listbox-date, .component-listbox-owner, .component-listbox-description {
