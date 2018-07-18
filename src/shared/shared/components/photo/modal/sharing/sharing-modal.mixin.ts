@@ -36,7 +36,7 @@ export class SharingModalMixin {
   // Overwrite this in parent class
   // onSaveShare: (input: any) => void;
   onSaveShare(e: SharingModalResult) {
-    const data: SharingCreateParams = {
+    const data: any = {
       objects: this.selectedObjects.map(s => { return {id: s.id, model: s.model}}),
       recipients: e.users
     };

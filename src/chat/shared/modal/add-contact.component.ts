@@ -1,6 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChatService } from '../services/chat.service';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
+
+import { Constants } from '@shared/constant';
+import { ApiBaseService } from '@shared/services';
+import { ChatService } from '../services/chat.service';
 
 declare var _:any;
 
@@ -14,17 +20,39 @@ export class ZChatShareAddContactComponent implements OnInit {
 
   @ViewChild('modal') modal: BsModalComponent;
   contacts: any;
-  type: string = 'addContact';
-  title: string = 'Message';
+  type = 'addContact';
+  title = 'New Conversation';
   filter: any;
   conversationSelect: any;
+  loading = false;
+  selectedUsers: Array<any> = [];
+  suggestedUsers: Array<any> = [];
 
-  constructor(private chatService: ChatService ) {
+  users: any = [];
+  search$ = new Subject<string>();
+
+
+  subscription: Subscription;
+  searchSubscription: Subscription;
+  readonly searchDebounceTime: number = Constants.searchDebounceTime;
+
+  constructor(private chatService: ChatService, private apiBaseService: ApiBaseService) {
 
   }
 
   ngOnInit() {
-    //
+    this.searchSubscription = this.search$.pipe(
+      debounceTime(Constants.searchDebounceTime),
+      distinctUntilChanged(),
+      switchMap((searchEvent: any) => this.apiBaseService.get(`account/search?q=${searchEvent.query}`)))
+      .subscribe((res: any) => {
+          const selectedIds = this.selectedUsers.map(ct => ct.id);
+          this.suggestedUsers = res.data.filter(ct => !selectedIds.includes(ct.id));
+        },
+        (error: any) => {
+          console.log('error', error);
+        }
+      );
   }
 
   add() {
@@ -40,27 +68,24 @@ export class ZChatShareAddContactComponent implements OnInit {
   }
 
   open() {
-    if(this.type == 'addContact') {
-      this.title = 'Message';
-    }
-    if(this.type == 'addMember') {
-      this.title = 'Add To Conversation';
-    }
-    if(this.type == 'shareContact') {
-      this.title = 'Share Contact';
-    }
-    this.chatService.getUserContacts().toPromise()
-      .then((res:any) => {
+    this.title = this.type === 'addContact' ? 'Create Conversation' :
+                 this.type === 'addMember' ? 'Add Members' : 'Choose Contact';
+    this.loading = true;
+    this.modal.open().then();
+
+    this.chatService.getUserContacts().toPromise().then((res: any) => {
       this.contacts = res.data;
-      if(this.title == 'Add To Conversation') {
+      this.users = res.data;
+      this.loading = false;
+      if (this.title == 'Add To Conversation') {
         this.conversationSelect = this.chatService.getContactSelect().value;
-        if(this.conversationSelect && this.conversationSelect.group_json.users_json) {
+        if (this.conversationSelect && this.conversationSelect.group_json.users_json) {
 
           this.contacts = _.map(this.contacts, (contact: any) => {
-            for(let user of this.conversationSelect.group_json.users_json) {
+            for (let user of this.conversationSelect.group_json.users_json) {
               contact.checked = false;
               contact.inConversation = false;
-              if(contact.id == user.id) {
+              if (contact.id === user.id) {
                 contact.checked = true;
                 contact.inConversation = true;
                 break;
@@ -72,7 +97,6 @@ export class ZChatShareAddContactComponent implements OnInit {
       }
     });
 
-    this.modal.open();
 
   }
 
@@ -103,5 +127,19 @@ export class ZChatShareAddContactComponent implements OnInit {
 
   search() {
     this.chatService.router.navigate([`${this.chatService.constant.searchNewContactsUrl}`]);
+  }
+
+
+  selectUser(user: any) {
+    if (!this.selectedUsers.includes(user)) {
+      this.selectedUsers.push(user);
+    }
+  }
+
+  deselectUser(user: any) {
+    const removedIndex = this.selectedUsers.indexOf(user);
+    if (removedIndex >= 0) {
+      this.selectedUsers.splice(removedIndex, 1);
+    }
   }
 }
