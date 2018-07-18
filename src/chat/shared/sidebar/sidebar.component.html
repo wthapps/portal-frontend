@@ -21,7 +21,7 @@
   <div *ngFor="let contact of favouriteContacts" class="menuleft-item" [routerLinkActive]="['active']">
     <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact); onCloseMenu()"
        href="javascript:;">
-      <z-chat-share-user class="media-chat-user-item" [data]="contact"></z-chat-share-user>
+      <z-chat-share-user class="media-chat-user-item" [data]="contact" [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
       <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
     </a>
   </div>
@@ -33,7 +33,7 @@
   <div *ngFor="let contact of recentContacts" class="menuleft-item" [routerLinkActive]="['active']">
     <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact); onCloseMenu()"
        href="javascript:;">
-      <z-chat-share-user class="media-chat-user-item" [data]="contact"></z-chat-share-user>
+      <z-chat-share-user class="media-chat-user-item" [data]="contact" [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
       <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
     </a>
   </div>

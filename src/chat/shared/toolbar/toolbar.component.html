@@ -1,7 +1,7 @@
 <ng-container *ngIf="contactSelect">
   <div class="page-body-nav">
     <div class="page-body-nav-left">
-      <z-chat-share-user [data]="contactSelect">
+      <z-chat-share-user [data]="contactSelect" [usersOnlineItem]="usersOnlineItem$ | async">
         <small *ngIf="contactSelect.group_json.member_count > 2" [attr.title]="contactSelect.group_json | chatGroupMembers"
                class="can-click" (click)="onShowMemberBar()">
           {{ contactSelect.group_json.member_count }} people <i
@@ -66,11 +66,11 @@
         <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)"
                 class="btn btn-sm btn-default dropdown-toggle" type="button"
                 data-toggle="dropdown">
-        <span *ngIf="inContact(user_in_group) && (usersOnlineItem$ | async)?.includes(user_in_group.id)"
+        <span *ngIf="chatContactList[user_in_group?.id] && (usersOnlineItem$ | async)?.includes(user_in_group.id)"
               class="fa fa-circle online"></span>
-          <span *ngIf="inContact(user_in_group) && !(usersOnlineItem$ | async)?.includes(user_in_group.id)"
+          <span *ngIf="chatContactList[user_in_group?.id] && !(usersOnlineItem$ | async)?.includes(user_in_group.id)"
                 class="fa fa-circle"></span>
-          <span *ngIf="!inContact(user_in_group)" class="fa fa-question-circle-o" aria-hidden="true"></span>
+          <span *ngIf="!chatContactList[user_in_group?.id]" class="fa fa-question-circle-o" aria-hidden="true"></span>
           {{ user_in_group.name }} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">

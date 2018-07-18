@@ -1,11 +1,13 @@
 import { Component, ViewChild, OnInit, Input } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+
 import { ChatService } from '../services/chat.service';
 import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { Constants, CHAT_CONVERSATIONS } from '@wth/shared/constant';
-import { CommonEventService } from '@shared/services';
-import { Observable } from 'rxjs';
+import { Constants } from '@wth/shared/constant';
+import { CommonEventService, UserService } from '@shared/services';
 
 
 declare let $: any;
@@ -22,16 +24,18 @@ export class ZChatToolbarComponent implements OnInit {
   @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   @Input() contactSelect: any;
+  @Input() chatContactList: {[partner_id: string]: any} = {};
   showMemberBar: boolean = false;
   usersOnlineItem$: Observable<any>;
   profileUrl: any;
   showSendMessage: boolean = false;
   showBlacklist: boolean = false;
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
 
   constructor(private chatService: ChatService,
               private commonEventService: CommonEventService,
+              private userService: UserService,
               private wthConfirmService: WthConfirmService) {
     this.profileUrl = this.chatService.constant.profileUrl;
   }
@@ -108,27 +112,7 @@ export class ZChatToolbarComponent implements OnInit {
   }
 
   checkSendMessage(user: any) {
-    let conversations: any = this.chatService.storage.find(CHAT_CONVERSATIONS).value;
-    let contact: any = _.find(conversations.data, {'partner_id': user.id});
-    if (contact) {
-      this.showSendMessage = true;
-    } else {
-      this.showSendMessage = false;
-    }
-  }
-
-  // TODO: Inefficient dirty check - SHould update later
-  inContact(user: any) {
-    let conversations: any = this.chatService.storage.find(CHAT_CONVERSATIONS).value;
-    let contact: any = _.find(conversations.data, {'partner_id': user.id});
-    if (contact) {
-      return true;
-    } else {
-      if (this.chatService.userService.getSyncProfile().id == user.id) {
-        return true;
-      }
-      return false;
-    }
+    this.showSendMessage = !!this.chatContactList[user.id] && this.userService.getSyncProfile().id !== user.id;
   }
 
   onAddToBlackList(user: any) {

@@ -3,7 +3,6 @@ import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { tap } from 'rxjs/operators/tap';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ChatService } from '../shared/services/chat.service';
@@ -34,6 +33,7 @@ export class ConversationDetailComponent
   commonEventSub: Subscription;
   contactSelect$: Observable<any>;
   currentMessages$: Observable<any>;
+  chatContactList$: Observable<any>;
   tokens: any;
 
   constructor(
@@ -41,24 +41,14 @@ export class ConversationDetailComponent
     private commonEventService: CommonEventService,
     private router: Router,
     private route: ActivatedRoute,
-    private photoService: PhotoService,
-    private store: Store<any>,
     private conversationService: ConversationService
   ) {
-    // this.store.select('conversations').subscribe((state: any) => {
-    //   console.log(state);
-    // });
-
-
   }
 
   ngOnInit() {
-    this.contactSelect$ = this.chatService.getContactSelectAsync().pipe(
-      tap(res => console.log(res))
-    );
-    this.currentMessages$ = this.chatService.getCurrentMessagesAsync().pipe(
-      tap(res => console.log('currentMessages$: ' ,res))
-    );;
+    this.contactSelect$ = this.chatService.getContactSelectAsync();
+    this.currentMessages$ = this.chatService.getCurrentMessagesAsync();
+    this.chatContactList$ = this.chatService.getChatConversationsAsync();
     this.route.params.forEach((params: any) => {
       let contact = this.chatService.getContactSelect().value;
       if (contact) {

@@ -7,7 +7,7 @@
            *ngFor="let contact of contactItem.value.data | chatGroupCouple:contactItem.value.data.length | chatGroupPending:contactItem.value.data.length">
         <div class="media media-user-list">
           <div class="media-body">
-            <z-chat-share-user [data]="contact" [size]="'sm'"></z-chat-share-user>
+            <z-chat-share-user [data]="contact" [usersOnlineItem]="usersOnlineItem$ | async" [size]="'sm'"></z-chat-share-user>
           </div>
           <div class="media-right no-wrap">
             <button class="btn btn-outline-primary" type="button" (click)="onAccept(contact)">

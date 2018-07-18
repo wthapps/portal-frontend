@@ -3,7 +3,7 @@
     <div *ngFor="let contact of (contactItem$ | async)?.value | chatGroupHistory"
          class="media media-middle media-user-list media-user-list-history">
       <div class="media-left">
-        <z-chat-share-user [data]="contact" [size]="'xs'"></z-chat-share-user>
+        <z-chat-share-user [data]="contact" [size]="'xs'" [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
       </div>
       <div class="media-left">
         <span class="text-fade">{{ contact.group_json.updated_at | timeFormat }}</span>

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+
 import { ChatService } from '../shared/services/chat.service';
 import { ApiBaseService } from '@wth/shared/services';
 
@@ -10,6 +13,7 @@ import { ApiBaseService } from '@wth/shared/services';
 export class ZChatContactPendingComponent implements OnInit {
   contactItem: any;
   count: any;
+  usersOnlineItem$: Observable<any>;
 
   constructor(
     private chatService: ChatService,
@@ -18,6 +22,7 @@ export class ZChatContactPendingComponent implements OnInit {
 
   ngOnInit() {
     this.contactItem = this.chatService.getConversations();
+    this.usersOnlineItem$ = this.chatService.getUsersOnline();
     this.apiBaseService
       .post('zone/chat/contact/contact_tab_count')
       .subscribe((res: any) => {

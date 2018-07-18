@@ -14,7 +14,7 @@
               <input class="new-contact" name="friend" type="checkbox" [(ngModel)]="contact.checked">
             </div>
             <div class="media-body">
-              <z-chat-share-user [data]="contact"></z-chat-share-user>
+              <z-chat-share-user [data]="contact" [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
             </div>
             <div class="media-right">
               <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>

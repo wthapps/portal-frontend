@@ -13,5 +13,5 @@
     <ng-content></ng-content>
   </div>
   <span *ngIf="data.display?.id" class="media-user-status"
-        [ngClass]="{'online': (usersOnlineItem$ | async)?.includes(data.display?.id)}"></span>
+        [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>
 </div>

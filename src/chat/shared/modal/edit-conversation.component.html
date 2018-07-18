@@ -7,7 +7,7 @@
     <bs-modal-body>
       <div class="media media-user-list">
         <div class="media-left">
-          <z-chat-share-user [data]="conversation" [size]="'sm'" [displayUserName]=false></z-chat-share-user>
+          <z-chat-share-user [data]="conversation" [size]="'sm'" [displayUserName]=false [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
         </div>
         <div class="media-body">
           <div class="form-group">

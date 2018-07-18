@@ -15,6 +15,7 @@ declare var _: any;
 })
 export class ZChatHistoryComponent implements OnInit {
   contactItem$: Observable<any>;
+  usersOnlineItem$: Observable<any>;
   configActions: any = {
     history: true
   };
@@ -23,5 +24,6 @@ export class ZChatHistoryComponent implements OnInit {
 
   ngOnInit() {
     this.contactItem$ = this.chatService.getHistoryConversations();
+    this.usersOnlineItem$ = this.chatService.getUsersOnline();
   }
 }

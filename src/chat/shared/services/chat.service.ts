@@ -14,7 +14,7 @@ import {
   HandlerService,
   PhotoUploadService,
   StorageService,
-  UserService, WMessageService
+  UserService, WMessageService, StorageItem
 } from '@wth/shared/services';
 import {
   ChatConstant, CHAT_CONVERSATIONS, CHAT_RECENT_CONVERSATIONS,
@@ -81,7 +81,7 @@ export class ChatService {
     }
   }
 
-  getConversationsAsync(option: any = {}): Observable<any> {
+  getConversationsAsync(option: any = {}): Observable<StorageItem> {
     return new Observable((observer: any) => {
       const res: any = this.storage.find(CHAT_CONVERSATIONS);
       if (res && res.value && !option.forceFromApi) {
@@ -98,6 +98,14 @@ export class ChatService {
         });
       }
     });
+  }
+
+  getChatConversationsAsync(): Observable<{[partner_id: string]: any}> {
+    const currentUser = this.userService.getSyncProfile();
+    return this.storage.getAsync(CHAT_CONVERSATIONS).pipe(
+      map((item: any) => (!item ? {} : item.data.reduce((r, a) => ({...r, [a.partner_id]: a}), {}))), // includes all contacts that have couple conversation with current user
+      map((item: any) => ({...item, [currentUser.id]: currentUser})) // includes current user id as well
+    );
   }
 
   getUserContacts(option: any = {}): Observable<any> {

@@ -1,5 +1,6 @@
 import { Processable } from './processable';
-import { ServiceManager } from '../../services';
+import { ServiceManager, StorageItem } from '../../services';
+import { CHAT_CONVERSATIONS } from '@wth/shared/constant';
 
 declare let _:any;
 
@@ -15,9 +16,9 @@ export class ChatNotification implements Processable {
     if (data.data.type == 'added_contact') {
       this.addContact(data);
     }
-    if (data.data.type == 'removed_contact') {
-      this.removeContact(data);
-    }
+    // if (data.data.type == 'removed_contact') {
+    //   this.removeContact(data);
+    // }
     if (data.data.type == 'update_display') {
       this.updateDisplay(data);
     }
@@ -52,28 +53,29 @@ export class ChatNotification implements Processable {
   }
 
   addContact(data:any) {
-    let item = this.serviceManager.getStorageService().find('chat_conversations');
+    let item: StorageItem = this.serviceManager.getStorageService().find('chat_conversations');
 
     let index = _.findIndex(item.value.data, { id: data.data.group_user.id });
     if(index == -1) {
       item.value.data.unshift(data.data.group_user);
+      this.serviceManager.getStorageService().save(CHAT_CONVERSATIONS, item.value);
     } else {
       item.value.data[index] = data.data.group_user;
     }
     this.serviceManager.getChatCommonService().updateAll();
   }
 
-  removeContact(data: any) {
-    console.log('remove contact yo ...', data);
-
-    let item = this.serviceManager.getStorageService().find('chat_conversations');
-
-    let index = _.findIndex(item.value.data, { id: data.data.group_user.id });
-    if(index !== -1) {
-      item.value.data.splice(index, 1);
-    }
-    this.serviceManager.getChatCommonService().updateAll();
-  }
+  // removeContact(data: any) {
+  //   console.log('remove contact yo ...', data);
+  //
+  //   let item = this.serviceManager.getStorageService().find('chat_conversations');
+  //
+  //   let index = _.findIndex(item.value.data, { id: data.data.group_user.id });
+  //   if(index !== -1) {
+  //     item.value.data.splice(index, 1);
+  //   }
+  //   this.serviceManager.getChatCommonService().updateAll();
+  // }
 
   updateConversationList(data:any) {
     let item = this.serviceManager.getStorageService().find('chat_conversations');

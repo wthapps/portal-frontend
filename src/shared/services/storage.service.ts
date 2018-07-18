@@ -37,18 +37,6 @@ export class StorageService {
   }
 
   save(key: string, value: any): void {
-    // // Convert StorageItem if need
-    // if (value instanceof StorageItem) {
-    //   value = _.clone(value).value;
-    // }
-    // // Create new store if need
-    // let item = this.find(key);
-    // if (item) {
-    //   item.value = _.clone(value);
-    // } else {
-    //   this.saveNew(key, value);
-    // }
-
     const newVal = _.cloneDeep(value);
     this.listItem[key] ? this.listItem[key].next(newVal) : this.listItem[key] = new BehaviorSubject(newVal);
   }
@@ -70,20 +58,11 @@ export class StorageService {
   }
 
   saveNew(key: string, value: any): void {
-    // let item = new StorageItem(key, _.clone(value));
-    // _.remove(this.listItem, (i: any) => {
-    //   return i.key == item.key;
-    // });
-    // this.listItem.push(item);
     const newVal = _.cloneDeep(value);
     this.listItem[key] ? this.listItem[key].next(newVal) : this.listItem[key] = new BehaviorSubject(newVal);
   }
 
   get(key: string) {
-    // let item = this.find(key);
-    // if (item != undefined) return item.value;
-    // return null;
-
     return this.getValue(key);
   }
 
@@ -96,12 +75,6 @@ export class StorageService {
   }
 
   find(key: string): StorageItem {
-    // this.resetIfNeed();
-    // for (let item of this.listItem) {
-    //   if (item.key == key) return item;
-    // }
-    // return null;
-
     return new StorageItem(key, this.getValue(key));
   }
 
@@ -112,20 +85,13 @@ export class StorageService {
       this.storageId != this.userService.getSyncProfile().id &&
       this.reset
     ) {
-      // for (let item of this.listItem) {
-      //   item.value = null;
-      // }
       this.listItem = {...DEFAULT_STORAGES};
       this.storageId = this.userService.getSyncProfile().id;
     }
   }
-
-  // getList() {
-  //   return this.listItem;
-  // }
 }
 
-class StorageItem {
+export class StorageItem {
   key: string;
   value: any;
 
