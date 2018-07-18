@@ -13,9 +13,10 @@ import {
   CommonEvent,
   CommonEventAction,
   CommonEventService,
-  PhotoService
+  PhotoService, UserService
 } from '@wth/shared/services';
 import { CHAT_ACTIONS, FORM_MODE } from '@wth/shared/constant';
+import { User } from '@wth/shared/shared/models';
 
 declare var _: any;
 declare var $: any;
@@ -34,6 +35,7 @@ export class ConversationDetailComponent
   contactSelect$: Observable<any>;
   currentMessages$: Observable<any>;
   chatContactList$: Observable<any>;
+  currentUser$: Observable<User>;
   tokens: any;
 
   constructor(
@@ -41,8 +43,10 @@ export class ConversationDetailComponent
     private commonEventService: CommonEventService,
     private router: Router,
     private route: ActivatedRoute,
+    private userService: UserService,
     private conversationService: ConversationService
   ) {
+    this.currentUser$ = userService.profile$;
   }
 
   ngOnInit() {

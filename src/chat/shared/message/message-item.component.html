@@ -1,4 +1,4 @@
-<div *ngIf="message.message_type != 'notification'" class="message-item" [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
+<div *ngIf="message.message_type != 'notification'" class="message-item" [ngClass]="{'message-item-left': !byMe, 'message-item-right': byMe}">
   <div class="message-item-date" *ngIf="hasShowDate()">
     <span>{{ message.created_at | timeFormat:'day' }}</span>
   </div>
@@ -28,10 +28,10 @@
               <a href="javascript:;" (click)="copy()">Copy</a>
             </li>
             <!--comment out this menu because this function is not working now-->
-            <li *ngIf="!message.file && message.byMe">
+            <li *ngIf="!message.file && byMe">
               <a href="javascript:;" (click)="edit()">Edit</a>
             </li>
-            <li *ngIf="!message.file && message.byMe">
+            <li *ngIf="!message.file && byMe">
               <a href="javascript:;" (click)="delete()">Delete</a>
             </li>
           </ul>
@@ -43,7 +43,7 @@
                 Download
               </a>
             </li>
-            <li *ngIf="message.byMe">
+            <li *ngIf="byMe">
               <a href="javascript:;" (click)="delete()">Remove</a>
             </li>
           </ul>
@@ -54,7 +54,7 @@
                 Open
               </a>
             </li>
-            <li *ngIf="message.byMe">
+            <li *ngIf="byMe">
               <a href="javascript:;" (click)="delete()">Remove</a>
             </li>
           </ul>
@@ -75,7 +75,7 @@
                 Download
               </a>
             </li>
-            <li *ngIf="message.byMe">
+            <li *ngIf="byMe">
               <a href="javascript:;" (click)="delete()">Remove</a>
             </li>
 
@@ -168,12 +168,12 @@
         <!--share contact type-->
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'share_contact_message'">
           <!-- Sender -->
-          <message-actions-item *ngIf="message.byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message.display.share_contact.uuid"
+          <message-actions-item *ngIf="byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message.display.share_contact.uuid"
             [name]=message.display.share_contact.name [status]="'Share contact'" [actions]="[{text: 'Resend', id: 'resend'}, {text: '', class:'fa fa-times', id: 'cancel', btnClass:'btn-default'}]"
             (eventOut)=onShareContact($event)>
           </message-actions-item>
           <!-- Receiver -->
-          <message-actions-item *ngIf="!message.byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message.display.share_contact.uuid"
+          <message-actions-item *ngIf="!byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message.display.share_contact.uuid"
             [name]=message.display.share_contact.name [status]="'Share contact'" [actions]="[{text: 'Add Contact', id: 'add_contact', class:'fa fa-plus'}]"
             (eventOut)=onAdd($event)>
           </message-actions-item>
@@ -183,16 +183,16 @@
         <!--requested contact type-->
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'request'">
           <!-- sent_request -->
-          <message-actions-item *ngIf="message.byMe && contactItem.value.status == 'sent_request'" [avatar]=message.receiver?.profile_image
+          <message-actions-item *ngIf="byMe && contactItem?.value?.status == 'sent_request'" [avatar]=message.receiver?.profile_image
             [url]="'profile/' + message.receiver.uuid" [name]=message.receiver.name [status]="'Requested'" [actions]="[{text: 'Resend', id: 'CONTACT_REQUEST_CREATE'}, {text: '', class:'fa fa-times', id: 'CONTACT_REQUEST_CANCEL', btnClass:'btn-default'}]"
             (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- contact already accepted -->
-          <message-actions-item *ngIf="message.byMe && contactItem.value.status == 'accepted'" [avatar]=message.receiver?.profile_image
+          <message-actions-item *ngIf="byMe && contactItem?.value?.status == 'accepted'" [avatar]=message.receiver?.profile_image
             [url]="'profile/' + message.receiver.uuid" [name]=message.receiver.name [status]="'accepted your request'" (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- Receiver -->
-          <message-simple-item *ngIf="!message.byMe" [data]="'Hello! You are now connected on Chat.'"></message-simple-item>
+          <message-simple-item *ngIf="!byMe" [data]="'Hello! You are now connected on Chat.'"></message-simple-item>
         </div>
 
         <!--leave conversation-->
@@ -225,7 +225,7 @@
           <small>{{ message.created_at | timeFormat: "time_only" }}</small>
         </div>
       </div>
-      <div class="message-item-status" *ngIf="message.byMe">
+      <div class="message-item-status" *ngIf="byMe">
         <span>Sent
           <i class="fa fa-check-circle-o"></i>
         </span>
@@ -234,7 +234,7 @@
   </div>
 </div>
 
-<div class="p20 text-center" *ngIf="message.links && message.links.length > 0" [ngClass]="{'message-item-left': !message.byMe, 'message-item-right': message.byMe}">
+<div class="p20 text-center" *ngIf="message.links && message.links.length > 0" [ngClass]="{'message-item-left': !byMe, 'message-item-right': byMe}">
   <div *ngFor="let link of message.links">
     <div *ngIf="link.image && link.title" class="message-item-content-main">
       <display-link [data]="link" *ngIf="link.image && link.title"></display-link>

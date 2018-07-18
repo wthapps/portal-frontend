@@ -14,6 +14,7 @@ import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
 import { WMessageService } from '@wth/shared/services';
 import { Router } from '@angular/router';
+import { User } from '@wth/shared/shared/models';
 
 declare var _: any;
 declare var $: any;
@@ -31,8 +32,10 @@ export class MessageListComponent implements OnInit {
 
   @Input() currentMessages: any;
   @Input() contactItem: any;
+  @Input() currentUser: User;
+
   prevMessage: any;
-  scrollDistance: number = 1000;
+  readonly scrollDistance: number = 1000;
 
   constructor(
     private chatService: ChatService,

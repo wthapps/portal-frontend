@@ -15,6 +15,7 @@ declare var _: any;
 })
 export class MessageItemComponent implements OnInit {
   @Input() message: any;
+  @Input() byMe: boolean;
   @Input() prevMessage: any;
   @Input() contactItem: any;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
@@ -37,18 +38,18 @@ export class MessageItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.contactItem = this.chatService.getContactSelect();
-    // ByMe
-    if (this.message.display && this.message.display.id) {
-      this.message.byMe =
-        this.chatService.userService.getSyncProfile().id ==
-        this.message.display.id;
-    } else {
-      this.message.file = {
-        thumbnail_url:
-          'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/thumbnails/generic_files_upload_default.png'
-      };
-    }
+    // // this.contactItem = this.chatService.getContactSelect();
+    // // ByMe
+    // if (this.message.display && this.message.display.id) {
+    //   this.message.byMe =
+    //     this.chatService.userService.getSyncProfile().id ==
+    //     this.message.display.id;
+    // } else {
+    //   this.message.file = {
+    //     thumbnail_url:
+    //       'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/thumbnails/generic_files_upload_default.png'
+    //   };
+    // }
   }
 
   onPreviewPhoto(message: any) {
