@@ -11,7 +11,7 @@ export interface CreateCommonSharing {
 export interface SharingModalOptions { sharingRecipients: Array<any> }
 export interface SharingRecipient {
   id?: number;
-  role_id: number;
+  role_id: any;
   recipient_id?: number;
   recipient_type?: string;
   _destroy?: boolean;

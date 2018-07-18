@@ -4,7 +4,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { ApiBaseService } from '@wth/shared/services';
 import { ModalComponent } from '@shared/shared/components/base/components';
-import { SharingModalOptions, SharingRecipient, SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { SharingModalOptions, SharingRecipient, SharingModalResult, SharingCreateParams } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
@@ -85,8 +85,10 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
   }
 
   save() {
-    const data = this.updating ? { recipients: this.sharedUsers, users: []} :
-                                 { recipients: this.sharedUsers, users: this.newUsers};
+    // const sharedUsers: SharingRecipient = this.sharedUsers.map(u => {return {role_id: u.role_id, , }};
+    const newUsers: any = this.newUsers.map(n => { return { role_id: this.role.id, recipient_id: n.id}});
+    const data: SharingModalResult = this.updating ? { recipients: this.sharedUsers, users: [], role: this.role} :
+      { recipients: this.sharedUsers, users: newUsers, role: this.role};
 
     // short distance
     this.onSave.emit(data);

@@ -20,14 +20,18 @@ export class SharingModalMixin {
       data = array;
     }
     if (data && data.length == 1 && data[0].model == 'Common::Sharing') {
-      this.apiBaseService.get(`media/sharings/recipients`, { id: data[0].id }).subscribe(res => {
+      this.apiBaseService.get(`media/sharings/${data[0].id}/recipients`).subscribe(res => {
         this.sharingModalService.open.next({ sharingRecipients: res.data });
       });
       this.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
+        console.log('onEditShare');
+
         this.onEditShare(e, data[0]);
       });
     } else {
       this.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
+        console.log('onSaveShare');
+
         this.onSaveShare(e);
       });
     }
@@ -38,7 +42,8 @@ export class SharingModalMixin {
   onSaveShare(e: SharingModalResult) {
     const data: any = {
       objects: this.selectedObjects.map(s => { return {id: s.id, model: s.model}}),
-      recipients: e.users
+      recipients: e.users,
+      role_id: e.role.id
     };
 
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
