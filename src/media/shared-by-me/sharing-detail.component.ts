@@ -148,7 +148,11 @@ export class ZMediaSharingDetailComponent
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        if (this.object.sharing_type == "Media::Playlist" || this.object.sharing_type == "Media::Video") {
+          this.subMenuActions.remove.title = 'Remove from Playlist';
+        } else {
+          this.subMenuActions.remove.title = 'Remove from Album';
+        }
         break;
       default:
         break;
@@ -176,7 +180,11 @@ export class ZMediaSharingDetailComponent
   }
 
   viewDetail(input?: any) {
-    this.router.navigate([`videos/`, this.selectedObjects[0].id]);
+    if (this.selectedObjects[0].model == 'Media::Photo') {
+      this.router.navigate([`photos/`, this.selectedObjects[0].uuid]);
+    } else {
+      this.router.navigate([`videos/`, this.selectedObjects[0].id]);
+    }
   }
 
   doNoData() {
@@ -205,6 +213,7 @@ export class ZMediaSharingDetailComponent
       this.hasSelectedObjects = (this.selectedObjects && this.selectedObjects.length > 0) ? true : false;
       this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
       this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
+      this.onListChanges({ action: 'selectedObjectsChanged'});
     }
   }
 
@@ -348,17 +357,6 @@ export class ZMediaSharingDetailComponent
 
   getMenuActions() {
     return {
-      // add: {
-      //   active: true,
-      //   // needPermission: 'view',
-      //   inDropDown: false, // Outside dropdown list
-      //   action: () => { },
-      //   class: 'btn btn-default',
-      //   liclass: 'hidden-xs',
-      //   tooltip: this.tooltip.share,
-      //   tooltipPosition: 'bottom',
-      //   iconClass: 'fa fa-plus-square'
-      // },
       share: {
         active: true,
         // needPermission: 'view',
@@ -457,6 +455,17 @@ export class ZMediaSharingDetailComponent
 
   getSubMenuActions() {
     return {
+      preview: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: this.viewDetail.bind(this),
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.preview,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-eye'
+      },
       share: {
         active: true,
         // needPermission: 'view',
@@ -472,7 +481,7 @@ export class ZMediaSharingDetailComponent
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
-        action: () => { },
+        action: this.openModalShare.bind(this),
         class: '',
         liclass: 'visible-xs-block',
         tooltip: this.tooltip.share,
@@ -490,17 +499,6 @@ export class ZMediaSharingDetailComponent
         tooltip: this.tooltip.addToFavorites,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
-      },
-      delete: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: this.removeFromParent.bind(this),
-        class: 'btn btn-default',
-        liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-trash'
       },
       edit: {
         active: true,
@@ -526,30 +524,25 @@ export class ZMediaSharingDetailComponent
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-download'
       },
-      detail: {
+      remove: {
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Outside dropdown list
-        action: this.viewDetail.bind(this),
+        action: () => {
+          this.selectedObjects = this.selectedObjects.map(el => {el._destroy = true; return {id: el.id, model: el.model, _destroy: el._destroy}})
+          this.apiBaseService.put(`media/sharings/${this.object.id}/objects`, { objects: this.selectedObjects}).subscribe(res => {
+            this.selectedObjects = [];
+            this.hasSelectedObjects = false;
+            this.loadObjects(this.object.uuid);
+          })
+        },
         class: '',
         liclass: '',
-        title: 'View Detail',
-        tooltip: this.tooltip.info,
+        title: 'Remove from share',
+        tooltip: this.tooltip.remvoe,
         tooltipPosition: 'bottom',
-        iconClass: 'fa fa-info-circle'
-      },
-      deleteMobile: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Inside dropdown list
-        action: () => { },
-        class: '',
-        liclass: 'visible-xs-block',
-        title: 'Delete',
-        tooltip: this.tooltip.info,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-trash'
+        iconClass: 'fa fa-times'
       }
     }
   }
-    }
+}

@@ -423,6 +423,17 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
 
   getSubMenuActions() {
     return {
+      // preview: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: false, // Outside dropdown list
+      //   action: this.viewDetail.bind(this),
+      //   class: 'btn btn-default',
+      //   liclass: 'hidden-xs',
+      //   tooltip: this.tooltip.preview,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-eye'
+      // },
       share: {
         active: true,
         // needPermission: 'view',
@@ -514,18 +525,6 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
         tooltip: this.tooltip.info,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-download'
-      },
-      detail: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Outside dropdown list
-        action: this.viewDetail.bind(this),
-        class: '',
-        liclass: '',
-        title: 'View Detail',
-        tooltip: this.tooltip.info,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-info-circle'
       },
       deleteMobile: {
         active: true,
