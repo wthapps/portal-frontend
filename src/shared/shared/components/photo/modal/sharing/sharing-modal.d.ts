@@ -20,6 +20,7 @@ export interface SharingRecipient {
 interface SharingCreateParams {
   objects: Array<{ id, model }>;
   recipients: Array<SharingRecipient>;
+  role_id: any;
 }
 interface SharingEditParams {
   recipients: Array<SharingRecipient>;

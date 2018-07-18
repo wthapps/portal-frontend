@@ -303,7 +303,7 @@ export class ZMediaSharingDetailComponent
     const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
     const data: SharingCreateParams = {
       objects: objects.map(s => { return { id: s.id, model: s.model } }),
-      recipients: e.recipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id } }),
+      recipients: e.recipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id }}),
       role_id: e.role.id
     };
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
