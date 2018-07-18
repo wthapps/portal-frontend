@@ -20,9 +20,9 @@ declare var $: any;
 
 @Component({
   selector: 'message-list',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'message-list.component.html',
   styleUrls: ['message-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class MessageListComponent implements OnInit {

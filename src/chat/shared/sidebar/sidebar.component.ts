@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
+
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { ZChatToolbarComponent } from '../toolbar/toolbar.component';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { StorageService, UrlService, HandlerService } from '@shared/services';
-import { Store } from '@ngrx/store';
 import { CONVERSATION_SELECT } from '@wth/shared/constant';
-import { Observable } from 'rxjs';
 
 declare var $: any;
 
@@ -16,7 +18,7 @@ declare var $: any;
   styleUrls: ['sidebar.component.scss']
 })
 export class ZChatSidebarComponent implements OnInit {
-  chatMenu = Constants.chatMenuItems;
+  readonly chatMenu = Constants.chatMenuItems;
 
   usersOnlineItem$:  Observable<any>;
   favouriteContacts$:  Observable<any>;
@@ -29,22 +31,12 @@ export class ZChatSidebarComponent implements OnInit {
   constructor(
     public chatService: ChatService,
     private router: Router,
-    private route: ActivatedRoute,
-    private store: Store<any>,
-    private handlerService: HandlerService,
     private urlService: UrlService,
     private storageService: StorageService,
     private renderer: Renderer2
   ) {}
 
   ngOnInit() {
-    // this.store.select('conversations').subscribe((state: any) => {
-    //   console.log(state);
-    // });
-    // this.store.select('conversationsUsers').subscribe((state: any) => {
-    //   console.log(state);
-    // });
-
     this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: any) => {

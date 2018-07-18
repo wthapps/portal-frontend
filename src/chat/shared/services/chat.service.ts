@@ -163,7 +163,7 @@ export class ChatService {
     return this.storage.getAsync(CONVERSATION_SELECT);
   }
 
-  getMessages(groupId: number, options: any = {}) {
+  getMessages(groupId: number, options: any = {}): void {
     let item: any = this.storage.find('chat_messages_group_' + groupId);
     if (item && item.value) {
       if (this.storage.find(CONVERSATION_SELECT).value.group_id == groupId) {

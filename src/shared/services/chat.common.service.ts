@@ -5,7 +5,7 @@ import { HandlerService } from './handler.service';
 import { UserService } from '@wth/shared/services/user.service';
 import { WMessageService } from '@wth/shared/services/message.service';
 import { Router } from '@angular/router';
-import { CONVERSATION_SELECT } from '@wth/shared/constant';
+import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES } from '@wth/shared/constant';
 
 declare var _: any;
 declare var Promise: any;
@@ -100,6 +100,9 @@ export class ChatCommonService {
         }
       }
     }
+
+    // this.storage.save('chat_messages_group_' + groupId, items.value);
+    this.storage.save(CURRENT_CHAT_MESSAGES, items.value);
 
     if(data && data.byMe)
       this.messageService.scrollToBottom();

@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
-import { Constants, CHAT_ACTIONS } from '@wth/shared/constant';
+import { Constants, CHAT_ACTIONS, ChatConstant } from '@wth/shared/constant';
 import { CommonEvent, CommonEventService, WMessageService } from '@wth/shared/services';
 
 declare var _: any;
@@ -10,7 +10,8 @@ declare var _: any;
 @Component({
   selector: 'message-item',
   templateUrl: 'message-item.component.html',
-  styleUrls: ['message-item.component.scss']
+  styleUrls: ['message-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessageItemComponent implements OnInit {
   @Input() message: any;
@@ -19,12 +20,10 @@ export class MessageItemComponent implements OnInit {
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
-  tooltip: any = Constants.tooltip;
-  noteUrl: any = Constants.baseUrls.note;
-
-  actions = CHAT_ACTIONS;
-
-  profileUrl: any = '';
+  readonly tooltip: any = Constants.tooltip;
+  readonly noteUrl: any = Constants.baseUrls.note;
+  readonly actions = CHAT_ACTIONS;
+  readonly profileUrl: any = ChatConstant.profileUrl;
 
   private modifiedMessage: any;
 
@@ -34,11 +33,11 @@ export class MessageItemComponent implements OnInit {
     private pubSubEventService: CommonEventService,
     private messageService: WMessageService
   ) {
-    this.profileUrl = this.chatService.constant.profileUrl;
+    // this.profileUrl = this.chatService.constant.profileUrl;
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getContactSelect();
+    // this.contactItem = this.chatService.getContactSelect();
     // ByMe
     if (this.message.display && this.message.display.id) {
       this.message.byMe =
