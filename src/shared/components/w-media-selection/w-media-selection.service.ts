@@ -9,13 +9,16 @@ import { Media } from '@shared/shared/models/media.model';
 import { ApiBaseService } from '@shared/services';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
+import { map } from 'rxjs/operators/map';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators/catchError';
 
 declare let _: any;
 
 @Injectable()
 export class WMediaSelectionService {
   medias$: any;
-  private mediasSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>(null);
+  private mediasSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>([]);
 
   uploadingMedias$: any;
   private uploadingMediaSubject: Subject<any[]> = new Subject<any[]>();
@@ -56,24 +59,28 @@ export class WMediaSelectionService {
     this.clear();
   }
 
-  getMedias(nextLink?: any) {
+  getMedias(nextLink?: any, override?: boolean): Observable<any> {
     const link = nextLink ? nextLink : 'media/photos';
     return this.apiBaseService.get(link).pipe(
-      tap((res: ResponseMetaData) => {
-
-        _.map(res.data, (v: any, k: any) => {
-          res.data[k].group_by_day = this.datePipe.transform(v.created_at, 'yyyy-MM-dd');
-          res.data[k].group_by_month = this.datePipe.transform(v.created_at, 'yyyy-MM');
-          res.data[k].group_by_year = this.datePipe.transform(v.created_at, 'yyyy');
-        });
+      map((res: ResponseMetaData) => {
+        const data = res.data.map((item) => ({...item, group_by_day: this.datePipe.transform(item.created_at, 'yyyy-MM-dd'),
+          group_by_month: this.datePipe.transform(item.created_at, 'yyyy-MM'),
+          group_by_year: this.datePipe.transform(item.created_at, 'yyyy')
+        }))
 
 
-        if (!this.mediasSubject.getValue()) {
-          this.mediasSubject.next(res.data);
+        if (!this.mediasSubject.getValue() || override) {
+          this.mediasSubject.next(data);
         } else {
-          let medias = this.mediasSubject.getValue().concat(res.data);
+          let medias = this.mediasSubject.getValue().concat(data);
           this.mediasSubject.next(medias);
         }
+        return res;
+      }),
+      catchError((err: any) => {
+        console.warn('error: ', err);
+        this.mediasSubject.next([]);
+        return Observable.throw(err);
       })
     );
   }
@@ -83,7 +90,7 @@ export class WMediaSelectionService {
   }
 
   clear() {
-    this.mediasSubject.next(null);
+    // this.mediasSubject.next([]);
     this.selectedMediasSubject.next([]);
     this.mediaParentSubject.next(null);
     this.objectListService.clear();

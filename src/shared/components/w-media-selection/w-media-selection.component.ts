@@ -107,7 +107,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         if (res) {
           this.initialState(res);
           this.open();
-          this.getObjects();
+          this.getObjects(true);
         }
       });
   }
@@ -135,10 +135,10 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     console.log('Post Photo Select Component DISMISSED', event);
   }
 
-  getObjects() {
+  getObjects(override?: boolean) {
     if (this.nextLink && !this.isLoading) {
       this.isLoading = true;
-      this.mediaSelectionService.getMedias(this.nextLink).subscribe(
+      this.mediaSelectionService.getMedias(this.nextLink, override).subscribe(
         (res: ResponseMetaData) => {
           this.nextLink = res.meta.links.next;
           this.isLoading = false;
@@ -153,7 +153,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
     if (this.currentTab !== 'upload') {
       this.nextLink = this.buildNextLink();
-      this.getObjects();
+      this.getObjects(true);
 
       if (this.currentTab === 'albums' || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me') {
         this.objectListService.setObjectsDisabled(['album']);
@@ -178,7 +178,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     }
     this.mediaSelectionService.clear();
     this.nextLink = this.buildNextLink();
-    this.getObjects();
+    this.getObjects(true);
   }
 
   onCompleteLoadMore(event: boolean) {
