@@ -1,11 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+
 import { ChatService } from '../services/chat.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'z-chat-share-user-icon',
   templateUrl: 'user-icon.component.html',
-  styleUrls: ['user.component.scss']
+  styleUrls: ['user.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ZChatShareUserIconComponent implements OnInit {
   @Input() image: any;

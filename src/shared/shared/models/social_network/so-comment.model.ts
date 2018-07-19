@@ -2,7 +2,7 @@ import { BaseInput } from '../base/base-input.model';
 import { SoUser } from './so-user.model';
 import { FromData } from '../base/interfaces/from-data';
 
-export let CommentObjectType = {
+export const CommentObjectType = {
   Post: 'SocialNetwork::Post',
   Comment: 'SocialNetwork::Comment',
   Photo: 'SocialNetwork::Photo'
@@ -25,7 +25,6 @@ export class SoComment extends BaseInput implements FromData {
   parentId: string = '';
   parentType: string = ''; // value is SocialNetwork::Post or SocialNetwork::Comment
   owner: SoUser = new SoUser();
-  transformedContent?: string = '';
 
   from(fields: any) {
     if (fields) {

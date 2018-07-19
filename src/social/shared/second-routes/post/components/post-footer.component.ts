@@ -7,9 +7,8 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { filter } from 'rxjs/operators/filter';
 import { Subject } from 'rxjs/Subject';
-import { take } from 'rxjs/operators/take';
+import { Observable } from 'rxjs/Observable';
 
 import {
   DeleteCommentEvent,
@@ -25,7 +24,7 @@ import { SoComment, SoPost } from '@wth/shared/shared/models';
 import { PhotoService, UserService } from '@shared/services';
 import { Constants } from '@wth/shared/constant';
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
-import { WTHEmojiPipe } from '@wth/shared/components/emoji/emoji.pipe';
+import { WTHEmojiCateCode } from '@wth/shared/components/emoji/emoji';
 
 declare var _: any;
 
@@ -53,10 +52,10 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   totalComment: number = 1;
   commentPageIndex: number = 0;
   loadingDone: boolean = false;
+  emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
   readonly commentLimit: number = Constants.soCommentLimit;
   readonly tooltip: any = Constants.tooltip;
 
-  private emojiPipe: WTHEmojiPipe;
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private router: Router,
@@ -65,11 +64,10 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
               public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
-    this.emojiPipe = new WTHEmojiPipe(this.wthEmojiService);
+    this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
   ngOnInit() {
-    this.emojifyData();
   }
 
   ngOnDestroy() {
@@ -83,22 +81,6 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
     }
     this.totalComment = +this.item.comment_count;
     this.loadingDone = (this.totalComment === 0 ) || (this.totalComment <= _.get(this.item, 'comments.length', 0));
-    this.emojifyData();
-  }
-
-  emojifyData() {
-    this.wthEmojiService.name2baseCodeMap$.pipe(
-      filter(map => Object.keys(map).length > 0),
-      take(1)
-    ).subscribe(map => {
-      this.item.comments.forEach(comment => {
-        comment.transformedContent = this.emojiPipe.transform(comment.content);
-
-        comment.comments.forEach(reply => {
-          reply.transformedContent = this.emojiPipe.transform(reply.content);
-        });
-      })
-    });
   }
 
   viewProfile(uuid: string) {
