@@ -45,7 +45,6 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
   modalRef: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
-
   constructor(
     public resolver: ComponentFactoryResolver,
     public mediaUploaderDataService: MediaUploaderDataService,
@@ -66,8 +65,6 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
   loadObjects(input?: any) {
     this.loading = true;
     this.apiBaseService.get('media/sharings/shared_with_me').subscribe(res => {
-      console.log(res.data);
-
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
@@ -107,8 +104,15 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
         if (this.selectedObjects && this.selectedObjects.length == 1) {
           if(this.selectedObjects[0].recipient.role_id > mediaConstants.SHARING_PERMISSIONS.DOWNLOAD) {
             this.menuActions.share.active = true;
+            this.menuActions.edit.active = true;
           } else {
             this.menuActions.share.active = false;
+            this.menuActions.edit.active = false;
+          }
+          if(this.selectedObjects[0].recipient.role_id > mediaConstants.SHARING_PERMISSIONS.VIEW) {
+            this.menuActions.download.active = true;
+          } else {
+            this.menuActions.download.active = false;
           }
         }
         this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
@@ -231,7 +235,19 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
         active: true,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
-        action: this.deleteObjects.bind(this, 'sharings'),
+        action: () => {
+          // this.deleteObjects.bind(this, 'sharings');
+          this.confirmService.confirm({
+            header: 'Delete',
+            acceptLabel: 'Delete',
+            message: `Are you sure to delete ${this.selectedObjects.length} sharings`,
+            accept: () => {
+              this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, {sharings: this.selectedObjects}).subscribe(res => {
+                this.loadObjects();
+              });
+            }
+          });
+        },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
         tooltip: this.tooltip.delete,

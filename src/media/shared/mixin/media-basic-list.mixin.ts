@@ -84,7 +84,7 @@ export class MediaBasicListMixin {
           this.selectedObjects = [];
         })
       }
-    })
+    });
   }
 
   changeViewMode(mode: any) {
