@@ -25,6 +25,7 @@ import { FileUploaderService } from '@shared/services/file/file-uploader.service
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators/map';
+import { ConversationService } from '@chat/shared/services';
 
 
 declare var _: any;
@@ -47,7 +48,8 @@ export class ChatService {
     public handler: HandlerService,
     public fileUploaderService: FileUploaderService,
     private messageService: WMessageService,
-    private fileService: GenericFileService
+    private fileService: GenericFileService,
+    private conversationService: ConversationService
   ) {
     // =============================
     this.constant = ChatConstant;
@@ -544,4 +546,15 @@ export class ChatService {
         return res;
       });
   }
+
+  // *************************************************************************************
+  // Start onversation region
+  // All of method of conversation here
+  createConversation(payload: any) {
+    this.conversationService.create(payload).subscribe(response => {
+      this.chatCommonService.updateConversationBroadcast(response.data.id);
+    });
+  }
+  // End conversation region
+  // *************************************************************************************
 }

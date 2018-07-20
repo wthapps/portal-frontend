@@ -36,23 +36,26 @@
         <div class="content-overflow">
           <div class="row media-user-list-group" *ngIf="contacts">
             <div class="col-sm-12"
-                 *ngFor="let contact of contacts | wthFilterBy:'name':filter">
+                 *ngFor="let user of contacts | wthFilterBy:'name':filter">
               <div class="media media-user-list media-middle">
                 <div class="media-body">
-                  <z-chat-share-user-icon [image]="contact?.profile_image"
-                                          [name]="contact.name"
+                  <z-chat-share-user-icon [image]="user?.profile_image"
+                                          [name]="user.name"
                                           [size]="'xs'"
                                           [groupType]="'couple'"
-                                          [userId]="contact.id">
+                                          [userId]="user.id">
                   </z-chat-share-user-icon>
                 </div>
                 <div class="media-right no-wrap">
-                  <input [disabled]="contact.inConversation"
-                         class="new-contact"
-                         name="friend"
-                         type="checkbox"
-                         [checked]="contact.checked"
-                         (click)="checkBox(contact)">
+                  <label class="w-container">
+                    <input [disabled]="user.inConversation"
+                           class="new-contact w-checkbox"
+                           name="friend"
+                           type="checkbox"
+                           [checked]="user.selected"
+                           (click)="toggleUserSelection(user)">
+                    <span class="w-checkmark"></span>
+                  </label>
                 </div>
               </div>
             </div>
@@ -75,8 +78,8 @@
       </ng-template>
     </bs-modal-body>
     <bs-modal-footer>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
-      <button type="submit" class="btn btn-outline-primary btn-min" (click)="add()">Done</button>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="close()">Cancel</button>
+      <button type="submit" [disabled]="!selectedUsers.length" class="btn btn-outline-primary btn-min" (click)="add()">Done</button>
     </bs-modal-footer>
   </bs-modal>
 <!--</form>-->
