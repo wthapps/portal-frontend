@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Renderer2, OnDestroy } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -8,6 +8,10 @@ import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@wth/shared/constant';
 import { CommonEventService, UserService } from '@shared/services';
+import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
+import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { merge, takeUntil } from 'rxjs/operators';
 
 
 declare let $: any;
@@ -20,24 +24,45 @@ declare let window: any;
   styleUrls: ['toolbar.component.scss']
 })
 
-export class ZChatToolbarComponent implements OnInit {
+export class ZChatToolbarComponent implements OnInit, OnDestroy {
   @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   @Input() contactSelect: any;
-  @Input() chatContactList: {[partner_id: string]: any} = {};
+  @Input() chatContactList: { [partner_id: string]: any } = {};
   showMemberBar: boolean = false;
   usersOnlineItem$: Observable<any>;
   profileUrl: any;
   showSendMessage: boolean = false;
   showBlacklist: boolean = false;
 
+  openAssets: boolean;
+
   readonly tooltip: any = Constants.tooltip;
 
   constructor(private chatService: ChatService,
               private commonEventService: CommonEventService,
               private userService: UserService,
-              private wthConfirmService: WthConfirmService) {
+              private wthConfirmService: WthConfirmService,
+              private addContactService: ZChatShareAddContactService,
+              private renderer: Renderer2,
+              private messageAssetsService: MessageAssetsService) {
     this.profileUrl = this.chatService.constant.profileUrl;
+
+    let close$: Observable<any> = Observable.merge(
+      componentDestroyed(this)
+    );
+
+    this.messageAssetsService.open$
+      .pipe(takeUntil(close$))
+      .subscribe(
+        (res: any) => {
+          this.openAssets = res;
+          if (!res) {
+            this.renderer.removeClass(document.body, 'open-chat-message-assets');
+          } else {
+            this.renderer.addClass(document.body, 'open-chat-message-assets');
+          }
+        });
   }
 
   ngOnInit() {
@@ -45,9 +70,19 @@ export class ZChatToolbarComponent implements OnInit {
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
   }
 
+  ngOnDestroy() {
+  }
+
   onAddContact() {
-    this.addContact.type = 'addContact';
-    this.addContact.open();
+    this.addContactService.open('addContact');
+  }
+
+  onAddMember() {
+    this.addContactService.open('addMember');
+  }
+
+  sendContact() {
+    this.addContactService.open('shareContact');
   }
 
   onEditConversation() {
@@ -55,26 +90,16 @@ export class ZChatToolbarComponent implements OnInit {
     this.editConversation.modal.open();
   }
 
-  onAddMember() {
-    this.addContact.type = 'addMember';
-    this.addContact.open();
-  }
-
   onFavorite() {
     this.chatService.addGroupUserFavorite(this.contactSelect);
   }
 
   disableNotification() {
-    this.chatService.updateNotification(this.contactSelect, {notification: false});
+    this.chatService.updateNotification(this.contactSelect, { notification: false });
   }
 
   enableNotification() {
-    this.chatService.updateNotification(this.contactSelect, {notification: true});
-  }
-
-  sendContact() {
-    this.addContact.type = 'shareContact';
-    this.addContact.open();
+    this.chatService.updateNotification(this.contactSelect, { notification: true });
   }
 
   leaveConversation() {
@@ -130,6 +155,14 @@ export class ZChatToolbarComponent implements OnInit {
       this.showBlacklist = false;
     } else {
       this.showBlacklist = true;
+    }
+  }
+
+  onShowAssets() {
+    if (this.openAssets) {
+      this.messageAssetsService.close();
+    } else {
+      this.messageAssetsService.open();
     }
   }
 }

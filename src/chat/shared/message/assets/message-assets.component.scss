@@ -1,0 +1,66 @@
+@import "../../../../assets/styles/global";
+
+$message-assets-width: 400px;
+.message-assets {
+  position: absolute;
+  right: -$message-assets-width;
+  top: $page-body-control-height;
+  bottom: 0;
+  z-index: 100;
+  width: $message-assets-width;
+  @include box-shadow($box-shadow-left);
+  @include flexbox;
+  @include flex-direction(column);
+}
+
+.message-assets-title {
+  padding: $grid-gutter-width/2;
+  @include flexbox;
+  @include align-items(center);
+  @include justify-content(space-between);
+}
+
+.message-assets-tab {
+  border-bottom: 2px solid $line;
+  .nav-tabs-wrap {
+    margin-bottom: -2px;
+  }
+}
+
+.message-assets-content {
+  @include flexbox;
+  @include flex(1);
+  overflow: auto;
+  > div {
+    width: 100%;
+  }
+}
+
+.message-assets-members {
+  padding: $grid-gutter-width/2;
+  background-color: #ffffff;
+  > ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    > li {
+      @include flexbox;
+      border-bottom: 1px solid $line;
+      padding: 5px 0;
+    }
+  }
+  .message-assets-members-row {
+    @include flex(1);
+  }
+}
+
+body {
+  &.open-chat-message-assets {
+    .page-body-content {
+      padding-right: $message-assets-width;
+    }
+    .message-assets {
+      right: 0;
+    }
+  }
+}

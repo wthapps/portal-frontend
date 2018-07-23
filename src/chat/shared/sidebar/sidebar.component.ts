@@ -9,6 +9,7 @@ import { ZChatToolbarComponent } from '../toolbar/toolbar.component';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { StorageService, UrlService, HandlerService } from '@shared/services';
 import { CONVERSATION_SELECT } from '@wth/shared/constant';
+import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 
 declare var $: any;
 
@@ -20,21 +21,22 @@ declare var $: any;
 export class ZChatSidebarComponent implements OnInit {
   readonly chatMenu = Constants.chatMenuItems;
 
-  usersOnlineItem$:  Observable<any>;
-  favouriteContacts$:  Observable<any>;
-  historyContacts$:  Observable<any>;
+  usersOnlineItem$: Observable<any>;
+  favouriteContacts$: Observable<any>;
+  historyContacts$: Observable<any>;
   recentContacts$: Observable<any>;
   historyShow: any = true;
   isRedirect: boolean;
-  @ViewChild('chatToolbar') chatToolbar: ZChatToolbarComponent;
 
   constructor(
     public chatService: ChatService,
     private router: Router,
     private urlService: UrlService,
     private storageService: StorageService,
-    private renderer: Renderer2
-  ) {}
+    private renderer: Renderer2,
+    private addContactService: ZChatShareAddContactService
+  ) {
+  }
 
   ngOnInit() {
     this.router.events
@@ -65,7 +67,7 @@ export class ZChatSidebarComponent implements OnInit {
                   this.chatService.router.navigate([
                     `${this.chatService.constant.conversationUrl}/${
                       res.value.data[0].id
-                    }`
+                      }`
                   ]);
                   this.chatService.selectContact(res.value.data[0]);
                   this.chatService.getMessages(res.value.data[0].group_json.id);
@@ -87,7 +89,7 @@ export class ZChatSidebarComponent implements OnInit {
   }
 
   onAddContact() {
-    this.chatToolbar.onAddContact();
+    this.addContactService.open('addContact');
   }
 
   historyToggle() {

@@ -2,7 +2,6 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
-import { ZChatShareUserComponent } from './user/user.component';
 import { ZChatShareEditConversationComponent } from './modal/edit-conversation.component';
 import { ZChatShareAddContactComponent } from './modal/add-contact.component';
 import { ZChatShareAddToConversationComponent } from './modal/add-to-conversation.component';
@@ -25,17 +24,21 @@ import { ChatContactService } from './services/chat-contact.service';
 import { ZChatSharedHeaderComponent } from './header/header.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { ChatCommonService } from '@wth/shared/services';
+import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
+import { ZChatShareUserModule } from '@chat/shared/user/user.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [SharedModule.forRoot(), ZChatMessageModule],
+  imports: [
+    SharedModule.forRoot(),
+    ZChatMessageModule
+  ],
   declarations: [
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    ZChatShareUserComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
@@ -58,7 +61,6 @@ import { ChatCommonService } from '@wth/shared/services';
     ZChatMessageModule,
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    ZChatShareUserComponent,
     ZChatShareEditConversationComponent,
     ZChatShareAddContactComponent,
     ZChatShareAddToConversationComponent,
@@ -86,7 +88,8 @@ export class ZChatSharedModule {
         ConversationService,
         ChatService,
         ChatContactService,
-        ChatCommonService
+        ChatCommonService,
+        ZChatShareAddContactService
       ]
     };
   }

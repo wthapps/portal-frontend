@@ -1,7 +1,5 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-import { ChatService } from '../services/chat.service';
-
 @Component({
   selector: 'z-chat-share-user',
   templateUrl: 'user.component.html',
@@ -14,7 +12,7 @@ export class ZChatShareUserComponent implements OnInit {
   @Input() displayUserName: boolean = true;
   @Input() usersOnlineItem: any;
 
-  constructor(private chatService: ChatService) {
+  constructor() {
   }
 
   ngOnInit() {

@@ -82,6 +82,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   noteSelectOpen() {
     this.notesListModal.open();
   }
+
   noteSelectOnInsert() {
     this.store
       .select('notes')

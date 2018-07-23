@@ -1,0 +1,57 @@
+<div class="message-assets">
+  <div class="message-assets-title">
+    <h4>Group number 3</h4>
+    <a (click)="onClose()" class="text-inherit text-fade" href="javascript:void(0);">
+      <i class="fa fa-times"></i>
+    </a>
+  </div>
+  <div class="message-assets-tab">
+    <w-nav-tab [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)"></w-nav-tab>
+  </div>
+  <div class="message-assets-content bg-gray-light">
+    <div *ngIf="currentTab === 'members'" class="message-assets-members">
+      <ng-container *ngIf="contactSelect?.group_json">
+        <ul
+          *ngIf="contactSelect.group_json.group_type == 'multiple' || contactSelect.group_json.group_type == 'support'">
+          <li *ngFor="let user_in_group of contactSelect.group_json.users_json">
+            <z-chat-share-user-icon
+              class="message-assets-members-row"
+              [userId]="user_in_group.id"
+              [image]="user_in_group.profile_image"
+              [name]="user_in_group.name">
+            </z-chat-share-user-icon>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                      pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+                <i class="fa fa-ellipsis-v"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li *ngIf="showSendMessage">
+                  <a href="javascript:;" (click)="onSelect(user_in_group)">Send Message</a>
+                </li>
+                <li>
+                  <a [routerLink]="[profileUrl, user_in_group.uuid]">View Profile</a>
+                </li>
+                <li *ngIf="showBlacklist">
+                  <a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a>
+                </li>
+                <li *ngIf="contactSelect.role == 'admin'">
+                  <a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove From Conversation</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </ng-container>
+    </div>
+    <div *ngIf="currentTab === 'photos'" class="message-assets-photos">
+      photos
+    </div>
+    <div *ngIf="currentTab === 'notes'" class="message-assets-notes">
+      notes
+    </div>
+    <div *ngIf="currentTab === 'files'" class="message-assets-files">
+      files
+    </div>
+  </div>
+</div>

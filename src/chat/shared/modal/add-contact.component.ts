@@ -8,8 +8,9 @@ import { Constants } from '@shared/constant';
 import { ApiBaseService } from '@shared/services';
 import { ChatService } from '../services/chat.service';
 import { ConversationService } from '@chat/conversation/conversation.service';
+import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 
-declare var _:any;
+declare var _: any;
 
 @Component({
   moduleId: module.id,
@@ -33,7 +34,6 @@ export class ZChatShareAddContactComponent implements OnInit {
   users: any = [];
   search$ = new Subject<string>();
 
-
   subscription: Subscription;
   searchSubscription: Subscription;
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
@@ -41,7 +41,8 @@ export class ZChatShareAddContactComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private apiBaseService: ApiBaseService,
-    private conversationService: ConversationService
+    private conversationService: ConversationService,
+    private addContactService: ZChatShareAddContactService
   ) {
 
   }
@@ -59,6 +60,15 @@ export class ZChatShareAddContactComponent implements OnInit {
           console.log('error', error);
         }
       );
+
+    this.addContactService.open$.subscribe((res: any) => {
+      if (res) {
+        this.type = res;
+        this.open();
+      } else {
+        this.modal.close();
+      }
+    });
   }
 
   add() {
@@ -75,17 +85,17 @@ export class ZChatShareAddContactComponent implements OnInit {
 
   open() {
     this.title = this.type === 'addContact' ? 'Create Conversation' :
-                 this.type === 'addMember' ? 'Add Members' : 'Choose Contact';
+      this.type === 'addMember' ? 'Add Members' : 'Choose Contact';
     this.loading = true;
     this.resetData();
     this.modal.open().then();
 
     // this.chatService.getUserContacts().toPromise().then((res: any) => {
-      this.apiBaseService.get(`account/get_my_contacts_accounts?size=1000`).subscribe(res => {
+    this.apiBaseService.get(`account/get_my_contacts_accounts?size=1000`).subscribe(res => {
 
-        this.contacts = res.data;
-        this.users = res.data;
-        this.loading = false;
+      this.contacts = res.data;
+      this.users = res.data;
+      this.loading = false;
       // if (this.title == 'Add To Conversation') {
       //   this.conversationSelect = this.chatService.getContactSelect().value;
       //   if (this.conversationSelect && this.conversationSelect.group_json.users_json) {
@@ -139,7 +149,6 @@ export class ZChatShareAddContactComponent implements OnInit {
   search() {
     this.chatService.router.navigate([`${this.chatService.constant.searchNewContactsUrl}`]);
   }
-
 
   selectUser(user: any) {
     this.selectedUsers.forEach(u => {
