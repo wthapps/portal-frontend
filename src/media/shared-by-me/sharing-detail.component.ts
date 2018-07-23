@@ -40,6 +40,7 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { Location } from '@angular/common';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
+import { mediaConstants } from '@media/shared/conig/constants';
 
 @Mixin([
   MediaBasicListMixin,
@@ -149,8 +150,10 @@ export class ZMediaSharingDetailComponent
         break;
       case 'selectedObjectsChanged':
         if (this.object.sharing_type == "Media::Playlist" || this.object.sharing_type == "Media::Video") {
+          this.subMenuActions.edit.title = 'Add to Playlist';
           this.subMenuActions.remove.title = 'Remove from Playlist';
         } else {
+          this.subMenuActions.edit.title = 'Add to Album';
           this.subMenuActions.remove.title = 'Remove from Album';
         }
         break;
@@ -171,6 +174,33 @@ export class ZMediaSharingDetailComponent
   loadObject(input: any) {
     this.apiBaseService.get(`media/sharings/${input}`).subscribe(res => {
       this.object = res.data;
+      console.log(this.object);
+
+      // validate permission
+      if (this.object.recipient) {
+        this.menuActions.share.active = false;
+        this.menuActions.shareMobile.active = false;
+        this.menuActions.edit.active = false;
+        this.menuActions.download.active = false;
+
+        this.subMenuActions.share.active = false;
+        this.subMenuActions.shareMobile.active = false;
+        this.subMenuActions.edit.active = false;
+        this.subMenuActions.remove.active = false;
+        this.subMenuActions.download.active = false;
+        this.subMenuActions.active_drop = false;
+      }
+      if (this.object.recipient && this.object.recipient.role_id > mediaConstants.SHARING_PERMISSIONS.DOWNLOAD) {
+        this.menuActions.share.active = true;
+        this.menuActions.shareMobile.active = true;
+        this.menuActions.edit.active = true;
+      }
+      if (this.object.recipient && this.object.recipient.role_id > mediaConstants.SHARING_PERMISSIONS.VIEW) {
+        this.menuActions.download.active = true;
+
+        this.subMenuActions.active_drop = true;
+        this.subMenuActions.download.active = true;
+      }
     });
   }
 
@@ -270,17 +300,34 @@ export class ZMediaSharingDetailComponent
   }
 
   deleteParent() {
-    this.confirmService.confirm({
-      header: 'Delete',
-      acceptLabel: 'Delete',
-      message: `Are you sure to delete this sharing`,
-      accept: () => {
-        this.loading = true;
-        this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
-          this.back();
-        })
-      }
-    })
+    // console.log(this.object);
+    // share with me
+    if(this.object.recipient) {
+      this.confirmService.confirm({
+        header: 'Delete',
+        acceptLabel: 'Delete',
+        message: `Are you sure to delete this sharing`,
+        accept: () => {
+          this.loading = true;
+          this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, { sharings: [this.object] }).subscribe(res => {
+            this.back();
+          })
+        }
+      })
+    } else {
+      this.confirmService.confirm({
+        header: 'Delete',
+        acceptLabel: 'Delete',
+        message: `Are you sure to delete this sharing`,
+        accept: () => {
+          this.loading = true;
+          this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
+            this.back();
+          })
+        }
+      });
+    }
+
   }
 
   changeViewMode(mode: any) {
@@ -357,6 +404,7 @@ export class ZMediaSharingDetailComponent
 
   getMenuActions() {
     return {
+      active_drop: true,
       share: {
         active: true,
         // needPermission: 'view',
@@ -455,6 +503,7 @@ export class ZMediaSharingDetailComponent
 
   getSubMenuActions() {
     return {
+      active_drop: true,
       preview: {
         active: true,
         // needPermission: 'view',

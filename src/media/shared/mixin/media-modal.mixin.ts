@@ -16,7 +16,7 @@ export class MediaModalMixin implements LoadModalAble {
 
   openEditModal(object: any) {
     let options: any;
-    if(object.model == 'Media::Photo') {
+    if (object.model == 'Media::Photo' || object.model == 'Media::Video') {
       this.loadModalComponent(PhotoEditModalComponent);
       options = {selectedObject: object}
     }

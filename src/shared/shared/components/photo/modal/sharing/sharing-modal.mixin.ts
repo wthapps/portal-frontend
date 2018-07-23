@@ -19,6 +19,7 @@ export class SharingModalMixin {
     if (array) {
       data = array;
     }
+
     if (data && data.length == 1 && data[0].model == 'Common::Sharing') {
       this.apiBaseService.get(`media/sharings/${data[0].id}/recipients`).subscribe(res => {
         this.sharingModalService.open.next({ sharingRecipients: res.data });

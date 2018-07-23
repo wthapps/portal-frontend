@@ -116,7 +116,7 @@ export class SharingModalV1Component implements OnInit, OnDestroy, ModalComponen
       this.modal.close().then();
       this.toastsService.success(`You created a share for ${this.newUsers.length} user(s) successful!`);
     } else {
-      this.sharedUsers = recipients;
+      this.sharedUsers = recipients || [];
       this.toastsService.success(`You updated sharing user(s) successful!`);
     }
     this.resetUserLists();
