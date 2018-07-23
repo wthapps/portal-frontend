@@ -140,13 +140,6 @@ export class ZContactService extends BaseEntityService<any> {
     return this.apiBaseService.post(`contact/contacts/check_emails`, payload);
   }
 
-  onLoadMore(orderDesc?: boolean) {
-    // this.page += 1;
-    // let order: boolean = orderDesc || this.orderDescSubject.getValue();
-    // if (order !== undefined) this.orderDescSubject.next(order);
-    // this.notifyContactsObservers();
-  }
-
   changeSortOption(order?: string) {
     if (order === undefined)
       this.orderDescSubject.next(!this.orderDescSubject.getValue());
@@ -347,9 +340,9 @@ export class ZContactService extends BaseEntityService<any> {
     let contacts: any[] = [];
     this.groupService.updateGroupCount(this.contacts);
 
-    if (_.has(this.filterOption, 'search')) {
+    if (_.get(this.filterOption, 'search')) {
       contacts = this.searchContact(this.filterOption.search);
-    } else if (_.has(this.filterOption, 'group')) {
+    } else if (_.get(this.filterOption, 'group')) {
       contacts = this.filterByGroup(this.filterOption);
     } else {
       contacts = this.contacts;
@@ -364,10 +357,6 @@ export class ZContactService extends BaseEntityService<any> {
 
     this.contactsSubject.next(
       orderedContactsWSelected
-      // orderedContactsWSelected.slice(
-      //   this.startIndex,
-      //   this.page * ITEM_PER_PAGE
-      // )
     );
     this.checkSelectAll();
   }
@@ -416,7 +405,8 @@ export class ZContactService extends BaseEntityService<any> {
         this.selectedObjects = [merged_contact];
         this.mergedObjects = [merged_contact];
 
-        this.contacts = [merged_contact, ...this.contacts];
+        // this.contacts = [merged_contact, ...this.contacts];
+        this.contacts.unshift(merged_contact);
         this.notifyContactsObservers();
         this.groupService.updateGroupCount(this.contacts);
       });
