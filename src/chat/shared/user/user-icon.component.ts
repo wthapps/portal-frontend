@@ -7,7 +7,6 @@ import { ChatService } from '../services/chat.service';
 @Component({
   selector: 'z-chat-share-user-icon',
   templateUrl: 'user-icon.component.html',
-  styleUrls: ['user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ZChatShareUserIconComponent implements OnInit {

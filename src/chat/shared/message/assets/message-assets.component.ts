@@ -5,6 +5,7 @@ import { ChatService } from '@chat/shared/services/chat.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { CommonEventService, UserService } from '@shared/services';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
+import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 
 @Component({
   selector: 'message-assets',
@@ -57,6 +58,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
               private commonEventService: CommonEventService,
               private userService: UserService,
               private wthConfirmService: WthConfirmService,
+              private addContactService: ZChatShareAddContactService,
               private messageAssetsService: MessageAssetsService) {
     this.profileUrl = this.chatService.constant.profileUrl;
 
@@ -80,6 +82,10 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
   onSelect(user: any) {
     this.chatService.selectContactByPartnerId(user.id);
+  }
+
+  onAddMember() {
+    this.addContactService.open('addMember');
   }
 
   onRemoveFromConversation(user: any) {

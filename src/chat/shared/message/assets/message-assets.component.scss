@@ -51,6 +51,9 @@ $message-assets-width: 400px;
   }
   .message-assets-members-row {
     @include flex(1);
+    .fa-plus {
+      @include center();
+    }
   }
 }
 

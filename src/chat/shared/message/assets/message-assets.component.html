@@ -15,6 +15,18 @@
       <ng-container *ngIf="contactSelect?.group_json">
         <ul
           *ngIf="contactSelect.group_json.group_type == 'multiple' || contactSelect.group_json.group_type == 'support'">
+          <li>
+            <div (click)="onAddMember()" class="message-assets-members-row can-click">
+              <div class="media-user media-user-xs">
+                <div class="media-user-avatar avatar-xs">
+                  <i class="fa fa-plus"></i>
+                </div>
+                <div class="media-user-name">
+                  Add member
+                </div>
+              </div>
+            </div>
+          </li>
           <li *ngFor="let user_in_group of contactSelect.group_json.users_json">
             <z-chat-share-user-icon
               class="message-assets-members-row"
