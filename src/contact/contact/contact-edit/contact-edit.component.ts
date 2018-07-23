@@ -116,9 +116,9 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnChanges() {
+    this.removeAll();
 
     if (this.contact && this.mode !== 'create') {
-      this.removeAll();
 
       _.map(this.contact.phones, (v: any) => {
         this.addItem('phones', v);
@@ -294,8 +294,8 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   removeItem(type: string, i: number) {
     const control = <FormArray>this.form.controls[type];
     if (this.contact[type][i]) {
-      this.contact[type][i]._destroy = true;
-      this.deleteObjects[type].push(this.contact[type][i]);
+      this.deleteObjects[type].push({...this.contact[type][i], _destroy: true});
+      this.contact[type].splice(i,1);
     }
 
     if (type === 'emails') {

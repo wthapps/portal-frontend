@@ -6,7 +6,6 @@ import { Contact } from '../contact.model';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
 import { Constants } from '../../../shared/constant/config/constants';
-import { ZContactEditComponent } from '@contacts/contact/contact-edit/contact-edit.component';
 
 import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '@contacts/group/group.service';
@@ -15,6 +14,32 @@ import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-ad
 
 declare var _: any;
 
+const DEFAULT_CONTACT_PARAMS = {
+  phones: [
+    {
+      category: 'mobile'
+    }
+  ],
+  emails: [
+    {
+      category: 'work'
+    }
+  ],
+
+  addresses: [
+    {
+      category: 'work'
+    },
+    {
+      category: 'home'
+    }
+  ],
+  social_media: [
+    {
+      category: 'wthapps'
+    }
+  ]
+};
 @Component({
   selector: 'contact-edit-page',
   templateUrl: 'contact-edit-page.component.html',
@@ -25,44 +50,18 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
 
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
 
-  contact: Contact = new Contact({
-    phones: [
-      {
-        category: 'mobile'
-      }
-    ],
-    emails: [
-      {
-        category: 'work'
-      }
-    ],
-
-    addresses: [
-      {
-        category: 'work'
-      },
-      {
-        category: 'home'
-      }
-    ],
-    social_media: [
-      {
-        category: 'wthapps'
-      }
-    ]
-  });
+  contact: Contact = new Contact(DEFAULT_CONTACT_PARAMS);
 
   emails = [];
   mode: string = 'view';
   pageTitle: string;
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   formValid: boolean = false;
   _contact: any = _contact;
   hasBack = false;
-  urls = Constants.baseUrls;
-
-  avatarDefault: any = Constants.img.avatar;
+  readonly urls = Constants.baseUrls;
+  readonly avatarDefault: any = Constants.img.avatar;
 
   constructor(
     private router: Router,
@@ -94,6 +93,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
           this.hasBack = true;
         } else if (this.mode === 'create') {
           this.pageTitle = 'Create contact';
+          this.contact =  new Contact(DEFAULT_CONTACT_PARAMS);
         } else {
           this.hasBack = false;
           this.pageTitle = 'Edit contact';
@@ -164,8 +164,11 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   doEvent(event: any) {
     switch (event.action) {
       case 'contact:contact:create':
+        let data = event.payload.item;
+        delete data['id'];
+        delete data['uuid'];
         this.contactService
-          .create(event.payload.item)
+          .create(data)
           .subscribe((response: any) => {
             this.toastsService.success(
               'Contact has been just created successfully!'
