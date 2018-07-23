@@ -42,6 +42,7 @@ import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete
 import { RadioButtonModule } from 'primeng/components/radiobutton/radiobutton';
 import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
 import { InputSwitchModule } from 'primeng/components/inputswitch/inputswitch';
+import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { ZSharedMenuModule } from '@wth/shared/shared/components/menu/menu.module';
 import { FileModule } from '@wth/shared/shared/components/file/file.module';
 import { CheckForUpdateService } from '@contacts/shared/services/check-for-update.service';
@@ -88,6 +89,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     AutoCompleteModule,
     CalendarModule,
     PanelMenuModule,
+    TooltipModule,
     StickyModule,
     ScrollToModule
     // BrowserAnimationsModule,
@@ -138,6 +140,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     AutoCompleteModule,
     CalendarModule,
     PanelMenuModule,
+    TooltipModule,
 
     ZContactSharedListComponent,
     ZContactSharedItemComponent,

@@ -43,7 +43,17 @@
   <a [routerLink]="['/others']" (click)="doEvent(null)" href="javascript:void(0)">
     <i class="fa fa-inbox"></i> Other contacts ({{ contactService.otherContactCount }})
   </a>
+
+  <div class="menuleft-item-action" style="display: inherit;"
+       [pTooltip]="otherContactsInfo"
+        tooltipPosition="bottom">
+    <span class="can-click" title="">
+      <i class="fa fa-info-circle"></i>
+    </span>
+  </div>
 </div>
+
+
 <div class="menuleft-item" [routerLinkActive]="['active']">
   <a (click)="openImportContactModal()" href="javascript:void(0)" >
     <i class="fa fa-download"></i> Import
@@ -59,3 +69,4 @@
 <z-contact-share-import-contact #importContactSelect (optionSelected)="onImportOptionSelected($event)"></z-contact-share-import-contact>
 
 <icloud-oauth-modal #iCloudOAuthModal></icloud-oauth-modal>
+
