@@ -400,12 +400,11 @@ export class ZContactService extends BaseEntityService<any> {
       .post(`${this.url}/merge_contacts`, { ids })
       .toPromise()
       .then((res: any) => {
-        const merged_contact: any = { ...res.data, selected: true };
+        const merged_contact: any = { ...res.data };
         this.contacts = this.contacts.filter((c: any) => !ids.includes(c.id));
-        this.selectedObjects = [merged_contact];
+        this.selectedObjects.length = 0;
         this.mergedObjects = [merged_contact];
 
-        // this.contacts = [merged_contact, ...this.contacts];
         this.contacts.unshift(merged_contact);
         this.notifyContactsObservers();
         this.groupService.updateGroupCount(this.contacts);
@@ -419,12 +418,9 @@ export class ZContactService extends BaseEntityService<any> {
       .post(`${this.url}/undo_merge`, { restore_ids, remove_ids })
       .toPromise()
       .then((res: any) => {
-        const restoredContacts = res.data.map(ct => {
-          return { ...ct, selected: true };
-        });
-        this.selectedObjects = [...restoredContacts];
+        const restoredContacts = res.data;
+        this.selectedObjects.length = 0;
         this.contacts = [...this.contacts.filter(ct => !remove_ids.includes(ct.id)), ...restoredContacts];
-        console.debug('Contacts after undo merge: ', this.contacts);
         this.notifyContactsObservers();
       });
   }
