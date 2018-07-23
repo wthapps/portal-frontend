@@ -1,6 +1,8 @@
 <div class="message-assets">
   <div class="message-assets-title">
-    <h4>Group number 3</h4>
+    <h4 *ngIf="contactSelect?.group_json">
+      {{ contactSelect?.group_json.users_name }}
+    </h4>
     <a (click)="onClose()" class="text-inherit text-fade" href="javascript:void(0);">
       <i class="fa fa-times"></i>
     </a>
