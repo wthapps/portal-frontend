@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { WTHEmoji, WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { WTHEmoji } from '@shared/components/emoji/emoji';
 
 declare let _: any;
 
