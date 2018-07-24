@@ -60,7 +60,7 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
     public sharingModalService: SharingModalService,
     public mediaCreateModalService: MediaCreateModalService,
     public toastsService: ToastsService,
-    private router: Router,
+    public router: Router,
   ) {
 
   }
