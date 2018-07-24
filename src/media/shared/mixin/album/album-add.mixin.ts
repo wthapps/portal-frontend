@@ -4,16 +4,26 @@ import { ToastsService } from "@shared/shared/components/toast/toast-message.ser
 import { MediaCreateModalService } from "@shared/shared/components/photo/modal/media/media-create-modal.service";
 import { AlbumCreateMixin } from "@media/shared/mixin/album/album-create.mixin";
 import { Mixin } from "@shared/design-patterns/decorator/mixin-decorator";
+import { Router } from "@angular/router";
 
 @Mixin([AlbumCreateMixin])
 /* AlbumAddMixin This is album add methods, to
 custom method please overwirte any method*/
 export class AlbumAddMixin implements AlbumCreateMixin {
-  constructor(public apiBaseService: ApiBaseService, public mediaAddModalService: MediaAddModalService, public toastsService: ToastsService, public mediaCreateModalService: MediaCreateModalService) {}
+  constructor(public apiBaseService: ApiBaseService,
+    public mediaAddModalService: MediaAddModalService,
+    public toastsService: ToastsService,
+    public router: Router,
+    public mediaCreateModalService: MediaCreateModalService
+  ) {}
   subAddAlbum: any;
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
 
+  // openModalAddToAlbum:(selectedObjects: any) => void;
+  // onAddToAlbum:(e: any) => void;
+  // openCreateAlbumModal:(selectedObjects: any) => void;
+  // onDoneAlbum:(e: any) => void;
   openModalAddToAlbum(selectedObjects: any) {
     if (this.subAddAlbum) this.subAddAlbum.unsubscribe();
     if (this.subOpenCreateAlbum) this.subOpenCreateAlbum.unsubscribe();
@@ -37,12 +47,16 @@ export class AlbumAddMixin implements AlbumCreateMixin {
   }
 
   onAddToAlbum(e) {
-    console.log('You should overwrite this');
+    this.apiBaseService
+      .post(`media/albums/${e.parents[0].id}/photos`, {
+        photos: e.children
+      })
+      .subscribe(res => {
+        this.toastsService.success('You just added to Album success');
+      });
   }
 
   openCreateAlbumModal:(selectedObjects: any) => void;
 
-  onDoneAlbum(e: any) {
-    console.log('You should overwrite this one');
-  }
+  onDoneAlbum: (e: any) => void;
 }

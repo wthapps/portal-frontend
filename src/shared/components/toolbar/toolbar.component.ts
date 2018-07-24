@@ -166,7 +166,7 @@ custom method please overwirte any method*/
   onDoneAlbum(e: any) {
     this.apiBaseService.post(`media/albums`, { name: e.parents[0].name, description: e.parents[0].description, photos: e.children.map(el => el.id) }).subscribe(res => {
       this.router.navigate(['albums', res.data.uuid]);
-    })
+    });
   }
   /* ================================== */
 

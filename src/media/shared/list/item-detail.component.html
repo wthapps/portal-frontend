@@ -44,14 +44,12 @@
             </video>
           </ng-container>
           <ng-container *ngIf="object.model == 'Media::Photo'">
-            <!-- <video class="embed-responsive-item" width="800" height="600" controls>
-              <source [src]="object.url" [type]="object.content_type">
-            </video> -->
-            <!-- <img [src]="object.url" alt=""> -->
             <div class="image-viewer-content-fixed">
-              <img id="image-viewer" [src]="object.url" alt="">
+              <img id="image-viewer" [src]="object.url" alt="" (load)="onStart($event)">
             </div>
-            <!-- <app-image-cropper [photo]="object.url" (onCompleteMethod)="doAction($event)"></app-image-cropper> -->
+            <ng-container *ngIf="object && hasEditPhoto">
+              <app-image-cropper [photo]="object.url" (onCompleteMethod)="doAction($event)"></app-image-cropper>
+            </ng-container>
             <div class="image-viewer-content-nav">
               <a *ngIf="hasPreviousItem" draggable="false" href="javascript:void(0);" (click)="onMove(false)" pTooltip="{{ tooltip.previous }}"
                 tooltipPosition="bottom">

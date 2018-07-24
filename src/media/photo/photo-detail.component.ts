@@ -16,11 +16,8 @@ import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/m
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
-import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 import { Location } from '@angular/common';
-import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
 import { Constants } from '@shared/constant';
-import { MediaDetailMixin } from '@media/shared/mixin/media-detail.mixin';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -31,81 +28,21 @@ import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing
 import { MediaAdditionalListMixin } from '@media/shared/mixin/media-additional-list.mixin';
 import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
 import * as Cropper from 'cropperjs';
-@Mixin([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin])
+import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
+import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+@Mixin([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin])
 @Component({
   selector: 'photo-detail',
   templateUrl: '../shared/list/item-detail.component.html',
   styleUrls: ['photo-detail.component.scss'],
 })
-export class PhotoDetailComponent implements OnInit, MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin {
-
-  // object: any;
-  // loading: any;
-  // ids: any;
-  // mode: any;
-  // showDetail: any;
-  // isOwner: any;
-  // recipients: any;
-
-  // constructor(public apiBaseService: ApiBaseService,
-  //   public confirmService: WthConfirmService,
-  //   public route: ActivatedRoute,
-  //   public photoService: PhotoService,
-  //   public location: Location) { }
-
-  // ngOnInit() {
-  //   this.route.params.subscribe(p => {
-  //     this.photoService.getPhoto(p.id).subscribe(res => {
-  //       this.object = res.data;
-  //     });
-  //   })
-  // }
-  // doEvent(e: any) {
-  //   switch (e.action) {
-  //     case 'goBack' :
-  //       this.back();
-  //     default:
-  //       break;
-  //   }
-  // }
-
-  // loadObject(input?: any) {
-  //   throw new Error('should overwrite this method');
-  // }
-
-  // toggleFavorite(item?: any) {
-  //   let data = this.object;
-  //   if (item) data = item;
-
-  //   this.apiBaseService
-  //     .post(`media/favorites/toggle`, {
-  //       objects: data.map(v => {
-  //         return { id: v.id, object_type: v.model };
-  //       })
-  //     })
-  //     .subscribe(res => {
-  //       this.onToggleFavorite(res.data);
-  //     });
-  // }
-
-  // onToggleFavorite(input: any) {
-  //   throw new Error('should overwrite this method');
-  // }
-
-  // deleteObject(term: any = 'photo') {
-  //   this.confirmService.confirm({
-  //     header: 'Delete',
-  //     acceptLabel: 'Delete',
-  //     message: `Are you sure to delete this ${term}`,
-  //     accept: () => {
-  //       this.loading = true;
-  //       this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
-  //         this.back();
-  //         this.loading = false;
-  //       })
-  //     }
-  //   })
-  // }
+export class PhotoDetailComponent implements OnInit,
+  MediaAdditionalListMixin,
+  SharingModalMixin,
+  MediaDownloadMixin,
+  MediaModalMixin,
+  AlbumAddMixin {
   object: any;
   tooltip: any = Constants.tooltip;
   menuActions: any = {};
@@ -118,14 +55,22 @@ export class PhotoDetailComponent implements OnInit, MediaAdditionalListMixin, S
   image: any;
   cropper: any;
   loadingImg: any;
+  hasEditPhoto: any;
+  subAddAlbum: any;
+  subOpenCreateAlbum: any;
+  subCreateAlbum: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(public apiBaseService: ApiBaseService,
     public route: ActivatedRoute,
+    public router: Router,
     public resolver: ComponentFactoryResolver,
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
+    public photoService: PhotoService,
+    public mediaAddModalService: MediaAddModalService,
+    public mediaCreateModalService: MediaCreateModalService,
     public location: Location) { }
 
   ngOnInit() {
@@ -167,7 +112,7 @@ export class PhotoDetailComponent implements OnInit, MediaAdditionalListMixin, S
     this.modalIns.event.subscribe(e => {
       switch (e.action) {
         case 'editInfo':
-          this.apiBaseService.put(`media/videos/${this.object.id}`, { name: e.params.selectedObject.name }).subscribe(res => {
+          this.apiBaseService.put(`media/photos/${this.object.id}`, e.params.selectedObject).subscribe(res => {
             this.object = res.data
           })
         default:
@@ -200,6 +145,56 @@ export class PhotoDetailComponent implements OnInit, MediaAdditionalListMixin, S
       }
     });
   }
+
+  onZoomIn() {
+    this.cropper.zoom(0.1);
+  }
+
+  onZoomOut() {
+    this.cropper.zoom(-0.1);
+  }
+
+  onRefresh() {
+    this.cropper.reset();
+    this.cropper.setDragMode('none');
+  }
+
+  doAction(event: any) {
+    switch (event.action) {
+      case 'editPhoto':
+        this.editPhoto();
+        break;
+      case 'cancelEdit':
+        this.hasEditPhoto = false;
+        break;
+      case 'savePhoto':
+        this.savePhoto(event.data);
+        break;
+      default:
+        break;
+    }
+    return false;
+  }
+
+  private editPhoto() {
+    this.hasEditPhoto = true;
+    // this.event.emit({action: 'editPhoto'});
+  }
+
+  private savePhoto(dataImg: any) {
+    this.photoService.confirmUpdate(this.object, dataImg).then((data: any) => {
+      // this.event.emit({ action: 'photoUpdated', payload: data });
+      this.object.url = `${data.url}?t=${+new Date()}`;
+      $('.cropper-canvas')[0].childNodes[0].src = this.object.url;
+
+      this.hasEditPhoto = false;
+    });
+  }
+
+  openModalAddToAlbum:(selectedObjects: any) => void;
+  onAddToAlbum:(e: any) => void;
+  openCreateAlbumModal:(selectedObjects: any) => void;
+  onDoneAlbum:(e: any) => void;
 
   getMenuActions() {
     return {
@@ -238,6 +233,19 @@ export class PhotoDetailComponent implements OnInit, MediaAdditionalListMixin, S
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
       },
+      editPhoto: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.hasEditPhoto = true;
+        },
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.edit,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-edit'
+      },
       delete: {
         active: true,
         // needPermission: 'view',
@@ -246,7 +254,7 @@ export class PhotoDetailComponent implements OnInit, MediaAdditionalListMixin, S
           this.confirmService.confirm({
             header: 'Delete',
             acceptLabel: 'Delete',
-            message: `Are you sure to delete this video`,
+            message: `Are you sure to delete this photo`,
             accept: () => {
               this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
                 this.back();
@@ -259,6 +267,21 @@ export class PhotoDetailComponent implements OnInit, MediaAdditionalListMixin, S
         tooltip: this.tooltip.delete,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
+      },
+      add: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          // this.showDetailsInfo = !this.showDetailsInfo;
+          this.openModalAddToAlbum([this.object]);
+        },
+        class: '',
+        liclass: '',
+        title: 'Add To Album',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-plus-square'
       },
       info: {
         active: true,

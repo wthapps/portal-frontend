@@ -14,14 +14,22 @@ import { SharingModalService } from '@shared/shared/components/photo/modal/shari
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
+import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 
-@Mixin([SharingModalMixin, MediaDownloadMixin, MediaModalMixin])
+@Mixin([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin])
 @Component({
   selector: 'video-detail',
   templateUrl: '../shared/list/item-detail.component.html',
   styleUrls: ['video-detail.component.scss']
 })
-export class ZVideoDetailComponent implements OnInit, MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin {
+export class ZVideoDetailComponent implements OnInit,
+  MediaAdditionalListMixin,
+  SharingModalMixin,
+  MediaDownloadMixin,
+  MediaModalMixin,
+  PlaylistAddMixin {
   object: any;
   tooltip: any = Constants.tooltip;
   menuActions: any = {};
@@ -30,14 +38,21 @@ export class ZVideoDetailComponent implements OnInit, MediaAdditionalListMixin, 
   showDetailsInfo: any = false;
   modalIns: any;
   modalRef: any;
+  subAddPlaylist: any;
+  subOpenCreatePlaylist: any;
+  subCreatePlaylist: any;
+
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(public apiBaseService: ApiBaseService,
     public route: ActivatedRoute,
+    public router: Router,
     public resolver: ComponentFactoryResolver,
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
+    public mediaAddModalService: MediaAddModalService,
+    public mediaCreateModalService: MediaCreateModalService,
     public location: Location){}
 
   ngOnInit() {
@@ -88,6 +103,11 @@ export class ZVideoDetailComponent implements OnInit, MediaAdditionalListMixin, 
     })
   }
 
+  openModalAddToPlaylist:(selectedObjects: any) => void;
+  onAddToPlaylist:(e: any) => void;
+  openCreatePlaylistModal:(selectedObjects: any) => void;
+  onDonePlaylist:(e: any) => void;
+
   getMenuActions() {
     return {
       active_drop: true,
@@ -124,6 +144,20 @@ export class ZVideoDetailComponent implements OnInit, MediaAdditionalListMixin, 
         tooltip: this.tooltip.addToFavorites,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
+      },
+      add: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          this.openModalAddToPlaylist([this.object]);
+        },
+        class: '',
+        liclass: '',
+        title: 'Add To Playlist',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-plus-square'
       },
       delete: {
         active: true,
