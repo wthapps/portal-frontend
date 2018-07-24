@@ -11,7 +11,7 @@
     <w-nav-tab [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)"></w-nav-tab>
   </div>
   <div class="message-assets-content bg-gray-light">
-    <div *ngIf="currentTab === 'members'" class="message-assets-members">
+    <div *ngIf="currentTab === 'members' && showMembers" class="message-assets-members">
       <ng-container *ngIf="contactSelect?.group_json">
         <ul
           *ngIf="contactSelect.group_json.group_type == 'multiple' || contactSelect.group_json.group_type == 'support'">
@@ -32,6 +32,7 @@
               class="message-assets-members-row"
               [userId]="user_in_group.id"
               [image]="user_in_group.profile_image"
+              [groupType]="chatContactList[user_in_group?.id] ? 'couple' : 'stranger'"
               [name]="user_in_group.name">
             </z-chat-share-user-icon>
             <div class="btn-group">

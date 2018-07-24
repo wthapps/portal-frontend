@@ -63,8 +63,6 @@
   }
 }
 
-
-
 .media-user {
   overflow: visible;
   position: relative;
@@ -80,6 +78,13 @@
     background-color: $user-offline;
     &.online {
       background-color: $user-online;
+    }
+  }
+  .media-user-stranger {
+    background-color: transparent;
+    i {
+      @include center();
+      color: $color-inverse;
     }
   }
 

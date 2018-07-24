@@ -2,11 +2,12 @@
   <div class="page-body-nav">
     <div class="page-body-nav-left">
       <z-chat-share-user [data]="contactSelect" [usersOnlineItem]="usersOnlineItem$ | async">
-        <small *ngIf="contactSelect.group_json.member_count > 2"
+        <!--<small *ngIf="contactSelect.group_json.member_count > 2"
                [attr.title]="contactSelect.group_json | chatGroupMembers"
                class="can-click" (click)="onShowMemberBar()">
-          {{ contactSelect.group_json.member_count }} people <i
-          [ngClass]="{'fa-angle-right': !showMemberBar, 'fa-angle-down': showMemberBar}" class="fa"></i>
+        </small>-->
+        <small>
+          Active {{ contactSelect.group_json.interacted_at | timeFormat }}
         </small>
       </z-chat-share-user>
     </div>
@@ -53,31 +54,5 @@
       </button>
     </div>
   </div>
-  <ng-container *ngIf="showMemberBar">
-    <div *ngIf="contactSelect.group_json.group_type == 'multiple' || contactSelect.group_json.group_type == 'support'"
-         class="page-body-nav-sub">
-      <div *ngFor="let user_in_group of contactSelect.group_json.users_json" class="dropdown">
-        <button (click)="showDropdownMenu($event); checkSendMessage(user_in_group); checkBlacklist(user_in_group)"
-                class="btn btn-sm btn-default dropdown-toggle" type="button"
-                data-toggle="dropdown">
-        <span *ngIf="chatContactList[user_in_group?.id] && (usersOnlineItem$ | async)?.includes(user_in_group.id)"
-              class="fa fa-circle online"></span>
-          <span *ngIf="chatContactList[user_in_group?.id] && !(usersOnlineItem$ | async)?.includes(user_in_group.id)"
-                class="fa fa-circle"></span>
-          <span *ngIf="!chatContactList[user_in_group?.id]" class="fa fa-question-circle-o" aria-hidden="true"></span>
-          {{ user_in_group.name }} <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li *ngIf="showSendMessage"><a href="javascript:;" (click)="onSelect(user_in_group)">Send Message</a></li>
-          <!--<li class="divider"></li>-->
-          <li><a [routerLink]="[profileUrl, user_in_group.uuid]">View Profile</a></li>
-          <li *ngIf="showBlacklist"><a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a></li>
-          <li *ngIf="contactSelect.role == 'admin'"><a href="javascript:;"
-                                                       (click)="onRemoveFromConversation(user_in_group)">Remove
-            From Conversation</a></li>
-        </ul>
-      </div>
-    </div>
-  </ng-container>
 </ng-container>
 <z-chat-share-edit-conversation #editConversation></z-chat-share-edit-conversation>

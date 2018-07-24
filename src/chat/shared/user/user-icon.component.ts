@@ -12,7 +12,7 @@ import { ChatService } from '../services/chat.service';
 export class ZChatShareUserIconComponent implements OnInit {
   @Input() image: any;
   @Input() name: any;
-  @Input() groupType: any;
+  @Input() groupType: any; // couple, stranger
   @Input() userId: any;
   @Input() size: string = 'xs'; //xs, xsm, sm, md, lg
   usersOnlineItem$: Observable<any>;

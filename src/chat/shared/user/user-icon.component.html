@@ -8,4 +8,7 @@
   </div>
   <span *ngIf="groupType == 'couple'" class="media-user-status"
         [ngClass]="{'online': (usersOnlineItem$ | async).includes(userId)}"></span>
+  <span *ngIf="groupType == 'stranger'" class="media-user-status media-user-stranger">
+    <i class="fa fa-question-circle"></i>
+  </span>
 </div>

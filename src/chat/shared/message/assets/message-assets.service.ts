@@ -15,11 +15,9 @@ export class MessageAssetsService {
 
   open() {
     this.openSubject.next(true);
-    // this.renderer.addClass(document.body, 'open-chat-message-assets');
   }
 
   close() {
     this.openSubject.next(false);
-    // this.renderer.removeClass(document.body, 'open-chat-message-assets');
   }
 }

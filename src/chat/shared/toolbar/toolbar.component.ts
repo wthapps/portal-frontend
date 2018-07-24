@@ -106,21 +106,6 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     this.chatService.leaveConversation(this.contactSelect);
   }
 
-  onRemoveFromConversation(user: any) {
-    this.chatService.removeFromConversation(this.contactSelect, user.id);
-  }
-
-  onShowMemberBar() {
-    this.showMemberBar = !this.showMemberBar;
-  }
-
-  showDropdownMenu(e: any) {
-    let showDropdownMenu_ul = e.target.nextElementSibling;
-    if (e.screenX + 240 > window.innerWidth) {
-      showDropdownMenu_ul.style.left = 'auto';
-    }
-  }
-
   onDeleteConversation() {
     this.wthConfirmService.confirm({
       acceptLabel: 'Delete',
@@ -136,6 +121,37 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     this.chatService.selectContactByPartnerId(user.id);
   }
 
+  onShowAssets() {
+    if (this.openAssets) {
+      this.messageAssetsService.close();
+    } else {
+      this.messageAssetsService.open();
+    }
+  }
+
+  /*onRemoveFromConversation(user: any) {
+    this.chatService.removeFromConversation(this.contactSelect, user.id);
+  }
+
+  onShowMemberBar() {
+    this.showMemberBar = !this.showMemberBar;
+  }
+
+  showDropdownMenu(e: any) {
+    let showDropdownMenu_ul = e.target.nextElementSibling;
+    if (e.screenX + 240 > window.innerWidth) {
+      showDropdownMenu_ul.style.left = 'auto';
+    }
+  }
+
+  checkBlacklist(user: any) {
+    if (this.chatService.userService.getSyncProfile().id == user.id) {
+      this.showBlacklist = false;
+    } else {
+      this.showBlacklist = true;
+    }
+  }
+
   checkSendMessage(user: any) {
     this.showSendMessage = !!this.chatContactList[user.id] && this.userService.getSyncProfile().id !== user.id;
   }
@@ -148,21 +164,5 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
         this.chatService.addGroupUserBlackList(user.id);
       }
     });
-  }
-
-  checkBlacklist(user: any) {
-    if (this.chatService.userService.getSyncProfile().id == user.id) {
-      this.showBlacklist = false;
-    } else {
-      this.showBlacklist = true;
-    }
-  }
-
-  onShowAssets() {
-    if (this.openAssets) {
-      this.messageAssetsService.close();
-    } else {
-      this.messageAssetsService.open();
-    }
-  }
+  }*/
 }
