@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
 import { ServiceManager } from '@shared/services/service-manager';
+import { noteConstants } from '@notes/shared/config/constants';
 
 declare var _: any;
 
@@ -18,6 +19,7 @@ export class ZNoteSharedHeaderComponent {
   show: boolean = false;
   searchAdvanced: boolean = false;
   search: string;
+  readonly OBJECT_TYPE: any = noteConstants.OBJECT_TYPE;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
   constructor(public serviceManager: ServiceManager) {
@@ -51,13 +53,20 @@ export class ZNoteSharedHeaderComponent {
     });
   }
 
-  setText(data: any) {
+  navigateTo(item: any): void {
     this.show = false;
-    this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: this.textbox.search}});
+    if(item.object_type == this.OBJECT_TYPE.NOTE) {
+      this.serviceManager.getRouter().navigate([{ outlets: { detail: ['notes', item.id] } }], {
+        queryParamsHandling: 'preserve',
+        preserveFragment: true
+      });
+    } else if(item.object_type == this.OBJECT_TYPE.FOLDER) {
+      this.serviceManager.getRouter().navigate(['folders', item.id]);
+    } else
+      console.warn('Unhandle object type: ', item.object_type);
   }
 
   onSearchAdvanced(e: any) {
-    console.log(e);
     this.searchAdvanced = e.searchAdvanced;
   }
 }

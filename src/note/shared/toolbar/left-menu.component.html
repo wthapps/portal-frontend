@@ -5,9 +5,9 @@
   <span *ngIf="noteFoldersTree.length > 0" (click)="showFolderTree = !showFolderTree" class="can-click menuleft-item-open">
     <i class="fa" [ngClass]="{'fa-chevron-right': !showFolderTree, 'fa-chevron-down' : showFolderTree}"></i>
   </span>
-  <a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']"
+  <a [routerLink]="[myNoteMenu?.link]" [routerLinkActive]="['active']"
      (click)="onNoteClick($event); onCloseMenu()" href="javascript:void(0);">
-    <i class="{{ noteMenu[0].icon }}"></i> {{ noteMenu[0].name }}
+    <i class="{{ myNoteMenu?.icon }}"></i> {{ myNoteMenu?.name }}
   </a>
 </div>
 
@@ -16,7 +16,7 @@
 </div>
 
 <ng-container *ngFor="let note of noteMenu;let i = index;">
-  <div class="menuleft-item" *ngIf="note.name != '' && i > 0" [routerLinkActive]="['active']"
+  <div class="menuleft-item" *ngIf="note.name != ''" [routerLinkActive]="['active']"
        [ngClass]="{'hidden': note.link == '/search'}">
     <a *ngIf="note.link != '#'" [routerLink]="[note.link]" [queryParams]="{}" (click)="onNoteClick($event); onCloseMenu()"
        href="javascript:;">

@@ -1,15 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { ServiceManager } from '@shared/services/service-manager';
-import { UrlService } from '@shared/services/url.service';
-import { ApiBaseService } from '@shared/services/apibase.service';
+
 import { Observable } from 'rxjs/Observable';
-import { Note } from '@shared/shared/models/note.model';
 import { Folder } from '../shared/reducers/folder';
 import { Store } from '@ngrx/store';
+
+
+import * as context from '../shared/reducers/context';
 import * as fromRoot from '../shared/reducers/index';
 import * as fromNote from '../shared/actions/note';
 import * as listReducer from '../shared/reducers/features/list-mixed-entities';
+import { UrlService } from '@shared/services/url.service';
+import { ApiBaseService } from '@shared/services/apibase.service';
+import { ZNoteService } from '@notes/shared/services/note.service';
+import { Note } from '@shared/shared/models/note.model';
+import { NoteConstants } from '@notes/shared/config/constants';
 
 @Component({
   selector: 'z-note-search',
@@ -19,8 +24,10 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
   event: any;
   params: any;
 
-  public noteItems$: Observable<Note[]>;
-  public folderItems$: Observable<Folder[]>;
+  readonly noteConstants: NoteConstants = new NoteConstants();
+
+  noteItems$: Observable<Note[]>;
+  folderItems$: Observable<Folder[]>;
   sortOption$: Observable<any>;
   nodeState$: Observable<any>;
   selectedObjects$: Observable<any[]>;
@@ -32,6 +39,7 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private urlService: UrlService,
+    private noteService: ZNoteService,
     private store: Store<any>,
     private apiBaseService: ApiBaseService
   ) {
@@ -63,12 +71,27 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
   getSearchResult() {
     this.apiBaseService
       .get(`note/search`, { q: this.params['q'] })
-      .subscribe((res: any) => {
+      .toPromise().then((res: any) => {
         this.store.dispatch(new fromNote.LoadSuccess(res.data));
+        this.store.dispatch({
+          type: context.SET_CONTEXT,
+          payload: {
+            page: this.noteConstants.PAGE_SEARCH,
+            pathTitle: 'Search',
+            permissions: this.noteConstants.PAGE_PERMISSIONS.SEARCH,
+            noData: this.noteConstants.NO_DATA.SEARCH
+          }
+        });
       });
   }
 
-  onNewNote() {}
+  onNewNote() {
+    this.noteService.modalEvent({ action: 'note:open_note_add_modal' });
+  }
 
-  onFolder() {}
+  onFolder() {
+    this.noteService.modalEvent({
+      action: 'note:folder:create'
+    });
+  }
 }

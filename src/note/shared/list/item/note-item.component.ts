@@ -24,7 +24,6 @@ import { UserService } from '@wth/shared/services';
 @Component({
   selector: 'note-item',
   templateUrl: 'note-item.component.html'
-  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteItemComponent implements OnInit, OnDestroy {
   @Input() data: Note = new Note();

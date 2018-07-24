@@ -28,7 +28,8 @@ declare let _: any;
   styleUrls: ['left-menu.component.scss']
 })
 export class ZNoteSharedLeftMenuComponent implements OnDestroy {
-  noteMenu = Constants.noteMenuItems;
+  noteMenu: any[] = [];
+  myNoteMenu: any;
   sub: any;
   sub2: any;
   noteFoldersTree: any[] = [];
@@ -41,6 +42,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     private commonEventService: CommonEventService,
     private renderer: Renderer2
   ) {
+    [this.myNoteMenu, ...this.noteMenu] = Constants.noteMenuItems;
     this.sub = this.store
       .select(fromRoot.getFoldersTree)
       .subscribe((folders: any) => {

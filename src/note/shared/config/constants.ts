@@ -8,6 +8,7 @@ export class NoteConstants extends ConstantsBase {
   PAGE_INSIDE_FOLDER: any = 'INSIDE_FOLDER';
   PAGE_NOTE_EDIT: any = 'NOTE_EDIT';
   PAGE_NOTE_FAVOURITE: any = 'NOTE_FAVOURITE';
+  PAGE_SEARCH: any = 'NOTE_SEARCH';
   PAGE_TRASH: string = 'NOTE_TRASH';
 
   /*
@@ -32,6 +33,10 @@ export class NoteConstants extends ConstantsBase {
       enableEdit: true
     },
     RECENT: {
+      edit: false,
+      enableEdit: true
+    },
+    SEARCH: {
       edit: false,
       enableEdit: true
     }
@@ -63,6 +68,12 @@ export class NoteConstants extends ConstantsBase {
       icon: 'fa fa-clock-o',
       title: 'There is no recent note accessed by you!',
       subTitle: 'Recent Note'
+    },
+    SEARCH: {
+      icon: 'fa fa-share-alt',
+      title: 'There is match search result!',
+      subTitle: 'Please try another keyword'
+
     }
   };
 
@@ -83,5 +94,5 @@ export class NoteConstants extends ConstantsBase {
     shared_date: 'Share date'
   };
 }
-let noteConstants: NoteConstants = new NoteConstants();
+const noteConstants: NoteConstants = new NoteConstants();
 export { noteConstants };

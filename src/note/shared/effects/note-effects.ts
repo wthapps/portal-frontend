@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
+
 import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-import { ApiBaseService } from '@shared/services/apibase.service';
 import { of } from 'rxjs/observable/of';
 import { empty } from 'rxjs/observable/empty';
 import { ZNoteService } from '../services/note.service';
-import { map, withLatestFrom, catchError, concatMap, mergeMap } from 'rxjs/operators';
+import { map, withLatestFrom, catchError, concatMap } from 'rxjs/operators';
 
 
 import * as note from '../actions/note';
 import * as context from '../reducers/context';
+import { ApiBaseService } from '@shared/services/apibase.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from "@shared/shared/components/confirmation/wth-confirm.service";
 import { Router } from "@angular/router";
@@ -56,8 +57,6 @@ export class NoteEffects {
             return ({type: note.NOTE_UPDATED, payload: res['data']});
           } ),
           catchError((err: HttpErrorResponse) => {
-            // this.toastsService.danger('Note updated FAIL, something\'s wrong happened');
-
             if (err.status == FORBIDDEN) {
               this.wthConfirmService.confirm({
                 message: 'The file you are looking for was deleted or you do not have permission to access',
@@ -111,7 +110,7 @@ export class NoteEffects {
       concatMap((payload: any) => {
         this.store.dispatch({type: context.SET_CONTEXT, payload: {loading: true}})
         return this.apiBaseService.get(`note/mixed_entities`, payload)}),
-      mergeMap((res: any) => { return [
+      concatMap((res: any) => { return [
         {type: note.LOAD_SUCCESS, payload: res.data},
         {type: context.SET_CONTEXT, payload: {loading: false}},
         {type: note.SET_LIST_PERMISSION, payload: {canAdd: true}}]; }),
@@ -137,7 +136,7 @@ export class NoteEffects {
     .ofType(note.TRASH_LOAD)
     .pipe(
       concatMap(() => this.apiBaseService.get(`note/trashs`)),
-      mergeMap((res: any) => { return [
+      concatMap((res: any) => { return [
         {type: note.LOAD_SUCCESS, payload: res.data},
         {type: note.SET_LIST_PERMISSION, payload: {canAdd: false}}]; }),
       catchError(() => of({type: note.LOAD_SUCCESS, payload: []}))
