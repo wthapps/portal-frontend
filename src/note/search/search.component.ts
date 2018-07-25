@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Folder } from '../shared/reducers/folder';
@@ -21,9 +21,6 @@ import { NoteConstants } from '@notes/shared/config/constants';
   templateUrl: 'search.component.html'
 })
 export class ZNoteSearchComponent implements OnInit, OnDestroy {
-  event: any;
-  params: any;
-
   readonly noteConstants: NoteConstants = new NoteConstants();
 
   noteItems$: Observable<Note[]>;
@@ -37,6 +34,7 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean>;
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private urlService: UrlService,
     private noteService: ZNoteService,
@@ -52,12 +50,9 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
     this.selectAll$ = this.store.select(fromRoot.getSelectAll);
     this.loading$ = this.store.select(fromRoot.getLoading);
 
-    this.event = this.router.events
-      .filter((event: any) => event instanceof NavigationEnd)
-      .subscribe((event: NavigationEnd) => {
-        this.params = this.urlService.getQuery();
-        this.getSearchResult();
-      });
+    this.route.queryParamMap.forEach(queryParamMap => {
+      this.getSearchResult(queryParamMap.get('q'));
+    })
   }
 
   ngOnInit() {
@@ -65,12 +60,11 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (event) this.event.unsubscribe();
   }
 
-  getSearchResult() {
-    this.apiBaseService
-      .get(`note/search`, { q: this.params['q'] })
+  getSearchResult(q: string): Promise<any> {
+    return this.apiBaseService
+      .get(`note/search`, { q })
       .toPromise().then((res: any) => {
         this.store.dispatch(new fromNote.LoadSuccess(res.data));
         this.store.dispatch({
