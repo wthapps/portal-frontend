@@ -81,7 +81,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   doListEvent(e: any) {
     switch(e.action) {
       case 'viewDetails':
-        this.router.navigate(['/videos', e.payload.selectedObject.id]);
+        this.router.navigate(['/videos', e.payload.selectedObject.uuid]);
         break;
       case 'deleteMedia':
         this.wthConfirmService.confirm({

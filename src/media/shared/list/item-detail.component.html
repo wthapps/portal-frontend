@@ -10,18 +10,18 @@
     </div>
     <div class="image-viewer-header-right">
       <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
-        <button *ngIf="action.key !== 'active_drop' && !action.val.inDropDown" [disabled]="!action.val.active" class="{{action.val.class}}"
+        <button *ngIf="action.val.active && !action.val.inDropDown" [disabled]="!action.val.active" class="{{action.val.class}}"
           draggable="false" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);"
           (click)="action.val.action()">
           <i class="{{action.val.iconClass}}"></i>
         </button>
       </ng-template>
-      <div class="btn-group ng-star-inserted">
+      <div class="btn-group">
 
         <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
           <i class="fa fa-ellipsis-v" ng-reflect-ng-class="fa fa-ellipsis-v"></i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right ng-star-inserted">
+        <ul class="dropdown-menu dropdown-menu-right">
           <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
             <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
               <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"

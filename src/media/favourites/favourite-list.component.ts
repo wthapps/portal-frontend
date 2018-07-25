@@ -128,6 +128,7 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
+
     });
   }
   viewDetail(uuid: string) {
@@ -142,18 +143,21 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
   viewDetails(payload: any) {
     switch (payload.selectedObject.model) {
       case 'Media::Playlist' :
-      this.router.navigate(['playlists', payload.selectedObject.uuid]);
-      break;
+        this.router.navigate(['playlists', payload.selectedObject.uuid]);
+        break;
       case 'Media::Album' :
-      this.router.navigate(['albums', payload.selectedObject.uuid]);
-      break;
+        this.router.navigate(['albums', payload.selectedObject.uuid]);
+        break;
       case 'Media::Photo' :
-      this.router.navigate(['photos', payload.selectedObject.uuid]);
+        this.router.navigate(['photos', payload.selectedObject.uuid]);
         break;
       case 'Media::Video' :
-      this.router.navigate(['videos', payload.selectedObject.id]);
+        this.router.navigate(['videos', payload.selectedObject.uuid]);
         break;
-        default:
+      case 'Common::Sharing' :
+        this.router.navigate(['shared', payload.selectedObject.uuid]);
+        break;
+      default:
         break;
       }
   }

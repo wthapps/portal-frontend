@@ -31,6 +31,7 @@ import * as Cropper from 'cropperjs';
 import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { mediaConstants } from '@media/shared/conig/constants';
 @Mixin([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin])
 @Component({
   selector: 'photo-detail',
@@ -76,16 +77,18 @@ export class PhotoDetailComponent implements OnInit,
   ngOnInit() {
     this.menuActions = this.getMenuActions();
     this.route.params.subscribe(params => {
-      this.apiBaseService.get(`media/photos/${params.id}`).subscribe(res => {
+      this.apiBaseService.get(`media/media/${params.id}`, {model: 'Media::Photo'}).subscribe(res => {
         this.object = res.data;
         if (this.object.favorite) {
           this.menuActions.favorite.iconClass = 'fa fa-star';
         } else {
           this.menuActions.favorite.iconClass = 'fa fa-star-o';
         }
+        this.validateActions(this.menuActions, this.object.permission.role_id);
       })
     })
   }
+  validateActions: (menuActions: any, role_id: number) => any;
 
   openModalShareCustom() {
     this.openModalShare([this.object]);
@@ -198,10 +201,10 @@ export class PhotoDetailComponent implements OnInit,
 
   getMenuActions() {
     return {
-      active_drop: true,
+      // active_drop: true,
       share: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: this.openModalShareCustom.bind(this),
         class: 'btn btn-default',
@@ -212,7 +215,7 @@ export class PhotoDetailComponent implements OnInit,
       },
       favorite: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: () => {
           this.apiBaseService.post(`media/favorites/toggle`, {
@@ -235,7 +238,7 @@ export class PhotoDetailComponent implements OnInit,
       },
       editPhoto: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: () => {
           this.hasEditPhoto = true;
@@ -248,7 +251,7 @@ export class PhotoDetailComponent implements OnInit,
       },
       delete: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: () => {
           this.confirmService.confirm({
@@ -270,7 +273,7 @@ export class PhotoDetailComponent implements OnInit,
       },
       add: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: () => {
           // this.showDetailsInfo = !this.showDetailsInfo;
@@ -285,7 +288,7 @@ export class PhotoDetailComponent implements OnInit,
       },
       info: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.showDetailsInfo = !this.showDetailsInfo;
@@ -299,8 +302,8 @@ export class PhotoDetailComponent implements OnInit,
       },
       download: {
         active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Outside dropdown list
+        permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
+        inDropDown: true, // Inside dropdown list
         action: () => {
           this.downloadMedia([this.object]);
         },
@@ -313,7 +316,7 @@ export class PhotoDetailComponent implements OnInit,
       },
       edit: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.openEditModal(this.object);

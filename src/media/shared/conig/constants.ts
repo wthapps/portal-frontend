@@ -9,8 +9,7 @@ export class MediaConstants extends ConstantsBase {
     VIEW: 1,
     DOWNLOAD: 2,
     EDIT: 3,
-    FULL: 4,
-    OWN: 5
+    OWNER: 5
   };
 }
 let mediaConstants: MediaConstants = new MediaConstants();

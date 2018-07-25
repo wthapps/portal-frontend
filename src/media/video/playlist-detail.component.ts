@@ -24,6 +24,7 @@ import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixi
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { mediaConstants } from '@media/shared/conig/constants';
 
 @Mixin([MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, LoadModalAble, SharingModalMixin, PlaylistAddMixin, MediaDownloadMixin])
 @Component({
@@ -131,11 +132,14 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
   }
 
   loadObject(input: any){
-    this.apiBaseService.get(`media/playlists/${input}`).subscribe(res => {
+    this.apiBaseService.get(`media/media/${input}`, {model: 'Media::Playlist'}).subscribe(res => {
       this.object = res.data;
       this.parentMenuActions.favorite.iconClass = res.data.favorite? 'fa fa-star' : 'fa fa-star-o';
+      this.validateActions(this.subMenuActions, this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
+      this.validateActions(this.parentMenuActions, this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
     });
   }
+  validateActions: (menuActions: any, role_id: number) => any;
 
   loadMoreObjects(input?: any) {
     /* this method is load objects to display on init */
@@ -143,7 +147,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
   }
 
   viewDetail(input?: any) {
-    this.router.navigate([`videos/`, this.selectedObjects[0].id]);
+    this.router.navigate([`videos/`, this.selectedObjects[0].uuid]);
   }
 
   doNoData() {
@@ -293,7 +297,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
     return {
       add: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: () => {},
         class: 'btn btn-default',
@@ -304,7 +308,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       share: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: this.openModalShareParent.bind(this),
         class: 'btn btn-default',
@@ -315,7 +319,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       shareMobile: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Inside dropdown list
         action: () => { },
         class: '',
@@ -327,7 +331,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       favorite: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: this.toggleFavoriteParent.bind(this),
         class: 'btn btn-default',
@@ -336,32 +340,9 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
       },
-      tag: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: () => { },
-        class: 'btn btn-default',
-        liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
-      },
-      tagMobile: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Inside dropdown list
-        action: () => { },
-        class: '',
-        liclass: 'visible-xs-block',
-        title: 'Tag',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
-      },
       delete: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: () => {console.log('delete');},
         class: 'btn btn-default',
@@ -372,7 +353,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       edit: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: () => { },
         class: '',
@@ -384,7 +365,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       detail: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: () => { },
         class: '',
@@ -396,7 +377,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       download: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: () => { },
         class: '',
@@ -408,7 +389,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       deleteMobile: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Inside dropdown list
         action: () => { },
         class: '',
@@ -436,7 +417,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       // },
       share: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: this.openModalShare.bind(this),
         class: 'btn btn-default',
@@ -447,7 +428,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       shareMobile: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Inside dropdown list
         action: () => { },
         class: '',
@@ -459,7 +440,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       favorite: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: this.toggleFavorite.bind(this),
         class: 'btn btn-default',
@@ -467,29 +448,6 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
         tooltip: this.tooltip.addToFavorites,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
-      },
-      tag: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: () => { },
-        class: 'btn btn-default',
-        liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
-      },
-      tagMobile: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Inside dropdown list
-        action: () => { },
-        class: '',
-        liclass: 'visible-xs-block',
-        title: 'Tag',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
       },
       delete: {
         active: true,
@@ -504,7 +462,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       edit: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: this.openModalAddToPlaylistCustom.bind(this),
         class: '',
@@ -516,7 +474,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       download: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: this.downloadMediaCustom.bind(this),
         class: '',
@@ -528,7 +486,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
       },
       deleteMobile: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Inside dropdown list
         action: () => { },
         class: '',

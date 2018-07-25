@@ -8,8 +8,7 @@
   </div>
 
   <!--type == 'photo'-->
-  <div *ngIf="object.object_type == 'photo' || (object.content_type && object.content_type.includes('video'))" class="photo-box-figure"
-    (click)="select(object)">
+  <div *ngIf="object.model == 'Media::Photo' || object.model == 'Media::Video'" class="photo-box-figure" (click)="select(object)">
     <div class="photo-box-input" (click)="toggleSelection(object, $event)">
       <i class="fa fa-check"></i>
     </div>
@@ -36,14 +35,16 @@
   </div>
 
   <!--type == 'album'-->
-  <div *ngIf="object.object_type == 'album' || object.object_type == 'Media::PlayList'" class="photo-box-figure" (click)="select(object)">
+  <div *ngIf="object.model == 'Media::Album' || object.model == 'Common::Sharing' || object.model == 'Media::Playlist'" class="photo-box-figure"
+    (click)="select(object)">
     <div class="photo-box-input" (click)="toggleSelection(object, $event)">
       <i class="fa fa-check"></i>
     </div>
     <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
       <div class="photo-box-figure-in">
         <!-- <img draggable="false" class="img-center lazyload" [src]="object.photo_default" alt=""> -->
-        <img draggable="false" class="img-center lazyload" [src]="object.thumbnail_url" alt="">
+        <!-- <img draggable="false" class="img-center lazyload" [src]="object.thumbnail_url" alt=""> -->
+        <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url + '?t=' + time" alt="">
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->
@@ -72,7 +73,7 @@
 
 
   <!--sharing-->
-  <div *ngIf="object.object_type == 'sharing'" class="photo-box-figure" (click)="select(object)">
+  <!-- <div *ngIf="object.object_type == 'sharing'" class="photo-box-figure" (click)="select(object)">
     <div class="photo-box-input" (click)="toggleSelection(object, $event)">
       <i class="fa fa-check"></i>
     </div>
@@ -81,7 +82,6 @@
         <img draggable="false" class="img-center lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="object.thumbnail_url" alt="">
       </div>
       <div class="photo-box-info">
-        <!--{{ object.name }} <br>-->
         <span *ngIf="object.count>1">
           {{ object.count }} items
         </span>
@@ -94,14 +94,10 @@
       <span class="can-click">
         <i class="wthico-album"></i> {{ object.name }}
       </span>
-      <!-- <div class="hidden">
-        data return doesn't have json_shares
-        <i *ngIf="object.favorite" class="fa fa-star"></i>
-      </div> -->
     </div>
     <div class="photo-box-owner">{{ object.owner?.name }}</div>
     <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
     <div class="photo-box-size">{{ object.child_count }}</div>
-  </div>
+  </div> -->
 
 </div>

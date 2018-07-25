@@ -44,7 +44,7 @@
             tooltipPosition="bottom">
             <i class="fa fa-ellipsis-v"></i>
           </a>
-          <ul *ngIf="menuActions.active_drop" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
             <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
               <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
                 <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"

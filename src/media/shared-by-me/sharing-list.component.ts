@@ -44,7 +44,6 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   modalRef: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
-
   constructor(
     public resolver: ComponentFactoryResolver,
     public mediaUploaderDataService: MediaUploaderDataService,

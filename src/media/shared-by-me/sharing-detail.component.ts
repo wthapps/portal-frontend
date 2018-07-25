@@ -174,35 +174,16 @@ export class ZMediaSharingDetailComponent
   loadObject(input: any) {
     this.apiBaseService.get(`media/sharings/${input}`).subscribe(res => {
       this.object = res.data;
-      console.log(this.object);
-
-      // validate permission
-      if (this.object.recipient) {
-        this.menuActions.share.active = false;
-        this.menuActions.shareMobile.active = false;
-        this.menuActions.edit.active = false;
-        this.menuActions.download.active = false;
-
-        this.subMenuActions.share.active = false;
-        this.subMenuActions.shareMobile.active = false;
-        this.subMenuActions.edit.active = false;
-        this.subMenuActions.remove.active = false;
-        this.subMenuActions.download.active = false;
-        this.subMenuActions.active_drop = false;
+      if (this.object.favorite) {
+        this.menuActions.favorite.iconClass = 'fa fa-star';
+      } else {
+        this.menuActions.favorite.iconClass = 'fa fa-star-o';
       }
-      if (this.object.recipient && this.object.recipient.role_id > mediaConstants.SHARING_PERMISSIONS.DOWNLOAD) {
-        this.menuActions.share.active = true;
-        this.menuActions.shareMobile.active = true;
-        this.menuActions.edit.active = true;
-      }
-      if (this.object.recipient && this.object.recipient.role_id > mediaConstants.SHARING_PERMISSIONS.VIEW) {
-        this.menuActions.download.active = true;
-
-        this.subMenuActions.active_drop = true;
-        this.subMenuActions.download.active = true;
-      }
+      this.validateActions(this.subMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
+      this.validateActions(this.parentMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
     });
   }
+  validateActions: (menuActions: any, role_id: number) => any;
 
   loadMoreObjects(input?: any) {
     /* this method is load objects to display on init */
@@ -213,7 +194,7 @@ export class ZMediaSharingDetailComponent
     if (this.selectedObjects[0].model == 'Media::Photo') {
       this.router.navigate([`photos/`, this.selectedObjects[0].uuid]);
     } else {
-      this.router.navigate([`videos/`, this.selectedObjects[0].id]);
+      this.router.navigate([`videos/`, this.selectedObjects[0].uuid]);
     }
   }
 
@@ -404,10 +385,9 @@ export class ZMediaSharingDetailComponent
 
   getMenuActions() {
     return {
-      active_drop: true,
       share: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: false, // Outside dropdown list
         action: this.openModalShareParent.bind(this),
         class: 'btn btn-default',
@@ -418,7 +398,7 @@ export class ZMediaSharingDetailComponent
       },
       shareMobile: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Inside dropdown list
         action: () => { },
         class: '',
@@ -430,7 +410,7 @@ export class ZMediaSharingDetailComponent
       },
       favorite: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: this.toggleFavoriteParent.bind(this),
         class: 'btn btn-default',
@@ -441,7 +421,7 @@ export class ZMediaSharingDetailComponent
       },
       delete: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: this.deleteParent.bind(this),
         class: 'btn btn-default',
@@ -452,7 +432,7 @@ export class ZMediaSharingDetailComponent
       },
       edit: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Outside dropdown list
         action: () => { },
         class: '',
@@ -464,7 +444,7 @@ export class ZMediaSharingDetailComponent
       },
       info: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: true, // Outside dropdown list
         action: this.toggleInfoCustom.bind(this),
         class: '',
@@ -476,7 +456,7 @@ export class ZMediaSharingDetailComponent
       },
       download: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
         inDropDown: true, // Outside dropdown list
         action: this.downloadMediaCustom.bind(this),
         class: '',
@@ -488,7 +468,7 @@ export class ZMediaSharingDetailComponent
       },
       deleteMobile: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: true, // Inside dropdown list
         action: () => { },
         class: '',
@@ -503,10 +483,10 @@ export class ZMediaSharingDetailComponent
 
   getSubMenuActions() {
     return {
-      active_drop: true,
+      // active_drop: true,
       preview: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: this.viewDetail.bind(this),
         class: 'btn btn-default',
@@ -517,7 +497,7 @@ export class ZMediaSharingDetailComponent
       },
       share: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: this.openModalShare.bind(this),
         class: 'btn btn-default',
@@ -528,7 +508,7 @@ export class ZMediaSharingDetailComponent
       },
       shareMobile: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Inside dropdown list
         action: this.openModalShare.bind(this),
         class: '',
@@ -540,7 +520,7 @@ export class ZMediaSharingDetailComponent
       },
       favorite: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: this.toggleFavorite.bind(this),
         class: 'btn btn-default',
@@ -551,7 +531,7 @@ export class ZMediaSharingDetailComponent
       },
       edit: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: this.openModalAddToPlaylistCustom.bind(this),
         class: '',
@@ -563,7 +543,7 @@ export class ZMediaSharingDetailComponent
       },
       download: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
         inDropDown: true, // Outside dropdown list
         action: this.downloadMediaCustom.bind(this),
         class: '',
@@ -575,7 +555,7 @@ export class ZMediaSharingDetailComponent
       },
       remove: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.selectedObjects = this.selectedObjects.map(el => {el._destroy = true; return {id: el.id, model: el.model, _destroy: el._destroy}})

@@ -17,8 +17,9 @@ import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { mediaConstants } from '@media/shared/conig/constants';
 
-@Mixin([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin])
+@Mixin([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin])
 @Component({
   selector: 'video-detail',
   templateUrl: '../shared/list/item-detail.component.html',
@@ -58,16 +59,19 @@ export class ZVideoDetailComponent implements OnInit,
   ngOnInit() {
     this.menuActions = this.getMenuActions();
     this.route.params.subscribe(params => {
-      this.apiBaseService.get(`media/videos/${params.id}`).subscribe(res => {
+      this.apiBaseService.get(`media/media/${params.id}`, {model: 'Media::Video'}).subscribe(res => {
         this.object = res.data;
         if(this.object.favorite){
           this.menuActions.favorite.iconClass = 'fa fa-star';
         } else {
           this.menuActions.favorite.iconClass = 'fa fa-star-o';
         }
+        this.validateActions(this.menuActions, this.object.permission.role_id);
       })
     })
   }
+
+  validateActions: (menuActions: any, role_id: number) => any;
 
   openModalShareCustom() {
     this.openModalShare([this.object]);
@@ -110,10 +114,10 @@ export class ZVideoDetailComponent implements OnInit,
 
   getMenuActions() {
     return {
-      active_drop: true,
+      // active_drop: true,
       share: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: this.openModalShareCustom.bind(this),
         class: 'btn btn-default',
@@ -124,7 +128,7 @@ export class ZVideoDetailComponent implements OnInit,
       },
       favorite: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: () => {
           this.apiBaseService.post(`media/favorites/toggle`, {
@@ -147,7 +151,7 @@ export class ZVideoDetailComponent implements OnInit,
       },
       add: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.openModalAddToPlaylist([this.object]);
@@ -161,7 +165,7 @@ export class ZVideoDetailComponent implements OnInit,
       },
       delete: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: () => {
           this.confirmService.confirm({
@@ -183,7 +187,7 @@ export class ZVideoDetailComponent implements OnInit,
       },
       info: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.showDetailsInfo = !this.showDetailsInfo;
@@ -197,7 +201,7 @@ export class ZVideoDetailComponent implements OnInit,
       },
       download: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.downloadMedia([this.object]);
@@ -211,7 +215,7 @@ export class ZVideoDetailComponent implements OnInit,
       },
       edit: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.openEditModal(this.object);
