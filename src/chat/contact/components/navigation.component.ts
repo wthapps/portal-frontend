@@ -8,7 +8,6 @@ import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { ApiBaseService } from '@shared/services';
 
 @Component({
-  moduleId: module.id,
   selector: 'z-chat-contact-navigation',
   templateUrl: 'navigation.component.html'
 })
@@ -74,7 +73,7 @@ export class ZChatContactMenuComponent implements OnInit {
 
     this.apiBaseService
       .post('zone/chat/contact/contact_tab_count')
-      .subscribe((res: any) => {
+      .toPromise().then((res: any) => {
         let tabs_w = this.tabs;
         _.map(res.data, (v: any, k: any) => {
           let tab_new: WTab = _.find(tabs_w, ['link', '/contacts/' + k]);

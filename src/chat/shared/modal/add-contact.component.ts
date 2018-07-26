@@ -13,7 +13,6 @@ import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.serv
 declare var _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'z-chat-share-add-contact',
   templateUrl: 'add-contact.component.html',
   styleUrls: ['contact-selection.component.scss']

@@ -7,13 +7,8 @@ import {
   EventEmitter,
   SimpleChanges,
   ViewChild,
-  ElementRef,
-  Renderer
+  ElementRef
 } from '@angular/core';
-import { Router } from '@angular/router';
-
-
-import 'rxjs/add/operator/takeWhile';
 
 import { MediaUploaderDataService } from './media-uploader-data.service';
 import { ModalDockComponent } from '@wth/shared/shared/components/modal/dock.component';
@@ -22,6 +17,7 @@ import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
 import { CommonEventService } from "@shared/services/common-event/common-event.service";
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
+import { Subscription } from 'rxjs';
 
 declare var $: any;
 declare var _: any;
@@ -39,7 +35,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
   uploaded_num: number;
   stopped_num: number;
   pending_files: any;
-  pending_request: any;
+  pending_request: Subscription;
   photos: Array<any> = [];
   files: Array<any>;
   isVideos: any;
@@ -140,7 +136,7 @@ export class MediaUploaderComponent implements OnInit, OnChanges, AfterViewInit 
 
   stop(event: any) {
     event.preventDefault();
-    if (this.pending_request) {
+    if (this.pending_request && !this.pending_request.closed) {
       this.pending_request.unsubscribe();
     }
     this.stopped_num = this.files_num - this.uploaded_num;
