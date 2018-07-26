@@ -15,6 +15,8 @@ import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.serv
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { Observable } from 'rxjs/Observable';
 import { takeUntil } from 'rxjs/operators';
+import { Media } from '@shared/shared/models/media.model';
+import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 
 
 @Component({
@@ -63,6 +65,10 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
   profileUrl: any;
 
+  medias$: Observable<Media[]>;
+  nextLink: string;
+  isLoading: boolean;
+
   constructor(
     private chatService: ChatService,
     private commonEventService: CommonEventService,
@@ -97,6 +103,8 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    this.medias$ = this.messageAssetsService.medias$;
   }
 
   ngOnInit() {
@@ -107,6 +115,14 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
   tabAction(event: WTab) {
     this.currentTab = event.link;
+    if (this.currentTab !== 'member') {
+      this.nextLink = this.buildNextLink();
+      if (this.nextLink) {
+        this.getObjects(true);
+      } else {
+        this.messageAssetsService.clear();
+      }
+    }
   }
 
   onClose() {
@@ -133,5 +149,44 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
         this.chatService.addGroupUserBlackList(user.id);
       }
     });
+  }
+
+  getObjects(override?: boolean) {
+    if (this.nextLink && !this.isLoading) {
+      this.isLoading = true;
+      this.messageAssetsService.getMedias(this.nextLink, override).subscribe(
+        (res: ResponseMetaData) => {
+          this.nextLink = res.meta.links.next;
+          this.isLoading = false;
+        }
+      );
+    }
+  }
+
+  onCompleteLoadMore(event: boolean) {
+    if (event) {
+      this.getObjects();
+    }
+  }
+
+  onCompleteSort(event: any) {
+    if (event) {
+      this.nextLink = this.buildNextLink() + `&sort=${event.sortOrder}&sort_name=${event.sortBy}`;
+      this.messageAssetsService.clear();
+      this.getObjects();
+    }
+  }
+
+  private buildNextLink() {
+    let urlAPI = '';
+    switch (this.currentTab) {
+      case 'photos':
+        urlAPI = `media/photos?active=1`;
+        break;
+      default:
+        urlAPI = null;
+        break;
+    }
+    return urlAPI;
   }
 }

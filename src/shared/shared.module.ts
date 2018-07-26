@@ -59,6 +59,7 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 import { WEditorModule } from '@shared/components/w-editor/w-editor.module';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { StickyModule } from 'ng2-sticky-kit';
+import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -147,6 +148,7 @@ import { StickyModule } from 'ng2-sticky-kit';
     // Custom modules
     ModalModule,
     WMediaSelectionModule,
+    WObjectListModule,
     WNavTabModule,
     ComponentsModule,
     WEditorModule,

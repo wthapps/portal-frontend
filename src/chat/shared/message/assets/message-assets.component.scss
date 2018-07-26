@@ -34,6 +34,11 @@ $message-assets-width: 400px;
   > div {
     width: 100%;
   }
+
+  .wobject-grid .wobject-row-body .wobject-row,
+  .wobject-timeline .wobject-row-body .wobject-row {
+    width: 50%;
+  }
 }
 
 .message-assets-members {
