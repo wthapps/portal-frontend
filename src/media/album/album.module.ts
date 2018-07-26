@@ -12,6 +12,7 @@ import { CoreModule } from '@wth/core/core.module';
 import { WGridListModule } from '@wth/shared/components/grid-list';
 import { MediaModalModule } from '@media/shared/modal/modal.module';
 import { WToolbarModule } from '@wth/shared/components/toolbar';
+import { WUploadModule } from '@shared/components/upload/upload.module';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { WToolbarModule } from '@wth/shared/components/toolbar';
     CoreModule,
     MediaModalModule,
     WToolbarModule,
+    WUploadModule,
     WGridListModule
   ],
   declarations: [

@@ -75,7 +75,7 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
 
   loadObjects(input?: any) {
     this.loading = true;
-    this.apiBaseService.get('/media/media?type=album').subscribe(res => {
+    this.apiBaseService.get('/media/albums', {model: 'Media::Album'}).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
@@ -83,12 +83,12 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
   }
 
   loadMoreObjects(input?: any) {
-    this.loading = true;
-    this.apiBaseService.get('/media/media?type=album').subscribe(res => {
-      this.objects = res.data;
-      this.links = res.meta.links;
-      this.loading = false;
-    });
+    if (this.links && this.links.next) {
+      this.apiBaseService.get(this.links.next).subscribe(res => {
+        this.objects = [...this.objects, ...res.data];
+        this.links = res.meta.links;
+      })
+    }
   }
 
   doToolbarEvent(e: any) {

@@ -45,7 +45,8 @@
           </ng-container>
           <ng-container *ngIf="object.model == 'Media::Photo'">
             <div class="image-viewer-content-fixed">
-              <img id="image-viewer" [src]="object.url" alt="" (load)="onStart($event)">
+              <!-- (load)="onStart($event)" -->
+              <img id="image-viewer" [src]="object.url" alt="">
             </div>
             <ng-container *ngIf="object && hasEditPhoto">
               <app-image-cropper [photo]="object.url" (onCompleteMethod)="doAction($event)"></app-image-cropper>

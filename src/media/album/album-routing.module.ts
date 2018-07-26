@@ -13,7 +13,7 @@ import { AuthGuard } from '@wth/shared/services';
         canActivate: [AuthGuard]
       },
       {
-        path: 'albums/:id',
+        path: 'albums/:uuid',
         component: ZMediaAlbumDetailComponent,
         canActivate: [AuthGuard]
       }

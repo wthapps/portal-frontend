@@ -5,10 +5,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import * as appStore from '../shared/store';
 import {
-  GetAll,
-  Favorite,
-  AddSuccess,
-  DeleteMany,
   Download
 } from '../shared/store/media/media.actions';
 import { Constants } from '@wth/shared/constant';
@@ -79,7 +75,7 @@ export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModal
 
   loadObjects() {
     this.loading = true;
-    this.apiBaseService.get('/media/media?type=photo').subscribe(res => {
+    this.apiBaseService.get('/media/media', {model: 'Media::Photo'}).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
@@ -185,7 +181,9 @@ custom method please overwirte any method*/
   selectedObjectsChanged:(e: any) => void;
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
-    this.router.navigate([`/photos/${id}`, { ids: this.selectedObjects.map(e => e.id) }]);
+    let data: any = { returnUrl: '/photos' };
+    if (this.selectedObjects && this.selectedObjects.length > 1) data.ids = this.selectedObjects.map(s => s.id).join(',')
+    this.router.navigate([`/photos/${id}`], {queryParams: data});
   }
 
   loadMoreObjects() {

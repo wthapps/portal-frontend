@@ -132,7 +132,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
   }
 
   loadObject(input: any){
-    this.apiBaseService.get(`media/media/${input}`, {model: 'Media::Playlist'}).subscribe(res => {
+    this.apiBaseService.get(`media/playlists/${input}`).subscribe(res => {
       this.object = res.data;
       this.parentMenuActions.favorite.iconClass = res.data.favorite? 'fa fa-star' : 'fa fa-star-o';
       this.validateActions(this.subMenuActions, this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
@@ -242,7 +242,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
   }
 
   openModalShareParent() {
-    this.openModalShare({selectedObjects: [this.object]});
+    this.openModalShare([this.object.sharing_object]);
   }
 
   openModalShare: (input: any) => void;
@@ -321,7 +321,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Inside dropdown list
-        action: () => { },
+        action: this.openModalShareParent.bind(this),
         class: '',
         liclass: 'visible-xs-block',
         tooltip: this.tooltip.share,

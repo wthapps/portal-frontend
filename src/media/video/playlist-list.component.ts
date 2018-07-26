@@ -90,7 +90,9 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin,
         active: true,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
-        action: this.openModalShare.bind(this),
+        action: () => {
+          this.openModalShare([this.selectedObjects[0].sharing_object]);
+        },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
         tooltip: this.tooltip.share,

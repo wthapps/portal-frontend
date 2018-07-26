@@ -63,6 +63,7 @@ export class PhotoDetailComponent implements OnInit,
   subAddAlbum: any;
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
+  returnUrl: any;
   listIds: DoublyLinkedLists;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -80,20 +81,37 @@ export class PhotoDetailComponent implements OnInit,
 
   ngOnInit() {
     this.menuActions = this.getMenuActions();
-    this.route.params.subscribe(params => {
-      if (params.ids) {
-        this.listIds = new DoublyLinkedLists(params.ids.split(","));
-        this.listIds.setCurrent(params.id);
-      }
-      this.apiBaseService.get(`media/media/${params.id}`, {model: 'Media::Photo'}).subscribe(res => {
-        this.object = res.data;
-        if (this.object.favorite) {
-          this.menuActions.favorite.iconClass = 'fa fa-star';
-        } else {
-          this.menuActions.favorite.iconClass = 'fa fa-star-o';
-        }
-        this.validateActions(this.menuActions, this.object.permission.role_id);
+
+    this.route.params.subscribe(p => {
+      this.route.queryParams.subscribe(params => {
+        this.apiBaseService.get(`media/media/${p.id}`, { model: 'Media::Photo' }).subscribe(res => {
+          this.object = res.data;
+          if (this.object.favorite) {
+            this.menuActions.favorite.iconClass = 'fa fa-star';
+          } else {
+            this.menuActions.favorite.iconClass = 'fa fa-star-o';
+          }
+          this.validateActions(this.menuActions, this.object.permission.role_id);
+          if (!this.listIds) {
+            if (params.ids) {
+              this.listIds = new DoublyLinkedLists(params.ids.split(','));
+              this.listIds.setCurrent(this.object.id);
+            } else {
+              let query: any = { model: 'Media::Photo' }
+              if (params.parent_id) query.parent = params.parent_id;
+              this.apiBaseService.get(`media/media/ids`, query).subscribe(res => {
+                if (res.data) {
+                  this.listIds = new DoublyLinkedLists(res.data.map(d => d.uuid));
+                  this.listIds.setCurrent(this.object.uuid);
+                }
+              });
+            }
+          }
+          if (params.returnUrl) this.returnUrl = params.returnUrl;
+        });
       })
+
+
     })
   }
   validateActions: (menuActions: any, role_id: number) => any;
@@ -341,14 +359,19 @@ export class PhotoDetailComponent implements OnInit,
 
   onPrev() {
     this.listIds.prev();
-    this.router.navigate([`/photos/${this.listIds.current.data}`, { ids: this.listIds.data }]);
+    this.router.navigate([`/photos/${this.listIds.current.data}`], { queryParamsHandling: "merge" });
   };
+
   onNext() {
     this.listIds.next();
-    this.router.navigate([`/photos/${this.listIds.current.data}`, { ids: this.listIds.data }]);
+    this.router.navigate([`/photos/${this.listIds.current.data}`], { queryParamsHandling: "merge" });
   };
 
   back() {
-    this.location.back();
+    if(this.returnUrl) {
+      this.router.navigate([this.returnUrl]);
+    } else {
+      this.location.back();
+    }
   }
 }
