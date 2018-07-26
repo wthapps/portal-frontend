@@ -59,7 +59,6 @@
                 <i class="fa fa-angle-right"></i>
               </a>
             </div>
-
             <div class="image-viewer-content-action">
               <a draggable="false" href="javascript:;" (click)="onZoomOut()" pTooltip="{{ tooltip.zoomOut }}" tooltipPosition="top">
                 <i class="fa fa-minus"></i>
@@ -71,6 +70,18 @@
                 <i class="fa fa-plus"></i>
               </a>
             </div>
+          </ng-container>
+        </div>
+        <div class="image-viewer-content-nav">
+          <ng-container *ngIf="listIds && listIds.isPrev()">
+            <a draggable="false" href="javascript:void(0);" (click)="onPrev('videos')" pTooltip="{{ tooltip.previous }}" tooltipPosition="bottom">
+              <i class="fa fa-angle-left"></i>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="listIds && listIds.isNext()">
+            <a class="right" draggable="false" href="javascript:void(0);" (click)="onNext('videos')" pTooltip="{{ tooltip.next }}" tooltipPosition="bottom">
+              <i class="fa fa-angle-right"></i>
+            </a>
           </ng-container>
         </div>
       </div>

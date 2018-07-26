@@ -3,7 +3,7 @@
   <ng-template #objectActionsTemplate>
     <ul class="page-body-control-menu" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
       <li>
-        <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="viewDetail(selectedObjects[0].id)" pTooltip="{{ tooltip.preview }}"
+        <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="viewDetail(selectedObjects[0].uuid)" pTooltip="{{ tooltip.preview }}"
           tooltipPosition="bottom">
           <i class="fa fa-eye"></i>
         </a>

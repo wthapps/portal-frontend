@@ -32,7 +32,9 @@ import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/conig/constants';
-@Mixin([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin])
+import { MediaPreviewMixin } from '@media/shared/mixin/media-preview.mixin';
+import { DoublyLinkedLists } from '@shared/data-structures/link-list/doubly-linked-lists';
+@Mixin([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin])
 @Component({
   selector: 'photo-detail',
   templateUrl: '../shared/list/item-detail.component.html',
@@ -42,6 +44,7 @@ export class PhotoDetailComponent implements OnInit,
   MediaAdditionalListMixin,
   SharingModalMixin,
   MediaDownloadMixin,
+  MediaPreviewMixin,
   MediaModalMixin,
   AlbumAddMixin {
   object: any;
@@ -60,6 +63,7 @@ export class PhotoDetailComponent implements OnInit,
   subAddAlbum: any;
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
+  listIds: DoublyLinkedLists;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(public apiBaseService: ApiBaseService,
@@ -77,6 +81,10 @@ export class PhotoDetailComponent implements OnInit,
   ngOnInit() {
     this.menuActions = this.getMenuActions();
     this.route.params.subscribe(params => {
+      if (params.ids) {
+        this.listIds = new DoublyLinkedLists(params.ids.split(","));
+        this.listIds.setCurrent(params.id);
+      }
       this.apiBaseService.get(`media/media/${params.id}`, {model: 'Media::Photo'}).subscribe(res => {
         this.object = res.data;
         if (this.object.favorite) {
@@ -330,6 +338,15 @@ export class PhotoDetailComponent implements OnInit,
       }
     }
   }
+
+  onPrev() {
+    this.listIds.prev();
+    this.router.navigate([`/photos/${this.listIds.current.data}`, { ids: this.listIds.data }]);
+  };
+  onNext() {
+    this.listIds.next();
+    this.router.navigate([`/photos/${this.listIds.current.data}`, { ids: this.listIds.data }]);
+  };
 
   back() {
     this.location.back();

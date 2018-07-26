@@ -18,8 +18,11 @@ import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixi
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/conig/constants';
+import { CircularLinkedLists } from '@shared/data-structures/link-list/circular-linked-lists';
+import { DoublyLinkedLists } from '@shared/data-structures/link-list/doubly-linked-lists';
+import { MediaPreviewMixin } from '@media/shared/mixin/media-preview.mixin';
 
-@Mixin([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin])
+@Mixin([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin, MediaPreviewMixin])
 @Component({
   selector: 'video-detail',
   templateUrl: '../shared/list/item-detail.component.html',
@@ -30,6 +33,7 @@ export class ZVideoDetailComponent implements OnInit,
   SharingModalMixin,
   MediaDownloadMixin,
   MediaModalMixin,
+  MediaPreviewMixin,
   PlaylistAddMixin {
   object: any;
   tooltip: any = Constants.tooltip;
@@ -42,6 +46,7 @@ export class ZVideoDetailComponent implements OnInit,
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
+  listIds: DoublyLinkedLists;
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -59,9 +64,14 @@ export class ZVideoDetailComponent implements OnInit,
   ngOnInit() {
     this.menuActions = this.getMenuActions();
     this.route.params.subscribe(params => {
+      if (params.ids) {
+        this.listIds = new DoublyLinkedLists(params.ids.split(","));
+        this.listIds.setCurrent(params.id);
+      }
+
       this.apiBaseService.get(`media/media/${params.id}`, {model: 'Media::Video'}).subscribe(res => {
         this.object = res.data;
-        if(this.object.favorite){
+        if(this.object.favorite) {
           this.menuActions.favorite.iconClass = 'fa fa-star';
         } else {
           this.menuActions.favorite.iconClass = 'fa fa-star-o';
@@ -100,7 +110,7 @@ export class ZVideoDetailComponent implements OnInit,
         case 'editInfo' :
           this.apiBaseService.put(`media/videos/${this.object.id}`, { name: e.params.selectedObject.name}).subscribe(res => {
             this.object = res.data
-          })
+          });
         default:
           break;
       }
@@ -229,6 +239,9 @@ export class ZVideoDetailComponent implements OnInit,
       }
     }
   }
+
+  onPrev: (term) => void;
+  onNext: (term) => void;
 
   back() {
     this.location.back();

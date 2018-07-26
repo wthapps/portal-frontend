@@ -66,7 +66,6 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
-    private wthConfirmService: WthConfirmService,
     private playlistModalService: PlaylistModalService,
     public resolver: ComponentFactoryResolver) {}
 
@@ -81,10 +80,10 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   doListEvent(e: any) {
     switch(e.action) {
       case 'viewDetails':
-        this.router.navigate(['/videos', e.payload.selectedObject.uuid]);
+        this.viewDetail(e.payload.selectedObject.uuid);
         break;
       case 'deleteMedia':
-        this.wthConfirmService.confirm({
+        this.confirmService.confirm({
           message: 'Are you sure to delete',
           accept: () => {
             let data = this.objects.filter(v => v.selected)
@@ -195,8 +194,8 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
       this.loading = false;
     });
   }
-  viewDetail(id: number) {
-    this.router.navigate(['/videos', id]);
+  viewDetail(id: any) {
+    this.router.navigate([`/videos/${id}`, { ids: this.selectedObjects.map(e => e.id)} ]);
   }
   loadMoreObjects(input?: any) {
     if (this.links && this.links.next) {

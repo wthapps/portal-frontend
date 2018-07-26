@@ -1,7 +1,7 @@
 <ng-template #objectActionsTemplate>
   <ul class="page-body-control-menu" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
     <li>
-      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="viewDetail(selectedObjects)" pTooltip="{{ tooltip.preview}}"
+      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="viewDetail(selectedObjects[0].uuid)" pTooltip="{{ tooltip.preview}}"
         tooltipPosition="bottom">
         <i class="fa fa-eye"></i>
       </a>
@@ -71,7 +71,7 @@
           </a>
         </li>
         <li *ngIf="hasSelectedObjects && selectedObjects.length == 1" href="javascript:void(0);" draggable="false">
-          <a (click)="viewDetail(selectedObjects)">
+          <a (click)="viewDetail(selectedObjects[0].uuid)">
             <i class="fa fa-info-circle"></i> View Detail
           </a>
         </li>

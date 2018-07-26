@@ -124,14 +124,12 @@ custom method please overwirte any method*/
   /* ================================== */
 
   doListEvent(event: any) {
-    console.log(event);
-
     switch (event.action) {
       case 'favorite':
         this.toggleFavorite(event.payload)
         break;
       case 'viewDetails':
-        this.viewDetail([event.payload.selectedObject]);
+        this.viewDetail(event.payload.selectedObject.uuid);
         break;
       case 'download':
         this.store.dispatch(new Download(event.payload));
@@ -177,18 +175,6 @@ custom method please overwirte any method*/
     }
   }
 
-  viewDetails(payload: any, ids = []) {
-    const object = payload.selectedObject;
-    this.router.navigate([
-      `photos`,
-      object.uuid, {
-        batchQuery: ids.length > 0 ? `${this.currentQuery}&ids=${ids}]` : this.currentQuery,
-        mode: 0
-      }
-    ]);
-  }
-
-
 
   ngOnDestroy() {
     // this.sub.unsubscribe();
@@ -198,14 +184,8 @@ custom method please overwirte any method*/
 custom method please overwirte any method*/
   selectedObjectsChanged:(e: any) => void;
   toggleFavorite: (input?: any) => void;
-  viewDetail(selectedObjects?: any) {
-    if (selectedObjects.length > 1) {
-      this.viewDetails({ selectedObject: selectedObjects[0] }, _.map(selectedObjects, 'id'));
-    } else if (selectedObjects.length === 1) {
-      this.viewDetails({ selectedObject: selectedObjects[0] });
-    } else if (selectedObjects.length === 0) {
-      this.viewDetails({ selectedObject: selectedObjects[0] });
-    }
+  viewDetail(id: any) {
+    this.router.navigate([`/photos/${id}`, { ids: this.selectedObjects.map(e => e.id) }]);
   }
 
   loadMoreObjects() {

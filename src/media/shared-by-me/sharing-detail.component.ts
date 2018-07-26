@@ -308,7 +308,6 @@ export class ZMediaSharingDetailComponent
         }
       });
     }
-
   }
 
   changeViewMode(mode: any) {

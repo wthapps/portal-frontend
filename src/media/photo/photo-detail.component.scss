@@ -75,7 +75,7 @@
       @include center(false, true);
       z-index: 100;
       left: $grid-gutter-width/2;
-      &:last-child {
+      &.right {
         left: auto;
         right: $grid-gutter-width/2;
       }

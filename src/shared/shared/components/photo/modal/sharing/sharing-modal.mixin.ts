@@ -46,14 +46,12 @@ export class SharingModalMixin {
       recipients: e.users,
       role_id: e.role.id
     };
-
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
       this.sharingModalService.update.next(res.data);
     });
   }
   // onEditShare: (e: SharingModalResult, sharing: any) => void;
   onEditShare(e: SharingModalResult, sharing: any) {
-
     const data: SharingEditParams = {
       recipients: e.recipients.map(s => { return { id: s.id, role_id: s.role_id, recipient_id: s.user.id, _destroy: s._destroy}}),
       users: e.users,
