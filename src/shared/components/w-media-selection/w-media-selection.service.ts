@@ -90,7 +90,7 @@ export class WMediaSelectionService {
   }
 
   clear() {
-    // this.mediasSubject.next([]);
+    this.mediasSubject.next([]);
     this.selectedMediasSubject.next([]);
     this.mediaParentSubject.next(null);
     this.objectListService.clear();

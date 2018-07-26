@@ -9,7 +9,7 @@ export class WObjectListService {
   private viewSubject: BehaviorSubject<string> = new BehaviorSubject<string>('grid');
 
   selectedObjects$: any;
-  private selectedObjectsSubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  private selectedObjectsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
   groupBy$: any;
   private groupBySubject: BehaviorSubject<any> = new BehaviorSubject<any>('object_type');
@@ -82,11 +82,14 @@ export class WObjectListService {
   }
 
   removeItem(id: any) {
-    _.remove(this.selectedObjectsSubject.getValue(), {'id': id});
+    // _.remove(this.selectedObjectsSubject.getValue(), {'id': id});
+    const filteredItems = this.selectedObjectsSubject.getValue().filter(item => item.id !== id);
+    this.selectedObjectsSubject.next(filteredItems);
   }
 
   clear() {
-    this.selectedObjectsSubject.next([]);
+    if(this.selectedObjectsSubject.getValue().length !== 0)
+      this.selectedObjectsSubject.next([]);
     this.selectedEvent.emit({ type: 'close' });
   }
 

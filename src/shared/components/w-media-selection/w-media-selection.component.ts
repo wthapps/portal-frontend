@@ -10,6 +10,8 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import 'rxjs/add/operator/takeUntil';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
+import { tap } from 'rxjs/operators/tap';
+import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 
 @Component({
   selector: 'w-media-selection',
@@ -138,7 +140,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   getObjects(override?: boolean) {
     if (this.nextLink && !this.isLoading) {
       this.isLoading = true;
-      this.mediaSelectionService.getMedias(this.nextLink, override).subscribe(
+      this.mediaSelectionService.getMedias(this.nextLink, override).toPromise().then(
         (res: ResponseMetaData) => {
           this.nextLink = res.meta.links.next;
           this.isLoading = false;
@@ -206,7 +208,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.nextLink = this.buildNextLink();
       this.objectListService.setObjectsDisabled([]);
 
-      this.getObjects();
+      this.getObjects(true);
     } else {
       this.onInsert();
     }

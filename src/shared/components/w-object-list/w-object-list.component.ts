@@ -88,7 +88,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   ngOnDestroy(): void {
-    this.objectListService.clear();
+    // this.objectListService.clear();
   }
 
   ngAfterContentChecked(): void {
