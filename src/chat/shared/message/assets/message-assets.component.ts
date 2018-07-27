@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
 import { takeUntil } from 'rxjs/operators';
 import { Media } from '@shared/shared/models/media.model';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
+import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 
 
 @Component({
@@ -75,7 +76,8 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private wthConfirmService: WthConfirmService,
     private addContactService: ZChatShareAddContactService,
-    private messageAssetsService: MessageAssetsService
+    private messageAssetsService: MessageAssetsService,
+    private objectListService: WObjectListService
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
 
@@ -108,6 +110,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.objectListService.setMultipleSelection(false);
   }
 
   ngOnDestroy() {
@@ -177,11 +180,18 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onCompleteDoubleClick(event: any) {
+    console.log('show photo, note, file:', event); // show photo, note, file
+  }
+
   private buildNextLink() {
     let urlAPI = '';
     switch (this.currentTab) {
       case 'photos':
         urlAPI = `media/photos?active=1`;
+        break;
+      case 'notes':
+        urlAPI = `note/v1/mixed_entities?active=1`;
         break;
       default:
         urlAPI = null;

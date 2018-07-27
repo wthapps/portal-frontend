@@ -30,14 +30,42 @@ $message-assets-width: 400px;
 .message-assets-content {
   @include flexbox;
   @include flex(1);
+  width: 100%;
   overflow: auto;
   > div {
     width: 100%;
   }
 
+  .wobject-row-checkbox, .wobject-row-header {
+    display: none;
+  }
+  .wobject-row-body {
+    padding-top: 15px;
+  }
+
   .wobject-grid .wobject-row-body .wobject-row,
   .wobject-timeline .wobject-row-body .wobject-row {
     width: 50%;
+  }
+  &.message-assets-content-row {
+    .wobject-grid .wobject-row-body .wobject-row,
+    .wobject-timeline .wobject-row-body .wobject-row {
+      width: 100%;
+    }
+    .wobject-grid .wobject-item, .wobject-timeline .wobject-item {
+      @include box-shadow(none);
+      .wobject-box-name {
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        border: 1px solid $line;
+      }
+    }
+  }
+
+  .wobject-box-content-note {
+    height: 54px;
+    overflow: hidden;
   }
 }
 
