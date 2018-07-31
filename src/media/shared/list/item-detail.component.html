@@ -39,7 +39,7 @@
       <div class="video-viewer-content">
         <div class="embed-responsive embed-responsive-16by9">
           <ng-container *ngIf="object.model == 'Media::Video'">
-            <video class="embed-responsive-item" width="800" height="600" controls>
+            <video id="video" class="embed-responsive-item" width="800" height="600" controls>
               <source [src]="object.url" [type]="object.content_type">
             </video>
           </ng-container>

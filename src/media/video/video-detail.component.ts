@@ -46,6 +46,7 @@ export class ZVideoDetailComponent implements OnInit,
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
+  returnUrl: any;
   listIds: DoublyLinkedLists;
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -63,21 +64,36 @@ export class ZVideoDetailComponent implements OnInit,
 
   ngOnInit() {
     this.menuActions = this.getMenuActions();
-    this.route.params.subscribe(params => {
-      if (params.ids) {
-        this.listIds = new DoublyLinkedLists(params.ids.split(","));
-        this.listIds.setCurrent(params.id);
-      }
-
-      this.apiBaseService.get(`media/media/${params.id}`, {model: 'Media::Video'}).subscribe(res => {
-        this.object = res.data;
-        if(this.object.favorite) {
-          this.menuActions.favorite.iconClass = 'fa fa-star';
-        } else {
-          this.menuActions.favorite.iconClass = 'fa fa-star-o';
-        }
-        this.validateActions(this.menuActions, this.object.permission.role_id);
-      })
+    this.route.params.subscribe(p => {
+      this.route.queryParams.subscribe(params => {
+        this.apiBaseService.get(`media/media/${p.id}`, { model: 'Media::Video' }).subscribe(res => {
+          this.object = res.data;
+          if (this.object.favorite) {
+            this.menuActions.favorite.iconClass = 'fa fa-star';
+          } else {
+            this.menuActions.favorite.iconClass = 'fa fa-star-o';
+          }
+          // reload video
+          if ($('#video')[0]) $('#video')[0].load();
+          this.validateActions(this.menuActions, this.object.permission.role_id);
+          if (!this.listIds && params.preview) {
+            if (params.ids) {
+              this.listIds = new DoublyLinkedLists(params.ids.split(','));
+              this.listIds.setCurrent(this.object.id);
+            } else {
+              let query: any = { model: 'Media::Video' }
+              if (params.parent_id) query.parent = params.parent_id;
+              this.apiBaseService.get(`media/media/ids`, query).subscribe(res => {
+                if (res.data) {
+                  this.listIds = new DoublyLinkedLists(res.data.map(d => d.uuid));
+                  this.listIds.setCurrent(this.object.uuid);
+                }
+              });
+            }
+          }
+          if (params.returnUrl) this.returnUrl = params.returnUrl;
+        });
+      });
     })
   }
 
@@ -240,10 +256,24 @@ export class ZVideoDetailComponent implements OnInit,
     }
   }
 
-  onPrev: (term) => void;
-  onNext: (term) => void;
+  // onPrev: (term) => void;
+  // onNext: (term) => void;
+  onPrev() {
+    this.listIds.prev();
+    this.router.navigate([`/videos/${this.listIds.current.data}`], { queryParamsHandling: "merge" });
+  };
+
+  onNext() {
+    this.listIds.next();
+    this.router.navigate([`/videos/${this.listIds.current.data}`], { queryParamsHandling: "merge" });
+  };
 
   back() {
-    this.location.back();
+    // this.location.back();
+    if (this.returnUrl) {
+      this.router.navigate([this.returnUrl]);
+    } else {
+      this.location.back();
+    }
   }
 }

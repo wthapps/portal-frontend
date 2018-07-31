@@ -25,6 +25,7 @@ import { MediaAddModalService } from '@shared/shared/components/photo/modal/medi
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 import { mediaConstants } from '@media/shared/conig/constants';
+import { LocationCustomService } from '@media/shared/service/location-custom.service';
 
 @Mixin([MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, LoadModalAble, SharingModalMixin, PlaylistAddMixin, MediaDownloadMixin])
 @Component({
@@ -61,6 +62,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
+  returnUrl: any;
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -74,6 +76,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
     public confirmService: WthConfirmService,
     public router: Router,
     public route: ActivatedRoute,
+    public locationCustomService: LocationCustomService,
     public location: Location) { }
 
   ngOnInit(){
@@ -89,7 +92,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
   doListEvent(e: any) {
     switch(e.action) {
       case 'viewDetails':
-        this.viewDetail();
+        this.viewDetail(this.object.uuid);
         break;
       case 'favorite':
         this.toggleFavorite(e.payload);
@@ -146,8 +149,10 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
     throw new Error('should overwrite this method');
   }
 
-  viewDetail(input?: any) {
-    this.router.navigate([`videos/`, this.selectedObjects[0].uuid]);
+  viewDetail(input: any) {
+    let data: any = { returnUrl: `/playlists/${input}`, preview: true, parent_id: this.object.id };
+    if (this.selectedObjects && this.selectedObjects.length > 1) data.ids = this.selectedObjects.map(s => s.id).join(',');
+    this.router.navigate([`/videos/${this.selectedObjects[0].uuid}`], { queryParams: data });
   }
 
   doNoData() {
@@ -155,7 +160,12 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
   }
 
   back() {
-    this.location.back();
+    if (this.locationCustomService.links && this.locationCustomService.links.length > 0) {
+      const back = this.locationCustomService.links.pop();
+      this.router.navigate([back]);
+    } else {
+      this.router.navigate(['/playlists']);
+    }
   }
 
   editName(object: any) {

@@ -18,7 +18,6 @@ export class DoublyLinkedLists {
   }
   next() {
     if (this.isNext()) {
-      // console.log(this.current.next);
       this.current = this.current.next;
     }
   }
@@ -28,6 +27,15 @@ export class DoublyLinkedLists {
       // console.log(this.current.prev);
       this.current = this.current.prev;
     }
+  }
+
+  add(node: Node) {
+    const tmp = this.current;
+    while (this.isNext()) {
+      this.current = this.current.next;
+    }
+    this.current.next = node;
+    this.current = tmp;
   }
 
   setCurrent(id: any) {

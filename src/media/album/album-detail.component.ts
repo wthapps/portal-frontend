@@ -223,12 +223,7 @@ export class ZMediaAlbumDetailComponent
   }
 
   viewDetail(input?: any) {
-    if (this.selectedObjects[0].model == 'Media::Photo') {
-      // , { parent_id: this.object.id }
-      this.router.navigate([`photos/${this.selectedObjects[0].uuid}`], { queryParams: { parent_id: this.object.id } });
-    } else {
-      this.router.navigate([`videos/${this.selectedObjects[0].uuid}`], { queryParams: { parent_id: this.object.id } });
-    }
+    this.router.navigate([`photos/${this.selectedObjects[0].uuid}`], { queryParams: { parent_id: this.object.id, preview: true } });
   }
 
   doNoData() {

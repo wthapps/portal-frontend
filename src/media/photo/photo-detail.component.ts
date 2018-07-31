@@ -92,7 +92,7 @@ export class PhotoDetailComponent implements OnInit,
             this.menuActions.favorite.iconClass = 'fa fa-star-o';
           }
           this.validateActions(this.menuActions, this.object.permission.role_id);
-          if (!this.listIds) {
+          if (!this.listIds && params.preview) {
             if (params.ids) {
               this.listIds = new DoublyLinkedLists(params.ids.split(','));
               this.listIds.setCurrent(this.object.id);
@@ -109,9 +109,7 @@ export class PhotoDetailComponent implements OnInit,
           }
           if (params.returnUrl) this.returnUrl = params.returnUrl;
         });
-      })
-
-
+      });
     })
   }
   validateActions: (menuActions: any, role_id: number) => any;

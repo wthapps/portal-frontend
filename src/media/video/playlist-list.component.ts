@@ -21,6 +21,8 @@ import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin'
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { LocationCustomService } from '@media/shared/service/location-custom.service';
+import { Node } from '@shared/data-structures/link-list/node';
 
 declare var _: any;
 
@@ -62,6 +64,7 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
     public objectListService: WObjectListService,
+    public locationCustomService: LocationCustomService,
     public resolver: ComponentFactoryResolver
   ) {
   }
@@ -310,8 +313,10 @@ export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin,
     });
   }
   viewDetail(uuid: string) {
-    this.router.navigate(['/playlists', uuid]);
+    this.locationCustomService.links.push('/playlists');
+    this.router.navigate([`/playlists/${uuid}`]);
   }
+
   loadMoreObjects(input?: any) {
     /* this method is load objects to display on init */
     throw new Error('should overwrite this method');
