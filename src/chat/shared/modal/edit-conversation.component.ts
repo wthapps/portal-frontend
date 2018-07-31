@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { ChatService } from '../services/chat.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'z-chat-share-edit-conversation',

@@ -32,7 +32,7 @@ export class ChatNotification implements Processable {
 
 
   updateDisplay(data:any) {
-    let item = this.serviceManager.getStorageService().find('chat_conversations');
+    let item = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
     let index = _.findIndex(item.value.data, { id: data.data.group_user.id });
     if(index != -1) {
       item.value.data[index] = data.data.group_user;
@@ -41,7 +41,7 @@ export class ChatNotification implements Processable {
   }
 
   addNotification(data:any) {
-    let item = this.serviceManager.getStorageService().find('chat_conversations');
+    let item = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
     if(item && item.value) {
       let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.data.group_id) return contact;});
       if (contact && contact.notification) {
@@ -53,7 +53,7 @@ export class ChatNotification implements Processable {
   }
 
   addContact(data:any) {
-    let item: StorageItem = this.serviceManager.getStorageService().find('chat_conversations');
+    let item: StorageItem = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
 
     let index = _.findIndex(item.value.data, { id: data.data.group_user.id });
     if(index == -1) {
@@ -68,7 +68,7 @@ export class ChatNotification implements Processable {
   // removeContact(data: any) {
   //   console.log('remove contact yo ...', data);
   //
-  //   let item = this.serviceManager.getStorageService().find('chat_conversations');
+  //   let item = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
   //
   //   let index = _.findIndex(item.value.data, { id: data.data.group_user.id });
   //   if(index !== -1) {
@@ -78,7 +78,7 @@ export class ChatNotification implements Processable {
   // }
 
   updateConversationList(data:any) {
-    let item = this.serviceManager.getStorageService().find('chat_conversations');
+    let item = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
     item.value.data = data.data.group_users;
     this.serviceManager.getChatCommonService().updateAll();
   }

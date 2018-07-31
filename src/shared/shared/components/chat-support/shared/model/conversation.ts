@@ -1,5 +1,5 @@
-import { Message } from './message';
-
-export interface Conversation {
-  lastMessage: Message;
-}
+// import { Message } from './message';
+//
+// export interface Conversation {
+//   lastMessage: Message;
+// }

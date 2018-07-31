@@ -10,8 +10,6 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import 'rxjs/add/operator/takeUntil';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
-import { tap } from 'rxjs/operators/tap';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 
 @Component({
   selector: 'w-media-selection',

@@ -5,7 +5,7 @@ import { HandlerService } from './handler.service';
 import { UserService } from '@wth/shared/services/user.service';
 import { WMessageService } from '@wth/shared/services/message.service';
 import { Router } from '@angular/router';
-import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES } from '@wth/shared/constant';
+import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, CHAT_CONVERSATIONS } from '@wth/shared/constant';
 
 declare var _: any;
 declare var Promise: any;
@@ -21,8 +21,13 @@ export class ChatCommonService {
     private userService: UserService
   ) {}
 
+  setConversations() {
+    let contacts = this.storage.getValue(CHAT_CONVERSATIONS);
+    this.storage.save(CHAT_CONVERSATIONS, {...contacts});
+  }
+
   setRecentConversations() {
-    let contacts = this.storage.find('chat_conversations').value.data;
+    let contacts = this.storage.find(CHAT_CONVERSATIONS).value.data;
     let recentContacts = _.filter(contacts, {
       favourite: false,
       black_list: false,
@@ -32,7 +37,7 @@ export class ChatCommonService {
   }
 
   setFavouriteConversations() {
-    let contacts = this.storage.find('chat_conversations').value.data;
+    let contacts = this.storage.find(CHAT_CONVERSATIONS).value.data;
     let favouriteContacts = _.filter(contacts, {
       favourite: true,
       black_list: false
@@ -41,7 +46,7 @@ export class ChatCommonService {
   }
 
   setHistoryConversations() {
-    let contacts = this.storage.find('chat_conversations').value.data;
+    let contacts = this.storage.find(CHAT_CONVERSATIONS).value.data;
     let historyContacts = _.filter(contacts, {
       history: true,
       black_list: false
@@ -50,8 +55,9 @@ export class ChatCommonService {
   }
 
   moveFristRecentList() {
-    let contactSelect: any = this.storage.find('conversation_select').value;
-    let conversations: any = this.storage.find('chat_conversations').value.data;
+    const contactSelect: any = this.storage.getValue(CONVERSATION_SELECT);
+    const chat_conversations = this.storage.getValue(CHAT_CONVERSATIONS);
+    let conversations: any = chat_conversations.data;
     _.pullAllBy(
       conversations,
       [{ group_id: contactSelect.group_id }],
@@ -59,14 +65,17 @@ export class ChatCommonService {
     );
     conversations.unshift(contactSelect);
     _.uniqBy(conversations, 'id');
+
+    console.log('update move first recent list and conversation list ...', conversations);
+    this.storage.save(CHAT_CONVERSATIONS, {...chat_conversations, data: conversations})
   }
 
   addMessage(groupId: any, data: any) {
     let message = data.message;
     message.links = data.links;
     let currentMessageList = this.storage.getValue('chat_messages_group_' + groupId);
-    if (this.storage.find('conversation_select')) {
-      let contactSelect = this.storage.find('conversation_select').value;
+    const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
+    if (contactSelect) {
       if (currentMessageList) {
         let isReplace = false;
         for (let i = 0; i < currentMessageList.data.length; i++) {
@@ -109,13 +118,13 @@ export class ChatCommonService {
   }
 
   updateContactSelect() {
-    let contactSelect = this.storage.find('conversation_select').value;
-    let chatContacts = this.storage.find('chat_conversations').value.data;
+    let contactSelect = this.storage.find(CONVERSATION_SELECT).value;
+    let chatContacts = this.storage.find(CHAT_CONVERSATIONS).value.data;
     if (chatContacts) {
       let isSet = false;
       for (let i = 0; i < chatContacts.length; i++) {
         if (chatContacts[i] && contactSelect && chatContacts[i].id == contactSelect.id) {
-          this.storage.save('conversation_select', chatContacts[i]);
+          this.storage.save(CONVERSATION_SELECT, chatContacts[i]);
           isSet = true;
         }
       }
@@ -126,6 +135,7 @@ export class ChatCommonService {
   }
 
   updateAll() {
+    this.setConversations();
     this.setRecentConversations();
     this.setFavouriteConversations();
     this.setHistoryConversations();
@@ -139,7 +149,7 @@ export class ChatCommonService {
   }
 
   setDefaultSelectContact(): Promise<any> {
-    let res: any = this.storage.find('chat_conversations');
+    let res: any = this.storage.find(CHAT_CONVERSATIONS);
     if (res && res.value && res.value.data && res.value.data[0]) {
       const defaultContact = res.value.data[0];
       this.storage.save(CONVERSATION_SELECT, defaultContact);

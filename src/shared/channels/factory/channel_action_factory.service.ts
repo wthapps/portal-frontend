@@ -9,12 +9,12 @@ import { CommonNotification } from '../actions/common_notification';
 
 @Injectable()
 export class ChannelActionFactoryService {
-  appearance_new_user_online:string = 'appearance_new_user_online';
-  appearance_all_users_online:string = 'appearance_all_users_online';
-  appearance_new_user_offline:string = 'appearance_new_user_offline';
-  chat_send_message:string = 'chat_send_message';
-  chat_notification:string = 'chat_notification';
-  common_notification: string = 'common_notification';
+  readonly appearance_new_user_online:string = 'appearance_new_user_online';
+  readonly appearance_all_users_online:string = 'appearance_all_users_online';
+  readonly appearance_new_user_offline:string = 'appearance_new_user_offline';
+  readonly chat_send_message:string = 'chat_send_message';
+  readonly chat_notification:string = 'chat_notification';
+  readonly common_notification: string = 'common_notification';
   action:any;
   data:any;
 

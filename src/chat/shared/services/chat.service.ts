@@ -26,6 +26,7 @@ import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators/map';
 import { ConversationService } from '@chat/shared/services';
+import { Conversation } from '@chat/shared/models/conversation.model';
 
 
 declare var _: any;
@@ -72,7 +73,7 @@ export class ChatService {
     if (res && res.value && !option.forceFromApi) {
       return res;
     } else {
-      this.apiBaseService.get('zone/chat/contacts').toPromise().then((res: any) => {
+      this.apiBaseService.get('zone/chat/contacts').toPromise().then((res: Conversation) => {
         this.storage.save(CHAT_CONVERSATIONS, res);
         this.chatCommonService.setRecentConversations();
         this.chatCommonService.setFavouriteConversations();
@@ -90,7 +91,7 @@ export class ChatService {
         observer.next(res);
         observer.complete();
       } else {
-        this.apiBaseService.get('zone/chat/contacts').toPromise().then((res: any) => {
+        this.apiBaseService.get('zone/chat/contacts').toPromise().then((res: Conversation) => {
           this.storage.save(CHAT_CONVERSATIONS, res);
           this.chatCommonService.setRecentConversations();
           this.chatCommonService.setFavouriteConversations();
@@ -102,10 +103,11 @@ export class ChatService {
     });
   }
 
+  // For detecting users in Chat contact in order to detect online / offline user status
   getChatConversationsAsync(): Observable<{[partner_id: string]: any}> {
     const currentUser = this.userService.getSyncProfile();
     return this.storage.getAsync(CHAT_CONVERSATIONS).pipe(
-      map((item: any) => (!item ? {} : item.data.reduce((r, a) => ({...r, [a.partner_id]: a}), {}))), // includes all contacts that have couple conversation with current user
+      map((item: any) => (!_.get(item, 'data') ? {} : item.data.reduce((r, a) => ({...r, [a.partner_id]: a}), {}))), // includes all contacts that have couple conversation with current user
       map((item: any) => ({...item, [currentUser.id]: currentUser})) // includes current user id as well
     );
   }
@@ -124,7 +126,7 @@ export class ChatService {
 
   getHistoryConversations(): Observable<any> {
     // return this.storage.find('chat_history_conversations');
-    return this.storage.getAsync(CHAT_CONVERSATIONS);
+    return this.storage.getAsync(CHAT_HISTORY_CONVERSATIONS);
   }
 
   selectContact(contact: any) {
@@ -504,7 +506,7 @@ export class ChatService {
   markAsRead(groupId: any) {
     this.apiBaseService
       .post('zone/chat/notification/mark_as_read', { id: groupId })
-      .subscribe((res: any) => {
+      .toPromise().then((res: any) => {
         let item = this.storage.find(CHAT_CONVERSATIONS);
         if (item && item.value) {
           let contact = _.find(item.value.data, (contact: any) => {
@@ -514,10 +516,12 @@ export class ChatService {
             contact.notification_count = 0;
           }
         }
+        this.chatCommonService.updateAll();
       });
   }
 
-  updateDisplayNotification(groupId: any): Promise<any> {
+  updateDisplayNotification(groupId: any): Promise<any
+    > {
     return this.apiBaseService
       .post('zone/chat/notification/broadcard_group_user_display', {
         group_id: groupId
