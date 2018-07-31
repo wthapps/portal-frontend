@@ -95,18 +95,18 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
           this.photo = response.data;
           this.isOwner = (response.data.owner.id === this.userService.getSyncProfile().id);
           this.loading = false;
-
-
-          this.api.get(`media/photos/${this.photo.uuid}/albums`).subscribe((res: any) => {
-            this.albums = res.data;
-            // this.api.get(`media/photos/${this.photo.id}/sharings`).subscribe((r: any) => {
-            //   this.albums = this.albums.concat(r.data);
-            // }, error => {
-            //
-            // });
-          }, error => {
-
-          });
+          //
+          //
+          // this.api.get(`media/photos/${this.photo.uuid}/albums`).subscribe((res: any) => {
+          //   this.albums = res.data;
+          //   // this.api.get(`media/photos/${this.photo.id}/sharings`).subscribe((r: any) => {
+          //   //   this.albums = this.albums.concat(r.data);
+          //   // }, error => {
+          //   //
+          //   // });
+          // }, error => {
+          //
+          // });
 
         },
         (error: any) => {
