@@ -6,7 +6,6 @@ import { Router } from "@angular/router";
 import { ConnectionNotificationService } from "@shared/services/connection-notification.service";
 import { NotificationService } from "@shared/services/notification.service";
 import { ApiBaseService } from "@shared/services/apibase.service";
-import { ApiProxyService } from "@shared/services/apiproxy.service";
 import { ConversationApiCommands } from "@shared/commands/chat/coversation-commands";
 import { StorageService } from "@shared/services/storage.service";
 import { HandlerService } from "@shared/services/handler.service";

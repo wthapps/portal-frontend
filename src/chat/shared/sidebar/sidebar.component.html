@@ -18,11 +18,12 @@
     Favourites
   </h4>
   <div *ngFor="let contact of favouriteContacts" class="menuleft-item" [routerLinkActive]="['active']">
-    <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact); onCloseMenu()"
-       href="javascript:;">
-      <z-chat-share-user class="media-chat-user-item" [data]="contact" [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
-      <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
-    </a>
+    <!--<a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact); onCloseMenu()"-->
+       <!--href="javascript:;">-->
+      <!--<z-chat-share-user class="media-chat-user-item" [data]="contact" [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>-->
+      <!--<span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>-->
+    <!--</a>-->
+    <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
   </div>
 </ng-container>
 <ng-container *ngIf="recentContacts$ | async as recentContacts">
@@ -30,11 +31,7 @@
     Recent
   </h4>
   <div *ngFor="let contact of recentContacts" class="menuleft-item" [routerLinkActive]="['active']">
-    <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, contact.id]" (click)="onSelect(contact); onCloseMenu()"
-       href="javascript:;">
-      <z-chat-share-user class="media-chat-user-item" [data]="contact" [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
-      <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
-    </a>
+    <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
   </div>
 </ng-container>
 
@@ -43,4 +40,21 @@
     <i class="fa fa-clock-o"></i> History
   </a>
 </div>
+
+<ng-template #conversationTemplate let-conversation="conversation">
+  <a class="media-chat-user" [routerLink]="[chatService.constant.conversationUrl, conversation.id]" (click)="onSelect(conversation); onCloseMenu()"
+     href="javascript:;">
+    <z-chat-share-user class="media-chat-user-item" [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
+      <span *ngIf="conversation.latest_message as latest_message">
+                <span *ngIf="latest_message?.message_type == 'text'" [innerHtml]="latest_message?.message | wthEmojis | linkify | stripHtml | safeHtml"></span>
+                <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
+                <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
+              </span>
+      <span class="badge badge-wth" *ngIf="conversation.notification_count > 0">{{ conversation?.notification_count | maxCount: 10}}</span>
+      <small *ngIf="conversation.latest_message"> {{conversation?.latest_message?.created_at | timeFormat}} </small>
+    </z-chat-share-user>
+
+  </a>
+
+</ng-template>
 

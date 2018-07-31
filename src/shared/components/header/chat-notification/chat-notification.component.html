@@ -3,7 +3,7 @@
     tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
     <span *ngIf="notificationCount > 0" class="notification-num">
-      {{notificationCount}}
+      {{notificationCount | maxCount: 10}}
     </span>
   </button>
 </div>
@@ -13,7 +13,7 @@
     aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
     <span *ngIf="notificationCount > 0" class="notification-num">
-      {{notificationCount}}
+      {{notificationCount | maxCount: 10}}
     </span>
   </button>
   <div class="nav-notification-list dropdown-menu dropdown-menu-right" (click)="hideActionsMenu($event)">
@@ -38,13 +38,13 @@
               <span *ngIf="conversation.group_type != 'multiple'" class="bold">{{conversation.display.name}}</span>
               <span *ngIf="conversation.group_type == 'multiple'" class="bold">{{(conversation.group_json.name || conversation.group_json.users_name) | maxLength:30}}</span>
               <br>
-              <span *ngIf="conversation.message" class="pt5 message">
-                <span *ngIf="conversation.message.message_type == 'text'" [innerHtml]="conversation?.message?.message | wthEmojis | linkify | stripHtml | safeHtml"></span>
-                <span *ngIf="conversation.message.message_type == 'request'"> Sent a request </span>
-                <span *ngIf="conversation.message.message_type == 'file'"> Sent a file </span>
+              <span *ngIf="conversation.latest_message as latest_message" class="pt5 message">
+                <span *ngIf="latest_message?.message_type == 'text'" [innerHtml]="latest_message?.message | wthEmojis | linkify | stripHtml | safeHtml"></span>
+                <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
+                <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
               </span>
               <br>
-              <small *ngIf="conversation.message" class="text-fade"> {{conversation?.message?.created_at | timeFormat}} </small>
+              <small *ngIf="conversation.latest_message" class="text-fade"> {{conversation?.latest_message?.created_at | timeFormat}} </small>
             </div>
           </div>
           <div class="noti-item-action">
