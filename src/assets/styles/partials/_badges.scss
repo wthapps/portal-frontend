@@ -2,7 +2,7 @@
   background-color: #d8d8d8;
   color: #4A4A4A;
   &.active {
-    background-color: $theme-color;
+    background-color: #F54A59;
     color: #ffffff;
   }
 }
@@ -43,6 +43,6 @@
   position: relative;
   top: -1px;
   font-size: 14px;
-  background-color: $color-inverse;
+  background-color: #F54A59;
   color: #ffffff;
 }

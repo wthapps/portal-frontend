@@ -6,7 +6,7 @@
   right: 0;
   left: 0;
   z-index: 1000;
-  @include box-shadow($box-shadow-bottom);
+  border-bottom: 1px solid $line;
 
   .header-nav-mobile {
     display: none;
