@@ -44,6 +44,20 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       type: 'tab'
     },
     {
+      name: 'Videos',
+      link: 'videos',
+      icon: 'fa fa-video-camera',
+      number: null,
+      type: 'tab'
+    },
+    {
+      name: 'Playlists',
+      link: 'playlists',
+      icon: 'fa fa-file-video-o',
+      number: null,
+      type: 'tab'
+    },
+    {
       name: 'Favourites',
       link: 'favourites',
       icon: 'fa fa-star',
@@ -275,6 +289,12 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         break;
       case 'albums':
         urlAPI = `media/albums?active=1`;
+        break;
+      case 'videos':
+        urlAPI = `media/videos?active=1`;
+        break;
+      case 'playlists':
+        urlAPI = `media/playlists?active=1`;
         break;
       case 'albums_detail':
         urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;

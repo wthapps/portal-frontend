@@ -50,7 +50,7 @@
           <!--note menu actions-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Note::Note'">
             <li>
-              <a [href]="noteUrl + '/notes/public/' + message.file.uuid" target="_blank">
+              <a [href]="noteUrl + '/notes/public/' + message.file?.uuid" target="_blank">
                 Open
               </a>
             </li>
@@ -139,7 +139,7 @@
 
           <!-- note type-->
           <div *ngIf="message.file_type == 'Note::Note'" class="note-display p15 can-click">
-            <a [href]="noteUrl + '/notes/public/' + message.file.uuid" target="_blank">
+            <a [href]="noteUrl + '/notes/public/' + message.file?.uuid" target="_blank">
               <h5>
                 <i class="fa fa-file"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}</h5>
               <div [innerHTML]="message.file?.content"></div>
@@ -188,8 +188,8 @@
             (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- contact already accepted -->
-          <message-actions-item *ngIf="byMe && contactItem?.value?.status == 'accepted'" [avatar]=message.receiver?.profile_image
-            [url]="'profile/' + message.receiver.uuid" [name]=message.receiver.name [status]="'accepted your request'" (eventOut)=doEvent($event)>
+          <message-actions-item *ngIf="byMe && contactItem?.value?.status == 'accepted'" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid"
+            [name]=message.receiver.name [status]="'accepted your request'" (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- Receiver -->
           <message-simple-item *ngIf="!byMe" [data]="'Hello! You are now connected on Chat.'"></message-simple-item>
