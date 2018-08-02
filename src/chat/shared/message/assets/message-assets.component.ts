@@ -82,13 +82,11 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     this.profileUrl = this.chatService.constant.profileUrl;
 
     this.currentTab = 'photos';
+  }
 
-    let close$: Observable<any> = Observable.merge(
-      componentDestroyed(this)
-    );
-
+  ngOnInit() {
+    console.log('ngOnInit');
     this.chatService.getContactSelectAsync()
-      .pipe(takeUntil(close$))
       .subscribe((res: any) => {
         this.contactSelect = res;
         if (this.contactSelect && this.contactSelect.group_json) {
@@ -107,9 +105,8 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       });
 
     this.medias$ = this.messageAssetsService.medias$;
-  }
 
-  ngOnInit() {
+
     this.objectListService.setMultipleSelection(false);
   }
 

@@ -67,6 +67,9 @@ $message-assets-width: 400px;
     height: 54px;
     overflow: hidden;
   }
+  .wobject-view {
+    padding-top: $grid-gutter-width/2;
+  }
 }
 
 .message-assets-members {
