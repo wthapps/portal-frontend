@@ -8,12 +8,12 @@ import { map } from 'rxjs/operators';
 import { GroupService } from '../../group/group.service';
 import { Router } from '@angular/router';
 import { BaseEntityService } from '../../../shared/services/base-entity-service';
-import { SuggestionService } from '../../../shared/services/suggestion.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '../../../shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService } from '@wth/shared/services';
 import { _wu } from '@wth/shared/shared/utils/utils';
 import { DEFAULT_SETTING } from '@contacts/shared/config/constants';
+import { Contact } from '@contacts/contact/contact.model';
 
 declare var _: any;
 declare var Promise: any;
@@ -54,7 +54,6 @@ export class ZContactService extends BaseEntityService<any> {
   constructor(
     protected apiBaseService: ApiBaseService,
     public groupService: GroupService,
-    private suggestService: SuggestionService,
     private toastsService: ToastsService,
     public router: Router,
     private wthConfirmService: WthConfirmService
@@ -68,11 +67,6 @@ export class ZContactService extends BaseEntityService<any> {
     this.initLoad$ = this.initLoadSubject.asObservable();
     this.orderDesc$ = this.orderDescSubject.asObservable();
     this.isSelectAll$ = this.isSelectAllSubject.asObservable();
-
-    this.suggestService.input$.subscribe((input: any) => {
-      let contacts: any[] = _.cloneDeep(this.searchContact(input));
-      this.suggestService.setSuggestion(contacts);
-    });
 
     this.loadUserSetttings();
   }
@@ -145,8 +139,7 @@ export class ZContactService extends BaseEntityService<any> {
       this.orderDescSubject.next(!this.orderDescSubject.getValue());
     else this.orderDescSubject.next(order !== 'asc');
 
-    this.notifyContactsObservers();
-  }
+    this.notifyContactsObservers();}
 
   addMoreContacts(data: any[]) {
     this.contacts.push(...data);
@@ -232,6 +225,10 @@ export class ZContactService extends BaseEntityService<any> {
     this.listenToListSource.next(event);
 
     this.isSelectAllSubject.next(!this.isSelectAllSubject.getValue());
+  }
+
+  viewContactDetail(contact: Contact): Promise<any> {
+    return this.router.navigate(['contacts', contact.id, 'view1']);
   }
 
   updateMultiple(body: any): Observable<any> {
@@ -449,7 +446,7 @@ export class ZContactService extends BaseEntityService<any> {
     return this.userSettings.phone_default_code;
   }
 
-  private searchContact(name: string): any[] {
+  searchContact(name: string): any[] {
     let search_value = name.toLowerCase();
     if (search_value === '') {
       return this.contacts;

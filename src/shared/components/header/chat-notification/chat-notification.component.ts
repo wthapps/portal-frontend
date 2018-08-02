@@ -62,15 +62,6 @@ export class ChatNotificationComponent implements OnInit {
       this.notificationCount += res.count;
     });
 
-
-    // // // Remove a group user ASAP
-    // this.handlerService.addListener('update_conversations', 'on_conversation_changes', (list: any[]) => {
-    //   if(!list)
-    //     return;
-    //   this.visibleConversationIds = list.map(d => d.id);
-    //   this.visibleConversations = this.conversations.filter(c => this.visibleConversationIds.includes(c.group_user.id));
-    // })
-
     this.storageService.getAsync(CHAT_CONVERSATIONS).subscribe(res => {
       console.log('conversations: ', res);
       if(res && res.data) {

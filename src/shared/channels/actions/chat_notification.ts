@@ -41,9 +41,9 @@ export class ChatNotification implements Processable {
   }
 
   addNotification(data:any) {
-    let item = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
-    if(item && item.value) {
-      let contact = _.find(item.value.data, (contact:any) => {if(contact.group_json.id == data.data.group_id) return contact;});
+    let conversations = this.serviceManager.getStorageService().getValue(CHAT_CONVERSATIONS);
+    if(conversations) {
+      let contact = _.find(conversations.data, (contact:any) => {if(contact.group_json.id == data.data.group_id) return contact;});
       if (contact && contact.notification) {
         if (contact.notification) contact.notification_count = data.data.count;
         this.serviceManager.getChatCommonService().updateAll();
@@ -53,14 +53,15 @@ export class ChatNotification implements Processable {
   }
 
   addContact(data:any) {
-    let item: StorageItem = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
-
-    let index = _.findIndex(item.value.data, { id: data.data.group_user.id });
+    const conversations = this.serviceManager.getStorageService().getValue(CHAT_CONVERSATIONS);
+    if(!conversations)
+      return;
+    let index = _.findIndex(conversations.data, { id: data.data.group_user.id });
     if(index == -1) {
-      item.value.data.unshift(data.data.group_user);
-      this.serviceManager.getStorageService().save(CHAT_CONVERSATIONS, item.value);
+      conversations.data.unshift(data.data.group_user);
+      this.serviceManager.getStorageService().save(CHAT_CONVERSATIONS, conversations);
     } else {
-      item.value.data[index] = data.data.group_user;
+      conversations.data[index] = data.data.group_user;
     }
     this.serviceManager.getChatCommonService().updateAll();
   }

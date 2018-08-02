@@ -1,3 +1,4 @@
+import { BaseEntity } from '@wth/shared/shared/models/base-entity.model';
 class ConversationDisplay {
   id: number;
   image: string;
@@ -49,7 +50,7 @@ class LocalMessage {
   uuid: string;
 }
 
-export class Conversation {
+export class Conversation extends BaseEntity {
   active: boolean;
   blacklist: boolean;
   display: ConversationDisplay;
@@ -58,7 +59,6 @@ export class Conversation {
   group_json: ChatGroup;
   group_type: string;
   history: false;
-  id: number;
   latest_message: LocalMessage;
   leave: boolean;
   notification: boolean;
