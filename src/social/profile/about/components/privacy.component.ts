@@ -36,11 +36,9 @@ export class ZSocialPrivacyComponent implements OnInit {
     if (this.params.name == 'hobby_privacy') {
       body = {hobby_privacy: privacy};
     }
-    // console.log(body);
 
     this.socialService.user.update(body).subscribe(
       (res: any) => {
-        // console.log(res);
         if (this.params.name == 'basic_info_privacy') {
           this.privacy = res.data.basic_info_privacy;
         }

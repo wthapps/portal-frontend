@@ -10,7 +10,7 @@ export class WTab {
     link?: string,
     icon?: string,
     number?: number,
-    type?: string,
+    type?: string
   }) {
     if (fields) {
       Object.assign(this, fields);

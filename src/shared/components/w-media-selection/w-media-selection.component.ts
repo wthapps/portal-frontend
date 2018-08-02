@@ -74,6 +74,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   ];
 
   medias$: Observable<Media[]>;
+  tabsFilter: any = [];
   mediaParent: Media;
   selectedMedias$: Observable<Media[]>;
   multipleSelection$: Observable<boolean>;
@@ -132,6 +133,12 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   initialState(initialState: any) {
     this.mediaSelectionService.clear();
     this.currentTab = initialState.currentTab; // 'upload', 'photos';
+    this.tabsFilter = this.tabs.filter((t: any) => {
+      if (initialState.hideTabs.includes(t.link)) {
+        return false;
+      }
+      return true;
+    })
     this.nextLink = this.buildNextLink(); // 'media/photos'
     this.isLoading = false;
   }

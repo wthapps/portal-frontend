@@ -50,8 +50,8 @@ export class WMediaSelectionService {
    * upload, photos, albums, favourites, shared_with_me
    * @param {string} currentTab
    */
-  open(currentTab: string = 'upload') {
-    this.openSubject.next({currentTab: currentTab});
+  open(currentTab: string = 'upload', hideTabs: any = []) {
+    this.openSubject.next({ currentTab: currentTab, hideTabs: hideTabs});
   }
 
   close() {

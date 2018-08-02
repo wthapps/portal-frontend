@@ -47,11 +47,12 @@ export class PlaylistAddMixin implements PlaylistCreateMixin {
 
   onAddToPlaylist(e) {
     this.apiBaseService
-      .post(`media/albums/${e.parents[0].id}/photos`, {
-        photos: e.children
+      .post(`media/playlists/add_to_playlist`, {
+        playlist: { id: e.parents[0].id },
+        videos: e.children.map(c => { return { id: c.id, model: c.model } })
       })
       .subscribe(res => {
-        this.toastsService.success('You just added to Album success');
+        this.toastsService.success('You just added to Playlist success');
       });
   }
 

@@ -26,6 +26,8 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 import { mediaConstants } from '@media/shared/conig/constants';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
+import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
+import { AsyncScheduler } from 'rxjs/scheduler/AsyncScheduler';
 
 @Mixin([MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, LoadModalAble, SharingModalMixin, PlaylistAddMixin, MediaDownloadMixin])
 @Component({
@@ -33,7 +35,13 @@ import { LocationCustomService } from '@media/shared/service/location-custom.ser
   templateUrl: '../shared/list/list-detail.component.html',
   styleUrls: ['playlist-detail.component.scss']
 })
-export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, MediaBasicListMixin, MediaAdditionalListMixin, LoadModalAble, SharingModalMixin, PlaylistAddMixin, MediaDownloadMixin {
+export class ZPlaylistDetailComponent implements OnInit,
+MediaListDetailMixin,
+MediaBasicListMixin,
+MediaAdditionalListMixin,
+LoadModalAble,
+SharingModalMixin,
+PlaylistAddMixin, MediaDownloadMixin {
   objects: any;
   object: any;
   hasSelectedObjects: boolean;
@@ -62,6 +70,8 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
+  subSelect: any;
+  sub: any;
   returnUrl: any;
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -74,6 +84,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
     public apiBaseService: ApiBaseService,
     public resolver: ComponentFactoryResolver,
     public confirmService: WthConfirmService,
+    public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public route: ActivatedRoute,
     public locationCustomService: LocationCustomService,
@@ -276,16 +287,7 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
 
   openModalAddToPlaylist:(selectedObjects: any) => void;
 
-  onAddToPlaylist(e) {
-    this.apiBaseService
-      .post(`media/playlists/add_to_playlist`, {
-        playlist: {id: e.parents[0].id},
-        videos: e.children.map(c => {return {id: c.id, model: c.model}})
-      })
-      .subscribe(res => {
-        this.toastsService.success('You just added to Playlist success');
-      });
-  }
+  onAddToPlaylist:(e: any) => void;
 
   downloadMediaCustom() {
     if (this.selectedObjects && this.selectedObjects.length > 0) {
@@ -303,13 +305,33 @@ export class ZPlaylistDetailComponent implements OnInit, MediaListDetailMixin, M
 
   toggleInfo:() => void;
 
+  async openSelectedModal() {
+    this.mediaSelectionService.open('videos', ['photos', 'albums']);
+    this.mediaSelectionService.setMultipleSelection(true);
+    if (this.subSelect) this.subSelect.unsubscribe();
+    if (this.sub) this.sub.unsubscribe();
+    this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
+      .subscribe(videos => {
+        this.onAddToPlaylist({ parents: [this.object], children: videos });
+        this.objects = [...videos, ...this.objects];
+      });
+    this.sub = this.mediaSelectionService.uploadingMedias$
+      .map(([file, dataUrl]) => [file])
+      .subscribe((videos: any) => {
+        this.onAddToPlaylist({ parents: [this.object], children: videos });
+        this.objects = [...videos, ...this.objects];
+      });
+  }
+
   getMenuActions() {
     return {
       add: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
-        action: () => {},
+        action: () => {
+          this.openSelectedModal();
+        },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
         tooltip: this.tooltip.share,

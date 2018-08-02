@@ -56,8 +56,6 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
     this.objectListService.selectedObjects$
       .takeUntil(componentDestroyed(this))
       .subscribe(res => {
-        console.log(res);
-
         this.selectedObjects = res;
         this.selectedObjectsChanged.emit(this.selectedObjects);
       });

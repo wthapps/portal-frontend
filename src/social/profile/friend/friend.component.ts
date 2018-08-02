@@ -47,7 +47,6 @@ export class ZSocialProfileFriendComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (res: any) => {
-          console.log(res);
           this.list = res.data;
           this.loading = false;
           // this.userInfo = res.data;
