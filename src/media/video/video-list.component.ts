@@ -24,6 +24,7 @@ import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { WUploader } from '@shared/services/w-uploader';
 
 declare var _: any;
 @Mixin([SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble, MediaDownloadMixin])
@@ -67,7 +68,9 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
     private playlistModalService: PlaylistModalService,
-    public resolver: ComponentFactoryResolver) {}
+    public resolver: ComponentFactoryResolver,
+    private uploader: WUploader
+              ) {}
 
   ngOnInit() {
     this.loadObjects();
@@ -151,20 +154,6 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
     }
   }
 
-  uploaVideodHandler(files: any) {
-    const data = files.map(file => {
-      return { file: file.result, name: file.name, type: file.type };
-    });
-    this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'initVideos', payload: files });
-    data.forEach(f => {
-      this.apiBaseService.post(`media/videos`, f).subscribe(res => {
-        this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
-        this.loadObjects();
-      });
-    });
-  }
-
-
   openModalAddToPlaylist() {
     if (this.subAddPlaylist) this.subAddPlaylist.unsubscribe();
     this.playlistModalService.open.next({ selectedObjects: this.selectedObjects });
@@ -214,4 +203,9 @@ custom method please overwirte any method*/
   changeViewMode:(mode: any) => void;
   // ============= End MediaViewMixin ===============
 
+  upload(content_types: any = []) {
+    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      allowedFileTypes: content_types
+    });
+  }
 }

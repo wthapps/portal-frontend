@@ -14,19 +14,21 @@
       </button>
       <ul class="dropdown-menu">
         <li>
-          <a class="p0" href="javascript:;">
-            <w-upload [mode]="'multiple'" [accept]="'image/*'" (uploadHandler)="uploadHandler($event)" (errorHandler)="errorHandler($event)">
+          <a class="p0" href="javascript:void(0);" (click)="(['image/*'])">
+            <span class="fileinput-button">
               <i class="fa fa-image"></i> Upload Photo
-            </w-upload>
+            </span>
           </a>
         </li>
+
         <li>
-          <a class="p0" href="javascript:;">
-            <w-upload [mode]="'multiple'" [accept]="'video/*'" (uploadHandler)="uploaVideodHandler($event)" (errorHandler)="errorHandler($event)">
-              <i class="fa fa-video-camera"></i> Upload Video
-            </w-upload>
+          <a class="p0" href="javascript:void(0);" (click)="upload(['video/*'])">
+            <span class="fileinput-button">
+              <i class="fa fa-image"></i> Upload Video
+            </span>
           </a>
         </li>
+
         <li>
           <a (click)="doAction({action: 'openModalCreateAlbumModal'})">
             <i class="fa fa-plus-circle"></i> Create Album

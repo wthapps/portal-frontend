@@ -18,6 +18,7 @@ import { State } from './shared/store';
 import { Store } from '@ngrx/store';
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+import { WUploader } from '@shared/services/w-uploader';
 
 /**
  * This class represents the main application component.

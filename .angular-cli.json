@@ -103,6 +103,8 @@
         "../../node_modules/font-awesome/css/font-awesome.min.css",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",
+        "../../node_modules/uppy/dist/uppy.min.css",
+        "../../node_modules/@uppy/status-bar/dist/style.min.css",
         "styles/media.scss"
       ],
       "scripts": [

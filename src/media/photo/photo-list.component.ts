@@ -23,6 +23,7 @@ import { AlbumCreateMixin } from '@media/shared/mixin/album/album-create.mixin';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { WUploader } from '@shared/services/w-uploader';
 
 declare var _: any;
 @Mixin([SharingModalMixin, MediaBasicListMixin, MediaSortMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
@@ -54,6 +55,9 @@ export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModal
   viewMode: any = this.viewModes.grid;
   modalIns: any;
   modalRef: any;
+
+  private sub: any;
+
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
@@ -66,16 +70,20 @@ export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModal
     public resolver: ComponentFactoryResolver,
     public router: Router,
     private commonEventService: CommonEventService,
-    public confirmService: WthConfirmService
+    public confirmService: WthConfirmService,
+    private uploader: WUploader
   ) {}
 
   ngOnInit() {
     this.loadObjects();
+    this.sub = this.commonEventService.filter(e => e.channel == 'WUploaderStatus').subscribe((event: any) => {
+      this.doListEvent(event);
+    });
   }
 
   loadObjects() {
     this.loading = true;
-    this.apiBaseService.get('/media/media', {model: 'Media::Photo'}).subscribe(res => {
+    this.apiBaseService.get('media/media', {model: 'Media::Photo'}).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
@@ -144,19 +152,11 @@ custom method please overwirte any method*/
     }
   }
 
-  uploadHandler(files: any) {
-    const data = files.map(file => {
-      return { file: file.result, name: file.name, type: file.type };
-    });
-    this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'init', payload: files });
-    data.forEach(f => {
-      this.apiBaseService.post(`media/photos`, f).subscribe(res => {
-        this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
-        this.loadObjects();
-      });
+  upload(content_types: any = []) {
+    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      allowedFileTypes: content_types
     });
   }
-
 
   onListChanges(e: any) {
     switch (e.action) {
@@ -173,7 +173,7 @@ custom method please overwirte any method*/
 
 
   ngOnDestroy() {
-    // this.sub.unsubscribe();
+    this.sub.unsubscribe();
   }
 
   /* MediaListMixin This is media list methods, to

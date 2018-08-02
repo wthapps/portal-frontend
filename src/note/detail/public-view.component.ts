@@ -31,8 +31,6 @@ import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import { PhotoUploadService } from '@shared/services/photo-upload.service';
-import { GenericFile } from '@shared/shared/models/generic-file.model';
-import { GenericFileService } from '@shared/services/generic-file.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';

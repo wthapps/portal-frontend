@@ -9,7 +9,7 @@ import {
   ViewChild,
   ComponentFactoryResolver,
   OnInit,
-  OnDestroy
+  OnDestroy, AfterViewInit
 } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, CommonEventService } from '@shared/services';
@@ -23,6 +23,7 @@ import { Router } from '@angular/router';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
+import { WUploader } from '@shared/services/w-uploader';
 
 @Mixin([MediaViewMixin, AlbumAddMixin, AlbumCreateMixin])
 @Component({
@@ -54,8 +55,9 @@ export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin, Alb
   subAddAlbum: any;
   subOpenCreateAlbum: any;
   subUploader: any;
-
   tooltip: any = Constants.tooltip;
+
+  uppy: any;
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -66,7 +68,9 @@ export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin, Alb
     public mediaCreateModalService: MediaCreateModalService,
     public mediaUploaderDataService: MediaUploaderDataService,
     public playlistCreateModalService: PlaylistCreateModalService,
-    private commonEventService: CommonEventService) {
+    private commonEventService: CommonEventService,
+    private uploader: WUploader
+    ) {
 
     }
 
@@ -84,6 +88,23 @@ export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin, Alb
       }
     });
   }
+
+  upload(content_types: any = []) {
+
+    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      allowedFileTypes: content_types
+    });
+    // document.getElementsByClassName('uppy-FileInput-btn')[0].click();
+    // const fileInput = document.getElementById('w-uploader-select-files-input').click();
+
+    // fileInput.handleChange(change => {
+    //   console.log('handle change:::');
+    // });
+    // document.querySelectorAll('.w-uploader-select-files-input').forEach(fileInput => {
+    //   this.wUploader.fileUpload(fileInput);
+    // });
+  }
+
   ngOnDestroy() {
     if (this.subUploader) this.subUploader.unsubscribe();
   }
@@ -117,34 +138,12 @@ export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin, Alb
     this.hasNoObject = this.selectedObjects.length === 0 ? true : false;
   }
 
-  uploadHandler(files: any) {
-    const data = files.map(file => {
-      return {file: file.result, name: file.name, type: file.type};
-    });
-    this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'init', payload: files });
-    data.forEach(f => {
-      if (f.type.includes('video')) {
-        this.apiBaseService.post(`media/videos`, f).subscribe(res => {
-          this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
-          this.event.emit({ action: 'uploaded', payload: res.data});
-        });
-      } else {
-        this.apiBaseService.post(`media/photos`, f).subscribe(res => {
-          this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
-          this.event.emit({ action: 'uploaded', payload: [...files] });
-        });
-      }
-    });
-  }
-
   uploaVideodHandler(files: any) {
     const data = files.map(file => {
       return { file: file.result, name: file.name, type: file.type };
     });
-    this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'initVideos', payload: files });
     data.forEach(f => {
       this.apiBaseService.post(`media/videos`, f).subscribe(res => {
-        this.commonEventService.broadcast({ channel: 'MediaUploadDocker', action: 'uploaded', payload: { data: res.data, originPhoto: f } });
         this.event.emit({ action: 'uploaded', payload: [...files] });
       });
     });
