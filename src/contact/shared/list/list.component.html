@@ -15,9 +15,9 @@
     <dt><span>{{ objects.key }}</span></dt>
     <dd *ngFor="let item of objects.value; trackBy: trackByItem " [ngClass]="{active: item.selected}">
       <div class="contact-dl-input">
-        <i (click)="onSelected(item)" class="fa fa-check"></i>
+        <i (click)="onChecked(item)" class="fa fa-check"></i>
       </div>
-      <div class="contact-dl-name">
+      <div class="contact-dl-name" (click)="onItemSelected(item)">
         <figure class="avatar-xs mr10">
           <img class="img-circle" alt="" [src]="item.profile_image">
         </figure>

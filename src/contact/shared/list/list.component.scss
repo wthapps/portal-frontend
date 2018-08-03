@@ -47,6 +47,10 @@
         white-space: nowrap;
       }
     }
+
+    &:hover{
+      cursor: pointer;
+    }
   }
   .contact-dl-email {
     width: 250px;

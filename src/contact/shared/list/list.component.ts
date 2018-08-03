@@ -1,10 +1,11 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
 import { ZContactService } from '../services/contact.service';
 import { Constants } from '../../../shared/constant/config/constants';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
+import { Contact } from '@contacts/contact/contact.model';
 
 @Component({
   selector: 'z-contact-shared-list',
@@ -13,8 +14,9 @@ import { CommonEventService } from '@shared/services/common-event/common-event.s
   encapsulation: ViewEncapsulation.None
 })
 export class ZContactSharedListComponent {
-  @Input() data: any[];
+  @Input() data: Contact[];
   @Input() showHeader: any = true;
+  @Output() itemSelected: EventEmitter<Contact> = new EventEmitter<Contact>();
 
   // descending: boolean = false;
   desc$: Observable<boolean>;
@@ -38,8 +40,12 @@ export class ZContactSharedListComponent {
   //   return false;
   // }
 
-  onSelected(item: any) {
+  onChecked(item: Contact) {
     item.selected = this.contactService.toggleSelectedObjects(item);
+  }
+
+  onItemSelected(item: Contact) {
+    this.itemSelected.emit(item);
   }
 
   onSelectedAll() {
@@ -58,6 +64,7 @@ export class ZContactSharedListComponent {
   }
 
   trackByGroup(index, group) {
+    // console.log('trackByGroup ...');
     return group ? group.key : '';
   }
 

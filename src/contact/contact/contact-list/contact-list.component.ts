@@ -32,6 +32,7 @@ import {
   CommonEventAction,
   CommonEventService
 } from '@wth/shared/services';
+import { Contact } from '@contacts/contact/contact.model';
 
 declare var _: any;
 @Component({
@@ -162,9 +163,15 @@ export class ZContactListComponent
     this.pageSubject.next(this.pageSubject.getValue() + 1);
   }
 
-  viewContactDetail(contactId: any) {
-    this.router.navigate([`contacts/${contactId}`, 'view']).then();
+  onItemSelected(contact: Contact) {
+    this.contactService.viewContactDetail(contact);
   }
+
+  viewContactDetail(contact: Contact) {
+    this.contactService.viewContactDetail(contact);
+  }
+
+
 
   editContact(contactId: any) {
     this.router.navigate(['contacts/' + contactId]).then();
@@ -269,7 +276,7 @@ export class ZContactListComponent
         break;
 
       case 'view_detail':
-        this.viewContactDetail(this.contactService.selectedObjects[0].id);
+        this.viewContactDetail(this.contactService.selectedObjects[0]);
         break;
 
       case 'edit_contact':
