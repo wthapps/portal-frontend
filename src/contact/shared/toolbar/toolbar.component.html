@@ -21,7 +21,13 @@
   <!--TODO remove-->
   <ul class="page-body-control-menu" *ngIf="pageTitle!=''">
     <li>
-      <h4 *ngIf="contactService.selectedObjects.length == 0;else templateShowSelected">{{ pageTitle }}</h4>
+      <h4 *ngIf="contactService.selectedObjects.length == 0;else templateShowSelected">{{ pageTitle }}
+        <button *ngIf="pageTitle==='Other contacts'" class="btn btn-default"
+                [pTooltip]="otherContactsInfo"
+                tooltipPosition="bottom">
+          <i class="fa fa-info-circle"></i>
+        </button>
+      </h4>
       <ng-template #templateShowSelected>
         <button (click)="onClearSelected()" type="button" class="btn"><i class="fa fa-times"></i></button>
         <span class="btn btn-text">{{ contactService.selectedObjects.length }} selected</span>

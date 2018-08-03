@@ -24,7 +24,6 @@ export class ZContactSharedLeftMenuComponent implements OnInit, OnDestroy {
   groups: Group[];
   hostname: String = '';
   currentGroup: string;
-  otherContactsInfo = 'Other Contacts are people you interacted with but did not add them to your Contacts books';
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private router: Router,

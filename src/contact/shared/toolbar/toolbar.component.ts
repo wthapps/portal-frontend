@@ -23,6 +23,7 @@ export class ZContactSharedToolbarComponent implements OnInit {
   selectedContact: string;
 
   tooltip: any = Constants.tooltip;
+  otherContactsInfo = 'Other Contacts are people you interacted with but did not add them to your Contacts books';
 
   constructor(
     public contactService: ZContactService,

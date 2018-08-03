@@ -4,7 +4,7 @@
 
 <div class="menuleft-item" [routerLinkActive]="['active']">
   <a href="javascript:;" [routerLink]="['/contacts', 'new']" (click)="onCloseSidebar()">
-    <i class="fa fa-plus"></i> New Contact
+    <i class="fa fa-plus"></i> Contact
   </a>
 </div>
 
@@ -14,9 +14,12 @@
     <i class="fa fa-address-book-o"></i> All Contacts ({{ contactService.myContactCount }})
   </a>
 </div>
+<div class="menuleft-item parent-item">
+  <a href="javascript:void(0)"><i class="fa fa-users"></i> Groups</a>
+</div>
 
 <ng-container *ngFor="let group of groups">
-  <div class="menuleft-item" [ngClass]="{'active' : (currentGroup === group?.name)}">
+  <div class="menuleft-item sub-item" [ngClass]="{'active' : (currentGroup === group?.name)}">
     <a [routerLink]="['contacts', {group: group.name}]" (click)="doEvent({action: group?.action, event: $event})">
       <i class="{{ group.icon }}"></i> {{ group.name }} ({{ group?.count }})
     </a>
@@ -43,14 +46,6 @@
   <a [routerLink]="['/others']" (click)="doEvent(null)" href="javascript:void(0)">
     <i class="fa fa-inbox"></i> Other contacts ({{ contactService.otherContactCount }})
   </a>
-
-  <div class="menuleft-item-action" style="display: inherit;"
-       [pTooltip]="otherContactsInfo"
-        tooltipPosition="bottom">
-    <span class="can-click" title="">
-      <i class="fa fa-info-circle"></i>
-    </span>
-  </div>
 </div>
 
 

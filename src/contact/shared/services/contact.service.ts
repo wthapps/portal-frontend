@@ -337,9 +337,10 @@ export class ZContactService extends BaseEntityService<any> {
     let contacts: any[] = [];
     this.groupService.updateGroupCount(this.contacts);
 
+    console.log('this filter options:::', this.filterOption);
     if (_.get(this.filterOption, 'search')) {
       contacts = this.searchContact(this.filterOption.search);
-    } else if (_.get(this.filterOption, 'group')) {
+    } else if (_.has(this.filterOption, 'group')) {
       contacts = this.filterByGroup(this.filterOption);
     } else {
       contacts = this.contacts;
