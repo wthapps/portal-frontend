@@ -50,17 +50,12 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   tooltip: any = Constants.tooltip;
   emojiData: any = [];
   mode: string;
-  // Subscription list
-  nextPhotoSubscription: Subscription;
-  uploadPhotoSubscription: Subscription;
 
   message: Message = new Message();
   appendedMessages: Array<Message> = new Array<Message>();
   messageEditorForm: FormGroup;
   messageCtrl: FormControl;
 
-  private pressingShiftKey: boolean = false;
-  private messageEditorId = '#chat-message-text';
 
   constructor(
     private chatService: ChatService,

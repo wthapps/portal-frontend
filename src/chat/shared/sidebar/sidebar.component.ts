@@ -1,15 +1,14 @@
-import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
-import { ZChatToolbarComponent } from '../toolbar/toolbar.component';
-import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
-import { StorageService, UrlService, HandlerService } from '@shared/services';
+import { NavigationEnd, Router } from '@angular/router';
+import { StorageService, UrlService } from '@shared/services';
 import { CONVERSATION_SELECT } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
+import { Conversation } from '@chat/shared/models/conversation.model';
 
 declare var $: any;
 
@@ -43,37 +42,36 @@ export class ZChatSidebarComponent implements OnInit {
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: any) => {
         if (this.urlService.parse().paths[0] === 'conversations') {
-          if (this.urlService.parse().paths[1]) {
-            this.chatService
-              .getConversationsAsync()
-              .subscribe((res: any) => {
-                if (res.value && res.value.data) {
-                  res.value.data.forEach(contact => {
+          const conversationId = this.urlService.parse().paths[1];
+          this.chatService
+            .getConversationsAsync()
+            .subscribe((res: any) => {
+              if(!(res && res.value && res.value.data))
+                return;
+              const conversations = res.value.data;
+              const mostRecent = conversations[0];
+
+              if(conversationId) {
+                let validConversation = false;
+                conversations.forEach(contact => {
                     if (
-                      contact.id === parseInt(this.urlService.parse().paths[1])
+                      contact.id === parseInt(conversationId)
                     ) {
-                      this.storageService.save(CONVERSATION_SELECT, contact);
-                      this.chatService.getMessages(contact.group_json.id);
+                      this.selectConversation(contact);
+                      validConversation = true;
+                      return;
                     }
                   });
-                }
-              });
-          } else {
-            this.chatService
-              .getConversationsAsync()
-              .toPromise()
-              .then((res: any) => {
-                if (res.value && res.value.data && res.value.data[0]) {
-                  this.chatService.router.navigate([
-                    `${this.chatService.constant.conversationUrl}/${
-                      res.value.data[0].id
-                      }`
-                  ]);
-                  this.chatService.selectContact(res.value.data[0]);
-                  this.chatService.getMessages(res.value.data[0].group_json.id);
-                }
-              });
-          }
+
+                  if(!validConversation && mostRecent) {
+                    this.selectConversation(mostRecent);
+                  }
+              } else {
+                  if (mostRecent) {
+                    this.selectConversation(mostRecent);
+                  }
+              }
+            });
         }
       });
 
@@ -82,6 +80,17 @@ export class ZChatSidebarComponent implements OnInit {
     this.historyContacts$ = this.chatService.getHistoryConversations();
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
   }
+
+  selectConversation(conversation: Conversation) {
+    this.chatService.router.navigate([
+      `${this.chatService.constant.conversationUrl}/${
+        conversation.id
+        }`
+    ]);
+    this.storageService.save(CONVERSATION_SELECT, conversation);
+    this.chatService.selectContact(conversation);
+    this.chatService.getMessages(conversation.group_json.id);
+  };
 
   onSelect(contact: any) {
     $('#chat-message-text').focus();

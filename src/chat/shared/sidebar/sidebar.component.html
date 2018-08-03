@@ -58,6 +58,7 @@
 <ng-template #conversationTemplate let-conversation="conversation">
   <a class="media-chat-user"
      [routerLink]="[chatService.constant.conversationUrl, conversation.id]"
+     [routerLinkActive]="['active']"
      (click)="onSelect(conversation); onCloseMenu()"
      href="javascript:;">
     <z-chat-share-user class="media-chat-user-item" [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">

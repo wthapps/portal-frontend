@@ -27,7 +27,7 @@ export class ChatCommonService {
   }
 
   setRecentConversations() {
-    let contacts = this.storage.find(CHAT_CONVERSATIONS).value.data;
+    let contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     let recentContacts = _.filter(contacts, {
       favourite: false,
       black_list: false,
@@ -37,7 +37,7 @@ export class ChatCommonService {
   }
 
   setFavouriteConversations() {
-    let contacts = this.storage.find(CHAT_CONVERSATIONS).value.data;
+    let contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     let favouriteContacts = _.filter(contacts, {
       favourite: true,
       black_list: false
@@ -46,7 +46,7 @@ export class ChatCommonService {
   }
 
   setHistoryConversations() {
-    let contacts = this.storage.find(CHAT_CONVERSATIONS).value.data;
+    let contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     let historyContacts = _.filter(contacts, {
       history: true,
       black_list: false
@@ -70,11 +70,12 @@ export class ChatCommonService {
     this.storage.save(CHAT_CONVERSATIONS, {...chat_conversations, data: conversations})
   }
 
-  addMessage(groupId: any, data: any) {
+  addMessage(groupId: any, data: any): void {
     let message = data.message;
     message.links = data.links;
     let currentMessageList = this.storage.getValue('chat_messages_group_' + groupId);
     const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
+    let conversationsResponse = this.storage.getValue(CHAT_CONVERSATIONS);
     if (contactSelect) {
       if (currentMessageList) {
         let isReplace = false;
@@ -98,6 +99,15 @@ export class ChatCommonService {
           this.messageService.scrollToBottom();
       }
     }
+
+    for(let conversation of conversationsResponse.data) {
+      if(conversation.group_json.id === groupId)
+        conversation.latest_message = message;
+    }
+    this.storage.save(CHAT_CONVERSATIONS, conversationsResponse);
+    this.setRecentConversations();
+    this.setFavouriteConversations();
+    this.setHistoryConversations();
   }
 
   updateItemInList(groupId: any, data: any) {
@@ -118,8 +128,8 @@ export class ChatCommonService {
   }
 
   updateContactSelect() {
-    let contactSelect = this.storage.find(CONVERSATION_SELECT).value;
-    let chatContacts = this.storage.find(CHAT_CONVERSATIONS).value.data;
+    let contactSelect = this.storage.getValue(CONVERSATION_SELECT);
+    let chatContacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     if (chatContacts) {
       let isSet = false;
       for (let i = 0; i < chatContacts.length; i++) {

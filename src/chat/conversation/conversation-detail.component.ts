@@ -53,17 +53,17 @@ export class ConversationDetailComponent
     this.contactSelect$ = this.chatService.getContactSelectAsync();
     this.currentMessages$ = this.chatService.getCurrentMessagesAsync();
     this.chatContactList$ = this.chatService.getChatConversationsAsync();
-    this.route.params.forEach((params: any) => {
-      let contact = this.chatService.getContactSelect().value;
-      if (contact) {
-        this.chatService.getMessages(contact.group_json.id);
-        if (contact.history) {
-          this.chatService.updateHistory(contact);
-        }
-      } else {
-        this.router.navigate(['/']);
-      }
-    });
+    // this.route.params.forEach((params: any) => {
+    //   let contact = this.chatService.getContactSelect().value;
+    //   if (contact) {
+    //     this.chatService.getMessages(contact.group_json.id);
+    //     if (contact.history) {
+    //       this.chatService.updateHistory(contact);
+    //     }
+    //   // } else {
+    //   //   this.router.navigate(['/']);
+    //   }
+    // });
 
     this.commonEventSub = this.commonEventService
       .filter((event: CommonEvent) => event.channel == 'chatCommonEvent')

@@ -167,17 +167,17 @@ export class ChatService {
     return this.storage.getAsync(CONVERSATION_SELECT);
   }
 
-  getMessages(groupId: number, options: any = {}): void {
-    let item: any = this.storage.find('chat_messages_group_' + groupId);
-    if (item && item.value) {
-      if (this.storage.find(CONVERSATION_SELECT).value.group_id == groupId) {
-        this.storage.save(CURRENT_CHAT_MESSAGES, item.value);
-      }
+  getMessages(groupId: number, options: any = {}): Promise<any> {
+    let messages: any = this.storage.getValue('chat_messages_group_' + groupId);
+    if (messages && this.storage.getValue(CONVERSATION_SELECT).group_id == groupId) {
+      this.storage.save(CURRENT_CHAT_MESSAGES, messages);
+      return Promise.resolve(messages);
     } else {
       this.storage.save(CURRENT_CHAT_MESSAGES, null);
-      this.apiBaseService
+      return this.apiBaseService
         .get('zone/chat/message/' + groupId, options)
-        .subscribe((res: any) => {
+        .toPromise()
+        .then((res: any) => {
           this.storage.save('chat_messages_group_' + groupId, res);
           if (
             this.storage.find(CONVERSATION_SELECT).value &&
@@ -185,7 +185,8 @@ export class ChatService {
           ) {
             this.storage.save(CURRENT_CHAT_MESSAGES, res);
           }
-        });
+        })
+      ;
     }
   }
 
