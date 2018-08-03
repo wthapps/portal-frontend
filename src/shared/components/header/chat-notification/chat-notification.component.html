@@ -39,7 +39,7 @@
               <span *ngIf="conversation.group_type == 'multiple'" class="bold">{{(conversation.group_json.name || conversation.group_json.users_name) | maxLength:30}}</span>
               <br>
               <span *ngIf="conversation.latest_message as latest_message" class="pt5 message">
-                <span *ngIf="latest_message?.message_type == 'text'" [innerHtml]="latest_message?.message | wthEmojis | linkify | stripHtml | safeHtml"></span>
+                <span *ngIf="latest_message?.message_type == 'text'" [innerHtml]="latest_message?.message | wthEmojis | linkify | safeHtml"></span>
                 <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
                 <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
               </span>

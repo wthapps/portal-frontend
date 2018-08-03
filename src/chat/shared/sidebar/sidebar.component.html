@@ -64,7 +64,7 @@
     <z-chat-share-user class="media-chat-user-item" [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
       <small class="btn-block" *ngIf="conversation.latest_message as latest_message">
         <span *ngIf="latest_message?.message_type == 'text'"
-              [innerHtml]="latest_message?.message | wthEmojis | linkify | stripHtml | safeHtml"></span>
+              [innerHtml]="latest_message?.message | wthEmojis | linkify  | safeHtml"></span>
         <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
         <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
       </small>
