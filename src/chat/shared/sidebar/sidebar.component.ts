@@ -46,16 +46,17 @@ export class ZChatSidebarComponent implements OnInit {
           this.chatService
             .getConversationsAsync()
             .subscribe((res: any) => {
-              if(!(res && res.value && res.value.data))
+              if (!(res && res.value && res.value.data)) {
                 return;
+              }
               const conversations = res.value.data;
               const mostRecent = conversations[0];
 
-              if(conversationId) {
+              if (conversationId) {
                 let validConversation = false;
                 conversations.forEach(contact => {
                     if (
-                      contact.id === parseInt(conversationId)
+                      contact.id === +conversationId
                     ) {
                       this.selectConversation(contact);
                       validConversation = true;
@@ -63,7 +64,7 @@ export class ZChatSidebarComponent implements OnInit {
                     }
                   });
 
-                  if(!validConversation && mostRecent) {
+                  if (!validConversation && mostRecent) {
                     this.selectConversation(mostRecent);
                   }
               } else {
@@ -90,7 +91,7 @@ export class ZChatSidebarComponent implements OnInit {
     this.storageService.save(CONVERSATION_SELECT, conversation);
     this.chatService.selectContact(conversation);
     this.chatService.getMessages(conversation.group_json.id);
-  };
+  }
 
   onSelect(contact: any) {
     $('#chat-message-text').focus();

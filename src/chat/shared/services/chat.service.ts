@@ -57,8 +57,9 @@ export class ChatService {
 
     // trigger changes in chat notification data
     this.storage.getAsync(CHAT_CONVERSATIONS).subscribe((value: any) => {
-      if(value && value.data)
+      if (value && value.data) {
         this.handler.triggerEvent('on_conversation_changes', value.data);
+      }
     });
   }
 
@@ -69,12 +70,12 @@ export class ChatService {
   }
 
   getConversations(option: any = {}) {
-    let res: any = this.storage.find(CHAT_CONVERSATIONS);
+    const res: any = this.storage.find(CHAT_CONVERSATIONS);
     if (res && res.value && !option.forceFromApi) {
       return res;
     } else {
-      this.apiBaseService.get('zone/chat/contacts').toPromise().then((res: Conversation) => {
-        this.storage.save(CHAT_CONVERSATIONS, res);
+      this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: Conversation) => {
+        this.storage.save(CHAT_CONVERSATIONS, conv);
         this.chatCommonService.setRecentConversations();
         this.chatCommonService.setFavouriteConversations();
         this.chatCommonService.setHistoryConversations();
@@ -91,8 +92,8 @@ export class ChatService {
         observer.next(res);
         observer.complete();
       } else {
-        this.apiBaseService.get('zone/chat/contacts').toPromise().then((res: Conversation) => {
-          this.storage.save(CHAT_CONVERSATIONS, res);
+        this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: Conversation) => {
+          this.storage.save(CHAT_CONVERSATIONS, conv);
           this.chatCommonService.setRecentConversations();
           this.chatCommonService.setFavouriteConversations();
           this.chatCommonService.setHistoryConversations();
@@ -107,7 +108,9 @@ export class ChatService {
   getChatConversationsAsync(): Observable<{[partner_id: string]: any}> {
     const currentUser = this.userService.getSyncProfile();
     return this.storage.getAsync(CHAT_CONVERSATIONS).pipe(
-      map((item: any) => (!_.get(item, 'data') ? {} : item.data.reduce((r, a) => ({...r, [a.partner_id]: a}), {}))), // includes all contacts that have couple conversation with current user
+      map((item: any) => (!_.get(item, 'data') ? {}
+      : item.data.reduce((r, a) => ({...r, [a.partner_id]: a}), {}))),
+      // includes all contacts that have couple conversation with current user
       map((item: any) => ({...item, [currentUser.id]: currentUser})) // includes current user id as well
     );
   }
@@ -139,15 +142,16 @@ export class ChatService {
       'remove_notification_after_select',
       'on_conversation_select',
       (contact: any) => {
-        if (contact.notification_count > 0)
+        if (contact.notification_count > 0) {
           this.markAsRead(contact.group_json.id);
+        }
       }
     );
   }
 
   selectContactByPartnerId(id: any) {
-    let conversations: any = this.storage.find(CHAT_CONVERSATIONS).value;
-    let contact: any = _.find(conversations.data, { partner_id: id });
+    const conversations: any = this.storage.find(CHAT_CONVERSATIONS).value;
+    const contact: any = _.find(conversations.data, { partner_id: id });
     if (contact) {
       this.selectContact(contact);
       this.router.navigate([`${this.constant.conversationUrl}/${contact.id}`]);
@@ -155,7 +159,7 @@ export class ChatService {
   }
 
   getContactByPartnerId(id: any) {
-    let conversations: any = this.storage.find(CHAT_CONVERSATIONS).value;
+    const conversations: any = this.storage.find(CHAT_CONVERSATIONS).value;
     return _.find(conversations.data, { partner_id: id });
   }
 
@@ -168,8 +172,8 @@ export class ChatService {
   }
 
   getMessages(groupId: number, options: any = {}): Promise<any> {
-    let messages: any = this.storage.getValue('chat_messages_group_' + groupId);
-    if (messages && this.storage.getValue(CONVERSATION_SELECT).group_id == groupId) {
+    const messages: any = this.storage.getValue('chat_messages_group_' + groupId);
+    if (messages && this.storage.getValue(CONVERSATION_SELECT).group_id === groupId) {
       this.storage.save(CURRENT_CHAT_MESSAGES, messages);
       return Promise.resolve(messages);
     } else {
@@ -181,7 +185,7 @@ export class ChatService {
           this.storage.save('chat_messages_group_' + groupId, res);
           if (
             this.storage.find(CONVERSATION_SELECT).value &&
-            this.storage.find(CONVERSATION_SELECT).value.group_id == groupId
+            this.storage.find(CONVERSATION_SELECT).value.group_id === groupId
           ) {
             this.storage.save(CURRENT_CHAT_MESSAGES, res);
           }
@@ -195,8 +199,10 @@ export class ChatService {
   }
 
   isExistingData(key: string) {
-    let data = this.storage.find(key);
-    if (data == null) return false;
+    const data = this.storage.find(key);
+    if (data == null) {
+      return false;
+    }
     return true;
   }
 
@@ -209,7 +215,7 @@ export class ChatService {
   }
 
   getLatestGroupId(): any {
-    let recentContacts = this.storage.find(CHAT_RECENT_CONVERSATIONS);
+    const recentContacts = this.storage.find(CHAT_RECENT_CONVERSATIONS);
     return _.map(recentContacts.value, 'group_id')[0];
   }
 
@@ -224,7 +230,7 @@ export class ChatService {
   }
 
   sendTextMessage(message: any, option: any = {}): Promise<any> {
-    let item = this.storage.find(CONVERSATION_SELECT);
+    const item = this.storage.find(CONVERSATION_SELECT);
     if (item && item.value && message) {
       return this.sendMessage(
         item.value.group_json.id,
@@ -243,16 +249,16 @@ export class ChatService {
   }
 
   uploadPhotoOnWeb(photo: any) {
-    let groupId = this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+    const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json.id;
     this.sendMessage(groupId, { type: 'file', id: photo.id, object: 'Photo' });
   }
 
   createUploadingFile(files?: any) {
-    let filesAddedPolicy = FileUploadPolicy.allowMultiple(files);
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files);
     filesAddedPolicy.forEach((file: any) => {
-      let groupId = this.storage.find(CONVERSATION_SELECT).value.group_json
+      const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json
         .id;
-      let message: Message = new Message({
+      const message: Message = new Message({
         message: 'Sending file.....',
         message_type: 'file',
         content_type: 'media/generic'
@@ -274,12 +280,13 @@ export class ChatService {
         });
       }
     });
-    let tmp = filesAddedPolicy.filter((item: any) => !item.allow);
-    if (tmp && tmp.length > 0)
+    const tmp = filesAddedPolicy.filter((item: any) => !item.allow);
+    if (tmp && tmp.length > 0) {
       this.commonEventService.broadcast({
         channel: 'LockMessage',
         payload: tmp
       });
+    }
   }
 
   getUsersOnline(): Observable<any> {
@@ -287,15 +294,16 @@ export class ChatService {
   }
 
   loadMoreMessages(): Promise<any> {
-    let current = this.storage.find(CURRENT_CHAT_MESSAGES).value || {};
-    let currentMessages: any = current.data || [];
+    const current = this.storage.find(CURRENT_CHAT_MESSAGES).value || {};
+    const currentMessages: any = current.data || [];
     let page: any = 1;
-    if (current.meta && +current.meta.page < +current.meta.page_count)
-      page = parseInt(current.meta.page) + 1;
-    else
+    if (current.meta && +current.meta.page < +current.meta.page_count) {
+      page = +current.meta.page + 1;
+    } else {
       return Promise.resolve({data: []});
-    let body: any = { page: page };
-    let groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
+    }
+    const body: any = { page: page };
+    const groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
       .id;
     return this.apiBaseService
       .get('zone/chat/message/' + groupId, body)
@@ -303,7 +311,7 @@ export class ChatService {
         res.data = _chat.combineMessages(currentMessages, res.data);
         this.storage.save('chat_messages_group_' + groupId, res);
         if (
-          this.storage.find(CONVERSATION_SELECT).value.group_id == groupId
+          +this.storage.find(CONVERSATION_SELECT).value.group_id === +groupId
         ) {
           this.storage.save(CURRENT_CHAT_MESSAGES, res);
         }
@@ -312,17 +320,17 @@ export class ChatService {
   }
 
   searchMessages(text: any) {
-    let currentMessages: any = this.storage.find(CURRENT_CHAT_MESSAGES).value
+    const currentMessages: any = this.storage.find(CURRENT_CHAT_MESSAGES).value
       .data;
-    let page: any = parseInt(
+    const page: any = +(
       this.storage.find(CURRENT_CHAT_MESSAGES).value.meta.page
     );
-    let body: any = { q: 'message:1' };
-    let groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
+    const body: any = { q: 'message:1' };
+    const groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
       .id;
 
-    let sequenceCall = (nextPage: any, currentPage: any): any => {
-      if (nextPage == currentPage) {
+    const sequenceCall = (nextPage: any, currentPage: any): any => {
+      if (nextPage === currentPage) {
         return [];
       }
       this.apiBaseService
@@ -334,7 +342,7 @@ export class ChatService {
           );
           this.storage.save('chat_messages_group_' + groupId, res);
           this.storage.save(CURRENT_CHAT_MESSAGES, res);
-          sequenceCall(parseInt(res.meta.page) + 1, currentPage);
+          sequenceCall(+(res.meta.page) + 1, currentPage);
         });
     };
 
@@ -349,7 +357,7 @@ export class ChatService {
   }
 
   addGroupUserFavorite(contact: any) {
-    let body: any = { favourite: !contact.favourite };
+    const body: any = { favourite: !contact.favourite };
     this.updateGroupUser(contact.group_id, body);
     contact.favourite = !contact.favourite;
   }
@@ -387,11 +395,12 @@ export class ChatService {
 
   leaveConversation(contact: any): Promise<any> {
     return this.updateGroupUser(contact.group_id, { leave: true })
-      .then(_ => this.chatCommonService.updateConversationBroadcast(contact.group_id))
-      .then(_ => {
+      .then(() => this.chatCommonService.updateConversationBroadcast(contact.group_id))
+      .then(() => {
           this.storage.removeItemOfKey(CHAT_RECENT_CONVERSATIONS, contact);
           // this.selectContact(nextRecentConversation);
-          const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
+          const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value
+          && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
           return nextRecentConversation ? this.router.navigate([ChatConstant.conversationUrl, nextRecentConversation.id])
             : this.router.navigate([ChatConstant.conversationUrl]);
         });
@@ -424,7 +433,7 @@ export class ChatService {
     } else {
       groupId = this.storage.find(CONVERSATION_SELECT).value.group_json.id;
     }
-    let body = { friends: friends };
+    const body = { friends: friends };
     this.apiBaseService
       .put('zone/chat/group/' + groupId, body)
       .subscribe((res: any) => {
@@ -433,7 +442,7 @@ export class ChatService {
   }
 
   addMemberGroups(friendId: any, groupIds: any) {
-    for (let groupId of groupIds) {
+    for (const groupId of groupIds) {
       this.addMembersGroup([friendId], groupId);
     }
   }
@@ -468,7 +477,8 @@ export class ChatService {
         // if (setDefaultOnSelect) {
         //   this.chatCommonService.setDefaultSelectContact();
         // }
-        const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
+        const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value
+        && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
 
         this.chatCommonService.updateAll();
         return this.router.navigate([ChatConstant.conversationUrl, _.get(nextRecentConversation, 'id', '')]);
@@ -481,7 +491,7 @@ export class ChatService {
   }
 
   shareContact(ids: any) {
-    let item = this.storage.find(CONVERSATION_SELECT);
+    const item = this.storage.find(CONVERSATION_SELECT);
     this.apiBaseService
       .post('zone/chat/contact/share', {
         group_id: item.value.group_json.id,
@@ -508,10 +518,12 @@ export class ChatService {
     this.apiBaseService
       .post('zone/chat/notification/mark_as_read', { id: groupId })
       .toPromise().then((res: any) => {
-        let item = this.storage.find(CHAT_CONVERSATIONS);
+        const item = this.storage.find(CHAT_CONVERSATIONS);
         if (item && item.value) {
-          let contact = _.find(item.value.data, (contact: any) => {
-            if (contact.group_json.id == groupId) return contact;
+          const contact = _.find(item.value.data, (ct: any) => {
+            if (ct.group_json.id === groupId) {
+              return ct;
+            }
           });
           if (contact) {
             contact.notification_count = 0;
