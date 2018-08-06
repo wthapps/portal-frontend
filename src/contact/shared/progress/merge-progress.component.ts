@@ -76,11 +76,11 @@ export class ZContactShareMergeProgressComponent implements OnDestroy {
     this.contactService
       .undoMerge()
       .then(res => (this.status = this.STATUS.undoed))
-      .then(() =>
-        setTimeout(() => {
-          this.modalDock.close();
-        }, 5000)
-      )
+      // .then(() =>
+      //   setTimeout(() => {
+      //     this.modalDock.close();
+      //   }, 5000)
+      // )
       .catch(err => {
         console.warn(err);
         this.status = this.STATUS.error;

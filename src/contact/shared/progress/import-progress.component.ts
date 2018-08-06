@@ -8,8 +8,8 @@ import { ContactAddGroupModalComponent } from '../modal/contact-add-group/contac
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 import { CommonEvent } from '../../../shared/services/common-event/common-event';
 import { GenericFile } from '../../../shared/shared/models/generic-file.model';
-import { FileReaderUtil } from "@shared/shared/utils/file/file-reader.util";
-import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
+import { FileReaderUtil } from '@shared/shared/utils/file/file-reader.util';
+import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 
 @Component({
   selector: 'z-contact-share-import-progress',
@@ -30,8 +30,8 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
 
   importSubscription: Subscription;
   importStatus: any;
-  successfulNum: number = 0;
-  failedNum: number = 0;
+  successfulNum = 0;
+  failedNum = 0;
 
   constructor(
     private contactService: ZContactService,
@@ -40,7 +40,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
     private commonEventService: CommonEventService
   ) {
     this.importSubscription = this.commonEventService.filter(
-      (event: CommonEvent) => event.channel == 'contact:contact:actions').subscribe((event: CommonEvent) => {
+      (event: CommonEvent) => event.channel === 'contact:contact:actions').subscribe((event: CommonEvent) => {
       this.doEvent(event);
     });
   }
@@ -51,7 +51,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
 
   // TODO move this logic to ContactService
   import(event: any) {
-    switch(event.payload.provider) {
+    switch (event.payload.provider) {
       case 'google':
         this.importGoogleContacts();
         break;
@@ -72,30 +72,28 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
       this.modalDock.open();
       this.importStatus = this.IMPORT_STATUS.importing;
       const data = await this.gapi.startImportContact(user);
-      let result = undefined;
-      console.debug(data);
-      if(data !== undefined) {
+      let result;
+      if (data !== undefined) {
         this.importedContacts = data;
         this.successfulNum = this.gapi.totalImporting;
         this.contactService.addMoreContacts(data);
         result = await this.importDone();
       } else {
-        let err: any = new Error('import contact have no data');
+        const err: any = new Error('import contact have no data');
         result = await this.importDone(err);
       }
       return result;
-    }
-    catch (err) {
+    } catch (err) {
       console.warn('importContact err: ', err);
       this.importStatus = this.IMPORT_STATUS.error;
       return this.importDone(err);
-    };
+    }
   }
 
   importFile(payload: any) {
     FileReaderUtil.readMultiple(payload.event.files).then((events: any) => {
-      let file: any = payload.event.files[0];
-      let genericFile = new GenericFile({
+      const file: any = payload.event.files[0];
+      const genericFile = new GenericFile({
         file: events[0].target.result,
         name: file.name,
         content_type: file.type,
@@ -119,7 +117,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
           this.importStatus = this.IMPORT_STATUS.error;
           this.importDone(error);
         });
-    })
+    });
   }
 
   open(options?: any) {
