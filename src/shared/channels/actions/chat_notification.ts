@@ -1,6 +1,6 @@
 import { Processable } from './processable';
-import { ServiceManager, StorageItem } from '../../services';
-import { CHAT_CONVERSATIONS } from '@wth/shared/constant';
+import { ServiceManager, StorageItem, WTHNavigateService } from '../../services';
+import { CHAT_CONVERSATIONS, Constants } from '@wth/shared/constant';
 
 declare let _:any;
 
@@ -49,7 +49,7 @@ export class ChatNotification implements Processable {
         this.serviceManager.getChatCommonService().updateAll();
       }
     }
-    if(data.data.count) this.serviceManager.handlerService.triggerEvent('on_notification_come', {count: 1});
+    if(data.data.count && !this.inSameModule([Constants.baseUrls.chat])) this.serviceManager.handlerService.triggerEvent('on_notification_come', {count: 1});
   }
 
   addContact(data:any) {
@@ -86,5 +86,9 @@ export class ChatNotification implements Processable {
 
   addNotificationMessage(data:any) {
     this.serviceManager.getChatCommonService().addMessage(data.data.group, data.data);
+  }
+
+  private inSameModule(moduleNames: string[]) {
+    return moduleNames.includes(window.location.origin);
   }
 }
