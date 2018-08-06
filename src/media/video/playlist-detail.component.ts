@@ -90,18 +90,18 @@ PlaylistAddMixin, MediaDownloadMixin {
     public locationCustomService: LocationCustomService,
     public location: Location) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.route.params.subscribe(p => {
       this.parentMenuActions = this.getMenuActions();
       this.subMenuActions = this.getSubMenuActions();
       this.menuActions = this.parentMenuActions;
       this.loadObjects(p.uuid);
       this.loadObject(p.uuid);
-    })
+    });
   }
 
   doListEvent(e: any) {
-    switch(e.action) {
+    switch (e.action) {
       case 'viewDetails':
         this.viewDetail(this.object.uuid);
         break;
@@ -112,11 +112,11 @@ PlaylistAddMixin, MediaDownloadMixin {
   }
 
   doToolbarEvent(e: any) {
-    switch(e.action) {
+    switch (e.action) {
       case 'uploaded':
         this.apiBaseService.post(`media/playlists/add_to_playlist`, {playlist: {id: this.object.id}, videos: [e.payload]}).subscribe(res => {
           this.loadObjects(this.object.uuid);
-        })
+        });
       case 'changeView':
         this.changeViewMode(e.payload);
       break;
@@ -145,12 +145,12 @@ PlaylistAddMixin, MediaDownloadMixin {
     });
   }
 
-  loadObject(input: any){
+  loadObject(input: any) {
     this.apiBaseService.get(`media/playlists/${input}`).subscribe(res => {
       this.object = res.data;
-      this.parentMenuActions.favorite.iconClass = res.data.favorite? 'fa fa-star' : 'fa fa-star-o';
-      this.validateActions(this.subMenuActions, this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
-      this.validateActions(this.parentMenuActions, this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
+      this.parentMenuActions.favorite.iconClass = res.data.favorite ? 'fa fa-star' : 'fa fa-star-o';
+      this.validateActions(this.subMenuActions, this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
+      this.validateActions(this.parentMenuActions, this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
     });
   }
   validateActions: (menuActions: any, role_id: number) => any;
@@ -161,8 +161,8 @@ PlaylistAddMixin, MediaDownloadMixin {
   }
 
   viewDetail(input: any) {
-    let data: any = { returnUrl: `/playlists/${input}`, preview: true, parent_id: this.object.id };
-    if (this.selectedObjects && this.selectedObjects.length > 1) data.ids = this.selectedObjects.map(s => s.id).join(',');
+    const data: any = { returnUrl: `/playlists/${input}`, preview: true, parent_id: this.object.id };
+    if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
     this.router.navigate([`/videos/${this.selectedObjects[0].uuid}`], { queryParams: data });
   }
 
@@ -187,35 +187,35 @@ PlaylistAddMixin, MediaDownloadMixin {
   selectedObjectsChanged(objectsChanged: any) {
     if (this.objects) {
       this.objects.forEach(ob => {
-        if (objectsChanged.some(el => el.id == ob.id && (el.object_type == ob.object_type || el.model == ob.model))) {
+        if (objectsChanged.some(el => el.id === ob.id && (el.object_type === ob.object_type || el.model === ob.model))) {
           ob.selected = true;
         } else {
           ob.selected = false;
         }
       });
-      this.selectedObjects = this.objects.filter(v => v.selected == true);
+      this.selectedObjects = this.objects.filter(v => v.selected === true);
       this.hasSelectedObjects = (this.selectedObjects && this.selectedObjects.length > 0) ? true : false;
-      this.menuActions = this.hasSelectedObjects? this.subMenuActions : this.parentMenuActions;
+      this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
       this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
     }
   }
 
-  loadModalComponent:(component: any) => void;
+  loadModalComponent: (component: any) => void;
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
-    if (items) data = items;
+    if (items) { data = items; }
     this.apiBaseService.post(`media/favorites/toggle`, {
       objects: data
-        .map(v => { return { id: v.id, object_type: v.model } })
+        .map(v => ({ id: v.id, object_type: v.model }))
     }).subscribe(res => {
       this.objects = this.objects.map(v => {
-        let tmp = res.data.filter(d => d.id == v.id);
+        const tmp = res.data.filter(d => d.id === v.id);
         if (tmp && tmp.length > 0) {
           v.favorite = tmp[0].favorite;
         }
         return v;
-      })
+      });
       this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
     });
   }
@@ -223,7 +223,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   deSelect() {
     this.objects.forEach(ob => {
       ob.selected = false;
-    })
+    });
     this.selectedObjects = [];
     this.hasSelectedObjects = false;
   }
@@ -238,9 +238,9 @@ PlaylistAddMixin, MediaDownloadMixin {
         this.apiBaseService.post(`media/media/delete`, { objects: this.selectedObjects }).subscribe(res => {
           this.loadObjects(this.object.uuid);
           this.loading = false;
-        })
+        });
       }
-    })
+    });
   }
 
   changeViewMode(mode: any) {
@@ -250,11 +250,11 @@ PlaylistAddMixin, MediaDownloadMixin {
   toggleFavoriteParent() {
     this.toggleFavorite([this.object]);
     this.object.favorite = !this.object.favorite;
-    this.menuActions.favorite.iconClass = this.object.favorite? 'fa fa-star' : 'fa fa-star-o';
+    this.menuActions.favorite.iconClass = this.object.favorite ? 'fa fa-star' : 'fa fa-star-o';
   }
 
-  removeFromParent(){
-    this.apiBaseService.post(`media/playlists/remove_from_playlist`, {playlist: {id: this.object.id}, videos: this.selectedObjects.map(ob => {return {id: ob.id, model: ob.model}})}).subscribe(res => {
+  removeFromParent() {
+    this.apiBaseService.post(`media/playlists/remove_from_playlist`, {playlist: {id: this.object.id}, videos: this.selectedObjects.map(ob => ({id: ob.id, model: ob.model}))}).subscribe(res => {
       this.toastsService.success('You removed videos successfully!');
       this.loadObjects(this.object.uuid);
       this.selectedObjects = [];
@@ -269,10 +269,10 @@ PlaylistAddMixin, MediaDownloadMixin {
   openModalShare: (input: any) => void;
 
   onSaveShare(e: any) {
-    const objects = this.hasSelectedObjects? this.selectedObjects : [this.object];
+    const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
     const data: SharingCreateParams = {
-      objects: objects.map(s => { return { id: s.id, model: s.model } }),
-      recipients: e.recipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id } }),
+      objects: objects.map(s => ({ id: s.id, model: s.model })),
+      recipients: e.recipients.map(s => ({ role_id: s.role_id, recipient_id: s.user.id })),
       role_id: e.role.id
     };
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
@@ -285,9 +285,9 @@ PlaylistAddMixin, MediaDownloadMixin {
     this.openModalAddToPlaylist(this.selectedObjects);
   }
 
-  openModalAddToPlaylist:(selectedObjects: any) => void;
+  openModalAddToPlaylist: (selectedObjects: any) => void;
 
-  onAddToPlaylist:(e: any) => void;
+  onAddToPlaylist: (e: any) => void;
 
   downloadMediaCustom() {
     if (this.selectedObjects && this.selectedObjects.length > 0) {
@@ -295,7 +295,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     }
   }
 
-  downloadMedia:(media: any) => void;
+  downloadMedia: (media: any) => void;
 
   openCreatePlaylistModal: (selectedObjects: any) => void;
 
@@ -303,13 +303,13 @@ PlaylistAddMixin, MediaDownloadMixin {
     console.log('You should overwrite this one', e);
   }
 
-  toggleInfo:() => void;
+  toggleInfo: () => void;
 
   async openSelectedModal() {
     this.mediaSelectionService.open('videos', ['photos', 'albums']);
     this.mediaSelectionService.setMultipleSelection(true);
-    if (this.subSelect) this.subSelect.unsubscribe();
-    if (this.sub) this.sub.unsubscribe();
+    if (this.subSelect) { this.subSelect.unsubscribe(); }
+    if (this.sub) { this.sub.unsubscribe(); }
     this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
       .subscribe(videos => {
         this.onAddToPlaylist({ parents: [this.object], children: videos });
@@ -376,7 +376,7 @@ PlaylistAddMixin, MediaDownloadMixin {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
-        action: () => {console.log('delete');},
+        action: () => {console.log('delete'); },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
         tooltip: this.tooltip.tag,
@@ -431,7 +431,7 @@ PlaylistAddMixin, MediaDownloadMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       }
-    }
+    };
   }
 
   getSubMenuActions() {
@@ -528,6 +528,6 @@ PlaylistAddMixin, MediaDownloadMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       }
-    }
+    };
   }
 }

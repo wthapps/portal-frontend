@@ -41,9 +41,9 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
   tooltip: any = Constants.tooltip;
 
   // check has selected objects
-  hasSelectedObjects: boolean = false;
+  hasSelectedObjects = false;
   selectedObjects: any = [];
-  favoriteAll: boolean = false;
+  favoriteAll = false;
   links: any;
   subAddPlaylist: any;
   subOpenShare: any;
@@ -52,6 +52,10 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
   subShareSave: any;
+  // ============
+  titleNoData: any = 'There is no favorites';
+  subTitleNoData: any = 'Add star to items to find easier';
+  iconNoData: any = 'fa fa-star';
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -61,6 +65,36 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
     public confirmService: WthConfirmService,
     public resolver: ComponentFactoryResolver
   ) {
+  }
+
+  openModalShare: () => void;
+  onSaveShare: (e: SharingModalResult) => void;
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
+  /* MediaListMixin This is media list methods, to
+  custom method please overwirte any method*/
+  selectedObjectsChanged: (objectsChanged: any) => void;
+  deleteObjects: (term: any) => void;
+  changeViewMode: (mode: any) => void;
+
+  toggleFavorite(items?: any) {
+    let data = this.selectedObjects;
+    if (items) {
+      data = items;
+    }
+    this.apiBaseService.post(`media/favorites/toggle`, {
+      objects: data
+        .map(v => ({ id: v.id, object_type: v.model }))
+    }).subscribe(res => {
+      this.objects = this.objects.map(v => {
+        const tmp = res.data.filter(d => d.id === v.id);
+        if (tmp && tmp.length > 0) {
+          v.favorite = tmp[0].favorite;
+        }
+        return v;
+      });
+      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+      this.objects = this.objects.filter(ob => ob.favorite);
+    });
   }
 
   ngOnInit() {
@@ -96,32 +130,6 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
     }
   }
 
-  openModalShare:() => void;
-  onSaveShare: (e: SharingModalResult) => void;
-  onEditShare: (e: SharingModalResult, sharing: any) => void;
-
-  /* MediaListMixin This is media list methods, to
-  custom method please overwirte any method*/
-  selectedObjectsChanged:(objectsChanged: any) => void;
-  toggleFavorite(items?: any) {
-    let data = this.selectedObjects;
-    if (items) data = items;
-    this.apiBaseService.post(`media/favorites/toggle`, {
-      objects: data
-        .map(v => { return { id: v.id, object_type: v.model } })
-    }).subscribe(res => {
-      this.objects = this.objects.map(v => {
-        let tmp = res.data.filter(d => d.id == v.id);
-        if (tmp && tmp.length > 0) {
-          v.favorite = tmp[0].favorite;
-        }
-        return v;
-      })
-      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-      this.objects = this.objects.filter(ob => ob.favorite);
-    });
-  }
-  deleteObjects: (term: any) => void;
   loadObjects() {
     this.loading = true;
     this.apiBaseService.get(`media/favorites`).subscribe(res => {
@@ -138,7 +146,6 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
     /* this method is load objects to display on init */
     throw new Error('should overwrite this method');
   }
-  changeViewMode: (mode: any) => void;
 
   viewDetails(payload: any) {
     switch (payload.selectedObject.model) {
@@ -280,6 +287,6 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       }
-    }
+    };
   }
 }
