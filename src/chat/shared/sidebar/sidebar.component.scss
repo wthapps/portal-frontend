@@ -1,54 +1,40 @@
 @import "../../../assets/styles/global";
-
-.menuleft-item {
-  &.active > a {
-    color: $text-color;
-  }
-  .media-chat-user {
-    @include flexbox;
-    @include align-items(center);
-  }
-  .media-chat-user-item {
-    @include flex(1);
-  }
-
+.menu-left-item {
+    &.active>a {
+        color: $text-color;
+    }
+    .media-chat-user {
+        @include flexbox;
+        @include align-items(center);
+    }
+    .media-chat-user-item {
+        @include flex(1);
+    }
 }
 
-.menuleft-header-nav {
-  @include flexbox;
-  @include justify-content(center);
-  a {
-    padding: 8px 10px;
-    color: inherit;
-    display: inline-block;
-    text-decoration: none;
-  }
+.media-chat-user {
+    &.active {
+      background-color: #f5f5f5;
+    }
 }
 
-.menuleft-form {
-  padding: 10px 15px 15px;
-  border-bottom: 1px solid $line;
-  margin-bottom: 5px;
-}
-
-.menuleft-bar {
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.media-chat-user-col {
-  @include flexbox;
-  @include flex-direction(column);
-  text-align: center;
-  padding: 5px 0;
-  .badge {
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    padding: 0 3px;
-    min-width: auto;
-    font-size: 10px;
-    font-weight: normal;
-    margin: 0 0 5px;
-  }
+.media-chat-user-row {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    .user-action-col {
+        @include flexbox;
+        @include flex-direction(column);
+        @include align-items(center);
+        .badge {
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+          padding: 0 3px;
+          min-width: auto;
+          font-size: 10px;
+          font-weight: normal;
+          margin: 0 0 5px;
+      }
+    }
 }

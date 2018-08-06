@@ -1,59 +1,61 @@
-<div class="menuleft-logo">
+<div class="menu-left-logo">
   <img src="/assets/images_new/logo-chat.png" alt="">
 </div>
-
-<div class="menuleft-header-nav">
-  <a href="javascript:void(0);" (click)="onAddContact(); onCloseMenu()">
-    <i class="fa fa-plus"></i> Chat
-  </a>
-  <a [routerLink]="['/contacts']" [routerLinkActive]="['active']" href="javascript:void(0);" (click)="onCloseMenu()">
-    <i class="fa fa-address-book-o"></i> Contacts
-  </a>
-  <a [routerLink]="['/setting']" [routerLinkActive]="['active']" href="javascript:void(0);" (click)="onCloseMenu()">
-    <i class="fa fa-cog"></i> Settings
-  </a>
-</div>
-<div class="menuleft-form">
-  <div class="input-group-wrap input-group-wrap-search">
-    <form class="input-group" novalidate="">
+<div class="menu-left-header">
+  <div class="menu-left-nav">
+    <a href="javascript:void(0);" (click)="onAddContact(); onCloseMenu()">
+      <i class="fa fa-plus"></i> Chat
+    </a>
+    <a [routerLink]="['/contacts']" [routerLinkActive]="['active']" href="javascript:void(0);" (click)="onCloseMenu()">
+      <i class="fa fa-address-book-o"></i> Contacts
+    </a>
+    <a [routerLink]="['/setting']" [routerLinkActive]="['active']" href="javascript:void(0);" (click)="onCloseMenu()">
+      <i class="fa fa-cog"></i> Settings
+    </a>
+  </div>
+  <div class="menu-left-form">
+    <div class="input-group-wrap input-group-wrap-search">
+      <form class="input-group" novalidate="">
         <span class="input-group-btn input-group-left">
           <button class="btn btn-default" tooltipposition="bottom" type="button">
             <i class="fa fa-search"></i>
           </button>
         </span>
-      <input autocomplete="off" class="form-control" name="search" type="text" placeholder="Search something">
-    </form>
+        <input autocomplete="off" class="form-control" name="search" type="text" placeholder="Search something">
+      </form>
+    </div>
+  </div>
+  <div class="menu-left-in">
+    <div class="dropdown">
+      <button class="btn btn-text-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        All
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-sm">
+        <li><a href="#">All</a></li>
+        <li><a href="#">Unread</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">Pending request</a></li>
+        <li><a href="#">Sent request</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">Mark all as read</a></li>
+      </ul>
+    </div>
   </div>
 </div>
-<div class="menuleft-bar">
-  <div class="dropdown">
-    <button class="btn btn-text-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-      All
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-      <li><a href="#">All</a></li>
-      <li><a href="#">Unread</a></li>
-      <li role="separator" class="divider"></li>
-      <li><a href="#">Pending request</a></li>
-      <li><a href="#">Sent request</a></li>
-      <li role="separator" class="divider"></li>
-      <li><a href="#">Mark all as read</a></li>
-    </ul>
-  </div>
+<div class="menu-left-content">
+  <ng-container *ngIf="favouriteContacts$ | async as favouriteContacts">
+    <div *ngFor="let contact of favouriteContacts" class="menu-left-item" [routerLinkActive]="['active']">
+      <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="recentContacts$ | async as recentContacts">
+    <div *ngFor="let contact of recentContacts" class="menu-left-item" [routerLinkActive]="['active']">
+      <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
+    </div>
+  </ng-container>
 </div>
-
-<ng-container *ngIf="favouriteContacts$ | async as favouriteContacts">
-  <div *ngFor="let contact of favouriteContacts" class="menuleft-item" [routerLinkActive]="['active']">
-    <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
-  </div>
-</ng-container>
-
-<ng-container *ngIf="recentContacts$ | async as recentContacts">
-  <div *ngFor="let contact of recentContacts" class="menuleft-item" [routerLinkActive]="['active']">
-    <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
-  </div>
-</ng-container>
 
 <ng-template #conversationTemplate let-conversation="conversation">
   <a class="media-chat-user"
@@ -61,19 +63,23 @@
      [routerLinkActive]="['active']"
      (click)="onSelect(conversation); onCloseMenu()"
      href="javascript:;">
-    <z-chat-share-user class="media-chat-user-item" [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
-      <small class="btn-block" *ngIf="conversation.latest_message as latest_message">
-        <span *ngIf="latest_message?.message_type == 'text'"
-              [innerHtml]="latest_message?.message | wthEmojis | linkify  | safeHtml"></span>
-        <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
-        <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
-      </small>
-      <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
-    </z-chat-share-user>
-    <div class="media-chat-user-col">
-      <span class="badge badge-wth badge-rounded" [ngClass]="{'invisible': conversation.notification_count == 0}">{{ conversation?.notification_count | maxCount: 10}}</span>
-      <i class="fa fa-star" [ngClass]="{'fa-star-o': !conversation.favourite}"></i>
-    </div>
+     <z-chat-share-user-avatar class="media-chat-user-row" [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
+        <div class="user-content">
+           <small class="btn-block" *ngIf="conversation.latest_message as latest_message">
+               <span *ngIf="latest_message?.message_type == 'text'"
+                     [innerHtml]="latest_message?.message | wthEmojis | linkify  | safeHtml"></span>
+               <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
+               <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
+             </small>
+             <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
+        </div>
+        <div class="user-action">
+           <div class="user-action-col">
+               <span class="badge badge-wth badge-rounded" [ngClass]="{'invisible': conversation.notification_count == 0}">{{ conversation?.notification_count | maxCount: 10}}</span>
+               <i class="fa fa-star" [ngClass]="{'fa-star-o': !conversation.favourite}"></i>
+             </div>
+        </div>
+      </z-chat-share-user-avatar>
   </a>
 </ng-template>
 

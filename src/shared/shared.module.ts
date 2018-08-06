@@ -60,6 +60,7 @@ import { WEditorModule } from '@shared/components/w-editor/w-editor.module';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { StickyModule } from 'ng2-sticky-kit';
 import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
+import { WUserModule } from '@shared/components/w-user/w-user.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -152,6 +153,7 @@ import { WObjectListModule } from '@shared/components/w-object-list/w-object-lis
     WNavTabModule,
     ComponentsModule,
     WEditorModule,
+    WUserModule,
     // Pipe
     PipeModule,
 

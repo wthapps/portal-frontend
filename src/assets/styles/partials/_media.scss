@@ -1,149 +1,184 @@
 .media-flex {
-  @include flexbox;
+    @include flexbox;
 }
 
 .media-flex-left,
 .media-flex-body,
 .media-flex-right {
-  @include flex(1);
+    @include flex(1);
 }
 
 .media-center {
-  display: table;
-  .media-center-left,
-  .media-center-body,
-  .media-center-right {
-    display: table-cell;
-    vertical-align: middle;
-  }
-  .media-center-left {
-    padding-right: 10px;
-  }
-  .media-center-body {
-    display: table-cell;
-    width: 2000px;
-  }
-  .media-center-right {
-    padding-left: 10px;
-  }
-  .media-center-heading {
-    margin: 0;
-    font-size: 14px;
-    font-weight: bold;
-  }
-  .media-center-p {
-    font-size: 14px;
-    color: $light-slate;
-    margin-bottom: 0;
-  }
+    display: table;
+    .media-center-left,
+    .media-center-body,
+    .media-center-right {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .media-center-left {
+        padding-right: 10px;
+    }
+    .media-center-body {
+        display: table-cell;
+        width: 2000px;
+    }
+    .media-center-right {
+        padding-left: 10px;
+    }
+    .media-center-heading {
+        margin: 0;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .media-center-p {
+        font-size: 14px;
+        color: $light-slate;
+        margin-bottom: 0;
+    }
 }
 
 .media-form {
-  &, .media-body {
-    overflow: visible;
-  }
+    &,
+    .media-body {
+        overflow: visible;
+    }
 }
 
 .media-div {
-  .pull-left {
-    float: left;
-    margin-right: 10px;
-  }
-  .media-div-body {
-    overflow: hidden;
-  }
-  .media-div-heading {
-    margin: 0;
-  }
+    .pull-left {
+        float: left;
+        margin-right: 10px;
+    }
+    .media-div-body {
+        overflow: hidden;
+    }
+    .media-div-heading {
+        margin: 0;
+    }
 }
 
 .media-no-hidden {
-  &, .media-body {
-    overflow: visible;
-  }
+    &,
+    .media-body {
+        overflow: visible;
+    }
 }
 
 .media-user {
-  overflow: visible;
-  position: relative;
-  $media-user-status-w: 18px;
-  $media-user-status-pos: $media-user-status-w - 3px;
-  .media-user-status {
-    position: absolute;
-    bottom: -3px;
-    width: $media-user-status-w;
-    height: $media-user-status-w;
-    border-radius: 50%;
-    border: 3px solid #FFF;
-    background-color: $user-offline;
-    &.online {
-      background-color: $user-online;
+    overflow: visible;
+    position: relative;
+    $media-user-status-w: 18px;
+    $media-user-status-pos: $media-user-status-w - 3px;
+    .media-user-status {
+        position: absolute;
+        bottom: -3px;
+        width: $media-user-status-w;
+        height: $media-user-status-w;
+        border-radius: 50%;
+        border: 3px solid #FFF;
+        background-color: $user-offline;
+        &.online {
+            background-color: $user-online;
+        }
     }
-  }
-  .media-user-stranger {
-    background-color: transparent;
-    i {
-      @include center();
-      color: $color-inverse;
+    .media-user-stranger {
+        background-color: transparent;
+        i {
+            @include center();
+            color: $color-inverse;
+        }
     }
-  }
+    .media-user-name {
+        position: absolute;
+        right: 0;
+        top: 0;
+        line-height: 1.1;
+        p {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            -ms-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+        }
+        small {
+            @include opacity(0.6);
+        }
+    }
+    .avatar-xs {
+        &+.media-user-name {
+            @include center(false, true);
+            left: $avatar-xs + 10px;
+        }
+        &~.media-user-status {
+            left: $avatar-xs - $media-user-status-pos;
+        }
+    }
+    .avatar-xsm {
+        &+.media-user-name {
+            left: $avatar-xsm + 10px;
+        }
+        &~.media-user-status {
+            left: $avatar-xsm - $media-user-status-pos;
+        }
+    }
+    .avatar-sm {
+        &+.media-user-name {
+            left: $avatar-sm + 10px;
+        }
+        &~.media-user-status {
+            left: $avatar-sm - $media-user-status-pos;
+        }
+    }
+    .avatar-md {
+        &+.media-user-name {
+            left: $avatar-md + 10px;
+        }
+        &~.media-user-status {
+            left: $avatar-md - $media-user-status-pos;
+        }
+    }
+    .avatar-lg {
+        &+.media-user-name {
+            left: $avatar-lg + 10px;
+        }
+        &~.media-user-status {
+            left: $avatar-lg - $media-user-status-pos;
+        }
+    }
+}
 
-  .media-user-name {
-    position: absolute;
-    right: 0;
-    top: 0;
-    line-height: 1.1;
-    p {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      white-space: nowrap;
-      -ms-text-overflow: ellipsis;
-      text-overflow: ellipsis;
+.user-row {
+    @include flexbox;
+    display: block;
+    width: 100%;
+    .user-avatar {
+        position: relative;
+        margin-right: 10px;
+        img {
+            width: 34px;
+            border-radius: 50%;
+        }
     }
-    small {
-      @include opacity(0.6);
+    .user-name {
+        @include flexbox;
+        width: 100%;
+        height: 20px;
+        position: relative;
+        p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
     }
-  }
-  .avatar-xs {
-    & + .media-user-name {
-      @include center(false, true);
-      left: $avatar-xs + 10px;
+    .user-body {
+        @include flex(1);
+        p {
+            margin: 0;
+        }
     }
-    & ~ .media-user-status {
-      left: $avatar-xs - $media-user-status-pos;
-    }
-  }
-  .avatar-xsm {
-    & + .media-user-name {
-      left: $avatar-xsm + 10px;
-    }
-    & ~ .media-user-status {
-      left: $avatar-xsm - $media-user-status-pos;
-    }
-  }
-  .avatar-sm {
-    & + .media-user-name {
-      left: $avatar-sm + 10px;
-    }
-    & ~ .media-user-status {
-      left: $avatar-sm - $media-user-status-pos;
-    }
-  }
-  .avatar-md {
-    & + .media-user-name {
-      left: $avatar-md + 10px;
-    }
-    & ~ .media-user-status {
-      left: $avatar-md - $media-user-status-pos;
-    }
-  }
-  .avatar-lg {
-    & + .media-user-name {
-      left: $avatar-lg + 10px;
-    }
-    & ~ .media-user-status {
-      left: $avatar-lg - $media-user-status-pos;
-    }
-  }
 }
