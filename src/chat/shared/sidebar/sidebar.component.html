@@ -58,28 +58,29 @@
 </div>
 
 <ng-template #conversationTemplate let-conversation="conversation">
-  <a class="media-chat-user"
-     [routerLink]="[chatService.constant.conversationUrl, conversation.id]"
-     [routerLinkActive]="['active']"
-     (click)="onSelect(conversation); onCloseMenu()"
-     href="javascript:;">
+  <div class="media-chat-user">
      <z-chat-share-user-avatar class="media-chat-user-row" [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
         <div class="user-content">
            <small class="btn-block" *ngIf="conversation.latest_message as latest_message">
-               <span *ngIf="latest_message?.message_type == 'text'"
-                     [innerHtml]="latest_message?.message | wthEmojis | linkify  | safeHtml"></span>
-               <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
-               <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
-             </small>
-             <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
+             <span *ngIf="latest_message?.message_type == 'text'"
+                   [innerHtml]="latest_message?.message | wthEmojis | linkify  | safeHtml"></span>
+             <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
+             <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
+           </small>
+           <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
+          <a class="media-chat-user-link"
+             [routerLink]="[chatService.constant.conversationUrl, conversation.id]"
+             [routerLinkActive]="['active']"
+             (click)="onSelect(conversation); onCloseMenu()"
+             href="javascript:;"></a>
         </div>
         <div class="user-action">
            <div class="user-action-col">
                <span class="badge badge-wth badge-rounded" [ngClass]="{'invisible': conversation.notification_count == 0}">{{ conversation?.notification_count | maxCount: 10}}</span>
-               <i class="fa fa-star" [ngClass]="{'fa-star-o': !conversation.favourite}"></i>
+               <i (click)="onFavourite(conversation)" class="fa fa-star can-click" [ngClass]="{'fa-star-o': !conversation.favourite}"></i>
              </div>
         </div>
       </z-chat-share-user-avatar>
-  </a>
+  </div>
 </ng-template>
 

@@ -1,40 +1,56 @@
 @import "../../../assets/styles/global";
+
 .menu-left-item {
-    &.active>a {
-        color: $text-color;
-    }
-    .media-chat-user {
-        @include flexbox;
-        @include align-items(center);
-    }
-    .media-chat-user-item {
-        @include flex(1);
-    }
+  &.active > a {
+    color: $text-color;
+  }
+  .media-chat-user {
+    @include flexbox;
+    @include align-items(center);
+  }
+  .media-chat-user-item {
+    @include flex(1);
+  }
 }
 
 .media-chat-user {
-    &.active {
-      background-color: #f5f5f5;
-    }
+  &.active, &:hover {
+    background-color: #f5f5f5;
+  }
 }
 
 .media-chat-user-row {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    .user-action-col {
-        @include flexbox;
-        @include flex-direction(column);
-        @include align-items(center);
-        .badge {
-          width: 20px;
-          height: 20px;
-          line-height: 20px;
-          padding: 0 3px;
-          min-width: auto;
-          font-size: 10px;
-          font-weight: normal;
-          margin: 0 0 5px;
-      }
+  display: block;
+  width: 100%;
+  padding: 15px;
+  position: relative;
+  .user-action-col {
+    @include flexbox;
+    @include flex-direction(column);
+    @include align-items(center);
+    .badge {
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      padding: 0 3px;
+      min-width: auto;
+      font-size: 10px;
+      font-weight: normal;
+      margin: 0 0 5px;
     }
+  }
+  .media-chat-user-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+  }
+  .user-action {
+    i.can-click {
+      position: relative;
+      z-index: 10;
+    }
+  }
 }

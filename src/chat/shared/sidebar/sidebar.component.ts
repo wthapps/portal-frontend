@@ -55,22 +55,22 @@ export class ZChatSidebarComponent implements OnInit {
               if (conversationId) {
                 let validConversation = false;
                 conversations.forEach(contact => {
-                    if (
-                      contact.id === +conversationId
-                    ) {
-                      this.selectConversation(contact);
-                      validConversation = true;
-                      return;
-                    }
-                  });
+                  if (
+                    contact.id === +conversationId
+                  ) {
+                    this.selectConversation(contact);
+                    validConversation = true;
+                    return;
+                  }
+                });
 
-                  if (!validConversation && mostRecent) {
-                    this.selectConversation(mostRecent);
-                  }
+                if (!validConversation && mostRecent) {
+                  this.selectConversation(mostRecent);
+                }
               } else {
-                  if (mostRecent) {
-                    this.selectConversation(mostRecent);
-                  }
+                if (mostRecent) {
+                  this.selectConversation(mostRecent);
+                }
               }
             });
         }
@@ -100,6 +100,10 @@ export class ZChatSidebarComponent implements OnInit {
 
   onAddContact() {
     this.addContactService.open('addContact');
+  }
+
+  onFavourite(conversation: any) {
+    this.chatService.addGroupUserFavorite(conversation);
   }
 
   historyToggle() {
