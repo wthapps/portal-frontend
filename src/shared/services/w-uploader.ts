@@ -78,7 +78,7 @@ export class WUploader {
 
     this.uppy.on('file-added', (file) => {
       // add more files that you need to pass to server here
-      file.meta = {...file.meta, file_upload_id: file.id};
+      file.meta = {...file.meta, file_upload_id: file.id, current_date: + new Date()};
       this.event$.next({action: 'file-added', payload: {file: file}});
     });
 
@@ -176,7 +176,7 @@ export class WUploader {
 
     files.forEach(file => {
       if (!file.progress.uploadComplete) {
-        canceledFiles.push({id: file.id, name: file.name});
+        canceledFiles.push({id: file.id, name: file.name, file_upload_id: `${file.id}-${file.meta.current_date}`});
         this.uppy.removeFile(file.id);
       }
     });
