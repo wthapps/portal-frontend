@@ -17,7 +17,7 @@ import { Contact } from '@contacts/contact/contact.model';
 
 declare var _: any;
 declare var Promise: any;
-export const ITEM_PER_PAGE: number = 50;
+export const ITEM_PER_PAGE = 50;
 
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
@@ -25,7 +25,7 @@ export class ZContactService extends BaseEntityService<any> {
   contacts: Array<any> = new Array<any>();
   mergingObjects: any[] = [];
   mergedObjects: any[] = [];
-  page: number = 1;
+  page = 1;
   userSettings: any = DEFAULT_SETTING;
 
   // orderDesc: boolean = false;
@@ -107,20 +107,22 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   getLocalContact(id): Promise<any> {
-    const ct = this.contacts.find(ct => ct['id'] == id.toString());
-    return Promise.resolve(ct);
+    const contact = this.contacts.find(ct => ct['id'] === id.toString());
+    return Promise.resolve(contact);
   }
 
   getIdLocalThenNetwork(id): Observable<any> {
     return Observable.create((obs) => {
       this.getLocalContact(id).then(res => {
-        if (res)
+        if (res) {
           obs.next(res);
+        }
         return this.get(id).toPromise();
       })
         .then((response: any) => {
-          if (response.data)
+          if (response.data) {
             obs.next(response.data);
+          }
           obs.complete();
         })
         .catch(err => {
@@ -135,11 +137,14 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   changeSortOption(order?: string) {
-    if (order === undefined)
+    if (order === undefined) {
       this.orderDescSubject.next(!this.orderDescSubject.getValue());
-    else this.orderDescSubject.next(order !== 'asc');
+    } else {
+      this.orderDescSubject.next(order !== 'asc');
+    }
 
-    this.notifyContactsObservers();}
+    this.notifyContactsObservers();
+  }
 
   addMoreContacts(data: any[]) {
     this.contacts.push(...data);
@@ -156,8 +161,9 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   confirmDeleteContacts(contacts: any[] = this.selectedObjects): Promise<any> {
-    let contact_names: string = contacts.reduce((acc, ct) => (ct.name.trim().length ? `${acc},${ct.name}` : acc), '').substring(1, 300).concat(' ...');
-    let contact_length: number = contacts.length;
+    const contact_names: string = contacts.reduce((acc, ct) => (ct.name.trim().length
+    ? `${acc},${ct.name}` : acc), '').substring(1, 300).concat(' ...');
+    const contact_length: number = contacts.length;
     return new Promise(resolve => {
       this.wthConfirmService.confirm({
         acceptLabel: 'Delete',
@@ -190,7 +196,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   toggleSelectedObjects(item: any) {
-    let index = _.findIndex(this.selectedObjects, ['id', item.id]);
+    const index = _.findIndex(this.selectedObjects, ['id', item.id]);
     if (index >= 0) {
       _.remove(this.selectedObjects, {
         uuid: item.uuid
@@ -207,18 +213,19 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   checkSelectAll() {
-    let isSelectAll =
+    const isSelectAll =
       this.contactsSubject.getValue().length <= this.selectedObjects.length;
     this.isSelectAllSubject.next(isSelectAll);
   }
 
   selectAllObjects(selected: boolean) {
-    if (!selected)
+    if (!selected) {
       this.selectedObjects.length = 0;
-    else if (_.get(this.filterOption, 'search') || _.get(this.filterOption, 'group')) {
+    } else if (_.get(this.filterOption, 'search') || _.get(this.filterOption, 'group')) {
       this.selectedObjects = [...this.contactsSubject.getValue()];
-    } else
+    } else {
       this.selectedObjects = [...this.contacts];
+    }
   }
 
   sendListToItem(event: any) {
@@ -236,7 +243,7 @@ export class ZContactService extends BaseEntityService<any> {
       .post(`${this.url}/update_multiple`, body)
       .pipe(
         map((response: any) => {
-          let contacts = response.data;
+          const contacts = response.data;
           contacts.forEach(this.updateCallback.bind(this));
           return response;
         })
@@ -319,7 +326,7 @@ export class ZContactService extends BaseEntityService<any> {
   // Search by name, email, phone number
   search(options: any) {
     this.resetPageNumber();
-    let search_value = _.get(options, 'search_value', '')
+    const search_value = _.get(options, 'search_value', '')
       .trim()
       .toLowerCase();
     this.filterOption = { search: search_value };
@@ -346,10 +353,10 @@ export class ZContactService extends BaseEntityService<any> {
       contacts = this.contacts;
     }
 
-    let orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a, b, this.orderDescSubject.getValue()));
-    let selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
+    const orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a, b, this.orderDescSubject.getValue()));
+    const selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
 
-    let orderedContactsWSelected: any[] = orderedContacts.map(ct => {
+    const orderedContactsWSelected: any[] = orderedContacts.map(ct => {
       return { ...ct, selected: selectedIds.includes(ct.uuid) };
     });
 
@@ -371,14 +378,14 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   mergeDuplicateContacts(contacts: any[] = this.selectedObjects): Promise<any> {
-    let ids: any[] = _.map(contacts, 'id');
+    const ids: any[] = _.map(contacts, 'id');
     this.mergingObjects = [...contacts];
     return this.apiBaseService
       .post(`${this.url}/merge_duplicate`, { ids })
       .toPromise()
       .then((res: any) => {
-        let delete_ids: any[] = res.delete_ids;
-        let updated_contacts: any[] = res.data.map(ct => {
+        const delete_ids: any[] = res.delete_ids;
+        const updated_contacts: any[] = res.data.map(ct => {
           return { ...ct, selected: true };
         });
         _.remove(this.contacts, (c: any) => delete_ids.includes(c.id));
@@ -392,7 +399,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   mergeContacts(contacts: any[] = this.selectedObjects): Promise<any> {
-    let ids: any[] = _.map(contacts, 'id');
+    const ids: any[] = _.map(contacts, 'id');
     this.mergingObjects = [...contacts];
     return this.apiBaseService
       .post(`${this.url}/merge_contacts`, { ids })
@@ -448,13 +455,13 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   searchContact(name: string): any[] {
-    let search_value = name.toLowerCase();
+    const search_value = name.toLowerCase();
     if (search_value === '') {
       return this.contacts;
     }
-    let contacts = _.filter(this.contacts, (contact: any) => {
-      let emails_string: string = _.map(contact.emails, 'value').join(', ');
-      let phones_string: string = _.map(contact.phones, 'value').join(', ');
+    const contacts = _.filter(this.contacts, (contact: any) => {
+      const emails_string: string = _.map(contact.emails, 'value').join(', ');
+      const phones_string: string = _.map(contact.phones, 'value').join(', ');
       if (
         contact.name.toLowerCase().indexOf(search_value) > -1 ||
         emails_string.toLowerCase().indexOf(search_value) > -1 ||
@@ -470,12 +477,12 @@ export class ZContactService extends BaseEntityService<any> {
   private deleteSelectedContacts(
     contacts: any[] = this.selectedObjects
   ): Promise<any> {
-    let body = { contacts: contacts };
+    const body = { contacts: contacts };
     return this.apiBaseService
       .post(`${this.url}/multi_destroy`, body)
       .toPromise()
       .then(() => {
-        let deletedIds = _.map(contacts, (contact: any) => contact.id);
+        const deletedIds = _.map(contacts, (contact: any) => contact.id);
 
         _.remove(this.contacts, (ct: any) => deletedIds.indexOf(ct.id) > -1);
         this.notifyContactsObservers();

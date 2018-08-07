@@ -3,7 +3,7 @@ import {
   forwardRef, ViewEncapsulation
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { DomHandler } from 'primeng/components/dom/domhandler';
 import { Header, SharedModule } from 'primeng/components/common/shared';
 import { EditorModule } from 'primeng/components/editor/editor';
@@ -13,7 +13,7 @@ declare var Quill: any;
 const KEYCODE = {
   'enter': 13,
   'escape': 27
-}
+};
 
 export const EDITOR_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -30,9 +30,9 @@ export const EDITOR_VALUE_ACCESSOR: any = {
     `,
   styleUrls: ['mini-editor.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [DomHandler,EDITOR_VALUE_ACCESSOR]
+  providers: [DomHandler, EDITOR_VALUE_ACCESSOR]
 })
-export class MiniEditor implements AfterViewInit,ControlValueAccessor {
+export class MiniEditor implements AfterViewInit, ControlValueAccessor {
 
   @Output() onTextChange: EventEmitter<any> = new EventEmitter();
 
@@ -49,20 +49,19 @@ export class MiniEditor implements AfterViewInit,ControlValueAccessor {
   @Output() onInit: EventEmitter<any> = new EventEmitter();
 
   value: string;
-
   _readonly: boolean;
+  quill: any;
+  editorElement: any;
 
   onModelChange: Function = () => {};
 
   onModelTouched: Function = () => {};
 
-  quill: any;
-  editorElement: any;
 
   constructor(public el: ElementRef, public domHandler: DomHandler) {}
 
   ngAfterViewInit() {
-    this.editorElement = this.domHandler.findSingle(this.el.nativeElement ,'div.ui-editor-content');
+    this.editorElement = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-editor-content');
 
 
     this.quill = new Quill(this.editorElement, {
@@ -75,7 +74,7 @@ export class MiniEditor implements AfterViewInit,ControlValueAccessor {
       formats: this.formats
     });
 
-    let keyboard = this.quill.getModule('keyboard');
+    const keyboard = this.quill.getModule('keyboard');
     delete keyboard.bindings['13'];
     this.quill.keyboard.addBinding({ key: 'enter'}, function(range, context) {
       this.onKeyUp.emit({keyCode: KEYCODE.enter});
@@ -96,7 +95,7 @@ export class MiniEditor implements AfterViewInit,ControlValueAccessor {
     }.bind(this));
 
 
-    if(this.value) {
+    if (this.value) {
       this.quill.pasteHTML(this.value);
     }
 
@@ -119,8 +118,8 @@ export class MiniEditor implements AfterViewInit,ControlValueAccessor {
   updateHtml2Model() {
 
     let html = this.editorElement.children[0].innerHTML;
-    let text = this.quill.getText();
-    if (html == '<p><br></p>') {
+    const text = this.quill.getText();
+    if (html === '<p><br></p>') {
       html = null;
     }
 
@@ -135,18 +134,17 @@ export class MiniEditor implements AfterViewInit,ControlValueAccessor {
   }
 
   addEmoj(icon: any) {
-    console.debug('add emoj ....', icon);
     const range = this.quill.getSelection(true);
     // console.debug('inside addEmoj ...', this.customEditor.editor, this.customEditor.selection, range);
     this.quill.insertText(range.index, icon, Quill.sources.USER);
     this.quill.setSelection(range.index + icon.length, Quill.sources.SILENT);
   }
 
-  writeValue(value: any) : void {
+  writeValue(value: any): void {
     this.value = value;
 
-    if(this.quill) {
-      if(value)
+    if (this.quill) {
+      if (value)
         this.quill.pasteHTML(value);
       else
         this.quill.setText('');
@@ -169,11 +167,11 @@ export class MiniEditor implements AfterViewInit,ControlValueAccessor {
     return this._readonly;
   }
 
-  set readonly(val:boolean) {
+  set readonly(val: boolean) {
     this._readonly = val;
 
-    if(this.quill) {
-      if(this._readonly)
+    if (this.quill) {
+      if (this._readonly)
         this.quill.disable();
       else
         this.quill.enable();
