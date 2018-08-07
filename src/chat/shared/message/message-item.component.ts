@@ -10,7 +10,6 @@ declare var _: any;
 @Component({
   selector: 'message-item',
   templateUrl: 'message-item.component.html',
-  styleUrls: ['message-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessageItemComponent implements OnInit {

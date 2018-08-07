@@ -1,5 +1,9 @@
 @import "../assets/styles/global";
 
+.main-page-body {
+  background-color: #EBEEF0;
+}
+
 .main-page-body .page-body-content.has-page-body-control {
   height: calc(100vh - #{$header-height} - #{$page-body-control-height});
   @include flexbox;

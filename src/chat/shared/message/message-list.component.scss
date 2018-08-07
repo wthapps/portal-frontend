@@ -3,6 +3,20 @@
 .message-wrapper {
   @include flex(1);
   overflow: auto;
+
+  .note-display {
+    background-color: #ffffff;
+    border: 1px solid $line;
+    max-height: 200px;
+    overflow: hidden;
+    @media (min-width: $screen-md-min) {
+      width: 400px;
+    }
+    a {
+      color: inherit;
+    }
+  }
+
 }
 
 .message-item-wrapper {
@@ -21,10 +35,9 @@
   }
 }
 
-$message-item-content-card-right: 85px;
+$message-item-content-card-right: 30px;
 $message-item-content-card-right-xs: 25px;
 .message-item {
-  margin-bottom: 15px;
   .message-item-date {
     position: relative;
     padding: 10px 0 20px 0;
@@ -67,7 +80,7 @@ $message-item-content-card-right-xs: 25px;
   .message-item-owner-avatar {
     position: absolute;
     left: 0;
-    top: 25px;
+    top: 20px;
     width: 50px;
     @media (max-width: $screen-xs-max) {
       width: 30px;
@@ -96,14 +109,14 @@ $message-item-content-card-right-xs: 25px;
   }
 
   .message-item-content-main {
-    border-radius: 4px;
-    padding: 10px;
+    @include border-right-radius(8px);
+    @include border-bottom-radius(8px);
+    overflow: hidden;
     position: relative;
     display: inline-block;
     max-width: 100%;
     word-break: break-word;
-    background-color: #eff1f2;
-    margin-bottom: 10px;
+    background-color: #ffffff;
     .message-item-menu {
       position: absolute;
       top: 0;
@@ -141,13 +154,14 @@ $message-item-content-card-right-xs: 25px;
 
   .message-item-status {
     position: absolute;
-    bottom: -5px;
+    bottom: 5px;
     font-size: 11px;
     left: 0;
     color: #6EC8F5;
   }
 
   .message-item-content-text {
+    padding: 10px;
     p {
       margin-bottom: 0;
     }
@@ -163,7 +177,24 @@ $message-item-content-card-right-xs: 25px;
     }
   }
 
+  .message-item-content-link {
+    max-width: 450px;
+    display: block;
+    img {
+      width: 100%;
+    }
+    .display-link {
+      border-width: 0;
+      margin: 0;
+    }
+    .display-link-txt {
+      text-align: left;
+    }
+  }
+
   .message-item-content-other-files {
+    background-color: #ffffff;
+    padding: 10px;
     a {
       display: block;
       color: inherit;
@@ -187,27 +218,30 @@ $message-item-content-card-right-xs: 25px;
   &.message-item-left {
     .message-item-content-main {
       overflow: hidden;
-      &:before {
-        @include make-arrow(left, #eff1f2, 6px, 6px);
-        left: -6px;
-      }
     }
   }
 
   &.message-item-right {
     .message-item-owner {
-      display: none;
+      text-align: right;
+      margin-right: $message-item-content-card-right-xs;
+      .message-item-owner-name a, .message-item-owner-avatar {
+        display: none;
+      }
+      @media (min-width: $screen-sm-min) {
+        margin-right: $message-item-content-card-right;
+      }
     }
     .message-item-content-card {
       text-align: right;
     }
     .message-item-content-main {
+      @include border-right-radius(0);
+      @include border-left-radius(8px);
+      @include border-bottom-radius(8px);
       text-align: left;
-      background-color: #E0F5FF;
-      &:before {
-        @include make-arrow(right, #E0F5FF, 6px, 6px);
-        right: -6px;
-      }
+      background-color: #ADE4FF;
+      margin-bottom: 15px;
       .message-item-menu {
         right: -30px;
       }

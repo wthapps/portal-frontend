@@ -6,7 +6,7 @@
     <div class="message-item-owner" *ngIf="hasShowOwner() && message.display">
       <h4 class="message-item-owner-name">
         <a class="mr5" [routerLink]="[profileUrl, message.display.uuid]"> {{ message.display.name }} </a>
-        <small class="visible-xs-inline-block">{{ message.created_at | timeFormat: "time_only" }}</small>
+        <small class="text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
       </h4>
       <figure class="message-item-owner-avatar">
         <span class="avatar-xs">
@@ -220,11 +220,11 @@
         </div>
 
       </div>
-      <div class="message-item-action" *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'Common::GenericFile')">
+      <!--<div class="message-item-action" *ngIf="(message.message_type == 'text' || message.file_type == 'Media::Photo' || message.file_type == 'Common::GenericFile')">
         <div class="message-item-time">
           <small>{{ message.created_at | timeFormat: "time_only" }}</small>
         </div>
-      </div>
+      </div>-->
       <div class="message-item-status" *ngIf="byMe">
         <span>Sent
           <i class="fa fa-check-circle-o"></i>
@@ -234,10 +234,14 @@
   </div>
 </div>
 
-<div class="p20 text-center" *ngIf="message.links && message.links.length > 0" [ngClass]="{'message-item-left': !byMe, 'message-item-right': byMe}">
-  <div *ngFor="let link of message.links">
-    <div *ngIf="link.image && link.title" class="message-item-content-main">
-      <display-link [data]="link" *ngIf="link.image && link.title"></display-link>
+<div *ngIf="message.links && message.links.length > 0" class="message-item" [ngClass]="{'message-item-left': !byMe, 'message-item-right': byMe}">
+  <div class="message-item-content">
+    <div class="message-item-content-card">
+      <ng-container *ngFor="let link of message.links">
+        <div *ngIf="link.image && link.title" class="message-item-content-main">
+          <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>
