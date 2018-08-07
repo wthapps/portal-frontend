@@ -13,7 +13,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "precommit": "pretty-quick --staged",
     "start-portal": "ng serve --app portal --port 3000 --live-reload false --open",
     "start-my": "ng serve --app my-account --port 3005 --live-reload false --open",
     "start-media": "ng serve --app media --port 3010 --live-reload true --open",
