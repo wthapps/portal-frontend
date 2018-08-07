@@ -17,7 +17,7 @@ const KEYCODE = {
 
 export const EDITOR_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => MiniEditor),
+  useExisting: forwardRef(() => MiniEditorComponent),
   multi: true
 };
 
@@ -32,7 +32,7 @@ export const EDITOR_VALUE_ACCESSOR: any = {
   encapsulation: ViewEncapsulation.None,
   providers: [DomHandler, EDITOR_VALUE_ACCESSOR]
 })
-export class MiniEditor implements AfterViewInit, ControlValueAccessor {
+export class MiniEditorComponent implements AfterViewInit, ControlValueAccessor {
 
   @Output() onTextChange: EventEmitter<any> = new EventEmitter();
 

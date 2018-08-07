@@ -29,7 +29,7 @@ import { Observable } from 'rxjs/Observable';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { takeUntil, filter, mergeMap, map } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
+import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { Store } from '@ngrx/store';
 import { log } from 'util';
@@ -44,7 +44,7 @@ declare var $: any;
   styleUrls: ['message-editor.component.scss']
 })
 export class MessageEditorComponent implements OnInit, OnDestroy {
-  @ViewChild(MiniEditor) editor: MiniEditor;
+  @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
   @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
 
   tooltip: any = Constants.tooltip;

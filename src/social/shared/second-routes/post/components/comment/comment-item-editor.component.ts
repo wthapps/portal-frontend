@@ -21,7 +21,7 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { takeUntil, filter, map, mergeMap, take } from 'rxjs/operators';
 
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
+import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 
 
@@ -50,7 +50,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   @Input() mode: any = CommentEditorMode.Add;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('commentContent') commentContent: ElementRef;
-  @ViewChild(MiniEditor) editor: MiniEditor;
+  @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
 
   comment: SoComment = new SoComment(); // Clone comment
   commentEditorMode = CommentEditorMode;

@@ -20,16 +20,17 @@
   .ql-editor {
     min-height: 18px;
     padding: 8px;
+    pointer-events: visible;
     word-break: break-word;
     > p:first-child {
       > br:first-child {
-        display: none;
+        // display: none;
       }
-      &:after {
-        content: '';
-        width: 100px;
-        display: inline-block;
-      }
+      // &:after {
+      //   content: '';
+      //   width: 100px;
+      //   display: inline-block;
+      // }
     }
   }
 }

@@ -26,7 +26,7 @@ import { PhotoUploadService, UserService } from '@wth/shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
-import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
+import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 
 @Component({
   selector: 'so-post-edit',
@@ -48,8 +48,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
   @Input() link: any = null;
 
 
-  @ViewChild(MiniEditor) editor: MiniEditor;
-  // @ViewChild('editor') editor: MiniEditor; // Replaced by MiniEditor
+  @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
+  // @ViewChild('editor') editor: MiniEditorComponent; // Replaced by MiniEditor
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
