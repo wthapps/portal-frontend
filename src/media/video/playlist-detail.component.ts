@@ -29,7 +29,13 @@ import { LocationCustomService } from '@media/shared/service/location-custom.ser
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { AsyncScheduler } from 'rxjs/scheduler/AsyncScheduler';
 
-@Mixin([MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, LoadModalAble, SharingModalMixin, PlaylistAddMixin, MediaDownloadMixin])
+@Mixin([MediaBasicListMixin,
+  MediaAdditionalListMixin,
+  MediaListDetailMixin,
+  LoadModalAble,
+  SharingModalMixin,
+  PlaylistAddMixin,
+  MediaDownloadMixin])
 @Component({
   selector: 'playlist-detail',
   templateUrl: '../shared/list/list-detail.component.html',
@@ -90,6 +96,16 @@ PlaylistAddMixin, MediaDownloadMixin {
     public locationCustomService: LocationCustomService,
     public location: Location) { }
 
+  validateActions: (menuActions: any, role_id: number) => any;
+  openModalShare: (input: any) => void;
+  loadModalComponent: (component: any) => void;
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
+  openModalAddToPlaylist: (selectedObjects: any) => void;
+  onAddToPlaylist: (e: any) => void;
+  downloadMedia: (media: any) => void;
+  openCreatePlaylistModal: (selectedObjects: any) => void;
+  toggleInfo: () => void;
+
   ngOnInit() {
     this.route.params.subscribe(p => {
       this.parentMenuActions = this.getMenuActions();
@@ -114,9 +130,11 @@ PlaylistAddMixin, MediaDownloadMixin {
   doToolbarEvent(e: any) {
     switch (e.action) {
       case 'uploaded':
-        this.apiBaseService.post(`media/playlists/add_to_playlist`, {playlist: {id: this.object.id}, videos: [e.payload]}).subscribe(res => {
+        this.apiBaseService.post(`media/playlists/add_to_playlist`, {
+          playlist: {id: this.object.id}, videos: [e.payload]}).subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
+        break;
       case 'changeView':
         this.changeViewMode(e.payload);
       break;
@@ -149,11 +167,12 @@ PlaylistAddMixin, MediaDownloadMixin {
     this.apiBaseService.get(`media/playlists/${input}`).subscribe(res => {
       this.object = res.data;
       this.parentMenuActions.favorite.iconClass = res.data.favorite ? 'fa fa-star' : 'fa fa-star-o';
-      this.validateActions(this.subMenuActions, this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
-      this.validateActions(this.parentMenuActions, this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
+      this.validateActions(this.subMenuActions,
+        this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
+      this.validateActions(this.parentMenuActions,
+        this.object.permission ? this.object.permission.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
     });
   }
-  validateActions: (menuActions: any, role_id: number) => any;
 
   loadMoreObjects(input?: any) {
     /* this method is load objects to display on init */
@@ -199,8 +218,6 @@ PlaylistAddMixin, MediaDownloadMixin {
       this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
     }
   }
-
-  loadModalComponent: (component: any) => void;
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
@@ -254,7 +271,8 @@ PlaylistAddMixin, MediaDownloadMixin {
   }
 
   removeFromParent() {
-    this.apiBaseService.post(`media/playlists/remove_from_playlist`, {playlist: {id: this.object.id}, videos: this.selectedObjects.map(ob => ({id: ob.id, model: ob.model}))}).subscribe(res => {
+    this.apiBaseService.post(`media/playlists/remove_from_playlist`,
+    {playlist: {id: this.object.id}, videos: this.selectedObjects.map(ob => ({id: ob.id, model: ob.model}))}).subscribe(res => {
       this.toastsService.success('You removed videos successfully!');
       this.loadObjects(this.object.uuid);
       this.selectedObjects = [];
@@ -265,8 +283,6 @@ PlaylistAddMixin, MediaDownloadMixin {
   openModalShareParent() {
     this.openModalShare([this.object.sharing_object]);
   }
-
-  openModalShare: (input: any) => void;
 
   onSaveShare(e: any) {
     const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
@@ -279,15 +295,10 @@ PlaylistAddMixin, MediaDownloadMixin {
       this.toastsService.success('You have just create sharing successful');
     });
   }
-  onEditShare: (e: SharingModalResult, sharing: any) => void;
 
   openModalAddToPlaylistCustom() {
     this.openModalAddToPlaylist(this.selectedObjects);
   }
-
-  openModalAddToPlaylist: (selectedObjects: any) => void;
-
-  onAddToPlaylist: (e: any) => void;
 
   downloadMediaCustom() {
     if (this.selectedObjects && this.selectedObjects.length > 0) {
@@ -295,15 +306,9 @@ PlaylistAddMixin, MediaDownloadMixin {
     }
   }
 
-  downloadMedia: (media: any) => void;
-
-  openCreatePlaylistModal: (selectedObjects: any) => void;
-
   onDonePlaylist(e: any) {
     console.log('You should overwrite this one', e);
   }
-
-  toggleInfo: () => void;
 
   async openSelectedModal() {
     this.mediaSelectionService.open('videos', ['photos', 'albums']);
@@ -313,13 +318,13 @@ PlaylistAddMixin, MediaDownloadMixin {
     this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
       .subscribe(videos => {
         this.onAddToPlaylist({ parents: [this.object], children: videos });
-        this.objects = [...videos, ...this.objects];
+        this.objects = [...videos.filter(v => v.model == 'Media::Video'), ...this.objects];
       });
     this.sub = this.mediaSelectionService.uploadingMedias$
       .map(([file, dataUrl]) => [file])
       .subscribe((videos: any) => {
         this.onAddToPlaylist({ parents: [this.object], children: videos });
-        this.objects = [...videos, ...this.objects];
+        this.objects = [...videos.filter(v => v.model == 'Media::Video'), ...this.objects];
       });
   }
 

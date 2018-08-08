@@ -49,10 +49,10 @@
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->
         <span *ngIf="object.child_count > 1">
-          {{ object.child_count }} {{object.object_type == 'Media::PlayList' ? 'videos' : 'photos'}}
+          {{ object.child_count }} {{object.object_type == 'Media::Playlist' ? 'videos' : 'photos'}}
         </span>
         <span *ngIf="object.child_count <= 1">
-          {{ object.child_count }} {{object.object_type == 'Media::PlayList' ? 'video' : 'photo'}}
+          {{ object.child_count }} {{object.object_type == 'Media::Playlist' ? 'video' : 'photo'}}
         </span>
       </div>
     </figure>

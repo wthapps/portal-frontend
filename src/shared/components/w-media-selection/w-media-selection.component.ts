@@ -176,8 +176,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.nextLink = this.buildNextLink();
       this.getObjects(true);
 
-      if (this.currentTab === 'albums' || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me') {
-        this.objectListService.setObjectsDisabled(['album']);
+      if (this.currentTab === 'albums' || this.currentTab === 'playlists' || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me') {
+        this.objectListService.setObjectsDisabled(['album', 'Media::Playlist']);
       } else {
         this.objectListService.setObjectsDisabled([]);
       }
@@ -196,6 +196,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.objectListService.setObjectsDisabled(['album']);
     } else if (this.currentTab === 'search') {
       this.currentTab = 'photos';
+    } else if (this.currentTab === 'playlist_detail') {
+      this.currentTab = 'playlists';
+      this.objectListService.setObjectsDisabled(['Media::Playlist']);
     }
     this.mediaSelectionService.clear();
     this.nextLink = this.buildNextLink();
@@ -215,11 +218,13 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   onCompleteDoubleClick(item: Media) {
-    if (item.object_type === 'album') {
+    if (item.object_type === 'album' || item.object_type === 'Media::Playlist') {
       if (this.currentTab === 'albums') {
         this.currentTab = 'albums_detail';
       } else if (this.currentTab === 'favourites') {
         this.currentTab = 'favourites_detail';
+      } else if (this.currentTab === 'playlists') {
+        this.currentTab = 'playlist_detail';
       }
       this.mediaSelectionService.clear();
       this.mediaSelectionService.setMediaParent(item);
@@ -248,7 +253,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
    * @param e
    */
   onSearchEnter(e: any) {
-    console.log(e);
     this.searchText = e.search;
     this.tabAction({
       link: 'search'
@@ -302,6 +306,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         break;
       case 'playlists':
         urlAPI = `media/playlists?active=1`;
+        break;
+      case 'playlist_detail':
+        urlAPI = `media/playlists/${this.mediaParent.id}/videos?active=1`;
         break;
       case 'albums_detail':
         urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;

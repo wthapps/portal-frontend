@@ -33,7 +33,10 @@ declare var _: any;
   templateUrl: '../shared/list/list.component.html'
   // templateUrl: 'playlist-list.component.html'
 })
-export class ZMediaPlaylistListComponent implements OnInit, MediaBasicListMixin, SharingModalMixin, MediaModalMixin {
+export class ZMediaPlaylistListComponent implements OnInit,
+MediaBasicListMixin,
+SharingModalMixin,
+MediaModalMixin {
   // display objects on screen
   objects: any;
   // tooltip to introduction

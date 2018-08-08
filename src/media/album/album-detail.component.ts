@@ -145,13 +145,13 @@ export class ZMediaAlbumDetailComponent
     this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
       .subscribe(photos => {
         this.onAddToAlbum({parents: [this.object], children: photos});
-        this.objects = [...photos, ...this.objects];
+        this.objects = [...photos.filter(p => p.model == 'Media::Photo'), ...this.objects];
       });
     this.sub = this.mediaSelectionService.uploadingMedias$
       .map(([file, dataUrl]) => [file])
       .subscribe((photos: any) => {
         this.onAddToAlbum({ parents: [this.object], children: photos });
-        this.objects = [...photos, ...this.objects];
+        this.objects = [...photos.filter(p => p.model == 'Media::Photo'), ...this.objects];
       });
   }
 

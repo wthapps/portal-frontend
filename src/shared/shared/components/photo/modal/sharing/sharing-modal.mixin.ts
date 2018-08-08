@@ -19,7 +19,7 @@ export class SharingModalMixin {
     if (array) {
       data = array;
     }
-    if (data && data.length == 1 && (data[0].model == 'Common::Sharing' || data[0].sharing_id)) {
+    if (data && data.length == 1 && (data[0] && (data[0].model == 'Common::Sharing' || data[0].sharing_id))) {
       let id;
       if (data[0].sharing_id) {
         id = data[0].sharing_id;
