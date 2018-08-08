@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, HostListener } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -15,7 +15,6 @@ import { GroupService } from './group.service';
 declare var $: any;
 
 @Component({
-
   selector: 'group-edit-modal',
   templateUrl: 'group-edit-modal.component.html',
   styleUrls: ['group-edit-modal.component.scss']
@@ -30,6 +29,14 @@ export class GroupEditModalComponent implements OnInit, WthAppsBaseModal {
 
   form: FormGroup;
   name: AbstractControl;
+
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(ke: KeyboardEvent) {
+    if (ke.keyCode === 13) {
+      this.submit();
+    }
+  }
 
   constructor(private fb: FormBuilder, private groupService: GroupService) {}
 

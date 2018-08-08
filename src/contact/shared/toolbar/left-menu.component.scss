@@ -21,6 +21,10 @@
   }
 }
 
+a {
+  text-transform: capitalize;
+}
+
 .menuleft-header-nav {
   @include flexbox;
   @include justify-content(left);

@@ -13,6 +13,7 @@ import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { combineLatest } from 'rxjs/operators/combineLatest';
+import { map } from 'rxjs/operators/map';
 
 import { ZContactService, ITEM_PER_PAGE } from '../../shared/services/contact.service';
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
@@ -56,6 +57,7 @@ export class ZContactListComponent
   linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
   linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
   _contact: any = _contact;
+  label$: Observable<string> ;
   private pageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
 
   private destroySubject: Subject<any> = new Subject<any>();
@@ -81,10 +83,14 @@ export class ZContactListComponent
       });
     // this.page = 1;
     this.contact$ = this.contactService.contacts$;
+    this.label$ = this.route.paramMap.pipe(
+      map(paramMap => paramMap.get('group'))
+    );
   }
 
   ngOnInit() {
-    this.pageTitle = location.pathname === '/others' ? 'Other contacts' : 'All contacts';
+    this.pageTitle = location.pathname === '/others' ? 'Other contacts' : 
+    this.route.snapshot.paramMap.get('group') || 'All contacts';
 
     this.commonEventService
       .filter(

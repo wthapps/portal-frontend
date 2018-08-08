@@ -48,6 +48,10 @@ export class GroupService extends BaseEntityService<Group> {
     return this.groupsSubject.getValue();
   }
 
+  getAllGroupsAsync(): Observable<Group[]> {
+    return this.groupsSubject.asObservable();
+  }
+
   create(body: any): Observable<any> {
     return super.create(body).mergeMap((res: any) => {
       let group: any = this.mapGroupToMenuItem(res.data);

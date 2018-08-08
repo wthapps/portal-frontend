@@ -21,7 +21,7 @@
 <ng-container *ngFor="let group of groups">
   <div class="menuleft-item sub-item" [ngClass]="{'active' : (currentGroup === group?.name)}">
     <a [routerLink]="['contacts', {group: group.name}]" (click)="doEvent({action: group?.action, event: $event})">
-      <i class="{{ group.icon }}"></i> {{ group.name }} ({{ group?.count }})
+      <i class="{{ group.icon }}"></i> {{ group.name | maxLength: 20}} ({{ group?.count }})
     </a>
     <div *ngIf="group.hasSubMenu" class="menuleft-item-action">
       <span class="can-click"
