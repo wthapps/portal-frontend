@@ -399,7 +399,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
       `You are removing selected photo(s) in Sharing Album
       <br/>Remove selected photo also remove from this Sharing and Album!`
       : `You are removing selected photo(s)from current sharing?
-      <br/>Your selected photo(s) still keep in your Pictures Library!`;
+      <br/>Your selected photo(s) still keep in your Photos Library!`;
     this.wthConfirmService.confirm({
       header: 'Remove sharing',
       acceptLabel: 'Remove',
@@ -631,7 +631,7 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
     let message = params.selectedObjects[0].object_type === 'sharing' ?
       `You are deleting sharing!
       <br/>Deleting this sharing will stop other users from accessing your photos
-      <br/>Your photos remain safe in your Pictures Library`
+      <br/>Your photos remain safe in your Photos Library`
       : `Are you sure to delete selected photo(s)/album(s)?`;
     if (sharings.length > 0) {
       let ids = sharings.map((s: any) => { return s.id });

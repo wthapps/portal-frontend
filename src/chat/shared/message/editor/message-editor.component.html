@@ -15,12 +15,11 @@
         <button class="btn btn-default" (click)="noteSelectOpen()" pTooltip="Send notes" tooltipPosition="top">
           <i class="fa fa-file"></i>
         </button>
-        <span class="btn btn-default btn-style-1 fileinput-button" pTooltip="{{ tooltip.sendFile }}"
-              tooltipPosition="top">
-          <i class="fa fa-paperclip"></i>
-          <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';"
-                 (change)="changeFiles($event)"/>
 
+        <span class="btn btn-default btn-style-1 fileinput-button"
+              pTooltip="{{ tooltip.sendFile }}" tooltipPosition="top"
+              (click)="sendMessage('file')">
+          <i class="fa fa-paperclip"></i>
         </span>
         <div class="btn-group dropup">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"

@@ -1,55 +1,55 @@
 <div class="zone-social-sidebar">
-  <dl>
-    <dt>Favourites</dt>
-    <dd >
+  <!--<dl>-->
+    <!--<dt>Favourites</dt>-->
+    <!--<dd >-->
 
-      <div class="media-center mb10" *ngFor="let	favourite of favoriteService.favorites">
-        <div class="media-center-left">
-          <figure *ngIf="favourite.friend">
-            <a [routerLink]="[profileUrl, favourite.friend.uuid]" [skipLocationChange]="true">
-              <span class="avatar-xs">
-                <img [src]=favourite.friend.profile_image alt="">
-              </span>
-            </a>
-          </figure>
+      <!--<div class="media-center mb10" *ngFor="let	favourite of favoriteService.favorites">-->
+        <!--<div class="media-center-left">-->
+          <!--<figure *ngIf="favourite.friend">-->
+            <!--<a [routerLink]="[profileUrl, favourite.friend.uuid]" [skipLocationChange]="true">-->
+              <!--<span class="avatar-xs">-->
+                <!--<img [src]=favourite.friend.profile_image alt="">-->
+              <!--</span>-->
+            <!--</a>-->
+          <!--</figure>-->
 
-          <figure *ngIf="favourite.community">
-            <a [routerLink]="[communitiesUrl, favourite.community.uuid]">
-              <span class="avatar-xs">
-                <img [src]=favourite.community.profile_image alt="">
-              </span>
-            </a>
-          </figure>
+          <!--<figure *ngIf="favourite.community">-->
+            <!--<a [routerLink]="[communitiesUrl, favourite.community.uuid]">-->
+              <!--<span class="avatar-xs">-->
+                <!--<img [src]=favourite.community.profile_image alt="">-->
+              <!--</span>-->
+            <!--</a>-->
+          <!--</figure>-->
 
-        </div>
-        <div class="media-center-body">
-          <a class="link-text" *ngIf="favourite.friend" [routerLink]="[profileUrl, favourite.friend.uuid]">
-            {{ favourite.friend.name }} </a>
-          <a class="link-text" *ngIf="favourite.community" [routerLink]="[communitiesUrl, favourite.community.uuid]">
-            {{ favourite.community.name }} </a>
-        </div>
-        <div class="media-center-right">
-          <div class="btn-group pull-right">
-            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
-              <i class="fa fa-ellipsis-v"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li><a href="javascript:;" (click)="unfavourite(favourite)">Remove From Favourites</a></li>
-              <li><a href="javascript:;" (click)="rearrange()">Rearrange</a></li>
-              <li role="separator" class="divider"></li>
-              <li *ngIf="favourite?.community"><a href="javascript:;" (click)="confirmLeaveCommunity(favourite?.community)">Leave
-                Community</a></li>
-              <li *ngIf="favourite?.friend"><a href="javascript:;" (click)="unfriend(favourite?.friend)">Unfriend</a>
-              </li>
-              <li><a href="javascript:;" (click)="onReport(favourite)">Report member</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        <!--</div>-->
+        <!--<div class="media-center-body">-->
+          <!--<a class="link-text" *ngIf="favourite.friend" [routerLink]="[profileUrl, favourite.friend.uuid]">-->
+            <!--{{ favourite.friend.name }} </a>-->
+          <!--<a class="link-text" *ngIf="favourite.community" [routerLink]="[communitiesUrl, favourite.community.uuid]">-->
+            <!--{{ favourite.community.name }} </a>-->
+        <!--</div>-->
+        <!--<div class="media-center-right">-->
+          <!--<div class="btn-group pull-right">-->
+            <!--<button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"-->
+                    <!--aria-expanded="false" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">-->
+              <!--<i class="fa fa-ellipsis-v"></i>-->
+            <!--</button>-->
+            <!--<ul class="dropdown-menu dropdown-menu-right">-->
+              <!--<li><a href="javascript:;" (click)="unfavourite(favourite)">Remove From Favourites</a></li>-->
+              <!--<li><a href="javascript:;" (click)="rearrange()">Rearrange</a></li>-->
+              <!--<li role="separator" class="divider"></li>-->
+              <!--<li *ngIf="favourite?.community"><a href="javascript:;" (click)="confirmLeaveCommunity(favourite?.community)">Leave-->
+                <!--Community</a></li>-->
+              <!--<li *ngIf="favourite?.friend"><a href="javascript:;" (click)="unfriend(favourite?.friend)">Unfriend</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:;" (click)="onReport(favourite)">Report member</a></li>-->
+            <!--</ul>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
 
-    </dd>
-  </dl>
+    <!--</dd>-->
+  <!--</dl>-->
 
 
   <wth-zone-report></wth-zone-report>

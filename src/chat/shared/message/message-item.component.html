@@ -62,7 +62,7 @@
           <!--sending message menu-->
           <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.sending_status == 1">
             <li>
-              <a (click)="cancle()" target="_blank" download>
+              <a (click)="cancel()" target="_blank" download>
                 Cancel
               </a>
             </li>
@@ -212,7 +212,7 @@
 
         <!--cancel message type-->
         <div class="message-item-content-text" *ngIf="message.sending_status == 2">
-          <span>Upload Canceled</span>
+          <span>Canceled sending a file</span>
         </div>
         <!--can't upload message type-->
         <div class="message-item-content-text" *ngIf="message.sending_status == 3">

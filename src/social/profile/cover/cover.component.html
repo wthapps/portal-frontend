@@ -100,10 +100,10 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
             <!--<li><a href="javascript:;" (click)="unfollow(userInfo.uuid)" *ngIf="relationships?.follow">Unfollow</a></li>-->
-            <li *ngIf="relationships.status === FRIEND_STATUS.FRIEND" ><a href="javascript:;" (click)="toggleFavourite(userInfo, 'friend')">
-              <i class="fa fa-check" *ngIf="favourite?.uuid"></i>
-              {{ (!favourite?.uuid) ? 'Add to Favorites' : 'Remove from Favorites' }}
-            </a></li>
+            <!--<li *ngIf="relationships.status === FRIEND_STATUS.FRIEND" ><a href="javascript:;" (click)="toggleFavourite(userInfo, 'friend')">-->
+              <!--<i class="fa fa-check" *ngIf="favourite?.uuid"></i>-->
+              <!--{{ (!favourite?.uuid) ? 'Add to Favorites' : 'Remove from Favorites' }}-->
+            <!--</a></li>-->
             <li><a href="javascript:;" (click)="onReport()">Report member</a></li>
           </ul>
         </div>

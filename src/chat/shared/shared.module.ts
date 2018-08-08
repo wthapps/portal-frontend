@@ -25,7 +25,7 @@ import { ZChatSharedHeaderComponent } from './header/header.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { ChatCommonService } from '@wth/shared/services';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
-import { ZChatShareUserModule } from '@chat/shared/user/user.module';
+import { MessageService } from '@chat/shared/message/message.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -86,6 +86,7 @@ export class ZChatSharedModule {
       ngModule: ZChatSharedModule,
       providers: [
         ConversationService,
+        MessageService,
         ChatService,
         ChatContactService,
         ChatCommonService,

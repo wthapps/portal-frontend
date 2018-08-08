@@ -223,9 +223,18 @@ export class ChatService {
     return this.apiBaseService.get('zone/chat/message/' + groupId);
   }
 
-  sendMessage(groupId: any, data: any, option: any = {}): Promise<any> {
+  createMessage(groupId: any = null, data: any, option: any = {}): Observable<any> {
+    // TODO this will be remvoe after getting groupId from UI
+    const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+    return this.apiBaseService.post('zone/chat/message', { group_id: conversationId, data: data });
+  }
+
+  sendMessage(groupId: any = null, data: any, option: any = {}): Promise<any> {
+    // TODO this will be remvoe after getting groupId from UI
+    const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+
     return this.apiBaseService
-      .post('zone/chat/message', { group_id: groupId, data: data })
+      .post('zone/chat/message', { group_id: conversationId, data: data })
       .toPromise();
   }
 
@@ -242,8 +251,7 @@ export class ChatService {
   }
 
   updateMessage(conversationId: any, message: any): Observable<any> {
-    return this.apiBaseService.put(
-      `zone/chat/conversations/${conversationId}/messages`,
+    return this.apiBaseService.put(   `zone/chat/conversations/${conversationId}/messages`,
       { message: message }
     );
   }

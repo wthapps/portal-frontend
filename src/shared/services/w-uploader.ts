@@ -32,7 +32,13 @@ export class WUploader {
    * @param {string} selector
    * @param {{}} options
    */
-  initialize(selector: string = '.w-uploader-file-input-container', options: any = {allowedFileTypes: null}) {
+  initialize(selector: string = '.w-uploader-file-input-container', options: any = {
+    allowedFileTypes: null,
+    willCreateMessage: false,
+    willCreatePost: false,
+    willCreateNote: false,
+    module: 'chat' || 'social' || 'notes' || 'contacts' || 'media'
+  }) {
 
     const opts: any = {
       autoProceed: true,
@@ -119,7 +125,6 @@ export class WUploader {
         file.preview = `${this.cdnUrl}/thumbnails/generic_file_default.png`;
         this.event$.next({action: 'progress', payload: {file: file, progress: progress}});
       }
-
     });
 
     this.uppy.on('upload-success', (file, resp, uploadURL) => {
@@ -160,10 +165,18 @@ export class WUploader {
    * @param file
    */
   cancel(file: any) {
-    this.uppy.removeFile(file);
-    this.api.post('common/files/cancel_upload', {files: [file]}).subscribe(response => {
-      console.log('cancel upload successful:::', response);
-    });
+    const canceledFiles = [];
+
+    if (!file.progress.uploadComplete) {
+      canceledFiles.push({id: file.id, name: file.name, file_upload_id: `${file.id}-${file.meta.current_date}`});
+      this.uppy.removeFile(file.id);
+    }
+
+    if (canceledFiles.length > 0) {
+      this.api.post('common/files/cancel_upload', {files: canceledFiles}).subscribe(response => {
+        this.event$.next({action: 'cancel-success', payload: {file: file}});
+      });
+    }
   }
 
   /**

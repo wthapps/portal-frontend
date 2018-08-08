@@ -35,6 +35,7 @@ import { Store } from '@ngrx/store';
 import { log } from 'util';
 import { noteConstants } from '@notes/shared/config/constants';
 import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
+import { WUploader } from '@shared/services/w-uploader';
 
 declare var $: any;
 
@@ -64,7 +65,8 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     private apiBaseService: ApiBaseService,
     private store: Store<any>,
     private fb: FormBuilder,
-    private messageService: WMessageService
+    private messageService: WMessageService,
+    private uploader: WUploader
   ) {
     this.createForm();
   }
@@ -134,7 +136,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   updateAttributes(attributes: any) {
     if ('message' in attributes) {
       this.message = attributes.message;
-      if (this.message.message_type == 'text') {
+      if (this.message.message_type === 'text') {
         this.setEditor(this.message);
       }
     }
@@ -171,6 +173,16 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
       this.messageService.scrollToBottom();
       this.chatService.sendTextMessage(this.message.message, { toTop: true });
       this.resetEditor();
+    }
+  }
+
+  sendMessage(type: string) {
+    if (type === 'file') {
+      this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+        allowedFileTypes: null,
+        willCreateMessage: true,
+        module: 'chat'
+      });
     }
   }
 

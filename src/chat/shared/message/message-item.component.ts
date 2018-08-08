@@ -115,7 +115,7 @@ export class MessageItemComponent implements OnInit {
     });
   }
 
-  cancle() {
+  cancel() {
     this.doAction({
       channel: 'chatCommonEvent',
       action: CHAT_ACTIONS.CHAT_MESSAGE_CANCEL,

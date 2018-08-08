@@ -1,17 +1,12 @@
-// import { Injectable } from '@angular/core';
-// import { Subject } from 'rxjs/Subject';
-// import { Observable } from 'rxjs/Observable';
-//
-// @Injectable()
-// export class WMessageService {
-//   scrollToBottom$: Observable<boolean>;
-//   private scrollToBottomSubject: Subject<boolean> = new Subject<boolean>();
-//
-//   constructor() {
-//     this.scrollToBottom$ = this.scrollToBottomSubject.asObservable();
-//   }
-//
-//   scrollToBottom() {
-//     this.scrollToBottomSubject.next(true);
-//   }
-// }
+import { Injectable } from '@angular/core';
+import { ApiBaseService, BaseEntityService } from '@shared/services';
+
+@Injectable()
+export class MessageService extends BaseEntityService<any> {
+
+  constructor(protected api: ApiBaseService) {
+    super(api);
+    this.url = 'zone/chat/message';
+  }
+
+}
