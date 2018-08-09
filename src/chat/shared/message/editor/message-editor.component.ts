@@ -3,7 +3,7 @@ import {
   HostListener,
   OnInit,
   OnDestroy,
-  ViewChild
+  ViewChild, ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
@@ -42,7 +42,8 @@ declare var $: any;
 @Component({
   selector: 'message-editor',
   templateUrl: 'message-editor.component.html',
-  styleUrls: ['message-editor.component.scss']
+  styleUrls: ['message-editor.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MessageEditorComponent implements OnInit, OnDestroy {
   @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;

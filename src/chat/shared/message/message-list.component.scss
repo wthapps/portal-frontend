@@ -117,25 +117,25 @@ $message-item-content-card-right-xs: 25px;
     max-width: 100%;
     word-break: break-word;
     background-color: #ffffff;
-    .message-item-menu {
-      position: absolute;
-      top: 0;
-      right: -25px;
-      i {
-        width: 20px;
-        height: 20px;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 16px;
-        background-color: #D8D8D8;
-        color: #ffffff;
-        cursor: pointer;
-      }
+
+  }
+  .message-item-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    i {
+      width: 20px;
+      height: 20px;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 16px;
+      background-color: #D8D8D8;
+      color: #ffffff;
+      cursor: pointer;
     }
   }
-
   .message-item-action {
     position: absolute;
     top: 0;
@@ -242,9 +242,7 @@ $message-item-content-card-right-xs: 25px;
       text-align: left;
       background-color: #ADE4FF;
       margin-bottom: 15px;
-      .message-item-menu {
-        right: -30px;
-      }
+
     }
     .message-item-status {
       left: auto;

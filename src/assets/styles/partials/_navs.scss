@@ -47,10 +47,10 @@
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 0;
+            bottom: -1px;
             color: #000000;
             font-weight: bold;
-            background-color: rgb(245, 74, 89);
+            background-color: $theme-color;
             height: 3px;
           }
         }

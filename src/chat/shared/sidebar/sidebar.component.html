@@ -61,7 +61,7 @@
   <div class="media-chat-user">
      <z-chat-share-user-avatar class="media-chat-user-row" [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
         <div class="user-content">
-           <small class="btn-block" *ngIf="conversation.latest_message as latest_message">
+           <small class="media-chat-user-message" *ngIf="conversation.latest_message as latest_message">
              <span *ngIf="latest_message?.message_type == 'text'"
                    [innerHtml]="latest_message?.message | wthEmojis | linkify  | safeHtml"></span>
              <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
