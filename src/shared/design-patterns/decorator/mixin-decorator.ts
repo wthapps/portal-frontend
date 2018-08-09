@@ -6,11 +6,12 @@ export function Mixin(baseCtors: Function[]) {
         if (name === 'constructor')
           return;
 
-        if (descriptor && (!descriptor.writable || !descriptor.configurable || !descriptor.enumerable || descriptor.get || descriptor.set)) {
+        if (descriptor && (!descriptor.writable || !descriptor.configurable 
+          || !descriptor.enumerable || descriptor.get || descriptor.set)) {
           Object.defineProperty(derivedCtor.prototype, name, descriptor);
         } else {
           // derivedCtor.prototype[name] = baseCtor.prototype[name];
-          if(!derivedCtor.prototype[name]) {
+          if (!derivedCtor.prototype[name]) {
             derivedCtor.prototype[name] = baseCtor.prototype[name];
           }
         }

@@ -14,9 +14,9 @@ import { Router } from '@angular/router';
 })
 export class ZContactSharedItemComponent implements OnInit {
   @Input() data: any;
-  @HostBinding('class') cssClass:string = 'component-listbox-body';
+  @HostBinding('class') cssClass = 'component-listbox-body';
 
-  saved: boolean = false;
+  saved = false;
 
   emailType: any = Constants.emailType;
   countriesCode$: Observable<any>;

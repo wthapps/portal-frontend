@@ -14,11 +14,11 @@ import { Constants } from '../../../../shared/constant/config/constants';
 export class ZContactSharedListV1Component implements OnChanges{
   @Input() data: any;
   @Input() showHeader: any = true;
-  @Input() selectedAll: boolean = false;
+  @Input() selectedAll = false;
 
   // descending: boolean = false;
   desc$: Observable<boolean>;
-  currentSort: string = 'name';
+  currentSort = 'name';
 
   tooltip: any = Constants.tooltip;
 
@@ -31,7 +31,7 @@ export class ZContactSharedListV1Component implements OnChanges{
   }
 
   onSort(event: any) {
-    if (this.currentSort == event) {
+    if (this.currentSort === event) {
       this.contactService.changeSortOption();
     } else {
       this.contactService.changeSortOption('asc');

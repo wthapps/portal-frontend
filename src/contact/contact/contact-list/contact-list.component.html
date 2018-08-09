@@ -2,12 +2,12 @@
   <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action" *ngIf="contactService.selectedObjects && contactService.selectedObjects.length > 0">
 
     <z-contact-shared-actions-bar
-      [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
-      [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
+      [showSocial]="contactService?.selectedObjects?.length==1 && (contactService?.selectedObjects | isContactInternal)"
+      [showChat]="contactService?.selectedObjects?.length==1 && (contactService?.selectedObjects | isContactInternal)"
       [showViewDetail]="false"
       [showEdit]="false"
       [showInvitation]="false"
-      [showAddToContacts]="validOthers"
+      [showAddToContacts]="true"
       [showMergeContacts]="true"
       [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')"
       [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'blacklist')"

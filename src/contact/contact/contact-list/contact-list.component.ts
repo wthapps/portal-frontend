@@ -51,11 +51,11 @@ export class ZContactListComponent
   filteredContacts: Array<any> = new Array<any>();
   contact$: Observable<any>;
   originalContacts: any = [];
-  loaded: boolean = false;
+  loaded = false;
   pageTitle: string;
 
-  linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
-  linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
+  linkSocial = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
+  linkChat = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
   _contact: any = _contact;
   label$: Observable<string> ;
   private pageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
@@ -75,7 +75,7 @@ export class ZContactListComponent
   ) {
     this.commonEventService
       .filter(
-        (event: CommonEvent) => event.channel == Constants.contactEvents.common
+        (event: CommonEvent) => event.channel === Constants.contactEvents.common
       )
       .pipe(takeUntil(this.destroySubject))
       .subscribe((event: CommonEvent) => {
@@ -89,17 +89,17 @@ export class ZContactListComponent
   }
 
   ngOnInit() {
-    this.pageTitle = location.pathname === '/others' ? 'Other contacts' : 
+    this.pageTitle = location.pathname === '/others' ? 'Other contacts' :
     this.route.snapshot.paramMap.get('group') || 'All contacts';
 
     this.commonEventService
       .filter(
         (event: CommonEvent) =>
-          event.channel == Constants.contactEvents.actionsToolbar
+          event.channel === Constants.contactEvents.actionsToolbar
       )
       .pipe(takeUntil(this.destroySubject))
       .subscribe((event: CommonEvent) => {
-        let tmp = _.cloneDeep(this.contactService.selectedObjects);
+        const tmp = _.cloneDeep(this.contactService.selectedObjects);
         this.contactService.selectedObjects = [event.payload];
         this.doActionsToolbar(event);
         this.contactService.selectedObjects = tmp;
@@ -132,7 +132,7 @@ export class ZContactListComponent
       .subscribe(([contacts, page]) => {
 
         _.map(contacts, (v: any) => {
-          let alias = v.name.charAt(0).toLowerCase();
+          const alias = v.name.charAt(0).toLowerCase();
           v.first_character = (this.isAlphaOrParen(alias)) ? alias : '#';
           return v;
         });
@@ -189,7 +189,7 @@ export class ZContactListComponent
         let groups: any[] = [];
         if (this.contactService.selectedObjects.length > 1) {
           groups = _contact.getSameLables(this.contactService.selectedObjects);
-        } else if (this.contactService.selectedObjects.length == 1) {
+        } else if (this.contactService.selectedObjects.length === 1) {
           groups = this.contactService.selectedObjects[0].groups;
           event.mode = 'edit';
         }
@@ -204,7 +204,7 @@ export class ZContactListComponent
       // this will handle all cases as: favourite, add to group
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
-        let selectedObjects =
+        const selectedObjects =
           event.payload && event.payload.selectedObjects
             ? event.payload.selectedObjects
             : this.contactService.selectedObjects;
@@ -213,22 +213,22 @@ export class ZContactListComponent
           console.log(res);
         });
         break;
-      case 'invitation:send_to_recipients':
-        this.invitationService
-          .create({ recipients: event.payload })
-          .subscribe((response: any) => {
-            // this.invitationModal.close();
-            this.toaster.success(
-              'You have just sent invitation(s) successfully!'
-            );
-          });
-        break;
+      // case 'invitation:send_to_recipients':
+      //   this.invitationService
+      //     .create({ recipients: event.payload })
+      //     .subscribe((response: any) => {
+      //       // this.invitationModal.close();
+      //       this.toaster.success(
+      //         'You have just sent invitation(s) successfully!'
+      //       );
+      //     });
+      //   break;
     }
   }
 
-  toggleGroup(name: string) {
-    let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
-      return group.name == name;
+  toggleGroup(name: string): void {
+    const group = _.find(this.groupService.getAllGroupSyn(), (gr: any) => {
+      return gr.name === name;
     });
     if (
       _contact.isContactsHasGroupName(this.contactService.selectedObjects, name)
@@ -324,16 +324,16 @@ export class ZContactListComponent
     this.modal.open();
   }
 
-  get validOthers(): boolean {
-    let result = true;
-    this.contactService.selectedObjects.forEach(contact => {
-      if (contact.my_contact) {
-        result = false;
-        return;
-      }
-    });
-    return result;
-  }
+  // get validOthers(): boolean {
+  //   let result = true;
+  //   this.contactService.selectedObjects.forEach(contact => {
+  //     if (contact && contact.my_contact) {
+  //       result = false;
+  //       return;
+  //     }
+  //   });
+  //   return result;
+  // }
 
   private isAlphaOrParen(str) {
     return /^[a-zA-Z()]+$/.test(str);

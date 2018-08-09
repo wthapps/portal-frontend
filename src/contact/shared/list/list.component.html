@@ -35,7 +35,7 @@
                                       [showNumber]="false"
                                       [showSocial]="item | isContactInternal"
                                       [showChat]="item | isContactInternal"
-                                      [showInvitation]="item.wthapps_user == null"
+                                      [showInvitation]="item | canInvite "
                                       [showAddToContacts]="!item.my_contact"
                                       [toggleFavourite]="item | contactHasGroup:'favourite'"
                                       [toggleBlacklist]="item | contactHasGroup:'blacklist'"

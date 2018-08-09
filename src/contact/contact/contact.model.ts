@@ -7,13 +7,13 @@ import { Email } from './email.model';
 import { Phone } from './phone.model';
 
 export class Contact extends BaseEntity {
-  profile_image: string = '';
-  name: string = '';
-  company: string = '';
-  job_title: string = '';
-  notes: string = '';
-  description: string = '';
-  primary: boolean = false;
+  profile_image = '';
+  name = '';
+  company = '';
+  job_title = '';
+  notes = '';
+  description = '';
+  primary = false;
   birthday: any;
   addresses: Array<Address>;
   phones: Array<Phone>;

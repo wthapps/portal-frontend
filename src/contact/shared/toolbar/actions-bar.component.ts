@@ -1,7 +1,7 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
 import { EmitEventMixin } from '../../../shared/shared/mixins/shared/emit-event.mixin';
-import { Mixin } from "../../../shared/design-patterns/decorator/mixin-decorator";
+import { Mixin } from '../../../shared/design-patterns/decorator/mixin-decorator';
 
 import { Constants } from '../../../shared/constant/config/constants';
 import { CommonEventService } from '@wth/shared/services';
@@ -15,27 +15,27 @@ import { CommonEventService } from '@wth/shared/services';
 })
 export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   // Show or not
-  @Input() showSocial: boolean = true;
-  @Input() showChat: boolean = true;
-  @Input() showNumber: boolean = true;
-  @Input() showViewDetail: boolean = true;
-  @Input() showMergeContacts: boolean = false;
-  @Input() showEdit: boolean = true;
-  @Input() showTag: boolean = true;
-  @Input() showInvitation: boolean = true;
-  @Input() showQuickInvitation: boolean = false;
+  @Input() showSocial = true;
+  @Input() showChat = true;
+  @Input() showNumber = true;
+  @Input() showViewDetail = true;
+  @Input() showMergeContacts = false;
+  @Input() showEdit = true;
+  @Input() showTag = true;
+  @Input() showInvitation = true;
+  @Input() showQuickInvitation = false;
   @Input() showAddToContacts = false;
   // Toggle
-  @Input() toggleFavourite: boolean = false;
-  @Input() toggleBlacklist: boolean = false;
+  @Input() toggleFavourite = false;
+  @Input() toggleBlacklist = false;
   // Order
-  @Input() order: boolean = false;
+  @Input() order = false;
   @Input() data: any = {};
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
   emitEvent: (value: any) => void;
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   readonly CONNECT_STATUS: any = Constants.contactConnectStatus;
   readonly UNCONNECT_STATUS = [1, 4];
 

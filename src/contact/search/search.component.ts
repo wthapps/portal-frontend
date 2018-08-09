@@ -1,14 +1,5 @@
 import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
 
-import { BsModalComponent } from 'ng2-bs3-modal';
-
-import { WthAppsBaseModal } from '../../shared/shared/interfaces/wthapps-base-modal';
 import { ZContactService } from '@contacts/shared/services/contact.service';
 import { ApiBaseService, UrlService, CommonEventService, CommonEvent } from '@shared/services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +8,7 @@ import { GroupService } from '@contacts/group/group.service';
 import { Config, Constants } from '@shared/constant';
 import { Recipient } from '@shared/shared/components/invitation/recipient.model';
 import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-add-group/contact-add-group-modal.component';
+import { InvitationCreateModalComponent } from '@shared/shared/components/invitation/invitation-create-modal.component';
 
 declare var $: any;
 declare var _: any;
@@ -26,8 +18,9 @@ declare var _: any;
   templateUrl: 'search.component.html',
   styleUrls: ['search.component.scss']
 })
-export class ContactSearchComponent implements OnInit, OnDestroy{
+export class ContactSearchComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
+  @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
 
   contacts: any;
   nextMine: any;
@@ -35,8 +28,8 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
   sub: any;
   _contact: any = _contact;
 
-  linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
-  linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
+  readonly linkSocial = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
+  readonly linkChat = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
 
   constructor(
     public contactService: ZContactService,
@@ -46,32 +39,32 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
     private commonEventService: CommonEventService,
     private groupService: GroupService,
     private apiBaseService: ApiBaseService
-  ){
+  ) {
     this.route.params.subscribe(params => {
 
-      if (!params['id'] || params['id'] == 'all') {
+      if (!params['id'] || params['id'] === 'all') {
         this.getAll(params);
       }
-      if (params['id'] == 'mine') {
+      if (params['id'] === 'mine') {
         this.getMine(params);
       }
-      if (params['id'] == 'wth') {
+      if (params['id'] === 'wth') {
         this.getWTH(params);
       }
 
-    })
+    });
   }
 
   ngOnInit() {
     this.contactService.selectedObjects = [];
     this.sub = this.commonEventService
-      .filter((event: CommonEvent) => event.channel == Constants.contactEvents.actionsToolbar)
+      .filter((event: CommonEvent) => event.channel === Constants.contactEvents.actionsToolbar)
       .subscribe((event: CommonEvent) => {
-        let tmp = [...this.contactService.selectedObjects];
+        const tmp = [...this.contactService.selectedObjects];
         this.contactService.selectedObjects = [event.payload];
         this.doActionsToolbar(event);
         this.contactService.selectedObjects = tmp;
-      })
+      });
   }
 
   ngOnDestroy() {
@@ -108,30 +101,30 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
   }
 
   doActionsToolbar(event: any) {
-    if (event.action == 'favourite') {
+    if (event.action === 'favourite') {
       // this.toggleGroupB(this.contactService.selectedObjects, 'favourite');
       this.toggleGroup('favourite');
     }
 
-    if (event.action == 'blacklist') {
+    if (event.action === 'blacklist') {
       this.toggleGroup('blacklist');
     }
 
-    if (event.action == 'tag') {
+    if (event.action === 'tag') {
       this.doEvent({ action: 'open_add_group_modal' });
     }
 
-    if (event.action == 'delete') {
+    if (event.action === 'delete') {
       this.contactService.confirmDeleteContacts(
         this.contactService.selectedObjects
       );
     }
 
-    if (event.action == 'save') {
+    if (event.action === 'save') {
       this.save();
     }
 
-    if (event.action == 'social') {
+    if (event.action === 'social') {
       if (
         this.contactService.selectedObjects &&
         this.contactService.selectedObjects[0].wthapps_user &&
@@ -143,7 +136,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
       }
     }
 
-    if (event.action == 'chat') {
+    if (event.action === 'chat') {
       if (
         this.contactService.selectedObjects &&
         this.contactService.selectedObjects[0].wthapps_user &&
@@ -169,9 +162,9 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
         .then();
     }
 
-    if (event.action == 'invitation:open_modal') {
-      let recipients: Array<Recipient> = new Array<Recipient>();
-      let objects: any[] = _.get(
+    if (event.action === 'invitation:open_modal') {
+      const recipients: Array<Recipient> = new Array<Recipient>();
+      const objects: any[] = _.get(
         event,
         'payload.objects',
         this.contactService.selectedObjects
@@ -189,12 +182,14 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
           });
         }
       });
+
+      this.invitationModal.open({ data: recipients });
     }
   }
 
   toggleGroup(name: string) {
-    let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
-      return group.name == name;
+    const group = _.find(this.groupService.getAllGroupSyn(), (gr: any) => {
+      return gr.name === name;
     });
     if (
       _contact.isContactsHasGroupName(this.contactService.selectedObjects, name)
@@ -214,16 +209,20 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
         this.contacts = this.contacts.map(contact => {
           // if contact
           if (!contact.settings) {
-            if(Array.isArray(res.data)) {
+            if (Array.isArray(res.data)) {
               res.data.forEach(c => {
-                if (c.id == contact.id) {c.selected = contact.selected; contact = c};
-              })
+                if (c.id === contact.id) {c.selected = contact.selected;
+                  contact = c;
+                }
+              });
             } else {
-              if (res.data.id == contact.id) {res.data.selected = contact.selected; contact = res.data};
+              if (res.data.id === contact.id) {res.data.selected = contact.selected;
+                contact = res.data;
+              }
             }
           }
           return contact;
-        })
+        });
       });
   }
 
@@ -233,16 +232,16 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
     tmp.forEach(data => {
       this.apiBaseService.post(`contact/contacts/save`, data).subscribe(res => {
         this.contacts = this.contacts.map(contact => {
-          if(contact.settings && contact.id == res.data.wthapps_user_id) {
+          if (contact.settings && contact.id === res.data.wthapps_user_id) {
             res.data.selected = data.selected;
             if (res.data.selected) this.contactService.selectedObjects.push(res.data);
             this.contactService.createCallback(res.data);
             return res.data;
           }
           return contact;
-        })
-      })
-    })
+        });
+      });
+    });
   }
 
   addTags(event: any) {
@@ -255,7 +254,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
         let groups: any[] = [];
         if (this.contactService.selectedObjects.length > 1) {
           groups = _contact.getSameLables(this.contactService.selectedObjects);
-        } else if (this.contactService.selectedObjects.length == 1) {
+        } else if (this.contactService.selectedObjects.length === 1) {
           groups = this.contactService.selectedObjects[0].groups;
           event.mode = 'edit';
         }
@@ -270,7 +269,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy{
       // this will handle all cases as: favourite, add to group
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
-        let selectedObjects =
+        const selectedObjects =
           event.payload && event.payload.selectedObjects
             ? event.payload.selectedObjects
             : this.contactService.selectedObjects;
