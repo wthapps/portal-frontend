@@ -71,7 +71,7 @@
         </a>
       </li>
       <li *ngIf="showInvitation">
-        <a href="javascript:void(0);" (click)="emitEvent({action: 'invitation:open_modal'})" title="Send invitation">
+        <a href="javascript:void(0);" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})" title="Send invitation">
           <i class="fa fa-send"></i> Send invitation
         </a>
       </li>
