@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -15,7 +15,8 @@ declare var $: any;
 @Component({
   selector: 'z-chat-share-sidebar',
   templateUrl: 'sidebar.component.html',
-  styleUrls: ['sidebar.component.scss']
+  styleUrls: ['sidebar.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ZChatSidebarComponent implements OnInit {
   readonly chatMenu = Constants.chatMenuItems;

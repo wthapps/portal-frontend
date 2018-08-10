@@ -2,31 +2,29 @@
 <ng-container *ngIf="type == 'update' && notification?.actions.length>0">
   <div class="noti-item" *ngIf="!notification?.isHidden && notification?.actions[0]?.name == 'view'">
     <div class="noti-item-avatar can-click" (click)="navigateTo(notification?.actions, notification?.id)">
-    <span class="avatar-xs">
-      <img [src]="notification?.actor.profile_image" alt="{{ notification?.actor?.name }}">
-    </span>
+      <span class="avatar-xs">
+        <img [src]="notification?.actor.profile_image" alt="{{ notification?.actor?.name }}">
+      </span>
     </div>
     <div class="noti-item-content can-click" (click)="navigateTo(notification?.actions, notification?.id)">
-      <div>
-      <span class="bold" [routerLink]="['/profile', notification?.actor.uuid]">
-        {{ notification?.actor?.name }}</span>
-        <span [innerHTML]="notification?.text"></span>
-        <span class="bold" href="javascript:;"
-              (click)="navigateToSocial(['/communities', notification?.community?.uuid])"
-              *ngIf="notification?.community?.name">
-        {{ notification?.community?.name }}</span>
-        <small class="help-block text-fade">
-          {{ notification?.created_at | timeFormat }}
-        </small>
-        <div *ngIf="notification?.response_actions[0]">
-          <div class="notifications-item-button">
+      <div class="bold" [routerLink]="['/profile', notification?.actor.uuid]">
+        {{ notification?.actor?.name }}</div>
+      <div [innerHTML]="notification?.text"></div>
+      <div class="bold" href="javascript:;"
+            (click)="navigateToSocial(['/communities', notification?.community?.uuid])"
+            *ngIf="notification?.community?.name">
+        {{ notification?.community?.name }}</div>
+      <div class="help-block text-fade">
+        {{ notification?.created_at | timeFormat }}
+      </div>
+      <div *ngIf="notification?.response_actions[0]">
+        <div class="notifications-item-button">
         <span *ngFor="let action of notification?.response_actions"
               class="btn-text btn-xs mr5 text-capitalize">
           <i class="fa"
              [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
           {{ action.name }}ed
         </span>
-          </div>
         </div>
       </div>
     </div>

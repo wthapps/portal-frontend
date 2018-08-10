@@ -57,5 +57,11 @@
     display: block;
     max-height: 34px;
     overflow: hidden;
+    .wth-emoji {
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
   }
 }
