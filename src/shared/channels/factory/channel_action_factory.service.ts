@@ -1,4 +1,4 @@
-import { Injectable }     from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AppearanceNewUserOnline } from '../actions/appearance_new_user_online';
 import { AppearanceAllUsersOnline } from '../actions/appearance_all_users_online';
 import { AppearanceNewUserOffline } from '../actions/appearance_new_user_offline';
@@ -9,20 +9,20 @@ import { CommonNotification } from '../actions/common_notification';
 
 @Injectable()
 export class ChannelActionFactoryService {
-  readonly appearance_new_user_online:string = 'appearance_new_user_online';
-  readonly appearance_all_users_online:string = 'appearance_all_users_online';
-  readonly appearance_new_user_offline:string = 'appearance_new_user_offline';
-  readonly chat_send_message:string = 'chat_send_message';
-  readonly chat_notification:string = 'chat_notification';
+  readonly appearance_new_user_online = 'appearance_new_user_online';
+  readonly appearance_all_users_online = 'appearance_all_users_online';
+  readonly appearance_new_user_offline = 'appearance_new_user_offline';
+  readonly chat_send_message = 'chat_send_message';
+  readonly chat_notification = 'chat_notification';
   readonly common_notification: string = 'common_notification';
-  action:any;
-  data:any;
+  action;
+  data;
 
-  create(data:any, service:any) {
+  create(data, service) {
     this.action = data.action;
     this.data = data.data;
-    let action:any;
-    switch(this.action) {
+    let action;
+    switch (this.action) {
       case this.appearance_all_users_online:
         action = new AppearanceAllUsersOnline(service);
         break;

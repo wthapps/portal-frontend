@@ -54,10 +54,11 @@ export class ChatCommonService {
     this.storage.save('chat_history_conversations', historyContacts);
   }
 
-  moveFristRecentList() {
-    const contactSelect: any = this.storage.getValue(CONVERSATION_SELECT);
+  moveFristRecentList(groupId?: string) {
     const chat_conversations = this.storage.getValue(CHAT_CONVERSATIONS);
     const conversations: any = chat_conversations.data;
+    const latest_group = conversations.find(conv => conv.group_id === groupId);
+    const contactSelect: any = latest_group || this.storage.getValue(CONVERSATION_SELECT);
     _.pullAllBy(
       conversations,
       [{ group_id: contactSelect.group_id }],
@@ -66,8 +67,8 @@ export class ChatCommonService {
     conversations.unshift(contactSelect);
     _.uniqBy(conversations, 'id');
 
-    console.log('update move first recent list and conversation list ...', conversations);
     this.storage.save(CHAT_CONVERSATIONS, {...chat_conversations, data: conversations});
+    this.setRecentConversations();
   }
 
   addMessage(groupId: any, data: any): void {
@@ -91,12 +92,13 @@ export class ChatCommonService {
         if (contactSelect.group_json.id === groupId) {
           this.storage.save('current_chat_messages', currentMessageList);
         }
-        if (!contactSelect.favourite) {
-          this.moveFristRecentList();
-        }
         // Scroll to bottom when user's own messages are arrived
         if (message.user_id === this.userService.getSyncProfile().id)
           this.messageService.scrollToBottom();
+      }
+
+      if (!contactSelect.favourite) {
+        this.moveFristRecentList(groupId);
       }
     }
     if (!conversationsResponse)

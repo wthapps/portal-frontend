@@ -23,7 +23,7 @@ export class ChatNotificationComponent implements OnInit {
   readonly defaultAvatar: string = Constants.img.avatar;
   readonly urls: any = Constants.baseUrls;
   conversations: any = [];
-  notificationCount: number = 0;
+  notificationCount = 0;
   links: any;
 
   constructor(
@@ -59,7 +59,7 @@ export class ChatNotificationComponent implements OnInit {
           this.notificationCount = 0;
         }
         this.conversations = this.conversations.map((conversation: any) => {
-          if (conversation.id == contact.group_json.id) {
+          if (conversation.id === contact.group_json.id) {
             conversation.notification_count = 0;
           }
           return conversation;
@@ -129,7 +129,7 @@ export class ChatNotificationComponent implements OnInit {
           }
         }
         this.conversations = this.conversations.map((conversation: any) => {
-          if (conversation.id == group_id) {
+          if (conversation.id === group_id) {
             conversation.notification_count = 0;
           }
           return conversation;
@@ -182,7 +182,7 @@ export class ChatNotificationComponent implements OnInit {
         ) {
           const conversations = chat_conversations.value.data.map(
             (conversation: any) => {
-              if (conversation.group_json.id == params.id)
+              if (conversation.group_json.id === params.id)
                 conversation.notification_count = 0;
               return conversation;
             }
@@ -198,7 +198,7 @@ export class ChatNotificationComponent implements OnInit {
         ) {
           const conversations = chat_conversations.value.data.map(
             (conversation: any) => {
-              if (conversation.group_json.id == params.id)
+              if (conversation.group_json.id === params.id)
                 conversation.notification = params.notification;
               return conversation;
             }
@@ -218,12 +218,13 @@ export class ChatNotificationComponent implements OnInit {
     }
   }
 
-  private navigate(conversation: any) {
+  navigate(conversation: any) {
     $('#chat-header-notification').removeClass('open');
     this.wthNavigateService.navigateOrRedirect(
       `conversations/${conversation.id}`,
       'chat'
     );
+    this.handlerService.triggerEvent('on_conversation_select', conversation);
   }
 
   private subToggle(e: any) {
