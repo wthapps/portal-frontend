@@ -3,7 +3,7 @@
     <ng-template [ngIf]="hasUploadingPhoto">
       <div class="photo-box">
         <div class="photo-box-action"
-             (click)="onAction({action: 'cancelUpload', data: 'value of current file'})">
+             (click)="onAction({action: 'cancelUpload', data: photo})">
           <i class="fa fa-remove"
              pTooltip="{{ tooltip.cancelUploading }}" tooltipPosition="top">
           </i>

@@ -141,18 +141,18 @@
       </div>
       <div class="form-group">
         <div class="row-img row-img-10 grid">
-          <div class="row-img-item" *ngFor="let f of files">
-            <div class="photo-box">
-              <div class="photo-box-action">
-                <i class="fa fa-remove" (click)="cancelUploading(f)"></i>
-              </div>
-              <div class="photo-box-figure">
-                <figure class="img-center-dv photo-item-uploading loading">
-                  <span class="photo-box-figure-in"></span>
-                </figure>
-              </div>
-            </div>
-          </div>
+          <!--<div class="row-img-item" *ngFor="let f of files">-->
+            <!--<div class="photo-box">-->
+              <!--<div class="photo-box-action">-->
+                <!--<i class="fa fa-remove" (click)="cancelUploading(f)"></i>-->
+              <!--</div>-->
+              <!--<div class="photo-box-figure">-->
+                <!--<figure class="img-center-dv photo-item-uploading loading">-->
+                  <!--<span class="photo-box-figure-in"></span>-->
+                <!--</figure>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
           <div class="row-img-item" *ngFor="let p of post.photos">
             <div class="photo-box">
               <div class="photo-box-action">
@@ -161,7 +161,7 @@
               <div class="photo-box-figure">
                 <figure class="img-center-dv">
                   <span class="photo-box-figure-in">
-                    <img class="img-center" draggable="false" [src]="p['thumbnail_url']" [alt]="'Image not found'">
+                    <img class="img-center" draggable="false" [src]="p?.thumbnail_url || p?.preview" [alt]="'Image not found'">
                   </span>
                 </figure>
               </div>

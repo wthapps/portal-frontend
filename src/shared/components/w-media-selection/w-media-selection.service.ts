@@ -35,6 +35,13 @@ export class WMediaSelectionService {
   multipleSelection$: any;
   private multipleSelectionSubject: Subject<boolean> = new Subject<boolean>();
 
+  private defaultOptions: any = {
+    selectedTab: 'photos',
+    hiddenTabs: [],
+    allowSelectMultiple: true,
+    allowCancelUpload: false,
+    allowedFileTypes: ['image/*', 'video/*']
+  };
   constructor(private apiBaseService: ApiBaseService,
               private objectListService: WObjectListService,
               private datePipe: DatePipe) {
@@ -47,11 +54,14 @@ export class WMediaSelectionService {
   }
 
   /**
-   * upload, photos, albums, favourites, shared_with_me
-   * @param {string} currentTab
+   *
+   * @param options
    */
-  open(currentTab: string = 'upload', hideTabs: any = []) {
-    this.openSubject.next({ currentTab: currentTab, hideTabs: hideTabs});
+  open(options: any = {}) {
+    options = Object.assign(this.defaultOptions, options);
+    this.clear();
+    this.objectListService.setMultipleSelection(options.allowSelectMultiple);
+    this.openSubject.next(options);
   }
 
   close() {
@@ -85,8 +95,8 @@ export class WMediaSelectionService {
     );
   }
 
-  upload(medias: any[]) {
-    this.uploadingMediaSubject.next(medias);
+  upload(options: any) {
+    this.uploadingMediaSubject.next(options);
   }
 
   clear() {

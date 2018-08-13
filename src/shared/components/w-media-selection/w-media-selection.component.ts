@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy, AfterViewInit } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { Observable } from 'rxjs/Observable';
@@ -10,6 +10,7 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import 'rxjs/add/operator/takeUntil';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
+import { WUploader } from '@shared/services/w-uploader';
 
 @Component({
   selector: 'w-media-selection',
@@ -18,7 +19,7 @@ import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
   encapsulation: ViewEncapsulation.None
 })
 
-export class WMediaSelectionComponent implements OnInit, OnDestroy {
+export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
 
   tabs: WTab[] = [
@@ -99,8 +100,15 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   // end search
 
-  constructor(private mediaSelectionService: WMediaSelectionService,
-              private objectListService: WObjectListService) {
+  allowCancelUpload: boolean;
+  private allowedFileTypes: any;
+  private sub: any;
+
+  constructor(
+    private mediaSelectionService: WMediaSelectionService,
+    private objectListService: WObjectListService,
+    private uploader: WUploader
+  ) {
     this.medias$ = this.mediaSelectionService.medias$;
     this.multipleSelection$ = this.mediaSelectionService.multipleSelection$;
     this.selectedMedias$ = this.objectListService.selectedObjects$;
@@ -120,30 +128,42 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       .takeUntil(componentDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
-          this.initialState(res);
-          this.open();
+          // this.initialState(res);
+          this.open(res);
           this.getObjects(true);
         }
       });
   }
 
+  ngAfterViewInit() {
+
+  }
+
   ngOnDestroy(): void {
   }
 
-  initialState(initialState: any) {
-    this.mediaSelectionService.clear();
-    this.currentTab = initialState.currentTab; // 'upload', 'photos';
+  open(options: any = {return: false}) {
+    console.log('open media select modal:::', options);
+    this.currentTab = options.selectedTab; // 'upload', 'photos';
     this.tabsFilter = this.tabs.filter((t: any) => {
-      if (initialState.hideTabs.includes(t.link)) {
+      if (options.hiddenTabs.includes(t.link)) {
         return false;
       }
       return true;
-    })
+    });
+    this.allowCancelUpload = options.allowCancelUpload;
+
+    // set content type depend on open options
+    if (options.hiddenTabs.includes('photos')) {
+      this.allowedFileTypes = ['video/*'];
+    } else if (options.hiddenTabs.includes('videos')) {
+      this.allowedFileTypes = ['image/*'];
+    } else {
+      this.allowedFileTypes = options.allowedFileTypes;
+    }
+
     this.nextLink = this.buildNextLink(); // 'media/photos'
     this.isLoading = false;
-  }
-
-  open(options: any = {return: false}) {
     this.modal.open().then();
   }
 
@@ -291,6 +311,19 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     this.modal.close().then();
   }
 
+  upload() {
+
+    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      allowedFileTypes: this.allowedFileTypes
+    });
+
+    this.sub = this.uploader.event$.subscribe(event => {
+      if (event.action === 'start') {
+        this.modal.close().then();
+        this.sub.unsubscribe();
+      }
+    });
+  }
 
   private buildNextLink() {
     let urlAPI = '';

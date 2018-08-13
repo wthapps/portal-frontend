@@ -97,6 +97,7 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onActions(action: any, params?: any) {
+    console.log('action::::', action, params);
     let type = params.commentType;
     let data = params.data;
     let comment = params.comment;

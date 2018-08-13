@@ -23,6 +23,7 @@ import { takeUntil, filter, map, mergeMap, take } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
+import { WUploader } from '@shared/services/w-uploader';
 
 
 export enum CommentEditorMode {
@@ -72,13 +73,16 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   close$: Observable<any>;
   uploadSubscription: Subscription;
   selectEmojiSub: Subscription;
+  private uploadingPhoto: any;
+  private sub: Subscription;
 
   constructor(private fb: FormBuilder,
               private router: Router,
               private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService,
               public userService: UserService,
-              private emojiService: WTHEmojiService) {
+              private emojiService: WTHEmojiService,
+              private uploader: WUploader) {
     this.user$ = this.userService.getAsyncProfile();
     this.close$ = Observable.merge(this.mediaSelectionService.open$, this.cancelPhotoSubject, componentDestroyed(this));
   }
@@ -102,6 +106,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.complete();
+    this.sub.unsubscribe();
   }
 
   viewProfile(uuid: string) {
@@ -152,8 +157,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   onOpenPhotoSelect() {
-    this.mediaSelectionService.open();
-    this.mediaSelectionService.setMultipleSelection(false);
+    this.mediaSelectionService.open({hiddenTabs: ['videos', 'playlists'], allowSelectMultiple: false, allowCancelUpload: true});
 
     this.mediaSelectionService.selectedMedias$.pipe(
       takeUntil(this.close$),
@@ -178,6 +182,29 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       this.hasUploadingPhoto = false;
       this.hasUpdatedContent = true;
     });
+
+    this.sub = this.uploader.event$.subscribe(event => {
+      this.handleUploadFiles(event);
+    });
+  }
+
+  handleUploadFiles(event: any) {
+    switch (event.action) {
+      case 'start':
+        this.uploadingPhoto = null;
+        break;
+      case 'progress':
+        this.setPhoto(event.payload.file);
+        this.uploadingPhoto = event.payload.file;
+        this.hasUploadingPhoto = true;
+        break;
+      case 'success':
+        // replace uploading photo by real photo
+        this.setPhoto(event.payload.resp);
+        this.hasUploadingPhoto = true;
+        this.hasUpdatedContent = true;
+        break;
+    }
   }
 
   onEmojiClick(e: any) {
@@ -231,8 +258,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.hasUpdatedContent = false;
   }
 
-  doEvents(response: any) {
-    switch (response.action) {
+  doEvents(event: any) {
+    switch (event.action) {
       case 'remove':
         // this.setPhoto(null);
         // this.files = null;
@@ -241,10 +268,10 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       case 'cancelUploadingPhoto':
       case 'cancelUpload':
         this.setPhoto(null);
-        if(this.uploadSubscription)
+        if (this.uploadSubscription)
           this.uploadSubscription.unsubscribe();
         this.files = null;
-        this.hasUpdatedContent = (this.comment.content != '');
+        this.hasUpdatedContent = (this.comment.content !== '');
         break;
     }
   }
@@ -278,8 +305,14 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.comment.photo = photo;
     this.commentEditorForm.controls['photo'].setValue(photo);
 
-    if(photo == null) {
+    if (photo == null) {
       this.cancelPhotoSubject.next('');
+      console.log('cancel upload photo:::', this.uploadingPhoto);
+
+      if (this.uploadingPhoto) {
+        this.uploader.cancel(this.uploadingPhoto);
+        this.uploadingPhoto = null;
+      }
     }
   }
 }

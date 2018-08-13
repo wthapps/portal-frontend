@@ -15,6 +15,7 @@ import { LoadingService } from '@shared/shared/components/loading/loading.servic
 import { PostService } from './shared/post.service';
 import { getSoProfile, SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE } from '../../reducers/index';
 import { Constants } from '@wth/shared/constant';
+import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 
 const DEFAULT_PRIVACY_SETTINGS = ['public', 'personal', 'friends'];
 
@@ -53,7 +54,8 @@ export class PostListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private postService: PostService,
-              private store: Store<any>
+              private store: Store<any>,
+              private mediaSelectionService: WMediaSelectionService
   ) {
     this.soProfile$ = store.select(getSoProfile);
   }
@@ -237,5 +239,9 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.nextLink = res.meta.links.next;
       });
     }
+  }
+
+  openSelectPhotosModal() {
+    this.mediaSelectionService.open();
   }
 }

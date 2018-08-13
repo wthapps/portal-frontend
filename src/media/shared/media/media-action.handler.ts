@@ -86,8 +86,7 @@ export class MediaActionHandler implements OnDestroy {
         options = {selectedObjects: payload.selectedObjects};
         break;
       case 'photosSelectModal':
-        mediaSelectionService.open('photos');
-        mediaSelectionService.setMultipleSelection(true);
+        mediaSelectionService.open();
         if (this.subSelect) this.subSelect.unsubscribe();
         this.subSelect = mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
           .subscribe(photos => {

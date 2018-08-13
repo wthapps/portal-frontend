@@ -27,6 +27,7 @@ import { LoadingService } from '@shared/shared/components/loading/loading.servic
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
+import { WUploader } from '@shared/services/w-uploader';
 
 @Component({
   selector: 'so-post-edit',
@@ -83,8 +84,10 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   readonly soPostPrivacy: any = Constants.soPostPrivacy;
 
+  private uploadingPhotos: Array<any> = [];
   private destroySubject: Subject<any> = new Subject<any>();
   private uploadSubscriptions: { [filename: string]: Subscription } = {};
+  private sub: any;
 
   constructor(
     private fb: FormBuilder,
@@ -94,7 +97,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
     private mediaSelectionService: WMediaSelectionService,
     private photoUploadService: PhotoUploadService,
     private emojiService: WTHEmojiService,
-    private userService: UserService
+    private userService: UserService,
+    private uploader: WUploader
   ) {
   }
 
@@ -110,6 +114,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.photosCtrl = this.form.controls['photos'];
     // this.currentUser = this.userService.getSyncProfile();
     this.profile$ = this.userService.getAsyncProfile();
+    this.sub = this.uploader.event$.subscribe(event => {
+      this.handleUploadFiles(event);
+    });
   }
 
   ngOnChanges() {
@@ -133,7 +140,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   showEmojiBtn(event: any) {
     this.emojiService.show(event);
 
-    if(this.selectEmojiSub && !this.selectEmojiSub.closed)
+    if (this.selectEmojiSub && !this.selectEmojiSub.closed)
       this.selectEmojiSub.unsubscribe();
     this.selectEmojiSub = this.emojiService.selectedEmoji$
       .pipe(
@@ -205,7 +212,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
     if (options.addingPhotos) {
-      this.mediaSelectionService.setMultipleSelection(true);
       this.mediaSelectionService.open();
     } else {
       this.modal.open();
@@ -266,6 +272,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   cancelUploading(file: any) {
     _.pull(this.files, file);
+    console.log('cancel uploading file:::', file);
+    this.uploader.cancel(file);
     if (file.name && this.uploadSubscriptions[file.name]) {
       this.uploadSubscriptions[file.name].unsubscribe();
       delete this.uploadSubscriptions[file.name];
@@ -281,8 +289,47 @@ export class PostEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleUploadFiles(event: any) {
+    let file;
+    let photo;
+    let index = -1;
+    switch (event.action) {
+      case 'start':
+        this.uploadingPhotos = [];
+        this.files = [];
+        break;
+      case 'progress':
+        file = event.payload.file;
+        this.post.photos.unshift(file);
+        break;
+      case 'success':
+        // replace uploading photo by real photo
+        file = event.payload.file;
+        photo = event.payload.resp;
+        index = this.post.photos.findIndex(p => p.id === file.id);
+        if (index >= 0) {
+          this.post.photos[index] = photo;
+        }
+        this.uploadingPhotos.push(photo);
+        this.files.push(file);
+
+        break;
+    }
+  }
   removePhoto(photo: any, event: any) {
     this.backupPhotos = this.post.photos;
+
+    // cancel uploading photo/video or delete selected photo
+    const index = this.uploadingPhotos.findIndex(p => p.id === photo.id);
+    if (index >= 0) {
+        this.uploader.cancel(this.files[index]);
+        this.uploadingPhotos.splice(index, 1);
+        this.files.splice(index, 1);
+    } else if (photo.meta) {
+      this.uploader.cancel(photo);
+      this.uploadingPhotos.splice(index, 1);
+      this.files.splice(index, 1);
+    }
     this.post.photos = _.pull(this.post.photos, photo);
   }
 
@@ -298,8 +345,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   addMorePhoto(event: any) {
     this.onMoreAdded.emit(true);
-    this.mediaSelectionService.open();
-    this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true});
 
     let close$: Observable<any> = Observable.merge(
       this.mediaSelectionService.open$,
@@ -327,6 +373,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   dismiss(photos: any) {
+    this.uploader.cancelAll(this.uploadingPhotos);
+    this.uploadingPhotos = [];
+
     this.dismissed.emit(photos);
     this.modal.close(null).then();
     this.mediaSelectionService.close();

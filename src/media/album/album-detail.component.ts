@@ -138,8 +138,7 @@ export class ZMediaAlbumDetailComponent
   }
 
   openSelectedModal() {
-    this.mediaSelectionService.open('photos');
-    this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({hiddenTabs:['videos', 'playlists']});
     if (this.subSelect) this.subSelect.unsubscribe();
     if (this.sub) this.sub.unsubscribe();
     this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)

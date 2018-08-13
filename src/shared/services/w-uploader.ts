@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Core, FileInput, Dashboard, XHRUpload, Tus, StatusBar, ProgressBar } from 'uppy';
+import { Core, FileInput, DragDrop, Dashboard, XHRUpload, Tus, StatusBar, ProgressBar } from 'uppy';
 import { AuthService } from '@shared/services/auth.service';
 import { Constants } from '@shared/constant';
 import { Subject } from 'rxjs/Subject';
-import { Status } from 'tslint/lib/runner';
 import { ApiBaseService } from '@shared/services/apibase.service';
 
 @Injectable()
@@ -32,7 +31,7 @@ export class WUploader {
    * @param {string} selector
    * @param {{}} options
    */
-  initialize(selector: string = '.w-uploader-file-input-container', options: any = {
+  initialize(mode: string = 'FileInput', selector: string = '.w-uploader-file-input-container', options: any = {
     allowedFileTypes: null,
     willCreateMessage: false,
     willCreatePost: false,
@@ -50,17 +49,21 @@ export class WUploader {
 
     this.uppy = Core(opts);
 
-    this.uppy.use(FileInput, {
-      target: selector,
-      replaceTargetContent: true,
-      inputName: 'file',
-      pretty: true,
-      locale: {
-       strings: {
-         chooseFiles: 'upload'
-       },
-      }
-    });
+    if (mode === 'FileInput') {
+      this.uppy.use(FileInput, {
+        target: selector,
+        replaceTargetContent: true,
+        inputName: 'file',
+        pretty: true,
+        locale: {
+          strings: {
+            chooseFiles: 'upload'
+          },
+        }
+      });
+    } else if (mode === 'DragDrop') {
+      this.uppy.use(DragDrop, {target: selector});
+    }
 
     // enable status bar
     // this.uppy.use(StatusBar, {
@@ -174,7 +177,7 @@ export class WUploader {
 
     if (canceledFiles.length > 0) {
       this.api.post('common/files/cancel_upload', {files: canceledFiles}).subscribe(response => {
-        this.event$.next({action: 'cancel-success', payload: {file: file}});
+        console.log('cancel upload successful:::', response);
       });
     }
   }
@@ -183,8 +186,8 @@ export class WUploader {
    *
    * @param {Array<any>} files
    */
-  cancelAll() {
-    const files = this.uppy.getFiles();
+  cancelAll(uploadingFiles?: Array<any>) {
+    const files = uploadingFiles || this.uppy.getFiles();
     const canceledFiles = [];
 
     files.forEach(file => {
@@ -240,13 +243,18 @@ export class WUploader {
    */
 
   open(mode: string, target: string, options: {}) {
-    if (mode !== 'FileInput' && mode !== 'Dashboard') {
+    if (mode !== 'FileInput' && mode !== 'Dashboard' && mode !== 'DragDrop') {
      console.log('mode is not supported:', mode);
      return;
     }
     if (mode === 'FileInput') {
-      this.initialize(target, options);
+      this.initialize('FileInput', target, options);
      (document.getElementsByClassName('uppy-FileInput-btn')[0] as HTMLElement).click();
+    }
+
+    if (mode === 'DragDrop') {
+      console.log('DragDrop target', target);
+      this.initialize('DragDrop', target, options);
     }
   }
 
