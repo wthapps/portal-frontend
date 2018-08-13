@@ -36,7 +36,7 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
-import { CommonEventService, UrlService } from '@wth/shared/services';
+import { CommonEventService, UrlService, WthConfirmService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
 import { noteConstants } from '@notes/shared/config/constants';
 import { Counter } from '@wth/core/quill/modules/counter';
@@ -62,7 +62,11 @@ export class ZNotePublicViewComponent implements OnInit, AfterViewInit {
   tooltip: any = Constants.tooltip;
   note: any;
 
-  constructor(private apiBaseService: ApiBaseService, private urlService: UrlService) {}
+  constructor(
+    private apiBaseService: ApiBaseService,
+    private wthConfirmService: WthConfirmService,
+    private router: Router,
+    private urlService: UrlService) {}
 
   ngOnInit() {
 
@@ -83,6 +87,20 @@ export class ZNotePublicViewComponent implements OnInit, AfterViewInit {
       };
       var quill = new Quill('#quill-editor', modules);
       document.querySelector('.ql-editor').innerHTML = res.data.content;
+    }, err => {
+      this.wthConfirmService.confirm({
+        message:
+          'The file you are looking for was deleted or you do not have permission to access',
+        header: 'File not found',
+        rejectLabel: null,
+        accept: () => {
+          this.router.navigate(['my-note']);
+        },
+        reject: () => {
+          this.router.navigate(['my-note']);
+        }
+      });
+
     })
   }
 

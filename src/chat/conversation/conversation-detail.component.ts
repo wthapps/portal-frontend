@@ -13,7 +13,7 @@ import {
   CommonEvent,
   CommonEventAction,
   CommonEventService,
-  PhotoService, UserService
+  PhotoService, UserService, ChatCommonService
 } from '@wth/shared/services';
 import { CHAT_ACTIONS, FORM_MODE } from '@wth/shared/constant';
 import { User } from '@wth/shared/shared/models';
@@ -48,6 +48,7 @@ export class ConversationDetailComponent
   constructor(
     private chatService: ChatService,
     private commonEventService: CommonEventService,
+    private chatCommonService: ChatCommonService,
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
@@ -133,7 +134,7 @@ export class ConversationDetailComponent
         this.conversationService
           .deleteMessage(event.payload.group_id, event.payload.id)
           .toPromise()
-          .then((response: any) => {
+          .then((res: any) => {
             console.log('delete ok!!!!');
           });
 

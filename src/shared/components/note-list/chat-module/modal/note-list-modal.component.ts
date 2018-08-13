@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import * as fromChatNote from './../../../../../core/store/chat/note.reducer';
 import * as fromChatContext from './../../../../../core/store/chat/context.reducer';
 import { chatNoteConstants, ChatNoteConstants } from '@shared/components/note-list/chat-module/constants';
-import { log } from 'util';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 
 @Component({
@@ -26,6 +25,7 @@ export class ChatNoteListModalComponent implements OnInit {
   insertEnable: any = false;
   objects: any = false;
   nextLink: any = '';
+  selectedObjects: any;
 
   constructor(
     private apiBaseService: ApiBaseService,
@@ -37,13 +37,13 @@ export class ChatNoteListModalComponent implements OnInit {
     this.store.select('notes').subscribe(state => {
       this.breadcrumb = state.breadcrumb;
       this.objects = state.objects;
-      const selectedObjects = state.objects.filter(ob => ob.selected == true);
-        if (selectedObjects.length > 0) {
+      this.selectedObjects = state.objects.filter(ob => ob.selected == true);
+      if (this.selectedObjects.length > 0) {
         this.insertEnable = true;
       } else {
         this.insertEnable = false;
       }
-      this.wObjectListService.setSelectedObjects(selectedObjects);
+      this.wObjectListService.setSelectedObjects(this.selectedObjects);
     });
     this.wObjectListService.selectedEvent.subscribe(res => {
       if (res.type == 'close') {
@@ -59,7 +59,7 @@ export class ChatNoteListModalComponent implements OnInit {
         type: fromChatContext.SET_LOADING,
         payload: true
       });
-    this.apiBaseService.get('note/v1/mixed_entities').subscribe(res => {
+    this.apiBaseService.get('note/v1/mixed_entities', {parent_id: null}).subscribe(res => {
       this.store.dispatch({
         type: fromChatContext.SET_CONTEXT,
         payload: {loading: false, noData: res.data.length == 0}
@@ -90,7 +90,7 @@ export class ChatNoteListModalComponent implements OnInit {
         type: fromChatContext.SET_LOADING,
         payload: true
       });
-    this.apiBaseService.get('note/v1/mixed_entities').subscribe(res => {
+    this.apiBaseService.get('note/v1/mixed_entities', {parent_id: null}).subscribe(res => {
       this.store.dispatch({
         type: fromChatContext.SET_CONTEXT,
         payload: {loading: false, noData: res.data.length == 0}
@@ -244,7 +244,7 @@ export class ChatNoteListModalComponent implements OnInit {
         });
       });
     } else {
-      const shared = item.label == 'My notes' ? '' : 'shared_with_me=true';
+      const shared: string = (item.label == 'My notes') ? 'parent_id=null' : 'shared_with_me=true';
       this.apiBaseService
       .get('note/v1/mixed_entities?' + shared)
       .subscribe(res => {
