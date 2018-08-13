@@ -20,7 +20,7 @@
 
         <!--text type-->
         <div class="message-item-content-text" *ngIf="message.message_type == 'text'">
-          <span [innerHtml]="message.message | wthEmojis | linkify | safeHtml"></span>
+          <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
         </div>
 
         <ng-template [ngIf]="message.message_type == 'file'">

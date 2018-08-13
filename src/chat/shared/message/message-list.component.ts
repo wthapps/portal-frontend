@@ -15,6 +15,9 @@ import { ZChatShareRequestContactComponent } from '../modal/request-contact.comp
 import { WMessageService } from '@wth/shared/services';
 import { Router } from '@angular/router';
 import { User } from '@wth/shared/shared/models';
+import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
+import { Observable } from 'rxjs/Observable';
+import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 
 declare var _: any;
 declare var $: any;
@@ -33,7 +36,7 @@ export class MessageListComponent implements OnInit {
   @Input() currentMessages: any;
   @Input() contactItem: any;
   @Input() currentUser: User;
-
+  emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
   prevMessage: any;
   readonly scrollDistance: number = 1000;
 
@@ -41,13 +44,16 @@ export class MessageListComponent implements OnInit {
     private chatService: ChatService,
     private ref: ChangeDetectorRef,
     private router: Router,
-    private messageService: WMessageService
+    private messageService: WMessageService,
+    private wthEmojiService: WTHEmojiService
   ) {
     this.messageService.scrollToBottom$.subscribe((res: boolean) => {
       if (res && this.listEl) {
         this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
       }
     });
+
+    this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
   ngOnInit() {
@@ -59,12 +65,11 @@ export class MessageListComponent implements OnInit {
   }
 
   onLoadMore() {
-    console.log('onLoadMore ...',  this.listEl.nativeElement.scrollTop);
-    this.chatService.loadMoreMessages()
-      .then(res => {
-        if(res.data && res.data.length > 0)
-          this.listEl.nativeElement.scrollTop += 100
-      });
+    console.log('onLoadMore ...', this.listEl.nativeElement.scrollTop);
+    this.chatService.loadMoreMessages().then(res => {
+      if (res.data && res.data.length > 0)
+        this.listEl.nativeElement.scrollTop += 100;
+    });
   }
 
   scrollDown() {
@@ -84,7 +89,8 @@ export class MessageListComponent implements OnInit {
         this.requestModal.modal.open();
         break;
       case 'CONTACT_REQUEST_CANCEL':
-        this.chatService.chatContactService.cancelContactRequest(event.data)
+        this.chatService.chatContactService
+          .cancelContactRequest(event.data)
           .then(conversationId => {
             const id = conversationId ? conversationId : '';
             this.router.navigate(['/conversations', id]);
@@ -94,7 +100,7 @@ export class MessageListComponent implements OnInit {
   }
 
   getPrevMessage(currentMessage: any) {
-    let curMsgIndex = _.findIndex(this.currentMessages.data, {
+    const curMsgIndex = _.findIndex(this.currentMessages.data, {
       id: currentMessage.id
     });
     return curMsgIndex <= 0 ? null : this.currentMessages.data[curMsgIndex - 1];

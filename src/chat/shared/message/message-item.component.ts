@@ -17,8 +17,10 @@ export class MessageItemComponent implements OnInit {
   @Input() byMe: boolean;
   @Input() prevMessage: any;
   @Input() contactItem: any;
+  @Input() emojiMap: any;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
+
 
   readonly tooltip: any = Constants.tooltip;
   readonly noteUrl: any = Constants.baseUrls.note;

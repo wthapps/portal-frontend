@@ -12,7 +12,11 @@
       <ng-container *ngIf="currentMessages.data && currentMessages?.data?.length>0;else templateNodata">
         <div class="message-item-wrapper">
           <div class="message-item-dv" *ngFor="let message of currentMessages?.data; trackBy: message?.id">
-            <message-item [message]="message" [byMe]="currentUser?.id === message?.display?.id" [prevMessage]="getPrevMessage(message)" [contactItem]="contactItem"
+            <message-item [message]="message"
+                          [byMe]="currentUser?.id === message?.display?.id"
+                          [prevMessage]="getPrevMessage(message)"
+                          [contactItem]="contactItem"
+                          [emojiMap]="emojiMap$ | async"
                           (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
           </div>
         </div>

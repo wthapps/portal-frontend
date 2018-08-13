@@ -1,16 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { filter } from 'rxjs/operators/filter';
-import { take } from 'rxjs/operators/take';
-
-import { WTHEmojiService, iconSize } from '@wth/shared/components/emoji/emoji.service';
+import { iconSize, WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@wth/shared/components/emoji/emoji';
 
 @Pipe({
   name: 'wth2Emojis'
 })
 export class WTHEmojiPipe implements PipeTransform {
-  private map: {[name: string]: WTHEmojiCateCode} = {};
+  private map: { [name: string]: WTHEmojiCateCode } = {};
 
   constructor(public wthEmojiService: WTHEmojiService) {
   }
@@ -21,9 +18,9 @@ export class WTHEmojiPipe implements PipeTransform {
   }
 
   private replacer(str, offset, s) {
-    if(Object.keys(this.map).length == 0 ) {
+    if (Object.keys(this.map).length == 0) {
       return str;
-    }  else {
+    } else {
       return `<i class="emojione-${iconSize}-${this.map[str].diversity ? 'diversity' : this.map[str].category} _${this.map[str].code} ng-star-inserted"></i>` || str;
     }
   }

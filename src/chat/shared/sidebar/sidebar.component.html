@@ -45,20 +45,20 @@
 </div>
 <div class="menu-left-content">
   <ng-container *ngIf="favouriteContacts$ | async as favouriteContacts">
-    <div *ngFor="let contact of favouriteContacts" class="menu-left-item" [routerLinkActive]="['active']">
+    <div *ngFor="let contact of favouriteContacts" class="menu-left-item">
       <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
     </div>
   </ng-container>
 
   <ng-container *ngIf="recentContacts$ | async as recentContacts">
-    <div *ngFor="let contact of recentContacts" class="menu-left-item" [routerLinkActive]="['active']">
+    <div *ngFor="let contact of recentContacts" class="menu-left-item">
       <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
     </div>
   </ng-container>
 </div>
 
 <ng-template #conversationTemplate let-conversation="conversation">
-  <div class="media-chat-user">
+  <div class="media-chat-user" [routerLinkActive]="['active']">
      <z-chat-share-user-avatar class="media-chat-user-row" [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
         <div class="user-content">
            <small class="media-chat-user-message" *ngIf="conversation.latest_message as latest_message">
@@ -70,7 +70,6 @@
            <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
           <a class="media-chat-user-link"
              [routerLink]="[chatService.constant.conversationUrl, conversation.id]"
-             [routerLinkActive]="['active']"
              (click)="onSelect(conversation); onCloseMenu()"
              href="javascript:;"></a>
         </div>

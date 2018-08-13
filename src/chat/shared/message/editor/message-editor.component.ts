@@ -1,41 +1,25 @@
-import {
-  Component,
-  HostListener,
-  OnInit,
-  OnDestroy,
-  ViewChild, ViewEncapsulation
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/observable/merge';
 
-import {
-  FormGroup,
-  FormBuilder,
-  FormControl,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ChatService } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE } from '@wth/shared/constant';
-import {
-  PhotoModalDataService,
-  PhotoUploadService,
-  ApiBaseService, WMessageService
-} from '@wth/shared/services';
+import { ApiBaseService, WMessageService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { takeUntil, filter, mergeMap, map } from 'rxjs/operators';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { Store } from '@ngrx/store';
-import { log } from 'util';
 import { noteConstants } from '@notes/shared/config/constants';
 import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
 import { WUploader } from '@shared/services/w-uploader';
+import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 
 declare var $: any;
 
@@ -58,6 +42,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   messageEditorForm: FormGroup;
   messageCtrl: FormControl;
 
+  selectEmojiSub: Subscription;
 
   constructor(
     private chatService: ChatService,
@@ -67,7 +52,8 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     private store: Store<any>,
     private fb: FormBuilder,
     private messageService: WMessageService,
-    private uploader: WUploader
+    private uploader: WUploader,
+    private emojiService: WTHEmojiService
   ) {
     this.createForm();
   }
@@ -152,7 +138,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   focus() {
-    //set background color #ffd when editing
+    // set background color #ffd when editing
   }
 
   cancelEditingMessage() {
@@ -253,6 +239,20 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+  }
+
+  showEmojiBtn(event: any) {
+    this.emojiService.show(event);
+
+    if (this.selectEmojiSub && !this.selectEmojiSub.closed) {
+      this.selectEmojiSub.unsubscribe();
+    }
+    this.selectEmojiSub = this.emojiService.selectedEmoji$
+      .pipe(take(1))
+      .subscribe(data => {
+        console.log(data);
+        this.editor.addEmoj(data.shortname);
+      });
   }
 
   private buildQuoteMessage(message: any): string {
