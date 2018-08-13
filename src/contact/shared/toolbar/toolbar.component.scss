@@ -10,3 +10,21 @@
     }
   }
 }
+
+.select-all-cb {
+  background-color: #F2F2F2;
+  i {
+    border: 1px solid #4a4a4a;
+    border-radius: 2px;
+    cursor: pointer;
+    color: #ffffff;
+  }
+  &.active {
+    i {
+      background-color: $theme-color;
+      border-color: $theme-color;
+      color: white;
+      opacity: 1;
+    }
+  }
+}

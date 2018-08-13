@@ -17,13 +17,14 @@ declare var _: any;
 export class ZContactSharedToolbarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
 
-  @Input() pageTitle: string = ''; // TODO will be removed
-  @Input() hasBack: boolean = false;
+  @Input() pageTitle = ''; // TODO will be removed
+  @Input() hasBack = false;
   @Input() currentPage: string;
   selectedContact: string;
 
-  tooltip: any = Constants.tooltip;
-  otherContactsInfo = 'Other Contacts are people you interacted with but did not add them to your Contacts books';
+  readonly tooltip: any = Constants.tooltip;
+  readonly otherContactsInfo = 'Other Contacts are people you interacted with but did not add them to your Contacts books';
+  readonly OTHER_CONTACTS = 'Other Contacts';
 
   constructor(
     public contactService: ZContactService,
@@ -40,7 +41,7 @@ export class ZContactSharedToolbarComponent implements OnInit {
     this.location.back();
   }
 
-  onClearSelected() {
-    this.contactService.resetSelectedObjects();
+  toggleSelectAll() {
+    this.contactService.toggleSelectAll();
   }
 }

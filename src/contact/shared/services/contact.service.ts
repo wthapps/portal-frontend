@@ -18,6 +18,8 @@ import { Contact } from '@contacts/contact/contact.model';
 declare var _: any;
 declare var Promise: any;
 export const ITEM_PER_PAGE = 50;
+export const OTHER_CONTACTS = 'others';
+export const MY_CONTACTS = 'contacts';
 
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
@@ -38,6 +40,7 @@ export class ZContactService extends BaseEntityService<any> {
   orderDesc$: Observable<boolean>;
   isSelectAll$: Observable<boolean>;
 
+  private currentPage = 'contacts'; // 'others' || 'contacts'
   private isSelectAllSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private contactsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private initLoadSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(
@@ -85,6 +88,10 @@ export class ZContactService extends BaseEntityService<any> {
 
   get otherContacts(): Array<any> {
     return this.contacts.filter(contact => contact.my_contact === false);
+  }
+
+  setCurrentPage(page: string): void {
+    this.currentPage = page;
   }
 
   // Change get all URL to support caching by SW
@@ -183,12 +190,12 @@ export class ZContactService extends BaseEntityService<any> {
     });
   }
 
-  addItemSelectedObjects(item: any) {
+  addItemSelectedObjects(item: any): void {
     this.selectedObjects.push(item);
     this.checkSelectAll();
   }
 
-  removeItemSelectedObjects(item: any) {
+  removeItemSelectedObjects(item: any): void {
     _.remove(this.selectedObjects, {
       uuid: item.uuid
     });
@@ -212,19 +219,30 @@ export class ZContactService extends BaseEntityService<any> {
     return this.isSelectAllSubject.getValue();
   }
 
-  checkSelectAll() {
+  checkSelectAll(): void {
     const isSelectAll =
+    this.inOtherPage() ?
+      this.otherContactCount <= this.selectedObjects.length :
       this.contactsSubject.getValue().length <= this.selectedObjects.length;
     this.isSelectAllSubject.next(isSelectAll);
   }
 
-  selectAllObjects(selected: boolean) {
+  clearSelected(): void {
+    this.selectedObjects.length = 0;
+  }
+
+  toggleSelectAll(): void {
+    this.selectAllObjects(!this.isSelectAll());
+    this.notifyContactsObservers();
+  }
+
+  selectAllObjects(selected: boolean): void {
     if (!selected) {
       this.selectedObjects.length = 0;
     } else if (_.get(this.filterOption, 'search') || _.get(this.filterOption, 'group')) {
       this.selectedObjects = [...this.contactsSubject.getValue()];
     } else {
-      this.selectedObjects = [...this.contacts];
+      this.selectedObjects = this.inOtherPage() ? [...this.otherContacts] : [...this.myContacts];
     }
   }
 
@@ -299,8 +317,6 @@ export class ZContactService extends BaseEntityService<any> {
 
   filter(options: any) {
     this.resetPageNumber();
-    // let group = _.get(options, 'group');
-    // this.filterOption = { group: group };
     this.filterOption = options;
     this.notifyContactsObservers();
   }
@@ -337,7 +353,6 @@ export class ZContactService extends BaseEntityService<any> {
   resetSelectedObjects() {
     this.selectedObjects.length = 0;
     this.notifyContactsObservers();
-    this.checkSelectAll();
   }
 
   notifyContactsObservers(): void {
@@ -350,7 +365,7 @@ export class ZContactService extends BaseEntityService<any> {
     } else if (_.has(this.filterOption, 'group')) {
       contacts = this.filterByGroup(this.filterOption);
     } else {
-      contacts = this.contacts;
+      contacts = this.inOtherPage() ? this.otherContacts : this.myContacts;
     }
 
     const orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a, b, this.orderDescSubject.getValue()));
@@ -366,6 +381,10 @@ export class ZContactService extends BaseEntityService<any> {
     this.checkSelectAll();
   }
 
+  inOtherPage(): boolean {
+    return this.currentPage === OTHER_CONTACTS;
+  }
+
   sendRequest(contact: any) {
     this.apiBaseService
       .post(`${this.url}/send_connect_request`, contact)
@@ -375,27 +394,6 @@ export class ZContactService extends BaseEntityService<any> {
         this.updateCallback(res.data);
       })
       .catch(err => console.error(err));
-  }
-
-  mergeDuplicateContacts(contacts: any[] = this.selectedObjects): Promise<any> {
-    const ids: any[] = _.map(contacts, 'id');
-    this.mergingObjects = [...contacts];
-    return this.apiBaseService
-      .post(`${this.url}/merge_duplicate`, { ids })
-      .toPromise()
-      .then((res: any) => {
-        const delete_ids: any[] = res.delete_ids;
-        const updated_contacts: any[] = res.data.map(ct => {
-          return { ...ct, selected: true };
-        });
-        _.remove(this.contacts, (c: any) => delete_ids.includes(c.id));
-        this.selectedObjects = [...updated_contacts];
-        this.mergedObjects = [...updated_contacts];
-
-        this.contacts = [...updated_contacts, ...this.contacts];
-        this.notifyContactsObservers();
-        this.groupService.updateGroupCount(this.contacts);
-      });
   }
 
   mergeContacts(contacts: any[] = this.selectedObjects): Promise<any> {

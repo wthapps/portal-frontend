@@ -7,19 +7,7 @@
       </button>
     </li>
   </ul>
-  <!--<ul [ngClass]="{'hidden-xs': contactService.selectedObjects.length > 0 || currentPage === 'detail'}" class="page-body-control-menu"
-    *ngIf="pageTitle==''">
-    <li>
-      <button type="button" class="btn btn-outline-primary" [routerLink]="['/contacts', 'new']">
-        <i class="fa fa-plus"></i> New Contact</button>
-    </li>
-    <li>
-      <button type="button" class="btn btn-outline-default" (click)="openImportContactModal()">
-        <i class="fa fa-download"></i> Import</button>
-    </li>
-  </ul>-->
-  <!--TODO remove-->
-  <ul class="page-body-control-menu" *ngIf="pageTitle!=''">
+  <!-- <ul class="page-body-control-menu" *ngIf="pageTitle!=''">
     <li>
       <h4 *ngIf="contactService.selectedObjects.length == 0;else templateShowSelected">{{ pageTitle }}
         <button *ngIf="pageTitle==='Other contacts'" class="btn btn-default"
@@ -29,11 +17,30 @@
         </button>
       </h4>
       <ng-template #templateShowSelected>
-        <button (click)="onClearSelected()" type="button" class="btn"><i class="fa fa-times"></i></button>
+<div class="select-all-cb" [ngClass]="{'active': (contactService?.isSelectAll$ | async)}">
+          <i (click)="onClearSelected()" class="fa fa-check"></i>
+        </div>
         <span class="btn btn-text">{{ contactService.selectedObjects.length }} selected</span>
       </ng-template>
     </li>
-  </ul>
+  </ul> -->
+
+  <div *ngIf="pageTitle!=''">
+    <h4 *ngIf="contactService.selectedObjects.length == 0;else templateShowSelected">{{ pageTitle }}
+<button *ngIf="pageTitle===OTHER_CONTACTS" class="btn btn-default" [pTooltip]="otherContactsInfo" tooltipPosition="bottom">
+        <i class="fa fa-info-circle"></i>
+      </button>
+    </h4>
+
+    <ng-template #templateShowSelected>
+      <!-- <button (click)="onClearSelected()" type="button" class="btn"><i class="fa fa-times"></i></button> -->
+      <div class="select-all-cb" [ngClass]="{'active': (contactService?.isSelectAll$ | async)}">
+        <i (click)="toggleSelectAll()" class="fa fa-check"></i>
+        <span class="btn btn-text">{{ contactService?.selectedObjects?.length }} selected</span>
+      </div>
+    </ng-template>
+  </div>
+
 </div>
 
 <ng-content></ng-content>

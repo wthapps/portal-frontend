@@ -15,12 +15,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { combineLatest } from 'rxjs/operators/combineLatest';
 import { map } from 'rxjs/operators/map';
 
-import { ZContactService, ITEM_PER_PAGE } from '../../shared/services/contact.service';
+import { ZContactService, ITEM_PER_PAGE, MY_CONTACTS, OTHER_CONTACTS } from '../../shared/services/contact.service';
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
 import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
 import { InvitationCreateModalComponent } from '../../../shared/shared/components/invitation/invitation-create-modal.component';
-import { WthConfirmService } from '../../../shared/shared/components/confirmation/wth-confirm.service';
 import { LoadingService } from '../../../shared/shared/components/loading/loading.service';
 import { InvitationService } from '../../../shared/shared/components/invitation/invitation.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
@@ -86,11 +85,23 @@ export class ZContactListComponent
     this.label$ = this.route.paramMap.pipe(
       map(paramMap => paramMap.get('group'))
     );
+    this.route.data
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe(data => {
+      console.log(data);
+      if (data && data.page) {
+        const inOtherPage = data.page === OTHER_CONTACTS;
+        this.pageTitle = inOtherPage ? 'Other contacts' :
+          this.route.snapshot.paramMap.get('group') || 'All contacts';
+        this.contactService.setCurrentPage(data.page);
+      }
+    });
   }
 
   ngOnInit() {
-    this.pageTitle = location.pathname === '/others' ? 'Other contacts' :
-    this.route.snapshot.paramMap.get('group') || 'All contacts';
+    // const inOtherPage = location.pathname === '/others';
+    // this.pageTitle = inOtherPage ? 'Other contacts' :
+    // this.route.snapshot.paramMap.get('group') || 'All contacts';
 
     this.commonEventService
       .filter(
@@ -213,16 +224,6 @@ export class ZContactListComponent
           console.log(res);
         });
         break;
-      // case 'invitation:send_to_recipients':
-      //   this.invitationService
-      //     .create({ recipients: event.payload })
-      //     .subscribe((response: any) => {
-      //       // this.invitationModal.close();
-      //       this.toaster.success(
-      //         'You have just sent invitation(s) successfully!'
-      //       );
-      //     });
-      //   break;
     }
   }
 

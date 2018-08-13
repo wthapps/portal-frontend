@@ -20,6 +20,7 @@
     "start-chat": "ng serve --app chat --port 3020 --live-reload true --open",
     "start-chat-false": "ng serve --app chat --port 3020 --live-reload false --open",
     "start-contact": "ng serve --app contact --port 3025 --live-reload true --open",
+    "start-contact-nr": "ng serve --app contact --port 3025 --live-reload false --open",
     "start-note": "ng serve --app note --port 3030 --live-reload false --open",
     "prettier": "prettier {src,e2e}/**/**/*.{ts,scss} --write",
     "anl-social": "webpack-bundle-analyzer dist/social/stats.json",

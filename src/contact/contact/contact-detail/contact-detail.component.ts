@@ -22,10 +22,10 @@ export class ZContactDetailComponent implements OnInit {
   contactId: number;
   data: any;
 
-  phoneCategories: any = Constants.phoneCategories;
-  emailCategories: any = Constants.emailCategories;
-  addressCategories: any = Constants.addressCategories;
-  mediaCategories: any = Constants.mediaCategories;
+  readonly phoneCategories: any = Constants.phoneCategories;
+  readonly emailCategories: any = Constants.emailCategories;
+  readonly addressCategories: any = Constants.addressCategories;
+  readonly mediaCategories: any = Constants.mediaCategories;
   _contact: any = _contact;
 
   countriesCode$: Observable<any>;
@@ -41,6 +41,7 @@ export class ZContactDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.contactService.clearSelected();
     this.route.params.forEach((params: Params) => {
       this.getContact(params['id']);
       this.contactId = params['id'];
