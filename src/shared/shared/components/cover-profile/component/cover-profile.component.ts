@@ -24,7 +24,6 @@ export class CoverProfileComponent implements OnDestroy {
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private loadingService: LoadingService,
-              // private photoSelectDataService: PhotoModalDataService,
               private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService,
               private objectListService: WObjectListService) {
@@ -38,7 +37,7 @@ export class CoverProfileComponent implements OnDestroy {
    selectPhoto function Should work when there is 1 PhotoDataSelectComponent available in current view
    */
   selectPhoto(callback: any, loadingId?: string) {
-    let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+    const close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
 
     this.mediaSelectionService.setMultipleSelection(false);
     this.mediaSelectionService.open();
@@ -65,10 +64,10 @@ export class CoverProfileComponent implements OnDestroy {
 
   changeProfileImage(event: any) {
     console.log('change Avatar image');
-    let loadingId: string = '#profile_image';
+    const loadingId = '#profile_image';
     this.selectPhoto((photos: any) => {
       // Update avatar image
-      let img_url = photos[0].url;
+      const img_url = photos[0].url;
       this.item.profile_image = img_url;
       this.updateItem({'profile_image': img_url}, 'profile_image');
     }, loadingId);
@@ -77,11 +76,10 @@ export class CoverProfileComponent implements OnDestroy {
   changeCoverImage(event: any) {
     console.log('changeCoverImage');
 
-    let loadingId: string = '#cover_image';
+    const loadingId = '#cover_image';
     this.selectPhoto((photos: Array<any>) => {
       // Update cover image
-      let photo: any;
-      let img_url = photos[0].url;
+      const img_url = photos[0].url;
       this.item.cover_image = img_url;
       this.updateItem({'cover_image': img_url}, 'cover_image');
     }, loadingId);

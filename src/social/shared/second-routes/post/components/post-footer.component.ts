@@ -48,10 +48,10 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
     onShowPhotoDetail: 7
   };
 
-  showInfo: boolean = false;
-  totalComment: number = 1;
-  commentPageIndex: number = 0;
-  loadingDone: boolean = false;
+  showInfo = false;
+  totalComment = 1;
+  commentPageIndex = 0;
+  loadingDone = false;
   emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
   readonly commentLimit: number = Constants.soCommentLimit;
   readonly tooltip: any = Constants.tooltip;
@@ -76,7 +76,7 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(data: any) {
-    if (this.type == 'info') {
+    if (this.type === 'info') {
       this.showInfo = true;
     }
     this.totalComment = +this.item.comment_count;
@@ -98,24 +98,24 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
 
   onActions(action: any, params?: any) {
     console.log('action::::', action, params);
-    let type = params.commentType;
-    let data = params.data;
-    let comment = params.comment;
+    const type = params.commentType;
+    const data = params.data;
+    const comment = params.comment;
     switch (action) {
       case this.actions.onDeleteComment:
         this.eventEmitter.emit(new DeleteCommentEvent(data));
         break;
       case this.actions.onEditComment:
-        let currentComment = data;
-        let commentType = type;
+        const currentComment = data;
+        const commentType = type;
         currentComment.isEditting = true;
         break;
       case this.actions.onDeleteReply:
         this.eventEmitter.emit(new DeleteReplyEvent({reply_uuid: data.uuid}));
         break;
       case this.actions.onCreateComment:
-        let parent = params.parent;
-        let parentType = params.parentType;
+        const parent = params.parent;
+        const parentType = params.parentType;
         _.set(parent, 'isCreatingNewReply', true);
         break;
       case this.actions.openLikeDislike:
@@ -152,14 +152,14 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   getMoreComments() {
-    let body = {'post_uuid': this.item.uuid, 'page_index': this.commentPageIndex, 'limit': this.commentLimit};
+    const body = {'post_uuid': this.item.uuid, 'page_index': this.commentPageIndex, 'limit': this.commentLimit};
     this.postService.loadComments(body)
       .toPromise().then((result: any) => {
-          if (this.commentPageIndex == 0) {
+          if (this.commentPageIndex === 0) {
             // this.item.comments.length = 0; // Clear comments data in the first loading
             this.item.comments = _.map(result.data.comments, this.mapComment);
           } else {
-            let cloneItem = this.item.comments.push(..._.map(result.data.comments, this.mapComment));
+            const cloneItem = this.item.comments.push(..._.map(result.data.comments, this.mapComment));
             this.item = _.clone(cloneItem); // clone this item to notify parent components
           }
           if (result.loading_done)
@@ -178,7 +178,7 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   totalRepliesInWords(replies: any) {
-    let repCount = replies.length > 1 ? 'replies' : 'reply';
+    const repCount = replies.length > 1 ? 'replies' : 'reply';
     return `${replies.length} ${repCount}`;
   }
 

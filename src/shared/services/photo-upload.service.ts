@@ -37,49 +37,7 @@ export class PhotoUploadService {
     private apiService: ApiBaseService,
     private userService: UserService
   ) {
-    this.loadConfigOnce();
   }
-
-  loadConfigOnce() {
-    // if (!this.albumTempBucketName || !this.bucketRegion)
-    //   this.loadConfig();
-  }
-
-  // loadConfig() {
-  //   // ONLY load config 1 time
-  //   this.apiService
-  //     .post(`${this.soPhotoUrl}/get_aws_config`)
-  //     .filter(() => this.userService.loggedIn)
-  //     .delay(3000) // Delay this action 3s to prevent slow loading at initial time
-  //     .take(1)
-  //     .subscribe(
-  //       (data: any) => {
-  //         this.albumTempBucketName = data.tempBucket;
-  //         this.bucketRegion = data.region;
-  //         this.bucketSubFolder = data.bucketSubFolder;
-  //         this.identityPoolId = data.identityPoolId;
-
-  //         this.init();
-  //       },
-  //       (err: any) => {
-  //         console.error('Error loading config', err);
-  //       }
-  //     );
-  // }
-
-  // init(): void {
-  //   AWS.config.update({
-  //     region: this.bucketRegion,
-  //     credentials: new AWS.CognitoIdentityCredentials({
-  //       IdentityPoolId: this.identityPoolId
-  //     })
-  //   });
-
-  //   this.s3 = new AWS.S3({
-  //     apiVersion: '2006-03-01',
-  //     params: { Bucket: this.albumTempBucketName }
-  //   });
-  // }
 
   getPhoto(photo: any): Promise<any> {
     return new Promise((resolve: any) => {

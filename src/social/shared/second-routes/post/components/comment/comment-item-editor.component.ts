@@ -45,7 +45,7 @@ declare let _: any;
 export class CommentItemEditorComponent implements OnInit, OnDestroy {
   // @Input() item: SoPost;
   @Input() parent: any; // parent is able to be Post or Comment or Photo or other object
-  @Input() parentType: string = 'SocialNetwork::Post';  // 'SocialNetwork::Post' or 'SocialNetwork::Comment'
+  @Input() parentType = 'SocialNetwork::Post';  // 'SocialNetwork::Post' or 'SocialNetwork::Comment'
   @Input() originComment = new SoComment();
   @Input() reply: SoComment;
   @Input() mode: any = CommentEditorMode.Add;
@@ -55,8 +55,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   comment: SoComment = new SoComment(); // Clone comment
   commentEditorMode = CommentEditorMode;
-  hasUploadingPhoto: boolean = false;
-  hasUpdatedContent: boolean = false;
+  hasUploadingPhoto = false;
+  hasUpdatedContent = false;
   files: any[];
   user$: Observable<User>;
   showEmoji: boolean;
@@ -88,12 +88,11 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.mode == CommentEditorMode.Add) {
+    if (this.mode === CommentEditorMode.Add) {
       // this.comment = new SoComment();
     }
 
     this.comment = _.cloneDeep(this.originComment);
-    //Init From controls
     this.commentEditorForm = this.fb.group({
       'content': [this.comment.content, ''],
       'photo': [this.comment.photo, null]
@@ -106,7 +105,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.complete();
-    if (this.sub) {
+    if (this.sub && !this.sub.closed) {
       this.sub.unsubscribe();
     }
   }
@@ -133,23 +132,23 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   commentAction(photos?: any) {
     let commentEvent: any;
-    let data: any = {};
+    const data: any = {};
     if (photos) data.photo = photos[0].id;
     data.content = this.comment.content;
-    if (this.mode == this.commentEditorMode.Add) {
+    if (this.mode === this.commentEditorMode.Add) {
       data.post_uuid = this.parent.uuid;
       commentEvent = new CommentCreateEvent(data);
     }
-    if (this.mode == this.commentEditorMode.Edit) {
+    if (this.mode === this.commentEditorMode.Edit) {
       data.uuid = this.comment.uuid;
       commentEvent = new CommentUpdateEvent(data);
     }
-    if (this.mode == this.commentEditorMode.Reply) {
+    if (this.mode === this.commentEditorMode.Reply) {
       data.comment_uuid = this.comment.uuid;
       data.post_uuid = this.parent.uuid;
       commentEvent = new ReplyCreateEvent(data);
     }
-    if (this.mode == this.commentEditorMode.EditReply) {
+    if (this.mode === this.commentEditorMode.EditReply) {
       data.comment_uuid = this.comment.uuid;
       data.reply_uuid = this.reply.uuid;
       commentEvent = new ReplyUpdateEvent(data);
@@ -210,7 +209,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   onEmojiClick(e: any) {
-    let emoj: any = e.replace(/\\/gi, '');
+    const emoj: any = e.replace(/\\/gi, '');
     this.editor.addEmoj(emoj);
     // this.comment.content = this.commentDomValue + emoj;
     this.hasUpdatedContent = true;
@@ -220,12 +219,12 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.setCommentContent('');
     this.setPhoto(null);
     this.hasUpdatedContent = false;
-    if (this.mode == CommentEditorMode.Add) {
+    if (this.mode === CommentEditorMode.Add) {
       // add new comment/reply to post
       _.set(this.originComment, 'isCreatingNewReply', false);
       // this.eventEmitter.emit(new CancelAddCommentEvent(this.comment));
 
-    } else if (this.mode == CommentEditorMode.Edit) {
+    } else if (this.mode === CommentEditorMode.Edit) {
       // update current comment/reply
       _.set(this.originComment, 'isEditting', false);
       this.eventEmitter.emit(new CancelEditCommentEvent(this.comment));
@@ -235,8 +234,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   post(comment?: any) {
     let event: any = null;
 
-    this.comment.content = comment || this.comment.content
-    if (this.mode == CommentEditorMode.Add) {
+    this.comment.content = comment || this.comment.content;
+    if (this.mode === CommentEditorMode.Add) {
       // add new comment/reply to post
       this.comment.parent = this.parent;
       this.comment.parentId = this.parent.uuid;
@@ -246,7 +245,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       _.set(this.originComment, 'isCreatingNewReply', false);
       event = new CommentCreateEvent({...this.comment});
 
-    } else if (this.mode == CommentEditorMode.Edit) {
+    } else if (this.mode === CommentEditorMode.Edit) {
 
       // update current comment/reply
       event = new CommentUpdateEvent(this.comment);
@@ -291,12 +290,11 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   showEmojiBtn(event: any) {
     this.emojiService.show(event);
 
-    if(this.selectEmojiSub && !this.selectEmojiSub.closed)
+    if (this.selectEmojiSub && !this.selectEmojiSub.closed)
       this.selectEmojiSub.unsubscribe();
     this.selectEmojiSub = this.emojiService.selectedEmoji$.pipe(
       take(1)
     ).subscribe(data => {
-      console.debug(data);
       this.editor.addEmoj(data.shortname);
       // this.comment.content = this.commentDomValue + emoj;
       this.hasUpdatedContent = true;
@@ -307,7 +305,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.comment.photo = photo;
     this.commentEditorForm.controls['photo'].setValue(photo);
 
-    if (photo == null) {
+    if (photo === null) {
       this.cancelPhotoSubject.next('');
       console.log('cancel upload photo:::', this.uploadingPhoto);
 

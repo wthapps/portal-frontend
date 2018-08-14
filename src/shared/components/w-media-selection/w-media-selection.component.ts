@@ -196,7 +196,8 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
       this.nextLink = this.buildNextLink();
       this.getObjects(true);
 
-      if (this.currentTab === 'albums' || this.currentTab === 'playlists' || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me') {
+      if (this.currentTab === 'albums' || this.currentTab === 'playlists'
+      || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me') {
         this.objectListService.setObjectsDisabled(['album', 'Media::Playlist']);
       } else {
         this.objectListService.setObjectsDisabled([]);

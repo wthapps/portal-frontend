@@ -76,13 +76,13 @@ export class WMediaSelectionService {
         const data = res.data.map((item) => ({...item, group_by_day: this.datePipe.transform(item.created_at, 'yyyy-MM-dd'),
           group_by_month: this.datePipe.transform(item.created_at, 'yyyy-MM'),
           group_by_year: this.datePipe.transform(item.created_at, 'yyyy')
-        }))
+        }));
 
 
         if (!this.mediasSubject.getValue() || override) {
           this.mediasSubject.next(data);
         } else {
-          let medias = this.mediasSubject.getValue().concat(data);
+          const medias = this.mediasSubject.getValue().concat(data);
           this.mediasSubject.next(medias);
         }
         return res;
@@ -115,7 +115,7 @@ export class WMediaSelectionService {
   }
 
   setSelectedMedias(medias: Media[]) {
-    let newMedias = this.mediasSubject.getValue().filter((media: any) => {
+    const newMedias = this.mediasSubject.getValue().filter((media: any) => {
       return medias.some((m: any) => {
         return (media.id === m.id && media.object_type === m.object_type);
       });

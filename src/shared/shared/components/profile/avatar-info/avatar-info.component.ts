@@ -36,8 +36,8 @@ declare let $: any;
 
 export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
   @Input() data: any;
-  @Input() editable: boolean = true;
-  @Input() nameOnly: boolean = false;
+  @Input() editable = true;
+  @Input() nameOnly = false;
   @ViewChild('modal') modal: BsModalComponent;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
@@ -145,12 +145,13 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
   changeProfileImage(event: any): void {
     event.preventDefault();
     // this.uploadProfile.modal.open();
-    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.getSyncProfile().profile_image} });
+    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT',
+     action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.getSyncProfile().profile_image} });
 
   }
 
   handleSelectCropEvent() {
-    this.commonEventService.filter((event: any) => event.channel == 'SELECT_CROP_EVENT')
+    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
       .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         this.doEvent(event);
@@ -162,7 +163,6 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
     // console.log(event);
     switch (event.action) {
       case 'SELECT_CROP:DONE':
-        console.debug('inside doEvent - SELECT_CROP:DONE', event);
         // Change user profile
         this.updateProfileImageBase64(event.payload);
         break;

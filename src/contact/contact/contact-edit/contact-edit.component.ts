@@ -1,13 +1,18 @@
 import { Component, EventEmitter, Input, OnChanges, Output, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
+import { Observable } from 'rxjs/Observable';
+import { untilComponentDestroyed, componentDestroyed } from 'ng2-rx-componentdestroyed';
+
 import { Contact } from '../contact.model';
 import { GroupService } from '../../group/group.service';
+import { PhotoUploadService } from '@wth/shared/services';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
 import { Constants } from '@shared/constant';
 import { CustomValidator } from '@shared/shared/validator/custom.validator';
 import { ZContactService } from '@contacts/shared/services/contact.service';
-import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
+import { debounceTime, takeUntil, filter, map, mergeMap, tap } from 'rxjs/operators';
+import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 
 declare let _: any;
 
@@ -28,26 +33,26 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   deleteObjects: any = {};
 
   phoneCategories: Array<any> = [
-    {value: 'mobile', text: 'Mobile'},
-    {value: 'home', text: 'Home'},
-    {value: 'work', text: 'Work'},
-    {value: 'main', text: 'Main'},
-    {value: 'fax', text: 'Fax'},
-    {value: 'other', text: 'Other'}
+    { value: 'mobile', text: 'Mobile' },
+    { value: 'home', text: 'Home' },
+    { value: 'work', text: 'Work' },
+    { value: 'main', text: 'Main' },
+    { value: 'fax', text: 'Fax' },
+    { value: 'other', text: 'Other' }
   ];
 
   emailCategories: Array<any> = [
-    {value: 'work', text: 'Work'},
-    {value: 'home', text: 'Home'},
-    {value: 'other', text: 'Other'}
+    { value: 'work', text: 'Work' },
+    { value: 'home', text: 'Home' },
+    { value: 'other', text: 'Other' }
   ];
 
   mediaCategories: Array<any> = [
-    {value: 'wthapps', text: 'WTHApps'},
-    {value: 'facebook', text: 'Facebook'},
-    {value: 'googleplus', text: 'Google Plus'},
-    {value: 'twitter', text: 'Twitter'},
-    {value: 'other', text: 'Other'}
+    { value: 'wthapps', text: 'WTHApps' },
+    { value: 'facebook', text: 'Facebook' },
+    { value: 'googleplus', text: 'Google Plus' },
+    { value: 'twitter', text: 'Twitter' },
+    { value: 'other', text: 'Other' }
 
   ];
 
@@ -67,15 +72,18 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   originalGroups: Object[];
   disableEdit = true;
   sub: any;
+  close$: Observable<any>;
 
   constructor(private fb: FormBuilder,
-              private groupService: GroupService,
-              private contactService: ZContactService,
-              private countryService: CountryService) {
+    private groupService: GroupService,
+    private contactService: ZContactService,
+    private mediaSelectionService: WMediaSelectionService,
+    private photoUploadService: PhotoUploadService,
+    private countryService: CountryService) {
     this.groupService.getAllGroups().then((res: any) => {
       this.originalGroups = res;
       _.map(res, (v: any) => {
-        this.filteredGroupsMultiple.push({value: v.name, display: v.name});
+        this.filteredGroupsMultiple.push({ value: v.name, display: v.name });
       });
     });
     this.deleteObjects['emails'] = [];
@@ -85,6 +93,8 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
     this.createForm();
 
+    this.close$ = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+
 
     this.sub = this.form.valueChanges
       .subscribe((e) => {
@@ -92,9 +102,9 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
         this.form.get('emails')['controls'].forEach((control, index) => {
           if (control.valid && control.value.value !== '' && !control.pristine) {
-            let sub = control.valueChanges.pipe(debounceTime(250)).subscribe(ctrl => {
+            const sub = control.valueChanges.pipe(debounceTime(250)).subscribe(ctrl => {
               const emails = this.form.get('emails')['controls'];
-              this.event.emit({action: 'contact:contact:edit_email', payload: {item: emails[index].value, emails: emails}});
+              this.event.emit({ action: 'contact:contact:edit_email', payload: { item: emails[index].value, emails: emails } });
               sub.unsubscribe();
               // this.sub.unsubscribe();
             });
@@ -192,7 +202,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     let formGroup: any = null;
     switch (type) {
       case 'phones': {
-        let data: any = {category: 'mobile', value: ''};
+        const data: any = { category: 'mobile', value: '' };
         if (item) {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
@@ -210,7 +220,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
         break;
       }
       case 'emails': {
-        let data: any = {category: 'work', value: ''};
+        const data: any = { category: 'work', value: '' };
         if (item) {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
@@ -226,7 +236,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
         break;
       }
       case 'addresses': {
-        let data: any = {
+        const data: any = {
           category: 'work',
           address_line1: '',
           po_box: '',
@@ -260,7 +270,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
         break;
       }
       case 'media': {
-        let data: any = {category: 'wthapps', value: ''};
+        const data: any = { category: 'wthapps', value: '' };
         if (item) {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
@@ -283,7 +293,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   addItem(type: string, item?: any) {
-    let control = <FormArray>this.form.controls[type];
+    const control = <FormArray>this.form.controls[type];
     if (item) {
       control.push(this.initItem(type, item));
     } else {
@@ -294,14 +304,40 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   removeItem(type: string, i: number) {
     const control = <FormArray>this.form.controls[type];
     if (this.contact[type][i]) {
-      this.deleteObjects[type].push({...this.contact[type][i], _destroy: true});
-      this.contact[type].splice(i,1);
+      this.deleteObjects[type].push({ ...this.contact[type][i], _destroy: true });
+      this.contact[type].splice(i, 1);
     }
 
     if (type === 'emails') {
-      this.event.emit({action: 'contact:contact:remove_email', payload: this.form.controls[type]['controls'][i].value});
+      this.event.emit({ action: 'contact:contact:remove_email', payload: this.form.controls[type]['controls'][i].value });
     }
     control.removeAt(i);
+  }
+
+  onChangeAvatar(): void {
+    this.mediaSelectionService.open({ hiddenTabs: ['videos', 'playlists'], allowSelectMultiple: false });
+
+    this.mediaSelectionService.selectedMedias$.pipe(
+      takeUntil(this.close$),
+      filter(items => items.length > 0)
+    ).subscribe((items) => {
+      this.setPhoto(items[0]);
+    });
+
+    this.mediaSelectionService.uploadingMedias$.pipe(
+      takeUntil(this.close$),
+      map(([file, dataUrl]) => [file]),
+      mergeMap((files: File[]) => {
+        return this.photoUploadService.uploadPhotos(files);
+      })
+    ).subscribe((res: any) => {
+      this.setPhoto(res.data);
+    });
+  }
+
+  setPhoto(photo): void {
+    this.contact.profile_image = photo.thumbnail_url;
+    this.upsertContact(this.contact);
   }
 
   onSubmit(values: any): void {
@@ -327,19 +363,23 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
     this.contact.notes = values.notes;
 
+    this.upsertContact(this.contact);
+  }
+
+  upsertContact(contact: Contact) {
     if (this.mode === 'create') {
-      this.event.emit({action: 'contact:contact:create', payload: {item: this.contact}});
+      this.event.emit({ action: 'contact:contact:create', payload: { item: contact } });
     }
     if (this.mode === 'edit') {
-      this.event.emit({action: 'contact:contact:update', payload: {item: this.contact}});
+      this.event.emit({ action: 'contact:contact:update', payload: { item: contact } });
     }
   }
 
   filterCountriesCode(event: any) {
     this.filteredCountriesCode = [];
     for (let i = 0; i < this.countriesNameCode.length; i++) {
-      let brand = this.countriesNameCode[i];
-      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+      const brand = this.countriesNameCode[i];
+      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
         this.filteredCountriesCode.push(brand);
       }
     }
