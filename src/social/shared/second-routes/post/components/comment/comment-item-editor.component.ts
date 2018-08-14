@@ -106,7 +106,9 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.complete();
-    this.sub.unsubscribe();
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
   viewProfile(uuid: string) {
