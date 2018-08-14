@@ -72,7 +72,7 @@ export class MessageItemComponent implements OnInit {
   }
 
   doAction(event: CommonEvent) {
-    var editingEvent = _.cloneDeep(event); // this helps current value doesn't change when users edit message
+    const editingEvent = _.cloneDeep(event); // this helps current value doesn't change when users edit message
 
     this.pubSubEventService.broadcast(editingEvent);
   }
