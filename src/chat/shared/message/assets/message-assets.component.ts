@@ -1,23 +1,15 @@
-import {
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewEncapsulation
-} from '@angular/core';
-import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
-import { Constants } from '@shared/constant';
-import { ChatService } from '@chat/shared/services/chat.service';
-import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { CommonEventService, UserService } from '@shared/services';
-import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { Observable } from 'rxjs/Observable';
-import { takeUntil } from 'rxjs/operators';
-import { Media } from '@shared/shared/models/media.model';
-import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
-import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {WTab} from '@shared/components/w-nav-tab/w-nav-tab';
+import {Constants} from '@shared/constant';
+import {ChatService} from '@chat/shared/services/chat.service';
+import {WthConfirmService} from '@shared/shared/components/confirmation/wth-confirm.service';
+import {CommonEventService, UserService} from '@shared/services';
+import {MessageAssetsService} from '@chat/shared/message/assets/message-assets.service';
+import {ZChatShareAddContactService} from '@chat/shared/modal/add-contact.service';
+import {Observable} from 'rxjs/Observable';
+import {Media} from '@shared/shared/models/media.model';
+import {ResponseMetaData} from '@shared/shared/models/response-meta-data.model';
+import {WObjectListService} from '@shared/components/w-object-list/w-object-list.service';
 
 
 @Component({
@@ -30,15 +22,15 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   @Input() chatContactList: { [partner_id: string]: any } = {};
   contactSelect: any;
   tooltip: any = Constants.tooltip;
-  showMembers: boolean;
-  tabsMember: WTab = {
+
+  tabMember: WTab = {
     name: 'Members',
     link: 'members',
     icon: null,
     number: null,
     type: 'tab'
   };
-  tabs: WTab[] = [
+  tabsPhoto: WTab[] = [
     {
       name: 'Photos',
       link: 'photos',
@@ -62,6 +54,10 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     }
   ];
 
+
+  tabsMember: WTab[] = [this.tabMember, ...this.tabsPhoto];
+  tabs: WTab[] = [];
+
   currentTab: string; // members, photos, notes, files
 
   profileUrl: any;
@@ -80,28 +76,20 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private objectListService: WObjectListService
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
-
-    this.currentTab = 'photos';
   }
 
   ngOnInit() {
     console.log('ngOnInit');
     this.chatService.getContactSelectAsync()
       .subscribe((res: any) => {
+        console.log(res);
         this.contactSelect = res;
-        if (this.contactSelect && this.contactSelect.group_json) {
-          this.showMembers = this.contactSelect.group_json.member_count > 2;
-          if (
-            this.showMembers &&
-            _.findIndex(this.tabs, ['link', 'members']) === -1
-          ) {
-            this.currentTab = 'members';
-            this.tabs.unshift(this.tabsMember);
-          } else {
-            this.currentTab = 'photos';
-            _.remove(this.tabs, ['link', 'members']);
-          }
+        if (this.contactSelect && this.contactSelect.group_type === 'couple') {
+          this.tabs = this.tabsPhoto;
+        } else {
+          this.tabs = this.tabsMember;
         }
+        this.tabAction(this.tabs[0]);
       });
 
     this.medias$ = this.messageAssetsService.medias$;
@@ -114,8 +102,9 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   tabAction(event: WTab) {
+    console.log(event);
     this.currentTab = event.link;
-    if (this.currentTab !== 'member') {
+    if (this.currentTab !== 'members') {
       this.nextLink = this.buildNextLink();
       if (this.nextLink) {
         this.getObjects(true);

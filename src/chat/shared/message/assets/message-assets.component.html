@@ -10,7 +10,7 @@
   <div class="message-assets-tab">
     <w-nav-tab [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)"></w-nav-tab>
   </div>
-  <div *ngIf="currentTab === 'members' && showMembers" class="message-assets-content bg-gray-light">
+  <div *ngIf="currentTab === 'members'" class="message-assets-content bg-gray-light">
     <div class="message-assets-members">
       <ng-container *ngIf="contactSelect?.group_json">
         <ul

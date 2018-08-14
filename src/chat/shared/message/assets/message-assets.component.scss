@@ -2,15 +2,20 @@
 
 $message-assets-width: 400px;
 .message-assets {
+  background-color: #ffffff;
   position: absolute;
-  right: -$message-assets-width;
+  right: -100%;
   top: $page-body-control-height;
   bottom: 0;
   z-index: 29;
   width: $message-assets-width;
+  max-width: 100%;
   @include box-shadow($box-shadow-left);
   @include flexbox;
   @include flex-direction(column);
+  @media (min-width: $screen-sm-min) {
+    right: -$message-assets-width;
+  }
 }
 
 .message-assets-title {
@@ -22,8 +27,12 @@ $message-assets-width: 400px;
 
 .message-assets-tab {
   border-bottom: 2px solid $line;
+  padding-bottom: 10px;
   .nav-tabs-wrap {
     margin-bottom: -2px;
+  }
+  @media (min-width: $screen-sm-min) {
+    padding-bottom: 0;
   }
 }
 
@@ -96,7 +105,9 @@ $message-assets-width: 400px;
 body {
   &.open-chat-message-assets {
     .page-body-content {
-      padding-right: $message-assets-width;
+      @media (min-width: $screen-lg-min) {
+        padding-right: $message-assets-width;
+      }
     }
     .message-assets {
       right: 0;
