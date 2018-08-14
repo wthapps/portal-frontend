@@ -195,6 +195,19 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
     }
   };
 
+  deleteShareWithMe() {
+    this.confirmService.confirm({
+      header: 'Delete',
+      acceptLabel: 'Delete',
+      message: `Are you sure to delete ${this.selectedObjects.length} sharings`,
+      accept: () => {
+        this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, { sharings: this.selectedObjects }).subscribe(res => {
+          this.loadObjects();
+        });
+      }
+    });
+  }
+
   getMenuActions() {
     return {
       share: {
@@ -237,16 +250,7 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
         inDropDown: false, // Outside dropdown list
         action: () => {
           // this.deleteObjects.bind(this, 'sharings');
-          this.confirmService.confirm({
-            header: 'Delete',
-            acceptLabel: 'Delete',
-            message: `Are you sure to delete ${this.selectedObjects.length} sharings`,
-            accept: () => {
-              this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, {sharings: this.selectedObjects}).subscribe(res => {
-                this.loadObjects();
-              });
-            }
-          });
+          this.deleteShareWithMe();
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
@@ -282,7 +286,7 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
-        action: () => { },
+        action: () => { this.deleteShareWithMe(); },
         class: '',
         liclass: 'visible-xs-block',
         title: 'Delete',

@@ -27,14 +27,21 @@ import { SharingModalService } from '@shared/shared/components/photo/modal/shari
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
+import { MediaAdditionalListMixin } from '@media/shared/mixin/media-additional-list.mixin';
+import { mediaConstants } from '@media/shared/conig/constants';
+import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 
-@Mixin([MediaBasicListMixin, SharingModalMixin])
+@Mixin([MediaBasicListMixin, SharingModalMixin, MediaAdditionalListMixin, MediaDownloadMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-favourite-list',
   templateUrl: '../shared/list/list.component.html'
 })
-export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin, SharingModalMixin {
+export class ZMediaFavoriteListComponent implements OnInit,
+  MediaBasicListMixin,
+  SharingModalMixin,
+  MediaDownloadMixin,
+  MediaAdditionalListMixin {
   // display objects on screen
   objects: any;
   // tooltip to introduction
@@ -75,6 +82,8 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
   selectedObjectsChanged: (objectsChanged: any) => void;
   deleteObjects: (term: any) => void;
   changeViewMode: (mode: any) => void;
+  validateActions:(menuActions: any, role_id: number) => any;
+  downloadMedia:(media: any) => void;
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
@@ -123,7 +132,19 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+      // console.log(e.payload[0]);
+
+        if(e.payload && e.payload.length == 1) {
+          this.validateActions(this.menuActions, e.payload[0].role_id);
+        } else {
+          // only view when select many
+          this.validateActions(this.menuActions, 1);
+          this.menuActions.delete.active = false;
+          this.menuActions.deleteMobile.active = false;
+          this.menuActions.download.active = false;
+          this.menuActions.share.active = false;
+          this.menuActions.shareMobile.active = false;
+        }
         break;
       default:
         break;
@@ -169,11 +190,24 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
       }
   }
 
+  deleteShareWithMe() {
+    this.confirmService.confirm({
+      header: 'Delete',
+      acceptLabel: 'Delete',
+      message: `Are you sure to delete ${this.selectedObjects.length} sharings`,
+      accept: () => {
+        this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, { sharings: this.selectedObjects }).subscribe(res => {
+          this.loadObjects();
+        });
+      }
+    });
+  }
+
   getMenuActions() {
     return {
       favourite: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: this.toggleFavorite.bind(this),
         class: 'btn btn-default',
@@ -184,7 +218,7 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
       },
       share: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: false, // Outside dropdown list
         action: this.openModalShare.bind(this),
         class: 'btn btn-default',
@@ -205,69 +239,77 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-share-alt'
       },
-      tag: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: () => { },
-        class: 'btn btn-default',
-        liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
-      },
-      tagMobile: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Inside dropdown list
-        action: () => { },
-        class: '',
-        liclass: 'visible-xs-block',
-        title: 'Tag',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
-      },
+      // tag: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: false, // Outside dropdown list
+      //   action: () => { },
+      //   class: 'btn btn-default',
+      //   liclass: 'hidden-xs',
+      //   tooltip: this.tooltip.tag,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-tag'
+      // },
       delete: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
-        action: () => { },
+        action: () => {
+          if(this.selectedObjects[0].object_type == 'sharing') {
+            if (this.selectedObjects[0].role_id == 5) {
+              this.deleteObjects('sharings');
+            } else {
+              this.deleteShareWithMe();
+            }
+          } else if (this.selectedObjects[0].object_type == 'video') {
+            this.deleteObjects('video');
+          } else if (this.selectedObjects[0].object_type == 'photo') {
+            this.deleteObjects('photo');
+          }
+        },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
         tooltip: this.tooltip.delete,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       },
-      edit: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Outside dropdown list
-        action: () => { },
-        class: '',
-        liclass: '',
-        title: 'Edit Information',
-        tooltip: this.tooltip.edit,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-edit'
-      },
-      detail: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Outside dropdown list
-        action: () => { },
-        class: '',
-        liclass: '',
-        title: 'View Detail',
-        tooltip: this.tooltip.info,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-info-circle'
-      },
+      // edit: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: true, // Outside dropdown list
+      //   action: () => { },
+      //   class: '',
+      //   liclass: '',
+      //   title: 'Edit Information',
+      //   tooltip: this.tooltip.edit,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-edit'
+      // },
+      // detail: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: true, // Outside dropdown list
+      //   action: () => { },
+      //   class: '',
+      //   liclass: '',
+      //   title: 'View Detail',
+      //   tooltip: this.tooltip.info,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-info-circle'
+      // },
       download: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
         inDropDown: true, // Outside dropdown list
-        action: () => { },
+        action: () => {
+          if (this.selectedObjects[0].object_type == 'sharing') {
+            this.apiBaseService.get(`media/sharings/${this.selectedObjects[0].uuid}/objects`).subscribe(res => {
+              this.downloadMedia(res.data);
+            });
+          } else {
+            this.downloadMedia(this.selectedObjects)
+          }
+        },
         class: '',
         liclass: '',
         title: 'Download',
@@ -277,9 +319,11 @@ export class ZMediaFavoriteListComponent implements OnInit, MediaBasicListMixin,
       },
       deleteMobile: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: true, // Inside dropdown list
-        action: () => { },
+        action: () => {
+          // this.deleteObjects
+        },
         class: '',
         liclass: 'visible-xs-block',
         title: 'Delete',
