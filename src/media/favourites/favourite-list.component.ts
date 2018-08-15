@@ -80,7 +80,26 @@ export class ZMediaFavoriteListComponent implements OnInit,
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
   selectedObjectsChanged: (objectsChanged: any) => void;
-  deleteObjects: (term: any) => void;
+  deleteObjects (term: any) {
+    const sharings_with_me = this.selectedObjects.filter(s => s.object_type == 'sharing' && s.role_id < 5);
+    const others = this.selectedObjects.filter(s => !(s.object_type == 'sharing' && s.role_id < 5));
+    this.confirmService.confirm({
+      header: 'Delete',
+      acceptLabel: 'Delete',
+      message: `Are you sure to delete ${this.selectedObjects.length} ${term}`,
+      accept: () => {
+        this.loading = true;
+        this.apiBaseService.post(`media/media/delete`, { objects: others }).subscribe(res => {
+          this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, { sharings: sharings_with_me }).subscribe(res => {
+            this.loadObjects();
+            this.loading = false;
+            this.hasSelectedObjects = false;
+            this.selectedObjects = [];
+          });
+        })
+      }
+    });
+  };
   changeViewMode: (mode: any) => void;
   validateActions:(menuActions: any, role_id: number) => any;
   downloadMedia:(media: any) => void;
@@ -139,8 +158,8 @@ export class ZMediaFavoriteListComponent implements OnInit,
         } else {
           // only view when select many
           this.validateActions(this.menuActions, 1);
-          this.menuActions.delete.active = false;
-          this.menuActions.deleteMobile.active = false;
+          // this.menuActions.delete.active = false;
+          // this.menuActions.deleteMobile.active = false;
           this.menuActions.download.active = false;
           this.menuActions.share.active = false;
           this.menuActions.shareMobile.active = false;
@@ -188,19 +207,6 @@ export class ZMediaFavoriteListComponent implements OnInit,
       default:
         break;
       }
-  }
-
-  deleteShareWithMe() {
-    this.confirmService.confirm({
-      header: 'Delete',
-      acceptLabel: 'Delete',
-      message: `Are you sure to delete ${this.selectedObjects.length} sharings`,
-      accept: () => {
-        this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, { sharings: this.selectedObjects }).subscribe(res => {
-          this.loadObjects();
-        });
-      }
-    });
   }
 
   getMenuActions() {
@@ -255,17 +261,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: () => {
-          if(this.selectedObjects[0].object_type == 'sharing') {
-            if (this.selectedObjects[0].role_id == 5) {
-              this.deleteObjects('sharings');
-            } else {
-              this.deleteShareWithMe();
-            }
-          } else if (this.selectedObjects[0].object_type == 'video') {
-            this.deleteObjects('video');
-          } else if (this.selectedObjects[0].object_type == 'photo') {
-            this.deleteObjects('photo');
-          }
+          this.deleteObjects('items');
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
@@ -322,7 +318,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: true, // Inside dropdown list
         action: () => {
-          // this.deleteObjects
+          this.deleteObjects('items');
         },
         class: '',
         liclass: 'visible-xs-block',
