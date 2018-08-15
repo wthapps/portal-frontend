@@ -1,14 +1,19 @@
 <z-contact-shared-toolbar [pageTitle]="pageTitle" [hasBack]="hasBack" [currentPage]="'detail'">
   <div class="page-body-control-nav page-body-control-nav-right">
+    <button *ngIf="mode === 'create'" type="reset"
+            class="btn btn-outline-default btn-min"
+            [routerLink]="['/contacts']">Cancel
+    </button>
+
     <button *ngIf="mode === 'create'" type="button"
             [disabled]="!contactEdit?.name?.valid && contactEdit?.name?.errors?.required || !formValid"
             (click)="contactEdit.onSubmit(contactEdit?.form?.value)"
             class="btn btn-outline-primary btn-min mr10">Create
     </button>
 
-    <button *ngIf="mode === 'create'" type="reset"
+    <button *ngIf="mode === 'edit'" type="reset"
             class="btn btn-outline-default btn-min"
-            [routerLink]="['/contacts']">Cancel
+            (click)="goBack()">Cancel
     </button>
 
     <button *ngIf="mode === 'edit'" type="button"
@@ -18,10 +23,7 @@
             class="btn btn-outline-primary btn-min mr10">Save
     </button>
 
-    <button *ngIf="mode === 'edit'" type="reset"
-            class="btn btn-outline-default btn-min"
-            (click)="goBack()">Cancel
-    </button>
+
 
     <z-contact-shared-actions-bar *ngIf="mode === 'view'"
                                   [showViewDetail]="false"
@@ -89,7 +91,7 @@
             <span>{{ email.value }}</span>
           </div>
           <div class="action">
-            <button class="btn btn-outline-default" pTooltip="Invite to join WTHApps" tooltipPosition="left"
+            <button class="btn btn-default" pTooltip="Invite to join WTHApps" tooltipPosition="left"
                     (click)="invite(email)">
               <i class="fa fa-envelope-o"></i>
             </button>

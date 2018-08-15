@@ -13,7 +13,7 @@ const subdomain = `test`;
 const fullDomain = `${subdomain}.${domain}`;
 
 export const ConfigByEnv: EnvConfig = {
-  CDN: `${protocol}://cdn-apps-test.${domain}`,
+  CDN: `${protocol}://cdn-apps-test.${domain}/assets`,
   API: `${protocol}://api-${fullDomain}`,
   ENV: 'TEST',
   DOMAIN: `${domain}`,
