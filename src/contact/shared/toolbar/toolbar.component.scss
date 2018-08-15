@@ -1,5 +1,4 @@
 @import '../../../shared/scss/global';
-
 :host {
   display: block;
   & /deep/ {
@@ -11,24 +10,46 @@
   }
 }
 
-.toolbar-title {
+.inline-block {
   display: inline-block;
 }
 
-.select-all-cb {
-  background-color: #F2F2F2;
-  i {
-    border: 1px solid #4a4a4a;
-    border-radius: 2px;
-    cursor: pointer;
-    color: #ffffff;
+.select-all-div {
+  @media (min-width : $screen-lg-min) {
+   padding-left: 20px;
   }
-  &.active {
+
+  @media (min-width: $screen-md-max) and (max-width: $screen-lg) {
+    padding-left: 25px;
+  }
+
+  @media (min-width: $screen-sm-max) and (max-width: $screen-md) {
+    padding-left: 40px;
+  }
+  @media (max-width: $screen-sm) {
+    margin-left: 6px;
+  }
+
+  .deselect-all {
+    display: inline-block;
+    cursor: pointer;
+    padding-right: 20px;
+  }
+  .select-all-cb {
+    display: inline-block;
     i {
-      background-color: $theme-color;
-      border-color: $theme-color;
-      color: white;
-      opacity: 1;
+      border: 1px solid #4a4a4a;
+      border-radius: 2px;
+      cursor: pointer;
+      color: #ffffff;
+    }
+    &.active {
+      i {
+        background-color: $theme-color;
+        border-color: $theme-color;
+        color: white;
+        opacity: 1;
+      }
     }
   }
 }

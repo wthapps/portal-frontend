@@ -74,6 +74,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
+        this.contactService.clearSelected();
         const id = params['id'];
         if (params['mode'] !== undefined) {
           this.mode = params['mode'];

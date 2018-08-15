@@ -44,4 +44,8 @@ export class ZContactSharedToolbarComponent implements OnInit {
   toggleSelectAll() {
     this.contactService.toggleSelectAll();
   }
+
+  deselectAll() {
+    this.contactService.clearSelected();
+  }
 }

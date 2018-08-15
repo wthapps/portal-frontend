@@ -41,8 +41,8 @@ export class ZContactDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.contactService.clearSelected();
     this.route.params.forEach((params: Params) => {
+      this.contactService.clearSelected();
       this.getContact(params['id']);
       this.contactId = params['id'];
     });
