@@ -210,8 +210,8 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
       case 'complete':
         if (this.uploaded_num > 0) {
           this.commonEventService.broadcast({ channel: 'WUploaderStatus', action: 'updateMediaList', payload: { } });
+          this.step = 2;
         }
-        this.step = 2;
         break;
     }
   }
