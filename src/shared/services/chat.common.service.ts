@@ -26,6 +26,14 @@ export class ChatCommonService {
     this.storage.save(CHAT_CONVERSATIONS, {...contacts});
   }
 
+  setAllConversations(conversations_response) {
+    this.storage.save(CHAT_CONVERSATIONS, conversations_response);
+    this.setRecentConversations();
+    this.setFavouriteConversations();
+    this.setHistoryConversations();
+    this.setDefaultSelectContact();
+  }
+
   setRecentConversations() {
     const contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     const recentContacts = _.filter(contacts, {
@@ -77,7 +85,10 @@ export class ChatCommonService {
     const currentMessageList = this.storage.getValue('chat_messages_group_' + groupId);
     const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
     const conversationsResponse = this.storage.getValue(CHAT_CONVERSATIONS);
-    if (contactSelect) {
+    if (!conversationsResponse || !conversationsResponse.data)
+      return;
+    const incomingConversation = conversationsResponse.data.find(conv => conv.group_json.id === groupId)
+    if (contactSelect && incomingConversation && contactSelect.id === incomingConversation.id) {
       if (currentMessageList) {
         let isReplace = false;
         for (let i = 0; i < currentMessageList.data.length; i++) {
@@ -97,20 +108,15 @@ export class ChatCommonService {
           this.messageService.scrollToBottom();
       }
 
-      if (!contactSelect.favourite) {
-        this.moveFristRecentList(groupId);
-      }
     }
-    if (!conversationsResponse)
-      return;
+    if (incomingConversation && !incomingConversation.favourite) {
+      this.moveFristRecentList(groupId);
+    }
     for (const conversation of conversationsResponse.data) {
       if (conversation.group_json.id === groupId)
         conversation.latest_message = message;
     }
-    this.storage.save(CHAT_CONVERSATIONS, conversationsResponse);
-    this.setRecentConversations();
-    this.setFavouriteConversations();
-    this.setHistoryConversations();
+    this.setAllConversations(conversationsResponse);
   }
 
   updateItemInList(groupId: any, data: any) {

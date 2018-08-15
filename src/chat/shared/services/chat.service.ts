@@ -74,7 +74,7 @@ export class ChatService {
     if (res && res.value && !option.forceFromApi) {
       return res;
     } else {
-      this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: Conversation) => {
+      this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: any) => {
         this.storage.save(CHAT_CONVERSATIONS, conv);
         this.chatCommonService.setRecentConversations();
         this.chatCommonService.setFavouriteConversations();
@@ -92,7 +92,7 @@ export class ChatService {
         observer.next(res);
         observer.complete();
       } else {
-        this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: Conversation) => {
+        this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: any) => {
           this.storage.save(CHAT_CONVERSATIONS, conv);
           this.chatCommonService.setRecentConversations();
           this.chatCommonService.setFavouriteConversations();

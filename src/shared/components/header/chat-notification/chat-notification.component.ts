@@ -1,5 +1,7 @@
+import { ChatCommonService } from './../../../services/chat.common.service';
+import { CHAT_CONVERSATIONS } from './../../../constant/chat-constant';
 import { Component, OnInit } from '@angular/core';
-import { Constants, CHAT_CONVERSATIONS } from '@shared/constant';
+import { Constants } from '@shared/constant';
 import { AuthService } from '@wth/shared/services';
 import { WTHNavigateService } from '@shared/services/wth-navigate.service';
 import { Router } from '@angular/router';
@@ -29,6 +31,7 @@ export class ChatNotificationComponent implements OnInit {
   constructor(
     private navigateService: WTHNavigateService,
     private apiBaseService: ApiBaseService,
+    private chatCommonService: ChatCommonService,
     private router: Router,
     private storageService: StorageService,
     public connectionService: ConnectionNotificationService,
@@ -36,7 +39,7 @@ export class ChatNotificationComponent implements OnInit {
     public handlerService: HandlerService,
     public wthNavigateService: WTHNavigateService,
     public authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
@@ -156,57 +159,44 @@ export class ChatNotificationComponent implements OnInit {
       });
   }
 
-  updateChatStore(action: any, params: any = null) {
-    const chat_conversations = this.storageService.find('chat_conversations');
+  updateChatStore(action: any, params: any = null): void {
+    const chat_conversations_response = this.storageService.getValue(CHAT_CONVERSATIONS);
+    if (!chat_conversations_response || !chat_conversations_response.data)
+      return;
+    let chat_conversations = chat_conversations_response.data
     switch (action) {
-      case 'markAllAsRead':
-        if (
-          chat_conversations &&
-          chat_conversations.value &&
-          chat_conversations.value.data
-        ) {
-          const conversations = chat_conversations.value.data.map(
-            (conversation: any) => {
+      case 'markAllAsRead': {
+        chat_conversations = chat_conversations.map(
+          (conversation: any) => {
+            conversation.notification_count = 0;
+            return conversation;
+          }
+        );
+      }
+        break;
+      case 'markAsRead': {
+        chat_conversations = chat_conversations.map(
+          (conversation: any) => {
+            if (conversation.group_json.id === params.id)
               conversation.notification_count = 0;
-              return conversation;
-            }
-          );
-          chat_conversations.value.data = conversations;
-        }
+            return conversation;
+          }
+        );
+      }
         break;
-      case 'markAsRead':
-        if (
-          chat_conversations &&
-          chat_conversations.value &&
-          chat_conversations.value.data
-        ) {
-          const conversations = chat_conversations.value.data.map(
-            (conversation: any) => {
-              if (conversation.group_json.id === params.id)
-                conversation.notification_count = 0;
-              return conversation;
-            }
-          );
-          chat_conversations.value.data = conversations;
-        }
-        break;
-      case 'updateNotification':
-        if (
-          chat_conversations &&
-          chat_conversations.value &&
-          chat_conversations.value.data
-        ) {
-          const conversations = chat_conversations.value.data.map(
-            (conversation: any) => {
-              if (conversation.group_json.id === params.id)
-                conversation.notification = params.notification;
-              return conversation;
-            }
-          );
-          chat_conversations.value.data = conversations;
-        }
+      case 'updateNotification': {
+        chat_conversations = chat_conversations.map(
+          (conversation: any) => {
+            if (conversation.group_json.id === params.id)
+              conversation.notification = params.notification;
+            return conversation;
+          }
+        );
+      }
         break;
     }
+
+    this.chatCommonService.setAllConversations(chat_conversations_response);
   }
 
   getMore() {
