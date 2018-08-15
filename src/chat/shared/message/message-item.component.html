@@ -131,11 +131,12 @@
           </div>
 
           <!-- note type-->
-          <div *ngIf="message.file_type == 'Note::Note'" class="note-display p15 can-click">
-            <a [href]="noteUrl + '/notes/public/' + message.file?.uuid" target="_blank">
+          <div class="message-item-content-note" *ngIf="message.file_type == 'Note::Note'">
+            <a class="d-block" [href]="noteUrl + '/notes/public/' + message.file?.uuid" target="_blank">
               <h5>
-                <i class="fa fa-file"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}</h5>
-              <div [innerHTML]="message.file?.content"></div>
+                <i class="fa fa-file"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
+              </h5>
+              <div class="message-item-content-note-in" [innerHTML]="message.file?.content"></div>
             </a>
           </div>
         </ng-template>
