@@ -76,7 +76,7 @@ export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModal
 
   ngOnInit() {
     this.loadObjects();
-    this.sub = this.commonEventService.filter(e => e.channel == 'WUploaderStatus').subscribe((event: any) => {
+    this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').subscribe((event: any) => {
       this.doListEvent(event);
     });
   }
@@ -145,9 +145,9 @@ custom method please overwirte any method*/
         this.loadMoreObjects();
         break;
       case 'openModal':
-        if (event.payload.modalName == "editNameModal") {
-          this.openEditModal(event.payload.selectedObject)
-        };
+        if (event.payload.modalName === 'editNameModal') {
+          this.openEditModal(event.payload.selectedObject);
+        }
         break;
     }
   }

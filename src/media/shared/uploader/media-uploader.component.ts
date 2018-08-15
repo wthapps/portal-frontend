@@ -56,7 +56,6 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
 
   @Output() createNewAlbum: EventEmitter<any> = new EventEmitter<any>();
   @Output() addToAlbum: EventEmitter<any> = new EventEmitter<any>();
-  @Output() needToReload: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -102,15 +101,12 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
 
   stop(event: any) {
     event.preventDefault();
-    // if (this.pending_request && !this.pending_request.closed) {
-    //   this.pending_request.unsubscribe();
-    // }
-    // this.stopped_num = this.files_num - this.uploaded_num;
-    // this.step = this.uploadSteps.stop;
-    // if (this.uploaded_num > 0) {
-    //   this.needToReload.emit(true);
-    // }
     this.uploader.cancelAll();
+    if (this.pending_request && !this.pending_request.closed) {
+      this.pending_request.unsubscribe();
+    }
+    this.stopped_num = this.files_num - this.uploaded_num;
+    this.step = this.uploadSteps.stop;
   }
 
   // Retry upload pending files
@@ -186,7 +182,6 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   updateUploadStatus(event) {
-    console.log('capture event:::', event.action, event.payload);
 
     switch (event.action) {
       case 'start':
@@ -211,8 +206,11 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
       case 'error':
         // this.step = 3;
         break;
+      case 'cancel-success':
       case 'complete':
-        this.commonEventService.broadcast({ channel: 'WUploaderStatus', action: 'updateMediaList', payload: { } });
+        if (this.uploaded_num > 0) {
+          this.commonEventService.broadcast({ channel: 'WUploaderStatus', action: 'updateMediaList', payload: { } });
+        }
         this.step = 2;
         break;
     }
