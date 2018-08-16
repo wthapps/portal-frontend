@@ -78,10 +78,12 @@ $ui-inputswitch-w: 24px;
 .ui-chkbox-box,
 .ui-radiobutton-box {
   &.ui-state-active,
-  &.ui-state-focus,
-  &.ui-state-active.ui-state-focus {
-    background-color: $color-success;
-    border-color: $color-success;
+  &.ui-state-active.ui-state-focus{
+    background-color: $input-color-active;
+    border-color: $input-color-active;
+  }
+  &.ui-state-focus {
+    background-color: transparent;
   }
 }
 
@@ -171,16 +173,16 @@ $ui-inputswitch-w: 24px;
 
       &.ui-state-focus {
         $color-rgba: rgba(
-          red($input-border-focus),
-          green($input-border-focus),
-          blue($input-border-focus),
-          0.6
+            red($input-border-focus),
+            green($input-border-focus),
+            blue($input-border-focus),
+            0.6
         );
         border-color: $input-border-focus;
         outline: 0;
         @include box-shadow(
-          inset 0 1px 1px rgba(0, 0, 0, 0.075),
-          0 0 8px $color-rgba
+            inset 0 1px 1px rgba(0, 0, 0, 0.075),
+            0 0 8px $color-rgba
         );
       }
       .ui-state-highlight {
