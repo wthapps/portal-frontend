@@ -183,19 +183,23 @@ export class WUploader {
   }
 
   /**
-   *
-   * @param {Array<any>} files
+   * Cancel uploading or uploaded files
+   * @param {boolean} cancelAll - Specific true if you want to delete all files
    */
-  cancelAll(uploadingFiles?: Array<any>) {
-    const files = uploadingFiles || this.uppy.getFiles();
-    const canceledFiles = [];
+  cancelAll(cancelAll: boolean = false) {
+    const files = this.uppy.getFiles();
+    let canceledFiles = [];
 
-    files.forEach(file => {
-      if (!file.progress.uploadComplete) {
-        canceledFiles.push({id: file.id, name: file.name, file_upload_id: `${file.id}-${file.meta.current_date}`});
-        this.uppy.removeFile(file.id);
-      }
-    });
+    if (cancelAll) {
+      canceledFiles = files;
+    } else {
+      files.forEach(file => {
+        if (!file.progress.uploadComplete) {
+          canceledFiles.push({id: file.id, name: file.name, file_upload_id: `${file.id}-${file.meta.current_date}`});
+          this.uppy.removeFile(file.id);
+        }
+      });
+    }
 
     if (canceledFiles.length > 0) {
       this.api.post('common/files/cancel_upload', {files: canceledFiles}).subscribe(response => {
