@@ -310,7 +310,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     console.log('You should overwrite this one', e);
   }
 
-  async openSelectedModal() {
+  openSelectedModal() {
     this.mediaSelectionService.open({selectedTab: 'videos', hiddenTabs: ['photos', 'albums']});
     this.mediaSelectionService.setMultipleSelection(true);
     if (this.subSelect) { this.subSelect.unsubscribe(); }

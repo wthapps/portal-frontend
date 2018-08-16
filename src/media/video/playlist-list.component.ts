@@ -23,10 +23,11 @@ import { SharingModalResult } from '@shared/shared/components/photo/modal/sharin
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
 import { Node } from '@shared/data-structures/link-list/node';
+import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 
 declare var _: any;
 
-@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin])
+@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-playlist-list',
@@ -36,6 +37,7 @@ declare var _: any;
 export class ZMediaPlaylistListComponent implements OnInit,
 MediaBasicListMixin,
 SharingModalMixin,
+MediaDownloadMixin,
 MediaModalMixin {
   // display objects on screen
   objects: any;
@@ -72,6 +74,8 @@ MediaModalMixin {
   ) {
   }
 
+  downloadMedia:(media: any) => void;
+
   ngOnInit() {
     this.loadObjects();
     this.menuActions = this.getMenuActions();
@@ -83,7 +87,11 @@ MediaModalMixin {
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        if(this.selectedObjects.length > 1) {
+          this.menuActions.edit.active = false;
+        } else {
+          this.menuActions.edit.active = true;
+        }
         break;
       default:
         break;
@@ -128,29 +136,29 @@ MediaModalMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
       },
-      tag: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: () => {},
-        class: 'btn btn-default',
-        liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
-      },
-      tagMobile: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Inside dropdown list
-        action: () => {},
-        class: '',
-        liclass: 'visible-xs-block',
-        title: 'Tag',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-tag'
-      },
+      // tag: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: false, // Outside dropdown list
+      //   action: () => {},
+      //   class: 'btn btn-default',
+      //   liclass: 'hidden-xs',
+      //   tooltip: this.tooltip.tag,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-tag'
+      // },
+      // tagMobile: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: true, // Inside dropdown list
+      //   action: () => {},
+      //   class: '',
+      //   liclass: 'visible-xs-block',
+      //   title: 'Tag',
+      //   tooltip: this.tooltip.tag,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-tag'
+      // },
       delete: {
         active: true,
         // needPermission: 'view',
@@ -166,7 +174,9 @@ MediaModalMixin {
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Outside dropdown list
-        action: () => {},
+        action: () => {
+          this.openEditModal(this.selectedObjects[0]);
+        },
         class: '',
         liclass: '',
         title: 'Edit Information',
@@ -174,23 +184,27 @@ MediaModalMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-edit'
       },
-      detail: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: true, // Outside dropdown list
-        action: () => {},
-        class: '',
-        liclass: '',
-        title: 'View Detail',
-        tooltip: this.tooltip.info,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-info-circle'
-      },
+      // detail: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: true, // Outside dropdown list
+      //   action: () => {},
+      //   class: '',
+      //   liclass: '',
+      //   title: 'View Detail',
+      //   tooltip: this.tooltip.info,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-info-circle'
+      // },
       download: {
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Outside dropdown list
-        action: () => {},
+        action: () => {
+          this.apiBaseService.get(`media/media/${this.selectedObjects[0].uuid}/objects`, {model: 'Media::Playlist'}).subscribe(res => {
+            this.downloadMedia(res.data);
+          })
+        },
         class: '',
         liclass: '',
         title: 'Download',

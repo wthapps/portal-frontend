@@ -1,6 +1,7 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
   <bs-modal-header [showDismiss]="true">
-    <h4 class="modal-title">Edit Album</h4>
+    <h4 *ngIf="selectedAlbum.model == 'Media::Playlist'" class="modal-title">Edit Playlist</h4>
+    <h4 *ngIf="selectedAlbum.model == 'Media::Album'" class="modal-title">Edit Album</h4>
   </bs-modal-header>
   <bs-modal-body>
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
@@ -21,8 +22,7 @@
       </div>
       <hr>
       <div class="clearfix text-right">
-        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
-                (click)="modal.close()">Cancel</button>
+        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
         <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min">Save</button>
 
       </div>

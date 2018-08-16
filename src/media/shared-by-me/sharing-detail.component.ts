@@ -41,6 +41,7 @@ import { SharingModalService } from '@shared/shared/components/photo/modal/shari
 import { Location } from '@angular/common';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { mediaConstants } from '@media/shared/conig/constants';
+import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 
 @Mixin([
   MediaBasicListMixin,
@@ -59,6 +60,7 @@ import { mediaConstants } from '@media/shared/conig/constants';
 export class ZMediaSharingDetailComponent
   implements
     OnInit,
+    OnDestroy,
     MediaListDetailMixin,
     MediaBasicListMixin,
     MediaAdditionalListMixin,
@@ -87,11 +89,13 @@ export class ZMediaSharingDetailComponent
   subMenuActions: any = {};
   modalIns: any;
   modalRef: any;
-  subShareSave: any;
   // ============
+  subShareSave: any;
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
+  subUpload: any;
+  subSelect: any;
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
@@ -103,6 +107,7 @@ export class ZMediaSharingDetailComponent
     public apiBaseService: ApiBaseService,
     public resolver: ComponentFactoryResolver,
     public confirmService: WthConfirmService,
+    public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public route: ActivatedRoute,
     public location: Location) { }
@@ -115,6 +120,12 @@ export class ZMediaSharingDetailComponent
       this.loadObjects(p.uuid);
       this.loadObject(p.uuid);
     })
+  }
+
+  ngOnDestroy() {
+    if (this.subUpload) { this.subUpload.unsubscribe(); }
+    if (this.subSelect) { this.subSelect.unsubscribe(); }
+    if (this.subAddPlaylist) { this.subAddPlaylist.unsubscribe(); }
   }
 
   doListEvent(e: any) {
@@ -382,8 +393,60 @@ export class ZMediaSharingDetailComponent
     console.log('You should overwrite this one', e);
   }
 
+  openSelectedModal() {
+    this.mediaSelectionService.open({ selectedTab: 'photos'});
+    this.mediaSelectionService.setMultipleSelection(true);
+    if (this.subSelect) { this.subSelect.unsubscribe(); }
+    if (this.subUpload) { this.subUpload.unsubscribe(); }
+    this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
+      .subscribe(objects => {
+        // this.onAddToPlaylist({ parents: [this.object], children: videos });
+        // this.objects = [...videos.filter(v => v.model == 'Media::Video'), ...this.objects];
+        this.afterSelectMediaAction(this.object, objects);
+      });
+    this.subUpload = this.mediaSelectionService.uploadingMedias$
+      .map(([file, dataUrl]) => [file])
+      .subscribe((objects: any) => {
+        // this.onAddToPlaylist({ parents: [this.object], children: videos });
+        // this.objects = [...videos.filter(v => v.model == 'Media::Video'), ...this.objects];
+        this.afterSelectMediaAction(this.object, objects);
+      });
+  }
+
+  afterSelectMediaAction(parent: any, children: any) {
+    if(this.object.model == 'Common::Sharing') {
+      if (this.object.sharing_type == 'Media::Playlist' || this.object.sharing_type == 'Media::Video') {
+        this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, { objects: children.filter(c => c.model == 'Media::Video')}).subscribe(res =>{
+          this.loadObjects(this.object.uuid);
+        });
+      }
+      if (this.object.sharing_type == 'Media::Album' || this.object.sharing_type == 'Media::Photo') {
+        this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, { objects: children.filter(c => c.model == 'Media::Photo')}).subscribe(res =>{
+          this.loadObjects(this.object.uuid);
+        });
+      }
+    }
+  }
+
+  validateSharing() {
+
+  }
+
   getMenuActions() {
     return {
+      add: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.openSelectedModal();
+        },
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.share,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-plus-square'
+      },
       share: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
@@ -562,7 +625,7 @@ export class ZMediaSharingDetailComponent
             this.selectedObjects = [];
             this.hasSelectedObjects = false;
             this.loadObjects(this.object.uuid);
-          })
+          });
         },
         class: '',
         liclass: '',
