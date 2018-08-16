@@ -42,7 +42,7 @@
   <div class="component-listbox-date"></div>
   <!-- Actions for contact -->
   <div class="component-listbox-action" *ngIf="!data.settings">
-<z-contact-shared-actions-bar [data]="data" [showQuickInvitation]="data.wthapps_user == null" 
+<z-contact-shared-actions-bar [data]="data" [showQuickInvitation]="data.wthapps_user == null"
   [showNumber]="false"
   [showSocial]="data | isContactInternal"
       [showChat]="data | isContactInternal" [showInvitation]="data | canInvite" [toggleFavourite]="data | contactHasGroup:'favourite'"
@@ -51,8 +51,8 @@
   </div>
   <!-- Actions for user -->
   <div class="component-listbox-action" *ngIf="data.settings">
-    <button *ngIf="!saved" class="btn btn-outline-default pull-right" type="button" (click)="saveContact()">
-      <i class="fa fa-plus"></i> Save to Contact </button>
+    <button *ngIf="!saved" class="btn btn-default pull-right" type="button" (click)="saveContact()" pTooltip="Save to Contacts">
+      <i class="fa fa-user-plus"></i></button>
     <span *ngIf="saved">Saved</span>
   </div>
 </div>

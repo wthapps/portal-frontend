@@ -427,6 +427,8 @@ export class ConstantsBase {
     add: 'Add',
     addLabel: 'Add label',
     addPeople: 'Add people',
+    sendRequest: 'Send request',
+    findContacts: 'Find Contacts',
     addPhoto: 'Add photo',
     addMorePhotos: 'Add more photos',
     addTag: 'Add Tag',

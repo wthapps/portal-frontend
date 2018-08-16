@@ -247,6 +247,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       isShare: this.isShare
     };
 
+    this.uploadingPhotos = [];
     this.saved.emit(options);
     this.mediaSelectionService.close();
 

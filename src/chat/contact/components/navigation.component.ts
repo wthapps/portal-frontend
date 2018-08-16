@@ -40,20 +40,6 @@ export class ZChatContactMenuComponent implements OnInit {
       type: 'link'
     },
     {
-      name: 'Pending',
-      link: '/contacts/pending',
-      icon: null,
-      number: null,
-      type: 'link'
-    },
-    {
-      name: 'Requested',
-      link: '/contacts/sent_request',
-      icon: null,
-      number: null,
-      type: 'link'
-    },
-    {
       name: 'Blacklist',
       link: '/contacts/blacklist',
       icon: null,
@@ -71,16 +57,16 @@ export class ZChatContactMenuComponent implements OnInit {
   ngOnInit() {
     this.constant = this.chatService.constant;
 
-    this.apiBaseService
-      .post('zone/chat/contact/contact_tab_count')
-      .toPromise().then((res: any) => {
-        let tabs_w = this.tabs;
-        _.map(res.data, (v: any, k: any) => {
-          let tab_new: WTab = _.find(tabs_w, ['link', '/contacts/' + k]);
-          if (tab_new) {
-            tab_new.number = v;
-          }
-        });
-      });
+    // this.apiBaseService
+    //   .post('zone/chat/contact/contact_tab_count')
+    //   .toPromise().then((res: any) => {
+    //     let tabs_w = this.tabs;
+    //     _.map(res.data, (v: any, k: any) => {
+    //       let tab_new: WTab = _.find(tabs_w, ['link', '/contacts/' + k]);
+    //       if (tab_new) {
+    //         tab_new.number = v;
+    //       }
+    //     });
+    //   });
   }
 }

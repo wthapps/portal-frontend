@@ -1,0 +1,11 @@
+<div *ngIf="user" class="media-user media-user-{{ size }}">
+  <div class="media-user-avatar avatar-{{ size }}">
+    <img [src]="user?.profile_image" alt="">
+  </div>
+  <div class="media-user-name">
+    <p>{{ user.name }}</p>
+    <ng-content></ng-content>
+  </div>
+  <span class="media-user-status"
+        [ngClass]="{'online': user.online}"></span>
+</div>

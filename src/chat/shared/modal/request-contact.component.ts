@@ -1,6 +1,6 @@
 import { Component, ViewChild, Output, EventEmitter } from '@angular/core';
-import { ChatService } from '../services/chat.service';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { ChatContactService } from '@chat/shared/services/chat-contact.service';
 
 declare var _: any;
 
@@ -13,16 +13,16 @@ declare var _: any;
 export class ZChatShareRequestContactComponent {
 
   contact: any;
-  message: string = 'Hello, please accept my request';
+  message = 'Hello, I would like to connect with you on WTH!Chat!';
   @ViewChild('modal') modal: BsModalComponent;
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private chatService: ChatService) {
+  constructor(private chatContactService: ChatContactService) {
 
   }
 
   send() {
-    this.chatService.chatContactService.addContact([this.contact.id], this.message);
+    this.chatContactService.addContact([this.contact.id], this.message);
     this.modal.close();
     this.onClose.emit();
   }

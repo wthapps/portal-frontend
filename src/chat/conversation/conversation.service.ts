@@ -41,6 +41,9 @@ export class ConversationService {
     );
   }
 
+  open() {
+
+  }
   // getLatestConversation(groupId: number) {
   //   return this.api
   //     .get('zone/chat/messages/' + groupId)

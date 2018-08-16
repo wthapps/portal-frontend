@@ -31,4 +31,8 @@ export class ChatContactService {
       .then(_ => this.chatCommonService.setDefaultSelectContact())
     ;
   }
+
+  getAll(query: string = '') {
+    return this.apiBaseService.get('chat/contacts', query);
+  }
 }

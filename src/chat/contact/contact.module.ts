@@ -6,8 +6,6 @@ import { ZChatContactRoutingModule } from './contact-routing.module';
 import { ZChatContactOnlineComponent } from './contact-online.component';
 import { ZChatContactBlackListComponent } from './contact-black-list.component';
 import { ZChatContactMenuComponent } from './components/navigation.component';
-import { ZChatContactSentRequestComponent } from './contact-sent-request.component';
-import { ZChatContactPendingComponent } from './contact-pending.component';
 import { ZChatContactReceiveComponent } from './contact-receive.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
@@ -24,8 +22,6 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     ZChatContactComponent,
     ZChatContactBlackListComponent,
     ZChatContactMenuComponent,
-    ZChatContactPendingComponent,
-    ZChatContactSentRequestComponent,
     ZChatContactReceiveComponent,
     ZChatContactOnlineComponent
   ],
@@ -33,8 +29,6 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     ZChatContactComponent,
     ZChatContactBlackListComponent,
     ZChatContactMenuComponent,
-    ZChatContactPendingComponent,
-    ZChatContactSentRequestComponent,
     ZChatContactReceiveComponent,
     ZChatContactOnlineComponent
   ],

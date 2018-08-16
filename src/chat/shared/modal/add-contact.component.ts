@@ -83,7 +83,7 @@ export class ZChatShareAddContactComponent implements OnInit {
   }
 
   open() {
-    this.title = this.type === 'addContact' ? 'Create Conversation' :
+    this.title = this.type === 'addContact' ? 'New Chat' :
       this.type === 'addMember' ? 'Add Members' : 'Choose Contact';
     this.loading = true;
     this.resetData();

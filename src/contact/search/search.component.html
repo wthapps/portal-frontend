@@ -13,9 +13,9 @@
       (eventOut)="doActionsToolbar($event)"></z-contact-shared-actions-bar>
 
     <button *ngIf="contactService.selectedObjects | isAll:'user':contactService.selectedObjects.length"
-            class="btn btn-outline-default pull-right"
-            type="button" (click)="save()">
-      <i class="fa fa-plus"></i> Save to Contact
+            class="btn btn-default pull-right"
+            type="button" (click)="save()" pTooltip="Save to Contacts">
+      <i class="fa fa-user-plus"></i>
     </button>
   </div>
 
