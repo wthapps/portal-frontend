@@ -1,13 +1,15 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <bs-modal-header [showDismiss]="true">
-    <h4 class="modal-title"><i class="fa" [ngClass]="titleIcon"></i> Change Groups</h4>
+    <h4 class="modal-title">
+      <i class="fa" [ngClass]="titleIcon"></i> Change Groups</h4>
   </bs-modal-header>
 
-  <form  novalidate>
+  <form novalidate>
     <bs-modal-body>
       <div class="row ng2-tags-container-wrapper">
         <div class="col-sm-12">
-          <div class="form-group">
+          <label class="guide"> Choose new group for your contacts</label>
+          <div class="form-group" *ngFor="let group of originalGroups">
             <!-- <tag-input [maxItems]='100'
                        [placeholder]="'Select a group'"
                        [inputId]="null"
@@ -18,19 +20,17 @@
               <tag-input-dropdown [autocompleteItems]="groups">
               </tag-input-dropdown>
             </tag-input> -->
-        <div *ngFor="let group of originalGroups">
-          <p-checkbox name="addGroup" [value]="group?.id" [label]="group?.name | titleCase | maxLength: 50" [(ngModel)]="selectedGroupIds"></p-checkbox>
+            <p-checkbox name="addGroup" [value]="group?.id" [label]="group?.name | titleCase | maxLength: 50" [(ngModel)]="selectedGroupIds"
+              styleClass="ui-chkbox-custom"></p-checkbox>
+          </div>
         </div>
-      </div>
-    </div>
 
       </div>
     </bs-modal-body>
 
     <bs-modal-footer>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
-              (click)="modal.close()">Cancel</button>
-      <button type="button" class="btn btn-outline-primary btn-min" (click)="submit()" >Done
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
+      <button type="button" class="btn btn-outline-primary btn-min" (click)="submit()">Done
       </button>
     </bs-modal-footer>
   </form>

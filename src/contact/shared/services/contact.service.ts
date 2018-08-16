@@ -71,7 +71,7 @@ export class ZContactService extends BaseEntityService<any> {
     this.orderDesc$ = this.orderDescSubject.asObservable();
     this.isSelectAll$ = this.isSelectAllSubject.asObservable();
 
-    this.loadUserSetttings();
+    this.syncSelectedContacts();
   }
 
   get myContactCount(): number {
@@ -94,14 +94,26 @@ export class ZContactService extends BaseEntityService<any> {
     this.currentPage = page;
   }
 
+  syncSelectedContacts(): void {
+    this.contactsSubject.subscribe((contacts: Contact[]) => {
+      if(contacts.length === 0 )
+        this.selectedObjects.length = 0;
+      else {
+        const contactIds = contacts.map(ct => ct.id);
+        this.selectedObjects = this.selectedObjects.filter(o => contactIds.includes(o.id));
+      }
+      this.checkSelectAll();
+    })
+  }
+
   // Change get all URL to support caching by SW
   getAll(options?: any, url?: any): Observable<any> {
     const path = url || `${this.url}/all`;
     return this.apiBaseService.post(path, options);
   }
 
-  loadUserSetttings() {
-    this.apiBaseService
+  loadUserSetttings(): Promise<any> {
+    return this.apiBaseService
       .get(`contact/contacts/settings`)
       .toPromise()
       .then((res: any) => {
@@ -527,6 +539,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   private deleteCallback(contact: any) {
     _.remove(this.contacts, (ct: any) => ct.id === contact.id);
+    _.remove(this.selectedObjects, (ct: any) => ct.id === contact.id);
     this.notifyContactsObservers();
   }
 }

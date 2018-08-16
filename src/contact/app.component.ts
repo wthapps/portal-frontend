@@ -1,3 +1,4 @@
+import { ContactService } from './../shared/components/contact-us/contact.service';
 import {
   Component,
   ComponentFactoryResolver,
@@ -105,6 +106,7 @@ export class AppComponent
       .getAllGroups()
       .then((groups: any[]) => console.debug('getAllGroups: ', groups))
       .then(() => this.contactService.initialLoad())
+      .then(() => this.contactService.loadUserSetttings())
       .then(() => timer(GAPI_TIMEOUT).subscribe(_ => this.googleApiService.handleClientLoad()));
   }
 
