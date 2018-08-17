@@ -44,6 +44,9 @@ import { mediaConstants } from '@media/shared/conig/constants';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { WUploader } from '@shared/services/w-uploader';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Mixin([
   MediaBasicListMixin,
@@ -62,7 +65,7 @@ import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 })
 export class ZMediaAlbumDetailComponent
   implements
-  OnInit,
+  OnInit, OnDestroy,
   MediaListDetailMixin,
   MediaBasicListMixin,
   MediaAdditionalListMixin,
@@ -95,14 +98,18 @@ export class ZMediaAlbumDetailComponent
   modalRef: any;
   subShareSave: any;
   // ============
-  sub: any;
   subSelect: any;
   subAddAlbum: any;
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
   // ============
+
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
+
+  private uploadingFiles: Array<any> = [];
+  private objectType = 'Media::Photo';
+  private destroy$ = new Subject();
 
   constructor(public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
@@ -114,7 +121,8 @@ export class ZMediaAlbumDetailComponent
     public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public route: ActivatedRoute,
-    public location: Location) { }
+    public location: Location,
+    private uploader: WUploader) { }
 
   ngOnInit() {
     this.route.params.subscribe(p => {
@@ -123,7 +131,7 @@ export class ZMediaAlbumDetailComponent
       this.menuActions = this.parentMenuActions;
       this.loadObjects(p.uuid);
       this.loadObject(p.uuid);
-    })
+    });
   }
 
   doListEvent(e: any) {
@@ -138,20 +146,42 @@ export class ZMediaAlbumDetailComponent
   }
 
   openSelectedModal() {
-    this.mediaSelectionService.open({hiddenTabs:['videos', 'playlists']});
+    this.mediaSelectionService.open({
+      hiddenTabs: ['videos', 'playlists'],
+      allowCancelUpload: true,
+      allowedFileTypes: ['image/*']
+    });
     if (this.subSelect) this.subSelect.unsubscribe();
-    if (this.sub) this.sub.unsubscribe();
     this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
       .subscribe(photos => {
         this.onAddToAlbum({parents: [this.object], children: photos});
-        this.objects = [...photos.filter(p => p.model == 'Media::Photo'), ...this.objects];
+        this.objects = [...photos.filter(p => p.model === this.objectType), ...this.objects];
       });
-    this.sub = this.mediaSelectionService.uploadingMedias$
-      .map(([file, dataUrl]) => [file])
-      .subscribe((photos: any) => {
-        this.onAddToAlbum({ parents: [this.object], children: photos });
-        this.objects = [...photos.filter(p => p.model == 'Media::Photo'), ...this.objects];
-      });
+
+    this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+      this.handleUploadFiles(event);
+    });
+  }
+
+  handleUploadFiles(event: any) {
+    switch (event.action) {
+      case 'start':
+        this.uploadingFiles = [];
+        break;
+      case 'success':
+        const file = event.payload.resp;
+        // just add to playlist all files are videos
+        if (file.content_type.startsWith('image')) {
+          this.uploadingFiles.push({...file, model: this.objectType});
+        }
+        break;
+      case 'complete':
+        if (this.uploadingFiles.length > 0) {
+          this.onAddToAlbum({ parents: [this.object], children: this.uploadingFiles });
+          this.objects = this.uploadingFiles;
+        }
+        break;
+    }
   }
 
   doToolbarEvent(e: any) {
@@ -159,7 +189,8 @@ export class ZMediaAlbumDetailComponent
       case 'uploaded':
         this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: { id: this.object.id }, videos: [e.payload] }).subscribe(res => {
           this.loadObjects(this.object.uuid);
-        })
+        });
+        break;
       case 'changeView':
         this.changeViewMode(e.payload);
         break;
@@ -175,7 +206,7 @@ export class ZMediaAlbumDetailComponent
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        if (this.object.sharing_type == "Media::Playlist" || this.object.sharing_type == "Media::Video") {
+        if (this.object.sharing_type === 'Media::Playlist' || this.object.sharing_type === 'Media::Video') {
           this.subMenuActions.edit.title = 'Add to Playlist';
           this.subMenuActions.remove.title = 'Remove from Playlist';
         } else {
@@ -287,7 +318,7 @@ export class ZMediaAlbumDetailComponent
   deSelect() {
     this.objects.forEach(ob => {
       ob.selected = false;
-    })
+    });
     this.selectedObjects = [];
     this.hasSelectedObjects = false;
   }
@@ -390,8 +421,8 @@ export class ZMediaAlbumDetailComponent
     this.modalIns.event.subscribe(e => {
       this.apiBaseService.put(`media/albums/${this.object.id}`, this.object).subscribe(res => {
       });
-    })
-  };
+    });
+  }
 
   getMenuActions() {
     return {
@@ -404,7 +435,7 @@ export class ZMediaAlbumDetailComponent
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.tooltip.share,
+        tooltip: this.tooltip.addPhotos,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-plus-square'
       },
@@ -505,7 +536,7 @@ export class ZMediaAlbumDetailComponent
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       }
-    }
+    };
   }
 
   getSubMenuActions() {
@@ -592,7 +623,7 @@ export class ZMediaAlbumDetailComponent
             this.selectedObjects = [];
             this.hasSelectedObjects = false;
             this.loadObjects(this.object.uuid);
-          })
+          });
         },
         class: '',
         liclass: '',
@@ -601,6 +632,11 @@ export class ZMediaAlbumDetailComponent
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-times'
       }
-    }
+    };
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

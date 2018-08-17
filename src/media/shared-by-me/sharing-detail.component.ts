@@ -6,22 +6,10 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {
-  ApiBaseService,
-  CommonEventService
-} from '@shared/services';
-import {
-  GetAll,
-  GetMore,
-  Favorite,
-  AddSuccess,
-  AddToDetailObjects,
-  RemoveFromDetailObjects,
-  Download,
-  DeleteMany
-} from '../shared/store/media/media.actions';
+import { ApiBaseService } from '@shared/services';
+import { Download } from '../shared/store/media/media.actions';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -42,6 +30,9 @@ import { Location } from '@angular/common';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { mediaConstants } from '@media/shared/conig/constants';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
+import { WUploader } from '@shared/services/w-uploader';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Mixin([
   MediaBasicListMixin,
@@ -100,6 +91,11 @@ export class ZMediaSharingDetailComponent
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
 
+  private uploadingFiles: Array<any> = [];
+  private photoSharingTypes: Array<any> = ['Media::Photo', 'Media::Album'];
+  private videoSharingTypes: Array<any> = ['Media::Media', 'Media::Playlist'];
+  private destroy$ = new Subject();
+
   constructor(public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
     public sharingModalService: SharingModalService,
@@ -110,22 +106,22 @@ export class ZMediaSharingDetailComponent
     public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public route: ActivatedRoute,
-    public location: Location) { }
+    public location: Location,
+    private uploader: WUploader ) { }
 
   ngOnInit() {
     this.route.params.subscribe(p => {
-      this.parentMenuActions = this.getMenuActions();
-      this.subMenuActions = this.getSubMenuActions();
-      this.menuActions = this.parentMenuActions;
       this.loadObjects(p.uuid);
       this.loadObject(p.uuid);
-    })
+    });
   }
 
   ngOnDestroy() {
     if (this.subUpload) { this.subUpload.unsubscribe(); }
     if (this.subSelect) { this.subSelect.unsubscribe(); }
     if (this.subAddPlaylist) { this.subAddPlaylist.unsubscribe(); }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   doListEvent(e: any) {
@@ -144,7 +140,8 @@ export class ZMediaSharingDetailComponent
       case 'uploaded':
         this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: { id: this.object.id }, videos: [e.payload] }).subscribe(res => {
           this.loadObjects(this.object.uuid);
-        })
+        });
+        break;
       case 'changeView':
         this.changeViewMode(e.payload);
         break;
@@ -160,7 +157,7 @@ export class ZMediaSharingDetailComponent
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        if (this.object.sharing_type == "Media::Playlist" || this.object.sharing_type == "Media::Video") {
+        if (['Media::Playlist', 'Media::Video'].includes(this.object.sharing_type)) {
           this.subMenuActions.edit.title = 'Add to Playlist';
           this.subMenuActions.remove.title = 'Remove from Playlist';
         } else {
@@ -185,13 +182,17 @@ export class ZMediaSharingDetailComponent
   loadObject(input: any) {
     this.apiBaseService.get(`media/sharings/${input}`).subscribe(res => {
       this.object = res.data;
+      this.parentMenuActions = this.getMenuActions();
+      this.subMenuActions = this.getSubMenuActions();
+      this.menuActions = this.parentMenuActions;
       if (this.object.favorite) {
         this.menuActions.favorite.iconClass = 'fa fa-star';
       } else {
         this.menuActions.favorite.iconClass = 'fa fa-star-o';
       }
-      this.validateActions(this.subMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
-      this.validateActions(this.parentMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
+      this.validateActions(this.subMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
+      this.validateActions(this.parentMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
+
     });
   }
   validateActions: (menuActions: any, role_id: number) => any;
@@ -202,7 +203,7 @@ export class ZMediaSharingDetailComponent
   }
 
   viewDetail(input?: any) {
-    if (this.selectedObjects[0].model == 'Media::Photo') {
+    if (this.selectedObjects[0].model === 'Media::Photo') {
       this.router.navigate([`photos/`, this.selectedObjects[0].uuid]);
     } else {
       this.router.navigate([`videos/`, this.selectedObjects[0].uuid]);
@@ -294,7 +295,7 @@ export class ZMediaSharingDetailComponent
   deleteParent() {
     // console.log(this.object);
     // share with me
-    if(this.object.recipient) {
+    if (this.object.recipient) {
       this.confirmService.confirm({
         header: 'Delete',
         acceptLabel: 'Delete',
@@ -394,37 +395,77 @@ export class ZMediaSharingDetailComponent
   }
 
   openSelectedModal() {
-    this.mediaSelectionService.open({ selectedTab: 'photos'});
-    this.mediaSelectionService.setMultipleSelection(true);
+
+    let options: any;
+
+    if (this.photoSharingTypes.includes(this.object.sharing_type)) {
+      options = {
+        selectedTab: 'photos',
+        hiddenTabs: ['videos', 'playlists'],
+        allowedFileType: ['image/*'],
+        allowCancelUpload: true
+      };
+    } else if (this.videoSharingTypes.includes(this.object.sharing_type)) {
+      options = {
+        selectedTab: 'videos',
+        hiddenTabs: ['photos', 'albums'],
+        allowedFileType: ['video/*'],
+        allowCancelUpload: true,
+        uploadButtonText: 'Upload videos',
+        dragdropText: 'Drag your videos here'
+      };
+    }
+    this.mediaSelectionService.open(options);
+
     if (this.subSelect) { this.subSelect.unsubscribe(); }
     if (this.subUpload) { this.subUpload.unsubscribe(); }
     this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
       .subscribe(objects => {
-        // this.onAddToPlaylist({ parents: [this.object], children: videos });
-        // this.objects = [...videos.filter(v => v.model == 'Media::Video'), ...this.objects];
         this.afterSelectMediaAction(this.object, objects);
       });
-    this.subUpload = this.mediaSelectionService.uploadingMedias$
-      .map(([file, dataUrl]) => [file])
-      .subscribe((objects: any) => {
-        // this.onAddToPlaylist({ parents: [this.object], children: videos });
-        // this.objects = [...videos.filter(v => v.model == 'Media::Video'), ...this.objects];
-        this.afterSelectMediaAction(this.object, objects);
-      });
+
+    this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+      this.handleUploadFiles(event);
+    });
   }
 
   afterSelectMediaAction(parent: any, children: any) {
-    if(this.object.model == 'Common::Sharing') {
-      if (this.object.sharing_type == 'Media::Playlist' || this.object.sharing_type == 'Media::Video') {
-        this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, { objects: children.filter(c => c.model == 'Media::Video')}).subscribe(res =>{
+    if (this.object.model === 'Common::Sharing') {
+      if (this.videoSharingTypes.includes(this.object.sharing_type)) {
+        this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, {
+          objects: children.filter(c => c.model === 'Media::Video')}).subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
       }
-      if (this.object.sharing_type == 'Media::Album' || this.object.sharing_type == 'Media::Photo') {
-        this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, { objects: children.filter(c => c.model == 'Media::Photo')}).subscribe(res =>{
+      if (this.photoSharingTypes.includes(this.object.sharing_type)) {
+        this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, {
+          objects: children.filter(c => c.model === 'Media::Photo')}).subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
       }
+    }
+  }
+
+  handleUploadFiles(event: any) {
+    switch (event.action) {
+      case 'start':
+        this.uploadingFiles = [];
+        break;
+      case 'success':
+        const file = event.payload.resp;
+
+        // just allow allow files depend on sharing_type and file's content_type
+        if (this.videoSharingTypes.includes(this.object.sharing_type) && file.content_type.startsWith('video')) {
+          this.uploadingFiles.push({...file, model: 'Media::Video'});
+        } else if (this.photoSharingTypes.includes(this.object.sharing_type) && file.content_type.startsWith('image')) {
+          this.uploadingFiles.push({...file, model: 'Media::Photo'});
+        }
+        break;
+      case 'complete':
+        if (this.uploadingFiles.length > 0) {
+          this.afterSelectMediaAction(this.object, this.uploadingFiles);
+        }
+        break;
     }
   }
 
@@ -443,7 +484,7 @@ export class ZMediaSharingDetailComponent
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.tooltip.share,
+        tooltip: this.object.sharing_type === 'Media::Album' ? this.tooltip.addPhotos : this.tooltip.addVideos,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-plus-square'
       },
@@ -636,4 +677,6 @@ export class ZMediaSharingDetailComponent
       }
     }
   }
+
+
 }

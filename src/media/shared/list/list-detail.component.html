@@ -69,10 +69,9 @@
     </div>
     <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
       [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
-      <w-upload *ngIf="actionNoData" class="btn btn-outline-primary" [mode]="uploadMode" [accept]="uploadType" (uploadHandler)="toolbar.uploadHandler($event)"
-        (errorHandler)="errorHandler($event)">
-        <i class="fa fa-cloud-upload"></i> {{actionNoData}}
-      </w-upload>
+      <button *ngIf="actionNoData" class="btn btn-outline-primary" (click)="toolbar.doAction({action: 'openMediaSelectModal'})">
+        <i class="fa fa-plus"></i> {{actionNoData}}
+      </button>
     </box-no-data>
     <ng-template #modalContainer></ng-template>
   </div>

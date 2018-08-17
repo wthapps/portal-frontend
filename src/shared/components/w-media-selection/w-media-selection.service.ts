@@ -40,7 +40,9 @@ export class WMediaSelectionService {
     hiddenTabs: [],
     allowSelectMultiple: true,
     allowCancelUpload: false,
-    allowedFileTypes: ['image/*', 'video/*']
+    allowedFileTypes: ['image/*', 'video/*'],
+    uploadButtonText: 'Upload photos',
+    dragdropText: 'Drag your photos here'
   };
   constructor(private apiBaseService: ApiBaseService,
               private objectListService: WObjectListService,

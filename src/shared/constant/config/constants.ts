@@ -430,6 +430,8 @@ export class ConstantsBase {
     sendRequest: 'Send request',
     findContacts: 'Find Contacts',
     addPhoto: 'Add photo',
+    addPhotos: 'Add photos',
+    addVideos: 'Add videos',
     addMorePhotos: 'Add more photos',
     addTag: 'Add Tag',
     addToAlbum: 'Add to album',

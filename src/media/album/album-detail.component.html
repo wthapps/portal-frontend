@@ -70,7 +70,7 @@
     <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
       [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
       <button class="btn btn-outline-primary" (click)="openSelectedModal()">
-        <i class="fa fa-cloud-upload"></i> Upload Photo</button>
+        <i class="fa fa-plus"></i> Add Photos</button>
     </box-no-data>
     <ng-template #modalContainer></ng-template>
   </div>

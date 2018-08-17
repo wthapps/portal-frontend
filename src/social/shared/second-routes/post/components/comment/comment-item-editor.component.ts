@@ -307,8 +307,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
     if (photo === null) {
       this.cancelPhotoSubject.next('');
-      console.log('cancel upload photo:::', this.uploadingPhoto);
-
       if (this.uploadingPhoto) {
         this.uploader.cancel(this.uploadingPhoto);
         this.uploadingPhoto = null;

@@ -177,7 +177,7 @@ export class WUploader {
 
     if (canceledFiles.length > 0) {
       this.api.post('common/files/cancel_upload', {files: canceledFiles}).subscribe(response => {
-        console.log('cancel upload successful:::', response);
+        // console.log('cancel upload successful:::', response);
       });
     }
   }

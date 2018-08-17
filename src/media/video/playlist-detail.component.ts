@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewContainerRef, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import {
   ApiBaseService,
   WthConfirmService
@@ -27,6 +28,7 @@ import { WMediaSelectionService } from '@shared/components/w-media-selection/w-m
 import { AsyncScheduler } from 'rxjs/scheduler/AsyncScheduler';
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
+import { WUploader } from '@shared/services/w-uploader';
 
 @Mixin([MediaBasicListMixin,
   MediaAdditionalListMixin,
@@ -38,11 +40,10 @@ import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.
   MediaDownloadMixin])
 @Component({
   selector: 'playlist-detail',
-  // templateUrl: '../shared/list/list-detail.component.html',
   templateUrl: 'playlist-detail.component.html',
   styleUrls: ['playlist-detail.component.scss']
 })
-export class ZPlaylistDetailComponent implements OnInit,
+export class ZPlaylistDetailComponent implements OnInit, OnDestroy,
 MediaListDetailMixin,
 MediaBasicListMixin,
 MediaAdditionalListMixin,
@@ -62,9 +63,9 @@ PlaylistAddMixin, MediaDownloadMixin {
   links: any;
   showDetailsInfo: any;
   // ============
-  titleNoData: any = 'There is no videos!';
-  subTitleNoData: any = 'Try to upload a new video';
-  actionNoData: any = 'Create an video';
+  titleNoData: any = 'There is no video!';
+  subTitleNoData: any = 'Try to add new videos';
+  actionNoData: any = 'Add videos';
   uploadMode: any = 'multiple';
   uploadType: any = 'video/*';
   // ===========
@@ -79,11 +80,13 @@ PlaylistAddMixin, MediaDownloadMixin {
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
   subSelect: any;
-  sub: any;
   returnUrl: any;
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
+  private destroy$ = new Subject();
+  private uploadingFiles: Array<any> = [];
+  private objectType = 'Media::Video';
 
   constructor(public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
@@ -96,7 +99,8 @@ PlaylistAddMixin, MediaDownloadMixin {
     public router: Router,
     public route: ActivatedRoute,
     public locationCustomService: LocationCustomService,
-    public location: Location) { }
+    public location: Location,
+    private uploader: WUploader) { }
 
   validateActions: (menuActions: any, role_id: number) => any;
   openModalShare: (input: any) => void;
@@ -118,7 +122,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(p => {
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe(p => {
       this.parentMenuActions = this.getMenuActions();
       this.subMenuActions = this.getSubMenuActions();
       this.menuActions = this.parentMenuActions;
@@ -148,9 +152,9 @@ PlaylistAddMixin, MediaDownloadMixin {
         break;
       case 'changeView':
         this.changeViewMode(e.payload);
-        break;
-      case 'toggleInfo':
-        this.toggleInfo();
+      break;
+      case 'openMediaSelectModal':
+        this.openSelectedModal();
         break;
     }
   }
@@ -329,21 +333,45 @@ PlaylistAddMixin, MediaDownloadMixin {
   }
 
   openSelectedModal() {
-    this.mediaSelectionService.open({selectedTab: 'videos', hiddenTabs: ['photos', 'albums']});
-    this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({
+      allowedFileTypes: ['videos/*'],
+      selectedTab: 'videos',
+      hiddenTabs: ['photos', 'albums'],
+      allowCancelUpload: true,
+      uploadButtonText: 'Upload videos',
+      dragdropText: 'Drag your videos here'
+    });
     if (this.subSelect) { this.subSelect.unsubscribe(); }
-    if (this.sub) { this.sub.unsubscribe(); }
+
     this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
       .subscribe(videos => {
         this.onAddToPlaylist({ parents: [this.object], children: videos });
-        this.objects = [...videos.filter(v => v.model == 'Media::Video'), ...this.objects];
+        this.objects = [...videos.filter(v => v.model === this.objectType), ...this.objects];
       });
-    this.sub = this.mediaSelectionService.uploadingMedias$
-      .map(([file, dataUrl]) => [file])
-      .subscribe((videos: any) => {
-        this.onAddToPlaylist({ parents: [this.object], children: videos });
-        this.objects = [...videos.filter(v => v.model == 'Media::Video'), ...this.objects];
-      });
+    this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+      this.handleUploadFiles(event);
+    });
+  }
+
+  handleUploadFiles(event: any) {
+    switch (event.action) {
+      case 'start':
+        this.uploadingFiles = [];
+        break;
+      case 'success':
+        const file = event.payload.resp;
+        // just add to playlist all files are videos
+        if (file.content_type.startsWith('video')) {
+          this.uploadingFiles.push({...file, model: this.objectType});
+        }
+        break;
+      case 'complete':
+        if (this.uploadingFiles.length > 0) {
+          this.onAddToPlaylist({ parents: [this.object], children: this.uploadingFiles });
+          this.objects = this.uploadingFiles;
+        }
+        break;
+    }
   }
 
   deleteParent() {
@@ -386,7 +414,7 @@ PlaylistAddMixin, MediaDownloadMixin {
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.tooltip.share,
+        tooltip: this.tooltip.addVideos,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-plus-square'
       },
@@ -590,5 +618,13 @@ PlaylistAddMixin, MediaDownloadMixin {
         iconClass: 'fa fa-trash'
       }
     };
+  }
+
+  ngOnDestroy() {
+    if (this.subSelect) {
+      this.subSelect.unsubscribe();
+    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

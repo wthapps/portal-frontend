@@ -101,6 +101,8 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
   // end search
 
   allowCancelUpload: boolean;
+  uploadButtonText: string;
+  dragdropText: string;
   private allowedFileTypes: any;
   private sub: any;
 
@@ -152,6 +154,8 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
       return true;
     });
     this.allowCancelUpload = options.allowCancelUpload;
+    this.uploadButtonText = options.uploadButtonText;
+    this.dragdropText = options.dragdropText;
 
     // set content type depend on open options
     if (options.hiddenTabs.includes('photos')) {

@@ -273,7 +273,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   cancelUploading(file: any) {
     _.pull(this.files, file);
-    console.log('cancel uploading file:::', file);
     this.uploader.cancel(file);
     if (file.name && this.uploadSubscriptions[file.name]) {
       this.uploadSubscriptions[file.name].unsubscribe();
