@@ -48,11 +48,15 @@
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->
-        <span *ngIf="object.child_count > 1">
-          {{ object.child_count }} {{object.object_type == 'Media::Playlist' ? 'videos' : 'photos'}}
+        <span *ngIf="object.model != 'Common::Sharing' && object.child_count > 1">
+          {{ object.child_count }} {{object.model == 'Media::Playlist' ? 'videos' : 'photos'}}
         </span>
-        <span *ngIf="object.child_count <= 1">
-          {{ object.child_count }} {{object.object_type == 'Media::Playlist' ? 'video' : 'photo'}}
+        <span *ngIf="object.model != 'Common::Sharing' && object.child_count <= 1">
+          {{ object.child_count }} {{object.model == 'Media::Playlist' ? 'video' : 'photo'}}
+        </span>
+        <span *ngIf="object.model == 'Common::Sharing'">
+          {{ object.child_count }} {{(object.sharing_type == 'Media::Playlist' || object.sharing_type == 'Media::Video') ? 'video'
+          : 'photo'}}{{object.child_count > 1 ? 's' : ''}}
         </span>
       </div>
     </figure>

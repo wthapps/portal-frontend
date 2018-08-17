@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import { ApiBaseService } from '@wth/shared/services';
 import { TaggingElComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-el.component';
 import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
-import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 
 

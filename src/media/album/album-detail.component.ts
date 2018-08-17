@@ -325,7 +325,7 @@ export class ZMediaAlbumDetailComponent
       this.confirmService.confirm({
         header: 'Delete',
         acceptLabel: 'Delete',
-        message: `Are you sure to delete this sharing`,
+        message: `Are you sure to delete this album`,
         accept: () => {
           this.loading = true;
           this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {

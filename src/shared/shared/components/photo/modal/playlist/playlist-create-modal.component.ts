@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
@@ -45,7 +45,9 @@ export class PlaylistCreateModalComponent implements OnInit {
   ngOnInit() {
     this.album = {};
     this.form = this.fb.group({
-      'name': "",
+      'name': ['',
+        Validators.compose([Validators.required])
+      ],
       'description': "",
       'tags': [],
     });
@@ -75,6 +77,7 @@ export class PlaylistCreateModalComponent implements OnInit {
     this.apiBaseService.post(`media/playlists`, {playlist: e, videos: this.arrayItems}).subscribe(res => {
       this.modal.close().then();
       this.playlistCreateModalService.created.next(res.data);
+      this.router.navigate([`/playlists/${res.data.uuid}`]);
     });
   }
 

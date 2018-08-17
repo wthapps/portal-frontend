@@ -31,8 +31,8 @@ declare var _: any;
 @Component({
   moduleId: module.id,
   selector: 'me-playlist-list',
-  templateUrl: '../shared/list/list.component.html'
   // templateUrl: 'playlist-list.component.html'
+  templateUrl: '../shared/list/list.component.html'
 })
 export class ZMediaPlaylistListComponent implements OnInit,
 MediaBasicListMixin,
@@ -163,7 +163,9 @@ MediaModalMixin {
         active: true,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
-        action: () => {},
+        action: () => {
+          this.deleteObjects('playlists')
+        },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
         tooltip: this.tooltip.delete,

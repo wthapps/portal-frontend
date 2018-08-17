@@ -3,9 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   ApiBaseService,
-  CommonEventService,
-  PhotoService,
-  UserService,
   WthConfirmService
 } from '@wth/shared/services';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
@@ -28,6 +25,8 @@ import { mediaConstants } from '@media/shared/conig/constants';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { AsyncScheduler } from 'rxjs/scheduler/AsyncScheduler';
+import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 
 @Mixin([MediaBasicListMixin,
   MediaAdditionalListMixin,
@@ -35,16 +34,19 @@ import { AsyncScheduler } from 'rxjs/scheduler/AsyncScheduler';
   LoadModalAble,
   SharingModalMixin,
   PlaylistAddMixin,
+  MediaModalMixin,
   MediaDownloadMixin])
 @Component({
   selector: 'playlist-detail',
-  templateUrl: '../shared/list/list-detail.component.html',
+  // templateUrl: '../shared/list/list-detail.component.html',
+  templateUrl: 'playlist-detail.component.html',
   styleUrls: ['playlist-detail.component.scss']
 })
 export class ZPlaylistDetailComponent implements OnInit,
 MediaListDetailMixin,
 MediaBasicListMixin,
 MediaAdditionalListMixin,
+MediaModalMixin,
 LoadModalAble,
 SharingModalMixin,
 PlaylistAddMixin, MediaDownloadMixin {
@@ -81,7 +83,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   returnUrl: any;
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
-
+  @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
 
   constructor(public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
@@ -105,6 +107,15 @@ PlaylistAddMixin, MediaDownloadMixin {
   downloadMedia: (media: any) => void;
   openCreatePlaylistModal: (selectedObjects: any) => void;
   toggleInfo: () => void;
+
+  openEditModal:(object: any) => void;
+  onAfterEditModal() {
+    const sub = this.modalIns.event.subscribe(event => {
+      this.apiBaseService.put(`media/playlists/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
+        if (sub) sub.unsubscribe();
+      })
+    });
+  }
 
   ngOnInit() {
     this.route.params.subscribe(p => {
@@ -137,7 +148,10 @@ PlaylistAddMixin, MediaDownloadMixin {
         break;
       case 'changeView':
         this.changeViewMode(e.payload);
-      break;
+        break;
+      case 'toggleInfo':
+        this.toggleInfo();
+        break;
     }
   }
 
@@ -201,6 +215,10 @@ PlaylistAddMixin, MediaDownloadMixin {
   editName(object: any) {
     this.loadModalComponent(MediaRenameModalComponent);
     this.modalIns.open({selectedObject: this.object});
+    this.modalIns.event.subscribe(e => {
+      this.apiBaseService.put(`media/playlists/${this.object.uuid}`, this.object).subscribe(res => {
+      });
+    })
   }
 
   selectedObjectsChanged(objectsChanged: any) {
@@ -328,6 +346,35 @@ PlaylistAddMixin, MediaDownloadMixin {
       });
   }
 
+  deleteParent() {
+    // share with me
+    if (this.object.recipient) {
+      this.confirmService.confirm({
+        header: 'Delete',
+        acceptLabel: 'Delete',
+        message: `Are you sure to delete this sharing`,
+        accept: () => {
+          this.loading = true;
+          this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, { sharings: [this.object] }).subscribe(res => {
+            this.back();
+          })
+        }
+      })
+    } else {
+      this.confirmService.confirm({
+        header: 'Delete',
+        acceptLabel: 'Delete',
+        message: `Are you sure to delete this playlist`,
+        accept: () => {
+          this.loading = true;
+          this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
+            this.back();
+          })
+        }
+      });
+    }
+  }
+
   getMenuActions() {
     return {
       add: {
@@ -381,7 +428,9 @@ PlaylistAddMixin, MediaDownloadMixin {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
-        action: () => {console.log('delete'); },
+        action: () => {
+          this.deleteParent();
+        },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
         tooltip: this.tooltip.tag,
@@ -392,7 +441,9 @@ PlaylistAddMixin, MediaDownloadMixin {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
-        action: () => { },
+        action: () => {
+          this.openEditModal(this.object);
+        },
         class: '',
         liclass: '',
         title: 'Edit Information',
@@ -400,14 +451,17 @@ PlaylistAddMixin, MediaDownloadMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-edit'
       },
-      detail: {
+      info: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
-        action: () => { },
+        action: () => {
+          this.mediaInfo.object = { ...this.object };
+          this.toggleInfo();
+        },
         class: '',
         liclass: '',
-        title: 'View Detail',
+        title: 'View Info',
         tooltip: this.tooltip.info,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-info-circle'
@@ -416,7 +470,9 @@ PlaylistAddMixin, MediaDownloadMixin {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
-        action: () => { },
+        action: () => {
+          this.downloadMedia(this.objects);
+        },
         class: '',
         liclass: '',
         title: 'Download',
