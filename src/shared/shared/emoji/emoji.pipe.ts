@@ -9,9 +9,9 @@ declare var _: any;
 export class ZChatEmojiPipe implements PipeTransform {
   transform(value: string) {
     value = value + ''; // make sure it's a string
-    return value.replace(ZChatEmojiService.emojisRegex, (match, text)=> {
+    return value.replace(ZChatEmojiService.emojisRegex, (match, text) => {
       let text_class = '';
-      if (text.charAt(0) == ';' || text.charAt(0) == ':') {
+      if (text.charAt(0) === ';' || text.charAt(0) === ':') {
         text_class = text;
       } else {
         text_class = text.replace(/\(|\)/gi, '');
@@ -28,7 +28,7 @@ export class ZChatEmojiClassPipe implements PipeTransform {
   transform(value: string) {
     value = value + ''; // make sure it's a string
     value = value.replace(/\\/gi, '');
-    if (value.charAt(0) == ';' || value.charAt(0) == ':') {
+    if (value.charAt(0) === ';' || value.charAt(0) === ':') {
       value = value.replace(':', '');
     } else {
       value = value.replace(/\(|\)/gi, '');

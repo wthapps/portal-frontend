@@ -56,7 +56,8 @@ export class ContactAddGroupModalComponent implements OnInit, WthAppsBaseModal {
     const selectedGroups: Group[] = this.originalGroups.filter((gr: Group) => this.selectedGroupIds.includes(+gr.id));
 
     this.contacts.forEach((contact: any) => {
-      contact.groups = selectedGroups;
+      const systemGroups = contact.groups.filter(gr => gr.system);
+      contact.groups = selectedGroups.concat(systemGroups);
     });
 
     this.commonEventService.broadcast({

@@ -57,6 +57,7 @@ export class ZContactListComponent
   linkChat = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
   _contact: any = _contact;
   label$: Observable<string> ;
+  inOtherPage = false;
   private pageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
 
   private destroySubject: Subject<any> = new Subject<any>();
@@ -90,8 +91,8 @@ export class ZContactListComponent
       .subscribe(data => {
       console.log(data);
       if (data && data.page) {
-        const inOtherPage = data.page === OTHER_CONTACTS;
-        this.pageTitle = inOtherPage ? 'Other contacts' :
+        this.inOtherPage = (data.page === OTHER_CONTACTS);
+        this.pageTitle = this.inOtherPage ? 'Other contacts' :
           this.route.snapshot.paramMap.get('group') || 'All contacts';
         this.contactService.setCurrentPage(data.page);
       }
