@@ -13,12 +13,12 @@ export class ZChatShareItemRequestComponent {
   }
 
   onAccept() {
-    let contact = this.chatService.getContactSelect().value;
+    const contact = this.chatService.getContactSelect().value;
     this.chatService.acceptRequest(contact);
   }
 
   onDecline() {
-    let contact = this.chatService.getContactSelect().value;
+    const contact = this.chatService.getContactSelect().value;
     this.chatService.declineRequest(contact);
   }
 }

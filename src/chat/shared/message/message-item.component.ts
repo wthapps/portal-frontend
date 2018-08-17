@@ -138,10 +138,10 @@ export class MessageItemComponent implements OnInit {
   }
 
   onShareContact(data: any) {
-    if (data.action == 'cancel') {
+    if (data.action === 'cancel') {
       this.delete();
     }
-    if (data.action == 'resend') {
+    if (data.action === 'resend') {
       this.chatService.shareContact([this.message.display.share_contact.id]);
     }
   }

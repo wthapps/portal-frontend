@@ -96,7 +96,7 @@ export class ConversationDetailComponent
         });
         this.messageEditor.focus();
         // Real copy
-        let temp = $('<input>');
+        const temp = $('<input>');
         $('body').append(temp);
         temp.val(event.payload.message).select();
         document.execCommand('copy');
@@ -219,7 +219,7 @@ export class ConversationDetailComponent
   drop(e: any) {
     e.preventDefault();
     e.stopPropagation();
-    let data = e.dataTransfer.files;
+    const data = e.dataTransfer.files;
     if (data.length > 0) {
       this.chatService.createUploadingFile(data);
     }

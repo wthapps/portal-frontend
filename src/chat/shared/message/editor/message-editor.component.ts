@@ -21,6 +21,7 @@ import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-mo
 import { WUploader } from '@shared/services/w-uploader';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 
+
 declare var $: any;
 
 @Component({
@@ -33,7 +34,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
   @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   emojiData: any = [];
   mode: string;
 
@@ -104,7 +105,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   handleKeyUp(e: any) {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && this.messageService.notEmptyHtml(this.message.message)) {
       this.send(true);
     } else if (e.keyCode === 27) {
       this.cancelEditingMessage();

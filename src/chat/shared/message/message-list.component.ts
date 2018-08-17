@@ -42,16 +42,15 @@ export class MessageListComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private ref: ChangeDetectorRef,
     private router: Router,
     private messageService: WMessageService,
     private wthEmojiService: WTHEmojiService
   ) {
-    this.messageService.scrollToBottom$.subscribe((res: boolean) => {
-      if (res && this.listEl) {
-        this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
-      }
-    });
+    // this.messageService.scrollToBottom$.subscribe((res: boolean) => {
+    //   if (res && this.listEl) {
+    //     this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
+    //   }
+    // });
 
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
@@ -65,10 +64,10 @@ export class MessageListComponent implements OnInit {
   }
 
   onLoadMore() {
-    console.log('onLoadMore ...', this.listEl.nativeElement.scrollTop);
+    // console.log('onLoadMore ...', this.listEl.nativeElement.scrollTop);
     this.chatService.loadMoreMessages().then(res => {
-      if (res.data && res.data.length > 0)
-        this.listEl.nativeElement.scrollTop += 100;
+      // if (res.data && res.data.length > 0)
+      //   this.listEl.nativeElement.scrollTop += 100;
     });
   }
 

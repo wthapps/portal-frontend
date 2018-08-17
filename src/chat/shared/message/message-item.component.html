@@ -177,17 +177,12 @@
         <!--requested contact type-->
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'request'">
           <!-- sent_request -->
-          <message-actions-item *ngIf="byMe"
-                                [avatar]=message.receiver?.profile_image
-                                [url]="'profile/' + message.receiver.uuid"
-                                [name]=message.receiver.name
-                                [status]="'Requested'"
-                                [actions]="[{text: 'Resend', id: 'CONTACT_REQUEST_CREATE'}, {text: '', class:'fa fa-times', id: 'CONTACT_REQUEST_CANCEL', btnClass:'btn-default'}]"
+          <message-actions-item *ngIf="byMe" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid" [name]=message.receiver.name
+            [status]="'Requested'" [actions]="[{text: 'Resend', id: 'CONTACT_REQUEST_CREATE'}, {text: '', class:'fa fa-times', id: 'CONTACT_REQUEST_CANCEL', btnClass:'btn-default'}]"
             (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- contact already accepted -->
-          <message-actions-item *ngIf="byMe && message.status == 'accepted'"
-                                [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid"
+          <message-actions-item *ngIf="byMe && message.status == 'accepted'" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid"
             [name]=message.receiver.name [status]="'accepted your request'" (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- Receiver -->
@@ -205,9 +200,9 @@
         </div>
 
         <!--deleted type-->
-        <div class="message-item-content-text" *ngIf="message.message_type == 'message_deleted'">
+        <!-- <div class="message-item-content-text" *ngIf="message.message_type == 'message_deleted'">
           <span>This message has been deleted</span>
-        </div>
+        </div> -->
 
         <!--cancel message type-->
         <div class="message-item-content-text" *ngIf="message.sending_status == 2">
@@ -292,7 +287,7 @@
       <!--<small>{{ message.created_at | timeFormat: "time_only" }}</small>-->
       <!--</div>-->
       <!--</div>-->
-      <div class="message-item-status" *ngIf="byMe">
+<div class="message-item-status" *ngIf="byMe && message.message_type !== 'message_deleted'">
         <span>Sent
           <i class="fa fa-check-circle-o"></i>
         </span>
