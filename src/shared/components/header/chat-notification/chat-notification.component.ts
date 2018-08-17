@@ -1,8 +1,5 @@
-import { ChatCommonService } from './../../../services/chat.common.service';
-import { CHAT_CONVERSATIONS } from './../../../constant/chat-constant';
 import { Component, OnInit } from '@angular/core';
-import { Constants } from '@shared/constant';
-import { AuthService } from '@wth/shared/services';
+import { CHAT_CONVERSATIONS, Constants } from '@shared/constant';
 import { WTHNavigateService } from '@shared/services/wth-navigate.service';
 import { Router } from '@angular/router';
 import { ConnectionNotificationService } from '@shared/services/connection-notification.service';
@@ -12,6 +9,10 @@ import { ConversationApiCommands } from '@shared/commands/chat/coversation-comma
 import { StorageService } from '@shared/services/storage.service';
 import { HandlerService } from '@shared/services/handler.service';
 import { Conversation } from '@chat/shared/models/conversation.model';
+import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
+import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
+import { Observable } from 'rxjs/Observable';
+import { AuthService, ChatCommonService } from '@shared/services';
 
 declare var $: any;
 
@@ -27,6 +28,7 @@ export class ChatNotificationComponent implements OnInit {
   conversations: any = [];
   notificationCount = 0;
   links: any;
+  emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
 
   constructor(
     private navigateService: WTHNavigateService,
@@ -38,8 +40,11 @@ export class ChatNotificationComponent implements OnInit {
     public notificationService: NotificationService,
     public handlerService: HandlerService,
     public wthNavigateService: WTHNavigateService,
-    public authService: AuthService
-  ) { }
+    public authService: AuthService,
+    private wthEmojiService: WTHEmojiService
+  ) {
+    this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
+  }
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
@@ -163,7 +168,7 @@ export class ChatNotificationComponent implements OnInit {
     const chat_conversations_response = this.storageService.getValue(CHAT_CONVERSATIONS);
     if (!chat_conversations_response || !chat_conversations_response.data)
       return;
-    let chat_conversations = chat_conversations_response.data
+    let chat_conversations = chat_conversations_response.data;
     switch (action) {
       case 'markAllAsRead': {
         chat_conversations = chat_conversations.map(

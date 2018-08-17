@@ -9,6 +9,8 @@ import { StorageService, UrlService } from '@shared/services';
 import { CONVERSATION_SELECT } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { Conversation } from '@chat/shared/models/conversation.model';
+import { WTHEmojiService } from "@shared/components/emoji/emoji.service";
+import { WTHEmojiCateCode } from "@shared/components/emoji/emoji";
 
 declare var $: any;
 
@@ -27,6 +29,7 @@ export class ZChatSidebarComponent implements OnInit {
   recentContacts$: Observable<any>;
   historyShow: any = true;
   isRedirect: boolean;
+  emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
 
   constructor(
     public chatService: ChatService,
@@ -34,8 +37,10 @@ export class ZChatSidebarComponent implements OnInit {
     private urlService: UrlService,
     private storageService: StorageService,
     private renderer: Renderer2,
-    private addContactService: ZChatShareAddContactService
+    private addContactService: ZChatShareAddContactService,
+    private wthEmojiService: WTHEmojiService
   ) {
+    this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
   ngOnInit() {
