@@ -12,16 +12,17 @@ export class WTHEmojiPipe implements PipeTransform {
   constructor(public wthEmojiService: WTHEmojiService) {
   }
 
-  transform(value: string, map?: any) {
-    this.map = map || this.map;
+  transform(value: string, map: any) {
+    this.map = map;
     return value.replace(this.wthEmojiService.PARSE_REGEX, this.replacer.bind(this));
   }
 
   private replacer(str, offset, s) {
-    if (Object.keys(this.map).length == 0) {
+    if (Object.keys(this.map).length === 0 || !this.map[str]) {
       return str;
     } else {
-      return `<i class="emojione-${iconSize}-${this.map[str].diversity ? 'diversity' : this.map[str].category} _${this.map[str].code} ng-star-inserted"></i>` || str;
+      return `<i class="emojione-${iconSize}-${this.map[str]['diversity'] ? 'diversity'
+      : this.map[str].category} _${this.map[str].code} ng-star-inserted"></i>` || str;
     }
   }
 }
