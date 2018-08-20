@@ -57,11 +57,8 @@
     <ng-container *ngIf="currentTab === 'upload'">
       <div class="media-selection-content gray-light">
         <div class="media-selection-upload-wrap">
-          <dropzone *ngIf="!allowCancelUpload" class="dropzone-container" [config]="dropzoneConfig" [disabled]="dropzoneDisabled"
-                    [message]="'<h3><i class=\'fa fa-picture-o\'></i><span>Drag your photos here</span></h3>or<div><span class=\'btn btn-outline-primary\'><i class=\'fa fa-cloud-upload\'></i> Upload Photo</span></div>'"
-                    (thumbnail)="onUploadThumbnail($event)"
-                    (success)="onUploadSuccess($event)"
-                    (error)="onUploadError($event)">
+          <dropzone *ngIf="!allowCancelUpload" class="dropzone-container" [config]="dropzoneConfig" [disabled]="dropzoneDisabled" [message]="'<h3><i class=\'fa fa-picture-o\'></i><span>Drag your photos here</span></h3>or<div><span class=\'btn btn-outline-primary\'><i class=\'fa fa-cloud-upload\'></i> Upload Photo</span></div>'"
+            (thumbnail)="onUploadThumbnail($event)" (success)="onUploadSuccess($event)" (error)="onUploadError($event)">
           </dropzone>
 
           <div *ngIf="allowCancelUpload" class="zone-no-photo text-center ng-star-inserted">
