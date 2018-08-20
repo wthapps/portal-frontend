@@ -155,7 +155,8 @@ export class ZMediaAlbumDetailComponent
     this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
       .subscribe(photos => {
         this.onAddToAlbum({parents: [this.object], children: photos});
-        this.objects = [...photos.filter(p => p.model === this.objectType), ...this.objects];
+        // this.objects = [...photos.filter(p => p.model === this.objectType), ...this.objects];
+        this.loadObjects(this.object.uuid);
       });
 
     this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe(event => {
@@ -321,6 +322,7 @@ export class ZMediaAlbumDetailComponent
     });
     this.selectedObjects = [];
     this.hasSelectedObjects = false;
+    this.selectedObjectsChanged(this.selectedObjects);
   }
 
   deleteObjects(term: any = 'items') {
@@ -619,15 +621,16 @@ export class ZMediaAlbumDetailComponent
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.selectedObjects = this.selectedObjects.map(el => { el._destroy = true; return { id: el.id, model: el.model, _destroy: el._destroy } })
-          this.apiBaseService.put(`media/sharings/${this.object.id}/objects`, { objects: this.selectedObjects }).subscribe(res => {
+          this.apiBaseService.put(`media/albums/${this.object.id}/objects`, { objects: this.selectedObjects }).subscribe(res => {
             this.selectedObjects = [];
             this.hasSelectedObjects = false;
+            this.selectedObjectsChanged(this.selectedObjects);
             this.loadObjects(this.object.uuid);
           });
         },
         class: '',
         liclass: '',
-        title: 'Remove from share',
+        title: 'Remove from Album',
         tooltip: this.tooltip.remvoe,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-times'

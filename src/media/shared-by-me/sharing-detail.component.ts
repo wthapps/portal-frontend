@@ -192,7 +192,6 @@ export class ZMediaSharingDetailComponent
       }
       this.validateActions(this.subMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
       this.validateActions(this.parentMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
-
     });
   }
   validateActions: (menuActions: any, role_id: number) => any;
@@ -573,7 +572,7 @@ export class ZMediaSharingDetailComponent
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: true, // Inside dropdown list
-        action: () => { },
+        action: this.deleteParent.bind(this),
         class: '',
         liclass: 'visible-xs-block',
         title: 'Delete',
@@ -661,10 +660,11 @@ export class ZMediaSharingDetailComponent
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          this.selectedObjects = this.selectedObjects.map(el => {el._destroy = true; return {id: el.id, model: el.model, _destroy: el._destroy}})
+          this.selectedObjects = this.selectedObjects.map(el => {el._destroy = true; return {id: el.id, model: el.model, _destroy: el._destroy}});
           this.apiBaseService.put(`media/sharings/${this.object.id}/objects`, { objects: this.selectedObjects}).subscribe(res => {
             this.selectedObjects = [];
             this.hasSelectedObjects = false;
+            this.selectedObjectsChanged(this.selectedObjects);
             this.loadObjects(this.object.uuid);
           });
         },

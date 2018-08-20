@@ -346,7 +346,8 @@ PlaylistAddMixin, MediaDownloadMixin {
     this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
       .subscribe(videos => {
         this.onAddToPlaylist({ parents: [this.object], children: videos });
-        this.objects = [...videos.filter(v => v.model === this.objectType), ...this.objects];
+        // this.objects = [...videos.filter(v => v.model === this.objectType), ...this.objects];
+        this.loadObjects(this.object.uuid);
       });
     this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       this.handleUploadFiles(event);
@@ -570,17 +571,17 @@ PlaylistAddMixin, MediaDownloadMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-star'
       },
-      delete: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: this.removeFromParent.bind(this),
-        class: 'btn btn-default',
-        liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-trash'
-      },
+      // delete: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: false, // Outside dropdown list
+      //   action: this.removeFromParent.bind(this),
+      //   class: 'btn btn-default',
+      //   liclass: 'hidden-xs',
+      //   tooltip: this.tooltip.tag,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-trash'
+      // },
       edit: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
@@ -605,17 +606,38 @@ PlaylistAddMixin, MediaDownloadMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-download'
       },
-      deleteMobile: {
+      // deleteMobile: {
+      //   active: true,
+      //   permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+      //   inDropDown: true, // Inside dropdown list
+      //   action: this.removeFromParent.bind(this),
+      //   class: '',
+      //   liclass: 'visible-xs-block',
+      //   title: 'Delete',
+      //   tooltip: this.tooltip.info,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-trash'
+      // },
+      remove: {
         active: true,
-        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
-        inDropDown: true, // Inside dropdown list
-        action: () => { },
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          this.selectedObjects = this.selectedObjects.map(el => { el._destroy = true; return { id: el.id, model: el.model, _destroy: el._destroy } })
+          this.apiBaseService.put(`media/playlists/${this.object.id}/objects`, { objects: this.selectedObjects }).subscribe(res => {
+            this.toastsService.success('You removed videos successfully!');
+            this.selectedObjects = [];
+            this.hasSelectedObjects = false;
+            this.selectedObjectsChanged(this.selectedObjects);
+            this.loadObjects(this.object.uuid);
+          })
+        },
         class: '',
-        liclass: 'visible-xs-block',
-        title: 'Delete',
-        tooltip: this.tooltip.info,
+        liclass: '',
+        title: 'Remove from Playlist',
+        tooltip: this.tooltip.remvoe,
         tooltipPosition: 'bottom',
-        iconClass: 'fa fa-trash'
+        iconClass: 'fa fa-times'
       }
     };
   }
