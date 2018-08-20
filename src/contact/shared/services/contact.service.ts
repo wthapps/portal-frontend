@@ -242,6 +242,7 @@ export class ZContactService extends BaseEntityService<any> {
   clearSelected(): void {
     // this.selectedObjects.length = 0;
     this.selectAllObjects(false);
+    this.notifyContactsObservers();
   }
 
   toggleSelectAll(): void {
