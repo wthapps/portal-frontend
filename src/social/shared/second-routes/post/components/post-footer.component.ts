@@ -3,12 +3,11 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnChanges, OnInit, OnDestroy
+  OnChanges, OnInit, OnDestroy, ChangeDetectionStrategy
 } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
 
 import {
   DeleteCommentEvent,
@@ -31,11 +30,13 @@ declare var _: any;
 @Component({
   selector: 'so-post-footer',
   templateUrl: 'post-footer.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() user: any;
   @Input() item: SoPost;
   @Input() type: string;
+  @Input() emojiMap: { [name: string]: WTHEmojiCateCode };
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
   commentEditorMode = CommentEditorMode;
 
@@ -52,7 +53,6 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   totalComment = 1;
   commentPageIndex = 0;
   loadingDone = false;
-  emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
   readonly commentLimit: number = Constants.soCommentLimit;
   readonly tooltip: any = Constants.tooltip;
 
@@ -60,11 +60,9 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(private router: Router,
               private postService: PostService,
-              private wthEmojiService: WTHEmojiService,
               public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
-    this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
   ngOnInit() {
@@ -76,11 +74,11 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(data: any) {
-    if (this.type === 'info') {
-      this.showInfo = true;
-    }
-    this.totalComment = +this.item.comment_count;
-    this.loadingDone = (this.totalComment === 0 ) || (this.totalComment <= _.get(this.item, 'comments.length', 0));
+    // if (this.type === 'info') {
+    //   this.showInfo = true;
+    // }
+    // this.totalComment = +this.item.comment_count;
+    // this.loadingDone = (this.totalComment === 0 ) || (this.totalComment <= _.get(this.item, 'comments.length', 0));
   }
 
   viewProfile(uuid: string) {

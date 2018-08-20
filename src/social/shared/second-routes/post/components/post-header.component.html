@@ -1,4 +1,4 @@
-<div *ngIf="!showInfo" class="z-social-media">
+<div *ngIf="!(type === 'info')" class="z-social-media">
   <a href="javascript:void(0);" (click)="viewProfile(item.owner.uuid)">
     <div class="z-social-media-left">
       <div class="avatar-xs">
@@ -127,7 +127,7 @@
       </ul>
     </div>
 
-    <div *ngIf="!showDetail" class="dropdown pull-right">
+<div *ngIf="!(type == 'detail')" class="dropdown pull-right">
       <a class="btn btn-default btn-default-no-border"
          pTooltip="{{ tooltip.viewDetail }}" tooltipPosition="top" (click)="viewPostDetail(item.uuid)">
         <i class="fa fa-external-link"></i>
@@ -135,7 +135,7 @@
     </div>
   </div>
 
-  <div *ngIf="showInfo" class="z-social-media-right">
+<div *ngIf="type === 'info'" class="z-social-media-right">
     <div class="dropdown pull-right">
       <a href="javascript:;" class="btn btn-default" (click)="onShowInfo()">
         <i class="fa fa-times"></i>

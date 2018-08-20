@@ -30,6 +30,7 @@ import { Constants } from '@shared/constant';
 import { BaseEvent } from '@shared/shared/event/base-event';
 import { PostActivitiesComponent } from './post-activities.component';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 
 @Component({
   selector: 'so-post',
@@ -41,8 +42,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   modalComponent: any;
   @Input() user: any;
   @Input() item: SoPost = new SoPost();
-  @Input() type: string = '';
-  @Input() showComments: boolean = true;
+  @Input() type = '';
+  @Input() showComments = true;
+  @Input() emojiMap: { [name: string]: WTHEmojiCateCode };
   @Output() onDeleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
 
@@ -52,6 +54,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   commentEditor: CommentItemEditorComponent;
 
   itemDisplay: any;
+  privacyName: string;
+  commentLoadingDone = false;
   modal: any;
 
   private destroySubject: Subject<any> = new Subject<any>();
@@ -60,7 +64,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   constructor(public apiBaseService: ApiBaseService,
               private photoService: PhotoService,
               private loading: LoadingService,
-              private photoSelectDataService: PhotoModalDataService,
               private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService,
               private componentFactoryResolver: ComponentFactoryResolver,
@@ -70,31 +73,30 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
     this.photoService.modifiedPhotos$
       .pipe(
-        filter((object: any) => _.get(object, 'payload.post_uuid', -99) == this.item.uuid || _.get(object, 'payload.post_uuid', -99) == _.get(this.item, 'parentItem.uuid')),
+        filter((object: any) =>
+        _.get(object, 'payload.post_uuid', -99) === this.item.uuid
+        || _.get(object, 'payload.post_uuid', -99) === _.get(this.item, 'parentItem.uuid')),
         takeUntil(this.destroySubject.asObservable())
       )
       .subscribe((object: any) => {
-        console.debug('modifiedPhotos - post: ', object);
-        let post: SoPost = _.get(object, 'payload.post');
-        switch(object.action) {
+        const post: SoPost = _.get(object, 'payload.post');
+        switch (object.action) {
           case 'update':
-            let updatedPhoto = object.payload.photo;
+            const updatedPhoto = object.payload.photo;
             let tempItem = _.cloneDeep(this.item);
             // Update post photos
-            console.debug('item before update: ', tempItem, this.item);
             tempItem = this.updatePhotoForPost(tempItem, updatedPhoto);
 
             // Update parentPost as well
-            if(tempItem.parent_post) {
+            if (tempItem.parent_post) {
               tempItem.parent_post = this.updatePhotoForPost(tempItem.parent_post, updatedPhoto);
             }
 
             this.item = tempItem;
             this.mapDisplay();
-            console.debug('item after update: ', tempItem);
             break;
           case 'delete':
-            console.debug('unimplemented DELETE photo in post: ', object);
+            console.log('unimplemented DELETE photo in post: ', object);
             break;
         }
       });
@@ -103,6 +105,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   ngOnInit() {
     // this.photoSelectDataService.init({multipleSelect: false});
     this.mediaSelectionService.setMultipleSelection(false);
+    this.mapDisplay();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -122,8 +125,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   updatePhotoForPost(post: any, updatedPhoto: any): any {
     post.photos = this.updatePhoto(post.photos, updatedPhoto);
 
-    for(let i = 0; i < post.comments.length; i++) {
-      if(post.comments[i].photo) {
+    for (let i = 0; i < post.comments.length; i++) {
+      if (post.comments[i].photo) {
         post.comments[i].photo = _.get(this.updatePhoto([post.comments[i].photo], updatedPhoto), '0');
       }
     }
@@ -132,7 +135,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   updatePhoto(currentPhotos: any[], updatedPhoto: any): any[] {
     return _.map(currentPhotos, (photo: any) => {
-        if( photo.id === updatedPhoto.id )
+        if ( photo.id === updatedPhoto.id )
           return updatedPhoto;
         else
           return photo;
@@ -144,6 +147,10 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     // Clone object to display
     this.itemDisplay = _.cloneDeep(this.item);
     this.itemDisplay.tags = this.item['tags_json'];
+    this.privacyName = this.getPrivacyName(this.item);
+    const totalComment = this.item.comment_count;
+    this.itemDisplay.commentLoadingDone = (totalComment === 0)
+    || (totalComment <= _.get(this.item, 'comments.length', 0));
     // handle css
     this.addCarouselCss();
     // handle photo remain
@@ -161,7 +168,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (this.itemDisplay.photos.length > 6) {
       this.itemDisplay.displayCss = 'carousel-thumb-style-6';
     }
-    if (this.itemDisplay.parent != null && this.itemDisplay.parent != undefined) {
+    if (this.itemDisplay.parent != null && this.itemDisplay.parent !== undefined) {
       this.itemDisplay.parent.displayCss = 'carousel-thumb-style-' + this.itemDisplay.parent.photos.length;
       if (this.itemDisplay.parent.photos.length > 6) {
         this.itemDisplay.parent.displayCss = 'carousel-thumb-style-6';
@@ -241,21 +248,20 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   onActions(event: BaseEvent) {
     if (event instanceof CommentCreateEvent) {
-      let self: any = this;
+      const self: any = this;
       this.createComment(event.data).toPromise().then(
         (res: any) => {
           console.log('response data', res.data);
 
-          if (res.data.parent_type == 'SocialNetwork::Post') {
-            let comment = new SoComment().from(res.data);
+          if (res.data.parent_type === 'SocialNetwork::Post') {
+            const comment = new SoComment().from(res.data);
             _.uniqBy(this.item.comments.unshift(comment), 'uuid');
             this.item.comment_count += 1;
 
-          } else if (res.data.parent_type == 'SocialNetwork::Comment') {
-            // this.updateItemComments(res.data);
-            let newReply: any = res.data;
-            let commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
-              return newReply.parent.uuid == comment.uuid;
+          } else if (res.data.parent_type === 'SocialNetwork::Comment') {
+            const newReply: any = res.data;
+            const commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
+              return newReply.parent.uuid === comment.uuid;
             });
             this.item.comments[commentIndex].comments.push(newReply);
           }
@@ -310,9 +316,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     if (event instanceof DeleteReplyEvent) {
       this.deleteReply(event.data).toPromise().then(
         (res: any) => {
-          let deletedReply: any = res.data;
-          let commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
-            return deletedReply.parent.uuid == comment.uuid;
+          const deletedReply: any = res.data;
+          const commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
+            return deletedReply.parent.uuid === comment.uuid;
           });
 
           _.remove(this.item.comments[commentIndex].comments, {uuid: deletedReply.uuid});
@@ -366,7 +372,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   createModalComponent(component: any) {
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
     this.modalContainer.clear();
     this.modalComponent = this.modalContainer.createComponent(componentFactory);
     this.modal = this.modalComponent.instance;
@@ -381,7 +387,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       $(event.target).addClass('active');
     }
 
-    let data = {reaction: reaction, reaction_object: object, uuid: uuid};
+    const data = {reaction: reaction, reaction_object: object, uuid: uuid};
     this.apiBaseService.post(this.apiBaseService.urls.zoneSoReactions, data).toPromise().then(
       (res: any) => {
         this.updateItemReactions(object, Object.assign({}, data, res.data));
@@ -390,21 +396,28 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     );
   }
 
+  private getPrivacyName(post: SoPost): string {
+    if (post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
+      return post.custom_objects[0].name;
+    return post.privacy.replace('_', ' ');
+  }
+
+
   private updateItemReactions(object: string, data: any) {
 
     // // update reactions for comment
-    if (object == 'post') {
+    if (object === 'post') {
       this.updateReactionsSet(this.item, data);
-    } else if (object == 'comment') {
+    } else if (object === 'comment') {
       // update reaction for reply
-      let done: boolean = false;
+      let done = false;
       _.forEach(this.item.comments, (comment: SoComment, index: any) => {
-        if (comment.uuid == data.uuid) {
+        if (comment.uuid === data.uuid) {
           this.updateReactionsSet(this.item.comments[index], data);
           return;
         }
         _.forEach(this.item.comments[index].comments, (reply: SoComment, i2: any) => {
-          if (reply.uuid == data.uuid) {
+          if (reply.uuid === data.uuid) {
             this.updateReactionsSet(this.item.comments[index].comments[i2], data);
             done = true;
             return;
@@ -425,11 +438,11 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   private updateItemComments(data: any) {
-    let updatedComment = new SoComment().from(data);
+    const updatedComment = new SoComment().from(data);
 
     _.forEach(this.item.comments, (comment: SoComment, index: any) => {
       // Update comment items
-      if (data.parent_type !== 'SocialNetwork::Comment' && (comment.uuid == updatedComment.uuid)) {
+      if (data.parent_type !== 'SocialNetwork::Comment' && (comment.uuid === updatedComment.uuid)) {
         this.item.comments[index] = updatedComment;
         return;
       }

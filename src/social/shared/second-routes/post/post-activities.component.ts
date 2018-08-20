@@ -9,7 +9,6 @@ import { Constants } from '@wth/shared/constant';
 
 
 @Component({
-
   selector: 'post-activities',
   templateUrl: 'post-activities.component.html'
 })
@@ -30,7 +29,7 @@ export class PostActivitiesComponent implements WthAppsBaseModal {
   open(options: any = {item: undefined}) {
     this.modal.open();
 
-    if (options.item != undefined) {
+    if (!options.item) {
       this.item = options.item;
     }
     this.loadData();

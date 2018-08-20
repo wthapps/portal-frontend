@@ -20,10 +20,11 @@ export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
   @Input() item: SoPost;
   @Input() type: string;
   @Input() originalPost: SoPost;
+  @Input() emojiMap: { [name: string]: WTHEmojiCateCode };
   parentItem: SoPost = new SoPost();
   originalParent: SoPost;
 
-  showInfo: boolean = false;
+  showInfo = false;
   actions = {
     openShare: 3,
     openActivities: 4,
@@ -34,7 +35,6 @@ export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
   };
   hasLike: boolean;
   hasDislike: boolean;
-  emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
   private destroySubject: Subject<any> = new Subject<any>();
   readonly DEFAULT_IMAGE: string = Constants.img.default;
 
@@ -43,19 +43,18 @@ export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
               public photoService: PhotoService,
               public userService: UserService,
               public postItem: PostComponent) {
-    this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
   ngOnInit() {
   }
   ngOnChanges(changes: SimpleChanges) {
-    if (this.type == 'info') {
-      this.showInfo = true;
-    }
+    // if (this.type === 'info') {
+    //   this.showInfo = true;
+    // }
 
     if (_.get(changes['item'], 'currentValue.parent_post')) {
-      let parentItem: any = changes['item'].currentValue.parent_post;
-      let remainPhotos: number = parentItem.photos.length - 6;
+      const parentItem: any = changes['item'].currentValue.parent_post;
+      const remainPhotos: number = parentItem.photos.length - 6;
       this.originalParent = _.cloneDeep(parentItem);
 
       parentItem.photos.splice(6);
@@ -87,8 +86,8 @@ export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
         this.postItem.toggleComments();
         break;
       case this.actions.onShowPhotoDetail:
-        let post = _.get(data, 'parentItem', this.originalPost);
-        let photoIds = _.map(post.photos, 'id');
+        const post = _.get(data, 'parentItem', this.originalPost);
+        const photoIds = _.map(post.photos, 'id');
         this.router.navigate([{
           outlets: {
             modal: [
@@ -103,7 +102,7 @@ export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
         }], { queryParamsHandling: 'preserve', preserveFragment: true });
         break;
       case this.actions.onShowPostDetail:
-        let parentUuid = data;
+        const parentUuid = data;
         this.router.navigate(([{outlets: {detail: ['posts', parentUuid]}}]));
         break;
     }

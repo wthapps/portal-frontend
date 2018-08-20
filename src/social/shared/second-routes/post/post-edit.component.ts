@@ -6,7 +6,8 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
-  ViewEncapsulation
+  ViewEncapsulation,
+  OnChanges
 } from '@angular/core';
 import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 
@@ -35,17 +36,17 @@ import { WUploader } from '@shared/services/w-uploader';
   styleUrls: ['post-edit.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class PostEditComponent implements OnInit, OnDestroy {
+export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
 
-  mode: string = 'add'; // add or edit
-  isShare: boolean = false; // if we are creating a new share that means isShare's value is 'true'
+  mode = 'add'; // add or edit
+  isShare = false; // if we are creating a new share that means isShare's value is 'true'
   @Input() photos: Array<any> = new Array<any>();
   @Input() community: any;
   @Input() soProfile: any;
-  @Input() showTag: boolean = true;
-  @Input() showAddPhotosButton: boolean = true;
+  @Input() showTag = true;
+  @Input() showAddPhotosButton = true;
   @Input() link: any = null;
 
 
@@ -174,7 +175,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
         this.socialService.community.currentCommunity
       ); // Default share new post to current community
     } else {
-      let defaultPrivacy: string = _.get(
+      const defaultPrivacy: string = _.get(
         this.soProfile,
         'settings.viewable_post.value'
       );
@@ -228,7 +229,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   done(item: any) {
     // this.setItemDescriptionFromDom();
-    let options: any = {
+    const options: any = {
       mode: this.mode,
       item: {
         uuid: this.post.uuid,
@@ -256,7 +257,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   uploadFiles(files: Array<any>) {
     if (files.length <= 0) return;
-    let subscription = this.photoUploadService.uploadPhotos(files).subscribe(
+    const subscription = this.photoUploadService.uploadPhotos(files).subscribe(
       (res: any) => {
         this.files.shift(); // remove file was uploaded
         // Only add distinct photos into post edit
@@ -347,7 +348,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.onMoreAdded.emit(true);
     this.mediaSelectionService.open({hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true});
 
-    let close$: Observable<any> = Observable.merge(
+    const close$: Observable<any> = Observable.merge(
       this.mediaSelectionService.open$,
       componentDestroyed(this)
     );
@@ -382,7 +383,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   customPrivacy(type: string, event: any) {
     event.preventDefault();
-    let mode: string = 'edit';
+    let mode = 'edit';
     if (this.post.privacy !== type) mode = 'add';
 
     this.privacyCustomModal.open(
@@ -452,7 +453,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   private getPrivacyName(post: any): string {
-    let privacy = !post || post.privacy == '' ? 'public' : post.privacy;
+    const privacy = !post || post.privacy === '' ? 'public' : post.privacy;
     if (
       privacy === Constants.soPostPrivacy.customCommunity.data &&
       post.custom_objects.length === 1

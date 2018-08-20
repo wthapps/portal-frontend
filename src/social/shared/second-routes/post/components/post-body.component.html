@@ -1,7 +1,7 @@
-<div *ngIf="!showInfo" class="z-social-post">
+<div *ngIf="!(type === 'info')" class="z-social-post">
   <div class="z-social-post-content">
     <div class="z-social-post-txt">
-      <read-more [limit]="100" [content]="item?.description | wth2Emojis:(emojiMap$ | async) | linkify">
+      <read-more [limit]="100" [content]="item?.description | wth2Emojis: emojiMap | linkify">
       </read-more>
       <div *ngIf="item.links && item.links.length > 0">
         <div *ngIf="item.links[0].image && item.links[0].title" class="message-item-content-main" >

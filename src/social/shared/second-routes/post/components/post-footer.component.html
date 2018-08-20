@@ -30,7 +30,7 @@
           <h4 class="media-heading"><a  href="javascript:;" (click)="viewProfile(comment.owner.uuid)" >{{ comment.owner.name }}</a>
             <span class="media-heading-time">{{ comment.created_at | timeFormat }}</span>
           </h4>
-          <div class="textarea-editor-view" [innerHtml]="comment?.content | wth2Emojis:(emojiMap$ | async) | linkify | safeHtml"></div>
+          <div class="textarea-editor-view" [innerHtml]="comment?.content | wth2Emojis: emojiMap | linkify | safeHtml"></div>
           <div *ngIf="comment.links && comment.links.length > 0">
             <div *ngIf="comment.links[0].image && comment.links[0].title" class="message-item-content-main">
               <display-link [data]="comment.links[0]"></display-link>
@@ -123,7 +123,7 @@
                 </ul>
               </div>
             </h4>
-            <div class="textarea-editor-view" [innerHtml]="reply?.content | wth2Emojis:(emojiMap$ | async)  | linkify | safeHtml"></div>
+            <div class="textarea-editor-view" [innerHtml]="reply?.content | wth2Emojis: emojiMap  | linkify | safeHtml"></div>
             <div *ngIf="reply.links && reply.links.length > 0">
               <div *ngIf="reply.links[0].image && reply.links[0].title" class="message-item-content-main">
                 <display-link [data]="reply.links[0]"></display-link>
@@ -165,7 +165,7 @@
       </ng-container>
     </li>
   </ul>
-  <div *ngIf="!loadingDone" class="z-social-comment-more">
+  <div *ngIf="!item.commentLoadingDone" class="z-social-comment-more">
     <!--<label attr.for="post-{{ item.uuid }}" class="read-more-trigger" (click)="viewAllComments()">View all comments</label>-->
     <label attr.for="post-{{ item.uuid }}" class="read-more-trigger" (click)="getMoreComments()">View more
       comments</label>

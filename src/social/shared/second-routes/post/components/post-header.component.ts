@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { SocialService } from '../../../services/social.service';
@@ -10,22 +10,23 @@ import { PostComponent } from '../post.component';
 
 @Component({
   selector: 'so-post-header',
-  templateUrl: 'post-header.component.html'
+  templateUrl: 'post-header.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PostHeaderComponent implements OnChanges {
   @Input() item: SoPost;
   @Input() type: string;
   @Input() user: any;
-  tooltip: any = Constants.tooltip;
+  @Input() privacyName: string;
+  readonly tooltip: any = Constants.tooltip;
 
-  showInfo: boolean = false;
-  showDetail: boolean = false;
+  // showInfo = false;
+  // showDetail = false;
   settings: any;
   // user: User;
   readonly postUrl: string = Constants.urls.posts;
   readonly profileUrl: string = Constants.urls.profile;
   readonly postPrivacy: any = Constants.soPostPrivacy;
-  privacyName: string;
   // privacyClassIcon: string;
 
 
@@ -37,12 +38,12 @@ export class PostHeaderComponent implements OnChanges {
   }
 
   ngOnChanges(data: any) {
-    if (this.type == 'info') {
-      this.showInfo = true;
-    } else if (this.type == 'detail') {
-      this.showDetail = true;
-    }
-    this.privacyName = this.getPrivacyName(this.item);
+    // if (this.type == 'info') {
+    //   this.showInfo = true;
+    // } else if (this.type == 'detail') {
+    //   this.showDetail = true;
+    // }
+    // this.privacyName = this.getPrivacyName(this.item);
     // this.privacyClassIcon = this.getPrivacyClassIcon(this.item);
   }
 
@@ -100,15 +101,15 @@ export class PostHeaderComponent implements OnChanges {
   }
 
   viewPrivacyCustom(post: any, modal: any) {
-    if (post.privacy == Constants.soPostPrivacy.customFriend.data || post.privacy == Constants.soPostPrivacy.customCommunity.data) {
+    if (post.privacy === Constants.soPostPrivacy.customFriend.data || post.privacy == Constants.soPostPrivacy.customCommunity.data) {
       modal.open();
     }
   }
-  private getPrivacyName(post: any): string {
-    if(post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
-      return post.custom_objects[0].name;
-    return post.privacy.replace('_', ' ');
-  }
+  // private getPrivacyName(post: any): string {
+  //   if(post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
+  //     return post.custom_objects[0].name;
+  //   return post.privacy.replace('_', ' ');
+  // }
 
   // private getPrivacyClassIcon(post: any): string {
   //   // switch (post.privacy) {
