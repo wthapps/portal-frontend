@@ -75,8 +75,8 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
       .subscribe(state => {
         const notes: any = state.objects.filter(
           item =>
-            item.object_type == noteConstants.OBJECT_TYPE.NOTE &&
-            item.selected == true
+            item.object_type === noteConstants.OBJECT_TYPE.NOTE &&
+            item.selected === true
         );
         this.notesListModal.close();
         notes.forEach(note => {
@@ -99,7 +99,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   createForm() {
     // Form controls
     this.messageEditorForm = new FormGroup({
-      message: new FormControl(this.message.message, Validators.required) //[this.message.message, null]
+      message: new FormControl(this.message.message, Validators.required)
     });
     this.messageCtrl = <FormControl>this.messageEditorForm.controls['message'];
   }
@@ -143,14 +143,14 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   cancelEditingMessage() {
-    if (this.mode == FORM_MODE.EDIT) {
+    if (this.mode === FORM_MODE.EDIT) {
       this.mode = FORM_MODE.CREATE;
     }
     this.resetEditor();
   }
 
   send(enter?: boolean) {
-    if (this.mode == FORM_MODE.EDIT) {
+    if (this.mode === FORM_MODE.EDIT) {
       this.chatService
         .updateMessage(this.message.group_id, this.message)
         .subscribe((response: any) => {
@@ -188,7 +188,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     this.mediaSelectionService.open();
     this.mediaSelectionService.setMultipleSelection(true);
 
-    let close$: Observable<any> = Observable.merge(
+    const close$: Observable<any> = Observable.merge(
       this.mediaSelectionService.open$,
       componentDestroyed(this)
     );
@@ -207,14 +207,14 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   chooseDone(e: any) {
     // this.photoModal.close();
-    for (let photo of e) {
+    for (const photo of e) {
       this.chatService.uploadPhotoOnWeb(photo);
     }
   }
 
   changeFiles(event: any) {
-    let files = event.target.files;
-    if (files.length == 0) {
+    const files = event.target.files;
+    if (files.length === 0) {
       return;
     }
     this.uploadFile(files);
@@ -227,13 +227,13 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   placeCaretAtEnd(el: any) {
     el.focus();
     if (
-      typeof window.getSelection != 'undefined' &&
-      typeof document.createRange != 'undefined'
+      typeof window.getSelection !== 'undefined' &&
+      typeof document.createRange !== 'undefined'
     ) {
-      let range: any = document.createRange();
+      const range: any = document.createRange();
       range.selectNodeContents(el);
       range.collapse(false);
-      let sel: any = window.getSelection();
+      const sel: any = window.getSelection();
       sel.removeAllRanges();
       sel.addRange(range);
     }

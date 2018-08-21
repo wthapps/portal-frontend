@@ -9,7 +9,8 @@ import {
   Output,
   EventEmitter,
   ViewEncapsulation,
-  ElementRef
+  ElementRef,
+  OnDestroy
 } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
@@ -20,6 +21,7 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { INCOMING_MESSAGE, ACTION } from '@shared/constant';
+import { untilComponentDestroyed } from 'ng2-rx-componentdestroyed';
 
 declare var _: any;
 declare var $: any;
@@ -30,7 +32,7 @@ declare var $: any;
   styleUrls: ['message-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MessageListComponent implements OnInit {
+export class MessageListComponent implements OnInit, OnDestroy {
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
   @ViewChild('listEl') listEl: ElementRef;
 
@@ -49,7 +51,10 @@ export class MessageListComponent implements OnInit {
     private storageService: StorageService,
     private wthEmojiService: WTHEmojiService
   ) {
-    this.messageService.scrollToBottom$.subscribe((res: boolean) => {
+    this.messageService.scrollToBottom$
+      .pipe(
+        untilComponentDestroyed(this)
+      ).subscribe((res: boolean) => {
       if (res && this.listEl) {
         this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
       }
@@ -57,17 +62,22 @@ export class MessageListComponent implements OnInit {
 
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
 
-    this.chatService.getCurrentMessagesAsync().subscribe(res => {
-      console.log('current messages: ', res);
-      // if (res && res.data && this.currentMessages.length === 0)
+    this.chatService.getCurrentMessagesAsync()
+    .pipe(
+      untilComponentDestroyed(this)
+    ).subscribe(res => {
       if (res && res.data )
         this.currentMessages = res.data;
     });
 
-    this.storageService.getAsync(INCOMING_MESSAGE).subscribe(res => {
+    this.storageService.getAsync(INCOMING_MESSAGE)
+    .pipe(
+      untilComponentDestroyed(this)
+    )
+    .subscribe(res => {
       if ((Object.keys(res)).length === 0)
        return;
-      console.log('incomming message: ', res);
+      // console.log('incomming message: ', res);
       const message = res.data;
       switch (res.action) {
         case ACTION.DELETE:
@@ -87,6 +97,9 @@ export class MessageListComponent implements OnInit {
           break;
       }
     });
+  }
+
+  ngOnDestroy() {
   }
 
   ngOnInit() {
