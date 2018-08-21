@@ -108,9 +108,25 @@ export class PhotoDetailComponent implements OnInit,
             }
           }
           if (params.returnUrl) this.returnUrl = params.returnUrl;
+          // this.onStart();
         });
       });
-    })
+    });
+    // const readURL: any = (input) => {
+    //   if (input.files && input.files[0]) {
+    //     var reader = new FileReader();
+
+    //     reader.onload = function (e: any) {
+    //       $('#image-viewer').attr('src', e.target.result);
+    //     }
+    //     reader.readAsDataURL(input.files[0]);
+    //   }
+    // }
+    // $("#image-viewer").change(() => {
+    //   console.log('change');
+
+    //   readURL(this);
+    // });
   }
   validateActions: (menuActions: any, role_id: number) => any;
 
@@ -150,27 +166,30 @@ export class PhotoDetailComponent implements OnInit,
 
   onStart(event?: any) {
     this.image =
-      event && event.path
-        ? event.path[0]
-        : document.getElementById('image-viewer');
-    this.cropper = new Cropper(this.image, {
-      autoCrop: false,
-      // dragMode: 'move',
-      dragMode: 'none',
-      background: false,
-      viewMode: 1, // restrict the crop box to not exceed the size of the canvas.
-      // viewMode: 2, // restrict the minimum canvas size to fit within the container.
-      ready: () => {
-        setTimeout(() => {
-          this.loadingImg = false;
-        }, 200);
-      },
-      zoom: (e: any) => {
-        if (e.detail.ratio !== e.detail.oldRatio) {
-          this.cropper.setDragMode('move');
+    event && event.path
+    ? event.path[0]
+    : document.getElementById('image-viewer');
+    if (this.cropper) {
+      this.cropper.replace($('#image-viewer').attr('src'));
+    } else {
+      this.cropper = new Cropper(this.image, {
+        autoCrop: false,
+        // dragMode: 'move',
+        dragMode: 'none',
+        background: false,
+        viewMode: 1, // restrict the crop box to not exceed the size of the canvas.
+        ready: () => {
+          setTimeout(() => {
+            this.loadingImg = false;
+          }, 200);
+        },
+        zoom: (e: any) => {
+          if (e.detail.ratio !== e.detail.oldRatio) {
+            this.cropper.setDragMode('move');
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   onZoomIn() {

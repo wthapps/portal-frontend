@@ -124,7 +124,7 @@ export class ZVideoDetailComponent implements OnInit,
     this.modalIns.event.subscribe(e => {
       switch (e.action) {
         case 'editInfo' :
-          this.apiBaseService.put(`media/videos/${this.object.id}`, { name: e.params.selectedObject.name}).subscribe(res => {
+          this.apiBaseService.put(`media/videos/${this.object.id}`, { name: e.params.selectedObject.name, description: e.params.selectedObject.description, created_at: e.params.selectedObject.created_at}).subscribe(res => {
             this.object = res.data
           });
         default:
