@@ -296,7 +296,7 @@
   </div>
 </div>
 
-<div *ngIf="message.links && message.links.length > 0" class="message-item" [ngClass]="{'message-item-left': !byMe, 'message-item-right': byMe}">
+<div *ngIf="message?.links?.length > 0" class="message-item" [ngClass]="{'message-item-left': !byMe, 'message-item-right': byMe}">
   <div class="message-item-content">
     <div class="message-item-content-card">
       <ng-container *ngFor="let link of message.links">

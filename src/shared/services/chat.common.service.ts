@@ -5,7 +5,7 @@ import { HandlerService } from './handler.service';
 import { UserService } from '@wth/shared/services/user.service';
 import { WMessageService } from '@wth/shared/services/message.service';
 import { Router } from '@angular/router';
-import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, CHAT_CONVERSATIONS } from '@wth/shared/constant';
+import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, CHAT_CONVERSATIONS, INCOMING_MESSAGE, ACTION } from '@wth/shared/constant';
 
 declare var _: any;
 declare var Promise: any;
@@ -31,7 +31,7 @@ export class ChatCommonService {
     this.setRecentConversations();
     this.setFavouriteConversations();
     this.setHistoryConversations();
-    this.setDefaultSelectContact();
+    // this.setDefaultSelectContact();
   }
 
   setRecentConversations() {
@@ -87,27 +87,26 @@ export class ChatCommonService {
     const conversationsResponse = this.storage.getValue(CHAT_CONVERSATIONS);
     if (!conversationsResponse || !conversationsResponse.data)
       return;
-    const incomingConversation = conversationsResponse.data.find(conv => conv.group_json.id === groupId)
-    if (contactSelect && incomingConversation && contactSelect.id === incomingConversation.id) {
-      if (currentMessageList) {
-        let isReplace = false;
-        for (let i = 0; i < currentMessageList.data.length; i++) {
-          if (currentMessageList.data[i].id === message.id) {
-            isReplace = true;
-            currentMessageList.data[i] = message;
-          }
+    const incomingConversation = conversationsResponse.data.find(conv => conv.group_json.id === groupId);
+    if (currentMessageList) {
+      let isReplace = false;
+      for (let i = 0; i < currentMessageList.data.length; i++) {
+        if (currentMessageList.data[i].id === message.id) {
+          isReplace = true;
+          currentMessageList.data[i] = message;
         }
-        if (!isReplace) {
-          currentMessageList.data.push(message);
-        }
-        if (contactSelect.group_json.id === groupId) {
-          this.storage.save('current_chat_messages', currentMessageList);
-        }
-        // Scroll to bottom when user's own messages are arrived
-        if (message.user_id === this.userService.getSyncProfile().id)
-          this.messageService.scrollToBottom();
       }
-
+      if (!isReplace) {
+        currentMessageList.data.push(message);
+      }
+      if (contactSelect.group_json.id === groupId) {
+        // this.storage.save('current_chat_messages', currentMessageList);
+        const action = isReplace ? ACTION.EDIT : ACTION.ADD;
+        this.storage.save(INCOMING_MESSAGE, { action, data: message });
+      }
+      // // Scroll to bottom when user's own messages are arrived
+      if (message.user_id === this.userService.getSyncProfile().id)
+        this.messageService.scrollToBottom();
     }
     if (incomingConversation && !incomingConversation.favourite) {
       this.moveFristRecentList(groupId);
@@ -121,6 +120,7 @@ export class ChatCommonService {
 
   updateItemInList(groupId: any, data: any) {
     const items = this.storage.find('chat_messages_group_' + groupId);
+    const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
     if (items && items.value) {
       for (let i = 0; i < items.value.data.length; i++) {
         if (items.value.data[i].id === data.id) {
@@ -129,14 +129,19 @@ export class ChatCommonService {
       }
     }
 
-    // this.storage.save('chat_messages_group_' + groupId, items.value);
-    this.storage.save(CURRENT_CHAT_MESSAGES, items.value);
+    // // this.storage.save('chat_messages_group_' + groupId, items.value);
+    // this.storage.save(CURRENT_CHAT_MESSAGES, items.value);
+    if (contactSelect.group_json.id === groupId) {
+      this.storage.save(INCOMING_MESSAGE, { action: ACTION.EDIT, data });
+      console.log('sending messages to current group: ', { action: ACTION.EDIT, data });
+    }
 
     if (data && data.byMe)
       this.messageService.scrollToBottom();
   }
 
   updateContactSelect() {
+    console.log('update contact select ...');
     const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
     const chatContacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     if (chatContacts) {
@@ -158,7 +163,7 @@ export class ChatCommonService {
     this.setRecentConversations();
     this.setFavouriteConversations();
     this.setHistoryConversations();
-    this.updateContactSelect();
+    // this.updateContactSelect();
   }
 
   updateConversationBroadcast(groupId: any): Promise<any> {

@@ -83,7 +83,7 @@ export class ChatNotificationComponent implements OnInit {
     );
 
     this.storageService.getAsync(CHAT_CONVERSATIONS).subscribe(res => {
-      console.log('conversations: ', res);
+      // console.log('conversations: ', res);
       if (res && res.data) {
         this.conversations = res.data;
         this.notificationCount = this.conversations.reduce(

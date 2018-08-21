@@ -13,7 +13,13 @@ export const CONVERSATION_SELECT = 'conversation_select';
 export const CURRENT_CHAT_MESSAGES = 'current_chat_messages';
 export const USERS_ONLINE = 'users_online';
 export const NUMBER_MESSAGE = 'number_message';
+export const INCOMING_MESSAGE = 'incoming_message';
 
+export const ACTION = {
+  ADD: 'ADD',
+  EDIT: 'EDIT',
+  DELETE: 'DELETE'
+};
 
 export const FORM_MODE = {
   CREATE: 'CREATE',

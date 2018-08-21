@@ -302,27 +302,28 @@ export class ChatService {
   }
 
   loadMoreMessages(): Promise<any> {
-    const current = this.storage.find(CURRENT_CHAT_MESSAGES).value || {};
+    const groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
+      .id;
+    // const current = this.storage.find(CURRENT_CHAT_MESSAGES).value || {};
+    const current = this.storage.getValue('chat_messages_group_' + groupId);
     const currentMessages: any = current.data || [];
     let page: any = 1;
-    if (current.meta && +current.meta.page < +current.meta.page_count) {
+    if (current && current.meta && +current.meta.page < +current.meta.page_count) {
       page = +current.meta.page + 1;
     } else {
       return Promise.resolve({data: []});
     }
     const body: any = { page: page };
-    const groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
-      .id;
     return this.apiBaseService
       .get('zone/chat/message/' + groupId, body)
       .toPromise().then((res: any) => {
-        res.data = _chat.combineMessages(currentMessages, res.data);
-        this.storage.save('chat_messages_group_' + groupId, res);
-        if (
-          +this.storage.find(CONVERSATION_SELECT).value.group_id === +groupId
-        ) {
-          this.storage.save(CURRENT_CHAT_MESSAGES, res);
-        }
+        const combinedData = _chat.combineMessages(currentMessages, res.data);
+        this.storage.save('chat_messages_group_' + groupId, { ...res, data: combinedData});
+        // if (
+        //   +this.storage.find(CONVERSATION_SELECT).value.group_id === +groupId
+        // ) {
+        //   this.storage.save(CURRENT_CHAT_MESSAGES, {...res, metadata: res.metadata});
+        // }
         return res;
       });
   }

@@ -9,8 +9,8 @@ import { StorageService, UrlService } from '@shared/services';
 import { CONVERSATION_SELECT } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { Conversation } from '@chat/shared/models/conversation.model';
-import { WTHEmojiService } from "@shared/components/emoji/emoji.service";
-import { WTHEmojiCateCode } from "@shared/components/emoji/emoji";
+import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
+import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 
 declare var $: any;
 

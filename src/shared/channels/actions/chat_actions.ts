@@ -7,7 +7,7 @@ export class ChatActions {
   }
 
   process(response: any) {
-    let data = response.data;
+    const data = response.data;
 
     switch (response.action) {
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:

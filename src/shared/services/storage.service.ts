@@ -1,3 +1,4 @@
+import { INCOMING_MESSAGE } from './../constant/chat-constant';
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -20,7 +21,8 @@ const DEFAULT_STORAGES: {[name: string]: BehaviorSubject<any>} = {
   [CONVERSATION_SELECT]: new BehaviorSubject(null),
   [CURRENT_CHAT_MESSAGES]: new BehaviorSubject(null),
   [USERS_ONLINE]: new BehaviorSubject([]),
-  [NUMBER_MESSAGE]: new BehaviorSubject(20)
+  [NUMBER_MESSAGE]: new BehaviorSubject(20),
+  [INCOMING_MESSAGE]: new BehaviorSubject({})
 };
 
 @Injectable()
@@ -28,7 +30,7 @@ export class StorageService {
   // listItem: Array<StorageItem> = [];
   private listItem: {[name: string]: BehaviorSubject<any>} = DEFAULT_STORAGES;
   storageId: any;
-  reset: boolean = true;
+  reset = true;
 
   constructor(public userService: UserService) {
     if (userService && userService.getSyncProfile()) {
@@ -43,7 +45,7 @@ export class StorageService {
 
   removeItemOfKey(key: string, item: any): void {
     let value: any = this.get(key);
-    if(Array.isArray(value)) {
+    if (Array.isArray(value)) {
       value = value.filter(i => i.id !== item.id);
       this.save(key, value);
     }
@@ -51,7 +53,7 @@ export class StorageService {
 
   updateItemOfKey(key: string, item: any): void {
     let value: any = this.get(key);
-    if(Array.isArray(value)) {
+    if (Array.isArray(value)) {
       value = value.map(i => (i.id !== item.id ? i : item));
       this.save(key, _.clone(value));
     }
@@ -82,7 +84,7 @@ export class StorageService {
     if (
       this.storageId &&
       this.userService.getSyncProfile() &&
-      this.storageId != this.userService.getSyncProfile().id &&
+      this.storageId !== this.userService.getSyncProfile().id &&
       this.reset
     ) {
       this.listItem = {...DEFAULT_STORAGES};
