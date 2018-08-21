@@ -1,6 +1,6 @@
 <z-chat-share-toolbar [contactSelect]="contactSelect$ | async" [chatContactList]="chatContactList$ | async" class="page-body-control"></z-chat-share-toolbar>
 
-<div class="page-body-content has-page-body-control" (drop)="drop($event)" (dragover)="drag($event)" (dragenter)="drag($event)">
+<div class="page-body-chat page-body-content has-page-body-control" (drop)="drop($event)" (dragover)="drag($event)" (dragenter)="drag($event)">
   <message-list [contactItem]="contactSelect$ | async" [currentMessages]="currentMessages$ | async" [currentUser]="currentUser$ | async" class="message-list-body" #messageList></message-list>
   <message-editor #messageEditor></message-editor>
   <message-assets [chatContactList]="chatContactList$ | async"></message-assets>

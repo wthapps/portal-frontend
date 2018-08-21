@@ -1,6 +1,6 @@
 @import "../assets/styles/global";
 
-.main-page-body {
+.page-body-chat {
   background-color: #EBEEF0;
 }
 
@@ -8,6 +8,7 @@
   height: calc(100vh - #{$header-height} - #{$page-body-control-height});
   @include flexbox;
   @include flex-direction(column);
+  overflow: auto;
 }
 
 .message-list-body {
