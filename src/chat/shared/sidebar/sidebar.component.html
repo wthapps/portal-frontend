@@ -6,7 +6,8 @@
     <a href="javascript:void(0);" (click)="onAddContact(); onCloseMenu()">
       <i class="fa fa-plus"></i> Chat
     </a>
-    <a [routerLink]="['/contacts']" [routerLinkActive]="['active']" href="javascript:void(0);" (click)="onCloseMenu()">
+    <a href="javascript:void(0);"
+       (click)="openContactModal();">
       <i class="fa fa-address-book-o"></i> Contacts
     </a>
     <a [routerLink]="['/setting']" [routerLinkActive]="['active']" href="javascript:void(0);" (click)="onCloseMenu()">

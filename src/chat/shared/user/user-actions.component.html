@@ -4,12 +4,13 @@
       <i class="fa fa-ellipsis-v"></i>
     </button>
     <ul class="dropdown-menu dropdown-menu-right">
-      <li><a>View Profile</a></li>
-      <li><a href="javascript:void(0);" (click)="addBlackList()">Add to blacklist</a></li>
-      <li><a href="javascript:void(0);" (click)="report(contact.display.uuid)">Report Member</a></li>
-      <li><a href="javascript:void(0);" (click)="deleteContact()">Remove</a></li>
+      <li><a [href]="profileUrl + '/' + contact.uuid" target="_blank">View Profile</a></li>
+      <li><a href="javascript:void(0);" (click)="toggleBlacklist(contact)">{{ contact.blacklist ? 'Remove From blacklist' : 'Add to blacklist' }}</a></li>
+      <li><a href="javascript:void(0);" (click)="report(contact)">Report Person</a></li>
+
+      <!--show this action for person is in Contact book-->
+      <li *ngIf="!contact.new"><a href="javascript:void(0);" (click)="remove(contact)">Remove</a></li>
     </ul>
   </div>
 </div>
-<!--<z-chat-share-add-to-conversation #addConversation [contact]="contact"></z-chat-share-add-to-conversation>-->
-<!--<wth-zone-report></wth-zone-report>-->
+

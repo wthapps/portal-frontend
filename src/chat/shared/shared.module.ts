@@ -26,6 +26,7 @@ import { SharedModule } from '@wth/shared/shared.module';
 import { ChatCommonService } from '@wth/shared/services';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { MessageService } from '@chat/shared/message/message.service';
+import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -44,6 +45,7 @@ import { MessageService } from '@chat/shared/message/message.service';
     ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
+    ContactListModalComponent,
 
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,
@@ -66,6 +68,7 @@ import { MessageService } from '@chat/shared/message/message.service';
     ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
+    ContactListModalComponent,
 
     ChatMonthDayYearPipe,
     ChatGroupCouplePipe,

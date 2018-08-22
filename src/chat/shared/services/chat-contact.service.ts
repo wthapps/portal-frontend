@@ -35,4 +35,8 @@ export class ChatContactService {
   getAll(query: string = '') {
     return this.apiBaseService.get('chat/contacts', query);
   }
+
+  getSharedWithMe() {
+    return this.apiBaseService.get('chat/contacts/shared_with_me');
+  }
 }

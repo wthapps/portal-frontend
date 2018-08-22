@@ -11,6 +11,7 @@ import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.serv
 import { Conversation } from '@chat/shared/models/conversation.model';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
+import { ModalService } from '@shared/components/modal/modal-service';
 
 declare var $: any;
 
@@ -38,7 +39,8 @@ export class ZChatSidebarComponent implements OnInit {
     private storageService: StorageService,
     private renderer: Renderer2,
     private addContactService: ZChatShareAddContactService,
-    private wthEmojiService: WTHEmojiService
+    private wthEmojiService: WTHEmojiService,
+    private modalService: ModalService
   ) {
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
@@ -106,6 +108,10 @@ export class ZChatSidebarComponent implements OnInit {
 
   onAddContact() {
     this.addContactService.open('addContact');
+  }
+
+  openContactModal() {
+    this.modalService.open({selectedTab: 'all'});
   }
 
   onFavourite(conversation: any) {

@@ -47,6 +47,7 @@ import { ApiProxyService } from '@shared/services/apiproxy.service';
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 import { WMessageService } from '@wth/shared/services/message.service';
 import { WUploader } from '@shared/services/w-uploader';
+import { ModalService } from '@shared/components/modal/modal-service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -114,7 +115,8 @@ export class SharedServicesModule {
         ApiProxyService,
         FileUploaderService,
         WindowService,
-        WUploader
+        WUploader,
+        ModalService
       ]
     };
   }

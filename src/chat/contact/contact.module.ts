@@ -9,6 +9,7 @@ import { ZChatContactMenuComponent } from './components/navigation.component';
 import { ZChatContactReceiveComponent } from './contact-receive.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 
 @NgModule({
   imports: [

@@ -178,7 +178,7 @@
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'request'">
           <!-- sent_request -->
           <message-actions-item *ngIf="byMe" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid" [name]=message.receiver.name
-            [status]="'Requested'" [actions]="[{text: 'Resend', id: 'CONTACT_REQUEST_CREATE'}, {text: '', class:'fa fa-times', id: 'CONTACT_REQUEST_CANCEL', btnClass:'btn-default'}]"
+            [status]="'Requested'" [actions]="[]"
             (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- contact already accepted -->

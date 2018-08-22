@@ -1,0 +1,28 @@
+.filter-region {
+  height: 36px;
+  right: 0;
+  left: 0;
+  top: 50px;
+  margin-top: -15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+// override current styles
+.modal-media-search {
+  padding: 0px;
+  .modal-media-search-in {
+    max-width: 570px;
+  }
+}
+
+.w-nav-tab-wrapper {
+  margin-left: -30px;
+}
+
+
+.content-overflow {
+  &.search-result {
+    min-height: 300px;
+  }
+}
+

@@ -344,10 +344,11 @@ export class ZNoteDetailEditComponent
           this.container.style.zIndex = '-1';
 
           const dataClipboard1 = e.clipboardData.types;
+          let fileClipboard: any;
 
           if (dataClipboard1[0].match('Files')) {
             if (e.clipboardData.items[0].type.match('image/*')) {
-              const fileClipboard = e.clipboardData.items[0].getAsFile();
+              fileClipboard = e.clipboardData.items[0].getAsFile();
             }
           }
 
@@ -365,25 +366,25 @@ export class ZNoteDetailEditComponent
               // this.scrollTop = null;
               // this.quill.selection.scrollIntoView();
             } else {
-              // if (fileClipboard.type.match('image/*')) {
-              //   const ids = [];
-              //   let randId = `img_${new Date().getTime()}`;
-              //   self.insertFakeImage(randId);
-              //   ids.push(randId);
-              //   // let file = e.target['result'];
-              //   const files = [fileClipboard];
-              //   self.photoUploadService
-              //     .uploadPhotos(files)
-              //     .subscribe((res: any) => {
-              //       randId = ids.shift();
-              //       $(`i#${randId}`).after(
-              //         `<img src="${res.data.url}" data-id="${res.data.id}" />`
-              //       );
-              //       $(`i#${randId}`).remove();
-              //     });
-              //   fileClipboard.value = '';
-              //   this.quill.focus();
-              // }
+              if (fileClipboard.type.match('image/*')) {
+                const ids = [];
+                let randId = `img_${new Date().getTime()}`;
+                self.insertFakeImage(randId);
+                ids.push(randId);
+                // let file = e.target['result'];
+                const files = [fileClipboard];
+                self.photoUploadService
+                  .uploadPhotos(files)
+                  .subscribe((res: any) => {
+                    randId = ids.shift();
+                    $(`i#${randId}`).after(
+                      `<img src="${res.data.url}" data-id="${res.data.id}" />`
+                    );
+                    $(`i#${randId}`).remove();
+                  });
+                fileClipboard.value = '';
+                this.quill.focus();
+              }
             }
           }, 1);
         } catch (err) {
