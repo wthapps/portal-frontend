@@ -1,3 +1,4 @@
+import { CommonEventService } from './../../../shared/services/common-event/common-event.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -11,6 +12,8 @@ import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '@contacts/group/group.service';
 import { InvitationCreateModalComponent } from '@shared/shared/components/invitation/invitation-create-modal.component';
 import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-add-group/contact-add-group-modal.component';
+import { CommonEvent } from '@shared/services';
+import { untilComponentDestroyed } from 'ng2-rx-componentdestroyed';
 
 declare var _: any;
 
@@ -53,11 +56,11 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   contact: Contact = new Contact(DEFAULT_CONTACT_PARAMS);
 
   emails = [];
-  mode: string = 'view';
+  mode = 'view';
   pageTitle: string;
 
   readonly tooltip: any = Constants.tooltip;
-  formValid: boolean = false;
+  formValid = false;
   _contact: any = _contact;
   hasBack = false;
   readonly urls = Constants.baseUrls;
@@ -69,8 +72,18 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
     private groupService: GroupService,
     private location: Location,
     private route: ActivatedRoute,
+    private commonEventService: CommonEventService,
     private toastsService: ToastsService
-  ) {}
+  ) {
+    this.commonEventService
+      .filter(
+        (event: CommonEvent) => event.channel === Constants.contactEvents.common
+      )
+      .pipe(untilComponentDestroyed(this))
+      .subscribe((event: CommonEvent) => {
+        this.doEvent(event);
+      });
+  }
 
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
@@ -109,8 +122,8 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   }
 
   toggleGroup(name: string) {
-    let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
-      return group.name == name;
+    const group = _.find(this.groupService.getAllGroupSyn(), (gr) => {
+      return gr.name === name;
     });
 
     if (_contact.isContactsHasGroupName([this.contact], name)) {
@@ -159,13 +172,15 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
             this.toastsService.success('You added others to your contacts successful!');
           });
         break;
+      default:
+        break;
     }
   }
 
   doEvent(event: any) {
     switch (event.action) {
       case 'contact:contact:create':
-        let data = event.payload.item;
+        const data = event.payload.item;
         delete data['id'];
         delete data['uuid'];
         this.contactService
@@ -182,8 +197,9 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
           });
         break;
       case 'contact:contact:update':
+        const item = event.payload.item || event.payload.selectedObjects || this.contactService.selectedObjects;
         this.contactService
-          .update(event.payload.item)
+          .update(item)
           .subscribe((response: any) => {
             this.toastsService.success(
               'Contact has been just updated successfully!'
