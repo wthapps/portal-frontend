@@ -241,6 +241,7 @@ export class PhotoDetailComponent implements OnInit,
   onAddToAlbum:(e: any) => void;
   openCreateAlbumModal:(selectedObjects: any) => void;
   onDoneAlbum:(e: any) => void;
+  onAddedToAlbum: (data: any) => void;
 
   getMenuActions() {
     return {

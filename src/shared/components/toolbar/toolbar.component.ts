@@ -181,6 +181,7 @@ custom method please overwirte any method*/
         this.toastsService.success('You just added to Album success');
       });
   }
+  onAddedToAlbum: (data: any) => void;
   /* ================================== */
 
   private checkFavoriteAll(objects: Array<any>): boolean {

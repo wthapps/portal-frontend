@@ -40,7 +40,7 @@
         <div class="container text-center">
           <!-- Media::Video -->
           <ng-container>
-            <video id="video" class="embed-responsive-item" controls>
+            <video id="video" class="embed-responsive-item" controls style="max-width: 854px;">
               <source [src]="object.url" [type]="object.content_type">
             </video>
           </ng-container>
@@ -100,9 +100,9 @@
 
   </div>
   <!-- ============== -->
-  <div class="image-viewer-info ">
+  <div class="image-viewer-info">
     <h3>Information
-      <a href="javascript:; " draggable="false " (click)="showDetailsInfo=! showDetailsInfo ">
+      <a href="javascript:; " draggable="false " (click)="showDetailsInfo = !showDetailsInfo">
         <i class="fa fa-times "></i>
       </a>
     </h3>

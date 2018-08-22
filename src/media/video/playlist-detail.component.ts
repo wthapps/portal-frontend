@@ -40,7 +40,7 @@ import { WUploader } from '@shared/services/w-uploader';
   MediaDownloadMixin])
 @Component({
   selector: 'playlist-detail',
-  templateUrl: 'playlist-detail.component.html',
+  templateUrl: '../shared/list/parent-detail.component.html',
   styleUrls: ['playlist-detail.component.scss']
 })
 export class ZPlaylistDetailComponent implements OnInit, OnDestroy,
@@ -120,6 +120,10 @@ PlaylistAddMixin, MediaDownloadMixin {
       })
     });
   }
+
+  onAddedToPlaylist(data: any) {
+    this.loadObjects(this.object.uuid);
+  };
 
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe(p => {
@@ -265,6 +269,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     });
     this.selectedObjects = [];
     this.hasSelectedObjects = false;
+    this.selectedObjectsChanged(this.selectedObjects);
   }
 
   deleteObjects(term: any = 'items') {
@@ -462,7 +467,7 @@ PlaylistAddMixin, MediaDownloadMixin {
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.tooltip.tag,
+        tooltip: this.tooltip.delete,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       },
@@ -485,7 +490,7 @@ PlaylistAddMixin, MediaDownloadMixin {
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          this.mediaInfo.object = { ...this.object };
+          // this.mediaInfo.object = { ...this.object };
           this.toggleInfo();
         },
         class: '',

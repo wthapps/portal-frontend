@@ -26,7 +26,7 @@
     </li>
   </ul>
 </ng-template>
-<div class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
+<div *ngIf="object" class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
   <div class="page-over-full-header">
     <ng-template #objectActionsTemplate>
       <ul class="page-body-control-menu">
@@ -69,8 +69,9 @@
     </div>
     <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
       [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
+
       <button class="btn btn-outline-primary" (click)="openSelectedModal()">
-        <i class="fa fa-cloud-upload"></i> Upload Video</button>
+        <i class="fa fa-cloud-upload"></i> {{object.model == 'Media::Playlist' ? 'Upload Video': 'Upload Photo'}}</button>
     </box-no-data>
     <ng-template #modalContainer></ng-template>
   </div>
@@ -121,33 +122,5 @@
       </div>
     </dl>
     <hr/>
-    <dl>
-      <dt>
-        <h4>
-          <i class="wthico-album"></i>
-          <span *ngIf="object.model == 'Media::Photo'"> Album </span>
-          <span *ngIf="object.model == 'Media::Video'"> Playlist </span>
-        </h4>
-      </dt>
-      <dd>
-        <div>
-          <ul class="list-unstyled albums ">
-            <li *ngFor="let parent of object.parents" class="row">
-              <div class="media">
-                <img class="col-sm-4" [src]="parent.thumbnail_url" alt="Generic placeholder image">
-                <div class="col-sm-8">
-                  <h5 class="mt-0">{{ parent.name }}</h5>
-                  <span> {{ parent.created_at | date: 'MMM dd, yyyy'}} </span>
-                </div>
-              </div>
-            </li>
-          </ul>
-
-          <div *ngIf="showMore ">
-            <a href="javascript:void(0); " (click)="loadMoreAlbums(index) ">more</a>
-          </div>
-        </div>
-      </dd>
-    </dl>
   </div>
 </div>

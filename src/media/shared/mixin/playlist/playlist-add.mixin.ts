@@ -23,6 +23,7 @@ export class PlaylistAddMixin implements PlaylistCreateMixin {
   // onAddToPlaylist:(e: any) => void;
   // openCreatePlaylistModal:(selectedObjects: any) => void;
   // onDonePlaylist:(e: any) => void;
+  // onAddedToPlaylist:(data: any) => void;
   openModalAddToPlaylist(selectedObjects: any) {
     if (this.subAddPlaylist) this.subAddPlaylist.unsubscribe();
     if (this.subOpenCreatePlaylist) this.subOpenCreatePlaylist.unsubscribe();
@@ -53,8 +54,10 @@ export class PlaylistAddMixin implements PlaylistCreateMixin {
       })
       .subscribe(res => {
         this.toastsService.success('You just added to Playlist success');
+        this.onAddedToPlaylist(res.data);
       });
   }
+  onAddedToPlaylist(data: any) { }
 
   openCreatePlaylistModal:(selectedObjects: any) => void;
 

@@ -24,6 +24,7 @@ export class AlbumAddMixin implements AlbumCreateMixin {
   // onAddToAlbum:(e: any) => void;
   // openCreateAlbumModal:(selectedObjects: any) => void;
   // onDoneAlbum:(e: any) => void;
+  // onAddedToAlbum:(data: any) => void;
   openModalAddToAlbum(selectedObjects: any) {
     if (this.subAddAlbum) this.subAddAlbum.unsubscribe();
     if (this.subOpenCreateAlbum) this.subOpenCreateAlbum.unsubscribe();
@@ -53,8 +54,11 @@ export class AlbumAddMixin implements AlbumCreateMixin {
       })
       .subscribe(res => {
         this.toastsService.success('You just added to Album success');
+        this.onAddedToAlbum(res.data);
       });
   }
+
+  onAddedToAlbum(data: any) {}
 
   openCreateAlbumModal:(selectedObjects: any) => void;
 

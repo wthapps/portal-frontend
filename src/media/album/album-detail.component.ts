@@ -61,7 +61,7 @@ import { Subject } from 'rxjs/Subject';
 @Component({
   moduleId: module.id,
   selector: 'me-sharing-detail',
-  templateUrl: 'album-detail.component.html'
+  templateUrl: '../shared/list/parent-detail.component.html'
 })
 export class ZMediaAlbumDetailComponent
   implements
@@ -156,12 +156,16 @@ export class ZMediaAlbumDetailComponent
       .subscribe(photos => {
         this.onAddToAlbum({parents: [this.object], children: photos});
         // this.objects = [...photos.filter(p => p.model === this.objectType), ...this.objects];
-        this.loadObjects(this.object.uuid);
+        // this.loadObjects(this.object.uuid);
       });
 
     this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       this.handleUploadFiles(event);
     });
+  }
+
+  onAddedToAlbum(data: any) {
+    this.loadObjects(this.object.uuid);
   }
 
   handleUploadFiles(event: any) {
@@ -293,10 +297,6 @@ export class ZMediaAlbumDetailComponent
 
   loadModalComponent: (component: any) => void;
   toggleInfo: () => void;
-  toggleInfoCustom() {
-    this.mediaInfo.object = {...this.object};
-    this.toggleInfo();
-  };
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
@@ -506,7 +506,7 @@ export class ZMediaAlbumDetailComponent
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: true, // Outside dropdown list
-        action: this.toggleInfoCustom.bind(this),
+        action: this.toggleInfo.bind(this),
         class: '',
         liclass: '',
         title: 'View Information',

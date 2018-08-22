@@ -135,6 +135,7 @@ export class ZVideoDetailComponent implements OnInit,
 
   openModalAddToPlaylist:(selectedObjects: any) => void;
   onAddToPlaylist:(e: any) => void;
+  onAddedToPlaylist: (data: any) => void;
   openCreatePlaylistModal:(selectedObjects: any) => void;
   onDonePlaylist:(e: any) => void;
 

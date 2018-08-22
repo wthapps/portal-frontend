@@ -109,6 +109,8 @@ export class ZMediaSharingDetailComponent
     public location: Location,
     private uploader: WUploader ) { }
 
+  onAddedToPlaylist: (data: any) => void;
+
   ngOnInit() {
     this.route.params.subscribe(p => {
       this.loadObjects(p.uuid);
