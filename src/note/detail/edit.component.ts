@@ -345,7 +345,6 @@ export class ZNoteDetailEditComponent
 
           const dataClipboard1 = e.clipboardData.types;
           let fileClipboard: any;
-
           if (dataClipboard1[0].match('Files')) {
             if (e.clipboardData.items[0].type.match('image/*')) {
               fileClipboard = e.clipboardData.items[0].getAsFile();
@@ -355,18 +354,18 @@ export class ZNoteDetailEditComponent
           if (e.defaultPrevented || !this.quill.isEnabled()) return;
           const range = this.quill.getSelection();
           let delta = new Delta().retain(range.index);
+          const scrollTop = this.quill.scrollingContainer.scrollTop;
+          this.container.focus();
           this.quill.selection.update(Quill.sources.SILENT);
           setTimeout(() => {
             if (dataClipboard1[0].match('text/*')) {
               delta = delta.concat(this.convert()).delete(range.length);
               this.quill.updateContents(delta, Quill.sources.USER);
-              // this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
+              this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
+              this.quill.scrollingContainer.scrollTop = scrollTop;
               this.quill.focus();
-              // this.quill.scrollingContainer.scrollTop = scrollTop;
-              // this.scrollTop = null;
-              // this.quill.selection.scrollIntoView();
             } else {
-              if (fileClipboard.type.match('image/*')) {
+              if (fileClipboard && fileClipboard.type.match('image/*')) {
                 const ids = [];
                 let randId = `img_${new Date().getTime()}`;
                 self.insertFakeImage(randId);
