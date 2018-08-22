@@ -10,8 +10,10 @@ export class PlaylistCreateMixin {
     public apiBaseService: ApiBaseService,
     public router: Router) {}
   openCreatePlaylistModal(selectedObjects: any) {
+    if (this.subCreatePlaylist) this.subCreatePlaylist.unsubscribe();
+    selectedObjects = selectedObjects.filter(s => s.model == 'Media::Video');
     this.mediaCreateModalService.open.next({ selectedObjects: selectedObjects, title: 'Create Playlist', namePlaceholder: 'Untitled Plyalist' });
-    this.subCreatePlaylist = this.mediaCreateModalService.onCreate$.take(1).subscribe(e => {
+    this.subCreatePlaylist = this.mediaCreateModalService.onCreate$.subscribe(e => {
       this.onDonePlaylist(e);
       this.mediaCreateModalService.close.next();
     });

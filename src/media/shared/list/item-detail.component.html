@@ -48,52 +48,47 @@
       </div>
     </div>
     <!-- Media::Photo -->
-    <ng-container *ngIf="object.model=='Media::Photo' ">
-      <div class="image-viewer-content-fixed ">
-        <!-- (load)="onStart($event) " -->
-        <img id="image-viewer" [src]="object.url " alt=" " (load)="onStart($event)" (onChange)="onStart($event)">
+    <ng-container *ngIf="object.model=='Media::Photo'">
+      <div class="image-viewer-content-fixed">
+        <!-- (load)="onStart($event)" -->
+        <img id="image-viewer" [src]="object.url" alt="" (load)="onStart($event)" (onChange)="onStart($event)">
       </div>
-      <ng-container *ngIf=" object && hasEditPhoto ">
-        <app-image-cropper [photo]="object.url" (onCompleteMethod)="doAction($event) "></app-image-cropper>
+      <ng-container *ngIf=" object && hasEditPhoto">
+        <app-image-cropper [photo]="object.url" (onCompleteMethod)="doAction($event)"></app-image-cropper>
       </ng-container>
     </ng-container>
     <!-- Common -->
     <div class="image-viewer-content-nav">
-      <a *ngIf="hasPreviousItem " draggable="false " href="javascript:void(0); " (click)="onMove(false) " pTooltip="{{
-          tooltip.previous }} " tooltipPosition="bottom ">
-        <i class="fa fa-angle-left "></i>
+      <a *ngIf="hasPreviousItem" draggable="false" href="javascript:void(0);" (click)="onMove(false)" pTooltip="{{tooltip.previous}}"
+        tooltipPosition="bottom">
+        <i class="fa fa-angle-left"></i>
       </a>
-      <a *ngIf="hasNextItem " draggable="false " href="javascript:void(0); " (click)="onMove() " pTooltip="{{ tooltip.next
-          }} " tooltipPosition="bottom ">
-        <i class="fa fa-angle-right "></i>
+      <a *ngIf="hasNextItem" draggable="false" href="javascript:void(0);" (click)="onMove()" pTooltip="{{tooltip.next}}" tooltipPosition="bottom">
+        <i class="fa fa-angle-right"></i>
       </a>
     </div>
     <!-- Media::Photo Only -->
     <div class="image-viewer-content-action" *ngIf="object.model=='Media::Photo'">
-      <a draggable=" false " href="javascript:; " (click)="onZoomOut() " pTooltip="{{ tooltip.zoomOut }}
-      " tooltipPosition="top ">
-        <i class="fa fa-minus "></i>
+      <a draggable=" false" href="javascript:;" (click)="onZoomOut()" pTooltip="{{ tooltip.zoomOut }}" tooltipPosition="top">
+        <i class="fa fa-minus"></i>
       </a>
-      <a draggable="false " href="javascript:; " (click)="onRefresh() " pTooltip="{{ tooltip.resetZoom }}
-      " tooltipPosition="top ">
-        <i class="fa fa-refresh "></i>
+      <a draggable="false" href="javascript:;" (click)="onRefresh()" pTooltip="{{ tooltip.resetZoom }}" tooltipPosition="top">
+        <i class="fa fa-refresh"></i>
       </a>
-      <a draggable="false " href="javascript:; " (click)="onZoomIn() " pTooltip="{{ tooltip.zoomIn }}
-      " tooltipPosition="top ">
-        <i class="fa fa-plus "></i>
+      <a draggable="false" href="javascript:;" (click)="onZoomIn()" pTooltip="{{ tooltip.zoomIn }}" tooltipPosition="top">
+        <i class="fa fa-plus"></i>
       </a>
     </div>
-    <div class="image-viewer-content-nav ">
-      <ng-container *ngIf="listIds && listIds.isPrev() ">
-        <a draggable="false " href="javascript:void(0); " (click)="onPrev( 'videos') " pTooltip="{{ tooltip.previous }}
-      " tooltipPosition="bottom ">
-          <i class="fa fa-angle-left "></i>
+    <div class="image-viewer-content-nav">
+      <ng-container *ngIf="listIds && listIds.isPrev()">
+        <a draggable="false" href="javascript:void(0);" (click)="onPrev( 'videos')" pTooltip="{{ tooltip.previous }}" tooltipPosition="bottom">
+          <i class="fa fa-angle-left"></i>
         </a>
       </ng-container>
-      <ng-container *ngIf="listIds && listIds.isNext() ">
-        <a class="right " draggable="false " href="javascript:void(0); " (click)="onNext( 'videos') " pTooltip="{{ tooltip.next
-      }} " tooltipPosition="bottom ">
-          <i class="fa fa-angle-right "></i>
+      <ng-container *ngIf="listIds && listIds.isNext()">
+        <a class="right" draggable="false" href="javascript:void(0);" (click)="onNext( 'videos')" pTooltip="{{ tooltip.next   }}"
+          tooltipPosition="bottom">
+          <i class="fa fa-angle-right"></i>
         </a>
       </ng-container>
     </div>
@@ -102,15 +97,15 @@
   <!-- ============== -->
   <div class="image-viewer-info">
     <h3>Information
-      <a href="javascript:; " draggable="false " (click)="showDetailsInfo = !showDetailsInfo">
-        <i class="fa fa-times "></i>
+      <a href="javascript:;" draggable="false" (click)="showDetailsInfo = !showDetailsInfo">
+        <i class="fa fa-times"></i>
       </a>
     </h3>
-    <div class="photo-detail-info-title ">
+    <div class="photo-detail-info-title">
       <h4>
         <i class="fa fa-info-circle"></i> Details</h4>
-      <button class="btn btn-default pull-right" (click)="openEditModal(object) ">
-        <i class="fa fa-pencil "></i>
+      <button class="btn btn-default pull-right" (click)="openEditModal(object)">
+        <i class="fa fa-pencil"></i>
       </button>
     </div>
     <dl>
@@ -121,10 +116,6 @@
       <div class="row">
         <dt class="col-sm-4">Description</dt>
         <dd class="col-sm-8">{{ object.description }}</dd>
-      </div>
-      <div class="row">
-        <dt class="col-sm-4">Type</dt>
-        <dd class="col-sm-8">{{ object.extension }}</dd>
       </div>
       <div class="row">
         <dt class="col-sm-4">Type</dt>
@@ -154,7 +145,7 @@
       </dt>
       <dd>
         <div>
-          <ul class="list-unstyled albums ">
+          <ul class="list-unstyled albums">
             <li *ngFor="let album of object.parents" class="row">
               <div class="media">
                 <img class="col-sm-4" [src]="album.thumbnail_url" alt="Generic placeholder image">
@@ -166,8 +157,8 @@
             </li>
           </ul>
 
-          <div *ngIf="showMore ">
-            <a href="javascript:void(0); " (click)="loadMoreAlbums(index) ">more</a>
+          <div *ngIf="showMore">
+            <a href="javascript:void(0);" (click)="loadMoreAlbums(index)">more</a>
           </div>
         </div>
       </dd>

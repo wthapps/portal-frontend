@@ -52,7 +52,9 @@ export class MediaCreateModalComponent implements OnInit {
       this.open(e)
     })
     this.mediaCreateModalService.onClose$.subscribe(e => {
-      this.close(e)
+      this.close(e);
+      this.name.setValue('');
+      this.description.setValue('');
     })
   }
 

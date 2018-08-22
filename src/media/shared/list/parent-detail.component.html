@@ -80,15 +80,15 @@
   </div> -->
   <div *ngIf="object" class="page-over-full-info">
     <h3>Information
-      <a href="javascript:; " draggable="false " (click)="showDetailsInfo = !showDetailsInfo">
-        <i class="fa fa-times "></i>
+      <a href="javascript:;" draggable="false" (click)="showDetailsInfo = !showDetailsInfo">
+        <i class="fa fa-times"></i>
       </a>
     </h3>
-    <div class="photo-detail-info-title ">
+    <div class="photo-detail-info-title">
       <h4>
         <i class="fa fa-info-circle"></i> Details</h4>
-      <button class="btn btn-default pull-right" (click)="openEditModal(object) ">
-        <i class="fa fa-pencil "></i>
+      <button class="btn btn-default pull-right" (click)="openEditModal(object)">
+        <i class="fa fa-pencil"></i>
       </button>
     </div>
     <dl>
@@ -99,10 +99,6 @@
       <div class="row">
         <dt class="col-sm-4">Description</dt>
         <dd class="col-sm-8">{{ object.description }}</dd>
-      </div>
-      <div class="row">
-        <dt class="col-sm-4">Type</dt>
-        <dd class="col-sm-8">{{ object.extension }}</dd>
       </div>
       <div class="row">
         <dt class="col-sm-4">Type</dt>

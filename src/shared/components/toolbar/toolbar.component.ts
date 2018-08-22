@@ -24,8 +24,10 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import { WUploader } from '@shared/services/w-uploader';
+import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
+import { PlaylistCreateMixin } from '@media/shared/mixin/playlist/playlist-create.mixin';
 
-@Mixin([MediaViewMixin, AlbumAddMixin, AlbumCreateMixin])
+@Mixin([MediaViewMixin, AlbumAddMixin, AlbumCreateMixin, PlaylistCreateMixin])
 @Component({
   selector: 'w-toolbar',
   exportAs: 'wToolbar',
@@ -33,7 +35,10 @@ import { WUploader } from '@shared/services/w-uploader';
   styleUrls: ['toolbar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin, AlbumAddMixin, AlbumCreateMixin {
+export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin,
+AlbumAddMixin,
+PlaylistCreateMixin,
+AlbumCreateMixin {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
   @Input() moreActionsTemplate: TemplateRef<any>;
@@ -56,6 +61,7 @@ export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin, Alb
   subOpenCreateAlbum: any;
   subUploader: any;
   tooltip: any = Constants.tooltip;
+  subCreatePlaylist: any;
 
   uppy: any;
 
@@ -73,6 +79,9 @@ export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin, Alb
     ) {
 
     }
+
+  openCreatePlaylistModal:(selectedObjects: any) => void;
+  onDonePlaylist:(e: any) => void;
 
   ngOnInit() {
     this.subUploader = this.mediaUploaderDataService.action$.subscribe(e => {
@@ -122,9 +131,11 @@ export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin, Alb
       this.updateSelectedObjects([]);
     }
     if (event.action === 'openModalCreatePlayListModal') {
-      this.playlistCreateModalService.open.next({selectedObjects: this.selectedObjects});
+      if (this.subCreateAlbum) this.subCreateAlbum.unsubscribe();
+      this.openCreatePlaylistModal(this.selectedObjects);
     }
     if (event.action === 'openModalCreateAlbumModal') {
+      if (this.subCreatePlaylist) this.subCreatePlaylist.unsubscribe();
       this.openCreateAlbumModal(this.selectedObjects);
     }
     this.event.emit(event);

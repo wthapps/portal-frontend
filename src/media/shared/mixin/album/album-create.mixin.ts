@@ -11,8 +11,10 @@ export class AlbumCreateMixin {
     public router: Router,
     public apiBaseService: ApiBaseService) {}
   openCreateAlbumModal(selectedObjects: any) {
+    if (this.subCreateAlbum) this.subCreateAlbum.unsubscribe();
+    selectedObjects = selectedObjects.filter(s => s.model == 'Media::Photo');
     this.mediaCreateModalService.open.next({ selectedObjects: selectedObjects, title: 'Create Album', namePlaceholder: 'Untitled Album' });
-    this.subCreateAlbum = this.mediaCreateModalService.onCreate$.take(1).subscribe(e => {
+    this.subCreateAlbum = this.mediaCreateModalService.onCreate$.subscribe(e => {
       this.onDoneAlbum(e);
       this.mediaCreateModalService.close.next();
     });
