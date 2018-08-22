@@ -140,6 +140,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   focus() {
     // set background color #ffd when editing
+    this.editor.focus();
   }
 
   cancelEditingMessage() {
@@ -268,9 +269,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   private resetEditor() {
     this.message = new Message();
     this.setEditor(this.message);
-    // Remove emoji and auto focus
-    $('#chat-message-text').html('');
-    $('#chat-message-text').focus();
+    this.focus();
   }
 
   private setEditor(message: Message) {
