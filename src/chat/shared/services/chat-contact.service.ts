@@ -36,7 +36,7 @@ export class ChatContactService {
     return this.apiBaseService.get('chat/contacts', query);
   }
 
-  getSharedWithMe() {
-    return this.apiBaseService.get('chat/contacts/shared_with_me');
+  getSentToMe() {
+    return this.apiBaseService.get('chat/contacts/sent_to_me');
   }
 }

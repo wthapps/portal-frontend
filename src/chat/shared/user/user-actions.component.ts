@@ -30,7 +30,7 @@ export class UserActionsComponent {
   }
 
   report(contact: any) {
-    this.onRemove.emit(contact);
+    this.onReport.emit(contact);
   }
 
   remove(contact: any) {

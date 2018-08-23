@@ -7,5 +7,7 @@
     <ng-content></ng-content>
   </div>
   <span class="media-user-status"
-        [ngClass]="{'online': user.online}"></span>
+        [ngClass]="{'online': user.online}">
+    <i *ngIf="user.blacklist" class="fa fa-ban" style="float: left; margin-top: -1px; color: #f54a59;"></i>
+  </span>
 </div>

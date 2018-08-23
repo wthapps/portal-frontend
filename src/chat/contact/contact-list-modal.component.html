@@ -7,7 +7,7 @@
     <div class="filter-region">
       <div *ngIf="showSearch" class="modal-media-search">
         <div class="modal-media-search-in">
-          <textbox-search [placeholder]="'Search contact'" [showSearchClearText]="true" [search]="keyword"
+          <textbox-search [placeholder]="'Find contact'" [showSearchClearText]="true" [search]="keyword"
                           (onEscapeEvent)="hideSearch($event)" (onEnterEvent)="search($event)">
           </textbox-search>
         </div>
@@ -18,7 +18,7 @@
                    (currentTab)="selectCurrentTab($event)" ></w-nav-tab>
         <div class="pull-right">
           <a class="btn btn-default" pTooltip="Find Contacts" tooltipPosition="top" (click)="displaySearch()">
-            <i class="fa fa-search"></i>
+            <i class="fa fa-user-plus"></i>
           </a>
         </div>
       </div>
@@ -48,7 +48,7 @@
               </button>
 
               <!--show actions for new person-->
-              <button *ngIf="contact.new" class="btn btn-default" (click)="sendRequest(contact)"
+              <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="sendRequest(contact)"
                       pTooltip="{{ tooltip.sendRequest }}" tooltipPosition="top">
                 <i class="fa fa-user-plus"></i>
               </button>

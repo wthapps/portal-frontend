@@ -90,28 +90,31 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
     switch (tab.id) {
 
       case 'online':
-        this.chatContactService.getAll().subscribe(response => {
-          this.contacts = response.data.filter(contact => contact.online === true);
+        this.apiBaseService.get(`account/users/my_contacts/?online=true`)
+          .pipe(takeUntil(this.destroy$)).subscribe(response => {
+          this.mapResponseToContacts(response);
           this.loading = false;
         });
         break;
 
       case 'received':
-        this.chatContactService.getAll().subscribe(response => {
-          this.contacts = response.data;
+        this.chatContactService.getSentToMe().subscribe(response => {
+          this.mapResponseToContacts(response);
           this.loading = false;
         });
         break;
 
       case 'blacklist':
-        this.chatContactService.getAll().subscribe(response => {
-          this.contacts = response.data;
+        this.apiBaseService.get(`account/users/blacklist`)
+          .pipe(takeUntil(this.destroy$)).subscribe(response => {
+          this.mapResponseToContacts(response);
           this.loading = false;
         });
         break;
       default:
-        this.chatContactService.getAll().subscribe(response => {
-          this.contacts = response.data;
+        this.apiBaseService.get(`account/users/my_contacts`)
+          .pipe(takeUntil(this.destroy$)).subscribe(response => {
+          this.mapResponseToContacts(response);
           this.loading = false;
         });
         break;
@@ -135,8 +138,7 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.apiBaseService.get(`chat/contacts/new/search?q=${this.keyword}`)
         .pipe(takeUntil(this.destroy$)).subscribe(response => {
-          this.contacts = response.data;
-          this.contacts.map(contact => contact.online = true);
+          this.mapResponseToContacts(response);
           this.loading = false;
     });
 
@@ -165,13 +167,13 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
     const path = `common/users/${this.authService.user.uuid}/blacklists/${contact.uuid}/${contact.blacklist ? 'remove' : 'add'}`;
     this.apiBaseService.get(path)
       .pipe(takeUntil(this.destroy$)).subscribe(response => {
-
+      const newContact = response.data.attributes;
       // update current contact list
-      this.contacts.forEach((c: any, index: any) => {
-        if (c.id === contact.id) {
-          this.contacts[index].blacklist = !this.contacts[index].blacklist;
-          const message = contact.blacklist ? `You added ${contact.name} to blacklist successful!` :
-                                              `You removed ${contact.name} from blacklist successful!`;
+      this.contacts.forEach((con: any, index: any) => {
+        if (con.id === newContact.id) {
+          this.contacts[index] = newContact;
+          const message = newContact.blacklist ? `You added ${newContact.name} to blacklist successful!` :
+                                                 `You removed ${newContact.name} from blacklist successful!`;
 
           this.toastsService.success(message);
           return;
@@ -197,5 +199,12 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private mapResponseToContacts(response: any) {
+    this.contacts = [];
+    response.data.forEach(item => {
+      this.contacts.push(item.attributes);
+    });
   }
 }
