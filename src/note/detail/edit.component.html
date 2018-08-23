@@ -21,30 +21,10 @@
       </button>
       <div class="note-editor-header-input visible-xs-block">
         <h4 *ngIf="note.permission == 'view'">{{note.name}}</h4>
-        <h4 *ngIf="note.permission !== 'view'" class="can-click" (click)="modalEditName.open()">
+        <h4 *ngIf="note.permission !== 'view'" class="can-click" (click)="modalEditName.modal.open()">
           <span *ngIf="note.name">{{note.name}}</span>
           <span *ngIf="!note.name">Untitled Note</span>
         </h4>
-
-        <bs-modal id="modal-note-edit" #modalEditName
-                  [keyboard]="false"
-                  [animation]="false">
-          <bs-modal-header [showDismiss]="true">
-            <h4 class="modal-title">Rename Note</h4>
-          </bs-modal-header>
-          <bs-modal-body>
-            <input tabindex="1" autofocus [formControl]="name" type="text" class="form-control" placeholder="Title">
-          </bs-modal-body>
-          <bs-modal-footer>
-            <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
-                    (click)="modalEditName.close()">Cancel
-            </button>
-            <button type="submit" class="btn btn-outline-primary btn-min"
-                    (click)="note.name = form.value.name;modalEditName.close()">Done
-            </button>
-          </bs-modal-footer>
-        </bs-modal>
-
       </div>
     </div>
   </div>
@@ -510,3 +490,27 @@
   </div>
 </form>
 <lock-upload-modal></lock-upload-modal>
+<!--<bs-modal id="modal-note-edit" #modalEditName
+          [keyboard]="false"
+          [animation]="false">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Rename Note</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <input tabindex="1" autofocus [formControl]="name" type="text" class="form-control" placeholder="Title">
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
+            (click)="modalEditName.close()">Cancel
+    </button>
+    <button type="submit" class="btn btn-outline-primary btn-min"
+            (click)="note.name = form.value.name;modalEditName.close()">Done
+    </button>
+  </bs-modal-footer>
+</bs-modal>-->
+<z-note-shared-modal-edit-name
+  #modalEditName
+  [name]="form.value.name"
+  (eventEmitter)="onSaveName($event)">
+</z-note-shared-modal-edit-name>
+<!--<z-note-shared-modal-edit-name #modalEditName [name]="form.value.name"></z-note-shared-modal-edit-name>-->

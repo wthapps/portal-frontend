@@ -1,13 +1,5 @@
-import {
-  Component,
-  ViewChild,
-  OnInit,
-  ViewEncapsulation,
-  AfterViewInit,
-  OnDestroy,
-  Renderer2
-} from '@angular/core';
-import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
+import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
@@ -15,16 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
-import {
-  takeUntil,
-  switchMap,
-  combineLatest,
-  filter,
-  mergeMap,
-  map,
-  debounceTime,
-  tap
-} from 'rxjs/operators';
+import { combineLatest, debounceTime, filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
 
 import * as fromRoot from '../shared/reducers/index';
 import * as context from '../shared/reducers/context';
@@ -32,7 +15,7 @@ import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import { PhotoUploadService } from '@shared/services/photo-upload.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
@@ -48,6 +31,7 @@ import ImageBlot from '@wth/core/quill/blots/image';
 import IconBlot from '@wth/core/quill/blots/icon';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
+import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit.component';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -62,7 +46,7 @@ const LINK_PATTERN = /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b\/?/im;
 export class ZNoteDetailEditComponent
   implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BsModalComponent) modal: BsModalComponent;
-  @ViewChild('modalEditName') modalEditName: BsModalComponent;
+  @ViewChild('modalEditName') modalEditName: ZNoteSharedModalEditNameComponent;
 
   note: Note = new Note();
   currentTab: any = 'note';
@@ -232,7 +216,7 @@ export class ZNoteDetailEditComponent
     });
 
     const bindings = {
-      'custom_enter': {
+      custom_enter: {
         key: 'Enter',
         shiftKey: null,
         prefix: LINK_PATTERN,
@@ -244,12 +228,18 @@ export class ZNoteDetailEditComponent
     };
 
     const Font = Quill.import('formats/font');
-    Font.whitelist = ['gotham', 'georgia', 'helvetica', 'courier-new', 'times-new-roman', 'trebuchet', 'verdana'];
+    Font.whitelist = [
+      'gotham',
+      'georgia',
+      'helvetica',
+      'courier-new',
+      'times-new-roman',
+      'trebuchet',
+      'verdana'
+    ];
 
     const Size = Quill.import('attributors/style/size');
-    Size.whitelist = [
-      '8px', '10px', '12px', '14px', '18px', '24px', '36px'
-    ];
+    Size.whitelist = ['8px', '10px', '12px', '14px', '18px', '24px', '36px'];
 
     const BlockEmbed = Quill.import('blots/block/embed');
 
@@ -361,7 +351,10 @@ export class ZNoteDetailEditComponent
             if (dataClipboard1[0].match('text/*')) {
               delta = delta.concat(this.convert()).delete(range.length);
               this.quill.updateContents(delta, Quill.sources.USER);
-              this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
+              this.quill.setSelection(
+                delta.length() - range.length,
+                Quill.sources.SILENT
+              );
               this.quill.scrollingContainer.scrollTop = scrollTop;
               this.quill.focus();
             } else {
@@ -411,7 +404,6 @@ export class ZNoteDetailEditComponent
   }
 
   addHyperLink(range, ctx) {
-
     const [line, offset] = this.customEditor.getLine(range.index);
     const link = ctx.prefix.split(' ').pop();
     const fullUrl = link.includes('http') ? link : `https://${link}`;
@@ -457,11 +449,7 @@ export class ZNoteDetailEditComponent
 
   // id: placeholder when fake images
   // data-id: real WTH photo id for editing
-  insertInlineImage(
-    id: any,
-    url= this.defaultImg,
-    dataId= null
-  ) {
+  insertInlineImage(id: any, url = this.defaultImg, dataId = null) {
     const range = this.customEditor.getSelection(true);
     this.customEditor.insertText(range.index, '\n', Quill.sources.USER);
     this.customEditor.insertEmbed(
@@ -677,7 +665,10 @@ export class ZNoteDetailEditComponent
       true,
       Quill.sources.USER
     );
-    this.customEditor.setSelection(range.index + offset + 1, Quill.sources.SILENT);
+    this.customEditor.setSelection(
+      range.index + offset + 1,
+      Quill.sources.SILENT
+    );
   }
 
   /*
@@ -846,6 +837,11 @@ export class ZNoteDetailEditComponent
         this.download(att);
       }
     }
+  }
+
+  onSaveName(event: any) {
+    this.note.name = event;
+    this.form.controls['name'].setValue(event);
   }
 
   private selectPhotos4Attachments() {
