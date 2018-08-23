@@ -24,8 +24,8 @@ declare var $: any;
   styleUrls: ['register.component.scss']
 })
 export class RegisterComponent {
-  errorMessage: string = '';
-  sex: number = 0;
+  errorMessage = '';
+  sex = 0;
 
   tooltip: any = Constants.tooltip;
 
@@ -37,10 +37,9 @@ export class RegisterComponent {
   birthday_day: AbstractControl;
   birthday_month: AbstractControl;
   birthday_year: AbstractControl;
-  //sexInput:AbstractControl;
   accepted: AbstractControl;
 
-  submitted: boolean = false;
+  submitted = false;
   invitationUuid: string;
 
   constructor(
@@ -74,7 +73,6 @@ export class RegisterComponent {
       birthday_day: ['0'],
       birthday_month: ['0'],
       birthday_year: ['0'],
-      //'sex': [],
       accepted: [false, Validators.compose([Validators.nullValidator])]
     });
 
@@ -100,7 +98,7 @@ export class RegisterComponent {
 
       values.sex = this.sex;
 
-      let body = JSON.stringify({
+      const body = JSON.stringify({
         first_name: values.first_name,
         last_name: values.last_name,
         email: values.email,
@@ -124,10 +122,9 @@ export class RegisterComponent {
           this.loadingService.stop();
 
           console.log('error:', error);
-          let err = error;
+          const err = error;
 
-          this.errorMessage = err.error;
-          //TODO refactoring code check signup
+          this.errorMessage = err.error.error;
           if (error.status === 422) {
             this.errorMessage = 'Email has already been taken';
           }
