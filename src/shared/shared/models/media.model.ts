@@ -1,6 +1,8 @@
 export class Media {
   id: number;
   name: string;
+  model: string;
+  uuid: string;
   description: string;
   owner: any;
   photos: any;

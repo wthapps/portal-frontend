@@ -90,11 +90,10 @@
             <ng-template #columnBox let-item>
 
               <!-- ------------ Album view ------------- -->
-              <ng-container *ngIf="item.object_type == 'album' || item.model == 'Media::Playlist'">
+              <ng-container *ngIf="item.object_type == 'album' || item.model == 'Media::Playlist' || item.model == 'Common::Sharing'">
                 <div class="wobject-box-img">
                   <img [src]="item.thumbnail_url" alt="">
-                  <div class="wmedia-box-info">{{ item.child_count }} photo
-                    <span *ngIf="item.child_count > 1">s</span>
+                  <div class="wmedia-box-info">{{ item.child_count }} photo{{(item.child_count > 1) ? 's' :''}}
                   </div>
                 </div>
                 <div class="wobject-box-name">

@@ -114,7 +114,9 @@
       </div>
       <div class="row">
         <dt class="col-sm-4">Uploaded</dt>
-        <dd class="col-sm-8">{{ object.created_at | timeFormat}}</dd>
+        <dd class="col-sm-8">
+          <span>{{ object.created_at | timeFormat}}</span>
+        </dd>
       </div>
     </dl>
     <hr/>

@@ -202,7 +202,7 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
 
       if (this.currentTab === 'albums' || this.currentTab === 'playlists'
       || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me') {
-        this.objectListService.setObjectsDisabled(['album', 'Media::Playlist']);
+        this.objectListService.setObjectsDisabled(['album', 'Media::Playlist', 'Common::Sharing']);
       } else {
         this.objectListService.setObjectsDisabled([]);
       }
@@ -218,7 +218,7 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
       this.objectListService.setObjectsDisabled(['album', 'Media::Playlist']);
     } else if (this.currentTab === 'shared_with_me_detail') {
       this.currentTab = 'shared_with_me';
-      this.objectListService.setObjectsDisabled(['album']);
+      this.objectListService.setObjectsDisabled(['album', 'Common::Sharing']);
     } else if (this.currentTab === 'search') {
       this.currentTab = 'photos';
     } else if (this.currentTab === 'playlist_detail') {
@@ -243,13 +243,15 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   onCompleteDoubleClick(item: Media) {
-    if (item.object_type === 'album' || item.object_type === 'Media::Playlist') {
+    if (item.object_type === 'album' || item.object_type === 'Media::Playlist' || item.model === 'Common::Sharing') {
       if (this.currentTab === 'albums') {
         this.currentTab = 'albums_detail';
       } else if (this.currentTab === 'favourites') {
         this.currentTab = 'favourites_detail';
       } else if (this.currentTab === 'playlists') {
         this.currentTab = 'playlist_detail';
+      } else if (this.currentTab === 'shared_with_me') {
+        this.currentTab = 'shared_with_me_detail';
       }
       this.mediaSelectionService.clear();
       this.mediaSelectionService.setMediaParent(item);
@@ -361,7 +363,7 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
         urlAPI = `media/sharings/shared_with_me?active=1`;
         break;
       case 'shared_with_me_detail':
-        urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
+        urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;
         break;
       case 'search':
         urlAPI = `media/search?active=1&q=${this.searchText}`;
