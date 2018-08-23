@@ -104,6 +104,9 @@
 
       .avatar-md {
         border: 1px solid #FFF;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
       }
     }
   }
