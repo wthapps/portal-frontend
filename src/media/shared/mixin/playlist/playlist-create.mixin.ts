@@ -20,7 +20,7 @@ export class PlaylistCreateMixin {
   }
 
   onDonePlaylist(e: any) {
-    this.apiBaseService.post(`media/playlists`, { name: e.parents[0].name, description: e.parents[0].description, photos: e.children.map(el => el.id) }).subscribe(res => {
+    this.apiBaseService.post(`media/playlists`, { name: e.parents[0].name, description: e.parents[0].description, videos: e.children.map(el => el.id) }).subscribe(res => {
       this.router.navigate(['playlists', res.data.uuid]);
     });
   }
