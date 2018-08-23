@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, OnInit, OnDestroy } 
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
-import { untilComponentDestroyed, componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { Subject } from 'rxjs/Subject';
 
 import { Contact } from '../contact.model';
 import { GroupService } from '../../group/group.service';
@@ -73,6 +73,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   disableEdit = true;
   sub: any;
   close$: Observable<any>;
+  private destroySubject: Subject<any> = new Subject();
 
   constructor(private fb: FormBuilder,
     private groupService: GroupService,
@@ -93,7 +94,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
     this.createForm();
 
-    this.close$ = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+    this.close$ = Observable.merge(this.mediaSelectionService.open$, this.destroySubject);
 
 
     this.sub = this.form.valueChanges
@@ -156,6 +157,8 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   createForm() {

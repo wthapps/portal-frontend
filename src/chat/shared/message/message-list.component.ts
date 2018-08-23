@@ -12,6 +12,9 @@ import {
   ElementRef,
   OnDestroy
 } from '@angular/core';
+
+import { Subject } from 'rxjs/Subject';
+
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
 import { WMessageService } from '@wth/shared/services';
@@ -21,7 +24,6 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { INCOMING_MESSAGE, ACTION } from '@shared/constant';
-import { untilComponentDestroyed } from 'ng2-rx-componentdestroyed';
 
 declare var _: any;
 declare var $: any;
@@ -44,6 +46,8 @@ export class MessageListComponent implements OnInit, OnDestroy {
   readonly scrollDistance: number = 1000;
   currentMessages: any[] = [];
 
+  private destroySubject: Subject<any> = new Subject();
+
   constructor(
     private chatService: ChatService,
     private router: Router,
@@ -52,9 +56,8 @@ export class MessageListComponent implements OnInit, OnDestroy {
     private wthEmojiService: WTHEmojiService
   ) {
     this.messageService.scrollToBottom$
-      .pipe(
-        untilComponentDestroyed(this)
-      ).subscribe((res: boolean) => {
+      .takeUntil(this.destroySubject)
+      .subscribe((res: boolean) => {
       if (res && this.listEl) {
         this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
       }
@@ -63,17 +66,14 @@ export class MessageListComponent implements OnInit, OnDestroy {
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
 
     this.chatService.getCurrentMessagesAsync()
-    .pipe(
-      untilComponentDestroyed(this)
-    ).subscribe(res => {
+      .takeUntil(this.destroySubject)
+      .subscribe(res => {
       if (res && res.data )
         this.currentMessages = res.data;
     });
 
     this.storageService.getAsync(INCOMING_MESSAGE)
-    .pipe(
-      untilComponentDestroyed(this)
-    )
+      .takeUntil(this.destroySubject)
     .subscribe(res => {
       if ((Object.keys(res)).length === 0)
        return;
@@ -100,6 +100,8 @@ export class MessageListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   ngOnInit() {

@@ -3,6 +3,9 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+
 import { Contact } from '../contact.model';
 import { ZContactService } from '../../shared/services/contact.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
@@ -13,7 +16,6 @@ import { GroupService } from '@contacts/group/group.service';
 import { InvitationCreateModalComponent } from '@shared/shared/components/invitation/invitation-create-modal.component';
 import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-add-group/contact-add-group-modal.component';
 import { CommonEvent } from '@shared/services';
-import { untilComponentDestroyed } from 'ng2-rx-componentdestroyed';
 
 declare var _: any;
 
@@ -65,6 +67,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   hasBack = false;
   readonly urls = Constants.baseUrls;
   readonly avatarDefault: any = Constants.img.avatar;
+  private destroySubject: Subject<any> = new Subject();
 
   constructor(
     private router: Router,
@@ -79,7 +82,8 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
       .filter(
         (event: CommonEvent) => event.channel === Constants.contactEvents.common
       )
-      .pipe(untilComponentDestroyed(this))
+      .pipe(
+        takeUntil(this.destroySubject))
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
       });
@@ -115,7 +119,10 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
+  }
 
   eventForm(form: any) {
     this.formValid = form.valid;
