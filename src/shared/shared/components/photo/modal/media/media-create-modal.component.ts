@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
@@ -42,7 +42,8 @@ export class MediaCreateModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      'name': "",
+      // 'name': "",
+      name: ["", Validators.compose([Validators.required])],
       'description': ""
     });
     this.name = this.form.controls['name'];
