@@ -283,7 +283,7 @@ export class ChatService {
             .uploadGenericFile(file)
             .subscribe((res: any) => {
                 console.log('send file successfully', res);
-                this.messageService.scrollToBottom();
+              setTimeout(() => this.messageService.scrollToBottom(), 500);
             });
         });
       }

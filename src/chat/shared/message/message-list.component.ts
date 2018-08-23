@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
@@ -56,7 +57,9 @@ export class MessageListComponent implements OnInit, OnDestroy {
     private wthEmojiService: WTHEmojiService
   ) {
     this.messageService.scrollToBottom$
-      .takeUntil(this.destroySubject)
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
       .subscribe((res: boolean) => {
       if (res && this.listEl) {
         this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
@@ -66,37 +69,42 @@ export class MessageListComponent implements OnInit, OnDestroy {
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
 
     this.chatService.getCurrentMessagesAsync()
-      .takeUntil(this.destroySubject)
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
       .subscribe(res => {
       if (res && res.data )
         this.currentMessages = res.data;
+      this.messageService.scrollToBottom();
     });
 
     this.storageService.getAsync(INCOMING_MESSAGE)
-      .takeUntil(this.destroySubject)
-    .subscribe(res => {
-      if ((Object.keys(res)).length === 0)
-       return;
-      // console.log('incomming message: ', res);
-      const message = res.data;
-      switch (res.action) {
-        case ACTION.DELETE:
-        case ACTION.EDIT: {
-          for (const idx in this.currentMessages) {
-            if (this.currentMessages[idx].id === message.id)
-              this.currentMessages[idx] = _.cloneDeep(message);
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
+      .subscribe(res => {
+        if ((Object.keys(res)).length === 0)
+        return;
+        const message = res.data;
+        switch (res.action) {
+          case ACTION.DELETE:
+          case ACTION.EDIT: {
+            for (const idx in this.currentMessages) {
+              if (this.currentMessages[idx].id === message.id)
+                this.currentMessages[idx] = _.cloneDeep(message);
+            }
+            break;
           }
-          break;
+          case ACTION.ADD: {
+            this.currentMessages.push(message);
+            setTimeout(() => this.messageService.scrollToBottom(), 500);
+            break;
+          }
+          default:
+            console.warn('unhandled action: ', res);
+            break;
         }
-        case ACTION.ADD: {
-          this.currentMessages.push(message);
-          break;
-        }
-        default:
-          console.warn('unhandled action: ', res);
-          break;
-      }
-    });
+      });
   }
 
   ngOnDestroy() {

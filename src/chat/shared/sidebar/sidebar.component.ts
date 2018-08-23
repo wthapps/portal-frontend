@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { StorageService, UrlService } from '@shared/services';
+import { StorageService, UrlService, WMessageService } from '@shared/services';
 import { CONVERSATION_SELECT } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { Conversation } from '@chat/shared/models/conversation.model';
@@ -40,6 +40,7 @@ export class ZChatSidebarComponent implements OnInit {
     private renderer: Renderer2,
     private addContactService: ZChatShareAddContactService,
     private wthEmojiService: WTHEmojiService,
+    private messageService: WMessageService,
     private modalService: ModalService
   ) {
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;

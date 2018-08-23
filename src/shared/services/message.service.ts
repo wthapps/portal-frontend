@@ -14,7 +14,7 @@ export class WMessageService {
   }
 
   scrollToBottom() {
-    // this.scrollToBottomSubject.next(true);
+    this.scrollToBottomSubject.next(true);
   }
 
   notEmptyHtml(htmlContent: string): boolean {
