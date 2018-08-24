@@ -374,8 +374,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   dismiss(photos: any) {
-    this.uploader.cancelAll(true);
-
+    if (this.uploadingPhotos.length > 0) {
+      this.uploader.cancelAll(true);
+    }
     this.dismissed.emit(photos);
     this.modal.close(null).then();
     this.mediaSelectionService.close();
