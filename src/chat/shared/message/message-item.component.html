@@ -46,7 +46,7 @@
         <!--note menu actions-->
         <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Note::Note'">
           <li>
-            <a [href]="noteUrl + '/notes/public/' + message.file?.uuid" target="_blank">
+            <a [href]="noteUrl + '/notes/public/' + message.src_controls[0]?.uuid" target="_blank">
               Open
             </a>
           </li>
@@ -132,7 +132,7 @@
 
           <!-- note type-->
           <div class="message-item-content-note" *ngIf="message.file_type == 'Note::Note'">
-            <a class="d-block" [href]="noteUrl + '/notes/public/' + message.file?.uuid" target="_blank">
+            <a class="d-block" [href]="noteUrl + '/notes/public/' + message.src_controls[0]?.uuid" target="_blank">
               <h5>
                 <i class="fa fa-file"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
               </h5>
@@ -178,8 +178,7 @@
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'request'">
           <!-- sent_request -->
           <message-actions-item *ngIf="byMe" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid" [name]=message.receiver.name
-            [status]="'Requested'" [actions]="[]"
-            (eventOut)=doEvent($event)>
+            [status]="'Requested'" [actions]="[]" (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- contact already accepted -->
           <message-actions-item *ngIf="byMe && message.status == 'accepted'" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid"
