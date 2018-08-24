@@ -85,9 +85,14 @@ export class ChatCommonService {
     const currentMessageList = this.storage.getValue('chat_messages_group_' + groupId);
     const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
     const conversationsResponse = this.storage.getValue(CHAT_CONVERSATIONS);
+
     if (!conversationsResponse || !conversationsResponse.data)
       return;
     const incomingConversation = conversationsResponse.data.find(conv => conv.group_json.id === groupId);
+    // show conversation if deleting
+    if (incomingConversation === undefined && contactSelect.group_type === 'couple') {
+      this.updateConversationBroadcast(groupId);
+    }
     if (currentMessageList) {
       let isReplace = false;
       for (let i = 0; i < currentMessageList.data.length; i++) {

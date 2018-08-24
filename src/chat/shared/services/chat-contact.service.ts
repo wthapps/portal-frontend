@@ -21,6 +21,7 @@ export class ChatContactService {
     this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text: text}).subscribe(
       (res: any) => {
         this.chatCommonService.updateConversationBroadcast(res.data.group_id);
+        this.chatCommonService.moveFristRecentList(res.data.group_id);
       }
     );
   }

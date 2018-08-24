@@ -1,13 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
-
-import {
-  FormGroup,
-  AbstractControl,
-  FormBuilder,
-  FormControl
-} from '@angular/forms';
-import { ZSharedReportService } from './report.service';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, AbstractControl, FormBuilder, FormControl } from '@angular/forms';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { Subject } from 'rxjs';
+import { takeUntil} from 'rxjs/operators';
+
+import { ZSharedReportService } from './report.service';
+import { ModalService } from '@shared/components/modal/modal-service';
 
 declare var $: any;
 declare var _: any;
@@ -16,7 +14,7 @@ declare var _: any;
     selector: 'wth-zone-report',
   templateUrl: 'report.component.html'
 })
-export class ZSharedReportComponent {
+export class ZSharedReportComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
 
   REASONS: Array<any> = [
@@ -43,9 +41,11 @@ export class ZSharedReportComponent {
 
   form: FormGroup;
   other: AbstractControl;
+  private destroy$ = new Subject();
 
   constructor(private fb: FormBuilder,
-              private reportService: ZSharedReportService) {
+              private reportService: ZSharedReportService,
+              private modalService: ModalService) {
 
     this.form = fb.group({
       'other': ['']
@@ -56,6 +56,18 @@ export class ZSharedReportComponent {
     this.reportService.set = this.activate.bind(this);
   }
 
+  ngOnInit() {
+    this.modalService.open$.pipe(takeUntil(this.destroy$)).subscribe(payload => {
+      if (payload.modalName === 'zoneReportModal') {
+        this.open(payload);
+      }
+    });
+  }
+
+  open (options: any) {
+    this.entityType = 'person'
+    this.modal.open();
+  }
   activate(type: string, uuid: string) {
     let promise = new Promise<boolean>((resolve, reject) => {
       this.show(type, uuid);
@@ -82,6 +94,11 @@ export class ZSharedReportComponent {
         error => console.log(error)
       );
     this.modal.close();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private show(type: string, uuid: string) {

@@ -5,9 +5,10 @@
       <h4 *ngIf="entityType == 'community'" class="modal-title text-left"> Report Community</h4>
       <h4 *ngIf="entityType == 'post'" class="modal-title text-left"> Report Post</h4>
       <h4 *ngIf="entityType == 'friend'" class="modal-title text-left"> Report Friend</h4>
+      <h4 *ngIf="entityType == 'person'" class="modal-title text-left"> Report Person</h4>
     </bs-modal-header>
     <bs-modal-body>
-      <div class="mb20">
+      <div class="mb20" style="min-height: 250px;">
         <p>Please specify your reason for reporting.</p>
         <div class="radio" *ngFor="let reason of reasons">
           <label>
@@ -27,10 +28,10 @@
       </div>
     </bs-modal-body>
     <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
       <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min"
               (click)="onSubmit(form.value)">Done
       </button>
-      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
     </bs-modal-footer>
   </bs-modal>
 </form>

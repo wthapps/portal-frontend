@@ -9,6 +9,7 @@ import { ModalService } from '@shared/components/modal/modal-service';
 import { Constants } from '@wth/shared/constant';
 import { ConversationService } from '@chat/conversation/conversation.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { ChatService } from '@chat/shared/services/chat.service';
 
 @Component({
   selector: 'contact-list-modal',
@@ -25,7 +26,7 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
     {
       id: 'all',
       name: 'All Contacts',
-      link: null,
+      link: 'all',
       icon: null,
       number: null
     },
@@ -56,6 +57,7 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
   loading: boolean;
   tooltip = Constants.tooltip;
   profileUrl = Constants.baseUrls.social + '/profile';
+  selectedTab: string;
 
   private destroy$ = new Subject();
   constructor(
@@ -65,23 +67,15 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
     private conversationService: ConversationService,
     private chatCommonService: ChatCommonService,
     private authService: AuthService,
-    private toastsService: ToastsService
+    private toastsService: ToastsService,
+    private chatService: ChatService
   ) {}
 
   ngOnInit() {
-    // this.usersOnlineItem$ = this.chatService.getUsersOnline();
-
-    this.chatContactService.getAll().subscribe(response => {
-      this.contacts = response.data;
-    });
-
-    this.apiBaseService
-      .post('zone/chat/contact/contact_tab_count')
-      .subscribe((res: any) => {
-      });
-
     this.modalService.open$.pipe(takeUntil(this.destroy$)).subscribe(payload => {
       this.modal.open(payload);
+      this.selectedTab = payload.selectedTab || 'all';
+      this.selectCurrentTab(this.selectedTab);
     });
   }
 
@@ -90,14 +84,17 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
     switch (tab.id) {
 
       case 'online':
+        this.selectedTab = tab.id;
         this.apiBaseService.get(`account/users/my_contacts/?online=true`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
           this.mapResponseToContacts(response);
           this.loading = false;
         });
+
         break;
 
       case 'received':
+        this.selectedTab = tab.id;
         this.chatContactService.getSentToMe().subscribe(response => {
           this.mapResponseToContacts(response);
           this.loading = false;
@@ -105,6 +102,7 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
         break;
 
       case 'blacklist':
+        this.selectedTab = tab.id;
         this.apiBaseService.get(`account/users/blacklist`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
           this.mapResponseToContacts(response);
@@ -183,17 +181,28 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
   }
 
   report(contact: any) {
-
+    this.modalService.open({modalName: 'zoneReportModal'});
   }
 
   remove(contact: any) {
-    const path = `chat/contacts/${contact.uuid}/remove`;
+    let path = `chat/contacts/${contact.uuid}/remove`;
     this.apiBaseService.post(path)
       .pipe(takeUntil(this.destroy$)).subscribe(response => {
-
-      // update current contact list
-      this.contacts = response.data;
+        this.contacts = this.contacts.filter(con => con.id !== contact.id);
     });
+
+    // remove conversation
+    path = `chat/conversations/${contact.uuid}/remove`;
+    this.apiBaseService.put(path)
+      .pipe(takeUntil(this.destroy$)).subscribe(response => {
+      // remove conversation from your view
+      this.chatService.deleteContact(response.data);
+      this.toastsService.success(`You removed Contact ${contact.name} successful!`);
+    });
+  }
+
+  close() {
+    this.modal.close();
   }
 
   ngOnDestroy() {

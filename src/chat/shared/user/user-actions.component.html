@@ -6,7 +6,7 @@
     <ul class="dropdown-menu dropdown-menu-right">
       <li><a [href]="profileUrl + '/' + contact.uuid" target="_blank">View Profile</a></li>
       <li><a href="javascript:void(0);" (click)="toggleBlacklist(contact)">{{ contact.blacklist ? 'Remove From blacklist' : 'Add to blacklist' }}</a></li>
-      <li *ngIf="contact.blacklist"><a href="javascript:void(0);" (click)="report(contact)">Report Person</a></li>
+      <li><a href="javascript:void(0);" (click)="report(contact)">Report Person</a></li>
 
       <!--show this action for person is in Contact book-->
       <li *ngIf="!contact.new"><a href="javascript:void(0);" (click)="remove(contact)">Remove</a></li>
