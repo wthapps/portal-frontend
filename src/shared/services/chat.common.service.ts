@@ -136,7 +136,7 @@ export class ChatCommonService {
 
     // // this.storage.save('chat_messages_group_' + groupId, items.value);
     // this.storage.save(CURRENT_CHAT_MESSAGES, items.value);
-    if (contactSelect.group_json.id === groupId) {
+    if (contactSelect && contactSelect.group_json.id === groupId) {
       this.storage.save(INCOMING_MESSAGE, { action: ACTION.EDIT, data });
       console.log('sending messages to current group: ', { action: ACTION.EDIT, data });
     }
