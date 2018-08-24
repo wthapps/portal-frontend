@@ -93,7 +93,11 @@
               <ng-container *ngIf="item.object_type == 'album' || item.model == 'Media::Playlist' || item.model == 'Common::Sharing'">
                 <div class="wobject-box-img">
                   <img [src]="item.thumbnail_url" alt="">
-                  <div class="wmedia-box-info">{{ item.child_count }} photo{{(item.child_count > 1) ? 's' :''}}
+
+                  <div *ngIf="item.model == 'Media::Playlist' || (item.model == 'Common::Sharing' && item.sharing_type == 'Media::Video')"
+                    class="wmedia-box-info">{{ item.child_count }} video{{(item.child_count > 1) ? 's' :''}}
+                  </div>
+                  <div *ngIf="item.model == 'Media::Album' || (item.model == 'Common::Sharing' && item.sharing_type == 'Media::Photo')" class="wmedia-box-info">{{ item.child_count }} photo{{(item.child_count > 1) ? 's' :''}}
                   </div>
                 </div>
                 <div class="wobject-box-name">
@@ -128,8 +132,12 @@
           </w-object-list>
         </ng-container>
         <ng-template #templateNodata>
-          <div class="media-selection-content gray-light">
-            <box-no-data [icon]="'fa fa-picture-o'" [title]="'There is no photo!'" [subTitle]="'There is no photo. Try to upload a file.'">
+          <div *ngIf="mediaParent" class="media-selection-content gray-light">
+            <box-no-data *ngIf="mediaParent.model == 'Media::Playlist' || (mediaParent.model == 'Common::Sharing' && mediaParent.sharing_type == 'Media::Video')"
+              [icon]="'fa fa-picture-o'" [title]="'There is no video!'" [subTitle]="'There is no video.'">
+            </box-no-data>
+            <box-no-data *ngIf="mediaParent.model == 'Media::Album' || (mediaParent.model == 'Common::Sharing' && mediaParent.sharing_type == 'Media::Photo')"
+              [icon]="'fa fa-picture-o'" [title]="'There is no photo!'" [subTitle]="'There is no photo.'">
             </box-no-data>
           </div>
         </ng-template>

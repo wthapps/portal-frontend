@@ -210,20 +210,21 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   onTabBack() {
+    const all = ['album', 'Common::Sharing', 'Media::Playlist']
     if (this.currentTab === 'albums_detail') {
       this.currentTab = 'albums';
-      this.objectListService.setObjectsDisabled(['album']);
+      this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'favourites_detail') {
       this.currentTab = 'favourites';
-      this.objectListService.setObjectsDisabled(['album', 'Media::Playlist']);
+      this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'shared_with_me_detail') {
       this.currentTab = 'shared_with_me';
-      this.objectListService.setObjectsDisabled(['album', 'Common::Sharing']);
+      this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'search') {
       this.currentTab = 'photos';
     } else if (this.currentTab === 'playlist_detail') {
       this.currentTab = 'playlists';
-      this.objectListService.setObjectsDisabled(['Media::Playlist']);
+      this.objectListService.setObjectsDisabled(all);
     }
     this.mediaSelectionService.clear();
     this.nextLink = this.buildNextLink();
@@ -357,7 +358,20 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
         urlAPI = `media/favorites?active=1`;
         break;
       case 'favourites_detail':
-        urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
+        switch (this.mediaParent.model) {
+          case 'Media::Playlist':
+            urlAPI = `media/playlists/${this.mediaParent.uuid}/videos`;
+            break;
+          case 'Media::Album':
+            urlAPI = `media/media/${this.mediaParent.uuid}/objects?model=Media::Album`;
+            break;
+          case 'Common::Sharing':
+            urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;
+            break;
+          default:
+            urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
+            break;
+        }
         break;
       case 'shared_with_me':
         urlAPI = `media/sharings/shared_with_me?active=1`;
