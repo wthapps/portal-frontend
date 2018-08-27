@@ -1,15 +1,15 @@
-import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {WTab} from '@shared/components/w-nav-tab/w-nav-tab';
-import {Constants} from '@shared/constant';
-import {ChatService} from '@chat/shared/services/chat.service';
-import {WthConfirmService} from '@shared/shared/components/confirmation/wth-confirm.service';
-import {CommonEventService, UserService} from '@shared/services';
-import {MessageAssetsService} from '@chat/shared/message/assets/message-assets.service';
-import {ZChatShareAddContactService} from '@chat/shared/modal/add-contact.service';
-import {Observable} from 'rxjs/Observable';
-import {Media} from '@shared/shared/models/media.model';
-import {ResponseMetaData} from '@shared/shared/models/response-meta-data.model';
-import {WObjectListService} from '@shared/components/w-object-list/w-object-list.service';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
+import { Constants } from '@shared/constant';
+import { ChatService } from '@chat/shared/services/chat.service';
+import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
+import { CommonEventService, UserService } from '@shared/services';
+import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
+import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
+import { Observable } from 'rxjs/Observable';
+import { Media } from '@shared/shared/models/media.model';
+import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
+import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 
 
 @Component({
@@ -76,10 +76,23 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private objectListService: WObjectListService
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
+    this.messageAssetsService.open$.subscribe(
+      (res: any) => {
+        if (res) {
+          console.log(res);
+          this.open();
+        }
+      }
+    );
   }
 
   ngOnInit() {
-    console.log('ngOnInit');
+  }
+
+  ngOnDestroy() {
+  }
+
+  open() {
     this.chatService.getContactSelectAsync()
       .subscribe((res: any) => {
         console.log(res);
@@ -96,9 +109,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
 
     this.objectListService.setMultipleSelection(false);
-  }
-
-  ngOnDestroy() {
   }
 
   tabAction(event: WTab) {
