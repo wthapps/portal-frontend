@@ -76,7 +76,7 @@ export class ConversationDetailComponent
     // });
 
     this.commonEventSub = this.commonEventService
-      .filter((event: CommonEvent) => event.channel == 'chatCommonEvent')
+      .filter((event: CommonEvent) => event.channel === 'chatCommonEvent')
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
       });

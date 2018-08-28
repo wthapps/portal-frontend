@@ -34,7 +34,7 @@ export class ChatCommonService {
     // this.setDefaultSelectContact();
   }
 
-  setRecentConversations() {
+  setRecentConversations(): Promise<any> {
     const contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     const recentContacts = _.filter(contacts, {
       favourite: false,
@@ -42,6 +42,7 @@ export class ChatCommonService {
       history: false
     });
     this.storage.save('chat_recent_conversations', recentContacts);
+    return Promise.resolve(recentContacts);
   }
 
   setFavouriteConversations() {
@@ -62,7 +63,7 @@ export class ChatCommonService {
     this.storage.save('chat_history_conversations', historyContacts);
   }
 
-  moveFristRecentList(groupId?: string) {
+  moveFristRecentList(groupId?: string): Promise<any> {
     const chat_conversations = this.storage.getValue(CHAT_CONVERSATIONS);
     const conversations: any = chat_conversations.data;
     const latest_group = conversations.find(conv => conv.group_id === groupId);
@@ -76,7 +77,7 @@ export class ChatCommonService {
     _.uniqBy(conversations, 'id');
 
     this.storage.save(CHAT_CONVERSATIONS, {...chat_conversations, data: conversations});
-    this.setRecentConversations();
+    return this.setRecentConversations();
   }
 
   addMessage(groupId: any, data: any): void {

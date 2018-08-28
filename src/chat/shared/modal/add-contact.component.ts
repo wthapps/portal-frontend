@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -9,6 +11,7 @@ import { ApiBaseService } from '@shared/services';
 import { ChatService } from '../services/chat.service';
 import { ConversationService } from '@chat/conversation/conversation.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
+
 
 declare var _: any;
 
@@ -41,6 +44,7 @@ export class ZChatShareAddContactComponent implements OnInit {
     private chatService: ChatService,
     private apiBaseService: ApiBaseService,
     private conversationService: ConversationService,
+    private router: Router,
     private addContactService: ZChatShareAddContactService
   ) {
 
@@ -132,15 +136,15 @@ export class ZChatShareAddContactComponent implements OnInit {
   }
 
   addMember() {
-    let contacts = _.filter(_.filter(this.contacts, { checked: true}), {inConversation: false});
-    let ids = _.map(contacts, 'id');
+    const contacts = _.filter(_.filter(this.contacts, { checked: true}), {inConversation: false});
+    const ids = _.map(contacts, 'id');
     this.chatService.addMembersGroup(ids);
     this.modal.close();
   }
 
   shareContact() {
-    let contacts = _.filter(this.contacts, { checked: true });
-    let ids = _.map(contacts, 'id');
+    const contacts = _.filter(this.contacts, { checked: true });
+    const ids = _.map(contacts, 'id');
     this.chatService.shareContact(ids);
     this.modal.close();
   }

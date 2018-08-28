@@ -1,4 +1,4 @@
-import { Injectable }     from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiBaseService, ChatCommonService, StorageService, UserService } from '@wth/shared/services';
 
@@ -17,19 +17,19 @@ export class ChatContactService {
 
   }
 
-  addContact(ids: any, text?: any) {
-    this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text: text}).subscribe(
+  addContact(ids: any, text?: any): Promise<any> {
+    return this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text: text})
+    .toPromise().then(
       (res: any) => {
         this.chatCommonService.updateConversationBroadcast(res.data.group_id);
-        this.chatCommonService.moveFristRecentList(res.data.group_id);
-      }
-    );
-  }
+        return this.chatCommonService.moveFristRecentList(res.data.group_id);
+      });
+    }
 
   cancelContactRequest(contact: any): Promise<boolean> {
-    let groupId = contact.group_id;
+    const groupId = contact.group_id;
     return this.apiBaseService.post('zone/chat/contact/cancel', {group_id: groupId}).toPromise()
-      .then(_ => this.chatCommonService.setDefaultSelectContact())
+      .then(() => this.chatCommonService.setDefaultSelectContact())
     ;
   }
 
