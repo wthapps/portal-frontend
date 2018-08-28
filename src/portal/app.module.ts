@@ -24,6 +24,7 @@ import { SubscribeModule } from './sub_unsub/subscribe.module';
 import { SupportModule } from './support/support.module';
 import { NotificationModule } from './notifications/notifications.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { FaqModule } from '@portal/faq/faq.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -45,6 +46,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     SubscribeModule,
     SupportModule,
     NotificationModule,
+    FaqModule,
 
     PortalSharedModule.forRoot(),
     CoreModule.forRoot(),

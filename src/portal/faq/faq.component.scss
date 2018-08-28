@@ -1,0 +1,19 @@
+@import '../../shared/scss/global';
+
+.faq-content {
+  .faq-content-right {
+    display: none;
+  }
+  @media(min-width: $screen-xs-max) {
+    @include flexbox;
+    width: 100%;
+    .faq-content-left {
+      @include flex(1);
+    }
+    .faq-content-right {
+      display: block;
+      width: 200px;
+      margin-left: $grid-gutter-width;
+    }
+  }
+}

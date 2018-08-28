@@ -16,6 +16,8 @@ import { TablePricingModule } from '@wth/shared/shared/components/table-pricing/
 import { FooterModule } from '@wth/shared/partials/footer/footer.module';
 import { PartialModule } from '@wth/shared/partials';
 import { WthCommonModule } from '@wth/shared/common/wth-common.module';
+import { AccordionModule } from 'primeng/primeng';
+import { StickyModule } from 'ng2-sticky-kit';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -50,6 +52,8 @@ import { WthCommonModule } from '@wth/shared/common/wth-common.module';
     ReactiveFormsModule,
     ShowHidePasswordModule,
     PartialModule,
+    AccordionModule,
+    StickyModule,
 
     TablePricingModule,
 

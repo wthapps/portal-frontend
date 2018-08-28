@@ -71,12 +71,11 @@
   }
   .navbar-brand {
     padding: 0;
-    height: 40px;
+    height: 44px;
+    @include flexbox;
+    @include align-items(center);
     margin-right: $grid-gutter-width/2;
-    img {
-      height: 40px;
-      width: auto;
-    }
+
     @media (max-width: $screen-xs-max) {
       display: none;
       /*margin-right: 0;
