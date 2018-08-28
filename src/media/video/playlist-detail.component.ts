@@ -342,6 +342,7 @@ PlaylistAddMixin, MediaDownloadMixin {
       allowedFileTypes: ['videos/*'],
       selectedTab: 'videos',
       hiddenTabs: ['photos', 'albums'],
+      filter: 'video',
       allowCancelUpload: true,
       uploadButtonText: 'Upload videos',
       dragdropText: 'Drag your videos here'

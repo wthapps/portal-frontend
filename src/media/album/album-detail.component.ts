@@ -148,6 +148,7 @@ export class ZMediaAlbumDetailComponent
   openSelectedModal() {
     this.mediaSelectionService.open({
       hiddenTabs: ['videos', 'playlists'],
+      filter: 'photo',
       allowCancelUpload: true,
       allowedFileTypes: ['image/*']
     });

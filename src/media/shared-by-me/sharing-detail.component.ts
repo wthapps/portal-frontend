@@ -403,6 +403,7 @@ export class ZMediaSharingDetailComponent
       options = {
         selectedTab: 'photos',
         hiddenTabs: ['videos', 'playlists'],
+        filter: 'photo',
         allowedFileType: ['image/*'],
         allowCancelUpload: true
       };
@@ -410,6 +411,7 @@ export class ZMediaSharingDetailComponent
       options = {
         selectedTab: 'videos',
         hiddenTabs: ['photos', 'albums'],
+        filter: 'video',
         allowedFileType: ['video/*'],
         allowCancelUpload: true,
         uploadButtonText: 'Upload videos',

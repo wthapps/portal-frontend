@@ -346,7 +346,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   addMorePhoto(event: any) {
     this.onMoreAdded.emit(true);
-    this.mediaSelectionService.open({hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true});
+    this.mediaSelectionService.open({hiddenTabs: ['videos', 'playlists'], filter: 'photo', allowCancelUpload: true});
 
     const close$: Observable<any> = Observable.merge(
       this.mediaSelectionService.open$,
