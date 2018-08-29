@@ -94,7 +94,8 @@ export class ZChatShareAddContactComponent implements OnInit {
     this.modal.open().then();
 
     // this.chatService.getUserContacts().toPromise().then((res: any) => {
-    this.apiBaseService.get(`account/get_my_contacts_accounts?size=1000`).subscribe(res => {
+    this.apiBaseService.get(`account/get_my_contacts_accounts?size=1000`)
+    .toPromise().then(res => {
 
       this.contacts = res.data;
       this.users = res.data;
@@ -143,8 +144,9 @@ export class ZChatShareAddContactComponent implements OnInit {
   }
 
   shareContact() {
-    const contacts = _.filter(this.contacts, { checked: true });
-    const ids = _.map(contacts, 'id');
+    // const contacts = _.filter(this.contacts, { checked: true });
+    // const ids = _.map(contacts, 'id');
+    const ids = this.selectedUsers.map(u => u.id);
     this.chatService.shareContact(ids);
     this.modal.close();
   }

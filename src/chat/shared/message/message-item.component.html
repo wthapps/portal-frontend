@@ -16,7 +16,7 @@
     </div>
     <div class="message-item-content-card">
       <!--mesasge menu-->
-      <div class="message-item-menu dropdown" *ngIf="message.message_type !== 'message_deleted' && message.message_type !== 'message_cancel' && message.message_type !== 'request'">
+<div class="message-item-menu dropdown" *ngIf="!(['message_deleted', 'message_cancel', 'request', 'share_contact_message'].includes(message?.message_type))">
         <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
         <!--text message menu actions-->
         <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
@@ -215,7 +215,7 @@
       </div>
 
       <!--mesasge menu-->
-      <div class="message-item-menu dropdown" *ngIf="message.message_type !== 'message_deleted' &&  message.message_type !== 'message_cancel' && message.message_type !== 'request'">
+<div class="message-item-menu dropdown" *ngIf="!(['message_deleted', 'message_cancel', 'request', 'share_contact_message'].includes(message?.message_type))">
         <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
 
         <!--text message menu actions-->

@@ -29,11 +29,11 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   @Input() contactSelect: any;
   @Input() chatContactList: { [partner_id: string]: any } = {};
-  showMemberBar: boolean = false;
+  showMemberBar = false;
   usersOnlineItem$: Observable<any>;
   profileUrl: any;
-  showSendMessage: boolean = false;
-  showBlacklist: boolean = false;
+  showSendMessage = false;
+  showBlacklist = false;
 
   openAssets: boolean;
 
@@ -48,7 +48,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
               private messageAssetsService: MessageAssetsService) {
     this.profileUrl = this.chatService.constant.profileUrl;
 
-    let close$: Observable<any> = Observable.merge(
+    const close$: Observable<any> = Observable.merge(
       componentDestroyed(this)
     );
 

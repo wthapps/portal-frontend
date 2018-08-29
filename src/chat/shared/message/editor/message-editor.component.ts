@@ -20,6 +20,7 @@ import { noteConstants } from '@notes/shared/config/constants';
 import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
 import { WUploader } from '@shared/services/w-uploader';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
+import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 
 
 declare var $: any;
@@ -52,6 +53,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     private apiBaseService: ApiBaseService,
     private store: Store<any>,
     private fb: FormBuilder,
+    private addContactService:  ZChatShareAddContactService,
     private messageService: WMessageService,
     private uploader: WUploader,
     private emojiService: WTHEmojiService
@@ -163,6 +165,10 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
       this.chatService.sendTextMessage(this.message.message, { toTop: true });
       this.resetEditor();
     }
+  }
+
+  shareContacts() {
+    this.addContactService.open('shareContact');
   }
 
   sendMessage(type: string) {
