@@ -23,13 +23,18 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
 import { mediaConstants } from '@media/shared/conig/constants';
+import { MediaAdditionalListMixin } from '@media/shared/mixin/media-additional-list.mixin';
 
-@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
+@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, MediaAdditionalListMixin])
 @Component({
   selector: 'me-sharings',
   templateUrl: '../shared/list/list.component.html'
 })
-export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin {
+export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
+SharingModalMixin,
+MediaModalMixin,
+MediaDownloadMixin,
+MediaAdditionalListMixin {
   objects: any;
   links: any;
   hasSelectedObjects: boolean;
@@ -42,6 +47,9 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
   menuActions: any = {};
   subShareSave: any;
   modalIns: any;
+  iconNoData: any = 'fa fa-share-alt';
+  titleNoData: any = 'There no media shared with you!';
+  subTitleNoData: any = 'Media can be shared to your connected contact.';
   modalRef: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -56,6 +64,8 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
     public sharingService: SharingService
   ) {
   }
+
+  validateActions: (menuActions: any, role_id: number) => any;
 
   ngOnInit() {
     this.loadObjects();
@@ -97,23 +107,14 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
       case 'selectedObjectsChanged':
         if (this.selectedObjects && this.selectedObjects.length > 1) {
           this.menuActions.share.active = false;
+          this.menuActions.shareMobile.active = false;
         } else {
           this.menuActions.share.active = true;
+          this.menuActions.shareMobile.active = true;
         }
         // Check permission
         if (this.selectedObjects && this.selectedObjects.length == 1) {
-          if(this.selectedObjects[0].recipient.role_id > mediaConstants.SHARING_PERMISSIONS.DOWNLOAD) {
-            this.menuActions.share.active = true;
-            this.menuActions.edit.active = true;
-          } else {
-            this.menuActions.share.active = false;
-            this.menuActions.edit.active = false;
-          }
-          if(this.selectedObjects[0].recipient.role_id > mediaConstants.SHARING_PERMISSIONS.VIEW) {
-            this.menuActions.download.active = true;
-          } else {
-            this.menuActions.download.active = false;
-          }
+          this.validateActions(this.menuActions, this.selectedObjects[0].recipient.role_id)
         }
         this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
@@ -212,7 +213,7 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
     return {
       share: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: false, // Outside dropdown list
         action: this.openModalShare.bind(this),
         class: 'btn btn-default',
@@ -223,6 +224,7 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
       },
       shareMobile: {
         active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
         // action: this.openModalShare.bind(this),
@@ -235,6 +237,7 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
       },
       favorite: {
         active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
         action: this.toggleFavorite.bind(this),
@@ -246,6 +249,7 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
       },
       delete: {
         active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
         action: () => {
@@ -260,7 +264,7 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
       },
       edit: {
         active: true,
-        // needPermission: 'view',
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Outside dropdown list
         action: this.openEditModalCustom.bind(this),
         class: '',
@@ -272,6 +276,7 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
       },
       download: {
         active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
         // needPermission: 'view',
         inDropDown: true, // Outside dropdown list
         action: this.downloadMediaCustom.bind(this),
@@ -284,6 +289,7 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
       },
       deleteMobile: {
         active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
         action: () => { this.deleteShareWithMe(); },

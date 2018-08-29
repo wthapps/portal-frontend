@@ -42,6 +42,9 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   subShareSave: any;
   modalIns: any;
   modalRef: any;
+  iconNoData: any = 'fa fa-share-alt';
+  titleNoData: any = 'There no media shared by you!';
+  subTitleNoData: any = 'Media can be shared to your connected contact.';
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
@@ -57,6 +60,8 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   }
 
   ngOnInit() {
+    console.log(this.iconNoData);
+    console.log(this.titleNoData);
     this.loadObjects();
     this.menuActions = this.getMenuActions();
   }
@@ -96,8 +101,10 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
       case 'selectedObjectsChanged' :
         if(this.selectedObjects && this.selectedObjects.length > 1) {
           this.menuActions.share.active = false;
+          this.menuActions.shareMobile.active = false;
         } else {
           this.menuActions.share.active = true;
+          this.menuActions.shareMobile.active = true;
         }
         this.menuActions.favorite.iconClass = this.favoriteAll? 'fa fa-star' : 'fa fa-star-o';
         break;
