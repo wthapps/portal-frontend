@@ -75,6 +75,11 @@ export class ZNotePublicViewComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.apiBaseService.get(`note/notes/show_public/${this.urlService.getId()}`).subscribe(res => {
       this.note = res.data;
+      if (this.note && this.note.length == 0) {
+        this.raiseError();
+        return;
+      }
+
       const modules: any = {
         modules: {
           toolbar: {
@@ -103,6 +108,21 @@ export class ZNotePublicViewComponent implements OnInit, AfterViewInit {
 
     })
   }
+  raiseError() {
+    this.wthConfirmService.confirm({
+      message:
+        'The file you are looking for was deleted or you do not have permission to access',
+      header: 'File not found',
+      rejectLabel: null,
+      accept: () => {
+        this.router.navigate(['my-note']);
+      },
+      reject: () => {
+        this.router.navigate(['my-note']);
+      }
+    });
+  }
+
 
   download(file: any) {
     this.apiBaseService
