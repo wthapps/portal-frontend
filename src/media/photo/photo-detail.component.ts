@@ -171,7 +171,9 @@ export class PhotoDetailComponent implements OnInit,
     ? event.path[0]
     : document.getElementById('image-viewer');
     if (this.cropper) {
-      this.cropper.replace($('#image-viewer').attr('src'));
+      if (this.cropper.url !== $('#image-viewer').attr('src')) {
+        this.cropper.replace($('#image-viewer').attr('src'));
+      }
     } else {
       this.cropper = new Cropper(this.image, {
         autoCrop: false,
