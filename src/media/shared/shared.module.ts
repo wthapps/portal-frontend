@@ -20,6 +20,8 @@ import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/
 import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
+import { AlbumCreateModalComponent } from '@media/shared/modal';
+import { MediaModalModule } from '@media/shared/modal/modal.module';
 
 TagInputModule.withDefaults({
   tagInput: {
@@ -35,6 +37,7 @@ TagInputModule.withDefaults({
   imports: [
     TagInputModule,
     // WGridListModule,
+    MediaModalModule,
     SharedModule
   ],
   declarations: [
@@ -53,6 +56,7 @@ TagInputModule.withDefaults({
     ZMediaSharedLeftMenuComponent
   ],
   exports: [
+    MediaModalModule,
     MediaUploaderComponent,
     MediaViewContainerComponent,
     MediaToolbarListComponent,
@@ -62,7 +66,6 @@ TagInputModule.withDefaults({
     AlbumDetailInfoComponent,
     MediaDetailInfoComponent,
     // ZMediaAlbumDetailComponent,
-
     //
     SharingItemComponent,
     ZMediaSharedLeftMenuComponent

@@ -15,7 +15,7 @@
     <!--(dblclick)="doAction({action:'previewAllPhotos', payload: {selectedObject: object}})"-->
     <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
       <div class="photo-box-figure-in">
-        <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url + '?t=' + time" alt="">
+        <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url" alt="">
         <i *ngIf="object.model == 'Media::Video'" class="fa fa-play-circle-o"></i>
       </div>
     </figure>

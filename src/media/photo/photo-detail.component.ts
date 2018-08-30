@@ -156,12 +156,13 @@ export class PhotoDetailComponent implements OnInit,
       switch (e.action) {
         case 'editInfo':
           this.apiBaseService.put(`media/photos/${this.object.id}`, e.params.selectedObject).subscribe(res => {
-            this.object = res.data
-          })
+            this.object = res.data;
+          });
+          break;
         default:
           break;
       }
-    })
+    });
   }
 
   onStart(event?: any) {

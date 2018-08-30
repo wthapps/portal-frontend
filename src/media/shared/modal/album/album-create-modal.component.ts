@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -7,6 +7,9 @@ import { Observable } from 'rxjs/Observable';
 import { ApiBaseService } from '@wth/shared/services';
 import { TaggingElComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-el.component';
 import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
+import { ModalService } from '@shared/components/modal/modal-service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 declare var $: any;
@@ -17,7 +20,7 @@ declare var _: any;
   templateUrl: 'album-create-modal.component.html',
   styleUrls: ['album-create-modal.component.scss']
 })
-export class AlbumCreateModalComponent implements OnInit {
+export class AlbumCreateModalComponent implements OnInit, OnDestroy {
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
@@ -37,11 +40,13 @@ export class AlbumCreateModalComponent implements OnInit {
   arrayItems: Array<number> = [];
   album: any;
   selectedPhotos: any;
+  private destroy$ = new Subject();
 
   constructor(private api: ApiBaseService,
               private fb: FormBuilder,
               private router: Router,
-              private tagService: ZMediaTaggingService) {
+              private tagService: ZMediaTaggingService,
+              private modalService: ModalService) {
     // super('form-create-album-modal');
   }
 
@@ -56,6 +61,12 @@ export class AlbumCreateModalComponent implements OnInit {
     this.descCtrl = this.form.controls['description'];
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
+
+    this.modalService.open$.pipe(takeUntil(this.destroy$)).subscribe(payload => {
+      if (payload.modalName === 'createAlbumModal') {
+        this.open(payload);
+      }
+    });
   }
 
   open(options?: any) {
@@ -134,5 +145,10 @@ export class AlbumCreateModalComponent implements OnInit {
   onAddItems(arrayItems: Array<number>) {
     this.isChanged = true;
     this.arrayItems = arrayItems;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

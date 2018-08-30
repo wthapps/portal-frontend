@@ -45,8 +45,7 @@
     </div>
 
     <div *ngIf="step==uploadSteps.uploaded && !isVideos">
-      <a *ngIf="step==uploadSteps.uploaded" class="mr20" href="javascript:void(0);"
-         (click)="onAction({action: 'openModal', payload: {modalName: 'createAlbumModal', selectedObjects: photos }})">
+      <a *ngIf="step==uploadSteps.uploaded" class="mr20" href="javascript:void(0);" (click)="createAlbum()">
         Create Album
       </a>
       <a *ngIf="step==uploadSteps.uploaded" href="javascript:void(0);"

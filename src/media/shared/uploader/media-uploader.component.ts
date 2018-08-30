@@ -18,6 +18,7 @@ import { PlaylistCreateModalService } from '@shared/shared/components/photo/moda
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
 import { Subscription } from 'rxjs';
 import { WUploader } from '@shared/services/w-uploader';
+import { ModalService } from '@shared/components/modal/modal-service';
 
 declare var $: any;
 declare var _: any;
@@ -68,7 +69,8 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
               private playlistCreateModalService: PlaylistCreateModalService,
               private playlistModalService: PlaylistModalService,
               private mediaUploadDataService: MediaUploaderDataService,
-              private uploader: WUploader) {
+              private uploader: WUploader,
+              private modalService: ModalService) {
     this.dragleave();
   }
 
@@ -137,7 +139,7 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   createAlbum(isPlaylist: boolean = false) {
-
+    this.modalService.open({modalName: 'createAlbumModal', selectedObjects: this.photos});
   }
 
   createPlaylist() {
