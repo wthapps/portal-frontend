@@ -44,16 +44,15 @@ export class ChatNotification implements Processable {
     const conversations = this.serviceManager.getStorageService().getValue(CHAT_CONVERSATIONS);
     if (conversations) {
       const contact = _.find(conversations.data,
-        (ct: any) => { if (ct.group_json.id === data.data.group_id)
-        return contact;
-      });
+        (ct: any) =>  (ct.group_json.id.toString() === data.data.group_id.toString())
+      );
       if (contact && contact.notification) {
         if (contact.notification) contact.notification_count = data.data.count;
         this.serviceManager.getChatCommonService().updateAll();
       }
     }
     if (data.data.count && !this.inSameModule([Constants.baseUrls.chat]))
-    this.serviceManager.handlerService.triggerEvent('on_notification_come', {count: 1});
+      this.serviceManager.handlerService.triggerEvent('on_notification_come', {count: 1});
   }
 
   addContact(data: any) {
