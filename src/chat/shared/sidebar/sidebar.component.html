@@ -6,8 +6,7 @@
     <a href="javascript:void(0);" (click)="onAddContact(); onCloseMenu()">
       <i class="fa fa-plus"></i> Chat
     </a>
-    <a href="javascript:void(0);"
-       (click)="openContactModal();">
+    <a href="javascript:void(0);" (click)="openContactModal();">
       <i class="fa fa-address-book-o"></i> Contacts
     </a>
     <a [routerLink]="['/setting']" [routerLinkActive]="['active']" href="javascript:void(0);" (click)="onCloseMenu()">
@@ -29,17 +28,27 @@
   <div class="menu-left-in">
     <div class="dropdown">
       <button class="btn btn-text-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        All
+        {{filter}}
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu dropdown-menu-sm">
-        <li><a href="#">All</a></li>
-        <li><a href="#">Unread</a></li>
+        <li>
+          <a href="javascript:void;" (click)="doFilter('all')">All</a>
+        </li>
+        <li>
+          <a href="javascript:void;" (click)="doFilter('unread')">Unread</a>
+        </li>
         <li role="separator" class="divider"></li>
-        <li><a href="#">Pending request</a></li>
-        <li><a href="#">Sent request</a></li>
+        <li>
+          <a href="javascript:void;" (click)="doFilter('pending')">Pending request</a>
+        </li>
+        <li>
+          <a href="javascript:void;" (click)="doFilter('sent')">Sent request</a>
+        </li>
         <li role="separator" class="divider"></li>
-        <li><a href="#">Mark all as read</a></li>
+        <li>
+          <a href="#">Mark all as read</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -60,27 +69,23 @@
 
 <ng-template #conversationTemplate let-conversation="conversation">
   <div class="media-chat-user" [routerLinkActive]="['active']">
-     <z-chat-share-user-avatar class="media-chat-user-row" [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
-        <div class="user-content">
-           <small class="media-chat-user-message" *ngIf="conversation.latest_message as latest_message">
-             <span class="emojione-sm" *ngIf="latest_message?.message_type == 'text'"
-                   [innerHtml]="latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify  | safeHtml"></span>
-             <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
-             <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
-           </small>
-           <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
-          <a class="media-chat-user-link"
-             [routerLink]="[chatService.constant.conversationUrl, conversation.id]"
-             (click)="onSelect(conversation); onCloseMenu()"
-             href="javascript:;"></a>
+    <z-chat-share-user-avatar class="media-chat-user-row" [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
+      <div class="user-content">
+        <small class="media-chat-user-message" *ngIf="conversation.latest_message as latest_message">
+          <span class="emojione-sm" *ngIf="latest_message?.message_type == 'text'" [innerHtml]="latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify  | safeHtml"></span>
+          <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
+          <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
+        </small>
+        <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
+        <a class="media-chat-user-link" [routerLink]="[chatService.constant.conversationUrl, conversation.id]" (click)="onSelect(conversation); onCloseMenu()"
+          href="javascript:;"></a>
+      </div>
+      <div class="user-action">
+        <div class="user-action-col">
+          <span class="badge badge-wth badge-rounded" [ngClass]="{'invisible': conversation.notification_count == 0}">{{ conversation?.notification_count | maxCount: 10}}</span>
+          <i (click)="onFavourite(conversation)" class="fa fa-star can-click" [ngClass]="{'fa-star-o': !conversation.favourite}"></i>
         </div>
-        <div class="user-action">
-           <div class="user-action-col">
-               <span class="badge badge-wth badge-rounded" [ngClass]="{'invisible': conversation.notification_count == 0}">{{ conversation?.notification_count | maxCount: 10}}</span>
-               <i (click)="onFavourite(conversation)" class="fa fa-star can-click" [ngClass]="{'fa-star-o': !conversation.favourite}"></i>
-             </div>
-        </div>
-      </z-chat-share-user-avatar>
+      </div>
+    </z-chat-share-user-avatar>
   </div>
 </ng-template>
-

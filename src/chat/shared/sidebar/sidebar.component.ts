@@ -30,6 +30,7 @@ export class ZChatSidebarComponent implements OnInit {
   recentContacts$: Observable<any>;
   historyShow: any = true;
   isRedirect: boolean;
+  filter: string = 'All';
   emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
 
   constructor(
@@ -100,6 +101,29 @@ export class ZChatSidebarComponent implements OnInit {
     this.storageService.save(CONVERSATION_SELECT, conversation);
     this.chatService.selectContact(conversation);
     this.chatService.getMessages(conversation.group_json.id);
+  }
+
+  doFilter(param){
+    if(param == 'unread'){
+      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][gt][notification_count]=0'}).subscribe((res: any) => {
+        this.filter = 'Unread';
+      });
+    }
+    if(param == 'all'){
+      this.chatService.getConversationsAsync({ forceFromApi: true }).subscribe((res: any) => {
+        this.filter = 'All';
+      });
+    }
+    if(param == 'sent'){
+      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=sent_request'}).subscribe((res: any) => {
+        this.filter = 'Sent Request';
+      });
+    }
+    if(param == 'pending'){
+      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=pending'}).subscribe((res: any) => {
+        this.filter = 'Pending Request';
+      });
+    }
   }
 
   onSelect(contact: any) {

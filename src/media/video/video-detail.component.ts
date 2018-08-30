@@ -18,7 +18,6 @@ import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixi
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/conig/constants';
-import { CircularLinkedLists } from '@shared/data-structures/link-list/circular-linked-lists';
 import { DoublyLinkedLists } from '@shared/data-structures/link-list/doubly-linked-lists';
 import { MediaPreviewMixin } from '@media/shared/mixin/media-preview.mixin';
 

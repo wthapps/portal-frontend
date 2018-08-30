@@ -92,7 +92,9 @@ export class ChatService {
         observer.next(res);
         observer.complete();
       } else {
-        this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: any) => {
+        this.apiBaseService.get(option.url || 'zone/chat/contacts').toPromise().then((conv: any) => {
+          console.log(conv);
+
           this.storage.save(CHAT_CONVERSATIONS, conv);
           this.chatCommonService.setRecentConversations();
           this.chatCommonService.setFavouriteConversations();
