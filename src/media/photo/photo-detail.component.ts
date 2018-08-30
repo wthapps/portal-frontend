@@ -231,7 +231,8 @@ export class PhotoDetailComponent implements OnInit,
   private savePhoto(dataImg: any) {
     this.photoService.confirmUpdate(this.object, dataImg).then((data: any) => {
       // this.event.emit({ action: 'photoUpdated', payload: data });
-      this.object.url = `${data.url}?t=${+new Date()}`;
+      // this.object.url = `${data.url}?t=${+new Date()}`;
+      this.object.url = `${data.url}`;
       $('.cropper-canvas')[0].childNodes[0].src = this.object.url;
 
       this.hasEditPhoto = false;

@@ -58,7 +58,7 @@
 </w-grid-list>
 <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
   [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
-  <button *ngIf="actionNoData" class="btn btn-outline-primary" (click)="doEvent({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
+  <button *ngIf="actionNoData" class="btn btn-outline-primary" (click)="doEvent({action: 'noData'})">
     <i class="fa fa-plus-circle"></i> {{actionNoData}}
   </button>
 </box-no-data>

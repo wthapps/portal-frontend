@@ -506,7 +506,9 @@ export class ZMediaSharingDetailComponent
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Inside dropdown list
-        action: () => { },
+        action: () => {
+          this.openSelectedModal();
+        },
         class: '',
         liclass: 'visible-xs-block',
         tooltip: this.tooltip.share,
@@ -540,7 +542,7 @@ export class ZMediaSharingDetailComponent
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Outside dropdown list
-        action: () => { },
+        action: () => { this.editName(this.object)},
         class: '',
         liclass: '',
         title: 'Edit Information',

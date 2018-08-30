@@ -134,7 +134,7 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
   }
 
   downloadAlbum() {
-    this.apiBaseService.get(`media/media?type=photo&album=${this.selectedObjects[0].id}`).subscribe(res => {
+    this.apiBaseService.get(`media/media/${this.selectedObjects[0].uuid}/objects`, {model: 'Media::Album'}).subscribe(res => {
       this.downloadMedia(res.data);
     })
   }

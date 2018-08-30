@@ -24,10 +24,13 @@ import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
 import { Node } from '@shared/data-structures/link-list/node';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
+import { PlaylistCreateMixin } from '@media/shared/mixin/playlist/playlist-create.mixin';
+import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 
 declare var _: any;
 
-@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
+@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, PlaylistCreateMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-playlist-list',
@@ -38,6 +41,7 @@ export class ZMediaPlaylistListComponent implements OnInit,
 MediaBasicListMixin,
 SharingModalMixin,
 MediaDownloadMixin,
+PlaylistCreateMixin,
 MediaModalMixin {
   // display objects on screen
   objects: any;
@@ -58,21 +62,29 @@ MediaModalMixin {
   subShareSave: any;
   modalIns: any;
   modalRef: any;
+  iconNoData: any = 'fa fa-file-video-o';
+  titleNoData: any = 'There is no playlist!';
+  subTitleNoData: any = 'Try to create a playlist';
+  actionNoData: any = 'Create Playlist';
+  subCreatePlaylist: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
     public apiBaseService: ApiBaseService,
-    private router: Router,
-    private playlistCreateModalService: PlaylistCreateModalService,
-    private playlistModalService: PlaylistModalService,
+    public router: Router,
+    public playlistCreateModalService: PlaylistCreateModalService,
+    public playlistModalService: PlaylistModalService,
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
     public objectListService: WObjectListService,
     public locationCustomService: LocationCustomService,
+    public mediaCreateModalService: MediaCreateModalService,
     public resolver: ComponentFactoryResolver
   ) {
   }
+  openCreatePlaylistModal:(selectedObjects: any) => void;
+  onDonePlaylist:(e: any) => void;
 
   downloadMedia:(media: any) => void;
 
@@ -95,6 +107,13 @@ MediaModalMixin {
         break;
       default:
         break;
+    }
+  }
+  doEvent(event: any){
+    switch(event.action){
+      case 'noData':
+        this.openCreatePlaylistModal([]);
+      break;
     }
   }
 
@@ -218,7 +237,9 @@ MediaModalMixin {
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
-        action: () => {},
+        action: () => {
+          this.deleteObjects('playlists')
+        },
         class: '',
         liclass: 'visible-xs-block',
         title: 'Delete',
