@@ -79,7 +79,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     this.messageAssetsService.open$.subscribe(
       (res: any) => {
         if (res) {
-          console.log(res);
           this.open();
         }
       }

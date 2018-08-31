@@ -50,7 +50,7 @@
         </ul>
       </div>
       <button class="btn btn-default" (click)="onShowAssets()" type="button">
-        <i class="fa text-primary fa-info-circle"></i>
+        <i [ngClass]="{'text-primary': openAssets}" class="fa fa-info-circle"></i>
       </button>
     </div>
   </div>

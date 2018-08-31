@@ -21,29 +21,33 @@
             <i class="fa fa-search"></i>
           </button>
         </span>
-        <input autocomplete="off" class="form-control" name="search" type="text" placeholder="Search something">
+        <input autocomplete="off" class="form-control" name="search" type="text" placeholder="Search Conversations">
       </form>
     </div>
   </div>
   <div class="menu-left-in">
     <div class="dropdown">
       <button class="btn btn-text-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        {{filter}}
+        {{ filter }}
         <span class="caret"></span>
       </button>
       <ul class="dropdown-menu dropdown-menu-sm">
         <li>
-          <a href="javascript:void;" (click)="doFilter('all')">All</a>
+          <a href="javascript:;" (click)="doFilter('all')">
+            <i class="fa fa-check" *ngIf="filter === 'All'"></i> All</a>
         </li>
         <li>
-          <a href="javascript:void;" (click)="doFilter('unread')">Unread</a>
+          <a href="javascript:;" (click)="doFilter('unread')">
+            <i class="fa fa-check" *ngIf="filter === 'Unread'"></i> Unread</a>
         </li>
         <li role="separator" class="divider"></li>
         <li>
-          <a href="javascript:void;" (click)="doFilter('pending')">Pending request</a>
+          <a href="javascript:;" (click)="doFilter('pending')">
+            <i class="fa fa-check" *ngIf="filter === 'Pending Request'"></i> Pending Request</a>
         </li>
         <li>
-          <a href="javascript:void;" (click)="doFilter('sent')">Sent request</a>
+          <a href="javascript:;" (click)="doFilter('sent')">
+            <i class="fa fa-check" *ngIf="filter === 'Sent Request'"></i> Sent Request</a>
         </li>
         <li role="separator" class="divider"></li>
         <li>

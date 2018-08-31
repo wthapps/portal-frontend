@@ -24,6 +24,10 @@
   width: 100%;
   padding: 15px;
   position: relative;
+  padding-right: 2px;
+  .user-name {
+    font-weight: bold;
+  }
   .user-action-col {
     @include flexbox;
     @include flex-direction(column);
