@@ -23,6 +23,7 @@
       currentTab == 'videos' ||
       currentTab == 'playlists' ||
       currentTab == 'playlist_detail' ||
+      currentTab == 'search_detail' ||
       currentTab == 'shared_with_me_detail'">
       <button (click)="onInsert()" class="btn btn-outline-default" type="button">Insert</button>
     </w-object-toolbar-selected>
@@ -32,6 +33,7 @@
       <div *ngIf="currentTab == 'albums_detail' ||
             currentTab == 'favourites_detail' ||
             currentTab == 'playlist_detail' ||
+            currentTab == 'search_detail' ||
             currentTab == 'shared_with_me_detail'" class="media-selection-toolbar-left pull-left">
         <ul class="list-unstyled">
           <li class="divider">
