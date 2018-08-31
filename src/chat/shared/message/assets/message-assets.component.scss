@@ -16,6 +16,11 @@ $message-assets-width: 400px;
   @media (min-width: $screen-sm-min) {
     right: -$message-assets-width;
   }
+
+  .nav-tabs-wrap .nav-tabs > li > a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 }
 
 .message-assets-title {
