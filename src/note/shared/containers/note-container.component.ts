@@ -57,8 +57,8 @@ export class ZNoteContainerComponent implements OnInit {
       if (params.error == 'file_does_not_exist') {
         this.wthConfirmService.confirm({
           message:
-            'The file you are looking for was deleted or you do not have permission to access',
-          header: 'File not found',
+            'You are in deleted note or invalid permission',
+          header: 'Note not found',
           rejectLabel: null,
           accept: () => {
             this.router.navigate(['my-note']);

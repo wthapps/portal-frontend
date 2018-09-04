@@ -108,9 +108,9 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
 
   onDeleteConversation() {
     this.wthConfirmService.confirm({
-      acceptLabel: 'Delete',
-      message: 'Are you sure you want to delete this conversation ?',
-      header: 'Delete Conversation',
+      acceptLabel: 'Hide',
+      message: 'Are you sure you want to hide this conversation?',
+      header: 'Hide Conversation',
       accept: () => {
         this.chatService.deleteContact(this.contactSelect);
       }

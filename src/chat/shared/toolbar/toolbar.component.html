@@ -35,7 +35,7 @@
             <a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a>
           </li>
           <!--show if current isn't one user-->
-          <li><a href="javascript:;" (click)="onDeleteConversation()">Delete Conversation</a></li>
+          <li><a href="javascript:;" (click)="onDeleteConversation()">Hide Conversation</a></li>
           <!--show if current is one user-->
           <li *ngIf="contactSelect.group_json.group_type == 'couple'"><a
             [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a></li>

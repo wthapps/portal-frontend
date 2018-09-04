@@ -59,7 +59,7 @@ export class NoteEffects {
           catchError((err: HttpErrorResponse) => {
             if (err.status == FORBIDDEN) {
               this.wthConfirmService.confirm({
-                message: 'The file you are looking for was deleted or you do not have permission to access',
+                message: 'You are in deleted note or invalid permission',
                 header: 'Note not found',
                 rejectLabel: null,
                 accept: () => {
