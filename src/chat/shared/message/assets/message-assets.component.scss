@@ -46,6 +46,7 @@ $message-assets-width: 400px;
   @include flex(1);
   width: 100%;
   overflow: auto;
+  @include justify-content(center);
   > div {
     width: 100%;
   }
