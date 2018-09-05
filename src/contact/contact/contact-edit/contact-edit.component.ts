@@ -1,17 +1,16 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { Subject, Observable, merge } from 'rxjs';
+import { debounceTime, takeUntil, filter, map, mergeMap, tap } from 'rxjs/operators';
+
 import { ZContactService } from '@contacts/shared/services/contact.service';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { Constants } from '@shared/constant';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
 import { CustomValidator } from '@shared/shared/validator/custom.validator';
 import { CommonEventService, PhotoUploadService } from '@wth/shared/services';
-
-import { Observable } from 'rxjs/Observable';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 import { GroupService } from '../../group/group.service';
-
 import { Contact } from '../contact.model';
 
 declare let _: any;
@@ -94,7 +93,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
     this.createForm();
 
-    this.close$ = Observable.merge(this.mediaSelectionService.open$, this.destroySubject);
+    this.close$ = merge(this.mediaSelectionService.open$, this.destroySubject);
 
     this.handleSelectCropEvent();
 

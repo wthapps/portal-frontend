@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 
 
-import { Observable } from 'rxjs';
-import { takeUntil, debounceTime } from 'rxjs/operations';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 
 import { TextBoxSearchComponent } from '../../../shared/partials/search-box/textbox-search.component';
 import { Router, ActivatedRoute } from '@angular/router';
