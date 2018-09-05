@@ -153,6 +153,8 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   send(enter?: boolean) {
+    if (!this.messageService.notEmptyHtml(this.message.message))
+      return;
     if (this.mode === FORM_MODE.EDIT) {
       this.chatService
         .updateMessage(this.message.group_id, this.message)
