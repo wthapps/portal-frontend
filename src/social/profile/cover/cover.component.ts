@@ -25,13 +25,6 @@ const DEFAULT_TABS: WTab[] = [
     icon: null,
     number: null,
     type: 'link'
-  },
-  {
-    name: 'Friends',
-    link: 'friends',
-    icon: null,
-    number: null,
-    type: 'link'
   }
 ];
 
