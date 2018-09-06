@@ -25,6 +25,17 @@
   padding: 15px;
   position: relative;
   padding-right: 2px;
+  .user-avatar-img {
+    overflow: hidden;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+  }
+  .user-row {
+    .user-avatar {
+      overflow: visible;
+    }
+  }
   .user-name {
     font-weight: bold;
   }

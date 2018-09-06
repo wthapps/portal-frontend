@@ -64,30 +64,35 @@
     overflow: visible;
   }
 }
+$media-user-status-w: 18px;
+$media-user-status-pos: $media-user-status-w - 3px;
+.media-user-status {
+  position: absolute;
+  bottom: -3px;
+  width: $media-user-status-w;
+  height: $media-user-status-w;
+  border-radius: 50%;
+  border: 3px solid #FFF;
+  right: -3px;
+  background-color: $user-offline;
+  &.online {
+    background-color: $user-online;
+  }
+}
+
+.media-user-stranger {
+  background-color: transparent;
+  i {
+    @include center();
+    color: $color-inverse;
+  }
+}
 
 .media-user {
   overflow: visible;
   position: relative;
-  $media-user-status-w: 18px;
-  $media-user-status-pos: $media-user-status-w - 3px;
   .media-user-status {
-    position: absolute;
-    bottom: -3px;
-    width: $media-user-status-w;
-    height: $media-user-status-w;
-    border-radius: 50%;
-    border: 3px solid #FFF;
-    background-color: $user-offline;
-    &.online {
-      background-color: $user-online;
-    }
-  }
-  .media-user-stranger {
-    background-color: transparent;
-    i {
-      @include center();
-      color: $color-inverse;
-    }
+    right: auto;
   }
   .media-user-name {
     position: absolute;
