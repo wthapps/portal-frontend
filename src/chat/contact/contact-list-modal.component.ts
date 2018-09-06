@@ -188,16 +188,12 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
     let path = `chat/contacts/${contact.uuid}/remove`;
     this.apiBaseService.post(path)
       .pipe(takeUntil(this.destroy$)).subscribe(response => {
-        this.contacts = this.contacts.filter(con => con.id !== contact.id);
-    });
-
-    // remove conversation
-    path = `chat/conversations/${contact.uuid}/remove`;
-    this.apiBaseService.put(path)
-      .pipe(takeUntil(this.destroy$)).subscribe(response => {
-      // remove conversation from your view
-      this.chatService.deleteContact(response.data);
-      this.toastsService.success(`You removed Contact ${contact.name} successful!`);
+        this.contacts.forEach((con: any, index: number) => {
+          if (con.id === contact.id) {
+            this.contacts.splice(index, 1);
+          }
+        });
+        this.toastsService.success(`You removed Contact ${contact.name} successful!`);
     });
   }
 
