@@ -19,6 +19,12 @@
     //}
 
   }
+  .message-item-dv:not(:first-child):last-child {
+    .dropdown-menu {
+      top: auto;
+      bottom: 100%;
+    }
+  }
 }
 
 $message-item-content-card-right: 30px;
