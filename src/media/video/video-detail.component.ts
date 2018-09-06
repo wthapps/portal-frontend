@@ -46,6 +46,7 @@ export class ZVideoDetailComponent implements OnInit,
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
   returnUrl: any;
+  sharings: any = [];
   listIds: DoublyLinkedLists;
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -130,6 +131,15 @@ export class ZVideoDetailComponent implements OnInit,
           break;
       }
     })
+  }
+
+  infoAlbumClick(object) {
+    if (object.object_type == 'Media::Playlist') {
+      this.router.navigate([`/playlists/${object.uuid}`]);
+    }
+    if (object.object_type == 'sharing') {
+      this.router.navigate([`/shared/${object.uuid}`]);
+    }
   }
 
   openModalAddToPlaylist:(selectedObjects: any) => void;
@@ -217,6 +227,9 @@ export class ZVideoDetailComponent implements OnInit,
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.showDetailsInfo = !this.showDetailsInfo;
+          this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Video' }).subscribe(res => {
+            this.sharings = res.data;
+          });
         },
         class: '',
         liclass: '',

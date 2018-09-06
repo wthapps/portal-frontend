@@ -64,6 +64,7 @@ export class PhotoDetailComponent implements OnInit,
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
   returnUrl: any;
+  sharings: any = [];
   listIds: DoublyLinkedLists;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -225,6 +226,15 @@ export class PhotoDetailComponent implements OnInit,
     return false;
   }
 
+  infoAlbumClick(object) {
+    if(object.object_type == 'album'){
+      this.router.navigate([`/albums/${object.uuid}`]);
+    }
+    if(object.object_type == 'sharing'){
+      this.router.navigate([`/shared/${object.uuid}`]);
+    }
+  }
+
   private editPhoto() {
     this.hasEditPhoto = true;
     // this.event.emit({action: 'editPhoto'});
@@ -340,6 +350,9 @@ export class PhotoDetailComponent implements OnInit,
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.showDetailsInfo = !this.showDetailsInfo;
+          this.apiBaseService.get(`media/object/${this.object.id}/sharings`, {model: 'Media::Photo'}).subscribe(res => {
+            this.sharings = res.data;
+          });
         },
         class: '',
         liclass: '',
