@@ -1,9 +1,9 @@
-<div *ngIf="message.message_type != 'notification'" class="message-item" [ngClass]="{'message-item-left': !byMe, 'message-item-right': byMe}">
+<div *ngIf="(!['notification', 'message_deleted'].includes(message.message_type))" class="message-item" [ngClass]="{'message-item-left': !byMe, 'message-item-right': byMe}">
   <div class="message-item-date" *ngIf="hasShowDate()">
     <span>{{ message.created_at | timeFormat:'day' }}</span>
   </div>
   <div class="message-item-content">
-    <div class="message-item-owner" *ngIf="hasShowOwner() && message.display && !['request', 'request_accepted'].includes(message.message_type)">
+    <div class="message-item-owner" *ngIf="hasShowOwner() && message.display && !(['request', 'request_accepted'].includes(message.message_type))">
       <h4 class="message-item-owner-name">
         <a class="mr5" [routerLink]="[profileUrl, message.display.uuid]"> {{ message.display.name }} </a>
         <small class="text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
@@ -312,7 +312,7 @@
   <div *ngIf="message.message_type === 'notification'">
     <span class="text-bold">{{ message.display.name }}</span> {{ message.message }}</div>
   <div *ngIf="message.message_type === 'request_accepted'">
-    You connected with <span class="text-bold"> {{ byMe ? message?.receiver_publish?.name : message.display.name }}</span> on WTH!Chat</div>
+    You connected with <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.display.name }}</span> on WTH!Chat</div>
   <div class="text-fade">
     <small>{{ message.created_at | timeFormat: "time_only" }}</small>
   </div>
