@@ -49,7 +49,7 @@
           <label class="sr-only" for="email">Email address</label>
           <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
 
-          <ng-container *ngIf="verified; else sent_verify">
+          <ng-container *ngIf="confirmedEmail; else sent_verify">
             <div style="position: relative; top: -30px; right: 10px; float: right; color: green; font-size: 20px"><i class="fa fa-check-circle"></i></div>
           </ng-container>
 

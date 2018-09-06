@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy }    from '@angular/core';
+import { Component, OnInit, OnDestroy }    from '@angular/core';
 import 'rxjs/add/observable/fromPromise';
 import { Subject } from 'rxjs/Subject';
 
@@ -14,12 +14,9 @@ import { UserService } from '@wth/shared/services/user.service';
 import { CountryService } from '@wth/shared/shared/components/countries/countries.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
-import { UploadCropImageComponent } from '@wth/shared/shared/components/upload-crop-image/upload-crop-image.component';
-import { PhotoModalDataService } from '@wth/shared/services/photo-modal-data.service';
-import { PhotoUploadService } from '@wth/shared/services/photo-upload.service';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 import { Constants } from '@wth/shared/constant/config/constants';
-import { ApiBaseService, UrlService } from "@shared/services";
+import { ApiBaseService } from '@shared/services';
 
 declare var $: any;
 declare var _: any;
@@ -62,7 +59,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   // validMonths: number[] = [];
   validYears: number[] = [];
   submitted: boolean = false;
-  verified: boolean = false;
+  confirmedEmail: any = null;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -71,7 +68,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
               private countryService: CountryService,
               private toastsService: ToastsService,
               private apiBaseService: ApiBaseService,
-              private urlService: UrlService,
               // private photoSelectDataService : PhotoModalDataService,
               // private photoUploadService: PhotoUploadService,
               private commonEventService: CommonEventService,
@@ -122,15 +118,9 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // verified email
-    if(this.urlService.getQuery() && this.urlService.getQuery().verified == 'true') {
-      this.toastsService.success('You have successfully verify your email address');
-    }
-    if(this.urlService.getQuery() && this.urlService.getQuery().verified == 'false') {
-      this.toastsService.danger('Cannot verify your email address. Please try again');
-    }
+
     this.apiBaseService.post('users/get_user').subscribe((res: any) => {
-      this.verified = res.data.verified;
+      this.confirmedEmail = res.data.confirmed_at;
     });
     // Set value before updating form (checking user leave this page)
     this.formValue = this.form.value;
@@ -240,7 +230,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   sendVerifyEmail() {
     this.apiBaseService.post(`users/confirmation`).subscribe((res: any) => {
       this.toastsService.success('A verification email was sent to your email address');
-    })
+    });
   }
 
   private range (start: number, end: number) {
