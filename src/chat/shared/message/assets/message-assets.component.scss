@@ -32,12 +32,8 @@ $message-assets-width: 400px;
 
 .message-assets-tab {
   border-bottom: 2px solid $line;
-  padding-bottom: 10px;
   .nav-tabs-wrap {
     margin-bottom: -2px;
-  }
-  @media (min-width: $screen-sm-min) {
-    padding-bottom: 0;
   }
 }
 
