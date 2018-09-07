@@ -25,7 +25,7 @@ export class ZContactShareMergeProgressComponent implements OnDestroy {
     done: 2,
     error: 3,
     cancelled: 4,
-    undoed: 5
+    undid: 5
   };
   // mergeContacts: Array<any> = [];
 
@@ -75,7 +75,7 @@ export class ZContactShareMergeProgressComponent implements OnDestroy {
   undo() {
     this.contactService
       .undoMerge()
-      .then(res => (this.status = this.STATUS.undoed))
+      .then(res => (this.status = this.STATUS.undid))
       // .then(() =>
       //   setTimeout(() => {
       //     this.modalDock.close();

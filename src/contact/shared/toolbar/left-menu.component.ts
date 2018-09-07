@@ -109,8 +109,8 @@ export class ZContactSharedLeftMenuComponent implements OnInit, OnDestroy {
   }
 
   private extractLabel(url: string) {
-    let regExp = /group=([\w ]*)/;
-    let match = decodeURI(url).match(regExp);
+    const regExp = /group=([\w ]*)/;
+    const match = decodeURI(url).match(regExp);
 
     if (match && match[1]) {
       return match[1];

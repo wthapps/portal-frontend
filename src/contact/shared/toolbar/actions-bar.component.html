@@ -65,11 +65,11 @@
         <a href="javascript:;" (click)="emitEvent({action: 'delete', payload: data})">
           <i class="fa fa-trash"></i> Delete</a>
       </li>
-      <li>
+      <!-- <li>
         <a href="javascript:;" (click)="emitEvent({action: 'blacklist', payload: data})" [title]="toggleBlacklist ? 'remove from blacklist' : 'add to blacklist'">
           <i class="fa fa-ban"></i> Blacklist
         </a>
-      </li>
+      </li> -->
       <li *ngIf="showInvitation">
         <a href="javascript:void(0);" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})" title="Send invitation">
           <i class="fa fa-envelope-o"></i> Send invitation

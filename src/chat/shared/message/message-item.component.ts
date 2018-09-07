@@ -26,6 +26,7 @@ export class MessageItemComponent implements OnInit {
   readonly noteUrl: any = Constants.baseUrls.note;
   readonly actions = CHAT_ACTIONS;
   readonly profileUrl: any = ChatConstant.profileUrl;
+  readonly NO_ACTION_MESSAGES = ['message_deleted', 'message_cancel', 'request', 'share_contact_message', 'request_accepted'];
 
   private modifiedMessage: any;
 

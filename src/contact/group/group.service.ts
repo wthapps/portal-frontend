@@ -34,7 +34,7 @@ export class GroupService extends BaseEntityService<Group> {
       return this.getAll()
         .toPromise()
         .then((res: any) => {
-          let groups: Group[] = _.map(res.data, (l: any) =>
+          const groups: Group[] = _.map(res.data, (l: any) =>
             this.mapGroupToMenuItem(l)
           );
           return this.notifyGroupObservers(groups);
@@ -54,7 +54,7 @@ export class GroupService extends BaseEntityService<Group> {
 
   create(body: any): Observable<any> {
     return super.create(body).mergeMap((res: any) => {
-      let group: any = this.mapGroupToMenuItem(res.data);
+      const group: any = this.mapGroupToMenuItem(res.data);
       return this.notifyGroupObservers(
         this.groupsSubject.getValue().concat([group])
       );
@@ -78,7 +78,7 @@ export class GroupService extends BaseEntityService<Group> {
   }
 
   updateGroupCount(contacts: any[]) {
-    let menus: any = {};
+    const menus: any = {};
     for (let ci = 0; ci < contacts.length; ci++) {
       _.each(contacts[ci].groups, (l: any) => {
         if (!l) return;
@@ -92,7 +92,7 @@ export class GroupService extends BaseEntityService<Group> {
     }
 
     // Update group count
-    let cMenus = _.map(this.groupsSubject.getValue(), (m: any) => {
+    const cMenus = _.map(this.groupsSubject.getValue(), (m: any) => {
       if (menus[m.name])
         return Object.assign(m, { count: menus[m.name].count });
       else if (m.name === 'all contacts')
@@ -112,7 +112,7 @@ export class GroupService extends BaseEntityService<Group> {
   }
 
   addGroups(groups: Group[]) {
-    let menus: any[] = this.groupsSubject.getValue();
+    const menus: any[] = this.groupsSubject.getValue();
     _.each(groups, (group: Group) => {
       // let menus: any[] = this.contactMenuSubject.getValue();
       // menus.push(menu);
@@ -124,25 +124,25 @@ export class GroupService extends BaseEntityService<Group> {
   }
 
   addMenu(menu: any): Promise<any> {
-    let menus: any[] = this.groupsSubject.getValue();
+    const menus: any[] = this.groupsSubject.getValue();
     menus.push(menu);
     return this.notifyGroupObservers(menus);
   }
 
   removeMenu(menu: any): Promise<any> {
-    let menus: any[] = this.groupsSubject.getValue();
+    const menus: any[] = this.groupsSubject.getValue();
     _.remove(menus, (m: any) => m.id === menu.id);
     return this.notifyGroupObservers(menus);
   }
 
   removeMenuByName(menu: any): Promise<any> {
-    let menus: any[] = this.groupsSubject.getValue();
+    const menus: any[] = this.groupsSubject.getValue();
     _.remove(menus, (m: any) => m.name === menu.name);
     return this.notifyGroupObservers(menus);
   }
 
   updateMenu(menu: any): Promise<any> {
-    let menus: any[] = _.map(this.groupsSubject.getValue(), (m: any) => {
+    const menus: any[] = _.map(this.groupsSubject.getValue(), (m: any) => {
       if (m.id === menu.id) return Object.assign(m, menu);
       else return m;
     });
@@ -151,9 +151,9 @@ export class GroupService extends BaseEntityService<Group> {
   }
 
   updateMenuName(menu: any): Promise<any> {
-    let groups = this.groupsSubject.getValue();
+    const groups = this.groupsSubject.getValue();
     for (let i = 0; i < groups.length; i++) {
-      if (menu.id == groups[i]['id']) {
+      if (menu.id === groups[i]['id']) {
         groups[i]['name'] = menu.name;
         break;
       }
@@ -164,16 +164,16 @@ export class GroupService extends BaseEntityService<Group> {
   notifyGroupObservers(
     groups: Group[] = this.groupsSubject.getValue()
   ): Promise<any[]> {
-    let orderedGroups = _.orderBy(groups, ['order'], ['asc']);
+    const orderedGroups = _.orderBy(groups, ['order'], ['asc']);
     this.groupsSubject.next(orderedGroups);
 
     return Promise.resolve(this.groupsSubject.getValue());
   }
 
   filterGroup(query: string, groups: any[]) {
-    let filtered: any[] = [];
+    const filtered: any[] = [];
     for (let i = 0; i < groups.length; i++) {
-      let group = groups[i];
+      const group = groups[i];
       if (group.name.toLowerCase().indexOf(query.toLowerCase()) === 0) {
         filtered.push(group.name);
       }

@@ -6,13 +6,14 @@ import { Subject } from 'rxjs/Subject';
 
 import { Contact } from '../contact.model';
 import { GroupService } from '../../group/group.service';
-import { PhotoUploadService } from '@wth/shared/services';
+import { PhotoUploadService, CommonEventService } from '@wth/shared/services';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
 import { Constants } from '@shared/constant';
 import { CustomValidator } from '@shared/shared/validator/custom.validator';
 import { ZContactService } from '@contacts/shared/services/contact.service';
 import { debounceTime, takeUntil, filter, map, mergeMap, tap } from 'rxjs/operators';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
+import { Photo } from '@shared/shared/models';
 
 declare let _: any;
 
@@ -80,6 +81,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     private contactService: ZContactService,
     private mediaSelectionService: WMediaSelectionService,
     private photoUploadService: PhotoUploadService,
+    private commonEventService: CommonEventService,
     private countryService: CountryService) {
     this.groupService.getAllGroups().then((res: any) => {
       this.originalGroups = res;
@@ -96,6 +98,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
     this.close$ = Observable.merge(this.mediaSelectionService.open$, this.destroySubject);
 
+    this.handleSelectCropEvent();
 
     this.sub = this.form.valueChanges
       .subscribe((e) => {
@@ -115,7 +118,11 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.countryService.getCountries().subscribe(
+    this.countryService.getCountries()
+    .pipe(
+      takeUntil(this.destroySubject)
+    )
+    .subscribe(
       (res: any) => {
         this.countriesCode = res;
         this.countriesNameCode = _.map(res,
@@ -318,29 +325,61 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onChangeAvatar(): void {
-    this.mediaSelectionService.open({ hiddenTabs: ['videos', 'playlists'], allowSelectMultiple: false });
+    // this.mediaSelectionService.open({ hiddenTabs: ['videos', 'playlists'], allowSelectMultiple: false });
 
-    this.mediaSelectionService.selectedMedias$.pipe(
-      takeUntil(this.close$),
-      filter(items => items.length > 0)
-    ).subscribe((items) => {
-      this.setPhoto(items[0]);
-    });
+    // this.mediaSelectionService.selectedMedias$.pipe(
+    //   takeUntil(this.close$),
+    //   filter(items => items.length > 0)
+    // ).subscribe((items) => {
+    //   this.startCropPhoto(items[0]);
+    // });
 
-    this.mediaSelectionService.uploadingMedias$.pipe(
-      takeUntil(this.close$),
-      map(([file, dataUrl]) => [file]),
-      mergeMap((files: File[]) => {
-        return this.photoUploadService.uploadPhotos(files);
-      })
-    ).subscribe((res: any) => {
-      this.setPhoto(res.data);
+    // this.mediaSelectionService.uploadingMedias$.pipe(
+    //   takeUntil(this.close$),
+    //   map(([file, dataUrl]) => [file]),
+    //   mergeMap((files: File[]) => {
+    //     return this.photoUploadService.uploadPhotos(files);
+    //   })
+    // ).subscribe((res: any) => {
+    //   this.startCropPhoto(res.data);
+    // });
+
+    this.startCropPhoto(this.contact.profile_image);
+  }
+
+  setPhoto(base64Photo): void {
+    Object.assign(this.contact, this.form.value);
+    this.contact.avatar = base64Photo;
+    console.log(this.contact);
+    this.upsertContact(this.contact);
+  }
+
+  startCropPhoto(photo: string) {
+    event.preventDefault();
+    this.commonEventService.broadcast({
+      channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN',
+      payload: { currentImage: photo }
     });
   }
 
-  setPhoto(photo): void {
-    this.contact.profile_image = photo.thumbnail_url;
-    this.upsertContact(this.contact);
+
+  handleSelectCropEvent() {
+    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
+      .takeUntil(this.destroySubject)
+      .subscribe((event: any) => {
+        this.doEvent(event);
+      });
+  }
+
+  doEvent(event: any) {
+    console.log(event);
+    switch (event.action) {
+      case 'SELECT_CROP:DONE':
+        this.setPhoto(event.payload);
+        break;
+      default:
+        break;
+    }
   }
 
   onSubmit(values: any): void {

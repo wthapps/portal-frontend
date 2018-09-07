@@ -1,4 +1,8 @@
+<<<<<<< ffc72068dbe449e44721aef8b3e2222b8f0a95fd
 import { Component, OnInit, OnDestroy }    from '@angular/core';
+=======
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+>>>>>>> update - contact - allow crop avatar #ref WTHZONE876
 import 'rxjs/add/observable/fromPromise';
 import { Subject } from 'rxjs/Subject';
 
@@ -16,7 +20,7 @@ import { ToastsService } from '@wth/shared/shared/components/toast/toast-message
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 import { Constants } from '@wth/shared/constant/config/constants';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, UrlService } from '@shared/services';
 
 declare var $: any;
 declare var _: any;
@@ -29,12 +33,12 @@ declare var _: any;
 export class MyProfileComponent implements OnInit, OnDestroy {
   // @ViewChild('uploadProfile') uploadProfile: UploadCropImageComponent;
 
-  pageTitle: string = 'Profile';
-  errorMessage: string = Constants.errorMessage.default;
-  defaultAvatar: string = Constants.img.avatar;
-  profile_image: string = '';
+  pageTitle = 'Profile';
+  errorMessage = Constants.errorMessage.default;
+  defaultAvatar = Constants.img.avatar;
+  profile_image = '';
 
-  sex: number = 0;
+  sex = 0;
   birthdayDate: any = {
     day: 0,
     month: 0,
@@ -58,9 +62,9 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   validDays: number[] = [];
   // validMonths: number[] = [];
   validYears: number[] = [];
-  submitted: boolean = false;
+  submitted = false;
   confirmedEmail: any = null;
-
+  verified = false;
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(public userService: UserService,
@@ -70,6 +74,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
               private apiBaseService: ApiBaseService,
               // private photoSelectDataService : PhotoModalDataService,
               // private photoUploadService: PhotoUploadService,
+              private urlService: UrlService,
               private commonEventService: CommonEventService,
               private loadingService: LoadingService) {
 
@@ -83,7 +88,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.handleSelectCropEvent();
 
     if (this.userService.getSyncProfile().birthday !== null) {
-      let birthday = new Date(this.userService.getSyncProfile().birthday);
+      const birthday = new Date(this.userService.getSyncProfile().birthday);
       this.birthdayDate.day = birthday.getDate();
       this.birthdayDate.month = birthday.getMonth() + 1;
       this.birthdayDate.year = birthday.getUTCFullYear();
@@ -118,7 +123,13 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
+    // verified email
+    if (this.urlService.getQuery() && this.urlService.getQuery().verified === 'true') {
+      this.toastsService.success('You have successfully verify your email address');
+    }
+    if (this.urlService.getQuery() && this.urlService.getQuery().verified === 'false') {
+      this.toastsService.danger('Cannot verify your email address. Please try again');
+    }
     this.apiBaseService.post('users/get_user').subscribe((res: any) => {
       this.confirmedEmail = res.data.confirmed_at;
     });
@@ -148,7 +159,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
       values.sex = this.sex;
 
-      let body = JSON.stringify({
+      const body = JSON.stringify({
         first_name: values.first_name,
         last_name: values.last_name,
         nationality: values.phone_prefix,
@@ -158,8 +169,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         birthday_year: values.birthday_year.toString(),
         sex: values.sex
       });
-
-      //console.log(body);
 
       this.userService.update(body)
         .subscribe((result: any) => {
@@ -180,11 +189,12 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   uploadImage(event: any): void {
     event.preventDefault();
     // this.uploadProfile.modal.open();
-    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.getSyncProfile().profile_image} });
+    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN',
+     payload: {currentImage: this.userService.getSyncProfile().profile_image} });
   }
 
   handleSelectCropEvent() {
-    this.commonEventService.filter((event: any) => event.channel == 'SELECT_CROP_EVENT')
+    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
       .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         this.doEvent(event);
@@ -234,17 +244,8 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
 
   private range (start: number, end: number) {
-    let f: number = (end > start) ? start : end;
-    let res: number[] = Array.from(Array(Math.abs(end - start) + 1).keys()).map((i: number) => { return i + f;})
+    const f: number = (end > start) ? start : end;
+    const res: number[] = Array.from(Array(Math.abs(end - start) + 1).keys()).map((i: number) => (i + f));
     return (end > start) ? res : res.reverse();
-  };
-
-
-  /**
-   *
-   * @returns {boolean|Promise<boolean>}
-   */
-  //2 canDeactivate(): Promise<boolean> | boolean {
-  //   return this.deactivateConfirmService.activate(this.formValue, this.form.value);
-  // }
+  }
 }

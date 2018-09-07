@@ -107,7 +107,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     ZContactSharedHeaderComponent,
     ZContactSharedListV1Component,
 
-    //modal here
+    // modal here
     ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,
     ZContactShareIcloudIndicateComponent,

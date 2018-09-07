@@ -26,7 +26,7 @@ declare let _: any;
 
 export class FileSelectCropComponent implements OnInit, OnDestroy {
   @ViewChild('cropImage') cropImage: CropImageComponent;
-  @Input() useNewPhotoSelect: boolean = true;
+  @Input() useNewPhotoSelect = true;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   currentImage: string;
@@ -42,9 +42,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    // this.close$ = Observable.merge(this.photoSelectDataService.closeObs$, this.photoSelectDataService.openObs$, this.photoSelectDataService.dismissObs$, this.destroySubject);
-
-    this.commonEventService.filter((event: any) => event.channel == 'SELECT_CROP_EVENT')
+    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
       .takeUntil(this.destroySubject)
       .subscribe((event: any) => {
         this.doEvent(event);
@@ -68,7 +66,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
       case 'SELECT_CROP:OPEN':
         this.currentImage = event.payload.currentImage;
         let edit: any = true;
-        if(event.payload.editCurrentMode == false) edit = event.payload.editCurrentMode;
+        if (event.payload.editCurrentMode === false) edit = event.payload.editCurrentMode;
         this.openPhotoSelect(edit);
         break;
       case 'SELECT_CROP:EDIT_CURRENT':
@@ -84,15 +82,14 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   }
 
   openPhotoSelect(editCurrentMode: any) {
-    if(!this.useNewPhotoSelect) {
+    if (!this.useNewPhotoSelect) {
       // this.photoSelectDataService.open({editCurrentMode: editCurrentMode});
       // this.subscribePhotoSelectEvents();
-    }
-    else {
+    } else {
       this.mediaSelectionService.setMultipleSelection(false);
       this.mediaSelectionService.open();
 
-      let close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
+      const close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
       this.mediaSelectionService.selectedMedias$.pipe(
         takeUntil(close$)
       ).subscribe((items) => {
@@ -117,8 +114,8 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     if (files.length < 1) {
       console.warn('file-select-crop: next error: files should have at least 1 element');
     } else {
-      console.debug('inside file-select-crop - next handling ...', files);
-      let img: string = files[0].thumbnail_url;
+      console.log('inside file-select-crop - next handling ...', files);
+      const img: string = files[0].thumbnail_url;
       this.cropImage.open(img);
       this.mediaSelectionService.close();
     }
@@ -128,7 +125,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     if (files.length < 1) {
       console.warn('file-select-crop: handleLocalImage error: files should have at least 1 element');
     } else {
-      console.debug('handle local image: ', files);
+      console.log('handle local image: ', files);
       this.photoUploadService.getPhoto(files[0])
         .then((image: any) => {
           this.cropImage.open(image);

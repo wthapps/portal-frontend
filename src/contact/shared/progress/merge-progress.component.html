@@ -1,8 +1,8 @@
 <wth-modal-dock #modalDock [cssClass]="{'dock-merge-contact': true, 'no-display': !status}" >
   <wth-modal-dock-header *ngIf="status" [hasCloseIcon]="false" [loading]="(status==STATUS.processing)" [failed]="(status==STATUS.cancelled || status==STATUS.error)"
-                         [done]="(status==STATUS.done || status==STATUS.undoed )">
+                         [done]="(status==STATUS.done || status==STATUS.undid )">
       <span *ngIf="status==STATUS.processing">Merging</span>
-      <span *ngIf="status==STATUS.undoed">Undoed {{ contactService.mergingObjects?.length }} merged contacts</span>
+<span *ngIf="status==STATUS.undid">Undid {{ contactService.mergingObjects?.length }} merged contacts</span>
       <span *ngIf="status==STATUS.done">{{ contactService.mergingObjects?.length }} contacts merged </span>
       <span *ngIf="status==STATUS.cancelled">Merge cancelled</span>
       <span *ngIf="status==STATUS.error">Oops, something's wrong !</span>
