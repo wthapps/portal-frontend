@@ -88,7 +88,7 @@ export class ZChatShareAddContactComponent implements OnInit {
 
   open() {
     this.title = this.type === 'addContact' ? 'New Chat' :
-      this.type === 'addMember' ? 'Add Members' : 'Choose Contact';
+    this.type === 'addMember' ? 'Add Members' : 'Choose Contact';
     this.loading = true;
     this.resetData();
     this.modal.open().then();
@@ -137,9 +137,9 @@ export class ZChatShareAddContactComponent implements OnInit {
   }
 
   addMember() {
-    const contacts = _.filter(_.filter(this.contacts, { checked: true}), {inConversation: false});
-    const ids = _.map(contacts, 'id');
-    this.chatService.addMembersGroup(ids);
+    // const ids = this.selectedUsers.map(user => user.id);
+    // this.chatService.addMembersGroup(ids);
+    this.addContactService.addMembers(this.selectedUsers);
     this.modal.close();
   }
 

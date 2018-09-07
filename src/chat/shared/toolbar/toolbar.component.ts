@@ -12,6 +12,7 @@ import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.serv
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { merge, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 
 declare let $: any;
@@ -68,6 +69,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // this.item = this.chatService.getContactSelect();
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
+
   }
 
   ngOnDestroy() {

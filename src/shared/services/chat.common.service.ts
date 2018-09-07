@@ -169,7 +169,7 @@ export class ChatCommonService {
     this.setRecentConversations();
     this.setFavouriteConversations();
     this.setHistoryConversations();
-    // this.updateContactSelect();
+    this.updateContactSelect();
   }
 
   updateConversationBroadcast(groupId: any): Promise<any> {

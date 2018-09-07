@@ -444,9 +444,9 @@ export class ChatService {
     } else {
       groupId = this.storage.find(CONVERSATION_SELECT).value.group_json.id;
     }
-    const body = { friends: friends };
+    const body = { add_members: true, user_ids: friends };
     this.apiBaseService
-      .put('zone/chat/group/' + groupId, body)
+      .put(`zone/chat/group/${groupId}`, body)
       .subscribe((res: any) => {
         this.chatCommonService.updateConversationBroadcast(groupId);
       });

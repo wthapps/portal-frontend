@@ -2,8 +2,7 @@ import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core
 
 @Component({
   selector: 'z-chat-share-user',
-  templateUrl: 'user.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: 'user.component.html'
 })
 export class ZChatShareUserComponent implements OnInit {
   @Input() data: any;

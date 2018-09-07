@@ -4,28 +4,16 @@
   </div>
   <div *ngIf="currentTab === 'members'" class="message-assets-content bg-gray-light">
     <div class="message-assets-members">
-      <ng-container *ngIf="contactSelect?.group_json">
+      <ng-container *ngIf="conversation">
         <ul
-          *ngIf="contactSelect.group_json.group_type == 'multiple' || contactSelect.group_json.group_type == 'support'">
-          <li>
-            <div (click)="onAddMember()" class="message-assets-members-row can-click">
-              <div class="media-user media-user-xs">
-                <div class="media-user-avatar avatar-xs">
-                  <i class="fa fa-plus"></i>
-                </div>
-                <div class="media-user-name">
-                  Add member
-                </div>
-              </div>
-            </div>
-          </li>
-          <li *ngFor="let user_in_group of contactSelect.group_json.users_json">
+          *ngIf="conversation.group_type === 'multiple' && members.length > 0">
+          <li *ngFor="let user of members">
             <z-chat-share-user-icon
               class="message-assets-members-row"
-              [userId]="user_in_group.id"
-              [image]="user_in_group.profile_image"
-              [groupType]="chatContactList[user_in_group?.id] ? 'couple' : 'stranger'"
-              [name]="user_in_group.name">
+              [userId]="user.id"
+              [image]="user.profile_image"
+              [groupType]="chatContactList[user?.id] ? 'couple' : 'stranger'"
+              [name]="user.name">
             </z-chat-share-user-icon>
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
@@ -33,17 +21,20 @@
                 <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li *ngIf="showSendMessage">
-                  <a href="javascript:;" (click)="onSelect(user_in_group)">Send Message</a>
+                <li *ngIf="conversation.group_json.creator_id !== user.id">
+                  <a href="javascript:void(0);" (click)="onSelect(user)">Send Message</a>
                 </li>
                 <li>
-                  <a [routerLink]="[profileUrl, user_in_group.uuid]">View Profile</a>
+                  <a [routerLink]="[profileUrl, user.uuid]">View Profile</a>
                 </li>
                 <li *ngIf="showBlacklist">
-                  <a href="javascript:;" (click)="onAddToBlackList(user_in_group)">Blacklist</a>
+                  <a href="javascript:void(0);" (click)="onAddToBlackList(user)">Blacklist</a>
                 </li>
-                <li *ngIf="contactSelect.role == 'admin'">
-                  <a href="javascript:;" (click)="onRemoveFromConversation(user_in_group)">Remove From Conversation</a>
+                <li *ngIf="conversation.group_json.creator_id !== user.id">
+                  <a href="javascript:void(0);" (click)="onRemoveMember(user)">Remove From Conversation</a>
+                </li>
+                <li *ngIf="conversation.group_json.creator_id === user.id">
+                  <a href="javascript:void(0);" (click)="leaveConversation(user)">Leave Conversation</a>
                 </li>
               </ul>
             </div>

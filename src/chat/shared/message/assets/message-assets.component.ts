@@ -3,13 +3,16 @@ import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { Constants } from '@shared/constant';
 import { ChatService } from '@chat/shared/services/chat.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { CommonEventService, UserService } from '@shared/services';
+import { ApiBaseService, ChatCommonService, CommonEventService, UserService } from '@shared/services';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { Observable } from 'rxjs/Observable';
 import { Media } from '@shared/shared/models/media.model';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
+import { ConversationService } from '@chat/conversation/conversation.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -20,7 +23,7 @@ import { WObjectListService } from '@shared/components/w-object-list/w-object-li
 })
 export class MessageAssetsComponent implements OnInit, OnDestroy {
   @Input() chatContactList: { [partner_id: string]: any } = {};
-  contactSelect: any;
+  conversation: any;
   tooltip: any = Constants.tooltip;
 
   tabMember: WTab = {
@@ -65,6 +68,8 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   medias$: Observable<Media[]>;
   nextLink: string;
   isLoading: boolean;
+  members: Array<any> = [];
+  private destroy$ = new Subject<any>();
 
   constructor(
     private chatService: ChatService,
@@ -73,7 +78,10 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private wthConfirmService: WthConfirmService,
     private addContactService: ZChatShareAddContactService,
     private messageAssetsService: MessageAssetsService,
-    private objectListService: WObjectListService
+    private objectListService: WObjectListService,
+    private conversationService: ConversationService,
+    private apiBaseService: ApiBaseService,
+    private chatCommonService: ChatCommonService
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
     this.messageAssetsService.open$.subscribe(
@@ -89,14 +97,15 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   open() {
     this.chatService.getContactSelectAsync()
       .subscribe((res: any) => {
-        console.log(res);
-        this.contactSelect = res;
-        if (this.contactSelect && this.contactSelect.group_type === 'couple') {
+        this.conversation = res;
+        if (this.conversation && this.conversation.group_type === 'couple') {
           this.tabs = this.tabsPhoto;
         } else {
           this.tabs = this.tabsMember;
@@ -105,9 +114,10 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       });
 
     this.medias$ = this.messageAssetsService.medias$;
-
-
     this.objectListService.setMultipleSelection(false);
+    this.addContactService.addMembers$.pipe(takeUntil(this.destroy$)).subscribe(users => {
+      this.onAddMember(users);
+    });
   }
 
   tabAction(event: WTab) {
@@ -120,6 +130,12 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       } else {
         this.messageAssetsService.clear();
       }
+    } else {
+      this.isLoading = true;
+      this.conversationService.getMembers(this.conversation.group_id, {}).subscribe(response => {
+        this.members = response.data;
+        this.isLoading = false;
+      });
     }
   }
 
@@ -131,12 +147,23 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     this.chatService.selectContactByPartnerId(user.id);
   }
 
-  onAddMember() {
-    this.addContactService.open('addMember');
+  onAddMember(members: Array<any>) {
+    const body = { add_members: true, user_ids: members.map(user => user.id) };
+    this.apiBaseService
+      .put(`zone/chat/group/${this.conversation.group_id}`, body)
+      .subscribe((res: any) => {
+        this.chatCommonService.updateConversationBroadcast(this.conversation.group_id).then((response: any) => {
+          const conversation = response.data.own_group_user.group_json;
+          this.members = conversation.users_json;
+        });
+      });
   }
 
-  onRemoveFromConversation(user: any) {
-    this.chatService.removeFromConversation(this.contactSelect, user.id);
+  onRemoveMember(user: any) {
+    this.chatService.removeFromConversation(this.conversation, user.id).then((response: any) => {
+      const conversation = response.data.own_group_user.group_json;
+      this.members = conversation.users_json;
+    });
   }
 
   onAddToBlackList(user: any) {
@@ -145,6 +172,16 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       header: 'Add To Black List',
       accept: () => {
         this.chatService.addGroupUserBlackList(user.id);
+      }
+    });
+  }
+
+  leaveConversation(user: any) {
+    this.wthConfirmService.confirm({
+      message: 'Are you sure you want to left this conversation?',
+      header: 'Leave Conversation',
+      accept: () => {
+        this.conversationService.leave(user.id);
       }
     });
   }
