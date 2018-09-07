@@ -26,10 +26,10 @@ const DEBOUNCE_TIME = 500;
 export class ZContactSharedHeaderComponent implements OnDestroy {
   constants: any;
   suggestions: any[] = [];
-  show: boolean = false;
+  show = false;
   search: string;
   text: string;
-  searchAdvanced: boolean = false;
+  searchAdvanced = false;
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
   private suggestSubject: Subject<any> = new Subject<any>();
   private destroySubject: Subject<any> = new Subject<any>();
@@ -40,7 +40,7 @@ export class ZContactSharedHeaderComponent implements OnDestroy {
               public contactService: ZContactService,
               public apiBaseService: ApiBaseService) {
     if (this.urlService.parse().id) {
-      this.text = this.urlService.parse().id.split("q=")[1];
+      this.text = this.urlService.parse().id.split('q=')[1];
     }
 
     this.suggestSubject.pipe(
@@ -48,7 +48,7 @@ export class ZContactSharedHeaderComponent implements OnDestroy {
       takeUntil(this.destroySubject)
     ).subscribe(key => {
       this.suggestions = this.contactService.searchContact(key);
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -85,13 +85,14 @@ export class ZContactSharedHeaderComponent implements OnDestroy {
 
   onNavigation(data: any) {
     this.show = false;
-    // if contact
-    if (data.user_id) {
-      this.router.navigate([`/contacts/${data.id}`, {mode: 'view'}]);
-    } else {
-      // else users
-      this.router.navigate([`/contacts/user_detail/${data.id}`]);
-    }
+    this.router.navigate([`/contacts/${data.id}`, { mode: 'view' }]);
+    // // if contact
+    // if (data.user_id) {
+    //   this.router.navigate([`/contacts/${data.id}`, {mode: 'view'}]);
+    // } else {
+    //   // else users
+    //   this.router.navigate([`/contacts/${data.id}`]);
+    // }
   }
 
   onSearchAdvanced(e: any) {

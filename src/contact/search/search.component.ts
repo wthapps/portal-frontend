@@ -71,26 +71,26 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
     if (this.sub) this.sub.unsubscribe();
   }
 
-  getAll(params: any) {
-    this.apiBaseService.get(`contact/search/wth_users_not_in_contact`, {q: `name:${params.q}`}).subscribe(res => {
+  async getAll(params: any) {
+    const res = await this.apiBaseService.get(`contact/search/wth_users_not_in_contact`, { q: `name:${params.q}` }).toPromise();
+    this.contacts = res.data;
+    this.nextWTH = res.meta.links.next;
+    const res2 = await this.apiBaseService.get(`contact/search/my_contacts`, { q: `name:${params.q}` }).toPromise();
+    this.contacts = [...this.contacts, ...res2.data];
+    this.nextMine = res2.meta.links.next;
+  }
+
+  getMine(params: any): void {
+    this.apiBaseService.get(`contact/search/my_contacts`, {q: `name:${params.q}`})
+    .toPromise().then(res => {
         this.contacts = res.data;
         this.nextWTH = res.meta.links.next;
-        this.apiBaseService.get(`contact/search/my_contacts`, {q: `name:${params.q}`}).subscribe(res2 => {
-          this.contacts = [...this.contacts, ...res2.data];
-          this.nextMine = res2.meta.links.next;
-        });
       });
   }
 
-  getMine(params: any) {
-    this.apiBaseService.get(`contact/search/my_contacts`, {q: `name:${params.q}`}).subscribe(res => {
-        this.contacts = res.data;
-        this.nextWTH = res.meta.links.next;
-      });
-  }
-
-  getWTH(params: any) {
-    this.apiBaseService.get(`contact/search/wth_users_not_in_contact`, {q: `name:${params.q}`}).subscribe(res => {
+  getWTH(params: any): void {
+    this.apiBaseService.get(`contact/search/wth_users_not_in_contact`, {q: `name:${params.q}`})
+    .toPromise().then(res => {
         this.contacts = res.data;
         this.nextWTH = res.meta.links.next;
       });
