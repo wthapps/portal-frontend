@@ -74,7 +74,6 @@ PlaylistAddMixin, MediaDownloadMixin {
   subMenuActions: any = {};
   modalIns: any;
   modalRef: any;
-  subShareSave: any;
   // ============
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;

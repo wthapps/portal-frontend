@@ -15,4 +15,6 @@ export class SharingModalService {
 
   update: Subject<any> = new Subject<any>();
   update$: Observable<any> = this.update.asObservable();
+
+  subShareSave: any;
 }

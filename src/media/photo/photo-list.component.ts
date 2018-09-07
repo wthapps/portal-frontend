@@ -37,7 +37,6 @@ export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModal
   tooltip: any = Constants.tooltip;
   type = 'photo';
   path = 'media/media';
-  subShareSave: any;
   objects: any;
   links: any;
   selectedObjects: any = [];

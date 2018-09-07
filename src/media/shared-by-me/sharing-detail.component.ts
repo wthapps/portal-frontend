@@ -81,7 +81,6 @@ export class ZMediaSharingDetailComponent
   modalIns: any;
   modalRef: any;
   // ============
-  subShareSave: any;
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
@@ -178,6 +177,21 @@ export class ZMediaSharingDetailComponent
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
+    }, err => {
+      if (err.status == 403) {
+        this.confirmService.confirm({
+          message:
+            'You are in deleted sharing or invalid permission',
+          header: 'Sharing not found',
+          rejectLabel: null,
+          accept: () => {
+            this.router.navigate(['/']);
+          },
+          reject: () => {
+            this.router.navigate(['/']);
+          }
+        });
+      }
     });
   }
 

@@ -58,7 +58,6 @@ export class ZMediaFavoriteListComponent implements OnInit,
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
-  subShareSave: any;
   // ============
   titleNoData: any = 'There is no favorites';
   subTitleNoData: any = 'Add star to items to find easier';

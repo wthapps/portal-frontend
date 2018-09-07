@@ -6,14 +6,13 @@ import { ToastsService } from "@shared/shared/components/toast/toast-message.ser
 /* This is methods to sharing, to
 custom method to overwirte any method in child class */
 export class SharingModalMixin {
-  subShareSave: any;
   selectedObjects: any;
 
   constructor(public sharingModalService: SharingModalService, public apiBaseService: ApiBaseService, public toastsService: ToastsService) {}
 
   // openModalShare:(input: any) => void;
   openModalShare(array?: any) {
-    if (this.subShareSave) this.subShareSave.unsubscribe();
+    if (this.sharingModalService.subShareSave) this.sharingModalService.subShareSave.unsubscribe();
     this.sharingModalService.open.next();
     let data: any = this.selectedObjects;
     if (array) {
@@ -29,11 +28,11 @@ export class SharingModalMixin {
       this.apiBaseService.get(`media/sharings/${id}/recipients`).subscribe(res => {
         this.sharingModalService.open.next({ sharingRecipients: res.data });
       });
-      this.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
+      this.sharingModalService.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
         this.onEditShare(e, id);
       });
     } else {
-      this.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
+      this.sharingModalService.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
         this.onSaveShare(e);
       });
     }

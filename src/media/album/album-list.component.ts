@@ -45,7 +45,6 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
   selectedObjects: any = [];
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
-  subShareSave: any;
   modalIns: any;
   modalRef: any;
   subCreateAlbum: any;

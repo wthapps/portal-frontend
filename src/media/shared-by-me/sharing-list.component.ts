@@ -39,7 +39,6 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
-  subShareSave: any;
   modalIns: any;
   modalRef: any;
   iconNoData: any = 'fa fa-share-alt';

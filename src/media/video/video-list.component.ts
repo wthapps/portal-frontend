@@ -49,7 +49,6 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   favoriteAll: boolean = false;
   links: any = {};
   subAddPlaylist: any;
-  subShareSave: any;
   // MediaViewMixin
   viewModes: any = {
     grid: 'grid',

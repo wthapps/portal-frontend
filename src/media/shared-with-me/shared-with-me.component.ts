@@ -45,7 +45,6 @@ MediaAdditionalListMixin {
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
-  subShareSave: any;
   modalIns: any;
   iconNoData: any = 'fa fa-share-alt';
   titleNoData: any = 'There no media shared with you!';

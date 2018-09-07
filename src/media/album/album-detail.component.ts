@@ -96,7 +96,6 @@ export class ZMediaAlbumDetailComponent
   subMenuActions: any = {};
   modalIns: any;
   modalRef: any;
-  subShareSave: any;
   // ============
   subSelect: any;
   subAddAlbum: any;

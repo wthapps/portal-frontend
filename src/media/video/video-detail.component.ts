@@ -37,7 +37,6 @@ export class ZVideoDetailComponent implements OnInit,
   object: any;
   tooltip: any = Constants.tooltip;
   menuActions: any = {};
-  subShareSave: any;
   selectedObjects: any;
   showDetailsInfo: any = false;
   modalIns: any;
