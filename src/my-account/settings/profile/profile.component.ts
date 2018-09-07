@@ -1,9 +1,4 @@
-<<<<<<< ffc72068dbe449e44721aef8b3e2222b8f0a95fd
-import { Component, OnInit, OnDestroy }    from '@angular/core';
-=======
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
->>>>>>> update - contact - allow crop avatar #ref WTHZONE876
-import 'rxjs/add/observable/fromPromise';
 import { Subject } from 'rxjs/Subject';
 
 import {
