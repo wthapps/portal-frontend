@@ -56,7 +56,7 @@ export class TextBoxSearchComponent implements OnInit {
       return;
     }
     // Escape key
-    if (e.code === 27) {
+    if (e.keyCode === 27) {
       this.onEscape();
       return;
     }

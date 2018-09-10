@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
+  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async" [hasSearch]="false">
     <chat-shared-header class="header-nav-left"></chat-shared-header>
   </w-header>
   <main class="main">

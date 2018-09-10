@@ -14,16 +14,22 @@
     </a>
   </div>
   <div class="menu-left-form">
-    <div class="input-group-wrap input-group-wrap-search">
-      <form class="input-group" novalidate="">
-        <span class="input-group-btn input-group-left">
-          <button class="btn btn-default" tooltipposition="bottom" type="button">
-            <i class="fa fa-search"></i>
-          </button>
-        </span>
-        <input autocomplete="off" class="form-control" name="search" type="text" placeholder="Search Conversations">
-      </form>
-    </div>
+    <!--<div class="input-group-wrap input-group-wrap-search">-->
+      <!--<form class="input-group" novalidate="">-->
+        <!--<span class="input-group-btn input-group-left">-->
+          <!--<button class="btn btn-default" tooltipposition="bottom" type="button">-->
+            <!--<i class="fa fa-search"></i>-->
+          <!--</button>-->
+        <!--</span>-->
+        <!--<input autocomplete="off" class="form-control" name="search" type="text" placeholder="Search Conversations">-->
+      <!--</form>-->
+    <!--</div>-->
+
+    <textbox-search #textbox (onEnterEvent)="search(textbox.search)"
+                    (onEscapeEvent)="clearSearch($event)"
+                    (onKeyUpEvent)="search(textbox.search)"
+                    [placeholder]="'Search conversation'">
+    </textbox-search>
   </div>
   <div class="menu-left-in">
     <div class="dropdown">
@@ -58,16 +64,27 @@
   </div>
 </div>
 <div class="menu-left-content">
-  <ng-container *ngIf="favouriteContacts$ | async as favouriteContacts">
-    <div *ngFor="let contact of favouriteContacts" class="menu-left-item">
-      <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
-    </div>
+
+  <ng-container *ngIf="!searching">
+    <ng-container *ngIf="favouriteContacts$ | async as favouriteContacts">
+      <div *ngFor="let contact of favouriteContacts" class="menu-left-item">
+        <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="recentContacts$ | async as recentContacts">
+      <div *ngFor="let contact of recentContacts" class="menu-left-item">
+        <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
+      </div>
+    </ng-container>
   </ng-container>
 
-  <ng-container *ngIf="recentContacts$ | async as recentContacts">
-    <div *ngFor="let contact of recentContacts" class="menu-left-item">
-      <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
-    </div>
+  <ng-container *ngIf="searching && searched">
+    <ng-container *ngIf="searchConversations.length > 0; else templateNodata">
+      <div *ngFor="let conversation of searchConversations" class="menu-left-item">
+        <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
+      </div>
+    </ng-container>
   </ng-container>
 </div>
 
@@ -91,5 +108,13 @@
         </div>
       </div>
     </z-chat-share-user-avatar>
+  </div>
+</ng-template>
+
+
+<ng-template #templateNodata>
+  <div class="conversation-no-data">
+    <box-no-data [icon]="'fa fa-comments-o'" [subTitle]="'There is no matching conversation'">
+    </box-no-data>
   </div>
 </ng-template>

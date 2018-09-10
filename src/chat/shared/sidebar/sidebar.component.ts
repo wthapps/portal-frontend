@@ -1,17 +1,18 @@
-import { Component, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { StorageService, UrlService, WMessageService } from '@shared/services';
+import { ApiBaseService, StorageService, UrlService, WMessageService } from '@shared/services';
 import { CONVERSATION_SELECT } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { Conversation } from '@chat/shared/models/conversation.model';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { ModalService } from '@shared/components/modal/modal-service';
+import { TextBoxSearchComponent } from '@shared/partials/search-box';
 
 declare var $: any;
 
@@ -22,6 +23,8 @@ declare var $: any;
   encapsulation: ViewEncapsulation.None
 })
 export class ZChatSidebarComponent implements OnInit {
+  @ViewChild('textbox') textbox: TextBoxSearchComponent;
+
   readonly chatMenu = Constants.chatMenuItems;
 
   usersOnlineItem$: Observable<any>;
@@ -33,6 +36,10 @@ export class ZChatSidebarComponent implements OnInit {
   filter: string = 'All';
   emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
 
+  searching = false;
+  searchConversations: Array<any> = [];
+  searched = false;
+
   constructor(
     public chatService: ChatService,
     private router: Router,
@@ -42,7 +49,8 @@ export class ZChatSidebarComponent implements OnInit {
     private addContactService: ZChatShareAddContactService,
     private wthEmojiService: WTHEmojiService,
     private messageService: WMessageService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private apiBaseService: ApiBaseService
   ) {
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
@@ -129,6 +137,10 @@ export class ZChatSidebarComponent implements OnInit {
   onSelect(contact: any) {
     $('#chat-message-text').focus();
     this.chatService.selectContact(contact);
+    if (this.searching) {
+      this.searching = false;
+      this.textbox.search = '';
+    }
   }
 
   onAddContact() {
@@ -150,4 +162,30 @@ export class ZChatSidebarComponent implements OnInit {
   onCloseMenu() {
     this.renderer.removeClass(document.body, 'left-sidebar-open');
   }
+
+
+  /*
+  * Handle searching here
+   */
+
+  search(keyword: string) {
+    this.searching = true;
+    this.searched = false;
+    this.apiBaseService.get('zone/chat/search', {q: keyword}).subscribe((res: any) => {
+      this.searchConversations = res.data;
+      this.searched = true;
+    });
+  }
+
+  clearSearch(event: any) {
+    this.searching = false;
+    this.searched = false;
+    this.searchConversations = [];
+    this.textbox.search = '';
+  }
+  /*
+  * End of searching here
+   */
+
+
 }
