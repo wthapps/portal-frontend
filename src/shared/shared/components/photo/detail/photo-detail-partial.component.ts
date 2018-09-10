@@ -147,7 +147,7 @@ export class PhotoDetailPartialComponent
 
   loadMenu() {
     this.menus = new Array<any>();
-    let canDelete = this.module !== 'social';
+    const canDelete = this.module !== 'social';
 
     this.menus = [
       {
@@ -363,7 +363,7 @@ export class PhotoDetailPartialComponent
   loadMoreAlbums(index: number) {
     for (let i = index; (i < index + viewSize) && i < this.albums.length; i++) {
       this.showMore = i < this.albums.length - 1 ? true : false;
-      if (i >= index+viewSize) {
+      if (i >= index + viewSize) {
         break;
       }
       this.objects.push(this.albums[i]);
@@ -396,7 +396,7 @@ export class PhotoDetailPartialComponent
 
   private showInfo() {
     this.showDetail = !this.showDetail;
-    if (this.recipients.length == 0 && this.showDetail == true) {
+    if (this.recipients.length === 0 && this.showDetail) {
       this.event.emit({ action: 'media:photo:load_sharing_info' });
     }
   }

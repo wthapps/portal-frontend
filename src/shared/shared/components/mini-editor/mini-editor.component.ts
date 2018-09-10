@@ -1,6 +1,6 @@
 import {
   NgModule, Component, ElementRef, AfterViewInit, Input, Output, EventEmitter, ContentChild, OnChanges,
-  forwardRef, ViewEncapsulation
+  forwardRef, ViewEncapsulation, SimpleChange, SimpleChanges
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -32,7 +32,7 @@ export const EDITOR_VALUE_ACCESSOR: any = {
   encapsulation: ViewEncapsulation.None,
   providers: [DomHandler, EDITOR_VALUE_ACCESSOR]
 })
-export class MiniEditorComponent implements AfterViewInit, ControlValueAccessor {
+export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlValueAccessor {
 
   @Output() onTextChange: EventEmitter<any> = new EventEmitter();
 
@@ -45,6 +45,8 @@ export class MiniEditorComponent implements AfterViewInit, ControlValueAccessor 
   @Input() placeholder: string;
 
   @Input() formats: string[];
+
+  @Input() isDisabled = false;
 
   @Output() onInit: EventEmitter<any> = new EventEmitter();
 
@@ -76,7 +78,8 @@ export class MiniEditorComponent implements AfterViewInit, ControlValueAccessor 
 
     const keyboard = this.quill.getModule('keyboard');
     delete keyboard.bindings['13'];
-    this.quill.keyboard.addBinding({ key: 'enter'}, function(range, context) {
+    this.quill.keyboard.addBinding({ key: 'enter' }, function (range, context) {
+      this.updateHtml2Model();
       this.onKeyUp.emit({keyCode: KEYCODE.enter});
       return false;
     }.bind(this));
@@ -109,6 +112,18 @@ export class MiniEditorComponent implements AfterViewInit, ControlValueAccessor 
     this.onInit.emit({
       editor: this.quill
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+
+    if (!this.quill)
+    return;
+    if (changes['isDisabled']) {
+        this.quill.disable();
+    } else {
+      this.quill.enable();
+    }
   }
 
   focus() {

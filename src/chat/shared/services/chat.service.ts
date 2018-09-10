@@ -258,9 +258,9 @@ export class ChatService {
     );
   }
 
-  uploadPhotoOnWeb(photo: any) {
+  uploadMediaOnWeb(media: any) {
     const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json.id;
-    this.sendMessage(groupId, { type: 'file', id: photo.id, object: 'Photo' });
+    this.sendMessage(groupId, { type: 'file', id: media.id, object: media.object_type || 'Photo' });
   }
 
   createUploadingFile(files?: any) {

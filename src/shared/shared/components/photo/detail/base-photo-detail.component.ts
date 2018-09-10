@@ -25,7 +25,7 @@ declare let saveAs: any;
 
 export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  module: string = 'media';
+  module = 'media';
   photo: Photo;
   id: number;
   ids: Array<number> = [];
@@ -43,7 +43,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
 
   // private routeSub: any;
   returnUrl: string;
-  private destroySubject: Subject<any> = new Subject<any>();
+  protected destroySubject: Subject<any> = new Subject<any>();
 
 
   @HostListener('document:keydown', ['$event'])
@@ -154,7 +154,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
       case 'download':
         this.photoService.download({id: this.photo.id}).subscribe(
           (response: any) => {
-            var blob = new Blob([response], {type: this.photo.content_type});
+            const blob = new Blob([response], {type: this.photo.content_type});
             saveAs(blob, `${this.photo.name}.${this.photo.extension}`);
           },
           (error: any) => {
@@ -203,8 +203,8 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
         message: `Are you sure to delete photo ${this.photo.name} ?`,
         accept: () => {
           this.loadingService.start();
-          let body = JSON.stringify({ids: [this.photo.id]});
-          this.photoService.deletePhoto(body).toPromise().then((res: any)=> {
+          const body = JSON.stringify({ids: [this.photo.id]});
+          this.photoService.deletePhoto(body).toPromise().then((res: any) => {
 
             // considering remove item in ids array and back to preUrl
             // this.router.navigateByUrl(this.prevUrl);
@@ -239,7 +239,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private favourite() {
-    this.photoService.actionOneFavourite(this.photo).subscribe((res: any)=> {
+    this.photoService.actionOneFavourite(this.photo).subscribe((res: any) => {
       this.photo.favorite = res.data.favorite;
     });
   }

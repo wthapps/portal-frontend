@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/observable/merge';
@@ -34,6 +34,7 @@ declare var $: any;
 export class MessageEditorComponent implements OnInit, OnDestroy {
   @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
   @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
+  @Input() isDisabled = false;
 
   readonly tooltip: any = Constants.tooltip;
   emojiData: any = [];
@@ -216,8 +217,8 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   chooseDone(e: any) {
     // this.photoModal.close();
-    for (const photo of e) {
-      this.chatService.uploadPhotoOnWeb(photo);
+    for (const media of e) {
+      this.chatService.uploadMediaOnWeb(media);
     }
   }
 

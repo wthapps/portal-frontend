@@ -7,7 +7,7 @@
     <i (click)="doAction({action:'favorite', payload: [object]})" class="fa" [ngClass]="object.favorite? 'fa-star': 'fa-star-o'"></i>
   </div>
 
-  <!--type == 'photo'-->
+  <!--type == 'photo', 'video' -->
   <div *ngIf="object.model == 'Media::Photo' || object.model == 'Media::Video'" class="photo-box-figure" (click)="select(object)">
     <div class="photo-box-input" (click)="toggleSelection(object, $event)">
       <i class="fa fa-check"></i>

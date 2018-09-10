@@ -1,15 +1,14 @@
 <div class="chat-message-container">
   <form [formGroup]="messageEditorForm" novalidate>
     <mini-editor [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" placeholder="Type message here"
-                 [style]="{'height':'auto', 'min-height': '27px'}"
-                 (onKeyUp)="handleKeyUp($event)">
+      [style]="{'height':'auto', 'min-height': '27px'}" (onKeyUp)="handleKeyUp($event)">
       <p-header>
       </p-header>
     </mini-editor>
     <div class="chat-message-action">
       <div class="btn-group dropup">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-default dropdown-toggle" [attr.disabled]="isDisabled ? 'disabled' : null"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-plus-circle"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
@@ -27,8 +26,10 @@
           </li>
         </ul>
       </div>
-      <button class="btn btn-default" (click)="showEmojiBtn($event)"><i class="fa fa-smile-o"></i></button>
-      <button class="btn chat-message-action-send btn-default" (click)="send()"><i class="fa fa-send"></i></button>
+      <button class="btn btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="showEmojiBtn($event)"><i
+          class="fa fa-smile-o"></i></button>
+      <button class="btn chat-message-action-send btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="send()"><i
+          class="fa fa-send"></i></button>
     </div>
   </form>
   <chat-note-list-modal #noteList (insertNoteEvent)="noteSelectOnInsert()">

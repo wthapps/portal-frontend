@@ -5,7 +5,7 @@
   <div class="message-item-content">
     <div class="message-item-owner" *ngIf="hasShowOwner() && message.display && !(['request', 'request_accepted'].includes(message.message_type))">
       <h4 class="message-item-owner-name">
-        <a class="mr5" [routerLink]="[profileUrl, message.display.uuid]"> {{ message.display.name }} </a>
+        <a class="mr5" [routerLink]="[profileUrl, message?.display?.uuid]"> {{ message.display.name }} </a>
         <small class="text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
       </h4>
       <figure class="message-item-owner-avatar">
@@ -16,7 +16,7 @@
     </div>
     <div class="message-item-content-card" *ngIf="!(['notification', 'request_accepted'].includes(message.message_type))">
       <!--mesasge menu-->
-<div class="message-item-menu dropdown" *ngIf="!(NO_ACTION_MESSAGES?.includes(message?.message_type)) && byMe">
+      <div class="message-item-menu dropdown" *ngIf="!(NO_ACTION_MESSAGES?.includes(message?.message_type)) && byMe">
         <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
         <!--text message menu actions-->
         <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
@@ -117,6 +117,17 @@
             </figure>
           </div>
 
+
+          <!--video type-->
+          <div class="message-item-content-photo can-click" *ngIf="message.file_type == 'Media::Video'">
+            <figure>
+              <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
+                <img [src]="message.file?.thumbnail_url" alt="">
+                <i class="fa fa-play-circle-o"></i>
+              </div>
+            </figure>
+          </div>
+
           <!-- file type-->
           <div class="message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
             <a class="media-div link-text" [href]="message.file?.url" target="_blank" download>
@@ -153,7 +164,8 @@
           <blockquote>
             <strong>David Nguyen</strong>
             <span>4:37 PM</span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque aut cupiditate doloremque, ea esse eveniet illum
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque aut cupiditate doloremque, ea esse
+              eveniet illum
               incidunt itaque molestias nisi non quae recusandae, sequi sint sunt suscipit tenetur ullam voluptatibus?
             </p>
           </blockquote>
@@ -162,13 +174,13 @@
         <!--share contact type-->
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'share_contact_message'">
           <!-- Sender -->
-          <message-actions-item *ngIf="byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message.display.share_contact.uuid"
-            [name]=message.display.share_contact.name [status]="'Share contact'" [actions]="[{text: 'Resend', id: 'resend'}, {text: '', class:'fa fa-times', id: 'cancel', btnClass:'btn-default'}]"
+          <message-actions-item *ngIf="byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message?.display?.share_contact?.uuid"
+            [name]=message?.display?.share_contact?.name [status]="'Share contact'" [actions]="[{text: 'Resend', id: 'resend'}, {text: '', class:'fa fa-times', id: 'cancel', btnClass:'btn-default'}]"
             (eventOut)=onShareContact($event)>
           </message-actions-item>
           <!-- Receiver -->
-          <message-actions-item *ngIf="!byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message.display.share_contact.uuid"
-            [name]=message.display.share_contact.name [status]="'Share contact'" [actions]="[{text: 'Add Contact', id: 'add_contact', class:'fa fa-plus'}]"
+          <message-actions-item *ngIf="!byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message?.display?.share_contact?.uuid"
+            [name]=message?.display?.share_contact?.name [status]="'Share contact'" [actions]="[{text: 'Add Contact', id: 'add_contact', class:'fa fa-plus'}]"
             (eventOut)=onAdd($event)>
           </message-actions-item>
         </div>
@@ -177,12 +189,13 @@
         <!--requested contact type-->
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'request'">
           <!-- sent_request -->
-          <message-actions-item *ngIf="byMe" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid" [name]=message.receiver.name
-            [status]="'Requested'" [actions]="[]" (eventOut)=doEvent($event)>
+          <message-actions-item *ngIf="byMe" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid"
+            [name]=message.receiver.name [status]="'Requested'" [actions]="[]" (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- contact already accepted -->
-          <message-actions-item *ngIf="byMe && message.status == 'accepted'" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid"
-            [name]=message.receiver.name [status]="'accepted your request'" (eventOut)=doEvent($event)>
+          <message-actions-item *ngIf="byMe && message.status == 'accepted'" [avatar]=message.receiver?.profile_image
+            [url]="'profile/' + message?.receiver?.uuid" [name]=message.receiver.name [status]="'accepted your request'"
+            (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- Receiver -->
           <!--<message-simple-item *ngIf="!byMe" [data]="'Hello! You are now connected on Chat.'"></message-simple-item>-->
@@ -215,7 +228,7 @@
       </div>
 
       <!--mesasge menu-->
-<div class="message-item-menu dropdown" *ngIf="!(NO_ACTION_MESSAGES?.includes(message?.message_type)) && byMe">
+      <div class="message-item-menu dropdown" *ngIf="!(NO_ACTION_MESSAGES?.includes(message?.message_type)) && byMe">
         <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
 
         <!--text message menu actions-->
@@ -233,7 +246,7 @@
         </ul>
 
         <!--photos menu actions-->
-        <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Media::Photo'">
+        <ul class="dropdown-menu dropdown-menu-right" *ngIf="['Media::Photo', 'Media::Video'].includes(message.file_type) ">
           <li *ngIf="message.file && message.message_type !== 'message_deleted'">
             <a [href]="message.file.url" target="_blank" download>
               Download
@@ -297,7 +310,7 @@
 
 <div *ngIf="message?.links?.length > 0" class="message-item" [ngClass]="{'message-item-left': !byMe, 'message-item-right': byMe}">
   <div class="message-item-content">
-    <div class="message-item-content-card"  *ngIf="!(['notification', 'request_accepted'].includes(message.message_type))">
+    <div class="message-item-content-card" *ngIf="!(['notification', 'request_accepted'].includes(message.message_type))">
       <ng-container *ngFor="let link of message.links">
         <div *ngIf="link.image && link.title" class="message-item-content-main">
           <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
@@ -312,7 +325,8 @@
   <div *ngIf="message.message_type === 'notification'">
     <span class="text-bold">{{ message.display.name }}</span> {{ message.message }}</div>
   <div *ngIf="message.message_type === 'request_accepted'">
-    You connected with <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.display.name }}</span> on WTH!Chat</div>
+    You connected with <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.display.name }}</span> on
+    WTH!Chat</div>
   <div class="text-fade">
     <small>{{ message.created_at | timeFormat: "time_only" }}</small>
   </div>
