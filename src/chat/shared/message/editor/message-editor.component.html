@@ -1,7 +1,7 @@
 <div class="chat-message-container">
   <form [formGroup]="messageEditorForm" novalidate>
     <mini-editor [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" placeholder="Type message here"
-      [style]="{'height':'auto', 'min-height': '27px'}" (onKeyUp)="handleKeyUp($event)">
+      [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px'}" (onKeyUp)="handleKeyUp($event)">
       <p-header>
       </p-header>
     </mini-editor>

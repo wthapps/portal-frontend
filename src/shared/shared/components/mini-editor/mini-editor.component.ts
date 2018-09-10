@@ -1,6 +1,6 @@
 import {
   NgModule, Component, ElementRef, AfterViewInit, Input, Output, EventEmitter, ContentChild, OnChanges,
-  forwardRef, ViewEncapsulation, SimpleChange, SimpleChanges
+  forwardRef, ViewEncapsulation, SimpleChanges
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
@@ -75,6 +75,7 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
       theme: 'snow',
       formats: this.formats
     });
+    this.enableOrDisableQuill(!this.isDisabled);
 
     const keyboard = this.quill.getModule('keyboard');
     delete keyboard.bindings['13'];
@@ -119,8 +120,12 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
 
     if (!this.quill)
     return;
-    if (changes['isDisabled']) {
-        this.quill.disable();
+    this.enableOrDisableQuill(changes['isDisabled']);
+  }
+
+  enableOrDisableQuill(enable) {
+    if (!enable) {
+      this.quill.disable();
     } else {
       this.quill.enable();
     }
