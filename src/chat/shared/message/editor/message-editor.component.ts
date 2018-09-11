@@ -268,7 +268,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   private buildQuoteMessage(message: any): string {
     return `<blockquote contenteditable="false">
-    <strong *ngIf="message.is_quote">${message.display.name}</strong>
+    <strong *ngIf="message.is_quote">${message.user.name}</strong>
     <span *ngIf="message.is_quote">${message.created_at}</span>
     <p [innerHtml]="#{message.message}"></p>
       </blockquote>

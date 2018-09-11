@@ -155,9 +155,9 @@ export class MessageItemComponent implements OnInit {
       return true;
     }
     if (
-      this.message.display &&
-      this.prevMessage.display &&
-      this.message.display.id === this.prevMessage.display.id
+      this.message.user &&
+      this.prevMessage.user &&
+      this.message.user.id === this.prevMessage.user.id
     ) {
       return false;
     }

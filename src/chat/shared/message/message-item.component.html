@@ -3,14 +3,14 @@
     <span>{{ message.created_at | timeFormat:'day' }}</span>
   </div>
   <div class="message-item-content">
-    <div class="message-item-owner" *ngIf="hasShowOwner() && message.display && !(['request', 'request_accepted'].includes(message.message_type))">
+    <div class="message-item-owner" *ngIf="hasShowOwner() && message.user && !(['request', 'request_accepted'].includes(message.message_type))">
       <h4 class="message-item-owner-name">
-        <a class="mr5" [routerLink]="[profileUrl, message?.display?.uuid]"> {{ message.display.name }} </a>
+        <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message.user.name }} </a>
         <small class="text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
       </h4>
       <figure class="message-item-owner-avatar">
         <span class="avatar-xs">
-          <img [src]="message.display?.image" alt="">
+          <img [src]="message.user?.profile_image" alt="">
         </span>
       </figure>
     </div>
@@ -323,9 +323,9 @@
 
 <div *ngIf="['notification', 'request_accepted'].includes(message.message_type)" class="p20 text-center">
   <div *ngIf="message.message_type === 'notification'">
-    <span class="text-bold">{{ message.display.name }}</span> {{ message.message }}</div>
+    <span class="text-bold">{{ message.user.name }}</span> {{ message.message }}</div>
   <div *ngIf="message.message_type === 'request_accepted'">
-    You connected with <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.display.name }}</span> on
+    You connected with <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.user.name }}</span> on
     WTH!Chat</div>
   <div class="text-fade">
     <small>{{ message.created_at | timeFormat: "time_only" }}</small>

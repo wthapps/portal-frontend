@@ -30,7 +30,8 @@
           <li><a href="javascript:;" (click)="sendContact()">Send Contact</a></li>
           <li role="separator" class="divider"></li>
           <!--show if current isn't one user-->
-          <li><a href="javascript:;" (click)="onEditConversation()">Edit Conversation</a></li>
+          <li *ngIf="contactSelect.group_json.group_type === 'multiple'">
+            <a href="javascript:void(0);" (click)="onEditConversation()">Edit Conversation</a></li>
           <li *ngIf="contactSelect.group_json.group_type == 'multiple'">
             <a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a>
           </li>
