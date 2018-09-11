@@ -4,6 +4,11 @@ import { AuthService } from '@shared/services/auth.service';
 import { Constants } from '@shared/constant';
 import { Subject } from 'rxjs/Subject';
 import { ApiBaseService } from '@shared/services/apibase.service';
+import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
+import { FileInputCustom } from '@core/third-parties/uppy/file-input';
+import { CommonEventService } from '@shared/services/common-event/common-event.service';
+import { BlackListPolicy } from '@shared/policies/black-list-policy';
+import { SizePolicy } from '@shared/policies/size-policy';
 
 @Injectable()
 export class WUploader {
@@ -24,7 +29,7 @@ export class WUploader {
   uppy: any;
 
 
-  constructor(private authService: AuthService, private api: ApiBaseService) {}
+  constructor(private authService: AuthService, private api: ApiBaseService, private commonEventService: CommonEventService) {}
 
   /**
    *
@@ -36,6 +41,7 @@ export class WUploader {
     willCreateMessage: false,
     willCreatePost: false,
     willCreateNote: false,
+    video: false,
     module: 'chat' || 'social' || 'notes' || 'contacts' || 'media'
   }) {
 
@@ -46,34 +52,26 @@ export class WUploader {
       }
     };
 
-
     this.uppy = Core(opts);
 
     if (mode === 'FileInput') {
-      this.uppy.use(FileInput, {
+      let policies: any = [new BlackListPolicy(), new SizePolicy(10000000, {only: /video\//g})];
+      this.uppy.use(FileInputCustom, {
         target: selector,
         replaceTargetContent: true,
         inputName: 'file',
         pretty: true,
+        commonEventService: this.commonEventService,
         locale: {
           strings: {
             chooseFiles: 'upload'
           },
-        }
+        },
+        policies: policies
       });
     } else if (mode === 'DragDrop') {
       this.uppy.use(DragDrop, {target: selector});
     }
-
-    // enable status bar
-    // this.uppy.use(StatusBar, {
-    //   target: '#w-uploader-statusbar',
-    //   hideUploadButton: false,
-    //   showProgressDetails: true,
-    //   hideAfterFinish: false,
-    //   locale: {}
-    // });
-
 
     this.uppy.use(XHRUpload, {
       endpoint: `${this.apiUrl}${this.uploadPath}`,
@@ -83,7 +81,6 @@ export class WUploader {
       formData: true,
       fieldName: 'file'
     });
-
 
     this.uppy.on('file-added', (file) => {
       // add more files that you need to pass to server here
@@ -98,18 +95,9 @@ export class WUploader {
 
     this.uppy.on('upload', (data) => {
      this.event$.next({action: 'start', payload: data});
-
-     // data object consists of `id` with upload ID and `fileIDs` array
-     // with file IDs in current upload
-     // data: { id, fileIDs }
     });
 
     this.uppy.on('upload-progress', (file, progress) => {
-    // file: { id, name, type, ... }
-    // progress: { uploader, bytesUploaded, bytesTotal }
-    // just read
-
-
       let url = '';
       const reader = new FileReader();
       reader.addEventListener('load', () => {
@@ -147,20 +135,8 @@ export class WUploader {
 
     this.uppy.on('info-visible', () => {
       const info = this.uppy.getState().info;
-      // info: {
-      //  isHidden: false,
-      //  type: 'error',
-      //  message: 'Failed to upload',
-      //  details: 'Error description'
-      // }
       this.event$.next({action: 'info-visible', payload: {info: info}});
     });
-    // this.uppy.use(ProgressBar, {
-    //   target: 'body',
-    //   fixed: true,
-    //   hideAfterFinish: false
-    // });
-    // this.upload();
   }
 
   /**
@@ -209,6 +185,7 @@ export class WUploader {
   }
 
   fileUpload(fileInput: any) {
+
     // const imagePreview = document.querySelector('.upload-preview')
 
     fileInput.style.display = 'none'; // uppy will add its own file input

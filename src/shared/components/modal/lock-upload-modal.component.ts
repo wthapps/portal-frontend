@@ -15,6 +15,7 @@ export class LockUploadModalComponent implements OnInit, OnDestroy {
   files: any;
   event: any;
   fileUtil: any;
+  title: any = "This file type is not permitted for sercurity reasons.";
 
   constructor(private commonEventService: CommonEventService) {}
 
@@ -23,8 +24,9 @@ export class LockUploadModalComponent implements OnInit, OnDestroy {
     this.fileUtil = FileUtil;
     this.event = this.commonEventService.filter(
       (event: CommonEvent) => event.channel == 'LockMessage').subscribe((event: CommonEvent) => {
-      this.files = event.payload;
-      this.modal.open();
+        this.files = event.payload.filter(f => f.allowErrors[0] == event.payload[0].allowErrors[0]);
+        this.title = this.files[0].allowTitle || this.title;
+        this.modal.open();
     });
   }
 

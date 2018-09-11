@@ -32,6 +32,8 @@ import IconBlot from '@wth/core/quill/blots/icon';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit.component';
+import { BlackListPolicy } from '@shared/policies/black-list-policy';
+import { SizePolicy } from '@shared/policies/size-policy';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -690,7 +692,7 @@ export class ZNoteDetailEditComponent
     if (files.length === 0) {
       return;
     }
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files);
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(10000000, {only: /video\//g})]);
     this.note.attachments = [
       ...this.note.attachments,
       ...filesAddedPolicy.filter(file => file.allow === true)

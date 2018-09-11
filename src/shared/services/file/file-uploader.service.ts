@@ -9,6 +9,7 @@ import { map, concatAll, catchError, mergeAll, mergeMap } from "rxjs/operators";
 import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
 import { _throw } from 'rxjs/observable/throw';
 import { from } from 'rxjs/observable/from';
+import { BlackListPolicy } from "@shared/policies/black-list-policy";
 
 @Injectable()
 export class FileUploaderService {
@@ -43,7 +44,7 @@ export class FileUploaderService {
   }
 
 
-  uploadGenericFilePolicy(file: any, policies: any = FileUploadPolicy.blackList) {
+  uploadGenericFilePolicy(file: any, policies: any) {
     if (FileUploadPolicy.isAllow(file, policies)) {
       return this.uploadGenericFile(file);
     } else {
@@ -51,11 +52,11 @@ export class FileUploaderService {
     }
   }
 
-  uploadMultipleGenericFilesPolicy(files: any, policies: any = FileUploadPolicy.blackList) {
+  uploadMultipleGenericFilesPolicy(files: any, policies: any = [new BlackListPolicy()]) {
     if (!files || files.length < 1) throw Boom.badData('files are empty');
     const source = from(Object.keys(files).map((key: any) => files[key]));
     const uploadFilesPolicy = source.pipe(
-      map((file: any) => this.uploadGenericFilePolicy(file).pipe(catchError(error => of(error.output.payload)))),
+      map((file: any) => this.uploadGenericFilePolicy(file, policies).pipe(catchError(error => of(error.output.payload)))),
       mergeAll()
     );
     return uploadFilesPolicy;

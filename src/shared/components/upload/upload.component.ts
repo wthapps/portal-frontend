@@ -10,6 +10,7 @@ import { Constants } from '@wth/shared/constant';
 import { FileReaderUtil } from '@shared/shared/utils/file/file-reader.util';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import * as Boom from 'boom';
+import { BlackListPolicy } from '@shared/policies/black-list-policy';
 
 @Component({
   selector: 'w-upload',
@@ -41,7 +42,7 @@ export class WUploadComponent {
     // validate acceptable
     const errorFiles: any = []
     Object.keys(e.target.files).forEach(k => {
-      if (!FileUploadPolicy.isAllow(e.target.files[k])) {
+      if (!FileUploadPolicy.isAllow(e.target.files[k], [new BlackListPolicy])) {
         errorFiles.push(e.target.files[k]);
         this.existErrors = true;
       }

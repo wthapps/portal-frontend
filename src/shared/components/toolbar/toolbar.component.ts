@@ -99,19 +99,16 @@ AlbumCreateMixin {
   }
 
   upload(content_types: any = []) {
-
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-      allowedFileTypes: content_types
+      allowedFileTypes: content_types,
+      video: false
     });
-    // document.getElementsByClassName('uppy-FileInput-btn')[0].click();
-    // const fileInput = document.getElementById('w-uploader-select-files-input').click();
-
-    // fileInput.handleChange(change => {
-    //   console.log('handle change:::');
-    // });
-    // document.querySelectorAll('.w-uploader-select-files-input').forEach(fileInput => {
-    //   this.wUploader.fileUpload(fileInput);
-    // });
+  }
+  uploadVideo(content_types: any = []) {
+    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      allowedFileTypes: content_types,
+      video: true
+    });
   }
 
   ngOnDestroy() {
@@ -149,16 +146,16 @@ AlbumCreateMixin {
     this.hasNoObject = this.selectedObjects.length === 0 ? true : false;
   }
 
-  uploaVideodHandler(files: any) {
-    const data = files.map(file => {
-      return { file: file.result, name: file.name, type: file.type };
-    });
-    data.forEach(f => {
-      this.apiBaseService.post(`media/videos`, f).subscribe(res => {
-        this.event.emit({ action: 'uploaded', payload: [...files] });
-      });
-    });
-  }
+  // uploaVideodHandler(files: any) {
+  //   const data = files.map(file => {
+  //     return { file: file.result, name: file.name, type: file.type };
+  //   });
+  //   data.forEach(f => {
+  //     this.apiBaseService.post(`media/videos`, f).subscribe(res => {
+  //       this.event.emit({ action: 'uploaded', payload: [...files] });
+  //     });
+  //   });
+  // }
 
   errorHandler(error: any) {
     if (error.statusCode == 406 && error.error == 'Not Acceptable') {

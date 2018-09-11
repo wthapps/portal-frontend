@@ -27,6 +27,8 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators/map';
 import { ConversationService } from '@chat/shared/services';
 import { Conversation } from '@chat/shared/models/conversation.model';
+import { BlackListPolicy } from '@shared/policies/black-list-policy';
+import { SizePolicy } from '@shared/policies/size-policy';
 
 
 declare var _: any;
@@ -264,7 +266,7 @@ export class ChatService {
   }
 
   createUploadingFile(files?: any) {
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files);
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(10000000, { only: /video\//g })]);
     filesAddedPolicy.forEach((file: any) => {
       const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json
         .id;
