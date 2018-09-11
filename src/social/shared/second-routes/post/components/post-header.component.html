@@ -2,8 +2,8 @@
   <a href="javascript:void(0);" (click)="viewProfile(item.owner.uuid)">
     <div class="z-social-media-left">
       <div class="avatar-xs">
-        <img [src]="item?.owner?.is_owner ? user?.profile_image : item?.owner?.profile_image" *ngIf="item?.owner?.is_owner ? user?.profile_image : item?.owner?.profile_image"
-             alt="">
+        <img [src]="(user?.uuid === item?.owner?.uuid) ? user?.profile_image : item?.owner?.profile_image"
+          alt="">
       </div>
     </div>
   </a>
@@ -30,16 +30,15 @@
           <bs-modal-body>
             <ul class="list-unstyled social-list-user wth-scrollable">
               <li *ngFor="let item of item.custom_objects">
-            <span class="social-list-user-action">
-            </span>
+                <span class="social-list-user-action">
+                </span>
                 <img alt="" [src]="item?.profile_image" *ngIf="item?.profile_image" title="" width="30">
                 <span>{{ item.name }}</span>
               </li>
             </ul>
           </bs-modal-body>
           <bs-modal-footer>
-            <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal"
-                    (click)="modal.dismiss()">
+            <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal" (click)="modal.dismiss()">
               DONE
             </button>
           </bs-modal-footer>
@@ -71,9 +70,8 @@
     <div class="dropdown pull-right">
       <!--<post-settings [item]="item"></post-settings>-->
       <button class="btn btn-default btn-default-no-border dropdown-toggle" type="button" id="dropdownMenu1"
-              data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true" (click)="getSettings($event)"
-              pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" (click)="getSettings($event)" pTooltip="{{ tooltip.moreAction }}"
+        tooltipPosition="top">
         <i class="fa fa-ellipsis-v"></i>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" *ngIf="settings">
@@ -86,8 +84,7 @@
         <li *ngIf="settings.edit != null"><a href="#" (click)="edit($event)">Edit Post</a></li>
         <li *ngIf="settings.delete != null"><a href="#" (click)="delete($event)">Delete</a></li>
 
-        <li role="separator" class="divider"
-            *ngIf="settings.enable_comment != null || settings.enable_share != null"></li>
+        <li role="separator" class="divider" *ngIf="settings.enable_comment != null || settings.enable_share != null"></li>
 
         <li *ngIf="settings.enable_comment != null  && item.disable_comment == false">
           <a href="javascript;" (click)="update({disable_comment: true}, $event)">
@@ -102,40 +99,40 @@
         </li>
 
         <li>
-          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == true"
-             (click)="update({disable_share: false}, $event)">Enable share
+          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == true" (click)="update({disable_share: false}, $event)">Enable
+            share
           </a>
         </li>
 
         <li>
-          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == false"
-             (click)="update({disable_share: true}, $event)">Disable share
+          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == false" (click)="update({disable_share: true}, $event)">Disable
+            share
           </a>
         </li>
 
         <li>
-          <a href="javascript:;"
-             (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' : 'Disable ' }}
+          <a href="javascript:;" (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' :
+            'Disable ' }}
             notifications
           </a>
         </li>
 
-        <li *ngIf="item.owner.uuid != userService.getSyncProfile().uuid">
+        <li *ngIf="item.owner.uuid !== userService.getSyncProfile().uuid">
           <a href="javascript:;" (click)="onReport()">Report post</a>
         </li>
 
       </ul>
     </div>
 
-<div *ngIf="!(type == 'detail')" class="dropdown pull-right">
-      <a class="btn btn-default btn-default-no-border"
-         pTooltip="{{ tooltip.viewDetail }}" tooltipPosition="top" (click)="viewPostDetail(item.uuid)">
+    <div *ngIf="!(type == 'detail')" class="dropdown pull-right">
+      <a class="btn btn-default btn-default-no-border" pTooltip="{{ tooltip.viewDetail }}" tooltipPosition="top"
+        (click)="viewPostDetail(item.uuid)">
         <i class="fa fa-external-link"></i>
       </a>
     </div>
   </div>
 
-<div *ngIf="type === 'info'" class="z-social-media-right">
+  <div *ngIf="type === 'info'" class="z-social-media-right">
     <div class="dropdown pull-right">
       <a href="javascript:;" class="btn btn-default" (click)="onShowInfo()">
         <i class="fa fa-times"></i>
@@ -144,4 +141,3 @@
   </div>
 
 </div>
-

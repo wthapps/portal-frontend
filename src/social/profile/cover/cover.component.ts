@@ -51,7 +51,7 @@ export class ZSocialProfileCoverComponent implements OnInit {
 
   favourite: any; // toggle favourites status for members, communities
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   readonly FRIEND_STATUS: any = {
     STRANGER: 0,
     REQUEST_SENT: 1,
@@ -142,6 +142,7 @@ export class ZSocialProfileCoverComponent implements OnInit {
               profile_image: result.data.profile_image
             });
             this.userService.updateProfile(newUserProfile);
+            Object.assign(this.userInfo, {profile_image: newUserProfile.profile_image}) ;
           }
         } else if (_.has(event.body, 'cover_image')) {
           toastMsg =
