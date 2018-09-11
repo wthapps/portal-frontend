@@ -2,7 +2,7 @@
   <div class="contact-bar">
     <a *ngFor="let objects of newData; trackBy: trackByGroup"
        [ngx-scroll-to]="'#contact-' + objects.key"
-       [ngx-scroll-to-offset]="-64"
+       [ngx-scroll-to-offset]="0"
        [ngx-scroll-to-duration]="0"
        href="javascript:;">
       {{ objects.key }}
