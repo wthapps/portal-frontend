@@ -162,6 +162,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       mode: 'add',
       isShare: false,
       addingPhotos: false,
+      showEmoji: false,
       post: null,
       parent: null
     }
@@ -212,11 +213,20 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.editor.focus();
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
-    if (options.addingPhotos) {
-      this.mediaSelectionService.open();
-    } else {
-      this.modal.open();
-    }
+    // if (options.addingPhotos) {
+    //   this.modal.open()
+    //     .then(_ => this.addMorePhoto());
+    // } else {
+    //   this.modal.open();
+    // }
+
+    this.modal.open()
+      .then(_ => {
+        if (options.addingPhotos)
+          this.addMorePhoto();
+        if (options.showEmoji)
+          this.showEmojiBtn(null);
+        });
 
     // Clear pending files in case of failure
     this.files.length = 0;
@@ -344,7 +354,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.modal.open();
   }
 
-  addMorePhoto(event: any) {
+  addMorePhoto(event?: any) {
     this.onMoreAdded.emit(true);
     this.mediaSelectionService.open({hiddenTabs: ['videos', 'playlists'], filter: 'photo', allowCancelUpload: true});
 

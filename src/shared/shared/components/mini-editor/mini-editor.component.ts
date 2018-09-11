@@ -2,11 +2,8 @@ import {
   NgModule, Component, ElementRef, AfterViewInit, Input, Output, EventEmitter, ContentChild, OnChanges,
   forwardRef, ViewEncapsulation, SimpleChanges
 } from '@angular/core';
-import {CommonModule} from '@angular/common';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { DomHandler } from 'primeng/components/dom/domhandler';
-import { Header, SharedModule } from 'primeng/components/common/shared';
-import { EditorModule } from 'primeng/components/editor/editor';
 
 declare var Quill: any;
 
@@ -116,11 +113,10 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-
     if (!this.quill)
     return;
-    this.enableOrDisableQuill(changes['isDisabled']);
+    if (changes['isDisabled'] !== undefined)
+      this.enableOrDisableQuill(changes['isDisabled']);
   }
 
   enableOrDisableQuill(enable) {

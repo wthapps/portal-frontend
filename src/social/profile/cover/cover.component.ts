@@ -129,7 +129,7 @@ export class ZSocialProfileCoverComponent implements OnInit {
       this.socialService.user.update(event.body).subscribe((result: any) => {
         console.log('update profile sucess: ', result);
         let toastMsg: string = '';
-        if (_.has(event.body, 'profile_image')) {
+        if (_.has(event.body, 'file')) {
           toastMsg = 'You have updated profile image successfully';
           // Update user profile
           if (
@@ -138,10 +138,10 @@ export class ZSocialProfileCoverComponent implements OnInit {
             Object.assign(this.socialService.user.profile, {
               profile_image: result.data.profile_image
             });
-            Object.assign(this.userService.getSyncProfile(), {
+            const newUserProfile = Object.assign(this.userService.getSyncProfile(), {
               profile_image: result.data.profile_image
             });
-            this.userService.updateProfile(this.userService.getSyncProfile());
+            this.userService.updateProfile(newUserProfile);
           }
         } else if (_.has(event.body, 'cover_image')) {
           toastMsg =

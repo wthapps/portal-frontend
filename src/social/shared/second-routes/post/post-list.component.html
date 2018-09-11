@@ -21,7 +21,8 @@
               <i class="fa fa-camera"></i>
             </button>
             <div class="btn-group dropup">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.emoticons }}" tooltipPosition="top">
+<button type="button" class="btn btn-default dropdown-toggle" (click)="postEditModal.open({community: community, mode: 'add', isShare: false, addingPhotos: false, showEmoji: true})"
+  data-toggle="dropdown" pTooltip="{{ tooltip.emoticons }}" tooltipPosition="top">
                 <i class="fa fa-smile-o"></i>
               </button>
             </div>
