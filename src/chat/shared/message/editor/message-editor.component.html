@@ -1,7 +1,8 @@
 <div class="chat-message-container">
   <form [formGroup]="messageEditorForm" novalidate>
     <mini-editor [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" placeholder="Type message here"
-      [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px'}" (onKeyUp)="handleKeyUp($event)">
+      [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px', 'max-height': '100px', overflow: 'auto'}"
+      (onKeyUp)="handleKeyUp($event)">
       <p-header>
       </p-header>
     </mini-editor>
@@ -28,11 +29,13 @@
       </div>
       <button class="btn btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="showEmojiBtn($event)"><i
           class="fa fa-smile-o"></i></button>
-      <button class="btn chat-message-action-send btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="send()"><i
+      <button class="btn chat-message-action-send btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="validateAndSend()"><i
           class="fa fa-send"></i></button>
     </div>
   </form>
   <chat-note-list-modal #noteList (insertNoteEvent)="noteSelectOnInsert()">
 
   </chat-note-list-modal>
+
+  <long-message-modal #longMessageModal></long-message-modal>
 </div>

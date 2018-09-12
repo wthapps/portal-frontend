@@ -1,3 +1,4 @@
+import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
@@ -21,6 +22,7 @@ import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-mo
 import { WUploader } from '@shared/services/w-uploader';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
+import { LongMessageModalComponent } from '@shared/components/modal/long-message-modal.component';
 
 
 declare var $: any;
@@ -34,7 +36,9 @@ declare var $: any;
 export class MessageEditorComponent implements OnInit, OnDestroy {
   @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
   @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
+  @ViewChild('longMessageModal') longMessageModal: LongMessageModalComponent;
   @Input() isDisabled = false;
+  @Input() maxLengthAllow = 2000;
 
   readonly tooltip: any = Constants.tooltip;
   emojiData: any = [];
@@ -46,6 +50,8 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   messageCtrl: FormControl;
 
   selectEmojiSub: Subscription;
+
+  private stripHtml: StripHtmlPipe;
 
   constructor(
     private chatService: ChatService,
@@ -60,6 +66,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     private emojiService: WTHEmojiService
   ) {
     this.createForm();
+    this.stripHtml = new StripHtmlPipe();
   }
 
   ngOnInit() {
@@ -108,8 +115,8 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   handleKeyUp(e: any) {
-    if (e.keyCode === 13 && this.messageService.notEmptyHtml(this.message.message)) {
-      this.send(true);
+    if (e.keyCode === 13) {
+      this.validateAndSend();
     } else if (e.keyCode === 27) {
       this.cancelEditingMessage();
       return;
@@ -153,22 +160,17 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     this.resetEditor();
   }
 
-  send(enter?: boolean) {
+  validateAndSend() {
     if (!this.messageService.notEmptyHtml(this.message.message))
       return;
-    if (this.mode === FORM_MODE.EDIT) {
-      this.chatService
-        .updateMessage(this.message.group_id, this.message)
-        .subscribe((response: any) => {
-          this.mode = FORM_MODE.CREATE;
-          this.resetEditor();
-        });
-    } else {
-      this.messageService.scrollToBottom();
-      this.chatService.sendTextMessage(this.message.message, { toTop: true });
-      this.resetEditor();
+    if (this.stripHtml.transform(this.message.message).length > this.maxLengthAllow ) {
+        // console.error('Chat messages exceed maximum length of ', this.maxLengthAllow);
+        this.longMessageModal.open();
+        return;
     }
+    this.send();
   }
+
 
   shareContacts() {
     this.addContactService.open('shareContact');
@@ -264,6 +266,21 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
         console.log(data);
         this.editor.addEmoj(data.shortname);
       });
+  }
+
+  private send() {
+    if (this.mode === FORM_MODE.EDIT) {
+      this.chatService
+        .updateMessage(this.message.group_id, this.message)
+        .subscribe((response: any) => {
+          this.mode = FORM_MODE.CREATE;
+          this.resetEditor();
+        });
+    } else {
+      this.messageService.scrollToBottom();
+      this.chatService.sendTextMessage(this.message.message, { toTop: true });
+      this.resetEditor();
+    }
   }
 
   private buildQuoteMessage(message: any): string {

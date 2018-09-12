@@ -1,3 +1,4 @@
+import { LongMessageModalComponent } from './../../../shared/components/modal/long-message-modal.component';
 import { NgModule } from '@angular/core';
 import { MessageEditorComponent } from './editor/message-editor.component';
 import { MessageListComponent } from './message-list.component';
@@ -32,6 +33,7 @@ import { MessageService } from '@chat/shared/message/message.service';
     MessageItemActionComponent,
     MessageItemSimpleComponent,
     MessageItemComponent,
+    LongMessageModalComponent,
     MessageAssetsComponent
   ],
   exports: [
@@ -43,6 +45,7 @@ import { MessageService } from '@chat/shared/message/message.service';
     MessageItemSimpleComponent,
     MessageItemComponent,
     MessageAssetsComponent,
+    LongMessageModalComponent,
 
     ZChatShareUserModule
   ],
