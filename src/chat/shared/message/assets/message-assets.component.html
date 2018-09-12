@@ -21,7 +21,7 @@
                 <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li *ngIf="conversation.group_json.creator_id !== user.id">
+                <li *ngIf="authService.user.id !== user.id">
                   <a href="javascript:void(0);" (click)="onSelect(user)">Send Message</a>
                 </li>
                 <li>
@@ -30,10 +30,10 @@
                 <li *ngIf="showBlacklist">
                   <a href="javascript:void(0);" (click)="onAddToBlackList(user)">Blacklist</a>
                 </li>
-                <li *ngIf="conversation.group_json.creator_id !== user.id">
+                <li *ngIf="authService.user.id === conversation.group_json.creator_id && conversation.group_json.creator_id !== user.id">
                   <a href="javascript:void(0);" (click)="onRemoveMember(user)">Remove From Conversation</a>
                 </li>
-                <li *ngIf="conversation.group_json.creator_id === user.id">
+                <li *ngIf="authService.user.id === user.id">
                   <a href="javascript:void(0);" (click)="leaveConversation(user)">Leave Conversation</a>
                 </li>
               </ul>

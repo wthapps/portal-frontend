@@ -3,7 +3,7 @@ import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { Constants } from '@shared/constant';
 import { ChatService } from '@chat/shared/services/chat.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService, ChatCommonService, CommonEventService, UserService } from '@shared/services';
+import { ApiBaseService, AuthService, ChatCommonService, CommonEventService, UserService } from '@shared/services';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { Observable } from 'rxjs/Observable';
@@ -69,12 +69,14 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   nextLink: string;
   isLoading: boolean;
   members: Array<any> = [];
+
   private destroy$ = new Subject<any>();
 
   constructor(
     private chatService: ChatService,
     private commonEventService: CommonEventService,
     private userService: UserService,
+    private authService: AuthService,
     private wthConfirmService: WthConfirmService,
     private addContactService: ZChatShareAddContactService,
     private messageAssetsService: MessageAssetsService,
@@ -178,10 +180,10 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
   leaveConversation(user: any) {
     this.wthConfirmService.confirm({
-      message: 'Are you sure you want to left this conversation?',
+      message: 'Are you sure you want to leave this conversation?',
       header: 'Leave Conversation',
       accept: () => {
-        this.conversationService.leave(user.id);
+        this.chatService.leaveConversation(this.conversation);
       }
     });
   }

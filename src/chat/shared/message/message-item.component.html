@@ -324,7 +324,22 @@
 
 <div *ngIf="['notification', 'request_accepted'].includes(message.message_type)" class="p20 text-center">
   <div *ngIf="message.message_type === 'notification'">
-    <span class="text-bold">{{ message.user.name }}</span> {{ message.message }}</div>
+
+    <ng-container *ngIf="message.message.indexOf('added into') !== -1">
+      <span class="text-bold"> {{ byMe ? 'You' : message.user?.name }} </span> added
+      <span class="text-bold">{{ message.receiver?.name }}</span> into this conversation
+    </ng-container>
+
+    <ng-container *ngIf="message.message.indexOf('removed from') !== -1">
+      <span class="text-bold"> {{ byMe ? 'You' : message.user?.name }} </span> removed
+      <span class="text-bold"> {{ message.receiver?.name }}</span> from this conversation
+    </ng-container>
+
+    <ng-container *ngIf="(message.message.indexOf('added into') === -1) && (message.message.indexOf('removed from') === -1)">
+      <span class="text-bold"> {{ byMe ? 'You' : message.user?.name }} </span> {{ message.message }}
+    </ng-container>
+  </div>
+
   <div *ngIf="message.message_type === 'request_accepted'">
     You connected with <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.user.name }}</span> on
     WTH!Chat</div>
@@ -332,3 +347,39 @@
     <small>{{ message.created_at | timeFormat: "time_only" }}</small>
   </div>
 </div>
+
+<!--<div *ngIf="['member_added', 'member_removed'].includes(message.message_type)" class="p20 text-center">-->
+  <!--<div *ngIf="byMe">-->
+
+    <!--<ng-container *ngIf="message.message.indexOf('added into') !== -1">-->
+      <!--<span class="text-bold">You</span> added-->
+      <!--<span class="text-bold">{{ message.receiver?.name }}</span> into conversation-->
+    <!--</ng-container>-->
+
+    <!--<ng-container *ngIf="message.message.indexOf('removed from') !== -1">-->
+      <!--<span class="text-bold">You</span> removed-->
+      <!--<span class="text-bold"> {{ message.receiver?.name }}</span> from conversation-->
+    <!--</ng-container>-->
+
+    <!--<ng-container *ngIf="(message.message.indexOf('added into') === -1) && message.message.indexOf('removed from') === -1">-->
+      <!--<span class="text-bold">You</span> {{ message.message }}-->
+    <!--</ng-container>-->
+  <!--</div>-->
+
+  <!--<div *ngIf="!byMe">-->
+    <!--<ng-container *ngIf="[message.message].includes('added into')">-->
+      <!--<span class="text-bold"> {{ message.user?.name }} added {{ message.receiver?.name }}</span> into conversation-->
+    <!--</ng-container>-->
+
+    <!--<ng-container *ngIf="[message.message].includes('removed from')">-->
+      <!--<span class="text-bold"> {{ message.user?.name }} removed {{ message.receiver?.name }}</span> from conversation-->
+    <!--</ng-container>-->
+
+    <!--<ng-container *ngIf="![message.message].includes('added into') && ![message.message].includes('removed from')">-->
+      <!--<span class="text-bold"> {{ message.user?.name }}</span> {{ message.message }}-->
+    <!--</ng-container>-->
+
+  <!--</div>-->
+
+  <!---->
+<!--</div>-->
