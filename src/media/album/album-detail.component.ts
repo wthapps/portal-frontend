@@ -86,6 +86,7 @@ export class ZMediaAlbumDetailComponent
   viewMode: any = this.viewModes.grid;
   links: any;
   showDetailsInfo: any;
+  sorting: any;
   // ============
   titleNoData: any = 'There is no photo!';
   subTitleNoData: any = 'Try to add a photo';
@@ -133,13 +134,17 @@ export class ZMediaAlbumDetailComponent
     });
   }
 
-  doListEvent(e: any) {
-    switch (e.action) {
+  doListEvent(event: any) {
+    switch (event.action) {
       case 'viewDetails':
         this.viewDetail();
         break;
       case 'favorite':
-        this.toggleFavorite(e.payload);
+        this.toggleFavorite(event.payload);
+        break;
+      case 'sort':
+        this.sorting = event.payload.queryParams;
+        this.loadObjects(this.object.uuid, this.sorting);
         break;
     }
   }
@@ -224,9 +229,11 @@ export class ZMediaAlbumDetailComponent
     }
   }
 
-  loadObjects(input: any) {
+  loadObjects(input: any, opts: any = {}) {
     this.loading = true;
-    this.apiBaseService.get(`media/media/${input}/objects`, {model: 'Media::Album'}).subscribe(res => {
+    opts = { ...opts, model: 'Media::Album' };
+    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.apiBaseService.get(`media/media/${input}/objects`, opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;

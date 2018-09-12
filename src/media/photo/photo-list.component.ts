@@ -17,7 +17,6 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { MediaSortMixin } from '@media/shared/mixin/media-sort.mixin';
 import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
 import { AlbumCreateMixin } from '@media/shared/mixin/album/album-create.mixin';
 import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
@@ -26,13 +25,19 @@ import { SharingModalResult } from '@shared/shared/components/photo/modal/sharin
 import { WUploader } from '@shared/services/w-uploader';
 
 declare var _: any;
-@Mixin([SharingModalMixin, MediaBasicListMixin, MediaSortMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
+@Mixin([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-photo-list',
   templateUrl: 'photo-list.component.html'
 })
-export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModalMixin, MediaBasicListMixin, MediaSortMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin {
+export class ZMediaPhotoListComponent implements OnInit, OnDestroy,
+SharingModalMixin,
+MediaBasicListMixin,
+AlbumAddMixin,
+AlbumCreateMixin,
+MediaDownloadMixin,
+MediaModalMixin {
   currentQuery: string;
   tooltip: any = Constants.tooltip;
   type = 'photo';
@@ -54,6 +59,7 @@ export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModal
   viewMode: any = this.viewModes.grid;
   modalIns: any;
   modalRef: any;
+  sorting: any =  {sort_name: "Date", sort: "desc"};
 
   private sub: any;
 
@@ -80,15 +86,24 @@ export class ZMediaPhotoListComponent implements OnInit, OnDestroy, SharingModal
     });
   }
 
-  loadObjects() {
+  loadObjects(opts: any = {}) {
     this.loading = true;
-    this.apiBaseService.get('media/media', {model: 'Media::Photo'}).subscribe(res => {
+    opts = {...opts, model: 'Media::Photo'};
+    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.apiBaseService.get('media/media', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
-      // TODO: don't need scroll
-      setTimeout(() => {window.scrollTo(0, 0)}, 200);
     });
+  }
+
+  loadMoreObjects() {
+    if (this.links && this.links.next) {
+      this.apiBaseService.get(this.links.next).subscribe(res => {
+        this.objects = [...this.objects, ...res.data];
+        this.links = res.meta.links;
+      })
+    }
   }
 
   doToolbarEvent(e: any) {
@@ -148,6 +163,9 @@ custom method please overwirte any method*/
         if (event.payload.modalName === 'editNameModal') {
           this.openEditModal(event.payload.selectedObject);
         }
+      case 'sort':
+        this.sorting = event.payload.queryParams;
+        this.loadObjects(this.sorting);
         break;
     }
   }
@@ -186,14 +204,6 @@ custom method please overwirte any method*/
     this.router.navigate([`/photos/${id}`], {queryParams: data});
   }
 
-  loadMoreObjects() {
-    if (this.links && this.links.next) {
-      this.apiBaseService.get(this.links.next).subscribe(res => {
-        this.objects = [...this.objects, ...res.data];
-        this.links = res.meta.links;
-      })
-    }
-  }
   // ============= MediaListMixin ===============
 
   /* SharingModalMixin This is methods to sharing, to

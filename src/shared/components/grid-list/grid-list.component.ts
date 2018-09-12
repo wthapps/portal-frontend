@@ -25,8 +25,6 @@ declare var $: any;
   selector: 'w-grid-list',
   templateUrl: 'grid-list.component.html',
   styleUrls: ['grid-list.component.scss'],
-  providers: [
-  ]
 })
 
 export class WGridListComponent implements OnDestroy, OnChanges {
@@ -35,6 +33,7 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   @Input() moreActionsTemplate: TemplateRef<any>;
   @Input() girdItemTemplate: TemplateRef<any>;
   @Input() scrollWindow: Boolean = true;
+  @Input() sorting: any = {sort_name: "Date", sort: "desc"};
 
   @Input() view: string = 'grid';
   @Input() objects: Array<any> = new Array<any>();
@@ -62,8 +61,6 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   hasScrollbar: boolean;
   hasMultipleSelection: Boolean = true;
   groupBy: string = '';
-  sortBy = 'Date';
-  sortOrder = 'asc';
 
   private pressingCtrlKey: boolean = false;
   private destroySubject: Subject<any> = new Subject<any>();
@@ -97,6 +94,11 @@ export class WGridListComponent implements OnDestroy, OnChanges {
         }
       });
     }
+    // if(changes.sorting) {
+
+    //   this.sorting = changes.sorting.currentValue;
+    //   console.log(this.sorting);
+    // }
   }
 
   ngOnDestroy() {
@@ -123,12 +125,9 @@ export class WGridListComponent implements OnDestroy, OnChanges {
         break;
       default:
         if (event.action === 'sort') {
-          this.sortBy = event.payload.queryParams.sort_name;
-          this.sortOrder = event.payload.queryParams.sort;
+          this.sorting.sort_name = event.payload.queryParams.sort_name;
+          this.sorting.sort = event.payload.queryParams.sort;
         }
-        // if (event.action === 'getMore' && !event.payload.nextLink) {
-        //   break;
-        // }
         if (event.action === 'deselectAll') {
           this.selectedObjects.length = 0;
         }

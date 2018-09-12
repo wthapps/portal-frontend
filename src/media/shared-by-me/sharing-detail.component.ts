@@ -70,6 +70,7 @@ export class ZMediaSharingDetailComponent
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
   links: any;
+  sorting: any;
   showDetailsInfo: any;
   // ============
   titleNoData: any = 'There is no sharing!';
@@ -133,6 +134,10 @@ export class ZMediaSharingDetailComponent
       case 'favorite':
         this.toggleFavorite(e.payload);
         break;
+      case 'sort':
+        this.sorting = e.payload.queryParams;
+        this.loadObjects(this.object.uuid, this.sorting);
+        break;
     }
   }
 
@@ -171,9 +176,10 @@ export class ZMediaSharingDetailComponent
     }
   }
 
-  loadObjects(input: any) {
+  loadObjects(input: any, opts: any = {}) {
     this.loading = true;
-    this.apiBaseService.get(`media/sharings/${input}/objects`).subscribe(res => {
+    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.apiBaseService.get(`media/sharings/${input}/objects`, opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
@@ -299,9 +305,13 @@ export class ZMediaSharingDetailComponent
       message: `Are you sure to delete ${this.selectedObjects.length} ${term}`,
       accept: () => {
         this.loading = true;
+        this.objects = this.objects.filter(ob => {
+          return !this.selectedObjects.map(s => s.uuid).includes(ob.uuid);
+        });
         this.apiBaseService.post(`media/media/delete`, { objects: this.selectedObjects }).subscribe(res => {
-          this.loadObjects(this.object.uuid);
           this.loading = false;
+          this.hasSelectedObjects = false;
+          this.selectedObjects = [];
         })
       }
     })

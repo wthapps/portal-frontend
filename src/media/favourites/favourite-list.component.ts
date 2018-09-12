@@ -62,6 +62,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
   titleNoData: any = 'There is no favorites';
   subTitleNoData: any = 'Add star to items to find easier';
   iconNoData: any = 'fa fa-star';
+  sorting: any;
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -137,6 +138,10 @@ export class ZMediaFavoriteListComponent implements OnInit,
       case 'favorite':
         this.toggleFavorite(e.payload);
         break;
+      case 'sort':
+        this.sorting = e.payload.queryParams;
+        this.loadObjects(this.sorting);
+        break;
     }
   }
 
@@ -169,9 +174,10 @@ export class ZMediaFavoriteListComponent implements OnInit,
     }
   }
 
-  loadObjects() {
+  loadObjects(opts: any = {}) {
     this.loading = true;
-    this.apiBaseService.get(`media/favorites`).subscribe(res => {
+    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.apiBaseService.get(`media/favorites`, opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;

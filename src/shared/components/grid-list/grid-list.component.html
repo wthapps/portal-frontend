@@ -11,7 +11,7 @@
   <div class="page-body-content has-page-body-control gray-light" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
     [scrollWindow]="scrollWindow" (scrolled)="doEvent({action: 'getMore', payload: { nextLink: nextLink }})">
     <div class="page-body-content-in">
-      <w-grid-list-header [data]="objects" [view]="view" [field]="sortBy" [direction]="sortOrder" (event)="doEvent($event)"></w-grid-list-header>
+      <w-grid-list-header [data]="objects" [view]="view" [field]="sorting.sort_name" [direction]="sorting.sort" (event)="doEvent($event)"></w-grid-list-header>
       <div id="list-photo" class="row-img row-img-{{ viewSize }}" [ngClass]="view" (dragenter)="onDragenter($event)" (dragleave)="onDragleave($event)">
         <ng-container *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">
           <p class="m15 fz15" *ngIf="group.key && (view !== 'grid')">

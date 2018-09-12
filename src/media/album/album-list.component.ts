@@ -47,6 +47,7 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
   viewMode: any = this.viewModes.grid;
   modalIns: any;
   modalRef: any;
+  sorting: any;
   subCreateAlbum: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -72,9 +73,11 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
     // this.sub.unsubscribe();
   }
 
-  loadObjects(input?: any) {
+  loadObjects(opts: any = {}) {
     this.loading = true;
-    this.apiBaseService.get('/media/albums', {model: 'Media::Album'}).subscribe(res => {
+    opts = { ...opts, model: 'Media::Album' };
+    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.apiBaseService.get('/media/albums', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
@@ -100,9 +103,6 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
 
   doListEvent(event: any) {
     switch (event.action) {
-      case 'sort':
-        // this.store.dispatch(new GetAll({path: this.path, queryParams: {type: this.type, ...event.payload.queryParams}}));
-        break;
       case 'viewDetails':
         this.viewDetail(event.payload.selectedObject)
         break;
@@ -116,6 +116,10 @@ export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixi
         if (event.payload.modalName == "createAlbumModal") {
           this.openCreateAlbumModal([]);
         };
+      case 'sort':
+        this.sorting = event.payload.queryParams;
+        this.loadObjects(this.sorting);
+        break;
     }
   }
 

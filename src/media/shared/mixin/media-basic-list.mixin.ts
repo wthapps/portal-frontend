@@ -12,6 +12,7 @@ export class MediaBasicListMixin {
   tooltip: any = Constants.tooltip;
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
+  sorting: any = {};
 
   constructor(public apiBaseService: ApiBaseService, public confirmService: WthConfirmService) {}
 
@@ -77,8 +78,10 @@ export class MediaBasicListMixin {
       message: `Are you sure to delete ${this.selectedObjects.length} ${term}`,
       accept: () => {
         this.loading = true;
+        this.objects = this.objects.filter(ob => {
+          return !this.selectedObjects.map(s => s.uuid).includes(ob.uuid);
+        });
         this.apiBaseService.post(`media/media/delete`, {objects: this.selectedObjects}).subscribe(res => {
-          this.loadObjects();
           this.loading = false;
           this.hasSelectedObjects = false;
           this.selectedObjects = [];

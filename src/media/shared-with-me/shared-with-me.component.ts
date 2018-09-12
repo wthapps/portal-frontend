@@ -50,6 +50,7 @@ MediaAdditionalListMixin {
   titleNoData: any = 'There no media shared with you!';
   subTitleNoData: any = 'Media can be shared to your connected contact.';
   modalRef: any;
+  sorting: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
@@ -71,9 +72,10 @@ MediaAdditionalListMixin {
     this.menuActions = this.getMenuActions();
   }
 
-  loadObjects(input?: any) {
+  loadObjects(opts: any = {}) {
     this.loading = true;
-    this.apiBaseService.get('media/sharings/shared_with_me').subscribe(res => {
+    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.apiBaseService.get('media/sharings/shared_with_me', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
@@ -138,6 +140,10 @@ MediaAdditionalListMixin {
       case 'openModal':
         this.openEditModal(e.payload.selectedObject)
         this.modalIns.event.subscribe(e => this.doModalAction(e));
+        break;
+      case 'sort':
+        this.sorting = e.payload.queryParams;
+        this.loadObjects(this.sorting);
         break;
     }
   }

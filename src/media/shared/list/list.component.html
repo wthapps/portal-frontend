@@ -32,7 +32,7 @@
   (event)="doToolbarEvent($event)">
 </w-toolbar>
 
-<w-grid-list #gridlist [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
+<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
 
   <!--loading icon-->
   <div class="page-body-content has-page-body-control gray-light" *ngIf="loading">

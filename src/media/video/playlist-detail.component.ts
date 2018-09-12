@@ -74,6 +74,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   subMenuActions: any = {};
   modalIns: any;
   modalRef: any;
+  sorting: any;
   // ============
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;
@@ -142,6 +143,10 @@ PlaylistAddMixin, MediaDownloadMixin {
       case 'favorite':
         this.toggleFavorite(e.payload);
         break;
+      case 'sort':
+        this.sorting = e.payload.queryParams;
+        this.loadObjects(this.object.uuid, this.sorting);
+        break;
     }
   }
 
@@ -175,7 +180,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     }
   }
 
-  loadObjects(input: any) {
+  loadObjects(input: any, opts: any = {}) {
     this.loading = true;
     this.apiBaseService.get(`media/playlists/${input}/videos`).subscribe(res => {
       this.objects = res.data;

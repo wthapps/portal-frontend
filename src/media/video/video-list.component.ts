@@ -58,6 +58,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   viewMode: any = this.viewModes.grid;
   modalIns: any;
   modalRef: any;
+  sorting: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(public apiBaseService: ApiBaseService,
@@ -113,6 +114,10 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
         break;
       case 'getMore':
         this.loadMoreObjects();
+        break;
+      case 'sort':
+        this.sorting = e.payload.queryParams;
+        this.loadObjects(this.sorting);
         break;
     }
   }
@@ -174,9 +179,10 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   selectedObjectsChanged: (e: any) => void;
   toggleFavorite: (input?: any) => void;
   deleteObjects: (term: any) => void;
-  loadObjects() {
+  loadObjects(opts: any = {}) {
     this.loading = true;
-    this.apiBaseService.get(`media/videos`).subscribe(res => {
+    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.apiBaseService.get(`media/videos`, opts).subscribe(res => {
       this.links = res.meta.links;
       this.objects = res.data;
       this.loading = false;

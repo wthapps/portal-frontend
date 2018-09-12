@@ -66,6 +66,7 @@ MediaModalMixin {
   subTitleNoData: any = 'Try to create a playlist';
   actionNoData: any = 'Create Playlist';
   subCreatePlaylist: any;
+  sorting: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
@@ -262,6 +263,10 @@ MediaModalMixin {
           this.openEditModal(event.payload.selectedObject)
         };
         break;
+      case 'sort':
+        this.sorting = event.payload.queryParams;
+        this.loadObjects(this.sorting);
+        break;
     }
   }
 
@@ -343,9 +348,10 @@ MediaModalMixin {
     });
   }
   deleteObjects: (term: any) => void;
-  loadObjects() {
+  loadObjects(opts: any = {}) {
     this.loading = true;
-    this.apiBaseService.get(`media/playlists`).subscribe(res => {
+    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.apiBaseService.get(`media/playlists`, opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;

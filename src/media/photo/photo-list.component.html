@@ -90,7 +90,7 @@
   (event)="doToolbarEvent($event)">
 </w-toolbar>
 
-<w-grid-list #gridlist [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
+<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
 
 </w-grid-list>
 <!--loading icon-->
@@ -99,6 +99,7 @@
 </div>
 <box-no-data *ngIf="objects && objects.length == 0" [title]="'There is no photos!'" [icon]="'fa fa-file-video-o'" [subTitle]="'Try to upload a new photos'"
   style="margin-top: 50px; display: block;">
-  <button class="btn btn-outline-primary" (click)="upload(['image/*'])"><i class="fa fa-cloud-upload"></i> Upload Photo</button>
+  <button class="btn btn-outline-primary" (click)="upload(['image/*'])">
+    <i class="fa fa-cloud-upload"></i> Upload Photo</button>
 </box-no-data>
 <div #modalContainer></div>
