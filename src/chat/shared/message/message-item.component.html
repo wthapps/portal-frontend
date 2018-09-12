@@ -121,7 +121,8 @@
           <!--video type-->
           <div class="message-item-content-photo can-click" *ngIf="message.file_type == 'Media::Video'">
             <figure>
-              <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
+              <!-- <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)"> -->
+                <div class="photo-box-figure-in">
                 <img [src]="message.file?.thumbnail_url" alt="">
                 <i class="fa fa-play-circle-o"></i>
               </div>
@@ -246,7 +247,7 @@
         </ul>
 
         <!--photos menu actions-->
-        <ul class="dropdown-menu dropdown-menu-right" *ngIf="['Media::Photo', 'Media::Video'].includes(message.file_type) ">
+        <ul class="dropdown-menu dropdown-menu-right" *ngIf="['file'].includes(message.message_type) ">
           <li *ngIf="message.file && message.message_type !== 'message_deleted'">
             <a [href]="message.file.url" target="_blank" download>
               Download
