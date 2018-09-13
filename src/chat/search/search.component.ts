@@ -20,7 +20,7 @@ export class ZChatSearchComponent {
     this.events = this.router.events
       .filter((event: any) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
-        let paths = event.url
+        const paths = event.url
           .toString()
           .split('/')[1]
           .split('?');

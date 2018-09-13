@@ -34,7 +34,7 @@ import { ContactListModalComponent } from '@chat/contact/contact-list-modal.comp
 
 @NgModule({
   imports: [
-    SharedModule.forRoot(),
+    SharedModule,
     ZChatMessageModule
   ],
   declarations: [

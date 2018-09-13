@@ -4,7 +4,7 @@ import { ZChatSharedModule } from '../shared/shared.module';
 import { ChatPhotoDetailComponent } from './photo-detail.component';
 import { ZChatPhotoRoutingModule } from './photo-routing.module';
 import { SharedModule } from '@wth/shared/shared.module';
-import { SharedServicesModule } from '@wth/shared/shared-services.module';
+// import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
@@ -12,7 +12,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     ZChatPhotoRoutingModule,
     ZChatSharedModule.forRoot(),
     SharedModule.forRoot(),
-    SharedServicesModule.forRoot()
+    // SharedServicesModule.forRoot()
   ],
   declarations: [ChatPhotoDetailComponent],
   exports: [ChatPhotoDetailComponent],

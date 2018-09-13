@@ -4,7 +4,7 @@ import { ZChatSharedModule } from '../shared/shared.module';
 import { ZChatHistoryRoutingModule } from './history-routing.module';
 import { ZChatHistoryComponent } from './history.component';
 import { SharedModule } from '@wth/shared/shared.module';
-import { SharedServicesModule } from '@wth/shared/shared-services.module';
+// import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
@@ -12,7 +12,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     ZChatHistoryRoutingModule,
     ZChatSharedModule.forRoot(),
     SharedModule.forRoot(),
-    SharedServicesModule.forRoot()
+    // SharedServicesModule.forRoot()
   ],
   declarations: [ZChatHistoryComponent],
   exports: [ZChatHistoryComponent],

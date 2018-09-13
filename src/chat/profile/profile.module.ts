@@ -5,15 +5,16 @@ import { ZChatProfileRoutingModule } from './profile-routing.module';
 import { ZChatProfileComponent } from './profile.component';
 import { ZChatSharedModule } from '../shared/shared.module';
 import { SharedModule } from '@wth/shared/shared.module';
-import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     ZChatProfileRoutingModule,
-    ZChatSharedModule.forRoot(),
-    SharedModule.forRoot(),
-    SharedServicesModule.forRoot()
+    ZChatSharedModule,
+    SharedModule,
+    // SharedServicesModule.forRoot()
   ],
   declarations: [ZChatProfileComponent],
   exports: [ZChatProfileComponent],

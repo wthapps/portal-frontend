@@ -1,7 +1,7 @@
 <div class="chat-message-container">
   <form [formGroup]="messageEditorForm" novalidate>
     <mini-editor [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" placeholder="Type message here"
-      [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px', 'max-height': '100px', overflow: 'auto'}"
+      [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"
       (onKeyUp)="handleKeyUp($event)">
       <p-header>
       </p-header>
@@ -12,7 +12,7 @@
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-plus-circle"></i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-right" *ngIf="!isDisabled">
           <li>
             <a (click)="onOpenSelectPhotos()" href="javascript:;"><i class="fa fa-photo"></i> Share photos</a>
           </li>

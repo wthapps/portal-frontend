@@ -9,7 +9,7 @@ import { MessageItemSimpleComponent } from './messages/message-simple-item.compo
 import { MessageItemActionComponent } from './messages/message-actions-item.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
-import { SharedServicesModule } from '@wth/shared/shared-services.module';
+// import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
 import { MessageAssetsComponent } from '@chat/shared/message/assets/message-assets.component';
 import { ZChatShareUserModule } from '@chat/shared/user/user.module';
@@ -21,7 +21,7 @@ import { MessageService } from '@chat/shared/message/message.service';
     MiniEditorModule,
     ChatNoteListModule,
     SharedModule.forRoot(),
-    SharedServicesModule.forRoot(),
+    // SharedServicesModule.forRoot(),
 
     ZChatShareUserModule
   ],

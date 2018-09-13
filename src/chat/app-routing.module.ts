@@ -1,14 +1,29 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, PreloadAllModules } from '@angular/router';
+import { AuthGuard } from '@shared/services';
 
 @NgModule({
   imports: [
     RouterModule.forRoot([
-      /* define app module routes here, e.g., to lazily load a module
-         (do not place feature module routes here, use an own -routing.module.ts in the feature instead)
-       */
-    ])
+      {
+        path: '',
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: 'profile', loadChildren:
+              './profile/profile.module#ZChatProfileModule'
+          },
+          {
+            path: 'search', loadChildren:
+              './search/search.module#ZChatSearchModule'
+          }
+        ]
+      }
+    ], {
+        enableTracing: false, // <-- debugging purposes only
+        preloadingStrategy: PreloadAllModules
+      })
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

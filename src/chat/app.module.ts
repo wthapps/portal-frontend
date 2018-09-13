@@ -12,10 +12,9 @@ import { ZChatConversationModule } from './conversation/conversation.module';
 import { ZChatContactModule } from './contact/contact.module';
 import { ZChatContactSearchModule } from './search-new-contacts/contact-search.module';
 import { ZChatHistoryModule } from './history/history.module';
-import { ZChatProfileModule } from './profile/profile.module';
-import { ZChatSearchModule } from './search/search.module';
+// import { ZChatProfileModule } from './profile/profile.module';
+// import { ZChatSearchModule } from './search/search.module';
 import { ZChatPhotoModule } from './photo/photo.module';
-import { ZChatMyProfileModule } from './my-profile/my-profile.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '@wth/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -41,10 +40,10 @@ import { ChatNoteListModule } from '@shared/components/note-list/chat-module/cha
     ZChatContactModule,
     ZChatContactSearchModule,
     ZChatHistoryModule,
-    ZChatProfileModule,
-    ZChatSearchModule,
+    // ZChatProfileModule,
+    // ZChatSearchModule,
     ZChatPhotoModule,
-    ZChatMyProfileModule,
+    // ZChatMyProfileModule,
     ChatNoteListModule,
 
     ModalModule,
