@@ -183,21 +183,6 @@ export class ZMediaSharingDetailComponent
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
-    }, err => {
-      if (err.status == 403) {
-        this.confirmService.confirm({
-          message:
-            'You are in deleted sharing or invalid permission',
-          header: 'Sharing not found',
-          rejectLabel: null,
-          accept: () => {
-            this.router.navigate(['/']);
-          },
-          reject: () => {
-            this.router.navigate(['/']);
-          }
-        });
-      }
     });
   }
 
@@ -214,6 +199,34 @@ export class ZMediaSharingDetailComponent
       }
       this.validateActions(this.subMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
       this.validateActions(this.parentMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
+    }, err => {
+      if (err.status == 403) {
+        this.confirmService.confirm({
+          message:
+            'This sharing you are looking for was deleted.',
+          header: 'Sharing not found',
+          rejectLabel: null,
+          accept: () => {
+            this.router.navigate(['/']);
+          },
+          reject: () => {
+            this.router.navigate(['/']);
+          }
+        });
+      } else {
+        this.confirmService.confirm({
+          message:
+            'You don\'t have permission to access this sharing. Please contact owner to gain permission.',
+          header: 'Permission denied',
+          rejectLabel: null,
+          accept: () => {
+            this.router.navigate(['/']);
+          },
+          reject: () => {
+            this.router.navigate(['/']);
+          }
+        });
+      }
     });
   }
   validateActions: (menuActions: any, role_id: number) => any;
