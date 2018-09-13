@@ -53,38 +53,50 @@
                        [sortInline]="false"
                        (completeSort)="onCompleteSort($event)"
                        (completeLoadMore)="onCompleteLoadMore($event)"
-                       (completeDoubleClick)="onCompleteDoubleClick($event)">
+                       (dbClickedItem)="view($event)"
+                       (clickedItem)="download($event)">
           <ng-template #columnBox let-item>
             <!-------------- Photo view --------------->
-            <ng-container *ngIf="item.object_type == 'photo'">
-              <div class="wobject-box-img">
+            <ng-container *ngIf="item.object_type === 'photo'">
+              <div class="wobject-box-img" (dbclick)="view(item)">
                 <img [src]="item.thumbnail_url" alt="">
               </div>
-              <div class="wobject-box-name">
-                <span>{{ item.name }}.{{ item.extension }}</span>
+              <div class="wobject-box-name" title="item.full_name">
+                <span><i class="fa fa-photo"></i> {{ item.full_name }} </span>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="item.object_type === 'video'">
+              <div class="wobject-box-img" (dbclick)="view(item)">
+                <img [src]="item.thumbnail_url" alt="">
+              </div>
+              <div class="wobject-box-name" title="item.full_name">
+                <span><i class="fa fa-video-camera"></i> {{ item.full_name }} </span>
               </div>
             </ng-container>
             <!-------------- End Photo view --------------->
             <!-------------- Note view --------------->
             <ng-container *ngIf="item.object_type == 'Note::Note'">
-              <div class="wobject-box-name">
-                <span class="bold"><i class="fa fa-file"></i> {{ item.object.name }}</span>
-                <div class="wobject-box-content-note" [innerHTML]="item.object.content | safeHtml"></div>
+              <div class="wobject-box-name wobject-box-clickable">
+                <span class="bold"><i class="fa fa-file"></i>
+                  <a [href]="noteUrl + item?.src_control?.uuid" target="_blank"> {{ item.name }} </a> </span>
+                <div class="wobject-box-content-note" [innerHTML]="item.content | safeHtml"></div>
               </div>
             </ng-container>
             <!-------------- End Note view --------------->
             <!-------------- File view --------------->
-            <ng-container *ngIf="item.object_type == 'file'">
-              <div class="wobject-box-name">
-                <div class="media">
-                  <div class="media-left">
-                    <i class="fa fa-file-archive-o fz30 mt5"></i>
+            <ng-container *ngIf="item.model === 'Common::GenericFile'">
+              <div class="wobject-box-name wobject-box-clickable">
+                  <div class="media">
+                    <div class="media-left">
+                      <i class="fa fa-file-archive-o fz30 mt5"></i>
+                    </div>
+                    <div class="media-body">
+                      <a [href]="item.url">
+                        <p class="mb0"> {{ item.full_name }} </p>
+                      </a>
+                        <small class="text-fade"> {{ item.size | bytes:0 }} </small>
+                    </div>
                   </div>
-                  <div class="media-body">
-                    <p class="mb0">Lorem ipsum dolor sit amet</p>
-                    <small class="text-fade">20kb</small>
-                  </div>
-                </div>
               </div>
             </ng-container>
             <!-------------- End File view --------------->
@@ -99,16 +111,13 @@
       <ng-template #templateNodata>
         <div class="message-assets-content bg-gray-light text-center">
           <box-no-data *ngIf="currentTab === 'photos'" [icon]="'fa fa-picture-o'"
-                       [title]="'There is no photo!'"
-                       [subTitle]="'There is no photo. Try to upload a file.'">
+                       [subTitle]="'There is no photo'">
           </box-no-data>
           <box-no-data *ngIf="currentTab === 'notes'" [icon]="'fa fa-sticky-note-o'"
-                       [title]="'There is no note!'"
-                       [subTitle]="'There is no note. Try to create a note.'">
+                       [subTitle]="'There is no note'">
           </box-no-data>
           <box-no-data *ngIf="currentTab === 'files'" [icon]="'fa fa-file-archive-o'"
-                       [title]="'There is no file!'"
-                       [subTitle]="'There is no file. Try to upload a file.'">
+                       [subTitle]="'There is no file'">
           </box-no-data>
         </div>
       </ng-template>

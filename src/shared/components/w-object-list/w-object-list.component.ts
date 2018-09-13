@@ -28,6 +28,8 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   @Output() completeSort: EventEmitter<any> = new EventEmitter<any>(null);
   @Output() completeDoubleClick: EventEmitter<any> = new EventEmitter<any>(null);
   @Output() selectedObjectsChanged: EventEmitter<any> = new EventEmitter<any>(null);
+  @Output() clickedItem: EventEmitter<any> = new EventEmitter<any>(null);
+  @Output() dbClickedItem: EventEmitter<any> = new EventEmitter<any>(null);
 
   @ContentChild('columnBox') columnBoxTmpl: TemplateRef<any>;
   @ContentChild('columnFileSize') columnFileSizeTmpl: TemplateRef<any>;
@@ -164,9 +166,11 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
 
   onDoubleClick(item: any) {
     this.completeDoubleClick.emit(item);
+    this.dbClickedItem.emit(item);
   }
 
   onClick(item: any) {
+    this.clickedItem.emit(item);
     if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0 || !this.hasMultipleSelection) {
       this.objectListService.clear();
       this.objectListService.addItem(

@@ -1,4 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { Constants } from '@shared/constant';
 import { ChatService } from '@chat/shared/services/chat.service';
@@ -69,7 +71,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   nextLink: string;
   isLoading: boolean;
   members: Array<any> = [];
-
+  readonly noteUrl: any = `${Constants.baseUrls.note}/notes/public/`;
   private destroy$ = new Subject<any>();
 
   constructor(
@@ -83,7 +85,8 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private objectListService: WObjectListService,
     private conversationService: ConversationService,
     private apiBaseService: ApiBaseService,
-    private chatCommonService: ChatCommonService
+    private chatCommonService: ChatCommonService,
+    private router: Router,
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
     this.messageAssetsService.open$.subscribe(
@@ -218,17 +221,42 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     console.log('show photo, note, file:', event); // show photo, note, file
   }
 
+  view(item: any) {
+    if (['photo', 'video'].includes(item.object_type)) {
+      this.router.navigate([
+        {
+          outlets: {
+            modal: [
+              'photos',
+              item.id,
+              {
+                ids: [item.id],
+                prevUrl: '/conversations'
+              }
+            ]
+          }
+        }
+      ]);
+    } else if (item.object_typ === 'note') {
+      this.router.navigate([`${this.noteUrl}/${item.src_control.uuid}`]);
+    }
+  }
+
+  download(item: any) {
+    console.log('download:item:::', item);
+  }
+
   private buildNextLink() {
     let urlAPI = '';
     switch (this.currentTab) {
       case 'photos':
-        urlAPI = `media/photos?active=1`;
+        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=photo`;
         break;
       case 'notes':
-        urlAPI = `note/v1/mixed_entities?active=1`;
+        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=note`;
         break;
       default:
-        urlAPI = null;
+        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=file`;
         break;
     }
     return urlAPI;
