@@ -81,6 +81,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   subCreatePlaylist: any;
   subSelect: any;
   returnUrl: any;
+  sharings: any;
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
@@ -182,7 +183,9 @@ PlaylistAddMixin, MediaDownloadMixin {
 
   loadObjects(input: any, opts: any = {}) {
     this.loading = true;
-    this.apiBaseService.get(`media/playlists/${input}/videos`).subscribe(res => {
+    opts = { ...opts, model: 'Media::Album' };
+    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.apiBaseService.get(`media/playlists/${input}/videos`, opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
@@ -497,6 +500,9 @@ PlaylistAddMixin, MediaDownloadMixin {
         action: () => {
           // this.mediaInfo.object = { ...this.object };
           this.toggleInfo();
+          this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Playlist' }).subscribe(res => {
+            this.sharings = res.data;
+          });
         },
         class: '',
         liclass: '',

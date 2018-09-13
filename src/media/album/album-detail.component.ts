@@ -87,6 +87,7 @@ export class ZMediaAlbumDetailComponent
   links: any;
   showDetailsInfo: any;
   sorting: any;
+  sharings: any;
   // ============
   titleNoData: any = 'There is no photo!';
   subTitleNoData: any = 'Try to add a photo';
@@ -203,9 +204,6 @@ export class ZMediaAlbumDetailComponent
         break;
       case 'changeView':
         this.changeViewMode(e.payload);
-        break;
-      case 'toggleInfo':
-        this.toggleInfo();
         break;
     }
   }
@@ -513,7 +511,12 @@ export class ZMediaAlbumDetailComponent
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: true, // Outside dropdown list
-        action: this.toggleInfo.bind(this),
+        action: () => {
+          this.toggleInfo();
+          this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Album' }).subscribe(res => {
+            this.sharings = res.data;
+          });
+        },
         class: '',
         liclass: '',
         title: 'View Information',

@@ -148,7 +148,7 @@
           <ul class="list-unstyled albums">
             <li *ngFor="let album of object.parents" class="row can-click">
               <div class="media" (click)="infoAlbumClick(album)">
-                <img class="col-sm-4" [src]="album.thumbnail_url" alt="Generic placeholder image">
+                <img class="col-sm-4" style="width: 50px; height: 50px; padding: 0px" [src]="album.thumbnail_url" alt="Generic placeholder image">
                 <div class="col-sm-8 mt3">
                   <h5 style="margin: 0px">{{ album.name }}</h5>
                   <span class="text-fade"> {{ album.created_at | date: 'MMM dd, yyyy'}} </span>
@@ -157,7 +157,7 @@
             </li>
             <li *ngFor="let sharing of sharings" class="row can-click">
               <div class="media" (click)="infoAlbumClick(sharing)">
-                <img class="col-sm-4" [src]="sharing.thumbnail_url" alt="Generic placeholder image">
+                <img class="col-sm-4" style="width: 50px; height: 50px; padding: 0px" [src]="sharing.thumbnail_url" alt="Generic placeholder image">
                 <div class="col-sm-8 mt3">
                   <h5 style="margin: 0px">{{ sharing.name }}</h5>
                   <span class="text-fade"> {{ sharing.created_at | date: 'MMM dd, yyyy'}} </span>
