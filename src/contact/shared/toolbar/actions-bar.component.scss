@@ -13,6 +13,7 @@
       @include inline-flex;
       @include align-items(center);
       margin-left: 5px;
+      color: unset;
     }
   }
 }

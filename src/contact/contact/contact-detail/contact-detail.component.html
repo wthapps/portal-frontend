@@ -7,7 +7,7 @@
         [showTag]="false"
         [showSocial]="data | isContactInternal"
         [showChat]="data | isContactInternal"
-        [showInvitation]="false"
+        [showInvitation]="true"
         [toggleFavourite]="_contact.isContactsHasGroupName([data], 'favourite')"
         [toggleBlacklist]="_contact.isContactsHasGroupName([data], 'blacklist')"
         (eventOut)="doActionsToolbar($event)"></z-contact-shared-actions-bar>

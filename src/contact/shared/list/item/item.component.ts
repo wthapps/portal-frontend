@@ -8,7 +8,6 @@ import { ApiBaseService } from '@shared/services';
 import { Router } from '@angular/router';
 
 @Component({
-
   selector: 'z-contact-shared-item',
   templateUrl: 'item.component.html'
 })

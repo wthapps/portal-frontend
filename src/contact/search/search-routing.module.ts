@@ -8,12 +8,21 @@ import { ContactSearchComponent } from '@contacts/search/search.component';
   imports: [
     RouterModule.forChild([
       {
-        path: 'search/:id',
-        component: ContactSearchComponent,
-        canActivate: [AuthGuard]
-      }
+        path: 'search',
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: '',
+            component: ContactSearchComponent
+          },
+          {
+            path: ':id',
+            component: ContactSearchComponent
+          }
+        ]
+      },
     ])
   ],
   exports: [RouterModule]
 })
-export class ZContactSearchRoutingModule {}
+export class ZContactSearchRoutingModule { }

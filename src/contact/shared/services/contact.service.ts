@@ -462,6 +462,16 @@ export class ZContactService extends BaseEntityService<any> {
     this.userSettings = settings;
   }
 
+  addToMyContacts(contacts: Contact[] = this.selectedObjects): Promise<any> {
+    if (contacts.length > 0) {
+      const selectedContacts = contacts.map(ct => ({
+        ...ct, my_contact: true
+      }));
+      return this.updateMultiple({ contacts: selectedContacts }).toPromise();
+    }
+    return Promise.resolve(null);
+  }
+
   get defaultCountryCode() {
     return this.userSettings.phone_default_code;
   }

@@ -76,8 +76,13 @@ $component-action: 320px;
     .page-body-control-menu {
       > li:not(.dropdown) {
         display: none;
+        color: unset;
         &:nth-child(2) {
           display: inline-block;
+        }
+
+        a {
+          color: unset;
         }
       }
     }

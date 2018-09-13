@@ -1,21 +1,29 @@
-<ul class="page-body-control-menu">
-  <li *ngIf="showAddToContacts">
-    <a href="javascript:void(0);" class="btn btn-default"
-       (click)="emitEvent({action: 'add_to_contacts', payload: data})"
-       pTooltip="{{ tooltip.addToContacts }}" tooltipPosition="bottom">
+
+<ul class="page-body-control-menu pull-right">
+  <li class="hidden-xs" *ngIf="showAddToContacts">
+    <a href="javascript:void(0);" class="btn btn-default" (click)="addToMyContacts([data])" pTooltip="{{ tooltip.addToContacts }}"
+      tooltipPosition="bottom">
       <i class="fa fa-user-plus" aria-hidden="true"></i>
     </a>
   </li>
-  <li *ngIf="contactService.selectedObjects.length > 1 && showMergeContacts">
-    <a href="javascript:;" class="btn btn-default" (click)="mergeContacts()" pTooltip="{{ tooltip.mergeContacts }}" tooltipPosition="bottom">
+  <li class="hidden-xs" *ngIf="contactService.selectedObjects.length > 1 && showMergeContacts">
+    <a href="javascript:;" class="btn btn-default" (click)="mergeContacts()" pTooltip="{{ tooltip.mergeContacts }}"
+      tooltipPosition="bottom">
       <!--<img alt="" width="30" src="assets/images/icons/merge_icon.svg">-->
       <i class="wthico-merge" aria-hidden="true"></i>
     </a>
   </li>
-  <li>
+  <li class="hidden-xs" *ngIf="showFavorite">
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite', payload: data})" pTooltip="{{ tooltip.favourite }}"
       tooltipPosition="bottom">
       <i class="fa" [ngClass]="toggleFavourite ? 'fa-star' : 'fa-star-o'"></i>
+    </a>
+  </li>
+
+  <li class="hidden-xs" *ngIf="showEdit">
+    <a href="javascript:void(0);" class="btn btn-default" (click)="emitEvent({action: 'edit_contact', payload: data})"
+      pTooltip="Edit Contact">
+      <i class="fa fa-pencil"></i>
     </a>
   </li>
 
@@ -25,29 +33,28 @@
       <i class="fa fa-ellipsis-v"></i>
     </a>
     <ul class="dropdown-menu dropdown-menu-right text-right">
-      <li *ngIf="showViewDetail">
+      <li class="visible-xs-block" *ngIf="showEdit">
+        <a href="javascript:void(0);" (click)="emitEvent({action: 'edit_contact', payload: data})">
+          <i class="fa fa-pencil"></i> Edit contact
+        </a>
+      </li>
+      <!-- <li *ngIf="showViewDetail">
         <a href="javascript:void(0);" (click)="emitEvent({action: 'view_detail', payload: data})">
           <i class="fa fa-eye"></i> View Contact
         </a>
-      </li>
-
-      <li *ngIf="showEdit">
-        <a href="javascript:void(0);" (click)="emitEvent({action: 'edit_contact', payload: data})">
-          <i class="fa fa-pencil"></i> Edit Contact
-        </a>
-      </li>
+      </li> -->
 
       <li *ngIf="showTag">
         <a href="javascript:void(0);" (click)="emitEvent({action: 'tag', payload: data})">
-          <i class="fa fa-users"></i> Add to Group
+          <i class="fa fa-users"></i> Change groups
         </a>
       </li>
 
       <ng-container *ngIf="showViewDetail">
         <!--<li class="visible-xs-block" *ngIf="showInvitation && !showNumber">-->
-          <!--<a href="javascript:;" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})">-->
-            <!--<i class="fa fa-envelope-o" aria-hidden="true"></i> Invite-->
-          <!--</a>-->
+        <!--<a href="javascript:;" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})">-->
+        <!--<i class="fa fa-envelope-o" aria-hidden="true"></i> Invite-->
+        <!--</a>-->
         <!--</li>-->
         <li class="visible-xs-block" *ngIf="number > 1">
           <a href="javascript:;" (click)="mergeContacts()">
@@ -65,13 +72,9 @@
         <a href="javascript:;" (click)="emitEvent({action: 'delete', payload: data})">
           <i class="fa fa-trash"></i> Delete</a>
       </li>
-      <!-- <li>
-        <a href="javascript:;" (click)="emitEvent({action: 'blacklist', payload: data})" [title]="toggleBlacklist ? 'remove from blacklist' : 'add to blacklist'">
-          <i class="fa fa-ban"></i> Blacklist
-        </a>
-      </li> -->
       <li *ngIf="showInvitation">
-        <a href="javascript:void(0);" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})" title="Send invitation">
+        <a href="javascript:void(0);" (click)="emitEvent({action: 'invitation:open_modal', payload: {objects: [data]}})"
+          title="Send invitation">
           <i class="fa fa-envelope-o"></i> Send invitation
         </a>
       </li>

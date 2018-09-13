@@ -5,6 +5,7 @@ import { Mixin } from '../../../shared/design-patterns/decorator/mixin-decorator
 
 import { Constants } from '../../../shared/constant/config/constants';
 import { CommonEventService } from '@wth/shared/services';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 
 @Mixin([EmitEventMixin])
@@ -22,9 +23,10 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   @Input() showMergeContacts = false;
   @Input() showEdit = true;
   @Input() showTag = true;
-  @Input() showInvitation = true;
+  @Input() showInvitation = false;
   @Input() showQuickInvitation = false;
   @Input() showAddToContacts = false;
+  @Input() showFavorite = true;
   // Toggle
   @Input() toggleFavourite = false;
   @Input() toggleBlacklist = false;
@@ -40,16 +42,24 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   readonly UNCONNECT_STATUS = [1, 4];
 
   constructor(public contactService: ZContactService,
-              private commonService: CommonEventService) {
+    private toastsService: ToastsService,
+    private commonService: CommonEventService) {
 
   }
 
   mergeContacts() {
-    this.commonService.broadcast({channel: 'contact:contact:actions:merge', action: 'open'});
+    this.commonService.broadcast({ channel: 'contact:contact:actions:merge', action: 'open' });
     // this.contactService.mergeDuplicateContacts().then((res: any) => console.log('merge duplicate is DONE'));
   }
 
   sendRequest(contact: any) {
     this.contactService.sendRequest(contact);
+  }
+
+  addToMyContacts(contacts): void {
+    this.contactService.addToMyContacts(contacts).then(res => {
+      if (res)
+        this.toastsService.success('You added others to your contacts successful!');
+    });
   }
 }

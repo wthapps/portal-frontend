@@ -20,7 +20,7 @@ export class ZContactSharedListV1Component implements OnChanges{
   desc$: Observable<boolean>;
   currentSort = 'name';
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
 
   constructor(public contactService: ZContactService) {
     this.desc$ = this.contactService.orderDesc$;

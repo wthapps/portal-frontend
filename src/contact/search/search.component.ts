@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 
 import { ZContactService } from '@contacts/shared/services/contact.service';
 import { ApiBaseService, UrlService, CommonEventService, CommonEvent } from '@shared/services';
@@ -9,8 +9,8 @@ import { Config, Constants } from '@shared/constant';
 import { Recipient } from '@shared/shared/components/invitation/recipient.model';
 import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-add-group/contact-add-group-modal.component';
 import { InvitationCreateModalComponent } from '@shared/shared/components/invitation/invitation-create-modal.component';
+import { Subscription } from 'rxjs/Subscription';
 
-declare var $: any;
 declare var _: any;
 
 @Component({
@@ -25,7 +25,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   contacts: any;
   nextMine: any;
   nextWTH: any;
-  sub: any;
+  sub: Subscription;
   _contact: any = _contact;
 
   readonly linkSocial = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
@@ -41,12 +41,11 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
     private apiBaseService: ApiBaseService
   ) {
     this.route.params.subscribe(params => {
-
-      if (!params['id'] || params['id'] === 'all') {
-        this.getAll(params);
-      }
-      if (params['id'] === 'mine') {
+      if (!params['id']  || params['id'] === 'mine') {
         this.getMine(params);
+      }
+      if (!params['id'] || params['id'] === 'others') {
+        this.getOtherContacts(params);
       }
       if (params['id'] === 'wth') {
         this.getWTH(params);
@@ -68,16 +67,15 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) this.sub.unsubscribe();
+    if (this.sub && !this.sub.closed) this.sub.unsubscribe();
   }
 
-  async getAll(params: any) {
-    const res = await this.apiBaseService.get(`contact/search/wth_users_not_in_contact`, { q: `name:${params.q}` }).toPromise();
-    this.contacts = res.data;
-    this.nextWTH = res.meta.links.next;
-    const res2 = await this.apiBaseService.get(`contact/search/my_contacts`, { q: `name:${params.q}` }).toPromise();
-    this.contacts = [...this.contacts, ...res2.data];
-    this.nextMine = res2.meta.links.next;
+  getOtherContacts(params: any): void {
+    this.apiBaseService.get(`contact/search/other_contacts`, { q: `name:${params.q}` })
+      .toPromise().then(res => {
+        this.contacts = res.data;
+        this.nextWTH = res.meta.links.next;
+      });
   }
 
   getMine(params: any): void {

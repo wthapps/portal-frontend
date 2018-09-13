@@ -33,8 +33,8 @@
     <ul class="list-unstyled m0">
       <li *ngIf="data.phones && data.phones.length > 0">
         <img *ngIf="(countriesCode$ | async) && data.phones[0] && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
-          src="assets/images/flags/{{data.phones[0]?.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg" width="30"
-          alt=""> {{ data.phones[0]?.value }}
+          src="assets/images/flags/{{data.phones[0]?.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
+          width="30" alt=""> {{ data.phones[0]?.value }}
       </li>
     </ul>
   </div>
@@ -42,16 +42,16 @@
   <div class="component-listbox-date"></div>
   <!-- Actions for contact -->
   <div class="component-listbox-action" *ngIf="!data.settings">
-<z-contact-shared-actions-bar [data]="data" [showQuickInvitation]="data.wthapps_user == null"
-  [showNumber]="false"
-  [showSocial]="data | isContactInternal"
-      [showChat]="data | isContactInternal" [showInvitation]="data | canInvite" [toggleFavourite]="data | contactHasGroup:'favourite'"
-      [toggleBlacklist]="data | contactHasGroup:'blacklist'" (eventOut)="doActionsToolbar($event)">
+    <z-contact-shared-actions-bar [data]="data" [showQuickInvitation]="data.wthapps_user == null" [showNumber]="false"
+      [showSocial]="data | isContactInternal" [showChat]="data | isContactInternal" [showInvitation]="data | canInvite"
+      [toggleFavourite]="data | contactHasGroup:'favourite' " [showFavorite]="data?.my_contact" [showAddToContacts]="!data?.my_contact"
+      [toggleBlacklist]="data |
+contactHasGroup:'blacklist'" (eventOut)="doActionsToolbar($event)">
     </z-contact-shared-actions-bar>
   </div>
   <!-- Actions for user -->
   <div class="component-listbox-action" *ngIf="data.settings">
-    <button *ngIf="!saved" class="btn btn-default pull-right" type="button" (click)="saveContact()" pTooltip="Save to Contacts">
+    <button *ngIf="!saved" class="btn btn-default pull-right" type="button" (click)="saveContact()" pTooltip="Add to my contacts">
       <i class="fa fa-user-plus"></i></button>
     <span *ngIf="saved">Saved</span>
   </div>

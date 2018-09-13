@@ -93,17 +93,17 @@ export class ZContactDetailComponent implements OnInit {
         this.router.navigate(['contacts/', this.data.id, {mode: 'edit'}]).then();
         break;
 
-      case 'add_to_contacts':
-        if (this.contactService.selectedObjects.length > 0) {
-          const contacts = this.contactService.selectedObjects.map(contact => {
-            contact.my_contact = true;
-            return { ...contact };
-          });
-          this.contactService.updateMultiple({contacts: contacts}).subscribe(response => {
-            this.toaster.success('You added others to your contacts successful!');
-          });
-        }
-        break;
+      // case 'add_to_contacts':
+      //   if (this.contactService.selectedObjects.length > 0) {
+      //     const contacts = this.contactService.selectedObjects.map(contact => {
+      //       contact.my_contact = true;
+      //       return { ...contact };
+      //     });
+      //     this.contactService.updateMultiple({contacts: contacts}).subscribe(response => {
+      //       this.toaster.success('You added others to your contacts successful!');
+      //     });
+      //   }
+      //   break;
     }
   }
 

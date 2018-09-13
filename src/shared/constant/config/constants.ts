@@ -506,7 +506,8 @@ export class ConstantsBase {
     deleteSharing: 'Delete Sharing',
     doubleClickToEdit: 'Double click to edit',
     addToSharing: 'Add to sharing',
-    addToContacts: 'Add to contacts'
+    addToContacts: 'Add to contacts',
+    wthContacts: 'Public contact information of other users from WTH!Apps.'
   };
 
   confirmDialog: any = {
