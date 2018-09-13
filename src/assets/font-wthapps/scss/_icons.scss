@@ -1,4 +1,6 @@
-
+.#{$fw-css-prefix}-merge:before {
+  content: "\e902";
+}
 .#{$fw-css-prefix}-shared-with-me:before {
   content: "\e901";
 }
