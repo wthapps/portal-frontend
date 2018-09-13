@@ -5,14 +5,10 @@
         <i class="fa fa-arrow-left"></i>
       </button>
     </li>
-  </ul> -->
-  <div class="nav-tabs-wrap pull-left">
-
+</ul> -->
+<w-nav-tab [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="search($event)"></w-nav-tab>
+  <!-- <div class="nav-tabs-wrap pull-left">
     <ul class="nav nav-tabs list-unstyled">
-      <!-- <li [ngClass]="active[0]? 'active': ''">
-        <a type="button" class="btn btn-outline-primary" (click)="search($event, 'all')">
-          All </a>
-      </li> -->
       <li [ngClass]="{'active': activeTabs?.mine}">
         <a type="button" class="btn btn-outline-default" (click)="search($event, 'mine')">
           My Contacts </a>
@@ -23,13 +19,12 @@
       </li>
       <li [ngClass]="{'active': activeTabs?.wth}">
         <a type="button" class="btn btn-outline-default" (click)="search($event, 'wth')">
-          WTH!Apps 
-        <i class="fa fa-info-circle"
-           [pTooltip]="tooltip?.wthContacts"
-           tooltipPosition="bottom"></i> </a>
+          WTH!Apps
+          <i class="fa fa-info-circle" [pTooltip]="tooltip?.wthContacts" tooltipPosition="bottom"></i> </a>
       </li>
     </ul>
-  </div>
+  </div> -->
+
 </div>
 
 <ng-content></ng-content>

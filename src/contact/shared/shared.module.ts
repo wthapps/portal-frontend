@@ -53,6 +53,7 @@ import { ZContactSearchSharedToolbarComponent } from '@contacts/shared/toolbar/s
 import { ZContactSharedListV1Component } from '@contacts/shared/list/v1/list.component';
 import { StickyModule } from 'ng2-sticky-kit';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -80,6 +81,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     CoverProfileModule,
     ModalDockModule,
     ZSharedMenuModule,
+    WNavTabModule,
 
     // third party libs
     TagInputModule,
@@ -131,6 +133,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     ComponentsModule,
     ZSharedMenuModule,
     BoxNoDataModule,
+    WNavTabModule,
 
     // third party libs
     TagInputModule,

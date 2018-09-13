@@ -5,6 +5,7 @@ import {
 
 import { Constants } from '../../../shared/constant/config/constants';
 import { Router, ActivatedRoute } from '@angular/router';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 
 const DEFAULT_TABS =  {
     mine: false,
@@ -20,6 +21,28 @@ export class ZContactSearchSharedToolbarComponent implements OnInit {
   // active: any = [true, false, false];
   activeTabs: any = DEFAULT_TABS;
   readonly tooltip: any = Constants.tooltip;
+  tabs: WTab[] = [{
+    name: 'My Contacts',
+    link: 'mine',
+    icon: null,
+    number: null,
+    type: 'tab'
+  },
+    {
+      name: 'Other Contacts',
+      link: 'others',
+      icon: null,
+      number: null,
+      type: 'tab'
+    },
+    {
+      name: 'WTH!Apps',
+      link: 'wth',
+      icon: 'fa fa-info-circle',
+      number: null,
+      type: 'tab'
+    }];
+  currentTab: string;
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
@@ -30,7 +53,7 @@ export class ZContactSearchSharedToolbarComponent implements OnInit {
     });
   }
 
-  search(e: any, data: any) {
-    this.router.navigate([`search/${data}`, { q: this.route.snapshot.params['q'] }]);
+  search(event: WTab) {
+    this.router.navigate([`search/${event.link}`, { q: this.route.snapshot.params['q'] }]);
   }
 }
