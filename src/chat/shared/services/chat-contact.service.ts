@@ -17,16 +17,15 @@ export class ChatContactService {
 
   }
 
-  addContact(ids: any, text?: any): Promise<any> {
-    return this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text: text})
-    .toPromise().then(
+  addContact(ids: any, text?: any) {
+    this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text: text}).subscribe(
       (res: any) => {
-        this.chatCommonService.moveFristRecentList(res.data.group_id);
-        if (res.data.group_id)
-          return this.chatCommonService.updateConversationBroadcast(res.data.group_id);
-        return Promise.resolve(null);
-      });
-    }
+        this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res => {
+          this.chatCommonService.moveFirstRecentList(res.data.group_id);
+        });
+      }
+    );
+  }
 
   cancelContactRequest(contact: any): Promise<boolean> {
     const groupId = contact.group_id;

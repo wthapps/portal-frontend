@@ -1,11 +1,11 @@
 <form>
   <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <bs-modal-header [showDismiss]="true">
-      <h4 class="modal-title"> <i class="fa fa-plus"></i> Add To Conversation </h4>
+      <h4 class="modal-title">Add To Conversation </h4>
     </bs-modal-header>
     <bs-modal-body>
       <div class="form-group">
-        <input type="text" name="name" class="form-control" placeholder="Name" value="">
+        <input type="text" name="name" class="form-control" placeholder="Conversation name" value="">
       </div>
       <div class="content-overflow" style="max-height: 300px;">
         <ng-container *ngIf="contactItem?.value?.data">

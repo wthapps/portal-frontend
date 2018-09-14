@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, PreloadAllModules } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@shared/services';
 
 @NgModule({
@@ -7,22 +7,11 @@ import { AuthGuard } from '@shared/services';
     RouterModule.forRoot([
       {
         path: '',
-        canActivate: [AuthGuard],
-        children: [
-          {
-            path: 'profile', loadChildren:
-              './profile/profile.module#ZChatProfileModule'
-          },
-          {
-            path: 'search', loadChildren:
-              './search/search.module#ZChatSearchModule'
-          }
-        ]
+        redirectTo: '/conversations',
+        pathMatch: 'full',
+        canActivate: [AuthGuard]
       }
-    ], {
-        enableTracing: false, // <-- debugging purposes only
-        preloadingStrategy: PreloadAllModules
-      })
+    ])
   ],
   exports: [RouterModule]
 })

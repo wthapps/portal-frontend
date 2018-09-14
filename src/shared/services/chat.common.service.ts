@@ -63,7 +63,7 @@ export class ChatCommonService {
     this.storage.save('chat_history_conversations', historyContacts);
   }
 
-  moveFristRecentList(groupId?: string): Promise<any> {
+  moveFirstRecentList(groupId?: string): Promise<any> {
     const chat_conversations = this.storage.getValue(CHAT_CONVERSATIONS);
     const conversations: any = chat_conversations.data;
     const latest_group = conversations.find(conv => conv.group_id === groupId);
@@ -115,7 +115,7 @@ export class ChatCommonService {
         this.messageService.scrollToBottom();
     }
     if (incomingConversation && !incomingConversation.favourite) {
-      this.moveFristRecentList(groupId);
+      this.moveFirstRecentList(groupId);
     }
     for (const conversation of conversationsResponse.data) {
       if (conversation.group_json.id === groupId)

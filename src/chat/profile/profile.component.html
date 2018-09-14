@@ -4,10 +4,10 @@
       <h3 class="bold m0">{{ profile.name }}</h3>
     </div>
     <div class="media-right no-wrap">
-      <button *ngIf="actions.send_message" class="btn btn-outline-default" type="button" (click)="onSelect(profile)">
-        <i class="fa fa-comment"></i>
+      <button *ngIf="actions.send_message" class="btn btn-default" type="button" (click)="onSelect(profile)">
+        <i class="fa fa-comments-o"></i>
       </button>
-      <button *ngIf="actions.favorite" type="button" class="btn btn-outline-default" (click)="onFavorite()">
+      <button *ngIf="actions.favorite" type="button" class="btn btn-default" (click)="onFavorite()">
         <!--<i class="fa fa-star-o"></i>-->
         <i class="fa" [ngClass]="contact.favourite? 'fa-star': 'fa-star-o'"></i>
       </button>
