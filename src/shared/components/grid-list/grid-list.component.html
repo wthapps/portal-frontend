@@ -1,12 +1,3 @@
-<!--<w-toolbar #toolbar-->
-<!--[view]="view"-->
-<!--[selectedObjects]="selectedObjects"-->
-<!--[leftActionsTemplate]="leftActionsTemplate ? leftActionsTemplate : leftActionsDefaultTemplate"-->
-<!--[objectActionsTemplate]="objectActionsTemplate"-->
-<!--(event)="doEvent($event)">-->
-<!--</w-toolbar>-->
-<!-- <ng-content select="w-toolbar"></ng-content> -->
-
 <ng-container *ngIf="objects && objects.length > 0">
   <div class="page-body-content has-page-body-control gray-light" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
     [scrollWindow]="scrollWindow" (scrolled)="doEvent({action: 'getMore', payload: { nextLink: nextLink }})">
@@ -14,7 +5,7 @@
       <w-grid-list-header [data]="objects" [view]="view" [field]="sorting.sort_name" [direction]="sorting.sort" (event)="doEvent($event)"></w-grid-list-header>
       <div id="list-photo" class="row-img row-img-{{ viewSize }}" [ngClass]="view" (dragenter)="onDragenter($event)" (dragleave)="onDragleave($event)">
         <ng-container *ngFor="let group of objects | convertByPattern:'created_at':groupByTime | groupBy:groupBy: objects?.length;">
-          <p class="m15 fz15" *ngIf="group.key && (view !== 'grid')">
+          <p class="m15 fz15" *ngIf="group.key && (view == 'timeline')">
             {{ group.key | titleCase }}
           </p>
           <div *ngIf="group.value" class="clearfix">

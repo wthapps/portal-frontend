@@ -94,11 +94,22 @@ export class WGridListComponent implements OnDestroy, OnChanges {
         }
       });
     }
-    // if(changes.sorting) {
+    if(changes.view) {
+      this.view = changes.view.currentValue;
+      if (this.view === 'grid') {
+        this.groupByTime = '';
+        this.groupBy = 'object_type';
+      }
+      if (this.view === 'list') {
+        this.groupByTime = '';
+        this.groupBy = '';
+      }
 
-    //   this.sorting = changes.sorting.currentValue;
-    //   console.log(this.sorting);
-    // }
+      if (this.view === 'timeline') {
+        this.groupByTime = 'date';
+        this.groupBy = 'created_at_converted';
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -192,10 +203,10 @@ export class WGridListComponent implements OnDestroy, OnChanges {
       this.groupByTime = '';
       this.groupBy = '';
     }
+
     if (this.view === 'timeline') {
       this.groupByTime = groupBy || 'date';
       this.groupBy = 'created_at_converted';
-      this.groupBy = 'created_at';
     }
   }
 
