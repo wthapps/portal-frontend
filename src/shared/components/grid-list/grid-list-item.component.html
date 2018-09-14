@@ -42,21 +42,17 @@
     </div>
     <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
       <div class="photo-box-figure-in">
-        <!-- <img draggable="false" class="img-center lazyload" [src]="object.photo_default" alt=""> -->
-        <!-- <img draggable="false" class="img-center lazyload" [src]="object.thumbnail_url" alt=""> -->
         <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url + '?t=' + time" alt="">
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->
         <span *ngIf="object.child_count > 1">
-          {{ object.child_count }} {{
-            (object.object_type == 'Media::Playlist') || (['Media::Playlist', 'Media::Video'].includes(object.sharing_type)) ? 'videos' : 'photos'
-          }}
+          {{ object.child_count }} {{ (object.object_type == 'Media::Playlist') || (['Media::Playlist', 'Media::Video'].includes(object.sharing_type))
+          ? 'videos' : 'photos' }}
         </span>
         <span *ngIf="object.child_count <= 1">
-          {{ object.child_count }} {{
-            (object.object_type == 'Media::Playlist') || (['Media::Playlist', 'Media::Video'].includes(object.sharing_type)) ? 'video' : 'photo'
-          }}
+          {{ object.child_count }} {{ (object.object_type == 'Media::Playlist') || (['Media::Playlist', 'Media::Video'].includes(object.sharing_type))
+          ? 'video' : 'photo' }}
         </span>
       </div>
     </figure>
@@ -76,7 +72,7 @@
   </div>
 
 
-  <!--sharing-->
+  <!-- sharing -->
   <!-- <div *ngIf="object.object_type == 'sharing'" class="photo-box-figure" (click)="select(object)">
     <div class="photo-box-input" (click)="toggleSelection(object, $event)">
       <i class="fa fa-check"></i>

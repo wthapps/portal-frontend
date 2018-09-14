@@ -195,6 +195,7 @@ export class WGridListComponent implements OnDestroy, OnChanges {
     if (this.view === 'timeline') {
       this.groupByTime = groupBy || 'date';
       this.groupBy = 'created_at_converted';
+      this.groupBy = 'created_at';
     }
   }
 

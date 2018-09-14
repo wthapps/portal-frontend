@@ -271,7 +271,11 @@ MediaModalMixin {
   }
 
   doToolbarEvent(e: any) {
-
+    switch (e.action) {
+      case 'changeView':
+        this.changeViewMode(e.payload);
+        break;
+    }
   }
 
   openModalAddToPlaylist() {

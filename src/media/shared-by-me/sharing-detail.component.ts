@@ -216,7 +216,7 @@ export class ZMediaSharingDetailComponent
       } else {
         this.confirmService.confirm({
           message:
-            'You don\'t have permission to access this sharing. Please contact owner to gain permission.',
+            'You don\'t have permission to access this sharing. Please contact the owner to gain permission.',
           header: 'Permission denied',
           rejectLabel: null,
           accept: () => {

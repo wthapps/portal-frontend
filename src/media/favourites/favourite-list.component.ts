@@ -146,7 +146,11 @@ export class ZMediaFavoriteListComponent implements OnInit,
   }
 
   doToolbarEvent(e: any) {
-
+    switch (e.action) {
+      case 'changeView':
+        this.changeViewMode(e.payload);
+        break;
+    }
   }
 
   onListChanges(e: any) {

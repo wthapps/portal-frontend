@@ -38,23 +38,6 @@
   <div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
     <box-loading></box-loading>
   </div>
-
-  <!--no data region-->
-
-  <!-- <div class="zone-no-photo text-center" *ngIf="objects && objects.length == 0 && !loading">
-    <div>
-      <h2>
-        <i class="icon-album"></i>
-      </h2>
-      <h3>There are no albums!</h3>
-      <p>
-        <button class="btn btn-outline-primary" (click)="doEvent({action: 'openModal', payload: {modalName: 'createAlbumModal'}})">
-          <i class="fa fa-plus-circle"></i> Create an album
-        </button>
-      </p>
-    </div>
-  </div> -->
-
 </w-grid-list>
 <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
   [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
