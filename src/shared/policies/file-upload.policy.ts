@@ -9,7 +9,7 @@ export class FileUploadPolicy {
 
   static allow(file: any, policies: any[] = []) {
     file.allow = true;
-    file.allowErrors = [];
+    file.validateErrors = [];
     policies.forEach(p => p.validate(file));
     return file;
   }

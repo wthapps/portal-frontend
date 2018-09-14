@@ -22,10 +22,10 @@ export class BlackListPolicy {
     let e = FileUtil.getExtension(file);
     if (this.policies.some((item: any) => item == e)) {
       file.allow = false;
-      file.allowTitle =
+      file.validateText =
         'This file type is not permitted for sercurity reasons.';
-      file.allowErrors = file.allowErrors
-        ? [...file.allowErrors, this.status]
+      file.validateErrors = file.validateErrors
+        ? [...file.validateErrors, this.status]
         : [this.status];
     }
     return file;
