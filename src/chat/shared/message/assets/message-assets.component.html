@@ -5,40 +5,42 @@
   <div *ngIf="currentTab === 'members'" class="message-assets-content bg-gray-light">
     <div class="message-assets-members">
       <ng-container *ngIf="conversation">
-        <ul
-          *ngIf="conversation.group_type === 'multiple' && members.length > 0">
-          <li *ngFor="let user of members">
-            <z-chat-share-user-icon
-              class="message-assets-members-row"
-              [userId]="user.id"
-              [image]="user.profile_image"
-              [groupType]="chatContactList[user?.id] ? 'couple' : 'stranger'"
-              [name]="user.name">
-            </z-chat-share-user-icon>
-            <div class="btn-group">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                      pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
-                <i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li *ngIf="authService.user.id !== user.id">
-                  <a href="javascript:void(0);" (click)="onSelect(user)">Send Message</a>
-                </li>
-                <li>
-                  <a [routerLink]="[profileUrl, user.uuid]">View Profile</a>
-                </li>
-                <li *ngIf="showBlacklist">
-                  <a href="javascript:void(0);" (click)="onAddToBlackList(user)">Blacklist</a>
-                </li>
-                <li *ngIf="authService.user.id === conversation.group_json.creator_id && conversation.group_json.creator_id !== user.id">
-                  <a href="javascript:void(0);" (click)="onRemoveMember(user)">Remove From Conversation</a>
-                </li>
-                <li *ngIf="authService.user.id === user.id">
-                  <a href="javascript:void(0);" (click)="leaveConversation(user)">Leave Conversation</a>
-                </li>
-              </ul>
-            </div>
-          </li>
+        <ul *ngIf="conversation.group_type === 'multiple' && members.length > 0">
+          <ng-container *ngFor="let user of members">
+            <li *ngIf="(userService.getSyncProfile().uuid !== user.uuid)">
+              <z-chat-share-user-icon
+                class="message-assets-members-row"
+                [userId]="user.id"
+                [image]="user.profile_image"
+                [groupType]="chatContactList[user?.id] ? 'couple' : 'stranger'"
+                [name]="user.name">
+              </z-chat-share-user-icon>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li *ngIf="authService.user.id !== user.id">
+                    <a href="javascript:void(0);" (click)="onSelect(user)">Send Message</a>
+                  </li>
+                  <li>
+                    <a [routerLink]="[profileUrl, user.uuid]">View Profile</a>
+                  </li>
+                  <li *ngIf="showBlacklist">
+                    <a href="javascript:void(0);" (click)="onAddToBlackList(user)">Blacklist</a>
+                  </li>
+                  <li
+                    *ngIf="authService.user.id === conversation.group_json.creator_id && conversation.group_json.creator_id !== user.id">
+                    <a href="javascript:void(0);" (click)="onRemoveMember(user)">Remove From Conversation</a>
+                  </li>
+                  <li *ngIf="authService.user.id === user.id">
+                    <a href="javascript:void(0);" (click)="leaveConversation(user)">Leave Conversation</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ng-container>
         </ul>
       </ng-container>
     </div>
@@ -86,17 +88,17 @@
             <!-------------- File view --------------->
             <ng-container *ngIf="item.model === 'Common::GenericFile'">
               <div class="wobject-box-name wobject-box-clickable">
-                  <div class="media">
-                    <div class="media-left">
-                      <i class="fa fa-file-archive-o fz30 mt5"></i>
-                    </div>
-                    <div class="media-body">
-                      <a [href]="item.url">
-                        <p class="mb0"> {{ item.full_name }} </p>
-                      </a>
-                        <small class="text-fade"> {{ item.size | bytes:0 }} </small>
-                    </div>
+                <div class="media">
+                  <div class="media-left">
+                    <i class="fa fa-file-archive-o fz30 mt5"></i>
                   </div>
+                  <div class="media-body">
+                    <a [href]="item.url">
+                      <p class="mb0"> {{ item.full_name }} </p>
+                    </a>
+                    <small class="text-fade"> {{ item.size | bytes:0 }}</small>
+                  </div>
+                </div>
               </div>
             </ng-container>
             <!-------------- End File view --------------->

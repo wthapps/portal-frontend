@@ -77,7 +77,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   constructor(
     private chatService: ChatService,
     private commonEventService: CommonEventService,
-    private userService: UserService,
+    public userService: UserService,
     private authService: AuthService,
     private wthConfirmService: WthConfirmService,
     private addContactService: ZChatShareAddContactService,
