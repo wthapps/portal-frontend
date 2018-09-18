@@ -4,19 +4,23 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
 
 import { ChatService } from '../services/chat.service';
+import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
+import { AbstractClassPart } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'z-chat-share-edit-conversation',
   templateUrl: 'edit-conversation.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['edit-conversation.component.scss']
 })
 export class ZChatShareEditConversationComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
   @Input() conversation: any;
   usersOnlineItem$: Observable<any>;
-  // chat_history_everyone: AbstractControl;
-  // everyone_can_add: AbstractControl;
-  constructor(private chatService: ChatService)  {
+  form: FormGroup;
+  allow_add: any = true;
+  name: any;
+
+  constructor(private chatService: ChatService, private fb: FormBuilder)  {
 
   }
 
@@ -25,11 +29,14 @@ export class ZChatShareEditConversationComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.chatService.updateDisplay(this.conversation, {display: this.conversation.display});
+    this.chatService.updateDisplay(this.conversation, {display: {name: this.name}, allow_add: this.allow_add});
     this.modal.close();
   }
 
   open() {
-    this.modal.open();
+    this.modal.open().then(e => {
+      this.allow_add = (this.conversation.group_json.allow_add || this.conversation.group_json.allow_add == 'true');
+      this.name = this.conversation.group_json.name;
+    });
   }
 }

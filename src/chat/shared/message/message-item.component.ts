@@ -32,7 +32,7 @@ export class MessageItemComponent implements OnInit {
   readonly noteUrl: any = Constants.baseUrls.note;
   readonly actions = CHAT_ACTIONS;
   readonly profileUrl: any = ChatConstant.profileUrl;
-  readonly NO_ACTION_MESSAGES = ['message_deleted', 'message_cancel', 'request', 'share_contact_message', 'request_accepted'];
+  readonly NO_ACTION_MESSAGES = ['message_deleted', 'message_cancel', 'request', 'request_accepted'];
 
   private modifiedMessage: any;
 
@@ -150,7 +150,8 @@ export class MessageItemComponent implements OnInit {
       this.delete();
     }
     if (data.action === 'resend') {
-      this.chatService.shareContact([this.message.display.share_contact.id]);
+      // this.chatService.shareContact([this.message.display.share_contact.id]);
+      this.chatService.selectContactByPartnerId(this.message.display.share_contact.id);
     }
   }
 

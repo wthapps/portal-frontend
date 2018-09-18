@@ -8,6 +8,5 @@
     <p *ngIf="data.group_json?.group_type == 'multiple'">{{ data.group_json.name }}</p>
     <ng-content></ng-content>
   </div>
-  <span *ngIf="data.display?.id" class="media-user-status"
-        [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>
+  <span *ngIf="data.display?.id" class="media-user-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>
 </div>

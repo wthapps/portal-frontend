@@ -16,20 +16,18 @@
   </div>
   <div class="menuleft-chat-form">
     <!--<div class="input-group-wrap input-group-wrap-search">-->
-      <!--<form class="input-group" novalidate="">-->
-        <!--<span class="input-group-btn input-group-left">-->
-          <!--<button class="btn btn-default" tooltipposition="bottom" type="button">-->
-            <!--<i class="fa fa-search"></i>-->
-          <!--</button>-->
-        <!--</span>-->
-        <!--<input autocomplete="off" class="form-control" name="search" type="text" placeholder="Search Conversations">-->
-      <!--</form>-->
+    <!--<form class="input-group" novalidate="">-->
+    <!--<span class="input-group-btn input-group-left">-->
+    <!--<button class="btn btn-default" tooltipposition="bottom" type="button">-->
+    <!--<i class="fa fa-search"></i>-->
+    <!--</button>-->
+    <!--</span>-->
+    <!--<input autocomplete="off" class="form-control" name="search" type="text" placeholder="Search Conversations">-->
+    <!--</form>-->
     <!--</div>-->
 
-    <textbox-search #textbox (onEnterEvent)="search(textbox.search)"
-                    (onEscapeEvent)="clearSearch($event)"
-                    (onKeyUpEvent)="search(textbox.search)"
-                    [placeholder]="'Search conversation name'">
+    <textbox-search #textbox (onEnterEvent)="search(textbox.search)" (onEscapeEvent)="clearSearch($event)" (onKeyUpEvent)="search(textbox.search)"
+      [placeholder]="'Search conversation name'">
     </textbox-search>
   </div>
   <hr>
@@ -99,6 +97,7 @@
           <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
           <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
         </small>
+        <!-- {{conversation.latest_message}} -->
         <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
         <a class="media-chat-user-link" [routerLink]="[chatService.constant.conversationUrl, conversation.id]" (click)="onSelect(conversation); onCloseMenu()"
           href="javascript:;"></a>

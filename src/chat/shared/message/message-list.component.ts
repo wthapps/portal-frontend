@@ -25,6 +25,7 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { INCOMING_MESSAGE, ACTION } from '@shared/constant';
+import { ChatContactService } from '@chat/shared/services/chat-contact.service';
 
 declare var _: any;
 declare var $: any;
@@ -54,6 +55,7 @@ export class MessageListComponent implements OnInit, OnDestroy {
     private router: Router,
     private messageService: WMessageService,
     private storageService: StorageService,
+    private chatContactService: ChatContactService,
     private wthEmojiService: WTHEmojiService
   ) {
     this.messageService.scrollToBottom$
@@ -125,7 +127,6 @@ export class MessageListComponent implements OnInit, OnDestroy {
     this.chatService.loadMoreMessages().then(res => {
       // if (res.data && res.data.length > 0)
       //   this.listEl.nativeElement.scrollTop += 100;
-      console.log('load more ...', res);
       this.currentMessages.unshift(...res.data);
     });
   }
@@ -137,7 +138,10 @@ export class MessageListComponent implements OnInit, OnDestroy {
 
   onAddContact(contact: any) {
     this.requestModal.contact = contact;
-    this.requestModal.modal.open();
+    // this.requestModal.modal.open();
+    this.chatContactService.addContact([contact.id], '', (res) => {
+      this.chatService.selectContactByPartnerId(contact.id);
+    });
   }
 
   doEvent(event: any) {
