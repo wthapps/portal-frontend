@@ -93,7 +93,9 @@ export class PhotoDetailComponent implements OnInit,
     public photoService: PhotoService,
     public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
-    public location: Location) { }
+    public location: Location) {
+    this.showMenuAction = true;
+  }
 
   ngOnInit() {
     this.menuActions = this.getMenuActions();
@@ -102,32 +104,32 @@ export class PhotoDetailComponent implements OnInit,
       combineLatest(this.route.queryParams)
     ).subscribe(([p, params]) => {
       this.apiBaseService.get(`media/media/${p.id}`, { model: 'Media::Photo' }).toPromise()
-      .then(res => {
-        this.object = res.data;
-        if (this.object.favorite) {
-          this.menuActions.favorite.iconClass = 'fa fa-star';
-        } else {
-          this.menuActions.favorite.iconClass = 'fa fa-star-o';
-        }
-        this.validateActions(this.menuActions, this.object.permission.role_id);
-        if (!this.listIds && params.preview) {
-          if (params.ids) {
-            this.listIds = new DoublyLinkedLists(params.ids.split(','));
-            this.listIds.setCurrent(this.object.id);
+        .then(res => {
+          this.object = res.data;
+          if (this.object.favorite) {
+            this.menuActions.favorite.iconClass = 'fa fa-star';
           } else {
-            const query: any = { model: 'Media::Photo' };
-            if (params.parent_id) query.parent = params.parent_id;
-            this.apiBaseService.get(`media/media/ids`, query).toPromise()
-            .then(res2 => {
-              if (res2.data) {
-                this.listIds = new DoublyLinkedLists(res2.data.map(d => d.uuid));
-                this.listIds.setCurrent(this.object.uuid);
-              }
-            });
+            this.menuActions.favorite.iconClass = 'fa fa-star-o';
           }
-        }
-        if (params.returnUrl) this.returnUrl = params.returnUrl;
-      });
+          this.validateActions(this.menuActions, this.object.permission.role_id);
+          if (!this.listIds && params.preview) {
+            if (params.ids) {
+              this.listIds = new DoublyLinkedLists(params.ids.split(','));
+              this.listIds.setCurrent(this.object.id);
+            } else {
+              const query: any = { model: 'Media::Photo' };
+              if (params.parent_id) query.parent = params.parent_id;
+              this.apiBaseService.get(`media/media/ids`, query).toPromise()
+                .then(res2 => {
+                  if (res2.data) {
+                    this.listIds = new DoublyLinkedLists(res2.data.map(d => d.uuid));
+                    this.listIds.setCurrent(this.object.uuid);
+                  }
+                });
+            }
+          }
+          if (params.returnUrl) this.returnUrl = params.returnUrl;
+        });
     });
     // const readURL: any = (input) => {
     //   if (input.files && input.files[0]) {
@@ -176,9 +178,9 @@ export class PhotoDetailComponent implements OnInit,
 
   onStart(event?: any) {
     this.image =
-    event && event.path
-    ? event.path[0]
-    : document.getElementById('image-viewer');
+      event && event.path
+        ? event.path[0]
+        : document.getElementById('image-viewer');
     if (this.cropper) {
       if (this.cropper.url !== $('#image-viewer').attr('src')) {
         this.cropper.replace($('#image-viewer').attr('src'));
@@ -280,7 +282,7 @@ export class PhotoDetailComponent implements OnInit,
         action: () => {
           this.apiBaseService.post(`media/favorites/toggle`, {
             objects: [this.object]
-              .map(v => ({ id: v.id, object_type: v.model } ))
+              .map(v => ({ id: v.id, object_type: v.model }))
           }).subscribe(res => {
             this.object = res.data[0];
             if (this.object.favorite) {
@@ -352,7 +354,7 @@ export class PhotoDetailComponent implements OnInit,
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.showDetailsInfo = !this.showDetailsInfo;
-          this.apiBaseService.get(`media/object/${this.object.id}/sharings`, {model: 'Media::Photo'}).subscribe(res => {
+          this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Photo' }).subscribe(res => {
             this.sharings = res.data;
           });
         },
