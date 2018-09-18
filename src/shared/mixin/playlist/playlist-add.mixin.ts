@@ -1,10 +1,10 @@
-import { ApiBaseService } from "@shared/services";
-import { MediaAddModalService } from "@shared/shared/components/photo/modal/media/media-add-modal.service";
-import { ToastsService } from "@shared/shared/components/toast/toast-message.service";
-import { MediaCreateModalService } from "@shared/shared/components/photo/modal/media/media-create-modal.service";
-import { Mixin } from "@shared/design-patterns/decorator/mixin-decorator";
-import { PlaylistCreateMixin } from "@media/shared/mixin/playlist/playlist-create.mixin";
-import { Router } from "@angular/router";
+import { ApiBaseService } from '@shared/services';
+import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { PlaylistCreateMixin } from '@shared/mixin/playlist/playlist-create.mixin';
+import { Router } from '@angular/router';
 
 @Mixin([PlaylistCreateMixin])
 /* PlaylistAddMixin This is Playlist add methods, to

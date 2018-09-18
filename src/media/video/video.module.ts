@@ -11,13 +11,13 @@ import { WToolbarModule } from '@wth/shared/components/toolbar';
 import { ZMediaVideoRoutingModule } from '@media/video/video-routing.module';
 import { ZMediaVideoListComponent } from '@media/video/video-list.component';
 import { BsModalModule } from 'ng2-bs3-modal';
-import { ZVideoDetailComponent } from '@media/video/video-detail.component';
 import { ZMediaPlaylistListComponent } from '@media/video/playlist-list.component';
 import { WUploadModule } from '@shared/components/upload/upload.module';
 import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
 import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
 import { PlaylistListService } from '@media/video/playlist-list.service';
 import { ZPlaylistDetailComponent } from '@media/video/playlist-detail.component';
+import { WMediaPreviewModule } from '@shared/components/w-media-preview/media-preview.module';
 // import { PhotoSandbox } from './photo.sandbox';
 
 @NgModule({
@@ -30,12 +30,12 @@ import { ZPlaylistDetailComponent } from '@media/video/playlist-detail.component
     WUploadModule,
     CoreModule,
     WGridListModule,
+    WMediaPreviewModule,
     WObjectListModule,
     WToolbarModule
   ],
   declarations: [
     ZMediaVideoListComponent,
-    ZVideoDetailComponent,
     ZMediaPlaylistListComponent,
     ZPlaylistDetailComponent
   ],

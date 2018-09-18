@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@wth/shared/services';
 import { ZMediaPhotoListComponent } from './photo-list.component';
-import { PhotoDetailComponent } from './photo-detail.component';
+import { PhotoDetailComponent } from '@shared/components/w-media-preview/photo-detail.component';
+
 
 @NgModule({
   imports: [

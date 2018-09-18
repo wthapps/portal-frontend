@@ -7,10 +7,10 @@ import {
   WthConfirmService
 } from '@wth/shared/services';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
-import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
-import { MediaAdditionalListMixin } from '@media/shared/mixin/media-additional-list.mixin';
+import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
+import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { Constants } from '@shared/constant';
-import { MediaListDetailMixin } from '@media/shared/mixin/media-list-detail.mixin';
+import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 import { Location } from '@angular/common';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
@@ -18,15 +18,15 @@ import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingCreateParams, SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
+import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { mediaConstants } from '@media/shared/conig/constants';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { AsyncScheduler } from 'rxjs/scheduler/AsyncScheduler';
-import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { WUploader } from '@shared/services/w-uploader';
 

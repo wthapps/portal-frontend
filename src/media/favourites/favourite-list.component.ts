@@ -20,16 +20,16 @@ import {
 import { MediaActionHandler } from '@media/shared/media';
 import { DeleteManySuccess } from '@media/shared/store/media';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
+import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { ApiBaseService } from '@shared/services';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaAdditionalListMixin } from '@media/shared/mixin/media-additional-list.mixin';
+import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { mediaConstants } from '@media/shared/conig/constants';
-import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 
 @Mixin([MediaBasicListMixin, SharingModalMixin, MediaAdditionalListMixin, MediaDownloadMixin])
 @Component({

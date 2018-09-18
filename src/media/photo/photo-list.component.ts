@@ -14,13 +14,13 @@ import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
+import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
-import { AlbumCreateMixin } from '@media/shared/mixin/album/album-create.mixin';
-import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
-import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
+import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
+import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
+import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { WUploader } from '@shared/services/w-uploader';
 

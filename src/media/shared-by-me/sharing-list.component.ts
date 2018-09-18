@@ -16,12 +16,12 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ApiBaseService } from '@shared/services';
-import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
+import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
-import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
+import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 
 @Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
 @Component({

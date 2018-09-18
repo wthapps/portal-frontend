@@ -18,24 +18,25 @@ import {
   Download
 } from '../shared/store/media/media.actions';
 import { Constants } from '@wth/shared/constant';
-import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
+import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { ApiBaseService, WthConfirmService } from '@shared/services';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
-import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
+import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { AlbumCreateMixin } from '@media/shared/mixin/album/album-create.mixin';
+import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
 
 @Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin])
 @Component({
   selector: 'z-media-album-list',
   templateUrl: 'album-list.component.html'
 })
-export class AlbumListComponent implements OnInit, OnDestroy, MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin {
+export class AlbumListComponent implements OnInit, OnDestroy,
+ MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin {
   objects: any;
   loading: boolean;
   links: any;

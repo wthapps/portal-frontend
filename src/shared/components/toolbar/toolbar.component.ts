@@ -14,18 +14,17 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
-import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { AlbumCreateMixin } from '@media/shared/mixin/album/album-create.mixin';
-import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
 import { Router } from '@angular/router';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import { WUploader } from '@shared/services/w-uploader';
-import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
-import { PlaylistCreateMixin } from '@media/shared/mixin/playlist/playlist-create.mixin';
+import { MediaViewMixin } from '@shared/mixin/media-view.mixin';
+import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
+import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
+import { PlaylistCreateMixin } from '@shared/mixin/playlist/playlist-create.mixin';
 
 @Mixin([MediaViewMixin, AlbumAddMixin, AlbumCreateMixin, PlaylistCreateMixin])
 @Component({

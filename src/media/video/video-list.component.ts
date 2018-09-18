@@ -18,12 +18,12 @@ import { PlaylistModalService } from '@shared/shared/components/photo/modal/play
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
-import { MediaViewMixin } from '@media/shared/mixin/media-view.mixin';
+import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
+import { MediaViewMixin } from '@shared/mixin/media-view.mixin';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { WUploader } from '@shared/services/w-uploader';
 
 declare var _: any;

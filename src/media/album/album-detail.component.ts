@@ -25,13 +25,12 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { MediaListDetailMixin } from '@media/shared/mixin/media-list-detail.mixin';
-import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
-import { MediaAdditionalListMixin } from '@media/shared/mixin/media-additional-list.mixin';
+import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
+import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
-import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
+import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
+import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingCreateParams, SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
@@ -42,12 +41,13 @@ import { Location } from '@angular/common';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { mediaConstants } from '@media/shared/conig/constants';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
-import { AlbumAddMixin } from '@media/shared/mixin/album/album-add.mixin';
-import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
+import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { WUploader } from '@shared/services/w-uploader';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
+import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 @Mixin([
   MediaBasicListMixin,
   MediaAdditionalListMixin,

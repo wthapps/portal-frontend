@@ -17,15 +17,15 @@ import { PlaylistCreateModalService } from '@shared/shared/components/photo/moda
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { MediaBasicListMixin } from '@media/shared/mixin/media-basic-list.mixin';
+import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaModalMixin } from '@media/shared/mixin/media-modal.mixin';
+import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
 import { Node } from '@shared/data-structures/link-list/node';
-import { MediaDownloadMixin } from '@media/shared/mixin/media-download.mixin';
-import { PlaylistAddMixin } from '@media/shared/mixin/playlist/playlist-add.mixin';
-import { PlaylistCreateMixin } from '@media/shared/mixin/playlist/playlist-create.mixin';
+import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
+import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
+import { PlaylistCreateMixin } from '@shared/mixin/playlist/playlist-create.mixin';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 
 declare var _: any;
