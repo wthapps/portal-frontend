@@ -6,9 +6,10 @@
       </button>
       <span class="divider"></span>
       <span class="btn btn-text hidden-xs">
-        <i class="fa" [ngClass]="object.model == 'Media::Video'? 'fa-video-camera': 'fa-photo'"></i> {{object.full_name || object.name}} </span>
+        <i class="fa" [ngClass]="object.model == 'Media::Video'? 'fa-video-camera': 'fa-photo'"></i> {{object.full_name
+        || object.name}} </span>
     </div>
-    <div class="image-viewer-header-right">
+    <div class="image-viewer-header-right" *ngIf="showMenuAction">
       <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
         <button *ngIf="action.val.active && !action.val.inDropDown" [disabled]="!action.val.active" class="{{action.val.class}}"
           draggable="false" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);"
@@ -18,14 +19,15 @@
       </ng-template>
       <div class="btn-group">
 
-        <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
+        <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+          type="button">
           <i class="fa fa-ellipsis-v" ng-reflect-ng-class="fa fa-ellipsis-v"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
             <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
-              <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"
-                href="javascript:void(0);" (click)="action.val.action()">
+              <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}"
+                tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
                 <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
               </a>
             </li>
@@ -63,7 +65,8 @@
         tooltipPosition="bottom">
         <i class="fa fa-angle-left"></i>
       </a>
-      <a *ngIf="hasNextItem" draggable="false" href="javascript:void(0);" (click)="onMove()" pTooltip="{{tooltip.next}}" tooltipPosition="bottom">
+      <a *ngIf="hasNextItem" draggable="false" href="javascript:void(0);" (click)="onMove()" pTooltip="{{tooltip.next}}"
+        tooltipPosition="bottom">
         <i class="fa fa-angle-right"></i>
       </a>
     </div>
@@ -81,7 +84,8 @@
     </div>
     <div class="image-viewer-content-nav">
       <ng-container *ngIf="listIds && listIds.isPrev()">
-        <a draggable="false" href="javascript:void(0);" (click)="onPrev( 'videos')" pTooltip="{{ tooltip.previous }}" tooltipPosition="bottom">
+        <a draggable="false" href="javascript:void(0);" (click)="onPrev( 'videos')" pTooltip="{{ tooltip.previous }}"
+          tooltipPosition="bottom">
           <i class="fa fa-angle-left"></i>
         </a>
       </ng-container>
@@ -134,7 +138,7 @@
         <dd class="col-sm-8">{{ object.created_at | timeFormat}}</dd>
       </div>
     </dl>
-    <hr/>
+    <hr />
     <dl>
       <dt>
         <h4>

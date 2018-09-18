@@ -1,19 +1,21 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+
+import { combineLatest } from 'rxjs/operators/combineLatest';
+import * as Cropper from 'cropperjs';
 
 import {
   ApiBaseService,
   PhotoService
 } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { Location } from '@angular/common';
 import { Constants } from '@shared/constant';
 import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import * as Cropper from 'cropperjs';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/conig/constants';
@@ -23,12 +25,20 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
 import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
+import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 @Mixin([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin])
 @Component({
   selector: 'photo-detail',
   templateUrl: './item-detail.component.html',
   styleUrls: ['photo-detail.component.scss'],
+  entryComponents: [
+    MediaRenameModalComponent,
+    PhotoEditModalComponent,
+    AddToAlbumModalComponent
+  ]
 })
 export class PhotoDetailComponent implements OnInit,
   MediaAdditionalListMixin,
@@ -38,9 +48,10 @@ export class PhotoDetailComponent implements OnInit,
   MediaModalMixin,
   AlbumAddMixin {
   object: any;
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   menuActions: any = {};
   selectedObjects: any;
+  showMenuAction: true;
   showDetailsInfo: any = false;
   modalIns: any;
   modalRef: any;
@@ -57,6 +68,21 @@ export class PhotoDetailComponent implements OnInit,
   listIds: DoublyLinkedLists;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
+  validateActions: (menuActions: any, role_id: number) => any;
+  openModalShare: (input: any) => void;
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
+
+  downloadMedia: (media: any) => void;
+  loadModalComponent: (component: any) => void;
+
+  openEditModal: (object: any) => void;
+  openModalAddToAlbum: (selectedObjects: any) => void;
+  onAddToAlbum: (e: any) => void;
+  openCreateAlbumModal: (selectedObjects: any) => void;
+  onDoneAlbum: (e: any) => void;
+  onAddedToAlbum: (data: any) => void;
+
+
   constructor(public apiBaseService: ApiBaseService,
     public route: ActivatedRoute,
     public router: Router,
@@ -72,34 +98,35 @@ export class PhotoDetailComponent implements OnInit,
   ngOnInit() {
     this.menuActions = this.getMenuActions();
 
-    this.route.params.subscribe(p => {
-      this.route.queryParams.subscribe(params => {
-        this.apiBaseService.get(`media/media/${p.id}`, { model: 'Media::Photo' }).subscribe(res => {
-          this.object = res.data;
-          if (this.object.favorite) {
-            this.menuActions.favorite.iconClass = 'fa fa-star';
+    this.route.params.pipe(
+      combineLatest(this.route.queryParams)
+    ).subscribe(([p, params]) => {
+      this.apiBaseService.get(`media/media/${p.id}`, { model: 'Media::Photo' }).toPromise()
+      .then(res => {
+        this.object = res.data;
+        if (this.object.favorite) {
+          this.menuActions.favorite.iconClass = 'fa fa-star';
+        } else {
+          this.menuActions.favorite.iconClass = 'fa fa-star-o';
+        }
+        this.validateActions(this.menuActions, this.object.permission.role_id);
+        if (!this.listIds && params.preview) {
+          if (params.ids) {
+            this.listIds = new DoublyLinkedLists(params.ids.split(','));
+            this.listIds.setCurrent(this.object.id);
           } else {
-            this.menuActions.favorite.iconClass = 'fa fa-star-o';
+            const query: any = { model: 'Media::Photo' };
+            if (params.parent_id) query.parent = params.parent_id;
+            this.apiBaseService.get(`media/media/ids`, query).toPromise()
+            .then(res2 => {
+              if (res2.data) {
+                this.listIds = new DoublyLinkedLists(res2.data.map(d => d.uuid));
+                this.listIds.setCurrent(this.object.uuid);
+              }
+            });
           }
-          this.validateActions(this.menuActions, this.object.permission.role_id);
-          if (!this.listIds && params.preview) {
-            if (params.ids) {
-              this.listIds = new DoublyLinkedLists(params.ids.split(','));
-              this.listIds.setCurrent(this.object.id);
-            } else {
-              let query: any = { model: 'Media::Photo' }
-              if (params.parent_id) query.parent = params.parent_id;
-              this.apiBaseService.get(`media/media/ids`, query).subscribe(res => {
-                if (res.data) {
-                  this.listIds = new DoublyLinkedLists(res.data.map(d => d.uuid));
-                  this.listIds.setCurrent(this.object.uuid);
-                }
-              });
-            }
-          }
-          if (params.returnUrl) this.returnUrl = params.returnUrl;
-          // this.onStart();
-        });
+        }
+        if (params.returnUrl) this.returnUrl = params.returnUrl;
       });
     });
     // const readURL: any = (input) => {
@@ -118,15 +145,13 @@ export class PhotoDetailComponent implements OnInit,
     //   readURL(this);
     // });
   }
-  validateActions: (menuActions: any, role_id: number) => any;
 
   openModalShareCustom() {
     this.openModalShare([this.object]);
   }
-  openModalShare: (input: any) => void;
   onSaveShare(input: any) {
     const data: any = {
-      objects: [this.object].map(s => { return { id: s.id, model: s.model } }),
+      objects: [this.object].map(s => ({ id: s.id, model: s.model })),
       recipients: input.users,
       role_id: input.role.id
     };
@@ -135,12 +160,6 @@ export class PhotoDetailComponent implements OnInit,
       this.sharingModalService.update.next(res.data);
     });
   }
-  onEditShare: (e: SharingModalResult, sharing: any) => void;
-
-  downloadMedia: (media: any) => void;
-  loadModalComponent: (component: any) => void;
-
-  openEditModal: (object: any) => void;
   onAfterEditModal() {
     this.modalIns.event.subscribe(e => {
       switch (e.action) {
@@ -216,10 +235,10 @@ export class PhotoDetailComponent implements OnInit,
   }
 
   infoAlbumClick(object) {
-    if(object.object_type == 'album'){
+    if (object.object_type === 'album') {
       this.router.navigate([`/albums/${object.uuid}`]);
     }
-    if(object.object_type == 'sharing'){
+    if (object.object_type === 'sharing') {
       this.router.navigate([`/shared/${object.uuid}`]);
     }
   }
@@ -239,12 +258,6 @@ export class PhotoDetailComponent implements OnInit,
       this.hasEditPhoto = false;
     });
   }
-
-  openModalAddToAlbum:(selectedObjects: any) => void;
-  onAddToAlbum:(e: any) => void;
-  openCreateAlbumModal:(selectedObjects: any) => void;
-  onDoneAlbum:(e: any) => void;
-  onAddedToAlbum: (data: any) => void;
 
   getMenuActions() {
     return {
@@ -267,7 +280,7 @@ export class PhotoDetailComponent implements OnInit,
         action: () => {
           this.apiBaseService.post(`media/favorites/toggle`, {
             objects: [this.object]
-              .map(v => { return { id: v.id, object_type: v.model } })
+              .map(v => ({ id: v.id, object_type: v.model } ))
           }).subscribe(res => {
             this.object = res.data[0];
             if (this.object.favorite) {
@@ -383,16 +396,16 @@ export class PhotoDetailComponent implements OnInit,
 
   onPrev() {
     this.listIds.prev();
-    this.router.navigate([`/photos/${this.listIds.current.data}`], { queryParamsHandling: "merge" });
-  };
+    this.router.navigate([`/photos/${this.listIds.current.data}`], { queryParamsHandling: 'merge' });
+  }
 
   onNext() {
     this.listIds.next();
-    this.router.navigate([`/photos/${this.listIds.current.data}`], { queryParamsHandling: "merge" });
-  };
+    this.router.navigate([`/photos/${this.listIds.current.data}`], { queryParamsHandling: 'merge' });
+  }
 
   back() {
-    if(this.returnUrl) {
+    if (this.returnUrl) {
       this.router.navigate([this.returnUrl]);
     } else {
       this.location.back();

@@ -121,8 +121,8 @@
           <!--video type-->
           <div class="message-item-content-photo can-click" *ngIf="message.file_type == 'Media::Video'">
             <figure>
-              <!-- <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)"> -->
-                <div class="photo-box-figure-in">
+              <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
+                <!-- <div class="photo-box-figure-in"> -->
                 <img [src]="message.file?.thumbnail_url" alt="">
                 <i class="fa fa-play-circle-o"></i>
               </div>

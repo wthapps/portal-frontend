@@ -13,7 +13,7 @@ import { ImageCropperModule } from '@shared/shared/components/image-cropper/imag
         CommonModule,
         ImageCropperModule,
         PipeModule,
-        TooltipModule
+        TooltipModule,
     ],
     declarations: [
         PhotoDetailComponent,

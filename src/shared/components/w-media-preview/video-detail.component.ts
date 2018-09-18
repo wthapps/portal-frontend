@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewContainerRef, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+
+import { combineLatest } from 'rxjs/operators/combineLatest';
 
 import {
   ApiBaseService, WthConfirmService,
 } from '@wth/shared/services';
-import { Location } from '@angular/common';
 import { Constants } from '@shared/constant';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
@@ -20,13 +22,21 @@ import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
 import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
+import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
+import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
+import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 
 @Mixin([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin, MediaPreviewMixin])
 @Component({
   selector: 'video-detail',
   templateUrl: './item-detail.component.html',
-  styleUrls: ['video-detail.component.scss']
+    styleUrls: ['video-detail.component.scss'],
+    entryComponents: [
+      MediaRenameModalComponent,
+      PhotoEditModalComponent,
+      AddToAlbumModalComponent
+    ]
 })
 export class ZVideoDetailComponent implements OnInit,
   MediaAdditionalListMixin,
@@ -36,9 +46,10 @@ export class ZVideoDetailComponent implements OnInit,
   MediaPreviewMixin,
   PlaylistAddMixin {
   object: any;
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   menuActions: any = {};
   selectedObjects: any;
+  showMenuAction: true;
   showDetailsInfo: any = false;
   modalIns: any;
   modalRef: any;
@@ -51,6 +62,20 @@ export class ZVideoDetailComponent implements OnInit,
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
+  validateActions: (menuActions: any, role_id: number) => any;
+  openModalShare: (input: any) => void;
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
+
+  downloadMedia: (media: any) => void;
+  loadModalComponent: (component: any) => void;
+
+  openEditModal: (object: any) => void;
+  openModalAddToPlaylist: (selectedObjects: any) => void;
+  onAddToPlaylist: (e: any) => void;
+  onAddedToPlaylist: (data: any) => void;
+  openCreatePlaylistModal: (selectedObjects: any) => void;
+  onDonePlaylist: (e: any) => void;
+
   constructor(public apiBaseService: ApiBaseService,
     public route: ActivatedRoute,
     public router: Router,
@@ -60,52 +85,55 @@ export class ZVideoDetailComponent implements OnInit,
     public confirmService: WthConfirmService,
     public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
-    public location: Location){}
-
+    public location: Location) {}
   ngOnInit() {
     this.menuActions = this.getMenuActions();
-    this.route.params.subscribe(p => {
-      this.route.queryParams.subscribe(params => {
-        this.apiBaseService.get(`media/media/${p.id}`, { model: 'Media::Video' }).subscribe(res => {
-          this.object = res.data;
-          if (this.object.favorite) {
-            this.menuActions.favorite.iconClass = 'fa fa-star';
+    this.route.data.subscribe(data => {
+      this.showMenuAction = (data['show_menu_action'] !== undefined) ? data['show_menu_action'] : true;
+    });
+
+    this.route.params.pipe(
+      combineLatest(this.route.queryParams)
+    ).subscribe(([p, params]) => {
+      this.apiBaseService.get(`media/media/${p.id}`, { model: 'Media::Video' }).toPromise()
+      .then(res => {
+        this.object = res.data;
+        if (this.object.favorite) {
+          this.menuActions.favorite.iconClass = 'fa fa-star';
+        } else {
+          this.menuActions.favorite.iconClass = 'fa fa-star-o';
+        }
+        // reload video
+        if ($('#video')[0]) $('#video')[0].load();
+        this.validateActions(this.menuActions, this.object.permission.role_id);
+        if (!this.listIds && params.preview) {
+          if (params.ids) {
+            this.listIds = new DoublyLinkedLists(params.ids.split(','));
+            this.listIds.setCurrent(this.object.id);
           } else {
-            this.menuActions.favorite.iconClass = 'fa fa-star-o';
+            const query: any = { model: 'Media::Video' };
+            if (params.parent_id) query.parent = params.parent_id;
+            this.apiBaseService.get(`media/media/ids`, query).toPromise()
+            .then(res2 => {
+              if (res2.data) {
+                this.listIds = new DoublyLinkedLists(res2.data.map(d => d.uuid));
+                this.listIds.setCurrent(this.object.uuid);
+              }
+            });
           }
-          // reload video
-          if ($('#video')[0]) $('#video')[0].load();
-          this.validateActions(this.menuActions, this.object.permission.role_id);
-          if (!this.listIds && params.preview) {
-            if (params.ids) {
-              this.listIds = new DoublyLinkedLists(params.ids.split(','));
-              this.listIds.setCurrent(this.object.id);
-            } else {
-              let query: any = { model: 'Media::Video' }
-              if (params.parent_id) query.parent = params.parent_id;
-              this.apiBaseService.get(`media/media/ids`, query).subscribe(res => {
-                if (res.data) {
-                  this.listIds = new DoublyLinkedLists(res.data.map(d => d.uuid));
-                  this.listIds.setCurrent(this.object.uuid);
-                }
-              });
-            }
-          }
-          if (params.returnUrl) this.returnUrl = params.returnUrl;
-        });
+        }
+        if (params.returnUrl) this.returnUrl = params.returnUrl;
       });
-    })
+    });
   }
 
-  validateActions: (menuActions: any, role_id: number) => any;
 
   openModalShareCustom() {
     this.openModalShare([this.object]);
   }
-  openModalShare: (input: any) => void;
   onSaveShare(input: any) {
     const data: any = {
-      objects: [this.object].map(s => { return { id: s.id, model: s.model } }),
+      objects: [this.object].map(s => ({ id: s.id, model: s.model } )),
       recipients: input.users,
       role_id: input.role.id
     };
@@ -114,39 +142,30 @@ export class ZVideoDetailComponent implements OnInit,
       this.sharingModalService.update.next(res.data);
     });
   }
-  onEditShare: (e: SharingModalResult, sharing: any) => void;
 
-  downloadMedia: (media: any) => void;
-  loadModalComponent: (component: any) => void;
-
-  openEditModal: (object: any) => void;
   onAfterEditModal() {
     this.modalIns.event.subscribe(e => {
       switch (e.action) {
         case 'editInfo' :
-          this.apiBaseService.put(`media/videos/${this.object.id}`, { name: e.params.selectedObject.name, description: e.params.selectedObject.description, created_at: e.params.selectedObject.created_at}).subscribe(res => {
-            this.object = res.data
+          this.apiBaseService.put(`media/videos/${this.object.id}`,
+          { name: e.params.selectedObject.name,
+             description: e.params.selectedObject.description, created_at: e.params.selectedObject.created_at})
+          .subscribe(res => {
+            this.object = res.data;
           });
-        default:
-          break;
       }
-    })
+    });
   }
 
   infoAlbumClick(object) {
-    if (object.object_type == 'Media::Playlist') {
+    if (object.object_type === 'Media::Playlist') {
       this.router.navigate([`/playlists/${object.uuid}`]);
     }
-    if (object.object_type == 'sharing') {
+    if (object.object_type === 'sharing') {
       this.router.navigate([`/shared/${object.uuid}`]);
     }
   }
 
-  openModalAddToPlaylist:(selectedObjects: any) => void;
-  onAddToPlaylist:(e: any) => void;
-  onAddedToPlaylist: (data: any) => void;
-  openCreatePlaylistModal:(selectedObjects: any) => void;
-  onDonePlaylist:(e: any) => void;
 
   getMenuActions() {
     return {
@@ -169,7 +188,7 @@ export class ZVideoDetailComponent implements OnInit,
         action: () => {
           this.apiBaseService.post(`media/favorites/toggle`, {
             objects: [this.object]
-              .map(v => { return { id: v.id, object_type: v.model } })
+              .map(v => ({ id: v.id, object_type: v.model } ))
           }).subscribe(res => {
             this.object = res.data[0];
             if (this.object.favorite) {
@@ -266,20 +285,20 @@ export class ZVideoDetailComponent implements OnInit,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-edit'
       }
-    }
+    };
   }
 
   // onPrev: (term) => void;
   // onNext: (term) => void;
   onPrev() {
     this.listIds.prev();
-    this.router.navigate([`/videos/${this.listIds.current.data}`], { queryParamsHandling: "merge" });
-  };
+    this.router.navigate([`/videos/${this.listIds.current.data}`], { queryParamsHandling: 'merge' });
+  }
 
   onNext() {
     this.listIds.next();
-    this.router.navigate([`/videos/${this.listIds.current.data}`], { queryParamsHandling: "merge" });
-  };
+    this.router.navigate([`/videos/${this.listIds.current.data}`], { queryParamsHandling: 'merge' });
+  }
 
   back() {
     // this.location.back();

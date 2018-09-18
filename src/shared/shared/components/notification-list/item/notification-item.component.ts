@@ -28,12 +28,13 @@ export class NotificationItemComponent implements OnInit {
   @ViewChild('notificationUndo', {read: ViewContainerRef}) undoNotificationRef: ViewContainerRef;
   @ViewChild('notiItemMenuEl') notiItemMenuEl: ElementRef;
   @Input() notification: any;
-  @Input() type: string = 'update';
+  @Input() type = 'update';
 
-  @HostBinding('class') classes: string = 'notification-item';
+  @HostBinding('class') classes = 'notification-item';
   itemSettings: any = {};
   showToggle: boolean;
-  modules: string[] = ['', 'social', 'chat', 'media', 'portal', 'contact', 'note', 'profile']; // Should be consistent with Constants.moduleMap
+  modules: string[] = ['', 'social', 'chat', 'media', 'portal', 'contact', 'note', 'profile'];
+  // Should be consistent with Constants.moduleMap
 
 
   @HostListener('document:click', ['$event']) clickedOutside(event: Event) {
@@ -70,16 +71,14 @@ export class NotificationItemComponent implements OnInit {
     const tmp = document.createElement('div');
     tmp.setAttribute('id', 'notiItemMenuEl');
     tmp.appendChild(el);
-    if(tmp.querySelector('.js-confirmHideNotification') !== null) {
+    if (tmp.querySelector('.js-confirmHideNotification') !== null) {
       tmp.querySelector('.js-confirmHideNotification').addEventListener('click', (e: any) => {
-        console.debug('.js-confirmHideNotification LCICKED', e);
         this.hideNotificationById(e.currentTarget.id);
       });
     }
 
-    if(tmp.querySelector('.js-toggleNotification') !== null) {
+    if (tmp.querySelector('.js-toggleNotification') !== null) {
       tmp.querySelector('.js-toggleNotification').addEventListener('click', (e: any) => {
-        console.debug('.js-toggleNotification CICKED', e);
         this.toggleNotificationById(e.currentTarget.id);
       });
     }
@@ -105,7 +104,7 @@ export class NotificationItemComponent implements OnInit {
 
 
   hideNotificationById(id: any) {
-    if(this.type === 'connection')
+    if (this.type === 'connection')
       this.connectionService.hideNotificationById(id);
     else
       this.notificationService.hideNotificationById(id);
@@ -134,8 +133,9 @@ export class NotificationItemComponent implements OnInit {
   toggleNotification() {
     switch (this.notification.object_type) {
       case 'SocialNetwork::Post':
-        if(_.get(this.notification, 'object.uuid')) {
-          this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/toggle_post_notification`, {uuid: _.get(this.notification, 'object.uuid')})
+        if (_.get(this.notification, 'object.uuid')) {
+          this.apiBaseService.post(`${this.apiBaseService.urls.zoneSoPosts}/toggle_post_notification`,
+           {uuid: _.get(this.notification, 'object.uuid')})
             .toPromise()
             .then((res: any) => {
               this.itemSettings = res.data;
@@ -155,7 +155,6 @@ export class NotificationItemComponent implements OnInit {
   getItemSettings() {
     switch (this.notification.object_type) {
       case 'SocialNetwork::Post':
-        console.debug('getItemSettings - object uuid: ', this.notification.object.uuid);
         this.apiBaseService.get(`${this.apiBaseService.urls.zoneSoPostSettings}/${this.notification.object.uuid}`)
           .toPromise().then(
           (res: any) => {
@@ -172,28 +171,28 @@ export class NotificationItemComponent implements OnInit {
 
 
   toggleReadStatus(notification: any) {
-    if(this.type === 'connection')
+    if (this.type === 'connection')
       this.connectionService.toggleReadStatus(notification);
     else
       this.notificationService.toggleReadStatus(notification);
   }
 
   doAction(action: any, notif_id: string) {
-    if(this.type === 'connection')
+    if (this.type === 'connection')
       this.connectionService.doAction(action, notif_id);
     else
       this.notificationService.doAction(action, notif_id);
   }
 
   navigateTo(actions: any[], notif_id: string): void {
-    if(this.type === 'connection')
+    if (this.type === 'connection')
       this.connectionService.navigateTo(actions, notif_id);
     else
       this.notificationService.navigateTo(actions, notif_id);
   }
 
   navigateToSocial(urls: string[]) {
-    if(this.type === 'connection')
+    if (this.type === 'connection')
       this.connectionService.navigateToSocial(urls);
     else
       this.notificationService.navigateToSocial(urls);

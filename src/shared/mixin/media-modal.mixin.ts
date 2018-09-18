@@ -12,23 +12,23 @@ export class MediaModalMixin implements LoadModalAble {
 
   constructor(public resolver: ComponentFactoryResolver) { }
 
-  loadModalComponent:(component: any) => void;
+  loadModalComponent: (component: any) => void;
 
   // openEditModal:(object: any) => void;
   // onAfterEditModal:() => void;
   openEditModal(object: any) {
     let options: any;
-    if (object.model == 'Media::Photo' || object.model == 'Media::Video') {
+    if (object.model === 'Media::Photo' || object.model === 'Media::Video') {
       this.loadModalComponent(PhotoEditModalComponent);
-      options = {selectedObject: object}
+      options = {selectedObject: object};
     }
-    if (object.model == 'Media::Album' || object.model == 'Media::Playlist') {
+    if (object.model === 'Media::Album' || object.model === 'Media::Playlist') {
       this.loadModalComponent(AlbumEditModalComponent);
-      options = {selectedObject: object}
+      options = {selectedObject: object};
     }
-    if(object.model == 'Common::Sharing') {
+    if (object.model === 'Common::Sharing') {
       this.loadModalComponent(MediaRenameModalComponent);
-      options = {selectedObject: object}
+      options = {selectedObject: object};
     }
     if (this.modalIns) {
       this.modalIns.open(options);
@@ -36,7 +36,7 @@ export class MediaModalMixin implements LoadModalAble {
     this.onAfterEditModal();
   }
 
-  onAfterEditModal(){
+  onAfterEditModal() {
     /* this method is load objects to display on init */
     throw new Error('should overwrite this method');
   }

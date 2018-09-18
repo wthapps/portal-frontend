@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@shared/services';
 import { ChatPhotoDetailComponent } from './photo-detail.component';
+import { ZVideoDetailComponent } from '@shared/components/w-media-preview/video-detail.component';
 
 @NgModule({
   imports: [
@@ -15,9 +16,9 @@ import { ChatPhotoDetailComponent } from './photo-detail.component';
       },
       {
         path: 'videos/:id',
-        component: ChatPhotoDetailComponent,
+        component: ZVideoDetailComponent,
         outlet: 'modal',
-        data: { object_type: 'video'},
+        data: { object_type: 'video', show_menu_action: false},
         canActivate: [AuthGuard]
       }
     ])

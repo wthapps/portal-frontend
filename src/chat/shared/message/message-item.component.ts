@@ -7,6 +7,11 @@ import { CommonEvent, CommonEventService, WMessageService } from '@wth/shared/se
 
 declare var _: any;
 
+const MEDIA_PATH_MAPPINGS = {
+  'Media::Photo': 'photos',
+  'Media::Video': 'videos'
+};
+
 @Component({
   selector: 'message-item',
   templateUrl: 'message-item.component.html',
@@ -56,11 +61,12 @@ export class MessageItemComponent implements OnInit {
   }
 
   onPreviewPhoto(message: any) {
+    const object_path = MEDIA_PATH_MAPPINGS[message.file_type] || 'photos';
     this.router.navigate([
       {
         outlets: {
           modal: [
-            'photos',
+            object_path,
             message.file.id,
             {
               ids: [message.file.id],
