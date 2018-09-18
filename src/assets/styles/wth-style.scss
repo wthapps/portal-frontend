@@ -1,20 +1,15 @@
 @import 'variables';
-
 //@import "third-parties/custom-bootstrap";
-
 @import '../../../node_modules/font-awesome/scss/font-awesome';
 // bootstrap 3
 @import '../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 // bootstrap 4
 //@import '../../../node_modules/bootstrap/scss/bootstrap';
-
 // font-wthapps
 @import '../../../src/assets/font-wthapps/scss/font-wthapps';
-
 @import 'general/mixin';
 @import 'general/setting';
 @import 'partials/constants';
-
 //
 // =Fonts
 // --------------------------------------------------
@@ -56,10 +51,6 @@
 @import 'layout/header';
 @import 'layout/footer';
 @import 'layout/content';
-@import 'layout/aside-left';
-@import 'layout/menu-left';
-@import 'layout/aside-menu';
-@import 'layout/aside-chat';
 //
 // =modules
 // --------------------------------------------------
@@ -104,6 +95,5 @@
 @import 'pages/payment';
 @import 'pages/products';
 @import 'pages/pricing';
-
 // zone
 @import 'pages/zone';

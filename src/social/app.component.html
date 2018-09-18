@@ -6,13 +6,10 @@
     <social-shared-header class="header-nav-left"></social-shared-header>
   </w-header>
   <main class="main gray-light">
-    <div class="main-page-left">
-      <aside class="main-page-left-in aside-menu">
-        <z-shared-menu>
-          <z-social-left-menu></z-social-left-menu>
-        </z-shared-menu>
-      </aside>
-    </div>
+    <w-left-menu>
+      <z-social-left-menu></z-social-left-menu>
+    </w-left-menu>
+
     <div class="main-page-body" [ngClass]="{'main-page-detail': activeOutlets['detail']}" [@routeAnimation]="getState(o)">
       <router-outlet name="modal" (activate)='onActivate($event)'
                      (deactivate)='onDeactivate($event)'></router-outlet>

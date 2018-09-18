@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -23,6 +23,7 @@ declare var $: any;
   encapsulation: ViewEncapsulation.None
 })
 export class ZChatSidebarComponent implements OnInit {
+  @HostBinding('class') cssClass = 'menuleft-chat';
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
   readonly chatMenu = Constants.chatMenuItems;

@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +16,7 @@ import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 import { WthConfirmModule } from '@wth/shared/shared/components/confirmation/wth-confirm.module';
 import { Ng2CableModule } from 'ng2-cable';
+import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -53,6 +54,7 @@ import { Ng2CableModule } from 'ng2-cable';
 
     WthConfirmModule,
     BoxLoadingModule,
+    WLeftMenuModule,
 
     // Pipe
     PipeModule,

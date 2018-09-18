@@ -1,8 +1,9 @@
-<div class="menu-left-logo">
+<div class="menuleft-logo">
   <img src="/assets/images_new/logo-chat.png" alt="">
 </div>
-<div class="menu-left-header">
-  <div class="menu-left-nav">
+
+<div class="menuleft-chat-header">
+  <div class="menuleft-chat-nav">
     <a href="javascript:void(0);" (click)="onAddContact(); onCloseMenu()">
       <i class="fa fa-plus"></i> Chat
     </a>
@@ -13,7 +14,7 @@
       <i class="fa fa-cog"></i> Settings
     </a>
   </div>
-  <div class="menu-left-form">
+  <div class="menuleft-chat-form">
     <!--<div class="input-group-wrap input-group-wrap-search">-->
       <!--<form class="input-group" novalidate="">-->
         <!--<span class="input-group-btn input-group-left">-->
@@ -31,7 +32,8 @@
                     [placeholder]="'Search conversation name'">
     </textbox-search>
   </div>
-  <div class="menu-left-in">
+  <hr>
+  <div class="menuleft-chat-in">
     <div class="dropdown">
       <button class="btn btn-text-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         {{ filter }}
@@ -63,7 +65,7 @@
     </div>
   </div>
 </div>
-<div class="menu-left-content">
+<div class="menuleft-chat-content">
 
   <ng-container *ngIf="!searching">
     <ng-container *ngIf="favouriteContacts$ | async as favouriteContacts">

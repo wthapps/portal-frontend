@@ -10,11 +10,11 @@ $message-assets-width: 400px;
   z-index: 29;
   width: $message-assets-width;
   max-width: 100%;
-  @include box-shadow($box-shadow-left);
   @include flexbox;
   @include flex-direction(column);
   @media (min-width: $screen-sm-min) {
     right: -$message-assets-width;
+    @include box-shadow($box-shadow-left);
   }
 
   .nav-tabs-wrap .nav-tabs > li > a {

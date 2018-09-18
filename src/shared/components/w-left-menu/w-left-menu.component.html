@@ -1,0 +1,16 @@
+<div class="main-left-menu">
+  <div class="menuleft-container">
+    <div class="menuleft-content">
+      <ng-content></ng-content>
+    </div>
+    <div *ngIf="!hideFooter" class="menuleft-footer">
+      <div>
+        <a target="_blank" [href]="constants.baseUrls.app + '/policies/terms'" rel="noopener"> Term of service</a>
+        &bull;
+        <a target="_blank" [href]="constants.baseUrls.app + '/policies/privacy'" rel="noopener">Privacy &amp; policies</a>
+      </div>
+      <span>&copy;{{ currentVersion }}</span>
+    </div>
+  </div>
+  <div (click)="onCloseMenu()" class="menuleft-dismiss"></div>
+</div>

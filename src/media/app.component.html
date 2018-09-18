@@ -3,13 +3,9 @@
     <media-shared-header class="header-nav-left"></media-shared-header>
   </w-header>
   <main class="main gray-light">
-    <div class="main-page-left">
-      <aside class="main-page-left-in aside-menu">
-        <z-shared-menu>
-          <z-media-shared-left-menu></z-media-shared-left-menu>
-        </z-shared-menu>
-      </aside>
-    </div>
+    <w-left-menu>
+      <z-media-shared-left-menu></z-media-shared-left-menu>
+    </w-left-menu>
     <div class="main-page-body">
       <router-outlet></router-outlet>
       <router-outlet name="modal"></router-outlet>
