@@ -23,15 +23,13 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 
 import { saveAs } from 'file-saver';
 import { ApiBaseService } from '@wth/shared/services';
-import {
-  AlbumCreateModalComponent, AlbumDeleteModalComponent,
-  AlbumEditModalComponent
-} from '@media/shared/modal';
+
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+import { AlbumCreateModalComponent, AlbumEditModalComponent, AlbumDeleteModalComponent } from '@shared/components/modal/album';
 
 declare var $: any;
 declare var _: any;

@@ -8,6 +8,7 @@ import { MediaItemComponent } from './media/media-item.component';
 import { AlbumService } from './service/album.service';
 import { MediaUploaderDataService } from './uploader/media-uploader-data.service';
 
+import { AlbumModalModule } from '@shared/components/modal/album/album-modal.module';
 import { ZMediaStore } from './store/media.store';
 import { ZMediaSharedHeaderComponent } from './header/header.component';
 import { TagInputModule } from 'ngx-chips';
@@ -20,7 +21,6 @@ import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/
 import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
-import { AlbumCreateModalComponent } from '@media/shared/modal';
 import { MediaModalModule } from '@media/shared/modal/modal.module';
 
 TagInputModule.withDefaults({
@@ -37,6 +37,7 @@ TagInputModule.withDefaults({
   imports: [
     TagInputModule,
     // WGridListModule,
+    AlbumModalModule,
     MediaModalModule,
     SharedModule
   ],
@@ -56,6 +57,7 @@ TagInputModule.withDefaults({
     ZMediaSharedLeftMenuComponent
   ],
   exports: [
+    AlbumModalModule,
     MediaModalModule,
     MediaUploaderComponent,
     MediaViewContainerComponent,

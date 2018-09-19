@@ -1,9 +1,5 @@
 import { ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
-import {
-  AlbumCreateModalComponent,
-  AlbumDeleteModalComponent,
-  AlbumEditModalComponent,
-} from '@media/shared/modal';
+
 import { Store } from '@ngrx/store';
 import * as appStore from '@media/shared/store';
 import * as mediaActions from '@media/shared/store/media/media.actions';
@@ -12,6 +8,8 @@ import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+
+import { AlbumCreateModalComponent, AlbumEditModalComponent, AlbumDeleteModalComponent } from '@shared/components/modal/album';
 
 
 export class MediaActionHandler implements OnDestroy {
@@ -40,8 +38,8 @@ export class MediaActionHandler implements OnDestroy {
     });
   }
 
-  ngOnDestroy(){
-    if(this.sub) this.sub.unsubscribe();
+  ngOnDestroy() {
+    if (this.sub) this.sub.unsubscribe();
     if (this.subSelect) this.subSelect.unsubscribe();
   }
 
@@ -92,7 +90,7 @@ export class MediaActionHandler implements OnDestroy {
           .subscribe(photos => {
             this.doEvent({action: 'addToParent', payload: {photos: photos }});
           });
-        if(this.sub)  this.sub.unsubscribe();
+        if (this.sub)  this.sub.unsubscribe();
         this.sub = mediaSelectionService.uploadingMedias$
           .map(([file, dataUrl]) => [file])
           .subscribe((photos: any) => {

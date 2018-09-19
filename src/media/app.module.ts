@@ -30,17 +30,15 @@ import { ServiceModule } from '@media/shared/service/service.module';
 import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
-import {
-  AlbumCreateModalComponent,
-  AlbumDeleteModalComponent,
-  AlbumEditModalComponent
-} from '@media/shared/modal';
+
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 import { ZMediaVideoModule } from '@media/video/video.module';
 import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
 import { PhotoHtmlModule } from '@media/html/photo-html.module';
+import { AlbumCreateModalComponent, AlbumEditModalComponent, AlbumDeleteModalComponent } from '@shared/components/modal/album';
+import { WMediaPreviewModule } from '@shared/components/w-media-preview/media-preview.module';
 
 @NgModule({
   imports: [
@@ -57,6 +55,7 @@ import { PhotoHtmlModule } from '@media/html/photo-html.module';
     ZMediaSearchModule,
     ZMediaMyProfileModule,
     ZMediaVideoModule,
+    WMediaPreviewModule,
     PhotoHtmlModule,
 
     AppRoutingModule,

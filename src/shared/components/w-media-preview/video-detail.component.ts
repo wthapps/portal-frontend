@@ -33,9 +33,9 @@ import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/
   templateUrl: './item-detail.component.html',
     styleUrls: ['video-detail.component.scss'],
     entryComponents: [
-      MediaRenameModalComponent,
-      PhotoEditModalComponent,
-      AddToAlbumModalComponent
+      // MediaRenameModalComponent,
+      // PhotoEditModalComponent,
+      // AddToAlbumModalComponent
     ]
 })
 export class ZVideoDetailComponent implements OnInit,
