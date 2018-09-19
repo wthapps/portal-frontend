@@ -28,7 +28,7 @@ import { ZContactShareIcloudIndicateComponent } from './modal/import-contact/icl
 import { CoreModule } from '../../core/core.module';
 import { ZContactShareMergeProgressComponent } from './progress/merge-progress.component';
 import { WthCommonModule } from '@wth/shared/common/wth-common.module';
-import { ZMyProfileComponent } from '@wth/shared/shared/components/profile/my-profile/my-profile.component';
+// import { ZMyProfileComponent } from '@wth/shared/shared/components/profile/my-profile/my-profile.component';
 import { ModalDockModule } from '@wth/shared/shared/components/modal/dock.module';
 import { ComponentsModule } from '@wth/shared/components/components.module';
 import { WMediaSelectionModule } from '@wth/shared/components/w-media-selection/w-media-selection.module';
@@ -77,7 +77,7 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
     ComponentsModule,
     FileModule,
     PartialModule,
-    PartialsProfileModule,
+    // PartialsProfileModule,
     CoverProfileModule,
     ModalDockModule,
     ZSharedMenuModule,
@@ -92,8 +92,8 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
     CalendarModule,
     PanelMenuModule,
     TooltipModule,
-    StickyModule,
-    ScrollToModule
+    ScrollToModule,
+    StickyModule
     // BrowserAnimationsModule,
   ],
   declarations: [
@@ -158,8 +158,8 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
     ZContactSearchSharedToolbarComponent,
     ZContactSharedListV1Component,
 
-    // my profile
-    ZMyProfileComponent,
+    // // my profile
+    // ZMyProfileComponent,
 
     // modal here
     ContactAddGroupModalComponent,

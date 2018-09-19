@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from '../core/core.module';
 import { HomeModule } from '../contact/home/home.module';
 import { ContactModule } from './contact/contact.module';
-import { MyProfileModule } from './my-profile/my-profile.module';
+// import { MyProfileModule } from './my-profile/my-profile.module';
 import { GroupModule } from './group/group.module';
 import { SettingsModule } from './settings/contact-settings.module';
 import { ContactSharedModule } from './shared/shared.module';
@@ -20,6 +20,7 @@ import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 import { environment } from '@env/environment';
 import { ContactSearchModule } from '@contacts/search/search.module';
 import { ContactHtmlModule } from '@contacts/html/contact-html.module';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,12 +33,13 @@ import { ContactHtmlModule } from '@contacts/html/contact-html.module';
     AppRoutingModule,
     HomeModule,
     ContactModule,
-    MyProfileModule,
+    // MyProfileModule,
     ContactSearchModule,
     GroupModule,
     SettingsModule,
     ModalModule,
     ContactHtmlModule,
+    ScrollToModule.forRoot(),
     ContactSharedModule.forRoot(),
 
     // WTHApps modules
