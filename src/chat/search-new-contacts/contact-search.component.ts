@@ -33,6 +33,6 @@ export class ZChatContactSearchComponent implements OnInit {
 
   onRequest(contact: any) {
     this.requestModal.contact = contact;
-    this.requestModal.modal.open();
+    this.requestModal.send();
   }
 }

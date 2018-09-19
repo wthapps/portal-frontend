@@ -1,6 +1,5 @@
 <div class="wrapper">
-  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async"
-            [hasSearch]="false">
+  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async" [hasSearch]="false">
     <chat-shared-header class="header-nav-left"></chat-shared-header>
   </w-header>
   <main class="main">
@@ -23,9 +22,7 @@
 
 <h-file-select-crop [useNewPhotoSelect]="true"></h-file-select-crop>
 <w-media-selection></w-media-selection>
-<wth-introduction #introduction
-                  [after]="{chat: true}"
-                  [data]="[
+<wth-introduction #introduction [after]="{chat: true}" [data]="[
   {
     title: 'Welcome to WTH!Chat',
     icon: '../../assets/icons/chat-50x50.png',

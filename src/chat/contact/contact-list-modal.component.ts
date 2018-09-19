@@ -158,7 +158,11 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
   }
 
   sendRequest(contact: any) {
-    this.modalService.open({modalName: 'ChatRequestModal', contact: contact});
+    // this.modalService.open({modalName: 'ChatRequestModal', contact: contact});
+    this.chatContactService.addContact([contact.id], '', (res: any)=> {
+      this.chatService.selectContactByPartnerId(contact.id);
+      this.modal.close();
+    })
   }
 
   toggleBlacklist(contact: any) {
