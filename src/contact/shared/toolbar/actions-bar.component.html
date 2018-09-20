@@ -1,19 +1,19 @@
 
 <ul class="page-body-control-menu pull-right">
-  <li class="hidden-xs" *ngIf="showAddToContacts">
+  <li *ngIf="showAddToContacts">
     <a href="javascript:void(0);" class="btn btn-default" (click)="addToMyContacts([data])" pTooltip="{{ tooltip.addToContacts }}"
       tooltipPosition="bottom">
       <i class="fa fa-user-plus" aria-hidden="true"></i>
     </a>
   </li>
-  <li class="hidden-xs" *ngIf="contactService.selectedObjects.length > 1 && showMergeContacts">
+  <li *ngIf="contactService.selectedObjects.length > 1 && showMergeContacts">
     <a href="javascript:;" class="btn btn-default" (click)="mergeContacts()" pTooltip="{{ tooltip.mergeContacts }}"
       tooltipPosition="bottom">
       <!--<img alt="" width="30" src="assets/images/icons/merge_icon.svg">-->
       <i class="wthico-merge" aria-hidden="true"></i>
     </a>
   </li>
-  <li class="hidden-xs" *ngIf="showFavorite">
+  <li *ngIf="showFavorite">
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite', payload: data})" pTooltip="{{ tooltip.favourite }}"
       tooltipPosition="bottom">
       <i class="fa" [ngClass]="toggleFavourite ? 'fa-star' : 'fa-star-o'"></i>
