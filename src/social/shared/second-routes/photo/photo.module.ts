@@ -19,12 +19,12 @@ import { ImageCropperModule } from '@shared/shared/components/image-cropper/imag
     // SharedModule
   ],
   declarations: [
-    PhotoDetailPartialComponent,
+    // PhotoDetailPartialComponent,
     ZSocialPhotoComponent,
     PhotoDetailComponent
   ],
   exports: [
-    PhotoDetailPartialComponent,
+    // PhotoDetailPartialComponent,
     ZSocialPhotoComponent,
     PhotoDetailComponent
   ],

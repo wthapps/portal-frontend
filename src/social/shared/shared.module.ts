@@ -43,6 +43,7 @@ import { InputSwitchModule, CheckboxModule, RadioButtonModule,
 import { ZSharedReportModule } from '@shared/shared/components/zone/report/report.module';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
+import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -76,6 +77,7 @@ import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
     ZSocialShareProfileModule,
     MiniEditorModule,
     BoxLoadingModule,
+    PartialsPhotoModule,
     WTHEmojiModule,
 
     // third party libs
@@ -139,6 +141,7 @@ import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
     ZSocialShareProfileModule,
     MiniEditorModule,
     BoxLoadingModule,
+    PartialsPhotoModule,
     WTHEmojiModule,
 
     // third party libs

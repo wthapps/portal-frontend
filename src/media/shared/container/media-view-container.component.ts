@@ -18,7 +18,7 @@ import { AlbumService } from '../service/album.service';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
 import { ZMediaStore } from '../store/media.store';
 import { FileSelectComponent } from '@wth/shared/shared/components/file/file-select/file-select.component';
-import { PhotoDetailPartialComponent } from '@shared/shared/components/photo/detail/photo-detail-partial.component';
+// import { PhotoDetailPartialComponent } from '@shared/shared/components/photo/detail/photo-detail-partial.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 import { saveAs } from 'file-saver';
@@ -55,7 +55,7 @@ declare var _: any;
 
     // FileSelectModalComponent,
     FileSelectComponent,
-    PhotoDetailPartialComponent,
+    // PhotoDetailPartialComponent,
     PhotoEditModalComponent,
     AddToAlbumModalComponent
   ]

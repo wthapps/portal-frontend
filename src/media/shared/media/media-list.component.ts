@@ -20,7 +20,7 @@ import 'rxjs/add/operator/takeUntil';
 import { MediaObjectService } from '../container/media-object.service';
 import { AlbumService } from '../service/album.service';
 import { ZMediaStore } from '../store/media.store';
-import { PhotoDetailPartialComponent } from '@wth/shared/shared/components/photo/detail/photo-detail-partial.component';
+// import { PhotoDetailPartialComponent } from '@wth/shared/shared/components/photo/detail/photo-detail-partial.component';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService, PhotoService } from '@shared/services';
@@ -50,7 +50,7 @@ declare var $: any;
     AlbumCreateModalComponent,
     AlbumEditModalComponent,
     AlbumDeleteModalComponent,
-    PhotoDetailPartialComponent,
+    // PhotoDetailPartialComponent,
     TaggingModalComponent,
     SharingModalComponent
   ]

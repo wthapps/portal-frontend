@@ -35,6 +35,7 @@ import { PhotoEditModalComponent } from './modal/photo/photo-edit-modal.componen
 import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.component';
 import { PlaylistModalModule } from '@shared/shared/components/photo/modal/playlist/playlist-modal.module';
 import { MediaModalModule } from '@shared/shared/components/photo/modal/media/media-modal.module';
+import { PhotoDetailPartialComponent } from '@shared/shared/components/photo/detail/photo-detail-partial.component';
 
 @NgModule({
   imports: [
@@ -53,7 +54,6 @@ import { MediaModalModule } from '@shared/shared/components/photo/modal/media/me
     PipeModule,
     BoxLoadingModule,
     PartialsPhotoSharingModule,
-    PartialsPhotoTaggingModule,
     ImageCropperModule,
     PlaylistModalModule,
     MediaModalModule,
@@ -72,6 +72,7 @@ import { MediaModalModule } from '@shared/shared/components/photo/modal/media/me
     MediaListHeaderComponent,
     ZMediaShareItemComponent,
     PhotoItemPreviewComponent,
+    PhotoDetailPartialComponent,
     BasePhotoDetailComponent
   ],
   exports: [
@@ -80,6 +81,7 @@ import { MediaModalModule } from '@shared/shared/components/photo/modal/media/me
     AddToAlbumModalComponent,
     PartialsPhotoTaggingModule,
     PartialsPhotoSharingModule,
+    PhotoDetailPartialComponent,
     PlaylistModalModule,
     MediaModalModule,
 
