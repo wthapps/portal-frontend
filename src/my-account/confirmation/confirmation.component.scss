@@ -9,14 +9,14 @@
   margin-left: auto;
   margin-right: auto;
   padding: 15px;
-  padding-top: 50px;
   background-color: #ffffff;
   border: solid 1px $line;
   border-radius: $border-radius-small;
 
   @media (min-width: $screen-sm-min) {
     padding: 50px;
-    .h1 {
+    padding-top: 15px;
+    .h1, i {
       font-size: 48px;
     }
     .h4 {
@@ -27,6 +27,7 @@
   .h1 {
     margin-top: 0;
     text-transform: uppercase;
+    i { font-size: 48px; }
   }
   .h4 {
     font-weight: normal;
