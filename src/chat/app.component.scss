@@ -16,6 +16,9 @@
   @include flex(1);
   @include flex-direction(column);
   overflow: auto;
+  .message-item-owner {
+    margin-top: 10px;
+  }
 }
 
 @media (max-width: $screen-xs-max) {

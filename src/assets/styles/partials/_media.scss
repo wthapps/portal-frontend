@@ -107,6 +107,7 @@ $media-user-status-pos: $media-user-status-w - 3px;
       white-space: nowrap;
       -ms-text-overflow: ellipsis;
       text-overflow: ellipsis;
+      font-weight: bold;
     }
     small {
       @include opacity(0.6);
