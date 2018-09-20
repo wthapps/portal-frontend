@@ -50,53 +50,52 @@
       <ng-container *ngIf="mediasList?.length; else templateNodata">
         <w-object-list class="message-assets-content bg-gray-light"
                        [ngClass]="{'message-assets-content-row': currentTab === 'notes' || currentTab === 'files'}"
-                       [scrollWindow]="false"
                        [data]="mediasList"
                        [sortInline]="false"
+                       [loadingMore]="loadingMore"
                        (completeSort)="onCompleteSort($event)"
                        (completeLoadMore)="onCompleteLoadMore($event)"
-                       (dbClickedItem)="view($event)"
-                       (clickedItem)="download($event)">
+                       (dbClickedItem)="view($event)">
           <ng-template #columnBox let-item>
             <!-------------- Photo view --------------->
-            <ng-container *ngIf="item.object_type === 'photo'">
+            <ng-container *ngIf="item.file_type === 'Media::Photo'">
               <div class="wobject-box-img" (dbclick)="view(item)">
-                <img [src]="item.thumbnail_url" alt="">
+                <img [src]="item.file.thumbnail_url" alt="">
               </div>
-              <div class="wobject-box-name" title="item.full_name">
-                <span><i class="fa fa-photo"></i> {{ item.full_name }} </span>
+              <div class="wobject-box-name" title="item.file.full_name">
+                <span><i class="fa fa-photo"></i> {{ item.file.full_name }} </span>
               </div>
             </ng-container>
-            <ng-container *ngIf="item.object_type === 'video'">
+            <ng-container *ngIf="item.file_type === 'Media::Video'">
               <div class="wobject-box-img" (dbclick)="view(item)">
-                <img [src]="item.thumbnail_url" alt="">
+                <img [src]="item.file.thumbnail_url" alt="">
               </div>
-              <div class="wobject-box-name" title="item.full_name">
-                <span><i class="fa fa-video-camera"></i> {{ item.full_name }} </span>
+              <div class="wobject-box-name" title="item.file.full_name">
+                <span><i class="fa fa-video-camera"></i> {{ item.file.full_name }} </span>
               </div>
             </ng-container>
             <!-------------- End Photo view --------------->
             <!-------------- Note view --------------->
-            <ng-container *ngIf="item.object_type == 'Note::Note'">
-              <div class="wobject-box-name wobject-box-clickable">
-                <span class="bold"><i class="fa fa-file"></i>
-                  <a [href]="noteUrl + item?.src_control?.uuid" target="_blank"> {{ item.name }} </a> </span>
-                <div class="wobject-box-content-note" [innerHTML]="item.content | safeHtml"></div>
+            <ng-container *ngIf="item.file_type == 'Note::Note'">
+              <div class="wobject-box-name">
+                <span class="bold name-clickable"><i class="fa fa-file"></i>
+                  <a [href]="noteUrl + item.uuid" target="_blank"> {{ item.file.name }} </a> </span>
+                <div class="wobject-box-content-note" [innerHTML]="item.file.content | safeHtml"></div>
               </div>
             </ng-container>
             <!-------------- End Note view --------------->
             <!-------------- File view --------------->
-            <ng-container *ngIf="item.model === 'Common::GenericFile'">
+            <ng-container *ngIf="item.file_type === 'Common::GenericFile'">
               <div class="wobject-box-name wobject-box-clickable">
                 <div class="media">
                   <div class="media-left">
                     <i class="fa fa-file-archive-o fz30 mt5"></i>
                   </div>
                   <div class="media-body">
-                    <a [href]="item.url">
-                      <p class="mb0"> {{ item.full_name }} </p>
+                    <a [href]="item.file.url">
+                      <p class="mb0"> {{ item.file.full_name }} </p>
                     </a>
-                    <small class="text-fade"> {{ item.size | bytes:0 }}</small>
+                    <small class="text-fade"> {{ item.file.size | bytes:0 }}</small>
                   </div>
                 </div>
               </div>
@@ -109,6 +108,7 @@
             <span *ngIf="item.object_type == 'photo'">{{ item.size | bytes:0 }}</span>
           </ng-template>
         </w-object-list>
+
       </ng-container>
       <ng-template #templateNodata>
         <div class="message-assets-content bg-gray-light text-center">

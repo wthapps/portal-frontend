@@ -46,7 +46,7 @@
         <!--note menu actions-->
         <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Note::Note'">
           <li>
-            <a [href]="noteUrl + '/notes/public/' + message.src_controls[0]?.uuid" target="_blank">
+            <a [href]="noteUrl + '/notes/public/' + message.uuid" target="_blank">
               Open
             </a>
           </li>
@@ -144,7 +144,7 @@
 
           <!-- note type-->
           <div class="message-item-content-note" *ngIf="message.file_type == 'Note::Note'">
-            <a class="d-block" [href]="noteUrl + '/notes/public/' + message.src_controls[0]?.uuid" target="_blank">
+            <a class="d-block" [href]="noteUrl + '/notes/public/' + message?.uuid" target="_blank">
               <h5>
                 <i class="fa fa-file"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
               </h5>
@@ -259,7 +259,7 @@
         <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.file_type == 'Note::Note'">
           <li>
             <!-- {{message.src_controls | json}} -->
-            <a [href]="noteUrl + '/notes/public/' + message.src_controls[0]?.uuid" target="_blank">
+            <a [href]="noteUrl + '/notes/public/' + message.uuid" target="_blank">
               Open
             </a>
           </li>

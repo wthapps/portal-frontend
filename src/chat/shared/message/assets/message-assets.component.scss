@@ -81,7 +81,7 @@ $message-assets-width: 400px;
   .wobject-view {
     padding-top: $grid-gutter-width/2;
   }
-  .wobject-box-clickable{
+  .wobject-box-clickable, .name-clickable {
     position: relative;
     z-index: 1;
     a {
@@ -123,3 +123,4 @@ body {
     }
   }
 }
+

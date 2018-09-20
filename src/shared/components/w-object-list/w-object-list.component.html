@@ -85,8 +85,12 @@
       </div>
     </div>
   </div>
-  <div id="wobject-drag-body" class="wobject-row-body" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
-    [scrollWindow]="scrollWindow" (scrolled)="onLoadMore()">
+  <div id="wobject-drag-body" class="wobject-row-body"
+       infinite-scroll
+       [infiniteScrollDistance]="2"
+       [infiniteScrollThrottle]="50"
+       [scrollWindow]="scrollWindow"
+       (scrolled)="onLoadMore()">
     <ng-container *ngFor="let objects of data | groupByMap: groupBy : sortOrder : sortBy : sortOrder">
       <div class="wobject-row-title">{{ objects.key }}</div>
       <div *ngFor="let item of objects.value; trackBy: item?.id" class="wobject-row" [ngClass]="{active: isActive(item)}">
@@ -113,6 +117,10 @@
         </div>
       </div>
     </ng-container>
+
+    <div *ngIf="loadingMore" class="box-loading-more" [ngClass]="outClass">
+      <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+    </div>
   </div>
 </div>
 

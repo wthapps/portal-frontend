@@ -24,6 +24,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   @Input() data: Media[];
   @Input() sortInline: Boolean = true;
   @Input() scrollWindow: Boolean = false;
+  @Input() loadingMore: Boolean = false;
   @Output() completeLoadMore: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   @Output() completeSort: EventEmitter<any> = new EventEmitter<any>(null);
   @Output() completeDoubleClick: EventEmitter<any> = new EventEmitter<any>(null);

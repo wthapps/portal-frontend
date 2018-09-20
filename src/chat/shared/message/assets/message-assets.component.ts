@@ -67,16 +67,17 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
   profileUrl: any;
 
-  medias$: Observable<Media[]>;
+  medias$: Observable<Array<any>>;
   nextLink: string;
   isLoading: boolean;
   members: Array<any> = [];
-  readonly noteUrl: any = `${Constants.baseUrls.note}/notes/public/`;
+  loadingMore = false;
+  readonly noteUrl: any = `${Constants.baseUrls.note}/notes/public`;
   private destroy$ = new Subject<any>();
+  private pageSize = 5;
 
   constructor(
     private chatService: ChatService,
-    private commonEventService: CommonEventService,
     public userService: UserService,
     private authService: AuthService,
     private wthConfirmService: WthConfirmService,
@@ -129,6 +130,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     console.log(event);
     this.currentTab = event.link;
     if (this.currentTab !== 'members') {
+      this.loadingMore = false;
       this.nextLink = this.buildNextLink();
       if (this.nextLink) {
         this.getObjects(true);
@@ -204,8 +206,14 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   onCompleteLoadMore(event: boolean) {
-    if (event) {
-      this.getObjects();
+    if (event && this.nextLink !== null) {
+      this.loadingMore = true;
+      this.messageAssetsService.getMedias(this.nextLink, false).pipe(takeUntil(this.destroy$)).subscribe(
+        (res: ResponseMetaData) => {
+          this.nextLink = res.meta.links.next;
+          this.loadingMore = false;
+        }
+      );
     }
   }
 
@@ -222,23 +230,27 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   view(item: any) {
-    if (['photo', 'video'].includes(item.object_type)) {
-      this.router.navigate([
-        {
-          outlets: {
-            modal: [
-              'photos',
-              item.id,
-              {
-                ids: [item.id],
-                prevUrl: '/conversations'
-              }
-            ]
+    switch (item.file_type) {
+      case 'Media::Photo':
+      case 'Media::Video':
+        this.router.navigate([
+          {
+            outlets: {
+              modal: [
+                item.file_type === 'Media::Photo' ? 'photos' : 'videos',
+                item.file.id,
+                {
+                  ids: [item.file.id],
+                  prevUrl: '/conversations'
+                }
+              ]
+            }
           }
-        }
-      ]);
-    } else if (item.object_typ === 'note') {
-      this.router.navigate([`${this.noteUrl}/${item.src_control.uuid}`]);
+        ]);
+        break;
+      case 'Note::Note':
+        window.open(`${this.noteUrl}/${item.uuid}`);
+        break;
     }
   }
 
@@ -250,13 +262,13 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     let urlAPI = '';
     switch (this.currentTab) {
       case 'photos':
-        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=photo`;
+        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=photo&per_page=${this.pageSize}`;
         break;
       case 'notes':
-        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=note`;
+        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=note&per_page=${this.pageSize}`;
         break;
       default:
-        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=file`;
+        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=file&per_page=${this.pageSize}`;
         break;
     }
     return urlAPI;
