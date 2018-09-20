@@ -23,6 +23,11 @@ import { SoProfileEffects } from './shared/effects/so-profile-effects';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SocialPostsEffects } from './shared/effects/social-posts-effects';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { WthCommonModule } from '@shared/common/wth-common.module';
+import { PostModule } from '@social/shared/second-routes/post';
+import { MiniEditorModule } from '@shared/shared/components/mini-editor/mini-editor.module';
+import { Ng2HdModule } from '@shared/shared/ng2-hd';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 @NgModule({
   imports: [
@@ -35,8 +40,13 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     SocialSettingsModule,
     ZSocialPhotoModule,
     ModalModule,
+    WthCommonModule,
+    MiniEditorModule,
+    Ng2HdModule,
+    PostModule,
+    ScrollToModule.forRoot(),
     ZSocialSharedModule.forRoot(),
-    SharedModule.forRoot(),
+    // SharedModule.forRoot(),
     SharedServicesModule.forRoot(),
     CoreModule.forRoot(),
 

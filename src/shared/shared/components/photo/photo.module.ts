@@ -12,7 +12,6 @@ import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 
 import { PipeModule } from '../../pipe/pipe.module';
 
-import { PhotoDetailPartialComponent } from './detail/photo-detail-partial.component';
 import { ZMediaToolbarComponent } from './toolbar/toolbar.component';
 import { ZMediaToolbarPhotoComponent } from './toolbar/photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './toolbar/album/album.component';
@@ -65,7 +64,6 @@ import { MediaModalModule } from '@shared/shared/components/photo/modal/media/me
     PhotoEditModalComponent,
     AddToAlbumModalComponent,
 
-    PhotoDetailPartialComponent,
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
@@ -88,7 +86,6 @@ import { MediaModalModule } from '@shared/shared/components/photo/modal/media/me
     BoxLoadingModule,
     PartialsPhotoTaggingModule,
 
-    PhotoDetailPartialComponent,
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,

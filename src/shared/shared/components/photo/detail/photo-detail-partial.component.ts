@@ -33,6 +33,7 @@ const viewSize = 5;
   styleUrls: ['photo-detail-partial.component.scss'],
   encapsulation: ViewEncapsulation.None,
   entryComponents: [
+    PhotoEditModalComponent,
     SharingModalComponent,
     TaggingModalComponent
   ]

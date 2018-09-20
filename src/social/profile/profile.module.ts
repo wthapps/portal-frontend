@@ -14,15 +14,19 @@ import { ZSocialProfileFormInterestComponent } from './form/interest.component';
 import { ZSocialProfilePostComponent } from './post/post.component';
 import { ZSocialProfileFriendComponent } from './friend/friend.component';
 import { ZSocialProfileDataService } from './profile-data.service';
-import { SharedModule } from '@wth/shared/shared.module';
+// import { SharedModule } from '@wth/shared/shared.module';
 import { ProfileRoutingModule } from './profile-routing.module';
+import { PostModule } from '@social/shared/second-routes/post';
+import { PartialsProfileModule } from '@shared/shared/components/profile/profile.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ZSocialSharedModule,
+    PostModule,
     ProfileRoutingModule,
-    SharedModule
+    PartialsProfileModule,
+    // SharedModule
   ],
   declarations: [
     ZSocialProfileComponent,

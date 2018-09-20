@@ -6,7 +6,7 @@ import { SharedModule } from 'primeng/components/common/shared';
 
 @NgModule({
   imports: [CommonModule, EditorModule],
-  exports: [MiniEditorComponent, SharedModule],
+  exports: [MiniEditorComponent, EditorModule, SharedModule],
   declarations: [MiniEditorComponent]
 })
 export class MiniEditorModule { }

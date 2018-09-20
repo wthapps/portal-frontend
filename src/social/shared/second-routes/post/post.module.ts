@@ -1,3 +1,4 @@
+import { ZSocialSharedModule } from './../../shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +17,18 @@ import { PostActivitiesComponent } from './post-activities.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
 import { PostService } from './shared/post.service';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
+import { PostListComponent } from '@social/shared/second-routes/post/post-list.component';
+import { PostHeaderComponent, PostBodyComponent, PostFooterComponent } from '@social/shared/second-routes/post/components';
+import { PostComponent } from '@social/shared/second-routes/post/post.component';
+import { PostDetailComponent } from '@social/shared/second-routes/post/post-detail.component';
+import { PostDetailPhotoComponent } from '@social/shared/second-routes/post/post-detail-photo.component';
+import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
+import { ReadMoreModule } from '@shared/shared/components/read-more/read-more.module';
+import { DisplayLinkModule } from '@shared/shared/components/link/display-link.module';
+import { EntitySelectModule } from '@shared/shared/components/entity-select/entity-select.module';
+import { PhotoItemPreviewComponent } from '@shared/shared/components/photo/photo-item-preview.component';
+import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.module';
+import { InputSwitchModule, CheckboxModule } from 'primeng/primeng';
 @NgModule({
   imports: [
     RouterModule,
@@ -24,14 +37,29 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
     ReactiveFormsModule,
     MiniEditorModule,
     Ng2HdModule,
-    SharedModule,
+    WTHEmojiModule,
+    ReadMoreModule,
+    EntitySelectModule,
+    PartialsPhotoModule,
+    DisplayLinkModule,
+    ZSocialSharedModule,
     TagInputModule,
+    InputSwitchModule,
     // BrowserAnimationsModule,
     InputTextareaModule
 
 
   ],
   declarations: [
+    // List Posts
+    PostListComponent,
+    PostComponent,
+    PostHeaderComponent,
+    PostBodyComponent,
+    PostFooterComponent,
+    PostDetailComponent,
+    PostDetailPhotoComponent,
+
     PostNewComponent,
     PostEditComponent,
     PostNewComponent,
@@ -49,8 +77,17 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
     ReactiveFormsModule,
     MiniEditorModule,
     Ng2HdModule,
+    EntitySelectModule,
+    ZSocialSharedModule,
 
-    TagInputModule,
+    // List Posts
+    PostListComponent,
+    PostComponent,
+    PostHeaderComponent,
+    PostBodyComponent,
+    PostFooterComponent,
+    PostDetailComponent,
+    PostDetailPhotoComponent,
     PostNewComponent,
     PostEditComponent,
     PostNewComponent,

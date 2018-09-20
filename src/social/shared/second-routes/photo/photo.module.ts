@@ -6,20 +6,25 @@ import {
 } from './index';
 import { ZSocialPhotoRoutingModule } from './photo-routing.module';
 import { ZSocialSharedModule } from '../../shared.module';
-import { SharedModule } from '@wth/shared/shared.module';
+import { PhotoDetailPartialComponent } from '@shared/shared/components/photo/detail/photo-detail-partial.component';
+import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
+// import { SharedModule } from '@wth/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    ImageCropperModule,
     ZSocialPhotoRoutingModule,
     ZSocialSharedModule,
-    SharedModule
+    // SharedModule
   ],
   declarations: [
+    PhotoDetailPartialComponent,
     ZSocialPhotoComponent,
     PhotoDetailComponent
   ],
   exports: [
+    PhotoDetailPartialComponent,
     ZSocialPhotoComponent,
     PhotoDetailComponent
   ],

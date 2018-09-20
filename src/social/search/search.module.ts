@@ -7,15 +7,17 @@ import { ZSocialSearchResultDetailComponent } from './detail/search-detail.compo
 // import { ZSocialSearchResultComponent } from './search.component';
 import { ZSocialPostByFilterComponent } from './components/post-by.component';
 import { ZSocialPostDateFilterComponent } from './components/post-date.component';
-import { SharedModule } from '@wth/shared/shared.module';
+// import { SharedModule } from '@wth/shared/shared.module';
 import { SearchRoutingModule } from './search-routing.module';
+import { PostModule } from '@social/shared/second-routes/post';
 
 @NgModule({
   imports: [
     CommonModule,
     ZSocialSharedModule,
+    PostModule,
     SearchRoutingModule,
-    SharedModule
+    // SharedModule
   ],
   declarations: [
     // ZSocialSearchResultComponent,
