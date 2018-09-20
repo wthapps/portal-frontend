@@ -30,6 +30,7 @@ export class MessageItemComponent implements OnInit {
 
   readonly tooltip: any = Constants.tooltip;
   readonly noteUrl: any = Constants.baseUrls.note;
+  readonly socialUrl: any = Constants.baseUrls.social;
   readonly actions = CHAT_ACTIONS;
   readonly profileUrl: any = ChatConstant.profileUrl;
   readonly NO_ACTION_MESSAGES = ['message_deleted', 'message_cancel', 'request', 'request_accepted'];

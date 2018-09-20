@@ -174,12 +174,12 @@
         <!--share contact type-->
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'share_contact_message'">
           <!-- Sender -->
-          <message-actions-item *ngIf="byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message?.display?.share_contact?.uuid"
+          <message-actions-item *ngIf="byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="socialUrl+'/profile/' + message?.display?.share_contact?.uuid"
             [name]=message?.display?.share_contact?.name [status]="" [actions]="[{text: '', id: 'resend', class:'fa fa-comment-o', btnClass:'btn-default'}]"
             (eventOut)=onShareContact($event)>
           </message-actions-item>
           <!-- Receiver -->
-          <message-actions-item *ngIf="!byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="'profile/' + message?.display?.share_contact?.uuid"
+          <message-actions-item *ngIf="!byMe" [avatar]=message?.display?.share_contact?.profile_image [url]="socialUrl+'/profile/' + message?.display?.share_contact?.uuid"
             [name]=message?.display?.share_contact?.name [status]="" [actions]="[{text: '', id: 'add_contact', class:'fa fa-comment-o', btnClass:'btn-default'}]"
             (eventOut)=onAdd($event)>
           </message-actions-item>
