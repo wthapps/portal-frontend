@@ -1,5 +1,5 @@
 .ui-widget {
-  font-family: inherit;
+  font-family: $font-base;
 }
 
 // inputswitch
@@ -478,5 +478,46 @@ $ui-inputswitch-w: 24px;
   }
   .fa-caret-down:before {
     @extend .fa-chevron-up;
+  }
+}
+
+.ui-widget-overlay {
+  background-color: $modal-backdrop-bg;
+  @include opacity($modal-backdrop-opacity);
+}
+
+.ui-dialog {
+  &.ui-widget {
+    @extend .modal-content;
+    position: fixed;
+    .ui-dialog-titlebar {
+      @extend .modal-header;
+      .ui-dialog-title {
+        @extend .h4;
+        @extend .modal-title;
+      }
+    }
+    .ui-dialog-titlebar-close {
+      @extend .close;
+      margin-top: -2px;
+      &, &:hover, &:focus {
+        border-color: transparent;
+        background-color: transparent;
+        background-image: none;
+      }
+      &:after {
+        content: '×';
+      }
+      .fa {
+        display: none;
+      }
+    }
+
+    .ui-dialog-content {
+      @extend .modal-body;
+    }
+    .ui-dialog-footer {
+      @extend .modal-footer;
+    }
   }
 }

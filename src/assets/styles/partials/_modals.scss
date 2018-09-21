@@ -30,6 +30,30 @@
   }
 }
 
+.modal-header {
+  padding-bottom: 0;
+  border-bottom-width: 0;
+
+  background-color: #ffffff;
+  background-image: none;
+  @include border-top-radius($border-radius-large);
+}
+
+
+.modal-content {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.modal-footer {
+  border-top-width: 0;
+  @include border-bottom-radius($border-radius-large);
+  .btn-min {
+    min-width: 86px;
+  }
+}
+
 .modal {
   .modal-title-action {
     float: right;
