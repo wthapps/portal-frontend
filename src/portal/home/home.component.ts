@@ -13,6 +13,8 @@ import { ToastsService } from '../../shared/shared/components/toast/toast-messag
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
 import { CustomValidator } from '../../shared/shared/validator/custom.validator';
 import { Constants } from '../../shared/constant/config/constants';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
+import { HandleReCaptchaMixin } from '@portal/shared/mixins/handle-login-recaptcha.mixin';
 /**
  * This class represents the lazy loaded HomeComponent.
  */
@@ -23,7 +25,8 @@ import { Constants } from '../../shared/constant/config/constants';
   styleUrls: ['home.component.scss'],
   animations: [fadeInAnimation]
 })
-export class HomeComponent {
+  @Mixins([HandleReCaptchaMixin])
+export class HomeComponent implements HandleReCaptchaMixin {
   @HostBinding('@fadeInAnimation') fadeInAnimation = true;
 
   tooltip: any = Constants.tooltip;
@@ -36,6 +39,7 @@ export class HomeComponent {
   birthday_day: AbstractControl;
   birthday_month: AbstractControl;
   birthday_year: AbstractControl;
+  notRobot: boolean = false;
   //sexInput:AbstractControl;
   accepted: AbstractControl;
 
@@ -76,6 +80,8 @@ export class HomeComponent {
     this.email = this.form.controls['email'];
     this.password = this.form.controls['password'];
   }
+
+  handleCaptcha:(event) => void;
 
   gotoHashtag(link: string, prodID: string) {
     this.router

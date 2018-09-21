@@ -12,7 +12,7 @@ import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
@@ -30,7 +30,7 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
 
 declare var _: any;
 
-@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, PlaylistCreateMixin])
+@Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, PlaylistCreateMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-playlist-list',

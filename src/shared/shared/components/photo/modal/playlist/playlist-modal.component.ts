@@ -10,7 +10,7 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { Constants } from '@wth/shared/constant';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { ModalComponent } from '@shared/shared/components/base/components';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
@@ -18,7 +18,7 @@ import { PlaylistCreateModalService } from '@shared/shared/components/photo/moda
 declare var $: any;
 declare var _: any;
 
-@Mixin([LoadModalAble])
+@Mixins([LoadModalAble])
 @Component({
   selector: 'playlist-modal',
   templateUrl: 'playlist-modal.component.html',

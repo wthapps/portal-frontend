@@ -14,7 +14,7 @@ import { CustomValidator } from '../../validator/custom.validator';
 import { Constants } from '../../../constant/config/constants';
 import { forEach } from '@angular/router/src/utils/collection';
 // import { ProfileFormMixin } from '../../mixins/form/profile/profile-form.mixin';
-// import { Mixin } from '../../../design-patterns/decorator/mixin-decorator';
+// import { Mixins  } from '../../../design-patterns/decorator/mixin-decorator';
 
 declare var _: any;
 

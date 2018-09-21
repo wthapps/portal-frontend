@@ -1,14 +1,14 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
 import { EmitEventMixin } from '../../../shared/shared/mixins/shared/emit-event.mixin';
-import { Mixin } from '../../../shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '../../../shared/design-patterns/decorator/mixin-decorator';
 
 import { Constants } from '../../../shared/constant/config/constants';
 import { CommonEventService } from '@wth/shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 
-@Mixin([EmitEventMixin])
+@Mixins([EmitEventMixin])
 @Component({
   selector: 'z-contact-shared-actions-bar',
   templateUrl: 'actions-bar.component.html',

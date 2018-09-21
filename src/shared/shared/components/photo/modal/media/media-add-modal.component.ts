@@ -1,7 +1,7 @@
 import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter, ViewContainerRef, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
@@ -9,7 +9,7 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
 declare var $: any;
 declare var _: any;
 
-@Mixin([LoadModalAble])
+@Mixins([LoadModalAble])
 @Component({
   selector: 'media-add-modal',
   templateUrl: 'media-add-modal.component.html',

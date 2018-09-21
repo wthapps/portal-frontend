@@ -11,7 +11,7 @@ import {
 } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@shared/constant';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
@@ -29,7 +29,7 @@ import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal
 import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
-@Mixin([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin])
+@Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin])
 @Component({
   selector: 'photo-detail',
   templateUrl: './item-detail.component.html',

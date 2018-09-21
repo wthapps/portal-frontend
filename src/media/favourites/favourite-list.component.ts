@@ -21,7 +21,7 @@ import { MediaActionHandler } from '@media/shared/media';
 import { DeleteManySuccess } from '@media/shared/store/media';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { ApiBaseService } from '@shared/services';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -31,7 +31,7 @@ import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mi
 import { mediaConstants } from '@media/shared/conig/constants';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 
-@Mixin([MediaBasicListMixin, SharingModalMixin, MediaAdditionalListMixin, MediaDownloadMixin])
+@Mixins([MediaBasicListMixin, SharingModalMixin, MediaAdditionalListMixin, MediaDownloadMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-favourite-list',

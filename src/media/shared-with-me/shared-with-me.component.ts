@@ -17,7 +17,7 @@ import { SharingService } from '@wth/shared/shared/components/photo/modal/sharin
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ApiBaseService } from '@shared/services';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
@@ -25,7 +25,7 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { mediaConstants } from '@media/shared/conig/constants';
 import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 
-@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, MediaAdditionalListMixin])
+@Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, MediaAdditionalListMixin])
 @Component({
   selector: 'me-sharings',
   templateUrl: '../shared/list/list.component.html'

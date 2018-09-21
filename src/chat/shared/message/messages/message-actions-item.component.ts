@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { EmitEventMixin } from '@wth/shared/shared/mixins/shared/emit-event.mixin';
-import { Mixin } from '@wth/shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@wth/shared/design-patterns/decorator/mixin-decorator';
 
 
 declare var _: any;
 
-@Mixin([EmitEventMixin])
+@Mixins([EmitEventMixin])
 @Component({
   selector: 'message-actions-item',
   templateUrl: 'message-actions-item.component.html'

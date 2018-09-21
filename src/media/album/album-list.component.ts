@@ -20,7 +20,7 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { ApiBaseService, WthConfirmService } from '@shared/services';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -30,7 +30,7 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
 
-@Mixin([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin])
+@Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin])
 @Component({
   selector: 'z-media-album-list',
   templateUrl: 'album-list.component.html'

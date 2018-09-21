@@ -13,7 +13,10 @@ import { TablePricingModule } from '@wth/shared/shared/components/table-pricing/
 import { StickyModule } from 'ng2-sticky-kit';
 import { AccordionModule } from 'primeng/primeng';
 
-import { PortalSharedFooterComponent, PortalSharedFooterPromotionComponent } from './footer/footer.component';
+import {
+  PortalSharedFooterComponent,
+  PortalSharedFooterPromotionComponent
+} from './footer/footer.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -30,7 +33,6 @@ import { PortalSharedFooterComponent, PortalSharedFooterPromotionComponent } fro
     ShowHidePasswordModule,
     PartialModule,
     TablePricingModule,
-
     // Custom modules
     ModalModule,
     WthCommonModule

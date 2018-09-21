@@ -24,8 +24,8 @@
         </div>
         <div class="media-body">
           <h4 class="media-heading">WTH! I can’t find my picture, bookmark or file!</h4>
-          <p>Our apps are all interconnected. As you chat and make social posts, all your pictures, bookmarks and
-            files are automatically organized to make it easy to find anything.</p>
+          <p>Our apps are all interconnected. As you chat and make social posts, all your pictures, bookmarks and files are
+            automatically organized to make it easy to find anything.</p>
         </div>
       </div>
       <div class="media">
@@ -43,8 +43,9 @@
         </div>
         <div class="media-body">
           <h4 class="media-heading">WTH! The internet is now full of ads – I really hate ads!</h4>
-          <p>All our apps are ad free! And your information is safe and secure. We will never sell it to advertisers or
-            anyone else.</p>
+          <p>All our apps are ad free! And your information is safe and secure. We will never sell it to advertisers or anyone
+            else.
+          </p>
         </div>
       </div>
       <div class="media">
@@ -53,8 +54,7 @@
         </div>
         <div class="media-body">
           <h4 class="media-heading">WTH! I need to do more!</h4>
-          <p>We are working on adding a bunch more useful apps, including a to-do list, project manager, email, games
-            and eFax.</p>
+          <p>We are working on adding a bunch more useful apps, including a to-do list, project manager, email, games and eFax.</p>
         </div>
       </div>
     </div>
@@ -73,8 +73,8 @@
             <img src="/assets/images_new/logo-social.png" alt="">
           </figure>
           <p>Stay connected with your friends and family without worrying about ads or your privacy.</p>
-          <a (click)="gotoHashtag('products', 'product-social')" href="javascript:;" class="btn btn-outline-primary">Learn
-            more</a>
+          <a (click)="gotoHashtag('products', 'product-social')" href="javascript:;" class="btn btn-outline-primary">Learn more
+          </a>
         </div>
         <div class="col-sm-4">
           <figure>
@@ -106,8 +106,8 @@
             <img src="/assets/images_new/logo-contact.png" alt="">
           </figure>
           <p>CONTACT - Keep all your pictures in one place to use with all your apps.</p>
-          <a (click)="gotoHashtag('products', 'product-contact')" href="#" class="btn btn-outline-primary">Learn
-            more</a>
+          <a (click)="gotoHashtag('products', 'product-contact')" href="#" class="btn btn-outline-primary">Learn more
+          </a>
         </div>
       </div>
     </div>
@@ -117,8 +117,8 @@
   <div class="container-fluid">
     <div class="section-title">
       <h3>Get started today</h3>
-      <h5>Try every feature, no credit card required.<br>
-        30 day free trial.</h5>
+      <h5>Try every feature, no credit card required.
+        <br> 30 day free trial.</h5>
     </div>
     <div class="started-form">
       <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
@@ -126,22 +126,18 @@
           <div class="col-sm-6">
             <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched)}">
               <label for="first_name">First Name</label>
-              <input [formControl]="first_name" type="text" class="form-control" id="first_name"
-                     placeholder="First Name">
+              <input [formControl]="first_name" type="text" class="form-control" id="first_name" placeholder="First Name">
               <div *ngIf="!first_name.valid && first_name.touched">
-                <span *ngIf="!first_name.valid && first_name.errors.required"
-                      class="help-block">First name is required</span>
+                <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">First name is required</span>
               </div>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group" [ngClass]="{'has-error': (!last_name.valid && last_name.touched)}">
               <label for="last_name">Last Name</label>
-              <input [formControl]="last_name" type="text" class="form-control" id="last_name"
-                     placeholder="Last Name">
+              <input [formControl]="last_name" type="text" class="form-control" id="last_name" placeholder="Last Name">
               <div *ngIf="!last_name.valid && last_name.touched">
-                    <span *ngIf="!last_name.valid && last_name.errors.required"
-                          class="help-block">Last name is required</span>
+                <span *ngIf="!last_name.valid && last_name.errors.required" class="help-block">Last name is required</span>
               </div>
             </div>
           </div>
@@ -152,23 +148,19 @@
           <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
           <div *ngIf="!email.valid && email.touched">
             <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
-            <span *ngIf="!email.errors.required && email.errors.emailFormat"
-                  class="help-block">Email is not valid. eg. example@wthapps.com</span>
+            <span *ngIf="!email.errors.required && email.errors.emailFormat" class="help-block">Email is not valid. eg. example@wthapps.com</span>
           </div>
         </div>
-        <div class="form-group has-password"
-             [ngClass]="{'has-error': (!password.valid && password.touched)}">
+        <div class="form-group has-password" [ngClass]="{'has-error': (!password.valid && password.touched)}">
           <label for="password">Password</label>
 
           <show-hide-password>
-            <input #showhidepassword [formControl]="password" type="password" class="form-control" id="password"
-                   placeholder="Password">
+            <input #showhidepassword [formControl]="password" type="password" class="form-control" id="password" placeholder="Password">
           </show-hide-password>
 
           <div *ngIf="!password.valid && password.touched">
             <p class="mt10 mb0">Password must:</p>
-            <ul
-              [ngClass]="{'text-danger': (!password.valid && password.touched), 'text-success': (password.valid && password.touched)}">
+            <ul [ngClass]="{'text-danger': (!password.valid && password.touched), 'text-success': (password.valid && password.touched)}">
 
               <ng-template [ngIf]="!password.valid">
                 <ng-template [ngIf]="password.errors.required">
@@ -180,11 +172,9 @@
                 <ng-template [ngIf]="!password.errors.required && !password.errors.minlength">
                   <li class="text-success">Contain at least 8 characters or more</li>
                 </ng-template>
-                <li [ngClass]="{'text-success': (!password.errors.lowercaseUppercase)}">Contain both uppercase and
-                  lowercase characters
+                <li [ngClass]="{'text-success': (!password.errors.lowercaseUppercase)}">Contain both uppercase and lowercase characters
                 </li>
-                <li [ngClass]="{'text-success': (!password.errors.specialSymbolOrNumber)}">Contain at least one number
-                  or symbol
+                <li [ngClass]="{'text-success': (!password.errors.specialSymbolOrNumber)}">Contain at least one number or symbol
                 </li>
 
               </ng-template>
@@ -196,20 +186,22 @@
             </ul>
           </div>
         </div>
-
+        <re-captcha #ReCaptchaComponent (captchaResponse)="handleCaptcha($event)" site_key="6LeZ0xIUAAAAABLfFeQpUGfK84j5aWgOnWbfJKM4"></re-captcha>
+        <input id="notRobot" type="checkbox" [checked]="notRobot" (change)="notRobot = !notRobot" style="visibility: hidden;" />
         <div class="form-group">
           By clicking Create Account, I agree to the
           <a class="link-underline" [routerLink]="['/policies/terms']" href="#">Terms of Service</a>,
           <a class="link-underline" [routerLink]="['/policies/privacy']" href="#">Privacy & Cookies Policy</a>.
         </div>
         <div class="form-group">
-          <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-primary">
+          <button [disabled]="!form.valid || !notRobot" type="submit" class="btn btn-block btn-primary">
             Create an account for free
           </button>
         </div>
 
         <div class="form-group text-center">
-          Already have an account? <a class="link-text" [routerLink]="['/login']" href="#">Sign in</a>
+          Already have an account?
+          <a class="link-text" [routerLink]="['/login']" href="#">Sign in</a>
         </div>
       </form>
     </div>

@@ -14,7 +14,7 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { Router } from '@angular/router';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -26,7 +26,7 @@ import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
 import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
 import { PlaylistCreateMixin } from '@shared/mixin/playlist/playlist-create.mixin';
 
-@Mixin([MediaViewMixin, AlbumAddMixin, AlbumCreateMixin, PlaylistCreateMixin])
+@Mixins([MediaViewMixin, AlbumAddMixin, AlbumCreateMixin, PlaylistCreateMixin])
 @Component({
   selector: 'w-toolbar',
   exportAs: 'wToolbar',

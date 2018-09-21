@@ -10,7 +10,7 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -25,7 +25,7 @@ import { SharingModalResult } from '@shared/shared/components/photo/modal/sharin
 import { WUploader } from '@shared/services/w-uploader';
 
 declare var _: any;
-@Mixin([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
+@Mixins([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-photo-list',

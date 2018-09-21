@@ -12,6 +12,8 @@ import { CustomValidator } from '../../shared/shared/validator/custom.validator'
 import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
 import { Constants } from '../../shared/constant/config/constants';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
+import { HandleReCaptchaMixin } from '@portal/shared/mixins/handle-login-recaptcha.mixin';
 
 declare var $: any;
 
@@ -23,7 +25,8 @@ declare var $: any;
   templateUrl: 'register.component.html',
   styleUrls: ['register.component.scss']
 })
-export class RegisterComponent {
+  @Mixins([HandleReCaptchaMixin])
+export class RegisterComponent implements HandleReCaptchaMixin{
   errorMessage = '';
   sex = 0;
 
@@ -41,6 +44,7 @@ export class RegisterComponent {
 
   submitted = false;
   invitationUuid: string;
+  notRobot: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -89,6 +93,8 @@ export class RegisterComponent {
       this.invitationUuid = queryParam['invitation'];
     });
   }
+
+  handleCaptcha:(event: any) => void;
 
   onSubmit(values: any): void {
     this.submitted = true;

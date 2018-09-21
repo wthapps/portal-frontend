@@ -31,7 +31,7 @@ import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingCreateParams, SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
@@ -48,7 +48,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
-@Mixin([
+@Mixins([
   MediaBasicListMixin,
   MediaAdditionalListMixin,
   MediaListDetailMixin,

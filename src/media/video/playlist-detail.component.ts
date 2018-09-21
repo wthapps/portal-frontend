@@ -6,7 +6,7 @@ import {
   ApiBaseService,
   WthConfirmService
 } from '@wth/shared/services';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { Constants } from '@shared/constant';
@@ -30,7 +30,7 @@ import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { WUploader } from '@shared/services/w-uploader';
 
-@Mixin([MediaBasicListMixin,
+@Mixins([MediaBasicListMixin,
   MediaAdditionalListMixin,
   MediaListDetailMixin,
   LoadModalAble,

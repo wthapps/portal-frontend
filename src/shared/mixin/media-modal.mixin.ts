@@ -1,11 +1,11 @@
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { ViewContainerRef, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { AlbumEditModalComponent } from '@shared/components/modal/album/album-edit-modal.component';
-@Mixin([LoadModalAble])
+@Mixins([LoadModalAble])
 export class MediaModalMixin implements LoadModalAble {
   modalIns: any;
   modalRef: any;

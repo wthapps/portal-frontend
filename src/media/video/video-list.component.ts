@@ -16,7 +16,7 @@ import { PlaylistModalComponent } from '@shared/shared/components/photo/modal/pl
 import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { MediaViewMixin } from '@shared/mixin/media-view.mixin';
@@ -27,7 +27,7 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { WUploader } from '@shared/services/w-uploader';
 
 declare var _: any;
-@Mixin([SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble, MediaDownloadMixin])
+@Mixins([SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble, MediaDownloadMixin])
 @Component({
   selector: 'me-video-list',
   entryComponents: [

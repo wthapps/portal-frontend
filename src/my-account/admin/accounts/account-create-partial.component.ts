@@ -14,7 +14,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { forEach } from '@angular/router/src/utils/collection';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 // import { ProfileFormMixin } from '../../mixins/form/profile/profile-form.mixin';
-// import { Mixin } from '../../../design-patterns/decorator/mixin-decorator';
+// import { Mixins  } from '../../../design-patterns/decorator/mixin-decorator';
 
 declare var _: any;
 

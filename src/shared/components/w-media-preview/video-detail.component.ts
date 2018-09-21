@@ -12,7 +12,7 @@ import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
-import { Mixin } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/conig/constants';
@@ -27,7 +27,7 @@ import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/p
 import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 
 
-@Mixin([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin, MediaPreviewMixin])
+@Mixins([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin, MediaPreviewMixin])
 @Component({
   selector: 'video-detail',
   templateUrl: './item-detail.component.html',
