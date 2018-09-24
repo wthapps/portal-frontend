@@ -5,3 +5,7 @@
 .flex-row-reverse {
   @include flex-direction(row-reverse)
 }
+
+.align-self-center {
+  @include align-self(center);
+}
