@@ -14,7 +14,9 @@ export class ZChatShareItemRequestComponent {
 
   onAccept() {
     const contact = this.chatService.getContactSelect().value;
+
     this.chatService.acceptRequest(contact);
+
   }
 
   onDecline() {

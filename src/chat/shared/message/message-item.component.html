@@ -343,7 +343,7 @@
 
   <div *ngIf="message.message_type === 'request_accepted'">
     You connected with
-    <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.user.name }}</span> on WTH!Chat
+    <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.user?.name }}</span> on WTH!Chat
   </div>
   <div class="text-fade">
     <small>{{ message.created_at | timeFormat: "time_only" }}</small>

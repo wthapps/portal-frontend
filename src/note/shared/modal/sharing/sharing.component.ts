@@ -47,9 +47,9 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
   contactTerm$ = new Subject<string>();
 
   roles = [
-    {id: 1, name: 'view', display_name: 'View Only'},
-    {id: 2, name: 'download', display_name: 'Can Download'},
-    {id: 3, name: 'edit', display_name: 'Can Edit'}
+    {id: 1, name: 'view', display_name: 'Can view'},
+    {id: 2, name: 'download', display_name: 'Can download'},
+    {id: 3, name: 'edit', display_name: 'Can edit'}
     // {id: 4, name: 'full', display_name: 'Full Access'}
   ];
   role = this.roles[0];

@@ -175,7 +175,7 @@ export class ChatService {
 
   getMessages(groupId: number, options: any = {}): Promise<any> {
     const messages: any = this.storage.getValue('chat_messages_group_' + groupId);
-    if (messages && this.storage.getValue(CONVERSATION_SELECT).group_id === groupId) {
+    if (messages && this.storage.getValue(CONVERSATION_SELECT).group_id === groupId && !options.force) {
       this.storage.save(CURRENT_CHAT_MESSAGES, messages);
       return Promise.resolve(messages);
     } else {
@@ -476,6 +476,8 @@ export class ChatService {
       { accept_friend: true })
       .then((res: any) => {
         contact.active = true;
+        this.getMessages(contact.group_id, { force: true }).then(res => {
+        });
       }
     );
   }

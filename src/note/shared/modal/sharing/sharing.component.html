@@ -1,5 +1,3 @@
-
-
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
   <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title">Sharing</h4>
@@ -13,15 +11,8 @@
       <!--add users for share region-->
       <div *ngIf="!updating" class="input-group">
 
-        <p-autoComplete #auto placeholder="Enter name or email"
-                        [(ngModel)]="selectedUsers"
-                        [suggestions]="users"
-                        [multiple]="true"
-                        [minLength]="1"
-                        field="name"
-                        (onSelect)="selectUser($event)"
-                        (onUnselect)="deselectUser($event)"
-                        (completeMethod)="contactTerm$.next($event)">
+        <p-autoComplete #auto placeholder="Enter name or email" [(ngModel)]="selectedUsers" [suggestions]="users" [multiple]="true"
+          [minLength]="1" field="name" (onSelect)="selectUser($event)" (onUnselect)="deselectUser($event)" (completeMethod)="contactTerm$.next($event)">
           <ng-template let-user pTemplate="item">
             <div class="ui-help-clearfix user-row">
               <div class="avatar">
@@ -43,12 +34,12 @@
           <!-- Single button -->
           <div class="btn-group">
             <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                    [title]="role.display_name">
+              [title]="role.display_name">
               <i class="fa" [ngClass]="role.name == 'view'? 'fa-eye' :
                             role.name == 'download'? 'fa-download' :
                             role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
               </i>
-              <span class="caret"></span>
+              <span class="caret ml5"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
               <li *ngFor="let r of roles" (click)="changeRole(r)">
@@ -72,47 +63,49 @@
 
     <ng-container *ngIf="!loading; else loadingBlock">
 
-        <div class="w-list-scroll">
+      <div class="w-list-scroll">
 
-          <!--Loop-->
-          <div class="media-list-item" *ngFor="let sharing of sharings">
-            <div class="media" [ngClass]="sharing._destroy ? 'remove': ''">
-              <div class="media-left">
-                <span class="avatar-xs">
-                  <img class="img-circle" [src]="sharing.recipient.profile_image" alt="">
-                </span>
-              </div>
-              <div class="media-body name">
-                {{ sharing?.recipient?.name }}
-              </div>
-              <div class="media-right">
+        <!--Loop-->
+        <div class="media-list-item" *ngFor="let sharing of sharings">
+          <div class="media" [ngClass]="sharing._destroy ? 'remove': ''">
+            <div class="media-left">
+              <span class="avatar-xs">
+                <img class="img-circle" [src]="sharing.recipient.profile_image" alt="">
+              </span>
+            </div>
+            <div class="media-body name">
+              {{ sharing?.recipient?.name }}
+            </div>
+            <div class="media-right">
 
-                <div class="btn-group" *ngIf="!sharing._destroy">
-                  <button type="button" class="btn btn-outline-default dropdown-toggle"
-                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                          [title]="sharing.permission">
-                    <i class="fa" [ngClass]="sharing.permission == 'view'? 'fa-eye' :
+              <div class="btn-group" *ngIf="!sharing._destroy">
+                <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                  [title]="sharing.permission">
+                  <i class="fa" [ngClass]="sharing.permission == 'view'? 'fa-eye' :
                             sharing.permission == 'download'? 'fa-download' :
                             sharing.permission == 'edit'? 'fa-pencil' : 'fa-unlock'">
-                    </i>
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-right" aria-haspopup="true" aria-expanded="false">
-                    <li *ngFor="let r of roles" (click)="changeRole(r, sharing)">
-                      <a href="javascript:void(0);">
-                      <i [ngClass]="{'fa fa-check': (!sharing.permission || sharing.permission == r.name)}"></i> {{ r.display_name }}</a></li>
-                  </ul>
-                </div>
-
-                <button *ngIf="!sharing._destroy" class="btn btn-sm btn-default" (click)="remove(sharing)"><i class="fa fa-times"></i></button>
-                <button *ngIf="sharing._destroy" class="btn btn-sm btn-default"> Removed </button>
+                  </i>
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" aria-haspopup="true" aria-expanded="false">
+                  <li *ngFor="let r of roles" (click)="changeRole(r, sharing)">
+                    <a href="javascript:void(0);">
+                      <i [ngClass]="{'fa fa-check': (!sharing.permission || sharing.permission == r.name)}"></i> {{ r.display_name }}</a>
+                  </li>
+                </ul>
               </div>
+
+              <button *ngIf="!sharing._destroy" class="btn btn-sm btn-default" (click)="remove(sharing)">
+                <i class="fa fa-times"></i>
+              </button>
+              <button *ngIf="sharing._destroy" class="btn btn-sm btn-default"> Removed </button>
             </div>
           </div>
-          <!--end Loop-->
         </div>
+        <!--end Loop-->
+      </div>
       <!--</div>-->
-    <!--</div>-->
+      <!--</div>-->
     </ng-container>
     <ng-template #loadingBlock>
       <box-loading></box-loading>
@@ -122,16 +115,13 @@
   </bs-modal-body>
   <bs-modal-footer>
     <button *ngIf="showCancelButton && changed" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
-    <button *ngIf="changed && updating" type="button" [ngClass]="{'text-disable': !changed}"
-            [disabled]="!changed" (click)="save()"
-            class="btn btn-outline-primary btn-min">Save Changes
+    <button *ngIf="changed && updating" type="button" [ngClass]="{'text-disable': !changed}" [disabled]="!changed" (click)="save()"
+      class="btn btn-outline-primary btn-min">Save Changes
     </button>
-    <button *ngIf="changed && !updating" type="button" [ngClass]="{'text-disable': !changed}"
-            [disabled]="!changed" (click)="save()"
-            class="btn btn-outline-primary btn-min">Share
+    <button *ngIf="changed && !updating" type="button" [ngClass]="{'text-disable': !changed}" [disabled]="!changed" (click)="save()"
+      class="btn btn-outline-primary btn-min">Share
     </button>
-    <button *ngIf="!changed" type="button" (click)="close()"
-            class="btn btn-outline-primary btn-min"> Done
+    <button *ngIf="!changed" type="button" (click)="close()" class="btn btn-outline-primary btn-min"> Done
     </button>
   </bs-modal-footer>
 </bs-modal>

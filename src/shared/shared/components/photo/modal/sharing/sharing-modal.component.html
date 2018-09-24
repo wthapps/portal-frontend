@@ -5,13 +5,8 @@
   <bs-modal-body>
     <div class="row pl20 pr20">
       <div class="input-group">
-        <p-autoComplete *ngIf="!deleting" placeholder="Search contacts"
-                        [(ngModel)]="textContacts"
-                        [suggestions]="filteredContacts"
-                        [multiple]="true" [minLength]="1"
-                        field="name"
-                        (onSelect)="selectContact($event)"
-                        (onUnselect)="unSelectContact($event)"
+        <p-autoComplete *ngIf="!deleting" placeholder="Search contacts" [(ngModel)]="textContacts" [suggestions]="filteredContacts"
+          [multiple]="true" [minLength]="1" field="name" (onSelect)="selectContact($event)" (onUnselect)="unSelectContact($event)"
           (completeMethod)="contactTerm$.next($event)">
           <ng-template let-user pTemplate="item">
             <div class="ui-help-clearfix user-row">
@@ -48,7 +43,7 @@
                             role.name == 'download'? 'fa-download' :
                             role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
               </i>
-              <span class="caret"></span>
+              <span class="caret ml5"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
               <li *ngFor="let r of roles" (click)="changeRole(r)">
