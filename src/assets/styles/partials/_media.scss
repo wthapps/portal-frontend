@@ -64,6 +64,7 @@
     overflow: visible;
   }
 }
+
 $media-user-status-w: 18px;
 $media-user-status-pos: $media-user-status-w - 3px;
 .media-user-status {
@@ -193,5 +194,21 @@ $media-user-status-pos: $media-user-status-w - 3px;
     p {
       margin: 0;
     }
+  }
+}
+
+.media-avatar {
+  @include flexbox;
+  .media-avatar-img {
+    margin-right: 10px;
+    position: relative;
+  }
+  .media-avatar-body {
+    @include flex(1);
+  }
+  .media-avatar-heading {
+    margin: 0 0 10px;
+    font-size: 24px;
+    padding: 0;
   }
 }
