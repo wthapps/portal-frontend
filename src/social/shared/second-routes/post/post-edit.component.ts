@@ -30,6 +30,7 @@ import { WMediaSelectionService } from '@wth/shared/components/w-media-selection
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { WUploader } from '@shared/services/w-uploader';
+import TextLengthValidatior from '@social/shared/hooks/validators/text-lenght.validator';
 
 @Component({
   selector: 'so-post-edit',
@@ -42,6 +43,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
 
   mode = 'add'; // add or edit
+  editorLimit = 3000;
+  editorError = '';
+  editorErrorMessage = 'The maximum limit for a post is ' + this.editorLimit + ' characters. Please make your post shorter.';
   isShare = false; // if we are creating a new share that means isShare's value is 'true'
   @Input() photos: Array<any> = new Array<any>();
   @Input() community: any;
@@ -82,6 +86,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   privacyName: string;
   profile$: Observable<any>;
   selectEmojiSub: Subscription;
+  textValidator: TextLengthValidatior = new TextLengthValidatior(this.editorLimit);
 
   readonly MODEL = MODEL_TYPE;
   readonly soPostPrivacy: any = Constants.soPostPrivacy;
@@ -450,6 +455,15 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   stopLoading() {
     this.loadingService.stop('#loading');
+  }
+
+  onTextChange(event){
+    this.hasChange = true;
+    if(event.status.error) {
+      this.editorError = 'editor-error';
+    } else{
+      this.editorError = "";
+    }
   }
 
   private setItemDescription(value: any) {

@@ -32,10 +32,13 @@ export const EDITOR_VALUE_ACCESSOR: any = {
 export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlValueAccessor {
 
   @Output() onTextChange: EventEmitter<any> = new EventEmitter();
+  @Output() onError: EventEmitter<any> = new EventEmitter();
 
   @Output() onKeyUp: EventEmitter<any> = new EventEmitter();
 
   @Input() style: any;
+
+  @Input() validators: any;
 
   @Input() styleClass: string;
 
@@ -132,16 +135,22 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
   }
 
   updateHtml2Model() {
-
     let html = this.editorElement.children[0].innerHTML;
     const text = this.quill.getText();
+
     if (html === '<p><br></p>') {
       html = null;
     }
-
+    let status: any = {error: false};
+    if (this.validators){
+      this.validators.forEach(v => {
+        status = v.validate({text: text, html: html});
+      })
+    }
     this.onTextChange.emit({
       htmlValue: html,
-      textValue: text
+      textValue: text,
+      status: status
     });
 
     this.onModelChange(html);

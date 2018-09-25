@@ -24,6 +24,7 @@ import { WMediaSelectionService } from '@wth/shared/components/w-media-selection
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WUploader } from '@shared/services/w-uploader';
+import TextLengthValidatior from '@social/shared/hooks/validators/text-lenght.validator';
 
 
 export enum CommentEditorMode {
@@ -75,6 +76,10 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   selectEmojiSub: Subscription;
   private uploadingPhoto: any;
   private sub: Subscription;
+  editorLimit = 2;
+  editorError = '';
+  editorErrorMessage = 'The maximum limit for a comment is ' + this.editorLimit + ' characters. Please make your comment shorter.';
+  textValidator: TextLengthValidatior = new TextLengthValidatior(this.editorLimit);
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -116,7 +121,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   handleKeyUp(e: any) {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && this.editorError == '') {
       if (this.checkValidForm()) {
         // this.comment.content = this.commentEditorForm.value;
         this.post(this.comment.content);
@@ -219,6 +224,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.setCommentContent('');
     this.setPhoto(null);
     this.hasUpdatedContent = false;
+    this.editorError = '';
     if (this.mode === CommentEditorMode.Add) {
       // add new comment/reply to post
       _.set(this.originComment, 'isCreatingNewReply', false);
@@ -299,6 +305,14 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       // this.comment.content = this.commentDomValue + emoj;
       this.hasUpdatedContent = true;
     });
+  }
+
+  onTextChange(event){
+    if (event.status.error) {
+      this.editorError = 'editor-error';
+    } else {
+      this.editorError = "";
+    }
   }
 
   private setPhoto(photo: any) {
