@@ -1,13 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 
@@ -20,6 +11,7 @@ import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 
 export class WNavTabComponent implements OnInit, OnChanges {
   @Input() tabs: WTab[];
+  @Input() break: Number = 3;
   @Input() setTabActive: string;
   @Output() currentTab: EventEmitter<WTab> = new EventEmitter<WTab>();
   tabActive: WTab;
