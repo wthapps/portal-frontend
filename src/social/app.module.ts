@@ -15,7 +15,6 @@ import { ZSocialHomeModule } from './home/home.module';
 import { ZSocialPhotoModule } from './shared/second-routes/photo/photo.module';
 import { SocialSettingsModule } from './settings/setting.module';
 import { CoreModule } from '@wth/core/core.module';
-import { SharedModule } from '@wth/shared/shared.module';
 import { ShortcutEffects } from './shared/effects/shortcut-effects';
 import { environment } from '@env/environment';
 import { appReducer } from './shared/reducers/index';
@@ -46,7 +45,6 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     PostModule,
     ScrollToModule.forRoot(),
     ZSocialSharedModule.forRoot(),
-    // SharedModule.forRoot(),
     SharedServicesModule.forRoot(),
     CoreModule.forRoot(),
 

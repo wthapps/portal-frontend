@@ -13,7 +13,7 @@ export class ConstantsBase {
     cdn: Config.CDN
   };
   cdn: any = Config.CDN;
-  currentVersion: string = '2018 WTHApps - v1.3.1';
+  currentVersion = '2018 WTHApps - v1.3.1';
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
@@ -72,13 +72,13 @@ export class ConstantsBase {
   windows: any = {
     scrollBarWidth: () => {
       // Create the measurement node
-      let scrollDiv = document.createElement('div');
+      const scrollDiv = document.createElement('div');
       scrollDiv.className = 'scrollbar-measure';
       document.body.appendChild(scrollDiv);
 
       // Get the scrollbar width
-      let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-      //console.warn(scrollbarWidth); // Mac:  15
+      const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+      // console.warn(scrollbarWidth); // Mac:  15
 
       // Delete the DIV
       document.body.removeChild(scrollDiv);
@@ -534,9 +534,9 @@ export class ConstantsBase {
 
   private getKeyByEnv(key: string): string {
     return (((Config.ENV !== 'STAG') && (Config.ENV !== 'TEST')) ? key : `${key}_${Config.ENV.toLowerCase()}`);
-  };
+  }
 }
-let Constants = new ConstantsBase();
+const Constants = new ConstantsBase();
 export { Constants };
 
 export let PhotoAction = {
@@ -552,4 +552,9 @@ export let MediaType = {
   playlist: 'playlist',
   favourites: 'favourites',
   sharedWithMe: 'sharedWithMe'
+};
+
+export const MODEL_TYPE = {
+  photo: 'Media::Photo',
+  video: 'Media::Video'
 };

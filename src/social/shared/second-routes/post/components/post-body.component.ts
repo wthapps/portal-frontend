@@ -1,19 +1,19 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
 
 import { PostComponent } from '../post.component';
 import { PhotoService, UserService } from '@wth/shared/services';
-import { Constants } from '@wth/shared/constant';
+import { Constants, MODEL_TYPE } from '@wth/shared/constant';
 import { SoPost } from '@wth/shared/shared/models';
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@wth/shared/components/emoji/emoji';
 
 @Component({
   selector: 'so-post-body',
-  templateUrl: 'post-body.component.html'
+  templateUrl: 'post-body.component.html',
+  styleUrls: ['./post-body.component.scss']
 })
 
 export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
@@ -37,6 +37,7 @@ export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
   hasDislike: boolean;
   private destroySubject: Subject<any> = new Subject<any>();
   readonly DEFAULT_IMAGE: string = Constants.img.default;
+  readonly MODEL = MODEL_TYPE;
 
   constructor(private router: Router,
               private wthEmojiService: WTHEmojiService,
@@ -47,11 +48,8 @@ export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
   }
-  ngOnChanges(changes: SimpleChanges) {
-    // if (this.type === 'info') {
-    //   this.showInfo = true;
-    // }
 
+  ngOnChanges(changes: SimpleChanges) {
     if (_.get(changes['item'], 'currentValue.parent_post')) {
       const parentItem: any = changes['item'].currentValue.parent_post;
       const remainPhotos: number = parentItem.photos.length - 6;
@@ -91,11 +89,12 @@ export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
         this.router.navigate([{
           outlets: {
             modal: [
-              'photos',
+              'preview',
               data.uuid,
-              { batchQuery: `/media/media?type=photo&parentable_id=${post.id}&parentable_type=SocialNetwork::Post`,
-                module: 'social',
-                post_uuid: post.uuid
+              {
+                object: 'post',
+                parent_uuid: post.uuid,
+                only_preview: true
               }
             ]
           }

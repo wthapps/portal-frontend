@@ -1,3 +1,4 @@
+import { MODEL_TYPE } from './../../../../shared/constant/config/constants';
 import {
   Component,
   ViewChild,
@@ -51,7 +52,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
 
   @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
-  // @ViewChild('editor') editor: MiniEditorComponent; // Replaced by MiniEditor
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
@@ -83,12 +83,13 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   profile$: Observable<any>;
   selectEmojiSub: Subscription;
 
+  readonly MODEL = MODEL_TYPE;
   readonly soPostPrivacy: any = Constants.soPostPrivacy;
 
   private uploadingPhotos: Array<any> = [];
   private destroySubject: Subject<any> = new Subject<any>();
   private uploadSubscriptions: { [filename: string]: Subscription } = {};
-  private sub: any;
+  private sub: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -110,10 +111,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       tags: [this.post.tags],
       photos: [this.post.photos, null]
     });
-    // this.descCtrl = this.form.controls['description'];
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
-    // this.currentUser = this.userService.getSyncProfile();
     this.profile$ = this.userService.getAsyncProfile();
     this.sub = this.uploader.event$.subscribe(event => {
       this.handleUploadFiles(event);
@@ -121,7 +120,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    // this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
     this.privacyName = this.getPrivacyName(this.post);
   }
 
@@ -131,7 +129,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   viewProfile(uuid: string = this.userService.getSyncProfile().uuid) {
     this.router
-      .navigate([{outlets: {detail: null}}], {
+      .navigate([{ outlets: { detail: null } }], {
         queryParamsHandling: 'preserve',
         preserveFragment: true
       })
@@ -145,16 +143,18 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       this.selectEmojiSub.unsubscribe();
     this.selectEmojiSub = this.emojiService.selectedEmoji$
       .pipe(
-      take(1))
+        take(1))
       .subscribe(data => {
-      this.editor.addEmoj(data.shortname);
-      this.hasChange = true;
-    });
+        this.editor.addEmoj(data.shortname);
+        this.hasChange = true;
+      });
   }
 
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
+    if (this.sub)
+      this.sub.unsubscribe();
   }
 
   open(
@@ -203,22 +203,14 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.privacyName = this.getPrivacyName(this.post);
 
     this.form = this.fb.group({
-      // 'description': [this.post.description, Validators.compose([Validators.required])],
       tags: [_.map(this.post.tags, 'name'), null],
       photos: [this.post.photos, null]
     });
-    // this.descCtrl = this.form.controls['description'];
     this.setItemDescription(this.post.description);
 
     this.editor.focus();
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
-    // if (options.addingPhotos) {
-    //   this.modal.open()
-    //     .then(_ => this.addMorePhoto());
-    // } else {
-    //   this.modal.open();
-    // }
 
     this.modal.open()
       .then(_ => {
@@ -226,7 +218,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
           this.addMorePhoto();
         if (options.showEmoji)
           this.showEmojiBtn(null);
-        });
+      });
 
     // Clear pending files in case of failure
     this.files.length = 0;
@@ -245,6 +237,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         uuid: this.post.uuid,
         description: this.description,
         photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
+        resources_attributes: [],
         tags_json: this.post.tags,
         privacy: this.post.privacy,
         adult: this.post.adult,
@@ -333,9 +326,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     // cancel uploading photo/video or delete selected photo
     const index = this.uploadingPhotos.findIndex(p => p.id === photo.id);
     if (index >= 0) {
-        this.uploader.cancel(this.files[index]);
-        this.uploadingPhotos.splice(index, 1);
-        this.files.splice(index, 1);
+      this.uploader.cancel(this.files[index]);
+      this.uploadingPhotos.splice(index, 1);
+      this.files.splice(index, 1);
     } else if (photo.meta) {
       this.uploader.cancel(photo);
       this.uploadingPhotos.splice(index, 1);
@@ -356,7 +349,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   addMorePhoto(event?: any) {
     this.onMoreAdded.emit(true);
-    this.mediaSelectionService.open({hiddenTabs: ['videos', 'playlists'], filter: 'photo', allowCancelUpload: true});
+    this.mediaSelectionService.open({ filter: 'photo', allowCancelUpload: true });
 
     const close$: Observable<any> = Observable.merge(
       this.mediaSelectionService.open$,
@@ -365,7 +358,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(close$), filter(items => items.length > 0))
       .subscribe(items => {
-        this.post.photos = _.uniqBy(_.flatten([this.post.photos, items]), 'id');
+        this.post.photos = _.uniqBy(_.flatten([this.post.photos, items]), 'uuid');
       });
 
     this.mediaSelectionService.uploadingMedias$
@@ -398,14 +391,14 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     if (this.post.privacy !== type) mode = 'add';
 
     this.privacyCustomModal.open(
-      {type: type, data: this.post.custom_objects},
+      { type: type, data: this.post.custom_objects },
       mode
     );
   }
 
   selectedItems(response: any) {
     this.update(
-      {privacy: response.type, custom_objects: response.items},
+      { privacy: response.type, custom_objects: response.items },
       null
     );
   }
@@ -429,7 +422,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       event.preventDefault();
     }
 
-    this.post = {...this.post, ...attr};
+    this.post = { ...this.post, ...attr };
     this.privacyName = this.getPrivacyName(this.post);
   }
 

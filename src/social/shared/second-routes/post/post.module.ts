@@ -26,6 +26,7 @@ import { DisplayLinkModule } from '@shared/shared/components/link/display-link.m
 import { EntitySelectModule } from '@shared/shared/components/entity-select/entity-select.module';
 import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.module';
 import { ZSocialSharedModule } from './../../shared.module';
+import { WMediaPreviewV1Module } from '@shared/components/w-media-preview/media-preview-v1.module';
 
 @NgModule({
   imports: [
@@ -43,6 +44,7 @@ import { ZSocialSharedModule } from './../../shared.module';
     ZSocialSharedModule,
     TagInputModule,
     InputSwitchModule,
+    WMediaPreviewV1Module,
     // BrowserAnimationsModule,
     InputTextareaModule
 
@@ -77,6 +79,7 @@ import { ZSocialSharedModule } from './../../shared.module';
     Ng2HdModule,
     EntitySelectModule,
     ZSocialSharedModule,
+    WMediaPreviewV1Module,
 
     // List Posts
     PostListComponent,
