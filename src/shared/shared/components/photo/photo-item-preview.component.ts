@@ -1,23 +1,25 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { Constants } from '../../../constant/config/constants';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Constants, MODEL_TYPE } from '../../../constant/config/constants';
 
 declare var _: any;
 declare var $: any;
 
 @Component({
-    selector: 'photo-item-preview',
+  selector: 'photo-item-preview',
   templateUrl: 'photo-item-preview.component.html',
-  styleUrls: ['photo-item-preview.component.scss']
+  styleUrls: ['photo-item-preview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class PhotoItemPreviewComponent implements OnChanges {
   @Input() photo: any;
   @Input() files: any;
-  @Input() hasUploadingPhoto: boolean;
+  @Input() hasUploadingPhoto = false;
+  readonly MODEL = MODEL_TYPE;
 
   @Output() events: EventEmitter<any> = new EventEmitter<any>();
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
 
   ngOnChanges(changes: SimpleChanges) {
   }

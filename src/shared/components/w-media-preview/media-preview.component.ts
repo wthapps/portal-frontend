@@ -27,7 +27,8 @@ import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 const MODEL_MAP = {
   'photo': '::Media::Photo',
   'video': '::Media::Video',
-  'post': '::SocialNetwork::Post'
+  'post': '::SocialNetwork::Post',
+  'comment': '::SocialNetwork::Comment'
 };
 
 @Mixins([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin, MediaPreviewMixin])

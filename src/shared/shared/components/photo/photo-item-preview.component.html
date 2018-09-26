@@ -1,11 +1,10 @@
 <div class="row-img row-img-10 grid">
   <div *ngIf="photo||files" class="row-img-item">
+    {{ hasUploadingPhoto }}
     <ng-template [ngIf]="hasUploadingPhoto">
       <div class="photo-box">
-        <div class="photo-box-action"
-             (click)="onAction({action: 'cancelUpload', data: photo})">
-          <i class="fa fa-remove"
-             pTooltip="{{ tooltip.cancelUploading }}" tooltipPosition="top">
+        <div class="photo-box-action" (click)="onAction({action: 'cancelUpload', data: photo})">
+          <i class="fa fa-remove" pTooltip="{{ tooltip.cancelUploading }}" tooltipPosition="top">
           </i>
         </div>
         <div class="photo-box-figure">
@@ -18,18 +17,16 @@
 
     <ng-template [ngIf]="!hasUploadingPhoto">
       <div class="photo-box">
-        <div class="photo-box-action"
-             (click)="onAction({action: 'remove', data: photo})">
-          <i class="fa fa-remove"
-             pTooltip="{{ tooltip.removeThisPhoto }}" tooltipPosition="top">
+        <div class="photo-box-action" (click)="onAction({action: 'remove', data: photo})">
+          <i class="fa fa-remove" pTooltip="{{ tooltip.removeThisPhoto }}" tooltipPosition="top">
           </i>
         </div>
         <div class="photo-box-figure">
           <figure class="img-center-dv">
-              <span class="photo-box-figure-in">
-                <img alt="" class="img-center" draggable="false"
-                     [src]="photo?.thumbnail_url">
-              </span>
+            <span class="photo-box-figure-in">
+              <img alt="" class="img-center" draggable="false" [src]="photo?.thumbnail_url">
+              <i class="fa fa-play-circle-o" *ngIf="photo?.model === MODEL.video"></i>
+            </span>
           </figure>
         </div>
       </div>

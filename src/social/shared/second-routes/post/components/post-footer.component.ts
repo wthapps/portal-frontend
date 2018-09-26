@@ -21,8 +21,7 @@ import { PostComponent } from '../post.component';
 import { PostService } from '../shared/post.service';
 import { SoComment, SoPost } from '@wth/shared/shared/models';
 import { PhotoService, UserService } from '@shared/services';
-import { Constants } from '@wth/shared/constant';
-import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
+import { Constants, MODEL_TYPE } from '@wth/shared/constant';
 import { WTHEmojiCateCode } from '@wth/shared/components/emoji/emoji';
 
 declare var _: any;
@@ -55,6 +54,7 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   loadingDone = false;
   readonly commentLimit: number = Constants.soCommentLimit;
   readonly tooltip: any = Constants.tooltip;
+  readonly MODEL = MODEL_TYPE;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -74,11 +74,6 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(data: any) {
-    // if (this.type === 'info') {
-    //   this.showInfo = true;
-    // }
-    // this.totalComment = +this.item.comment_count;
-    // this.loadingDone = (this.totalComment === 0 ) || (this.totalComment <= _.get(this.item, 'comments.length', 0));
   }
 
   viewProfile(uuid: string) {
@@ -96,32 +91,39 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
 
   onActions(action: any, params?: any) {
     console.log('action::::', action, params);
-    const type = params.commentType;
-    const data = params.data;
-    const comment = params.comment;
+    const { data, comment, parent, commentType } = params;
     switch (action) {
       case this.actions.onDeleteComment:
         this.eventEmitter.emit(new DeleteCommentEvent(data));
         break;
       case this.actions.onEditComment:
         const currentComment = data;
-        const commentType = type;
         currentComment.isEditting = true;
         break;
       case this.actions.onDeleteReply:
         this.eventEmitter.emit(new DeleteReplyEvent({reply_uuid: data.uuid}));
         break;
       case this.actions.onCreateComment:
-        const parent = params.parent;
-        const parentType = params.parentType;
         _.set(parent, 'isCreatingNewReply', true);
         break;
       case this.actions.openLikeDislike:
-        this.postItem.openLikeDislike(data, type);
+        this.postItem.openLikeDislike(data, commentType);
         break;
       case this.actions.onShowPhotoDetail:
-        // this.router.navigate([{outlets: {modal: ['comments', data, 'photos', type, {ids: [type]}]}}]);
-        this.router.navigate([{outlets: {modal: ['photos', type, {ids: [type], post_uuid: this.item.uuid}]}}]);
+        // this.router.navigate([{outlets: {modal: ['photos', type, {ids: [type], post_uuid: this.item.uuid}]}}]);
+        this.router.navigate([{
+          outlets: {
+            modal: [
+              'preview',
+              comment.photo.uuid,
+              {
+                object: 'comment',
+                parent_uuid: comment.uuid,
+                only_preview: true
+              }
+            ]
+          }
+        }], { queryParamsHandling: 'preserve', preserveFragment: true });
         break;
     }
   }
