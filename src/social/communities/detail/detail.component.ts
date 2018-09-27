@@ -1,26 +1,26 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
+import { AuthService, UserService } from '@shared/services';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { Constants } from '@wth/shared/constant';
+import { fadeInAnimation } from '@wth/shared/shared/animations/route.animation';
+import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
+import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
+import { User } from '@wth/shared/shared/models';
 
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
+import { SHORTCUT_ADD_MULTI_DONE } from '../../shared/reducers/index';
+import { PostListComponent } from '../../shared/second-routes/post/post-list.component';
+import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
+import { SocialService } from '../../shared/services/social.service';
 
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
-import { SocialService } from '../../shared/services/social.service';
-import { PostListComponent } from '../../shared/second-routes/post/post-list.component';
-import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
-import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
-import { User } from '@wth/shared/shared/models';
-import { AuthService, UserService } from '@shared/services';
-import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
-import { Constants } from '@wth/shared/constant';
-import { SHORTCUT_ADD_MULTI_DONE } from '../../shared/reducers/index';
-import { fadeInAnimation } from '@wth/shared/shared/animations/route.animation';
-import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 
 declare let _: any;
 declare let $: any;
@@ -41,19 +41,6 @@ const EMPTY_DEFAULT_TABS: any = {
   styleUrls: ['detail.component.scss']
 })
 export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
-  errorMessage: string = '';
-
-  tooltip: any = Constants.tooltip;
-
-  tab: any = {
-    post: 'post',
-    about: 'about',
-    members: 'members',
-    invitations: 'invitations',
-    join_requests: 'join_requests',
-    blacklist: 'blacklist'
-  };
-
   tabs: WTab[] = [
     {
       name: 'Post',
@@ -91,7 +78,21 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       type: 'tab'
     }
   ];
+  currentTab: String = 'post'; // upload, photos, albums, albums_detail, favourites, shared_with_me
 
+
+  errorMessage: string = '';
+
+  tooltip: any = Constants.tooltip;
+
+  tab: any = {
+    post: 'post',
+    about: 'about',
+    members: 'members',
+    invitations: 'invitations',
+    join_requests: 'join_requests',
+    blacklist: 'blacklist'
+  };
 
   tabData: any = [
     {
@@ -148,15 +149,15 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(public authService: AuthService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private userService: UserService,
-    private wthConfirmService: WthConfirmService,
-    private toastsService: ToastsService,
-    private zoneReportService: ZSharedReportService,
-    public favoriteService: SocialFavoriteService,
-    private store: Store<any>,
-    private socialService: SocialService) {
+              private route: ActivatedRoute,
+              private router: Router,
+              private userService: UserService,
+              private wthConfirmService: WthConfirmService,
+              private toastsService: ToastsService,
+              private zoneReportService: ZSharedReportService,
+              public favoriteService: SocialFavoriteService,
+              private store: Store<any>,
+              private socialService: SocialService) {
     this.profile$ = this.userService.getAsyncProfile();
   }
 
@@ -255,16 +256,16 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         else
           toastMsg = result.message;
 
-        Object.assign(this.community, { ...result.data}) ;
+        Object.assign(this.community, { ...result.data });
 
         this.toastsService.success(toastMsg);
         this.favoriteService.updateFavorite(result.data, 'community');
       },
-        error => {
-          this.toastsService.danger(this.errorMessage);
-          console.log(error);
-        }
-      );
+      error => {
+        this.toastsService.danger(this.errorMessage);
+        console.log(error);
+      }
+    );
   }
 
   askToJoin() {
@@ -272,9 +273,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       .toPromise().then((result: any) => {
         this.joinRequestId = result.data.id;
       },
-        (error: any) => {
-          console.log('error', error);
-        });
+      (error: any) => {
+        console.log('error', error);
+      });
   }
 
   cancelJoinRequest(joinRequestId: any) {
@@ -295,14 +296,14 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     $('#invitation_' + invitationId).remove();
     this.socialService.community.cancelInvitation(this.uuid, invitationId)
       .toPromise().then(
-        (res: any) => {
-          // Update invitation count
-          this.community.invitation_count -= 1;
-        },
-        error => {
-          this.errorMessage = <any>error;
-        }
-      );
+      (res: any) => {
+        // Update invitation count
+        this.community.invitation_count -= 1;
+      },
+      error => {
+        this.errorMessage = <any>error;
+      }
+    );
   }
 
   acceptJoinRequest(item: any) {
@@ -380,9 +381,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.community.invitation_count += user_ids.length;
         console.log('get tab items for: ' + this.selectedTab);
       },
-        error => {
-          console.log('error', error);
-        });
+      error => {
+        console.log('error', error);
+      });
   }
 
   onReportMember(reportee_id: string, reason: string = '') {
@@ -390,9 +391,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       .toPromise().then((result: any) => {
         console.log('reported member');
       },
-        error => {
-          console.log('error', error);
-        });
+      error => {
+        console.log('error', error);
+      });
   }
 
   onDelete() {

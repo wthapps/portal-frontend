@@ -1,28 +1,22 @@
-.filter-region {
-  height: 36px;
-  right: 0;
-  left: 0;
-  top: 50px;
-  margin-top: -15px;
-  border-bottom: 1px solid #e5e5e5;
-}
-
-// override current styles
-.modal-media-search {
-  padding: 0px;
-  .modal-media-search-in {
-    max-width: 570px;
+.modal-contact-list {
+  .nav-tabs-wrap {
+    padding-left: 0;
+    padding-right: 0;
+    position: relative;
+    z-index: 10;
+  }
+  .list-group {
+    margin-top: -1px;
+    .list-group-item:nth-last-child(1),
+    .list-group-item:nth-last-child(2),
+    .list-group-item:nth-last-child(3),
+    .list-group-item:nth-last-child(4) {
+      &:not(:first-child) {
+        .dropdown-menu {
+          bottom: 100%;
+          top: auto;
+        }
+      }
+    }
   }
 }
-
-.w-nav-tab-wrapper {
-  margin-left: -30px;
-}
-
-
-.content-overflow {
-  &.search-result {
-    min-height: 300px;
-  }
-}
-

@@ -79,6 +79,10 @@ $media-user-status-pos: $media-user-status-w - 3px;
   &.online {
     background-color: $user-online;
   }
+  i {
+    @include center();
+    color: $color-inverse;
+  }
 }
 
 .media-user-stranger {
@@ -199,12 +203,23 @@ $media-user-status-pos: $media-user-status-w - 3px;
 
 .media-avatar {
   @include flexbox;
+  width: 100%;
+  .media-avatar-img-wrap {
+    position: relative;
+    margin-right: 10px;
+    .media-avatar-img {
+      margin-right: 0;
+    }
+  }
   .media-avatar-img {
     margin-right: 10px;
     position: relative;
   }
   .media-avatar-body {
     @include flex(1);
+  }
+  .media-avatar-action {
+
   }
   .media-avatar-heading {
     margin: 0 0 10px;

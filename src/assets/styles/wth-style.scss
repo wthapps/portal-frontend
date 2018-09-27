@@ -8,6 +8,7 @@
 // font-wthapps
 @import '../../../src/assets/font-wthapps/scss/font-wthapps';
 @import 'general/mixin';
+@import 'general/breakpoints';
 @import 'general/setting';
 @import 'partials/constants';
 //
@@ -40,6 +41,7 @@
 @import 'partials/w_panels';
 @import 'partials/icons';
 @import 'partials/accordions';
+@import 'partials/display';
 //
 // =Third parties
 // --------------------------------------------------

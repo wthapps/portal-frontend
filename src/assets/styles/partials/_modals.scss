@@ -37,8 +37,12 @@
   background-color: #ffffff;
   background-image: none;
   @include border-top-radius($border-radius-large);
-}
 
+  .close {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+}
 
 .modal-content {
   -webkit-border-radius: 10px;
@@ -61,5 +65,23 @@
   .divider {
     margin-left: -$modal-inner-padding;
     margin-right: -$modal-inner-padding;
+  }
+}
+
+.modal-body {
+  > .list-group {
+    margin-left: -$modal-inner-padding;
+    margin-right: -$modal-inner-padding;
+    margin-bottom: -$modal-inner-padding;
+    .list-group-item {
+      border-left-width: 0;
+      border-right-width: 0;
+      &:first-child {
+        @include border-top-radius(0);
+      }
+      &:last-child {
+        border-bottom-width: 0;
+      }
+    }
   }
 }

@@ -1,20 +1,21 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ConversationService } from '@chat/conversation/conversation.service';
+import { ChatContactService } from '@chat/shared/services/chat-contact.service';
+import { ChatService } from '@chat/shared/services/chat.service';
+import { ModalService } from '@shared/components/modal/modal-service';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { Constants } from '@wth/shared/constant';
 
 import { ApiBaseService, AuthService, ChatCommonService } from '@wth/shared/services';
-import { ChatContactService } from '@chat/shared/services/chat-contact.service';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ModalService } from '@shared/components/modal/modal-service';
-import { Constants } from '@wth/shared/constant';
-import { ConversationService } from '@chat/conversation/conversation.service';
-import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { ChatService } from '@chat/shared/services/chat.service';
 
 @Component({
   selector: 'contact-list-modal',
   templateUrl: 'contact-list-modal.component.html',
-  styleUrls: ['contact-list-modal.component.scss']
+  styleUrls: ['contact-list-modal.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ContactListModalComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;

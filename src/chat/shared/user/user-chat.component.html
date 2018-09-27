@@ -1,13 +1,16 @@
-<div *ngIf="user" class="media-user media-user-{{ size }}">
-  <div class="media-user-avatar avatar-{{ size }}">
-    <img [src]="user?.profile_image" alt="">
+<div *ngIf="user" class="media-avatar align-items-center">
+  <div class="media-avatar-img-wrap">
+    <div class="media-avatar-img avatar-{{ size }}">
+      <img [src]="user?.profile_image" alt="">
+    </div>
+    <div class="media-user-status" [ngClass]="{'online': user.online}">
+      <i *ngIf="user.blacklist" class="fa fa-ban"></i>
+    </div>
   </div>
-  <div class="media-user-name">
-    <p>{{ user.name }}</p>
+  <div class="media-avatar-body">
+    {{ user.name }}
+  </div>
+  <div class="media-avatar-action">
     <ng-content></ng-content>
   </div>
-  <span class="media-user-status"
-        [ngClass]="{'online': user.online}">
-    <i *ngIf="user.blacklist" class="fa fa-ban" style="float: left; margin-top: -1px; color: #f54a59;"></i>
-  </span>
 </div>

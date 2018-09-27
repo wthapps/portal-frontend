@@ -1,4 +1,4 @@
-<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" [cssClass]="'modal-contact-list'">
   <bs-modal-header>
     <button aria-label="Close" class="close" (click)="close()">
       <span aria-hidden="true">×</span>
@@ -6,89 +6,51 @@
     <h4 class="modal-title"> Contacts </h4>
   </bs-modal-header>
   <bs-modal-body>
-
-    <div class="filter-region">
-      <div *ngIf="showSearch" class="modal-media-search">
-        <div class="modal-media-search-in">
-          <textbox-search [placeholder]="'Find Contact'" [showSearchClearText]="true" [search]="keyword"
-                          (onEscapeEvent)="hideSearch($event)" (onEnterEvent)="search($event)">
-          </textbox-search>
-        </div>
-
-      </div>
-      <div *ngIf="!showSearch" >
-        <w-nav-tab class="pull-left w-nav-tab-wrapper" [tabs]="tabs" [setTabActive]="selectedTab"
-                   (currentTab)="selectCurrentTab($event)" ></w-nav-tab>
-        <div class="pull-right">
-          <a class="btn btn-default" pTooltip="Find Contacts" tooltipPosition="top" (click)="displaySearch()">
-            <i class="fa fa-user-plus"></i>
-          </a>
-        </div>
-      </div>
+    <div class="d-flex justify-content-between" *ngIf="!showSearch">
+      <w-nav-tab [tabs]="tabs" [setTabActive]="selectedTab" (currentTab)="selectCurrentTab($event)"></w-nav-tab>
+      <button type="button" class="btn btn-default" pTooltip="Find Contacts" tooltipPosition="top" (click)="displaySearch()">
+        <i class="fa fa-user-plus"></i>
+      </button>
     </div>
-
-    <div class="content-overflow && search-result">
+    <textbox-search *ngIf="showSearch" [placeholder]="'Find Contact'" [showSearchClearText]="true" [search]="keyword"
+                    (onEscapeEvent)="hideSearch($event)" (onEnterEvent)="search($event)">
+    </textbox-search>
 
     <ng-container *ngIf="!loading; else loadingBlock">
-      <div class="row media-user-list-group" *ngIf="contacts">
-        <div class="col-sm-12" *ngFor="let contact of contacts">
-          <div class="media media-user-list media-middle">
-            <div class="media-body">
-              <!--<z-chat-share-user-icon [image]="user?.profile_image"-->
-                                      <!--[name]="user.name"-->
-                                      <!--[size]="'xs'"-->
-                                      <!--[groupType]="'couple'"-->
-                                      <!--[userId]="user.id">-->
-              <!--</z-chat-share-user-icon>-->
-              <w-user-chat [user]="contact" [size]="'xs'"></w-user-chat>
-            </div>
-
-            <!--actions-->
-            <div class="media-right no-wrap">
-              <!--show actions for person in contact book-->
-              <button *ngIf="!contact.new" class="btn btn-default" type="button" (click)="createConversation(contact)">
-                <i class="fa fa-comments-o"></i>
-              </button>
-
-              <!--show actions for new person-->
-              <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="sendRequest(contact)"
-                      pTooltip="{{ tooltip.sendRequest }}" tooltipPosition="top">
-                <i class="fa fa-user-plus"></i>
-              </button>
-              <w-user-actions #chatContactActions
-                              [contact]="contact"
-                              [profileUrl]="profileUrl"
-                              (onConversate)="createConversation($event)"
-                              (onToggleBlacklist)="toggleBlacklist($event)"
-                              (onReport)="report($event)"
-                              (onRemove)="remove($event)"
-              ></w-user-actions>
-            </div>
-
-          </div>
+      <div class="list-group" *ngIf="contacts">
+        <div class="list-group-item" *ngIf="contacts.length === 0;else templateData">
+          <box-no-data [icon]="'fa fa-address-book-o'"
+                       [subTitle]="'There is no Contact'">
+          </box-no-data>
         </div>
+        <ng-template #templateData>
+          <w-user-chat class="list-group-item" *ngFor="let contact of contacts" [user]="contact" [size]="'xs'">
+            <button *ngIf="!contact.new" class="btn btn-default" type="button" (click)="createConversation(contact)">
+              <i class="fa fa-comments-o"></i>
+            </button>
+
+            <!--show actions for new person-->
+            <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="sendRequest(contact)"
+                    pTooltip="{{ tooltip.sendRequest }}" tooltipPosition="top">
+              <i class="fa fa-user-plus"></i>
+            </button>
+            <w-user-actions #chatContactActions
+                            [contact]="contact"
+                            [profileUrl]="profileUrl"
+                            (onConversate)="createConversation($event)"
+                            (onToggleBlacklist)="toggleBlacklist($event)"
+                            (onReport)="report($event)"
+                            (onRemove)="remove($event)"
+            ></w-user-actions>
+          </w-user-chat>
+        </ng-template>
       </div>
-
-      <!--<div *ngIf="contacts && contacts.length === 0" class="box-no-data text-center">-->
-        <!--<h2>There is no contact</h2>-->
-      <!--</div>-->
-      <ng-container *ngIf="contacts && contacts.length === 0">
-        <box-no-data [icon]="'fa fa-address-book-o'"
-                     [subTitle]="'There is no Contact'">
-
-        </box-no-data>
-      </ng-container>
-
-
     </ng-container>
 
     <ng-template #loadingBlock>
       <box-loading></box-loading>
     </ng-template>
-
-  </div>
   </bs-modal-body>
 
 </bs-modal>
-<!--</form>-->
 <z-chat-share-request-contact #request></z-chat-share-request-contact>
