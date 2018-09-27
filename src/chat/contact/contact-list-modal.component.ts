@@ -176,11 +176,11 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
           this.contacts[index] = newContact;
           const message = newContact.blacklist ? `You added ${newContact.name} to blacklist successful!` :
                                                  `You removed ${newContact.name} from blacklist successful!`;
-
           this.toastsService.success(message);
           return;
         }
       });
+      this.chatService.getConversations({ forceFromApi: true});
     });
   }
 
