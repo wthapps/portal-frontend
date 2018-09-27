@@ -35,10 +35,9 @@
           <div *ngIf="comment.photo" class="z-social-carousel">
             <ul class="{{ item?.displayCss }}">
               <li>
-                <figure (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id, comment: comment})">
-                  <img class="img-full" *ngIf="comment.photo" [src]="comment.photo.thumbnail_url">
-                  <i class="fa fa-play-circle-o" *ngIf="comment.photo?.model === MODEL.video"></i>
-                </figure>
+                <div (click)="onActions(actions.onShowPhotoDetail, {data: comment.uuid, commentType: comment.photo.id, comment: comment})">
+                  <ng-container *ngTemplateOutlet="photoRef; context: {'photo': comment.photo }"></ng-container>
+                </div>
               </li>
             </ul>
           </div>
@@ -112,10 +111,9 @@
                 <display-link [data]="reply.links[0]"></display-link>
               </div>
             </div>
-            <a class="can-click" *ngIf="reply.photo" (click)="onActions(actions.onShowPhotoDetail, {data: reply.uuid, commentType: reply.photo.id, comment: reply})">
-              <img [src]="reply.photo.thumbnail_url">
-              <i class="fa fa-play-circle-o" *ngIf="reply.photo?.model === MODEL.video"></i>
-            </a>
+            <div class="can-click" *ngIf="reply.photo" (click)="onActions(actions.onShowPhotoDetail, {data: reply.uuid, commentType: reply.photo.id, comment: reply})">
+              <ng-container *ngTemplateOutlet="photoRef; context: {'photo': reply.photo }"></ng-container>
+            </div>
             <div class="media-body-reply">
               <ul>
                 <li>
@@ -149,3 +147,11 @@
       comments</label>
   </div>
 </div>
+
+<ng-template #photoRef let-photo="photo">
+  <img class="can-click img-full lazyload" [src]="photo.url" *ngIf="photo?.model === MODEL.photo" alt="">
+  <div class="photo-box-figure-in" *ngIf="photo?.model === MODEL.video">
+    <img class="img-full img-center lazyload" [src]="photo?.thumbnail_url" alt="">
+    <i class="fa fa-play-circle-o"></i>
+  </div>
+</ng-template>

@@ -15,28 +15,25 @@
     <ul class="{{ item.displayCss }}">
       <li *ngFor="let photo of item.photos;	let	i	=	index">
         <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, photo)">
-          <img class="img-full lazyload" [src]="photo.url" *ngIf="photo?.model === MODEL.photo" alt="">
-          <div class="photo-box-figure-in" *ngIf="photo?.model === MODEL.video">
-            <img class="img-full img-center lazyload" [src]="photo?.thumbnail_url" alt="">
-            <i class="fa fa-play-circle-o"></i>
-          </div>
+          <ng-container *ngTemplateOutlet="photoRef; context: {photo: photo}"></ng-container>
         </figure>
         <figure *ngIf="i == 5 && item.remainPhotos == 0" (click)="onActions(actions.onShowPhotoDetail, photo)">
-          <img class="img-full lazyload" [src]="photo.url" alt="">
+          <!-- <img class="img-full lazyload" [src]="photo.url" alt=""> -->
+          <ng-container *ngTemplateOutlet="photoRef; context: {photo: photo}"></ng-container>
         </figure>
         <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, photo)" *ngIf="i == 5 && item.remainPhotos != 0">
           <span>
             + {{ item.remainPhotos }}
           </span>
           <figure>
-            <img class="img-full lazyload" [src]="photo.url" alt="">
+            <!-- <img class="img-full lazyload" [src]="photo.url" alt=""> -->
+            <ng-container *ngTemplateOutlet="photoRef; context: {photo: photo}"></ng-container>
           </figure>
         </a>
       </li>
     </ul>
   </div>
   <div class="z-social-post-tag">
-    <!--<a *ngFor="let tag of item.tags">-->
     <a *ngFor="let tag of item.tags_json">
       {{ tag.value }}
     </a>
@@ -64,19 +61,21 @@
     <div *ngIf="parentItem.photos.length>0" class="z-social-carousel">
       <ul class="carousel-thumb-style-6">
         <li *ngFor="let photo of parentItem.photos;	let	i	=	index">
-          <figure *ngIf="i < 5" (click)="onActions(actions.onShowPhotoDetail, {id: photo?.id, parentItem: originalParent})">
-            <img class="img-full lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="photo.url" alt="">
+          <figure *ngIf="i < 5" (click)="onPreviewSharedPhotos(photo, parentItem)">
+            <!-- <img class="img-full lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="photo.url" alt=""> -->
+            <ng-container *ngTemplateOutlet="photoRef; context: {photo: photo}"></ng-container>
           </figure>
-          <figure *ngIf="i == 5 && parentItem.remainPhotos == 0" (click)="onActions(actions.onShowPhotoDetail, {id: photo?.id, parentItem: originalParent})">
-            <img class="img-full lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="photo.url" alt="">
+          <figure *ngIf="i == 5 && parentItem.remainPhotos == 0" (click)="onPreviewSharedPhotos(photo, parentItem)">
+            <!-- <img class="img-full lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="photo.url" alt=""> -->
+            <ng-container *ngTemplateOutlet="photoRef; context: {photo: photo}"></ng-container>
           </figure>
-          <a href="javascript:;" (click)="onActions(actions.onShowPhotoDetail, {id: photo?.id, parentItem: originalParent})"
-            *ngIf="i == 5 && parentItem.remainPhotos != 0">
+          <a href="javascript:;" (click)="onPreviewSharedPhotos(photo, parentItem)" *ngIf="i == 5 && parentItem.remainPhotos != 0">
             <span>
               + {{ parentItem.remainPhotos }}
             </span>
             <figure>
-              <img class="img-full lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="photo.url" alt="">
+              <!-- <img class="img-full lazyload" [src]="DEFAULT_IMAGE" [attr.data-src]="photo.url" alt=""> -->
+              <ng-container *ngTemplateOutlet="photoRef; context: {'photo': photo}"></ng-container>
             </figure>
           </a>
         </li>
@@ -115,3 +114,11 @@
 
   </div>
 </div>
+
+<ng-template #photoRef let-photo="photo">
+  <img class="can-click img-full lazyload" [src]="photo.url" *ngIf="photo?.model === MODEL.photo" alt="">
+  <div class="photo-box-figure-in" *ngIf="photo?.model === MODEL.video">
+    <img class="img-full img-center lazyload" [src]="photo?.thumbnail_url" alt="">
+    <i class="fa fa-play-circle-o"></i>
+  </div>
+</ng-template>

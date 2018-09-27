@@ -6,13 +6,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ZSocialSharedModule } from './shared/shared.module';
 import { ZSocialHomeModule } from './home/home.module';
-import { ZSocialPhotoModule } from './shared/second-routes/photo/photo.module';
 import { SocialSettingsModule } from './settings/setting.module';
 import { CoreModule } from '@wth/core/core.module';
 import { ShortcutEffects } from './shared/effects/shortcut-effects';
@@ -26,7 +26,7 @@ import { WthCommonModule } from '@shared/common/wth-common.module';
 import { PostModule } from '@social/shared/second-routes/post';
 import { MiniEditorModule } from '@shared/shared/components/mini-editor/mini-editor.module';
 import { Ng2HdModule } from '@shared/shared/ng2-hd';
-import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { ZSocialPhotoModule } from '@social/shared/second-routes/photo/photo.module';
 
 @NgModule({
   imports: [
@@ -37,12 +37,12 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     AppRoutingModule,
     ZSocialHomeModule,
     SocialSettingsModule,
-    ZSocialPhotoModule,
     ModalModule,
     WthCommonModule,
     MiniEditorModule,
     Ng2HdModule,
     PostModule,
+    ZSocialPhotoModule,
     ScrollToModule.forRoot(),
     ZSocialSharedModule.forRoot(),
     SharedServicesModule.forRoot(),

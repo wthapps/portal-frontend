@@ -3,7 +3,7 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnChanges, OnInit, OnDestroy, ChangeDetectionStrategy
+  OnInit, OnDestroy, ChangeDetectionStrategy
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -28,18 +28,17 @@ declare var _: any;
 
 @Component({
   selector: 'so-post-footer',
-  templateUrl: 'post-footer.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: 'post-footer.component.html'
 })
-export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
+export class PostFooterComponent implements OnInit, OnDestroy {
   @Input() user: any;
   @Input() item: SoPost;
   @Input() type: string;
   @Input() emojiMap: { [name: string]: WTHEmojiCateCode };
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
-  commentEditorMode = CommentEditorMode;
+  readonly commentEditorMode = CommentEditorMode;
 
-  actions = {
+  readonly actions = {
     onDeleteComment: 1,
     onEditComment: 2,
     onDeleteReply: 3,
@@ -48,10 +47,7 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
     onShowPhotoDetail: 7
   };
 
-  showInfo = false;
-  totalComment = 1;
   commentPageIndex = 0;
-  loadingDone = false;
   readonly commentLimit: number = Constants.soCommentLimit;
   readonly tooltip: any = Constants.tooltip;
   readonly MODEL = MODEL_TYPE;
@@ -71,9 +67,6 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.complete();
-  }
-
-  ngOnChanges(data: any) {
   }
 
   viewProfile(uuid: string) {
@@ -115,7 +108,7 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
           outlets: {
             modal: [
               'preview',
-              comment.photo.uuid,
+              comment.photo.uuid || data,
               {
                 object: 'comment',
                 parent_uuid: comment.uuid,
@@ -162,8 +155,6 @@ export class PostFooterComponent implements OnInit, OnDestroy, OnChanges {
             const cloneItem = this.item.comments.push(..._.map(result.data.comments, this.mapComment));
             this.item = _.clone(cloneItem); // clone this item to notify parent components
           }
-          if (result.loading_done)
-            this.loadingDone = result.loading_done;
 
           this.commentPageIndex += 1;
 

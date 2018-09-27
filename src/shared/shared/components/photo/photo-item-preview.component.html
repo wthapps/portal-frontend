@@ -1,6 +1,5 @@
 <div class="row-img row-img-10 grid">
   <div *ngIf="photo||files" class="row-img-item">
-    {{ hasUploadingPhoto }}
     <ng-template [ngIf]="hasUploadingPhoto">
       <div class="photo-box">
         <div class="photo-box-action" (click)="onAction({action: 'cancelUpload', data: photo})">

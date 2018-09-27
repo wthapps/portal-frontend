@@ -173,6 +173,19 @@ export class ZMediaPreviewComponent implements OnInit,
     });
   }
 
+  onZoomIn() {
+    this.cropper.zoom(0.1);
+  }
+
+  onZoomOut() {
+    this.cropper.zoom(-0.1);
+  }
+
+  onRefresh() {
+    this.cropper.reset();
+    this.cropper.setDragMode('none');
+  }
+
   infoAlbumClick(object) {
     if (object.object_type === 'Media::Playlist') {
       this.router.navigate([`/playlists/${object.uuid}`]);

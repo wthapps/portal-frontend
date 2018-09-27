@@ -69,6 +69,10 @@ export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
     this.destroySubject.complete();
   }
 
+  onPreviewSharedPhotos(photo, parentItem) {
+    this.onActions(this.actions.onShowPhotoDetail, { ...photo, parentItem });
+  }
+
   onActions(action: any, data?: any, type?: any) {
     switch (action) {
       case this.actions.openShare:
@@ -85,7 +89,6 @@ export class PostBodyComponent implements OnInit, OnChanges, OnDestroy {
         break;
       case this.actions.onShowPhotoDetail:
         const post = _.get(data, 'parentItem', this.originalPost);
-        const photoIds = _.map(post.photos, 'id');
         this.router.navigate([{
           outlets: {
             modal: [

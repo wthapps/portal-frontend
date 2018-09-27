@@ -14,23 +14,18 @@ import { WMediaPreviewV1Module } from '@shared/components/w-media-preview/media-
 @NgModule({
   imports: [
     CommonModule,
-    ImageCropperModule,
     ZSocialPhotoRoutingModule,
-    WMediaPreviewV1Module,
-    ZSocialSharedModule,
-    // SharedModule
+    WMediaPreviewV1Module
   ],
   declarations: [
-    // PhotoDetailPartialComponent,
-    ZSocialPhotoComponent,
-    PhotoDetailComponent
+    // ZSocialPhotoComponent,
+    // PhotoDetailComponent
   ],
   exports: [
     WMediaPreviewV1Module,
 
-    // PhotoDetailPartialComponent,
-    ZSocialPhotoComponent,
-    PhotoDetailComponent
+    // ZSocialPhotoComponent,
+    // PhotoDetailComponent
   ],
   providers: []
 })
