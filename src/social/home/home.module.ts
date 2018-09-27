@@ -10,13 +10,12 @@ import { Ng2HdModule } from '@shared/shared/ng2-hd';
 import { PostModule } from '@social/shared/second-routes/post';
 
 @NgModule({
-  imports: [CommonModule, ZSocialSharedModule, ModalModule, Ng2HdModule,
+  imports: [CommonModule, ZSocialSharedModule, ModalModule,
     PostModule,
     // , SharedModule
   ],
   declarations: [ZSocialHomeComponent],
   exports: [
-    Ng2HdModule,
     ZSocialHomeComponent],
   providers: []
 })

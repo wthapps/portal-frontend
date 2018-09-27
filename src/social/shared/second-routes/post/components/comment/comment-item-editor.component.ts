@@ -44,7 +44,6 @@ declare let _: any;
 })
 
 export class CommentItemEditorComponent implements OnInit, OnDestroy {
-  // @Input() item: SoPost;
   @Input() parent: any; // parent is able to be Post or Comment or Photo or other object
   @Input() parentType = 'SocialNetwork::Post';  // 'SocialNetwork::Post' or 'SocialNetwork::Comment'
   @Input() originComment = new SoComment();
@@ -94,7 +93,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.mode === CommentEditorMode.Add) {
-      // this.comment = new SoComment();
     }
 
     this.comment = _.cloneDeep(this.originComment);
@@ -102,7 +100,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       'content': [this.comment.content, ''],
       'photo': [this.comment.photo, null]
     });
-    // this.contentCtrl = this.commentEditorForm.controls['content'];
     this.setCommentContent(this.commentEditorForm.controls['content'].value);
     this.photosCtrl = this.commentEditorForm.controls['photo'];
   }
@@ -121,9 +118,8 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   }
 
   handleKeyUp(e: any) {
-    if (e.keyCode === 13 && this.editorError == '') {
+    if (e.keyCode === 13 && this.editorError === '') {
       if (this.checkValidForm()) {
-        // this.comment.content = this.commentEditorForm.value;
         this.post(this.comment.content);
       } else {
         this.cancel();
@@ -139,7 +135,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     let commentEvent: any;
     const data: any = {};
     if (photos) data.photo = photos[0].id;
-    data.content = this.comment.content;
+    data.content = this.comment.content || '';
     if (this.mode === this.commentEditorMode.Add) {
       data.post_uuid = this.parent.uuid;
       commentEvent = new CommentCreateEvent(data);
@@ -169,7 +165,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       takeUntil(this.close$),
       filter(items => items.length > 0)
     ).subscribe((items) => {
-      // this.comment.photo = items[0];
       this.setPhoto(items[0]);
       this.hasUpdatedContent = true;
     });
@@ -183,7 +178,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
         return this.photoUploadService.uploadPhotos(files);
       })
     ).subscribe((res: any) => {
-      // this.comment.photo = res.data;
       this.setPhoto(res.data);
       this.hasUploadingPhoto = false;
       this.hasUpdatedContent = true;
@@ -216,7 +210,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   onEmojiClick(e: any) {
     const emoj: any = e.replace(/\\/gi, '');
     this.editor.addEmoj(emoj);
-    // this.comment.content = this.commentDomValue + emoj;
     this.hasUpdatedContent = true;
   }
 
@@ -228,7 +221,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     if (this.mode === CommentEditorMode.Add) {
       // add new comment/reply to post
       _.set(this.originComment, 'isCreatingNewReply', false);
-      // this.eventEmitter.emit(new CancelAddCommentEvent(this.comment));
 
     } else if (this.mode === CommentEditorMode.Edit) {
       // update current comment/reply
@@ -240,7 +232,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   post(comment?: any) {
     let event: any = null;
 
-    this.comment.content = comment || this.comment.content;
+    this.comment.content = comment || this.comment.content || '';
     if (this.mode === CommentEditorMode.Add) {
       // add new comment/reply to post
       this.comment.parent = this.parent;
@@ -259,8 +251,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.eventEmitter.emit(event);
     this.comment.content = '';
     this.setPhoto(null);
-    // this.comment.photo = null;
-    // this.commentEditorForm.controls['photo'].setValue(null);
     this.files = null;
     this.hasUpdatedContent = false;
   }
@@ -285,7 +275,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   checkValidForm(): boolean {
     // remove leading and trailing whitespaces: spaces, tabs, new lines from comment content before saving
-    // return this.hasUpdatedContent && this.comment.content.replace(/^\s+|\s+$/g, '') !== '';
     return !!this.comment.content || !!this.comment.photo;
   }
 
@@ -302,16 +291,15 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       take(1)
     ).subscribe(data => {
       this.editor.addEmoj(data.shortname);
-      // this.comment.content = this.commentDomValue + emoj;
       this.hasUpdatedContent = true;
     });
   }
 
-  onTextChange(event){
+  onTextChange(event) {
     if (event.status.error) {
       this.editorError = 'editor-error';
     } else {
-      this.editorError = "";
+      this.editorError = '';
     }
   }
 

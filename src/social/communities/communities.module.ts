@@ -5,7 +5,6 @@ import { ZSocialSharedModule } from '../shared/shared.module';
 
 import { ZSocialCommunityListComponent } from './list/list.component';
 import { ZSocialCommunityDetailComponent } from './detail/detail.component';
-import { ZSocialCommunitySharedModule } from './shared/shared.module';
 import { ZSocialCommunityFormEditComponent } from './shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from './shared/form/preferences.component';
 import { PostModule } from '../shared/second-routes/post/post.module';
@@ -22,27 +21,17 @@ import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-
     Ng2HdModule,
     CommunityRoutingModule,
     ZSocialSharedModule,
-    ZSocialCommunitySharedModule,
     BoxLoadingModule,
 
     ZSocialSharedModule
-    // SharedModule
-    // CoreModule
   ],
   declarations: [
     ZSocialCommunityListComponent,
     ZSocialCommunityDetailComponent,
     ZSocialCommunityFormEditComponent,
-    // MemberListInviteComponent,
-
-    // // PostListComponent,
-    // ZSocialCommunityCoverComponent
 
     // Preferences
     ZSocialCommunityFormPreferenceComponent
-
-    // // Notifications
-    // ZSocialNotificationsComponent
   ],
   exports: [
     ZSocialSharedModule,

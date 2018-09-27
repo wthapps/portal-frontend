@@ -133,7 +133,6 @@ export class PostFooterComponent implements OnInit, OnDestroy {
     }
 
     this.eventEmitter.emit(event);
-    // this.viewAllComments();
   }
 
   mapComment(comment: any) {

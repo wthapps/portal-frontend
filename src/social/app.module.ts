@@ -40,7 +40,7 @@ import { ZSocialPhotoModule } from '@social/shared/second-routes/photo/photo.mod
     ModalModule,
     WthCommonModule,
     MiniEditorModule,
-    Ng2HdModule,
+    // Ng2HdModule,
     PostModule,
     ZSocialPhotoModule,
     ScrollToModule.forRoot(),

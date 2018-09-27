@@ -4,12 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { InputSwitchModule } from 'primeng/primeng';
-import { InputTextareaModule } from 'primeng/components/inputtextarea/inputtextarea';
 import { TagInputModule } from 'ngx-chips';
 
 import { CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { Ng2HdModule } from '@wth/shared/shared/ng2-hd';
-import { PostNewComponent } from './post-new.component';
 import { PostEditComponent } from './post-edit.component';
 import { PostActivitiesComponent } from './post-activities.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
@@ -19,7 +17,6 @@ import { PostListComponent } from '@social/shared/second-routes/post/post-list.c
 import { PostHeaderComponent, PostBodyComponent, PostFooterComponent } from '@social/shared/second-routes/post/components';
 import { PostComponent } from '@social/shared/second-routes/post/post.component';
 import { PostDetailComponent } from '@social/shared/second-routes/post/post-detail.component';
-import { PostDetailPhotoComponent } from '@social/shared/second-routes/post/post-detail-photo.component';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { ReadMoreModule } from '@shared/shared/components/read-more/read-more.module';
 import { DisplayLinkModule } from '@shared/shared/components/link/display-link.module';
@@ -44,9 +41,7 @@ import { WMediaPreviewV1Module } from '@shared/components/w-media-preview/media-
     ZSocialSharedModule,
     TagInputModule,
     InputSwitchModule,
-    WMediaPreviewV1Module,
-    // BrowserAnimationsModule,
-    InputTextareaModule
+    WMediaPreviewV1Module
 
 
   ],
@@ -58,11 +53,8 @@ import { WMediaPreviewV1Module } from '@shared/components/w-media-preview/media-
     PostBodyComponent,
     PostFooterComponent,
     PostDetailComponent,
-    PostDetailPhotoComponent,
 
-    PostNewComponent,
     PostEditComponent,
-    PostNewComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     // MemberListInviteComponent,
@@ -88,10 +80,7 @@ import { WMediaPreviewV1Module } from '@shared/components/w-media-preview/media-
     PostBodyComponent,
     PostFooterComponent,
     PostDetailComponent,
-    PostDetailPhotoComponent,
-    PostNewComponent,
     PostEditComponent,
-    PostNewComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     // MemberListInviteComponent,
