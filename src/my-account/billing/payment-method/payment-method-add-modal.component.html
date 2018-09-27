@@ -1,0 +1,82 @@
+<form [formGroup]="pmForm" id="adyen-encrypted-form" novalidate>
+  <bs-modal #modal
+            [cssClass]="'modal-account-edit'"
+            [keyboard]="false"
+            [animation]="false"
+            [backdrop]="'static'" style="display: inline;" >
+    <bs-modal-header>
+      <button aria-label="Close" class="close" (click)="close()">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title">Add Payment Method</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+
+      <div><p>Choose your payment method</p></div>
+
+            <div class="payment-method-wrap">
+              <label class="radio-inline">
+                <input type="radio" name="paymentMethod" #pmCard value="card" checked
+                       (change)="choosePMType(pmCard)">
+                <span class="payment-method-credit"></span>
+              </label>
+              <label class="radio-inline">
+                <input type="radio"
+                       name="paymentMethod" #pmPaypal value="paypal"
+                       (change)="choosePMType(pmPaypal)">
+                <span class="payment-method-paypal"></span>
+              </label>
+            </div>
+
+            <div [style.display]="pmType === 'paypal' ? 'none' : 'block'">
+              <div class="form-group">
+                <label for="card-name">Card Name</label>
+                <input [formControl]="holderName" class="form-control" type="text"
+                       id="card-name" size="20"
+                       autocomplete="off" data-encrypted-name="holderName">
+              </div>
+              <div class="form-group">
+                <label for="card-number">Card Number</label>
+                <div class="cardinfo-card-number">
+                  <input [formControl]="number" class="form-control"
+                         (change)="inputNumber($event)" type="tel" id="card-number" size="20"
+                       autocomplete="off" data-encrypted-name="number">
+                  <!--<span id="cardtype"></span>-->
+                  <span id="cardType" class="cse-cardtype-visa">
+                    <span class="cse-cardtype-label">VISA</span>
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="card-expiry-month">Valid Thru</label>
+                    <input [formControl]="expiryMonth" class='form-control' type="text" id="card-expiry-month" size="2" maxlength="2"
+                           autocomplete="off" data-encrypted-name="expiryMonth">
+                    <input [formControl]="expiryYear" class='form-control' type="text" id="card-expiry-year" size="4" maxlength="4"
+                           autocomplete="off" data-encrypted-name="expiryYear">
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="card-cvv">CVV</label>
+                    <input [formControl]="cvc" class='form-control' type="tel" id="card-cvv" size="4"
+                           maxlength="4" data-encrypted-name="cvc">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+    </bs-modal-body>
+
+    <bs-modal-footer>
+      <div>
+        <input type="hidden" [formControl]="generationtime" data-encrypted-name="generationtime" />
+        <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
+        <button class="btn btn-outline-primary btn-min pull-right" (click)="add()">Add</button>
+      </div>
+    </bs-modal-footer>
+  </bs-modal>
+
+</form>

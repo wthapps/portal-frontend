@@ -39,10 +39,9 @@ $message-assets-width: 400px;
 
 .message-assets-content {
   @include flexbox;
-  @include flex(1);
   width: 100%;
   overflow: auto;
-  @include justify-content(center);
+  @include justify-content(space-around);
   > div {
     width: 100%;
   }
@@ -70,6 +69,12 @@ $message-assets-width: 400px;
         -moz-border-radius: 5px;
         border-radius: 5px;
         border: 1px solid $line;
+        .media-body a {
+          display: block;
+          width: 317px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
       }
     }
   }
@@ -93,6 +98,7 @@ $message-assets-width: 400px;
 .message-assets-members {
   padding: $grid-gutter-width/2;
   background-color: #ffffff;
+  height: 100%;
   > ul {
     margin: 0;
     padding: 0;

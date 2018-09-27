@@ -25,7 +25,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
-      "serviceWorker": true,
+      "serviceWorker": false,
       "styles": [
         "styles/styles-app-loading.scss",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
@@ -66,11 +66,16 @@
       "styles": [
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",
-        "styles/my-account.scss"
+        "styles/my-account.scss",
+        "../../node_modules/adyen-cse-web/js/addOns/adyen.cardtype.css"
       ],
       "scripts": [
         "../../src/shared/channels/common.js",
-        "../../node_modules/moment/min/moment.min.js"
+        "../../node_modules/moment/min/moment.min.js",
+        "../../node_modules/adyen-cse-web/js/adyen.encrypt.min.js",
+        "../../node_modules/adyen-cse-web/js/adyen.encrypt.nodom.min.js",
+        "../../node_modules/adyen-cse-web/js/addOns/adyen.cardtype.min.js"
+
       ],
       "environmentSource": "../environments/environment.ts",
       "environments": {

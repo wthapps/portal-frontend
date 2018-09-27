@@ -74,7 +74,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   loadingMore = false;
   readonly noteUrl: any = `${Constants.baseUrls.note}/notes/public`;
   private destroy$ = new Subject<any>();
-  private pageSize = 5;
+  private pageSize = 30;
 
   constructor(
     private chatService: ChatService,

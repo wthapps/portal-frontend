@@ -48,7 +48,7 @@
   <ng-container *ngIf="currentTab !== 'members'">
     <ng-container *ngIf="!isLoading && medias$ | async as mediasList; else templateloading">
       <ng-container *ngIf="mediasList?.length; else templateNodata">
-        <w-object-list class="message-assets-content bg-gray-light"
+        <w-object-list class="message-assets-content"
                        [ngClass]="{'message-assets-content-row': currentTab === 'notes' || currentTab === 'files'}"
                        [data]="mediasList"
                        [sortInline]="false"
@@ -91,9 +91,8 @@
                   <div class="media-left">
                     <i class="fa fa-file-archive-o fz30 mt5"></i>
                   </div>
-                  <div class="media-body">
-                    <a [href]="item.file.url">
-                      <p class="mb0"> {{ item.file.full_name }} </p>
+                  <div class="media-body" [title]="item.file.full_name">
+                    <a [href]="item.file.url"> {{ item.file.full_name }}
                     </a>
                     <small class="text-fade"> {{ item.file.size | bytes:0 }}</small>
                   </div>

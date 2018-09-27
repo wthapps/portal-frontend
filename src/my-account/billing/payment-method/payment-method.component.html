@@ -44,11 +44,11 @@
     <div class="panel-body" *ngIf="!userService.getSyncProfile().has_payment_info">
       Not billing details data in your account
       <div class="clearfix mt40">
-        <a [routerLink]="['/payment']" class="btn btn-success">Add</a>
+        <a [routerLink]="['/payment']" class="btn btn-outline-primary btn-min">Add payment method</a>
       </div>
     </div>
   </div>
 </div>
-
+<payment-method-add-modal #addModal></payment-method-add-modal>
 
 
