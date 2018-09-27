@@ -216,6 +216,9 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   cancel() {
     this.setCommentContent('');
     this.setPhoto(null);
+
+    this.cancelUploadPhoto();
+
     this.hasUpdatedContent = false;
     this.editorError = '';
     if (this.mode === CommentEditorMode.Add) {
@@ -227,6 +230,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       _.set(this.originComment, 'isEditting', false);
       this.eventEmitter.emit(new CancelEditCommentEvent(this.comment));
     }
+
   }
 
   post(comment?: any) {
@@ -265,6 +269,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       case 'cancelUploadingPhoto':
       case 'cancelUpload':
         this.setPhoto(null);
+        this.cancelUploadPhoto();
         if (this.uploadSubscription)
           this.uploadSubscription.unsubscribe();
         this.files = null;
@@ -306,13 +311,13 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   private setPhoto(photo: any) {
     this.comment.photo = photo;
     this.commentEditorForm.controls['photo'].setValue(photo);
+  }
 
-    if (photo === null) {
-      this.cancelPhotoSubject.next('');
-      if (this.uploadingPhoto) {
-        this.uploader.cancel(this.uploadingPhoto);
-        this.uploadingPhoto = null;
-      }
+  private cancelUploadPhoto() {
+    this.cancelPhotoSubject.next('');
+    if (this.uploadingPhoto) {
+      this.uploader.cancel(this.uploadingPhoto);
+      this.uploadingPhoto = null;
     }
   }
 }
