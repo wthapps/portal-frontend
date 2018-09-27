@@ -24,3 +24,10 @@
   min-height: 300px;
   max-height: 300px;
 }
+
+.dropdown-menu {
+  &.dropdown-menu-right a i {
+    position: absolute;
+    right: 15px;
+  }
+}

@@ -39,7 +39,7 @@
               <ul class="dropdown-menu dropdown-menu-right">
                 <li *ngFor="let r of roles" (click)="changeRole(r)">
                   <a href="javascript:void(0);"> {{ r.display_name }}
-                    <i class="pull-right" [ngClass]="{'fa fa-check': (r.id === role.id)}"></i>
+                    <i class="" [ngClass]="{'fa fa-check': (r.id === role.id)}"></i>
                   </a>
                 </li>
               </ul>
