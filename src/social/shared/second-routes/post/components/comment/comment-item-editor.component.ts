@@ -76,7 +76,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   selectEmojiSub: Subscription;
   private uploadingPhoto: any;
   private sub: Subscription;
-  editorLimit = 2;
+  editorLimit = 1000;
   editorError = '';
   editorErrorMessage = 'The maximum limit for a comment is ' + this.editorLimit + ' characters. Please make your comment shorter.';
   textValidator: TextLengthValidatior = new TextLengthValidatior(this.editorLimit);
