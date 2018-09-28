@@ -83,8 +83,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
       // this.photoSelectDataService.open({editCurrentMode: editCurrentMode});
       // this.subscribePhotoSelectEvents();
     } else {
-      this.mediaSelectionService.setMultipleSelection(false);
-      this.mediaSelectionService.open();
+      this.mediaSelectionService.open({ allowSelectMultiple: false });
 
       const close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, componentDestroyed(this));
       this.mediaSelectionService.selectedMedias$.pipe(

@@ -161,7 +161,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   onOpenPhotoSelect() {
     this.mediaSelectionService.open({filter: 'photo', allowSelectMultiple: false, allowCancelUpload: true});
-    this.mediaSelectionService.setMultipleSelection(false);
 
     this.mediaSelectionService.selectedMedias$.pipe(
       takeUntil(this.close$),

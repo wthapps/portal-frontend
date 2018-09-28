@@ -725,8 +725,7 @@ export class ZNoteDetailEditComponent
 
   selectPhotos() {
     // this.photoSelectDataService.open({return: true});
-    this.mediaSelectionService.open();
-    this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({ allowSelectMultiple: true });
 
     this.selectPhotos4Attachments();
   }
@@ -847,8 +846,7 @@ export class ZNoteDetailEditComponent
   }
 
   private selectPhotos4Attachments() {
-    this.mediaSelectionService.open();
-    this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({ allowSelectMultiple: true });
 
     const close$: Observable<any> = Observable.merge(
       this.mediaSelectionService.open$,

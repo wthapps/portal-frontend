@@ -42,8 +42,7 @@ export class CoverProfileComponent implements OnDestroy {
   selectPhoto(callback: any, loadingId?: string) {
     const close$: Observable<any> = Observable.merge(this.mediaSelectionService.open$, this.destroySubject);
 
-    this.mediaSelectionService.setMultipleSelection(false);
-    this.mediaSelectionService.open();
+    this.mediaSelectionService.open({ allowSelectMultiple: false, hiddenTabs: ['videos', 'playlists']});
     this.mediaSelectionService.selectedMedias$.pipe(
       takeUntil(close$),
       filter((items: any[]) => items.length > 0)

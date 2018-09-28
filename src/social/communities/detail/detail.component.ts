@@ -239,7 +239,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   onCoverAction(event: any) {
-    if (event.action == 'updateItem') {
+    if (event.action === 'updateItem') {
       this.updateCommunity(event.body);
     }
   }

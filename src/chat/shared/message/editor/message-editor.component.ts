@@ -196,8 +196,7 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
   }
 
   onOpenSelectPhotos() {
-    this.mediaSelectionService.open();
-    this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({ allowSelectMultiple: true});
 
     const close$: Observable<any> = Observable.merge(
       this.mediaSelectionService.open$,
