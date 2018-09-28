@@ -12,6 +12,7 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { ZChatEmojiModule } from '@shared/shared/emoji/emoji.module';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
+import { BsModalModule } from 'ng2-bs3-modal';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
     ZChatEmojiModule,
     PipeModule,
     TooltipModule,
+    BsModalModule,
     WTHEmojiModule
   ],
   declarations: [

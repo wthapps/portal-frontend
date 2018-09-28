@@ -198,6 +198,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
     this.mode = options.mode;
     this.isShare = options.isShare;
+    this.editorError = "";
 
     if (options.post != null) {
       this.post = _.cloneDeep(options.post);
