@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { GoogleApiService } from '../services/google-api.service';
 import { ModalDockComponent } from '../../../shared/shared/components/modal/dock.component';
 import { LoadingService } from '../../../shared/shared/components/loading/loading.service';
@@ -10,6 +11,7 @@ import { CommonEvent } from '../../../shared/services/common-event/common-event'
 import { GenericFile } from '../../../shared/shared/models/generic-file.model';
 import { FileReaderUtil } from '@shared/shared/utils/file/file-reader.util';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
+import { WUploader } from '@shared/services/w-uploader';
 
 @Component({
   selector: 'z-contact-share-import-progress',
@@ -32,12 +34,15 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
   importStatus: any;
   successfulNum = 0;
   failedNum = 0;
+  destroy$ = new Subject();
+
 
   constructor(
     private contactService: ZContactService,
     public gapi: GoogleApiService,
     public loadingService: LoadingService,
-    private commonEventService: CommonEventService
+    private commonEventService: CommonEventService,
+    private uploader: WUploader
   ) {
     this.importSubscription = this.commonEventService.filter(
       (event: CommonEvent) => event.channel === 'contact:contact:actions').subscribe((event: CommonEvent) => {
@@ -60,7 +65,52 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
       case 'microsoft':
         break;
       case 'import_from_file':
-        this.importFile(event.payload);
+        this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+          allowedFileTypes: ['text/x-vcard', 'text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+        });
+        this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe(e => {
+          switch (e.action) {
+            case 'start':
+              this.modalDock.open();
+              this.importStatus = this.IMPORT_STATUS.importing;
+
+              break;
+            case 'progress':
+
+              break;
+            case 'success':
+              const file = e.payload.resp;
+              console.log('file:::', file);
+              this.contactService.import({
+                import_info: {
+                  provider: event.payload.provider,
+                  type: event.payload.type,
+                  name: event.payload.name
+                },
+                file: file
+              }).subscribe((response: any) => {
+                  this.successfulNum = response.data.length;
+                  this.contactService.addMoreContacts(response.data);
+                  this.importDone();
+                  this.destroy$.next();
+                  this.destroy$.complete();
+                },
+                (error: any) => {
+                  this.importStatus = this.IMPORT_STATUS.error;
+                  this.importDone(error);
+                  this.destroy$.next();
+                  this.destroy$.complete();
+                });
+              break;
+            case 'error':
+              break;
+            case 'cancel-success':
+            case 'complete':
+              break;
+          }
+        });
+        console.log('importing files:::', event.payload);
+        // this.importFile(event.payload);
         break;
     }
   }

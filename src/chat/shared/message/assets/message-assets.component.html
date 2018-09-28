@@ -79,7 +79,7 @@
             <ng-container *ngIf="item.file_type == 'Note::Note'">
               <div class="wobject-box-name">
                 <span class="bold name-clickable"><i class="fa fa-file"></i>
-                  <a [href]="noteUrl + item.uuid" target="_blank"> {{ item.file.name }} </a> </span>
+                  <a [href]="noteUrl + '/' + item.uuid" target="_blank"> {{ item.file.name === '' ? 'Untitled' : item.file.name }} </a> </span>
                 <div class="wobject-box-content-note" [innerHTML]="item.file.content | safeHtml"></div>
               </div>
             </ng-container>
