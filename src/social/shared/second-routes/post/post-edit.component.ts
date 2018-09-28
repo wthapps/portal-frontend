@@ -95,6 +95,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   private destroySubject: Subject<any> = new Subject<any>();
   private uploadSubscriptions: { [filename: string]: Subscription } = {};
   private sub: Subscription;
+  private close$: Observable<any>;
 
   constructor(
     private fb: FormBuilder,
@@ -122,6 +123,11 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.sub = this.uploader.event$.subscribe(event => {
       this.handleUploadFiles(event);
     });
+
+    this.close$ = Observable.merge(
+      this.mediaSelectionService.open$,
+      componentDestroyed(this)
+    );
   }
 
   ngOnChanges() {
@@ -204,7 +210,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     if (options.parent != null) {
       this.parent = options.parent;
     }
-    // this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
     this.privacyName = this.getPrivacyName(this.post);
 
     this.form = this.fb.group({
@@ -235,7 +240,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   done(item: any) {
-    // this.setItemDescriptionFromDom();
     const options: any = {
       mode: this.mode,
       item: {
@@ -354,29 +358,28 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   addMorePhoto(event?: any) {
     this.onMoreAdded.emit(true);
+    this.mediaSelectionService.setMultipleSelection(true);
     this.mediaSelectionService.open({ filter: 'photo', allowCancelUpload: true });
 
-    const close$: Observable<any> = Observable.merge(
-      this.mediaSelectionService.open$,
-      componentDestroyed(this)
-    );
     this.mediaSelectionService.selectedMedias$
-      .pipe(takeUntil(close$), filter(items => items.length > 0))
+      .pipe(takeUntil(this.close$), filter(items => items.length > 0))
       .subscribe(items => {
         this.post.photos = _.uniqBy(_.flatten([this.post.photos, items]), 'uuid');
       });
 
     this.mediaSelectionService.uploadingMedias$
       .pipe(
-        takeUntil(close$),
+        takeUntil(this.close$),
         map(([file, dataUrl]) => file),
         filter(file => this.photoUploadService.isValidImage(file)),
-        tap(file => {
+        map(file => {
+          console.log('valid files', file);
           this.files.push(file);
           this.modal.open();
         })
       )
       .subscribe((item: any[]) => {
+        console.log('uploading files', item);
         this.uploadFiles([item]);
       });
   }
@@ -430,24 +433,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.post = { ...this.post, ...attr };
     this.privacyName = this.getPrivacyName(this.post);
   }
-
-  // private getPrivacyClassIcon(post: any): string {
-  //   let privacy = !post || post.privacy == '' ? 'public' : post.privacy;
-  //   switch (privacy) {
-  //     case Constants.soPostPrivacy.friends.data:
-  //       return 'fa-users';
-  //     case Constants.soPostPrivacy.public.data:
-  //       return 'fa-globe';
-  //     case Constants.soPostPrivacy.personal.data:
-  //       return 'fa-lock';
-  //     case Constants.soPostPrivacy.customFriend.data:
-  //       return 'fa-user-times';
-  //     case Constants.soPostPrivacy.customCommunity.data:
-  //       return 'fa-group';
-  //   }
-  //   return '';
-  //   // return `Constants.soPostPrivacy.${post.privacy}.class`;
-  // }
 
   loading() {
     this.loadingService.start('#loading');

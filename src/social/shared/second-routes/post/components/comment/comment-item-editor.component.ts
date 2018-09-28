@@ -54,7 +54,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
 
   comment: SoComment = new SoComment(); // Clone comment
-  commentEditorMode = CommentEditorMode;
+  readonly commentEditorMode = CommentEditorMode;
   hasUploadingPhoto = false;
   hasUpdatedContent = false;
   files: any[];
@@ -65,7 +65,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   contentCtrl: AbstractControl;
   photosCtrl: AbstractControl;
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
 
   textContent = 'Let\'s try 1st sample';
   cancelPhotoSubject: Subject<any> = new Subject<any>();
@@ -73,12 +73,13 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   close$: Observable<any>;
   uploadSubscription: Subscription;
   selectEmojiSub: Subscription;
-  private uploadingPhoto: any;
-  private sub: Subscription;
   editorLimit = 1000;
   editorError = '';
   editorErrorMessage = 'The maximum limit for a comment is ' + this.editorLimit + ' characters. Please make your comment shorter.';
   textValidator: TextLengthValidatior = new TextLengthValidatior(this.editorLimit);
+
+  private uploadingPhoto: any;
+  private sub: Subscription;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -160,6 +161,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   onOpenPhotoSelect() {
     this.mediaSelectionService.open({filter: 'photo', allowSelectMultiple: false, allowCancelUpload: true});
+    this.mediaSelectionService.setMultipleSelection(false);
 
     this.mediaSelectionService.selectedMedias$.pipe(
       takeUntil(this.close$),

@@ -248,5 +248,6 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   openSelectPhotosModal() {
     this.mediaSelectionService.open();
+    this.mediaSelectionService.setMultipleSelection(true);
   }
 }

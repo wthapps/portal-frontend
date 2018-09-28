@@ -396,7 +396,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   private getPrivacyName(post: SoPost): string {
     if (post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
       return post.custom_objects[0].name;
-    return post.privacy.replace('_', ' ');
+    return (post.privacy ? post.privacy.replace('_', ' ') : '');
   }
 
 
