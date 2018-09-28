@@ -38,6 +38,9 @@ export class WUploader {
    */
   initialize(mode: string = 'FileInput', selector: string = '.w-uploader-file-input-container', options: any = {
     allowedFileTypes: null,
+    preventedFileTypes: null,
+    maxNumberOfFiles: null,
+    maxFileSize: null,
     willCreateMessage: false,
     willCreatePost: false,
     willCreateNote: false,
@@ -48,8 +51,11 @@ export class WUploader {
     const opts: any = {
       autoProceed: true,
       restrictions: {
-        allowedFileTypes: options.allowedFileTypes
-      }
+        allowedFileTypes: options.allowedFileTypes,
+        maxNumberOfFiles: options.maxNumberOfFiles,
+        maxFileSize: options.maxFileSize
+      },
+      onBeforeFileAdded: (currentFile, files) => this.verifyUpload(currentFile, files, options.maxFileSize, options.allowedFileTypes, options.preventedFileTypes),
     };
 
     this.uppy = Core(opts);
@@ -137,6 +143,39 @@ export class WUploader {
       const info = this.uppy.getState().info;
       this.event$.next({action: 'info-visible', payload: {info: info}});
     });
+  }
+
+  verifyUpload(currentFile: any, files: Array<any>, maxFileSize: number, allowedFileTypes: Array<any>|null, preventedFileTypes: Array<any>|null) {
+    if (maxFileSize !== null) {
+      const maxTotalFileSize = maxFileSize;
+      let TotalFileSize = 0;
+
+      for (let key in files) {
+        TotalFileSize = TotalFileSize + files[key].size;
+      }
+
+      const grandTotalFileSize = currentFile.data.size + TotalFileSize;
+      console.log('current file:::', currentFile);
+      if (allowedFileTypes && allowedFileTypes.length > 0) {
+        if (!allowedFileTypes.includes(currentFile.type)) {
+          this.event$.next({action: 'error', payload: {file: currentFile, error: `Not allowed file type ${currentFile.type}`}});
+          return false;
+        }
+      }
+
+      if (preventedFileTypes && preventedFileTypes.length > 0) {
+        if (!preventedFileTypes.includes(currentFile.type)) {
+          this.event$.next({action: 'error', payload: {file: currentFile, error: `Not allowed file type ${currentFile.type}`}});
+          return false;
+        }
+      }
+
+      if (grandTotalFileSize >= maxTotalFileSize) {
+        this.event$.next({action: 'error', payload: {file: currentFile, error: `Max filesize exceeded::: ${maxFileSize}`}});
+        return false;
+      }
+      return true;
+    }
   }
 
   /**
