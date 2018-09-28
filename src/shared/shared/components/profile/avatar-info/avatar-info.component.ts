@@ -17,7 +17,6 @@ import { QuestionControlService } from '../../form/base/question-control.service
 import { TextboxQuestion } from '../../form/categories/textbox-question';
 import { UserInfo } from '../../../models/user/user-info.model';
 import { LoadingService } from '../../loading/loading.service';
-import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { UserService } from '../../../../services/user.service';
 import { ToastsService } from '../../toast/toast-message.service';
@@ -53,7 +52,6 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
 
   constructor(private questionControlService: QuestionControlService,
               private loadingService: LoadingService,
-              // private photoSelectDataService: PhotoModalDataService,
               private apiBaseService: ApiBaseService,
               private userService: UserService,
               private toastsService: ToastsService,

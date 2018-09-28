@@ -18,7 +18,6 @@ export * from './message.service';
 export * from './notification.service';
 export * from './photo.service';
 export * from './album.service';
-export * from './photo-modal-data.service';
 export * from './photo-upload.service';
 export * from './service-manager';
 export * from './storage.service';

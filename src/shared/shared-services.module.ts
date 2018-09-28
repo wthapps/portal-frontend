@@ -17,7 +17,6 @@ import { NotificationService } from './services/notification.service';
 import { NotificationChannelService } from './channels/notification-channel.service';
 import { AppearancesChannelService } from './channels/appearances-channel.service';
 import { ChannelService } from './channels/channel.service';
-import { PhotoModalDataService } from './services/photo-modal-data.service';
 import { PhotoUploadService } from './services/photo-upload.service';
 import { UrlService } from './services/url.service';
 import { DateService } from './services/date.service';
@@ -95,7 +94,6 @@ export class SharedServicesModule {
         ConnectionNotificationService,
         AppearancesChannelService,
         ChannelService,
-        PhotoModalDataService,
         PhotoUploadService,
         UrlService,
         DateService,

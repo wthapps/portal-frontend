@@ -9,8 +9,6 @@ import { ZSocialCommunityFormEditComponent } from './shared/form/edit.component'
 import { ZSocialCommunityFormPreferenceComponent } from './shared/form/preferences.component';
 import { PostModule } from '../shared/second-routes/post/post.module';
 import { Ng2HdModule } from '@wth/shared/shared/ng2-hd';
-// import { SharedModule } from '@wth/shared/shared.module';
-// import { CoreModule } from '@wth/core/core.module';
 import { CommunityRoutingModule } from './community-routing.module';
 import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 
@@ -31,13 +29,16 @@ import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-
     ZSocialCommunityFormEditComponent,
 
     // Preferences
-    ZSocialCommunityFormPreferenceComponent
+    ZSocialCommunityFormPreferenceComponent,
+
   ],
   exports: [
     ZSocialSharedModule,
     ZSocialCommunityFormEditComponent,
     ZSocialCommunityDetailComponent,
-    ZSocialCommunityFormPreferenceComponent
+    ZSocialCommunityFormPreferenceComponent,
+    ZSocialCommunityListComponent,
+
   ],
   providers: []
 })

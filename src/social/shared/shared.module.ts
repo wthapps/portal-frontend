@@ -4,12 +4,9 @@ import { ZSocialFavoritesComponent } from './favorites/social-favorites.componen
 import { SocialService } from './services/social.service';
 import { SoCommunityService } from './services/community.service';
 
-import { ZSocialMembersComponent } from '../friends/members.component';
 import { ZSocialProfileService } from '../profile/profile.service';
 import { SocialFavoriteService } from './services/social-favorites.service';
 import { ZSocialShareProfileModule } from './user/list.module';
-import { ZSocialShareCommunityFormEditComponent } from './form/edit-community.component';
-import { ZSocialShareCommunityFormPreferenceComponent } from './form/preferences-community.component';
 import { SocialDataService } from './services/social-data.service';
 import { SoUserService } from './services/social-user.service';
 import { SoPostService } from './services/social-post.service';
@@ -17,13 +14,10 @@ import { ZSocialSharedHeaderComponent } from './header/header.component';
 import { StepByStepGuideModule } from './step-by-step-guide/step-by-step-guide.module';
 import { Ng2HdModule } from '@wth/shared/shared/ng2-hd';
 import { CoverProfileModule } from '@wth/shared/shared/components/cover-profile/cover-profile.module';
-// import { SharedModule } from '@wth/shared/shared.module';
-import { ZSocialSharedNewsFeedComponent } from './news-feed/news-feed.component';
 import { ZSocialLeftMenuComponent } from './component/social-left-menu.component';
 import { SoShortcutService } from './services/shortcut.service';
 import { ZSocialShortcutSettingComponent } from './shortcut-setting/shortcut-setting.component';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
-import { ZSocialCoverComponent } from '@social/shared/cover/cover.component';
 import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 import { WthCommonModule } from '@shared/common/wth-common.module';
 import { ModalModule } from '@shared/components/modal/modal.module';
@@ -44,6 +38,9 @@ import { ZSharedReportModule } from '@shared/shared/components/zone/report/repor
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.module';
+import { ZSocialMembersComponent } from '@social/friends/members.component';
+import { ZSocialShareCommunityFormEditComponent } from '@social/shared/form/edit-community.component';
+import { ZSocialShareCommunityFormPreferenceComponent } from '@social/shared/form/preferences-community.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -67,7 +64,6 @@ import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.modul
     ComponentsModule,
     FileModule,
     PartialModule,
-    // PartialsProfileModule,
     CoverProfileModule,
     ModalDockModule,
     ZSharedMenuModule,
@@ -90,28 +86,20 @@ import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.modul
     PanelMenuModule,
     TooltipModule,
 
-
-    // SharedModule
   ],
   declarations: [
     ZSocialFavoritesComponent,
 
     ZSocialMembersComponent,
 
-    // Search
-    // ZSocialSearchResultComponent,
-
-    // Community
-    ZSocialShareCommunityFormEditComponent,
-    ZSocialShareCommunityFormPreferenceComponent,
-
     ZSocialSharedHeaderComponent,
-    ZSocialSharedNewsFeedComponent,
     ZSocialShortcutSettingComponent,
     //  Left menu
     ZSocialLeftMenuComponent,
 
-    ZSocialCoverComponent
+    // Community partial components
+    ZSocialShareCommunityFormEditComponent,
+    ZSocialShareCommunityFormPreferenceComponent
   ],
   exports: [
     CommonModule,
@@ -129,7 +117,6 @@ import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.modul
     ComponentsModule,
     FileModule,
     PartialModule,
-    // PartialsProfileModule,
     CoverProfileModule,
     ModalDockModule,
     ZSharedMenuModule,
@@ -157,25 +144,19 @@ import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.modul
 
     ZSocialFavoritesComponent,
 
-    // Ng2HdModule,
-    // ZSocialShareProfileModule,
-
     StepByStepGuideModule,
 
-    // Community
-    ZSocialShareCommunityFormEditComponent,
-    ZSocialShareCommunityFormPreferenceComponent,
 
+    ZSocialMembersComponent,
     ZSocialSharedHeaderComponent,
-    ZSocialSharedNewsFeedComponent,
     ZSocialShortcutSettingComponent,
-
-    MiniEditorModule,
 
     //  Left menu
     ZSocialLeftMenuComponent,
 
-    ZSocialCoverComponent
+    // Community partial components
+    ZSocialShareCommunityFormEditComponent,
+    ZSocialShareCommunityFormPreferenceComponent
   ]
 })
 export class ZSocialSharedModule {

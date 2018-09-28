@@ -17,13 +17,12 @@ import { PostLikeDislikeComponent } from './post-likedislike.component';
 
 import {
   CommentCreateEvent, CommentUpdateEvent, ReplyCreateEvent, ReplyUpdateEvent,
-  DeleteReplyEvent, OpenPhotoModalEvent, DeleteCommentEvent, ViewMoreCommentsEvent
+  DeleteReplyEvent, DeleteCommentEvent, ViewMoreCommentsEvent
 } from '../../events/social-events';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { SoComment, SoPost } from '@wth/shared/shared/models';
 import { ApiBaseService, PhotoService, PhotoUploadService } from '@wth/shared/services';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
-import { PhotoModalDataService } from '@shared/services/photo-modal-data.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@shared/constant';
@@ -65,7 +64,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
               private photoService: PhotoService,
               private loading: LoadingService,
               private mediaSelectionService: WMediaSelectionService,
-              private photoUploadService: PhotoUploadService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private toast: ToastsService,
               private wthConfirmService: WthConfirmService) {
@@ -103,7 +101,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   ngOnInit() {
-    // this.photoSelectDataService.init({multipleSelect: false});
     this.mediaSelectionService.setMultipleSelection(false);
     this.mapDisplay();
   }

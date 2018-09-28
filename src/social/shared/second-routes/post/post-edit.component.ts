@@ -457,12 +457,12 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.loadingService.stop('#loading');
   }
 
-  onTextChange(event){
+  onTextChange(event) {
     this.hasChange = true;
-    if(event.status.error) {
+    if (event.status.error) {
       this.editorError = 'editor-error';
-    } else{
-      this.editorError = "";
+    } else {
+      this.editorError = '';
     }
   }
 

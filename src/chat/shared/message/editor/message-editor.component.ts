@@ -55,7 +55,6 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
 
   constructor(
     private chatService: ChatService,
-    // private photoSelectDataService: PhotoModalDataService,
     private mediaSelectionService: WMediaSelectionService,
     private apiBaseService: ApiBaseService,
     private store: Store<any>,

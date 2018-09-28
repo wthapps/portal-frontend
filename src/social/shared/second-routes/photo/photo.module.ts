@@ -10,14 +10,9 @@ import { WMediaPreviewV1Module } from '@shared/components/w-media-preview/media-
     WMediaPreviewV1Module
   ],
   declarations: [
-    // ZSocialPhotoComponent,
-    // PhotoDetailComponent
   ],
   exports: [
-    WMediaPreviewV1Module,
-
-    // ZSocialPhotoComponent,
-    // PhotoDetailComponent
+    WMediaPreviewV1Module
   ],
   providers: []
 })

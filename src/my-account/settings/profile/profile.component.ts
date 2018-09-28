@@ -67,8 +67,6 @@ export class MyProfileComponent implements OnInit, OnDestroy {
               private countryService: CountryService,
               private toastsService: ToastsService,
               private apiBaseService: ApiBaseService,
-              // private photoSelectDataService : PhotoModalDataService,
-              // private photoUploadService: PhotoUploadService,
               private urlService: UrlService,
               private commonEventService: CommonEventService,
               private loadingService: LoadingService) {

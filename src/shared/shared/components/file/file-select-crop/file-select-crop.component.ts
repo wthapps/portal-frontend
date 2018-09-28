@@ -5,8 +5,6 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/observable/merge';
 
-import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
-import { UploadCropImageComponent } from '../../upload-crop-image/upload-crop-image.component';
 import { CommonEventService } from '../../../../services/common-event/common-event.service';
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { Subject } from 'rxjs/Subject';
@@ -35,7 +33,6 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private commonEventService: CommonEventService,
-              // private photoSelectDataService: PhotoModalDataService,
               private mediaSelectionService: WMediaSelectionService,
               private photoUploadService: PhotoUploadService) {
   }

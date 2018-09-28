@@ -1,18 +1,14 @@
-import { CommonEventAction } from './../../../../services/common-event/common-event.action';
 import { Component, Input, Output, EventEmitter, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/merge';
 
 import { LoadingService } from '../../loading/loading.service';
 
-import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { take, takeUntil, switchMap, filter } from 'rxjs/operators';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { takeUntil, switchMap, filter } from 'rxjs/operators';
 import { CommonEventService } from '@shared/services';
 
 @Component({
