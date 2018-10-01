@@ -1,87 +1,81 @@
 <form [formGroup]="form" novalidate>
 
-  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" [cssClass]="'modal-lg'">
     <bs-modal-header>
       <button aria-label="Close" class="close" (click)="doEvent({action: 'cancel'})" type="button">
         <span aria-hidden="true">×</span>
       </button>
-      <h4 class="modal-title">Send Invitations</h4>
+      <h4 class="modal-title">Invite New Users</h4>
 
     </bs-modal-header>
     <bs-modal-body>
-        <div>
-          <div class="row row-12">
-            <div class="col-sm-4 ml5">
-              Full name
-            </div>
-            <div class="col-sm-7">
-              Email address
-            </div>
+      <div>
+        <div class="row row-12">
+          <div class="col-sm-4 ml5">
+            Full name
+          </div>
+          <div class="col-sm-7">
+            Email address
           </div>
         </div>
+      </div>
 
-        <div formArrayName="items">
-          <div *ngFor="let item of getFormControls(); let i=index" class="media mt0">
-            <div *ngIf="item" class="media-body" [formGroupName]="i">
+      <div formArrayName="items">
+        <div *ngFor="let item of getFormControls(); let i=index" class="media mt0">
+          <div *ngIf="item" class="media-body" [formGroupName]="i">
 
-              <div class="row row-10">
+            <div class="row row-10">
 
-                <div class="col-sm-4">
-                  <div class="form-group no-label" [ngClass]="{
+              <div class="col-sm-4">
+                <div class="form-group no-label" [ngClass]="{
                     'has-error': (!item['controls']?.fullName.valid
                                 && item['controls']?.fullName.touched),
                     'has-success': (item['controls']?.fullName.valid
                                 && item['controls']?.fullName.touched
                                 && form.value.items[i]?.fullName.length > 0)}">
-                    <input type="text" class="form-control" formControlName="fullName" placeholder="Full name">
-                    <div *ngIf="!item['controls']?.fullName.valid && item['controls']?.fullName.touched">
-                      <span class="help-block text-danger" *ngIf="item['controls']?.fullName.errors.required">
-                        Full name is required
-                      </span>
-                    </div>
+                  <input type="text" class="form-control" formControlName="fullName" placeholder="Full name">
+                  <div *ngIf="!item['controls']?.fullName.valid && item['controls']?.fullName.touched">
+                    <span class="help-block text-danger" *ngIf="item['controls']?.fullName.errors.required">
+                      Full name is required
+                    </span>
                   </div>
                 </div>
+              </div>
 
-                <div class="col-sm-8">
-                  <div class="form-group no-label"
-                       [ngClass]="{
+              <div class="col-sm-8">
+                <div class="form-group no-label" [ngClass]="{
                     'has-error': (!item?.email?.valid
                                 && item?.email?.touched),
                     'has-success': (item?.email?.valid
                                 && item?.email?.touched
                                 && form.value.items[i].email.length > 0)}">
-                    <input type="email" email class="form-control" formControlName="email" placeholder="recipient-name@example.com">
-                    <div
-                      *ngIf="!item?.email?.valid && item?.email?.touched">
-                      <span
-                        *ngIf="!item?.email?.valid && item?.email?.errors.emailFormat"
-                        class="help-block text-danger">
-                        Email is not valid
-                      </span>
-                    </div>
+                  <input type="email" email class="form-control" formControlName="email" placeholder="recipient-name@example.com">
+                  <div *ngIf="!item?.email?.valid && item?.email?.touched">
+                    <span *ngIf="!item?.email?.valid && item?.email?.errors.emailFormat" class="help-block text-danger">
+                      Email is not valid
+                    </span>
                   </div>
                 </div>
-
               </div>
-            </div>
-            <div class="media-right">
-              <button *ngIf="this.form.value.items.length > 1" type="button" class="btn btn-default" (click)="remove(i, item.controls)">
-                <i class="fa fa-trash-o"></i>
-              </button>
+
             </div>
           </div>
+          <div class="media-right">
+            <button *ngIf="this.form.value.items.length > 1" type="button" class="btn btn-default" (click)="remove(i, item.controls)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
         </div>
-        <button type="button" class="btn btn-default mb10" (click)="add()">
-          <i class="fa fa-plus"></i> Add more
-        </button>
+      </div>
+      <button type="button" class="btn btn-default mb10" (click)="add()">
+        <i class="fa fa-plus"></i> Add more
+      </button>
     </bs-modal-body>
 
     <bs-modal-footer>
-    <div>
-        <button type="button" class="btn btn-outline-default btn-min"
-                (click)="doEvent({action: 'cancel'})">Cancel</button>
-        <button [disabled]="!validItems()" type="submit" class="btn btn-outline-primary btn-min pull-right"
-                (click)="doEvent({action: 'invitation:send_to_recipients'})">Send Invitations
+      <div>
+        <button type="button" class="btn btn-outline-default btn-min" (click)="doEvent({action: 'cancel'})">Cancel</button>
+        <button [disabled]="!validItems()" type="submit" class="btn btn-outline-primary btn-min pull-right" (click)="doEvent({action: 'invitation:send_to_recipients'})">Send Invitations
         </button>
       </div>
     </bs-modal-footer>
