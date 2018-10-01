@@ -1,19 +1,24 @@
 <ng-container *ngIf="contactSelect">
   <div class="page-body-nav">
     <div class="page-body-nav-left">
-      <z-chat-share-user [data]="contactSelect" [usersOnlineItem]="usersOnlineItem$ | async">
+      <z-chat-share-user [data]="contactSelect" [isStranger]="contactSelect.group_type === 'couple' && !contactSelect?.active"
+        [displayAvatar]="inContacBook" [usersOnlineItem]="usersOnlineItem$ | async">
         <!--<small *ngIf="contactSelect.group_json.member_count > 2"
                [attr.title]="contactSelect.group_json | chatGroupMembers"
                class="can-click" (click)="onShowMemberBar()">
         </small>-->
-        <small>
+        <small *ngIf="inContacBook">
           Active {{ contactSelect.group_json.interacted_at | timeFormat }}
+        </small>
+        <small *ngIf="!inContacBook">
+          This user isn't in your Contacts
         </small>
       </z-chat-share-user>
     </div>
     <div class="page-body-nav-right">
       <button *ngIf="contactSelect.group_json.group_type == 'multiple' && (userService.profile.id == contactSelect.group_json.creator_id || contactSelect.group_json.allow_add)"
-        type="button" class="btn btn-default" (click)="onAddMember()" pTooltip="{{ tooltip.addMembers }}" tooltipPosition="top">
+        type="button" class="btn btn-default" (click)="onAddMember()" pTooltip="{{ tooltip.addMembers }}"
+        tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
       <button type="button" class="btn btn-default" (click)="onFavorite()" pTooltip="{{ (contactSelect.favourite) ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"

@@ -14,7 +14,6 @@ import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { ModalService } from '@shared/components/modal/modal-service';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
 
-declare var $: any;
 
 @Component({
   selector: 'z-chat-share-sidebar',
@@ -34,7 +33,7 @@ export class ZChatSidebarComponent implements OnInit {
   recentContacts$: Observable<any>;
   historyShow: any = true;
   isRedirect: boolean;
-  filter: string = 'All';
+  filter = 'All';
   emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
 
   searching = false;
@@ -49,7 +48,6 @@ export class ZChatSidebarComponent implements OnInit {
     private renderer: Renderer2,
     private addContactService: ZChatShareAddContactService,
     private wthEmojiService: WTHEmojiService,
-    private messageService: WMessageService,
     private modalService: ModalService,
     private apiBaseService: ApiBaseService
   ) {
@@ -112,24 +110,27 @@ export class ZChatSidebarComponent implements OnInit {
     this.chatService.getMessages(conversation.group_json.id);
   }
 
-  doFilter(param){
-    if(param == 'unread'){
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][gt][notification_count]=0'}).subscribe((res: any) => {
+  doFilter(param) {
+    if (param === 'unread') {
+      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][gt][notification_count]=0'})
+      .subscribe((res: any) => {
         this.filter = 'Unread';
       });
     }
-    if(param == 'all'){
+    if (param === 'all') {
       this.chatService.getConversationsAsync({ forceFromApi: true }).subscribe((res: any) => {
         this.filter = 'All';
       });
     }
-    if(param == 'sent'){
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=sent_request'}).subscribe((res: any) => {
+    if (param === 'sent') {
+      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=sent_request'})
+      .subscribe((res: any) => {
         this.filter = 'Sent Request';
       });
     }
-    if(param == 'pending'){
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=pending'}).subscribe((res: any) => {
+    if (param === 'pending') {
+      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=pending'})
+      .subscribe((res: any) => {
         this.filter = 'Pending Request';
       });
     }

@@ -75,7 +75,7 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
       theme: 'snow',
       formats: this.formats
     });
-    this.enableOrDisableQuill(!this.isDisabled);
+    this.enableOrDisableQuill(this.isDisabled);
 
     const keyboard = this.quill.getModule('keyboard');
     delete keyboard.bindings['13'];
@@ -119,11 +119,11 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
     if (!this.quill)
     return;
     if (changes['isDisabled'] !== undefined)
-      this.enableOrDisableQuill(changes['isDisabled']);
+      this.enableOrDisableQuill(changes['isDisabled'].currentValue);
   }
 
-  enableOrDisableQuill(enable) {
-    if (!enable) {
+  enableOrDisableQuill(disabled) {
+    if (disabled) {
       this.quill.disable();
     } else {
       this.quill.enable();

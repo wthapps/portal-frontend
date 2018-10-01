@@ -7,12 +7,10 @@ import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.
 import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@wth/shared/constant';
-import { CommonEventService, UserService } from '@shared/services';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { merge, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 declare let $: any;
@@ -30,6 +28,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   @Input() contactSelect: any;
   @Input() chatContactList: { [partner_id: string]: any } = {};
+  @Input() inContactBook = true;
   showMemberBar = false;
   usersOnlineItem$: Observable<any>;
   profileUrl: any;
@@ -41,8 +40,6 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   readonly tooltip: any = Constants.tooltip;
 
   constructor(private chatService: ChatService,
-              private commonEventService: CommonEventService,
-              private userService: UserService,
               private wthConfirmService: WthConfirmService,
               private addContactService: ZChatShareAddContactService,
               private renderer: Renderer2,

@@ -7,11 +7,7 @@ import { ZChatProfileComponent } from './profile.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {
-        path: 'profile', loadChildren:
-        './profile.module#ZChatProfileModule'
-      },
-      {  path: ':id',
+      {  path: 'profile/:id',
         component: ZChatProfileComponent,
         canActivate: [AuthGuard]
       }

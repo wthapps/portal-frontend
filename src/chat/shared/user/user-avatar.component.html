@@ -5,8 +5,10 @@
       <img *ngIf="data.group_json?.group_type == 'support'" [src]="data.display.image" alt="">
       <img *ngIf="data.group_json?.group_type == 'multiple'" [src]="data.group_json?.image" alt="">
     </div>
-    <span *ngIf="data.display?.id" class="media-user-status"
-          [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id), 'black_list': data.black_list}">
+    <span *ngIf="!isStranger && data.display?.id" class="media-user-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id), 'black_list': data.black_list}">
+    </span>
+    <span *ngIf="isStranger" class="media-user-status media-user-stranger">
+      <i class="fa fa-question-circle"></i>
     </span>
   </div>
   <div class="user-body">

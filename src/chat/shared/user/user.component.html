@@ -1,5 +1,5 @@
 <div *ngIf="data" class="media-user media-user-{{ size }}">
-  <div class="media-user-avatar avatar-{{ size }}">
+  <div class="media-user-avatar avatar-{{ size }}" [ngStyle]="{'display': !displayAvatar ? 'none' : 'block'}">
     <img *ngIf="data.group_json?.group_type == 'couple'" [src]="data.display.image" alt="">
     <img *ngIf="data.group_json?.group_type == 'multiple'" [src]="data.group_json?.image" alt="">
   </div>
@@ -8,5 +8,8 @@
     <p *ngIf="data.group_json?.group_type == 'multiple'">{{ data.group_json.name }}</p>
     <ng-content></ng-content>
   </div>
-  <span *ngIf="data.display?.id" class="media-user-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>
+<span *ngIf="!isStranger && data.display?.id" class="media-user-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>
+<span *ngIf="isStranger" class="media-user-status media-user-stranger">
+  <i class="fa fa-question-circle"></i>
+</span>
 </div>

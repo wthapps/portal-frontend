@@ -6,9 +6,11 @@
   border-radius: 0;
   margin: 0;
   padding: 0;
+
   .ui-editor-toolbar {
     display: none;
   }
+
   .ui-editor-content {
     border: 1px solid $input-border !important;
     -webkit-border-radius: $input-border-radius;
@@ -17,13 +19,27 @@
     margin: 0;
     padding: 0;
   }
+
   .ql-editor {
     min-height: 18px;
     padding: 8px;
     word-break: break-word;
-    
+
   }
+
   .ql-editor.ql-blank::before {
     font-style: normal;
+  }
+
+  .ql-disabled {
+    cursor: not-allowed;
+
+    .ql-editor {
+      cursor: not-allowed;
+
+      p {
+        cursor: not-allowed;
+      }
+    }
   }
 }
