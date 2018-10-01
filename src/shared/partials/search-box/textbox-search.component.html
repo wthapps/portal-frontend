@@ -11,7 +11,7 @@
            placeholder="{{ placeholder }}">
     <span class="input-group-btn">
         <button (click)="onEscape()"
-                class="btn btn-default visible-xs-inline-block" type="reset" pTooltip="{{ tooltip.reset }}"
+                class="btn btn-default hidden" type="reset" pTooltip="{{ tooltip.reset }}"
                 [ngClass]="{'show-button': showSearchClearText || (search && search.length > 0)}"
                 tooltipPosition="bottom">
           <i class="fa fa-times"></i>

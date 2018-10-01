@@ -70,6 +70,9 @@ $message-item-content-card-right-xs: 25px;
     max-width: 550px;
     word-break: break-word;
     background-color: #ffffff;
+    @media (max-width: $screen-xs-max) {
+      max-width: 90%;
+    }
   }
 
   .message-item-owner-avatar {
