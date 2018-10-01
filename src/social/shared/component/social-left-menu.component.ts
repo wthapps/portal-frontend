@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 
 import * as fromRoot from '../reducers/index';
 import { interval } from 'rxjs/observable/interval';
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { POSTS_COUNT_LOAD } from '../reducers/index';
 import { POSTS_COUNT_LOAD_DONE } from '../reducers/index';
@@ -30,7 +30,7 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
   newPostsCount$: Observable<any>;
   uuid: string;
 
-  shortcutsExpand: boolean = false;
+  shortcutsExpand = false;
   readonly COUNT_DISPLAY: any = {
     '0': ' ',
     '10': '10+'
@@ -61,7 +61,7 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
   }
 
   onSubMenu(link: string) {
-    if (this.router.url.indexOf('communities') == -1) {
+    if (this.router.url.indexOf('communities') === -1) {
       this.clearOutlets().then(() => this.navigateService.navigateOrRedirect(link));
     }
   }
@@ -71,7 +71,7 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
   }
 
   reloadHome() {
-    let time = new Date().getTime();
+    const time = new Date().getTime();
     this.store.dispatch({type: POSTS_COUNT_LOAD_DONE, payload: 0});
     this.router.navigate(['/home'], {queryParams: {r: time}, relativeTo: this.route})
       .then(() => this.clearOutlets());
@@ -82,7 +82,6 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
       takeUntil(this.destroySubject)
     )
       .subscribe(() => {
-        console.debug('counting ...');
         this.store.dispatch({type: POSTS_COUNT_LOAD});
         this.store.dispatch({type: SHORTCUT_LOAD});
       });

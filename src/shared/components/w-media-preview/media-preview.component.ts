@@ -28,7 +28,8 @@ const MODEL_MAP = {
   'photo': '::Media::Photo',
   'video': '::Media::Video',
   'post': '::SocialNetwork::Post',
-  'comment': '::SocialNetwork::Comment'
+  'comment': '::SocialNetwork::Comment',
+  'conversation': '::Chat::GroupUser',
 };
 
 @Mixins([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin, MediaPreviewMixin])
@@ -129,6 +130,8 @@ export class ZMediaPreviewComponent implements OnInit,
             this.apiBaseService.get(`media/media/relating_objects`, query).toPromise()
               .then(res2 => {
                 if (res2.data) {
+                  if (res2.data.length === 0)
+                  return;
                   this.listIds = new DoublyLinkedListsV2(res2.data.map(d => ({uuid: d.uuid, model: d.model})));
                   const {uuid, model} = this.object;
                   this.listIds.setCurrent({uuid, model});

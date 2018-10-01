@@ -1,16 +1,16 @@
 <ng-container *ngIf="contactSelect">
   <div class="page-body-nav">
     <div class="page-body-nav-left">
-      <z-chat-share-user [data]="contactSelect" [isStranger]="contactSelect.group_type === 'couple' && !contactSelect?.active"
+      <z-chat-share-user [data]="contactSelect" [isStranger]="contactSelect?.group_type === 'couple' && !contactSelect?.active"
         [usersOnlineItem]="usersOnlineItem$ | async">
         <!--<small *ngIf="contactSelect.group_json.member_count > 2"
                [attr.title]="contactSelect.group_json | chatGroupMembers"
                class="can-click" (click)="onShowMemberBar()">
         </small>-->
-        <small *ngIf="!(contactSelect.group_type === 'couple' && !contactSelect?.active)">
+        <small *ngIf="contactSelect && !(contactSelect?.group_type === 'couple' && !contactSelect?.active)">
           Active {{ contactSelect.group_json.interacted_at | timeFormat }}
         </small>
-        <small *ngIf="contactSelect.group_type === 'couple' && !contactSelect?.active">
+        <small *ngIf="contactSelect && contactSelect?.group_type === 'couple' && !contactSelect?.active">
           This user isn't in your Contacts
         </small>
       </z-chat-share-user>

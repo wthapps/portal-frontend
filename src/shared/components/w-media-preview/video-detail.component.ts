@@ -301,11 +301,14 @@ export class ZVideoDetailComponent implements OnInit,
   }
 
   back() {
-    // this.location.back();
     if (this.returnUrl) {
       this.router.navigate([this.returnUrl]);
     } else {
-      this.location.back();
+      const outlet = this.route.snapshot.outlet;
+      if (outlet !== 'primary')
+        this.router.navigate([{ outlets: { [outlet]: null } }]);
+      else
+        this.location.back();
     }
   }
 }

@@ -11,6 +11,7 @@ import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.serv
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { takeUntil } from 'rxjs/operators';
+import { UserService } from '@shared/services';
 
 
 declare let $: any;
@@ -39,11 +40,13 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
 
   readonly tooltip: any = Constants.tooltip;
 
-  constructor(private chatService: ChatService,
-              private wthConfirmService: WthConfirmService,
-              private addContactService: ZChatShareAddContactService,
-              private renderer: Renderer2,
-              private messageAssetsService: MessageAssetsService) {
+  constructor(
+    public userService: UserService,
+    private chatService: ChatService,
+    private wthConfirmService: WthConfirmService,
+    private addContactService: ZChatShareAddContactService,
+    private renderer: Renderer2,
+    private messageAssetsService: MessageAssetsService) {
     this.profileUrl = this.chatService.constant.profileUrl;
 
     const close$: Observable<any> = Observable.merge(

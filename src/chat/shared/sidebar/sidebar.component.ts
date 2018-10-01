@@ -69,6 +69,8 @@ export class ZChatSidebarComponent implements OnInit {
               const conversations = res.value.data;
               const mostRecent = conversations[0];
 
+              if (!Number.isInteger(+conversationId))
+                return;
               if (conversationId) {
                 let validConversation = false;
                 conversations.forEach(contact => {

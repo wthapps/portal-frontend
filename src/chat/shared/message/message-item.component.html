@@ -111,7 +111,7 @@
           <!--photo type-->
           <div class="message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
             <figure>
-              <a href="javascript:;" (click)="onPreviewPhoto(message)">
+              <a href="javascript:void(0);" (click)="onPreviewPhoto(message)">
                 <img [src]="message.file?.url" alt="" (load)="onImgLoaded()">
               </a>
             </figure>
@@ -189,12 +189,13 @@
         <!--requested contact type-->
         <div class="message-item-content-contact-sharing" *ngIf="message.message_type == 'request'">
           <!-- sent_request -->
-          <message-actions-item *ngIf="byMe" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid" [name]=message.receiver.name
-            [status]="'Requested'" [actions]="[]" (eventOut)=doEvent($event)>
+          <message-actions-item *ngIf="byMe" [avatar]=message.receiver?.profile_image [url]="'profile/' + message.receiver.uuid"
+            [name]=message.receiver.name [status]="'Requested'" [actions]="[]" (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- contact already accepted -->
-          <message-actions-item *ngIf="byMe && message.status == 'accepted'" [avatar]=message.receiver?.profile_image [url]="'profile/' + message?.receiver?.uuid"
-            [name]=message.receiver.name [status]="'accepted your request'" (eventOut)=doEvent($event)>
+          <message-actions-item *ngIf="byMe && message.status == 'accepted'" [avatar]=message.receiver?.profile_image
+            [url]="'profile/' + message?.receiver?.uuid" [name]=message.receiver.name [status]="'accepted your request'"
+            (eventOut)=doEvent($event)>
           </message-actions-item>
           <!-- Receiver -->
           <!--<message-simple-item *ngIf="!byMe" [data]="'Hello! You are now connected on Chat.'"></message-simple-item>-->
