@@ -10,7 +10,6 @@ export class ZChatShareUserComponent implements OnInit {
   @Input() displayUserName = true;
   @Input() usersOnlineItem: any;
   @Input() isStranger = false;
-  @Input() displayAvatar = true;
 
   constructor() {
   }
