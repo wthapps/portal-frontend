@@ -13,7 +13,6 @@ $message-assets-width: 400px;
   @include flexbox;
   @include flex-direction(column);
   @media (min-width: $screen-sm-min) {
-    right: -$message-assets-width;
     @include box-shadow($box-shadow-left);
   }
 
@@ -40,6 +39,7 @@ $message-assets-width: 400px;
 .message-assets-content {
   @include flexbox;
   width: 100%;
+  height: 100%;
   overflow: auto;
   @include justify-content(space-around);
   > div {

@@ -70,11 +70,11 @@ $media-user-status-pos: $media-user-status-w - 3px;
 .media-user-status {
   position: absolute;
   bottom: -3px;
+  right: -3px;
   width: $media-user-status-w;
   height: $media-user-status-w;
   border-radius: 50%;
   border: 3px solid #FFF;
-  right: -3px;
   background-color: $user-offline;
   &.online {
     background-color: $user-online;
@@ -210,6 +210,12 @@ $media-user-status-pos: $media-user-status-w - 3px;
     .media-avatar-img {
       margin-right: 0;
     }
+    .media-avatar-status {
+      border: 3px solid #FFF;
+      position: absolute;
+      bottom: -3px;
+      right: -3px;
+    }
   }
   .media-avatar-img {
     margin-right: 10px;
@@ -217,13 +223,30 @@ $media-user-status-pos: $media-user-status-w - 3px;
   }
   .media-avatar-body {
     @include flex(1);
+    .media-avatar-status {
+      width: 10px;
+      height: 10px;
+    }
   }
-  .media-avatar-action {
-
-  }
+  // .media-avatar-action {}
   .media-avatar-heading {
     margin: 0 0 10px;
     font-size: 24px;
     padding: 0;
+  }
+  .media-avatar-status {
+    width: $media-user-status-w;
+    height: $media-user-status-w;
+    border-radius: 50%;
+    background-color: $user-offline;
+    display: inline-block;
+    vertical-align: middle;
+    &.online {
+      background-color: $user-online;
+    }
+    i {
+      @include center();
+      color: $color-inverse;
+    }
   }
 }
