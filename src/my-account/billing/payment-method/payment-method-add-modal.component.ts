@@ -46,6 +46,11 @@ export class PaymentMethodAddModalComponent implements OnInit {
     this.cvc = this.pmForm.controls.cvc;
     this.generationtime = this.pmForm.controls.generationtime;
 
+    this.apiBaseService.get('account/payment_methods/new')
+      .subscribe(response => {
+        console.log('new payment method:::', response.data);
+      });
+
   }
 
   /*
@@ -55,6 +60,12 @@ export class PaymentMethodAddModalComponent implements OnInit {
   * */
   open(options: any = {data: undefined, mode: 'edit'}) {
     this.options = options;
+
+    this.apiBaseService.get('account/payment_methods/new')
+      .subscribe(response => {
+        console.log('new payment method:::', response.data);
+      });
+
     this.modal.open(options).then();
   }
 

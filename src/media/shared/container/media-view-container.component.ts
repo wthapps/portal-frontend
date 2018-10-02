@@ -17,7 +17,7 @@ import { AlbumDetailInfoComponent } from '../../album/album-detail-info.componen
 import { AlbumService } from '../service/album.service';
 import { MediaUploaderDataService } from '../uploader/media-uploader-data.service';
 import { ZMediaStore } from '../store/media.store';
-import { FileSelectComponent } from '@wth/shared/shared/components/file/file-select/file-select.component';
+// import { FileSelectComponent } from '@wth/shared/shared/components/file/file-select/file-select.component';
 // import { PhotoDetailPartialComponent } from '@shared/shared/components/photo/detail/photo-detail-partial.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
@@ -54,7 +54,7 @@ declare var _: any;
     AlbumDeleteModalComponent,
 
     // FileSelectModalComponent,
-    FileSelectComponent,
+    // FileSelectComponent,
     // PhotoDetailPartialComponent,
     PhotoEditModalComponent,
     AddToAlbumModalComponent
@@ -551,7 +551,7 @@ export class MediaViewContainerComponent implements OnInit, AfterViewInit, OnDes
         break;
       //  Add uploaded photos to album detail
       case 'photosSelectModal':
-        this.loadModalComponent(FileSelectComponent);
+        // this.loadModalComponent(FileSelectComponent);
         options = {};
         break;
     }

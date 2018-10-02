@@ -146,7 +146,7 @@ export class WUploader {
   }
 
   verifyUpload(currentFile: any, files: Array<any>, maxFileSize: number, allowedFileTypes: Array<any>|null, preventedFileTypes: Array<any>|null) {
-    if (maxFileSize !== null) {
+    if (maxFileSize) {
       const maxTotalFileSize = maxFileSize;
       let TotalFileSize = 0;
 
@@ -174,8 +174,8 @@ export class WUploader {
         this.event$.next({action: 'error', payload: {file: currentFile, error: `Max filesize exceeded::: ${maxFileSize}`}});
         return false;
       }
-      return true;
     }
+    return true;
   }
 
   /**
