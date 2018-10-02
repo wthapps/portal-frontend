@@ -59,7 +59,7 @@ export class MessageItemComponent implements OnInit {
           message.file.uuid,
           {
             object: 'conversation',
-            parent_uuid: currentConversation.group.uuid,
+            parent_uuid: _.get(currentConversation, 'group.uuid'),
             only_preview: true
           }
         ]
