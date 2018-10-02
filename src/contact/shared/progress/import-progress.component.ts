@@ -15,7 +15,8 @@ import { WUploader } from '@shared/services/w-uploader';
 
 @Component({
   selector: 'z-contact-share-import-progress',
-  templateUrl: 'import-progress.component.html'
+  templateUrl: 'import-progress.component.html',
+  styleUrls: ['import-progress.component.scss']
 })
 
 export class ZContactShareImportProgressComponent implements OnDestroy {
