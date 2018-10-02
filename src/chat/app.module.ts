@@ -22,7 +22,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '@env/environment';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
-import { WMediaPreviewModule } from '@shared/components/w-media-preview/media-preview.module';
 import { ZChatProfileModule } from '@chat/profile/profile.module';
 
 @NgModule({
@@ -47,7 +46,6 @@ import { ZChatProfileModule } from '@chat/profile/profile.module';
 
     AppRoutingModule,
     ModalModule,
-    WMediaPreviewModule,
     ZChatSharedModule.forRoot(),
     SharedServicesModule.forRoot(),
     StoreModule.forRoot(ChatStore),

@@ -62,22 +62,18 @@ export class MessageItemComponent implements OnInit {
   }
 
   onPreviewPhoto(message: any) {
-    const object_path = MEDIA_PATH_MAPPINGS[message.file_type] || 'photos';
-    this.router.navigate([
-      {
-        outlets: {
-          modal: [
-            object_path,
-            message.file.id,
-            {
-              ids: [message.file.id],
-              message: message.id,
-              prevUrl: '/conversations'
-            }
-          ]
-        }
+    this.router.navigate([{
+      outlets: {
+        modal: [
+          'preview',
+          message.file.uuid,
+          {
+            object: 'conversation',
+            only_preview: true
+          }
+        ]
       }
-    ]);
+    }], { queryParamsHandling: 'preserve', preserveFragment: true });
   }
 
   doAction(event: CommonEvent) {
