@@ -1,15 +1,36 @@
-<div *ngIf="data" class="media-user media-user-{{ size }}">
-  <div class="media-user-avatar avatar-{{ size }}" [ngStyle]="{'display': isStranger ? 'none' : 'block'}">
-    <img *ngIf="data.group_json?.group_type == 'couple'" [src]="data.display.image" alt="">
-    <img *ngIf="data.group_json?.group_type == 'multiple'" [src]="data.group_json?.image" alt="">
+<div *ngIf="data" class="media-avatar">
+  <div *ngIf="displayAvatar" class="media-avatar-img-wrap">
+    <div class="media-avatar-img avatar-{{ size }}">
+      <img *ngIf="data.group_json?.group_type == 'couple'" [src]="data.display.image" alt="">
+      <img *ngIf="data.group_json?.group_type == 'multiple'" [src]="data.group_json?.image" alt="">
+    </div>
+    <span *ngIf="data.display?.id" class="media-avatar-status"
+          [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}">
+      <i *ngIf="isStranger" class="fa fa-question-circle"></i>
+    </span>
   </div>
-  <div *ngIf="displayUserName" class="media-user-name">
-    <p *ngIf="data.group_json?.group_type == 'couple'">{{ data.display.name }}</p>
-    <p *ngIf="data.group_json?.group_type == 'multiple'">{{ data.group_json.name }}</p>
+  <div *ngIf="displayUserName" class="media-avatar-body">
+    <div class="text-bold" *ngIf="data.group_json?.group_type == 'couple'">{{ data.display.name }}</div>
+    <div class="text-bold" *ngIf="data.group_json?.group_type == 'multiple'">{{ data.group_json.name }}</div>
+    <ng-container *ngIf="!displayAvatar">
+
+      <ng-container *ngIf="data.group_json?.group_type == 'couple'">
+        <div *ngIf="isStranger">
+          <span class="media-avatar-status"><i class="fa fa-question-circle"></i></span>
+          This user isn't in your Contacts
+        </div>
+        <div *ngIf="!isStranger">
+          <span class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>
+          <span *ngIf="usersOnlineItem?.includes(data.display?.id)">Online</span>
+          <span *ngIf="!usersOnlineItem?.includes(data.display?.id)">Offline</span>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="data.group_json?.group_type == 'multiple'">
+        {{ data.group_json?.member_count }} members
+      </ng-container>
+
+    </ng-container>
     <ng-content></ng-content>
   </div>
-  <span *ngIf="!isStranger && data.display?.id" class="media-user-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>
-  <span *ngIf="isStranger" class="media-user-status media-user-stranger">
-    <i class="fa fa-question-circle"></i>
-  </span>
 </div>

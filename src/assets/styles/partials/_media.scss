@@ -241,6 +241,7 @@ $media-user-status-pos: $media-user-status-w - 3px;
     background-color: $user-offline;
     display: inline-block;
     vertical-align: middle;
+    position: relative;
     &.online {
       background-color: $user-online;
     }
