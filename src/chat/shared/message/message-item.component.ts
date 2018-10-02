@@ -2,8 +2,8 @@ import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy
 import { Router } from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
-import { Constants, CHAT_ACTIONS, ChatConstant } from '@wth/shared/constant';
-import { CommonEvent, CommonEventService, WMessageService } from '@wth/shared/services';
+import { Constants, CHAT_ACTIONS, ChatConstant, CONVERSATION_SELECT } from '@wth/shared/constant';
+import { CommonEvent, CommonEventService, WMessageService, StorageService } from '@wth/shared/services';
 
 declare var _: any;
 
@@ -40,6 +40,7 @@ export class MessageItemComponent implements OnInit {
   constructor(
     private router: Router,
     private chatService: ChatService,
+    private storageService: StorageService,
     private pubSubEventService: CommonEventService,
     private messageService: WMessageService
   ) {
@@ -47,21 +48,10 @@ export class MessageItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    // // this.contactItem = this.chatService.getContactSelect();
-    // // ByMe
-    // if (this.message.display && this.message.display.id) {
-    //   this.message.byMe =
-    //     this.chatService.userService.getSyncProfile().id ==
-    //     this.message.display.id;
-    // } else {
-    //   this.message.file = {
-    //     thumbnail_url:
-    //       'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/thumbnails/generic_files_upload_default.png'
-    //   };
-    // }
   }
 
   onPreviewPhoto(message: any) {
+    const currentConversation = this.storageService.get(CONVERSATION_SELECT);
     this.router.navigate([{
       outlets: {
         modal: [
@@ -69,6 +59,7 @@ export class MessageItemComponent implements OnInit {
           message.file.uuid,
           {
             object: 'conversation',
+            parent_uuid: currentConversation.group.uuid,
             only_preview: true
           }
         ]

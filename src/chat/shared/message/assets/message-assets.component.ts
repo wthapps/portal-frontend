@@ -13,7 +13,7 @@ import { Media } from '@shared/shared/models/media.model';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { ConversationService } from '@chat/conversation/conversation.service';
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 
 
@@ -79,7 +79,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   constructor(
     private chatService: ChatService,
     public userService: UserService,
-    private authService: AuthService,
+    public authService: AuthService,
     private wthConfirmService: WthConfirmService,
     private addContactService: ZChatShareAddContactService,
     private messageAssetsService: MessageAssetsService,
@@ -233,20 +233,19 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     switch (item.file_type) {
       case 'Media::Photo':
       case 'Media::Video':
-        this.router.navigate([
-          {
-            outlets: {
-              modal: [
-                item.file_type === 'Media::Photo' ? 'photos' : 'videos',
-                item.file.id,
-                {
-                  ids: [item.file.id],
-                  prevUrl: '/conversations'
-                }
-              ]
-            }
+        this.router.navigate([{
+          outlets: {
+            modal: [
+              'preview',
+              item.file.uuid,
+              {
+                object: 'conversation',
+                parent_uuid: this.conversation.group.uuid,
+                only_preview: true
+              }
+            ]
           }
-        ]);
+        }], { queryParamsHandling: 'preserve', preserveFragment: true });
         break;
       case 'Note::Note':
         window.open(`${this.noteUrl}/${item.uuid}`);

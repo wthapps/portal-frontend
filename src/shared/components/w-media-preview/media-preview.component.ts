@@ -29,7 +29,7 @@ const MODEL_MAP = {
   'video': '::Media::Video',
   'post': '::SocialNetwork::Post',
   'comment': '::SocialNetwork::Comment',
-  'conversation': '::Chat::GroupUser',
+  'conversation': '::Chat::Group',
 };
 
 @Mixins([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin, MediaPreviewMixin])
