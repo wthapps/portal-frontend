@@ -1,7 +1,16 @@
-<box-no-data *ngIf="conversations && conversations.length == 0" [icon]="'fa fa-comments-o'"
+<box-no-data *ngIf="conversations && conversations.length == 0"
              [title]="'Welcome to WTH!Chat'"
              [subTitle]="'Start chatting with your friends or search for new person on WTH!Apps'">
-  <button class="btn btn-outline-primary" (click)="onAddContact()" href="javascript:void(0);">
-    <i class="fa fa-plus" aria-hidden="true"></i> New Chat
+  <div class="box-no-data-icon">
+    <div class="media-avatar justify-content-center">
+      <div class="media-avatar-img-wrap mr0">
+        <div class="media-avatar-img avatar-md">
+          <img [src]="userService.getSyncProfile().profile_image" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary" (click)="onAddContact()" type="button">
+    <i class="fa fa-plus" aria-hidden="true"></i> New Message
   </button>
 </box-no-data>

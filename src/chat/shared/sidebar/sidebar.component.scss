@@ -29,6 +29,12 @@
   .menuleft-chat-in {
     margin-top: -10px;
     margin-bottom: 5px;
+    .dropdown-menu {
+      a {
+        @include flexbox;
+        @include justify-content(space-between);
+      }
+    }
   }
   .menuleft-chat-content {
     @include flex(1);
@@ -72,6 +78,9 @@
       border-radius: 50%;
     }
     .user-row {
+      height: 60px;
+      line-height: 1.1;
+      @include align-items(inherit);
       .user-avatar {
         overflow: visible;
       }
@@ -79,10 +88,14 @@
     .user-name {
       font-weight: bold;
     }
+    .user-action {
+      @include flexbox;
+    }
     .user-action-col {
       @include flexbox;
       @include flex-direction(column);
       @include align-items(center);
+      @include justify-content(space-between);
       .badge {
         width: 20px;
         height: 20px;
@@ -110,7 +123,8 @@
     }
     .media-chat-user-message {
       display: block;
-      max-height: 34px;
+      max-height: 25px;
+      line-height: 25px;
       overflow: hidden;
       .wth-emoji {
         padding-top: 0;
