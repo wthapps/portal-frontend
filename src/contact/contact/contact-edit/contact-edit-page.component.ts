@@ -65,6 +65,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   formValid = false;
   _contact: any = _contact;
   hasBack = false;
+  viewOnly = false;
   readonly urls = Constants.baseUrls;
   readonly avatarDefault: any = Constants.img.avatar;
   private destroySubject: Subject<any> = new Subject();
@@ -90,33 +91,34 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params: any) => {
-        this.contactService.clearSelected();
-        const id = params['id'];
-        if (params['mode'] !== undefined) {
-          this.mode = params['mode'];
-        } else {
-          this.mode = 'create';
-        }
+    this.route.paramMap.forEach((paramMap: any) => {
+      this.contactService.clearSelected();
+      const id = paramMap.get('id');
+      this.mode = paramMap.get('mode') || 'create';
+      const isWthContact = paramMap.get('wth') || false;
 
-        if (this.mode === 'view') {
-          this.hasBack = true;
-        }
-        if (id !== undefined && id !== 'new') {
+      if (this.mode === 'view') {
+        this.hasBack = true;
+      }
+      if (id && id !== 'new') {
+        if (isWthContact === 'true') {
+          this.viewOnly = true;
+          this.getWthContact(id);
+        } else
           this.get(id);
-        }
+      }
 
-        if (this.mode === 'view') {
-          this.pageTitle = 'Contact details';
-          this.hasBack = true;
-        } else if (this.mode === 'create') {
-          this.pageTitle = 'Create contact';
-          this.contact =  new Contact(DEFAULT_CONTACT_PARAMS);
-        } else {
-          this.hasBack = false;
-          this.pageTitle = 'Edit contact';
-        }
-      });
+      if (this.mode === 'view') {
+        this.pageTitle = 'Contact details';
+        this.hasBack = true;
+      } else if (this.mode === 'create') {
+        this.pageTitle = 'Create contact';
+        this.contact = new Contact(DEFAULT_CONTACT_PARAMS);
+      } else {
+        this.hasBack = false;
+        this.pageTitle = 'Edit contact';
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -274,6 +276,13 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
             this.emails = response.data;
           });
       }
+    });
+  }
+
+  private getWthContact(id: number) {
+    this.contactService.getWthContact(id).subscribe(res => {
+      console.log('get WTH Contact: ', res);
+      this.contact = res.data;
     });
   }
 }

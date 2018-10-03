@@ -96,10 +96,8 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   }
 
   onItemSelected(contact: Contact) {
-    if (this.route.snapshot.paramMap.get('id') !== 'wth')
-      this.contactService.viewContactDetail(contact);
-    else {
-    }
+    const isWthContact = this.route.snapshot.paramMap.get('id') === 'wth';
+    this.contactService.viewContactDetail(contact, isWthContact);
   }
 
   onLoadMore() {
@@ -108,7 +106,6 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
 
   doActionsToolbar(event: any) {
     if (event.action === 'favourite') {
-      // this.toggleGroupB(this.contactService.selectedObjects, 'favourite');
       this.toggleGroup('favourite');
     }
 

@@ -6,13 +6,6 @@ import { ZMediaPreviewComponent } from '@shared/components/w-media-preview/media
 @NgModule({
   imports: [
     RouterModule.forChild([
-      // {
-      //   path: 'photos/:id',
-      //   component: ZMediaPreviewComponent,
-      //   outlet: 'modal',
-      //   data: { object_type: 'photo', show_menu_action: false },
-      //   canActivate: [AuthGuard]
-      // },
       {
         path: 'preview/:id',
         component: ZMediaPreviewComponent,

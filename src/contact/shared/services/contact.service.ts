@@ -96,14 +96,14 @@ export class ZContactService extends BaseEntityService<any> {
 
   syncSelectedContacts(): void {
     this.contactsSubject.subscribe((contacts: Contact[]) => {
-      if(contacts.length === 0 )
+      if (contacts.length === 0 )
         this.selectedObjects.length = 0;
       else {
         const contactIds = contacts.map(ct => ct.id);
         this.selectedObjects = this.selectedObjects.filter(o => contactIds.includes(o.id));
       }
       this.checkSelectAll();
-    })
+    });
   }
 
   // Change get all URL to support caching by SW
@@ -149,6 +149,10 @@ export class ZContactService extends BaseEntityService<any> {
           obs.complete();
         });
     });
+  }
+
+  getWthContact(id): Observable<any> {
+    return this.apiBaseService.get(`contact/contacts/show_user`, { id });
   }
 
   checkEmails(payload: any) {
@@ -265,8 +269,8 @@ export class ZContactService extends BaseEntityService<any> {
     this.isSelectAllSubject.next(!this.isSelectAllSubject.getValue());
   }
 
-  viewContactDetail(contact: Contact): Promise<any> {
-    return this.router.navigate(['contacts', contact.id, 'view']);
+  viewContactDetail(contact: Contact, isWthContact = false): Promise<any> {
+    return this.router.navigate(['contacts', contact.id, 'view', {wth: isWthContact}]);
   }
 
   updateMultiple(body: any): Observable<any> {

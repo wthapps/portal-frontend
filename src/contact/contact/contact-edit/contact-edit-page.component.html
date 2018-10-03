@@ -1,38 +1,25 @@
 <z-contact-shared-toolbar [pageTitle]="pageTitle" [hasBack]="hasBack" [currentPage]="'detail'">
   <div class="page-body-control-nav page-body-control-nav-right">
-    <button *ngIf="mode === 'create'" type="reset"
-            class="btn btn-outline-default btn-min"
-            [routerLink]="['/contacts']">Cancel
+    <button *ngIf="mode === 'create'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts']">Cancel
     </button>
 
-    <button *ngIf="mode === 'create'" type="button"
-            [disabled]="!contactEdit?.name?.valid && contactEdit?.name?.errors?.required || !formValid"
-            (click)="contactEdit.onSubmit(contactEdit?.form?.value)"
-            class="btn btn-outline-primary btn-min mr10">Create
+    <button *ngIf="mode === 'create'" type="button" [disabled]="!contactEdit?.name?.valid && contactEdit?.name?.errors?.required || !formValid"
+      (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min mr10">Create
     </button>
 
-    <button *ngIf="mode === 'edit'" type="reset"
-            class="btn btn-outline-default btn-min"
-            (click)="goBack()">Cancel
+    <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min" (click)="goBack()">Cancel
     </button>
 
-    <button *ngIf="mode === 'edit'" type="button"
-            [disabled]="(!contactEdit?.name?.valid && contactEdit?.name?.errors?.required)
+    <button *ngIf="mode === 'edit'" type="button" [disabled]="(!contactEdit?.name?.valid && contactEdit?.name?.errors?.required)
             || contactEdit?.disableEdit || !formValid"
-            (click)="contactEdit.onSubmit(contactEdit?.form?.value)"
-            class="btn btn-outline-primary btn-min mr10">Save
+      (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min mr10">Save
     </button>
 
 
 
-    <z-contact-shared-actions-bar *ngIf="mode === 'view'"
-                                  [showViewDetail]="false"
-                                  [showNumber]="false"
-                                  [showInvitation]="false"
-                                  [showAddToContacts]="!contact.my_contact"
-                                  [toggleFavourite]="_contact.isContactsHasGroupName([contact], 'favourite')"
-                                  [toggleBlacklist]="_contact.isContactsHasGroupName([contact], 'blacklist')"
-                                  (eventOut)="doActionsToolbar($event)">
+    <z-contact-shared-actions-bar *ngIf="mode === 'view' && !viewOnly" [showViewDetail]="false" [showNumber]="false"
+      [showInvitation]="false" [showAddToContacts]="!contact.my_contact && !viewOnly" [toggleFavourite]="_contact.isContactsHasGroupName([contact], 'favourite') && !viewOnly"
+      [toggleBlacklist]="_contact.isContactsHasGroupName([contact], 'blacklist') && !viewOnly" (eventOut)="doActionsToolbar($event)">
 
     </z-contact-shared-actions-bar>
   </div>
@@ -42,19 +29,15 @@
 <div class="page-body-content has-page-body-control">
   <div class="contact-edit-page page-body-content-in">
     <div class="contact-edit-content">
-      <contact-edit #contactEdit
-                    [contact]="contact" [mode]="mode"
-                    (eventForm)="eventForm($event)"
-                    (event)="doEvent($event)"></contact-edit>
+      <contact-edit #contactEdit [contact]="contact" [mode]="mode" (eventForm)="eventForm($event)" (event)="doEvent($event)"></contact-edit>
       <ng-container *ngIf="mode==='view'">
         <contact-view [contact]="contact"></contact-view>
       </ng-container>
     </div>
     <div class="contact-edit-aside">
       <h4>WTH Profiles
-        <i class="fa fa-info-circle"
-           pTooltip="Profiles were found in WTHApps using contact info entered"
-           tooltipPosition="bottom"></i>
+        <i class="fa fa-info-circle" pTooltip="Profiles were found in WTHApps using contact info entered"
+          tooltipPosition="bottom"></i>
       </h4>
       <ng-container *ngFor="let email of emails">
         <div *ngIf="email.wthapps_user" class="user-row">
@@ -70,8 +53,8 @@
             <span>{{ email.value }}</span>
           </div>
           <div class="action">
-            <a class="btn btn-outline-default" [href]="urls.chat" target="_blank"
-               pTooltip="Send message" tooltipPosition="left">
+            <a class="btn btn-outline-default" [href]="urls.chat" target="_blank" pTooltip="Send message"
+              tooltipPosition="left">
               <i class="fa fa-comments-o"></i>
             </a>
           </div>
@@ -79,8 +62,7 @@
       </ng-container>
       <h4 class="regular-email">
         Regular email
-        <i class="fa fa-info-circle" pTooltip="Entered information didn't match any WTHApps profiles"
-           tooltipPosition="bottom"></i>
+        <i class="fa fa-info-circle" pTooltip="Entered information didn't match any WTHApps profiles" tooltipPosition="bottom"></i>
       </h4>
       <ng-container *ngFor="let email of emails">
         <div *ngIf="email.wthapps_user == null" class="user-row">
@@ -91,8 +73,7 @@
             <span>{{ email.value }}</span>
           </div>
           <div class="action">
-            <button class="btn btn-default" pTooltip="Invite to join WTHApps" tooltipPosition="left"
-                    (click)="invite(email)">
+            <button class="btn btn-default" pTooltip="Invite to join WTHApps" tooltipPosition="left" (click)="invite(email)">
               <i class="fa fa-envelope-o"></i>
             </button>
           </div>
