@@ -1,5 +1,5 @@
 import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input, OnChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/observable/merge';
@@ -9,7 +9,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ChatService } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE } from '@wth/shared/constant';
-import { ApiBaseService, WMessageService } from '@wth/shared/services';
+import { ApiBaseService, WMessageService, AuthService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
@@ -33,16 +33,20 @@ declare var $: any;
   styleUrls: ['message-editor.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MessageEditorComponent implements OnInit, OnDestroy {
+export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
   @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
   @ViewChild('longMessageModal') longMessageModal: LongMessageModalComponent;
+  @ViewChild('miniEditor') miniEditor: MiniEditorComponent;
   @Input() isDisabled = false;
+  @Input() contactSelect;
   @Input() maxLengthAllow = 2000;
 
   readonly tooltip: any = Constants.tooltip;
   emojiData: any = [];
   mode: string;
+  placeholder: string = "Type message here";
+  placeholderBl: string = "You can\'t chat with blacklisted contact. Remove from blacklist to continue";
 
   message: Message = new Message();
   appendedMessages: Array<Message> = new Array<Message>();
@@ -73,6 +77,13 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
     // this.photoModal.action = 'UPLOAD';
   }
 
+  ngOnChanges(changes: any){
+    if (changes && changes.contactSelect && changes.contactSelect.currentValue && changes.contactSelect.currentValue.black_list) {
+      this.setPlaceholder(this.placeholderBl);
+    } else {
+      this.setPlaceholder(this.placeholder);
+    }
+  }
   noteSelectOpen() {
     this.notesListModal.open();
   }
@@ -111,6 +122,12 @@ export class MessageEditorComponent implements OnInit, OnDestroy {
       message: new FormControl(this.message.message, Validators.required)
     });
     this.messageCtrl = <FormControl>this.messageEditorForm.controls['message'];
+  }
+
+  setPlaceholder(message: any = this.placeholder){
+    if (this.miniEditor) {
+      this.miniEditor.quill.root.dataset.placeholder = message;
+    }
   }
 
   handleKeyUp(e: any) {

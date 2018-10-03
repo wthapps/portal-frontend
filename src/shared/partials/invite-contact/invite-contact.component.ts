@@ -13,6 +13,7 @@ export class InviteContactComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('create') createModal: InvitationCreateModalComponent;
   contacts: any;
+  loading: any;
   suggestedUsers: any = [];
   selectedUsers: any = [];
 

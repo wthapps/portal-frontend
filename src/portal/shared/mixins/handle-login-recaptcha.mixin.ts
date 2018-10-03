@@ -3,4 +3,7 @@ export class HandleReCaptchaMixin {
   handleCaptcha(event: any) {
     document.getElementById('notRobot').click();
   }
+  handleCaptchaExpire(event: any) {
+    document.getElementById('notRobot').click();
+  }
 }

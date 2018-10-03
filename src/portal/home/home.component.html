@@ -184,7 +184,8 @@
             </ul>
           </div>
         </div>
-        <re-captcha #ReCaptchaComponent (captchaResponse)="handleCaptcha($event)" site_key="6LeZ0xIUAAAAABLfFeQpUGfK84j5aWgOnWbfJKM4"></re-captcha>
+        <re-captcha #ReCaptchaComponent (captchaResponse)="handleCaptcha($event)" (captchaExpired)="handleCaptchaExpire($event)"
+          site_key={{recaptcha_site_key}}></re-captcha>
         <input id="notRobot" type="checkbox" [checked]="notRobot" (change)="notRobot = !notRobot" style="visibility: hidden;" />
         <div class="form-group">
           By clicking Create Account, I agree to the

@@ -15,6 +15,9 @@ import { CustomValidator } from '../../shared/shared/validator/custom.validator'
 import { Constants } from '../../shared/constant/config/constants';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { HandleReCaptchaMixin } from '@portal/shared/mixins/handle-login-recaptcha.mixin';
+import { Config } from '@shared/constant';
+import { environment } from '@env/environment';
+
 /**
  * This class represents the lazy loaded HomeComponent.
  */
@@ -44,6 +47,7 @@ export class HomeComponent implements HandleReCaptchaMixin {
   accepted: AbstractControl;
 
   submitted: boolean = false;
+  recaptcha_site_key: any;
 
   constructor(
     private router: Router,
@@ -79,9 +83,12 @@ export class HomeComponent implements HandleReCaptchaMixin {
     this.last_name = this.form.controls['last_name'];
     this.email = this.form.controls['email'];
     this.password = this.form.controls['password'];
+    this.recaptcha_site_key = environment.keys.recaptcha_site_key;
+
   }
 
   handleCaptcha:(event) => void;
+  handleCaptchaExpire:(event) => void;
 
   gotoHashtag(link: string, prodID: string) {
     this.router

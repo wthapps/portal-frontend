@@ -95,6 +95,7 @@ export class RegisterComponent implements HandleReCaptchaMixin{
   }
 
   handleCaptcha:(event: any) => void;
+  handleCaptchaExpire:(event: any) => void;
 
   onSubmit(values: any): void {
     this.submitted = true;
@@ -127,7 +128,6 @@ export class RegisterComponent implements HandleReCaptchaMixin{
           // stop loading
           this.loadingService.stop();
 
-          console.log('error:', error);
           const err = error;
 
           this.errorMessage = err.error.error;
