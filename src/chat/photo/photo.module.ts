@@ -7,7 +7,7 @@ import { WMediaPreviewV1Module } from '@shared/components/w-media-preview/media-
   imports: [
     ReactiveFormsModule,
     ZChatPhotoRoutingModule,
-    WMediaPreviewV1Module,
+    WMediaPreviewV1Module
   ],
   declarations: [],
   exports: [],
