@@ -61,10 +61,10 @@ export class ZContactSharedHeaderComponent implements OnDestroy {
     $event.stopPropagation();  // <- that will stop propagation on lower layers
   }
 
-  onEscape(e?: any) {
+  onEscape() {
     this.show = false;
     this.search = '';
-    this.onEnter(e);
+    this.onEnter(this.search);
   }
 
   onEnter(search: any) {

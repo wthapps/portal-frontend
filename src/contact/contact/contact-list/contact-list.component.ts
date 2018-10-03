@@ -89,7 +89,6 @@ export class ZContactListComponent
     this.route.data
       .pipe(takeUntil(this.destroySubject))
       .subscribe(data => {
-      console.log(data);
       if (data && data.page) {
         this.inOtherPage = (data.page === OTHER_CONTACTS);
         this.pageTitle = this.inOtherPage ? 'Other contacts' :
@@ -100,10 +99,6 @@ export class ZContactListComponent
   }
 
   ngOnInit() {
-    // const inOtherPage = location.pathname === '/others';
-    // this.pageTitle = inOtherPage ? 'Other contacts' :
-    // this.route.snapshot.paramMap.get('group') || 'All contacts';
-
     this.commonEventService
       .filter(
         (event: CommonEvent) =>
@@ -142,13 +137,6 @@ export class ZContactListComponent
         combineLatest(this.pageSubject),
         takeUntil(this.destroySubject))
       .subscribe(([contacts, page]) => {
-
-        _.map(contacts, (v: any) => {
-          const alias = v.name.charAt(0).toLowerCase();
-          v.first_character = (this.isAlphaOrParen(alias)) ? alias : '#';
-          return v;
-        });
-
         this.contacts = contacts.slice(0, ITEM_PER_PAGE * page);
         this.loadingService.stop();
       });
@@ -169,7 +157,8 @@ export class ZContactListComponent
   }
 
   confirmDeleteContacts() {
-    this.contactService.confirmDeleteContacts();
+    this.contactService.confirmDeleteContacts()
+    .then(ct => this.router.navigate(['contacts']));
   }
 
   ngOnDestroy() {
@@ -261,7 +250,7 @@ export class ZContactListComponent
         this.doEvent({ action: 'open_add_group_modal' });
         break;
       case 'delete':
-        this.contactService.confirmDeleteContacts(this.contactService.selectedObjects);
+        this.confirmDeleteContacts();
         break;
       case 'social':
         if (this.contactService.selectedObjects &&
@@ -309,35 +298,9 @@ export class ZContactListComponent
         });
         this.invitationModal.open({ data: recipients });
         break;
-      // case 'add_to_contacts':
-      //   if (this.contactService.selectedObjects.length > 0) {
-      //     const contacts = this.contactService.selectedObjects.map(contact => {
-      //       contact.my_contact = true;
-      //         return { ...contact };
-      //     });
-      //     this.contactService.updateMultiple({contacts: contacts}).subscribe(response => {
-      //       this.toaster.success('You added others to your contacts successful!');
-      //     });
-      //   }
-      //   break;
     }
   }
   addTags(event: any) {
     this.modal.open();
-  }
-
-  // get validOthers(): boolean {
-  //   let result = true;
-  //   this.contactService.selectedObjects.forEach(contact => {
-  //     if (contact && contact.my_contact) {
-  //       result = false;
-  //       return;
-  //     }
-  //   });
-  //   return result;
-  // }
-
-  private isAlphaOrParen(str) {
-    return /^[a-zA-Z()]+$/.test(str);
   }
 }

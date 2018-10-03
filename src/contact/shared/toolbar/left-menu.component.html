@@ -11,7 +11,7 @@
 <div class="menuleft-item" [ngClass]="{'active' : ( currentGroup === 'all contacts')}">
   <a href="javascript:;" [routerLink]="['contacts', {group: 'all contacts'}]"
      (click)="doEvent({action: 'contacts', event: $event})">
-    <i class="fa fa-address-book-o"></i> All Contacts ({{ contactService.myContactCount }})
+    <i class="fa fa-address-book-o"></i> My Contacts ({{ contactService.myContactCount }})
   </a>
 </div>
 <div class="menuleft-item parent-item">

@@ -23,14 +23,16 @@ import { MapToIterablePipe } from '@shared/shared/pipe/map-to-iterable.pipe';
 import { FreeSpacePipe } from '@shared/shared/pipe/free-space.pipe';
 import { GroupByMapPipe } from '@shared/shared/pipe/group-by-map.pipe';
 import { KeysPipe } from '@shared/shared/pipe/keys.pipe';
-import { StripHtmlPipe } from "@shared/shared/pipe/strip-html.pipe";
+import { StripHtmlPipe } from '@shared/shared/pipe/strip-html.pipe';
 import { MaxCountPipe } from '@wth/shared/shared/pipe/max-count.pipe';
+import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.pipe';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [
+    AddFirstCharacterPipe,
     GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,
@@ -59,6 +61,7 @@ import { MaxCountPipe } from '@wth/shared/shared/pipe/max-count.pipe';
     KeysPipe
   ],
   exports: [
+    AddFirstCharacterPipe,
     GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,

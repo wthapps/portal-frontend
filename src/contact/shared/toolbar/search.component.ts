@@ -45,7 +45,7 @@ export class ZContactSearchSharedToolbarComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.currentTab = params.id;
+      this.currentTab = params.id || 'mine';
     });
   }
 

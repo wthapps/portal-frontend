@@ -10,6 +10,7 @@ import { Recipient } from '@shared/shared/components/invitation/recipient.model'
 import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-add-group/contact-add-group-modal.component';
 import { InvitationCreateModalComponent } from '@shared/shared/components/invitation/invitation-create-modal.component';
 import { Subscription } from 'rxjs/Subscription';
+import { Contact } from '@contacts/contact/contact.model';
 
 declare var _: any;
 
@@ -44,7 +45,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
       if (!params['id']  || params['id'] === 'mine') {
         this.getMine(params);
       }
-      if (!params['id'] || params['id'] === 'others') {
+      if (params['id'] === 'others') {
         this.getOtherContacts(params);
       }
       if (params['id'] === 'wth') {
@@ -71,7 +72,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   }
 
   getOtherContacts(params: any): void {
-    this.apiBaseService.get(`contact/search/other_contacts`, { q: `name:${params.q}` })
+    this.apiBaseService.get(`contact/search/other_contacts`, { q: `name:${params.q || ''}` })
       .toPromise().then(res => {
         this.contacts = res.data;
         this.nextWTH = res.meta.links.next;
@@ -79,7 +80,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   }
 
   getMine(params: any): void {
-    this.apiBaseService.get(`contact/search/my_contacts`, {q: `name:${params.q}`})
+    this.apiBaseService.get(`contact/search/my_contacts`, {q: `name:${params.q || ''}`})
     .toPromise().then(res => {
         this.contacts = res.data;
         this.nextWTH = res.meta.links.next;
@@ -87,11 +88,18 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   }
 
   getWTH(params: any): void {
-    this.apiBaseService.get(`contact/search/wth_users_not_in_contact`, {q: `name:${params.q}`})
+    this.apiBaseService.get(`contact/search/wth_users_not_in_contact`, {q: `name:${params.q || ''}`})
     .toPromise().then(res => {
         this.contacts = res.data;
         this.nextWTH = res.meta.links.next;
       });
+  }
+
+  onItemSelected(contact: Contact) {
+    if (this.route.snapshot.paramMap.get('id') !== 'wth')
+      this.contactService.viewContactDetail(contact);
+    else {
+    }
   }
 
   onLoadMore() {
@@ -113,9 +121,9 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
     }
 
     if (event.action === 'delete') {
-      this.contactService.confirmDeleteContacts(
-        this.contactService.selectedObjects
-      );
+      const selectedIds = this.contactService.selectedObjects.map(ct => ct.id);
+      this.contactService.confirmDeleteContacts()
+        .then(contact => this.contacts = this.contacts.filter(ct => !selectedIds.includes(ct.id)));
     }
 
     if (event.action === 'save') {

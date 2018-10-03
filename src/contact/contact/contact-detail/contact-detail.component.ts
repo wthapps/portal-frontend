@@ -74,7 +74,8 @@ export class ZContactDetailComponent implements OnInit {
         break;
 
       case 'delete':
-          this.contactService.confirmDeleteContacts([this.data]);
+        this.contactService.confirmDeleteContacts([this.data])
+          .then(ct => this.router.navigate(['contacts']));
         break;
 
       case 'social':

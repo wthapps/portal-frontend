@@ -48,8 +48,8 @@ export class ZContactUserDetailComponent implements OnInit {
   }
 
   toggleGroup(name: string) {
-    let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
-      return group.name == name;
+    const group = _.find(this.groupService.getAllGroupSyn(), (gr: any) => {
+      return gr.name === name;
     });
 
     if (_contact.isContactsHasGroupName([this.data], name)) {
@@ -63,19 +63,20 @@ export class ZContactUserDetailComponent implements OnInit {
   }
 
   doActionsToolbar(event: any) {
-    if (event.action == 'favourite') {
+    if (event.action === 'favourite') {
       this.toggleGroup('favourite');
     }
 
-    if (event.action == 'blacklist') {
+    if (event.action === 'blacklist') {
       this.toggleGroup('blacklist');
     }
 
-    if (event.action == 'delete') {
-      this.contactService.confirmDeleteContacts([this.data]);
+    if (event.action === 'delete') {
+      this.contactService.confirmDeleteContacts([this.data])
+      .then(() => this.router.navigate(['contacts']));
     }
 
-    if (event.action == 'edit_contact') {
+    if (event.action === 'edit_contact') {
       this.router.navigate(['contacts/', this.data.id, {mode: 'edit'}]).then();
     }
   }
@@ -91,6 +92,6 @@ export class ZContactUserDetailComponent implements OnInit {
   private getContact(id: number) {
     this.apiBaseService.get(`contact/contacts/show_user`, {id: id}).subscribe(res => {
       this.data = res.data;
-    })
+    });
   }
 }

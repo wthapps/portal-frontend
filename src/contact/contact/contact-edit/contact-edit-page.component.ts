@@ -154,7 +154,8 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
         break;
 
       case 'delete':
-        this.contactService.confirmDeleteContacts([this.contact]);
+        this.contactService.confirmDeleteContacts([this.contact])
+          .then(ct => this.router.navigate(['contacts']));
         break;
 
       case 'edit_contact':

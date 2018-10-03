@@ -194,8 +194,7 @@ export class ZContactService extends BaseEntityService<any> {
             this.toastsService.success(
               `Delete ${contact_length} contacts successfully`
             );
-            resolve();
-            this.router.navigate(['contacts']);
+            resolve(contacts);
           });
         }
       });

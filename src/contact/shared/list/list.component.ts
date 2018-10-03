@@ -22,23 +22,12 @@ export class ZContactSharedListComponent {
   desc$: Observable<boolean>;
   // currentSort: string = 'name';
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
 
   constructor(public contactService: ZContactService,
               private commonEventService: CommonEventService) {
     this.desc$ = this.contactService.orderDesc$;
   }
-
-  // onSort(event: any) {
-  //   if (this.currentSort == event) {
-  //     // this.descending = !this.descending;
-  //     this.contactService.changeSortOption();
-  //   } else {
-  //     this.contactService.changeSortOption('asc');
-  //     this.currentSort = event;
-  //   }
-  //   return false;
-  // }
 
   onChecked(item: Contact) {
     item.selected = this.contactService.toggleSelectedObjects(item);
