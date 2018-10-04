@@ -175,8 +175,8 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
       this.contacts.forEach((con: any, index: any) => {
         if (con.id === newContact.id) {
           this.contacts[index] = newContact;
-          const message = newContact.blacklist ? `You added ${newContact.name} to blacklist successful!` :
-                                                 `You removed ${newContact.name} from blacklist successful!`;
+          const message = newContact.blacklist ? `You added to blacklist successful!` :
+                                                 `You removed from blacklist successful!`;
           this.toastsService.success(message);
           return;
         }

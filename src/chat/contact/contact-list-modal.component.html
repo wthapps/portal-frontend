@@ -12,15 +12,14 @@
         <i class="fa fa-user-plus"></i>
       </button>
     </div>
-    <textbox-search *ngIf="showSearch" [placeholder]="'Find Contact'" [showSearchClearText]="true" [search]="keyword"
-                    (onEscapeEvent)="hideSearch($event)" (onEnterEvent)="search($event)">
+    <textbox-search *ngIf="showSearch" [placeholder]="'Find Contact'" [showSearchClearText]="true" [search]="keyword" (onEscapeEvent)="hideSearch($event)"
+      (onEnterEvent)="search($event)">
     </textbox-search>
 
     <ng-container *ngIf="!loading; else loadingBlock">
       <div class="list-group" *ngIf="contacts">
         <div class="list-group-item" *ngIf="contacts.length === 0;else templateData">
-          <box-no-data [icon]="'fa fa-address-book-o'"
-                       [subTitle]="'There is no Contact'">
+          <box-no-data [icon]="'fa fa-address-book-o'" [subTitle]="'There is no Contact'">
           </box-no-data>
         </div>
         <ng-template #templateData>
@@ -30,18 +29,12 @@
             </button>
 
             <!--show actions for new person-->
-            <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="sendRequest(contact)"
-                    pTooltip="{{ tooltip.sendRequest }}" tooltipPosition="top">
+            <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="sendRequest(contact)" pTooltip="{{ tooltip.sendRequest }}"
+              tooltipPosition="top">
               <i class="fa fa-user-plus"></i>
             </button>
-            <w-user-actions #chatContactActions
-                            [contact]="contact"
-                            [profileUrl]="profileUrl"
-                            (onConversate)="createConversation($event)"
-                            (onToggleBlacklist)="toggleBlacklist($event)"
-                            (onReport)="report($event)"
-                            (onRemove)="remove($event)"
-            ></w-user-actions>
+            <w-user-actions #chatContactActions [contact]="contact" [profileUrl]="profileUrl" (onConversate)="createConversation($event)"
+              (onToggleBlacklist)="toggleBlacklist($event)" (onReport)="report($event)" (onRemove)="remove($event)"></w-user-actions>
           </w-user-chat>
         </ng-template>
       </div>
