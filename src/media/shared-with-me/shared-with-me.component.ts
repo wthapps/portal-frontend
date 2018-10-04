@@ -160,10 +160,12 @@ MediaAdditionalListMixin {
   }
 
   doToolbarEvent(e: any) {
-    console.log(e);
     switch (e.action) {
       case 'favorite':
         this.toggleFavorite();
+        break;
+      case 'changeView':
+        this.changeViewMode(e.payload);
         break;
     }
   }
