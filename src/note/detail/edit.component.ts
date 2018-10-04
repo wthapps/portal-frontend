@@ -57,11 +57,11 @@ export class ZNoteDetailEditComponent
   hasSortBy = false;
   noteChanged = false;
   customEditor: any;
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
 
   showFormatGroupMobile = false;
 
-  subPage = noteConstants.PAGE_NOTE_EDIT;
+  readonly subPage = noteConstants.PAGE_NOTE_EDIT;
 
   buttonControl = '';
 
@@ -241,7 +241,8 @@ export class ZNoteDetailEditComponent
     ];
 
     const Size = Quill.import('attributors/style/size');
-    Size.whitelist = ['8px', '10px', '12px', '14px', '18px', '24px', '36px'];
+    Size.whitelist = ['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt'];
+    // Size.whitelist = ['8px', '10px', '12px', '14px', '18px', '24px', '36px'];
 
     const BlockEmbed = Quill.import('blots/block/embed');
 

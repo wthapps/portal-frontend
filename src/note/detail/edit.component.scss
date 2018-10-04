@@ -278,6 +278,9 @@ $note-editor-aside-w: 400px;
     }
     .ql-editor {
       min-height: 100vh;
+      p {
+        font-size: 14pt;
+      }
     }
   }
   #quill-toolbar.ql-toolbar .ql-formats .ql-picker.ql-font {
