@@ -95,7 +95,7 @@
       @include flexbox;
       @include flex-direction(column);
       @include align-items(center);
-      @include justify-content(space-between);
+      @include justify-content(left);
       .badge {
         width: 20px;
         height: 20px;

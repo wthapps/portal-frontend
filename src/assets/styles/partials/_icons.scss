@@ -22,6 +22,6 @@ $zone-icons-width: 16;
 .emojione-sm {
   i[class^="emojione-"] {
     @include transform(scale(0.5));
-    margin: -5px -10px -10px;
+    margin: -10px;
   }
 }
