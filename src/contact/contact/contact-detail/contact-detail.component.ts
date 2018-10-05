@@ -3,7 +3,6 @@ import { ZContactService } from '../../shared/services/contact.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
-import { ApiBaseService } from '../../../shared/services/apibase.service';
 import { Constants } from '../../../shared/constant/config/constants';
 import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
@@ -93,18 +92,6 @@ export class ZContactDetailComponent implements OnInit {
       case 'edit_contact':
         this.router.navigate(['contacts/', this.data.id, {mode: 'edit'}]).then();
         break;
-
-      // case 'add_to_contacts':
-      //   if (this.contactService.selectedObjects.length > 0) {
-      //     const contacts = this.contactService.selectedObjects.map(contact => {
-      //       contact.my_contact = true;
-      //       return { ...contact };
-      //     });
-      //     this.contactService.updateMultiple({contacts: contacts}).subscribe(response => {
-      //       this.toaster.success('You added others to your contacts successful!');
-      //     });
-      //   }
-      //   break;
     }
   }
 

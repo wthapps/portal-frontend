@@ -28,6 +28,7 @@
     "stats-social": "ng build --app social --stats-json && webpack-bundle-analyzer dist/social/stats.json",
     "stats-note": "ng build --app note --stats-json && webpack-bundle-analyzer dist/note/stats.json",
     "stats-contact": "ng build --app contact --stats-json && webpack-bundle-analyzer dist/contact/stats.json",
+    "build-deploy-test": "ENV=test ./deploy/build_deploy_all_local.sh | tee build_deploy_test.log",
     "build-portal": "ng build --prod --app portal && http-server -p 3000 dist/portal",
     "build-deploy-portal": "ng build --prod --app portal && cp -R dist/portal/* ~/deployment/fe-portal",
     "build-my-account": "ng build --prod --app my-account && http-server -p 3005 dist/my-account",

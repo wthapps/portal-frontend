@@ -175,13 +175,6 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
           contacts: [this.contact]
         });
         break;
-
-      // case 'add_to_contacts':
-      //   this.contact.my_contact = true;
-      //     this.contactService.updateMultiple({contacts: [this.contact]}).subscribe(response => {
-      //       this.toastsService.success('You added others to your contacts successful!');
-      //     });
-      //   break;
       default:
         break;
     }

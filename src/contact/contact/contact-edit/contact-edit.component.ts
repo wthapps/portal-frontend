@@ -11,9 +11,8 @@ import { CountryService } from '@shared/shared/components/countries/countries.se
 import { Constants } from '@shared/constant';
 import { CustomValidator } from '@shared/shared/validator/custom.validator';
 import { ZContactService } from '@contacts/shared/services/contact.service';
-import { debounceTime, takeUntil, filter, map, mergeMap, tap } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
-import { Photo } from '@shared/shared/models';
 
 declare let _: any;
 
@@ -325,25 +324,6 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onChangeAvatar(): void {
-    // this.mediaSelectionService.open({ hiddenTabs: ['videos', 'playlists'], allowSelectMultiple: false });
-
-    // this.mediaSelectionService.selectedMedias$.pipe(
-    //   takeUntil(this.close$),
-    //   filter(items => items.length > 0)
-    // ).subscribe((items) => {
-    //   this.startCropPhoto(items[0]);
-    // });
-
-    // this.mediaSelectionService.uploadingMedias$.pipe(
-    //   takeUntil(this.close$),
-    //   map(([file, dataUrl]) => [file]),
-    //   mergeMap((files: File[]) => {
-    //     return this.photoUploadService.uploadPhotos(files);
-    //   })
-    // ).subscribe((res: any) => {
-    //   this.startCropPhoto(res.data);
-    // });
-
     this.startCropPhoto(this.contact.profile_image);
   }
 
@@ -390,18 +370,6 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     this.contact.phones = _.concat(values.phones, this.deleteObjects['phones']);
     this.contact.media = _.concat(values.media, this.deleteObjects['media']);
     this.contact.addresses = _.concat(values.addresses, this.deleteObjects['addresses']);
-
-    // if (values.groups && values.groups.length > 0) {
-    //   let groups: any = [];
-    //   _.forEach(values.groups, (group: any) => {
-    //     if (_.isObject(group)) {
-    //       groups.push(_.filter(this.originalGroups, ['name', group.value])[0]);
-    //     } else {
-    //       groups.push(_.filter(this.originalGroups, ['name', group])[0]);
-    //     }
-    //   });
-    //   this.contact.groups = groups;
-    // }
 
     this.contact.notes = values.notes;
 
