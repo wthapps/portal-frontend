@@ -1,0 +1,37 @@
+li.pm-item {
+  margin: 5px 0 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  height: 72px;
+  .pm-item-container {
+    margin-top: 10px;
+    .pull-left {
+      margin-left: 10px;
+    }
+  }
+  .default-button {
+    margin-top: 5px;
+  }
+  .pm-image {
+    img {
+      height: 25px;
+      margin-top: 2px;
+    }
+  }
+  .pm-summary {
+    .pm-summary-info {
+      font-size: 14px;
+    }
+    .pm-summary-date {
+      font-size: 10px;
+      color: #ddd;
+    }
+    span {
+      display: table;
+    }
+  }
+}
+
+.add-button {
+  padding-bottom: 20px;
+}

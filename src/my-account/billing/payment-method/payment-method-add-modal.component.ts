@@ -4,18 +4,20 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 import { ApiBaseService } from '@shared/services';
-// import * as adyen from 'adyen-cse-web';
+import { environment } from '@env/environment';
 
 declare const adyen: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'payment-method-add-modal',
   templateUrl: 'payment-method-add-modal.component.html'
 })
 
 export class PaymentMethodAddModalComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
+  @Output() onSaved = new EventEmitter<any>();
+  @Output() onClose = new EventEmitter<any>();
+
   options: any;
   pmType = 'card';
   pmForm: FormGroup;
@@ -25,19 +27,26 @@ export class PaymentMethodAddModalComponent implements OnInit {
   expiryYear: AbstractControl;
   cvc: AbstractControl;
   generationtime: AbstractControl;
+  defaultOptions: {
+    data: null,
+    mode: 'add' | 'edit'
+  };
+  pm: any;
+  mode: string;
 
   constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
 
   }
 
   ngOnInit() {
+
     this.pmForm = this.fb.group({
       holderName: ['HUYNH DOAN THINH', [Validators.required]],
-      number: ['2222 4000 7000 0005', [Validators.required]],
+      number: ['', [Validators.required]],
       expiryMonth: ['10', [Validators.required]],
       expiryYear: ['2020', [Validators.required]],
       cvc: ['737', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]],
-      generationtime: [(new Date()).toISOString(), [Validators.required]]
+      generationtime: [null, [Validators.required]]
     });
     this.holderName = this.pmForm.controls.holderName;
     this.number = this.pmForm.controls.number;
@@ -45,12 +54,6 @@ export class PaymentMethodAddModalComponent implements OnInit {
     this.expiryYear = this.pmForm.controls.expiryYear;
     this.cvc = this.pmForm.controls.cvc;
     this.generationtime = this.pmForm.controls.generationtime;
-
-    this.apiBaseService.get('account/payment_methods/new')
-      .subscribe(response => {
-        console.log('new payment method:::', response.data);
-      });
-
   }
 
   /*
@@ -58,13 +61,13 @@ export class PaymentMethodAddModalComponent implements OnInit {
   * @data: array of item
   * @mode: add or edit or view. default is add
   * */
-  open(options: any = {data: undefined, mode: 'edit'}) {
-    this.options = options;
-
-    this.apiBaseService.get('account/payment_methods/new')
-      .subscribe(response => {
-        console.log('new payment method:::', response.data);
-      });
+  open(options: any = {data: undefined, mode: 'add'}) {
+    this.options = Object.assign({}, this.defaultOptions, options);
+    this.pm = this.options.data;
+    this.pmForm.controls.generationtime.setValue(this.pm.generation_time);
+    if (options.mode === 'edit') {
+      this.pmForm.controls.number.setValue(`**** **** **** ${this.pm.object_json.last4Number}`);
+    }
 
     this.modal.open(options).then();
   }
@@ -73,18 +76,13 @@ export class PaymentMethodAddModalComponent implements OnInit {
     this.modal.close(options).then();
   }
 
-  inputNumber(event: any) {
-    const cardType = adyen.cardtype.determine(event.target.value);
-    console.log('inputNumber:::', event.target, cardType);
-  }
 
-  add() {
-    const key = '10001|BD56A321C8083026355A289AD273D26415C410A4921A1D6F10C6CDED438140DB09A72E8D3D48256BA470D9A02331FBB0CF2C42BF5CFE7F53FA5F7B2939EFA69A9347A68339B7EADD87B7FD9CDFB23D1F222F100B7D64BF661E28F8B8FF08FF5F643A1BFF1609C0F67426C42C3FA44315C9E93EA5663C39B71F60B1388AFB3A5714962B77C876FC6F6A4DD8D4CC572D9111CDC53D09FE54EF2FDBA44608BF745A795C19DA09C1BAE4A53D25484E1878AFA0ED88B8C7E877D706B5A428CC40C11280CEFB4ACCCCC8D00ADD8DB70248BF2E35FF32D5753525C64673EEE4F949C117626F3692F2E0FEB9682B3A4DDD60D8503E9B276668E6B2CDF33D31734FE8C9B5';
+  save() {
+    const key = environment.keys.adyen_public_key;
     let options = {cardTypeElement: null};
     let postData = {};
     let form    = document.getElementById('adyen-encrypted-form');
     const cseInstance = adyen.encrypt.createEncryption(key, options);
-    options.cardTypeElement = document.getElementById('cardtype');
 
     console.log('add payment method:::', adyen);
     console.log('add payment method:::', form);
@@ -98,15 +96,6 @@ export class PaymentMethodAddModalComponent implements OnInit {
     console.log('postData:::', postData);
     console.log('encryptedForm:::', form);
 
-    this.apiBaseService.post('account/payment_methods', postData)
-      .subscribe(response => {
-      console.log('add payment method:::', response.data);
-    });
-
+    this.onSaved.emit({paymentMethod: {...this.pm, ...postData}, mode: this.options.mode});
   }
-
-  choosePMType(element: any) {
-      this.pmType = element.value;
-  }
-
 }

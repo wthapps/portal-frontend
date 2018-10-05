@@ -1,0 +1,44 @@
+<div class="box-panel">
+  <h3 class="box-panel-title">{{ pageTitle }}</h3>
+  <div>
+    <span>
+      WTH!Apps uses secure and encrypted technology to add your payment method. Your can use this page to manage the payment information you have added in your system
+    </span>
+  </div>
+  <div class="">
+    <ul class="list-group" *ngIf="loaded && paymentMethods.length > 0">
+      <li class="list-group-item pm-item" *ngFor="let pm of paymentMethods">
+        <!--<h4 class="list-group-item-heading">Payment Methods</h4>-->
+        <div class="pm-item-container">
+          <div class="pull-left default-button">
+            <input type="radio" [checked]="pm.default" name="payment-method-default" title="Set as default"
+                   (click)="setDefault(pm, $event)">
+          </div>
+          <div class="pull-left pm-image">
+            <img [src]="'assets/images/card/' + pm.method_type_id + '.png'">
+
+            <!--{{ pm.method_type_name }}-->
+          </div>
+          <div class="pull-left pm-summary">
+            <span class="pm-summary-info"> {{ pm.method_type_name }} ending in {{ pm.object_json.last4Number }}</span>
+            <span class="pm-summary-date">Expiry date {{ pm.object_json.expiryDate }}</span>
+          </div>
+          <div class="pull-right">
+            <button class="btn btn-default" (click)="openModal(pm)" title="Edit"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-default" (click)="delete(pm)" title="Remove" [disabled]="pm.default"><i class="fa fa-trash"></i></button>
+          </div>
+        </div>
+
+      </li>
+    </ul>
+    <div class="panel-body" *ngIf="loaded && paymentMethods.length === 0">
+      There is no payment method
+    </div>
+  </div>
+  <div class="add-button">
+    <button class="btn btn-outline-primary btn-min" (click)="openModal()">Add Card</button>
+  </div>
+</div>
+<payment-method-add-modal #addModal (onSaved)="savePaymentMethod($event)"></payment-method-add-modal>
+
+
