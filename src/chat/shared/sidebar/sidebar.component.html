@@ -108,7 +108,7 @@
         <small class="media-chat-user-message" *ngIf="conversation.latest_message as latest_message">
           <span class="emojione-sm" *ngIf="latest_message?.message_type == 'text'"
                 [innerHtml]="latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify  | safeHtml"></span>
-          <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
+          <span *ngIf="latest_message?.message_type == 'request'"> Sent you a request </span>
           <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
         </small>
         <!-- {{conversation.latest_message}} -->
