@@ -45,8 +45,8 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   readonly tooltip: any = Constants.tooltip;
   emojiData: any = [];
   mode: string;
-  placeholder: string = "Type message here";
-  placeholderBl: string = "You can\'t chat with blacklisted contact. Remove from blacklist to continue";
+  placeholder = 'Type message here';
+  placeholderBl = 'You can\'t chat with blacklisted contact. Remove from blacklist to continue';
 
   message: Message = new Message();
   appendedMessages: Array<Message> = new Array<Message>();
@@ -77,7 +77,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     // this.photoModal.action = 'UPLOAD';
   }
 
-  ngOnChanges(changes: any){
+  ngOnChanges(changes: any) {
     if (changes && changes.contactSelect && changes.contactSelect.currentValue && changes.contactSelect.currentValue.black_list) {
       this.setPlaceholder(this.placeholderBl);
     } else {
@@ -124,7 +124,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.messageCtrl = <FormControl>this.messageEditorForm.controls['message'];
   }
 
-  setPlaceholder(message: any = this.placeholder){
+  setPlaceholder(message: any = this.placeholder) {
     if (this.miniEditor) {
       this.miniEditor.quill.root.dataset.placeholder = message;
     }

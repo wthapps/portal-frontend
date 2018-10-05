@@ -15,11 +15,13 @@ import { MessageAssetsComponent } from '@chat/shared/message/assets/message-asse
 import { ZChatShareUserModule } from '@chat/shared/user/user.module';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { MessageService } from '@chat/shared/message/message.service';
+import { PipeModule } from '@shared/shared/pipe/pipe.module';
 
 @NgModule({
   imports: [
     MiniEditorModule,
     ChatNoteListModule,
+    PipeModule,
     SharedModule.forRoot(),
     // SharedServicesModule.forRoot(),
 

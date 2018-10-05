@@ -4,14 +4,14 @@
       <img *ngIf="data.group_json?.group_type == 'couple'" [src]="data.display.image" alt="">
       <img *ngIf="data.group_json?.group_type == 'multiple'" [src]="data.group_json?.image" alt="">
     </div>
-    <span *ngIf="data.display?.id" class="media-avatar-status"
-          [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}">
+    <span *ngIf="data.display?.id" class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}">
       <i *ngIf="isStranger" class="fa fa-question-circle"></i>
     </span>
   </div>
   <div *ngIf="displayUserName" class="media-avatar-body">
-    <div class="text-bold" *ngIf="data.group_json?.group_type == 'couple'">{{ data.display.name }}</div>
-    <div class="text-bold" *ngIf="data.group_json?.group_type == 'multiple'">{{ data.group_json.name }}</div>
+    <div class="text-bold" *ngIf="data.group_json?.group_type == 'couple'">{{ data.display.name | maxLength: 50 }}</div>
+    <div class="text-bold" *ngIf="data.group_json?.group_type == 'multiple'">{{ data.group_json.name | maxLength: 200
+      }}</div>
     <ng-container *ngIf="!displayAvatar">
 
       <ng-container *ngIf="data.group_json?.group_type == 'couple'">

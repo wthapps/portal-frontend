@@ -5,7 +5,7 @@
   <div class="message-item-content">
     <div class="message-item-owner" *ngIf="hasShowOwner() && message.user && !(['request', 'request_accepted'].includes(message.message_type))">
       <h4 class="message-item-owner-name">
-        <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message.user.name }} </a>
+        <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength: 50}} </a>
         <small class="text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
       </h4>
       <figure class="message-item-owner-avatar">
