@@ -71,7 +71,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   nextLink: string;
   isLoading: boolean;
   members: Array<any> = [];
-  loadingMore = false;
   readonly noteUrl: any = `${Constants.baseUrls.note}/notes/public`;
   private destroy$ = new Subject<any>();
   private pageSize = 30;
@@ -130,7 +129,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     console.log(event);
     this.currentTab = event.link;
     if (this.currentTab !== 'members') {
-      this.loadingMore = false;
+      this.isLoading = false;
       this.nextLink = this.buildNextLink();
       if (this.nextLink) {
         this.getObjects(true);
@@ -207,11 +206,11 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
   onCompleteLoadMore(event: boolean) {
     if (event && this.nextLink !== null) {
-      this.loadingMore = true;
+      this.isLoading = true;
       this.messageAssetsService.getMedias(this.nextLink, false).pipe(takeUntil(this.destroy$)).subscribe(
         (res: ResponseMetaData) => {
           this.nextLink = res.meta.links.next;
-          this.loadingMore = false;
+          this.isLoading = false;
         }
       );
     }
