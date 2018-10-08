@@ -27,7 +27,7 @@
             </ng-template>
 
             <ng-template [ngIf]="!userService.getSyncProfile()">
-              <a [routerLink]="['/signup']" class="btn btn-default btn-min">Sign up</a>
+              <a [routerLink]="['/signup']" class="btn btn-outline-default btn-min">Sign up</a>
             </ng-template>
 
 
@@ -56,7 +56,7 @@
           </ng-template>
 
           <ng-template [ngIf]="!userService.getSyncProfile()">
-            <a (click)="redirectTo('home', 'signup', $event)" class="btn btn-default btn-min">Sign up</a>
+            <a (click)="redirectTo('home', 'signup', $event)" class="btn btn-outline-default btn-min">Sign up</a>
           </ng-template>
         </td>
       </tr>
