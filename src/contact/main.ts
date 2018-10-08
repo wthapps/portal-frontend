@@ -11,10 +11,10 @@ if (environment.production) {
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
-  .then(() => {
-    console.log('should register SW');
-    if ('serviceWorker' in navigator && environment.production) {
-      registerSw();
-    }
-  })
+  // .then(() => {
+  //   console.log('should register SW');
+  //   if ('serviceWorker' in navigator && environment.production) {
+  //     registerSw();
+  //   }
+  // })
   .catch(err => console.log(err));

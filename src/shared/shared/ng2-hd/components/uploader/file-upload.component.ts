@@ -1,4 +1,4 @@
-import { Component, Input, NgZone } from '@angular/core';
+import { Component, Input, NgZone, ElementRef } from '@angular/core';
 
 import { DomSanitizer } from '@angular/platform-browser';
 import { DomHandler } from 'primeng/components/dom/domhandler';
@@ -12,7 +12,7 @@ import { FileUpload } from 'primeng/components/fileupload/fileupload';
 })
 export class FileUploadComponent extends FileUpload {
   @Input() icon = 'fa-plus';
-  constructor(domHandler: DomHandler, sanitizer: DomSanitizer, zone: NgZone) {
-    super(domHandler, sanitizer, zone);
+  constructor(el: ElementRef, domHandler: DomHandler, sanitizer: DomSanitizer, zone: NgZone) {
+    super(el, domHandler, sanitizer, zone);
   }
 }

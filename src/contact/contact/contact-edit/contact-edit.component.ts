@@ -349,7 +349,9 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
   handleSelectCropEvent() {
     this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
-      .takeUntil(this.destroySubject)
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
       .subscribe((event: any) => {
         this.doEvent(event);
       });

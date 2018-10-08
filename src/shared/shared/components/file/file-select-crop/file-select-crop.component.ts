@@ -37,7 +37,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
-      .takeUntil(this.destroySubject)
+      .pipe(takeUntil(this.destroySubject))
       .subscribe((event: any) => {
         this.doEvent(event);
       });

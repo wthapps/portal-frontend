@@ -34,6 +34,7 @@
     "build-social": "ng build --prod social && http-server -p 3015 dist/social",
     "build-deploy-contact": "ng build --prod contact && cp -R dist/contact/* ~/deployment/fe-contact",
     "build-contact-stag": "ng build --prod --e stag contact && http-server -p 3025 dist/contact",
+    "build-contact-test": "ng build --prod --configuration=test contact && http-server -p 3025 dist/contact",
     "build-social:staging": "ng build --prod social --env stag",
     "build-portal:staging": "ng build --prod portal --env stag",
     "build-contact:staging": "ng build --prod contact --env stag",

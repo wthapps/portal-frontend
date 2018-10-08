@@ -46,7 +46,7 @@ import { ProfileModule } from '@wth/shared/user';
     WthCommonModule,
     SharedServicesModule.forRoot(),
     CoreModule.forRoot(),
-    ServiceWorkerModule.register('/combined-worker.js', {
+    ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: environment.production
     })
   ],

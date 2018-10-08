@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Observable, merge } from 'rxjs';
+import { Observable, Subject, merge } from 'rxjs';
 
 
 
