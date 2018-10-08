@@ -39,6 +39,7 @@ AlbumAddMixin,
 PlaylistCreateMixin,
 AlbumCreateMixin {
   @Input() leftActionsTemplate: TemplateRef<any>;
+  @Input() leftAddActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
   @Input() moreActionsTemplate: TemplateRef<any>;
 

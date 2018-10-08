@@ -207,7 +207,8 @@ export class ConstantsBase {
       icon: 'fw fw-shared-with-me'
     },
     { name: 'Shared by me', link: '/shared-by-me', icon: 'fa fa-share-alt' },
-    { name: 'Search', link: '/search', icon: 'fa fa-search' }
+    { name: 'Search', link: '/search', icon: 'fa fa-search' },
+    { name: 'Trash', link: '/trash', icon: 'fa fa-trash' }
   ];
 
   socialMenuItems: any = [

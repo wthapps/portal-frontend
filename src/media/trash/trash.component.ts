@@ -28,10 +28,10 @@ declare var _: any;
 @Mixins([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
 @Component({
   moduleId: module.id,
-  selector: 'me-photo-list',
-  templateUrl: 'photo-list.component.html'
+  selector: 'me-trash',
+  templateUrl: 'trash.component.html'
 })
-export class ZMediaPhotoListComponent implements OnInit, OnDestroy,
+export class ZMediaTrashComponent implements OnInit, OnDestroy,
 SharingModalMixin,
 MediaBasicListMixin,
 AlbumAddMixin,
@@ -88,13 +88,56 @@ MediaModalMixin {
 
   loadObjects(opts: any = {}) {
     this.loading = true;
-    opts = {...opts, model: 'Media::Photo'};
+    opts = {...opts, model: 'Media::Trash'};
     this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
-    this.apiBaseService.get('media/media', opts).subscribe(res => {
+    this.apiBaseService.get('media/trashes', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
     });
+  }
+
+  restore(){
+    this.apiBaseService.post(`media/trashes/restore`, {objects: this.selectedObjects.map(e => {return {id: e.id, model: e.model} })}).subscribe(res => {
+      this.loadObjects();
+    })
+  }
+
+  delete(){
+    this.confirmService.confirm({
+      header: 'Delete',
+      acceptLabel: 'Delete',
+      message: `Selected photos or videos in your Trash will be deleted permanently. This action can't be undone`,
+      accept: () => {
+        this.loading = true;
+        this.objects = this.objects.filter(ob => {
+          return this.selectedObjects.some(s => {
+            return (s.id != ob.id && s.model != ob.model)
+          })
+        })
+        this.apiBaseService.post(`media/trashes/really_destroy`, { objects: this.selectedObjects.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
+          this.loading = false;
+          this.loadObjects();
+        })
+      }
+    })
+  }
+
+  emptyTrash(){
+    this.confirmService.confirm({
+      header: 'Empty Trash',
+      acceptLabel: 'Delete',
+      message: `All photos and videos in your Trash will be deleted permanently. This action can't be undone`,
+      accept: () => {
+        this.loading = true;
+        let tmp = this.objects;
+        this.objects = [];
+        this.apiBaseService.post(`media/trashes/really_destroy`, { objects: tmp.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
+          this.loading = false;
+          this.loadObjects();
+        })
+      }
+    })
   }
 
   loadMoreObjects() {

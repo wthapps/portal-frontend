@@ -37,8 +37,13 @@ import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.compone
 import { ZMediaVideoModule } from '@media/video/video.module';
 import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
 import { PhotoHtmlModule } from '@media/html/photo-html.module';
-import { AlbumCreateModalComponent, AlbumEditModalComponent, AlbumDeleteModalComponent } from '@shared/components/modal/album';
+import {
+  AlbumCreateModalComponent,
+  AlbumEditModalComponent,
+  AlbumDeleteModalComponent
+} from '@shared/components/modal/album';
 import { WMediaPreviewModule } from '@shared/components/w-media-preview/media-preview.module';
+import { ZMediaTrashModule } from '@media/trash/trash.module';
 
 @NgModule({
   imports: [
@@ -57,6 +62,7 @@ import { WMediaPreviewModule } from '@shared/components/w-media-preview/media-pr
     ZMediaVideoModule,
     WMediaPreviewModule,
     PhotoHtmlModule,
+    ZMediaTrashModule,
 
     AppRoutingModule,
     ModalModule,
