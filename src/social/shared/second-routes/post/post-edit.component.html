@@ -32,7 +32,7 @@
           <div class="z-heading">
             <a href="javascript:;" (click)="viewProfile()">
               <div class="z-name">
-                {{ (profile$ | async)?.name }}
+                {{ (profile$ | async)?.name | maxLength: 50}}
               </div>
             </a>
             <div class="z-shared-with dropdown">

@@ -167,7 +167,7 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
       this.allowedFileTypes = options.allowedFileTypes;
     }
 
-    if(options.filter){
+    if (options.filter) {
       this.filter = options.filter;
     } else {
       this.filter = 'all';
@@ -208,7 +208,8 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
       this.getObjects(true);
 
       if (this.currentTab === 'albums' || this.currentTab === 'playlists'
-        || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me' || this.currentTab === 'search') {
+        || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me'
+        || this.currentTab === 'search') {
         this.objectListService.setObjectsDisabled(['album', 'Media::Playlist', 'Common::Sharing']);
       } else {
         this.objectListService.setObjectsDisabled([]);
@@ -217,7 +218,7 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   onTabBack() {
-    const all = ['album', 'Common::Sharing', 'Media::Playlist']
+    const all = ['album', 'Common::Sharing', 'Media::Playlist'];
     if (this.currentTab === 'albums_detail') {
       this.currentTab = 'albums';
       this.objectListService.setObjectsDisabled(all);
@@ -369,9 +370,11 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
         urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'favourites':
-        if(this.filter == 'all') urlAPI = `media/favorites?active=1`;
-        if (this.filter == 'photo') urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Album&filter[or][sharing_type]=Media::Album&filter[or][sharing_type]=Media::Photo`;
-        if (this.filter == 'video') urlAPI = `media/favorites?filter[where][object_type]=Media::Video&filter[or][object_type]=Media::Playlist&filter[or][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist`;
+        if (this.filter === 'all') urlAPI = `media/favorites?active=1`;
+        if (this.filter === 'photo')
+        urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Album&filter[or][sharing_type]=Media::Album&filter[or][sharing_type]=Media::Photo`;
+        if (this.filter === 'video')
+        urlAPI = `media/favorites?filter[where][object_type]=Media::Video&filter[or][object_type]=Media::Playlist&filter[or][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist`;
         break;
       case 'favourites_detail':
         switch (this.mediaParent.model) {
@@ -390,9 +393,11 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
         }
         break;
       case 'shared_with_me':
-        if (this.filter == 'all') urlAPI = `media/sharings/shared_with_me?active=1`;
-        if (this.filter == 'photo') urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Album`;
-        if (this.filter == 'video') urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist`;
+        if (this.filter === 'all') urlAPI = `media/sharings/shared_with_me?active=1`;
+        if (this.filter === 'photo')
+        urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Album`;
+        if (this.filter === 'video')
+        urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist`;
         break;
       case 'shared_with_me_detail':
         urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;
