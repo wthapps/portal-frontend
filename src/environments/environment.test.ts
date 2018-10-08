@@ -21,7 +21,7 @@ export const ConfigByEnv: EnvConfig = {
   SUB_DOMAIN: {
     APP: `${protocol}://${fullDomain}`,
     MYACCOUNT: `${protocol}://myaccount-${fullDomain}`,
-    MEDIA: `${protocol}://media-${fullDomain}`,
+    MEDIA: `${protocol}://photos-${fullDomain}`,
     SOCIAL: `${protocol}://social-${fullDomain}`,
     CHAT: `${protocol}://chat-${fullDomain}`,
     CONTACT: `${protocol}://contacts-${fullDomain}`,

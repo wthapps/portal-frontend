@@ -23,12 +23,12 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
 
   tooltip: any = Constants.tooltip;
   defaultAvatar: string = Constants.img.avatar;
-  showUpdatedVersion: boolean = false;
-  showSearchMobile: boolean = false;
+  showUpdatedVersion = false;
+  showSearchMobile = false;
   newVersion: string;
   constants: any;
   urls: any = Constants.baseUrls;
-  type: string = 'update'; // update , connection
+  type = 'update'; // update , connection
 
   constructor(private navigateService: WTHNavigateService,
               private channelService: ChannelService,
@@ -49,13 +49,13 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    let documentElem = $(document);
-    let nav = $('.navbar-default');
+    const documentElem = $(document);
+    const nav = $('.navbar-default');
     let lastScrollTop = 0;
 
     documentElem.on('scroll', function () {
-      let currentScrollTop = $(this).scrollTop();
-      if (currentScrollTop < lastScrollTop && currentScrollTop != 0) {
+      const currentScrollTop = $(this).scrollTop();
+      if (currentScrollTop < lastScrollTop && currentScrollTop !== 0) {
         nav.addClass('active');
       } else {
         nav.removeClass('active');
@@ -81,14 +81,15 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
     $('.navbar-nav-notification').removeClass('open');
 
     // Navigate to notification page of social module
-    if (this.navigateService.inSameModule([Constants.baseUrls.note, Constants.baseUrls.social, Constants.baseUrls.media, Constants.baseUrls.contact]))
+    if (this.navigateService.inSameModule([Constants.baseUrls.note,
+       Constants.baseUrls.social, Constants.baseUrls.media, Constants.baseUrls.contact]))
       this.navigateService.navigateTo(['/notifications'], {type: this.type});
     else
       this.navigateService.navigateOrRedirect('notifications', 'social');
   }
 
   getMoreNotifications() {
-    if (this.type == 'connection')
+    if (this.type === 'connection')
       this.connectionService.getMoreNotifications();
     else
       this.notificationService.getMoreNotifications();
