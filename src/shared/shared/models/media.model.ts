@@ -9,6 +9,7 @@ export class Media {
   photo_number: number;
   created_at: any;
   photo_default: any;
+  sharing_type: string;
   favorite: boolean;
   tags: any = [];
   tags_json: any = [];
@@ -32,6 +33,7 @@ export class Media {
     photo_number?: number,
     created_at?: any,
     photo_default?: any,
+    sharing_type?: string,
     favorite?: boolean,
     tags?: any,
     tags_json?: any,
