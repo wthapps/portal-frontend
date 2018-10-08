@@ -30,6 +30,7 @@ export class InviteContactComponent implements OnInit {
   openCreate(e: any) {
     this.modal.close();
     let data = [];
+    this.selectedUsers = [];
     this.contacts.filter(c => c.selected).forEach(c => {
       if(c.emails && c.emails.length > 0) {
         c.emails.forEach(e => {
