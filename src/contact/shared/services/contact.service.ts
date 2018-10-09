@@ -187,14 +187,12 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   confirmDeleteContacts(contacts: any[] = this.selectedObjects): Promise<any> {
-    const contact_names = this.maxLengthPipe.transform(contacts.reduce((acc, ct) => (ct.name.trim().length
-    ? `${acc}, ${ct.name}` : acc), '').slice(2), 300);
     const contact_length: number = contacts.length;
     return new Promise(resolve => {
       this.wthConfirmService.confirm({
         acceptLabel: 'Delete',
         rejectLabel: 'Cancel',
-        message: `Are you sure to delete following ${contact_length} contact(s)? <br/> ${contact_names}. This action can't be undone.`,
+        message: `Are you sure to delete following ${contact_length} contact(s)? <br/>This action can't be undone.`,
         header: 'Delete Contacts',
         accept: () => {
           this.deleteSelectedContacts(contacts).then(() => {
