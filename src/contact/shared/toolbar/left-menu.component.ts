@@ -69,8 +69,10 @@ export class ZContactSharedLeftMenuComponent implements OnInit, OnDestroy {
   }
 
   deleteGroup(group: any) {
+    const contacts_length = group.count || 0;
     this.wthConfirmService.confirm({
-      message: 'Are you sure you want to delete this group ?',
+      message: `This group has ${contacts_length} contacts. Delete this group will remove it from all contacts.
+      <br /> This action can't be undone.`,
       header: 'Delete group',
       accept: () => {
         this.apiBaseService
