@@ -201,9 +201,22 @@ $media-user-status-pos: $media-user-status-w - 3px;
   }
 }
 
+.media-avatar-list {
+  .media-avatar {
+    & + .media-avatar {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid $line;
+    }
+  }
+}
+
 .media-avatar {
   @include flexbox;
   width: 100%;
+  & + .media-avatar {
+    margin-top: 10px;
+  }
   .media-avatar-img-wrap {
     position: relative;
     margin-right: 10px;
