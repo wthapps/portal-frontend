@@ -14,6 +14,7 @@ import { ApiBaseService } from '@wth/shared/services';
 import { _wu } from '@wth/shared/shared/utils/utils';
 import { DEFAULT_SETTING } from '@contacts/shared/config/constants';
 import { Contact } from '@contacts/contact/contact.model';
+import { MaxLengthPipe } from '@shared/shared/pipe/max-length.pipe';
 
 declare var _: any;
 declare var Promise: any;
@@ -53,6 +54,7 @@ export class ZContactService extends BaseEntityService<any> {
   private listenToItemSource = new Subject<any>();
   private filterOption: any = {};
   private nextLink: string;
+  private maxLengthPipe: MaxLengthPipe;
 
   constructor(
     protected apiBaseService: ApiBaseService,
@@ -70,6 +72,7 @@ export class ZContactService extends BaseEntityService<any> {
     this.initLoad$ = this.initLoadSubject.asObservable();
     this.orderDesc$ = this.orderDescSubject.asObservable();
     this.isSelectAll$ = this.isSelectAllSubject.asObservable();
+    this.maxLengthPipe = new MaxLengthPipe();
 
     this.syncSelectedContacts();
   }
@@ -184,14 +187,14 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   confirmDeleteContacts(contacts: any[] = this.selectedObjects): Promise<any> {
-    const contact_names: string = contacts.reduce((acc, ct) => (ct.name.trim().length
-    ? `${acc},${ct.name}` : acc), '').substring(1, 300).concat(' ...');
+    const contact_names = this.maxLengthPipe.transform(contacts.reduce((acc, ct) => (ct.name.trim().length
+    ? `${acc}, ${ct.name}` : acc), '').slice(2), 300);
     const contact_length: number = contacts.length;
     return new Promise(resolve => {
       this.wthConfirmService.confirm({
         acceptLabel: 'Delete',
         rejectLabel: 'Cancel',
-        message: `Are you sure to delete following ${contact_length} contact(s)? <br/> ${contact_names}`,
+        message: `Are you sure to delete following ${contact_length} contact(s)? <br/> ${contact_names}. This action can't be undone.`,
         header: 'Delete Contacts',
         accept: () => {
           this.deleteSelectedContacts(contacts).then(() => {

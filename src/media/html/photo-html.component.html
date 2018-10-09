@@ -4,7 +4,7 @@
 <div class="page-body-content has-page-body-control">
   <ng-container *ngIf="medias$ | async as mediasList; else templateloading">
     <ng-container *ngIf="mediasList?.length; else templateNodata">
-      <w-object-list class="media-selection-content gray-light" [data]="mediasList" [sortInline]="false" (completeSort)="onCompleteSort($event)"
+      <w-object-list class="media-selection-content gray-light" [data]="mediasList" [isLoading]="isLoading" [sortInline]="false" (completeSort)="onCompleteSort($event)"
         (completeLoadMore)="onCompleteLoadMore($event)" (completeDoubleClick)="onCompleteDoubleClick($event)">
         <ng-template #columnBox let-item>
 
