@@ -34,8 +34,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
   imports: [
     BrowserModule,
     HttpClientModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
-
     AppRoutingModule,
     MyHomeModule,
     MyAppsModule,

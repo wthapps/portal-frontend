@@ -2,9 +2,9 @@ import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter,
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 import { ApiBaseService } from '@shared/services';
 import { environment } from '@env/environment';
+import { CreditCardValidator } from '@account/shared/credit-card';
 
 declare const adyen: any;
 
@@ -42,8 +42,8 @@ export class PaymentMethodAddModalComponent implements OnInit {
 
     this.pmForm = this.fb.group({
       holderName: ['HUYNH DOAN THINH', [Validators.required]],
-      number: ['', [Validators.required]],
-      expiryMonth: ['10', [Validators.required]],
+      number: ['', [Validators.required, CreditCardValidator.validateCardNumber]],
+      expiryMonth: ['10', [Validators.required, CreditCardValidator.validateExpiryMonth]],
       expiryYear: ['2020', [Validators.required]],
       cvc: ['737', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]],
       generationtime: [null, [Validators.required]]

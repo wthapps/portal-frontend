@@ -23,7 +23,7 @@
           <small class="text-fade">{{ user?.email }}</small>
           <div class="navbar-nav-plan m">
             <p class="media-heading bold">{{ user?.plan?.name }}</p>
-            <a [href]="urls.myAccount + '/plans'" class="btn btn-primary" *ngIf="user?.plan?.is_trial">
+            <a [href]="urls.myAccount + 'billing/plan'" class="btn btn-primary" *ngIf="user?.plan?.is_trial">
               <i class="fa fa-arrow-circle-up"></i> Upgrade
             </a>
           </div>

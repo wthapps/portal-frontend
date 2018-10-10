@@ -79,8 +79,11 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
             'application/vcard',
             'text/anytext',
             'text/directory',
-            'application/x-versit',
             'text/csv',
+            'application/csv',
+            'application/x-versit',
+            'application/excel',
+            'application/vnd.msexcel',
             'application/vnd.ms-excel',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           ],
