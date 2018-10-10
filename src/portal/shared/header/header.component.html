@@ -1,6 +1,9 @@
 <div>
   <a [routerLink]="['/']" class="navbar-brand" href="#">
-    <img [src]="logoUrl" alt="WTHApps">
+    <img *ngIf="!(loggedIn$ | async);else templateNotLogin" [src]="logoUrl" alt="WTHApps">
+    <ng-template #templateNotLogin>
+      <img src="/assets/images_new/logo-sm.png" alt="WTHApps">
+    </ng-template>
   </a>
   <ul class="nav navbar-nav hidden-xs">
     <li class="nav-item">
