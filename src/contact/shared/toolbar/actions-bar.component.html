@@ -27,7 +27,7 @@
     </a>
   </li>
 
-  <li class="dropdown action">
+  <li class="dropdown action" *ngIf="!isStranger">
     <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
       tooltipPosition="bottom">
       <i class="fa fa-ellipsis-v"></i>

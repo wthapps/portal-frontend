@@ -22,7 +22,7 @@
     </box-no-data>
   </div>
   <div class="page-body-content-in" *ngIf="contacts && contacts.length >= 1">
-    <z-contact-shared-list [data]="contacts" (itemSelected)="onItemSelected($event)"></z-contact-shared-list>
+    <z-contact-shared-list [data]="contacts" [isStranger]="currentTab === 'wth'" (itemSelected)="onItemSelected($event)"></z-contact-shared-list>
   </div>
 </div>
 <contact-add-group-modal #modal></contact-add-group-modal>

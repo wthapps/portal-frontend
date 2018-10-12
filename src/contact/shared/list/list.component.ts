@@ -16,6 +16,7 @@ import { Contact } from '@contacts/contact/contact.model';
 export class ZContactSharedListComponent {
   @Input() data: Contact[];
   @Input() showHeader: any = true;
+  @Input() isStranger = false;
   @Output() itemSelected: EventEmitter<Contact> = new EventEmitter<Contact>();
 
   // descending: boolean = false;

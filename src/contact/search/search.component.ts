@@ -26,6 +26,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   contacts: any;
   nextMine: any;
   nextWTH: any;
+  currentTab = '';
   sub: Subscription;
   _contact: any = _contact;
 
@@ -42,6 +43,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
     private apiBaseService: ApiBaseService
   ) {
     this.route.params.subscribe(params => {
+      this.currentTab = params['id'] || 'mine';
       if (!params['id']  || params['id'] === 'mine') {
         this.getMine(params);
       }

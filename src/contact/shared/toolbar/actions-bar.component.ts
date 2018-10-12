@@ -27,6 +27,7 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   @Input() showQuickInvitation = false;
   @Input() showAddToContacts = false;
   @Input() showFavorite = true;
+  @Input() isStranger = false;
   // Toggle
   @Input() toggleFavourite = false;
   @Input() toggleBlacklist = false;
