@@ -479,6 +479,10 @@ export class ZContactService extends BaseEntityService<any> {
     return this.userSettings.phone_default_code;
   }
 
+  get contactsSortBy() {
+    return this.userSettings.contacts_sort_by;
+  }
+
   searchContact(name: string): any[] {
     const search_value = name.toLowerCase();
     if (search_value === '') {

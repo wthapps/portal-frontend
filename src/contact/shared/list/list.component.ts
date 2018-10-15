@@ -17,6 +17,7 @@ export class ZContactSharedListComponent {
   @Input() data: Contact[];
   @Input() showHeader: any = true;
   @Input() isStranger = false;
+  @Input() contactsSortBy = 'first_name';
   @Output() itemSelected: EventEmitter<Contact> = new EventEmitter<Contact>();
 
   // descending: boolean = false;

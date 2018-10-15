@@ -8,7 +8,7 @@
             </span>
           </div>
           <div class="media-body">
-            <h4 class="bold">{{ contact?.name }}</h4>
+            <h4 class="bold">{{ contact | contactNamePipe: contactService.contactsSortBy}}</h4>
             <p>
               <small>{{ contact?.job_title }}</small>
             </p>

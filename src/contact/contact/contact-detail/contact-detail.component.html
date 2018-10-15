@@ -25,7 +25,7 @@
                 </span>
               </div>
               <div class="media-body">
-                <h4 class="bold">{{ data.name }}</h4>
+                <h4 class="bold"> {{ data | contactNamePipe: contactService.contactsSortBy }}</h4>
                 <p>
                   <small>{{ data.job_title }}</small>
                 </p>

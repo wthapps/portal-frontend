@@ -15,7 +15,7 @@
     </box-no-data>
   </div>
   <div class="page-body-content-in" *ngIf="contacts.length>=1">
-    <z-contact-shared-list [data]="contacts" (itemSelected)="onItemSelected($event)"></z-contact-shared-list>
+    <z-contact-shared-list [data]="contacts" [contactsSortBy]="contactService.contactsSortBy" (itemSelected)="onItemSelected($event)"></z-contact-shared-list>
   </div>
 </div>
 

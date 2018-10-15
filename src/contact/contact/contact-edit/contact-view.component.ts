@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Constants } from '../../../shared/constant/config/constants';
 import { Observable } from 'rxjs/Observable';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
+import { ZContactService } from '@contacts/shared/services/contact.service';
 
 declare let _: any;
 
@@ -20,7 +21,9 @@ export class ZContactViewComponent {
 
   countriesCode$: Observable<any>;
 
-  constructor(private countryService: CountryService) {
+  constructor(
+    public contactService: ZContactService,
+    private countryService: CountryService) {
     this.countriesCode$ = this.countryService.countriesCode$;
   }
 

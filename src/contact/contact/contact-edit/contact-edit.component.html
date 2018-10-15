@@ -16,15 +16,19 @@
             </div>
             <div class="media-body content-overflow-visible">
               <div class="row row-10">
-                <div class="col-sm-12 mb10">
-                  <div class="form-group no-label mb0" [ngClass]="{'has-error': (!name.valid && name.touched),
-        'has-success': (name.valid && name.touched)}">
-                    <input autofocus [formControl]="name" type="text" class="form-control" placeholder="Full name">
-                    <div *ngIf="!name.valid && name.touched">
+                <div class="col-sm-6 mb10">
+                  <div class="form-group no-label mb0">
+                    <input autofocus [formControl]="name" type="text" class="form-control" placeholder="First name">
+                    <!-- <div *ngIf="!name.valid && name.touched">
                       <span *ngIf="!name.valid && name.errors.required" class="help-block">
                         Name is required
                       </span>
-                    </div>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="col-sm-6 mb10">
+                  <div class="form-group no-label mb0">
+                    <input [formControl]="family_name" type="text" class="form-control" placeholder="Last name">
                   </div>
                 </div>
                 <div class="col-sm-6 mb10">
@@ -57,12 +61,7 @@
               <div class="media-body" [formGroupName]="i">
                 <div class="row row-10">
                   <div class="col-sm-2">
-                    <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_phone['controls'].category.valid
-                  && add_phone['controls'].category.touched),
-                  'has-success': (add_phone['controls'].category.valid
-                  && add_phone['controls'].category.touched
-                  && form.value.phones[i].category.length > 1)}">
+                    <div class="form-group no-label">
                       <select class="form-control" name="name" formControlName="category">
                         <option *ngFor="let et of phoneCategories" value="{{ et.value }}">{{ et.text }}</option>
                       </select>
@@ -70,12 +69,7 @@
                   </div>
 
                   <div class="col-sm-5">
-                    <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_phone['controls'].country_alpha_code.valid
-                  && add_phone['controls'].country_alpha_code.touched),
-                  'has-success': (add_phone['controls'].country_alpha_code.valid
-                  && add_phone['controls'].country_alpha_code.touched
-                  && form.value.phones[i].country_alpha_code && form.value.phones[i].country_alpha_code.length>1)}">
+                    <div class="form-group no-label">
 
                       <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code" [suggestions]="filteredCountriesCode"
                         (completeMethod)="filterCountriesCode($event)" [size]="30" [minLength]="1" placeholder="Select your country"
@@ -90,18 +84,13 @@
 
 
                   <div class="col-sm-5">
-                    <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_phone['controls'].value.valid
-                  && add_phone['controls'].value.touched),
-                  'has-success': (add_phone['controls'].value.valid
-                  && add_phone['controls'].value.touched
-                  && form.value.phones[i].value.length > 1)}">
+                    <div class="form-group no-label">
                       <input type="text" class="form-control" formControlName="value" placeholder="">
-                      <div *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched">
+                      <!-- <div *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched">
                         <span *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.errors.phoneFormat" class="help-block text-danger">
                           Phone is not valid
                         </span>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -129,32 +118,22 @@
               <div class="media-body" [formGroupName]="i">
                 <div class="row row-10">
                   <div class="col-sm-3">
-                    <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.emails.controls[i].controls.category.valid
-                  && form.controls.emails.controls[i].controls.category.touched),
-                  'has-success': (form.controls.emails.controls[i].controls.category.valid
-                  && form.controls.emails.controls[i].controls.category.touched
-                  && form.value.emails[i].category.length > 1)}">
+                    <div class="form-group no-label">
                       <select class="form-control" name="name" formControlName="category">
                         <option *ngFor="let et of emailCategories" value="{{ et.value }}">{{ et.text }}</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-sm-9">
-                    <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.emails.controls[i].controls.value.valid
-                  && form.controls.emails.controls[i].controls.value.touched),
-                  'has-success': (form.controls.emails.controls[i].controls.value.valid
-                  && form.controls.emails.controls[i].controls.value.touched
-                  && form.value.emails[i].value.length > 1)}">
+                    <div class="form-group no-label">
                       <input type="text" class="form-control" formControlName="value" placeholder="">
-                      <div *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.touched">
+                      <!-- <div *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.touched">
 
                         <span *ngIf="!form.controls.emails.controls[i].controls.value.valid && form.controls.emails.controls[i].controls.value.errors.emailFormat && !form.controls.emails.controls[i].controls.value.errors.required"
                           class="help-block text-danger">
                           Email is not valid
                         </span>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -182,12 +161,7 @@
               <div class="media-body" [formGroupName]="i">
                 <div class="row row-10">
                   <div class="col-sm-3">
-                    <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.addresses.controls[i].controls.category.valid
-                  && form.controls.addresses.controls[i].controls.category.touched),
-                  'has-success': (form.controls.addresses.controls[i].controls.category.valid
-                  && form.controls.addresses.controls[i].controls.category.touched
-                  && form.value.addresses[i].category.length > 1)}">
+                    <div class="form-group no-label">
                       <select class="form-control" name="name" formControlName="category">
                         <option *ngFor="let et of emailCategories" value="{{ et.value }}">{{ et.text }}</option>
                       </select>
@@ -252,31 +226,21 @@
               <div class="media-body" [formGroupName]="i">
                 <div class="row row-10">
                   <div class="col-sm-3">
-                    <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.media.controls[i].controls.category.valid
-                  && form.controls.media.controls[i].controls.category.touched),
-                  'has-success': (form.controls.media.controls[i].controls.category.valid
-                  && form.controls.media.controls[i].controls.category.touched
-                  && form.value.media[i].category.length > 1)}">
+                    <div class="form-group no-label">
                       <select class="form-control" name="name" formControlName="category">
                         <option *ngFor="let et of mediaCategories" value="{{ et.value }}">{{ et.text }}</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-sm-9">
-                    <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!form.controls.media.controls[i].controls.value.valid
-                  && form.controls.media.controls[i].controls.value.touched),
-                  'has-success': (form.controls.media.controls[i].controls.value.valid
-                  && form.controls.media.controls[i].controls.value.touched
-                  && form.value.media[i].value.length > 1)}">
+                    <div class="form-group no-label">
                       <input type="text" class="form-control" formControlName="value" placeholder="">
-                      <div *ngIf="!form.controls.media.controls[i].controls.value.valid && form.controls.media.controls[i].controls.value.touched">
+                      <!-- <div *ngIf="!form.controls.media.controls[i].controls.value.valid && form.controls.media.controls[i].controls.value.touched">
                         <span *ngIf="!form.controls.media.controls[i].controls.value.valid && form.controls.media.controls[i].controls.value.errors.urlFormat"
                           class="help-block text-danger">
                           Link is not valid
                         </span>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>

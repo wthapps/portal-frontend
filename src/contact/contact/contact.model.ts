@@ -9,6 +9,7 @@ import { Phone } from './phone.model';
 export class Contact extends BaseEntity {
   profile_image = '';
   name = '';
+  family_name = '';
   company = '';
   job_title = '';
   notes = '';

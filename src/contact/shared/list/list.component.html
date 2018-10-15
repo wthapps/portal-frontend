@@ -21,7 +21,7 @@
         <figure class="avatar-xs mr10">
           <img class="img-circle" alt="" [src]="item.profile_image">
         </figure>
-        <div class="name"><span>{{ item.name }}</span></div>
+        <div class="name"><span> {{ item | contactNamePipe: contactsSortBy}} </span></div>
       </div>
       <div class="contact-dl-email">
         <p class="m0" *ngFor="let email of item.emails">{{ email.value }}</p>

@@ -63,6 +63,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
   form: FormGroup;
   name: AbstractControl;
+  family_name: AbstractControl;
   company: AbstractControl;
   // groups: AbstractControl;
   job_title: AbstractControl;
@@ -118,18 +119,18 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.countryService.getCountries()
-    .pipe(
-      takeUntil(this.destroySubject)
-    )
-    .subscribe(
-      (res: any) => {
-        this.countriesCode = res;
-        this.countriesNameCode = _.map(res,
-          (v: any) => {
-            return v.name + ' (' + v.dial_code + ')';
-          }
-        );
-      });
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
+      .subscribe(
+        (res: any) => {
+          this.countriesCode = res;
+          this.countriesNameCode = _.map(res,
+            (v: any) => {
+              return v.name + ' (' + v.dial_code + ')';
+            }
+          );
+        });
   }
 
   ngOnChanges() {
@@ -155,6 +156,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
       this.avatarDefault = this.contact.profile_image;
       (<FormControl>this.name).setValue(this.contact.name);
+      (<FormControl>this.family_name).setValue(this.contact.family_name);
       (<FormControl>this.company).setValue(this.contact.company);
       (<FormControl>this.job_title).setValue(this.contact.job_title);
       (<FormControl>this.notes).setValue(this.contact.notes);
@@ -173,7 +175,8 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
       'emails': this.fb.array([this.initItem('emails')]),
       'addresses': this.fb.array([this.initItem('addresses')]),
       'media': this.fb.array([this.initItem('media')]),
-      'name': ['', Validators.compose([Validators.required])],
+      'name': [''],
+      'family_name': [''],
       'company': [''],
       // 'groups': [''],
       'job_title': [''],
@@ -181,6 +184,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     });
 
     this.name = this.form.controls['name'];
+    this.family_name = this.form.controls['family_name'];
     this.company = this.form.controls['company'];
     // this.groups = this.form.controls['groups'];
     this.job_title = this.form.controls['job_title'];
@@ -364,6 +368,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
   onSubmit(values: any): void {
     this.contact.name = values.name;
+    this.contact.family_name = values.family_name;
     this.contact.company = values.company;
     this.contact.job_title = values.job_title;
     this.contact.emails = _.concat(values.emails, this.deleteObjects['emails']);
