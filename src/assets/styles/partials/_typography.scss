@@ -95,6 +95,30 @@ a.disabled {
   font-size: 120%;
 }
 
+/**
+<div class="text-1-line">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque dolorem dolores eaque enim et, impedit labore laudantium nulla odio officiis perspiciatis repellendus, saepe unde vitae voluptate. Eos iste non quibusdam.</p>
+</div>
+ */
+.text-1-line {
+  position: relative;
+  width: 100%;
+  &:after {
+    content: "hidden";
+    visibility: hidden;
+  }
+  p {
+    margin: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+  }
+}
+
 .link-text {
   color: inherit;
   padding: 0;

@@ -167,6 +167,7 @@
 
 .page-body-nav {
   @include flexbox;
+  @include justify-content(space-between);
   .page-body-nav-left {
     @include flex(1);
   }

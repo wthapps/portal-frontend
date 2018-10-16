@@ -9,9 +9,12 @@
     </span>
   </div>
   <div *ngIf="displayUserName" class="media-avatar-body">
-    <div class="text-bold" *ngIf="data.group_json?.group_type == 'couple'">{{ data.display.name | maxLength: 50 }}</div>
-    <div class="text-bold" *ngIf="data.group_json?.group_type == 'multiple'">{{ data.group_json.name | maxLength: 200
-      }}</div>
+    <div class="text-bold text-1-line" *ngIf="data.group_json?.group_type == 'couple'">
+      <p>{{ data.display.name }}</p>
+    </div>
+    <div class="text-bold text-1-line" *ngIf="data.group_json?.group_type == 'multiple'">
+      <p>{{ data.group_json.name }}</p>
+    </div>
     <ng-container *ngIf="!displayAvatar">
 
       <ng-container *ngIf="data.group_json?.group_type == 'couple'">
