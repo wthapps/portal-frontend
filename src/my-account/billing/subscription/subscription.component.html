@@ -15,7 +15,7 @@
         <div class="col-xs-3 text-left pl0">
           <div> {{ plan?.description }} &nbsp; <a [routerLink]="['/billing/plan']">Change</a></div>
           <div> 0  <a [routerLink]="['/admin/accounts']">Change</a></div>
-          <div><b> (subscription?.amount | number) }}/month </b></div>
+          <div><b> {{ subscription?.amount }}/month </b></div>
           <div><span>Visa</span> &nbsp; <a [routerLink]="['/billing/payment_methods']">Change</a></div>
           <div><b> {{ subscription?.next_billing_date | date: 'MMM d, y' }} </b></div>
         </div>

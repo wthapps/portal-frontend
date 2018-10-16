@@ -1,41 +1,49 @@
 <div class="box-panel">
   <h3 class="box-panel-title">{{ pageTitle }}</h3>
-  <div>
+  <div *ngIf="!paymentMethod">
     <span>
-      WTH!Apps uses secure and encrypted technology to add your payment method. You can use this page to manage the payment information you have added in our system
+      In order to start your subscription, please provide a payment method.
+    </span>
+    <span>
+      You can use this page to manage the payment information you have stored in our system.
+    </span>
+  </div>
+  <div *ngIf="paymentMethod">
+    <span>
+      WTH!Apps uses secure and encrypted technology to store your payment method. You can use this page to manage the payment information you have stored in our system
     </span>
   </div>
   <div class="">
-    <ul class="list-group" *ngIf="loaded && paymentMethods.length > 0">
-      <li class="list-group-item pm-item" *ngFor="let pm of paymentMethods">
+    <ul class="list-group" *ngIf="loaded && paymentMethod">
+      <li class="list-group-item pm-item">
         <div class="pm-item-container">
           <!--<div class="pull-left default-button">-->
             <!--<input type="radio" [checked]="pm.default" name="payment-method-default" title="Set as default"-->
                    <!--(click)="setDefault(pm, $event)">-->
           <!--</div>-->
           <div class="pull-left pm-image">
-            <img [src]="'assets/images/card/' + pm.method_type_id + '.png'">
+            <img [src]="'assets/images/card/' + paymentMethod.method_type_id + '.png'">
 
             <!--{{ pm.method_type_name }}-->
           </div>
           <div class="pull-left pm-summary">
-            <span class="pm-summary-info"> {{ pm.method_type_name }} ending in {{ pm.object_json.last4Number }}</span>
-            <span class="pm-summary-date">Expiry date {{ pm.object_json.expiryDate }}</span>
+            <span class="pm-summary-info"> {{ paymentMethod.method_type_name }} ending in {{ paymentMethod.object_json.last4Number }}</span>
+            <span class="pm-summary-date">Expiry date {{ paymentMethod.object_json.expiryDate }}</span>
           </div>
           <div class="pull-right">
-            <button class="btn btn-default" (click)="openModal(pm)" title="Edit"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-default" (click)="openModal(paymentMethod)" title="Edit"><i class="fa fa-pencil"></i></button>
             <!--<button class="btn btn-default" (click)="delete(pm)" title="Remove" [disabled]="pm.default"><i class="fa fa-trash"></i></button>-->
           </div>
         </div>
 
       </li>
     </ul>
-    <div class="panel-body" *ngIf="loaded && paymentMethods.length === 0">
+    <div class="panel-body" *ngIf="loaded && !paymentMethod">
       There is no payment method
     </div>
   </div>
   <div class="add-button">
-    <button class="btn btn-outline-primary btn-min" (click)="openModal()"> {{ paymentMethods.length === 0 ? 'Add Payment Method' : 'Change Payment Method' }}</button>
+    <button class="btn btn-outline-primary btn-min" (click)="openModal()"> {{ !paymentMethod ? 'Add Payment Method' : 'Change Payment Method' }}</button>
   </div>
 </div>
 <payment-method-add-modal #addModal (onSaved)="savePaymentMethod($event)"></payment-method-add-modal>

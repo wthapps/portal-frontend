@@ -13,15 +13,15 @@
     <bs-modal-body>
 
       <div>
-        <div class="form-group" [ngClass]="{'has-error': (!holderName.valid && holderName.touched),
-                                            'has-success': (holderName.valid && holderName.touched)}">
+        <div class="form-group" [ngClass]="{'has-error': (!holderName.valid && holderName.dirty),
+                                            'has-success': (holderName.valid && holderName.dirty)}">
           <label for="card-name">Card Name</label>
           <input [formControl]="holderName" class="form-control" type="text"
                  id="card-name" size="20"
                  autocomplete="off" data-encrypted-name="holderName">
         </div>
-        <div class="form-group" [ngClass]="{'has-error': (!number.valid && number.touched),
-                                            'has-success': (number.valid && number.touched)}">
+        <div class="form-group" [ngClass]="{'has-error': (!number.valid && number.dirty),
+                                            'has-success': (number.valid && number.dirty)}">
           <label for="card-number">Card Number</label>
           <div class="cardinfo-card-number">
             <input [formControl]="number" class="form-control" type="tel" id="card-number" size="20" wccnumber
@@ -31,8 +31,8 @@
         </div>
         <div class="row">
           <div class="col-sm-3">
-            <div class="form-group" [ngClass]="{'has-error': (!expiryMonth.valid && expiryMonth.touched),
-                                                'has-success': (expiryMonth.valid && expiryMonth.touched)}">
+            <div class="form-group" [ngClass]="{'has-error': (!expiryMonth.valid && expiryMonth.dirty),
+                                                'has-success': (expiryMonth.valid && expiryMonth.dirty)}">
               <label for="card-expiry-month">Expiry month</label>
               <input [formControl]="expiryMonth" class='form-control' type="tel" id="card-expiry-month" size="2"
                      maxlength="2" placeholder="MM" wccmonth min="1" max="12"
@@ -40,8 +40,8 @@
             </div>
           </div>
           <div class="col-sm-3">
-            <div class="form-group" [ngClass]="{'has-error': (!expiryYear.valid && expiryYear.touched),
-                                                'has-success': (expiryYear.valid && expiryYear.touched)}">
+            <div class="form-group" [ngClass]="{'has-error': (!expiryYear.valid && expiryYear.dirty),
+                                                'has-success': (expiryYear.valid && expiryYear.dirty)}">
               <label for="card-expiry-month">Expiry year</label>
               <input [formControl]="expiryYear" class='form-control' type="tel" id="card-expiry-year" size="4"
                      maxlength="4" placeholder="YYYY" wccyear
@@ -49,8 +49,8 @@
             </div>
           </div>
           <div class="col-sm-3">
-            <div class="form-group" [ngClass]="{'has-error': (!cvc.valid && cvc.touched),
-                                                'has-success': (cvc.valid && cvc.touched)}">
+            <div class="form-group" [ngClass]="{'has-error': (!cvc.valid && cvc.dirty),
+                                                'has-success': (cvc.valid && cvc.dirty)}">
               <label for="card-cvv">CVV</label>
               <input [formControl]="cvc" class='form-control' type="tel" id="card-cvv" size="4" wcccvc
                      maxlength="4" data-encrypted-name="cvc">

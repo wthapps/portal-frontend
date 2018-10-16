@@ -45,7 +45,7 @@ export class MySubscriptionComponent implements OnInit {
   getCurrentPaymentMethod(user: any) {
     this.apiBaseService.get(`account/accounts/${user.id}/payment_method`).subscribe(
       (response: any) => {
-        this.paymentMethod = response.data;
+        this.paymentMethod = response.data[0];
       }
     );
   }

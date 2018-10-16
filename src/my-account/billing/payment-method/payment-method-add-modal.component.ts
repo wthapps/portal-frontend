@@ -66,6 +66,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
     this.pm = this.options.data;
     this.pmForm.controls.generationtime.setValue(this.pm.generation_time);
     if (options.mode === 'edit') {
+
       this.pmForm.controls.number.setValue(`**** **** **** ${this.pm.object_json.last4Number}`);
     }
 
@@ -84,8 +85,6 @@ export class PaymentMethodAddModalComponent implements OnInit {
     let form    = document.getElementById('adyen-encrypted-form');
     const cseInstance = adyen.encrypt.createEncryption(key, options);
 
-    console.log('add payment method:::', adyen);
-    console.log('add payment method:::', form);
     // Bind encryption to the form
     let encryptedForm = adyen.encrypt.createEncryptedForm(form, key, options);
 
@@ -93,9 +92,9 @@ export class PaymentMethodAddModalComponent implements OnInit {
 
     encryptedForm.addCardTypeDetection(options.cardTypeElement);
 
-    console.log('postData:::', postData);
-    console.log('encryptedForm:::', form);
-
+    if (this.options.mode === 'edit') {
+      postData['card'] = {expiryMonth: this.expiryMonth.value, expiryYear: this.expiryYear.value};
+    }
     this.onSaved.emit({paymentMethod: {...this.pm, ...postData}, mode: this.options.mode});
   }
 }
