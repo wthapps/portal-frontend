@@ -29,10 +29,13 @@ import { ConversationService } from '@chat/shared/services';
 import { Conversation } from '@chat/shared/models/conversation.model';
 import { BlackListPolicy } from '@shared/policies/black-list-policy';
 import { SizePolicy } from '@shared/policies/size-policy';
+import { from } from 'rxjs/observable/from';
+import { mergeMap } from 'rxjs/operators';
 
 
 declare var _: any;
 declare var Promise: any;
+export const CONCURRENT_UPLOAD = 2;
 
 @Injectable()
 export class ChatService {
@@ -258,38 +261,42 @@ export class ChatService {
     );
   }
 
-  uploadMediaOnWeb(media: any) {
+  uploadMediaOnWeb(media: any): Promise<any> {
     const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json.id;
-    this.sendMessage(groupId, { type: 'file', id: media.id, object: media.object_type || 'Photo' });
+    return this.sendMessage(groupId, { type: 'file', id: media.id, object: media.object_type || 'Photo' });
   }
 
   createUploadingFile(files?: any) {
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(10000000, { only: /video\//g })]);
-    filesAddedPolicy.forEach((file: any) => {
-      const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json
-        .id;
-      const message: Message = new Message({
-        message: 'Sending file.....',
-        message_type: 'file',
-        content_type: 'media/generic'
-      });
-      if (file.allow) {
-        this.sendMessage(groupId, message, null)
-          .then((response: any) => {
-          file.parent = {
-            id: response.data.id,
-            uuid: '',
-            type: 'Chat::Message'
-          };
-          this.fileUploaderService
-            .uploadGenericFile(file)
-            .subscribe((res: any) => {
-                console.log('send file successfully', res);
-              setTimeout(() => this.messageService.scrollToBottom(), 500);
-            });
-        });
-      }
+    const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json
+      .id;
+    const message: Message = new Message({
+      message: 'Sending file.....',
+      message_type: 'file',
+      content_type: 'media/generic'
     });
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(10000000, { only: /video\//g })]);
+    const validFiles = filesAddedPolicy.filter((item: any) => item.allow);
+
+    // upload multiple files in batch of CONCURRENT_UPLOAD, usually set as 4
+    from(validFiles).pipe(
+      mergeMap(file => this.sendMessage(groupId, message, null),
+      (file, response) => {
+        return Object.assign(file, {parent: {
+                  id: response.data.id,
+                  uuid: '',
+                  type: 'Chat::Message'}});
+      },
+      CONCURRENT_UPLOAD
+      ),
+      mergeMap(file => this.fileUploaderService.uploadGenericFile(file),
+        (file, response) => (response),
+        CONCURRENT_UPLOAD
+      )
+    ).subscribe(res => {
+      console.log('send file successfully', res);
+              setTimeout(() => this.messageService.scrollToBottom(), 500);
+    });
+
     const tmp = filesAddedPolicy.filter((item: any) => !item.allow);
     if (tmp && tmp.length > 0) {
       this.commonEventService.broadcast({
@@ -476,8 +483,7 @@ export class ChatService {
       { accept_friend: true })
       .then((res: any) => {
         contact.active = true;
-        this.getMessages(contact.group_id, { force: true }).then(res => {
-        });
+        this.getMessages(contact.group_id, { force: true });
       }
     );
   }

@@ -1,26 +1,26 @@
-import { Injectable } from "@angular/core";
-import { FileReaderUtil } from "@shared/shared/utils/file/file-reader.util";
-import { GenericFileService } from "@shared/services";
-import { GenericFile } from "@shared/shared/models/generic-file.model";
-import { Observer, Observable } from "rxjs";
-import * as Boom from "boom";
-import { of } from "rxjs/observable/of";
-import { map, concatAll, catchError, mergeAll, mergeMap } from "rxjs/operators";
-import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
+import { Injectable } from '@angular/core';
+import { FileReaderUtil } from '@shared/shared/utils/file/file-reader.util';
+import { GenericFileService } from '@shared/services';
+import { GenericFile } from '@shared/shared/models/generic-file.model';
+import { Observable } from 'rxjs/Observable';
+import * as Boom from 'boom';
+import { of } from 'rxjs/observable/of';
+import { map, concatAll, catchError, mergeAll, mergeMap } from 'rxjs/operators';
+import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { _throw } from 'rxjs/observable/throw';
 import { from } from 'rxjs/observable/from';
-import { BlackListPolicy } from "@shared/policies/black-list-policy";
+import { BlackListPolicy } from '@shared/policies/black-list-policy';
 
 @Injectable()
 export class FileUploaderService {
 
   constructor(private genericFileService: GenericFileService){}
 
-  uploadGenericFile(file: any) : Observable<any> {
-    if (!file) {
+  uploadGenericFile(genFile: any): Observable<any> {
+    if (!genFile) {
       return _throw(Boom.badData('file is empty'));
     }
-    return of(file).pipe(
+    return of(genFile).pipe(
       mergeMap(file => FileReaderUtil.read(file), (file, event) => {
         return new GenericFile({
           file: event.target.result,

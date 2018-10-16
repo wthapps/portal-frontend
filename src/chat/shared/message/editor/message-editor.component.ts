@@ -6,14 +6,14 @@ import 'rxjs/add/observable/merge';
 
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ChatService } from '../../services/chat.service';
+import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE } from '@wth/shared/constant';
 import { ApiBaseService, WMessageService, AuthService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { filter, map, take, takeUntil } from 'rxjs/operators';
+import { filter, map, take, takeUntil, mergeMap } from 'rxjs/operators';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { Store } from '@ngrx/store';
@@ -23,6 +23,7 @@ import { WUploader } from '@shared/services/w-uploader';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { LongMessageModalComponent } from '@shared/components/modal/long-message-modal.component';
+import { from } from 'rxjs/observable/from';
 
 
 declare var $: any;
@@ -232,11 +233,18 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  chooseDone(e: any) {
-    // this.photoModal.close();
-    for (const media of e) {
-      this.chatService.uploadMediaOnWeb(media);
-    }
+  chooseDone(allMedia: any[]) {
+    // Create multiple chat messages in batches of CONCURRENT_UPLOAD (default value is 4)
+    from(allMedia).pipe(
+      mergeMap(media => this.chatService.uploadMediaOnWeb(media),
+      (valueFromSource, valueFromPromise) => {
+        return `Source: ${valueFromSource}, Promise: ${valueFromPromise}`;
+      },
+      CONCURRENT_UPLOAD
+      )
+    ).subscribe((val) => {
+      console.log('choose done: ', val);
+    });
   }
 
   changeFiles(event: any) {
