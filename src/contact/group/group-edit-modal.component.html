@@ -7,9 +7,8 @@
     <bs-modal-body>
       <div class="row">
         <div class="col-sm-12">
-          <div class="form-group"
+          <div class="form-group no-label"
                [ngClass]="{'has-error': (!name.valid && name.touched),'has-success': (name.valid && name.touched)}">
-            <label for="name"></label>
             <input autofocus [formControl]="name" type="text" class="form-control" id="name" placeholder="New group name">
             <div *ngIf="!name.valid && name.touched">
               <span *ngIf="!name.valid && name.errors.required" class="help-block">
