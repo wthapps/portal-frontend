@@ -198,7 +198,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
     this.mode = options.mode;
     this.isShare = options.isShare;
-    this.editorError = "";
+    this.editorError = '';
 
     if (options.post != null) {
       this.post = _.cloneDeep(options.post);
@@ -359,8 +359,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   addMorePhoto(event?: any) {
     this.onMoreAdded.emit(true);
-    this.mediaSelectionService.setMultipleSelection(true);
-    this.mediaSelectionService.open({ filter: 'photo', allowCancelUpload: true });
+    // this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({ filter: 'photo', allowSelectMultiple: true, allowCancelUpload: true });
 
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.close$), filter(items => items.length > 0))

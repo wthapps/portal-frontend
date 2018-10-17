@@ -50,6 +50,7 @@ export class ConstantsBase {
     InternalServerError: 200,
     Created: 201,
     Conflict: 409,
+    NotAcceptable: 406,
     ExpectationFailed: 417,
     PaymentRequired: 402
   };
