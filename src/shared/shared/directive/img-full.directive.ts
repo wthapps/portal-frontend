@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[imgFull]'
@@ -22,7 +22,7 @@ export class ImgFullDirective {
     this.setClass(this.aspectRatioWindow, this.aspectRatioImg);
   }
 
-  constructor(private el: ElementRef, private renderer: Renderer) {
+  constructor(private el: ElementRef, private renderer: Renderer2) {
     this.aspectRatioWindow = this.getAspectRatio(window.innerWidth, window.innerHeight);
   }
 
@@ -32,11 +32,11 @@ export class ImgFullDirective {
 
   private setClass(win: any, img: any) {
     if (win >= img) {
-      this.renderer.setElementClass(this.el.nativeElement, 'img-full-height', true);
-      this.renderer.setElementClass(this.el.nativeElement, 'img-full-width', false);
+      this.renderer.addClass(this.el.nativeElement, 'img-full-height');
+      this.renderer.removeClass(this.el.nativeElement, 'img-full-width');
     } else {
-      this.renderer.setElementClass(this.el.nativeElement, 'img-full-height', false);
-      this.renderer.setElementClass(this.el.nativeElement, 'img-full-width', true);
+      this.renderer.removeClass(this.el.nativeElement, 'img-full-height');
+      this.renderer.addClass(this.el.nativeElement, 'img-full-width');
     }
   }
 }

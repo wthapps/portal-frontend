@@ -159,8 +159,14 @@ $message-item-content-card-right-xs: 25px;
 
   .message-item-content-photo {
     img {
-      max-width: 300px;
-      width: 100%;
+      &.img-horizontal {
+        max-width: 430px;
+        height: auto;
+      }
+      &.img-vertical {
+        max-height: 430px;
+        width: auto;
+      }
     }
   }
 

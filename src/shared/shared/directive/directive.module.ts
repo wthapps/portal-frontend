@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ImgAlignDirective } from '@shared/shared/directive/img-align.directive';
 import { AutofocusInputDirective } from './autofocus.directive';
 import { DisplayAsHtmlDirective } from './display-as-html.directive';
 import { ImgFullDirective } from './img-full.directive';
@@ -17,6 +18,7 @@ import { ScrollDirectiveModule } from './scroll/scroll.directive.module';
     AutofocusInputDirective,
     DisplayAsHtmlDirective,
     ImgFullDirective,
+    ImgAlignDirective,
     TextAreaAutoHeightDirective,
     CommentAutoHeightDirective,
     ShiftEnterDirective,
@@ -28,6 +30,7 @@ import { ScrollDirectiveModule } from './scroll/scroll.directive.module';
     AutofocusInputDirective,
     DisplayAsHtmlDirective,
     ImgFullDirective,
+    ImgAlignDirective,
     TextAreaAutoHeightDirective,
     CommentAutoHeightDirective,
     ShiftEnterDirective,
