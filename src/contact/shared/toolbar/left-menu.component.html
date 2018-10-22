@@ -9,29 +9,25 @@
 </div> -->
 
 
-<div class="menuleft-item btn-group" >
-  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false">
-    <i class="fa fa-plus visible-xs" aria-hidden="true"></i> <span class="hidden-xs">New</span>
-  </button>
+<div class="menuleft-item btn-group">
+  <a type="button" class="new-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-plus"></i> <span class="hidden-xs">New</span>
+  </a>
   <ul class="dropdown-menu dropdown-menu-sm">
     <li><a href="javascript:;" [routerLink]="['/contacts', 'new']" (click)="onCloseSidebar()">
-      <i class="fa fa-plus"></i> New Contact
-    </a></li>
+        <i class="fa fa-plus"></i> New Contact
+      </a></li>
     <li>
 
-  <a (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})"
-  href="javascript:void(0)" >
- <i class="fa fa-plus"></i> New Group
-</a>
+      <a (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})" href="javascript:void(0)">
+        <i class="fa fa-plus"></i> New Group
+      </a>
     </li>
   </ul>
 </div>
 
 <div class="menuleft-item" [ngClass]="{'active' : ( currentGroup === 'all contacts')}">
-  <a href="javascript:;" [routerLink]="['contacts', {group: 'all contacts'}]"
-     (click)="doEvent({action: 'contacts', event: $event})">
+  <a href="javascript:;" [routerLink]="['contacts', {group: 'all contacts'}]" (click)="doEvent({action: 'contacts', event: $event})">
     <i class="fa fa-address-book-o"></i> My Contacts ({{ contactService.myContactCount }})
   </a>
 </div>
@@ -45,9 +41,8 @@
       <i class="{{ group.icon }}"></i> {{ group.name | maxLength: 20}} ({{ group?.count }})
     </a>
     <div *ngIf="group.hasSubMenu" class="menuleft-item-action">
-      <span class="can-click"
-            (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
-            title="edit group name">
+      <span class="can-click" (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
+        title="edit group name">
         <i class="fa fa-pencil"></i>
       </span>
       <span class="can-click" (click)="deleteGroup(group)" title="delete group">
@@ -71,7 +66,7 @@
 
 
 <div class="menuleft-item" [routerLinkActive]="['active']">
-  <a (click)="openImportContactModal()" href="javascript:void(0)" >
+  <a (click)="openImportContactModal()" href="javascript:void(0)">
     <i class="fa fa-download"></i> Import
   </a>
 </div>
@@ -85,4 +80,3 @@
 <z-contact-share-import-contact #importContactSelect (optionSelected)="onImportOptionSelected($event)"></z-contact-share-import-contact>
 
 <icloud-oauth-modal #iCloudOAuthModal></icloud-oauth-modal>
-
