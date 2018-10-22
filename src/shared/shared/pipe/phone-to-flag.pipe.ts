@@ -6,16 +6,25 @@ declare var _: any;
   name: 'phoneCodeCountries'
 })
 export class PhoneCodeCountriesPipe implements PipeTransform {
-
   transform(key: any, data: any): any {
     if (key) {
-      let phoneName = key.split(' (+');
-      let phoneCode = _.find(data, ['name', phoneName[0]]);
-      return '<div class="clearfix">' +
-        '<img class="pull-left" width=\'30\' src=\'assets/images/flags/' + phoneCode.code.toLowerCase() + '.svg\' alt=\'\'>' +
-        '<span class="pull-left">' + phoneCode.name + '</span>' +
-        '<span class="pull-right">' + '(' + phoneCode.dial_code + ')' + '</span>' +
-        '</div>';
+      const phoneName = key.split(' (+');
+      const phoneCode = _.find(data, ['name', phoneName[0]]);
+      return (
+        '<div class="clearfix">' +
+        "<img class=\"pull-left\" width='30' src='assets/images/flags/" +
+        phoneCode.code.toLowerCase() +
+        ".svg' alt=''>" +
+        '<span class="pull-left">' +
+        phoneCode.name +
+        '</span>' +
+        '<span class="pull-right">' +
+        '(' +
+        phoneCode.dial_code +
+        ')' +
+        '</span>' +
+        '</div>'
+      );
     }
   }
 }
@@ -28,12 +37,11 @@ export class PhoneCodeCountriesPipe implements PipeTransform {
   name: 'phoneCodeFlag'
 })
 export class PhoneCodeFlagPipe implements PipeTransform {
-
   transform(key: any, data: any): any {
     if (data) {
       if (key) {
-        let phoneName = key.split(' (+');
-        let phoneCode = _.find(data, ['name', phoneName[0]]);
+        const phoneName = key.split(' (+');
+        const phoneCode = _.find(data, ['name', phoneName[0]]);
         if (phoneCode && phoneCode.code) {
           return phoneCode.code.toLowerCase();
         }
@@ -43,18 +51,39 @@ export class PhoneCodeFlagPipe implements PipeTransform {
   }
 }
 
+const PHONE_CODE_REGEX = /\([^\)]*\)/;
+// Aghanistan (+83) => +83
+@Pipe({
+  name: 'phoneCodeOnlyFlag'
+})
+export class PhoneCodeOnlyFlagPipe implements PipeTransform {
+  transform(key: any): any {
+    if (!key) return '';
+    const matches = key.match(PHONE_CODE_REGEX);
+    return matches ? matches[0] : '';
+  }
+}
+
 @Pipe({
   name: 'phoneCodeToDisplayCode'
 })
 export class PhoneCodeToDisplayCodePipe implements PipeTransform {
-
   transform(key: any, data: any): any {
-    let phoneCode = _.find(data, ['code', key.toUpperCase()]);
-    return '<div class="clearfix">' +
-      '<img class="pull-left" width=\'30\' src=\'assets/images/flags/' + phoneCode.code.toLowerCase() + '.svg\' alt=\'\'>' +
-      '<span class="pull-left">' + phoneCode.name + '</span>' +
-      '<span class="pull-right">' + '(' + phoneCode.dial_code + ')' + '</span>' +
-      '</div>';
+    const phoneCode = _.find(data, ['code', key.toUpperCase()]);
+    return (
+      '<div class="clearfix">' +
+      "<img class=\"pull-left\" width='30' src='assets/images/flags/" +
+      phoneCode.code.toLowerCase() +
+      ".svg' alt=''>" +
+      '<span class="pull-left">' +
+      phoneCode.name +
+      '</span>' +
+      '<span class="pull-right">' +
+      '(' +
+      phoneCode.dial_code +
+      ')' +
+      '</span>' +
+      '</div>'
+    );
   }
 }
-

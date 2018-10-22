@@ -71,9 +71,9 @@
                   <div class="col-sm-5">
                     <div class="form-group no-label">
 
-                      <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code" [suggestions]="filteredCountriesCode"
-                        (completeMethod)="filterCountriesCode($event)" [size]="30" [minLength]="1" placeholder="Select your country"
-                        [dropdown]="true">
+                      <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
+                        [suggestions]="filteredCountriesCode" (completeMethod)="filterCountriesCode($event)" [size]="30"
+                        [minLength]="1" placeholder="Select your country" [dropdown]="true">
                         <ng-template ngFor let-code let-i="index" pTemplate="item">
                           <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
                         </ng-template>
@@ -171,12 +171,12 @@
                     <div class="row row-10">
                       <div class="col-sm-12">
                         <div class="form-group no-label">
-                          <input type="text" class="form-control" formControlName="address_line1" placeholder="Address">
+                          <input type="text" class="form-control" formControlName="address_line1" placeholder="Address Line 1">
                         </div>
                       </div>
                       <div class="col-sm-12">
                         <div class="form-group no-label">
-                          <input type="text" class="form-control" formControlName="po_box" placeholder="PO Box">
+                          <input type="text" class="form-control" formControlName="address_line2" placeholder="Address Line 2">
                         </div>
                       </div>
                       <div class="col-sm-12">

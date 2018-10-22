@@ -10,9 +10,7 @@
     <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min" (click)="goBack()">Cancel
     </button>
 
-    <button *ngIf="mode === 'edit'" type="button" [disabled]="(!contactEdit?.name?.valid && contactEdit?.name?.errors?.required)
-            || contactEdit?.disableEdit || !formValid"
-      (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min mr10">Save
+    <button *ngIf="mode === 'edit'" type="button" (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min mr10">Save
     </button>
 
 
@@ -66,9 +64,9 @@
       </h4>
       <ng-container *ngFor="let email of emails">
         <div *ngIf="email.wthapps_user == null" class="user-row">
-          <div class="avatar">
+          <!-- <div class="avatar">
             <img class="img-circle" width="34" alt="" [src]="avatarDefault">
-          </div>
+          </div> -->
           <div class="name">
             <span>{{ email.value }}</span>
           </div>

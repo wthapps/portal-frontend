@@ -20,6 +20,7 @@ export class ZContactDetailComponent implements OnInit {
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
   contactId: number;
   data: any;
+  showAddToContacts = false;
 
   readonly phoneCategories: any = Constants.phoneCategories;
   readonly emailCategories: any = Constants.emailCategories;
@@ -44,6 +45,7 @@ export class ZContactDetailComponent implements OnInit {
       this.contactService.clearSelected();
       this.getContact(params['id']);
       this.contactId = params['id'];
+      this.showAddToContacts = (params['wth'] === 'true');
     });
   }
 

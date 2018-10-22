@@ -1,11 +1,11 @@
-<wth-modal-dock #modalDock [cssClass]="{'dock-merge-contact': true, 'no-display': !status}" >
+<wth-modal-dock #modalDock [cssClass]="{'dock-merge-contact': true, 'no-display': !status}">
   <wth-modal-dock-header *ngIf="status" [hasCloseIcon]="false" [loading]="(status==STATUS.processing)" [failed]="(status==STATUS.cancelled || status==STATUS.error)"
-                         [done]="(status==STATUS.done || status==STATUS.undid )">
-      <span *ngIf="status==STATUS.processing">Merging</span>
-<span *ngIf="status==STATUS.undid">Undid {{ contactService.mergingObjects?.length }} merged contacts</span>
-      <span *ngIf="status==STATUS.done">{{ contactService.mergingObjects?.length }} contacts merged </span>
-      <span *ngIf="status==STATUS.cancelled">Merge cancelled</span>
-      <span *ngIf="status==STATUS.error">Oops, something's wrong !</span>
+    [done]="(status==STATUS.done || status==STATUS.undid )">
+    <span *ngIf="status==STATUS.processing">Merging</span>
+    <span *ngIf="status==STATUS.undid">Reverted</span>
+    <span *ngIf="status==STATUS.done">{{ contactService.mergingObjects?.length }} contacts merged </span>
+    <span *ngIf="status==STATUS.cancelled">Merge cancelled</span>
+    <span *ngIf="status==STATUS.error">Oops, something's wrong !</span>
     <div *ngIf="status==STATUS.done" dock-header-action>
       <a class="merge-action" href="javascript:;" (click)="undo()">Undo</a>
       <a class="merge-action" href="javascript:;" (click)="modalDock.close()">Close</a>

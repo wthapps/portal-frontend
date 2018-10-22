@@ -11,6 +11,7 @@ import { LoadingService } from '../../../shared/shared/components/loading/loadin
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 import { CommonEvent } from '../../../shared/services/common-event/common-event';
 
+const IDLE_TIME_MS = 10000;
 @Component({
   selector: 'z-contact-share-merge-progress',
   templateUrl: 'merge-progress.component.html',
@@ -20,7 +21,7 @@ import { CommonEvent } from '../../../shared/services/common-event/common-event'
 export class ZContactShareMergeProgressComponent implements OnDestroy {
   @ViewChild('modalDock') modalDock: ModalDockComponent;
 
-  STATUS: any = {
+  readonly STATUS: any = {
     processing: 1,
     done: 2,
     error: 3,
@@ -33,6 +34,7 @@ export class ZContactShareMergeProgressComponent implements OnDestroy {
   status: any;
   successfulNum: Number = 0;
   failedNum: Number = 0;
+  timeoutRef: any;
 
   constructor(
     private contactService: ZContactService,
@@ -52,12 +54,13 @@ export class ZContactShareMergeProgressComponent implements OnDestroy {
     switch (event.action) {
       case 'open': {
         this.status = this.STATUS.processing;
-        this.modalDock.open();
+        this.open();
 
         this.contactService
           .mergeContacts()
           .then((res: any) => {
             this.status = this.STATUS.done;
+            this.autoClose();
           })
           .catch(err => (this.status = this.STATUS.error));
         break;
@@ -72,15 +75,28 @@ export class ZContactShareMergeProgressComponent implements OnDestroy {
     this.mergeSubscription.unsubscribe();
   }
 
+  open() {
+    this.modalDock.open();
+  }
+
+  clearTimeout() {
+    if (this.timeoutRef)
+      clearTimeout(this.timeoutRef);
+  }
+
+  autoClose() {
+    this.clearTimeout();
+    this.timeoutRef = setTimeout(() => this.modalDock.close(), IDLE_TIME_MS);
+  }
+
   undo() {
+    this.clearTimeout();
     this.contactService
       .undoMerge()
-      .then(res => (this.status = this.STATUS.undid))
-      // .then(() =>
-      //   setTimeout(() => {
-      //     this.modalDock.close();
-      //   }, 5000)
-      // )
+      .then(res => {
+        this.status = this.STATUS.undid;
+        this.autoClose();
+      })
       .catch(err => {
         console.warn(err);
         this.status = this.STATUS.error;

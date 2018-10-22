@@ -422,7 +422,8 @@ export class ZContactService extends BaseEntityService<any> {
       .then((res: any) => {
         const merged_contact: any = { ...res.data };
         this.contacts = this.contacts.filter((c: any) => !ids.includes(c.id));
-        this.selectedObjects.length = 0;
+        // this.selectedObjects.length = 0;
+        this.selectedObjects = [merged_contact];
         this.mergedObjects = [merged_contact];
 
         this.contacts.unshift(merged_contact);

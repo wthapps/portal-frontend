@@ -252,6 +252,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
         const data: any = {
           category: 'work',
           address_line1: '',
+          address_line2: '',
           po_box: '',
           city: '',
           province: '',
@@ -263,6 +264,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
             id: [item.id, Validators.compose([Validators.required])],
             category: [item.category],
             address_line1: [item.address_line1],
+            address_line2: [item.address_line2],
             po_box: [item.po_box],
             city: [item.city],
             province: [item.province],
@@ -273,6 +275,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
           formGroup = {
             category: [data.category],
             address_line1: [data.address_line1],
+            address_line2: [data.address_line2],
             po_box: [data.po_box],
             city: [data.city],
             province: [data.province],

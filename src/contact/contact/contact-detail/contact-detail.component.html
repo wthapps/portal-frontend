@@ -1,16 +1,10 @@
 <ng-container *ngIf="data">
   <z-contact-shared-toolbar [currentPage]="'detail'" [hasBack]="true">
     <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
-      <z-contact-shared-actions-bar
-        [showViewDetail]="false"
-        [showNumber]="false"
-        [showTag]="false"
-        [showSocial]="data | isContactInternal"
-        [showChat]="data | isContactInternal"
-        [showInvitation]="true"
-        [toggleFavourite]="_contact.isContactsHasGroupName([data], 'favourite')"
-        [toggleBlacklist]="_contact.isContactsHasGroupName([data], 'blacklist')"
-        (eventOut)="doActionsToolbar($event)"></z-contact-shared-actions-bar>
+      <z-contact-shared-actions-bar [showViewDetail]="false" [showAddToContacts]="showAddToContacts" [showNumber]="false"
+        [showTag]="false" [showSocial]="data | isContactInternal" [showChat]="data | isContactInternal"
+        [showInvitation]="true" [toggleFavourite]="_contact.isContactsHasGroupName([data], 'favourite')"
+        [toggleBlacklist]="_contact.isContactsHasGroupName([data], 'blacklist')" (eventOut)="doActionsToolbar($event)"></z-contact-shared-actions-bar>
     </div>
   </z-contact-shared-toolbar>
   <div class="page-body-content has-page-body-control">
@@ -48,9 +42,10 @@
                 <dd>
                   {{ item.country_alpha_code | phoneCodeFlag:countriesCode | json }}
                   <p>
-                    <img *ngIf="(countriesCode$ | async) && data.phones[0]?.country_alpha_code && item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
-                      src="assets/images/flags/{{ item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg" width="30"
-                      alt=""> {{ item.value }}
+                    <!-- <img *ngIf="(countriesCode$ | async) && data.phones[0]?.country_alpha_code && item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
+                      src="assets/images/flags/{{ item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
+                      width="30" alt=""> {{ item.value }} -->
+                    {{ item.value }}
                   </p>
                 </dd>
               </ng-template>
@@ -85,12 +80,7 @@
               <ng-template ngFor let-item [ngForOf]="data.addresses">
                 <dt>{{ item.category | keyToValue:addressCategories:'value':'text' }}</dt>
                 <dd>
-                  <p>
-                    {{ item.address_line1 }}
-                    <br> {{ item.address_line2 }}
-                    <br> {{ item.city }} {{ item.province }} {{ item.postcode }}
-                    <br> {{ item.country }}
-                    <br>
+                  <p [innerHTML]="item | contactAddressPipe">
                   </p>
                 </dd>
               </ng-template>

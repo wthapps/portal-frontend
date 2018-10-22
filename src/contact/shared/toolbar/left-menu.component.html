@@ -2,10 +2,31 @@
   <img src="/assets/images_new/logo-contact.png" alt="">
 </div>
 
-<div class="menuleft-item" [routerLinkActive]="['active']">
+<!-- <div class="menuleft-item" [routerLinkActive]="['active']">
   <a href="javascript:;" [routerLink]="['/contacts', 'new']" (click)="onCloseSidebar()">
     <i class="fa fa-plus"></i> Contact
   </a>
+</div> -->
+
+
+<div class="menuleft-item btn-group" >
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">
+    <i class="fa fa-plus visible-xs" aria-hidden="true"></i> <span class="hidden-xs">New</span>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-sm">
+    <li><a href="javascript:;" [routerLink]="['/contacts', 'new']" (click)="onCloseSidebar()">
+      <i class="fa fa-plus"></i> New Contact
+    </a></li>
+    <li>
+
+  <a (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})"
+  href="javascript:void(0)" >
+ <i class="fa fa-plus"></i> New Group
+</a>
+    </li>
+  </ul>
 </div>
 
 <div class="menuleft-item" [ngClass]="{'active' : ( currentGroup === 'all contacts')}">
@@ -36,12 +57,12 @@
   </div>
 </ng-container>
 
-<div class="menuleft-item">
+<!-- <div class="menuleft-item">
   <a (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})"
      href="javascript:void(0)" >
     <i class="fa fa-plus"></i> New Group
   </a>
-</div>
+</div> -->
 <div class="menuleft-item" [routerLinkActive]="['active']">
   <a [routerLink]="['/others']" (click)="doEvent(null)" href="javascript:void(0)">
     <i class="fa fa-inbox"></i> Other contacts ({{ contactService.otherContactCount }})

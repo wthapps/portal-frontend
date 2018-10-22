@@ -13,6 +13,7 @@ import { FileReaderUtil } from '@shared/shared/utils/file/file-reader.util';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { WUploader } from '@shared/services/w-uploader';
 
+const IDLE_TIME_MS = 10000;
 @Component({
   selector: 'z-contact-share-import-progress',
   templateUrl: 'import-progress.component.html',
@@ -37,6 +38,7 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
   failedNum = 0;
   importInfo: any;
   destroy$ = new Subject();
+  timeoutRef: any;
 
 
   constructor(
@@ -60,6 +62,16 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
     this.importSubscription.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  clearTimeout() {
+    if (this.timeoutRef)
+      clearTimeout(this.timeoutRef);
+  }
+
+  autoClose() {
+    this.clearTimeout();
+    this.timeoutRef = setTimeout(() => this.modalDock.close(), IDLE_TIME_MS);
   }
 
   // TODO move this logic to ContactService
@@ -116,6 +128,8 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
       console.warn('importContact err: ', err);
       this.importStatus = this.IMPORT_STATUS.error;
       return this.importDone(err);
+    } finally {
+      this.autoClose();
     }
   }
 
@@ -141,10 +155,12 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
             this.successfulNum = response.data.length;
             this.contactService.addMoreContacts(response.data);
             this.importDone();
+            this.autoClose();
           },
           (error: any) => {
             this.importStatus = this.IMPORT_STATUS.error;
             this.importDone(error);
+            this.autoClose();
           });
         break;
 

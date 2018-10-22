@@ -365,24 +365,25 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.close$), filter(items => items.length > 0))
       .subscribe(items => {
+        console.log('items: ', items);
         this.post.photos = _.uniqBy(_.flatten([this.post.photos, items]), 'uuid');
       });
 
-    this.mediaSelectionService.uploadingMedias$
-      .pipe(
-        takeUntil(this.close$),
-        map(([file, dataUrl]) => file),
-        filter(file => this.photoUploadService.isValidImage(file)),
-        map(file => {
-          console.log('valid files', file);
-          this.files.push(file);
-          this.modal.open();
-        })
-      )
-      .subscribe((item: any[]) => {
-        console.log('uploading files', item);
-        this.uploadFiles([item]);
-      });
+    // this.mediaSelectionService.uploadingMedias$
+    //   .pipe(
+    //     takeUntil(this.close$),
+    //     map(([file, dataUrl]) => file),
+    //     filter(file => this.photoUploadService.isValidImage(file)),
+    //     map(file => {
+    //       console.log('valid files', file);
+    //       this.files.push(file);
+    //       this.modal.open();
+    //     })
+    //   )
+    //   .subscribe((item: any[]) => {
+    //     console.log('uploading files', item);
+    //     this.uploadFiles([item]);
+    //   });
   }
 
   dismiss(photos: any) {
