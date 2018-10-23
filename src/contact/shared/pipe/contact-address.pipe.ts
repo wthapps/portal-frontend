@@ -12,7 +12,6 @@ export class ContactAddressPipe implements PipeTransform {
       postcode,
       country
     } = item;
-    console.log('address_line2:', item, address_line2);
 
     let full_address = address_line1 || '';
     if (address_line2 && address_line2.trim() !== '')

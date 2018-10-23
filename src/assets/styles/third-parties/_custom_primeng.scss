@@ -3,7 +3,7 @@
 }
 
 // inputswitch
-
+$ui-state-active-color: green;
 $ui-inputswitch-w: 24px;
 
 .ui-inputswitch {
@@ -79,11 +79,19 @@ $ui-inputswitch-w: 24px;
 .ui-radiobutton-box {
   &.ui-state-active,
   &.ui-state-active.ui-state-focus {
-    background-color: $input-color-active;
+    background-color:  $input-color-active;
     border-color: $input-color-active;
   }
   &.ui-state-focus {
     background-color: transparent;
+  }
+}
+
+.ui-radiobutton-box {
+  &.ui-state-active,
+  &.ui-state-active.ui-state-focus {
+    background-color:  $ui-state-active-color;
+    border-color: $ui-state-active-color;
   }
 }
 
