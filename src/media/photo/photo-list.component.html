@@ -1,8 +1,8 @@
 <ng-template #objectActionsTemplate>
   <ul class="page-body-control-menu" [ngClass]="{'text-disable': !hasSelectedObjects}" [class.disabled]="!hasSelectedObjects">
     <li>
-      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="viewDetail(selectedObjects[0].uuid)" pTooltip="{{ tooltip.preview}}"
-        tooltipPosition="bottom">
+      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="viewDetail(selectedObjects[0].uuid)"
+        pTooltip="{{ tooltip.preview}}" tooltipPosition="bottom">
         <i class="fa fa-eye"></i>
       </a>
     </li>
@@ -25,8 +25,8 @@
     <!-- -Hide mobile- -->
     <li class="hidden-xs" *ngIf="hasSelectedObjects">
       <a class="btn btn-default" href="javascript:;" draggable="false" (click)="toolbar.doAction({action: 'openModal',
-         payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})" pTooltip="{{ tooltip.tag}}"
-        tooltipPosition="bottom">
+         payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})"
+        pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
         <i class="fa fa-tag"></i>
       </a>
     </li>
@@ -90,13 +90,16 @@
   (event)="doToolbarEvent($event)">
 </w-toolbar>
 
-<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
+<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)"
+  (selectedObjectsChanged)="selectedObjectsChanged($event)">
 
 </w-grid-list>
-<box-loading *ngIf="this.links?.next"></box-loading>
 
-<box-no-data *ngIf="objects && objects.length == 0" [title]="'There is no photos!'" [icon]="'fa fa-file-video-o'" [subTitle]="'Try to upload a new photos'"
-  style="margin-top: 50px; display: block;">
+<div class="text-fade text-center" *ngIf="endLoading"> <strong>{{objects.length}} files</strong></div>
+<box-loading *ngIf="links?.next"></box-loading>
+
+<box-no-data *ngIf="objects && objects.length == 0" [title]="'There is no photos!'" [icon]="'fa fa-file-video-o'"
+  [subTitle]="'Try to upload a new photos'" style="margin-top: 50px; display: block;">
   <button class="btn btn-outline-primary" (click)="upload(['image/*'])">
     <i class="fa fa-cloud-upload"></i> Upload Photo</button>
 </box-no-data>

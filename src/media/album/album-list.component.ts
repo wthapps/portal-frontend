@@ -50,6 +50,7 @@ export class AlbumListComponent implements OnInit, OnDestroy,
   modalRef: any;
   sorting: any;
   subCreateAlbum: any;
+  endLoading: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
 
@@ -82,17 +83,13 @@ export class AlbumListComponent implements OnInit, OnDestroy,
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
+      this.loadingEnd();
     });
   }
 
-  loadMoreObjects(input?: any) {
-    if (this.links && this.links.next) {
-      this.apiBaseService.get(this.links.next).subscribe(res => {
-        this.objects = [...this.objects, ...res.data];
-        this.links = res.meta.links;
-      })
-    }
-  }
+  loadMoreObjects:(input?: any) => void;
+
+  loadingEnd: () => void;
 
   doToolbarEvent(e: any) {
     switch (e.action) {
@@ -109,6 +106,9 @@ export class AlbumListComponent implements OnInit, OnDestroy,
         break;
       case 'favorite':
         this.toggleFavorite(event.payload);
+        break;
+      case 'getMore':
+        this.loadMoreObjects();
         break;
       case 'openModal':
         if (event.payload.modalName == "editNameModal") {

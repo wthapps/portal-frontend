@@ -42,6 +42,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   modalIns: any;
   modalRef: any;
   sorting: any;
+  endLoading: any;
   iconNoData: any = 'fa fa-share-alt';
   titleNoData: any = 'There no media shared by you!';
   subTitleNoData: any = 'Media can be shared to your connected contact.';
@@ -71,17 +72,11 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
+      this.loadingEnd();
     })
   }
 
-  loadMoreObjects(input?: any) {
-    if (this.links && this.links.next) {
-      this.apiBaseService.get(this.links.next).subscribe(res => {
-        this.objects = [...this.objects, ...res.data];
-        this.links = res.meta.links;
-      })
-    }
-  }
+  loadMoreObjects:(input?: any) => void;
 
   viewDetail(input?: any) {
     /* this method is load detail object */
@@ -89,6 +84,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   }
 
   selectedObjectsChanged:(objectsChanged: any) => void;
+  onAfterEditModal: () => void;
 
   toggleFavorite:(items?: any) => void;
 
@@ -180,9 +176,8 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   loadModalComponent: (component: any) => void;
 
   openEditModal:(object: any) => void;
-  onAfterEditModal() {
 
-  };
+  loadingEnd:() => void;
 
   openEditModalCustom() {
     if(this.selectedObjects && this.selectedObjects.length == 1) {

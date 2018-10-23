@@ -1,10 +1,7 @@
 <ng-container *ngIf="data | addFirstCharacter | groupByMap:'first_character':'asc':'name':'asc' as newData">
   <div class="contact-bar">
-    <a *ngFor="let objects of newData; trackBy: trackByGroup"
-       [ngx-scroll-to]="'#contact-' + objects.key"
-       [ngx-scroll-to-offset]="0"
-       [ngx-scroll-to-duration]="0"
-       href="javascript:;">
+    <a *ngFor="let objects of newData; trackBy: trackByGroup" [ngx-scroll-to]="'#contact-' + objects.key"
+      [ngx-scroll-to-offset]="0" [ngx-scroll-to-duration]="0" href="javascript:;">
       {{ objects.key }}
     </a>
   </div>
@@ -30,32 +27,13 @@
         <p class="m0" *ngFor="let phone of item.phones">{{ phone.value }}</p>
       </div>
       <div class="contact-dl-action">
-        <z-contact-shared-actions-bar [data]="item"
-                                      [showQuickInvitation]="item.wthapps_user == null"
-                                      [showNumber]="false"
-                                      [showSocial]="item | isContactInternal"
-                                      [showChat]="item | isContactInternal"
-                                      [showInvitation]="item | canInvite "
-                                      [showEdit]="!isStranger"
-                                      [showFavorite]="!isStranger"
-                                      [isStranger]="isStranger"
-                                      [showAddToContacts]="!item.my_contact"
-                                      [toggleFavourite]="item | contactHasGroup:'favourite'"
-                                      [toggleBlacklist]="item | contactHasGroup:'blacklist'"
-                                      (eventOut)="doActionsToolbar($event)">
+        <z-contact-shared-actions-bar [data]="item" [showQuickInvitation]="item.wthapps_user == null" [showNumber]="false"
+          [showSocial]="item | isContactInternal" [showChat]="item | isContactInternal" [showInvitation]="item | canInvite "
+          [showEdit]="!isStranger" [showFavorite]="!isStranger" [isStranger]="isStranger" [showAddToContacts]="!item.my_contact"
+          [toggleFavourite]="item | contactHasGroup:'favourite'" [toggleBlacklist]="item | contactHasGroup:'blacklist'"
+          (eventOut)="doActionsToolbar($event)">
         </z-contact-shared-actions-bar>
       </div>
-      <!--<div *ngIf="!item.settings" class="contact-dl-action">
-        <z-contact-shared-actions-bar [item]="item" [showQuickInvitation]="item.wthapps_user == null" [showNumber]="false" [showSocial]="item | isContactInternal"
-                                      [showChat]="item | isContactInternal" [showInvitation]="item.wthapps_user == null" [toggleFavourite]="item | contactHasGroup:'favourite'"
-                                      [toggleBlacklist]="item | contactHasGroup:'blacklist'" (eventOut)="doActionsToolbar($event)">
-        </z-contact-shared-actions-bar>
-      </div>
-      <div class="component-listbox-action" *ngIf="item.settings">
-        <button *ngIf="!saved" class="btn btn-outline-default pull-right" type="button" (click)="saveContact()">
-          <i class="fa fa-plus"></i> Save to Contact </button>
-        <span *ngIf="saved">Saved</span>
-      </div>-->
     </dd>
   </dl>
 </ng-container>

@@ -59,6 +59,7 @@ MediaModalMixin {
   viewMode: any = this.viewModes.grid;
   modalIns: any;
   modalRef: any;
+  endLoading: any;
   sorting: any =  {sort_name: "Date", sort: "desc"};
 
   private sub: any;
@@ -94,17 +95,13 @@ MediaModalMixin {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
+      this.loadingEnd();
     });
   }
 
-  loadMoreObjects() {
-    if (this.links && this.links.next) {
-      this.apiBaseService.get(this.links.next).subscribe(res => {
-        this.objects = [...this.objects, ...res.data];
-        this.links = res.meta.links;
-      })
-    }
-  }
+  loadMoreObjects:(input?: any) => void;
+
+  loadingEnd:() => void;
 
   doToolbarEvent(e: any) {
     switch (e.action) {
@@ -188,7 +185,6 @@ custom method please overwirte any method*/
         break;
     }
   }
-
 
   ngOnDestroy() {
     this.sub.unsubscribe();

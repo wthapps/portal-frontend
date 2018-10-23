@@ -51,6 +51,8 @@ MediaAdditionalListMixin {
   subTitleNoData: any = 'Media can be shared to your connected contact.';
   modalRef: any;
   sorting: any;
+  endLoading: any;
+  disableMoreAction: boolean = false;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
@@ -79,17 +81,13 @@ MediaAdditionalListMixin {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
+      this.loadingEnd();
     })
   }
 
-  loadMoreObjects(input?: any) {
-    if (this.links && this.links.next) {
-      this.apiBaseService.get(this.links.next).subscribe(res => {
-        this.objects = [...this.objects, ...res.data];
-        this.links = res.meta.links;
-      })
-    }
-  }
+  loadMoreObjects:(input?: any) => void;
+
+  loadingEnd:() => void;
 
   viewDetail(input?: any) {
     /* this method is load detail object */
@@ -115,7 +113,8 @@ MediaAdditionalListMixin {
         }
         // Check permission
         if (this.selectedObjects && this.selectedObjects.length == 1) {
-          this.validateActions(this.menuActions, this.selectedObjects[0].recipient.role_id)
+          this.validateActions(this.menuActions, this.selectedObjects[0].recipient.role_id);
+          this.disableMoreAction = (Object.keys(this.menuActions).filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length == 0);
         }
         this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
@@ -236,6 +235,7 @@ MediaAdditionalListMixin {
         inDropDown: true, // Inside dropdown list
         // action: this.openModalShare.bind(this),
         class: '',
+        mobile: true,
         liclass: 'visible-xs-block',
         tooltip: this.tooltip.share,
         title: 'Share',
@@ -284,7 +284,6 @@ MediaAdditionalListMixin {
       download: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
-        // needPermission: 'view',
         inDropDown: true, // Outside dropdown list
         action: this.downloadMediaCustom.bind(this),
         class: '',
@@ -297,10 +296,10 @@ MediaAdditionalListMixin {
       deleteMobile: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
-        // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
         action: () => { this.deleteShareWithMe(); },
         class: '',
+        mobile: true,
         liclass: 'visible-xs-block',
         title: 'Delete',
         tooltip: this.tooltip.delete,

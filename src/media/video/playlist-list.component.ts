@@ -67,6 +67,7 @@ MediaModalMixin {
   actionNoData: any = 'Create Playlist';
   subCreatePlaylist: any;
   sorting: any;
+  endLoading: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
@@ -359,6 +360,7 @@ MediaModalMixin {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
+      this.loadingEnd();
     });
   }
   viewDetail(uuid: string) {
@@ -366,10 +368,10 @@ MediaModalMixin {
     this.router.navigate([`/playlists/${uuid}`]);
   }
 
-  loadMoreObjects(input?: any) {
-    /* this method is load objects to display on init */
-    throw new Error('should overwrite this method');
-  }
+  loadingEnd:() => void;
+
+  loadMoreObjects:(input?: any) => void;
+
   changeViewMode:(mode: any) => void;
 
   loadModalComponent: (component: any) => void;

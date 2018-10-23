@@ -63,6 +63,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
   subTitleNoData: any = 'Add star to items to find easier';
   iconNoData: any = 'fa fa-star';
   sorting: any;
+  endLoading: any;
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -75,6 +76,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
   }
 
   openModalShare: () => void;
+  loadingEnd: () => void;
   onSaveShare: (e: SharingModalResult) => void;
   onEditShare: (e: SharingModalResult, sharing: any) => void;
   /* MediaListMixin This is media list methods, to
@@ -138,6 +140,9 @@ export class ZMediaFavoriteListComponent implements OnInit,
       case 'favorite':
         this.toggleFavorite(e.payload);
         break;
+      case 'getMore':
+        this.loadMoreObjects();
+        break;
       case 'sort':
         this.sorting = e.payload.queryParams;
         this.loadObjects(this.sorting);
@@ -185,16 +190,13 @@ export class ZMediaFavoriteListComponent implements OnInit,
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
-
+      this.loadingEnd();
     });
   }
   viewDetail(uuid: string) {
     // this.router.navigate(['/playlists', uuid]);
   }
-  loadMoreObjects(input?: any) {
-    /* this method is load objects to display on init */
-    throw new Error('should overwrite this method');
-  }
+  loadMoreObjects:(input?: any) => void;
 
   viewDetails(payload: any) {
     switch (payload.selectedObject.model) {

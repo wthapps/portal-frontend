@@ -33,6 +33,7 @@ import { WMediaSelectionService } from '@shared/components/w-media-selection/w-m
 import { WUploader } from '@shared/services/w-uploader';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
 
 @Mixins([
   MediaBasicListMixin,
@@ -41,12 +42,13 @@ import { takeUntil } from 'rxjs/operators';
   LoadModalAble,
   SharingModalMixin,
   PlaylistAddMixin,
+  MediaParentMixin,
   MediaDownloadMixin
 ])
 @Component({
   moduleId: module.id,
   selector: 'me-sharing-detail',
-  templateUrl: '../shared/list/list-detail.component.html'
+  templateUrl: '../shared/list/parent-detail.component.html'
 })
 export class ZMediaSharingDetailComponent
   implements
@@ -87,6 +89,7 @@ export class ZMediaSharingDetailComponent
   subCreatePlaylist: any;
   subUpload: any;
   subSelect: any;
+  endLoading: any;
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
@@ -133,6 +136,9 @@ export class ZMediaSharingDetailComponent
         break;
       case 'favorite':
         this.toggleFavorite(e.payload);
+        break;
+      case 'getMore':
+        this.loadMoreObjects(e.payload);
         break;
       case 'sort':
         this.sorting = e.payload.queryParams;
@@ -183,6 +189,7 @@ export class ZMediaSharingDetailComponent
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
+      this.loadingEnd();
     });
   }
 
@@ -231,10 +238,8 @@ export class ZMediaSharingDetailComponent
   }
   validateActions: (menuActions: any, role_id: number) => any;
 
-  loadMoreObjects(input?: any) {
-    /* this method is load objects to display on init */
-    throw new Error('should overwrite this method');
-  }
+  loadMoreObjects:(input?: any) => void;
+  loadingEnd:(input?: any) => void;
 
   viewDetail(input?: any) {
     if (this.selectedObjects[0].model === 'Media::Photo') {
@@ -275,13 +280,10 @@ export class ZMediaSharingDetailComponent
   }
 
   loadModalComponent: (component: any) => void;
+  getSharingParentInfo: (sharingId: any) => void;
   toggleInfo: () => void;
   toggleInfoCustom() {
-    this.apiBaseService.get(`media/sharings/${this.object.id}/recipients`).subscribe(res => {
-      this.recipients = res.data.map(r => r.user);
-      this.mediaInfo.users = [...this.recipients];
-      this.mediaInfo.object = {...this.object};
-    });
+    this.getSharingParentInfo(this.object.id);
     this.toggleInfo();
   };
 

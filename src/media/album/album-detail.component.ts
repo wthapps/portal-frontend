@@ -48,6 +48,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
+import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
 @Mixins([
   MediaBasicListMixin,
   MediaAdditionalListMixin,
@@ -60,7 +61,6 @@ import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 ])
 @Component({
   moduleId: module.id,
-  selector: 'me-sharing-detail',
   templateUrl: '../shared/list/parent-detail.component.html'
 })
 export class ZMediaAlbumDetailComponent
@@ -73,10 +73,12 @@ export class ZMediaAlbumDetailComponent
   LoadModalAble,
   SharingModalMixin,
   AlbumAddMixin,
+  MediaParentMixin,
   MediaDownloadMixin {
   objects: any;
   object: any;
   recipients: any;
+  sharingOwner: any;
   hasSelectedObjects: boolean;
   selectedObjects: any = [];
   favoriteAll: any;
@@ -88,6 +90,7 @@ export class ZMediaAlbumDetailComponent
   showDetailsInfo: any;
   sorting: any;
   sharings: any;
+  moreRecipients: any;
   // ============
   titleNoData: any = 'There is no photo!';
   subTitleNoData: any = 'Try to add a photo';
@@ -103,6 +106,8 @@ export class ZMediaAlbumDetailComponent
   subAddAlbum: any;
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
+  endLoading: any;
+
   // ============
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -142,6 +147,9 @@ export class ZMediaAlbumDetailComponent
         break;
       case 'favorite':
         this.toggleFavorite(event.payload);
+        break;
+      case 'getMore':
+        this.loadMoreObjects();
         break;
       case 'sort':
         this.sorting = event.payload.queryParams;
@@ -235,6 +243,7 @@ export class ZMediaAlbumDetailComponent
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
+      this.loadingEnd();
     });
   }
 
@@ -257,10 +266,9 @@ export class ZMediaAlbumDetailComponent
   }
   validateActions: (menuActions: any, role_id: number) => any;
 
-  loadMoreObjects(input?: any) {
-    /* this method is load objects to display on init */
-    throw new Error('should overwrite this method');
-  }
+  loadMoreObjects:(input?: any) => void;
+
+  loadingEnd: () => void;
 
   viewDetail(input?: any) {
     this.router.navigate([`photos/${this.selectedObjects[0].uuid}`], { queryParams: { parent_id: this.object.id, preview: true } });
@@ -403,7 +411,7 @@ export class ZMediaAlbumDetailComponent
     const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
     const data: SharingCreateParams = {
       objects: objects.map(s => { return { id: s.id, model: s.model } }),
-      recipients: e.recipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id } }),
+      recipients: e.users,
       role_id: e.role.id
     };
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
@@ -422,6 +430,7 @@ export class ZMediaAlbumDetailComponent
   }
 
   downloadMedia: (media: any) => void;
+  getSharingParentInfo: (sharingId: any) => void;
 
   openEditModal:(object: any) => void;
   onAfterEditModal() {
@@ -429,6 +438,11 @@ export class ZMediaAlbumDetailComponent
       this.apiBaseService.put(`media/albums/${this.object.id}`, this.object).subscribe(res => {
       });
     });
+  }
+
+  showMoreRecipients() {
+    this.recipients = [...this.recipients, ...this.moreRecipients];
+    this.moreRecipients = null;
   }
 
   getMenuActions() {
@@ -513,9 +527,9 @@ export class ZMediaAlbumDetailComponent
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.toggleInfo();
-          this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Album' }).subscribe(res => {
-            this.sharings = res.data;
-          });
+          if (this.object.sharing_object) {
+            this.getSharingParentInfo(this.object.sharing_object.sharing_id);
+          }
         },
         class: '',
         liclass: '',

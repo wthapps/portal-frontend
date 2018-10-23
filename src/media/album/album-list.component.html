@@ -18,8 +18,8 @@
       <!-- -Hide mobile- -->
       <li class="hidden-xs">
         <a class="btn btn-default" href="javascript:;" draggable="false" (click)="toolbar.doAction({action: 'openModal',
-               payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})" pTooltip="{{ tooltip.tag}}"
-          tooltipPosition="bottom">
+               payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})"
+          pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
           <i class="fa fa-tag"></i>
         </a>
       </li>
@@ -84,7 +84,8 @@
   (event)="doToolbarEvent($event)">
 </w-toolbar>
 
-<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
+<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)"
+  (selectedObjectsChanged)="selectedObjectsChanged($event)">
 
   <!--loading icon-->
   <div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
@@ -106,6 +107,9 @@
     </div>
   </div>
 </w-grid-list>
+
+<box-loading *ngIf="links?.next"></box-loading>
+<div class="text-fade text-center" *ngIf="endLoading"> <strong>{{objects.length}} files</strong></div>
 
 
 <ng-template #modalContainer></ng-template>

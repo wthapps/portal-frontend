@@ -59,6 +59,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   modalIns: any;
   modalRef: any;
   sorting: any;
+  endLoading: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(public apiBaseService: ApiBaseService,
@@ -170,6 +171,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   /* SharingModalMixin This is methods to sharing, to
   custom method to overwirte any method*/
   openModalShare: () => void;
+  loadingEnd: () => void;
   onSaveShare: (e: SharingModalResult) => void;
   onEditShare: (e: SharingModalResult, sharing: any) => void;
   // ========== SharingModalMixin ==============
@@ -186,22 +188,18 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
       this.links = res.meta.links;
       this.objects = res.data;
       this.loading = false;
+      this.loadingEnd();
     });
   }
+
   viewDetail(id: any) {
     // this.router.navigate([`/videos/${id}`, { ids: this.selectedObjects.map(e => e.id)} ]);
     let data: any = { returnUrl: '/videos', preview: true };
     if (this.selectedObjects && this.selectedObjects.length > 1) data.ids = this.selectedObjects.map(s => s.id).join(',')
     this.router.navigate([`/videos/${id}`], { queryParams: data });
   }
-  loadMoreObjects(input?: any) {
-    if (this.links && this.links.next) {
-      this.apiBaseService.get(this.links.next).subscribe(res => {
-        this.objects = [...this.objects, ...res.data];
-        this.links = res.meta.links;
-      })
-    }
-  }
+
+  loadMoreObjects:(input?: any) => void;
   // ============= End MediaListMixin ===============
   /* MediaViewMixin This is media view methods, to
 custom method please overwirte any method*/

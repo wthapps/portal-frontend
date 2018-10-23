@@ -29,6 +29,7 @@ import { AsyncScheduler } from 'rxjs/scheduler/AsyncScheduler';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { WUploader } from '@shared/services/w-uploader';
+import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
 
 @Mixins([MediaBasicListMixin,
   MediaAdditionalListMixin,
@@ -37,6 +38,7 @@ import { WUploader } from '@shared/services/w-uploader';
   SharingModalMixin,
   PlaylistAddMixin,
   MediaModalMixin,
+  MediaParentMixin,
   MediaDownloadMixin])
 @Component({
   selector: 'playlist-detail',
@@ -82,6 +84,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   subSelect: any;
   returnUrl: any;
   sharings: any;
+  endLoading: any;
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
@@ -112,6 +115,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   downloadMedia: (media: any) => void;
   openCreatePlaylistModal: (selectedObjects: any) => void;
   toggleInfo: () => void;
+  loadingEnd: () => void;
 
   openEditModal:(object: any) => void;
   onAfterEditModal() {
@@ -189,6 +193,7 @@ PlaylistAddMixin, MediaDownloadMixin {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
+      this.loadingEnd();
     });
   }
 
@@ -203,10 +208,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     });
   }
 
-  loadMoreObjects(input?: any) {
-    /* this method is load objects to display on init */
-    throw new Error('should overwrite this method');
-  }
+  loadMoreObjects:(input?: any) => void;
 
   viewDetail(input: any) {
     const data: any = { returnUrl: `/playlists/${input}`, preview: true, parent_id: this.object.id };
@@ -322,7 +324,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
     const data: SharingCreateParams = {
       objects: objects.map(s => ({ id: s.id, model: s.model })),
-      recipients: e.recipients.map(s => ({ role_id: s.role_id, recipient_id: s.user.id })),
+      recipients: e.users,
       role_id: e.role.id
     };
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
@@ -417,6 +419,8 @@ PlaylistAddMixin, MediaDownloadMixin {
     }
   }
 
+  getSharingParentInfo: (sharingId: any) => void;
+
   getMenuActions() {
     return {
       add: {
@@ -500,9 +504,12 @@ PlaylistAddMixin, MediaDownloadMixin {
         action: () => {
           // this.mediaInfo.object = { ...this.object };
           this.toggleInfo();
-          this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Playlist' }).subscribe(res => {
-            this.sharings = res.data;
-          });
+          // this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Playlist' }).subscribe(res => {
+          //   this.sharings = res.data;
+          // });
+          if (this.object.sharing_object) {
+            this.getSharingParentInfo(this.object.sharing_object.sharing_id);
+          }
         },
         class: '',
         liclass: '',

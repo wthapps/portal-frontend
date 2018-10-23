@@ -13,6 +13,7 @@ export class MediaBasicListMixin {
   viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
   sorting: any = {};
+  endLoading: any;
 
   constructor(public apiBaseService: ApiBaseService, public confirmService: WthConfirmService) {}
 
@@ -22,13 +23,26 @@ export class MediaBasicListMixin {
   }
 
   loadMoreObjects(input?: any) {
-    /* this method is load objects to display on init */
-    throw new Error('should overwrite this method');
-  }
+    if(this.links && this.links.next) {
+      this.apiBaseService.get(this.links.next).subscribe(res => {
+        this.objects = [...this.objects, ...res.data];
+        this.links = res.meta.links;
+        this.loadingEnd();
+      })
+    }
+  };
 
   viewDetail(input?: any) {
     /* this method is load detail object */
     throw new Error('should overwrite this method');
+  }
+
+  loadingEnd() {
+    if (!this.links || (this.links && !this.links.next)) {
+      this.endLoading = true;
+    } else {
+      this.endLoading = false;
+    }
   }
 
   selectedObjectsChanged(objectsChanged: any) {
