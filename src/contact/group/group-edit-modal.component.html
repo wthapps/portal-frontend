@@ -7,8 +7,7 @@
     <bs-modal-body>
       <div class="row">
         <div class="col-sm-12">
-          <div class="form-group no-label"
-               [ngClass]="{'has-error': errMsg}">
+          <div class="form-group no-label" [ngClass]="{'has-error': errMsg}">
             <input autofocus [formControl]="name" type="text" class="form-control" id="name" placeholder="New group name">
             <!-- <div *ngIf="!name.valid && name.touched">
               <span *ngIf="!name.valid && name.errors.required" class="help-block">
@@ -28,8 +27,7 @@
 
     <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
-      <button type="button" (click)="submit()"
-              class="btn btn-outline-primary btn-min">
+      <button type="button" (click)="submit()" [disabled]="!name.valid" class="btn btn-outline-primary btn-min">
         Done
       </button>
     </bs-modal-footer>

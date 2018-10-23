@@ -38,7 +38,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     GroupModule,
     SettingsModule,
     ModalModule,
-    ContactHtmlModule,
+    environment.production ? [] : ContactHtmlModule,
     ScrollToModule.forRoot(),
     ContactSharedModule.forRoot(),
 

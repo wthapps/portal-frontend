@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, ViewChild, HostListener } from '@angular/core';
+import { CustomValidator } from './../../shared/shared/validator/custom.validator';
+import { Component, Input, OnInit, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -13,17 +14,19 @@ import { Group } from './group.model';
 import { GroupService } from './group.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Constants } from '@shared/constant';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 declare var $: any;
 
 const DUPLICATE_GROUP_NAME =  'This group name already exists.';
-const REQUIRED_NAME = 'Name is required';
+const REQUIRED_NAME = 'No valid name is entered';
 @Component({
   selector: 'group-edit-modal',
   templateUrl: 'group-edit-modal.component.html',
   styleUrls: ['group-edit-modal.component.scss']
 })
-export class GroupEditModalComponent implements OnInit, WthAppsBaseModal {
+export class GroupEditModalComponent implements OnInit, OnDestroy, WthAppsBaseModal {
   @Input() mode: string;
   @Input() item: Group;
 
@@ -34,6 +37,7 @@ export class GroupEditModalComponent implements OnInit, WthAppsBaseModal {
   form: FormGroup;
   name: AbstractControl;
   errMsg: string;
+  private destroySubject: Subject<any> = new Subject();
 
 
   @HostListener('document:keydown', ['$event'])
@@ -50,9 +54,26 @@ export class GroupEditModalComponent implements OnInit, WthAppsBaseModal {
 
     this.form = this.fb.group({
       id: [this.item.id],
-      name: [this.item.name, Validators.compose([Validators.required])]
+      name: [this.item.name, Validators.compose([Validators.required, CustomValidator.notEmpty])]
     });
     this.name = this.form.controls['name'];
+
+    this.form.valueChanges.pipe(
+      takeUntil(this.destroySubject))
+      .subscribe(val => {
+        console.log(val);
+        const { name } = val;
+        if (!name) {
+          this.errMsg = null;
+          return;
+        }
+        this.errMsg = null;
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   submit() {
@@ -86,8 +107,6 @@ export class GroupEditModalComponent implements OnInit, WthAppsBaseModal {
   open(options?: any) {
     this.mode = options.mode || 'add';
     this.item = options.item || new Group();
-
-    console.log('grouplll', this.item);
 
     this.modal.open(options).then();
   }

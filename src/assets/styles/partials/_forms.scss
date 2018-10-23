@@ -65,7 +65,7 @@
     }
     &.has-error:not(.has-select) {
         &:before {
-            content: "\f057";
+            content: "\f06a";
             color: $alert-danger-text;
         }
     }

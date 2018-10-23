@@ -15,6 +15,10 @@ export class CustomValidator {
     return EMAIL_REGEXP.test(c.value) ? null : {emailFormat: true};
   }
 
+  public static notEmpty(c: AbstractControl) {
+    return (c.value && !c.value.trim() ) ? {empty: true} : null;
+  }
+
   public static urlFormat(c: AbstractControl) {
     if (!c.value) {
       return null;

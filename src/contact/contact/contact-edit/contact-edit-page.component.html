@@ -3,7 +3,7 @@
     <button *ngIf="mode === 'create'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts']">Cancel
     </button>
 
-    <button *ngIf="mode === 'create'" type="button" [disabled]="!contactEdit?.name?.valid && contactEdit?.name?.errors?.required || !formValid"
+    <button *ngIf="mode === 'create'" type="button" [disabled]="!contactEdit?.name?.valid && !contactEdit?.family_name?.valid"
       (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min mr10">Create
     </button>
 
