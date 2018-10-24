@@ -158,14 +158,18 @@ $message-item-content-card-right-xs: 25px;
   }
 
   .message-item-content-photo {
+    background-color: #E9EDF1;
     img {
+      visibility: hidden;
       &.img-horizontal {
         max-width: 430px;
         height: auto;
+        visibility: visible;
       }
       &.img-vertical {
         max-height: 430px;
         width: auto;
+        visibility: visible;
       }
     }
   }
