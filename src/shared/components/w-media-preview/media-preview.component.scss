@@ -3,10 +3,8 @@
 .image-viewer-content-fixed {
   @include flexbox;
   @include align-items(center);
-  .video-viewer-content {
-    max-width: 100%;
-    width: 800px;
-    margin: 0 auto;
+  .embed-responsive-item {
+    width: 100%;
   }
 }
 

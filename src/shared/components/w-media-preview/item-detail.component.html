@@ -37,19 +37,17 @@
     </div>
   </div>
   <div class="image-viewer-content">
-    <div *ngIf="object.model == 'Media::Video'" class="video-viewer-content">
+    <ng-container *ngIf="object.model == 'Media::Video'">
       <div class="image-viewer-content-fixed">
         <div class="container text-center">
           <!-- Media::Video -->
-          <ng-container>
             <video id="video" class="embed-responsive-item" controls [attr.controlsList]="(!object?.permission || object?.permission?.role_id === '1') ? 'nodownload' : null"
               style="max-width: 854px; max-height: 550px">
               <source [src]="object.url" [type]="object.content_type">
             </video>
-          </ng-container>
         </div>
       </div>
-    </div>
+    </ng-container>
     <!-- Media::Photo -->
     <ng-container>
       <div class="image-viewer-content-fixed" [ngStyle]="{'display': object.model == 'Media::Photo' ? 'block' : 'none'}">
