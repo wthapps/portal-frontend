@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Contact } from '@contacts/contact/contact.model';
+import { Contact } from '../../contact/contact.model';
 
 declare let _: any;
 

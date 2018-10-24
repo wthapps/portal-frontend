@@ -1,6 +1,15 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es2016",
+      "dom"
+    ],
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",
     "module": "commonjs",
@@ -8,7 +17,22 @@
     "types": [
       "jasmine",
       "node"
-    ]
+    ],
+    "paths": {
+      "@app/*": ["app/*"],
+      "@core/*": ["core/*"],
+      "@env/*": ["environments/*"],
+      "@shared/*": ["shared/*"],
+      "@wth/shared/*": ["shared/*"],
+      "@wth/core/*": ["core/*"],
+      "@portal/*": ["portal/*"],
+      "@account/*": ["my-account/*"],
+      "@social/*": ["social/*"],
+      "@media/*": ["media/*"],
+      "@chat/*": ["chat/*"],
+      "@contacts/*": ["contact/*"],
+      "@notes/*": ["note/*"]
+    }
   },
   "files": [
     "test.ts"
