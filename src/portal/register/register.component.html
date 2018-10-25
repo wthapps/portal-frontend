@@ -16,6 +16,7 @@
               <input [formControl]="first_name" type="text" class="form-control" id="first_name" placeholder="First Name">
               <div *ngIf="!first_name.valid && first_name.touched">
                 <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">First name is required</span>
+                <span *ngIf="!first_name.valid && first_name.errors.blanked" class="help-block">First name is blanked</span>
               </div>
             </div>
           </div>
@@ -25,6 +26,7 @@
               <input [formControl]="last_name" type="text" class="form-control" id="last_name" placeholder="Last Name">
               <div *ngIf="!last_name.valid && last_name.touched">
                 <span *ngIf="!last_name.valid && last_name.errors.required" class="help-block">Last name is required</span>
+                <span *ngIf="!last_name.valid && last_name.errors.blanked" class="help-block">Last name is blanked</span>
               </div>
             </div>
           </div>
@@ -69,7 +71,7 @@
             </ng-template>
           </ul>
         </div>
-        <re-captcha #ReCaptchaComponent (captchaResponse)="handleCaptcha($event)" site_key="6LeZ0xIUAAAAABLfFeQpUGfK84j5aWgOnWbfJKM4"></re-captcha>
+        <re-captcha (captchaResponse)="handleCaptcha($event)" site_key="{{siteKey}}"></re-captcha>
         <input id="notRobot" type="checkbox" [checked]="notRobot" (change)="notRobot = !notRobot" style="visibility: hidden;" />
         <div class="form-group">
           By signing up, you agree to the

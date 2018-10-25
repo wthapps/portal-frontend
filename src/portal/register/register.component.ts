@@ -8,6 +8,7 @@ import { Constants } from '../../shared/constant/config/constants';
 import { UserService } from '../../shared/services/user.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
 import { CustomValidator } from '../../shared/shared/validator/custom.validator';
+import { environment } from '@env/environment';
 
 declare var $: any;
 
@@ -39,6 +40,7 @@ export class RegisterComponent implements HandleReCaptchaMixin {
   submitted = false;
   invitationUuid: string;
   notRobot: boolean = false;
+  siteKey = environment.keys.recaptcha_site_key;
 
   constructor(
     private fb: FormBuilder,
@@ -52,8 +54,8 @@ export class RegisterComponent implements HandleReCaptchaMixin {
      }*/
 
     this.form = fb.group({
-      first_name: ['', Validators.compose([Validators.required])],
-      last_name: ['', Validators.compose([Validators.required])],
+      first_name: ['', Validators.compose([Validators.required, CustomValidator.blanked])],
+      last_name: ['', Validators.compose([Validators.required, CustomValidator.blanked])],
       email: [
         '',
         Validators.compose([Validators.required, CustomValidator.emailFormat])

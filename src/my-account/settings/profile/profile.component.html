@@ -26,6 +26,9 @@
               <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">
                 First name is required
               </span>
+              <span *ngIf="!first_name.valid && first_name.errors.blanked" class="help-block">
+                First name is blanked
+              </span>
           </div>
         </div>
       </div>
@@ -37,6 +40,9 @@
           <div *ngIf="!last_name.valid && last_name.touched">
               <span *ngIf="!last_name.valid && last_name.errors.required" class="help-block">
                 Last name is required
+              </span>
+              <span *ngIf="!last_name.valid && last_name.errors.blanked" class="help-block">
+                Last name is blanked
               </span>
           </div>
         </div>

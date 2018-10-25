@@ -89,10 +89,10 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
     this.form = fb.group({
       'first_name': [this.userService.getSyncProfile().first_name,
-        Validators.compose([Validators.required])
+        Validators.compose([Validators.required, CustomValidator.blanked])
       ],
       'last_name': [this.userService.getSyncProfile().last_name,
-        Validators.compose([Validators.required])
+        Validators.compose([Validators.required, CustomValidator.blanked])
       ],
       'email': [
         {value: this.userService.getSyncProfile().email, disabled: true},

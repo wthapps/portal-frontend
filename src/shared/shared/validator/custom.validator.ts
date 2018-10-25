@@ -116,6 +116,10 @@ export class CustomValidator {
     return true;
   }
 
+  static blanked(control: AbstractControl) {
+    return control.value && control.value.trim().length === 0 ? { 'blanked': true } : null;
+  }
+
   static validateCCNumber(control: AbstractControl) {
     if (Validators.required(control) !== undefined && Validators.required(control) !== null) {
       return true;
