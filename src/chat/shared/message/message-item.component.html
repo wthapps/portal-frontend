@@ -112,7 +112,7 @@
           <div class="message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
             <figure>
               <a href="javascript:void(0);" (click)="onPreviewPhoto(message)">
-                <img imgAlign [src]="message.file?.url" alt="">
+                <img [src]="message.file?.url" alt="">
               </a>
             </figure>
           </div>
@@ -123,7 +123,7 @@
             <figure>
               <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
                 <!-- <div class="photo-box-figure-in"> -->
-                <img imgAlign [src]="message.file?.thumbnail_url" alt="">
+                <img [src]="message.file?.thumbnail_url" alt="">
                 <i class="fa fa-play-circle-o"></i>
               </div>
             </figure>
