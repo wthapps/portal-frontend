@@ -5,6 +5,9 @@
         <h2 class="h1">Sign Up</h2>
         <p class="h4">Welcome to WTHApps!</p>
       </div>
+      <p *ngIf="errorMessage" class="text-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ errorMessage }}
+      </p>
       <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
         <div class="row">
           <div class="col-sm-6">

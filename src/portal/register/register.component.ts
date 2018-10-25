@@ -1,19 +1,13 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import {
-  FormGroup,
-  AbstractControl,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HandleReCaptchaMixin } from '@portal/shared/mixins/handle-login-recaptcha.mixin';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Constants } from '../../shared/constant/config/constants';
 
 import { UserService } from '../../shared/services/user.service';
-import { CustomValidator } from '../../shared/shared/validator/custom.validator';
-import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
-import { Constants } from '../../shared/constant/config/constants';
-import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { HandleReCaptchaMixin } from '@portal/shared/mixins/handle-login-recaptcha.mixin';
+import { CustomValidator } from '../../shared/shared/validator/custom.validator';
 
 declare var $: any;
 
@@ -25,8 +19,8 @@ declare var $: any;
   templateUrl: 'register.component.html',
   styleUrls: ['register.component.scss']
 })
-  @Mixins([HandleReCaptchaMixin])
-export class RegisterComponent implements HandleReCaptchaMixin{
+@Mixins([HandleReCaptchaMixin])
+export class RegisterComponent implements HandleReCaptchaMixin {
   errorMessage = '';
   sex = 0;
 
@@ -51,7 +45,6 @@ export class RegisterComponent implements HandleReCaptchaMixin{
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private toastsService: ToastsService,
     private loadingService: LoadingService
   ) {
     /*if (this.userService.loggedIn) {
@@ -94,8 +87,8 @@ export class RegisterComponent implements HandleReCaptchaMixin{
     });
   }
 
-  handleCaptcha:(event: any) => void;
-  handleCaptchaExpire:(event: any) => void;
+  handleCaptcha: (event: any) => void;
+  handleCaptchaExpire: (event: any) => void;
 
   onSubmit(values: any): void {
     this.submitted = true;
@@ -134,7 +127,6 @@ export class RegisterComponent implements HandleReCaptchaMixin{
           if (error.status === 422) {
             this.errorMessage = 'Email has already been taken';
           }
-          this.toastsService.danger(this.errorMessage);
         }
       );
     }

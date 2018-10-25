@@ -1,20 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  AbstractControl
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Ng2Cable } from 'ng2-cable';
 
 import { AppearancesChannelService } from '../../shared/channels/appearances-channel.service';
-import { UserService } from '../../shared/services/user.service';
-import { AuthService } from '../../shared/services/auth.service';
-import { CustomValidator } from '../../shared/shared/validator/custom.validator';
-import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
-import { LoadingService } from '../../shared/shared/components/loading/loading.service';
 import { Constants } from '../../shared/constant/config/constants';
-import { Ng2Cable } from 'ng2-cable';
+import { AuthService } from '../../shared/services/auth.service';
+import { UserService } from '../../shared/services/user.service';
+import { LoadingService } from '../../shared/shared/components/loading/loading.service';
+import { CustomValidator } from '../../shared/shared/validator/custom.validator';
 
 declare var $: any;
 
@@ -32,6 +26,7 @@ export class LoginComponent implements OnInit {
   email: AbstractControl;
   password: AbstractControl;
   submitted: boolean = false;
+  errorMessage: string;
 
   tooltip: any = Constants.tooltip;
 
@@ -42,7 +37,6 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private toastsService: ToastsService,
     private loadingService: LoadingService,
     private appearancesChannelService: AppearancesChannelService,
     private ng2Cable: Ng2Cable,
@@ -71,9 +65,9 @@ export class LoginComponent implements OnInit {
       // start loading
       this.loadingService.start();
 
-      let email = values.email;
-      let password = values.password;
-      let body = JSON.stringify({ user: { email, password } });
+      const email = values.email;
+      const password = values.password;
+      const body = JSON.stringify({ user: { email, password } });
 
       this.authService.login(body).subscribe(
         (response: any) => {
@@ -94,7 +88,7 @@ export class LoginComponent implements OnInit {
         (error: any) => {
           // stop loading
           this.loadingService.stop();
-          this.toastsService.danger(error.error.error);
+          this.error = error.error.error;
         }
       );
     }
