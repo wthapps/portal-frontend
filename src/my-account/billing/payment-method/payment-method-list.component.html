@@ -22,30 +22,31 @@
                    <!--(click)="setDefault(pm, $event)">-->
           <!--</div>-->
           <div class="pull-left pm-image">
-            <img [src]="'assets/images/card/' + paymentMethod.method_type_id + '.png'">
+            <img [src]="'assets/images/card/' + paymentMethod?.method_type_id + '.png'">
 
             <!--{{ pm.method_type_name }}-->
           </div>
           <div class="pull-left pm-summary">
-            <span class="pm-summary-info"> {{ paymentMethod.method_type_name }} ending in {{ paymentMethod.object_json.last4Number }}</span>
-            <span class="pm-summary-date">Expiry date {{ paymentMethod.object_json.expiryDate }}</span>
+            <span class="pm-summary-info"> ending in {{ paymentMethod?.object_json?.last4Number }}</span>
+            <span class="pm-summary-date">Expiry date {{ paymentMethod?.object_json?.expiryDate }}</span>
           </div>
           <div class="pull-right">
             <button class="btn btn-default" (click)="openModal(paymentMethod)" title="Edit"><i class="fa fa-pencil"></i></button>
-            <!--<button class="btn btn-default" (click)="delete(pm)" title="Remove" [disabled]="pm.default"><i class="fa fa-trash"></i></button>-->
+            <button class="btn btn-default" (click)="delete(paymentMethod)" title="Remove"><i class="fa fa-trash"></i></button>
           </div>
         </div>
 
       </li>
     </ul>
-    <div class="panel-body" *ngIf="loaded && !paymentMethod">
-      There is no payment method
-    </div>
+    <!--<div class="panel-body" *ngIf="loaded && !paymentMethod">-->
+      <!--There is no payment method-->
+    <!--</div>-->
   </div>
   <div class="add-button">
     <button class="btn btn-outline-primary btn-min" (click)="openModal()"> {{ !paymentMethod ? 'Add Payment Method' : 'Change Payment Method' }}</button>
   </div>
 </div>
 <payment-method-add-modal #addModal (onSaved)="savePaymentMethod($event)"></payment-method-add-modal>
+
 
 

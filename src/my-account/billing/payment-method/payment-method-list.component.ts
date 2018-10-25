@@ -16,6 +16,7 @@ import { ApiBaseService } from '@shared/services';
 
 export class PaymentMethodListComponent implements OnInit, AfterViewInit {
   @ViewChild('addModal') addModal: PaymentMethodAddModalComponent;
+
   pageTitle = 'Payment methods';
   credit_card: CreditCard;
   paymentMethod: any;
@@ -45,18 +46,17 @@ export class PaymentMethodListComponent implements OnInit, AfterViewInit {
 
   openModal(paymentMethod: any = null) {
     const mode = paymentMethod ? 'edit' : 'add';
-
+    let pm = null;
     this.apiBaseService.get('account/payment_methods/new')
       .subscribe(response => {
         if (mode === 'edit') {
-          this.paymentMethod = paymentMethod;
-          this.paymentMethod.generation_time = response.data.generation_time;
+          pm = paymentMethod;
+          pm.generation_time = response.data.generation_time;
         } else if (mode === 'add') {
-          this.paymentMethod = response.data;
+          pm = response.data;
         }
-        this.addModal.open({data: this.paymentMethod, mode: mode});
+        this.addModal.open({data: pm, mode: mode});
       });
-
   }
 
   /** Depending on mode that we will create or update payment method
@@ -74,7 +74,7 @@ export class PaymentMethodListComponent implements OnInit, AfterViewInit {
   create(paymentMethod: any): void {
     this.apiBaseService.post('account/payment_methods', paymentMethod)
       .subscribe(response => {
-        this.paymentMethods.push(response.data);
+        this.paymentMethod = response.data;
         this.toastsService.success('You added payment method successfully');
         this.addModal.close();
       }, response => {

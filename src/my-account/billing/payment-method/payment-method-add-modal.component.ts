@@ -33,27 +33,14 @@ export class PaymentMethodAddModalComponent implements OnInit {
   };
   pm: any;
   mode: string;
+  title: string;
 
   constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
 
   }
 
   ngOnInit() {
-
-    this.pmForm = this.fb.group({
-      holderName: ['HUYNH DOAN THINH', [Validators.required]],
-      number: ['', [Validators.required, CreditCardValidator.validateCardNumber]],
-      expiryMonth: ['10', [Validators.required, CreditCardValidator.validateExpiryMonth]],
-      expiryYear: ['2020', [Validators.required]],
-      cvc: ['737', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]],
-      generationtime: [null, [Validators.required]]
-    });
-    this.holderName = this.pmForm.controls.holderName;
-    this.number = this.pmForm.controls.number;
-    this.expiryMonth = this.pmForm.controls.expiryMonth;
-    this.expiryYear = this.pmForm.controls.expiryYear;
-    this.cvc = this.pmForm.controls.cvc;
-    this.generationtime = this.pmForm.controls.generationtime;
+    this.initializeForm();
   }
 
   /*
@@ -64,10 +51,16 @@ export class PaymentMethodAddModalComponent implements OnInit {
   open(options: any = {data: undefined, mode: 'add'}) {
     this.options = Object.assign({}, this.defaultOptions, options);
     this.pm = this.options.data;
+    this.mode = options.mode;
+
+    this.initializeForm(this.mode);
     this.pmForm.controls.generationtime.setValue(this.pm.generation_time);
     if (options.mode === 'edit') {
-
+      this.pmForm.controls.holderName.setValue(this.pm.object_json.holderName);
       this.pmForm.controls.number.setValue(`**** **** **** ${this.pm.object_json.last4Number}`);
+      this.title = 'Update';
+    } else {
+      this.title = 'Add';
     }
 
     this.modal.open(options).then();
@@ -96,5 +89,34 @@ export class PaymentMethodAddModalComponent implements OnInit {
       postData['card'] = {expiryMonth: this.expiryMonth.value, expiryYear: this.expiryYear.value};
     }
     this.onSaved.emit({paymentMethod: {...this.pm, ...postData}, mode: this.options.mode});
+  }
+
+  private initializeForm(mode: string = 'add') {
+    if (mode === 'add') {
+      this.pmForm = this.fb.group({
+        holderName: ['', [Validators.required]],
+        number: ['', [Validators.required, CreditCardValidator.validateCardNumber]],
+        expiryMonth: ['', [Validators.required, CreditCardValidator.validateExpiryMonth]],
+        expiryYear: ['', [Validators.required]],
+        cvc: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]],
+        generationtime: [null, [Validators.required]]
+      });
+    } else if (mode === 'edit') {
+      this.pmForm = this.fb.group({
+        holderName: ['', [Validators.required]],
+        number: ['', [Validators.required]],
+        expiryMonth: ['', [Validators.required, CreditCardValidator.validateExpiryMonth]],
+        expiryYear: ['', [Validators.required]],
+        cvc: ['', []],
+        generationtime: [null, [Validators.required]]
+      });
+    }
+
+    this.holderName = this.pmForm.controls.holderName;
+    this.number = this.pmForm.controls.number;
+    this.expiryMonth = this.pmForm.controls.expiryMonth;
+    this.expiryYear = this.pmForm.controls.expiryYear;
+    this.cvc = this.pmForm.controls.cvc;
+    this.generationtime = this.pmForm.controls.generationtime;
   }
 }
