@@ -19,7 +19,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 import { environment } from '@env/environment';
 import { ContactSearchModule } from '@contacts/search/search.module';
-import { ContactHtmlModule } from '@contacts/html/contact-html.module';
+// import { ContactHtmlModule } from '@contacts/html/contact-html.module';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 @NgModule({
@@ -38,7 +38,7 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     GroupModule,
     SettingsModule,
     ModalModule,
-    environment.production ? [] : ContactHtmlModule,
+    // environment.production ? [] : ContactHtmlModule,
     ScrollToModule.forRoot(),
     ContactSharedModule.forRoot(),
 

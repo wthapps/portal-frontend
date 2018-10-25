@@ -3,17 +3,12 @@
     <button *ngIf="mode === 'create'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts']">Cancel
     </button>
 
-    <button *ngIf="mode === 'create'" type="button" [disabled]="!contactEdit?.name?.valid && !contactEdit?.family_name?.valid"
-      (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min mr10">Create
+    <button type="button" [disabled]="!contactEdit?.name?.valid && !contactEdit?.family_name?.valid" (click)="contactEdit.onSubmit(contactEdit?.form?.value)"
+      class="btn btn-outline-primary btn-min mr10"> {{ mode === 'edit' ? 'Save' : 'Create' }}
     </button>
 
     <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min" (click)="goBack()">Cancel
     </button>
-
-    <button *ngIf="mode === 'edit'" type="button" (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min mr10">Save
-    </button>
-
-
 
     <z-contact-shared-actions-bar *ngIf="mode === 'view' && !viewOnly" [showViewDetail]="false" [showNumber]="false"
       [showInvitation]="false" [showAddToContacts]="!contact.my_contact && !viewOnly" [toggleFavourite]="_contact.isContactsHasGroupName([contact], 'favourite') && !viewOnly"
