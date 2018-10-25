@@ -1,19 +1,21 @@
-@import '../../shared/scss/global';
+@import "../../assets/styles/global";
 
 .faq-content {
-  .faq-content-right {
-    display: none;
-  }
-  @media(min-width: $screen-xs-max) {
-    @include flexbox;
-    width: 100%;
+  @include flexbox;
+
+  @media(min-width: $screen-sm-min) {
     .faq-content-left {
       @include flex(1);
     }
     .faq-content-right {
-      display: block;
       width: 200px;
       margin-left: $grid-gutter-width;
+    }
+  }
+  @media (max-width: $screen-xs-max) {
+    @include flex-direction(column);
+    .faq-content-right {
+      @include order(-1);
     }
   }
 }
