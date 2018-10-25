@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit {
         (error: any) => {
           // stop loading
           this.loadingService.stop();
-          this.error = error.error.error;
+          this.errorMessage = error.error.error;
         }
       );
     }
