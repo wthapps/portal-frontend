@@ -45,78 +45,78 @@
                     <!-- <img *ngIf="(countriesCode$ | async) && data.phones[0]?.country_alpha_code && item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
                       src="assets/images/flags/{{ item.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
                       width="30" alt=""> {{ item.value }} -->
-                    {{ item.value }}
-                  </p>
-                </dd>
-              </ng-template>
-            </dl>
-          </div>
-        </div>
+{{ item.value }}
+</p>
+</dd>
+</ng-template>
+</dl>
+</div>
+</div>
 
-        <div class="field-group">
-          <div class="field-group-title">
-            <h3>Email</h3>
-          </div>
-          <div class="field-group-content">
-            <dl class="dl-horizontal" *ngIf="data.emails.length > 0">
-              <ng-template ngFor let-item [ngForOf]="data.emails">
-                <dt>{{ item.category | keyToValue:emailCategories:'value':'text' }}</dt>
-                <dd>
-                  <p>
-                    {{ item.value }}
-                  </p>
-                </dd>
-              </ng-template>
-            </dl>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-group-title">
-            <h3>Address</h3>
-          </div>
-          <div class="field-group-content">
-            <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
-              <ng-template ngFor let-item [ngForOf]="data.addresses">
-                <dt>{{ item.category | keyToValue:addressCategories:'value':'text' }}</dt>
-                <dd>
-                  <p [innerHTML]="item | contactAddressPipe">
-                  </p>
-                </dd>
-              </ng-template>
-            </dl>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-group-title">
-            <h3>Media</h3>
-          </div>
-          <div class="field-group-content">
-            <dl class="dl-horizontal" *ngIf="data.media.length > 0">
-              <ng-template ngFor let-item [ngForOf]="data.media">
-                <dt>{{ item.category | keyToValue:mediaCategories:'value':'text' }}</dt>
-                <dd>
-                  <p>
-                    <a href="{{ item.value }}" target="_blank" rel="noopener">{{ item.value }}</a>
-                  </p>
-                </dd>
-              </ng-template>
-            </dl>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <div class="field-group-title">
-            <h3>Note</h3>
-          </div>
-          <div class="field-group-content">
-            {{ data.notes }}
-          </div>
-        </div>
-
-      </div>
-    </div>
+<div class="field-group">
+  <div class="field-group-title">
+    <h3>Email</h3>
   </div>
+  <div class="field-group-content">
+    <dl class="dl-horizontal" *ngIf="data.emails.length > 0">
+      <ng-template ngFor let-item [ngForOf]="data.emails">
+        <dt>{{ item.category | keyToValue:emailCategories:'value':'text' }}</dt>
+        <dd>
+          <p>
+            {{ item.value }}
+          </p>
+        </dd>
+      </ng-template>
+    </dl>
+  </div>
+</div>
+
+<div class="field-group">
+  <div class="field-group-title">
+    <h3>Address</h3>
+  </div>
+  <div class="field-group-content">
+    <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
+      <ng-template ngFor let-item [ngForOf]="data.addresses">
+        <dt>{{ item.category | keyToValue:addressCategories:'value':'text' }}</dt>
+        <dd>
+          <p [innerHTML]="item | contactAddressPipe">
+          </p>
+        </dd>
+      </ng-template>
+    </dl>
+  </div>
+</div>
+
+<div class="field-group">
+  <div class="field-group-title">
+    <h3>Media</h3>
+  </div>
+  <div class="field-group-content">
+    <dl class="dl-horizontal" *ngIf="data.media.length > 0">
+      <ng-template ngFor let-item [ngForOf]="data.media">
+        <dt>{{ item.category | keyToValue:mediaCategories:'value':'text' }}</dt>
+        <dd>
+          <p>
+            <a href="{{ item.value }}" target="_blank" rel="noopener">{{ item.value }}</a>
+          </p>
+        </dd>
+      </ng-template>
+    </dl>
+  </div>
+</div>
+
+<div class="field-group">
+  <div class="field-group-title">
+    <h3>Note</h3>
+  </div>
+  <div class="field-group-content">
+    {{ data.notes }}
+  </div>
+</div>
+
+</div>
+</div>
+</div>
 </ng-container>
 <contact-add-group-modal #modal></contact-add-group-modal>

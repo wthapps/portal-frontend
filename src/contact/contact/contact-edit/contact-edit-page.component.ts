@@ -66,6 +66,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   _contact: any = _contact;
   hasBack = false;
   viewOnly = false;
+  isWthContact = false;
   readonly urls = Constants.baseUrls;
   readonly avatarDefault: any = Constants.img.avatar;
   private destroySubject: Subject<any> = new Subject();
@@ -95,13 +96,13 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
       this.contactService.clearSelected();
       const id = paramMap.get('id');
       this.mode = paramMap.get('mode') || 'create';
-      const isWthContact = paramMap.get('wth') || false;
+      this.isWthContact = paramMap.get('wth') && paramMap.get('wth') === 'true';
 
       if (this.mode === 'view') {
         this.hasBack = true;
       }
       if (id && id !== 'new') {
-        if (isWthContact === 'true') {
+        if (this.isWthContact) {
           this.viewOnly = true;
           this.getWthContact(id);
         } else

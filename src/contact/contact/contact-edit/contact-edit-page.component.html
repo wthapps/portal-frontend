@@ -3,16 +3,19 @@
     <button *ngIf="mode === 'create'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts']">Cancel
     </button>
 
-    <button type="button" [disabled]="!contactEdit?.name?.valid && !contactEdit?.family_name?.valid" (click)="contactEdit.onSubmit(contactEdit?.form?.value)"
-      class="btn btn-outline-primary btn-min mr10"> {{ mode === 'edit' ? 'Save' : 'Create' }}
+    <button type="button" *ngIf="mode === 'create' || mode === 'edit'" [disabled]="!contactEdit?.name?.valid && !contactEdit?.family_name?.valid"
+      (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min mr10"> {{ mode
+      === 'edit' ? 'Save' : 'Create' }}
     </button>
 
     <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min" (click)="goBack()">Cancel
     </button>
 
-    <z-contact-shared-actions-bar *ngIf="mode === 'view' && !viewOnly" [showViewDetail]="false" [showNumber]="false"
-      [showInvitation]="false" [showAddToContacts]="!contact.my_contact && !viewOnly" [toggleFavourite]="_contact.isContactsHasGroupName([contact], 'favourite') && !viewOnly"
-      [toggleBlacklist]="_contact.isContactsHasGroupName([contact], 'blacklist') && !viewOnly" (eventOut)="doActionsToolbar($event)">
+    <z-contact-shared-actions-bar *ngIf="isWthContact || (mode === 'view' && !viewOnly)" [showViewDetail]="false"
+      [showNumber]="false" [showInvitation]="isWthContact" [showAddToContacts]="isWthContact || (!contact.my_contact && !viewOnly)"
+      [showFavorite]="!isWthContact" [showEdit]="!isWthContact" [isStranger]="isWthContact" [toggleFavourite]="_contact.isContactsHasGroupName([contact], 'favourite') && !viewOnly && !isWthContact"
+      [toggleBlacklist]="_contact.isContactsHasGroupName([contact], 'blacklist') && !viewOnly && !isWthContact"
+      (eventOut)="doActionsToolbar($event)">
 
     </z-contact-shared-actions-bar>
   </div>

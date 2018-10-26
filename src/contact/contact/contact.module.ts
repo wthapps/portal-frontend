@@ -6,7 +6,7 @@ import { ZContactRoutingModule } from './contact-routing.module';
 
 import { ZContactListComponent } from './contact-list/contact-list.component';
 import { ZContactEditPageComponent } from './contact-edit/contact-edit-page.component';
-import { ZContactDetailComponent } from './contact-detail/contact-detail.component';
+// import { ZContactDetailComponent } from './contact-detail/contact-detail.component';
 import { ZContactEditComponent } from './contact-edit/contact-edit.component';
 
 import { CoreModule } from '../../core/core.module';
@@ -29,18 +29,17 @@ import { ZContactViewComponent } from '@contacts/contact/contact-edit/contact-vi
   declarations: [
     ZContactListComponent,
     ZContactEditPageComponent,
-    ZContactDetailComponent,
+    // ZContactDetailComponent,
     ZContactUserDetailComponent,
 
     //components
     ZContactViewComponent,
     ZContactEditComponent
-
   ],
   exports: [
     ZContactListComponent,
     ZContactEditPageComponent,
-    ZContactDetailComponent,
+    // ZContactDetailComponent,
 
     //components
     ZContactViewComponent,
