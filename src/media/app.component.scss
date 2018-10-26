@@ -114,8 +114,8 @@
 .row-img {
   @include clearfix;
   &.grid {
-    margin-left: -10px;
-    margin-right: -10px;
+    // margin-left: -10px;
+    // margin-right: -10px;
     .row-img-item {
       float: left;
       width: 50%;

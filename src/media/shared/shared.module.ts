@@ -22,6 +22,7 @@ import { SharingService } from '@wth/shared/shared/components/photo/modal/sharin
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
 import { MediaModalModule } from '@media/shared/modal/modal.module';
+import { MediaModalListComponent } from './media-modal-list/media-modal-list.component';
 
 TagInputModule.withDefaults({
   tagInput: {
@@ -50,6 +51,7 @@ TagInputModule.withDefaults({
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
     MediaDetailInfoComponent,
+    MediaModalListComponent,
     // ZMediaAlbumDetailComponent,
 
     // new components
@@ -64,6 +66,7 @@ TagInputModule.withDefaults({
     MediaToolbarListComponent,
     MediaListComponent,
     MediaItemComponent,
+    MediaModalListComponent,
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
     MediaDetailInfoComponent,

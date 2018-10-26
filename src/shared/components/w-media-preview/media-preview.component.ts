@@ -15,7 +15,7 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { mediaConstants } from '@media/shared/conig/constants';
+import { mediaConstants } from '@media/shared/config/constants';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';

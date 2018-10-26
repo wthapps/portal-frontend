@@ -97,7 +97,7 @@ MediaModalMixin {
   onListChanges(e: any) {
     switch (e.action) {
       case 'favorite':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
         if(this.selectedObjects.length > 1) {
@@ -105,6 +105,7 @@ MediaModalMixin {
         } else {
           this.menuActions.edit.active = true;
         }
+        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       default:
         break;
@@ -268,6 +269,10 @@ MediaModalMixin {
         this.sorting = event.payload.queryParams;
         this.loadObjects(this.sorting);
         break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsChanged();
+        break;
     }
   }
 
@@ -310,48 +315,8 @@ MediaModalMixin {
   }
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
-  selectedObjectsChanged(objectsChanged: any) {
-    if(this.objects) {
-      this.hasSelectedObjects = (objectsChanged && objectsChanged.length > 0) ? true : false;
-      this.objects.forEach(ob => {
-        if (objectsChanged.some(el => el.id == ob.id && (el.object_type == ob.object_type || el.model == ob.model))) {
-          ob.selected = true;
-        } else {
-          ob.selected = false;
-        }
-      });
-      this.selectedObjects = this.objects.filter(v => v.selected == true);
-      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-    }
-    if (this.favoriteAll) {
-      this.menuActions.favorite.iconClass = 'fa fa-star';
-    } else {
-      this.menuActions.favorite.iconClass = 'fa fa-star-o'
-    }
-  };
-  toggleFavorite(items?: any) {
-    let data = this.selectedObjects;
-    if (items) data = items;
-
-    this.apiBaseService.post(`media/favorites/toggle`, {
-      objects: data
-        .map(v => { return { id: v.id, object_type: v.model } })
-    }).subscribe(res => {
-      this.objects = this.objects.map(v => {
-        let tmp = res.data.filter(d => d.id == v.id);
-        if (tmp && tmp.length > 0) {
-          v.favorite = tmp[0].favorite;
-        }
-        return v;
-      })
-      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-      if (this.favoriteAll) {
-        this.menuActions.favorite.iconClass = 'fa fa-star';
-      } else {
-        this.menuActions.favorite.iconClass = 'fa fa-star-o'
-      }
-    });
-  }
+  selectedObjectsChanged:(objectsChanged?: any) => void;
+  toggleFavorite: (items?: any) => void;
   deleteObjects: (term: any) => void;
   loadObjects(opts: any = {}) {
     this.loading = true;

@@ -18,7 +18,7 @@ import { SharingModalResult } from '@shared/shared/components/photo/modal/sharin
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { mediaConstants } from '@media/shared/conig/constants';
+import { mediaConstants } from '@media/shared/config/constants';
 import { DoublyLinkedLists } from '@shared/data-structures/link-list/doubly-linked-lists';
 import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';

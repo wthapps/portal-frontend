@@ -22,7 +22,7 @@ import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { mediaConstants } from '@media/shared/conig/constants';
+import { mediaConstants } from '@media/shared/config/constants';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { AsyncScheduler } from 'rxjs/scheduler/AsyncScheduler';
@@ -30,7 +30,8 @@ import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { WUploader } from '@shared/services/w-uploader';
 import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
-
+import { BsModalComponent } from 'ng2-bs3-modal';
+declare var _: any;
 @Mixins([MediaBasicListMixin,
   MediaAdditionalListMixin,
   MediaListDetailMixin,
@@ -54,6 +55,8 @@ LoadModalAble,
 SharingModalMixin,
 PlaylistAddMixin, MediaDownloadMixin {
   objects: any;
+  cloneObjects: any;
+  selectedCoverObjects: any;
   object: any;
   hasSelectedObjects: boolean;
   selectedObjects: any = [];
@@ -88,6 +91,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
+  @ViewChild('coverModal') coverModal: BsModalComponent;
   private destroy$ = new Subject();
   private uploadingFiles: Array<any> = [];
   private objectType = 'Media::Video';
@@ -152,6 +156,10 @@ PlaylistAddMixin, MediaDownloadMixin {
         this.sorting = e.payload.queryParams;
         this.loadObjects(this.object.uuid, this.sorting);
         break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsChanged();
+        break;
     }
   }
 
@@ -179,6 +187,8 @@ PlaylistAddMixin, MediaDownloadMixin {
         break;
       case 'selectedObjectsChanged':
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
+        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
         break;
       default:
         break;
@@ -191,6 +201,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
     this.apiBaseService.get(`media/playlists/${input}/videos`, opts).subscribe(res => {
       this.objects = res.data;
+      this.cloneObjects = _.cloneDeep(this.objects);
       this.links = res.meta.links;
       this.loading = false;
       this.loadingEnd();
@@ -208,7 +219,57 @@ PlaylistAddMixin, MediaDownloadMixin {
     });
   }
 
-  loadMoreObjects:(input?: any) => void;
+  loadMoreObjects(input?: any) {
+    if (this.links && this.links.next) {
+      this.apiBaseService.get(this.links.next).subscribe(res => {
+        this.objects = [...this.objects, ...res.data];
+        this.cloneObjects = _.cloneDeep(this.objects);
+        this.links = res.meta.links;
+        this.loadingEnd();
+      })
+    }
+  };
+
+  doCoverEvent(event: any) {
+    switch (event.action) {
+      case 'favorite':
+        this.toggleFavorite(event.payload);
+        break;
+      case 'getMore':
+        this.loadMoreObjects();
+        break;
+      case 'sort':
+        this.sorting = event.payload.queryParams;
+        this.loadObjects(this.object.uuid, this.sorting);
+        break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsCoverChanged();
+        break;
+    }
+  }
+
+  selectedObjectsCoverChanged() {
+    this.selectedCoverObjects = this.cloneObjects.filter(ob => ob.selected == true);
+  }
+
+  setCover(event) {
+    this.apiBaseService.put('media/playlists/' + this.object.uuid, { thumbnail_url: this.selectedCoverObjects[0].thumbnail_url }).subscribe(res => {
+      this.doToolbarCoverEvent({ action: 'close' });
+      this.coverModal.close();
+      this.toastsService.success("Set cover image successfully")
+    })
+  }
+
+  doToolbarCoverEvent(event: any) {
+    if (event.action == 'close') {
+      this.cloneObjects = this.cloneObjects.map(ob => {
+        ob.selected = false;
+        return ob
+      });
+      this.selectedCoverObjects = [];
+    }
+  }
 
   viewDetail(input: any) {
     const data: any = { returnUrl: `/playlists/${input}`, preview: true, parent_id: this.object.id };
@@ -238,21 +299,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     })
   }
 
-  selectedObjectsChanged(objectsChanged: any) {
-    if (this.objects) {
-      this.objects.forEach(ob => {
-        if (objectsChanged.some(el => el.id === ob.id && (el.object_type === ob.object_type || el.model === ob.model))) {
-          ob.selected = true;
-        } else {
-          ob.selected = false;
-        }
-      });
-      this.selectedObjects = this.objects.filter(v => v.selected === true);
-      this.hasSelectedObjects = (this.selectedObjects && this.selectedObjects.length > 0) ? true : false;
-      this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
-      this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
-    }
-  }
+  selectedObjectsChanged:(objectsChanged?: any) => void;
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
@@ -483,6 +530,22 @@ PlaylistAddMixin, MediaDownloadMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       },
+      slideShow: {
+        active: true,
+        // needPermission: 'view',
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          this.selectedObjects = [this.objects[0]];
+          this.viewDetail(this.object.uuid);
+          this.selectedObjects = [];
+        },
+        class: '',
+        liclass: '',
+        title: 'Slide show',
+        tooltip: this.tooltip.edit,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-eye'
+      },
       edit: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
@@ -497,16 +560,26 @@ PlaylistAddMixin, MediaDownloadMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-edit'
       },
+      cover: {
+        active: true,
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          // this.openEditModal(this.selectedObjects[0]);
+          this.coverModal.open();
+        },
+        class: '',
+        liclass: '',
+        title: 'Set cover image',
+        tooltip: this.tooltip.edit,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-file-image-o'
+      },
       info: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          // this.mediaInfo.object = { ...this.object };
           this.toggleInfo();
-          // this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Playlist' }).subscribe(res => {
-          //   this.sharings = res.data;
-          // });
           if (this.object.sharing_object) {
             this.getSharingParentInfo(this.object.sharing_object.sharing_id);
           }
@@ -649,9 +722,8 @@ PlaylistAddMixin, MediaDownloadMixin {
           this.selectedObjects = this.selectedObjects.map(el => { el._destroy = true; return { id: el.id, model: el.model, _destroy: el._destroy } })
           this.apiBaseService.put(`media/playlists/${this.object.id}/objects`, { objects: this.selectedObjects }).subscribe(res => {
             this.toastsService.success('You removed videos successfully!');
-            this.selectedObjects = [];
-            this.hasSelectedObjects = false;
-            this.selectedObjectsChanged(this.selectedObjects);
+            this.objects = this.objects.filter(ob => ob.selected !== true);
+            this.selectedObjectsChanged();
             this.loadObjects(this.object.uuid);
           })
         },

@@ -33,17 +33,19 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   @Input() moreActionsTemplate: TemplateRef<any>;
   @Input() girdItemTemplate: TemplateRef<any>;
   @Input() scrollWindow: Boolean = true;
+  @Input() hideScale: Boolean = false;
+  @Input() viewSize: number = Constants.mediaSliderViewNumber.default;
   @Input() sorting: any = {sort_name: "Date", sort: "desc"};
 
   @Input() view: string = 'grid';
   @Input() objects: Array<any> = new Array<any>();
   @Input() nextLink: string = null;
+  @Input() hasMultipleSelection: boolean = true;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedObjectsChanged: EventEmitter<any> = new EventEmitter<any>();
 
   selectedObjects: Array<any> = [];
 
-  viewSize: number = Constants.mediaSliderViewNumber.default;
   groupByTime: string = 'date';
   // this is used in detail pages
   object: any;
@@ -59,7 +61,6 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   totalObjectsDisabled: Number = 0;
 
   hasScrollbar: boolean;
-  hasMultipleSelection: Boolean = true;
   groupBy: string = '';
 
   private pressingCtrlKey: boolean = false;
@@ -86,14 +87,14 @@ export class WGridListComponent implements OnDestroy, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['objects'] && changes['objects'].currentValue && changes['objects'].currentValue.length > 0) {
-      this.selectedObjects.length = 0;
-      changes['objects'].currentValue.forEach(o => {
-        if (o.selected === true) {
-          this.selectedObjects.push(o);
-        }
-      });
-    }
+    // if (changes['objects'] && changes['objects'].currentValue && changes['objects'].currentValue.length > 0) {
+    //   this.selectedObjects.length = 0;
+    //   changes['objects'].currentValue.forEach(o => {
+    //     if (o.selected === true) {
+    //       this.selectedObjects.push(o);
+    //     }
+    //   });
+    // }
     if(changes.view) {
       this.view = changes.view.currentValue;
       if (this.view === 'grid') {
@@ -139,51 +140,14 @@ export class WGridListComponent implements OnDestroy, OnChanges {
           this.sorting.sort_name = event.payload.queryParams.sort_name;
           this.sorting.sort = event.payload.queryParams.sort;
         }
-        if (event.action === 'deselectAll') {
-          this.selectedObjects.length = 0;
-        }
-        if (event.action === 'select') {
-          if (!this.pressingCtrlKey && !event.payload.checkbox) {
-            event.payload.clearAll = true;
-          } else if (this.pressingCtrlKey && event.payload.selectedObjects[0].selected) {
-            event.action = 'deselect';
-          }
-          if (event.payload.clearAll) {
-            this.selectedObjects.length = 0;
+        if (event.action == 'clickOnCircle' || event.action == 'clickOnItem') {
+          if ((this.pressingCtrlKey || event.action == 'clickOnCircle') && this.hasMultipleSelection) {
+            this.toggleObject(event.payload.object);
+          } else {
+            this.deSelectAll();
+            this.selectObject(event.payload.object);
           }
         }
-        if (event.action === 'select') {
-          event.payload.selectedObjects.forEach(obj => {
-            this.selectedObjects.push(obj);
-          });
-        }
-
-        if (event.action === 'deselect') {
-          event.payload.selectedObjects.forEach(obj => {
-            this.selectedObjects = this.selectedObjects.filter(o => o.id !== obj.id);
-          });
-        }
-        if (event.action === 'select' ||
-            event.action === 'selectAll' ||
-            event.action === 'deselect' ||
-            event.action === 'deselectAll') {
-          if (event.action === 'deselectAll') {
-            this.selectedObjects.map(obj => obj.selected = false);
-          }
-          this.selectedObjectsChanged.emit(this.selectedObjects);
-        }
-
-        // Update favorite status for toolbar when hit favorite action on item
-        // if (event.action === 'favorite' && !event.payload.multiItem) {
-        //   this.selectedObjects.map(object => {
-        //     if (object.id === event.payload.selectedObjects[0].id ) {
-        //       object.favorite = event.payload.mode === 'add' ? true : false;
-        //     }
-        //     return object;
-        //   });
-        //   this.selectedObjectsChanged.emit(this.selectedObjects);
-        // }
-
         this.event.emit(event);
         break;
     }
@@ -215,11 +179,28 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   }
 
   private deSelectAll() {
-      this.doEvent({ action: 'deselectAll' });
+    this.objects = this.objects.map(ob => {ob.selected = false; return ob});
+  }
+
+  private selectObject(object: any) {
+    this.objects = this.objects.map(ob => {
+      if(ob.id == object.id) {
+        ob.selected = true;
+      }
+      return ob
+    });
+  }
+
+  private toggleObject(object){
+    this.objects = this.objects.map(ob => {
+      if(ob.id == object.id) {
+        ob.selected = !ob.selected;
+      }
+      return ob;
+    })
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {
     return ((ke.keyCode === 17 || ke.keyCode === 18 || ke.keyCode === 91 || ke.keyCode === 93 || ke.ctrlKey) ? true : false);
   }
-
 }

@@ -22,7 +22,7 @@ import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { mediaConstants } from '@media/shared/conig/constants';
+import { mediaConstants } from '@media/shared/config/constants';
 import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, MediaAdditionalListMixin])
@@ -94,7 +94,7 @@ MediaAdditionalListMixin {
     this.router.navigate(['/shared', input]);
   }
 
-  selectedObjectsChanged: (objectsChanged: any) => void;
+  selectedObjectsChanged: (objectsChanged?: any) => void;
 
   toggleFavorite: (items?: any) => void;
 
@@ -143,6 +143,10 @@ MediaAdditionalListMixin {
       case 'sort':
         this.sorting = e.payload.queryParams;
         this.loadObjects(this.sorting);
+        break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsChanged();
         break;
     }
   }

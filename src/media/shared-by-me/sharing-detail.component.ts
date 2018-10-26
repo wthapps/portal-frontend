@@ -28,7 +28,7 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { Location } from '@angular/common';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
-import { mediaConstants } from '@media/shared/conig/constants';
+import { mediaConstants } from '@media/shared/config/constants';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { WUploader } from '@shared/services/w-uploader';
 import { Subject } from 'rxjs';
@@ -144,6 +144,10 @@ export class ZMediaSharingDetailComponent
         this.sorting = e.payload.queryParams;
         this.loadObjects(this.object.uuid, this.sorting);
         break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsChanged();
+        break;
     }
   }
 
@@ -167,6 +171,7 @@ export class ZMediaSharingDetailComponent
     switch (e.action) {
       case 'favorite':
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
         if (['Media::Playlist', 'Media::Video'].includes(this.object.sharing_type)) {
@@ -176,6 +181,8 @@ export class ZMediaSharingDetailComponent
           this.subMenuActions.edit.title = 'Add to Album';
           this.subMenuActions.remove.title = 'Remove from Album';
         }
+        this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
+        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
         break;
       default:
         break;
@@ -262,22 +269,7 @@ export class ZMediaSharingDetailComponent
     this.modalIns.open({ selectedObject: this.object });
   }
 
-  selectedObjectsChanged(objectsChanged: any) {
-    if (this.objects) {
-      this.objects.forEach(ob => {
-        if (objectsChanged.some(el => el.id == ob.id && (el.object_type == ob.object_type || el.model == ob.model))) {
-          ob.selected = true;
-        } else {
-          ob.selected = false;
-        }
-      });
-      this.selectedObjects = this.objects.filter(v => v.selected == true);
-      this.hasSelectedObjects = (this.selectedObjects && this.selectedObjects.length > 0) ? true : false;
-      this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
-      this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
-      this.onListChanges({ action: 'selectedObjectsChanged'});
-    }
-  }
+  selectedObjectsChanged:(objectsChanged?: any) => void;
 
   loadModalComponent: (component: any) => void;
   getSharingParentInfo: (sharingId: any) => void;

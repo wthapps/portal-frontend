@@ -111,15 +111,13 @@ MediaModalMixin {
       acceptLabel: 'Delete',
       message: `Selected photos or videos in your Trash will be deleted permanently. This action can't be undone`,
       accept: () => {
-        this.loading = true;
         this.objects = this.objects.filter(ob => {
           return this.selectedObjects.some(s => {
-            return (s.id != ob.id && s.model != ob.model)
+            return (s.id !== ob.id || s.model !== ob.model)
           })
         })
         this.apiBaseService.post(`media/trashes/really_destroy`, { objects: this.selectedObjects.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
-          this.loading = false;
-          this.loadObjects();
+          // this.loadObjects();
         })
       }
     })
@@ -131,12 +129,9 @@ MediaModalMixin {
       acceptLabel: 'Delete',
       message: `All photos and videos in your Trash will be deleted permanently. This action can't be undone`,
       accept: () => {
-        this.loading = true;
         let tmp = this.objects;
         this.objects = [];
         this.apiBaseService.post(`media/trashes/really_destroy`, { objects: tmp.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
-          this.loading = false;
-          this.loadObjects();
         })
       }
     })
@@ -187,9 +182,6 @@ custom method please overwirte any method*/
       case 'favorite':
         this.toggleFavorite(event.payload)
         break;
-      case 'viewDetails':
-        this.viewDetail(event.payload.selectedObject.uuid);
-        break;
       case 'download':
         this.store.dispatch(new Download(event.payload));
         break;
@@ -206,6 +198,10 @@ custom method please overwirte any method*/
       case 'sort':
         this.sorting = event.payload.queryParams;
         this.loadObjects(this.sorting);
+        break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsChanged();
         break;
     }
   }
@@ -236,7 +232,7 @@ custom method please overwirte any method*/
 
   /* MediaListMixin This is media list methods, to
 custom method please overwirte any method*/
-  selectedObjectsChanged:(e: any) => void;
+  selectedObjectsChanged:(objectsChanged?: any) => void;
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
     let data: any = { returnUrl: '/photos' , preview: true};

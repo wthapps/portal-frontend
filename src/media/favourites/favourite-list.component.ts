@@ -28,7 +28,7 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
-import { mediaConstants } from '@media/shared/conig/constants';
+import { mediaConstants } from '@media/shared/config/constants';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaAdditionalListMixin, MediaDownloadMixin])
@@ -81,7 +81,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
   onEditShare: (e: SharingModalResult, sharing: any) => void;
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
-  selectedObjectsChanged: (objectsChanged: any) => void;
+  selectedObjectsChanged: (objectsChanged?: any) => void;
   deleteObjects (term: any) {
     const sharings_with_me = this.selectedObjects.filter(s => s.object_type == 'sharing' && s.role_id < 5);
     const others = this.selectedObjects.filter(s => !(s.object_type == 'sharing' && s.role_id < 5));
@@ -147,6 +147,10 @@ export class ZMediaFavoriteListComponent implements OnInit,
         this.sorting = e.payload.queryParams;
         this.loadObjects(this.sorting);
         break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsChanged();
+        break;
     }
   }
 
@@ -164,15 +168,11 @@ export class ZMediaFavoriteListComponent implements OnInit,
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-      // console.log(e.payload[0]);
-
         if(e.payload && e.payload.length == 1) {
           this.validateActions(this.menuActions, e.payload[0].role_id);
         } else {
           // only view when select many
           this.validateActions(this.menuActions, 1);
-          // this.menuActions.delete.active = false;
-          // this.menuActions.deleteMobile.active = false;
           this.menuActions.download.active = false;
           this.menuActions.share.active = false;
           this.menuActions.shareMobile.active = false;

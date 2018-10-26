@@ -45,17 +45,10 @@ export class MediaBasicListMixin {
     }
   }
 
-  selectedObjectsChanged(objectsChanged: any) {
+  selectedObjectsChanged(objectsChanged: any = this.objects) {
     if (this.objects) {
-      this.hasSelectedObjects = (objectsChanged && objectsChanged.length > 0) ? true : false;
-      this.objects.forEach(ob => {
-        if (objectsChanged.some(el => el.id == ob.id && (el.object_type == ob.object_type || el.model == ob.model))) {
-          ob.selected = true;
-        } else {
-          ob.selected = false;
-        }
-      });
       this.selectedObjects = this.objects.filter(v => v.selected == true);
+      this.hasSelectedObjects = this.selectedObjects.length > 0;
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
       this.onListChanges({ action: 'selectedObjectsChanged', payload: objectsChanged});
     }
@@ -89,7 +82,7 @@ export class MediaBasicListMixin {
     this.confirmService.confirm({
       header: 'Delete',
       acceptLabel: 'Delete',
-      message: `Are you sure to delete ${this.selectedObjects.length} ${term}`,
+      message: `Are you sure to delete ${this.selectedObjects.length} ${term}` + (this.selectedObjects.length > 1 ? 's' : ''),
       accept: () => {
         this.loading = true;
         this.objects = this.objects.filter(ob => {

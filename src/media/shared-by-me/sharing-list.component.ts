@@ -83,7 +83,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
     this.router.navigate(['/shared', input]);
   }
 
-  selectedObjectsChanged:(objectsChanged: any) => void;
+  selectedObjectsChanged:(objectsChanged?: any) => void;
   onAfterEditModal: () => void;
 
   toggleFavorite:(items?: any) => void;
@@ -128,6 +128,10 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
       case 'sort':
         this.sorting = e.payload.queryParams;
         this.loadObjects(this.sorting);
+        break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsChanged();
         break;
     }
   }

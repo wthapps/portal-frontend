@@ -30,11 +30,11 @@ export class WGridListItemComponent {
   }
 
   select(item: any) {
-    this.doAction({action: 'select', payload: {selectedObjects: [item], clearAll: false }});
+    this.doAction({ action: 'clickOnItem', payload: { object: item } });
   }
 
-  toggleSelection(item: any, event: any) {
-    this.doAction({action: item.selected ? 'deselect' : 'select', payload: { selectedObjects: [item], checkbox: true}});
+  clickOnCircle(item: any, event: any) {
+    this.doAction({action: 'clickOnCircle', payload: {object: item}});
     event.stopPropagation();
   }
 

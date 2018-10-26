@@ -50,8 +50,7 @@
   (event)="doToolbarEvent($event)">
 </w-toolbar>
 
-<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)"
-  (selectedObjectsChanged)="selectedObjectsChanged($event)">
+<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)">
 
   <div footer-grid-list>
     <box-loading *ngIf="links?.next"></box-loading>

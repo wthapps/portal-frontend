@@ -25,6 +25,7 @@ import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { WUploader } from '@shared/services/w-uploader';
+import { mediaConstants } from '@media/shared/config/constants';
 
 declare var _: any;
 @Mixins([SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble, MediaDownloadMixin])
@@ -60,6 +61,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   modalRef: any;
   sorting: any;
   endLoading: any;
+  menuActions: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(public apiBaseService: ApiBaseService,
@@ -75,6 +77,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
 
   ngOnInit() {
     this.loadObjects();
+    this.menuActions = this.getMenuActions();
   }
 
   loadModalComponent:(component: any) => void;
@@ -120,6 +123,10 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
         this.sorting = e.payload.queryParams;
         this.loadObjects(this.sorting);
         break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsChanged();
+        break;
     }
   }
 
@@ -138,10 +145,10 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   onListChanges(e: any) {
     switch (e.action) {
       case 'favorite':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       default:
         break;
@@ -178,7 +185,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
 
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
-  selectedObjectsChanged: (e: any) => void;
+  selectedObjectsChanged: (objectsChanged?: any) => void;
   toggleFavorite: (input?: any) => void;
   deleteObjects: (term: any) => void;
   loadObjects(opts: any = {}) {
@@ -210,5 +217,124 @@ custom method please overwirte any method*/
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
       allowedFileTypes: content_types
     });
+  }
+
+  getMenuActions() {
+    return {
+      preview: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.viewDetail(this.selectedObjects[0].uuid)
+        },
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.preview,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-eye'
+      },
+      share: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: this.openModalShare.bind(this),
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.share,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      shareMobile: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Inside dropdown list
+        action: this.openModalShare.bind(this),
+        class: '',
+        liclass: 'visible-xs-block',
+        tooltip: this.tooltip.share,
+        title: 'Share',
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      favorite: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: this.toggleFavorite.bind(this),
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.addToFavorites,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-star'
+      },
+      delete: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.deleteObjects('video');
+        },
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.delete,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      },
+      // edit: {
+      //   active: true,
+      //   permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+      //   inDropDown: true, // Outside dropdown list
+      //   action: () => {
+      //     this.openEditModal(this.object);
+      //   },
+      //   class: '',
+      //   liclass: '',
+      //   title: 'Edit Information',
+      //   tooltip: this.tooltip.edit,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-edit'
+      // },
+      download: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          this.downloadMedia(this.selectedObjects);
+        },
+        class: '',
+        liclass: '',
+        title: 'Download',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-download'
+      },
+      add: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          this.openModalAddToPlaylist()
+        },
+        class: '',
+        liclass: '',
+        title: 'Add to PlayList',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-plus-square'
+      },
+      deleteMobile: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Inside dropdown list
+        action: () => {this.deleteObjects('video')},
+        class: '',
+        liclass: 'visible-xs-block',
+        title: 'Delete',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      }
+    };
   }
 }

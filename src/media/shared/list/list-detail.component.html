@@ -65,8 +65,7 @@
       (event)="doToolbarEvent($event)">
     </w-toolbar>
 
-    <w-grid-list #gridlist [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)"
-      [scrollWindow]="false">
+    <w-grid-list #gridlist [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" [scrollWindow]="false">
       <div footer-grid-list>
         <box-loading *ngIf="links?.next"></box-loading>
         <div class="text-fade text-center" *ngIf="endLoading"> <strong>{{objects.length}} files</strong></div>

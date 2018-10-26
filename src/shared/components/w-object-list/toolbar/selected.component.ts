@@ -1,6 +1,6 @@
 import {
   Component, ViewEncapsulation, OnDestroy, ChangeDetectorRef, AfterViewInit,
-  ChangeDetectionStrategy, Input
+  ChangeDetectionStrategy, Input, Output, EventEmitter
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
@@ -38,6 +38,8 @@ import { Media } from '@shared/shared/models/media.model';
 
 export class WObjectToolbarSelectedComponent implements AfterViewInit, OnDestroy {
   @Input() selectedObjects: Media[];
+  @Output() event: EventEmitter<any> = new EventEmitter<any>();
+
 
   constructor(private objectListService: WObjectListService,
               private cdr: ChangeDetectorRef
@@ -46,6 +48,7 @@ export class WObjectToolbarSelectedComponent implements AfterViewInit, OnDestroy
 
   clearSelected() {
     this.objectListService.clear();
+    this.event.emit({action: 'close'});
   }
 
   ngAfterViewInit() {

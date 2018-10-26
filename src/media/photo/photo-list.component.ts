@@ -23,6 +23,8 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { WUploader } from '@shared/services/w-uploader';
+import { mediaConstants } from '@media/shared/config/constants';
+
 
 declare var _: any;
 @Mixins([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
@@ -60,6 +62,7 @@ MediaModalMixin {
   modalIns: any;
   modalRef: any;
   endLoading: any;
+  menuActions: any;
   sorting: any =  {sort_name: "Date", sort: "desc"};
 
   private sub: any;
@@ -85,6 +88,7 @@ MediaModalMixin {
     this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').subscribe((event: any) => {
       this.doListEvent(event);
     });
+    this.menuActions = this.getMenuActions();
   }
 
   loadObjects(opts: any = {}) {
@@ -164,6 +168,10 @@ custom method please overwirte any method*/
         this.sorting = event.payload.queryParams;
         this.loadObjects(this.sorting);
         break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsChanged();
+        break;
     }
   }
 
@@ -176,10 +184,15 @@ custom method please overwirte any method*/
   onListChanges(e: any) {
     switch (e.action) {
       case 'favorite':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        if (this.selectedObjects.length > 1) {
+          this.menuActions.edit.active = false;
+        } else {
+          this.menuActions.edit.active = true;
+        }
+        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       default:
         break;
@@ -192,7 +205,7 @@ custom method please overwirte any method*/
 
   /* MediaListMixin This is media list methods, to
 custom method please overwirte any method*/
-  selectedObjectsChanged:(e: any) => void;
+  selectedObjectsChanged:(objectsChanged?: any) => void;
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
     let data: any = { returnUrl: '/photos' , preview: true};
@@ -230,5 +243,124 @@ custom method please overwirte any method*/
         if(sub) sub.unsubscribe();
       })
     });
+  }
+
+  getMenuActions() {
+    return {
+      preview: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.viewDetail(this.selectedObjects[0].uuid)
+        },
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.preview,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-eye'
+      },
+      share: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: this.openModalShare.bind(this),
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.share,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      shareMobile: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Inside dropdown list
+        action: this.openModalShare.bind(this),
+        class: '',
+        liclass: 'visible-xs-block',
+        tooltip: this.tooltip.share,
+        title: 'Share',
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      favorite: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: this.toggleFavorite.bind(this),
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.addToFavorites,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-star'
+      },
+      delete: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.deleteObjects('photo');
+        },
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.delete,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      },
+      add: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          this.openModalAddToAlbum(this.selectedObjects);
+        },
+        class: '',
+        liclass: '',
+        title: 'Add to Album',
+        tooltip: this.tooltip.add,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-plus-square'
+      },
+      download: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          this.downloadMedia(this.selectedObjects);
+        },
+        class: '',
+        liclass: '',
+        title: 'Download',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-download'
+      },
+      edit: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          this.openEditModal(this.selectedObjects[0]);
+        },
+        class: '',
+        liclass: '',
+        title: 'Edit Information',
+        tooltip: this.tooltip.edit,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-edit'
+      },
+      deleteMobile: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Inside dropdown list
+        action: () => { this.deleteObjects('photo') },
+        class: '',
+        liclass: 'visible-xs-block',
+        title: 'Delete',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      }
+    };
   }
 }
