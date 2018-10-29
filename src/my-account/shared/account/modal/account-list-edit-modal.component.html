@@ -18,13 +18,16 @@
 </div>
        <div class="pb5 bold">
         <div class="row row-12">
-          <div class="col-sm-4">
-            Full name
+          <div class="col-sm-3">
+            First name
           </div>
-          <div class="col-sm-4 ml5 pl0">
+          <div class="col-sm-3">
+            Last name
+          </div>
+          <div class="col-sm-3">
             Email address
           </div>
-          <div class="col-sm-3 pl0">
+          <div class="col-sm-3">
             Date of birth
           </div>
 
@@ -38,24 +41,47 @@
 
             <div class="row row-12">
 
-              <div class="col-sm-4 pr0">
+              <div class="col-sm-3 pr0">
                 <div class="form-group no-label" [ngClass]="{
-                    'has-error': (!item['controls'].name.valid
-                                && item['controls'].name.touched),
-                    'has-success': (item['controls'].name.valid
-                                && item['controls'].name.touched
-                                && form.value.items[i].name.length > 0)}">
-                  <input type="text" class="form-control" formControlName="name"
-                         (change)="changed(item.controls)" placeholder="Full name">
-                  <div *ngIf="!item['controls'].name.valid && item['controls'].name.touched">
-                      <span class="help-block text-danger" *ngIf="item['controls'].name.errors.required">
-                        Full name is required
+                    'has-error': (!item['controls'].firstName.valid
+                                && item['controls'].firstName.touched),
+                    'has-success': (item['controls'].firstName.valid
+                                && item['controls'].firstName.touched
+                                && form.value.items[i].firstName.length > 0)}">
+                  <input type="text" class="form-control" formControlName="firstName"
+                         (change)="changed(item.controls)" placeholder="First name">
+                  <div *ngIf="!item['controls'].firstName.valid && item['controls'].firstName.touched">
+                      <span class="help-block text-danger" *ngIf="item['controls'].firstName.dirty && item['controls'].firstName.errors.required">
+                        First name is required
+                      </span>
+                      <span class="help-block text-danger" *ngIf="item['controls'].firstName.dirty && item['controls'].firstName.errors.blanked">
+                        First name is blanked
                       </span>
                   </div>
                 </div>
               </div>
 
-              <div class="col-sm-4 pl5 pr0">
+              <div class="col-sm-3 pr0">
+                <div class="form-group no-label" [ngClass]="{
+                    'has-error': (!item['controls'].lastName.valid
+                                && item['controls'].lastName.touched),
+                    'has-success': (item['controls'].lastName.valid
+                                && item['controls'].lastName.touched
+                                && form.value.items[i].lastName.length > 0)}">
+                  <input type="text" class="form-control" formControlName="lastName"
+                         (change)="changed(item.controls)" placeholder="Last name">
+                  <div *ngIf="!item['controls'].lastName.valid && item['controls'].lastName.touched">
+                      <span class="help-block text-danger" *ngIf="item['controls'].lastName.dirty && item['controls'].lastName.errors.required">
+                        Last name is required
+                      </span>
+                      <span class="help-block text-danger" *ngIf="item['controls'].lastName.dirty && item['controls'].lastName.errors.blanked">
+                        Last name is blanked
+                      </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-3">
 
                 <div class="form-group no-label"
                      [ngClass]="{
@@ -66,7 +92,7 @@
                                 && form.value.items[i].email.length > 0)}">
                   <input type="email" email class="form-control" formControlName="email"
                          (change)="changed(item.controls)"
-                         placeholder="account-email@example.com">
+                         placeholder="user-name@example.com">
                   <div *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
                       <span
                         *ngIf="!item['controls'].email.valid && item['controls'].email.errors.emailFormat"
@@ -76,9 +102,9 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-3 pl5 pr0">
+              <div class="col-sm-2">
 
-                <div class="form-group no-label no-label-birthday"
+                <div class="form-group no-label"
                      [ngClass]="{
                     'has-error': (!item['controls'].birthday.valid
                                 && item['controls'].birthday.touched),
@@ -103,16 +129,6 @@
                   </div>
                 </div>
               </div>
-
-              <!--<div class="col-sm-2 pl5">-->
-                <!--<div class="form-group no-label">-->
-                  <!--<select class="form-control">-->
-                    <!--<option value="family">Family</option>-->
-                    <!--<option value="student">Student</option>-->
-                  <!--</select>-->
-                <!--</div>-->
-              <!--</div>-->
-
               <div class="col-sm-1">
                 <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == 0"
                         type="button"

@@ -14,6 +14,8 @@ import { CommonModule } from '@angular/common';
 import { AccountCreatePartialComponent } from './accounts/account-create-partial.component';
 import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
 // import { MatInputModule, MatNativeDateModule } from '@angular/material';
+import { InviteContactModule } from '@shared/partials/invite-contact/invite-contact.module';
+
 
 @NgModule({
   imports: [
@@ -22,7 +24,7 @@ import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/a
     ReactiveFormsModule,
     // MatNativeDateModule, // TODO fix
     // MatInputModule,
-
+    InviteContactModule,
     BsModalModule,
     PipeModule,
     MyAdminRoutingModule,

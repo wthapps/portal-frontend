@@ -34,9 +34,10 @@
   </nav>
   <div id="loading"></div>
   <div class="box-panel-subtitle">
-      <a class="btn btn-outline-primary btn-min" (click)="addRecipients(modal)">
-        <i class="fa fa-envelope-open-o"></i> Invite new members</a>
-
+      <!-- <a class="btn btn-outline-primary btn-min" (click)="addRecipients(modal)">
+        <i class="fa fa-envelope-open-o"></i> Invite new members
+      </a> -->
+    <button class="btn btn-outline-secondary"><invite-contact></invite-contact></button>
     <button class="btn btn-outline-secondary" *ngIf="currentTab == TAB.PENDING.value"
             (click)="onResend()" [disabled]="selectedItems.length === 0"><i class="fa fa-envelope-open-o" aria-hidden="true" ></i> Resend</button>
     <button class="btn btn-outline-secondary"

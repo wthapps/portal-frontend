@@ -11,6 +11,15 @@ import { RouterModule } from '@angular/router';
       {
         path: 'contact',
         loadChildren: './contact-us/contact.module#ContactUsModule'
+      },
+      {
+        path: '',
+        children: [
+          {
+            path: 'dashboard',
+            loadChildren: './dashboard/dashboard.module#DashboardModule'
+          }
+        ]
       }
     ])
   ],

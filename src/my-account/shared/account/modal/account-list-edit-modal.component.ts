@@ -27,13 +27,13 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
 
   form: FormGroup;
   deleteObjects: any = [];
-  type: string = 'items';
-  noOfCtrl: number = 2;
-  userId: number = 0;
+  type = 'items';
+  noOfCtrl = 2;
+  userId = 0;
 
   accounts: Array<any>;
-  fullAccountCount: number = 0;
-  subAccountCount: number = 0;
+  fullAccountCount = 0;
+  subAccountCount = 0;
   accountCount: number = this.fullAccountCount + this.subAccountCount;
 
   // These are get value form subscription and plan
@@ -64,7 +64,7 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   * @data: array of item
   * @mode: add or edit or view. default is add
   * */
-  open(options: any = {mode:'add', data: undefined, subscription: {}}) {
+  open(options: any = {mode: 'add', data: undefined, subscription: {}}) {
     this.subAccountCount = 0;
     this.fullAccountCount = 0;
     this.accounts = options.accounts;
@@ -88,34 +88,36 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
 
       if (items.length > 0) {
         for (let i = 0; i < items.length; i++) {
-          this.add(items[i].parent_id != null? true: false, items[i]);
+          this.add(items[i].parent_id != null ? true : false, items[i]);
         }
-      } else if(items.length === 0) {
+      } else if (items.length === 0) {
         for (let i = 0; i < this.noOfCtrl; i++) {
-          this.add(i % 2 !== 0? true : false);
+          this.add(i % 2 !== 0 ? true : false);
         }
       }
     }
   }
 
   create(subAccount: boolean, item?: any) {
-    let parentId = subAccount === false ? null : this.userId;
-    let creatorId = parentId == null ? 0 : null;
+    const parentId = subAccount === false ? null : this.userId;
+    const creatorId = parentId == null ? 0 : null;
 
     if (item) {
       this.countNoOfSubAndMaster(item);
       return this.fb.group({
         email: [item.email, Validators.compose([Validators.required, CustomValidator.emailFormat])],
-        name: [item.name, Validators.compose([Validators.required])],
+        firstName: [item.firstName, Validators.compose([Validators.required, CustomValidator.blanked])],
+        lastName: [item.lastName, Validators.compose([Validators.required, CustomValidator.blanked])],
         birthday: [item.birthday, Validators.compose([Validators.required])],
         id: [item.id],
         parent_id: [item.parent_id],
         creator_id: [item.creator_id]
       });
     } else {
-      let group = this.fb.group({
+      const group = this.fb.group({
         email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])],
-        name: ['', Validators.compose([Validators.required])],
+        firstName: ['', Validators.compose([Validators.required, CustomValidator.blanked])],
+        lastName: ['', Validators.compose([Validators.required, CustomValidator.blanked])],
         birthday: [this.defaultDate, Validators.compose([Validators.required])],
         id: [null],
         parent_id: [parentId],
@@ -129,9 +131,9 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   }
 
   add(subAccount: boolean, item?: any) {
-    let control = <FormArray>this.form.controls.items;
+    const control = <FormArray>this.form.controls.items;
     if (item) {
-      let group = this.create(subAccount, item);
+      const group = this.create(subAccount, item);
       control.push(group);
       this.changed(group.controls);
     } else {
@@ -142,7 +144,7 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   continue() {
     this.data = this.form.value.items;
     _.remove(this.data, (item: any) => {
-      return item.email == '' || item.name == '';
+      return item.email === '' || item.firstName === '' || item.lastName === '';
     });
     // status to current object
     _.forEach(this.data, (item: any, index: number) => {
@@ -175,14 +177,14 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   }
 
   remove(i: number, item: any) {
-    let control = <FormArray>this.form.controls[this.type];
+    const control = <FormArray>this.form.controls[this.type];
 
     this.changed(item, true);
 
     control.removeAt(i);
     if (item && item.id && item.id.value) {
       _.forEach(this.data, (data: any) => {
-        if (data.id == item.id.value) {
+        if (data.id === item.id.value) {
           data._destroy = true;
           this.deleteObjects.push(data);
         }
@@ -191,7 +193,7 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   }
 
   removeAll() {
-    let control = <FormArray>this.form.controls[this.type];
+    const control = <FormArray>this.form.controls[this.type];
     control.controls.length = 0;
     this.deleteObjects.length = 0;
     control.reset();
@@ -203,14 +205,14 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
 
   validItems(): boolean {
     let result = false;
-    let items = this.form.value.items;
+    const items = this.form.value.items;
 
-    if(items.length == 0) return false;
-    if(items.length == 1) {
+    if (items.length === 0) return false;
+    if (items.length === 1) {
       return this.form.valid;
     }
     _.forEach((<FormArray>this.form.get(this.type)).controls, (item: any) => {
-      if(item.controls.name.valid && item.controls.email.valid && item.controls.birthday.valid) {
+      if (item.controls.firstName.valid && item.controls.lastName.valid &&item.controls.email.valid && item.controls.birthday.valid) {
         result = true;
         // this.countNoOfSubAndMaster(item.value);
       }
@@ -219,7 +221,7 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   }
 
   changed(item: any, countDown: boolean = false) {
-    if(item.name.valid && item.email.valid && item.birthday.valid) {
+    if (item.firstName.valid && item.lastName.valid && item.email.valid && item.birthday.valid) {
       this.countNoOfSubAndMaster(item.parent_id.value, countDown);
     }
   }
@@ -227,12 +229,12 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   private countNoOfSubAndMaster(parent_id: any, countDown: boolean = false) {
 
     if (parent_id == null) {
-      if(countDown)
+      if (countDown)
         this.fullAccountCount--;
       else
         this.fullAccountCount++;
     }
-    if (parent_id == 0) {
+    if (parent_id === 0) {
       if (countDown)
         this.subAccountCount--;
       else

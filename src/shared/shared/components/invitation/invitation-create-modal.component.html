@@ -11,10 +11,13 @@
     <bs-modal-body>
       <div>
         <div class="row row-12">
-          <div class="col-sm-4 ml5">
-            Full name
+          <div class="col-sm-3">
+            Fist name
           </div>
-          <div class="col-sm-7">
+          <div class="col-sm-3">
+            Last name
+          </div>
+          <div class="col-sm-6">
             Email address
           </div>
         </div>
@@ -24,25 +27,46 @@
         <div *ngFor="let item of getFormControls(); let i=index" class="media mt0">
           <div *ngIf="item" class="media-body" [formGroupName]="i">
 
-            <div class="row row-10">
+            <div class="row row-12">
 
-              <div class="col-sm-4">
+              <div class="col-sm-3">
                 <div class="form-group no-label" [ngClass]="{
-                    'has-error': (!item['controls']?.fullName.valid
-                                && item['controls']?.fullName.touched),
-                    'has-success': (item['controls']?.fullName.valid
-                                && item['controls']?.fullName.touched
-                                && form.value.items[i]?.fullName.length > 0)}">
-                  <input type="text" class="form-control" formControlName="fullName" placeholder="Full name">
-                  <div *ngIf="!item['controls']?.fullName.valid && item['controls']?.fullName.touched">
-                    <span class="help-block text-danger" *ngIf="item['controls']?.fullName.errors.required">
-                      Full name is required
+                    'has-error': (!item['controls']?.firstName.valid
+                                && item['controls']?.firstName.touched),
+                    'has-success': (item['controls']?.firstName.valid
+                                && item['controls']?.firstName.touched
+                                && form.value.items[i]?.firstName.length > 0)}">
+                  <input type="text" class="form-control" formControlName="firstName" placeholder="Fist name">
+                  <div *ngIf="!item['controls']?.firstName.valid && item['controls']?.firstName.touched">
+                    <span class="help-block text-danger" *ngIf="item['controls']?.firstName.errors.required">
+                      First name is required
+                    </span>
+                    <span class="help-block text-danger" *ngIf="item['controls']?.firstName.errors.blanked">
+                      First name is blanked
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group no-label" [ngClass]="{
+                    'has-error': (!item['controls']?.lastName.valid
+                                && item['controls']?.lastName.touched),
+                    'has-success': (item['controls']?.lastName.valid
+                                && item['controls']?.lastName.touched
+                                && form.value.items[i]?.lastName.length > 0)}">
+                  <input type="text" class="form-control" formControlName="lastName" placeholder="Last name">
+                  <div *ngIf="!item['controls']?.lastName.valid && item['controls']?.lastName.touched">
+                    <span class="help-block text-danger" *ngIf="item['controls']?.lastName.errors.required">
+                      Last name is required
+                    </span>
+                    <span class="help-block text-danger" *ngIf="item['controls']?.lastName.errors.blanked">
+                      Last name is blanked
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div class="col-sm-8">
+              <div class="col-sm-5">
                 <div class="form-group no-label" [ngClass]="{
                     'has-error': (!item?.email?.valid
                                 && item?.email?.touched),
@@ -57,14 +81,13 @@
                   </div>
                 </div>
               </div>
-
+              <div class="col-sm-1">
+                <button *ngIf="this.form.value.items.length > 1" type="button" class="btn btn-default" (click)="remove(i, item.controls)">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </div>
             </div>
-          </div>
-          <div class="media-right">
-            <button *ngIf="this.form.value.items.length > 1" type="button" class="btn btn-default" (click)="remove(i, item.controls)">
-              <i class="fa fa-trash-o"></i>
-            </button>
-          </div>
+          </div>          
         </div>
       </div>
       <button type="button" class="btn btn-default mb10" (click)="add()">

@@ -71,13 +71,15 @@ export class InvitationCreateModalComponent implements OnInit {
     if (item) {
       return this.fb.group({
         email: [item.email, Validators.compose([Validators.required, CustomValidator.emailFormat])],
-        fullName: [item.fullName, Validators.compose([Validators.required])],
+        firstName: [item.firstName, Validators.compose([Validators.required, CustomValidator.blanked])],
+        lastName: [item.lastName, Validators.compose([Validators.required, CustomValidator.blanked])],
         contactId: [item.contactId]
       });
     } else {
       return this.fb.group({
         email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])],
-        fullName: ['', Validators.compose([Validators.required])],
+        firstName: ['', Validators.compose([Validators.required, CustomValidator.blanked])],
+        lastName: ['', Validators.compose([Validators.required, CustomValidator.blanked])],
         contactId: [null]
       });
     }
@@ -94,18 +96,23 @@ export class InvitationCreateModalComponent implements OnInit {
 
 
   doEvent(options: any) {
-    const data = this.form.value.items;
+    let data = this.form.value.items;
     switch (options.action) {
       case 'invitation:send_to_recipients':
         // remove items whose email is empty
         _.remove(data, (item: any) => {
-          if (item.email !== '') {
-            item.fullName = item.email.split('@')[0];
-          }
+          // if (item.email !== '') {
+          //   item.firstName = item.email.split('@')[0];
+          // }
           return item.email === '';
         });
         options['payload'] = data;
         this.modal.close();
+        data.map(r => {
+          if (r.firstName !== '' && r.lastName !== '') {
+            r.fullName = `${r.firstName} ${r.lastName}`;
+          }
+        });
         this.sendInvitations(data);
         this.removeAll();
         // this.event.emit(options);
@@ -168,7 +175,7 @@ export class InvitationCreateModalComponent implements OnInit {
       return this.form.valid;
     }
     _.forEach(this.form.value.items, (item: any) => {
-      if (item.email !== '' && item.fullName !== '') {
+      if (item.email !== '' && item.fistName !== '' && item.lastName !== '') {
         result = true;
       }
     });

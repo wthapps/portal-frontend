@@ -28,7 +28,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers, metaReducers, appEffects } from './store';
 import { ConfirmationModule } from './confirmation/confirmation.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { DashboardModule } from '@account/dashboard/dashboard.module';
 
 @NgModule({
   imports: [
@@ -36,6 +36,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     HttpClientModule,
     AppRoutingModule,
     MyHomeModule,
+    DashboardModule,
     MyAppsModule,
     MyBillingModule,
     MyMyAppsModule,
@@ -58,7 +59,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
       : []
   ],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   providers: [
     {
       provide: APP_BASE_HREF,
