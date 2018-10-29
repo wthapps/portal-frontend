@@ -156,6 +156,7 @@ export class InvitationCreateModalComponent implements OnInit {
       .create({ recipients: data })
       .toPromise().then((response: any) => {
         // this.invitationModal.close();
+        this.event.emit({action: 'invitation:send_successfully', payload: response.data});
         this.toaster.success(
           'You have just sent invitation(s) successfully!'
         );

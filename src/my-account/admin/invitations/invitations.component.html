@@ -37,7 +37,7 @@
       <!-- <a class="btn btn-outline-primary btn-min" (click)="addRecipients(modal)">
         <i class="fa fa-envelope-open-o"></i> Invite new members
       </a> -->
-    <button class="btn btn-outline-secondary"><invite-contact></invite-contact></button>
+    <button class="btn btn-outline-secondary"><invite-contact (invited)="doEvent($event)"></invite-contact></button>
     <button class="btn btn-outline-secondary" *ngIf="currentTab == TAB.PENDING.value"
             (click)="onResend()" [disabled]="selectedItems.length === 0"><i class="fa fa-envelope-open-o" aria-hidden="true" ></i> Resend</button>
     <button class="btn btn-outline-secondary"
@@ -76,8 +76,8 @@
         </div>
       </th>
       <td><a rel="nofollow" target="_top"
-             href="mailto:{{ item.recipient_email }}">{{ item.recipient_email }}</a></td>
-        <td *ngIf="currentTab === TAB.PENDING.value">{{ item.created_at | date:'y MMM d' }} {{ item.created_at | date:'H:mm:ss' }}</td>
+             href="mailto:{{ item?.recipient_email }}">{{ item?.recipient_email }}</a></td>
+        <td *ngIf="currentTab === TAB.PENDING.value">{{ item?.created_at | date:'y MMM d' }} {{ item?.created_at | date:'H:mm:ss' }}</td>
         <td *ngIf="currentTab === TAB.ACCEPTED.value">{{ item?.accepted_at | date: 'y MMM d' }} {{ item?.accepted_at | date:'H:mm:ss' }}</td>
       <td>
         <div>

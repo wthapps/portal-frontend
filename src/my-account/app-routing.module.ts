@@ -13,10 +13,10 @@ import { RouterModule } from '@angular/router';
         loadChildren: './contact-us/contact.module#ContactUsModule'
       },
       {
-        path: '',
+        path: 'dashboard',
         children: [
           {
-            path: 'dashboard',
+            path: '',
             loadChildren: './dashboard/dashboard.module#DashboardModule'
           }
         ]

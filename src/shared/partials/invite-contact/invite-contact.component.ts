@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Constants } from '@shared/constant';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { ApiBaseService } from '@shared/services';
@@ -10,6 +10,7 @@ import { InvitationCreateModalComponent } from '@shared/shared/components/invita
   styleUrls: ['./invite-contact.component.scss']
 })
 export class InviteContactComponent implements OnInit {
+  @Output() invited: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('create') createModal: InvitationCreateModalComponent;
   contacts: any;
@@ -79,5 +80,9 @@ export class InviteContactComponent implements OnInit {
       }
       return false;
     });
+  }
+
+  onInvited(event) {
+    this.invited.emit(event);
   }
 }

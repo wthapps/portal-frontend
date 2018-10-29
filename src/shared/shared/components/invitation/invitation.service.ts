@@ -25,6 +25,6 @@ export class InvitationService extends BaseEntityService<Invitation> {
   }
 
   multiDelete(body: any): Observable<any> {
-    return this.api.post(this.url+ '/multi_delete', body);
+    return this.api.post(this.url + '/multi_delete', body);
   }
 }
