@@ -1,0 +1,89 @@
+<div class="menuleft-logo">
+  <img src="/assets/images_new/logo-contact.png" alt="">
+</div>
+
+<!-- <div class="menuleft-item" [routerLinkActive]="['active']">
+  <a href="javascript:;" [routerLink]="['/contacts', 'new']" (click)="onCloseSidebar()">
+    <i class="fa fa-plus"></i> Contact
+  </a>
+</div> -->
+
+
+<div class="menuleft-item btn-group">
+  <a type="button" class="new-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-plus"></i> <span class="hidden-xs">New</span>
+  </a>
+  <ul class="dropdown-menu dropdown-menu-sm">
+    <li><a href="javascript:;" [routerLink]="['/contacts', 'new']" (click)="onCloseSidebar()">
+      <i class="fa fa-plus"></i> New Contact
+    </a></li>
+    <li>
+
+      <a (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})"
+         href="javascript:void(0)">
+        <i class="fa fa-plus"></i> New Group
+      </a>
+    </li>
+  </ul>
+</div>
+<div class="menuleft-item-divider">
+  <div class="menuleft-item" [ngClass]="{'active' : ( currentGroup === 'all contacts')}">
+    <a href="javascript:;" [routerLink]="['contacts', {group: 'all contacts'}]"
+       (click)="doEvent({action: 'contacts', event: $event})">
+      <i class="fa fa-address-book-o"></i> My Contacts ({{ contactService.myContactCount }})
+    </a>
+  </div>
+  <div class="menuleft-item parent-item">
+    <a href="javascript:void(0)"><i class="fa fa-users"></i> Groups</a>
+  </div>
+
+  <ng-container *ngFor="let group of groups">
+    <div class="menuleft-item sub-item" [ngClass]="{'active' : (currentGroup === group?.name)}">
+      <a [routerLink]="['contacts', {group: group.name}]" (click)="doEvent({action: group?.action, event: $event})">
+        <i class="{{ group.icon }}"></i> {{ group.name | maxLength: 20}} ({{ group?.count }})
+      </a>
+      <div *ngIf="group.hasSubMenu" class="menuleft-item-action">
+      <span class="can-click"
+            (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
+            title="edit group name">
+        <i class="fa fa-pencil"></i>
+      </span>
+        <span class="can-click" (click)="deleteGroup(group)" title="delete group">
+        <i class="fa fa-trash"></i>
+      </span>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<!-- <div class="menuleft-item">
+  <a (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})"
+     href="javascript:void(0)" >
+    <i class="fa fa-plus"></i> New Group
+  </a>
+</div> -->
+<div class="menuleft-item" [routerLinkActive]="['active']">
+  <a [routerLink]="['/others']" (click)="doEvent(null)" href="javascript:void(0)">
+    <i class="fa fa-inbox"></i> Other contacts ({{ contactService.otherContactCount }})
+  </a>
+</div>
+
+
+<div class="menuleft-item" [routerLinkActive]="['active']">
+  <a (click)="openImportContactModal()" href="javascript:void(0)">
+    <i class="fa fa-download"></i> Import
+  </a>
+</div>
+<div class="menuleft-item" [routerLinkActive]="['active']">
+  <a (click)="onShowSettings()" href="javascript:void(0)">
+    <i class="fa fa-cog"></i> Settings
+  </a>
+</div>
+
+
+<z-contact-share-import-contact #importContactSelect
+                                (optionSelected)="onImportOptionSelected($event)"></z-contact-share-import-contact>
+
+<icloud-oauth-modal #iCloudOAuthModal></icloud-oauth-modal>
+
+
+<z-contact-shared-setting #modalSettings></z-contact-shared-setting>

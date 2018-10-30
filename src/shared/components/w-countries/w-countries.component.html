@@ -1,0 +1,16 @@
+<ng-container *ngIf="countriesCode$ | async as countriesCode">
+  <p-dropdown (onChange)="onComplete()" [options]="countriesCode"
+              [(ngModel)]="selectedCountry"
+              [style]="{'width':'100%'}" filter="true">
+    <ng-template let-item pTemplate="selectedItem">
+      <img width="30" src="/assets/images/flags/{{country.code}}.svg">
+      {{country.value}}
+    </ng-template>
+    <ng-template let-country pTemplate="item">
+      <div class="country-dropdown-item">
+        <img width="30" src="/assets/images/flags/{{country.code}}.svg">
+        {{country.value}}
+      </div>
+    </ng-template>
+  </p-dropdown>
+</ng-container>

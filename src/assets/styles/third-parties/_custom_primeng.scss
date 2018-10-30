@@ -79,7 +79,7 @@ $ui-inputswitch-w: 24px;
 .ui-radiobutton-box {
   &.ui-state-active,
   &.ui-state-active.ui-state-focus {
-    background-color:  $input-color-active;
+    background-color: $input-color-active;
     border-color: $input-color-active;
   }
   &.ui-state-focus {
@@ -90,7 +90,7 @@ $ui-inputswitch-w: 24px;
 .ui-radiobutton-box {
   &.ui-state-active,
   &.ui-state-active.ui-state-focus {
-    background-color:  $ui-state-active-color;
+    background-color: $ui-state-active-color;
     border-color: $ui-state-active-color;
   }
 }
@@ -527,5 +527,20 @@ $ui-inputswitch-w: 24px;
     .ui-dialog-footer {
       @extend .modal-footer;
     }
+  }
+}
+
+.ui-dropdown {
+  .ui-dropdown-trigger {
+    min-width: 32px;
+    border-width: 0;
+    span.fa {
+      @include center();
+      margin: 0;
+    }
+  }
+  .ui-dropdown-label {
+    line-height: 18px;
+    padding: 7px 12px;
   }
 }

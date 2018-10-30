@@ -39,9 +39,11 @@ a {
 .parent-item, .parent-item a:hover {
   cursor: default;
 }
+
 .sub-item {
   padding-left: 10px;
 }
+
 .show {
   display: inherit;
 }
@@ -49,4 +51,9 @@ a {
 .new-btn {
   padding: 8px 15px;
   cursor: pointer;
+}
+
+.menuleft-item-divider {
+  border-top: 1px solid $line;
+  border-bottom: 1px solid $line;
 }

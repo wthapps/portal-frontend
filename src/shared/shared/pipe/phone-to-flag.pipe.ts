@@ -12,9 +12,9 @@ export class PhoneCodeCountriesPipe implements PipeTransform {
       const phoneCode = _.find(data, ['name', phoneName[0]]);
       return (
         '<div class="clearfix">' +
-        "<img class=\"pull-left\" width='30' src='assets/images/flags/" +
+        `<img class=\"pull-left\" width='30' src='assets/images/flags/` +
         phoneCode.code.toLowerCase() +
-        ".svg' alt=''>" +
+        `.svg' alt=''>` +
         '<span class="pull-left">' +
         phoneCode.name +
         '</span>' +
@@ -52,6 +52,7 @@ export class PhoneCodeFlagPipe implements PipeTransform {
 }
 
 const PHONE_CODE_REGEX = /\([^\)]*\)/;
+
 // Aghanistan (+83) => +83
 @Pipe({
   name: 'phoneCodeOnlyFlag'
@@ -72,9 +73,9 @@ export class PhoneCodeToDisplayCodePipe implements PipeTransform {
     const phoneCode = _.find(data, ['code', key.toUpperCase()]);
     return (
       '<div class="clearfix">' +
-      "<img class=\"pull-left\" width='30' src='assets/images/flags/" +
+      '<img class="pull-left" width=\'30\' src=\'assets/images/flags/' +
       phoneCode.code.toLowerCase() +
-      ".svg' alt=''>" +
+      '.svg\' alt=\'\'>' +
       '<span class="pull-left">' +
       phoneCode.name +
       '</span>' +

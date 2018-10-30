@@ -1,25 +1,25 @@
 import { Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Group } from '@contacts/group/group.model';
-import { GroupService } from '@contacts/group/group.service';
-import { ZContactService } from '@contacts/shared/services/contact.service';
-import { CommonEventService } from '@shared/services';
-import { ApiBaseService } from '@shared/services/apibase.service';
-import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
+import { ZContactSharedSettingsComponent } from '@contacts/shared/modal/settings/settings.component';
+import { ApiBaseService, CommonEventService, WthConfirmService } from '@shared/services';
 import { Subject } from 'rxjs/Subject';
-import { ICloudOAuthComponent } from '@contacts/shared/modal/import-contact/icloud/icloud-oauth.component';
-import { ZContactShareImportContactComponent } from '@contacts/shared/modal/import-contact/import-contact.component';
+import { Group } from '../../group/group.model';
+import { GroupService } from '../../group/group.service';
+import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oauth.component';
+import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
+import { ZContactService } from '../services/contact.service';
 
 declare var _: any;
 
 @Component({
-  selector: 'z-contact-shared-left-menu',
-  templateUrl: 'left-menu.component.html',
-  styleUrls: ['left-menu.component.scss']
+  selector: 'z-contact-shared-sidebar',
+  templateUrl: 'sidebar.component.html',
+  styleUrls: ['sidebar.component.scss']
 })
-export class ZContactSharedLeftMenuComponent implements OnInit, OnDestroy {
+export class ZContactSharedSidebarComponent implements OnInit, OnDestroy {
   @ViewChild('importContactSelect') importContactSelect: ZContactShareImportContactComponent;
   @ViewChild('iCloudOAuthModal') iCloudOAuthModal: ICloudOAuthComponent;
+  @ViewChild('modalSettings') modalSettings: ZContactSharedSettingsComponent;
 
   groups: Group[];
   hostname: String = '';
@@ -62,6 +62,11 @@ export class ZContactSharedLeftMenuComponent implements OnInit, OnDestroy {
       this.commonEventService.broadcast({ channel: 'contactCommonEvent', action: event.action, payload: event.payload });
       this.commonEventService.broadcast({ channel: 'menuCommonEvent', action: event.action, payload: event.payload });
     }
+  }
+
+  onShowSettings() {
+    this.onCloseSidebar();
+    this.modalSettings.open();
   }
 
   onCloseSidebar() {

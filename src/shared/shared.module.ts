@@ -2,6 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WCountriesModule } from '@shared/components/w-countries/w-countries.module';
 import { CookieModule } from 'ngx-cookie';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { BsModalModule } from 'ng2-bs3-modal';
@@ -151,6 +152,7 @@ import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.modu
     ModalModule,
     WMediaSelectionModule,
     WObjectListModule,
+    WCountriesModule,
     WNavTabModule,
     WLeftMenuModule,
     ComponentsModule,
