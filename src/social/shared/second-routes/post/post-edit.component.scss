@@ -17,6 +17,15 @@
   display: inline-block;
 }
 
+.dropdown-menu {
+  li {
+    span {
+      padding: 10px 15px;
+      position: relative;
+    }
+  }
+}
+
 @media (max-width: $screen-xs-max) {
   .modal-post-edit {
     min-height: 100vh;

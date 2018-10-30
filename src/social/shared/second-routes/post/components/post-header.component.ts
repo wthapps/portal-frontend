@@ -38,13 +38,6 @@ export class PostHeaderComponent implements OnChanges {
   }
 
   ngOnChanges(data: any) {
-    // if (this.type == 'info') {
-    //   this.showInfo = true;
-    // } else if (this.type == 'detail') {
-    //   this.showDetail = true;
-    // }
-    // this.privacyName = this.getPrivacyName(this.item);
-    // this.privacyClassIcon = this.getPrivacyClassIcon(this.item);
   }
 
   viewPostDetail(uuid: string) {
@@ -56,6 +49,12 @@ export class PostHeaderComponent implements OnChanges {
   viewProfile(uuid: string) {
     this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
       .then(() => this.router.navigate([this.profileUrl, uuid]));
+  }
+
+  navigateToLink(link) {
+    if (link)
+      this.router.navigate([{outlets: {detail: null}}], {queryParamsHandling: 'preserve' , preserveFragment: true})
+        .then(() => this.router.navigate([link]));
   }
 
   update(attr: any = {}, event: any) {
@@ -101,29 +100,8 @@ export class PostHeaderComponent implements OnChanges {
   }
 
   viewPrivacyCustom(post: any, modal: any) {
-    if (post.privacy === Constants.soPostPrivacy.customFriend.data || post.privacy == Constants.soPostPrivacy.customCommunity.data) {
+    if (post.privacy === Constants.soPostPrivacy.customFriend.data || post.privacy === Constants.soPostPrivacy.customCommunity.data) {
       modal.open();
     }
   }
-  // private getPrivacyName(post: any): string {
-  //   if(post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
-  //     return post.custom_objects[0].name;
-  //   return post.privacy.replace('_', ' ');
-  // }
-
-  // private getPrivacyClassIcon(post: any): string {
-  //   // switch (post.privacy) {
-  //   //   case Constants.soPostPrivacy.friends.data:
-  //   //     return 'fa-users';
-  //   //   case  Constants.soPostPrivacy.public.data:
-  //   //     return 'fa-globe';
-  //   //   case  Constants.soPostPrivacy.personal.data:
-  //   //     return 'fa-lock';
-  //   //   case  Constants.soPostPrivacy.customFriend.data:
-  //   //     return 'fa-user-times';
-  //   //   case  Constants.soPostPrivacy.customCommunity.data:
-  //   //     return 'fa-group';
-  //   // }
-  //   return '';
-  // }
 }

@@ -2,8 +2,7 @@
   <a href="javascript:void(0);" (click)="viewProfile(item.owner.uuid)">
     <div class="z-social-media-left">
       <div class="avatar-xs">
-        <img [src]="(user?.uuid === item?.owner?.uuid) ? user?.profile_image : item?.owner?.profile_image"
-          alt="">
+        <img [src]="(user?.uuid === item?.owner?.uuid) ? user?.profile_image : item?.owner?.profile_image" alt="">
       </div>
     </div>
   </a>
@@ -30,10 +29,12 @@
           <bs-modal-body>
             <ul class="list-unstyled social-list-user wth-scrollable">
               <li *ngFor="let item of item.custom_objects">
-                <span class="social-list-user-action">
-                </span>
-                <img alt="" [src]="item?.profile_image" *ngIf="item?.profile_image" title="" width="30">
-                <span>{{ item.name }}</span>
+                <a href="javascript:;" (click)="navigateToLink(item?.link)">
+                  <span class="social-list-user-action">
+                  </span>
+                  <img alt="" [src]="item?.profile_image" *ngIf="item?.profile_image" title="" width="30">
+                  <span>{{ item.name }}</span>
+                </a>
               </li>
             </ul>
           </bs-modal-body>

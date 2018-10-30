@@ -4,18 +4,12 @@
 
 <div class="navbar-form navbar-left hidden-xs navbar-form-search">
   <div class="navbar-searchTop" (click)="clickedInside($event)">
-    <textbox-search #textbox (onEnterEvent)="onEnter(textbox.search)"
-                    (onEscapeEvent)="onEscape()"
-                    (onKeyUpEvent)="onKey(textbox.search)"
-                    [placeholder]="'Search something'"
-                    [search]="search"
-                    [showSearchAdvanced]="false"
-                    (onSearchAdvancedEvent)="searchAdvanced = true">
+    <textbox-search #textbox (onEnterEvent)="onEnter(textbox.search)" (onEscapeEvent)="onEscape()" (onKeyUpEvent)="onKey(textbox.search)"
+      [placeholder]="'Search WTHSocial'" [search]="search" [showSearchAdvanced]="false" (onSearchAdvancedEvent)="searchAdvanced = true">
 
       <div class="input-group-suggestions" *ngIf="show && !searchAdvanced">
         <div class="list-group">
-          <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item"
-             (click)="onNavigation(data)">
+          <a *ngFor="let data of suggestions" href="javascript:;" class="list-group-item" (click)="onNavigation(data)">
             <span class="avatar-xxs"><img [src]="data.profile_image" alt=""></span>
             <span class="avatar-name-txt">{{ data.name }}</span>
           </a>

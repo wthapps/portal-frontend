@@ -36,10 +36,11 @@
               </div>
             </a>
             <div class="z-shared-with dropdown">
-              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;" aria-haspopup="true"
-                aria-expanded="true">
+              <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
+                aria-haspopup="true" aria-expanded="true">
                 <i class="fa" [ngClass]="postPrivacy[post?.privacy]?.css"></i> {{ privacyName }} </a>
               <ul class="dropdown-menu">
+                <li><span> Who will see this</span></li>
                 <li>
                   <a href="#" (click)="update({privacy: soPostPrivacy.public.data}, $event)">
                     <i class="fa fa-globe"></i> Public</a>
@@ -54,10 +55,10 @@
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
-                  <a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Share with Friends</a>
+                  <a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Custom Friends</a>
                 </li>
                 <li>
-                  <a href="#" (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Share in Communities
+                  <a href="#" (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Custom Communities
                   </a>
                 </li>
               </ul>
@@ -85,8 +86,8 @@
         </div>
         <div class="z-social-media-right">
           <div class="dropdown pull-right">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-              pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="true" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
               <i class="fa fa-ellipsis-v"></i>
             </button>
             <ul class="dropdown-menu">
@@ -119,9 +120,9 @@
       </div>
 
       <div class="form-group">
-        <mini-editor #editor="ngModel" required [autofocus] [(ngModel)]="description" [ngModelOptions]="{standalone: true}" placeholder="Share your ideas"
-          [style]="{'height':'auto', 'min-height': '27px'}" [styleClass]="editorError" (onTextChange)="onTextChange($event)"
-          [validators]="[textValidator]">
+        <mini-editor #editor="ngModel" required [autofocus] [(ngModel)]="description" [ngModelOptions]="{standalone: true}"
+          placeholder="Share your ideas" [style]="{'height':'auto', 'min-height': '27px'}" [styleClass]="editorError"
+          (onTextChange)="onTextChange($event)" [validators]="[textValidator]">
           <p-header>
           </p-header>
         </mini-editor>
@@ -130,7 +131,8 @@
       <display-link *ngIf="link" [data]="link"></display-link>
       <div id="loading"></div>
       <div *ngIf="showTag" class="form-group">
-        <tag-input [maxItems]='100' [(ngModel)]="post.tags" (onRemove)="removeTag($event)" (onAdd)="addTag($event)" [formControl]="tagsCtrl">
+        <tag-input [maxItems]='100' [(ngModel)]="post.tags" (onRemove)="removeTag($event)" (onAdd)="addTag($event)"
+          [formControl]="tagsCtrl">
           <tag-input-dropdown [autocompleteItems]="tags">
           </tag-input-dropdown>
         </tag-input>
@@ -177,8 +179,8 @@
           <button *ngIf="parent == null && showAddPhotosButton" (click)="addMorePhoto($event)" type="button" class="btn btn-outline-default pull-left">
             <i class="fa fa-camera"></i>
           </button>
-          <button type="button" class="btn btn-outline-default dropdown-toggle pull-left" data-toggle="dropdown" pTooltip="{{ tooltip.emoticons }}"
-            tooltipPosition="top" (click)="showEmojiBtn($event)">
+          <button type="button" class="btn btn-outline-default dropdown-toggle pull-left" data-toggle="dropdown"
+            pTooltip="{{ tooltip.emoticons }}" tooltipPosition="top" (click)="showEmojiBtn($event)">
             <i class="fa fa-smile-o"></i>
           </button>
         </div>
@@ -195,4 +197,5 @@
   </bs-modal-body>
 </bs-modal>
 
-<entity-select #privacyCustomModal type='custom_friend' (onSelected)="selectedItems($event)"></entity-select>
+<entity-select #privacyCustomModal type='custom_friend' [placeholder]="SEARCH_PLACEHOLDER[post.privacy] || 'Search'"
+  (onSelected)="selectedItems($event)"></entity-select>

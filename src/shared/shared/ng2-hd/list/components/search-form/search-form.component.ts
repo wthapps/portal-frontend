@@ -17,8 +17,8 @@ import {
 } from '@angular/forms';
 
 @Component({
-    selector: 'search-form',
-  templateUrl: 'search-form.component.html'
+  selector: 'search-form',
+  templateUrl: 'search-form.component.html',
 })
 export class SearchFormComponent implements OnInit {
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();

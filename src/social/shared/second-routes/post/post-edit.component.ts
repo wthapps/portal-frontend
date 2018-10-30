@@ -64,6 +64,12 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   readonly tooltip: any = Constants.tooltip;
   readonly postPrivacy: any = Constants.soPostPrivacy;
+  readonly SEARCH_PLACEHOLDER = {
+    customFriend: 'Search for friends',
+    custom_friend: 'Search for friends',
+    customCommunity: 'Search for communities',
+    custom_community: 'Search for communities'
+  };
 
   post: SoPost;
   files: Array<any> = new Array<any>();
@@ -400,6 +406,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     let mode = 'edit';
     if (this.post.privacy !== type) mode = 'add';
 
+    this.privacyCustomModal.placeholder = this.SEARCH_PLACEHOLDER[type] || 'Search';
     this.privacyCustomModal.open(
       { type: type, data: this.post.custom_objects },
       mode
