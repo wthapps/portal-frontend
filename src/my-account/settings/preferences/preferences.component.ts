@@ -21,7 +21,7 @@ declare var _: any;
 })
 
 export class MyPreferencesComponent implements OnInit {
-  pageTitle: string = 'Preferences';
+  pageTitle = 'Preferences';
   errorMessage: string = Constants.errorMessage.default;
 
   formValue: any;
@@ -30,9 +30,8 @@ export class MyPreferencesComponent implements OnInit {
   language: AbstractControl;
   subscribed: AbstractControl;
   auto_update: AbstractControl;
-  use_diagnosis: AbstractControl;
 
-  submitted: boolean = false;
+  submitted = false;
 
   constructor(private fb: FormBuilder,
               private toastsService: ToastsService,
@@ -45,13 +44,11 @@ export class MyPreferencesComponent implements OnInit {
       ],
       'subscribed': [this.userService.getSyncProfile().subscribed],
       'auto_update': [this.userService.getSyncProfile().auto_update],
-      'use_diagnosis': [this.userService.getSyncProfile().use_diagnosis],
     });
 
     this.language = this.form.controls['language'];
     this.subscribed = this.form.controls['subscribed'];
     this.auto_update = this.form.controls['auto_update'];
-    this.use_diagnosis = this.form.controls['use_diagnosis'];
   }
 
   ngOnInit(): void {
@@ -65,13 +62,11 @@ export class MyPreferencesComponent implements OnInit {
 
     this.submitted = true;
     if (this.form.valid) {
-
       this.loadingService.start();
-      let body = JSON.stringify({
+      const body = JSON.stringify({
         language: values.language,
         subscribed: values.subscribed,
         auto_update: values.auto_update,
-        use_diagnosis: values.use_diagnosis,
       });
 
       this.userService.update(body)

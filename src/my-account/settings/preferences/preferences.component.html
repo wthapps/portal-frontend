@@ -30,13 +30,7 @@
           <input type="checkbox" [formControl]="auto_update">
           Allow WTHapps automatic update (Recommended)
         </label>
-      </div>
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" [formControl]="use_diagnosis">
-          Allow WTHapps Diagnostics (so we can fix bugs faster)
-        </label>
-      </div>
+      </div>      
     </div>
     <button [disabled]="!form.valid || form.pristine" type="submit" class="btn btn-outline-primary btn-min">Update</button>
   </form>

@@ -37,11 +37,11 @@
       <!-- <a class="btn btn-outline-primary btn-min" (click)="addRecipients(modal)">
         <i class="fa fa-envelope-open-o"></i> Invite new members
       </a> -->
-    <button class="btn btn-outline-secondary"><invite-contact (invited)="doEvent($event)"></invite-contact></button>
-    <button class="btn btn-outline-secondary" *ngIf="currentTab == TAB.PENDING.value"
-            (click)="onResend()" [disabled]="selectedItems.length === 0"><i class="fa fa-envelope-open-o" aria-hidden="true" ></i> Resend</button>
-    <button class="btn btn-outline-secondary"
-            (click)="onRemove()" [disabled]="selectedItems.length === 0"><i class="fa fa-trash" aria-hidden="true" ></i> Remove</button>
+    <button class="btn btn-default" style="padding:0;"><invite-contact (invited)="doEvent($event)"></invite-contact></button>
+    <button class="btn btn-default" *ngIf="currentTab == TAB.PENDING.value" title="Resend"
+            (click)="onResend()" [disabled]="selectedItems.length === 0"><i class="fa fa-envelope-open-o"></i></button>
+    <button class="btn btn-default" title="Delete"
+            (click)="onRemove()" [disabled]="selectedItems.length === 0"><i class="fa fa-trash"></i></button>
   </div>
   <br/>
 
@@ -81,10 +81,10 @@
         <td *ngIf="currentTab === TAB.ACCEPTED.value">{{ item?.accepted_at | date: 'y MMM d' }} {{ item?.accepted_at | date:'H:mm:ss' }}</td>
       <td>
         <div>
-          <button *ngIf="currentTab == TAB.PENDING.value" class="btn btn-outline-secondary"
-                  (click)="onResend(item)"><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Resend</button>
-          <button class="btn btn-outline-secondary"
-                  (click)="onRemove(item)"><i class="fa fa-trash" aria-hidden="true"></i> Remove</button>
+          <button *ngIf="currentTab == TAB.PENDING.value" class="btn btn-default" title="Resend"
+                  (click)="onResend(item)"><i class="fa fa-envelope-open-o" aria-hidden="true"></i></button>
+          <button class="btn btn-default" title="Delete"
+                  (click)="onRemove(item)"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </div>
       </td>
     </tr>
