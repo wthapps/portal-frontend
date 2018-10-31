@@ -21,6 +21,7 @@ import { SocialService } from '../../shared/services/social.service';
 
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
+import { SoStorageService } from '@social/shared/services/social-storage.service';
 
 declare let _: any;
 declare let $: any;
@@ -81,7 +82,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   currentTab: String = 'post'; // upload, photos, albums, albums_detail, favourites, shared_with_me
 
 
-  errorMessage: string = '';
+  errorMessage = '';
 
   tooltip: any = Constants.tooltip;
 
@@ -120,7 +121,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     }*/
   ];
 
-  selectedTab: string = 'post';
+  selectedTab = 'post';
   selectedTabTitle: any;
 
   community: any = null;
@@ -129,12 +130,12 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   invitationId: string;
   joinRequestId: string;
   tabItems: Array<any> = [];
-  isAdmin: boolean = false;
-  isMember: boolean = false;
-  is_close: boolean = true;
+  isAdmin = false;
+  isMember = false;
+  is_close = true;
   favourite: any;
   userSettings: any;
-  loading: boolean = true;
+  loading = true;
 
   activeTabs: any = EMPTY_DEFAULT_TABS;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
@@ -149,6 +150,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(public authService: AuthService,
+              public soStorageService: SoStorageService,,
               private route: ActivatedRoute,
               private router: Router,
               private userService: UserService,
@@ -443,7 +445,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(
         (res: any) => {
-          if ([this.tab.about, this.tab.post].indexOf(this.selectedTab) == -1)
+          if ([this.tab.about, this.tab.post].indexOf(this.selectedTab) === -1)
             this.tabItems = res.data;
           // Update member_count, invitation_count, join_request_count
           switch (this.selectedTab) {

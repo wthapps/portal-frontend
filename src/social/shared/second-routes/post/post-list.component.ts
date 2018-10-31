@@ -7,11 +7,11 @@ import { Observable } from 'rxjs/Observable';
 import { combineLatest, takeUntil } from 'rxjs/operators';
 
 
+import { SoStorageService } from './../../services/social-storage.service';
 import { PostEditComponent } from './post-edit.component';
 import { SocialService } from '../../services/social.service';
 import { SoPost } from '@wth/shared/shared/models';
 import { ApiBaseService } from '@wth/shared/services';
-import { LoadingService } from '@shared/shared/components/loading/loading.service';
 import { PostService } from './shared/post.service';
 import { getSoProfile, SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE } from '../../reducers/index';
 import { Constants } from '@wth/shared/constant';
@@ -34,7 +34,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   @Input() canCreatePost = true;
   @Input() showComments = true;
 
-  @Input() items: Array<SoPost>;
+  @Input() posts: Array<SoPost>;
   @Input() user: any;
   uuid: string;
   commentBox: any;
@@ -53,6 +53,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   constructor(public apiBaseService: ApiBaseService,
     public socialService: SocialService,
+    private soStorageService: SoStorageService,
     private route: ActivatedRoute,
     private router: Router,
     private wthEmojiService: WTHEmojiService,
@@ -125,7 +126,8 @@ export class PostListComponent implements OnInit, OnDestroy {
       .toPromise().then(
         (res: any) => {
           this.stopLoading();
-          this.items = _.map(res.data, this.mapPost);
+          // this.posts = _.map(res.data, this.mapPost);
+          this.soStorageService.savePostList(_.map(res.data, this.mapPost));
           this.nextLink = res.meta.links.next;
           if (res.data.length === 0) {
             this.postIsEmpty = true;
@@ -150,7 +152,9 @@ export class PostListComponent implements OnInit, OnDestroy {
     if (options.mode === 'add') {
       this.postService.add(options.item)
         .toPromise().then((response: any) => {
-          this.items.unshift(..._.map([response.data], this.mapPost)); // Adding new post at the beginning of posts array
+          // this.posts.unshift(..._.map([response.data], this.mapPost)); // Adding new post at the beginning of posts array
+          const newPost = this.mapPost(response.data);
+          this.soStorageService.createPost(newPost);
           this.postEditModal.close();
           this.postIsEmpty = false;
           if (DEFAULT_PRIVACY_SETTINGS.includes(response.data.privacy))
@@ -166,13 +170,14 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.postService.update(options.item)
         .toPromise().then((response: any) => {
           const editedItem = _.map([response.data], this.mapPostNoComments)[0];
-          const idx = _.findIndex(this.items, (i: SoPost) => {
+          const idx = _.findIndex(this.posts, (i: SoPost) => {
             return i.uuid === editedItem.uuid;
           });
           if (idx >= 0) {
-            editedItem.comments = this.items[idx].comments;
-            this.items[idx] = editedItem;
+            editedItem.comments = this.posts[idx].comments;
+            // this.posts[idx] = editedItem;
           }
+          this.soStorageService.updatePost(editedItem);
 
           if (DEFAULT_PRIVACY_SETTINGS.includes(response.data.privacy))
             this.store.dispatch({ type: SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE, payload: response.data.privacy });
@@ -210,16 +215,18 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   updatedPost(event: any, post: any) {
-    this.items = _.map(this.items, (item: any) => {
-      if (item.id === post.id)
-        return post;
-      else
-        return item;
-    });
+    // this.posts = _.map(this.posts, (item: any) => {
+    //   if (item.id === post.id)
+    //     return post;
+    //   else
+    //     return item;
+    // });
+    this.soStorageService.updatePost(post);
   }
 
   deletedPost(event: any, post: any) {
-    _.remove(this.items, { id: post.id });
+    // _.remove(this.posts, { id: post.id });
+    this.soStorageService.removePosts([post.uuid]);
   }
 
 
@@ -237,9 +244,10 @@ export class PostListComponent implements OnInit, OnDestroy {
     if (this.nextLink) {
       this.apiBaseService.get(this.nextLink)
         .toPromise().then((res: any) => {
-          _.map(res.data, (v: any) => {
-            this.items.push(this.mapPost(v));
-          });
+          // _.map(res.data, (v: any) => {
+          //   this.posts.push(this.mapPost(v));
+          // });
+          this.soStorageService.appendPosts(res.data.map(v => this.mapPost(v)));
           this.nextLink = res.meta.links.next;
         });
     }

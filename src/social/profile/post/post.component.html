@@ -1,10 +1,4 @@
-<div lockYOffset="20"
-     observeAttributes="true"
-     infinite-scroll
-     [scrollWindow]="true"
-     (scrolled)="onLoadMore()">
-<so-post-list #posts
-              [user]="authService.user$|async"
-              [type]="'random_user'"
-              [canCreatePost]="canCreate"></so-post-list>
+<div lockYOffset="20" observeAttributes="true" infinite-scroll [scrollWindow]="true" (scrolled)="onLoadMore()">
+    <so-post-list #posts [user]="authService.user$|async" [posts]="soStorageService.postList$  | async" [type]="'random_user'"
+        [canCreatePost]="canCreate"></so-post-list>
 </div>

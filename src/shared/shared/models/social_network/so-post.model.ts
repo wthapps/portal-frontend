@@ -28,7 +28,7 @@ export class SoPost extends BaseInput implements FromData {
   mute = false;
   like_count = 0;
   dislike_count = 0;
-  share_count = 0;
+  shared_count = 0;
   comment_count = 0;
 
   from(fields: any) {

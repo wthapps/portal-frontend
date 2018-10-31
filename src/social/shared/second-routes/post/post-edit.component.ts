@@ -188,10 +188,12 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.post = new SoPost();
     if (this.socialService.community.currentCommunity) {
       this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
-      this.post.custom_objects.length = 0;
-      this.post.custom_objects.push(
-        this.socialService.community.currentCommunity
-      ); // Default share new post to current community
+      this.post.custom_objects = [this.socialService.community.currentCommunity];
+      // this.post.custom_objects.length = 0;
+      // this.post.custom_objects.push(
+      //   this.socialService.community.currentCommunity
+      // ); // Default share new post to current community
+
     } else {
       const defaultPrivacy: string = _.get(
         this.soProfile,
@@ -214,9 +216,10 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       this.setItemDescription('');
     }
 
-    if (options.parent != null) {
-      this.parent = options.parent;
-    }
+    // if (options.parent != null) {
+    //   this.parent = options.parent;
+    // }
+    this.parent = options.parent ;
     this.privacyName = this.getPrivacyName(this.post);
 
     this.form = this.fb.group({
@@ -247,12 +250,13 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   done(item: any) {
+    const photos = this.post.photos.map(p => ({...p, model: p.model || MODEL_TYPE[p.object_type]}));
     const options: any = {
       mode: this.mode,
       item: {
         uuid: this.post.uuid,
         description: this.description,
-        photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
+        photos_json: photos, // TODO refactor on view formControl=photosCtrl
         resources_attributes: [],
         tags_json: this.post.tags,
         privacy: this.post.privacy,
@@ -274,31 +278,31 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.modal.close();
   }
 
-  uploadFiles(files: Array<any>) {
-    if (files.length <= 0) return;
-    const subscription = this.photoUploadService.uploadPhotos(files).subscribe(
-      (res: any) => {
-        this.files.shift(); // remove file was uploaded
-        // Only add distinct photos into post edit
-        this.post.photos.unshift(res.data);
-        this.uploadedPhotos.push(res.data);
-      },
-      (err: any) => {
-        console.log('Error when uploading files ', err);
-      }
-    );
+  // uploadFiles(files: Array<any>) {
+  //   if (files.length <= 0) return;
+  //   const subscription = this.photoUploadService.uploadPhotos(files).subscribe(
+  //     (res: any) => {
+  //       this.files.shift(); // remove file was uploaded
+  //       // Only add distinct photos into post edit
+  //       this.post.photos.unshift(res.data);
+  //       this.uploadedPhotos.push(res.data);
+  //     },
+  //     (err: any) => {
+  //       console.log('Error when uploading files ', err);
+  //     }
+  //   );
 
-    this.uploadSubscriptions[files[0].name] = subscription;
-  }
+  //   this.uploadSubscriptions[files[0].name] = subscription;
+  // }
 
-  cancelUploading(file: any) {
-    _.pull(this.files, file);
-    this.uploader.cancel(file);
-    if (file.name && this.uploadSubscriptions[file.name]) {
-      this.uploadSubscriptions[file.name].unsubscribe();
-      delete this.uploadSubscriptions[file.name];
-    }
-  }
+  // cancelUploading(file: any) {
+  //   _.pull(this.files, file);
+  //   this.uploader.cancel(file);
+  //   if (file.name && this.uploadSubscriptions[file.name]) {
+  //     this.uploadSubscriptions[file.name].unsubscribe();
+  //     delete this.uploadSubscriptions[file.name];
+  //   }
+  // }
 
   doEvents(response: any) {
     switch (response.action) {
@@ -371,25 +375,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.close$), filter(items => items.length > 0))
       .subscribe(items => {
-        console.log('items: ', items);
         this.post.photos = _.uniqBy(_.flatten([this.post.photos, items]), 'uuid');
       });
-
-    // this.mediaSelectionService.uploadingMedias$
-    //   .pipe(
-    //     takeUntil(this.close$),
-    //     map(([file, dataUrl]) => file),
-    //     filter(file => this.photoUploadService.isValidImage(file)),
-    //     map(file => {
-    //       console.log('valid files', file);
-    //       this.files.push(file);
-    //       this.modal.open();
-    //     })
-    //   )
-    //   .subscribe((item: any[]) => {
-    //     console.log('uploading files', item);
-    //     this.uploadFiles([item]);
-    //   });
   }
 
   dismiss(photos: any) {

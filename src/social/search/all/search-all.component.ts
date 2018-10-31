@@ -2,6 +2,7 @@ import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiBaseService, ServiceManager, AuthService } from '@wth/shared/services';
 import { debounceTime, throttleTime, combineLatest } from 'rxjs/operators';
+import { SoStorageService } from '@social/shared/services/social-storage.service';
 
 @Component({
   selector: 'z-social-search-all',
@@ -11,8 +12,8 @@ import { debounceTime, throttleTime, combineLatest } from 'rxjs/operators';
 })
 
 export class ZSocialSearchResultAllComponent implements OnDestroy {
-  show: boolean = false;
-  type: string = '';
+  show = false;
+  type = '';
   result: any;
   groups: any;
   sub: any;
@@ -23,10 +24,11 @@ export class ZSocialSearchResultAllComponent implements OnDestroy {
   show_more_communities: any;
   show_more_members: any;
   params: any;
-  term: string = 'all';
-  loading: boolean = true;
+  term = 'all';
+  loading = true;
 
   constructor(private route: ActivatedRoute, private router: Router, private api: ApiBaseService,
+              public soStorageService: SoStorageService,
               public authService: AuthService ) {
       this.sub = this.route.paramMap.pipe(
         combineLatest(this.route.queryParamMap)

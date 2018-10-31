@@ -47,7 +47,7 @@ import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.modul
 import { ZSocialMembersComponent } from '@social/friends/members.component';
 import { ZSocialShareCommunityFormEditComponent } from '@social/shared/form/edit-community.component';
 import { ZSocialShareCommunityFormPreferenceComponent } from '@social/shared/form/preferences-community.component';
-import { SoSorageService } from './services/social-storage.service';
+import { SoStorageService } from './services/social-storage.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -173,7 +173,7 @@ export class ZSocialSharedModule {
         SoCommunityService,
         ZSocialProfileService,
         SocialFavoriteService,
-        SoSorageService,
+        SoStorageService,
         SoShortcutService
       ]
     };

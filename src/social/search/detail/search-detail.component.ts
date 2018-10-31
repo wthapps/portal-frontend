@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { SocialService } from '../../shared/services/social.service';
 import { ServiceManager, UrlService, AuthService } from '@wth/shared/services';
 import { combineLatest } from 'rxjs/operators';
+import { SoStorageService } from '@social/shared/services/social-storage.service';
 
 declare let _: any;
 
@@ -13,17 +14,17 @@ declare let _: any;
   encapsulation: ViewEncapsulation.None})
 
 export class ZSocialSearchResultDetailComponent implements OnDestroy {
-  show: boolean = false;
-  type: string = '';
+  show = false;
+  type = '';
   result: any;
   group: any;
   groups: any;
-  showMore: boolean = false;
+  showMore = false;
   sub: any;
   favourite: any; // toggle favourites status for members, communities
 
-  searchPostedBy: string = '';
-  searchDate: string = '';
+  searchPostedBy = '';
+  searchDate = '';
   events: any;
   show_more_posts: any;
   params: any;
@@ -31,14 +32,15 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
   filterDate: any;
   nextLink: any;
 
-  showNavSearch:boolean = true;
-  term: string = '';
+  showNavSearch = true;
+  term = '';
   loading: boolean;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               public serviceManager: ServiceManager,
               public authService: AuthService,
+              public soStorageService: SoStorageService,
               private urlService: UrlService,
               private socialService: SocialService) {
     this.route.paramMap.pipe(
@@ -50,7 +52,7 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
       this.filter = paramMap.get('filter_post') || queryParamMap.get('filter_post');
       this.filterDate = paramMap.get('filter_date') || queryParamMap.get('filter_date');
       if (this.params) {
-        let query: any = {q: this.params};
+        const query: any = {q: this.params};
         if (this.filter) {
           query.filter = this.filter;
         }
@@ -81,7 +83,6 @@ export class ZSocialSearchResultDetailComponent implements OnDestroy {
   }
 
   onFilter(e) {
-    console.debug('on filter: ', e, this.route);
     const queryParams = {...this.route.snapshot.queryParams, ...e};
     this.router.navigate([this.route.snapshot.params], {queryParams, relativeTo: this.route});
   }

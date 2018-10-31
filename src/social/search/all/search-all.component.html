@@ -7,18 +7,19 @@
       <a [routerLink]="['/search/members', {q: params}]" [queryParams]="{q: params}">Members</a>
     </li>
     <li [ngClass]="{'active': (term === 'communities')}">
-      <a [routerLink]="['/search/communities', {q:params}]" [queryParams]="{q:params}" >Communities</a>
+      <a [routerLink]="['/search/communities', {q:params}]" [queryParams]="{q:params}">Communities</a>
     </li>
     <li class="hidden-xs" [ngClass]="{'active': (term === 'posts')}">
-      <a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}" >Posts</a>
+      <a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}">Posts</a>
     </li>
     <li class="visible-xs-inline-block">
       <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
           <i class="fa fa-ellipsis-h"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li><a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}" >Posts</a></li>
+          <li><a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}">Posts</a></li>
         </ul>
       </div>
     </li>
@@ -32,9 +33,8 @@
       <div class="panel panel-default" *ngFor="let group of groups">
         <div class="panel-heading">
           <h3 class="panel-title">
-            <a class="link-text"
-               [routerLink]="['/search', group=='members'?'member':group=='communities'?'community':'post', {q:params}]"
-               [queryParams]="{q:params}">
+            <a class="link-text" [routerLink]="['/search', group=='members'?'member':group=='communities'?'community':'post', {q:params}]"
+              [queryParams]="{q:params}">
               {{ group | titleCase }}
             </a>
           </h3>
@@ -45,26 +45,23 @@
           </h3>
         </div>
 
-        <z-social-share-profile-list *ngIf="group=='members' || group=='communities'"
-                                     [data]="result[group]"
-                                     [user]="authService.user$ | async"
-                                     [type]="group">
+        <z-social-share-profile-list *ngIf="group=='members' || group=='communities'" [data]="result[group]" [user]="authService.user$ | async"
+          [type]="group">
         </z-social-share-profile-list>
 
-        <so-post-list *ngIf="group == 'posts'" #posts
-                      [items]="result[group]"
-                      [type]="'search'"
-                      [showComments]="false">
+        <so-post-list *ngIf="group == 'posts'" #posts [posts]="result[group]" [type]="'search'" [showComments]="false">
         </so-post-list>
 
         <div *ngIf="group == 'posts' && show_more_posts" class="panel-footer">
           <a [routerLink]="[show_more_posts.link, {q:params}]" [queryParams]="{q:params}">{{ show_more_posts.text }}</a>
         </div>
         <div *ngIf="group == 'communities' && show_more_communities" class="panel-footer">
-          <a [routerLink]="[show_more_communities.link, {q:params}]" [queryParams]="{q:params}">{{ show_more_communities.text }}</a>
+          <a [routerLink]="[show_more_communities.link, {q:params}]" [queryParams]="{q:params}">{{
+            show_more_communities.text }}</a>
         </div>
         <div *ngIf="group == 'members' && show_more_members" class="panel-footer">
-          <a [routerLink]="[show_more_members.link, {q:params}]" [queryParams]="{q:params}">{{ show_more_members.text }}</a>
+          <a [routerLink]="[show_more_members.link, {q:params}]" [queryParams]="{q:params}">{{ show_more_members.text
+            }}</a>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -11,8 +11,7 @@ import { PostEditComponent } from './post-edit.component';
 import { PostService } from './shared/post.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
-
-
+import { SoStorageService } from './../../services/social-storage.service';
 
 @Component({
   selector: 'so-post-detail',
@@ -26,15 +25,15 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   item: SoPost = new SoPost();
   errorMessage: string;
 
-  private id = '';
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
 
 
   constructor(public apiBaseService: ApiBaseService,
-    private route: ActivatedRoute,
     public router: Router,
     public location: Location,
     public authService: AuthService,
+    private soStorageService: SoStorageService,
+    private route: ActivatedRoute,
     private wthEmojiService: WTHEmojiService,
     private postService: PostService) {
     super();
@@ -43,8 +42,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
-      this.id = params['id'];
-      this.loadPost(this.id);
+      this.loadPost(params['id']);
     });
 
   }
@@ -61,9 +59,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
   }
 
   goBack() {
-    this.router.navigate([{ outlets: { detail: null } }], { queryParamsHandling: 'preserve' }).then(() => {
-
-    });
+    this.router.navigate([{ outlets: { detail: null } }], { queryParamsHandling: 'preserve' });
   }
 
 
@@ -74,6 +70,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
           .toPromise().then((response: any) => {
             console.log('response', response);
             // Navigate to the new shared post
+            // this.soStorageService.prependPosts(response.data);
             this.router.navigate([{ outlets: { detail: ['/posts', response.data.uuid] } }]
               , { queryParamsHandling: 'preserve', preserveFragment: true });
             this.postEditModal.close();
@@ -90,7 +87,7 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
             const updatedPost = new SoPost().from(response.data);
             delete updatedPost.comments;
             this.item = _.merge({}, this.item, updatedPost);
-
+            this.soStorageService.updatePost(this.item);
             this.postEditModal.close();
           },
             (error: any) => {

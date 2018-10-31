@@ -116,7 +116,7 @@
 </div>
 
 <ng-template #photoRef let-photo="photo">
-  <img class="can-click img-full lazyload" [src]="photo.url" *ngIf="photo?.model === MODEL.photo" alt="">
+  <img class="can-click img-full lazyload" [src]="photo.url" *ngIf="!photo.model || photo?.model === MODEL.photo" alt="">
   <div class="photo-box-figure-in" *ngIf="photo?.model === MODEL.video">
     <img class="img-full img-center lazyload" [src]="photo?.thumbnail_url" alt="">
     <i class="fa fa-play-circle-o"></i>

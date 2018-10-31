@@ -1,9 +1,4 @@
-<div
-  class="page-body-content gray-light"
-  lockYOffset="20"
-  observeAttributes="true"
-  infinite-scroll
-  [scrollWindow]="true"
+<div class="page-body-content gray-light" lockYOffset="20" observeAttributes="true" infinite-scroll [scrollWindow]="true"
   (scrolled)="onLoadMore()">
   <div class="page-body-content-in zone-social">
     <div class="zone-social-in">
@@ -31,20 +26,18 @@
 
             <div class="hd-item-action-right-bottom">
               <div class="btn-group">
-                <button class="btn btn-outline-default" type="button" (click)="chooseMembers($event)"
-                        data-toggle="modal"
-                        data-target="#modal-social-share-com" *ngIf="isMember">
+                <button class="btn btn-outline-default" type="button" (click)="chooseMembers($event)" data-toggle="modal"
+                  data-target="#modal-social-share-com" *ngIf="isMember">
                   <i class="fa fa-user-plus"></i> Invite Member
                 </button>
-                <button class="btn btn-outline-default" type="button" (click)="askToJoin()"
-                        *ngIf="!isMember && !joinRequestId">
+                <button class="btn btn-outline-default" type="button" (click)="askToJoin()" *ngIf="!isMember && !joinRequestId">
                   <i class="fa fa-user-plus"></i> Ask to join
                 </button>
               </div>
 
               <div class="btn-group" *ngIf="!isMember && joinRequestId != undefined">
                 <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                  aria-haspopup="true" aria-expanded="false">
                   Asked to join <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-custom">
@@ -56,7 +49,7 @@
 
               <div class="btn-group" *ngIf="!isMember && invitationId != undefined">
                 <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                  aria-haspopup="true" aria-expanded="false">
                   Invited to join <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-custom">
@@ -69,18 +62,18 @@
               <!--community menu-->
               <div class="btn-group" *ngIf="isMember">
                 <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)"
-                        pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+                  aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)" pTooltip="{{ tooltip.moreAction }}"
+                  tooltipPosition="top">
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right">
                   <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
                   <li><a href="javascript:;" (click)="toggleComNotification(community?.uuid)">
-                    {{ userSettings?.mute ? 'Enable' : 'Disable' }} notifications </a>
+                      {{ userSettings?.mute ? 'Enable' : 'Disable' }} notifications </a>
                   </li>
                   <li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>
                   <li *ngIf="isAdmin"><a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage
-                    members</a>
+                      members</a>
                   </li>
                   <li role="separator" class="divider"></li>
                   <!--<li>-->
@@ -103,9 +96,8 @@
 
         <nav class="nav-tabs-wrap clearfix">
           <div class="pull-left btn-group hidden-md hidden-lg mt10 mb10">
-            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
+            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
               {{ selectedTabTitle?.value }} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
@@ -146,8 +138,7 @@
             <li [ngClass]="selectedTab=='join_requests'? 'active': ''" *ngIf="isAdmin">
               <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'join_requests'}">
                 Join Requests
-                <span *ngIf="community?.join_request_count"
-                      class="badge-right">{{ community?.join_request_count }}</span>
+                <span *ngIf="community?.join_request_count" class="badge-right">{{ community?.join_request_count }}</span>
               </a>
             </li>
           </ul>
@@ -156,11 +147,8 @@
       </div>
 
       <!--post list-->
-      <so-post-list *ngIf="activeTabs.post" #posts
-                    [user]="authService.user$|async"
-                    [type]="'community'"
-                    [canCreatePost]="isMember"
-                    [community]="community"></so-post-list>
+      <so-post-list *ngIf="activeTabs.post" #posts [user]="authService.user$|async" [posts]="soStorageService.postList$  | async"
+        [type]="'community'" [canCreatePost]="isMember" [community]="community"></so-post-list>
 
       <!--about-->
       <div class="panel panel-default" *ngIf="activeTabs.about">
@@ -205,13 +193,12 @@
                   <div class="media-avatar-body align-self-center">{{ item?.user.name }}</div>
                   <div class="media-avatar-action">
                     <div class="d-flex">
-                    <span class="text-fade member-role align-self-center">
-                      {{ (item?.role === 1) ? 'Admin' :'Member' }}
-                    </span>
+                      <span class="text-fade member-role align-self-center">
+                        {{ (item?.role === 1) ? 'Admin' :'Member' }}
+                      </span>
                       <div class="btn-group dropup ml10">
-                        <button class="btn btn-outline-default dropdown-toggle" aria-expanded="false"
-                                aria-haspopup="true"
-                                data-toggle="dropdown" type="button">
+                        <button class="btn btn-outline-default dropdown-toggle" aria-expanded="false" aria-haspopup="true"
+                          data-toggle="dropdown" type="button">
                           <i class="fa fa-ellipsis-v"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
@@ -268,25 +255,14 @@
   </div>
 
   <ng-template [ngIf]="community">
-    <z-social-community-form-edit
-      #modalEdit
-      [data]="community"
-      [action]="'edit'"
-      (updated)="onUpdated($event)">
+    <z-social-community-form-edit #modalEdit [data]="community" [action]="'edit'" (updated)="onUpdated($event)">
     </z-social-community-form-edit>
 
-    <z-social-community-form-preference
-      #modalPreference
-      [data]="community"
-      (updated)="onUpdated($event)">
+    <z-social-community-form-preference #modalPreference [data]="community" (updated)="onUpdated($event)">
     </z-social-community-form-preference>
   </ng-template>
 
-  <z-social-community-form-edit
-    #modalEdit
-    [data]="community"
-    [action]="'edit'"
-    (updated)="onUpdated($event)">
+  <z-social-community-form-edit #modalEdit [data]="community" [action]="'edit'" (updated)="onUpdated($event)">
   </z-social-community-form-edit>
 
   <wth-zone-report></wth-zone-report>

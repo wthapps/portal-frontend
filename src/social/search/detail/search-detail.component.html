@@ -4,21 +4,22 @@
       <a [routerLink]="['/search/all', {q:params}]" [queryParams]="{q:params}">All</a>
     </li>
     <li [ngClass]="{'active': (term === 'members')}">
-      <a [routerLink]="['/search/members', {q:params}]" [queryParams]="{q:params}" >Members</a>
+      <a [routerLink]="['/search/members', {q:params}]" [queryParams]="{q:params}">Members</a>
     </li>
     <li [ngClass]="{'active': (term === 'communities')}">
-      <a [routerLink]="['/search/communities', {q:params}]" [queryParams]="{q:params}" >Communities</a>
+      <a [routerLink]="['/search/communities', {q:params}]" [queryParams]="{q:params}">Communities</a>
     </li>
     <li class="hidden-xs" [ngClass]="{'active': (term === 'posts')}">
-      <a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}" >Posts</a>
+      <a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}">Posts</a>
     </li>
     <li class="visible-xs-inline-block">
       <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
           <i class="fa fa-ellipsis-h"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li><a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}" >Posts</a></li>
+          <li><a [routerLink]="['/search/posts', {q:params}]" [queryParams]="{q:params}">Posts</a></li>
         </ul>
       </div>
     </li>
@@ -26,25 +27,18 @@
 </div>
 
 
-<div class="page-body-content gray-light page-body-content-search"
-  lockYOffset="10"
-  observeAttributes="true"
-  infinite-scroll
-  [scrollWindow]="true"
-  (scrolled)="onLoadMore()">
-  <div class="page-body-content-in zone-social" >
+<div class="page-body-content gray-light page-body-content-search" lockYOffset="10" observeAttributes="true"
+  infinite-scroll [scrollWindow]="true" (scrolled)="onLoadMore()">
+  <div class="page-body-content-in zone-social">
     <div class="zone-social-in" *ngIf="!loading; else loadingBlock;">
       <div class="panel panel-default" *ngIf="result;else noDataBlock">
         <div class="panel-heading">
           <h3 class="panel-title">{{ group | titleCase }}</h3>
         </div>
 
-        <z-social-share-profile-list *ngIf="group=='members' || group=='communities'"
-                                     [data]="result" [type]="group"></z-social-share-profile-list>
+        <z-social-share-profile-list *ngIf="group=='members' || group=='communities'" [data]="result" [type]="group"></z-social-share-profile-list>
 
-        <so-post-list *ngIf="group == 'posts'" #posts
-                      [items]="result"
-                      [type]="'search'">
+        <so-post-list *ngIf="group == 'posts'" #posts [posts]="result" [type]="'search'">
         </so-post-list>
 
         <div class="panel-body" *ngIf="result.length == 0">

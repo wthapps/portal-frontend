@@ -41,7 +41,7 @@
 
 <div id="post-list-component">
   <ng-container *ngIf="!loading">
-    <div class="panel panel-default mb15" *ngFor="let item of items;">
+    <div class="panel panel-default mb15" *ngFor="let item of posts;">
       <div class="panel-body">
         <so-post [user]="user" [item]="item" [showComments]="showComments" [emojiMap]="emojiMap$ | async" (onDeleted)="deletedPost($event, item)"
           (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)" (photoModalOpened)="openPhotoModal($event)">

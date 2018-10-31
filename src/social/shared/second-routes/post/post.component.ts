@@ -12,7 +12,8 @@ import {
 import { Subject } from 'rxjs/Subject';
 import { takeUntil, filter } from 'rxjs/operators';
 
-import { CommentEditorMode, CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
+import { SoStorageService } from './../../services/social-storage.service';
+import { CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
 
 import {
@@ -21,7 +22,7 @@ import {
 } from '../../events/social-events';
 import { BaseZoneSocialItem } from '../../base/base-social-item';
 import { SoComment, SoPost } from '@wth/shared/shared/models';
-import { ApiBaseService, PhotoService, PhotoUploadService } from '@wth/shared/services';
+import { ApiBaseService, PhotoService } from '@wth/shared/services';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
@@ -61,6 +62,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
 
   constructor(public apiBaseService: ApiBaseService,
+              private soStorageService: SoStorageService,
               private photoService: PhotoService,
               private loading: LoadingService,
               private mediaSelectionService: WMediaSelectionService,
@@ -106,8 +108,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // if (changes['item'].currentValue.id != undefined) {
-    // }
     if (!this.item) {
       this.item = new SoPost();
     }
@@ -132,77 +132,12 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   updatePhoto(currentPhotos: any[], updatedPhoto: any): any[] {
     return _.map(currentPhotos, (photo: any) => {
-        if ( photo.id === updatedPhoto.id )
-          return updatedPhoto;
-        else
-          return photo;
+      if ( photo.id === updatedPhoto.id )
+        return updatedPhoto;
+      else
+        return photo;
       }
     );
-  }
-
-  mapDisplay(): any {
-    // Clone object to display
-    this.itemDisplay = _.cloneDeep(this.item);
-    this.itemDisplay.tags = this.item['tags_json'];
-    this.privacyName = this.getPrivacyName(this.item);
-    const totalComment = this.item.comment_count;
-    this.itemDisplay.commentLoadingDone = (totalComment === 0)
-    || (totalComment <= _.get(this.item, 'comments.length', 0));
-    // handle css
-    this.addCarouselCss();
-    // handle photo remain
-    this.getRemainPhotos();
-    // Right Photos than 6 will be remove for display
-    this.removeRightPhotos();
-    // // handle user privacy
-    // this.privacyDisplay();
-    // classify reaction
-    // this.classifyReactions();
-  }
-
-  addCarouselCss() {
-    this.itemDisplay.displayCss = 'carousel-thumb-style-' + this.itemDisplay.photos.length;
-    if (this.itemDisplay.photos.length > 6) {
-      this.itemDisplay.displayCss = 'carousel-thumb-style-6';
-    }
-    if (this.itemDisplay.parent != null && this.itemDisplay.parent !== undefined) {
-      this.itemDisplay.parent.displayCss = 'carousel-thumb-style-' + this.itemDisplay.parent.photos.length;
-      if (this.itemDisplay.parent.photos.length > 6) {
-        this.itemDisplay.parent.displayCss = 'carousel-thumb-style-6';
-      }
-    }
-  }
-
-  getRemainPhotos() {
-    if (this.itemDisplay.photos.length > 6) {
-      this.itemDisplay.remainPhotos = this.itemDisplay.photos.length - 6;
-    }
-  }
-
-  removeRightPhotos() {
-    // while (this.itemDisplay.photos.length > 6) {
-    //   this.itemDisplay.photos = _.dropRight(this.itemDisplay.photos);
-    // }
-    this.itemDisplay.photos.splice(6);
-  }
-
-  classifyReactions() {
-    this.itemDisplay.reactions_dislike = new Array<any>();
-    this.itemDisplay.reactions_like = new Array<any>();
-    this.itemDisplay.reactions_share = new Array<any>();
-    this.itemDisplay.reactions.forEach((reaction: any) => {
-      switch (reaction.reaction) {
-        case 'dislike':
-          this.itemDisplay.reactions_dislike.push(reaction);
-          break;
-        case 'like':
-          this.itemDisplay.reactions_like.push(reaction);
-          break;
-        case 'share':
-          this.itemDisplay.reactions_share.push(reaction);
-          break;
-      }
-    });
   }
 
   edit() {
@@ -210,11 +145,11 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   update(attr: any = {}) {
-    console.log('attt ', attr);
     this.apiBaseService.put(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`, attr)
       .toPromise().then((result: any) => {
           // this.item = result['data'];
           _.merge(this.item, new SoPost().from(result['data']).excludeComments());
+          this.updateStoragePost();
           this.mapDisplay();
         }
       );
@@ -248,8 +183,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
       const self: any = this;
       this.createComment(event.data).toPromise().then(
         (res: any) => {
-          console.log('response data', res.data);
-
           if (res.data.parent_type === 'SocialNetwork::Post') {
             const comment = new SoComment().from(res.data);
             _.uniqBy(this.item.comments.unshift(comment), 'uuid');
@@ -263,6 +196,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
             this.item.comments[commentIndex].comments.push(newReply);
           }
 
+          this.updateStoragePost();
           this.mapDisplay();
         }
       );
@@ -283,6 +217,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         (res: any) => {
           // this.item = new SoPost().from(res.data);
           _.remove(this.item.comments, {uuid: event.data.uuid});
+          this.updateStoragePost();
           this.mapDisplay();
         }
       );
@@ -319,25 +254,18 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
           });
 
           _.remove(this.item.comments[commentIndex].comments, {uuid: deletedReply.uuid});
+          this.updateStoragePost();
           this.mapDisplay();
 
         }
       );
     }
 
-    // // Open photo modal
-    // if (event instanceof OpenPhotoModalEvent) {
-    //   this.commentEditor = event.data;
-    //   Object.assign(this.commentEditor, {multipleSelect: false});
-    //   this.openPhotoModal(event.data);
-    //
-    // }
-
     // View more comments
     if (event instanceof ViewMoreCommentsEvent) {
       this.syncComments(event.data);
+      this.updateStoragePost();
     }
-
   }
 
   syncComments(post: any) {
@@ -393,6 +321,53 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     );
   }
 
+  private updateStoragePost() {
+    this.soStorageService.updatePost(_.cloneDeep(this.item));
+  }
+
+  private mapDisplay(): any {
+    // Clone object to display
+    this.itemDisplay = _.cloneDeep(this.item);
+    this.itemDisplay.tags = this.item['tags_json'];
+    this.privacyName = this.getPrivacyName(this.item);
+    const totalComment = this.item.comment_count;
+    this.itemDisplay.commentLoadingDone = (totalComment === 0)
+    || (totalComment <= _.get(this.item, 'comments.length', 0));
+    // handle css
+    this.addCarouselCss();
+    // handle photo remain
+    this.getRemainPhotos();
+    // Right Photos than 6 will be remove for display
+    this.removeRightPhotos();
+    // // handle user privacy
+    // this.privacyDisplay();
+    // classify reaction
+    // this.classifyReactions();
+  }
+
+  private addCarouselCss() {
+    this.itemDisplay.displayCss = 'carousel-thumb-style-' + this.itemDisplay.photos.length;
+    if (this.itemDisplay.photos.length > 6) {
+      this.itemDisplay.displayCss = 'carousel-thumb-style-6';
+    }
+    if (this.itemDisplay.parent != null && this.itemDisplay.parent !== undefined) {
+      this.itemDisplay.parent.displayCss = 'carousel-thumb-style-' + this.itemDisplay.parent.photos.length;
+      if (this.itemDisplay.parent.photos.length > 6) {
+        this.itemDisplay.parent.displayCss = 'carousel-thumb-style-6';
+      }
+    }
+  }
+
+  private getRemainPhotos() {
+    if (this.itemDisplay.photos.length > 6) {
+      this.itemDisplay.remainPhotos = this.itemDisplay.photos.length - 6;
+    }
+  }
+
+  private removeRightPhotos() {
+    this.itemDisplay.photos.splice(6);
+  }
+
   private getPrivacyName(post: SoPost): string {
     if (post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
       return post.custom_objects[0].name;
@@ -425,6 +400,8 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         ;
       });
     }
+    this.updateStoragePost();
+
   }
 
   private updateReactionsSet(srcObj: any, data: any) {
@@ -453,5 +430,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         });
       }
     });
+    this.updateStoragePost();
   }
 }

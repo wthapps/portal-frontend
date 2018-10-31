@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { PostListComponent } from '../../shared/second-routes/post/post-list.component';
 import { ZSocialProfileDataService } from '../profile-data.service';
 import { AuthService, UserService } from '@wth/shared/services';
+import { SoStorageService } from '@social/shared/services/social-storage.service';
 
 
 @Component({
@@ -16,7 +17,9 @@ export class ZSocialProfilePostComponent implements OnInit {
   relationships: any;
   canCreate: boolean;
 
-  constructor(public authService: AuthService, private profileDataService: ZSocialProfileDataService) { }
+  constructor(public authService: AuthService,
+              public soStorageService: SoStorageService,
+              private profileDataService: ZSocialProfileDataService) { }
 
   ngOnInit() {
     this.profileDataService.profileData$.subscribe((res: any) => {

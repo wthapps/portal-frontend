@@ -168,7 +168,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group" *ngIf="parent != null">
+      <div class="form-group" *ngIf="parent">
         Shared from
         <a href="javascript:;" (click)="viewProfile(parent.owner.uuid)">{{ parent.owner.name }}</a>
       </div>
