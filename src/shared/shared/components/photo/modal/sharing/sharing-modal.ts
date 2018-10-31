@@ -17,17 +17,17 @@ export interface SharingRecipient {
   _destroy?: boolean;
   user?: any;
 }
-interface SharingCreateParams {
+export interface SharingCreateParams {
   objects: Array<{ id, model }>;
   recipients: Array<SharingRecipient>;
   role_id: any;
 }
-interface SharingEditParams {
+export interface SharingEditParams {
   recipients: Array<SharingRecipient>;
   users: Array<SharingRecipient>;
   id: number;
 }
-interface SharingModalResult {
+export interface SharingModalResult {
   recipients: Array<SharingRecipient>;
   users: Array<SharingRecipient>;
   role: any;

@@ -63,8 +63,10 @@ export class ZMediaSharingDetailComponent
     MediaDownloadMixin {
   objects: any;
   object: any;
+  cloneObjects: any;
   recipients: any;
   hasSelectedObjects: boolean;
+  selectedCoverObjects: any = [];
   selectedObjects: any = [];
   favoriteAll: any;
   loading: boolean;
@@ -258,6 +260,18 @@ export class ZMediaSharingDetailComponent
 
   doNoData() {
     throw new Error('should overwrite this method');
+  }
+
+  doCoverEvent(event: any) {
+  }
+
+  selectedObjectsCoverChanged() {
+  }
+
+  setCover(event) {
+  }
+
+  doToolbarCoverEvent(event: any) {
   }
 
   back() {

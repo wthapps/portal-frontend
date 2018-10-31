@@ -1,7 +1,5 @@
 import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter, OnInit } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
-
-
 import { ApiBaseService } from '@wth/shared/services';
 import { ModalComponent } from '@shared/shared/components/base/components';
 import { SharingModalOptions, SharingRecipient, SharingModalResult, SharingCreateParams } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
