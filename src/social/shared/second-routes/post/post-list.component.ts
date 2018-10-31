@@ -53,7 +53,6 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   constructor(public apiBaseService: ApiBaseService,
     public socialService: SocialService,
-    private loadingService: LoadingService,
     private route: ActivatedRoute,
     private router: Router,
     private wthEmojiService: WTHEmojiService,

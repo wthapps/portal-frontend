@@ -7,7 +7,6 @@ import { SoCommunityService } from './services/community.service';
 import { ZSocialProfileService } from '../profile/profile.service';
 import { SocialFavoriteService } from './services/social-favorites.service';
 import { ZSocialShareProfileModule } from './user/list.module';
-import { SocialDataService } from './services/social-data.service';
 import { SoUserService } from './services/social-user.service';
 import { SoPostService } from './services/social-post.service';
 import { ZSocialSharedHeaderComponent } from './header/header.component';
@@ -32,8 +31,15 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TagInputModule } from 'ngx-chips';
-import { InputSwitchModule, CheckboxModule, RadioButtonModule,
-   AutoCompleteModule, CalendarModule, PanelMenuModule, TooltipModule } from 'primeng/primeng';
+import {
+  InputSwitchModule,
+  CheckboxModule,
+  RadioButtonModule,
+  AutoCompleteModule,
+  CalendarModule,
+  PanelMenuModule,
+  TooltipModule
+} from 'primeng/primeng';
 import { ZSharedReportModule } from '@shared/shared/components/zone/report/report.module';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
@@ -41,6 +47,7 @@ import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.modul
 import { ZSocialMembersComponent } from '@social/friends/members.component';
 import { ZSocialShareCommunityFormEditComponent } from '@social/shared/form/edit-community.component';
 import { ZSocialShareCommunityFormPreferenceComponent } from '@social/shared/form/preferences-community.component';
+import { SoSorageService } from './services/social-storage.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -84,8 +91,7 @@ import { ZSocialShareCommunityFormPreferenceComponent } from '@social/shared/for
     AutoCompleteModule,
     CalendarModule,
     PanelMenuModule,
-    TooltipModule,
-
+    TooltipModule
   ],
   declarations: [
     ZSocialFavoritesComponent,
@@ -123,7 +129,6 @@ import { ZSocialShareCommunityFormPreferenceComponent } from '@social/shared/for
     WNavTabModule,
     ZSharedReportModule,
 
-
     PipeModule,
     ZSocialShareProfileModule,
     MiniEditorModule,
@@ -141,11 +146,9 @@ import { ZSocialShareCommunityFormPreferenceComponent } from '@social/shared/for
     PanelMenuModule,
     TooltipModule,
 
-
     ZSocialFavoritesComponent,
 
     StepByStepGuideModule,
-
 
     ZSocialMembersComponent,
     ZSocialSharedHeaderComponent,
@@ -170,7 +173,7 @@ export class ZSocialSharedModule {
         SoCommunityService,
         ZSocialProfileService,
         SocialFavoriteService,
-        SocialDataService,
+        SoSorageService,
         SoShortcutService
       ]
     };

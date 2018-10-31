@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
 
 import { ApiBaseService, UserService } from '@wth/shared/services';
+import { SoPost } from '@shared/shared/models';
 
 /**
  * Created by phat on 18/11/2016.
@@ -12,12 +13,14 @@ declare  let _: any;
 
 @Injectable()
 export class SoPostService {
+  private postList: SoPost[] = [];
+
   constructor(private apiBaseService: ApiBaseService,
               private userService: UserService) {
   }
 
   getList(uuid: string = this.userService.getSyncProfile().uuid, type?: string) {
-    let uuid2: string = uuid || this.userService.getSyncProfile().uuid;
+    const uuid2: string = uuid || this.userService.getSyncProfile().uuid;
     return this.getListSocialPosts(uuid2, type);
   }
 
