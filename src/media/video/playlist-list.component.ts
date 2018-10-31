@@ -260,6 +260,9 @@ MediaModalMixin {
       case 'favorite':
         this.toggleFavorite(event.payload);
         break;
+      case 'updateMediaList':
+        this.loadObjects();
+        break;
       case 'openModal':
         if (event.payload.modalName == "editNameModal") {
           this.openEditModal(event.payload.selectedObject)

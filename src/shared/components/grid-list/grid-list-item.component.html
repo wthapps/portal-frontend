@@ -18,15 +18,25 @@
     <div class="photo-box-name">
       <span class="can-click" title="Double click to edit name" (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
         <i *ngIf="object.model == 'Media::Photo'" class="fa fa-photo"></i>
-        <i *ngIf="object.model == 'Media::Video'" class="fa fa-video-camera"></i> {{ object.name }}.{{ object.extension
-        }}
+        <i *ngIf="object.model == 'Media::Video'" class="fa fa-video-camera"></i>
+        <div style="
+        text-overflow: ellipsis;
+        width: 300px;
+        display: block;
+        overflow: hidden;">
+          {{ object.name }}.{{ object.extension}}
+        </div>
       </span>
       <div class="hidden">
         <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
         <i *ngIf="object.favorite" class="fa fa-star"></i>
       </div>
     </div>
-    <div class="photo-box-owner">{{ object.owner?.name }}</div>
+    <div class="photo-box-owner">
+      <span *ngIf="object.owner">
+        {{object.owner.id == userService.profile.id ? 'me' : object.owner.name}}
+      </span>
+    </div>
     <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
     <div class="photo-box-size">{{ object.size | bytes:0 }}</div>
   </div>

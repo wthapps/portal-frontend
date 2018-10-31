@@ -62,6 +62,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   sorting: any;
   endLoading: any;
   menuActions: any;
+  sub: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(public apiBaseService: ApiBaseService,
@@ -78,6 +79,9 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
   ngOnInit() {
     this.loadObjects();
     this.menuActions = this.getMenuActions();
+    this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').subscribe((event: any) => {
+      this.doListEvent(event);
+    });
   }
 
   loadModalComponent:(component: any) => void;
@@ -122,6 +126,9 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
       case 'sort':
         this.sorting = e.payload.queryParams;
         this.loadObjects(this.sorting);
+        break;
+      case 'updateMediaList':
+        this.loadObjects();
         break;
       case 'clickOnItem':
       case 'clickOnCircle':

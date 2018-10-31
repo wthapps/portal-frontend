@@ -1,5 +1,6 @@
 import { Component, Input, EventEmitter, Output, HostBinding, OnChanges, ViewEncapsulation } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
+import { UserService } from '@shared/services';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -13,6 +14,8 @@ export class WGridListItemComponent {
   @Input() object: any;
 
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
+
+  constructor(private userService: UserService) {}
 
   time = +new Date();
   readonly DEFAULT_IMAGE = Constants.img.default;

@@ -222,8 +222,6 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
     return this.photos.length > 0 ? true : false;
   }
 
-
-
   ngOnDestroy() {
     this.uploaderSub.unsubscribe();
   }

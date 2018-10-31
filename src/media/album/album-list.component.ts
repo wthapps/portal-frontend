@@ -54,7 +54,7 @@ export class AlbumListComponent implements OnInit,
   menuActions: any = {};
   modalIns: any;
   modalRef: any;
-  iconNoData: any = 'fa fa-file-video-o';
+  iconNoData: any = 'wthico-album';
   titleNoData: any = 'There is no album!';
   subTitleNoData: any = 'Try to create a album';
   actionNoData: any = 'Create Album';

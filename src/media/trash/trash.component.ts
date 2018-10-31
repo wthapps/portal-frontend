@@ -82,9 +82,6 @@ MediaModalMixin {
 
   ngOnInit() {
     this.loadObjects();
-    this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').subscribe((event: any) => {
-      this.doListEvent(event);
-    });
   }
 
   loadObjects(opts: any = {}) {
@@ -227,7 +224,7 @@ custom method please overwirte any method*/
 
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    // this.sub.unsubscribe();
   }
 
   /* MediaListMixin This is media list methods, to
