@@ -43,22 +43,31 @@
                 <li><span> Who will see this</span></li>
                 <li>
                   <a href="#" (click)="update({privacy: soPostPrivacy.public.data}, $event)">
-                    <i class="fa fa-globe"></i> Public</a>
+                    <i class="fa fa-globe"></i> Public
+                    <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.public.data"></i>
+                  </a>
                 </li>
                 <li>
                   <a href="#" (click)="update({privacy: soPostPrivacy.friends.data}, $event)">
-                    <i class="fa fa-users"></i> Friends</a>
+                    <i class="fa fa-users"></i> Friends
+                    <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.friends.data"></i>
+                  </a>
                 </li>
                 <li>
                   <a href="#" (click)="update({privacy: soPostPrivacy.personal.data}, $event)">
-                    <i class="fa fa-lock"></i> Personal</a>
+                    <i class="fa fa-lock"></i> Personal
+                    <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.personal.data"></i>
+                  </a>
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
-                  <a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Custom Friends</a>
+                  <a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Custom Friends
+                    <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.customFriend.data"></i>
+                  </a>
                 </li>
                 <li>
                   <a href="#" (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Custom Communities
+                    <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.customCommunity.data"></i>
                   </a>
                 </li>
               </ul>

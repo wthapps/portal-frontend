@@ -150,7 +150,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(public authService: AuthService,
-              public soStorageService: SoStorageService,,
+              public soStorageService: SoStorageService,
               private route: ActivatedRoute,
               private router: Router,
               private userService: UserService,
