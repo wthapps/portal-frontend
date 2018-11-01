@@ -70,8 +70,8 @@ export class PostDetailComponent extends BaseZoneSocialItem implements OnInit {
           .toPromise().then((response: any) => {
             console.log('response', response);
             // Navigate to the new shared post
-            // this.soStorageService.prependPosts(response.data);
-            this.router.navigate([{ outlets: { detail: ['/posts', response.data.uuid] } }]
+            this.soStorageService.createPost(response.data);
+            this.router.navigate([{ outlets: { detail: ['posts', response.data.uuid] } }]
               , { queryParamsHandling: 'preserve', preserveFragment: true });
             this.postEditModal.close();
           },

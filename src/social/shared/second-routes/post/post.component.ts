@@ -275,7 +275,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
 
   openShare() {
-    this.modalOpened.emit({mode: 'add', parent: this.item, isShare: true});
+    this.modalOpened.emit({mode: 'add', parent: this.item.parent_post || this.item, isShare: true});
   }
 
   openActivities() {

@@ -35,7 +35,7 @@
                 {{ (profile$ | async)?.name | maxLength: 50}}
               </div>
             </a>
-            <div class="z-shared-with dropdown">
+            <div class="z-shared-with dropdown post-edit">
               <a href="return false;" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;"
                 aria-haspopup="true" aria-expanded="true">
                 <i class="fa" [ngClass]="postPrivacy[post?.privacy]?.css"></i> {{ privacyName }} </a>
@@ -148,18 +148,6 @@
       </div>
       <div class="form-group">
         <div class="row-img row-img-10 grid">
-          <!--<div class="row-img-item" *ngFor="let f of files">-->
-          <!--<div class="photo-box">-->
-          <!--<div class="photo-box-action">-->
-          <!--<i class="fa fa-remove" (click)="cancelUploading(f)"></i>-->
-          <!--</div>-->
-          <!--<div class="photo-box-figure">-->
-          <!--<figure class="img-center-dv photo-item-uploading loading">-->
-          <!--<span class="photo-box-figure-in"></span>-->
-          <!--</figure>-->
-          <!--</div>-->
-          <!--</div>-->
-          <!--</div>-->
           <div class="row-img-item" *ngFor="let p of post.photos">
             <div class="photo-box">
               <div class="photo-box-action">

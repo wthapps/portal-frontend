@@ -278,32 +278,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.modal.close();
   }
 
-  // uploadFiles(files: Array<any>) {
-  //   if (files.length <= 0) return;
-  //   const subscription = this.photoUploadService.uploadPhotos(files).subscribe(
-  //     (res: any) => {
-  //       this.files.shift(); // remove file was uploaded
-  //       // Only add distinct photos into post edit
-  //       this.post.photos.unshift(res.data);
-  //       this.uploadedPhotos.push(res.data);
-  //     },
-  //     (err: any) => {
-  //       console.log('Error when uploading files ', err);
-  //     }
-  //   );
-
-  //   this.uploadSubscriptions[files[0].name] = subscription;
-  // }
-
-  // cancelUploading(file: any) {
-  //   _.pull(this.files, file);
-  //   this.uploader.cancel(file);
-  //   if (file.name && this.uploadSubscriptions[file.name]) {
-  //     this.uploadSubscriptions[file.name].unsubscribe();
-  //     delete this.uploadSubscriptions[file.name];
-  //   }
-  // }
-
   doEvents(response: any) {
     switch (response.action) {
       case 'remove':

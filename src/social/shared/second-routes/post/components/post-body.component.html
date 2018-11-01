@@ -40,7 +40,7 @@
   </div>
 
   <!--original post or parent post-->
-  <div *ngIf="!item.is_post">
+  <div *ngIf="!item.is_post && item.parent_post">
     <hr />
     <div class="form-group">
       Shared from <a href="javascript:;" (click)="onActions(actions.onShowPostDetail, parentItem.uuid)">{{

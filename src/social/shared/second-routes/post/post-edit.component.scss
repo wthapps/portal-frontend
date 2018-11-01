@@ -17,13 +17,15 @@
   display: inline-block;
 }
 
-.dropdown-menu {
-  min-width: 190px;
-  
-  li {
-    span {
-      padding: 10px 15px;
-      position: relative;
+.post-edit {
+  .dropdown-menu {
+    min-width: 190px;
+    
+    li {
+      span {
+        padding: 10px 15px;
+        position: relative;
+      }
     }
   }
 }
