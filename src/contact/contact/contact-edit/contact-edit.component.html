@@ -70,15 +70,9 @@
 
                   <div class="col-sm-5">
                     <div class="form-group no-label">
-
-                      <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
-                        [suggestions]="filteredCountriesCode" (completeMethod)="filterCountriesCode($event)" [size]="30"
-                        [minLength]="1" placeholder="Select your country" [dropdown]="true">
-                        <ng-template ngFor let-code let-i="index" pTemplate="item">
-                          <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
-                        </ng-template>
-                      </p-autoComplete>
-
+                      <w-countries [country]="add_phone.value.country_alpha_code"
+                                   (completeChange)="onCompleteChange($event, i)"></w-countries>
+                      <input type="hidden" formControlName="country_alpha_code">
                     </div>
                   </div>
 

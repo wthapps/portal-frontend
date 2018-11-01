@@ -1,18 +1,18 @@
-import { Component, EventEmitter, Input, OnChanges, Output, OnInit, OnDestroy } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ZContactService } from '@contacts/shared/services/contact.service';
+import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
+import { Constants } from '@shared/constant';
+import { CountryService } from '@shared/shared/components/countries/countries.service';
+import { CustomValidator } from '@shared/shared/validator/custom.validator';
+import { CommonEventService, PhotoUploadService } from '@wth/shared/services';
 
 import { Observable } from 'rxjs/Observable';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+import { GroupService } from '../../group/group.service';
 
 import { Contact } from '../contact.model';
-import { GroupService } from '../../group/group.service';
-import { PhotoUploadService, CommonEventService } from '@wth/shared/services';
-import { CountryService } from '@shared/shared/components/countries/countries.service';
-import { Constants } from '@shared/constant';
-import { CustomValidator } from '@shared/shared/validator/custom.validator';
-import { ZContactService } from '@contacts/shared/services/contact.service';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 
 declare let _: any;
 
@@ -59,8 +59,6 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   countriesCode: any;
   countriesNameCode: any;
 
-  filteredCountriesCode: Array<any> = new Array<any>();
-
   form: FormGroup;
   name: AbstractControl;
   family_name: AbstractControl;
@@ -77,12 +75,12 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   private destroySubject: Subject<any> = new Subject();
 
   constructor(private fb: FormBuilder,
-    private groupService: GroupService,
-    private contactService: ZContactService,
-    private mediaSelectionService: WMediaSelectionService,
-    private photoUploadService: PhotoUploadService,
-    private commonEventService: CommonEventService,
-    private countryService: CountryService) {
+              private groupService: GroupService,
+              private contactService: ZContactService,
+              private mediaSelectionService: WMediaSelectionService,
+              private photoUploadService: PhotoUploadService,
+              private commonEventService: CommonEventService,
+              private countryService: CountryService) {
     this.groupService.getAllGroups().then((res: any) => {
       this.originalGroups = res;
       _.map(res, (v: any) => {
@@ -269,7 +267,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
             city: [item.city],
             province: [item.province],
             postcode: [item.postcode],
-            country: [item.country],
+            country: [item.country]
           };
         } else {
           formGroup = {
@@ -280,7 +278,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
             city: [data.city],
             province: [data.province],
             postcode: [data.postcode],
-            country: [data.country],
+            country: [data.country]
           };
         }
         break;
@@ -296,7 +294,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
         } else {
           formGroup = {
             category: [data.category],
-            value: [data.value, Validators.compose([CustomValidator.urlFormat])],
+            value: [data.value, Validators.compose([CustomValidator.urlFormat])]
           };
         }
         break;
@@ -393,13 +391,8 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  filterCountriesCode(event: any) {
-    this.filteredCountriesCode = [];
-    for (let i = 0; i < this.countriesNameCode.length; i++) {
-      const brand = this.countriesNameCode[i];
-      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
-        this.filteredCountriesCode.push(brand);
-      }
-    }
+  onCompleteChange(country: string, i: number) {
+    const controlArray = <FormArray>this.form.get('phones');
+    controlArray.controls[i].get('country_alpha_code').setValue(country);
   }
 }

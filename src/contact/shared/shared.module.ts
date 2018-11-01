@@ -145,6 +145,7 @@ import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
     CalendarModule,
     PanelMenuModule,
     TooltipModule,
+    WCountriesModule,
 
     ZContactSharedListComponent,
     ZContactSharedItemComponent,

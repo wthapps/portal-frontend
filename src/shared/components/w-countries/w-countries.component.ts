@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CountryModel, WCountriesService } from '@shared/components/w-countries/w-countries.service';
+import { OverlayPanel } from 'primeng/primeng';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -9,6 +10,8 @@ import { Observable } from 'rxjs/Observable';
   encapsulation: ViewEncapsulation.None
 })
 export class WCountriesComponent implements OnInit, OnChanges {
+  @ViewChild('overlayPanel') overlayPanel: OverlayPanel;
+
   @Input() country: string;
   @Output() completeChange: EventEmitter<string> = new EventEmitter<string>();
 

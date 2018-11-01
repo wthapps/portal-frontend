@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { map, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 
 export class CountryModel {
@@ -17,7 +18,6 @@ export class CountryModel {
  */
 @Injectable()
 export class WCountriesService {
-
   countriesCode$: Observable<CountryModel[]>;
   private countriesCodeSubject: BehaviorSubject<CountryModel[]> = new BehaviorSubject<CountryModel[]>(null);
 

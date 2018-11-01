@@ -5,7 +5,6 @@ import { ZContactListComponent } from './contact-list/contact-list.component';
 import { ZContactEditPageComponent } from './contact-edit/contact-edit-page.component';
 // import { ZContactDetailComponent } from './contact-detail/contact-detail.component';
 import { AuthGuard } from '@wth/shared/services';
-import { ZContactUserDetailComponent } from '@contacts/contact/user-detail/contact-user-detail.component';
 import { MY_CONTACTS } from '@contacts/shared/services/contact.service';
 
 @NgModule({
@@ -49,11 +48,6 @@ import { MY_CONTACTS } from '@contacts/shared/services/contact.service';
       //   component: ZContactDetailComponent,
       //   canActivate: [AuthGuard]
       // },
-      {
-        path: 'contacts/user_detail/:id',
-        component: ZContactUserDetailComponent,
-        canActivate: [AuthGuard]
-      }
     ])
   ],
   exports: [RouterModule]
