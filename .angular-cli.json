@@ -27,7 +27,7 @@
       "prefix": "",
       "serviceWorker": false,
       "styles": [
-        "styles/styles-app-loading.scss",
+        "../assets/styles/styles-app-loading.scss",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",
         "../../node_modules/cropperjs/dist/cropper.min.css",
@@ -64,6 +64,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
       "styles": [
+        "../assets/styles/styles-app-loading.scss",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",
         "styles/my-account.scss",
@@ -104,6 +105,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
       "styles": [
+        "../assets/styles/styles-app-loading.scss",
         "../../node_modules/bootstrap/dist/css/bootstrap.css",
         "../../node_modules/font-awesome/css/font-awesome.min.css",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
@@ -144,6 +146,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
       "styles": [
+        "../assets/styles/styles-app-loading.scss",
         "../../node_modules/bootstrap/dist/css/bootstrap.css",
         "../../node_modules/font-awesome/css/font-awesome.min.css",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
@@ -185,6 +188,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "",
       "styles": [
+        "../assets/styles/styles-app-loading.scss",
         "../../node_modules/bootstrap/dist/css/bootstrap.css",
         "../../node_modules/font-awesome/css/font-awesome.min.css",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
@@ -230,6 +234,7 @@
       "prefix": "",
       "serviceWorker": true,
       "styles": [
+        "../assets/styles/styles-app-loading.scss",
         "../../node_modules/bootstrap/dist/css/bootstrap.css",
         "../../node_modules/font-awesome/css/font-awesome.min.css",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
@@ -270,6 +275,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "note",
       "styles": [
+        "../assets/styles/styles-app-loading.scss",
         "../../node_modules/primeng/resources/themes/omega/theme.css",
         "../../node_modules/primeng/resources/primeng.min.css",
         "../../node_modules/font-awesome/scss/font-awesome.scss",
