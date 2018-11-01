@@ -1,0 +1,23 @@
+<!--<div class="page-body-content gray-light">-->
+  <div class="page-body-content-in">
+    <!--<div class="profile-page">-->
+      <div class="w-user-profile">
+        <w-user-cover-info [user]="profile$ | async" (onOpenModal)="openModal($event)"></w-user-cover-info>
+        <w-user-basic-info #basicInfo *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></w-user-basic-info>
+        <w-user-contact-info #contactInfo *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></w-user-contact-info>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Contact Information</h3>
+          </div>
+          <div class="panel-body">
+            <w-user-emails #email *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></w-user-emails>
+            <w-user-phones #phone *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></w-user-phones>
+            <w-user-addresses #address *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></w-user-addresses>
+            <w-user-media #media *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></w-user-media>
+          </div>
+        </div>
+      </div>
+      <div class="w-profile-card"></div>
+    <!--</div>-->
+  </div>
+<!--</div>-->

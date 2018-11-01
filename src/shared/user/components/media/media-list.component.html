@@ -1,0 +1,89 @@
+<div *ngIf="data">
+  <div class="field-group-title">
+    <h3 class="pull-left">Media</h3>
+    <div class="pull-right">
+      <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
+  </div>
+  <div class="field-group-content">
+    <dl class="dl-horizontal" *ngIf="data.media && data.media.length > 0">
+      <ng-template ngFor let-item [ngForOf]="data.media" let-i="index" [ngForTrackBy]="trackByFn">
+        <dt>{{ item.category | keyToValue:mediaType:'category':'name' }}</dt>
+        <dd><p><a href="{{ item.value }}" target="_blank" rel="noopener">{{ item.value }}</a></p></dd>
+      </ng-template>
+    </dl>
+
+    <div *ngIf="data.media && data.media.length == 0 && editable">
+      <p class="text-fade">
+        Tell us more about your media
+      </p>
+      <button type="button" class="btn btn-default" (click)="onOpenModal()">
+        <i class="fa fa-plus"></i> Add detail
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<form [formGroup]="form" novalidate>
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title">Media</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+      <div formArrayName="media">
+        <div *ngFor="let add_phone of getFormControls(); let i=index" class="media mt0">
+          <div class="media-body" [formGroupName]="i">
+            <div class="row row-10">
+              <div class="col-sm-4">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!add_phone['controls'].category.valid
+                  && add_phone['controls'].category.touched),
+                  'has-success': (add_phone['controls'].category.valid
+                  && add_phone['controls'].category.touched
+                  && form.value.media[i].category.length>1)}">
+                  <select class="form-control" name="name" formControlName="category">
+                    <option *ngFor="let et of mediaType" value="{{ et.category }}">{{ et.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <div class="form-group no-label" [ngClass]="{
+                  'has-error': (!add_phone['controls'].value.valid
+                  && add_phone['controls'].value.touched),
+                  'has-success': (add_phone['controls'].value.valid
+                  && add_phone['controls'].value.touched
+                  && form.value.media[i].value.length>1)}">
+                  <input type="text" class="form-control" formControlName="value" placeholder="">
+                  <div *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched">
+                    <span *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched"
+                      class="help-block text-danger">
+                      Link is not valid
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="media-right">
+            <button type="button" class="btn btn-default" (click)="removeItem(i, add_phone.controls)">
+              <i class="fa fa-trash-o"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-default" (click)="addItem()">
+        <i class="fa fa-plus"></i> Add more
+      </button>
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+      <button type="submit" class="btn btn-outline-primary btn-min"
+              (click)="onSubmit(form.value)">Done
+      </button>
+    </bs-modal-footer>
+  </bs-modal>
+</form>

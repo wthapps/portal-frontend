@@ -32,6 +32,7 @@ export class User {
   took_a_tour: boolean;
   online: boolean;
   term_policy_version: string;
+  cover_image: string;
 
   constructor(fields: {
     id?: number,
@@ -60,7 +61,8 @@ export class User {
     use_diagnosis?: boolean,
     supporter?: boolean,
     took_a_tour?: boolean,
-    online?: boolean
+    online?: boolean,
+    cover_image?: string,
   }) {
     if (fields) Object.assign(this, fields);
   }
