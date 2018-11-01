@@ -201,10 +201,10 @@ export class ZMediaFavoriteListComponent implements OnInit,
   viewDetails(payload: any) {
     switch (payload.selectedObject.model) {
       case 'Media::Playlist' :
-        this.router.navigate(['playlists', payload.selectedObject.uuid]);
+        this.router.navigate([`/playlists`, payload.selectedObject.uuid], { queryParams: { returnUrls: ['/', '/favourites'] } });
         break;
       case 'Media::Album' :
-        this.router.navigate(['albums', payload.selectedObject.uuid]);
+        this.router.navigate([`/albums`, payload.selectedObject.uuid], { queryParams: { returnUrls: ['/', '/favourites'] } });
         break;
       case 'Media::Photo' :
         this.router.navigate(['photos', payload.selectedObject.uuid]);

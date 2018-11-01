@@ -40,8 +40,7 @@
             </button>
           </li>
         </ng-template>
-
-        <li class="dropdown action">
+        <li *ngIf="menuActions | hasMoreActions" class="dropdown action">
           <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
             pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
             <i class="fa fa-ellipsis-v"></i>

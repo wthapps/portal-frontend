@@ -70,7 +70,6 @@ export class AlbumListComponent implements OnInit,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
     public objectListService: WObjectListService,
-    public locationCustomService: LocationCustomService,
     public mediaCreateModalService: MediaCreateModalService,
     public resolver: ComponentFactoryResolver
   ) {
@@ -265,9 +264,9 @@ export class AlbumListComponent implements OnInit,
       this.loadingEnd();
     });
   }
+
   viewDetail(uuid: string) {
-    this.locationCustomService.links.push('/albums');
-    this.router.navigate([`/albums/${uuid}`]);
+    this.router.navigate([`/albums/${uuid}`], {queryParams: {returnUrls: ['/', '/albums']}});
   }
 
   loadingEnd: () => void;
@@ -283,6 +282,7 @@ export class AlbumListComponent implements OnInit,
       this.apiBaseService.put(`media/albums/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
         if (sub) sub.unsubscribe();
       })
+
     });
   }
 }

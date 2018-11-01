@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { combineLatest } from 'rxjs/operators/combineLatest';
 
 import {
-  ApiBaseService, WthConfirmService,
+  ApiBaseService, WthConfirmService, UrlService,
 } from '@wth/shared/services';
 import { Constants } from '@shared/constant';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
@@ -25,9 +25,10 @@ import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 
 
-@Mixins([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin, MediaPreviewMixin])
+@Mixins([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin, MediaPreviewMixin, MediaListDetailMixin])
 @Component({
   selector: 'video-detail',
   templateUrl: './item-detail.component.html',
@@ -44,6 +45,7 @@ export class ZVideoDetailComponent implements OnInit,
   MediaDownloadMixin,
   MediaModalMixin,
   MediaPreviewMixin,
+  MediaListDetailMixin,
   PlaylistAddMixin {
   object: any;
   readonly tooltip: any = Constants.tooltip;
@@ -56,7 +58,7 @@ export class ZVideoDetailComponent implements OnInit,
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
-  returnUrl: any;
+  returnUrls: any;
   sharings: any = [];
   listIds: DoublyLinkedLists;
 
@@ -79,6 +81,7 @@ export class ZVideoDetailComponent implements OnInit,
   constructor(public apiBaseService: ApiBaseService,
     public route: ActivatedRoute,
     public router: Router,
+    public urlService: UrlService,
     public resolver: ComponentFactoryResolver,
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
@@ -91,7 +94,7 @@ export class ZVideoDetailComponent implements OnInit,
     this.route.data.subscribe(data => {
       this.showMenuAction = (data['show_menu_action'] !== undefined) ? data['show_menu_action'] : true;
     });
-
+    this.returnUrls = this.route.snapshot.queryParams.returnUrls;
     this.route.params.pipe(
       combineLatest(this.route.queryParams)
     ).subscribe(([p, params]) => {
@@ -122,11 +125,12 @@ export class ZVideoDetailComponent implements OnInit,
             });
           }
         }
-        if (params.returnUrl) this.returnUrl = params.returnUrl;
       });
     });
   }
 
+  loadObject:(input: any) => void;
+  toggleInfo:() => void;
 
   openModalShareCustom() {
     this.openModalShare([this.object]);
@@ -300,15 +304,5 @@ export class ZVideoDetailComponent implements OnInit,
     this.router.navigate([`/videos/${this.listIds.current.data}`], { queryParamsHandling: 'merge' });
   }
 
-  back() {
-    if (this.returnUrl) {
-      this.router.navigate([this.returnUrl]);
-    } else {
-      const outlet = this.route.snapshot.outlet;
-      if (outlet !== 'primary')
-        this.router.navigate([{ outlets: { [outlet]: null } }]);
-      else
-        this.location.back();
-    }
-  }
+  back:() => void;
 }

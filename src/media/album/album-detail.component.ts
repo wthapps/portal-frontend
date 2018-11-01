@@ -10,7 +10,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import {
   ApiBaseService,
-  CommonEventService
+  CommonEventService,
+  UrlService
 } from '@shared/services';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
@@ -101,6 +102,7 @@ export class ZMediaAlbumDetailComponent
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
   endLoading: any;
+  returnUrls: any;
   // ============
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -122,6 +124,7 @@ export class ZMediaAlbumDetailComponent
     public router: Router,
     public route: ActivatedRoute,
     public location: Location,
+    public urlService: UrlService,
     private uploader: WUploader) { }
 
   ngOnInit() {
@@ -132,6 +135,7 @@ export class ZMediaAlbumDetailComponent
       this.loadObjects(p.uuid);
       this.loadObject(p.uuid);
     });
+    this.returnUrls = this.route.snapshot.queryParams.returnUrls;
   }
 
   doListEvent(event: any) {
@@ -322,7 +326,7 @@ export class ZMediaAlbumDetailComponent
   loadingEnd: () => void;
 
   viewDetail() {
-    const data: any = { returnUrl: `/albums/${this.object.uuid}`, preview: true, parent_id: this.object.id };
+    const data: any = { returnUrls: [...this.returnUrls, `/albums/${this.object.uuid}`] , preview: true, parent_id: this.object.id };
     if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
     this.router.navigate([`/photos/${this.selectedObjects[0].uuid}`], { queryParams: data });
   }
@@ -331,9 +335,7 @@ export class ZMediaAlbumDetailComponent
     throw new Error('should overwrite this method');
   }
 
-  back() {
-    this.location.back();
-  }
+  back:() => void;
 
   editName(object: any) {
     this.loadModalComponent(MediaRenameModalComponent);

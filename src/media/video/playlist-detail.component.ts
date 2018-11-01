@@ -85,7 +85,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
   subSelect: any;
-  returnUrl: any;
+  returnUrls: any;
   sharings: any;
   endLoading: any;
   // ============
@@ -142,6 +142,8 @@ PlaylistAddMixin, MediaDownloadMixin {
       this.loadObjects(p.uuid);
       this.loadObject(p.uuid);
     });
+
+    this.returnUrls = this.route.snapshot.queryParams.returnUrls;
   }
 
   doListEvent(e: any) {
@@ -272,7 +274,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   }
 
   viewDetail(input: any) {
-    const data: any = { returnUrl: `/playlists/${input}`, preview: true, parent_id: this.object.id };
+    const data: any = { returnUrls: [...this.returnUrls, `/playlists/${input}`], preview: true, parent_id: this.object.id };
     if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
     this.router.navigate([`/videos/${this.selectedObjects[0].uuid}`], { queryParams: data });
   }

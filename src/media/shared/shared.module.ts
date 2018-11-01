@@ -24,6 +24,8 @@ import { LocationCustomService } from '@media/shared/service/location-custom.ser
 import { MediaModalModule } from '@media/shared/modal/modal.module';
 import { MediaModalListComponent } from './media-modal-list/media-modal-list.component';
 
+import { HasMoreActionsPipe } from './pipes/has-more-actions.pipe';
+
 TagInputModule.withDefaults({
   tagInput: {
     placeholder: ''
@@ -52,6 +54,7 @@ TagInputModule.withDefaults({
     AlbumDetailInfoComponent,
     MediaDetailInfoComponent,
     MediaModalListComponent,
+    HasMoreActionsPipe,
     // ZMediaAlbumDetailComponent,
 
     // new components
@@ -70,6 +73,7 @@ TagInputModule.withDefaults({
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
     MediaDetailInfoComponent,
+    HasMoreActionsPipe,
     // ZMediaAlbumDetailComponent,
     //
     SharingItemComponent,

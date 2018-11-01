@@ -332,8 +332,7 @@ MediaModalMixin {
     });
   }
   viewDetail(uuid: string) {
-    this.locationCustomService.links.push('/playlists');
-    this.router.navigate([`/playlists/${uuid}`]);
+    this.router.navigate([`/playlists/${uuid}`], { queryParams: { returnUrls: ['/', '/playlists'] } });
   }
 
   loadingEnd:() => void;

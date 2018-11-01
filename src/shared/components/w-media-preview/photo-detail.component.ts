@@ -7,7 +7,8 @@ import * as Cropper from 'cropperjs';
 
 import {
   ApiBaseService,
-  PhotoService
+  PhotoService,
+  UrlService
 } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@shared/constant';
@@ -28,8 +29,9 @@ import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 
-@Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin])
+@Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin, MediaListDetailMixin])
 @Component({
   selector: 'photo-detail',
   templateUrl: './item-detail.component.html',
@@ -46,6 +48,7 @@ export class PhotoDetailComponent implements OnInit,
   MediaDownloadMixin,
   MediaPreviewMixin,
   MediaModalMixin,
+  MediaListDetailMixin,
   AlbumAddMixin {
   object: any;
   readonly tooltip: any = Constants.tooltip;
@@ -63,7 +66,7 @@ export class PhotoDetailComponent implements OnInit,
   subAddAlbum: any;
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
-  returnUrl: any;
+  returnUrls: any;
   sharings: any = [];
   listIds: DoublyLinkedLists;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -91,6 +94,7 @@ export class PhotoDetailComponent implements OnInit,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
     public photoService: PhotoService,
+    public urlSerive: UrlService,
     public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
     public location: Location) {
@@ -99,7 +103,7 @@ export class PhotoDetailComponent implements OnInit,
 
   ngOnInit() {
     this.menuActions = this.getMenuActions();
-
+    this.returnUrls = this.route.snapshot.queryParams.returnUrls;
     this.route.params.pipe(
       combineLatest(this.route.queryParams)
     ).subscribe(([p, params]) => {
@@ -128,25 +132,13 @@ export class PhotoDetailComponent implements OnInit,
                 });
             }
           }
-          if (params.returnUrl) this.returnUrl = params.returnUrl;
         });
     });
-    // const readURL: any = (input) => {
-    //   if (input.files && input.files[0]) {
-    //     var reader = new FileReader();
-
-    //     reader.onload = function (e: any) {
-    //       $('#image-viewer').attr('src', e.target.result);
-    //     }
-    //     reader.readAsDataURL(input.files[0]);
-    //   }
-    // }
-    // $("#image-viewer").change(() => {
-    //   console.log('change');
-
-    //   readURL(this);
-    // });
   }
+
+  loadObject:(input?: any) => void;
+
+  toggleInfo:() => void;
 
   openModalShareCustom() {
     this.openModalShare([this.object]);
@@ -406,11 +398,5 @@ export class PhotoDetailComponent implements OnInit,
     this.router.navigate([`/photos/${this.listIds.current.data}`], { queryParamsHandling: 'merge' });
   }
 
-  back() {
-    if (this.returnUrl) {
-      this.router.navigate([this.returnUrl]);
-    } else {
-      this.location.back();
-    }
-  }
+  back:() => void;
 }

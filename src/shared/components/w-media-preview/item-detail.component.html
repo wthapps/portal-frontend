@@ -41,10 +41,10 @@
       <div class="image-viewer-content-fixed">
         <div class="container text-center">
           <!-- Media::Video -->
-            <video id="video" class="embed-responsive-item" controls [attr.controlsList]="(!object?.permission || object?.permission?.role_id === '1') ? 'nodownload' : null"
-              style="max-width: 854px; max-height: 550px">
-              <source [src]="object.url" [type]="object.content_type">
-            </video>
+          <video id="video" class="embed-responsive-item" controls [attr.controlsList]="(!object?.permission || object?.permission?.role_id === '1') ? 'nodownload' : null"
+            style="max-width: 854px; max-height: 550px">
+            <source [src]="object.url" [type]="object.content_type">
+          </video>
         </div>
       </div>
     </ng-container>

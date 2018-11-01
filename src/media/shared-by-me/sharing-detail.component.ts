@@ -92,6 +92,7 @@ export class ZMediaSharingDetailComponent
   subUpload: any;
   subSelect: any;
   endLoading: any;
+  returnUrls: any;
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
@@ -122,6 +123,8 @@ export class ZMediaSharingDetailComponent
       this.loadObject(p.uuid);
     });
   }
+
+  back:() => void;
 
   ngOnDestroy() {
     if (this.subUpload) { this.subUpload.unsubscribe(); }
@@ -184,6 +187,7 @@ export class ZMediaSharingDetailComponent
           this.subMenuActions.remove.title = 'Remove from Album';
         }
         this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
+        this.validateActions(this.menuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
         this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
         break;
       default:
@@ -272,10 +276,6 @@ export class ZMediaSharingDetailComponent
   }
 
   doToolbarCoverEvent(event: any) {
-  }
-
-  back() {
-    this.location.back();
   }
 
   editName(object: any) {
