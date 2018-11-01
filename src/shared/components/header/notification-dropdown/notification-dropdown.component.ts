@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
-import { Constants } from "@shared/constant";
-import { User } from "@shared/shared/models";
+import { Constants } from '@shared/constant';
+import { User } from '@shared/shared/models';
 import { AuthService } from '@wth/shared/services';
-import { WTHNavigateService } from "@shared/services/wth-navigate.service";
-import { ChannelService } from "@shared/channels/channel.service";
-import { Router } from "@angular/router";
-import { ConnectionNotificationService } from "@shared/services/connection-notification.service";
-import { NotificationService } from "@shared/services/notification.service";
-import { NotificationListComponent } from "@shared/shared/components/notification-list/notification-list.component";
+import { WTHNavigateService } from '@shared/services/wth-navigate.service';
+import { ChannelService } from '@shared/channels/channel.service';
+import { Router } from '@angular/router';
+import { ConnectionNotificationService } from '@shared/services/connection-notification.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
 
 declare var $: any;
 
@@ -31,8 +31,6 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
   type = 'update'; // update , connection
 
   constructor(private navigateService: WTHNavigateService,
-              private channelService: ChannelService,
-              private router: Router,
               public connectionService: ConnectionNotificationService,
               public notificationService: NotificationService,
               public authService: AuthService) {

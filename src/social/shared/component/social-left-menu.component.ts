@@ -5,11 +5,13 @@ import { WTHNavigateService, UserService } from '@wth/shared/services';
 
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-
-import * as fromRoot from '../reducers/index';
 import { interval } from 'rxjs/observable/interval';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
+
+
+import * as fromRoot from '../reducers/index';
+import { SocialFavoriteService } from './../services/social-favorites.service';
 import { POSTS_COUNT_LOAD } from '../reducers/index';
 import { POSTS_COUNT_LOAD_DONE } from '../reducers/index';
 import { SHORTCUT_LOAD } from '@social/shared/reducers';
@@ -41,10 +43,13 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
               private router: Router,
               private route: ActivatedRoute,
               private navigateService: WTHNavigateService,
+              private soFavoriteService: SocialFavoriteService,
               private renderer: Renderer2,
               private store: Store<any>) {
     [this.homeMenuItem, this.communitiesMenuItem, ...this.socialMenu] = Constants.socialMenuItems;
-    this.store.dispatch({type: fromRoot.SHORTCUT_LOAD});
+    soFavoriteService.loadFavourites().then(_ =>
+      this.store.dispatch({type: fromRoot.SHORTCUT_LOAD})
+      );
     this.shortcuts$ = this.store.select(fromRoot.getShortcuts);
     this.newPostsCount$ = this.store.select(fromRoot.getNewPostsCount);
     this.uuid = this.userService.getSyncProfile().uuid;

@@ -67,8 +67,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   readonly SEARCH_PLACEHOLDER = {
     customFriend: 'Search for friends',
     custom_friend: 'Search for friends',
-    customCommunity: 'Search for communities',
-    custom_community: 'Search for communities'
+    customCommunity: 'Search for community',
+    custom_community: 'Search for community'
   };
 
   post: SoPost;
