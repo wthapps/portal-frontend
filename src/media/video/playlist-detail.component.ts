@@ -530,7 +530,7 @@ PlaylistAddMixin, MediaDownloadMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       },
-      slideShow: {
+      preview: {
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Outside dropdown list
@@ -541,7 +541,7 @@ PlaylistAddMixin, MediaDownloadMixin {
         },
         class: '',
         liclass: '',
-        title: 'Slide show',
+        title: 'Preview',
         tooltip: this.tooltip.edit,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-eye'

@@ -376,9 +376,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
           });
         }
         break;
-      case 'slideShow':
-        this.slideShow();
-        break;
       case 'changeCoverImage':
         this.changeCoverImage();
         break;
@@ -758,10 +755,6 @@ export class MediaListComponent implements AfterViewInit, OnDestroy {
         preserveFragment: true
       });
     }
-  }
-
-  slideShow() {
-    return;
   }
 
   changeCoverImage() {

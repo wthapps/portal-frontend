@@ -205,7 +205,7 @@ export class ZMediaAlbumDetailComponent
       allowedFileTypes: ['image/*']
     });
     if (this.subSelect) this.subSelect.unsubscribe();
-    this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
+    this.subSelect = this.mediaSelectionService.selectedMedias$
       .subscribe(photos => {
         this.onAddToAlbum({parents: [this.object], children: photos});
         // this.objects = [...photos.filter(p => p.model === this.objectType), ...this.objects];
@@ -321,8 +321,10 @@ export class ZMediaAlbumDetailComponent
 
   loadingEnd: () => void;
 
-  viewDetail(input?: any) {
-    this.router.navigate([`photos/${this.selectedObjects[0].uuid || input}`], { queryParams: { parent_id: this.object.id, preview: true } });
+  viewDetail() {
+    const data: any = { returnUrl: `/albums/${this.object.uuid}`, preview: true, parent_id: this.object.id };
+    if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
+    this.router.navigate([`/photos/${this.selectedObjects[0].uuid}`], { queryParams: data });
   }
 
   doNoData() {
@@ -543,7 +545,7 @@ export class ZMediaAlbumDetailComponent
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       },
-      slideShow: {
+      preview: {
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Outside dropdown list
@@ -554,7 +556,7 @@ export class ZMediaAlbumDetailComponent
         },
         class: '',
         liclass: '',
-        title: 'Slide show',
+        title: 'Preview',
         tooltip: this.tooltip.edit,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-eye'

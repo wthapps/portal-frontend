@@ -35,7 +35,7 @@ export class SoStorageService {
     //  Update share count if possible
     if (parent_post) {
       for (let i = 0; i < currPosts.length; i++) {
-        const p = currPosts[i];
+        const p: any = currPosts[i];
         if (p.uuid === parent_post.uuid) {
           p.shared_count = parent_post.shared_count;
           currPosts[i] = _.cloneDeep(p);
