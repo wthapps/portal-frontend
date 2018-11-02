@@ -25,7 +25,8 @@
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/cropperjs/dist/cropper.min.css",
-              "src/portal/styles/portal.scss"
+              "src/portal/styles/portal.scss",
+              "src/assets/styles/styles-app-loading.scss"
             ],
             "scripts": [
               "node_modules/cropperjs/dist/cropper.min.js",
@@ -106,7 +107,7 @@
               "src/shared/channels/common.js"
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/cropperjs/dist/cropper.min.css",
@@ -175,7 +176,7 @@
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "src/my-account/styles/my-account.scss",
@@ -257,7 +258,7 @@
               "node_modules/moment/min/moment.min.js"
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "src/my-account/styles/my-account.scss"
@@ -407,7 +408,7 @@
               "src/shared/channels/common.js"
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
@@ -475,14 +476,14 @@
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "src/social/styles/social.scss"
+              "src/social/styles/social.scss",
+              "src/assets/styles/styles-app-loading.scss"
             ],
             "scripts": [
               "node_modules/moment/min/moment.min.js",
@@ -564,7 +565,6 @@
               "src/shared/channels/common.js"
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
@@ -634,14 +634,14 @@
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "src/chat/styles/chat.scss"
+              "src/chat/styles/chat.scss",
+              "src/assets/styles/styles-app-loading.scss"
             ],
             "scripts": [
               "node_modules/moment/min/moment.min.js",
@@ -723,7 +723,7 @@
               "src/shared/channels/common.js"
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
@@ -795,7 +795,7 @@
               "src/contact/sw.js"
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
@@ -886,7 +886,7 @@
               "src/shared/channels/common.js"
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/primeng/resources/themes/omega/theme.css",
@@ -957,7 +957,7 @@
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/font-awesome/scss/font-awesome.scss",
@@ -1077,7 +1077,7 @@
               "src/shared/channels/common.js"
             ],
             "styles": [
-              "../assets/styles/styles-app-loading.scss",
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/primeng/resources/themes/omega/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/font-awesome/scss/font-awesome.scss",

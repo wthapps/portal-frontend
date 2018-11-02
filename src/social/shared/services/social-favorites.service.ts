@@ -20,7 +20,7 @@ export class SocialFavoriteService {
 
   loadFavourites(): Promise<any> {
     return this.socialService.user.getFavourites()
-      .filter(() => !this.loaded) // Only load data once
+      .pipe(filter(() => !this.loaded)) // Only load data once
       .toPromise()
       .then(
       (res: any) => {
@@ -42,18 +42,18 @@ export class SocialFavoriteService {
 
 
   addFavourite(uuid: any, type: any, localFavorite?: any): Promise<any> {
-    return this.socialService.user.toggleFavourites(uuid, type)
-      .map((res: any) => {
+    return this.socialService.user.toggleFavourites(uuid, type).pipe(
+      map((res: any) => {
         if (_.find(this.favorites, (f: any) => f.uuid === _.get(res, 'data.uuid'))) {
           this.removeFavorite(res.data);
         } else {
           this.addFavorite(res.data);
         }
         return res;
-      })
+      }))
       .toPromise()
       .catch((err: any) => {
-        console.error(`Error in addFavourite: ${err}`)
+        console.log(`Error in addFavourite: ${err}`);
       });
   }
 
@@ -65,7 +65,7 @@ export class SocialFavoriteService {
   }
 
   unfavourite(favourite: any) {
-    this.socialService.unfavourite(favourite.uuid).take(1)
+    this.socialService.unfavourite(favourite.uuid).pipe(take(1))
       .toPromise().then((response: any) => {
         // _.remove(this.favourites.getValue(), (f: any) => f.uuid == favourite.uuid);
         this.removeFavorite(favourite);
