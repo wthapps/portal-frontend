@@ -79,6 +79,7 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
   mediaParent: Media;
   selectedMedias$: Observable<Media[]>;
   multipleSelection$: Observable<boolean>;
+  view$: Observable<string>;
 
   currentTab: string; // upload, photos, albums, albums_detail, favourites, shared_with_me
 
@@ -115,6 +116,7 @@ export class WMediaSelectionComponent implements OnInit, AfterViewInit, OnDestro
     this.medias$ = this.mediaSelectionService.medias$;
     this.multipleSelection$ = this.mediaSelectionService.multipleSelection$;
     this.selectedMedias$ = this.objectListService.selectedObjects$;
+    this.view$ = this.objectListService.view$;
 
     this.mediaSelectionService.mediaParent$
       .takeUntil(componentDestroyed(this))

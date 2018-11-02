@@ -43,7 +43,7 @@
   <ng-container *ngIf="currentTab !== 'members'">
     <ng-container *ngIf="!isLoading && medias$ | async as mediasList; else templateloading">
       <ng-container *ngIf="mediasList?.length; else templateNodata">
-        <w-object-list class="message-assets-content" [ngClass]="{'message-assets-content-row': currentTab === 'notes' || currentTab === 'files'}"
+        <w-object-list class="message-assets-content" [viewMode]="'grid'" [ngClass]="{'message-assets-content-row': currentTab === 'notes' || currentTab === 'files'}"
           [data]="mediasList" [sortInline]="false" [isLoading]="isLoading" (completeSort)="onCompleteSort($event)"
           (completeLoadMore)="onCompleteLoadMore($event)" (dbClickedItem)="view($event)">
           <ng-template #columnBox let-item>

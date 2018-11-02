@@ -25,6 +25,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   @Input() sortInline: Boolean = true;
   @Input() scrollWindow: Boolean = false;
   @Input() isLoading: Boolean = false;
+  @Input() viewMode = 'grid';
   @Output() completeLoadMore: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   @Output() completeSort: EventEmitter<any> = new EventEmitter<any>(null);
   @Output() completeDoubleClick: EventEmitter<any> = new EventEmitter<any>(null);
@@ -37,7 +38,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   @ContentChild('columnAction') columnActionTmpl: TemplateRef<any>;
 
   dragSelect: any;
-  view$: Observable<string>;
+  // view$: Observable<string>;
   selectedObjects: any;
 
   objectsDisabled: any;
@@ -50,7 +51,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   sortOrder: string;
 
   constructor(private objectListService: WObjectListService) {
-    this.view$ = this.objectListService.view$;
+    // this.view$ = this.objectListService.view$;
 
     this.objectListService.objectsDisabled$
       .takeUntil(componentDestroyed(this))
@@ -84,8 +85,8 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   ngOnChanges(changes: SimpleChanges): void {
     this.totalObjectsDisabled = 0;
 
-    for (let object_type of this.objectsDisabled) {
-      let totalObjectsDisabled = _.filter(this.data, (media: Media) => (media.object_type === object_type));
+    for (const object_type of this.objectsDisabled) {
+      const totalObjectsDisabled = _.filter(this.data, (media: Media) => (media.object_type === object_type));
       this.totalObjectsDisabled = this.totalObjectsDisabled + totalObjectsDisabled.length;
     }
   }
@@ -134,7 +135,8 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onMultiSelected(item: any) {
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0 || !this.hasMultipleSelection) {
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0
+     || !this.hasMultipleSelection) {
       this.objectListService.clear();
       this.objectListService.addItem(
         {
@@ -171,7 +173,8 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onClick(item: any) {
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0 || !this.hasMultipleSelection) {
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0
+     || !this.hasMultipleSelection) {
       this.objectListService.clear();
       this.objectListService.addItem(
         {

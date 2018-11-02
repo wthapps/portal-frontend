@@ -88,8 +88,8 @@
             </div>
             <w-object-toolbar-view class="pull-right"></w-object-toolbar-view>
           </div>
-          <w-object-list class="media-selection-content gray-light" [data]="mediasList" [sortInline]="false"
-            [isLoading]="isLoading" (completeSort)="onCompleteSort($event)" (completeLoadMore)="onCompleteLoadMore($event)"
+          <w-object-list class="media-selection-content gray-light" [viewMode]="view$ | async" [data]="mediasList"
+            [sortInline]="false" [isLoading]="isLoading" (completeSort)="onCompleteSort($event)" (completeLoadMore)="onCompleteLoadMore($event)"
             (completeDoubleClick)="onCompleteDoubleClick($event)">
             <ng-template #columnBox let-item>
 

@@ -17,6 +17,7 @@ export class PhotoHtmlComponent implements OnInit, OnDestroy {
   mediaParent: Media;
   selectedMedias$: Observable<Media[]>;
   multipleSelection$: Observable<boolean>;
+  view$: Observable<string>;
   nextLink: string;
   isLoading: boolean;
 
@@ -35,6 +36,7 @@ export class PhotoHtmlComponent implements OnInit, OnDestroy {
     this.medias$ = this.mediaSelectionService.medias$;
     this.multipleSelection$ = this.mediaSelectionService.multipleSelection$;
     this.selectedMedias$ = this.objectListService.selectedObjects$;
+    this.view$ = this.objectListService.view$;
 
     this.mediaSelectionService.mediaParent$
       .takeUntil(componentDestroyed(this))
