@@ -19,8 +19,6 @@ export class MediaListDetailMixin {
   }
 
   back() {
-    console.log(this.returnUrls);
-
     if (this.returnUrls && this.returnUrls !== 'undefined') {
       const link = this.returnUrls.pop();
       this.router.navigate([link], {queryParams: {returnUrls: this.returnUrls}});

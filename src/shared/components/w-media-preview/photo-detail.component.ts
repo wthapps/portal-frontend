@@ -83,7 +83,12 @@ export class PhotoDetailComponent implements OnInit,
   onAddToAlbum: (e: any) => void;
   openCreateAlbumModal: (selectedObjects: any) => void;
   onDoneAlbum: (e: any) => void;
-  onAddedToAlbum: (data: any) => void;
+  onAddedToAlbum(data: any) {
+    this.apiBaseService.get(`media/media/${this.object.uuid}`, { model: 'Media::Photo' }).toPromise()
+      .then(res => {
+        this.object = res.data;
+      })
+  };
 
 
   constructor(public apiBaseService: ApiBaseService,

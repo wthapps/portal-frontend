@@ -149,21 +149,28 @@
       <dd>
         <div>
           <ul class="list-unstyled albums">
-            <li *ngFor="let album of object.parents" class="row can-click">
+            <li *ngFor="let album of object.parents" class="col-sm-6 can-click" style="margin: 0px">
               <div class="media" (click)="infoAlbumClick(album)">
-                <img class="col-sm-4" style="width: 50px; height: 50px; padding: 0px" [src]="album.thumbnail_url" alt="Generic placeholder image">
-                <div class="col-sm-8 mt3">
+                <div class="media-left">
+                  <img style="width: 50px; height: 50px; padding: 0px" [src]="album.thumbnail_url" alt="Generic placeholder image">
+                </div>
+                <div class="media-body">
                   <h5 style="margin: 0px">{{ album.name }}</h5>
-                  <span class="text-fade"> {{ album.created_at | date: 'MMM dd, yyyy'}} </span>
+                  <span class="text-fade"> {{ album.created_at | date: 'MMM dd yyyy'}} </span>
                 </div>
               </div>
             </li>
-            <li *ngFor="let sharing of sharings" class="row can-click">
-              <div class="media" (click)="infoAlbumClick(sharing)">
-                <img class="col-sm-4" style="width: 50px; height: 50px; padding: 0px" [src]="sharing.thumbnail_url" alt="Generic placeholder image">
-                <div class="col-sm-8 mt3">
+            <li *ngFor="let sharing of sharings" class="col-sm-6 row can-click" style="margin: 0px">
+              <div class="media" (click)="infoAlbumClick(album)">
+                <div class="media-left">
+                  <img class="col-sm-4" style="width: 50px; height: 50px; padding: 0px" [src]="sharing.thumbnail_url"
+                    alt="Generic
+                placeholder image">
+
+                </div>
+                <div class="media-body">
                   <h5 style="margin: 0px">{{ sharing.name }}</h5>
-                  <span class="text-fade"> {{ sharing.created_at | date: 'MMM dd, yyyy'}} </span>
+                  <span class="text-fade" style="font-size: 12px"> {{ sharing.created_at | date: 'MMM dd yyyy'}} </span>
                   <i class="fw fw-shared-with-me"></i>
                 </div>
               </div>
