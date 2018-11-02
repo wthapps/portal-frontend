@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit, Input, Renderer2, OnDestroy } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Subject, Observable } from 'rxjs';
+import { takeUntil, merge } from 'rxjs/operators';
 
 import { ChatService } from '../services/chat.service';
 import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
@@ -10,7 +11,6 @@ import { Constants } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { takeUntil } from 'rxjs/operators';
 import { UserService } from '@shared/services';
 
 
@@ -37,6 +37,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   showBlacklist = false;
 
   openAssets: boolean;
+  destroy$ = new Subject();
 
   readonly tooltip: any = Constants.tooltip;
 
@@ -49,12 +50,8 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     private messageAssetsService: MessageAssetsService) {
     this.profileUrl = this.chatService.constant.profileUrl;
 
-    const close$: Observable<any> = Observable.merge(
-      componentDestroyed(this)
-    );
-
     this.messageAssetsService.open$
-      .pipe(takeUntil(close$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res: any) => {
           this.openAssets = res;
@@ -73,6 +70,8 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onAddContact() {

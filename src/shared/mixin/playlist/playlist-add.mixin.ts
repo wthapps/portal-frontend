@@ -1,4 +1,7 @@
 import { ApiBaseService } from '@shared/services';
+
+import { take } from 'rxjs/operators';
+
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
@@ -36,11 +39,11 @@ export class PlaylistAddMixin implements PlaylistCreateMixin {
       buttonTitle: 'Create New Playlist',
       unit: 'photo'
     });
-    this.subAddPlaylist = this.mediaAddModalService.onAdd$.take(1).subscribe(e => {
+    this.subAddPlaylist = this.mediaAddModalService.onAdd$.pipe(take(1)).subscribe(e => {
       this.onAddToPlaylist({parents: [e], children: selectedObjects});
     });
     this.subOpenCreatePlaylist = this.mediaAddModalService.onOpenCreateNew$
-      .take(1)
+      .pipe(take(1))
       .subscribe(e => {
         this.openCreatePlaylistModal(selectedObjects);
       });

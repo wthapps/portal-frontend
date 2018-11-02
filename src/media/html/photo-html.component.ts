@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Media } from '@shared/shared/models/media.model';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
@@ -39,11 +42,11 @@ export class PhotoHtmlComponent implements OnInit, OnDestroy {
     this.view$ = this.objectListService.view$;
 
     this.mediaSelectionService.mediaParent$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe((res: Media) => (this.mediaParent = res));
 
     this.objectListService.multipleSelection$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => (this.dropzoneConfig.maxFiles = !res ? 1 : null));
   }
 

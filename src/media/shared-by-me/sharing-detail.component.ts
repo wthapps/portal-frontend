@@ -7,6 +7,8 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import { ApiBaseService } from '@shared/services';
 import { Download } from '../shared/store/media/media.actions';
@@ -31,8 +33,6 @@ import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.
 import { mediaConstants } from '@media/shared/config/constants';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { WUploader } from '@shared/services/w-uploader';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
 
 @Mixins([
@@ -467,7 +467,7 @@ export class ZMediaSharingDetailComponent
 
     if (this.subSelect) { this.subSelect.unsubscribe(); }
     if (this.subUpload) { this.subUpload.unsubscribe(); }
-    this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
+    this.subSelect = this.mediaSelectionService.selectedMedias$.pipe(filter((items: any[]) => items.length > 0))
       .subscribe(objects => {
         this.afterSelectMediaAction(this.object, objects);
       });

@@ -1,4 +1,6 @@
 import { ApiBaseService } from '@shared/services';
+import { take } from 'rxjs/operators';
+
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
@@ -37,11 +39,11 @@ export class AlbumAddMixin implements AlbumCreateMixin {
       buttonTitle: 'Create New Album',
       unit: 'photo'
     });
-    this.subAddAlbum = this.mediaAddModalService.onAdd$.take(1).subscribe(e => {
+    this.subAddAlbum = this.mediaAddModalService.onAdd$.pipe(take(1)).subscribe(e => {
       this.onAddToAlbum({parents: [e], children: selectedObjects});
     });
     this.subOpenCreateAlbum = this.mediaAddModalService.onOpenCreateNew$
-      .take(1)
+      .pipe(take(1))
       .subscribe(e => {
         this.openCreateAlbumModal(selectedObjects);
       });

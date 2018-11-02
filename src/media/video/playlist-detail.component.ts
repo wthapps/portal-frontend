@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewContainerRef, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import {
   ApiBaseService,
   WthConfirmService
@@ -25,7 +25,6 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { mediaConstants } from '@media/shared/config/constants';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
-import { AsyncScheduler } from 'rxjs/scheduler/AsyncScheduler';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { WUploader } from '@shared/services/w-uploader';
@@ -407,7 +406,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     });
     if (this.subSelect) { this.subSelect.unsubscribe(); }
 
-    this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
+    this.subSelect = this.mediaSelectionService.selectedMedias$.pipe(filter((items: any[]) => items.length > 0))
       .subscribe(videos => {
         this.onAddToPlaylist({ parents: [this.object], children: videos });
         // this.objects = [...videos.filter(v => v.model === this.objectType), ...this.objects];

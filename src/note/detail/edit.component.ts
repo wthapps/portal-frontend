@@ -14,6 +14,7 @@ import {
   tap
 } from 'rxjs/operators';
 
+import { Store } from '@ngrx/store';
 import * as fromRoot from '../shared/reducers/index';
 import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';

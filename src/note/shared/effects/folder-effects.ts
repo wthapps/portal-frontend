@@ -58,5 +58,5 @@ export class FolderEffects {
         new folder.SetCurrentFolderPathAndUpdateCurrent(res['data']),
         {type: context.SET_CONTEXT_BY_FOLDER_PATHS, payload : res.data}
       ]}),
-      catchError(() => empty()));
+      catchError(() => EMPTY));
 }

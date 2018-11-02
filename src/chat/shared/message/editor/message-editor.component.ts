@@ -1,6 +1,6 @@
 import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input, OnChanges } from '@angular/core';
-import { Subscription,  Observable } from 'rxjs';
+import { Subject, Subscription,  Observable, from } from 'rxjs';
 import { filter, map, take, takeUntil, merge, mergeMap } from 'rxjs/operators';
 
 
@@ -9,9 +9,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE } from '@wth/shared/constant';
-import { ApiBaseService, WMessageService, AuthService } from '@wth/shared/services';
+import { ApiBaseService, WMessageService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { Store } from '@ngrx/store';
@@ -52,6 +51,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   messageCtrl: FormControl;
 
   selectEmojiSub: Subscription;
+  destroy$ = new Subject();
 
   private stripHtml: StripHtmlPipe;
 
@@ -213,18 +213,14 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   onOpenSelectPhotos() {
     this.mediaSelectionService.open({ allowSelectMultiple: true});
 
-    const close$: Observable<any> = merge(
-      this.mediaSelectionService.open$,
-      componentDestroyed(this)
-    );
     this.mediaSelectionService.selectedMedias$
-      .pipe(takeUntil(close$), filter((items: any[]) => items.length > 0))
+      .pipe(takeUntil(this.destroy$), filter((items: any[]) => items.length > 0))
       .subscribe(photos => {
         this.chooseDone(photos);
       });
 
     this.mediaSelectionService.uploadingMedias$
-      .pipe(takeUntil(close$), map(([file, dataUrl]) => [file]))
+      .pipe(takeUntil(this.destroy$), map(([file, dataUrl]) => [file]))
       .subscribe((photos: any) => {
         this.uploadFile(photos);
       });
@@ -272,6 +268,8 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   showEmojiBtn(event: any) {

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
-import { Constants } from '@wth/shared/constant';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import * as appStore from '../shared/store';
 import {
@@ -55,7 +54,7 @@ MediaAdditionalListMixin {
   modalRef: any;
   sorting: any;
   endLoading: any;
-  disableMoreAction: boolean = false;
+  disableMoreAction = false;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
@@ -79,13 +78,13 @@ MediaAdditionalListMixin {
 
   loadObjects(opts: any = {}) {
     this.loading = true;
-    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
     this.apiBaseService.get('media/sharings/shared_with_me', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
       this.loadingEnd();
-    })
+    });
   }
 
   loadMoreObjects:(input?: any) => void;

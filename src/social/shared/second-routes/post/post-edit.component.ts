@@ -119,7 +119,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       this.handleUploadFiles(event);
     });
 
-    this.close$ = Observable.merge(
+    this.close$ = merge(
       this.mediaSelectionService.open$,
       componentDestroyed(this)
     );
