@@ -4,7 +4,7 @@ import {
   HostListener, Renderer
 } from '@angular/core';
 
-import * as Payment from 'payment';
+declare const Payment: any;
 
 @Directive({
   selector: '[wccnumber]'

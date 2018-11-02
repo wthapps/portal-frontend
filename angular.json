@@ -184,7 +184,8 @@
             ],
             "scripts": [
               "src/shared/channels/common.js",
-              "node_modules/moment/min/moment.min.js"
+              "node_modules/moment/min/moment.min.js",
+              "node_modules/payment/dist/payment.js"
             ]
           },
           "configurations": {

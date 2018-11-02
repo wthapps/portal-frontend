@@ -7,8 +7,6 @@ import { CCExpiryYearFormatDirective } from './directives/expiry-year-format.dir
 
 import { CCCvcFormatDirective } from './directives/cvc-format.directive';
 
-import * as Payment from 'payment';
-
 const CC_DIRECTIVES = [
   CCNumberFormatDirective,
   CCExpiryDateFormatDirective,

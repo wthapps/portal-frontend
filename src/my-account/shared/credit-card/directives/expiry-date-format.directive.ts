@@ -3,7 +3,7 @@ import {
   ElementRef
 } from '@angular/core';
 
-import * as Payment from 'payment';
+declare const Payment: any;
 
 @Directive({
   selector: '[wccdate]'

@@ -32,7 +32,7 @@ export interface UploadProgress {
 export interface UploadFile {
   id: string;
   fileIndex: number;
-  lastModifiedDate: Date;
+  lastModifiedDate: any;
   name: string;
   size: number;
   type: string;
@@ -87,7 +87,7 @@ export class Uploader {
   }
 
   handleFiles(incomingFiles: FileList): void {
-    this.files.push(...[].map.call(incomingFiles, (file: File, i: number) => {
+    this.files.push(...[].map.call(incomingFiles, (file: any, i: number) => {
       const uploadFile: UploadFile = {
         fileIndex: i,
         id: this.generateId(),
