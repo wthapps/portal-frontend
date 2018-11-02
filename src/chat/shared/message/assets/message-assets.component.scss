@@ -58,6 +58,9 @@ $message-assets-width: 400px;
     width: 50%;
   }
   &.message-assets-content-row {
+    .wobject-row-body {
+      display: block;
+    }
     .wobject-grid .wobject-row-body .wobject-row,
     .wobject-timeline .wobject-row-body .wobject-row {
       width: 100%;
