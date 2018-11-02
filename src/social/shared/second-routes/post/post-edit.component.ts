@@ -17,14 +17,14 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { takeUntil, filter, map, tap, take } from 'rxjs/operators';
+import { takeUntil, filter, take } from 'rxjs/operators';
 
 import { SocialService } from '../../services/social.service';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
 import { SoPost } from '@shared/shared/models';
 import { Constants } from '@wth/shared/constant';
-import { PhotoUploadService, UserService } from '@wth/shared/services';
+import { UserService } from '@wth/shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
@@ -99,7 +99,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   private uploadingPhotos: Array<any> = [];
   private destroySubject: Subject<any> = new Subject<any>();
-  private uploadSubscriptions: { [filename: string]: Subscription } = {};
   private sub: Subscription;
   private close$: Observable<any>;
 
@@ -109,7 +108,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     private loadingService: LoadingService,
     private socialService: SocialService,
     private mediaSelectionService: WMediaSelectionService,
-    private photoUploadService: PhotoUploadService,
     private emojiService: WTHEmojiService,
     private userService: UserService,
     private uploader: WUploader
@@ -140,10 +138,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.privacyName = this.getPrivacyName(this.post);
   }
 
-  handleKeyUp(event: any) {
-    this.hasChange = true;
-  }
-
   viewProfile(uuid: string = this.userService.getSyncProfile().uuid) {
     this.router
       .navigate([{ outlets: { detail: null } }], {
@@ -170,7 +164,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
-    if (this.sub)
+    if (this.sub && !this.sub.closed)
       this.sub.unsubscribe();
   }
 
@@ -189,11 +183,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     if (this.socialService.community.currentCommunity) {
       this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
       this.post.custom_objects = [this.socialService.community.currentCommunity];
-      // this.post.custom_objects.length = 0;
-      // this.post.custom_objects.push(
-      //   this.socialService.community.currentCommunity
-      // ); // Default share new post to current community
-
     } else {
       const defaultPrivacy: string = _.get(
         this.soProfile,
@@ -216,9 +205,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       this.setItemDescription('');
     }
 
-    // if (options.parent != null) {
-    //   this.parent = options.parent;
-    // }
     this.parent = options.parent ;
     this.privacyName = this.getPrivacyName(this.post);
 
@@ -250,7 +236,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   done(item: any) {
-    const photos = this.post.photos.map(p => ({...p, model: p.model || MODEL_TYPE[p.object_type]}));
+    // Exclude unfinished uploading videos / photos from creating / updating a post
+    const photos = this.post.photos.filter(p => p.uuid).map(p => ({...p, model: p.model || MODEL_TYPE[p.object_type]}));
     const options: any = {
       mode: this.mode,
       item: {

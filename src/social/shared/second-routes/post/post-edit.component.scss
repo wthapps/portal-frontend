@@ -17,23 +17,14 @@
   display: inline-block;
 }
 
-.post-edit {
-  a {
-    color: #2996cc;
-    float: left;
-    margin-left: 5px;
-  }
-  
+.post-edit {  
   .dropdown-menu {
     min-width: 190px;
-    
-    li {
-      span {
-        padding: 10px 15px;
-        position: relative;
-      }
-    }
   }
+}
+
+.blue {
+  color: #2996cc !important;
 }
 
 @media (max-width: $screen-xs-max) {

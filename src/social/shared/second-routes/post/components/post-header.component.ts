@@ -100,7 +100,12 @@ export class PostHeaderComponent implements OnChanges {
   }
 
   viewPrivacyCustom(post: any, modal: any) {
-    if (post.privacy === Constants.soPostPrivacy.customFriend.data || post.privacy === Constants.soPostPrivacy.customCommunity.data) {
+    // Navigate to community page if possible
+    if (post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1) {
+      const link = `communities/${post.custom_objects[0].uuid}`;
+      this.navigateToLink(link);
+    } else if (post.privacy === Constants.soPostPrivacy.customFriend.data
+       || post.privacy === Constants.soPostPrivacy.customCommunity.data) {
       modal.open();
     }
   }

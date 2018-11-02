@@ -87,26 +87,26 @@
 
         <li role="separator" class="divider" *ngIf="settings.enable_comment != null || settings.enable_share != null"></li>
 
-        <li *ngIf="settings.enable_comment != null  && item.disable_comment == false">
+        <li *ngIf="settings.enable_comment != null  && !item.disable_comment">
           <a href="javascript;" (click)="update({disable_comment: true}, $event)">
             Disable comment
           </a>
         </li>
 
-        <li *ngIf="settings.enable_comment != null && item.disable_comment == true">
+        <li *ngIf="settings.enable_comment != null && item.disable_comment">
           <a href="javascript;" (click)="update({disable_comment: false}, $event)">
             Enable comment
           </a>
         </li>
 
         <li>
-          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == true" (click)="update({disable_share: false}, $event)">Enable
+          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share" (click)="update({disable_share: false}, $event)">Enable
             share
           </a>
         </li>
 
         <li>
-          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == false" (click)="update({disable_share: true}, $event)">Disable
+          <a href="javascript:;" *ngIf="settings.enable_share != null && !item.disable_share" (click)="update({disable_share: true}, $event)">Disable
             share
           </a>
         </li>
@@ -125,7 +125,7 @@
       </ul>
     </div>
 
-    <div *ngIf="!(type == 'detail')" class="dropdown pull-right">
+    <div *ngIf="!(type === 'detail')" class="dropdown pull-right">
       <a class="btn btn-default btn-default-no-border" pTooltip="{{ tooltip.viewDetail }}" tooltipPosition="top"
         (click)="viewPostDetail(item.uuid)">
         <i class="fa fa-external-link"></i>
