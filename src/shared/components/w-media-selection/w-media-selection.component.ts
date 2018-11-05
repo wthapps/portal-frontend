@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
+
+import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -23,6 +24,8 @@ import { WUploader } from '@shared/services/w-uploader';
 
 export class WMediaSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
+
+  // @Output() onInsertEvent: EventEmitter<any> = new EventEmitter<any>();
 
   tabs: WTab[] = [
     {
@@ -250,6 +253,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   onInsert() {
     this.mediaSelectionService.setSelectedMedias(this.objectListService.getSelectedObjects());
+    // this.onInsertEvent.emit(this.objectListService.getSelectedObjects());
     this.close();
     this.objectListService.clear();
   }
@@ -333,7 +337,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   upload() {
-
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
       allowedFileTypes: this.allowedFileTypes
     });

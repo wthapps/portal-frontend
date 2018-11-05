@@ -310,13 +310,12 @@
     </div>
   </div>
 </div>
-
 <div *ngIf="message?.links?.length > 0" class="message-item" [ngClass]="{'message-item-left': !byMe, 'message-item-right': byMe}">
   <div class="message-item-content">
     <div class="message-item-content-card" *ngIf="!(['notification', 'request_accepted'].includes(message.message_type))">
       <ng-container *ngFor="let link of message.links">
-        <div *ngIf="link.image && link.title" class="">
-          <display-link class="message-item-content-link" [data]="link"></display-link>
+        <div *ngIf="link.image && link.title">
+          <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
         </div>
       </ng-container>
     </div>

@@ -7,14 +7,13 @@ import { ChatContactService } from './chat-contact.service';
 import { Message } from '../models/message.model';
 import { _chat } from '../utils/chat.functions';
 import {
-  ApiBaseService,
   ChatCommonService,
   CommonEventService,
   GenericFileService,
   HandlerService,
   PhotoUploadService,
   StorageService,
-  UserService, WMessageService, StorageItem
+  UserService, WMessageService, StorageItem, ApiBaseService
 } from '@wth/shared/services';
 import {
   ChatConstant, CHAT_CONVERSATIONS, CHAT_RECENT_CONVERSATIONS,

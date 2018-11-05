@@ -6,6 +6,7 @@ export class ChatConstant {
 }
 
 export const CHAT_CONVERSATIONS = 'chat_conversations';
+export const CHAT_MESSAGES_GROUP_ = 'chat_messages_group_';
 export const CHAT_RECENT_CONVERSATIONS = 'chat_recent_conversations';
 export const CHAT_FAVOURITE_CONVERSATIONS = 'chat_favourite_conversations';
 export const CHAT_HISTORY_CONVERSATIONS = 'chat_history_conversations';

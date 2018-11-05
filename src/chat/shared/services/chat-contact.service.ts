@@ -4,6 +4,7 @@ import { ApiBaseService, ChatCommonService, StorageService, UserService } from '
 
 
 declare var _: any;
+declare var Promise: any;
 
 @Injectable()
 export class ChatContactService {

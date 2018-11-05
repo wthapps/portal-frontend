@@ -26,6 +26,7 @@ import { Observable } from 'rxjs/Observable';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { INCOMING_MESSAGE, ACTION } from '@shared/constant';
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
+import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 declare var _: any;
 declare var $: any;
@@ -36,17 +37,17 @@ declare var $: any;
   styleUrls: ['message-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MessageListComponent implements OnInit, OnDestroy {
+export class MessageListComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
   @ViewChild('listEl') listEl: ElementRef;
 
-  // @Input() currentMessages: any;
+  @Input() currentMessages: any;
   @Input() contactItem: any;
   @Input() currentUser: User;
   emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
   prevMessage: any;
   readonly scrollDistance: number = 1000;
-  currentMessages: any[] = [];
+  // currentMessages: any[] = [];
 
   private destroySubject: Subject<any> = new Subject();
 
@@ -69,54 +70,12 @@ export class MessageListComponent implements OnInit, OnDestroy {
     });
 
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
-
-    this.chatService.getCurrentMessagesAsync()
-      .pipe(
-        takeUntil(this.destroySubject)
-      )
-      .subscribe(res => {
-      if (res && res.data ) {
-        this.currentMessages = res.data;
-      }
-      this.messageService.scrollToBottom();
-    });
-
-    this.storageService.getAsync(INCOMING_MESSAGE)
-      .pipe(
-        takeUntil(this.destroySubject)
-      )
-      .subscribe(res => {
-        if ((Object.keys(res)).length === 0) {
-        return;
-        }
-        const message = res.data;
-        switch (res.action) {
-          case ACTION.DELETE:
-          case ACTION.EDIT: {
-            for (const idx in this.currentMessages) {
-              if (this.currentMessages[idx].id === message.id) {
-                this.currentMessages[idx] = _.cloneDeep(message);
-              }
-            }
-            break;
-          }
-          case ACTION.ADD: {
-            this.currentMessages.push(message);
-            setTimeout(() => this.messageService.scrollToBottom(), 500);
-            break;
-          }
-          default:
-            console.warn('unhandled action: ', res);
-            break;
-        }
-      });
   }
 
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.complete();
   }
-
   ngOnInit() {
     // setInterval(() => {
     //   this.item = this.chatService.getCurrentMessages();
@@ -124,6 +83,11 @@ export class MessageListComponent implements OnInit, OnDestroy {
     //   this.ref.markForCheck();
     // }, 200);
   }
+
+  ngOnChanges() {
+    // console.log(this.currentMessages);
+  }
+
 
   onLoadMore() {
     // console.log('onLoadMore ...', this.listEl.nativeElement.scrollTop);

@@ -14,5 +14,6 @@
     <small *ngIf="data.site_name">{{ data.site_name }}</small>
   </div>
 </div>
-
-<span *ngIf="embedCode" [innerHtml]="embedCode | safeHtml"></span>
+<div class="embedCode" style="display: block">
+  <span *ngIf="embedCode" [innerHtml]="embedCode | safeHtml"></span>
+</div>

@@ -14,7 +14,9 @@ export class DisplayLinkComponent implements OnInit {
     if (id) {
       this.embedCode =
         '<div class="embed-responsive embed-responsive-16by9">\n' +
-        '  <iframe class="embed-responsive-item" src="//www.youtube.com/embed/' + id + '">' +
+        '  <iframe class="embed-responsive-item" src="//www.youtube.com/embed/' +
+        id +
+        '">' +
         '</iframe>\n' +
         '</div>';
     }

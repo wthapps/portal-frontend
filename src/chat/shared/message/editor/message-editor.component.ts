@@ -7,8 +7,8 @@ import { Store } from '@ngrx/store';
 
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
-import { Constants, FORM_MODE } from '@wth/shared/constant';
-import { ApiBaseService, WMessageService } from '@wth/shared/services';
+import { Constants, FORM_MODE, CURRENT_CHAT_MESSAGES, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
+import { ApiBaseService, WMessageService, StorageService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
@@ -19,6 +19,8 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { LongMessageModalComponent } from '@shared/components/modal/long-message-modal.component';
 import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
+import { ConversationDetailService } from '@chat/conversation/conversation-detail.service';
+import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 
 
 declare var $: any;
@@ -64,9 +66,11 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     private mediaSelectionService: WMediaSelectionService,
     private apiBaseService: ApiBaseService,
     private store: Store<any>,
+    private storage: StorageService,
     private fb: FormBuilder,
     private addContactService:  ZChatShareAddContactService,
     private messageService: WMessageService,
+    private chatMessageService: ChatMessageService,
     private uploader: WUploader,
     private emojiService: WTHEmojiService
   ) {
@@ -89,7 +93,6 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.uploader.event$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(event => {
-      console.log('event: ', event);
       this.sendFileEvent(event);
     });
   }
@@ -117,18 +120,9 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         );
         this.notesListModal.close();
         notes.forEach(note => {
-          this.apiBaseService
-            .post('zone/chat/message', {
-              data: {
-                type: 'file',
-                id: note.object_id,
-                object: note.object_type
-              },
-              group_id: this.chatService.getContactSelect().value.group_id
-            })
-            .subscribe(res => {
-              // Not implements because channel will get message automacticaly
-            });
+          this.chatMessageService.createFileMessage(note).subscribe(res => {
+            this.storage.find(CURRENT_CHAT_MESSAGES).value.data.push(res.data)
+          });
         });
       });
   }
@@ -226,7 +220,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onChangeValue(event: any) {
-    console.log('changing.............', event.target.innerHtml);
+    // console.log('changing.............', event.target.innerHtml);
   }
 
   onOpenSelectPhotos() {
@@ -240,16 +234,16 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   chooseDone(allMedia: any[]) {
-    // Create multiple chat messages in batches of CONCURRENT_UPLOAD (default value is 4)
+    // Create multiple chat messages in batches of CONCURRENT_UPLOAD (default value is 2)
     from(allMedia).pipe(
-      mergeMap(media => this.chatService.uploadMediaOnWeb(media),
-      (valueFromSource, valueFromPromise) => {
-        return `Source: ${valueFromSource}, Promise: ${valueFromPromise}`;
+      mergeMap(media => this.chatMessageService.createMediaMessage(media),
+      (valueFromSource, valueFromInner) => {
+        return valueFromInner;
       },
       CONCURRENT_UPLOAD
       )
     ).subscribe((val) => {
-      console.log('choose done: ', val);
+      this.storage.find(CURRENT_CHAT_MESSAGES).value.data.push(val.data);
     });
   }
 
@@ -267,7 +261,6 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.selectEmojiSub = this.emojiService.selectedEmoji$
       .pipe(take(1))
       .subscribe(data => {
-        console.log(data);
         this.editor.addEmoj(data.shortname);
       });
   }
@@ -284,10 +277,12 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
             content_type: meta.type,
             meta_data: {file: {id, name, progress, meta }}
           });
-          this.chatService.createMessage(null, message).toPromise().then(response => {
-            this.uploadingMessages[id] = {...response.data, content_type: meta.type};
-            this.updateUploadingMessage(id);
-          });
+
+        this.chatMessageService.create(null, message).subscribe(res => {
+          this.uploadingMessages[id] = { ...res.data, content_type: meta.type};
+          this.updateUploadingMessage(id);
+          this.updateCurrentMessage();
+        })
       }
         break;
       case 'start':
@@ -297,15 +292,23 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
       }
       case 'success': {
         const { id } = event.payload.file;
-
         this.uploadedFiles[id] = event.payload.resp;
+        setTimeout(() => {
+          this.updateCurrentMessage();
+        }, 2000);
         if (!this.uploadingMessages[id]) {
           return;
         }
+
         this.updateUploadingMessage(id);
         break;
       }
     }
+  }
+
+  private updateCurrentMessage() {
+    const groupId = this.storage.getValue(CONVERSATION_SELECT).group_id;
+    this.storage.find(CURRENT_CHAT_MESSAGES).value.data = _.cloneDeep(this.storage.getValue(CHAT_MESSAGES_GROUP_ + groupId)).data;
   }
 
   private updateUploadingMessage(fileId: string) {
@@ -325,11 +328,15 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         .updateMessage(this.message.group_id, this.message)
         .subscribe((response: any) => {
           this.mode = FORM_MODE.CREATE;
+          this.updateCurrentMessage();
           this.resetEditor();
         });
     } else {
       this.messageService.scrollToBottom();
-      this.chatService.sendTextMessage(this.message.message, { toTop: true });
+      this.chatMessageService.createTextMessage(this.message.message).subscribe(res => {
+        this.updateCurrentMessage();
+      })
+
       this.resetEditor();
     }
   }

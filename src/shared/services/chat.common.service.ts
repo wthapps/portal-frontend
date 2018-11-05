@@ -5,7 +5,7 @@ import { HandlerService } from './handler.service';
 import { UserService } from '@wth/shared/services/user.service';
 import { WMessageService } from '@wth/shared/services/message.service';
 import { Router } from '@angular/router';
-import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, CHAT_CONVERSATIONS, INCOMING_MESSAGE, ACTION } from '@wth/shared/constant';
+import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, CHAT_CONVERSATIONS, INCOMING_MESSAGE, ACTION, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
 
 declare var _: any;
 declare var Promise: any;
@@ -122,6 +122,7 @@ export class ChatCommonService {
         conversation.latest_message = message;
     }
     this.setAllConversations(conversationsResponse);
+    this.storage.find(CURRENT_CHAT_MESSAGES).value.data = _.cloneDeep(this.storage.getValue(CHAT_MESSAGES_GROUP_ + groupId)).data;
   }
 
   updateItemInList(groupId: any, data: any) {

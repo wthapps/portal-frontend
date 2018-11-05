@@ -13,12 +13,14 @@ import {
   CommonEvent,
   CommonEventAction,
   CommonEventService,
-  PhotoService, UserService, ChatCommonService
+  PhotoService, UserService, ChatCommonService, StorageService
 } from '@wth/shared/services';
-import { CHAT_ACTIONS, FORM_MODE } from '@wth/shared/constant';
+import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, CURRENT_CHAT_MESSAGES } from '@wth/shared/constant';
 import { User } from '@wth/shared/shared/models';
 import { WUploader } from '@shared/services/w-uploader';
 import { Message } from '@chat/shared/models/message.model';
+import { ConversationDetailService } from './conversation-detail.service';
+// import { ConversationDetailService } from '@chat/conversation/conversation-detail.service';
 
 declare var _: any;
 declare var $: any;
@@ -39,7 +41,7 @@ export class ConversationDetailComponent
   chatContactList$: Observable<any>;
   currentUser$: Observable<User>;
   tokens: any;
-
+  sub: any;
 
   constructor(
     private chatService: ChatService,
@@ -48,7 +50,9 @@ export class ConversationDetailComponent
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
+    private storage: StorageService,
     private conversationService: ConversationService,
+    private conversationDetailService: ConversationDetailService,
     private uploader: WUploader
   ) {
     this.currentUser$ = userService.profile$;
@@ -58,6 +62,7 @@ export class ConversationDetailComponent
     this.contactSelect$ = this.chatService.getContactSelectAsync();
     this.currentMessages$ = this.chatService.getCurrentMessagesAsync();
     this.chatContactList$ = this.chatService.getChatConversationsAsync();
+    this.conversationDetailService.setComponent(this);
 
     this.commonEventSub = this.commonEventService
       .filter((event: CommonEvent) => event.channel === 'chatCommonEvent')
@@ -66,7 +71,10 @@ export class ConversationDetailComponent
       });
 
   }
-
+  ngOnDestroy() {
+    this.commonEventSub.unsubscribe();
+    this.sub.unsubscribe();
+  }
   doEvent(event: CommonEvent) {
     switch (event.action) {
       case CHAT_ACTIONS.CHAT_MESSAGE_COPY:
@@ -96,6 +104,7 @@ export class ConversationDetailComponent
           mode: FORM_MODE.EDIT
         });
         this.messageEditor.focus();
+        this.updateCurrentMessage();
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD:
         break;
@@ -108,7 +117,7 @@ export class ConversationDetailComponent
           .cancelUpload(group_id, id)
           .toPromise()
           .then((response: any) => {
-            console.log('cancel ok!!!!');
+            this.updateCurrentMessage();
           });
         }
         break;
@@ -117,11 +126,16 @@ export class ConversationDetailComponent
           .deleteMessage(event.payload.group_id, event.payload.id)
           .toPromise()
           .then((res: any) => {
-            console.log('delete ok!!!!');
+            this.updateCurrentMessage();
           });
 
         break;
     }
+  }
+
+  private updateCurrentMessage() {
+    const groupId = this.storage.getValue(CONVERSATION_SELECT).group_id;
+    this.storage.find(CURRENT_CHAT_MESSAGES).value.data = _.cloneDeep(this.storage.getValue(CHAT_MESSAGES_GROUP_ + groupId)).data;
   }
 
 
@@ -134,17 +148,6 @@ export class ConversationDetailComponent
 
     }
     return message;
-  }
-
-  createMessage(message: any) {
-  }
-
-  updateMessage(message: any) {
-
-  }
-
-  deleteMessage(message: any) {
-
   }
 
 
@@ -161,9 +164,5 @@ export class ConversationDetailComponent
   drag(e: any) {
     e.preventDefault();
     e.stopPropagation();
-  }
-
-  ngOnDestroy() {
-    this.commonEventSub.unsubscribe();
   }
 }
