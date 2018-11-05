@@ -49,7 +49,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   hasMultipleSelection: Boolean = true;
   groupBy: string;
   sortBy: string;
-  sortOrder: string;
+  sortOrder: 'asc' | 'desc' | boolean;
 
   constructor(private objectListService: WObjectListService) {
     // this.view$ = this.objectListService.view$;

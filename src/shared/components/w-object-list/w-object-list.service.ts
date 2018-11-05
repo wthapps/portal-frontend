@@ -17,8 +17,8 @@ export class WObjectListService {
   sortBy$: Observable<any>;
   private sortBySubject: BehaviorSubject<any> = new BehaviorSubject<any>('created_at');
 
-  sortOrder$: Observable<any>;
-  private sortOrderSubject: BehaviorSubject<any> = new BehaviorSubject<any>('desc');
+  sortOrder$: Observable<'asc' | 'desc' | boolean>;
+  private sortOrderSubject: BehaviorSubject<'asc' | 'desc' | boolean> = new BehaviorSubject<any>('desc');
 
   multipleSelection$: Observable<any>;
   private multipleSelectionSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
@@ -44,7 +44,7 @@ export class WObjectListService {
   }
 
   addItem(item: any) {
-    let items = this.selectedObjectsSubject.getValue().concat([item]);
+    const items = this.selectedObjectsSubject.getValue().concat([item]);
     this.selectedObjectsSubject.next(items);
   }
 
@@ -52,7 +52,7 @@ export class WObjectListService {
     if (_.find(this.selectedObjectsSubject.getValue(), {'id': item.id})) {
       _.remove(this.selectedObjectsSubject.getValue(), {'id': item.id});
     } else {
-      let items = this.selectedObjectsSubject.getValue().concat([item]);
+      const items = this.selectedObjectsSubject.getValue().concat([item]);
       this.selectedObjectsSubject.next(items);
     }
   }
@@ -69,7 +69,7 @@ export class WObjectListService {
     this.sortBySubject.next(sortBy);
   }
 
-  setSortOrder(sortOrder: string) {
+  setSortOrder(sortOrder: 'asc' | 'desc' | boolean) {
     this.sortOrderSubject.next(sortOrder);
   }
 
@@ -88,8 +88,9 @@ export class WObjectListService {
   }
 
   clear() {
-    if(this.selectedObjectsSubject.getValue().length !== 0)
+    if (this.selectedObjectsSubject.getValue().length !== 0) {
       this.selectedObjectsSubject.next([]);
+    }
     this.selectedEvent.emit({ type: 'close' });
   }
 
