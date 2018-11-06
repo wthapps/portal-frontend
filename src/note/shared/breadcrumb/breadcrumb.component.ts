@@ -48,7 +48,7 @@ export class ZNoteSharedBreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   onClick(item: any) {
-    if (item) this.router.navigate([item.routerLink]);
+    if (item) { this.router.navigate([item.routerLink]); }
   }
 
   onMenu(event: string) {
@@ -57,7 +57,7 @@ export class ZNoteSharedBreadcrumbComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.model) {
-      for (let item of this.model) {
+      for (const item of this.model) {
         if (item.eventEmitter) {
           item.eventEmitter.unsubscribe();
         }

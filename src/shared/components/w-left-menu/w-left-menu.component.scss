@@ -1,5 +1,6 @@
 @import "../../../assets/styles/global";
 
+$active-color: red;
 .main-left-menu {
   display: none;
   overflow: hidden;
@@ -187,6 +188,15 @@
         span {
           color: $theme-color !important;
         }
+      }
+    }
+    
+    .ui-menuitem-link, .ui-panelmenu-header, .ui-panelmenu-header-link {
+      &.ui-state-active {
+        color: $active-color;
+      }
+      a.ui-state-active {
+        color: $active-color;
       }
     }
   }

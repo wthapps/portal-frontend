@@ -37,7 +37,7 @@ export class FolderEffects {
       concatMap((res: any) => {
         return [
           new folder.LoadSuccess(res.data),
-        ];}),
+        ]; }),
       catchError(() => EMPTY));
 
   @Effect() loadAll = this.actions

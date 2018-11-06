@@ -23,7 +23,7 @@ declare var _: any;
 export class ZNoteContainerComponent implements OnInit {
   @Input() breadcrumbs: any;
 
-  viewOption: string = 'grid';
+  viewOption = 'grid';
   noteItems$: Observable<Note[]>;
   folderItems$: Observable<Folder[]>;
   allItems$: Observable<any[]>;
@@ -54,7 +54,7 @@ export class ZNoteContainerComponent implements OnInit {
   ngOnInit() {
     // File does not exist
     this.route.queryParams.subscribe((params: any) => {
-      if (params.error == 'file_does_not_exist') {
+      if (params.error === 'file_does_not_exist') {
         this.wthConfirmService.confirm({
           message:
             'You are in deleted note or invalid permission',

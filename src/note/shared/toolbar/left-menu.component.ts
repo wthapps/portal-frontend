@@ -8,9 +8,8 @@ import * as fromRoot from '../reducers/index';
 import { Store } from '@ngrx/store';
 
 import { ApiBaseService } from '@shared/services/apibase.service';
-import { Router } from '@angular/router';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
-import * as folder from '../actions/folder';
+import * as fromFolder from '../actions/folder';
 
 declare let $: any;
 declare let _: any;
@@ -31,7 +30,6 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
   constructor(
     private store: Store<any>,
     private apiBaseService: ApiBaseService,
-    private router: Router,
     private commonEventService: CommonEventService,
     private renderer: Renderer2
   ) {
@@ -46,7 +44,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
         });
       });
     this.sub2 = this.commonEventService
-      .filter((event: any) => event.channel == 'noteLeftMenu')
+      .filter((event: any) => event.channel === 'noteLeftMenu')
       .subscribe((event: any) => {
         if (!event.payload || event.action === '') {
           return;
@@ -60,17 +58,18 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
         switch (event.action) {
           // Update and create
           case 'update': {
-            for (let folder of event.payload) {
+            console.log('folders: ', event.payload);
+            for (const folder of event.payload) {
               this.update(folder, this.noteFoldersTree);
             }
             break;
           }
           case 'destroy': {
-            for (let folder of event.payload) {
+            for (const folder of event.payload) {
               this.destroy(folder, this.noteFoldersTree);
             }
             this.store.dispatch({
-              type: folder.FOLDER_UPDATED,
+              type: fromFolder.FOLDER_UPDATED,
               payload: this.noteFoldersTree
             });
             break;
@@ -108,15 +107,17 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
   }
 
   loadMenu(event: any) {
-    event.originalEvent.stopPropagation();
-    let htmlTarget: any = event.originalEvent.target;
+    const htmlTarget: any = event.originalEvent.target;
+    const { item } = event;
+    const { expanded, id } = item;
+    const iconClick = (htmlTarget.className.includes('ui-panelmenu-icon'));
+
     if (
-      $(htmlTarget).hasClass('fa-caret-right') ||
-      $(htmlTarget).hasClass('fa-caret-down')
+      item.items && item.items.length === 0
     ) {
-      if (event.item.expanded) {
+      if (expanded) {
         this.apiBaseService
-          .get(`note/folders/${event.item.id}`)
+          .get(`note/folders/${id}`)
           .subscribe((res: any) => {
             this.commonEventService.broadcast({
               action: 'update',
@@ -126,44 +127,28 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
           });
       }
     } else {
-      this.router.navigate(['/folders', event.item.id]);
-      // ignore expanded
-      event.item.expanded = !event.item.expanded;
-      $(htmlTarget)
-        .closest('.well-folder-tree')
-        .find('a')
-        .removeClass('active');
-      $(htmlTarget)
-        .closest('a')
-        .addClass('active');
-
+      if (!iconClick) {
+        event.item.expanded = !expanded;
+      }
       this.onCloseMenu();
     }
-  }
-
-  onNoteClick(event: any) {
-    $(event.target)
-      .closest('ul')
-      .find('.well-folder-tree a')
-      .removeClass('active');
-    $('.ui-menuitem-link').removeClass('active');
-    $('.ui-panelmenu-headerlink-hasicon').removeClass('active');
   }
 
   update(target: any, folders: any, options: any = {}) {
     target.label = target.name;
     target.title = target.name;
-    target.icon = 'fa-folder-o';
+    target.icon = 'fa fa-folder-o';
     target.styleClass = `js-note-folders-tree-${target.id}`;
-    if (!target.items) target.items = [];
+    if (!target.items) { target.items = []; }
     target.command = (event: any) => this.loadMenu(event);
-    if (!target.parent_id) {
-      if (_.some(folders, ['id', target.id])) {
-        for (let folder of folders) {
-          if (folder.id == target.id) {
-            folder.label = target.label;
-            folder.name = target.name;
-            folder.expanded = target.expanded;
+    target.routerLink = ['/folders', target.id];
+    target.routerLinkActiveOptions = { exact: true };
+    const { id, parent_id, label, name, expanded, routerLink, routerLinkActiveOptions } = target;
+    if (!parent_id) {
+      if (_.some(folders, ['id', id])) {
+        for (const folder of folders) {
+          if (folder.id === id) {
+            Object.assign(folder, {label, name, expanded, routerLink, routerLinkActiveOptions });
           }
         }
       } else {
@@ -172,17 +157,15 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       this.sort(folders);
       return;
     }
-    for (let folder of folders) {
+    for (const folder of folders) {
       if (folder.items instanceof Array && folder.items.length > 0) {
         this.update(target, folder.items);
       }
-      if (target.parent_id == folder.id) {
+      if (target.parent_id === folder.id) {
         if (_.some(folder.items, ['id', target.id])) {
-          for (let f of folder.items) {
-            if (f.id == target.id) {
-              f.label = target.label;
-              f.name = target.name;
-              f.expanded = target.expanded;
+          for (const f of folder.items) {
+            if (f.id === id) {
+              Object.assign(folder, {label, name, expanded, routerLink, routerLinkActiveOptions });
             }
           }
         } else {
@@ -195,8 +178,8 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
 
   sort(folders: any) {
     folders.sort(function (a, b) {
-      var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-      var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+      const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.name.toUpperCase(); // ignore upper and lowercase
       if (nameA < nameB) {
         return -1;
       }
@@ -210,14 +193,14 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
   destroy(target: any, folders: any) {
     if (!target.parent_id) {
       _.remove(folders, (item: any) => {
-        return item.id == target.id;
+        return item.id === target.id;
       });
       return;
     }
-    for (let folder of folders) {
-      if (target.parent_id == folder.id) {
+    for (const folder of folders) {
+      if (target.parent_id === folder.id) {
         _.remove(folder.items, (item: any) => {
-          return item.id == target.id;
+          return item.id === target.id;
         });
       }
       this.destroy(target, folder.items);
