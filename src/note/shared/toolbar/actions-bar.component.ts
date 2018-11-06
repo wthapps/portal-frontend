@@ -41,7 +41,7 @@ export class ZNoteSharedActionBarComponent
   @Input() toolbarPosition: any = 'top';
 
   readonly tooltip: any = Constants.tooltip;
-  show: boolean = true;
+  show = true;
   destroySubject: Subject<any> = new Subject<any>();
   urls: any;
   disableDropDown: any = false;
@@ -161,23 +161,23 @@ export class ZNoteSharedActionBarComponent
     /*====================================
     [Position] validate
     ====================================*/
-    if (this.toolbarPosition == 'top') {
+    if (this.toolbarPosition === 'top') {
       this.actionsMenu.findFolder.show = false;
     }
     /*====================================
     [Permission] validate
     ====================================*/
-    let permissonValidateObjects = (action, objects) => {
+    const permissonValidateObjects = (action, objs) => {
       // check permission in each objects
-      objects.map((object: any) => {
+      objs.map((object: any) => {
         // if permission is view turn off all acions edit
         if (
-          object.permission == 'view' &&
-          (action.needPermission == 'edit' || action.needPermission == 'owner')
+          object.permission === 'view' &&
+          (action.needPermission === 'edit' || action.needPermission === 'owner')
         ) {
           action.show = false;
         }
-        if (object.permission == 'edit' && action.needPermission == 'owner') {
+        if (object.permission === 'edit' && action.needPermission === 'owner') {
           action.show = false;
         }
       });
@@ -189,27 +189,27 @@ export class ZNoteSharedActionBarComponent
     /*====================================
     [Path And Page] validate (shared-with-me, shared-by-me)
     ====================================*/
-    let pathValidate = (action, currentPath) => {
+    const pathValidate = (action, currentPath) => {
       // ==================
-      if (currentPath != 'shared-by-me' && action.title == 'Stop Sharing') {
+      if (currentPath !== 'shared-by-me' && action.title === 'Stop Sharing') {
         action.show = false;
       }
       if (
         [noteConstants.PAGE_MY_NOTE].includes(this.page) &&
-        action.title == 'Find folder'
+        action.title === 'Find folder'
       ) {
         action.show = false;
       }
       // ==================
       if (
-        this.subPage == noteConstants.PAGE_NOTE_EDIT &&
-        action.title == 'Edit'
+        this.subPage === noteConstants.PAGE_NOTE_EDIT &&
+        action.title === 'Edit'
       ) {
         action.show = false;
       }
       if (
         this.subPage !== noteConstants.PAGE_NOTE_EDIT &&
-        action.title == 'Print'
+        action.title === 'Print'
       ) {
         action.show = false;
       }
@@ -228,13 +228,14 @@ export class ZNoteSharedActionBarComponent
     /*====================================
     [Objects_Type] validate
     ====================================*/
-    let objectTypeValidateObjects = (action, objects) => {
-      objects.map((object: any) => {
+    const objectTypeValidateObjects = (action, objs) => {
+      objs.map((object: any) => {
         if (
-          object.object_type == 'Note::Folder' &&
-          (action.title == 'Make copy' || action.title == 'Export as PDF')
-        )
+          object.object_type === 'Note::Folder' &&
+          (action.title === 'Make copy' || action.title === 'Export as PDF')
+        ) {
           action.show = false;
+        }
       });
     };
     Object.keys(this.actionsMenu).map((action: any) =>
@@ -245,11 +246,11 @@ export class ZNoteSharedActionBarComponent
     [Favourite] validate
     ====================================*/
     let allFavorite: any = true;
-    let permissonValidateFavourites = (action, objects) => {
+    const permissonValidateFavourites = (action, objs) => {
       // check Favourite in each objects
-      objects.map((object: any) => {
-        if (action.title == 'Favourite') {
-          if (object.favourite == false) {
+      objs.map((object: any) => {
+        if (action.title === 'Favourite') {
+          if (object.favourite === false) {
             allFavorite = false;
           }
         }
@@ -258,14 +259,15 @@ export class ZNoteSharedActionBarComponent
     Object.keys(this.actionsMenu).map((action: any) =>
       permissonValidateFavourites(this.actionsMenu[action], objects)
     );
-    if (allFavorite) this.actionsMenu.favourite.iconClass = 'fa fa-star';
-    if (!allFavorite) this.actionsMenu.favourite.iconClass = 'fa fa-star-o';
+    if (allFavorite) { this.actionsMenu.favourite.iconClass = 'fa fa-star'; }
+    if (!allFavorite) { this.actionsMenu.favourite.iconClass = 'fa fa-star-o'; }
 
     // After All
     this.disableDropDown = true;
-    for (let key of Object.keys(this.actionsMenu)) {
-      if (this.actionsMenu[key].inDropDown && this.actionsMenu[key].show)
+    for (const key of Object.keys(this.actionsMenu)) {
+      if (this.actionsMenu[key].inDropDown && this.actionsMenu[key].show) {
         this.disableDropDown = false;
+      }
     }
   }
 
@@ -278,7 +280,7 @@ export class ZNoteSharedActionBarComponent
 
   toolbarSetup(e: any) {
     // show toolbar or not, toolbar top only
-    if (this.selectedObjects.length < 1 && this.toolbarPosition == 'top') {
+    if (this.selectedObjects.length < 1 && this.toolbarPosition === 'top') {
       this.show = false;
     } else {
       this.show = true;
@@ -308,10 +310,10 @@ export class ZNoteSharedActionBarComponent
   }
 
   deleteOrRemove() {
-    let deleteObjects = this.selectedObjects.filter(
-      (object: any) => object.permission == 'owner'
+    const deleteObjects = this.selectedObjects.filter(
+      (object: any) => object.permission === 'owner'
     );
-    let removeObjects = this.selectedObjects.filter(
+    const removeObjects = this.selectedObjects.filter(
       (object: any) => object.permission !== 'owner'
     );
     if (deleteObjects.length > 0) {
@@ -366,7 +368,7 @@ export class ZNoteSharedActionBarComponent
 
   edit() {
     if (this.selectedObjects.length > 0) {
-      let selectedObject = this.selectedObjects[0];
+      const selectedObject = this.selectedObjects[0];
       switch (selectedObject.object_type) {
         case 'Note::Note':
           this.noteService.modalEvent({
@@ -386,10 +388,10 @@ export class ZNoteSharedActionBarComponent
   }
 
   findFolder() {
-    let obj: any = this.selectedObjects[0];
-    let parentPath: string =
-      obj.permission == 'owner' ? '/my-note' : '/shared-with-me';
-    let path: string = obj.parent_id
+    const obj: any = this.selectedObjects[0];
+    const parentPath: string =
+      obj.permission === 'owner' ? '/my-note' : '/shared-with-me';
+      const path: string = obj.parent_id
       ? `${parentPath}/folders/${obj.parent_id}`
       : parentPath;
     this.store.dispatch({
@@ -421,7 +423,7 @@ export class ZNoteSharedActionBarComponent
   }
 
   favourite() {
-    let objects: any = this.selectedObjects.map((object: any) => {
+    const objects: any = this.selectedObjects.map((object: any) => {
       return {
         id: object.id,
         object_type: object.object_type,

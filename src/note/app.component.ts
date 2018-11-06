@@ -446,7 +446,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           this.apiBaseService
             .download('note/notes/pdf_download/' + object.id)
             .subscribe((res: any) => {
-              var blob = new Blob([res], { type: 'application/pdf' });
+              const blob = new Blob([res], { type: 'application/pdf' });
               saveAs(blob, object.name + '.pdf');
               n = n - 1;
               if (n === 0) {

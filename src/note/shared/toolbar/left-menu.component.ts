@@ -37,6 +37,10 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     this.sub = this.store
       .select(fromRoot.getFoldersTree)
       .subscribe((folders: any) => {
+        console.log('folder tree get updated');
+        if (this.noteFoldersTree.length !== 0) {
+          return;
+        }
         this.commonEventService.broadcast({
           action: 'update',
           channel: 'noteLeftMenu',
@@ -46,26 +50,27 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     this.sub2 = this.commonEventService
       .filter((event: any) => event.channel === 'noteLeftMenu')
       .subscribe((event: any) => {
-        if (!event.payload || event.action === '') {
+        const { payload, action } = event;
+        if (!payload || action === '') {
           return;
         }
-        if (!(event.payload instanceof Array)) {
-          event.payload = [event.payload];
+        if (!(payload instanceof Array)) {
+          event.payload = [payload];
         }
-        event.payload = event.payload.filter((i: any) => {
+        event.payload = payload.filter((i: any) => {
           return i.object_type === 'Note::Folder';
         });
-        switch (event.action) {
+        switch (action) {
           // Update and create
           case 'update': {
-            console.log('folders: ', event.payload);
-            for (const folder of event.payload) {
+            console.log('folders: ', payload);
+            for (const folder of payload) {
               this.update(folder, this.noteFoldersTree);
             }
             break;
           }
           case 'destroy': {
-            for (const folder of event.payload) {
+            for (const folder of payload) {
               this.destroy(folder, this.noteFoldersTree);
             }
             this.store.dispatch({
@@ -161,11 +166,11 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       if (folder.items instanceof Array && folder.items.length > 0) {
         this.update(target, folder.items);
       }
-      if (target.parent_id === folder.id) {
-        if (_.some(folder.items, ['id', target.id])) {
+      if (parent_id === folder.id) {
+        if (_.some(folder.items, ['id', id])) {
           for (const f of folder.items) {
             if (f.id === id) {
-              Object.assign(folder, {label, name, expanded, routerLink, routerLinkActiveOptions });
+              Object.assign(f, {label, name, routerLink, routerLinkActiveOptions });
             }
           }
         } else {

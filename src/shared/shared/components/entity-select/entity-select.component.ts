@@ -91,8 +91,9 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.termSubscription && !this.termSubscription.closed)
+    if (this.termSubscription && !this.termSubscription.closed) {
       this.termSubscription.unsubscribe();
+    }
   }
 
   changeEntity(newType: string = '') {
@@ -110,8 +111,9 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
   }
 
   open(options: any = {url: undefined, type: '', data: []}, mode: string = 'add') {
-    if (options.type && options.type !== '')
+    if (options.type && options.type !== '') {
       this.changeEntity(options.type);
+    }
 
     this.items.length = 0;
     this.resubscribe();

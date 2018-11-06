@@ -21,16 +21,17 @@ declare var _: any;
 export class ZNoteSharedModalFolderEditComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
 
-  titleModal: string = 'New Folder';
+  titleModal = 'New Folder';
 
   form: FormGroup;
   name: AbstractControl;
   folder: any = {};
   currentFolder: any = {};
-  breadcrumb: boolean = false;
-  mode: string = 'add';
+  breadcrumb = false;
+  mode = 'add';
 
-  constructor(private fb: FormBuilder, private commonEventService: CommonEventService, private apiBaseService: ApiBaseService, private store: Store<any>) {
+  constructor(private fb: FormBuilder, private commonEventService: CommonEventService,
+    private apiBaseService: ApiBaseService, private store: Store<any>) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
     });
@@ -39,15 +40,15 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.name.setValue(this.folder.name)
+    this.name.setValue(this.folder.name);
   }
 
 
   open(options?: any) {
     this.mode = options.mode;
-    if (this.mode == 'add') {
+    if (this.mode === 'add') {
       this.titleModal = 'Add Folder';
-    } else if (this.mode == 'edit') {
+    } else if (this.mode === 'edit') {
       this.titleModal = 'Edit Folder';
       this.folder = options.folder;
       this.breadcrumb = options.breadcrumb;
@@ -70,10 +71,10 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
       this.apiBaseService.post('note/folders', this.folder)
         .pipe(
           withLatestFrom(this.store, (res: any, state: any) => {
-            return {res: res, state: state.context}
+            return {res: res, state: state.context};
           }))
         .subscribe((combine: any) => {
-          if(combine.state.permissions.edit) {
+          if (combine.state.permissions.edit) {
             this.store.dispatch(new note.MultiNotesAdded([combine.res.data]));
           }
           this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [combine.res.data]});
