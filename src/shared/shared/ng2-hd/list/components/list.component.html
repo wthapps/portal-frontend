@@ -4,58 +4,53 @@
 </div>
 <!-- input tag container -->
 <div ngClass="hd-list {{ theme }}" (click)="focus(true)" [attr.tabindex]="-1" [class.hd-list--invalid]="hasErrors()"
-  [class.hd-list--focused]="isInputFocused()">
+     [class.hd-list--focused]="isInputFocused()">
 
   <!--tags [custom]-->
   <div #template class="hd-list-container--custom">
     <ng-content></ng-content>
 
-    <search-form *ngIf="hasCustomTemplate()" (onSubmit)="addItem()" (onBlur)="blur()" (onFocus)="focus()" (onKeydown)="fireEvents('keydown', $event)"
-      (onKeyup)="fireEvents('keyup', $event)" (onKeypress)="handleKeyPress()" [validators]="validators" [hidden]="readonly || maxItemsReached()"
-      [placeholder]="itemsSearching?.length ? placeholder : secondaryPlaceholder" [inputClass]="inputClass" [inputId]="inputId"
-      [ngStyle]="{'width': '100%'}"></search-form>
+    <search-form *ngIf="hasCustomTemplate()" (onSubmit)="addItem()" (onBlur)="blur()" (onFocus)="focus()"
+                 (onKeydown)="fireEvents('keydown', $event)"
+                 (onKeyup)="fireEvents('keyup', $event)" (onKeypress)="handleKeyPress()" [validators]="validators"
+                 [hidden]="readonly || maxItemsReached()"
+                 [placeholder]="itemsSearching?.length ? placeholder : secondaryPlaceholder" [inputClass]="inputClass"
+                 [inputId]="inputId"
+                 [ngStyle]="{'width': '100%'}"></search-form>
   </div>
 
   <!-- tags [default] -->
-  <div class="wth-scrollable mb20" style="max-height: 100px;">
-    <div class="hd-list-container hd-list-container--default" *ngIf="hasCustomTemplate() === false">
-      <div *ngFor="let item of selectedItems" (click)="selectItem(item);$event.stopPropagation();" (keydown)="handleKeydown($event, item)"
-        [attr.tabindex]="readonly ? -1 : 0" class="hd-list-selected-item" [class.hd-list--readonly]="readonly"
-        [attr.aria-label]="item">
-
-        <img alt="" [src]="item?.profile_image" title="" width="30">
-        <!-- tag name -->
-        <span class="hd-list__name"> {{ item?.name }} </span>
-
-        <!-- remove 'x' button -->
-        <delete-icon class="hd-list__remove-button" aria-label="Remove item" (click)="removeItem(item)" *ngIf="!readonly">
-        </delete-icon>
-      </div>
-
-      <search-form (onSubmit)="addItem()" (onBlur)="blur()" (onFocus)="focus()" (onKeydown)="fireEvents('keydown', $event)"
-        (onKeyup)="fireEvents('keyup', $event)" [validators]="validators" [hidden]="readonly || maxItemsReached()"
-        [placeholder]="itemsSearching?.length ? placeholder : secondaryPlaceholder" [inputClass]="inputClass" [inputId]="inputId"></search-form>
+  <div class="tags-input-wrap" *ngIf="hasCustomTemplate() === false">
+    <div *ngFor="let item of selectedItems" (click)="selectItem(item);$event.stopPropagation();"
+         (keydown)="handleKeydown($event, item)"
+         [attr.tabindex]="readonly ? -1 : 0" class="tags-input-item" [class.hd-list--readonly]="readonly"
+         [attr.aria-label]="item">
+      {{ item?.name }} <i (click)="removeItem(item)" *ngIf="!readonly" class="fa fa-times"></i>
     </div>
+    <search-form (onSubmit)="addItem()" (onBlur)="blur()" (onFocus)="focus()"
+                 (onKeydown)="fireEvents('keydown', $event)"
+                 (onKeyup)="fireEvents('keyup', $event)" [validators]="validators"
+                 [hidden]="readonly || maxItemsReached()"
+                 [placeholder]="itemsSearching?.length ? placeholder : secondaryPlaceholder" [inputClass]="inputClass"
+                 [inputId]="inputId"></search-form>
   </div>
 
 
-  <div *ngIf="searchable" class="hd-list-content-scrollale">
-    <div class="media-avatar-list">
-      <div *ngFor="let item of itemsSearching" class="media-avatar align-items-center" (click)="toggleSelectItem(item, $event)">
-        <div class="media-avatar-img-wrap">
-          <div class="media-avatar-img avatar-xs">
-            <img alt="" [src]="item.profile_image">
-          </div>
-        </div>
-        <div class="media-avatar-body">
-          {{ item.name }}
-        </div>
-        <div class="media-avatar-action pr10">
-          <input type="checkbox" (click)="toggleSelectItem(item, $event)" [(ngModel)]="item.selected" [checked]="item.selected">
+  <div *ngIf="searchable" class="media-avatar-list wth-scrollable" style="max-height: 300px;">
+    <div *ngFor="let item of itemsSearching" class="media-avatar align-items-center can-click"
+         (click)="toggleSelectItem(item, $event)">
+      <div class="media-avatar-img-wrap">
+        <div class="media-avatar-img avatar-xs">
+          <img alt="" [src]="item.profile_image">
         </div>
       </div>
+      <div class="media-avatar-body">
+        {{ item.name }}
+      </div>
+      <div class="media-avatar-action pr10">
+        <i *ngIf="item.selected" class="fa fa-times"></i>
+      </div>
     </div>
-
   </div>
 </div>
 

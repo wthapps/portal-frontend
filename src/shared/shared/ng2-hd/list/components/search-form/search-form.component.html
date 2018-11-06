@@ -1,10 +1,13 @@
 <!-- form -->
-<form (submit)="onSubmit.emit()" [ngStyle]="{'width': '100%'}" [formGroup]="form">
-    <div class="form-group full-width" [ngStyle]="{'border': '1px solid', 'width': '100%'}">
-        <input #input type="text" required class="form-control hd-list__text-input" style="border:none;"
-            formControlName="item" tabindex="0" [ngClass]="inputClass" [attr.id]="inputId" [attr.placeholder]="placeholder"
-            [attr.aria-label]="placeholder" (focus)="onFocus.emit($event)" (blur)="onBlur.emit($event)" (keydown)="onKeyDown($event)"
-            (keyup)="onKeyup.emit($event)" />
-
-    </div>
+<form (submit)="onSubmit.emit()" [formGroup]="form">
+  <input #input type="text" required
+         formControlName="item" tabindex="0"
+         [ngClass]="inputClass"
+         [attr.id]="inputId"
+         [attr.placeholder]="placeholder"
+         [attr.aria-label]="placeholder"
+         (focus)="onFocus.emit($event)"
+         (blur)="onBlur.emit($event)"
+         (keydown)="onKeyDown($event)"
+         (keyup)="onKeyup.emit($event)">
 </form>

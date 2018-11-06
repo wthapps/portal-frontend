@@ -21,10 +21,10 @@
 
         <bs-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
           <bs-modal-header cssClass="modal-social-head">
-            <h4 class="modal-title text-left text-capitalize"> {{ privacyName }}</h4>
-            <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
+            <h4 class="modal-title text-left text-capitalize"> {{ privacyName }}</h4>
           </bs-modal-header>
           <bs-modal-body>
             <ul class="list-unstyled social-list-user wth-scrollable">

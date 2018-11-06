@@ -18,13 +18,7 @@ import {
 
 @Component({
   selector: 'search-form',
-  templateUrl: 'search-form.component.html',
-  styles: [`
-  :host{
-    display: block;
-    width: 100%
-  }
-  `]
+  templateUrl: 'search-form.component.html'
 })
 export class SearchFormComponent implements OnInit {
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
