@@ -16,15 +16,12 @@
         <label for="album-description">Description</label>
         <textarea id="album-description" class="form-control" [formControl]="description" rows="3"></textarea>
       </div>
-      <hr>
       <div class="row-img grid" *ngIf="selectedPhotos">
         <!--<z-media-share-list [data]="selectedPhotos" [view]="'grid'"></z-media-share-list>-->
       </div>
-      <hr>
       <div class="clearfix text-right">
         <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
-        <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min">Save</button>
-
+        <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min ml10">Save</button>
       </div>
     </form>
   </bs-modal-body>

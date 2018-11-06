@@ -68,7 +68,6 @@
     <w-grid-list #gridlist [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" [scrollWindow]="false">
       <div footer-grid-list>
         <box-loading *ngIf="links?.next"></box-loading>
-        <div class="text-fade text-center" *ngIf="endLoading"> <strong>{{objects.length}} files</strong></div>
       </div>
     </w-grid-list>
     <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"

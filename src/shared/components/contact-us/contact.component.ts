@@ -8,6 +8,8 @@ import {
   FormControl
 } from '@angular/forms';
 
+import { takeUntil } from 'rxjs/operators';
+
 import { ReCaptchaComponent } from 'angular2-recaptcha/lib/captcha.component';
 
 import { ContactService } from './contact.service';
@@ -110,9 +112,8 @@ export class ContactComponent implements OnInit, OnDestroy {
       values.recaptcha_response = this.recaptchaResponse;
 
       const body = JSON.stringify(values);
-      this.contactService
-        .createFeedback(body)
-        .takeUntil(componentDestroyed(this))
+      this.contactService.createFeedback(body)
+        .pipe(takeUntil(componentDestroyed(this)))
         .subscribe(
           (res: any) => {
             this.loadingService.stop();

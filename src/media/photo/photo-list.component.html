@@ -36,7 +36,6 @@
 
 </w-grid-list>
 
-<div class="text-fade text-center" *ngIf="endLoading"> <strong>{{objects.length}} files</strong></div>
 <box-loading *ngIf="links?.next"></box-loading>
 
 <box-no-data *ngIf="objects && objects.length == 0" [title]="'There is no photos!'" [icon]="'fa fa-file-video-o'"

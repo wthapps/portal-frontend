@@ -68,7 +68,6 @@
       (selectedObjectsChanged)="selectedObjectsChanged($event)" [scrollWindow]="false">
       <div footer-grid-list>
         <box-loading *ngIf="links?.next"></box-loading>
-        <div class="text-fade text-center" *ngIf="endLoading"> <strong>{{objects.length}} files</strong></div>
       </div>
     </w-grid-list>
 
@@ -172,7 +171,6 @@
         [hasMultipleSelection]="false" [scrollWindow]="false" [hideScale]="true">
         <div footer-grid-list>
           <box-loading *ngIf="links?.next"></box-loading>
-          <div class="text-fade text-center" *ngIf="endLoading"> <strong>{{objects.length}} files</strong></div>
         </div>
       </w-grid-list>
     </div>

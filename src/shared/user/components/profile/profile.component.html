@@ -4,7 +4,7 @@
       <div class="w-user-profile">
         <w-user-cover-info [user]="profile$ | async" (onOpenModal)="openModal($event)"></w-user-cover-info>
         <w-user-basic-info #basicInfo *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></w-user-basic-info>
-        <w-user-contact-info #contactInfo *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></w-user-contact-info>
+        <!--<w-user-contact-info #contactInfo *ngIf="data" [data]="data" [editable]="true" (eventOut)="doEvent($event)"></w-user-contact-info>-->
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">Contact Information</h3>

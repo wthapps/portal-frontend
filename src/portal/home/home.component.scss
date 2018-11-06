@@ -76,13 +76,13 @@
   padding-top: 10px;
   padding-bottom: 30px;
   .section-title {
-    margin-bottom: 30px;
+    //margin-bottom: 30px;
   }
   @media (min-width: $screen-sm-min) {
     padding-top: 40px;
     padding-bottom: 80px;
     .section-title {
-      margin-bottom: 60px;
+      //margin-bottom: 60px;
     }
   }
 }
@@ -143,7 +143,7 @@
     @media (min-width: $screen-sm-min) {
       p {
         min-height: 38px;
-        margin-bottom: 30px;
+        //margin-bottom: 30px;
       }
     }
 
@@ -151,7 +151,7 @@
       margin-bottom: 30px;
       .row {
         > div {
-          margin-bottom: 40px;
+          //margin-bottom: 40px;
           &:last-child {
             margin-bottom: 0;
           }
@@ -160,8 +160,11 @@
     }
 
     .row {
-      margin-bottom: 10px;
+      //margin-bottom: 10px;
     }
+  }
+  .w-app-item {
+    padding-top: 30px;
   }
 }
 

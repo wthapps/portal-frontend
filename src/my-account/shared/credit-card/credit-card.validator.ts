@@ -1,6 +1,7 @@
 import { FormControl } from '@angular/forms';
 
 declare const Payment: any;
+import Payment from 'payment';
 
 export class CreditCardValidator {
 
