@@ -1,16 +1,48 @@
-<div class="page-container">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-3">
-        <my-shared-menu></my-shared-menu>
-      </div>
-      <div class="col-sm-9">
-        <!-- <router-outlet></router-outlet> -->
-        <div class="box-panel">
-          <h3 class="box-panel-title">Dashboard</h3>
-        </div>
+<div class="dashboard">
+  <div>
+    <div class="welcome-text">
+      <h3>Welcome to WTH!Apps</h3>
+      <p>Enjoy your digital life with all the conveniences</p>
+
+    </div>
+    <div class="w-apps-container">
+      <div class="header-nav-apps">
+        <ul class="flex-container nowrap">
+          <li class="flex-item">
+            <a [href]="urls.social">
+              <i class="wthicon wthicon-social-lg"></i>
+              <span>Social</span>
+            </a>
+          </li>
+          <li class="flex-item">
+            <a [href]="urls.chat">
+              <i class="wthicon wthicon-chat-lg"></i>
+              <span>Chat</span>
+            </a>
+          </li>
+          <li class="flex-item">
+            <a [href]="urls.media">
+              <i class="wthicon wthicon-pictures-lg"></i>
+              <span>Photos</span>
+            </a>
+          </li>
+          <li class="flex-item">
+            <a [href]="urls.contact">
+              <i class="wthicon wthicon-contacts-lg"></i>
+              <span>Contacts</span>
+            </a>
+          </li>
+          <li class="flex-item">
+            <a [href]="urls.note">
+              <i class="wthicon wthicon-notes-lg"></i>
+              <span>Notes</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
+
 </div>
+
 

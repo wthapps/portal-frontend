@@ -1,0 +1,49 @@
+
+@import "../../assets/styles/global";
+
+.dashboard {
+  text-align: center;
+  .welcome-text {
+    padding: 30px;
+    p {
+      color: $text-color-light;
+      font-size: 13px;
+    }
+  }
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  justify-content: center;
+  margin-left: -30px;
+  .flex-item {
+    width: 144px;
+    height: 110px;
+    //margin: 8px;
+    a {
+      color: $text-color-light;
+      display: block;
+      border-radius: 4px;
+      text-align: center;
+      padding: 10px;
+      &:hover{
+        background-color: #eee;
+        color: $text-color;
+        text-decoration: none;
+      }
+      i {
+        font-size: 48px;
+        line-height: 48px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+      span {
+        display: block;
+        font-weight: bold;
+        font-size: 16px
+      }
+    }
+  }
+}

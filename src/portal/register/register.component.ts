@@ -116,7 +116,7 @@ export class RegisterComponent implements HandleReCaptchaMixin {
       this.userService.signup('users', body).subscribe(
         result => {
           this.loadingService.stop();
-          window.location.href = Constants.baseUrls.myAccount;
+          window.location.href = Constants.baseUrls.myAccount + '/dashboard';
         },
         error => {
           // stop loading
