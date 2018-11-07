@@ -75,8 +75,9 @@ export class MessageListComponent implements OnInit, OnDestroy {
         takeUntil(this.destroySubject)
       )
       .subscribe(res => {
-      if (res && res.data )
+      if (res && res.data ) {
         this.currentMessages = res.data;
+      }
       this.messageService.scrollToBottom();
     });
 
@@ -85,15 +86,17 @@ export class MessageListComponent implements OnInit, OnDestroy {
         takeUntil(this.destroySubject)
       )
       .subscribe(res => {
-        if ((Object.keys(res)).length === 0)
+        if ((Object.keys(res)).length === 0) {
         return;
+        }
         const message = res.data;
         switch (res.action) {
           case ACTION.DELETE:
           case ACTION.EDIT: {
             for (const idx in this.currentMessages) {
-              if (this.currentMessages[idx].id === message.id)
+              if (this.currentMessages[idx].id === message.id) {
                 this.currentMessages[idx] = _.cloneDeep(message);
+              }
             }
             break;
           }
@@ -132,8 +135,9 @@ export class MessageListComponent implements OnInit, OnDestroy {
   }
 
   scrollDown() {
-    if ($('#chat-message-text').is(':focus'))
+    if ($('#chat-message-text').is(':focus')) {
       this.chatService.markAsRead(this.contactItem.value.group_id);
+    }
   }
 
   onAddContact(contact: any) {

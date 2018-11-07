@@ -7,8 +7,8 @@ import {
   Observable,
   of,
   throwError,
-  from } from "rxjs";
-import { map, concatAll, catchError, mergeAll, mergeMap } from "rxjs/operators";
+  from } from 'rxjs';
+import { map, concatAll, catchError, mergeAll, mergeMap } from 'rxjs/operators';
 
 import * as Boom from 'boom';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
@@ -17,7 +17,7 @@ import { BlackListPolicy } from '@shared/policies/black-list-policy';
 @Injectable()
 export class FileUploaderService {
 
-  constructor(private genericFileService: GenericFileService){}
+  constructor(private genericFileService: GenericFileService) {}
 
   uploadGenericFile(genFile: any): Observable<any> {
     if (!genFile) {
@@ -38,7 +38,7 @@ export class FileUploaderService {
 
   uploadMultipleGenericFiles(files: any): Observable<any> {
     // if (!files || files.length < 1) throw Boom.badData('files are empty');
-    if (!files || files.length < 1) throwError('files are empty');
+    if (!files || files.length < 1) { throwError('files are empty'); }
     const source = from(Object.keys(files).map((key: any) => files[key]));
     const uploadFiles = source.pipe(
       map((file: any) => this.uploadGenericFile(file)),
@@ -59,7 +59,7 @@ export class FileUploaderService {
 
   uploadMultipleGenericFilesPolicy(files: any, policies: any = [new BlackListPolicy()]) {
     // if (!files || files.length < 1) throw Boom.badData('files are empty');
-    if (!files || files.length < 1) throwError('files are empty');
+    if (!files || files.length < 1) { throwError('files are empty'); }
     const source = from(Object.keys(files).map((key: any) => files[key]));
     const uploadFilesPolicy = source.pipe(
       map((file: any) => this.uploadGenericFilePolicy(file, policies).pipe(catchError(error => of(error.output.payload)))),

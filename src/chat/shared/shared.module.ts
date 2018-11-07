@@ -25,7 +25,6 @@ import { ZChatSharedHeaderComponent } from './header/header.component';
 import { SharedModule } from '@wth/shared/shared.module';
 import { ChatCommonService } from '@wth/shared/services';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
-import { MessageService } from '@chat/shared/message/message.service';
 import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 
 /**
@@ -89,7 +88,6 @@ export class ZChatSharedModule {
       ngModule: ZChatSharedModule,
       providers: [
         ConversationService,
-        MessageService,
         ChatService,
         ChatContactService,
         ChatCommonService,

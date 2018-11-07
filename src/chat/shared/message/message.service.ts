@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { ApiBaseService, BaseEntityService } from '@shared/services';
+// import { Injectable } from '@angular/core';
+// import { ApiBaseService, BaseEntityService } from '@shared/services';
 
-@Injectable()
-export class MessageService extends BaseEntityService<any> {
+// @Injectable()
+// export class MessageService extends BaseEntityService<any> {
 
-  constructor(protected api: ApiBaseService) {
-    super(api);
-    this.url = 'zone/chat/message';
-  }
+//   constructor(protected api: ApiBaseService) {
+//     super(api);
+//     this.url = 'zone/chat/message';
+//   }
 
-}
+// }

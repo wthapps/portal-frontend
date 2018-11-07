@@ -1,10 +1,9 @@
-import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input, OnChanges } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { Subject, Subscription,  Observable, from } from 'rxjs';
 import { filter, map, take, takeUntil, merge, mergeMap } from 'rxjs/operators';
-
-
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
@@ -13,13 +12,14 @@ import { ApiBaseService, WMessageService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
-import { Store } from '@ngrx/store';
 import { noteConstants } from '@notes/shared/config/constants';
 import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
 import { WUploader } from '@shared/services/w-uploader';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { LongMessageModalComponent } from '@shared/components/modal/long-message-modal.component';
+import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
+import { MessageService } from '@shared/shared/components/chat-support/message/message.service';
 
 
 declare var $: any;
@@ -53,7 +53,10 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   selectEmojiSub: Subscription;
   destroy$ = new Subject();
 
+  private currentFileId: string;
+  private uploadingMessage: any;
   private stripHtml: StripHtmlPipe;
+  private sub: Subscription;
 
   constructor(
     private chatService: ChatService,
@@ -73,6 +76,15 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
     // this.photoModal.action = 'UPLOAD';
+
+
+    // capture event while upload
+    this.uploader.event$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(event => {
+      console.log('event: ', event);
+      this.sendFileEvent(event);
+    });
   }
 
   ngOnChanges(changes: any) {
@@ -175,8 +187,9 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   validateAndSend() {
-    if (!this.messageService.notEmptyHtml(this.message.message))
+    if (!this.messageService.notEmptyHtml(this.message.message)) {
       return;
+    }
     if (this.stripHtml.transform(this.message.message).length > this.maxLengthAllow ) {
         // console.error('Chat messages exceed maximum length of ', this.maxLengthAllow);
         this.longMessageModal.open();
@@ -203,7 +216,6 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   onEmojiClick(e: any) {
     // $('#chat-message-text').append(`${e.replace(/\\/gi, '')}`);
     this.editor.addEmoj(`${e.replace(/\\/gi, '')}`);
-    // this.placeCaretAtEnd(document.getElementById('chat-message-text'));
   }
 
   onChangeValue(event: any) {
@@ -211,7 +223,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onOpenSelectPhotos() {
-    this.mediaSelectionService.open({ allowSelectMultiple: true});
+    this.mediaSelectionService.open({ allowSelectMultiple: true, allowCancelUpload: true });
 
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.destroy$), filter((items: any[]) => items.length > 0))
@@ -219,11 +231,11 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         this.chooseDone(photos);
       });
 
-    this.mediaSelectionService.uploadingMedias$
-      .pipe(takeUntil(this.destroy$), map(([file, dataUrl]) => [file]))
-      .subscribe((photos: any) => {
-        this.uploadFile(photos);
-      });
+    // this.mediaSelectionService.uploadingMedias$
+    //   .pipe(takeUntil(this.destroy$), map(([file, dataUrl]) => [file]))
+    //   .subscribe((photos: any) => {
+    //     this.uploadFile(photos);
+    //   });
   }
 
   chooseDone(allMedia: any[]) {
@@ -238,33 +250,6 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     ).subscribe((val) => {
       console.log('choose done: ', val);
     });
-  }
-
-  changeFiles(event: any) {
-    const files = event.target.files;
-    if (files.length === 0) {
-      return;
-    }
-    this.uploadFile(files);
-  }
-
-  uploadFile(files: any) {
-    this.chatService.createUploadingFile(files);
-  }
-
-  placeCaretAtEnd(el: any) {
-    el.focus();
-    if (
-      typeof window.getSelection !== 'undefined' &&
-      typeof document.createRange !== 'undefined'
-    ) {
-      const range: any = document.createRange();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      const sel: any = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
   }
 
   ngOnDestroy() {
@@ -285,6 +270,55 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         this.editor.addEmoj(data.shortname);
       });
   }
+
+  private sendFileEvent(event: any) {
+
+    switch (event.action) {
+      case 'start':
+        // const files = this.uploader.uppy.getFiles();
+        // files.forEach(file => {
+        //   const message = new Message({
+        //     message: 'Sending file.....',
+        //     message_type: 'file',
+        //     content_type: file.meta.type,
+        //     meta_data: {file: {id: file.id, name: file.name, progress: file.progress, meta: file.meta}}
+        //   });
+        //   this.chatService.createMessage(null, message).subscribe(response => {
+        //     currentMessage = response.data;
+        //     console.log('current event message:::', event);
+        //   });
+        // });
+        // const file = event.payload.file;
+        break;
+      case 'progress':
+        const file = event.payload.file;
+        const { id, name, progress, meta } = file;
+        if (this.currentFileId !== file.id) {
+          this.currentFileId = id;
+          const message = new Message({
+            message: 'Sending file.....',
+            message_type: 'file',
+            content_type: meta.type,
+            meta_data: {file: {id, name, progress, meta }}
+          });
+          this.chatService.createMessage(null, message).subscribe(response => {
+            this.uploadingMessage = {...response.data, content_type: meta.type};
+          });
+        }
+        break;
+      case 'success':
+        if (this.uploadingMessage &&
+          this.uploadingMessage.message_type === 'file' &&
+          this.uploadingMessage.sending_status === 1) {
+          this.messageService.update(this.uploadingMessage).subscribe(response => {
+            console.log('sending file success', response.data);
+          });
+        }
+        // update current message
+        break;
+    }
+  }
+
 
   private send() {
     if (this.mode === FORM_MODE.EDIT) {

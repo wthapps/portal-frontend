@@ -14,7 +14,6 @@ import { ChatNoteListModule } from '@shared/components/note-list/chat-module/cha
 import { MessageAssetsComponent } from '@chat/shared/message/assets/message-assets.component';
 import { ZChatShareUserModule } from '@chat/shared/user/user.module';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
-import { MessageService } from '@chat/shared/message/message.service';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 
 @NgModule({
@@ -52,8 +51,7 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
     ZChatShareUserModule
   ],
   providers: [
-    MessageAssetsService,
-    MessageService
+    MessageAssetsService
   ]
 })
 export class ZChatMessageModule {}
