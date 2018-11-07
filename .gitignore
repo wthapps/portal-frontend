@@ -78,4 +78,4 @@ bower_components
 ts-node*
 firefox_root
 start*.sh
-/src/environment/environment.ts
+src/environments/environment.ts
