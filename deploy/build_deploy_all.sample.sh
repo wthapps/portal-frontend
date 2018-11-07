@@ -33,7 +33,7 @@ MODULES="portal chat contact media my-account note social"
 for var in $MODULES
 do
    echo " ===== Start build module [$var] ... " &&
-   ng build --prod --app $var --e $ENV &&
+   ng build --prod $var -c $ENV &&
    echo " ===== Finish build folder [$var] " &&
 
 
