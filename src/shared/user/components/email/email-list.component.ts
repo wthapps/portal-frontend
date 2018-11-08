@@ -48,7 +48,7 @@ export class EmailListComponent implements OnInit, ProfileFormMixin {
 
   ngOnInit() {
     this.form = this.fb.group({
-      'emails': this.fb.array([
+      emails: this.fb.array([
         this.initItem(),
       ])
     });
@@ -82,9 +82,17 @@ export class EmailListComponent implements OnInit, ProfileFormMixin {
   onOpenModal() {
     this.modal.open();
     this.removeAll();
-    _.map(this.data.emails, (v: any)=> {
-      this.addItem(v);
-    });
-    this.addItem();
+    if (this.data.emails && this.data.emails.length > 0) {
+      this.data.emails.map(v => {
+        this.addItem(v);
+      });
+    } else {
+      this.addItem();
+    }
   }
+
+  get f() {
+    return this.form.controls;
+  }
+
 }

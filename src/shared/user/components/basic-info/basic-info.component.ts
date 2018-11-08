@@ -38,9 +38,7 @@ export class BasicInfoComponent implements OnInit {
   sex: AbstractControl;
   tag_line: AbstractControl;
   description: AbstractControl;
-  birthday_day: AbstractControl;
-  birthday_month: AbstractControl;
-  birthday_year: AbstractControl;
+  birthday: AbstractControl;
   nationality: AbstractControl;
 
   constructor(private fb: FormBuilder,
@@ -51,9 +49,7 @@ export class BasicInfoComponent implements OnInit {
       company: [''],
       occupation: [''],
       sex: [''],
-      birthday_day: [''],
-      birthday_month: [''],
-      birthday_year: [''],
+      birthday: [''],
       nationality: ['']
     });
 
@@ -61,9 +57,7 @@ export class BasicInfoComponent implements OnInit {
     this.company = this.form.controls['company'];
     this.occupation = this.form.controls['occupation'];
     this.sex = this.form.controls['sex'];
-    this.birthday_day = this.form.controls['birthday_day'];
-    this.birthday_month = this.form.controls['birthday_month'];
-    this.birthday_year = this.form.controls['birthday_year'];
+    this.birthday = this.form.controls['birthday'];
     this.nationality = this.form.controls['nationality'];
   }
 
@@ -79,31 +73,22 @@ export class BasicInfoComponent implements OnInit {
     // console.log(this.data);
 
     (<FormControl>this.about).setValue(this.data.about);
+    (<FormControl>this.company).setValue(this.data.company);
+    (<FormControl>this.occupation).setValue(this.data.occupation);
     (<FormControl>this.sex).setValue(this.data.sex);
-
-    // console.log(this.data.birthday);
-
-    if (this.data.birthday !== null) {
-      let birthday = new Date(this.data.birthday);
-      (<FormControl>this.birthday_day).setValue(birthday.getDate());
-      (<FormControl>this.birthday_month).setValue(birthday.getMonth() + 1);
-      (<FormControl>this.birthday_year).setValue(birthday.getUTCFullYear());
-    }
-
+    (<FormControl>this.birthday).setValue(new Date(this.data.birthday).toISOString().split('T')[0]);
     (<FormControl>this.nationality).setValue(this.data.nationality);
 
     this.modal.open();
   }
 
   onSubmit(values: any): void {
-    console.log(values);
-    let birthday = new Date(values.birthday_year, values.birthday_month - 1, values.birthday_day);
 
-    let body = {
+    const body = {
       about: values.about,
       company: values.company,
       occupation: values.occupation,
-      birthday: birthday,
+      birthday: values.birthday,
       nationality: values.nationality,
       sex: values.sex
     };
@@ -111,7 +96,6 @@ export class BasicInfoComponent implements OnInit {
     this.profileService.updateMyProfile(body).subscribe((res: any) => {
       this.data = res.data;
       this.outEvent.emit(res.data);
-      console.log(res);
       this.modal.close();
     });
   }

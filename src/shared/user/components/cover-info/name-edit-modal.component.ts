@@ -68,7 +68,7 @@ export class NameEditModalComponent {
       return this.fb.group({
         first_name: [user.first_name, [Validators.required, CustomValidator.blanked]],
         last_name: [user.last_name, [Validators.required, CustomValidator.blanked]],
-        nickname: [''],
+        nickname: [user.nickname, [CustomValidator.blanked]],
       });
     }
   }

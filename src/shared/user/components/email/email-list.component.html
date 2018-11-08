@@ -12,7 +12,7 @@
       <ng-template ngFor let-item [ngForOf]="data.emails" let-i="index" [ngForTrackBy]="trackByFn">
         <dt>{{ item.category | keyToValue:emailType:'category':'name' }}</dt>
 
-        <dd><p><a class="link-text" href="mailto:{{ item.value }}">{{ item.value }}</a></p></dd>
+        <dd><p><a style="text-transform: lowercase;" href="mailto:{{ item.value }}">{{ item.value }}</a></p></dd>
       </ng-template>
     </dl>
 
@@ -36,15 +36,13 @@
     </bs-modal-header>
     <bs-modal-body>
       <div formArrayName="emails">
-        <div *ngFor="let add_email of getFormControls(); let i=index" class="media mt0">
-          <div *ngIf="add_email" class="media-body" [formGroupName]="i">
+        <div *ngFor="let item of f.emails.controls; let i=index" class="media mt0">
+          <div *ngIf="item" class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_email['controls'].category.valid
-                  && add_email['controls'].category.touched),
-                  'has-success': (add_email['controls'].category.valid
-                  && add_email['controls'].category.touched
+                  'has-error':   (!item.controls.category.valid  && item.controls.category.touched),
+                  'has-success': (item.controls.category.valid   && item.controls.category.touched
                   && form.value.emails[i].category.length > 1)}">
                   <select class="form-control" name="name" formControlName="category">
                     <option *ngFor="let et of emailType" value="{{ et.category }}">{{ et.name }} </option>
@@ -53,16 +51,16 @@
               </div>
               <div class="col-sm-8">
                 <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_email['controls'].value.valid
-                  && add_email['controls'].value.touched),
-                  'has-success': (add_email['controls'].value.valid
-                  && add_email['controls'].value.touched
+                  'has-error': (!item['controls'].value.valid
+                  && item['controls'].value.touched),
+                  'has-success': (item['controls'].value.valid
+                  && item['controls'].value.touched
                   && form.value.emails[i].value.length > 1)}">
                   <input type="text" class="form-control" formControlName="value" placeholder="">
                   <div
-                    *ngIf="!add_email['controls'].value.valid && add_email['controls'].value.touched">
+                    *ngIf="!item['controls'].value.valid && item['controls'].value.touched">
                     <span
-                      *ngIf="!add_email['controls'].value.valid && add_email['controls'].value.errors.emailFormat"
+                      *ngIf="!item['controls'].value.valid && item['controls'].value.errors.emailFormat"
                       class="help-block text-danger">
                       Email is not valid
                     </span>
@@ -72,7 +70,7 @@
             </div>
           </div>
           <div class="media-right">
-            <button type="button" class="btn btn-default" (click)="removeItem(i, add_email.controls)">
+            <button type="button" class="btn btn-default" (click)="removeItem(i, item.controls)">
               <i class="fa fa-trash-o"></i>
             </button>
           </div>

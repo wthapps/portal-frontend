@@ -35,11 +35,13 @@
         </div>
         <div class="row" *ngIf="!nameOnly">
           <div class="col-md-12">
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{'has-error': (f.nickname.errors && f.nickname.touched)}">
             <label for="nickname">Nick name</label>
             <input type="text" class="form-control" id="nickname" placeholder="Nick name"
                    formControlName="nickname">
-
+              <div *ngIf="f.nickname.errors && f.nickname.touched">
+                <span *ngIf="f.nickname.errors.blanked" class="help-block">Nick name is blanked</span>
+              </div>
             </div>
           </div>
         </div>
