@@ -57,7 +57,7 @@ export class ZMediaSearchComponent implements
   sorting: any;
   showDetailsInfo: any;
   // ============
-  titleNoData: any = 'There is no sharing!';
+  titleNoData: any = 'There are no sharings!';
   iconNoData: any = 'fa fa-share-alt';
   // ===========
   menuActions: any = {};
@@ -106,7 +106,7 @@ export class ZMediaSearchComponent implements
     this.route.queryParams.subscribe(p => {
       console.log(p);
       this.loadObjects(p);
-    })
+    });
   }
 
   doListEvent(e: any) {
@@ -134,7 +134,8 @@ export class ZMediaSearchComponent implements
   doToolbarEvent(e: any) {
     switch (e.action) {
       case 'uploaded':
-        this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: { id: this.object.id }, videos: [e.payload] }).subscribe(res => {
+        this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: { id: this.object.id }, videos: [e.payload] })
+        .subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
         break;
@@ -205,22 +206,22 @@ export class ZMediaSearchComponent implements
   toggleInfoCustom() {
     this.getSharingParentInfo(this.object.id);
     this.toggleInfo();
-  };
+  }
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
-    if (items) data = items;
+    if (items) { data = items; }
     this.apiBaseService.post(`media/favorites/toggle`, {
       objects: data
-        .map(v => { return { id: v.id, object_type: v.model } })
+        .map(v => ({ id: v.id, object_type: v.model }))
     }).subscribe(res => {
       this.objects = this.objects.map(v => {
-        let tmp = res.data.filter(d => d.id == v.id);
+        const tmp = res.data.filter(d => d.id === v.id);
         if (tmp && tmp.length > 0) {
           v.favorite = tmp[0].favorite;
         }
         return v;
-      })
+      });
       this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
     });
   }
@@ -228,7 +229,7 @@ export class ZMediaSearchComponent implements
   deSelect() {
     this.objects.forEach(ob => {
       ob.selected = false;
-    })
+    });
     this.selectedObjects = [];
     this.hasSelectedObjects = false;
   }
@@ -247,9 +248,9 @@ export class ZMediaSearchComponent implements
           this.loading = false;
           this.hasSelectedObjects = false;
           this.selectedObjects = [];
-        })
+        });
       }
-    })
+    });
   }
 
   deleteParent() {
@@ -264,9 +265,9 @@ export class ZMediaSearchComponent implements
           this.loading = true;
           this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, { sharings: [this.object] }).subscribe(res => {
             this.back();
-          })
+          });
         }
-      })
+      });
     } else {
       this.confirmService.confirm({
         header: 'Delete',
@@ -276,7 +277,7 @@ export class ZMediaSearchComponent implements
           this.loading = true;
           this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
             this.back();
-          })
+          });
         }
       });
     }
@@ -293,7 +294,8 @@ export class ZMediaSearchComponent implements
   }
 
   removeFromParent() {
-    this.apiBaseService.post(`media/playlists/remove_from_playlist`, { playlist: { id: this.object.id }, videos: this.selectedObjects.map(ob => { return { id: ob.id, model: ob.model } }) }).subscribe(res => {
+    this.apiBaseService.post(`media/playlists/remove_from_playlist`, { playlist: { id: this.object.id },
+     videos: this.selectedObjects.map(ob => ({ id: ob.id, model: ob.model })) }).subscribe(res => {
       this.toastsService.success('You removed videos successfully!');
       this.loadObjects(this.object.uuid);
       this.selectedObjects = [];
@@ -331,7 +333,7 @@ export class ZMediaSearchComponent implements
     this.apiBaseService
       .post(`media/playlists/add_to_playlist`, {
         playlist: { id: e.parents[0].id },
-        videos: e.children.map(c => { return { id: c.id, model: c.model } })
+        videos: e.children.map(c => ({ id: c.id, model: c.model }))
       })
       .subscribe(res => {
         this.toastsService.success('You just added to Playlist success');
@@ -549,7 +551,7 @@ export class ZMediaSearchComponent implements
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       }
-    }
+    };
   }
 
   // getSubMenuActions() {

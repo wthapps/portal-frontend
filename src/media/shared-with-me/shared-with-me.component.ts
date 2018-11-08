@@ -48,7 +48,7 @@ MediaAdditionalListMixin {
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
   modalIns: any;
-  iconNoData: any = 'fa fa-share-alt';
+  iconNoData: any = 'fa fw-shared-with-me';
   titleNoData: any = 'There no media shared with you!';
   subTitleNoData: any = 'Media can be shared to your connected contact.';
   modalRef: any;
@@ -87,9 +87,9 @@ MediaAdditionalListMixin {
     });
   }
 
-  loadMoreObjects:(input?: any) => void;
+  loadMoreObjects: (input?: any) => void;
 
-  loadingEnd:() => void;
+  loadingEnd: () => void;
 
   viewDetail(input?: any) {
     /* this method is load detail object */
@@ -114,9 +114,10 @@ MediaAdditionalListMixin {
           this.menuActions.shareMobile.active = true;
         }
         // Check permission
-        if (this.selectedObjects && this.selectedObjects.length == 1) {
+        if (this.selectedObjects && this.selectedObjects.length === 1) {
           this.validateActions(this.menuActions, this.selectedObjects[0].recipient.role_id);
-          this.disableMoreAction = (Object.keys(this.menuActions).filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length == 0);
+          this.disableMoreAction = (Object.keys(this.menuActions)
+          .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
         }
         this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
@@ -139,8 +140,8 @@ MediaAdditionalListMixin {
         this.viewDetail(e.payload.selectedObject.uuid);
         break;
       case 'openModal':
-        this.openEditModal(e.payload.selectedObject)
-        this.modalIns.event.subscribe(e => this.doModalAction(e));
+        this.openEditModal(e.payload.selectedObject);
+        this.modalIns.event.subscribe(ev => this.doModalAction(ev));
         break;
       case 'sort':
         this.sorting = e.payload.queryParams;
@@ -157,8 +158,9 @@ MediaAdditionalListMixin {
     switch (e.action) {
       case 'editName':
         this.apiBaseService.put(`media/sharings/${e.params.selectedObject.id}`, e.params.selectedObject).subscribe(res => {
-          this.toastsService.success('Updated successfully')
-        })
+          this.toastsService.success('Updated successfully');
+        });
+        break;
       default:
         break;
     }
@@ -199,14 +201,14 @@ MediaAdditionalListMixin {
   openEditModal: (object: any) => void;
   onAfterEditModal() {
 
-  };
+  }
 
   openEditModalCustom() {
-    if (this.selectedObjects && this.selectedObjects.length == 1) {
+    if (this.selectedObjects && this.selectedObjects.length === 1) {
       this.openEditModal(this.selectedObjects[0]);
       this.modalIns.event.subscribe(e => this.doModalAction(e));
     }
-  };
+  }
 
   deleteShareWithMe() {
     this.confirmService.confirm({
@@ -312,6 +314,6 @@ MediaAdditionalListMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       }
-    }
+    };
   }
 }

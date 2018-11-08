@@ -3,7 +3,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 
 
 @Component({
-    selector: 'album-delete-modal',
+  selector: 'album-delete-modal',
   templateUrl: 'album-delete-modal.component.html',
 })
 export class AlbumDeleteModalComponent {
@@ -11,7 +11,7 @@ export class AlbumDeleteModalComponent {
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   selectedAlbums: Array<any> = new Array<any>();
 
-  checked: boolean = false;
+  checked = false;
 
   open(options?: any) {
     this.selectedAlbums = options['selectedObjects'];

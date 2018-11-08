@@ -63,7 +63,7 @@ MediaModalMixin {
   modalRef: any;
   endLoading: any;
   menuActions: any;
-  sorting: any =  {sort_name: "Date", sort: "desc"};
+  sorting: any =  {sort_name: 'Date', sort: 'desc'};
 
   private sub: any;
 
@@ -94,7 +94,7 @@ MediaModalMixin {
   loadObjects(opts: any = {}) {
     this.loading = true;
     opts = {...opts, model: 'Media::Photo'};
-    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
     this.apiBaseService.get('media/media', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
@@ -102,10 +102,6 @@ MediaModalMixin {
       this.loadingEnd();
     });
   }
-
-  loadMoreObjects:(input?: any) => void;
-
-  loadingEnd:() => void;
 
   doToolbarEvent(e: any) {
     switch (e.action) {
@@ -118,11 +114,20 @@ MediaModalMixin {
     }
   }
 
+
+  // tslint:disable-next-line:member-ordering
+  loadMoreObjects: (input?: any) => void;
+
+  // tslint:disable-next-line:member-ordering
+  loadingEnd: () => void;
+
   /* AlbumCreateMixin This is album create methods, to
 custom method please overwirte any method*/
+  // tslint:disable-next-line:member-ordering
   openCreateAlbumModal: (selectedObjects: any) => void;
   onDoneAlbum(e: any) {
-    this.apiBaseService.post(`media/albums`,{name: e.parents[0].name, description: e.parents[0].description, photos: e.children.map(el => el.id)}).subscribe(res => {
+    this.apiBaseService.post(`media/albums`, {name: e.parents[0].name, description: e.parents[0].description,
+       photos: e.children.map(el => el.id)}).subscribe(res => {
       this.router.navigate(['albums', res.data.uuid]);
     });
   }
@@ -130,23 +135,25 @@ custom method please overwirte any method*/
 
   /* AlbumAddMixin This is album add methods, to
 custom method please overwirte any method*/
+  // tslint:disable-next-line:member-ordering
   openModalAddToAlbum: (selectedObjects: any) => void;
   onAddToAlbum(e: any) {
     this.apiBaseService
       .post(`media/albums/${e.parents[0].id}/photos`, {
           photos: this.selectedObjects
         })
-        .subscribe(res => {
+        .toPromise().then(res => {
           this.toastsService.success('You just added to Album success');
         });
   }
+  // tslint:disable-next-line:member-ordering
   onAddedToAlbum: (data: any) => void;
   /* ================================== */
 
   doListEvent(event: any) {
     switch (event.action) {
       case 'favorite':
-        this.toggleFavorite(event.payload)
+        this.toggleFavorite(event.payload);
         break;
       case 'viewDetails':
         this.viewDetail(event.payload.selectedObject.uuid);
@@ -164,6 +171,7 @@ custom method please overwirte any method*/
         if (event.payload.modalName === 'editNameModal') {
           this.openEditModal(event.payload.selectedObject);
         }
+        break;
       case 'sort':
         this.sorting = event.payload.queryParams;
         this.loadObjects(this.sorting);
@@ -205,11 +213,13 @@ custom method please overwirte any method*/
 
   /* MediaListMixin This is media list methods, to
 custom method please overwirte any method*/
-  selectedObjectsChanged:(objectsChanged?: any) => void;
+  // tslint:disable-next-line:member-ordering
+  selectedObjectsChanged: (objectsChanged?: any) => void;
+  // tslint:disable-next-line:member-ordering
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
-    let data: any = { returnUrl: '/photos' , preview: true};
-    if (this.selectedObjects && this.selectedObjects.length > 1) data.ids = this.selectedObjects.map(s => s.id).join(',')
+    const data: any = { returnUrl: '/photos' , preview: true};
+    if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
     this.router.navigate([`/photos/${id}`], {queryParams: data});
   }
 
@@ -217,31 +227,40 @@ custom method please overwirte any method*/
 
   /* SharingModalMixin This is methods to sharing, to
 custom method please overwirte any method*/
+  // tslint:disable-next-line:member-ordering
   openModalShare: () => void;
+  // tslint:disable-next-line:member-ordering
   onSaveShare: (e: any) => void;
+  // tslint:disable-next-line:member-ordering
   onEditShare: (e: SharingModalResult, sharing: any) => void;
+  // tslint:disable-next-line:member-ordering
   deleteObjects: (term: any) => void;
   // ========== SharingModalMixin ==============
 
   /* MediaViewMixin This is media view methods, to
 custom method please overwirte any method*/
   // changeViewMode:(mode: any) => void;
-  changeViewMode:(mode: any) => void;
+  // tslint:disable-next-line:member-ordering
+  changeViewMode: (mode: any) => void;
   /* MediaSortMixin This is media sort methods, to
 custom method please overwirte any method*/
-  sortMedia:() => void;
+  // tslint:disable-next-line:member-ordering
+  sortMedia: () => void;
 
-  downloadMedia:(media: any) => void;
+  // tslint:disable-next-line:member-ordering
+  downloadMedia: (media: any) => void;
 
+  // tslint:disable-next-line:member-ordering
   loadModalComponent: (component: any) => void;
 
-  openEditModal:(object: any) => void;
+  // tslint:disable-next-line:member-ordering
+  openEditModal: (object: any) => void;
   onAfterEditModal() {
     /* this method is load objects to display on init */
     const sub = this.modalIns.event.subscribe(event => {
       this.apiBaseService.put(`media/photos/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
-        if(sub) sub.unsubscribe();
-      })
+        if (sub) { sub.unsubscribe(); }
+      });
     });
   }
 
@@ -252,7 +271,7 @@ custom method please overwirte any method*/
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: () => {
-          this.viewDetail(this.selectedObjects[0].uuid)
+          this.viewDetail(this.selectedObjects[0].uuid);
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
@@ -353,7 +372,7 @@ custom method please overwirte any method*/
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: true, // Inside dropdown list
-        action: () => { this.deleteObjects('photo') },
+        action: () => { this.deleteObjects('photo'); },
         class: '',
         liclass: 'visible-xs-block',
         title: 'Delete',

@@ -2,22 +2,20 @@ import { Component, Input, Output, EventEmitter, ViewChild, OnInit, OnDestroy } 
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, tap, takeUntil } from 'rxjs/operators';
+
 import { ApiBaseService } from '@wth/shared/services';
 import { TaggingElComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-el.component';
 import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
 import { ModalService } from '@shared/components/modal/modal-service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 
 declare var $: any;
 declare var _: any;
 
 @Component({
-    selector: 'album-create-modal',
+  selector: 'album-create-modal',
   templateUrl: 'album-create-modal.component.html',
   styleUrls: ['album-create-modal.component.scss']
 })
@@ -35,7 +33,7 @@ export class AlbumCreateModalComponent implements OnInit, OnDestroy {
   tagsCtrl: AbstractControl;
   photosCtrl: AbstractControl;
 
-  isChanged: boolean = false;
+  isChanged = false;
   tagItems: any;
 
   arrayItems: Array<number> = [];
@@ -85,25 +83,25 @@ export class AlbumCreateModalComponent implements OnInit, OnDestroy {
 
   createAlbum() {
     let albumName = $('#album-name').val();
-    let albumDes = $('#album-description').val();
-    if (albumName.length == 0) {
+    const albumDes = $('#album-description').val();
+    if (albumName.length === 0) {
       albumName = 'Untitled Album';
     }
-    let selectedPhotosId = _.map(this.selectedPhotos, 'id');
+    const selectedPhotosId = _.map(this.selectedPhotos, 'id');
 
-    let tagsName:any = [];
+    const tagsName = [];
     for (let i = 0; i < this.tag.addedTags.length; i++) {
-      if (typeof this.tag.addedTags[i] == 'object') {
+      if (typeof this.tag.addedTags[i] === 'object') {
         tagsName.push(this.tag.addedTags[i].display);
       } else {
         tagsName.push(this.tag.addedTags[i]);
       }
     }
-    let album:any = {name: albumName, description: albumDes, photos: selectedPhotosId, tags_name: tagsName};
+    const album = {name: albumName, description: albumDes, photos: selectedPhotosId, tags_name: tagsName};
     // Only subscribe to this observable once
     this.close(null);
     this.api.post(`media/albums`, album)
-      .subscribe((res: any) => {
+      .toPromise().then((res: any) => {
         this.album = res.data;
         this.doneFormModal.emit(this.album);
         this.event.emit({action: 'addAlbumSuccessful', payload: res });
@@ -112,12 +110,12 @@ export class AlbumCreateModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  viewAlbumDetail(albumId: number) {
-    this.router.navigate(['albums', albumId], {queryParams: {returnUrl: this.router.url}});
+  viewAlbumDetail(albumId: number): Promise<any> {
+    return this.router.navigate(['albums', albumId], {queryParams: {returnUrl: this.router.url}});
   }
 
   onAction(action: string, data: any) {
-    let options = {action: action, data: data};
+    const options = {action: action, data: data};
     this.event.emit(options);
   }
 
@@ -131,7 +129,7 @@ export class AlbumCreateModalComponent implements OnInit, OnDestroy {
   }
 
   removePhoto(photo: any, event: any): void {
-    _.remove(this.selectedPhotos, (p: any) => p.id == photo.id);
+    _.remove(this.selectedPhotos, (p: any) => p.id === photo.id);
   }
 
 

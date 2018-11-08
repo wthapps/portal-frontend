@@ -38,7 +38,7 @@
 <div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
   <box-loading></box-loading>
 </div>
-<box-no-data *ngIf="objects && objects.length == 0" [title]="'There is no video!'" [icon]="'fa fa-video-camera'"
+<box-no-data *ngIf="objects && objects.length == 0" [title]="'There are no videos!'" [icon]="'fa fa-video-camera'"
   [subTitle]="'Try to upload a new video'" style="margin-top: 50px; display: block;">
   <button class="btn btn-outline-primary" (click)="upload(['video/*'])"><i class="fa fa-cloud-upload"></i> Upload Video</button>
 </box-no-data>

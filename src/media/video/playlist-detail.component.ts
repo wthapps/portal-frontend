@@ -67,7 +67,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   links: any;
   showDetailsInfo: any;
   // ============
-  titleNoData: any = 'There is no video!';
+  titleNoData: any = 'There are no videos!';
   subTitleNoData: any = 'Try to add new videos';
   actionNoData: any = 'Add videos';
   uploadMode: any = 'multiple';
@@ -120,18 +120,18 @@ PlaylistAddMixin, MediaDownloadMixin {
   toggleInfo: () => void;
   loadingEnd: () => void;
 
-  openEditModal:(object: any) => void;
+  openEditModal: (object: any) => void;
   onAfterEditModal() {
     const sub = this.modalIns.event.subscribe(event => {
       this.apiBaseService.put(`media/playlists/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
-        if (sub) sub.unsubscribe();
-      })
+        if (sub) { sub.unsubscribe(); }
+      });
     });
   }
 
   onAddedToPlaylist(data: any) {
     this.loadObjects(this.object.uuid);
-  };
+  }
 
   ngOnInit() {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe(p => {
@@ -199,7 +199,7 @@ PlaylistAddMixin, MediaDownloadMixin {
   loadObjects(input: any, opts: any = {}) {
     this.loading = true;
     opts = { ...opts, model: 'Media::Album' };
-    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
     this.apiBaseService.get(`media/playlists/${input}/videos`, opts).subscribe(res => {
       this.objects = res.data;
       this.cloneObjects = _.cloneDeep(this.objects);
@@ -227,9 +227,9 @@ PlaylistAddMixin, MediaDownloadMixin {
         this.cloneObjects = _.cloneDeep(this.objects);
         this.links = res.meta.links;
         this.loadingEnd();
-      })
+      });
     }
-  };
+  }
 
   doCoverEvent(event: any) {
     switch (event.action) {
@@ -251,22 +251,23 @@ PlaylistAddMixin, MediaDownloadMixin {
   }
 
   selectedObjectsCoverChanged() {
-    this.selectedCoverObjects = this.cloneObjects.filter(ob => ob.selected == true);
+    this.selectedCoverObjects = this.cloneObjects.filter(ob => ob.selected === true);
   }
 
   setCover(event) {
-    this.apiBaseService.put('media/playlists/' + this.object.uuid, { thumbnail_url: this.selectedCoverObjects[0].thumbnail_url }).subscribe(res => {
+    this.apiBaseService.put('media/playlists/' + this.object.uuid, { thumbnail_url: this.selectedCoverObjects[0].thumbnail_url })
+    .subscribe(res => {
       this.doToolbarCoverEvent({ action: 'close' });
       this.coverModal.close();
-      this.toastsService.success("Set cover image successfully")
-    })
+      this.toastsService.success('Set cover image successfully');
+    });
   }
 
   doToolbarCoverEvent(event: any) {
-    if (event.action == 'close') {
+    if (event.action === 'close') {
       this.cloneObjects = this.cloneObjects.map(ob => {
         ob.selected = false;
-        return ob
+        return ob;
       });
       this.selectedCoverObjects = [];
     }
@@ -297,10 +298,10 @@ PlaylistAddMixin, MediaDownloadMixin {
     this.modalIns.event.subscribe(e => {
       this.apiBaseService.put(`media/playlists/${this.object.uuid}`, this.object).subscribe(res => {
       });
-    })
+    });
   }
 
-  selectedObjectsChanged:(objectsChanged?: any) => void;
+  selectedObjectsChanged: (objectsChanged?: any) => void;
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
@@ -449,9 +450,9 @@ PlaylistAddMixin, MediaDownloadMixin {
           this.loading = true;
           this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, { sharings: [this.object] }).subscribe(res => {
             this.back();
-          })
+          });
         }
-      })
+      });
     } else {
       this.confirmService.confirm({
         header: 'Delete',
@@ -461,7 +462,7 @@ PlaylistAddMixin, MediaDownloadMixin {
           this.loading = true;
           this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
             this.back();
-          })
+          });
         }
       });
     }
@@ -720,13 +721,14 @@ PlaylistAddMixin, MediaDownloadMixin {
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          this.selectedObjects = this.selectedObjects.map(el => { el._destroy = true; return { id: el.id, model: el.model, _destroy: el._destroy } })
+          this.selectedObjects = this.selectedObjects.map(el => { el._destroy = true;
+             return { id: el.id, model: el.model, _destroy: el._destroy }; });
           this.apiBaseService.put(`media/playlists/${this.object.id}/objects`, { objects: this.selectedObjects }).subscribe(res => {
             this.toastsService.success('You removed videos successfully!');
             this.objects = this.objects.filter(ob => ob.selected !== true);
             this.selectedObjectsChanged();
             this.loadObjects(this.object.uuid);
-          })
+          });
         },
         class: '',
         liclass: '',

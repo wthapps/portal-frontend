@@ -7,6 +7,7 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { Router } from '@angular/router';
 import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
+import { Subscription } from 'rxjs';
 
 @Mixins([AlbumCreateMixin])
 /* AlbumAddMixin This is album add methods, to
@@ -18,9 +19,9 @@ export class AlbumAddMixin implements AlbumCreateMixin {
     public router: Router,
     public mediaCreateModalService: MediaCreateModalService
   ) {}
-  subAddAlbum: any;
-  subOpenCreateAlbum: any;
-  subCreateAlbum: any;
+  subAddAlbum: Subscription;
+  subOpenCreateAlbum: Subscription;
+  subCreateAlbum: Subscription;
 
   // openModalAddToAlbum:(selectedObjects: any) => void;
   // onAddToAlbum:(e: any) => void;
@@ -28,9 +29,9 @@ export class AlbumAddMixin implements AlbumCreateMixin {
   // onDoneAlbum:(e: any) => void;
   // onAddedToAlbum:(data: any) => void;
   openModalAddToAlbum(selectedObjects: any) {
-    if (this.subAddAlbum) this.subAddAlbum.unsubscribe();
-    if (this.subOpenCreateAlbum) this.subOpenCreateAlbum.unsubscribe();
-    if (this.subCreateAlbum) this.subCreateAlbum.unsubscribe();
+    if (this.subAddAlbum) { this.subAddAlbum.unsubscribe(); }
+    if (this.subOpenCreateAlbum) { this.subOpenCreateAlbum.unsubscribe(); }
+    if (this.subCreateAlbum) { this.subCreateAlbum.unsubscribe(); }
     const getParents = this.apiBaseService.get(`media/albums`);
     this.mediaAddModalService.open.next({
       selectedObjects: selectedObjects,
@@ -62,7 +63,8 @@ export class AlbumAddMixin implements AlbumCreateMixin {
 
   onAddedToAlbum(data: any) {}
 
-  openCreateAlbumModal:(selectedObjects: any) => void;
+  openCreateAlbumModal: (selectedObjects: any) => void;
 
   onDoneAlbum: (e: any) => void;
 }
+

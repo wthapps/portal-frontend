@@ -28,7 +28,6 @@ declare var _: any;
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin])
 @Component({
-  moduleId: module.id,
   templateUrl: '../shared/list/list.component.html'
 })
 export class AlbumListComponent implements OnInit,
@@ -40,28 +39,46 @@ export class AlbumListComponent implements OnInit,
   // display objects on screen
   objects: any;
   // tooltip to introduction
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
 
   // check has selected objects
-  hasSelectedObjects: boolean = false;
+  hasSelectedObjects = false;
   selectedObjects: any = [];
-  favoriteAll: boolean = false;
+  favoriteAll = false;
   links: any;
   subOpenShare: any;
   loading: boolean;
-  viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
+  readonly viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
   modalIns: any;
   modalRef: any;
-  iconNoData: any = 'wthico-album';
-  titleNoData: any = 'There is no album!';
-  subTitleNoData: any = 'Try to create a album';
-  actionNoData: any = 'Create Album';
+  readonly iconNoData: any = 'wthico-album';
+  readonly titleNoData: any = 'There are no albums!';
+  readonly subTitleNoData: any = 'Try to create a album';
+  readonly actionNoData: any = 'Create Album';
   sorting: any;
   endLoading: any;
   subCreateAlbum: any;
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+
+  openCreateAlbumModal: (selectedObjects: any) => void;
+  openModalShare: (input?: any) => void;
+  onSaveShare: (e: any) => void;
+  onEditShare: (e: SharingModalResult, sharing: any) => void;
+  selectedObjectsChanged: (objectsChanged?: any) => void;
+
+  toggleFavorite: (items?: any) => void;
+
+  deleteObjects: (term: any) => void;
+  loadingEnd: () => void;
+
+  loadMoreObjects: (input?: any) => void;
+
+  changeViewMode: (mode: any) => void;
+
+  loadModalComponent: (component: any) => void;
+  openEditModal: (object: any) => void;
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -100,12 +117,11 @@ export class AlbumListComponent implements OnInit,
     }
   }
 
-  openCreateAlbumModal:(selectedObjects: any) => void;
-
   onDoneAlbum(e: any) {
-    this.apiBaseService.post(`media/albums`, { name: e.parents[0].name, description: e.parents[0].description, photos: e.children.map(el => el.id) }).subscribe(res => {
+    this.apiBaseService.post(`media/albums`, { name: e.parents[0].name, description: e.parents[0].description,
+       photos: e.children.map(el => el.id) }).subscribe(res => {
       this.loadObjects();
-    })
+    });
   }
 
   getMenuActions() {
@@ -151,7 +167,7 @@ export class AlbumListComponent implements OnInit,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
         action: () => {
-          this.deleteObjects('albums')
+          this.deleteObjects('albums');
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
@@ -181,7 +197,7 @@ export class AlbumListComponent implements OnInit,
         action: () => {
           this.apiBaseService.get(`media/media/${this.selectedObjects[0].uuid}/objects`, { model: 'Media::Album' }).subscribe(res => {
             this.downloadMedia(res.data);
-          })
+          });
         },
         class: '',
         liclass: '',
@@ -195,7 +211,7 @@ export class AlbumListComponent implements OnInit,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
         action: () => {
-          this.deleteObjects('albums')
+          this.deleteObjects('albums');
         },
         class: '',
         liclass: 'visible-xs-block',
@@ -204,12 +220,12 @@ export class AlbumListComponent implements OnInit,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       }
-    }
+    };
   }
   doListEvent(event: any) {
     switch (event.action) {
       case 'viewDetails':
-        this.viewDetail(event.payload.selectedObject.uuid)
+        this.viewDetail(event.payload.selectedObject.uuid);
         break;
       case 'favorite':
         this.toggleFavorite(event.payload);
@@ -217,17 +233,20 @@ export class AlbumListComponent implements OnInit,
       case 'getMore':
         this.loadMoreObjects();
         break;
-      case 'openModal':
-        if (event.payload.modalName == "editNameModal") {
-          this.openEditModal(event.payload.selectedObject)
-        };
-        if (event.payload.modalName == "createAlbumModal") {
+      case 'openModal': {
+        if (event.payload.modalName === 'editNameModal') {
+          this.openEditModal(event.payload.selectedObject);
+        }
+        if (event.payload.modalName === 'createAlbumModal') {
           this.openCreateAlbumModal([]);
-        };
-      case 'sort':
+        }
+        break;
+      }
+      case 'sort': {
         this.sorting = event.payload.queryParams;
         this.loadObjects(this.sorting);
         break;
+      }
       case 'clickOnItem':
       case 'clickOnCircle':
         this.selectedObjectsChanged();
@@ -243,20 +262,17 @@ export class AlbumListComponent implements OnInit,
     }
   }
 
-  openModalShare: (input?: any) => void;
-  onSaveShare: (e: any) => void;
-  onEditShare: (e: SharingModalResult, sharing: any) => void;
+  doEvent(event) {
+    const {action} = event;
+    console.log('doEvent action: ', action);
+  }
+
 
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
-  selectedObjectsChanged:(objectsChanged?: any) => void;
-
-  toggleFavorite:(items?: any) => void;
-
-  deleteObjects: (term: any) => void;
   loadObjects(opts: any = {}) {
     this.loading = true;
-    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
     this.apiBaseService.get(`media/albums`, opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
@@ -269,19 +285,11 @@ export class AlbumListComponent implements OnInit,
     this.router.navigate([`/albums/${uuid}`], {queryParams: {returnUrls: ['/', '/albums']}});
   }
 
-  loadingEnd: () => void;
-
-  loadMoreObjects: (input?: any) => void;
-
-  changeViewMode: (mode: any) => void;
-
-  loadModalComponent: (component: any) => void;
-  openEditModal: (object: any) => void;
   onAfterEditModal() {
     const sub = this.modalIns.event.subscribe(event => {
       this.apiBaseService.put(`media/albums/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
-        if (sub) sub.unsubscribe();
-      })
+        if (sub) { sub.unsubscribe(); }
+      });
 
     });
   }

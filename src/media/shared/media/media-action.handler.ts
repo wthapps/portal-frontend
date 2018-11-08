@@ -86,12 +86,12 @@ export class MediaActionHandler implements OnDestroy {
         break;
       case 'photosSelectModal':
         mediaSelectionService.open();
-        if (this.subSelect) this.subSelect.unsubscribe();
+        if (this.subSelect) { this.subSelect.unsubscribe(); }
         this.subSelect = mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
           .subscribe(photos => {
             this.doEvent({action: 'addToParent', payload: {photos: photos }});
           });
-        if (this.sub)  this.sub.unsubscribe();
+        if (this.sub) {  this.sub.unsubscribe(); }
         this.sub = mediaSelectionService.uploadingMedias$
           .map(([file, dataUrl]) => [file])
           .subscribe((photos: any) => {

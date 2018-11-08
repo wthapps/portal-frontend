@@ -16,6 +16,7 @@
     "start-portal": "ng serve portal --port 3000 --open",
     "start-account": "ng serve my-account --port 3005 --open",
     "start-photo": "ng serve media --port 3010 --open",
+    "start-photo-nr": "ng serve media --port 3010 --live-reload false --open",
     "start-social": "ng serve social --port 3015 --open",
     "start-chat": "ng serve chat --port 3020 --open",
     "start-chat-nr": "ng serve chat --port 3020 --live-reload false --open",

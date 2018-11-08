@@ -51,9 +51,9 @@ MediaModalMixin {
   tooltip: any = Constants.tooltip;
 
   // check has selected objects
-  hasSelectedObjects: boolean = false;
+  hasSelectedObjects = false;
   selectedObjects: any = [];
-  favoriteAll: boolean = false;
+  favoriteAll = false;
   links: any;
   subAddPlaylist: any;
   subOpenShare: any;
@@ -64,7 +64,7 @@ MediaModalMixin {
   modalIns: any;
   modalRef: any;
   iconNoData: any = 'fa fa-file-video-o';
-  titleNoData: any = 'There is no playlist!';
+  titleNoData: any = 'There are no playlists!';
   subTitleNoData: any = 'Try to create a playlist';
   actionNoData: any = 'Create Playlist';
   subCreatePlaylist: any;
@@ -86,10 +86,10 @@ MediaModalMixin {
     public resolver: ComponentFactoryResolver
   ) {
   }
-  openCreatePlaylistModal:(selectedObjects: any) => void;
-  onDonePlaylist:(e: any) => void;
+  openCreatePlaylistModal: (selectedObjects: any) => void;
+  onDonePlaylist: (e: any) => void;
 
-  downloadMedia:(media: any) => void;
+  downloadMedia: (media: any) => void;
 
   ngOnInit() {
     this.loadObjects();
@@ -102,7 +102,7 @@ MediaModalMixin {
         this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        if(this.selectedObjects.length > 1) {
+        if (this.selectedObjects.length > 1) {
           this.menuActions.edit.active = false;
         } else {
           this.menuActions.edit.active = true;
@@ -113,8 +113,8 @@ MediaModalMixin {
         break;
     }
   }
-  doEvent(event: any){
-    switch(event.action){
+  doEvent(event: any) {
+    switch (event.action) {
       case 'noData':
         this.openCreatePlaylistModal([]);
       break;
@@ -187,7 +187,7 @@ MediaModalMixin {
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
         action: () => {
-          this.deleteObjects('playlists')
+          this.deleteObjects('playlists');
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
@@ -228,7 +228,7 @@ MediaModalMixin {
         action: () => {
           this.apiBaseService.get(`media/media/${this.selectedObjects[0].uuid}/objects`, {model: 'Media::Playlist'}).subscribe(res => {
             this.downloadMedia(res.data);
-          })
+          });
         },
         class: '',
         liclass: '',
@@ -242,7 +242,7 @@ MediaModalMixin {
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
         action: () => {
-          this.deleteObjects('playlists')
+          this.deleteObjects('playlists');
         },
         class: '',
         liclass: 'visible-xs-block',
@@ -251,7 +251,7 @@ MediaModalMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-trash'
       }
-    }
+    };
   }
 
   doListEvent(event: any) {
@@ -266,9 +266,9 @@ MediaModalMixin {
         this.loadObjects();
         break;
       case 'openModal':
-        if (event.payload.modalName == "editNameModal") {
-          this.openEditModal(event.payload.selectedObject)
-        };
+        if (event.payload.modalName === 'editNameModal') {
+          this.openEditModal(event.payload.selectedObject);
+        }
         break;
       case 'sort':
         this.sorting = event.payload.queryParams;
@@ -290,7 +290,7 @@ MediaModalMixin {
   }
 
   openModalAddToPlaylist() {
-    if (this.subAddPlaylist) this.subAddPlaylist.unsubscribe();
+    if (this.subAddPlaylist) { this.subAddPlaylist.unsubscribe(); }
     this.playlistModalService.open.next({
       selectedObjects: this.selectedObjects
     });
@@ -308,8 +308,8 @@ MediaModalMixin {
       });
   }
 
-  openModalShare:(input?: any) => void;
-  onSaveShare:(e: any) => void;
+  openModalShare: (input?: any) => void;
+  onSaveShare: (e: any) => void;
   onEditShare: (e: SharingModalResult, sharing: any) => void;
 
   createPlaylist() {
@@ -320,12 +320,12 @@ MediaModalMixin {
   }
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
-  selectedObjectsChanged:(objectsChanged?: any) => void;
+  selectedObjectsChanged: (objectsChanged?: any) => void;
   toggleFavorite: (items?: any) => void;
   deleteObjects: (term: any) => void;
   loadObjects(opts: any = {}) {
     this.loading = true;
-    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
     this.apiBaseService.get(`media/playlists`, opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
@@ -337,19 +337,19 @@ MediaModalMixin {
     this.router.navigate([`/playlists/${uuid}`], { queryParams: { returnUrls: ['/', '/playlists'] } });
   }
 
-  loadingEnd:() => void;
+  loadingEnd: () => void;
 
-  loadMoreObjects:(input?: any) => void;
+  loadMoreObjects: (input?: any) => void;
 
-  changeViewMode:(mode: any) => void;
+  changeViewMode: (mode: any) => void;
 
   loadModalComponent: (component: any) => void;
-  openEditModal:(object: any) => void;
+  openEditModal: (object: any) => void;
   onAfterEditModal() {
     const sub = this.modalIns.event.subscribe(event => {
       this.apiBaseService.put(`media/playlists/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
-        if (sub) sub.unsubscribe();
-      })
+        if (sub) { sub.unsubscribe(); }
+      });
     });
   }
 }

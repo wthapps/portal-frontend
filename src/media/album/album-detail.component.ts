@@ -34,7 +34,7 @@ import { WMediaSelectionService } from '@shared/components/w-media-selection/w-m
 import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { WUploader } from '@shared/services/w-uploader';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
 import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
@@ -53,7 +53,6 @@ declare var _: any;
   MediaDownloadMixin
 ])
 @Component({
-  moduleId: module.id,
   templateUrl: '../shared/list/parent-detail.component.html'
 })
 export class ZMediaAlbumDetailComponent
@@ -87,7 +86,7 @@ export class ZMediaAlbumDetailComponent
   sharings: any;
   moreRecipients: any;
   // ============
-  titleNoData: any = 'There is no photo!';
+  titleNoData: any = 'There are no photos!';
   subTitleNoData: any = 'Try to add a photo';
   iconNoData: any = 'fa fa-file-image-o';
   // ===========
@@ -180,22 +179,23 @@ export class ZMediaAlbumDetailComponent
   }
 
   selectedObjectsCoverChanged() {
-    this.selectedCoverObjects = this.cloneObjects.filter(ob => ob.selected == true);
+    this.selectedCoverObjects = this.cloneObjects.filter(ob => ob.selected === true);
   }
 
   setCover(event) {
-    this.apiBaseService.put('media/albums/' + this.object.id, {thumbnail_url: this.selectedCoverObjects[0].thumbnail_url}).subscribe(res => {
+    this.apiBaseService.put('media/albums/' + this.object.id, {thumbnail_url: this.selectedCoverObjects[0].thumbnail_url})
+    .subscribe(res => {
       this.doToolbarCoverEvent({action: 'close'});
       this.coverModal.close();
-      this.toastsService.success("Set cover image successfully")
-    })
+      this.toastsService.success('Set cover image successfully');
+    });
   }
 
   doToolbarCoverEvent(event: any) {
-    if(event.action == 'close'){
+    if (event.action === 'close') {
       this.cloneObjects = this.cloneObjects.map(ob => {
         ob.selected = false;
-        return ob
+        return ob;
       });
       this.selectedCoverObjects = [];
     }
@@ -208,9 +208,10 @@ export class ZMediaAlbumDetailComponent
       allowCancelUpload: true,
       allowedFileTypes: ['image/*']
     });
-    if (this.subSelect) this.subSelect.unsubscribe();
-    this.subSelect = this.mediaSelectionService.selectedMedias$
-      .subscribe(photos => {
+    if (this.subSelect) { this.subSelect.unsubscribe(); }
+    this.subSelect = this.mediaSelectionService.selectedMedias$.pipe(
+      filter(photos => photos.length > 0)
+    ).subscribe(photos => {
         this.onAddToAlbum({parents: [this.object], children: photos});
         // this.objects = [...photos.filter(p => p.model === this.objectType), ...this.objects];
         // this.loadObjects(this.object.uuid);
@@ -249,7 +250,8 @@ export class ZMediaAlbumDetailComponent
   doToolbarEvent(e: any) {
     switch (e.action) {
       case 'uploaded':
-        this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: { id: this.object.id }, videos: [e.payload] }).subscribe(res => {
+        this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: { id: this.object.id },
+         videos: [e.payload] }).subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
         break;
@@ -283,20 +285,20 @@ export class ZMediaAlbumDetailComponent
   loadObjects(input: any, opts: any = {}) {
     this.loading = true;
     opts = { ...opts, model: 'Media::Album' };
-    this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
-    this.apiBaseService.get(`media/media/${input}/objects`, opts).subscribe(res => {
+    this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
+    this.apiBaseService.get(`media/media/${input}/objects`, opts).toPromise().then(res => {
       this.objects = res.data;
-      this.cloneObjects = _.cloneDeep(this.objects)
+      this.cloneObjects = _.cloneDeep(this.objects);
       this.links = res.meta.links;
       this.loading = false;
       this.loadingEnd();
     });
   }
 
-  openModalAddToAlbum:(selectedObjects: any) => void;
-  onAddToAlbum:(e: any) => void;
-  openCreateAlbumModal:(selectedObjects: any) => void;
-  onDoneAlbum:(e: any) => void;
+  openModalAddToAlbum: (selectedObjects: any) => void;
+  onAddToAlbum: (e: any) => void;
+  openCreateAlbumModal: (selectedObjects: any) => void;
+  onDoneAlbum: (e: any) => void;
 
   loadObject(input: any) {
     this.apiBaseService.get(`media/albums/${input}`).subscribe(res => {
@@ -306,8 +308,10 @@ export class ZMediaAlbumDetailComponent
       } else {
         this.menuActions.favorite.iconClass = 'fa fa-star-o';
       }
-      this.validateActions(this.subMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
-      this.validateActions(this.parentMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER)
+      this.validateActions(this.subMenuActions, this.object.recipient ? this.object.recipient.role_id :
+         mediaConstants.SHARING_PERMISSIONS.OWNER);
+      this.validateActions(this.parentMenuActions, this.object.recipient ? this.object.recipient.role_id :
+         mediaConstants.SHARING_PERMISSIONS.OWNER);
     });
   }
   validateActions: (menuActions: any, role_id: number) => any;
@@ -319,9 +323,9 @@ export class ZMediaAlbumDetailComponent
         this.cloneObjects = _.cloneDeep(this.objects);
         this.links = res.meta.links;
         this.loadingEnd();
-      })
+      });
     }
-  };
+  }
 
   loadingEnd: () => void;
 
@@ -335,7 +339,7 @@ export class ZMediaAlbumDetailComponent
     throw new Error('should overwrite this method');
   }
 
-  back:() => void;
+  back: () => void;
 
   editName(object: any) {
     this.loadModalComponent(MediaRenameModalComponent);
@@ -343,28 +347,28 @@ export class ZMediaAlbumDetailComponent
     this.modalIns.event.subscribe(e => {
       this.apiBaseService.put(`media/albums/${this.object.id}`, this.object).subscribe(res => {
       });
-    })
+    });
   }
 
-  selectedObjectsChanged:(objectsChanged?: any) => void;
+  selectedObjectsChanged: (objectsChanged?: any) => void;
 
   loadModalComponent: (component: any) => void;
   toggleInfo: () => void;
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
-    if (items) data = items;
+    if (items) { data = items; }
     this.apiBaseService.post(`media/favorites/toggle`, {
       objects: data
-        .map(v => { return { id: v.id, object_type: v.model } })
+        .map(v => ({ id: v.id, object_type: v.model }))
     }).subscribe(res => {
       this.objects = this.objects.map(v => {
-        let tmp = res.data.filter(d => d.id == v.id);
+        const tmp = res.data.filter(d => d.id === v.id);
         if (tmp && tmp.length > 0) {
           v.favorite = tmp[0].favorite;
         }
         return v;
-      })
+      });
       this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
     });
   }
@@ -388,9 +392,9 @@ export class ZMediaAlbumDetailComponent
         this.apiBaseService.post(`media/media/delete`, { objects: this.selectedObjects }).subscribe(res => {
           this.loadObjects(this.object.uuid);
           this.loading = false;
-        })
+        });
       }
-    })
+    });
   }
 
   deleteParent() {
@@ -404,9 +408,9 @@ export class ZMediaAlbumDetailComponent
           this.loading = true;
           this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, { sharings: [this.object] }).subscribe(res => {
             this.back();
-          })
+          });
         }
-      })
+      });
     } else {
       this.confirmService.confirm({
         header: 'Delete',
@@ -416,7 +420,7 @@ export class ZMediaAlbumDetailComponent
           this.loading = true;
           this.apiBaseService.post(`media/media/delete`, { objects: [this.object] }).subscribe(res => {
             this.back();
-          })
+          });
         }
       });
     }
@@ -433,7 +437,8 @@ export class ZMediaAlbumDetailComponent
   }
 
   removeFromParent() {
-    this.apiBaseService.post(`media/playlists/remove_from_playlist`, { playlist: { id: this.object.id }, videos: this.selectedObjects.map(ob => { return { id: ob.id, model: ob.model } }) }).subscribe(res => {
+    this.apiBaseService.post(`media/playlists/remove_from_playlist`, { playlist: { id: this.object.id },
+     videos: this.selectedObjects.map(ob => ({ id: ob.id, model: ob.model })) }).subscribe(res => {
       this.toastsService.success('You removed videos successfully!');
       this.loadObjects(this.object.uuid);
       this.selectedObjects = [];
@@ -450,7 +455,7 @@ export class ZMediaAlbumDetailComponent
   onSaveShare(e: SharingModalResult) {
     const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
     const data: SharingCreateParams = {
-      objects: objects.map(s => { return { id: s.id, model: s.model } }),
+      objects: objects.map(s => ({ id: s.id, model: s.model })),
       recipients: e.users,
       role_id: e.role.id
     };
@@ -472,7 +477,7 @@ export class ZMediaAlbumDetailComponent
   downloadMedia: (media: any) => void;
   getSharingParentInfo: (sharingId: any) => void;
 
-  openEditModal:(object: any) => void;
+  openEditModal: (object: any) => void;
   onAfterEditModal() {
     this.modalIns.event.subscribe(e => {
       this.apiBaseService.put(`media/albums/${this.object.id}`, this.object).subscribe(res => {
@@ -714,9 +719,10 @@ export class ZMediaAlbumDetailComponent
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          this.selectedObjects = this.selectedObjects.map(el => { el._destroy = true; return { id: el.id, model: el.model, _destroy: el._destroy } })
+          this.selectedObjects = this.selectedObjects.map(el => { el._destroy = true;
+             return { id: el.id, model: el.model, _destroy: el._destroy }; });
           this.apiBaseService.put(`media/albums/${this.object.id}/objects`, { objects: this.selectedObjects }).subscribe(res => {
-            this.objects = this.objects.filter(ob => ob.selected !== true)
+            this.objects = this.objects.filter(ob => ob.selected !== true );
             this.selectedObjectsChanged(this.objects);
             this.loadObjects(this.object.uuid);
           });

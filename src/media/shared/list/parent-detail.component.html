@@ -28,6 +28,10 @@
     </li>
   </ul>
 </ng-template>
+<div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
+  <box-loading></box-loading>
+</div>
+
 <div *ngIf="object" class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
   <div class="page-over-full-header">
     <ng-template #objectActionsTemplate>
@@ -70,7 +74,6 @@
         <box-loading *ngIf="links?.next"></box-loading>
       </div>
     </w-grid-list>
-
     <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
       [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
 

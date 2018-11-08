@@ -4,7 +4,6 @@ import { Constants } from '@wth/shared/constant';
 declare let _: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'me-toolbar-list',
   templateUrl: 'media-toolbar-list.component.html',
   styleUrls: ['media-toolbar-list.component.scss']

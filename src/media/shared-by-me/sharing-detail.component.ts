@@ -77,7 +77,7 @@ export class ZMediaSharingDetailComponent
   sorting: any;
   showDetailsInfo: any;
   // ============
-  titleNoData: any = 'There is no sharing!';
+  titleNoData: any = 'There are no sharings!';
   iconNoData: any = 'fa fa-share-alt';
   // ===========
   menuActions: any = {};

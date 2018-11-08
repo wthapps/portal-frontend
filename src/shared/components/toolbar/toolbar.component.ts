@@ -46,21 +46,21 @@ AlbumCreateMixin {
   @Input() object; // detail object
   @Input() selectedObjects: Array<any> = new Array<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
-  viewModes: any = {
+  readonly viewModes: any = {
     grid: 'grid',
     list: 'list',
     timeline: 'timeline'
   };
   @Input() viewMode: any = this.viewModes.grid;
-  favoriteAll: boolean = false;
-  hasOneObject: boolean = false;
-  hasManyObjects: boolean = false;
-  hasNoObject: boolean = false;
+  favoriteAll = false;
+  hasOneObject = false;
+  hasManyObjects = false;
+  hasNoObject = false;
   subCreateAlbum: any;
   subAddAlbum: any;
   subOpenCreateAlbum: any;
   subUploader: any;
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   subCreatePlaylist: any;
 
   uppy: any;
@@ -80,17 +80,17 @@ AlbumCreateMixin {
 
     }
 
-  openCreatePlaylistModal:(selectedObjects: any) => void;
-  onDonePlaylist:(e: any) => void;
+  openCreatePlaylistModal: (selectedObjects: any) => void;
+  onDonePlaylist: (e: any) => void;
 
   ngOnInit() {
     this.subUploader = this.mediaUploaderDataService.action$.subscribe(e => {
       switch (e.action) {
         case 'openModal':
-          if (e.payload.modalName == 'createAlbumModal') {
+          if (e.payload.modalName === 'createAlbumModal') {
             this.openCreateAlbumModal(e.payload.selectedObjects);
           }
-          if (e.payload.modalName == 'addToAlbumModal') {
+          if (e.payload.modalName === 'addToAlbumModal') {
             this.openModalAddToAlbum(e.payload.selectedObjects);
           }
           break;
@@ -112,7 +112,7 @@ AlbumCreateMixin {
   }
 
   ngOnDestroy() {
-    if (this.subUploader) this.subUploader.unsubscribe();
+    if (this.subUploader) { this.subUploader.unsubscribe(); }
   }
 
   doAction(event: any) {
@@ -128,11 +128,10 @@ AlbumCreateMixin {
       this.updateSelectedObjects([]);
     }
     if (event.action === 'openModalCreatePlayListModal') {
-      if (this.subCreateAlbum) this.subCreateAlbum.unsubscribe();
+      if (this.subCreatePlaylist) { this.subCreatePlaylist.unsubscribe(); }
       this.openCreatePlaylistModal(this.selectedObjects);
     }
     if (event.action === 'openModalCreateAlbumModal') {
-      if (this.subCreatePlaylist) this.subCreatePlaylist.unsubscribe();
       this.openCreateAlbumModal(this.selectedObjects);
     }
     this.event.emit(event);
@@ -158,20 +157,21 @@ AlbumCreateMixin {
   // }
 
   errorHandler(error: any) {
-    if (error.statusCode == 406 && error.error == 'Not Acceptable') {
+    if (error.statusCode === 406 && error.error === 'Not Acceptable') {
       this.commonEventService.broadcast({ channel: 'LockMessage', payload: error.files });
     }
   }
 
   changeViewMode(mode: any) {
-    this.event.emit({action: 'changeView', payload: mode})
+    this.event.emit({action: 'changeView', payload: mode});
   }
 
   /* AlbumCreateMixin This is album create methods, to
 custom method please overwirte any method*/
   openCreateAlbumModal: (selectedObjects: any) => void;
   onDoneAlbum(e: any) {
-    this.apiBaseService.post(`media/albums`, { name: e.parents[0].name, description: e.parents[0].description, photos: e.children.map(el => el.id) }).subscribe(res => {
+    this.apiBaseService.post(`media/albums`, { name: e.parents[0].name, description: e.parents[0].description,
+       photos: e.children.map(el => el.id) }).toPromise().then(res => {
       this.router.navigate(['albums', res.data.uuid]);
     });
   }
