@@ -276,7 +276,22 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         break;
       case 'progress':
         file = event.payload.file;
-        this.post.photos.unshift(file);
+        // this.post.photos.unshift(file);
+        if (this.post.photos && this.post.photos.length > 0) {
+          let hasPhoto = false;
+          this.post.photos.forEach(p => {
+            if (p.id === file.id) {
+              hasPhoto = true;
+              return;
+            }
+          });
+          if (!hasPhoto) {
+            this.post.photos.unshift(file);
+          }
+        } else {
+          this.post.photos.unshift(file);
+        }
+
         break;
       case 'success':
         // replace uploading photo by real photo

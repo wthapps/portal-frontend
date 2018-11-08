@@ -1,6 +1,6 @@
 <div *ngIf="data">
   <div class="field-group-title">
-    <h3 class="pull-left">Email</h3>
+    <h3 class="pull-left">Emails</h3>
     <div class="pull-right">
       <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
         <i class="fa fa-pencil"></i>
@@ -32,7 +32,7 @@
 <form [formGroup]="form" novalidate>
   <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <bs-modal-header [showDismiss]="true">
-      <h4 class="modal-title">Email</h4>
+      <h4 class="modal-title">Emails</h4>
     </bs-modal-header>
     <bs-modal-body>
       <div formArrayName="emails">

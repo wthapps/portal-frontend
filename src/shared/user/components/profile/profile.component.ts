@@ -7,6 +7,7 @@ import { UserService } from '@shared/services/user.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { WModalService } from '@shared/modal';
 import { NameEditModalComponent } from '@shared/user/components/cover-info/name-edit-modal.component';
+import { ProfileService } from '@shared/user/components/profile/profile.service';
 
 
 @Component ({
@@ -15,22 +16,27 @@ import { NameEditModalComponent } from '@shared/user/components/cover-info/name-
   styleUrls: ['profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+  user$: Observable<any>;
   profile$: Observable<any>;
   data: any;
 
   constructor(private userService: UserService,
               private apiBaseService: ApiBaseService,
+              private profileService: ProfileService,
               private modalService: WModalService) {
-    this.profile$ = this.userService.getAsyncProfile();
+    this.user$ = this.userService.getAsyncProfile();
 
     this.modalService.submit$.subscribe(payload => {
       this.updateProfile(payload);
     });
+
+    // this.profile$ = this.profileService.profile$;
   }
 
   ngOnInit() {
-    this.apiBaseService.get(`zone/social_network/users/${this.userService.getSyncProfile().uuid}`).toPromise().then((res: any) => {
+    this.apiBaseService.get(`zone/social_network/users/${this.userService.getSyncProfile().uuid}`).subscribe((res: any) => {
       this.data = res.data;
+      // this.profileService.setProfile(res.data);
     });
   }
 

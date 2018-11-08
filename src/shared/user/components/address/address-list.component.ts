@@ -106,13 +106,32 @@ export class AddressListComponent implements OnInit, ProfileFormMixin {
   onOpenModal() {
     this.modal.open();
     this.removeAll();
-    _.map(this.data.addresses, (v: any) => {
-      this.addItem(v);
-    });
-    this.addItem();
+    if (this.data.addresses && this.data.addresses.length > 0) {
+      _.map(this.data.addresses, (v: any) => {
+        this.addItem(v);
+      });
+    } else {
+      this.addItem();
+    }
   }
 
   getAddressControls() {
     return (<FormGroup>this.form.get('addresses')).controls;
+  }
+
+  get validItems(): boolean {
+    let result = false;
+    const items = this.form.value.items;
+
+    if (items.length === 0) return false;
+    if (items.length === 1) {
+      return this.form.valid;
+    }
+    _.forEach(this.form.value.items, (item: any) => {
+      if (item.email !== '' && item.fistName !== '' && item.lastName !== '') {
+        result = true;
+      }
+    });
+    return result;
   }
 }

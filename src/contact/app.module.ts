@@ -20,7 +20,8 @@ import { ContactModule } from './contact/contact.module';
 // import { MyProfileModule } from './my-profile/my-profile.module';
 import { GroupModule } from './group/group.module';
 import { ContactSharedModule } from './shared/shared.module';
-import { ProfileModule } from '@wth/shared/user';
+// import { ProfileModule } from '@wth/shared/user';
+import { ProfilePageModule } from '@contacts/profile/profile-page.module';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ProfileModule } from '@wth/shared/user';
     AppRoutingModule,
     HomeModule,
     ContactModule,
-    ProfileModule,
+    // ProfileModule,
+    ProfilePageModule,
     ContactSearchModule,
     GroupModule,
     ModalModule,

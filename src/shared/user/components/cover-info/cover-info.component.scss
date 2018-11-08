@@ -19,10 +19,19 @@
       @include box-shadow(0 0 2px rgba(#000, 0.5));
     }
   }
+
+  .w-cover-action {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 4;
+  }
+
   .w-cover-image {
     @include border-top-radius($border-radius-base);
     position: relative;
-    padding-bottom: 50%;
+    //padding-bottom: 50%;
+    height: 130px;
     overflow: hidden;
     img {
       @include center(false, true);
@@ -37,13 +46,13 @@
       width: 100%;
       z-index: 2;
       content: "";
-    //   background-color: inherit;
-      background: -moz-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -moz-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
-      background: -webkit-gradient(linear, left top, right bottom, color-stop(40%, transparent), color-stop(100%, rgba(0, 0, 0, 0.5))), -webkit-gradient(linear, left top, left bottom, color-stop(10%, transparent), color-stop(100%, rgba(0, 0, 0, 0.3)));
-      background: -webkit-linear-gradient(-135deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -webkit-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
-      background: -o-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -o-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
-      background: -ms-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -ms-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
-      background: linear-gradient(-135deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+      background-color: inherit;
+    //  background: -moz-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -moz-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+    //  background: -webkit-gradient(linear, left top, right bottom, color-stop(40%, transparent), color-stop(100%, rgba(0, 0, 0, 0.5))), -webkit-gradient(linear, left top, left bottom, color-stop(10%, transparent), color-stop(100%, rgba(0, 0, 0, 0.3)));
+    //  background: -webkit-linear-gradient(-135deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -webkit-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+    //  background: -o-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -o-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+    //  background: -ms-linear-gradient(45deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), -ms-linear-gradient(top, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
+    //  background: linear-gradient(-135deg, transparent 40%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.3) 100%);
     }
   }
 
@@ -57,9 +66,11 @@
         left: 15px;
         right: 15px;
         z-index: 3;
-        color: #ffffff;
+        //color: #ffffff
+        color: $text-color;
         .z-name {
-          color: #ffffff;
+          //color: #ffffff;
+          color: $text-color;
         }
         .w-user-name {
           position: absolute;

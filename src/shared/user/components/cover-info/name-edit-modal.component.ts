@@ -54,6 +54,7 @@ export class NameEditModalComponent {
 
   onSubmit(payload?: any): void {
     this.modalService.submit(payload);
+    this.modal.close();
   }
 
 

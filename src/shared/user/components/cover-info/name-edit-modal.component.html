@@ -48,7 +48,7 @@
     <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
       <button type="submit" class="btn btn-outline-primary btn-min"
-              [disabled]="!userForm.valid" (click)="onSubmit(userForm.value)">Done
+              [disabled]="!userForm.valid || userForm.pristine" (click)="onSubmit(userForm.value)">Done
       </button>
     </bs-modal-footer>
   </bs-modal>

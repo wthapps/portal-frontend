@@ -5,6 +5,11 @@
         <!--<i class="fa fa-camera"></i>-->
       <!--</button>-->
     </div>
+    <div class="w-cover-action">
+      <button class="pull-right btn btn-default" (click)="openModal()">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
     <div class="w-cover-image" id="cover_image">
       <img class="img-bg img-full no-user-selected" [src]="user?.cover_image" alt="">
     </div>
@@ -27,16 +32,16 @@
           </div>
           <div class="z-shared-info">
             <ul>
-              <li>{{ user?.about }}</li>
+              <li>{{ user?.nickname }}</li>
             </ul>
           </div>
           <div class="z-shared-description"></div>
         </div>
 
         <div class="w-user-actions">
-          <button class="btn btn-default" (click)="openModal()">
-            <i class="fa fa-pencil"></i>
-          </button>
+          <!--<button class="btn btn-default" (click)="openModal()">-->
+            <!--<i class="fa fa-pencil"></i>-->
+          <!--</button>-->
         </div>
       </div>
     </div>

@@ -31,7 +31,10 @@ export class BasicInfoComponent implements OnInit {
   first_name: AbstractControl;
   last_name: AbstractControl;
   nickname: AbstractControl;
+
   about: AbstractControl;
+  company: AbstractControl;
+  occupation: AbstractControl;
   sex: AbstractControl;
   tag_line: AbstractControl;
   description: AbstractControl;
@@ -44,15 +47,19 @@ export class BasicInfoComponent implements OnInit {
               private profileService: ProfileService,
               private countryService: CountryService) {
     this.form = fb.group({
-      'about': [''],
-      'sex': [''],
-      'birthday_day': [''],
-      'birthday_month': [''],
-      'birthday_year': [''],
-      'nationality': ['']
+      about: [''],
+      company: [''],
+      occupation: [''],
+      sex: [''],
+      birthday_day: [''],
+      birthday_month: [''],
+      birthday_year: [''],
+      nationality: ['']
     });
 
     this.about = this.form.controls['about'];
+    this.company = this.form.controls['company'];
+    this.occupation = this.form.controls['occupation'];
     this.sex = this.form.controls['sex'];
     this.birthday_day = this.form.controls['birthday_day'];
     this.birthday_month = this.form.controls['birthday_month'];
@@ -94,6 +101,8 @@ export class BasicInfoComponent implements OnInit {
 
     let body = {
       about: values.about,
+      company: values.company,
+      occupation: values.occupation,
       birthday: birthday,
       nationality: values.nationality,
       sex: values.sex
