@@ -1,36 +1,27 @@
-import { MODEL_TYPE } from './../../../../shared/constant/config/constants';
-import {
-  Component,
-  ViewChild,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  OnDestroy,
-  ViewEncapsulation,
-  OnChanges
-} from '@angular/core';
-import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
-
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { takeUntil, filter, take } from 'rxjs/operators';
-
-import { SocialService } from '../../services/social.service';
-import { BsModalComponent } from 'ng2-bs3-modal';
-import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
+import { WUploader } from '@shared/services/w-uploader';
+import { LoadingService } from '@shared/shared/components/loading/loading.service';
 import { SoPost } from '@shared/shared/models';
+import TextLengthValidatior from '@social/shared/hooks/validators/text-lenght.validator';
+import { ZSocialSharedPrivacyComponent } from '@social/shared/modal-privacy/privacy.component';
+import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { Constants } from '@wth/shared/constant';
 import { UserService } from '@wth/shared/services';
-import { LoadingService } from '@shared/shared/components/loading/loading.service';
-import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
+import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
-import { WUploader } from '@shared/services/w-uploader';
-import TextLengthValidatior from '@social/shared/hooks/validators/text-lenght.validator';
+import { BsModalComponent } from 'ng2-bs3-modal';
+
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { Observable } from 'rxjs/Observable';
+import { filter, take, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { SocialService } from '../../services/social.service';
+import { MODEL_TYPE } from './../../../../shared/constant/config/constants';
 
 @Component({
   selector: 'so-post-edit',
@@ -41,6 +32,7 @@ import TextLengthValidatior from '@social/shared/hooks/validators/text-lenght.va
 export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
+  @ViewChild('privacyModal') privacyModal: ZSocialSharedPrivacyComponent;
 
   mode = 'add'; // add or edit
   editorLimit = 3000;
@@ -205,7 +197,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       this.setItemDescription('');
     }
 
-    this.parent = options.parent ;
+    this.parent = options.parent;
     this.privacyName = this.getPrivacyName(this.post);
 
     this.form = this.fb.group({
@@ -237,7 +229,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
   done(item: any) {
     // Exclude unfinished uploading videos / photos from creating / updating a post
-    const photos = this.post.photos.filter(p => p.uuid).map(p => ({...p, model: p.model || MODEL_TYPE[p.object_type]}));
+    const photos = this.post.photos.filter(p => p.uuid).map(p => ({ ...p, model: p.model || MODEL_TYPE[p.object_type] }));
     const options: any = {
       mode: this.mode,
       item: {
@@ -301,6 +293,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         break;
     }
   }
+
   removePhoto(photo: any, event: any) {
     this.backupPhotos = this.post.photos;
 
@@ -362,6 +355,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   selectedItems(response: any) {
+    console.log(response);
     this.update(
       { privacy: response.type, custom_objects: response.items },
       null
@@ -406,6 +400,10 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.editorError = '';
     }
+  }
+
+  onOpenPrivacyModal(type: string) {
+    this.privacyModal.open(type);
   }
 
   private setItemDescription(value: any) {

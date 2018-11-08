@@ -203,6 +203,17 @@ body {
       }
     }
   }
+
+
+  .ui-autocomplete-token {
+    max-width: 100%;
+  }
+  .ui-autocomplete-token-label {
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+  }
+
   .ui-tooltip {
     z-index: 1090 !important;
     .ui-tooltip-text {

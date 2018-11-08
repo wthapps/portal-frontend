@@ -16,44 +16,8 @@
       </a>
       <div class="z-shared-with dropdown">
         <a class="text-capitalize" href="#" (click)="viewPrivacyCustom(item, modal)" data-toggle="dropdown">
-          <i class="{{ postPrivacy[item?.privacy]?.css }}">
-          </i> {{ privacyName }}</a>
-
-        <bs-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false"
-                  [backdrop]="'static'">
-          <bs-modal-header cssClass="modal-social-head">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title text-left text-capitalize"> {{ privacyName }}</h4>
-          </bs-modal-header>
-          <bs-modal-body>
-
-            <div class="media-avatar-list wth-scrollable" style="max-height: 300px;">
-              <ng-container *ngFor="let item of item.custom_objects">
-                <div (click)="navigateToLink(item?.link)" class="media-avatar align-items-center can-click">
-                  <div class="media-avatar-img-wrap">
-                    <div class="media-avatar-img avatar-xs">
-                      <img alt="" [src]="item?.profile_image" *ngIf="item?.profile_image">
-                    </div>
-                    <!--<div class="media-user-status"></div>-->
-                  </div>
-                  <div class="media-avatar-body">
-                    {{ item.name }}
-                  </div>
-                  <div class="media-avatar-action"></div>
-                </div>
-              </ng-container>
-            </div>
-
-          </bs-modal-body>
-          <bs-modal-footer>
-            <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal"
-                    (click)="modal.dismiss()">DONE
-            </button>
-          </bs-modal-footer>
-        </bs-modal>
-
+          <i class="{{ postPrivacy[item?.privacy]?.css }}"></i> {{ privacyName }}
+        </a>
       </div>
     </div>
     <div class="z-shared-info">
@@ -155,3 +119,37 @@
   </div>
 
 </div>
+
+<bs-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false"
+          [backdrop]="'static'">
+  <bs-modal-header cssClass="modal-social-head">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title text-left text-capitalize"> {{ privacyName }}</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div class="media-avatar-list wth-scrollable" style="max-height: 300px;">
+      <ng-container *ngFor="let item of item.custom_objects">
+        <div (click)="navigateToLink(item?.link)" class="media-avatar align-items-center can-click">
+          <div class="media-avatar-img-wrap">
+            <div class="media-avatar-img avatar-xs">
+              <img alt="" [src]="item?.profile_image" *ngIf="item?.profile_image">
+            </div>
+            <!--<div class="media-user-status"></div>-->
+          </div>
+          <div class="media-avatar-body">
+            {{ item.name }}
+          </div>
+          <div class="media-avatar-action"></div>
+        </div>
+      </ng-container>
+    </div>
+
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal"
+            (click)="modal.dismiss()">DONE
+    </button>
+  </bs-modal-footer>
+</bs-modal>

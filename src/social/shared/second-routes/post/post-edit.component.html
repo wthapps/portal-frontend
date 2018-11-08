@@ -61,13 +61,15 @@
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
-                  <a href="#" (click)="customPrivacy(soPostPrivacy.customFriend.data, $event)">Custom Friends
+                  <a (click)="onOpenPrivacyModal(soPostPrivacy.customFriend.data)" href="#">
+                    Custom Friends
                     <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.customFriend.data"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="#" (click)="customPrivacy(soPostPrivacy.customCommunity.data, $event)">Custom Communities
-                    <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.customCommunity.data"></i>
+                  <a (click)="onOpenPrivacyModal(soPostPrivacy.customCommunity.data)" href="#">
+                    Custom Communities
+                    <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.customFriend.data"></i>
                   </a>
                 </li>
               </ul>
@@ -196,3 +198,7 @@
 
 <entity-select #privacyCustomModal type='custom_friend' [placeholder]="SEARCH_PLACEHOLDER[post.privacy] || 'Search'"
   (onSelected)="selectedItems($event)"></entity-select>
+
+
+<social-shared-privacy #privacyModal [selectedItems]="post.custom_objects" (onSelected)="selectedItems($event)">
+</social-shared-privacy>

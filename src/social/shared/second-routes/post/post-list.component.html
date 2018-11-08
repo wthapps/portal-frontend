@@ -11,10 +11,6 @@
       </div>
       <div class="z-social-media-body">
         <div class="z-social-media-inputpost form-group">
-          <div class="mb10">
-            <div contenteditable="true" class="form-control" rows="3" placeholder="Share your ideas" (focus)="postEditModal.open()"></div>
-          </div>
-
           <span class="z-social-media-inputpost-icon">
             <button class="btn btn-default" (click)="postEditModal.open({community: community, mode: 'add', isShare: false, addingPhotos: true})"
               pTooltip="{{ tooltip.addPhoto }}" tooltipPosition="top">
@@ -27,10 +23,7 @@
               </button>
             </div>
           </span>
-          <!--<button class="btn btn-outline-default" type="button"-->
-          <!--(click)="postEditModal.open({community: community, mode: 'add', isShare: false})">-->
-          <!--<i class="fa fa-camera"></i> Add Photo-->
-          <!--</button>-->
+          <div contenteditable="true" class="form-control" placeholder="Share your ideas" (focus)="postEditModal.open()"></div>
         </div>
       </div>
     </div>

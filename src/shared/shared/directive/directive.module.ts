@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { HrefDirective } from '@shared/shared/directive/href.directive';
 import { ImgAlignDirective } from '@shared/shared/directive/img-align.directive';
 import { AutofocusInputDirective } from './autofocus.directive';
 import { DisplayAsHtmlDirective } from './display-as-html.directive';
@@ -22,7 +23,8 @@ import { ScrollDirectiveModule } from './scroll/scroll.directive.module';
     TextAreaAutoHeightDirective,
     CommentAutoHeightDirective,
     ShiftEnterDirective,
-    ContentEditableDirective
+    ContentEditableDirective,
+    HrefDirective
   ],
   exports: [
     ScrollDirectiveModule,
@@ -34,7 +36,8 @@ import { ScrollDirectiveModule } from './scroll/scroll.directive.module';
     TextAreaAutoHeightDirective,
     CommentAutoHeightDirective,
     ShiftEnterDirective,
-    ContentEditableDirective
+    ContentEditableDirective,
+    HrefDirective
   ]
 })
 export class DirectiveModule {

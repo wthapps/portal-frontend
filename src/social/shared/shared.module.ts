@@ -1,4 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { ZSocialSharedAutoCompleteSharedComponent } from '@social/shared/auto-complete-shared/auto-complete-shared.component';
+import { ZSocialSharedPrivacyComponent } from '@social/shared/modal-privacy/privacy.component';
 import { ZSocialFavoritesComponent } from './favorites/social-favorites.component';
 
 import { SocialService } from './services/social.service';
@@ -105,7 +107,9 @@ import { SoStorageService } from './services/social-storage.service';
 
     // Community partial components
     ZSocialShareCommunityFormEditComponent,
-    ZSocialShareCommunityFormPreferenceComponent
+    ZSocialShareCommunityFormPreferenceComponent,
+    ZSocialSharedAutoCompleteSharedComponent,
+    ZSocialSharedPrivacyComponent
   ],
   exports: [
     CommonModule,
@@ -159,7 +163,9 @@ import { SoStorageService } from './services/social-storage.service';
 
     // Community partial components
     ZSocialShareCommunityFormEditComponent,
-    ZSocialShareCommunityFormPreferenceComponent
+    ZSocialShareCommunityFormPreferenceComponent,
+    ZSocialSharedAutoCompleteSharedComponent,
+    ZSocialSharedPrivacyComponent
   ]
 })
 export class ZSocialSharedModule {
