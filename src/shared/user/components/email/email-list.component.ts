@@ -18,7 +18,7 @@ declare var _: any;
 
 @Mixins([ProfileFormMixin])
 @Component({
-    selector: 'w-user-emails',
+  selector: 'w-user-emails',
   templateUrl: 'email-list.component.html'
 })
 
@@ -54,7 +54,7 @@ export class EmailListComponent implements OnInit, ProfileFormMixin {
     });
   }
 
-  //emails
+  // emails
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
@@ -89,10 +89,6 @@ export class EmailListComponent implements OnInit, ProfileFormMixin {
     } else {
       this.addItem();
     }
-  }
-
-  get f() {
-    return this.form.controls;
   }
 
 }
