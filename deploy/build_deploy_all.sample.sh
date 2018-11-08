@@ -5,7 +5,7 @@ echo "=== USAGE: ENV='stag/prod' sh build_deploy_all.sh | tee build_deploy.log =
 
 case $ENV in
   prod)
-    ENV=prod
+    ENV=production
     PEM_KEY=~/working/keys/productionwthappscom.pem
     TARGET_MACHINE=centos@34.211.124.230
     TARGET_FOLDER=/var/wthapps/web-ui
