@@ -20,8 +20,12 @@ export class MediaListDetailMixin {
 
   back() {
     if (this.returnUrls && this.returnUrls !== 'undefined') {
-      const link = this.returnUrls.pop();
-      this.router.navigate([link], {queryParams: {returnUrls: this.returnUrls}});
+      if (typeof this.returnUrls === 'string') {
+        this.router.navigate([this.returnUrls]);
+      } else {
+        const link = this.returnUrls.pop();
+        this.router.navigate([link], {queryParams: {returnUrls: this.returnUrls}});
+      }
     } else {
       const outlet = this.route.snapshot.outlet;
       if (outlet !== 'primary')

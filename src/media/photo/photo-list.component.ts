@@ -218,7 +218,7 @@ custom method please overwirte any method*/
   // tslint:disable-next-line:member-ordering
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
-    const data: any = { returnUrl: '/photos' , preview: true};
+    const data: any = { returnUrls: '/photos' , preview: true};
     if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
     this.router.navigate([`/photos/${id}`], {queryParams: data});
   }

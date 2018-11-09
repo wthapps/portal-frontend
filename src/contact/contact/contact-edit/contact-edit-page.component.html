@@ -4,7 +4,7 @@
     </button>
 
     <button type="button" *ngIf="mode === 'create' || mode === 'edit'" [disabled]="!contactEdit?.name?.valid && !contactEdit?.family_name?.valid"
-      (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min mr10"> {{ mode
+      (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min ml10"> {{ mode
       === 'edit' ? 'Save' : 'Create' }}
     </button>
 
@@ -69,7 +69,7 @@
             <span>{{ email.value }}</span>
           </div>
           <div class="action">
-            <button class="btn btn-default" pTooltip="Invite to join WTHApps" tooltipPosition="left" (click)="invite(email)">
+            <button class="btn btn-default" pTooltip="Invite to WTHApps" tooltipPosition="left" (click)="invite(email)">
               <i class="fa fa-envelope-o"></i>
             </button>
           </div>

@@ -209,7 +209,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
 
   viewDetail(id: any) {
     // this.router.navigate([`/videos/${id}`, { ids: this.selectedObjects.map(e => e.id)} ]);
-    let data: any = { returnUrl: '/videos', preview: true };
+    let data: any = { returnUrls: '/videos', preview: true };
     if (this.selectedObjects && this.selectedObjects.length > 1) data.ids = this.selectedObjects.map(s => s.id).join(',')
     this.router.navigate([`/videos/${id}`], { queryParams: data });
   }

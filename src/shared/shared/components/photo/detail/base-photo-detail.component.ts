@@ -40,7 +40,6 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
   photos: Array<any> = [];
   links: any;
   albums: Array<any> = [];
-
   // private routeSub: any;
   returnUrl: string;
   protected destroySubject: Subject<any> = new Subject<any>();
@@ -73,6 +72,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
       map((params: any) => {
         this.id = params['id'];
         this.prevUrl = params['prevUrl'];
+
         if (params['ids']) {
           this.ids = params['ids'].split(',').map(Number) || [];
         }

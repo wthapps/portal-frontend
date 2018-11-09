@@ -12,7 +12,7 @@
 <div class="btn-group header-nav-notification hidden-xs" id="chat-header-notification">
   <button (click)="toggleViewNotifications()" type="button" class="btn btn-default dropdown-toggle"
           data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
+          aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.chat }}" tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
     <span *ngIf="notificationCount > 0" class="notification-num">
       {{notificationCount | maxCount: 10}}
@@ -22,7 +22,7 @@
     <div class="nav-notification-list-header">
       <nav class="nav-tabs-wrap p10 clearfix">
         <div class="pull-right">
-          <a href="javascript:void" (click)="markAllAsRead()"> Mark all as read </a>
+          <a href="javascript:void(0)" (click)="markAllAsRead()"> Mark all as read </a>
         </div>
       </nav>
     </div>

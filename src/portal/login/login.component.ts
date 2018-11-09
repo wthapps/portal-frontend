@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   email: AbstractControl;
   password: AbstractControl;
-  submitted: boolean = false;
+  submitted = false;
   errorMessage: string;
 
   tooltip: any = Constants.tooltip;

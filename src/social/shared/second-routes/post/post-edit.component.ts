@@ -277,6 +277,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       case 'progress':
         file = event.payload.file;
         // this.post.photos.unshift(file);
+        console.log('file:::', event.payload);
         if (this.post.photos && this.post.photos.length > 0) {
           let hasPhoto = false;
           this.post.photos.forEach(p => {
@@ -295,8 +296,11 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         break;
       case 'success':
         // replace uploading photo by real photo
+
         file = event.payload.file;
         photo = event.payload.resp;
+        console.log('file success:::', file);
+        console.log('photo success:::', photo);
         index = this.post.photos.findIndex(p => p.id === file.id);
         if (index >= 0) {
           this.post.photos[index] = photo;

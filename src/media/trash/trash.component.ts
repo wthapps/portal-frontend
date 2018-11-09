@@ -232,7 +232,7 @@ custom method please overwirte any method*/
   selectedObjectsChanged:(objectsChanged?: any) => void;
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
-    let data: any = { returnUrl: '/photos' , preview: true};
+    let data: any = { returnUrls: '/photos' , preview: true};
     if (this.selectedObjects && this.selectedObjects.length > 1) data.ids = this.selectedObjects.map(s => s.id).join(',')
     this.router.navigate([`/photos/${id}`], {queryParams: data});
   }

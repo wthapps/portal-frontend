@@ -27,7 +27,7 @@
     </span>
     <div class="select-all-cb" [ngClass]="{'active': (contactService?.isSelectAll$ | async)}">
       <i (click)="toggleSelectAll()" class="fa fa-check"></i>
-      <span class="btn btn-text pl0 pr0">{{ contactService?.selectedObjects?.length }} selected</span>
+      <span class="btn btn-text pl10 pr0">{{ contactService?.selectedObjects?.length }} selected</span>
     </div>
   </div>
 </ng-template>

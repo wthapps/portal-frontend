@@ -55,6 +55,7 @@ MediaAdditionalListMixin {
   sorting: any;
   endLoading: any;
   disableMoreAction = false;
+
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
@@ -106,9 +107,19 @@ MediaAdditionalListMixin {
         this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
+        let hasDownload = true;
         if (this.selectedObjects && this.selectedObjects.length > 1) {
           this.menuActions.share.active = false;
           this.menuActions.shareMobile.active = false;
+
+          this.selectedObjects.forEach(object => {
+            if (object.recipient.role_id < 2) {
+              hasDownload = false;
+              return;
+            }
+          });
+          this.disableMoreAction = !hasDownload;
+
         } else {
           this.menuActions.share.active = true;
           this.menuActions.shareMobile.active = true;

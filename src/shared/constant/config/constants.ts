@@ -244,7 +244,7 @@ export class ConstantsBase {
   };
 
   urls: any = {
-    default: Config.SUB_DOMAIN.SOCIAL,
+    default: `${Config.SUB_DOMAIN.MYACCOUNT}/dashboard` ,
     zoneSoPosts: 'zone/social_network/posts',
     zoneSoComments: 'zone/social_network/comments',
     zoneSoMyPosts: 'zone/social_network/my_posts',
@@ -463,10 +463,13 @@ export class ConstantsBase {
     markAsUnread: 'Mark as unread',
     mergeContacts: 'Merge duplicate contacts',
     moreAction: 'More action',
+    more: 'More',
     new: 'New',
     next: 'Next',
     notification: 'Notification',
     notifications: 'Notifications',
+    chat: 'Chat',
+    inviteToWTHApps: 'Invite to WTHApps',
     preview: 'Preview',
     previous: 'Previous',
     rangeSliderView: 'Range slider view',

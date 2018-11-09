@@ -1,13 +1,13 @@
 <ng-template #objectActionsTemplate>
   <ul class="page-body-control-menu" *ngIf="hasSelectedObjects">
     <li>
-      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="restore()" pTooltip="{{ tooltip.preview}}"
+      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="restore()" pTooltip="{{ tooltip.restore}}"
         tooltipPosition="bottom">
         <i class="fa fa-history"></i>
       </a>
     </li>
     <li>
-      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="delete()" pTooltip="{{ tooltip.preview}}"
+      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="delete()" pTooltip="{{ tooltip.delete}}"
         tooltipPosition="bottom">
         <i class="fa fa-trash"></i>
       </a>
