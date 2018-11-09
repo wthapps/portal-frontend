@@ -36,7 +36,7 @@
     </bs-modal-header>
     <bs-modal-body>
       <div formArrayName="emails">
-        <div *ngFor="let item of f.emails['controls']; let i=index" class="media mt0">
+        <div *ngFor="let item of form.controls.controls['emails'].controls; let i=index" class="media mt0">
           <div *ngIf="item" class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">
