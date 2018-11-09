@@ -22,6 +22,7 @@ declare let _: any;
 })
 export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
+  // tslint:disable-next-line:no-input-rename
   @Input('contact') contact: Contact;
   @Input() mode = 'create';
   @Output() event: EventEmitter<any> = new EventEmitter<any>();

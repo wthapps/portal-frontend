@@ -99,16 +99,18 @@ export class ConversationDetailComponent
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD:
         break;
-      case CHAT_ACTIONS.CHAT_MESSAGE_CANCEL:
-        if (event.payload.message_type === 'file') {
-          this.uploader.cancel(event.payload.meta_data.file);
+      case CHAT_ACTIONS.CHAT_MESSAGE_CANCEL: {
+        const { message_type, meta_data, file, group_id, id } = event.payload;
+        if (message_type === 'file' && file && meta_data.file) {
+          this.uploader.cancel(meta_data.file);
         }
         this.conversationService
-          .cancelUpload(event.payload.group_id, event.payload.id)
+          .cancelUpload(group_id, id)
           .toPromise()
           .then((response: any) => {
             console.log('cancel ok!!!!');
           });
+        }
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
         this.conversationService

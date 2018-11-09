@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input, OnChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Subject, Subscription,  Observable, from } from 'rxjs';
-import { filter, map, take, takeUntil, merge, mergeMap } from 'rxjs/operators';
+import { Subject, Subscription,  Observable, from, merge } from 'rxjs';
+import { filter, take, takeUntil, mergeMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
@@ -19,7 +19,6 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { LongMessageModalComponent } from '@shared/components/modal/long-message-modal.component';
 import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
-import { MessageService } from '@shared/shared/components/chat-support/message/message.service';
 
 
 declare var $: any;
@@ -53,8 +52,10 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   selectEmojiSub: Subscription;
   destroy$ = new Subject();
 
+  private close$: Observable<any>;
   private currentFileId: string;
-  private uploadingMessage: any;
+  private uploadingMessages: {[id: string]: Message} = {};
+  private uploadedFiles: {[id: string]: any} = {};
   private stripHtml: StripHtmlPipe;
   private sub: Subscription;
 
@@ -225,17 +226,16 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   onOpenSelectPhotos() {
     this.mediaSelectionService.open({ allowSelectMultiple: true, allowCancelUpload: true });
 
+    this.close$ = merge(
+      this.mediaSelectionService.open$,
+      this.destroy$
+    );
+
     this.mediaSelectionService.selectedMedias$
-      .pipe(takeUntil(this.destroy$), filter((items: any[]) => items.length > 0))
+      .pipe(takeUntil(this.close$), filter((items: any[]) => items.length > 0))
       .subscribe(photos => {
         this.chooseDone(photos);
       });
-
-    // this.mediaSelectionService.uploadingMedias$
-    //   .pipe(takeUntil(this.destroy$), map(([file, dataUrl]) => [file]))
-    //   .subscribe((photos: any) => {
-    //     this.uploadFile(photos);
-    //   });
   }
 
   chooseDone(allMedia: any[]) {
@@ -274,51 +274,49 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   private sendFileEvent(event: any) {
 
     switch (event.action) {
-      case 'start':
-        // const files = this.uploader.uppy.getFiles();
-        // files.forEach(file => {
-        //   const message = new Message({
-        //     message: 'Sending file.....',
-        //     message_type: 'file',
-        //     content_type: file.meta.type,
-        //     meta_data: {file: {id: file.id, name: file.name, progress: file.progress, meta: file.meta}}
-        //   });
-        //   this.chatService.createMessage(null, message).subscribe(response => {
-        //     currentMessage = response.data;
-        //     console.log('current event message:::', event);
-        //   });
-        // });
-        // const file = event.payload.file;
-        break;
-      case 'progress':
+      case 'file-added': {
         const file = event.payload.file;
         const { id, name, progress, meta } = file;
-        if (this.currentFileId !== file.id) {
-          this.currentFileId = id;
           const message = new Message({
             message: 'Sending file.....',
             message_type: 'file',
             content_type: meta.type,
             meta_data: {file: {id, name, progress, meta }}
           });
-          this.chatService.createMessage(null, message).subscribe(response => {
-            this.uploadingMessage = {...response.data, content_type: meta.type};
+          this.chatService.createMessage(null, message).toPromise().then(response => {
+            this.uploadingMessages[id] = {...response.data, content_type: meta.type};
+            this.updateUploadingMessage(id);
           });
-        }
+      }
         break;
-      case 'success':
-        if (this.uploadingMessage &&
-          this.uploadingMessage.message_type === 'file' &&
-          this.uploadingMessage.sending_status === 1) {
-          this.messageService.update(this.uploadingMessage).subscribe(response => {
-            console.log('sending file success', response.data);
-          });
-        }
-        // update current message
+      case 'start':
         break;
+      case 'progress': {
+        break;
+      }
+      case 'success': {
+        const { id } = event.payload.file;
+
+        this.uploadedFiles[id] = event.payload.resp;
+        if (!this.uploadingMessages[id]) {
+          return;
+        }
+        this.updateUploadingMessage(id);
+        break;
+      }
     }
   }
 
+  private updateUploadingMessage(fileId: string) {
+    if (!this.uploadingMessages[fileId] || !this.uploadedFiles[fileId]) {
+      return;
+    }
+    const uploadingMessage = {...this.uploadingMessages[fileId], file: this.uploadedFiles[fileId]};
+    this.messageService.update(uploadingMessage).toPromise().then(response => {
+          delete this.uploadingMessages[fileId];
+          delete this.uploadedFiles[fileId];
+        });
+  }
 
   private send() {
     if (this.mode === FORM_MODE.EDIT) {
