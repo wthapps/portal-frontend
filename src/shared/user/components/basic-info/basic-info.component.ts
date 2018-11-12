@@ -76,7 +76,7 @@ export class BasicInfoComponent implements OnInit {
     (<FormControl>this.company).setValue(this.data.company);
     (<FormControl>this.occupation).setValue(this.data.occupation);
     (<FormControl>this.sex).setValue(this.data.sex);
-    (<FormControl>this.birthday).setValue(new Date(this.data.birthday).toISOString().split('T')[0]);
+    (<FormControl>this.birthday).setValue(new Date(this.data.birthday || null).toISOString().split('T')[0]);
     (<FormControl>this.nationality).setValue(this.data.nationality);
 
     this.modal.open();

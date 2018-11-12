@@ -68,15 +68,19 @@
         z-index: 3;
         //color: #ffffff
         color: $text-color;
-        .z-name {
+        .z-name, .z-shared-info ul li {
           //color: #ffffff;
           color: $text-color;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          width: 100%;
+          overflow: hidden;
         }
         .w-user-name {
           position: absolute;
           top: 0;
           left: 110px;
-          right: 150px;
+          right: 25px;
         }
         .z-social-media-right {
           position: absolute;
