@@ -18,12 +18,12 @@
           </div>
         </div>
         <div class="media-body">
-          <p class="media-heading bold mb0">{{ user?.first_name }}
+          <p class="media-heading">{{ user?.first_name }}
             {{ user?.last_name }}</p>
           <small class="text-fade">{{ user?.email }}</small>
           <div class="navbar-nav-plan m">
             <p class="media-heading bold">{{ user?.plan?.name }}</p>
-            <a [href]="urls.myAccount + '/plans'" class="btn btn-primary" *ngIf="user?.plan?.is_trial">
+            <a [href]="urls.myAccount + '/billing/plan'" class="btn btn-primary" *ngIf="user?.plan?.is_trial">
               <i class="fa fa-arrow-circle-up"></i> Upgrade
             </a>
           </div>
@@ -31,7 +31,7 @@
       </div>
     </li>
     <li role="separator" class="divider"></li>
-    <li><a [href]="urls.myAccount + '/settings/profile'">Account</a></li>
+    <li><a [href]="urls.myAccount + '/settings/profile'">Settings</a></li>
     <li><a [href]="urls.myAccount + '/admin/invitations'">Invitations</a></li>
     <li><a (click)="logout()" href="javascript:void(0);">Sign Out</a></li>
   </ul>

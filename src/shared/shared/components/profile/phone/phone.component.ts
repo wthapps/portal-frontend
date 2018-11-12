@@ -11,12 +11,12 @@ import { CustomValidator } from '../../../validator/custom.validator';
 import { CountryService } from '../../countries/countries.service';
 import { ApiBaseService } from '../../../../services/apibase.service';
 import { Constants } from '../../../../constant/config/constants';
-import { Mixin } from '../../../../design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '../../../../design-patterns/decorator/mixin-decorator';
 import { ProfileFormMixin } from '../../../mixins/form/profile/profile-form.mixin';
 
 declare var _: any;
 
-@Mixin([ProfileFormMixin])
+@Mixins([ProfileFormMixin])
 @Component({
     selector: 'partials-profile-phone',
   templateUrl: 'phone.component.html',

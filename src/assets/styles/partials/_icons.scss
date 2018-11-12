@@ -18,3 +18,10 @@ $zone-icons-width: 16;
     background-position: center #{-(($i - 1) * $zone-icons-width) + px};
   }
 }
+
+.emojione-sm {
+  i[class^="emojione-"] {
+    @include transform(scale(0.5));
+    margin: -10px;
+  }
+}

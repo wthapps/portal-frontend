@@ -1,21 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { RouterModule } from '@angular/router';
 
-import { InputTextareaModule } from 'primeng/components/inputtextarea/inputtextarea';
+import { InputSwitchModule } from 'primeng/primeng';
 import { TagInputModule } from 'ngx-chips';
+
 import { CommentItemEditorComponent } from './components/comment/comment-item-editor.component';
 import { Ng2HdModule } from '@wth/shared/shared/ng2-hd';
-import { SharedModule } from '@wth/shared/shared.module';
-import { PostNewComponent } from './post-new.component';
 import { PostEditComponent } from './post-edit.component';
 import { PostActivitiesComponent } from './post-activities.component';
 import { PostLikeDislikeComponent } from './post-likedislike.component';
 import { PostService } from './shared/post.service';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
+import { PostListComponent } from '@social/shared/second-routes/post/post-list.component';
+import { PostHeaderComponent, PostBodyComponent, PostFooterComponent } from '@social/shared/second-routes/post/components';
+import { PostComponent } from '@social/shared/second-routes/post/post.component';
+import { PostDetailComponent } from '@social/shared/second-routes/post/post-detail.component';
+import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
+import { ReadMoreModule } from '@shared/shared/components/read-more/read-more.module';
+import { DisplayLinkModule } from '@shared/shared/components/link/display-link.module';
+import { EntitySelectModule } from '@shared/shared/components/entity-select/entity-select.module';
+import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.module';
+import { ZSocialSharedModule } from './../../shared.module';
+import { WMediaPreviewV1Module } from '@shared/components/w-media-preview/media-preview-v1.module';
+
 @NgModule({
   imports: [
     RouterModule,
@@ -24,17 +33,28 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
     ReactiveFormsModule,
     MiniEditorModule,
     Ng2HdModule,
-    SharedModule,
+    WTHEmojiModule,
+    ReadMoreModule,
+    EntitySelectModule,
+    PartialsPhotoModule,
+    DisplayLinkModule,
+    ZSocialSharedModule,
     TagInputModule,
-    // BrowserAnimationsModule,
-    InputTextareaModule
+    InputSwitchModule,
+    WMediaPreviewV1Module
 
 
   ],
   declarations: [
-    PostNewComponent,
+    // List Posts
+    PostListComponent,
+    PostComponent,
+    PostHeaderComponent,
+    PostBodyComponent,
+    PostFooterComponent,
+    PostDetailComponent,
+
     PostEditComponent,
-    PostNewComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     // MemberListInviteComponent,
@@ -49,11 +69,18 @@ import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini
     ReactiveFormsModule,
     MiniEditorModule,
     Ng2HdModule,
+    EntitySelectModule,
+    ZSocialSharedModule,
+    WMediaPreviewV1Module,
 
-    TagInputModule,
-    PostNewComponent,
+    // List Posts
+    PostListComponent,
+    PostComponent,
+    PostHeaderComponent,
+    PostBodyComponent,
+    PostFooterComponent,
+    PostDetailComponent,
     PostEditComponent,
-    PostNewComponent,
     PostActivitiesComponent,
     PostLikeDislikeComponent,
     // MemberListInviteComponent,

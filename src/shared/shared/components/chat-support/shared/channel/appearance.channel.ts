@@ -3,8 +3,7 @@
  */
 
 import { Injectable }     from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable ,  Observer } from 'rxjs';
 
 import { CookieService } from 'ngx-cookie';
 
@@ -31,16 +30,11 @@ export class AppearanceChannel extends CableService {
   }
 
   subscribe(type?: string) {
-
-    if (this.userService.loggedIn && type === 'cs') {
-      this.createConnectionInstance(this.cookie.get(Constants.cookieKeys.chatSupportId), 'cs');
-    } else {
-      if (this.userService.getSyncProfile())
+    if (this.userService.getSyncProfile()) {
         this.createConnectionInstance(this.userService.getSyncProfile().uuid);
     }
 
-
-    var self = this;
+    const self = this;
     (function () {
 
       App.appearance = App.cable.subscriptions.create(ApiConfig.actionCable.appearanceChannel, {

@@ -1,0 +1,121 @@
+<div class="message-assets">
+  <div class="message-assets-tab">
+    <w-nav-tab [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)"></w-nav-tab>
+  </div>
+  <div *ngIf="currentTab === 'members'" class="message-assets-content bg-gray-light">
+    <div class="message-assets-members">
+      <ng-container *ngIf="conversation">
+        <ul *ngIf="conversation.group_type === 'multiple' && members.length > 0">
+          <ng-container *ngFor="let user of members">
+            <li *ngIf="(userService.getSyncProfile().uuid !== user.uuid)">
+              <z-chat-share-user-icon class="message-assets-members-row" [userId]="user.id" [image]="user.profile_image"
+                [groupType]="chatContactList[user?.id] ? 'couple' : 'stranger'" [name]="user.name">
+              </z-chat-share-user-icon>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
+                  tooltipPosition="top">
+                  <i class="fa fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li *ngIf="authService.user.id !== user.id">
+                    <a href="javascript:void(0);" (click)="onSelect(user)">Send Message</a>
+                  </li>
+                  <li>
+                    <a [routerLink]="[profileUrl, user.uuid]">View Profile</a>
+                  </li>
+                  <li *ngIf="showBlacklist">
+                    <a href="javascript:void(0);" (click)="onAddToBlackList(user)">Blacklist</a>
+                  </li>
+                  <li *ngIf="authService.user.id === conversation.group_json.creator_id && conversation.group_json.creator_id !== user.id">
+                    <a href="javascript:void(0);" (click)="onRemoveMember(user)">Remove From Conversation</a>
+                  </li>
+                  <li *ngIf="authService.user.id === user.id">
+                    <a href="javascript:void(0);" (click)="leaveConversation(user)">Leave Conversation</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ng-container>
+        </ul>
+      </ng-container>
+    </div>
+  </div>
+  <ng-container *ngIf="currentTab !== 'members'">
+    <ng-container *ngIf="!isLoading && medias$ | async as mediasList; else templateloading">
+      <ng-container *ngIf="mediasList?.length; else templateNodata">
+        <w-object-list class="message-assets-content" [viewMode]="'grid'" [ngClass]="{'message-assets-content-row': currentTab === 'notes' || currentTab === 'files'}"
+          [data]="mediasList" [sortInline]="false" [isLoading]="isLoading" (completeSort)="onCompleteSort($event)"
+          (completeLoadMore)="onCompleteLoadMore($event)" (dbClickedItem)="view($event)">
+          <ng-template #columnBox let-item>
+            <!-------------- Photo view --------------->
+            <ng-container *ngIf="item.file_type === 'Media::Photo' && item?.file">
+              <div class="wobject-box-img" (dbclick)="view(item)">
+                <img [src]="item?.file?.thumbnail_url" alt="">
+              </div>
+              <div class="wobject-box-name" title="item?.file?.full_name">
+                <span><i class="fa fa-photo"></i> {{ item?.file?.full_name }} </span>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="item.file_type === 'Media::Video' && item?.file">
+              <div class="wobject-box-img" (dbclick)="view(item)">
+                <img [src]="item?.file?.thumbnail_url" alt="">
+              </div>
+              <div class="wobject-box-name" title="item?.file?.full_name">
+                <span><i class="fa fa-video-camera"></i> {{ item?.file?.full_name }} </span>
+              </div>
+            </ng-container>
+            <!-------------- End Photo view --------------->
+            <!-------------- Note view --------------->
+            <ng-container *ngIf="item.file_type == 'Note::Note'">
+              <div class="wobject-box-name">
+                <span class="bold name-clickable"><i class="fa fa-file"></i>
+                  <a [href]="noteUrl + '/' + item.uuid" target="_blank"> {{ item?.file?.name === '' ? 'Untitled' :
+                    item?.file?.name }} </a> </span>
+                <div class="wobject-box-content-note" [innerHTML]="item?.file?.content | safeHtml"></div>
+              </div>
+            </ng-container>
+            <!-------------- End Note view --------------->
+            <!-------------- File view --------------->
+            <ng-container *ngIf="item.file_type === 'Common::GenericFile'">
+              <div class="wobject-box-name wobject-box-clickable">
+                <div class="media">
+                  <div class="media-left">
+                    <i class="fa fa-file-archive-o fz30 mt5"></i>
+                  </div>
+                  <div class="media-body" [title]="item?.file?.full_name">
+                    <a [href]="item?.file?.url"> {{ item?.file?.full_name }}
+                    </a>
+                    <small class="text-fade"> {{ item?.file?.size | bytes:0 }}</small>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <!-------------- End File view --------------->
+          </ng-template>
+          <ng-template #columnFileSize let-item>
+            <span *ngIf="item.object_type == 'album'">{{ item.photo_number }} file<span *ngIf="item.photo_number>1">s</span></span>
+            <span *ngIf="item.object_type == 'photo'">{{ item.size | bytes:0 }}</span>
+          </ng-template>
+        </w-object-list>
+
+      </ng-container>
+      <ng-template #templateNodata>
+        <div class="message-assets-content bg-gray-light text-center">
+          <box-no-data *ngIf="currentTab === 'photos'" [icon]="'fa fa-picture-o'" [subTitle]="'There is no photo'">
+          </box-no-data>
+          <box-no-data *ngIf="currentTab === 'notes'" [icon]="'fa fa-sticky-note-o'" [subTitle]="'There is no note'">
+          </box-no-data>
+          <box-no-data *ngIf="currentTab === 'files'" [icon]="'fa fa-file-archive-o'" [subTitle]="'There is no file'">
+          </box-no-data>
+        </div>
+      </ng-template>
+    </ng-container>
+    <ng-template #templateloading>
+      <div class="message-assets-content bg-gray-light">
+        <div class="text-center">
+          <box-loading></box-loading>
+        </div>
+      </div>
+    </ng-template>
+  </ng-container>
+</div>

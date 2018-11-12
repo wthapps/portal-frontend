@@ -1,9 +1,5 @@
-import { ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
-import {
-  AlbumCreateModalComponent,
-  AlbumDeleteModalComponent,
-  AlbumEditModalComponent,
-} from '@media/shared/modal';
+import { ComponentFactoryResolver, ViewChild, ViewContainerRef, OnDestroy } from '@angular/core';
+
 import { Store } from '@ngrx/store';
 import * as appStore from '@media/shared/store';
 import * as mediaActions from '@media/shared/store/media/media.actions';
@@ -12,12 +8,17 @@ import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+import { Observable, EMPTY } from 'rxjs';
+
+import { AlbumCreateModalComponent, AlbumEditModalComponent, AlbumDeleteModalComponent } from '@shared/components/modal/album';
 
 
-export class MediaActionHandler {
+export class MediaActionHandler implements OnDestroy {
   @ViewChild('modalContainer', {read: ViewContainerRef}) modalContainer: ViewContainerRef;
   modalComponent: any;
   modal: any;
+  sub: any;
+  subSelect: any;
 
   constructor(
     protected resolver: ComponentFactoryResolver,
@@ -36,6 +37,11 @@ export class MediaActionHandler {
     this.modal.event.takeUntil(this.destroySubject).subscribe((event: any) => {
       this.doEvent(event);
     });
+  }
+
+  ngOnDestroy() {
+    if (this.sub) this.sub.unsubscribe();
+    if (this.subSelect) this.subSelect.unsubscribe();
   }
 
   openModal(payload: any, mediaSelectionService: any) {
@@ -79,14 +85,14 @@ export class MediaActionHandler {
         options = {selectedObjects: payload.selectedObjects};
         break;
       case 'photosSelectModal':
-        mediaSelectionService.open('photos');
-        mediaSelectionService.setMultipleSelection(true);
-
-        mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
+        mediaSelectionService.open();
+        if (this.subSelect) { this.subSelect.unsubscribe(); }
+        this.subSelect = mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
           .subscribe(photos => {
             this.doEvent({action: 'addToParent', payload: {photos: photos }});
           });
-        mediaSelectionService.uploadingMedias$
+        if (this.sub) {  this.sub.unsubscribe(); }
+        this.sub = mediaSelectionService.uploadingMedias$
           .map(([file, dataUrl]) => [file])
           .subscribe((photos: any) => {
           this.doEvent({action: 'addToParent', payload: {photos: photos, uploading: true }});
@@ -142,7 +148,11 @@ export class MediaActionHandler {
     this.store.dispatch(new mediaActions.GetMore({...event.payload}));
   }
 
-  protected destroySubject() {
-
+  protected destroySubject(): Observable<any> {
+    if (this.sub) {
+      return this.sub.unsubscribe();
+    } else {
+      return EMPTY;
+    }
   }
 }

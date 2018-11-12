@@ -3,14 +3,13 @@ import { Params, ActivatedRoute } from '@angular/router';
 
 import { ZNoteService } from '../shared/services/note.service';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable } from 'rxjs';
 
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
 import * as folder from '../shared/actions/folder';
 import * as listReducer from '../shared/reducers/features/list-mixed-entities';
 import * as context from '../shared/reducers/context';
-import { Observable } from 'rxjs/Observable';
 import { Folder } from '../shared/reducers/folder';
 import { Note } from '@shared/shared/models/note.model';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';

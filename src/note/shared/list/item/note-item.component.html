@@ -1,5 +1,6 @@
 <div *ngIf="data" class="component-listbox-row" [ngClass]="{'item-folder': data.object_type == 'Note::Folder', 'active': selected}">
   <div class="component-listbox-input">
+    <span (click)="onView()" class="component-listbox-click-mobile"></span>
     <i (click)="onClickMulti()" class="fa fa-check"></i>
   </div>
   <div class="component-listbox-name can-click" (click)="onClick()" (dblclick)="onView()">

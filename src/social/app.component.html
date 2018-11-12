@@ -1,15 +1,15 @@
 <div class="wrapper">
-  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
+  <w-header class="header"
+            [auth]="authService"
+            [user]="authService.user$ | async"
+            [loggedIn]="authService.loggedIn$ | async">
     <social-shared-header class="header-nav-left"></social-shared-header>
   </w-header>
   <main class="main gray-light">
-    <div class="main-page-left">
-      <aside class="main-page-left-in aside-menu">
-        <z-shared-menu>
-          <z-social-left-menu></z-social-left-menu>
-        </z-shared-menu>
-      </aside>
-    </div>
+    <w-left-menu>
+      <z-social-left-menu></z-social-left-menu>
+    </w-left-menu>
+
     <div class="main-page-body" [ngClass]="{'main-page-detail': activeOutlets['detail']}" [@routeAnimation]="getState(o)">
       <router-outlet name="modal" (activate)='onActivate($event)'
                      (deactivate)='onDeactivate($event)'></router-outlet>
@@ -22,7 +22,6 @@
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
   <wth-confirm></wth-confirm>
-  <!--<h-file-select></h-file-select>-->
   <h-file-select-crop [useNewPhotoSelect]="true"></h-file-select-crop>
   <w-media-selection></w-media-selection>
 </div>
@@ -30,7 +29,7 @@
                     [after]="{social: true}"
                     [data]="[
   {
-    title: 'Welcome to WTH!Social Media',
+    title: 'Welcome to WTH!Social',
     icon: '../../assets/icons/social-50x50.png',
     content: 'WTH!Social Network allows you keep in touch with your friends and family.',
     content2: 'You can create posts and share them your friends and family without worry about ad or privacy.'
@@ -40,3 +39,5 @@
 
 <app-wth-emoji></app-wth-emoji>
 
+<div class="w-uploader-file-input-container">
+</div>

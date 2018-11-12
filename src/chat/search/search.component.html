@@ -1,17 +1,25 @@
-<div class="page-body-content">
+<div class="page-body-content has-page-body-control ng-star-inserted">
+  <div class="page-body-control">
+    <b>CONVERSATIONS</b>
+  </div>
   <div class="page-body-content-in" *ngIf="conversations">
     <div class="media media-middle media-user-list media-user-list-hover" *ngFor="let contact of conversations">
       <div class="media-body">
         <z-chat-share-user [data]="contact"></z-chat-share-user>
       </div>
       <div class="media-left">
-        <p style="min-width: 100px" class="text-fade">{{ contact.updated_chat_at | timeFormat }}</p>
+        <div style="min-width: 100px" class="text-fade">{{ contact.updated_chat_at | timeFormat }}</div>
+      </div>
+      <div class="media-left">
+        <div style="min-width: 100px" class="text-fade truncate" [innerHtml]="contact?.latest_message?.message"> </div>
       </div>
 
       <div class="media-right">
-        <z-chat-contact-actions [contact]="contact" (updateEvent)="delayAndGetConversations()"></z-chat-contact-actions>
+        <z-chat-contact-actions [contact]="contact" (updateEvent)="delayAndGetConversations()" (editEvent)="onEditConversation(contact)"></z-chat-contact-actions>
       </div>
     </div>
   </div>
 </div>
+
+<z-chat-share-edit-conversation #editConversation></z-chat-share-edit-conversation>
 

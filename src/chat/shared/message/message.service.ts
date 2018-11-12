@@ -1,17 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+// import { Injectable } from '@angular/core';
+// import { ApiBaseService, BaseEntityService } from '@shared/services';
 
-@Injectable()
-export class MessageService {
-  scrollToBottom$: Observable<boolean>;
-  private scrollToBottomSubject: Subject<boolean> = new Subject<boolean>();
+// @Injectable()
+// export class MessageService extends BaseEntityService<any> {
 
-  constructor() {
-    this.scrollToBottom$ = this.scrollToBottomSubject.asObservable();
-  }
+//   constructor(protected api: ApiBaseService) {
+//     super(api);
+//     this.url = 'zone/chat/message';
+//   }
 
-  scrollToBottom() {
-    this.scrollToBottomSubject.next(true);
-  }
-}
+// }

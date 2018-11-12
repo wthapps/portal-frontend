@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { UserService, ApiBaseService, BaseEntityService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';

@@ -1,5 +1,6 @@
-<div class="box-no-data">
-  <h2>
+<div class="box-no-data" [ngClass]="outClass">
+  <ng-content select=".box-no-data-icon"></ng-content>
+  <h2 *ngIf="icon">
     <i [class]="icon" aria-hidden="true"></i>
   </h2>
   <h3>{{ title }}</h3>

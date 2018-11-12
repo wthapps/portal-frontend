@@ -1,5 +1,4 @@
-<!--<me-list-header [data]="objects" [viewOption]="viewOption" (outEvent)="actionSortbar($event)"></me-list-header>-->
-<div class="page-body-content has-page-body-control"
+<!-- <div class="page-body-content has-page-body-control"
      infinite-scroll
      [infiniteScrollDistance]="2"
      [infiniteScrollThrottle]="500"
@@ -19,7 +18,7 @@
 
       <div *ngIf="page == 'albums'">
         <h2><i class="icon-album"></i></h2>
-        <h3>There is no album!</h3>
+        <h3>There are no albums!</h3>
         <h4>Try to create an album.</h4>
         <p>
           <button class="btn btn-outline-primary"
@@ -31,44 +30,33 @@
 
       <div *ngIf="page == 'photos' || page == 'album_detail'">
         <h2><i class="fa fa-picture-o"></i></h2>
-        <h3>There is no photo!</h3>
-        <h4>There is no photo. Try to upload a file.</h4>
+        <h3>There are no photos!</h3>
+        <h4>There are no photos. Try to upload a file.</h4>
         <p>
           <button class="btn btn-outline-primary" (click)="onAction({action: 'openUploadModal'})">
             <i class="fa fa-cloud-upload"></i> Upload File
           </button>
         </p>
-        <!--<me-uploader #uploader (outEvent)="onAction($event)"></me-uploader>-->
       </div>
       <div *ngIf="page == 'favorites'">
         <h2><i class="fa fa-star"></i></h2>
-        <h3>There is no favourited photo or album.</h3>
+        <h3>There are no favourited photos or albums.</h3>
         <h4>Add star to a photo or album to find easier.</h4>
       </div>
       <div *ngIf="page == 'shared-with-me'">
         <h2><i class="fw fw-shared-with-me"></i></h2>
-        <h3>There is no shared photo or album!</h3>
+        <h3>There are no shared photos or albums!</h3>
         <h4>Photo and album are shared by your connected contact.</h4>
-        <!--<p>-->
-          <!--<button class="btn btn-default">-->
-            <!--Learn More-->
-          <!--</button>-->
-        <!--</p>-->
       </div>
       <div *ngIf="page == 'shared-by-me'">
         <h2><i class="fa fa-share-alt"></i></h2>
-        <h3>There is no photo shared by you</h3>
+        <h3>There are no photos shared by you</h3>
         <h4>Photos can be shared to your connected contact.</h4>
-        <!--<p>-->
-          <!--<button class="btn btn-default">-->
-            <!--Learn More-->
-          <!--</button>-->
-        <!--</p>-->
       </div>
 
       <div *ngIf="page == 'sharing_detail'">
         <h2><i class="fa fa-share-alt"></i></h2>
-        <h3>There is no photo or album is sharing!</h3>
+        <h3>There are no sharing photos or albums!</h3>
         <h4>Try to add some photos or albums.</h4>
         <p>
           <button class="btn btn-outline-primary"
@@ -76,7 +64,6 @@
             <i class="fa fa-plus-square"></i> Add
           </button>
         </p>
-        <!--<me-uploader #uploader (outEvent)="onAction($event)"></me-uploader>-->
       </div>
     </div>
 
@@ -108,6 +95,4 @@
   </div>
 
   <div class="p50" [ngClass]="{'inside-loading': nextLink != null, 'hidden':nextLink == null}"></div>
-</div>
-
-<!--<ng-template #modalContainer></ng-template>-->
+</div> -->

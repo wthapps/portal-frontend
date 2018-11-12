@@ -12,7 +12,6 @@ import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 
 import { PipeModule } from '../../pipe/pipe.module';
 
-import { PhotoDetailPartialComponent } from './detail/photo-detail-partial.component';
 import { ZMediaToolbarComponent } from './toolbar/toolbar.component';
 import { ZMediaToolbarPhotoComponent } from './toolbar/photo/photo.component';
 import { ZMediaToolbarAlbumComponent } from './toolbar/album/album.component';
@@ -34,7 +33,9 @@ import { PartialsPhotoTaggingModule } from './modal/tagging/tagging.module';
 import { MediaRenameModalComponent } from './modal/media/media-rename-modal.component';
 import { PhotoEditModalComponent } from './modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.component';
-
+import { PlaylistModalModule } from '@shared/shared/components/photo/modal/playlist/playlist-modal.module';
+import { MediaModalModule } from '@shared/shared/components/photo/modal/media/media-modal.module';
+import { PhotoDetailPartialComponent } from '@shared/shared/components/photo/detail/photo-detail-partial.component';
 
 @NgModule({
   imports: [
@@ -53,17 +54,16 @@ import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.compo
     PipeModule,
     BoxLoadingModule,
     PartialsPhotoSharingModule,
-    PartialsPhotoTaggingModule,
     ImageCropperModule,
-    PartialsPhotoTaggingModule,
-    PartialsPhotoSharingModule
+    PlaylistModalModule,
+    MediaModalModule,
+    PartialsPhotoTaggingModule
   ],
   declarations: [
     MediaRenameModalComponent,
     PhotoEditModalComponent,
     AddToAlbumModalComponent,
 
-    PhotoDetailPartialComponent,
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
@@ -72,6 +72,7 @@ import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.compo
     MediaListHeaderComponent,
     ZMediaShareItemComponent,
     PhotoItemPreviewComponent,
+    PhotoDetailPartialComponent,
     BasePhotoDetailComponent
   ],
   exports: [
@@ -80,12 +81,13 @@ import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.compo
     AddToAlbumModalComponent,
     PartialsPhotoTaggingModule,
     PartialsPhotoSharingModule,
+    PhotoDetailPartialComponent,
+    PlaylistModalModule,
+    MediaModalModule,
 
     BoxLoadingModule,
-    PartialsPhotoSharingModule,
     PartialsPhotoTaggingModule,
 
-    PhotoDetailPartialComponent,
     ZMediaToolbarComponent,
     ZMediaToolbarPhotoComponent,
     ZMediaToolbarAlbumComponent,
@@ -96,10 +98,6 @@ import { AddToAlbumModalComponent } from './modal/photo/add-to-album-modal.compo
     PhotoItemPreviewComponent,
     BasePhotoDetailComponent
   ],
-  providers: [
-    PhotoService
-  ]
+  providers: [PhotoService]
 })
-
-export class PartialsPhotoModule {
-}
+export class PartialsPhotoModule {}

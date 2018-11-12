@@ -7,12 +7,13 @@ export class ChatActions {
   }
 
   process(response: any) {
-    let data = response.data;
+    const data = response.data;
 
     switch (response.action) {
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
       case CHAT_ACTIONS.CHAT_MESSAGE_UPDATE:
         console.log('chat operation message', data);
+        data['file'] = data.file || data.file_json;
 
         this.serviceManager.getChatCommonService().updateItemInList(data.group_id, data);
         break;

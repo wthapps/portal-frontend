@@ -10,9 +10,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-// import './operators';
-import { Subject } from 'rxjs/Subject';
+import { Observable ,  Subject } from 'rxjs';
 
 import { ZNoteService } from './shared/services/note.service';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
@@ -78,8 +76,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.commonEventService
       .filter(
         (event: any) =>
-          event.channel == 'menuCommonEvent' ||
-          event.channel == 'noteActionsBar'
+          event.channel === 'menuCommonEvent' ||
+          event.channel === 'noteActionsBar'
       )
       .subscribe((event: any) => {
         this.doEvent(event);
@@ -171,9 +169,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
 
       // TODO move all of below services to store effect
-      case 'note:mixed_entity:move_to_folder':
+      case 'note:mixed_entity:move_to_folder': {
         let number = event.payload.length;
-        if (number == 1) {
+        if (number === 1) {
           this.store.dispatch({
             type: progressContext.SET_PROGRESS_CONTEXT,
             payload: {
@@ -201,8 +199,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           )
           .subscribe((combine: any) => {
             if (
-              combine.state.page == noteConstants.PAGE_MY_NOTE ||
-              combine.state.page == noteConstants.PAGE_INSIDE_FOLDER
+              combine.state.page === noteConstants.PAGE_MY_NOTE ||
+              combine.state.page === noteConstants.PAGE_INSIDE_FOLDER
             ) {
               let callback = () => {
                 this.router.navigate(['my-note']);
@@ -216,7 +214,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 };
               }
               number = combine.res.data.length;
-              if (number == 1) {
+              if (number === 1) {
                 this.store.dispatch({
                   type: progressContext.SET_PROGRESS_CONTEXT,
                   payload: {
@@ -273,7 +271,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 };
               }
               number = combine.res.data.length;
-              if (number == 1) {
+              if (number === 1) {
                 this.store.dispatch({
                   type: progressContext.SET_PROGRESS_CONTEXT,
                   payload: {
@@ -300,9 +298,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           });
         break;
+      }
       case 'note:mixed_entity:make_a_copy': {
-        let number = event.payload.length;
-        if (number == 1) {
+        const number = event.payload.length;
+        if (number === 1) {
           this.store.dispatch({
             type: progressContext.SET_PROGRESS_CONTEXT,
             payload: {
@@ -329,10 +328,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           )
           .subscribe((combine: any) => {
             if (
-              combine.state.page == noteConstants.PAGE_MY_NOTE ||
-              combine.state.page == noteConstants.PAGE_INSIDE_FOLDER
+              combine.state.page === noteConstants.PAGE_MY_NOTE ||
+              combine.state.page === noteConstants.PAGE_INSIDE_FOLDER
             ) {
-              if (number == 1) {
+              if (number === 1) {
                 this.store.dispatch({
                   type: progressContext.SET_PROGRESS_CONTEXT,
                   payload: {
@@ -349,10 +348,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
               }
               this.store.dispatch(new note.MultiNotesAdded(combine.res.data));
             } else {
-              let callback = () => {
+              const callback = () => {
                 this.router.navigate(['my-note']);
               };
-              if (number == 1) {
+              if (number === 1) {
                 this.store.dispatch({
                   type: progressContext.SET_PROGRESS_CONTEXT,
                   payload: {
@@ -384,8 +383,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.mixedEntityService
           .delete(0, event.payload)
           .subscribe((res: any) => {
-            let number = event.payload.length;
-            if (number == 1) {
+            const number = event.payload.length;
+            if (number === 1) {
               this.store.dispatch({
                 type: progressContext.SET_PROGRESS_CONTEXT,
                 payload: {
@@ -426,8 +425,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       case 'note:note_edit:export_pdf': {
-        let number = event.payload.length;
-        if (number == 1) {
+        const number = event.payload.length;
+        if (number === 1) {
           this.store.dispatch({
             type: progressContext.SET_PROGRESS_CONTEXT,
             payload: {
@@ -443,15 +442,15 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         }
         let n = number;
-        for (let object of event.payload) {
+        for (const object of event.payload) {
           this.apiBaseService
             .download('note/notes/pdf_download/' + object.id)
             .subscribe((res: any) => {
-              var blob = new Blob([res], { type: 'application/pdf' });
+              const blob = new Blob([res], { type: 'application/pdf' });
               saveAs(blob, object.name + '.pdf');
               n = n - 1;
-              if (n == 0) {
-                if (number == 1) {
+              if (n === 0) {
+                if (number === 1) {
                   this.store.dispatch({
                     type: progressContext.SET_PROGRESS_CONTEXT,
                     payload: {
@@ -480,7 +479,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(
+    const modalComponentFactory = this.resolver.resolveComponentFactory(
       component
     );
     this.modalContainer.clear();

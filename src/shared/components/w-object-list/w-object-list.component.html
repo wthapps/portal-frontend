@@ -1,16 +1,14 @@
-<div class="wobject-view wobject-{{ view$ | async }}"
-     [ngClass]="{'has-scrollbar': hasScrollbar}">
+<div class="wobject-view wobject-{{ viewMode }}" [ngClass]="{'has-scrollbar': hasScrollbar}">
   <div *ngIf="data && data.length > 0" class="wobject-row-header">
     <div class="wobject-row">
 
       <div *ngIf="(data.length === selectedObjects.length + totalObjectsDisabled)
-      && data.length !==0 && selectedObjects.length !== 0" (click)="onClearAll()"
-           class="wobject-row-checkbox">
+      && data.length !==0 && selectedObjects.length !== 0"
+        (click)="onClearAll()" class="wobject-row-checkbox">
         <i class="fa fa-check active"></i>
       </div>
-      <div [ngClass]="{disabled: !hasMultipleSelection || data.length === totalObjectsDisabled}"
-           *ngIf="(data.length !== selectedObjects.length + totalObjectsDisabled) || data.length === totalObjectsDisabled"
-           (click)="onSelectedAll()" class="wobject-row-checkbox">
+      <div [ngClass]="{disabled: !hasMultipleSelection || data.length === totalObjectsDisabled}" *ngIf="(data.length !== selectedObjects.length + totalObjectsDisabled) || data.length === totalObjectsDisabled"
+        (click)="onSelectedAll()" class="wobject-row-checkbox">
         <i class="fa fa-check"></i>
       </div>
       <div class="wobject-row-ui">
@@ -19,23 +17,20 @@
             <div class="wobject-box-name">
               <span (click)="onSort('name')" class="can-click">
                 Name
-                <i *ngIf="sortBy == 'name'" class="fa fa-arrow-up"
-                   [ngClass]="{'fa-arrow-down': sortOrder == 'desc'}"></i>
+                <i *ngIf="sortBy == 'name'" class="fa fa-arrow-up" [ngClass]="{'fa-arrow-down': sortOrder == 'desc'}"></i>
               </span>
             </div>
           </div>
           <div class="wobject-owner">
             <span (click)="onSort('owner')" class="can-click">
               Owner
-              <i *ngIf="sortBy == 'owner'" class="fa fa-arrow-up"
-                 [ngClass]="{'fa-arrow-down': sortOrder == 'desc'}"></i>
+              <i *ngIf="sortBy == 'owner'" class="fa fa-arrow-up" [ngClass]="{'fa-arrow-down': sortOrder == 'desc'}"></i>
             </span>
           </div>
           <div class="wobject-create-date">
             <span (click)="onSort('created_at')" class="can-click">
               Create Date
-              <i *ngIf="sortBy == 'created_at'" class="fa fa-arrow-up"
-                 [ngClass]="{'fa-arrow-down': sortOrder == 'desc'}"></i>
+              <i *ngIf="sortBy == 'created_at'" class="fa fa-arrow-up" [ngClass]="{'fa-arrow-down': sortOrder == 'desc'}"></i>
             </span>
           </div>
           <div class="wobject-file-size">
@@ -52,13 +47,17 @@
       <!-- Split button -->
       <div *ngIf="(view$ | async) === 'grid'" class="btn-group pull-right">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
+          aria-expanded="false">
           <span *ngIf="sortBy == 'name'">Name</span>
           <span *ngIf="sortBy == 'created_at'">Create Date</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li><a (click)="onSort('name')" href="javascript:;">Name</a></li>
-          <li><a (click)="onSort('created_at')" href="javascript:;">Create Date</a></li>
+          <li>
+            <a (click)="onSort('name')" href="javascript:;">Name</a>
+          </li>
+          <li>
+            <a (click)="onSort('created_at')" href="javascript:;">Create Date</a>
+          </li>
         </ul>
         <button (click)="onSort(sortBy)" type="button" class="btn btn-default">
           <i class="fa fa-arrow-up" [ngClass]="{'fa-arrow-down': sortOrder == 'desc'}"></i>
@@ -67,15 +66,21 @@
       <!-- Split button -->
       <div *ngIf="(view$ | async) === 'timeline'" class="btn-group pull-right">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
+          aria-expanded="false">
           <span *ngIf="groupBy == 'group_by_day'">Day</span>
           <span *ngIf="groupBy == 'group_by_month'">Month</span>
           <span *ngIf="groupBy == 'group_by_year'">Year</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li><a (click)="onGroup('group_by_day')" href="javascript:;">Day</a></li>
-          <li><a (click)="onGroup('group_by_month')" href="javascript:;">Month</a></li>
-          <li><a (click)="onGroup('group_by_year')" href="javascript:;">Year</a></li>
+          <li>
+            <a (click)="onGroup('group_by_day')" href="javascript:;">Day</a>
+          </li>
+          <li>
+            <a (click)="onGroup('group_by_month')" href="javascript:;">Month</a>
+          </li>
+          <li>
+            <a (click)="onGroup('group_by_year')" href="javascript:;">Year</a>
+          </li>
         </ul>
         <button (click)="onSort(sortBy)" type="button" class="btn btn-default">
           <i class="fa fa-arrow-up" [ngClass]="{'fa-arrow-down': sortOrder == 'desc'}"></i>
@@ -83,21 +88,13 @@
       </div>
     </div>
   </div>
-  <div id="wobject-drag-body" class="wobject-row-body"
-       infinite-scroll
-       [infiniteScrollDistance]="2"
-       [infiniteScrollThrottle]="500"
-       [scrollWindow]="false"
-       (scrolled)="onLoadMore()">
-
+  <div id="wobject-drag-body" class="wobject-row-body" infinite-scroll [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50" [scrollWindow]="scrollWindow" (scrolled)="onLoadMore()">
     <ng-container *ngFor="let objects of data | groupByMap: groupBy : sortOrder : sortBy : sortOrder">
       <div class="wobject-row-title">{{ objects.key }}</div>
-      <div *ngFor="let item of objects.value" class="wobject-row" [ngClass]="{active: isActive(item)}">
-        <button (dblclick)="onDoubleClick(item)" (click)="onClick(item)" type="button"
-                class="wobject-click"
-                [ngClass]="{'wobject-drag': isSelected(item)}"
-                [attr.data-id]="item.id"
-                [attr.data-type]="item.object_type">
+      <div *ngFor="let item of objects.value; trackBy: item?.id" class="wobject-row" [ngClass]="{active: isActive(item)}">
+        <button (dblclick)="onDoubleClick(item)" (click)="onClick(item)" type="button" class="wobject-click" [ngClass]="{'wobject-drag': isSelected(item)}"
+          [attr.data-id]="item.id" [attr.data-type]="item.object_type">
         </button>
         <div (click)="onMultiSelected(item)" class="wobject-row-checkbox">
           <i class="fa fa-check"></i>
@@ -119,6 +116,10 @@
         </div>
       </div>
     </ng-container>
+
+    <div class="p30 text-center" *ngIf="isLoading">
+      <box-loading></box-loading>
+    </div>
   </div>
 </div>
 

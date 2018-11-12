@@ -1,13 +1,13 @@
 <div class="box-panel">
   <h3 class="box-panel-title">{{ pageTitle }}</h3>
   <h4 class="box-panel-subtitle">Profile Picture</h4>
-  <div class="media media-upload-profile">
-    <div class="media-left">
-      <img width="70" [src]="defaultAvatar" [attr.data-src]="(userService.getAsyncProfile() | async)?.profile_image" class="img-responsive lazyload" alt="">
+  <div class="media-avatar">
+    <div class="media-avatar-img avatar-md">
+      <img class="lazyload" [src]="defaultAvatar" [attr.data-src]="(userService.getAsyncProfile() | async)?.profile_image" alt="">
     </div>
-    <div class="media-right">
+    <div class="media-avatar-body">
       <p>Upload a photo (GIF, JPG or PNG) with the size of 150 X 150 or wider.</p>
-      <button (click)="uploadImage($event)" type="button" class="btn btn-default btn-min">
+      <button (click)="uploadImage($event)" type="button" class="btn btn-outline-default btn-min">
         <i class="fa fa-pencil"></i> Edit
       </button>
     </div>
@@ -26,6 +26,9 @@
               <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">
                 First name is required
               </span>
+              <span *ngIf="!first_name.valid && first_name.errors.blanked" class="help-block">
+                First name is blanked
+              </span>
           </div>
         </div>
       </div>
@@ -38,6 +41,9 @@
               <span *ngIf="!last_name.valid && last_name.errors.required" class="help-block">
                 Last name is required
               </span>
+              <span *ngIf="!last_name.valid && last_name.errors.blanked" class="help-block">
+                Last name is blanked
+              </span>
           </div>
         </div>
       </div>
@@ -49,7 +55,7 @@
           <label class="sr-only" for="email">Email address</label>
           <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
 
-          <ng-container *ngIf="verified; else sent_verify">
+          <ng-container *ngIf="confirmedEmail; else sent_verify">
             <div style="position: relative; top: -30px; right: 10px; float: right; color: green; font-size: 20px"><i class="fa fa-check-circle"></i></div>
           </ng-container>
 

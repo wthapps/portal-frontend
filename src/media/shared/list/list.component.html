@@ -1,25 +1,70 @@
-<div id="list-photo" class="row-img" *ngIf="data" [ngClass]="view" (dragenter)="onDragenter($event)"
-     (dragleave)="onDragleave($event)">
-  <me-list-header *ngIf="showSortBar" [data]="data" (outEvent)="actionItem($event)" [viewOption]="view"></me-list-header>
-  <div *ngIf="view != 'time'">
-    <z-media-share-item *ngFor="let item of data;" [type]="type" [data]="item" [hasAction]="hasAction" (outEvent)="actionItem($event)"></z-media-share-item>
-  </div>
-  <div *ngIf="view == 'time'">
-    <div *ngFor="let group of data | groupByMonthYear:'created_at' :groupBy :data.length" class="clearfix">
-      <p class="m15 fz15">{{ group.key }}</p>
-      <z-media-share-item *ngFor="let item of group.value" [type]="type" [data]="item" [hasAction]="hasAction" (outEvent)="actionItem($event)"></z-media-share-item>
-    </div>
-  </div>
+<ng-template #objectActionsTemplate>
+  <ul class="page-body-control-menu" *ngIf="hasSelectedObjects" [ngClass]="{'text-disable': !hasSelectedObjects}"
+    [class.disabled]="!hasSelectedObjects">
+    <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+      <li *ngIf="!action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+        <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false" pTooltip="{{action.val.tooltip}}"
+          tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
+          <i class="{{action.val.iconClass}}"></i>
+        </button>
+      </li>
+    </ng-template>
+    <!-- More action on destop -->
+    <li class="dropdown action hidden-xs" *ngIf="disableMoreAction != true">
+      <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction}}"
+        tooltipPosition="bottom">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+        <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+          <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+            <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"
+              href="javascript:void(0);" (click)="action.val.action()">
+              <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
+            </a>
+          </li>
+        </ng-template>
+      </ul>
+    </li>
+    <!-- More action on mobile -->
+    <li class="dropdown action visible-xs-block">
+      <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction}}"
+        tooltipPosition="bottom">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+        <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+          <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+            <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"
+              href="javascript:void(0);" (click)="action.val.action()">
+              <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
+            </a>
+          </li>
+        </ng-template>
+      </ul>
+    </li>
+  </ul>
+</ng-template>
 
-  <!--<div *ngIf="view == 'time'" *ngFor="let group of data | groupByMonthYear:'created_at'">-->
-    <!--{{ group|json }}-->
-  <!--</div>-->
+<w-toolbar #toolbar [viewMode]="viewMode" [selectedObjects]="selectedObjects" [objectActionsTemplate]="objectActionsTemplate"
+  (event)="doToolbarEvent($event)">
+</w-toolbar>
+
+<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)">
+
+  <div footer-grid-list>
+    <box-loading *ngIf="links?.next"></box-loading>
+  </div>
+</w-grid-list>
+<div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
+  <box-loading></box-loading>
 </div>
+<box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
+  [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
+  <button *ngIf="actionNoData" class="btn btn-outline-primary" (click)="doEvent({action: 'noData'})">
+    <i class="fa fa-plus-circle"></i> {{actionNoData}}
+  </button>
+</box-no-data>
 
-<!--<div *ngIf="data">
-  <div *ngIf="data.length==0" class="text-center">
-    <div class="zone-no-photo">F
-      <p>Drag photos anywhere to upload</p>
-    </div>
-  </div>
-</div>-->
+
+<ng-template #modalContainer></ng-template>

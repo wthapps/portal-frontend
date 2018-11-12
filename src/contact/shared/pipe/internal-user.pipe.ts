@@ -6,7 +6,7 @@ declare let _: any;
 
 @Pipe({name: 'isContactInternal'})
 export class ZContactInternalUser implements PipeTransform {
-  transform(contact: any, name:any) {
+  transform(contact: any, name: any) {
     return _contact.isInternal(contact);
   }
 }

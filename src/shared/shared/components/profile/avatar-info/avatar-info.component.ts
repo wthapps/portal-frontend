@@ -1,15 +1,10 @@
 import { Component, Input, ViewChild, Output, EventEmitter, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
-import {
-  FormGroup
-} from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { Observable ,  Subscription ,  Subject } from 'rxjs';
+import { merge, take, takeUntil } from 'rxjs/operators';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/takeUntil';
+
 
 
 import { QuestionBase } from '../../form/base/question-base';
@@ -17,7 +12,6 @@ import { QuestionControlService } from '../../form/base/question-control.service
 import { TextboxQuestion } from '../../form/categories/textbox-question';
 import { UserInfo } from '../../../models/user/user-info.model';
 import { LoadingService } from '../../loading/loading.service';
-import { PhotoModalDataService } from '../../../../services/photo-modal-data.service';
 import { PhotoUploadService } from '../../../../services/photo-upload.service';
 import { UserService } from '../../../../services/user.service';
 import { ToastsService } from '../../toast/toast-message.service';
@@ -36,8 +30,8 @@ declare let $: any;
 
 export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
   @Input() data: any;
-  @Input() editable: boolean = true;
-  @Input() nameOnly: boolean = false;
+  @Input() editable = true;
+  @Input() nameOnly = false;
   @ViewChild('modal') modal: BsModalComponent;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
@@ -53,7 +47,6 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
 
   constructor(private questionControlService: QuestionControlService,
               private loadingService: LoadingService,
-              // private photoSelectDataService: PhotoModalDataService,
               private apiBaseService: ApiBaseService,
               private userService: UserService,
               private toastsService: ToastsService,
@@ -145,13 +138,14 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
   changeProfileImage(event: any): void {
     event.preventDefault();
     // this.uploadProfile.modal.open();
-    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.getSyncProfile().profile_image} });
+    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT',
+     action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.getSyncProfile().profile_image} });
 
   }
 
   handleSelectCropEvent() {
-    this.commonEventService.filter((event: any) => event.channel == 'SELECT_CROP_EVENT')
-      .takeUntil(this.destroySubject)
+    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
+      .pipe(takeUntil(this.destroySubject))
       .subscribe((event: any) => {
         this.doEvent(event);
       });
@@ -162,7 +156,6 @@ export class PartialsProfileAvatarInfoComponent implements OnInit, OnDestroy {
     // console.log(event);
     switch (event.action) {
       case 'SELECT_CROP:DONE':
-        console.debug('inside doEvent - SELECT_CROP:DONE', event);
         // Change user profile
         this.updateProfileImageBase64(event.payload);
         break;

@@ -1,27 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ZSocialPhotoComponent,
-  PhotoDetailComponent
-} from './index';
 import { ZSocialPhotoRoutingModule } from './photo-routing.module';
-import { ZSocialSharedModule } from '../../shared.module';
-import { SharedModule } from '@wth/shared/shared.module';
+import { WMediaPreviewV1Module } from '@shared/components/w-media-preview/media-preview-v1.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ZSocialPhotoRoutingModule,
-    ZSocialSharedModule,
-    SharedModule
+    WMediaPreviewV1Module
   ],
   declarations: [
-    ZSocialPhotoComponent,
-    PhotoDetailComponent
   ],
   exports: [
-    ZSocialPhotoComponent,
-    PhotoDetailComponent
+    WMediaPreviewV1Module
   ],
   providers: []
 })

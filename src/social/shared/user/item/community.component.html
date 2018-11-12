@@ -47,11 +47,11 @@
             <a [routerLink]="['/', communitiesUrl,data.uuid]" [queryParams]="{tab: 'members'}">Manage members</a>
           </li>
           <li role="separator" class="divider"></li>
-          <li>
-            <a href="javascript:;" (click)="toggleFavourite(data.uuid)">
-              Favourites <i class="fa pull-right" [ngClass]="userSettings?.favorite ? 'fa-star': 'fa-star-o'"></i>
-            </a>
-          </li>
+          <!--<li>-->
+            <!--<a href="javascript:;" (click)="toggleFavourite(data.uuid)">-->
+              <!--Favourites <i class="fa pull-right" [ngClass]="userSettings?.favorite ? 'fa-star': 'fa-star-o'"></i>-->
+            <!--</a>-->
+          <!--</li>-->
           <li>
             <a href="javascript:;" (click)="confirmLeaveCommunity(data)">Leave community</a>
           </li>

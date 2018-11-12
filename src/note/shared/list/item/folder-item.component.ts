@@ -16,7 +16,7 @@ import { ZNoteService } from '../../services/note.service';
 
 import * as fromRoot from '../../reducers/index';
 import * as note from '../../actions/note';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { UrlService, UserService } from '@shared/services';
 import { noteConstants, NoteConstants } from '../../config/constants';

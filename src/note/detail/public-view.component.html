@@ -31,7 +31,7 @@
     </div>
 
     <div class="btn-group ml10">
-      <button class="btn btn-outline-default" [disabled]="note?.attachments.length === 0" (click)="downloadAttachments()">
+      <button class="btn btn-outline-default" [disabled]="note?.attachments?.length === 0" (click)="downloadAttachments()">
         <i class="fa fa-download"></i> Download all
       </button>
     </div>

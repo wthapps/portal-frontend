@@ -1,12 +1,17 @@
-import { Component, EventEmitter, Input, OnChanges, Output, OnInit, OnDestroy } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Contact } from '../contact.model';
-import { GroupService } from '../../group/group.service';
-import { CountryService } from '@shared/shared/components/countries/countries.service';
-import { Constants } from '@shared/constant';
-import { CustomValidator } from '@shared/shared/validator/custom.validator';
+import { Subject, Observable, merge } from 'rxjs';
+import { debounceTime, takeUntil, filter, map, mergeMap, tap } from 'rxjs/operators';
+
 import { ZContactService } from '@contacts/shared/services/contact.service';
+import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
+import { Constants } from '@shared/constant';
+import { CountryService } from '@shared/shared/components/countries/countries.service';
+import { CustomValidator } from '@shared/shared/validator/custom.validator';
+import { CommonEventService, PhotoUploadService } from '@wth/shared/services';
+import { GroupService } from '../../group/group.service';
+import { Contact } from '../contact.model';
 
 declare let _: any;
 
@@ -17,8 +22,9 @@ declare let _: any;
 })
 export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
+  // tslint:disable-next-line:no-input-rename
   @Input('contact') contact: Contact;
-  @Input() mode: string = 'create';
+  @Input() mode = 'create';
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @Output() eventForm: EventEmitter<any> = new EventEmitter<any>();
 
@@ -27,53 +33,58 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   deleteObjects: any = {};
 
   phoneCategories: Array<any> = [
-    {value: 'mobile', text: 'Mobile'},
-    {value: 'home', text: 'Home'},
-    {value: 'work', text: 'Work'},
-    {value: 'main', text: 'Main'},
-    {value: 'fax', text: 'Fax'},
-    {value: 'other', text: 'Other'}
+    { value: 'mobile', text: 'Mobile' },
+    { value: 'home', text: 'Home' },
+    { value: 'work', text: 'Work' },
+    { value: 'main', text: 'Main' },
+    { value: 'fax', text: 'Fax' },
+    { value: 'other', text: 'Other' }
   ];
 
   emailCategories: Array<any> = [
-    {value: 'work', text: 'Work'},
-    {value: 'home', text: 'Home'},
-    {value: 'other', text: 'Other'}
+    { value: 'work', text: 'Work' },
+    { value: 'home', text: 'Home' },
+    { value: 'other', text: 'Other' }
   ];
 
   mediaCategories: Array<any> = [
-    {value: 'wthapps', text: 'WTHApps'},
-    {value: 'facebook', text: 'Facebook'},
-    {value: 'googleplus', text: 'Google Plus'},
-    {value: 'twitter', text: 'Twitter'},
-    {value: 'other', text: 'Other'}
+    { value: 'wthapps', text: 'WTHApps' },
+    { value: 'facebook', text: 'Facebook' },
+    { value: 'googleplus', text: 'Google Plus' },
+    { value: 'twitter', text: 'Twitter' },
+    { value: 'other', text: 'Other' }
 
   ];
 
   countriesCode: any;
   countriesNameCode: any;
 
-  filteredCountriesCode: Array<any> = new Array<any>();
-
   form: FormGroup;
   name: AbstractControl;
+  family_name: AbstractControl;
   company: AbstractControl;
-  groups: AbstractControl;
+  // groups: AbstractControl;
   job_title: AbstractControl;
   notes: AbstractControl;
 
   filteredGroupsMultiple: any = [];
   originalGroups: Object[];
-  disableEdit: boolean = true;
+  disableEdit = true;
+  sub: any;
+  close$: Observable<any>;
+  private destroySubject: Subject<any> = new Subject();
 
   constructor(private fb: FormBuilder,
               private groupService: GroupService,
               private contactService: ZContactService,
+              private mediaSelectionService: WMediaSelectionService,
+              private photoUploadService: PhotoUploadService,
+              private commonEventService: CommonEventService,
               private countryService: CountryService) {
     this.groupService.getAllGroups().then((res: any) => {
       this.originalGroups = res;
       _.map(res, (v: any) => {
-        this.filteredGroupsMultiple.push({value: v.name, display: v.name});
+        this.filteredGroupsMultiple.push({ value: v.name, display: v.name });
       });
     });
     this.deleteObjects['emails'] = [];
@@ -83,32 +94,47 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
     this.createForm();
 
+    this.close$ = merge(this.mediaSelectionService.open$, this.destroySubject);
 
-    this.form.valueChanges
-      .subscribe(() => {
-        this.eventForm.emit(this.form.valid);
+    this.handleSelectCropEvent();
+
+    this.sub = this.form.valueChanges
+      .subscribe((e) => {
+        this.eventForm.emit(this.form);
+
+        this.form.get('emails')['controls'].forEach((control, index) => {
+          if (control.valid && control.value.value !== '' && !control.pristine) {
+            const sub = control.valueChanges.pipe(debounceTime(250)).subscribe(ctrl => {
+              const emails = this.form.get('emails')['controls'];
+              this.event.emit({ action: 'contact:contact:edit_email', payload: { item: emails[index].value, emails: emails } });
+              sub.unsubscribe();
+              // this.sub.unsubscribe();
+            });
+          }
+        });
       });
-
   }
 
   ngOnInit(): void {
-    this.countryService.getCountries().subscribe(
-      (res: any) => {
-        this.countriesCode = res;
-        this.countriesNameCode = _.map(res,
-          (v: any) => {
-            return v.name + ' (' + v.dial_code + ')';
-          }
-        );
-      });
+    this.countryService.getCountries()
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
+      .subscribe(
+        (res: any) => {
+          this.countriesCode = res;
+          this.countriesNameCode = _.map(res,
+            (v: any) => {
+              return v.name + ' (' + v.dial_code + ')';
+            }
+          );
+        });
   }
 
   ngOnChanges() {
+    this.removeAll();
 
-    if (this.contact && this.mode == 'edit') {
-      console.log(this.contact);
-
-      this.removeAll();
+    if (this.contact && this.mode !== 'create') {
 
       _.map(this.contact.phones, (v: any) => {
         this.addItem('phones', v);
@@ -128,14 +154,17 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
       this.avatarDefault = this.contact.profile_image;
       (<FormControl>this.name).setValue(this.contact.name);
+      (<FormControl>this.family_name).setValue(this.contact.family_name);
       (<FormControl>this.company).setValue(this.contact.company);
       (<FormControl>this.job_title).setValue(this.contact.job_title);
       (<FormControl>this.notes).setValue(this.contact.notes);
-      (<FormControl>this.groups).setValue(_.map(this.contact.groups, 'name'));
+      // (<FormControl>this.groups).setValue(_.map(this.contact.groups, 'name'));
     }
   }
 
   ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   createForm() {
@@ -144,16 +173,18 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
       'emails': this.fb.array([this.initItem('emails')]),
       'addresses': this.fb.array([this.initItem('addresses')]),
       'media': this.fb.array([this.initItem('media')]),
-      'name': ['', Validators.compose([Validators.required])],
+      'name': ['', Validators.compose([Validators.required, CustomValidator.notEmpty])],
+      'family_name': ['', Validators.compose([Validators.required, CustomValidator.notEmpty])],
       'company': [''],
-      'groups': [''],
+      // 'groups': [''],
       'job_title': [''],
       'notes': ['']
     });
 
     this.name = this.form.controls['name'];
+    this.family_name = this.form.controls['family_name'];
     this.company = this.form.controls['company'];
-    this.groups = this.form.controls['groups'];
+    // this.groups = this.form.controls['groups'];
     this.job_title = this.form.controls['job_title'];
     this.notes = this.form.controls['notes'];
     setTimeout(() => {
@@ -182,7 +213,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     let formGroup: any = null;
     switch (type) {
       case 'phones': {
-        let data: any = {category: 'mobile', value: ''};
+        const data: any = { category: 'mobile', value: '' };
         if (item) {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
@@ -200,7 +231,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
         break;
       }
       case 'emails': {
-        let data: any = {category: 'work', value: ''};
+        const data: any = { category: 'work', value: '' };
         if (item) {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
@@ -216,9 +247,10 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
         break;
       }
       case 'addresses': {
-        let data: any = {
+        const data: any = {
           category: 'work',
           address_line1: '',
+          address_line2: '',
           po_box: '',
           city: '',
           province: '',
@@ -230,27 +262,29 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
             id: [item.id, Validators.compose([Validators.required])],
             category: [item.category],
             address_line1: [item.address_line1],
+            address_line2: [item.address_line2],
             po_box: [item.po_box],
             city: [item.city],
             province: [item.province],
             postcode: [item.postcode],
-            country: [item.country],
+            country: [item.country]
           };
         } else {
           formGroup = {
             category: [data.category],
             address_line1: [data.address_line1],
+            address_line2: [data.address_line2],
             po_box: [data.po_box],
             city: [data.city],
             province: [data.province],
             postcode: [data.postcode],
-            country: [data.country],
+            country: [data.country]
           };
         }
         break;
       }
       case 'media': {
-        let data: any = {category: 'wthapps', value: ''};
+        const data: any = { category: 'wthapps', value: '' };
         if (item) {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
@@ -260,7 +294,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
         } else {
           formGroup = {
             category: [data.category],
-            value: [data.value, Validators.compose([CustomValidator.urlFormat])],
+            value: [data.value, Validators.compose([CustomValidator.urlFormat])]
           };
         }
         break;
@@ -273,7 +307,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   addItem(type: string, item?: any) {
-    let control = <FormArray>this.form.controls[type];
+    const control = <FormArray>this.form.controls[type];
     if (item) {
       control.push(this.initItem(type, item));
     } else {
@@ -284,14 +318,60 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   removeItem(type: string, i: number) {
     const control = <FormArray>this.form.controls[type];
     if (this.contact[type][i]) {
-      this.contact[type][i]._destroy = true;
-      this.deleteObjects[type].push(this.contact[type][i]);
+      this.deleteObjects[type].push({ ...this.contact[type][i], _destroy: true });
+      this.contact[type].splice(i, 1);
+    }
+
+    if (type === 'emails') {
+      this.event.emit({ action: 'contact:contact:remove_email', payload: this.form.controls[type]['controls'][i].value });
     }
     control.removeAt(i);
   }
 
+  onChangeAvatar(): void {
+    this.startCropPhoto(this.contact.profile_image);
+  }
+
+  setPhoto(base64Photo): void {
+    Object.assign(this.contact, this.form.value);
+    this.contact.avatar = base64Photo;
+    console.log(this.contact);
+    this.upsertContact(this.contact);
+  }
+
+  startCropPhoto(photo: string) {
+    event.preventDefault();
+    this.commonEventService.broadcast({
+      channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN',
+      payload: { currentImage: photo }
+    });
+  }
+
+
+  handleSelectCropEvent() {
+    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
+      .pipe(
+        takeUntil(this.destroySubject)
+      )
+      .subscribe((event: any) => {
+        this.doEvent(event);
+      });
+  }
+
+  doEvent(event: any) {
+    console.log(event);
+    switch (event.action) {
+      case 'SELECT_CROP:DONE':
+        this.setPhoto(event.payload);
+        break;
+      default:
+        break;
+    }
+  }
+
   onSubmit(values: any): void {
     this.contact.name = values.name;
+    this.contact.family_name = values.family_name;
     this.contact.company = values.company;
     this.contact.job_title = values.job_title;
     this.contact.emails = _.concat(values.emails, this.deleteObjects['emails']);
@@ -299,35 +379,22 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     this.contact.media = _.concat(values.media, this.deleteObjects['media']);
     this.contact.addresses = _.concat(values.addresses, this.deleteObjects['addresses']);
 
-    if (values.groups && values.groups.length > 0) {
-      let groups: any = [];
-      _.forEach(values.groups, (group: any) => {
-        if (_.isObject(group)) {
-          groups.push(_.filter(this.originalGroups, ['name', group.value])[0]);
-        } else {
-          groups.push(_.filter(this.originalGroups, ['name', group])[0]);
-        }
-      });
-      this.contact.groups = groups;
-    }
-
     this.contact.notes = values.notes;
 
-    if (this.mode == 'create') {
-      this.event.emit({action: 'contact:contact:create', payload: {item: this.contact}});
+    this.upsertContact(this.contact);
+  }
+
+  upsertContact(contact: Contact) {
+    if (this.mode === 'create') {
+      this.event.emit({ action: 'contact:contact:create', payload: { item: contact } });
     }
-    if (this.mode == 'edit') {
-      this.event.emit({action: 'contact:contact:update', payload: {item: this.contact}});
+    if (this.mode === 'edit') {
+      this.event.emit({ action: 'contact:contact:update', payload: { item: contact } });
     }
   }
 
-  filterCountriesCode(event: any) {
-    this.filteredCountriesCode = [];
-    for (let i = 0; i < this.countriesNameCode.length; i++) {
-      let brand = this.countriesNameCode[i];
-      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
-        this.filteredCountriesCode.push(brand);
-      }
-    }
+  onCompleteChange(country: string, i: number) {
+    const controlArray = <FormArray>this.form.get('phones');
+    controlArray.controls[i].get('country_alpha_code').setValue(country);
   }
 }

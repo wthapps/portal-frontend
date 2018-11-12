@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/observable/throw';
+import { throwError,  Observable } from 'rxjs';
+import { take, catchError, switchMap } from 'rxjs/operators';
+
 
 import { CookieService } from 'ngx-cookie';
 import { Constants } from '../constant/config/constants';
@@ -81,16 +81,22 @@ export class ApiBaseService {
   }
 
   addCommand(command: Observable<any>): Observable<any> {
-    return Observable.create((observer: any) => {
-      command.take(1).subscribe((c: any) => {
-        this.call(c.method, c.path, c.body, c.options)
-          .take(1)
-          .catch(this.handleError)
-          .subscribe((res: any) => {
-            observer.next(res);
-          });
-      });
-    });
+    // return Observable.create((observer: any) => {
+    //   command.take(1).subscribe((c: any) => {
+    //     this.call(c.method, c.path, c.body, c.options)
+    //       .take(1)
+    //       .catch(this.handleError)
+    //       .subscribe((res: any) => {
+    //         observer.next(res);
+    //       });
+    //   });
+    // });
+
+    return command.pipe(
+      take(1),
+      switchMap(c => this.call(c.method, c.path, c.body, c.options)),
+      catchError(this.handleError)
+    );
   }
 
   protected call(
@@ -104,24 +110,26 @@ export class ApiBaseService {
       return this.http[method](
         this.baseUrl + path + UrlConverterUtil.objectToUrl(body),
         this.options
-      )
-        .take(1)
-        .catch(this.handleError);
+      ).pipe(
+          take(1),
+          catchError(this.handleError)
+      );
     } else {
       return this.http[method](
         this.baseUrl + path,
         JsonConverterUtil.objectToString(body),
         this.options
-      )
-        .take(1)
-        .catch(this.handleError);
+      ).pipe(
+        take(1),
+        catchError(this.handleError)
+      );
     }
   }
 
   private buildOptions(options: any = {}) {
     // Json web token
     if (!options.unauthen) {
-      let jwt = this.cookieService.get('jwt');
+      const jwt = this.cookieService.get(Constants.cookieKeys.jwt);
       this.headers = this.headers.delete('Authorization');
       if (jwt) {
         this.headers = this.headers.set('Authorization', 'Bearer ' + jwt);
@@ -138,7 +146,7 @@ export class ApiBaseService {
   }
 
   protected handleError(error: any | any): any {
-    if (error.status == 401 && error.statusText == 'Unauthorized') {
+    if (error.status == 401) {
       if (window.location.href.indexOf('login') < 0) {
         window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${
           window.location['href']
@@ -146,6 +154,6 @@ export class ApiBaseService {
       }
     }
 
-    return Observable.throw(error);
+    return throwError(error);
   }
 }

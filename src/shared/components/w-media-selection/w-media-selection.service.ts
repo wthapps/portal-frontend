@@ -1,37 +1,45 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { tap } from 'rxjs/operators/tap';
+import { BehaviorSubject ,  Observable ,  Subject } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 import { Media } from '@shared/shared/models/media.model';
 import { ApiBaseService } from '@shared/services';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
+import { map } from 'rxjs/operators/map';
 
 declare let _: any;
 
 @Injectable()
 export class WMediaSelectionService {
-  medias$: any;
+  medias$: Observable<any>;
   private mediasSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>(null);
 
-  uploadingMedias$: any;
+  uploadingMedias$: Observable<any>;
   private uploadingMediaSubject: Subject<any[]> = new Subject<any[]>();
 
   selectedMedias$: Observable<any[]>;
   private selectedMediasSubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
-  mediaParent$: any;
+  mediaParent$: Observable<any>;
   private mediaParentSubject: BehaviorSubject<Media> = new BehaviorSubject<Media>(null);
 
-  open$: any;
+  open$: Observable<any>;
   private openSubject: Subject<any> = new Subject<any>();
 
-  multipleSelection$: any;
+  multipleSelection$: Observable<any>;
   private multipleSelectionSubject: Subject<boolean> = new Subject<boolean>();
 
+  private defaultOptions: any = {
+    selectedTab: 'photos',
+    hiddenTabs: [],
+    allowSelectMultiple: true,
+    allowCancelUpload: false,
+    allowedFileTypes: ['image/*', 'video/*'],
+    uploadButtonText: 'Upload photos',
+    dragdropText: 'Drag your photos here'
+  };
   constructor(private apiBaseService: ApiBaseService,
               private objectListService: WObjectListService,
               private datePipe: DatePipe) {
@@ -44,11 +52,14 @@ export class WMediaSelectionService {
   }
 
   /**
-   * upload, photos, albums, favourites, shared_with_me
-   * @param {string} currentTab
+   *
+   * @param options
    */
-  open(currentTab: string = 'upload') {
-    this.openSubject.next({currentTab: currentTab});
+  open(options: any = {}) {
+    options = Object.assign(this.defaultOptions, options);
+    this.clear();
+    this.objectListService.setMultipleSelection(options.allowSelectMultiple);
+    this.openSubject.next(options);
   }
 
   close() {
@@ -56,34 +67,38 @@ export class WMediaSelectionService {
     this.clear();
   }
 
-  getMedias(nextLink?: any) {
+  getMedias(nextLink?: any, override?: boolean): Observable<any> {
     const link = nextLink ? nextLink : 'media/photos';
     return this.apiBaseService.get(link).pipe(
-      tap((res: ResponseMetaData) => {
-
-        _.map(res.data, (v: any, k: any) => {
-          res.data[k].group_by_day = this.datePipe.transform(v.created_at, 'yyyy-MM-dd');
-          res.data[k].group_by_month = this.datePipe.transform(v.created_at, 'yyyy-MM');
-          res.data[k].group_by_year = this.datePipe.transform(v.created_at, 'yyyy');
-        });
+      map((res: ResponseMetaData) => {
+        const data = res.data.map((item) => ({...item, group_by_day: this.datePipe.transform(item.created_at, 'yyyy-MM-dd'),
+          group_by_month: this.datePipe.transform(item.created_at, 'yyyy-MM'),
+          group_by_year: this.datePipe.transform(item.created_at, 'yyyy')
+        }));
 
 
-        if (!this.mediasSubject.getValue()) {
-          this.mediasSubject.next(res.data);
+        if (!this.mediasSubject.getValue() || override) {
+          this.mediasSubject.next(data);
         } else {
-          let medias = this.mediasSubject.getValue().concat(res.data);
+          const medias = this.mediasSubject.getValue().concat(data);
           this.mediasSubject.next(medias);
         }
+        return res;
+      }),
+      catchError((err: any) => {
+        console.warn('error: ', err);
+        this.mediasSubject.next([]);
+        return Observable.throw(err);
       })
     );
   }
 
-  upload(medias: any[]) {
-    this.uploadingMediaSubject.next(medias);
+  upload(options: any) {
+    this.uploadingMediaSubject.next(options);
   }
 
   clear() {
-    this.mediasSubject.next(null);
+    this.mediasSubject.next([]);
     this.selectedMediasSubject.next([]);
     this.mediaParentSubject.next(null);
     this.objectListService.clear();
@@ -98,7 +113,7 @@ export class WMediaSelectionService {
   }
 
   setSelectedMedias(medias: Media[]) {
-    let newMedias = this.mediasSubject.getValue().filter((media: any) => {
+    const newMedias = this.mediasSubject.getValue().filter((media: any) => {
       return medias.some((m: any) => {
         return (media.id === m.id && media.object_type === m.object_type);
       });

@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit, HostListener, AfterViewInit} from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
+import { Subject } from 'rxjs';
+import { takeUntil, map, mergeMap } from 'rxjs/operators';
+
+
 
 
 import { Photo } from '../../../models/photo.model';
@@ -25,7 +25,7 @@ declare let saveAs: any;
 
 export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  module: string = 'media';
+  module = 'media';
   photo: Photo;
   id: number;
   ids: Array<number> = [];
@@ -39,10 +39,10 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
   recipients: Array<any> = [];
   photos: Array<any> = [];
   links: any;
-
+  albums: Array<any> = [];
   // private routeSub: any;
   returnUrl: string;
-  private destroySubject: Subject<any> = new Subject<any>();
+  protected destroySubject: Subject<any> = new Subject<any>();
 
 
   @HostListener('document:keydown', ['$event'])
@@ -67,11 +67,12 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || 'photos';
-    this.route.params
-      .takeUntil(this.destroySubject.asObservable())
-      .map((params: any) => {
-        this.id = +params['id'];
+    this.route.params.pipe(
+      takeUntil(this.destroySubject.asObservable()),
+      map((params: any) => {
+        this.id = params['id'];
         this.prevUrl = params['prevUrl'];
+
         if (params['ids']) {
           this.ids = params['ids'].split(',').map(Number) || [];
         }
@@ -85,15 +86,28 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
         // get batchQuery
         this.batchQuery = params['batchQuery'] || '';
         return params['id'];
-      })
-      .mergeMap((id: any ) => {
+      }),
+      mergeMap((id: any ) => {
         this.loading = true;
         return this.photoService.getPhoto(id);
-      })
+      }))
       .subscribe((response: any) => {
           this.photo = response.data;
           this.isOwner = (response.data.owner.id === this.userService.getSyncProfile().id);
           this.loading = false;
+          //
+          //
+          // this.api.get(`media/photos/${this.photo.uuid}/albums`).subscribe((res: any) => {
+          //   this.albums = res.data;
+          //   // this.api.get(`media/photos/${this.photo.id}/sharings`).subscribe((r: any) => {
+          //   //   this.albums = this.albums.concat(r.data);
+          //   // }, error => {
+          //   //
+          //   // });
+          // }, error => {
+          //
+          // });
+
         },
         (error: any) => {
           this.loading = false;
@@ -105,7 +119,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
     if (this.batchQuery !== '') {
       this.api.get(this.batchQuery).subscribe(response => {
         this.photos = response.data;
-        this.links = response.page_metadata.links;
+        this.links = response.meta.links;
       });
     }
   }
@@ -140,7 +154,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
       case 'download':
         this.photoService.download({id: this.photo.id}).subscribe(
           (response: any) => {
-            var blob = new Blob([response], {type: this.photo.content_type});
+            const blob = new Blob([response], {type: this.photo.content_type});
             saveAs(blob, `${this.photo.name}.${this.photo.extension}`);
           },
           (error: any) => {
@@ -189,8 +203,8 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
         message: `Are you sure to delete photo ${this.photo.name} ?`,
         accept: () => {
           this.loadingService.start();
-          let body = JSON.stringify({ids: [this.photo.id]});
-          this.photoService.deletePhoto(body).toPromise().then((res: any)=> {
+          const body = JSON.stringify({ids: [this.photo.id]});
+          this.photoService.deletePhoto(body).toPromise().then((res: any) => {
 
             // considering remove item in ids array and back to preUrl
             // this.router.navigateByUrl(this.prevUrl);
@@ -225,7 +239,7 @@ export class BasePhotoDetailComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private favourite() {
-    this.photoService.actionOneFavourite(this.photo).subscribe((res: any)=> {
+    this.photoService.actionOneFavourite(this.photo).subscribe((res: any) => {
       this.photo.favorite = res.data.favorite;
     });
   }

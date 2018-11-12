@@ -1,0 +1,188 @@
+<div class="image-viewer-wrap" *ngIf="object" [ngClass]="{'active-info': showDetailsInfo}">
+  <div class="image-viewer-header">
+    <div class="image-viewer-header-left">
+      <button class="btn btn-default" type="button" (click)="back()">
+        <i class="fa fa-arrow-left"></i>
+      </button>
+      <span class="divider"></span>
+      <span class="btn btn-text hidden-xs">
+        <i class="fa" [ngClass]="object.model == 'Media::Video'? 'fa-video-camera': 'fa-photo'"></i> {{object.full_name
+        || object.name}} </span>
+    </div>
+    <div class="image-viewer-header-right" *ngIf="showMenuAction">
+      <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+        <button *ngIf="action.val.active && !action.val.inDropDown" [disabled]="!action.val.active" class="{{action.val.class}}"
+          draggable="false" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);"
+          (click)="action.val.action()">
+          <i class="{{action.val.iconClass}}"></i>
+        </button>
+      </ng-template>
+      <div class="btn-group">
+
+        <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+          type="button">
+          <i class="fa fa-ellipsis-v" ng-reflect-ng-class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+            <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+              <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}"
+                tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
+                <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
+              </a>
+            </li>
+          </ng-template>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="image-viewer-content">
+    <ng-container *ngIf="object.model == 'Media::Video'">
+      <div class="image-viewer-content-fixed">
+        <div class="container text-center">
+          <!-- Media::Video -->
+          <video id="video" class="embed-responsive-item" controls [attr.controlsList]="(!object?.permission || object?.permission?.role_id === '1') ? 'nodownload' : null"
+            style="max-width: 854px; max-height: 550px">
+            <source [src]="object.url" [type]="object.content_type">
+          </video>
+        </div>
+      </div>
+    </ng-container>
+    <!-- Media::Photo -->
+    <ng-container>
+      <div class="image-viewer-content-fixed" [ngStyle]="{'display': object.model == 'Media::Photo' ? 'block' : 'none'}">
+        <!-- (load)="onStart($event)" -->
+        <img id="image-viewer" [src]="object.url" alt="" (load)="onStart($event)" (onChange)="onStart($event)">
+      </div>
+      <ng-container *ngIf=" object && hasEditPhoto">
+        <app-image-cropper [photo]="object.url" (onCompleteMethod)="doAction($event)"></app-image-cropper>
+      </ng-container>
+    </ng-container>
+    <!-- Common -->
+    <div class="image-viewer-content-nav">
+      <a *ngIf="hasPreviousItem" draggable="false" href="javascript:void(0);" (click)="onMove(false)" pTooltip="{{tooltip.previous}}"
+        tooltipPosition="bottom">
+        <i class="fa fa-angle-left"></i>
+      </a>
+      <a *ngIf="hasNextItem" draggable="false" href="javascript:void(0);" (click)="onMove()" pTooltip="{{tooltip.next}}"
+        tooltipPosition="bottom">
+        <i class="fa fa-angle-right"></i>
+      </a>
+    </div>
+    <!-- Media::Photo Only -->
+    <div class="image-viewer-content-action" *ngIf="object.model=='Media::Photo'">
+      <a draggable=" false" href="javascript:;" (click)="onZoomOut()" pTooltip="{{ tooltip.zoomOut }}" tooltipPosition="top">
+        <i class="fa fa-minus"></i>
+      </a>
+      <a draggable="false" href="javascript:;" (click)="onRefresh()" pTooltip="{{ tooltip.resetZoom }}" tooltipPosition="top">
+        <i class="fa fa-refresh"></i>
+      </a>
+      <a draggable="false" href="javascript:;" (click)="onZoomIn()" pTooltip="{{ tooltip.zoomIn }}" tooltipPosition="top">
+        <i class="fa fa-plus"></i>
+      </a>
+    </div>
+    <div class="image-viewer-content-nav">
+      <ng-container *ngIf="listIds && listIds.isPrev()">
+        <a draggable="false" href="javascript:void(0);" (click)="onPrev( 'videos')" pTooltip="{{ tooltip.previous }}"
+          tooltipPosition="bottom">
+          <i class="fa fa-angle-left"></i>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="listIds && listIds.isNext()">
+        <a class="right" draggable="false" href="javascript:void(0);" (click)="onNext( 'videos')" pTooltip="{{ tooltip.next   }}"
+          tooltipPosition="bottom">
+          <i class="fa fa-angle-right"></i>
+        </a>
+      </ng-container>
+    </div>
+
+  </div>
+  <!-- ============== -->
+  <div class="image-viewer-info">
+    <h3>Information
+      <a href="javascript:;" draggable="false" (click)="showDetailsInfo = !showDetailsInfo">
+        <i class="fa fa-times"></i>
+      </a>
+    </h3>
+    <div class="photo-detail-info-title">
+      <h4>
+        <i class="fa fa-info-circle"></i> Details</h4>
+      <button class="btn btn-default pull-right" (click)="openEditModal(object)">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
+    <dl>
+      <div class="row">
+        <dt class="col-sm-4">Name</dt>
+        <dd class="col-sm-8">{{ object.name }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Description</dt>
+        <dd class="col-sm-8">{{ object.description }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Type</dt>
+        <dd class="col-sm-8">{{ object.extension }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Size</dt>
+        <dd class="col-sm-8">{{ object.size | bytes:3}}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Dimensions</dt>
+        <dd class="col-sm-8">{{ object.dimensions}}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Uploaded</dt>
+        <dd class="col-sm-8">{{ object.created_at | timeFormat}}</dd>
+      </div>
+    </dl>
+    <hr />
+    <dl>
+      <dt>
+        <h4>
+          <i class="wthico-album"></i>
+          <span *ngIf="object.model == 'Media::Photo'"> Album </span>
+          <span *ngIf="object.model == 'Media::Video'"> Playlist </span>
+        </h4>
+      </dt>
+      <dd>
+        <div>
+          <ul class="list-unstyled albums">
+            <li *ngFor="let album of object.parents" class="col-sm-6 can-click" style="margin: 0px">
+              <div class="media" (click)="infoAlbumClick(album)">
+                <div class="media-left">
+                  <img style="width: 50px; height: 50px; padding: 0px" [src]="album.thumbnail_url" alt="Generic placeholder image">
+                </div>
+                <div class="media-body">
+                  <h5 style="margin: 0px">{{ album.name }}</h5>
+                  <span class="text-fade"> {{ album.created_at | date: 'MMM dd yyyy'}} </span>
+                </div>
+              </div>
+            </li>
+            <li *ngFor="let sharing of sharings" class="col-sm-6 row can-click" style="margin: 0px">
+              <div class="media" (click)="infoAlbumClick(album)">
+                <div class="media-left">
+                  <img class="col-sm-4" style="width: 50px; height: 50px; padding: 0px" [src]="sharing.thumbnail_url"
+                    alt="Generic
+                placeholder image">
+
+                </div>
+                <div class="media-body">
+                  <h5 style="margin: 0px">{{ sharing.name }}</h5>
+                  <span class="text-fade" style="font-size: 12px"> {{ sharing.created_at | date: 'MMM dd yyyy'}} </span>
+                  <i class="fw fw-shared-with-me"></i>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <div *ngIf="showMore">
+            <a href="javascript:void(0);" (click)="loadMoreAlbums(index)">more</a>
+          </div>
+        </div>
+      </dd>
+    </dl>
+  </div>
+</div>
+<ng-template #modalContainer></ng-template>

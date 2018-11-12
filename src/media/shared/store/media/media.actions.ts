@@ -69,7 +69,7 @@ export class GetMore implements Action {
 
 export class GetMoreSuccess implements Action {
   type = ActionTypes.GET_MORE_SUCCESS;
-  constructor(public payload: Partial<any>[] = null) { }
+  constructor(public payload: any = null) { }
 }
 
 export class GetAllFail implements Action {

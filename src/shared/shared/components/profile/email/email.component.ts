@@ -15,11 +15,11 @@ import { TextboxQuestion } from '../../form/categories/textbox-question';
 import { QuestionControlService } from '../../form/base/question-control.service';
 import { DropdownQuestion } from '../../form/categories/dropdown-question';
 import { ProfileFormMixin } from '../../../mixins/form/profile/profile-form.mixin';
-import { Mixin } from '../../../../design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '../../../../design-patterns/decorator/mixin-decorator';
 
 declare var _: any;
 
-@Mixin([ProfileFormMixin])
+@Mixins([ProfileFormMixin])
 @Component({
     selector: 'partials-profile-email',
   templateUrl: 'email.component.html'

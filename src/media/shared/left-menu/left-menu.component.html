@@ -1,6 +1,10 @@
+<div class="menuleft-logo">
+  <img src="/assets/images_new/logo-picture.png" alt="">
+</div>
+
 <ng-container *ngFor="let media of mediaMenu">
   <div *ngIf="media.name != ''" class="menuleft-item" [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
-    <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}">
+    <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}" (click)="onCloseMenu()">
       <i class="{{ media.icon }}"></i> {{ media.name }}
     </a>
   </div>

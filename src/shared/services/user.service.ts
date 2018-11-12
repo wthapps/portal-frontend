@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable ,  BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CookieService, CookieOptions } from 'ngx-cookie';
 
 import { Constants } from '../constant/config/constants';
@@ -17,19 +17,22 @@ declare var _: any;
 
 @Injectable()
 export class UserService {
-  loggedIn: boolean = false;
+  loggedIn = false;
 
   defaultPayment: any;
-  profile$: Observable<any>;
+  profile$: Observable<User>;
   notificationSetting$: Observable<any>;
+  EXP_TIME = 24 * 60 * 60 * 365 * 1000;
 
-  public cookieOptionsArgs: CookieOptions = Constants.cookieOptionsArgs;
+  cookieOptionsArgs: CookieOptions = {
+    ...Constants.cookieOptionsArgs,
+    expires: new Date(new Date().getTime() + this.EXP_TIME)
+  };
   // Please use getSyncProfile
   private profile: User = null;
   // Please use getAsyncProfile
 
   private readonly NOTIFICATION_SETTING_URL: string = 'users/notification_settings';
-  private readonly EXP_TIME_MS = 24 * 60 * 60 * 365 * 1000;
   private _profile: BehaviorSubject<any> = new BehaviorSubject<any>({});
   private _notificationSetting: BehaviorSubject<any> = new BehaviorSubject<any>(
     {}
@@ -48,32 +51,32 @@ export class UserService {
   }
 
   login(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.post(path, body, { unauthen: true }).map(res => {
+    return this.apiBaseService.post(path, body, { unauthen: true }).pipe(map(res => {
       if (res) {
         this.storeUserInfo(res);
       }
       return res;
-    });
+    }));
   }
 
   logout(path: string): Observable<Response> {
     // public logout(path: string) {
-    return this.apiBaseService.delete(path).map(res => {
+    return this.apiBaseService.delete(path).pipe(map(res => {
       this.deleteUserInfo();
       return res;
-    });
+    }));
   }
 
   /*
    * `sign up` new an account.
    */
   signup(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.post(path, body, { unauthen: true }).map(res => {
+    return this.apiBaseService.post(path, body, { unauthen: true }).pipe(map(res => {
       if (res) {
         this.storeUserInfo(res);
       }
       return res;
-    });
+    }));
   }
 
   /*
@@ -83,50 +86,48 @@ export class UserService {
   update(body: any): Observable<Response> {
     return this.apiBaseService
       .patch(`users/${this.getSyncProfile().id}`, body)
-      .map((res: any) => {
+      .pipe(map((res: any) => {
         if (res) {
           this.updateProfile(res.data);
           this.windowService.setItem({ profile: res.data });
           this.readUserInfo();
         }
         return res;
-      });
+      }));
   }
 
   validateSession(): Observable<any> {
-    return this.apiBaseService.post('users/get_user').map(() => {
+    return this.apiBaseService.post('users/get_user').pipe(map(() => {
       return { valid: true };
-    });
+    }));
   }
 
   /*
    * change current password
    */
   changePassword(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.patch(path, body).map(res => {
+    return this.apiBaseService.patch(path, body).pipe(map(res => {
       if (res) {
         console.log('changePassword:', res);
       }
       return res;
-    });
+    }));
   }
 
   choosePlan(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.put(path, body).map((res: any) => {
+    return this.apiBaseService.put(path, body).pipe(map((res: any) => {
       if (res) {
         this.updateProfile(res.data);
         this.readUserInfo();
       }
       return res;
-    });
+    }));
   }
 
   deleteUserInfo() {
-    this.cookieService.remove('jwt', this.cookieOptionsArgs);
-    this.cookieService.remove('logged_in', this.cookieOptionsArgs);
-    this.cookieService.remove('profile', this.cookieOptionsArgs);
-
-    // localStorage.removeItem('profile');
+    this.cookieService.remove(Constants.cookieKeys.jwt, this.cookieOptionsArgs);
+    this.cookieService.remove(Constants.cookieKeys.loggedIn, this.cookieOptionsArgs);
+    this.cookieService.remove(Constants.cookieKeys.profile, this.cookieOptionsArgs);
 
     this.loggedIn = false;
     this.profile = null;
@@ -136,21 +137,15 @@ export class UserService {
     let userId = 1;
     let path = 'users/' + userId + '/payments';
 
-    return this.apiBaseService.post(path, []).map((res: any) => {
+    return this.apiBaseService.post(path, []).pipe(map((res: any) => {
       if (res) {
         this.storeDefaultPayment(res);
       }
       return res;
-    });
+    }));
   }
 
   getSyncProfile() {
-    // let sub = this.profile$.subscribe((profile: any) => {
-    //   this.profile = profile
-    // })
-    // sub.unsubscribe();
-    // return this.profile;
-
     return this._profile.getValue();
   }
 
@@ -159,14 +154,13 @@ export class UserService {
   }
 
   validProfile() {
-    let profile: any = this._profile.getValue();
+    const profile = this._profile.getValue();
     return profile && Object.keys(profile).length > 0;
   }
 
   updateProfile(profile: any) {
-    // localStorage.removeItem('profile');
     this.cookieService.put(
-      'profile',
+      Constants.cookieKeys.profile,
       JSON.stringify(profile),
       this.cookieOptionsArgs
     );
@@ -185,21 +179,21 @@ export class UserService {
     }
     this.apiBaseService
       .post(`${this.NOTIFICATION_SETTING_URL}/index`)
-      .map(res => res.data)
+      .pipe(map(res => res.data))
       .subscribe(this._notificationSetting);
   }
 
   updateNotificationSetting(body: any) {
     this.apiBaseService
       .post(`${this.NOTIFICATION_SETTING_URL}/update`, body)
-      .map(res => res.data)
+      .pipe(map(res => res.data))
       .subscribe(this._notificationSetting);
   }
 
   resetNotificationSetting() {
     this.apiBaseService
       .post(`${this.NOTIFICATION_SETTING_URL}/reset`)
-      .map(res => res.data)
+      .pipe(map(res => res.data))
       .subscribe(this._notificationSetting);
   }
 
@@ -216,21 +210,10 @@ export class UserService {
       response.data.profile_image = Constants.img.avatar;
     }
 
-    let cookieOptionsArgs = {
-      ...this.cookieOptionsArgs,
-      expires: new Date(new Date().getTime() + this.EXP_TIME_MS)
-    };
-
-    // TODO move string constants to config file
-    this.cookieService.put('jwt', response.token, cookieOptionsArgs);
-    this.cookieService.put('logged_in', 'true', cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.jwt, response.token, this.cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.loggedIn, 'true', this.cookieOptionsArgs);
     this.cookieService.put(
-      Constants.cookieKeys.chatSupportId,
-      response.data.uuid,
-      cookieOptionsArgs
-    );
-    this.cookieService.put(
-      'profile',
+      Constants.cookieKeys.profile,
       JSON.stringify(response.data),
       this.cookieOptionsArgs
     );
@@ -241,11 +224,11 @@ export class UserService {
   }
 
   private readUserInfo() {
-    if (this.cookieService.get('logged_in')) {
-      if (this.cookieService.get('profile'))
-        this.setProfile(JSON.parse(this.cookieService.get('profile')));
-
-      this.loggedIn = Boolean(this.cookieService.get('logged_in'));
+    if (this.cookieService.get(Constants.cookieKeys.loggedIn)) {
+      if (this.cookieService.get(Constants.cookieKeys.profile)) {
+        this.setProfile(JSON.parse(this.cookieService.get(Constants.cookieKeys.profile)));
+      }
+      this.loggedIn = Boolean(this.cookieService.get(Constants.cookieKeys.loggedIn));
     }
   }
 

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { Config } from '@wth/shared/constant';
@@ -73,7 +73,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onDeactivate(event) {
     if(!event || !event.route) {
-      console.warn('Hmm, shall not deactivate primary route: ', event);
       return;
     }
     this.activeOutlets[event.route.outlet] = false;

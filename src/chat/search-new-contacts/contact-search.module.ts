@@ -4,7 +4,7 @@ import { ZChatSharedModule } from '../shared/shared.module';
 import { ZChatContactSearchRoutingModule } from './contact-search-routing.module';
 import { ZChatContactSearchComponent } from './contact-search.component';
 import { SharedModule } from '@wth/shared/shared.module';
-import { SharedServicesModule } from '@wth/shared/shared-services.module';
+// import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
@@ -12,7 +12,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     ZChatContactSearchRoutingModule,
     ZChatSharedModule.forRoot(),
     SharedModule.forRoot(),
-    SharedServicesModule.forRoot()
+    // SharedServicesModule.forRoot()
   ],
   declarations: [ZChatContactSearchComponent],
   exports: [ZChatContactSearchComponent],

@@ -1,24 +1,28 @@
-import { NgModule } from '@angular/core';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { AppComponent } from './app.component';
-
-import { CoreModule } from '../core/core.module';
-import { HomeModule } from '../contact/home/home.module';
-import { ContactModule } from './contact/contact.module';
-import { MyProfileModule } from './my-profile/my-profile.module';
-import { GroupModule } from './group/group.module';
-import { SettingsModule } from './settings/contact-settings.module';
-import { ContactSharedModule } from './shared/shared.module';
 import { APP_BASE_HREF } from '@angular/common';
-import { AppRoutingModule } from './app-routing.module';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { ContactSearchModule } from '@contacts/search/search.module';
+import { environment } from '@env/environment';
+// import { ContactHtmlModule } from '@contacts/html/contact-html.module';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
-import { WthCommonModule } from '@wth/shared/common/wth-common.module';
-import { environment } from '@env/environment';
-import { ContactSearchModule } from '@contacts/search/search.module';
+import { HomeModule } from '../contact/home/home.module';
+
+import { CoreModule } from '../core/core.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ContactModule } from './contact/contact.module';
+// import { MyProfileModule } from './my-profile/my-profile.module';
+import { GroupModule } from './group/group.module';
+import { ContactSharedModule } from './shared/shared.module';
+// import { ProfileModule } from '@wth/shared/user';
+import { ProfilePageModule } from '@contacts/profile/profile-page.module';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,11 +35,13 @@ import { ContactSearchModule } from '@contacts/search/search.module';
     AppRoutingModule,
     HomeModule,
     ContactModule,
-    MyProfileModule,
+    // ProfileModule,
+    ProfilePageModule,
     ContactSearchModule,
     GroupModule,
-    SettingsModule,
     ModalModule,
+    // environment.production ? [] : ContactHtmlModule,
+    ScrollToModule.forRoot(),
     ContactSharedModule.forRoot(),
 
     // WTHApps modules
@@ -59,4 +65,5 @@ import { ContactSearchModule } from '@contacts/search/search.module';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

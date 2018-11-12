@@ -16,7 +16,7 @@ import { Photo } from '@wth/shared/shared/models';
 declare var $: any;
 
 @Component({
-    selector: 'photo-edit-modal',
+  selector: 'photo-edit-modal',
   templateUrl: 'photo-edit-modal.component.html'
 })
 export class PhotoEditModalComponent implements OnChanges, WthAppsBaseModal {

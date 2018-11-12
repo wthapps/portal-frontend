@@ -19,6 +19,12 @@
   text-align: center;
   color: #9b9b9b;
   padding: 30px 15px;
+  .box-no-data-icon {
+    display: inline-block;
+    img {
+      max-width: 100%;
+    }
+  }
   h2 {
     margin: 0;
     padding: 0;
@@ -27,10 +33,10 @@
     }
   }
   h3 {
-    font-size: 36px;
+    font-size: 28px;
   }
   h4 {
-    font-size: 24px;
+    font-size: 16px;
     margin: 0 0 30px;
     font-weight: 400;
   }
@@ -44,7 +50,7 @@
       font-size: 24px;
     }
     h4 {
-      font-size: 16px;
+      font-size: 14px;
     }
   }
 }

@@ -1,9 +1,8 @@
-<div *ngIf="!showInfo" class="z-social-media">
+<div *ngIf="!(type === 'info')" class="z-social-media">
   <a href="javascript:void(0);" (click)="viewProfile(item.owner.uuid)">
     <div class="z-social-media-left">
       <div class="avatar-xs">
-        <img [src]="item?.owner?.is_owner ? user?.profile_image : item?.owner?.profile_image" *ngIf="item?.owner?.is_owner ? user?.profile_image : item?.owner?.profile_image"
-             alt="">
+        <img [src]="(user?.uuid === item?.owner?.uuid) ? user?.profile_image : item?.owner?.profile_image" alt="">
       </div>
     </div>
   </a>
@@ -17,34 +16,8 @@
       </a>
       <div class="z-shared-with dropdown">
         <a class="text-capitalize" href="#" (click)="viewPrivacyCustom(item, modal)" data-toggle="dropdown">
-          <i class="fa {{ privacyClassIcon}}">
-          </i> {{ privacyName }}</a>
-
-        <bs-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false" [backdrop]="'static'">
-          <bs-modal-header cssClass="modal-social-head">
-            <h4 class="modal-title text-left text-capitalize"> {{ privacyName }}</h4>
-            <button type="button" class="close" style="right:15px;left: auto;" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </bs-modal-header>
-          <bs-modal-body>
-            <ul class="list-unstyled social-list-user wth-scrollable">
-              <li *ngFor="let item of item.custom_objects">
-            <span class="social-list-user-action">
-            </span>
-                <img alt="" [src]="item?.profile_image" *ngIf="item?.profile_image" title="" width="30">
-                <span>{{ item.name }}</span>
-              </li>
-            </ul>
-          </bs-modal-body>
-          <bs-modal-footer>
-            <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal"
-                    (click)="modal.dismiss()">
-              DONE
-            </button>
-          </bs-modal-footer>
-        </bs-modal>
-
+          <i class="{{ postPrivacy[item?.privacy]?.css }}"></i> {{ privacyName }}
+        </a>
       </div>
     </div>
     <div class="z-shared-info">
@@ -71,9 +44,9 @@
     <div class="dropdown pull-right">
       <!--<post-settings [item]="item"></post-settings>-->
       <button class="btn btn-default btn-default-no-border dropdown-toggle" type="button" id="dropdownMenu1"
-              data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="true" (click)="getSettings($event)"
-              pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" (click)="getSettings($event)"
+              pTooltip="{{ tooltip.moreAction }}"
+              tooltipPosition="top">
         <i class="fa fa-ellipsis-v"></i>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" *ngIf="settings">
@@ -89,53 +62,55 @@
         <li role="separator" class="divider"
             *ngIf="settings.enable_comment != null || settings.enable_share != null"></li>
 
-        <li *ngIf="settings.enable_comment != null  && item.disable_comment == false">
+        <li *ngIf="settings.enable_comment != null  && !item.disable_comment">
           <a href="javascript;" (click)="update({disable_comment: true}, $event)">
             Disable comment
           </a>
         </li>
 
-        <li *ngIf="settings.enable_comment != null && item.disable_comment == true">
+        <li *ngIf="settings.enable_comment != null && item.disable_comment">
           <a href="javascript;" (click)="update({disable_comment: false}, $event)">
             Enable comment
           </a>
         </li>
 
         <li>
-          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == true"
-             (click)="update({disable_share: false}, $event)">Enable share
+          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share"
+             (click)="update({disable_share: false}, $event)">Enable
+            share
           </a>
         </li>
 
         <li>
-          <a href="javascript:;" *ngIf="settings.enable_share != null && item.disable_share == false"
-             (click)="update({disable_share: true}, $event)">Disable share
+          <a href="javascript:;" *ngIf="settings.enable_share != null && !item.disable_share"
+             (click)="update({disable_share: true}, $event)">Disable
+            share
           </a>
         </li>
 
         <li>
-          <a href="javascript:;"
-             (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' : 'Disable ' }}
+          <a href="javascript:;" (click)="togglePostNotitification(item.uuid, $event)"> {{ settings.mute ? 'Enable ' :
+            'Disable ' }}
             notifications
           </a>
         </li>
 
-        <li *ngIf="item.owner.uuid != userService.getSyncProfile().uuid">
+        <li *ngIf="item.owner.uuid !== userService.getSyncProfile().uuid">
           <a href="javascript:;" (click)="onReport()">Report post</a>
         </li>
 
       </ul>
     </div>
 
-    <div *ngIf="!showDetail" class="dropdown pull-right">
-      <a class="btn btn-default btn-default-no-border"
-         pTooltip="{{ tooltip.viewDetail }}" tooltipPosition="top" (click)="viewPostDetail(item.uuid)">
+    <div *ngIf="!(type === 'detail')" class="dropdown pull-right">
+      <a class="btn btn-default btn-default-no-border" pTooltip="{{ tooltip.viewDetail }}" tooltipPosition="top"
+         (click)="viewPostDetail(item.uuid)">
         <i class="fa fa-external-link"></i>
       </a>
     </div>
   </div>
 
-  <div *ngIf="showInfo" class="z-social-media-right">
+  <div *ngIf="type === 'info'" class="z-social-media-right">
     <div class="dropdown pull-right">
       <a href="javascript:;" class="btn btn-default" (click)="onShowInfo()">
         <i class="fa fa-times"></i>
@@ -145,3 +120,36 @@
 
 </div>
 
+<bs-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [animation]="false"
+          [backdrop]="'static'">
+  <bs-modal-header cssClass="modal-social-head">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title text-left text-capitalize"> {{ privacyName }}</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div class="media-avatar-list wth-scrollable" style="max-height: 300px;">
+      <ng-container *ngFor="let item of item.custom_objects">
+        <div (click)="navigateToLink(item?.link)" class="media-avatar align-items-center can-click">
+          <div class="media-avatar-img-wrap">
+            <div class="media-avatar-img avatar-xs">
+              <img alt="" [src]="item?.profile_image" *ngIf="item?.profile_image">
+            </div>
+            <!--<div class="media-user-status"></div>-->
+          </div>
+          <div class="media-avatar-body">
+            {{ item.name }}
+          </div>
+          <div class="media-avatar-action"></div>
+        </div>
+      </ng-container>
+    </div>
+
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-primary btn-min" data-dismiss="modal"
+            (click)="modal.dismiss()">DONE
+    </button>
+  </bs-modal-footer>
+</bs-modal>

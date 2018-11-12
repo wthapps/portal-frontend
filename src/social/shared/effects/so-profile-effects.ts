@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { delayWhen, filter, map, catchError, concatMap, retry } from 'rxjs/operators';
 
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';

@@ -80,7 +80,7 @@
     .photo-detail-info-title {
       margin-bottom: 10px;
       padding-bottom: 10px;
-      border-bottom: 1px solid $line;
+      //border-bottom: 1px solid $line;
       @include clearfix;
       h4 {
         font-size: 18px;
@@ -93,6 +93,9 @@
           font-weight: normal;
           font-size: 14px;
         }
+        button {
+          float: right;
+        }
       }
     }
 
@@ -101,14 +104,18 @@
     .page-over-full-info {
       right: 0;
     }
+
+    .page-body-control, .page-body-content {
+      padding-right: $photo-detail-info-width;
+    }
   }
 }
 
 .row-img {
   @include clearfix;
   &.grid {
-    margin-left: -10px;
-    margin-right: -10px;
+    // margin-left: -10px;
+    // margin-right: -10px;
     .row-img-item {
       float: left;
       width: 50%;
@@ -218,7 +225,7 @@
         .photo-box-figure-in {
           background-color: #D8D8D8;
           img {
-            padding: 15px;
+            // padding: 15px;
           }
         }
         .fa-check {
@@ -350,4 +357,17 @@ $photo-box-img-owner: 150px;
       text-align: right;
     }
   }
+}
+
+.page-body-content-in {
+  .wobject-view {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+  @media (min-width: $screen-lg-min) {
+    .wobject-row-toolbar {
+      margin-top: -15px;
+    }
+  }
+
 }

@@ -1,0 +1,181 @@
+<ng-template #leftMenuTemplate>
+  <ul class="page-body-control-menu">
+    <li class="divider">
+      <a class="btn btn-default" draggable="false" href="javascript:void(0);" (click)="back()" pTooltip="{{ tooltip.back }}"
+        tooltipPosition="bottom">
+        <i class="fa fa-arrow-left"></i>
+      </a>
+    </li>
+
+    <li class="hidden-xs hidden-sm">
+      <!-- (dblclick)="" -->
+      <a class="btn btn-inline" draggable="false" href="javascript:void(0);" title="Double click to edit" (dblclick)="editName(object)">
+        {{object?.name}}
+      </a>
+    </li>
+  </ul>
+</ng-template>
+<ng-template #leftSubMenuTemplate>
+  <ul class="page-body-control-menu">
+    <li class="divider">
+      <a class="btn btn-default" href="javascript:;" (click)="deSelect()" draggable="false" pTooltip="{{ tooltip.close }}"
+        tooltipPosition="bottom">
+        <i class="fa fa-times"></i>
+      </a>
+    </li>
+    <li class="hidden-xs hidden-sm">
+      <span class="btn btn-text">{{ selectedObjects.length }} selected</span>
+    </li>
+  </ul>
+</ng-template>
+<div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
+  <box-loading></box-loading>
+</div>
+
+<div *ngIf="object" class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
+  <div class="page-over-full-header">
+    <ng-template #objectActionsTemplate>
+      <ul class="page-body-control-menu">
+        <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+          <li *ngIf="!action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+            <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false" pTooltip="{{action.val.tooltip}}"
+              tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
+              <i class="{{action.val.iconClass}}"></i>
+            </button>
+          </li>
+        </ng-template>
+        <li *ngIf="menuActions | hasMoreActions" class="dropdown action">
+          <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
+            <i class="fa fa-ellipsis-v"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+            <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+              <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+                <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}"
+                  tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
+                  <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
+                </a>
+              </li>
+            </ng-template>
+          </ul>
+        </li>
+      </ul>
+    </ng-template>
+
+    <w-toolbar #toolbar [object]="object" [viewMode]="viewMode" [selectedObjects]="selectedObjects"
+      [objectActionsTemplate]="objectActionsTemplate" [leftActionsTemplate]="hasSelectedObjects? leftSubMenuTemplate : leftMenuTemplate"
+      (event)="doToolbarEvent($event)">
+    </w-toolbar>
+
+    <w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)"
+      (selectedObjectsChanged)="selectedObjectsChanged($event)" [scrollWindow]="false">
+      <div footer-grid-list>
+        <box-loading *ngIf="links?.next"></box-loading>
+      </div>
+    </w-grid-list>
+    <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
+      [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
+
+      <button class="btn btn-outline-primary" (click)="openSelectedModal()">
+        <i class="fa fa-cloud-upload"></i> {{object.model == 'Media::Playlist' ? 'Upload Video': 'Upload Photo'}}</button>
+    </box-no-data>
+    <ng-template #modalContainer></ng-template>
+  </div>
+  <!-- <div class="page-over-full-info">
+    <media-detail-info #mediaInfo (event)="doToolbarEvent($event)"></media-detail-info>
+  </div> -->
+  <div *ngIf="object" class="page-over-full-info">
+    <h3>Information
+      <a href="javascript:;" draggable="false" (click)="showDetailsInfo = !showDetailsInfo">
+        <i class="fa fa-times"></i>
+      </a>
+    </h3>
+    <div class="photo-detail-info-title">
+      <h4>
+        <i class="fa fa-info-circle"></i> Details</h4>
+      <button class="btn btn-default pull-right" (click)="openEditModal(object)">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
+    <dl>
+      <div class="row">
+        <dt class="col-sm-6">Name</dt>
+        <dd class="col-sm-6">{{ object.name }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-6">Description</dt>
+        <dd class="col-sm-6">{{ object.description }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-6">Type</dt>
+        <dd class="col-sm-6">{{ object.extension }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-6">Number of files</dt>
+        <dd class="col-sm-6">{{ object.child_count }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-6">Created</dt>
+        <dd class="col-sm-6">
+          <span>{{ object.created_at | timeFormat}}</span>
+        </dd>
+      </div>
+    </dl>
+    <hr />
+    <dl>
+      <dt>
+        <h4>
+          <i class="wthico-album"></i>
+          <span> Sharings </span>
+        </h4>
+      </dt>
+      <dd>
+        <div>
+          <ul class="list-unstyled albums">
+            <li *ngIf="sharingOwner" class="row can-click" style="border-right: 2px solid gainsboro; padding: 0 5px"
+              pTooltip="{{sharingOwner.user.name}} is owner" tooltipPosition="bottom" (click)="openModalShareParent()">
+              <div class="avatar-xs">
+                <img [src]="sharingOwner.user.profile_image" alt="">
+              </div>
+            </li>
+            <li *ngFor="let recipient of recipients" class="row can-click" pTooltip="{{recipient.user.name}}"
+              tooltipPosition="bottom" (click)="openModalShareParent()">
+              <div class="avatar-xs">
+                <img [src]="recipient.user.profile_image" alt="">
+              </div>
+            </li>
+            <li *ngIf="moreRecipients" class="row can-click" (click)="showMoreRecipients()">
+              <div class="avatar-xs text-center" style="border: 1px solid grey">
+                <h5 style="position: relative; top: -2px">
+                  {{moreRecipients.length}}+
+                </h5>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </dd>
+    </dl>
+  </div>
+</div>
+<!-- <me-modal-list></me-modal-list> -->
+<bs-modal #coverModal cssClass="modal-media-selection">
+  <bs-modal-header [showDismiss]="true">
+    <h4>Set cover image</h4>
+    <w-object-toolbar-selected [selectedObjects]="selectedCoverObjects" (event)="doToolbarCoverEvent($event)">
+      <button (click)="setCover($event)" class="btn btn-outline-default" type="button">Set</button>
+    </w-object-toolbar-selected>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div style="height: 800px; overflow: scroll" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
+      [scrollWindow]="false" (scrolled)="doListEvent({action: 'getMore'})">
+      <div style="padding: 10px"></div>
+      <w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="cloneObjects" (event)="doCoverEvent($event)"
+        [hasMultipleSelection]="false" [scrollWindow]="false" [hideScale]="true">
+        <div footer-grid-list>
+          <box-loading *ngIf="links?.next"></box-loading>
+        </div>
+      </w-grid-list>
+    </div>
+  </bs-modal-body>
+</bs-modal>

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { switchMap, takeUntil, map } from 'rxjs/operators';
 
 import { InvitationService } from '@wth/shared/shared/components/invitation/invitation.service';
@@ -72,18 +72,24 @@ export class MyInvitationsComponent implements OnInit, OnDestroy {
     modal.open({data: this.data});
   }
 
+  updateInvitations(event: any) {
+
+  }
 
   doEvent(event: any) {
-    this.loadingService.start('#loading');
+    // this.loadingService.start('#loading');
     switch (event.action) {
+      case 'invitation:send_successfully':
+        this.items = [...this.items, ...event.payload];
+        break;
       case 'invitation:send_to_recipients':
 
         console.log(event);
         this.invitationService.create({recipients: event.payload}).subscribe((response: any) => {
-            if(this.currentTab == this.TAB.PENDING.value)
+            if (this.currentTab === this.TAB.PENDING.value)
               this.items = _.uniqBy([...this.items, ...response.data], 'recipient_email');
             this.loadingService.stop('#loading');
-            this.toaster.success('You have just sent invitation(s) successfully!');
+            // this.toaster.success('You have just sent invitation(s) successfully!');
           },
           (error: any) => {
             this.loadingService.stop('#loading');

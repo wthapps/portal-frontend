@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { PostListComponent } from '../../shared/second-routes/post/post-list.component';
-import { PostNewComponent } from '../../shared/second-routes/post/post-new.component';
 import { ZSocialProfileDataService } from '../profile-data.service';
 import { AuthService, UserService } from '@wth/shared/services';
+import { SoStorageService } from '@social/shared/services/social-storage.service';
 
 
 @Component({
@@ -11,14 +11,15 @@ import { AuthService, UserService } from '@wth/shared/services';
 })
 export class ZSocialProfilePostComponent implements OnInit {
   @ViewChild('posts') posts: PostListComponent;
-  @ViewChild('postNew') postNew: PostNewComponent;
 
   uuid: any;
   userInfo: any;
   relationships: any;
   canCreate: boolean;
 
-  constructor(public authService: AuthService, private profileDataService: ZSocialProfileDataService) { }
+  constructor(public authService: AuthService,
+              public soStorageService: SoStorageService,
+              private profileDataService: ZSocialProfileDataService) { }
 
   ngOnInit() {
     this.profileDataService.profileData$.subscribe((res: any) => {

@@ -6,7 +6,6 @@ import { ApiBaseService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 
 @Component({
-  moduleId: module.id,
   selector: 'z-chat-contact-receive',
   templateUrl: 'contact-receive.component.html'
 })

@@ -3,3 +3,25 @@
 @import '../../assets/styles/wth-style';
 //@import "../../assets/styles/partials/forms";
 @import 'variables';
+
+
+.user-card-content .user-card-content-email,  .user-card-content span {
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: -20px;
+}
+
+.user-card-avatar {
+  cursor: pointer;
+  .img-circle {
+    background-color: #D8D8D8;
+    min-width: 34px;
+    min-height: 34px;
+  }
+}
+
+a {
+  text-transform: capitalize;
+}

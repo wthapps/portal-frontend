@@ -416,13 +416,13 @@ export class MyPaymentComponent implements AfterViewInit, OnInit {
 
             // Cookie.delete('profile');
             this.cookieService.put(
-              'profile',
+              Constants.cookieKeys.profile,
               JSON.stringify(_thisPayment.userService.getSyncProfile()),
               this.cookieOptionsArgs
             );
             // _thisPayment.userService.getSyncProfile() = JSON.parse(this.cookieService.get('profile'));
             _thisPayment.userService.setProfile(
-              JSON.parse(this.cookieService.get('profile'))
+              JSON.parse(this.cookieService.get(Constants.cookieKeys.profile))
             );
             // make sure onInit method on PlansComponent will work
             _thisPayment.zone.run(() => {

@@ -1,0 +1,84 @@
+<ng-template #leftMenuTemplate>
+  <ul class="page-body-control-menu">
+    <li class="divider">
+      <a class="btn btn-default" draggable="false" href="javascript:void(0);" (click)="back()" pTooltip="{{ tooltip.back }}"
+        tooltipPosition="bottom">
+        <i class="fa fa-arrow-left"></i>
+      </a>
+    </li>
+
+    <li class="hidden-xs hidden-sm">
+      <!-- (dblclick)="" -->
+      <a class="btn btn-inline" draggable="false" href="javascript:void(0);" title="Double click to edit" (dblclick)="editName(object)">
+        {{object?.name}}
+      </a>
+    </li>
+  </ul>
+</ng-template>
+<ng-template #leftSubMenuTemplate>
+  <ul class="page-body-control-menu">
+    <li class="divider">
+      <a class="btn btn-default" href="javascript:;" (click)="deSelect()" draggable="false" pTooltip="{{ tooltip.close }}"
+        tooltipPosition="bottom">
+        <i class="fa fa-times"></i>
+      </a>
+    </li>
+    <li class="hidden-xs hidden-sm">
+      <span class="btn btn-text">{{ selectedObjects.length }} selected</span>
+    </li>
+  </ul>
+</ng-template>
+<div class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
+  <div class="page-over-full-header">
+    <ng-template #objectActionsTemplate>
+      <ul class="page-body-control-menu">
+        <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+          <li *ngIf="!action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+            <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false" pTooltip="{{action.val.tooltip}}"
+              tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
+              <i class="{{action.val.iconClass}}"></i>
+            </button>
+          </li>
+        </ng-template>
+
+        <li class="dropdown action">
+          <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
+            <i class="fa fa-ellipsis-v"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+            <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+              <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+                <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}"
+                  tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
+                  <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
+                </a>
+              </li>
+            </ng-template>
+          </ul>
+        </li>
+      </ul>
+    </ng-template>
+
+    <w-toolbar #toolbar [object]="object" [viewMode]="viewMode" [selectedObjects]="selectedObjects"
+      [objectActionsTemplate]="objectActionsTemplate" [leftActionsTemplate]="hasSelectedObjects? leftSubMenuTemplate : leftMenuTemplate"
+      (event)="doToolbarEvent($event)">
+    </w-toolbar>
+
+    <w-grid-list #gridlist [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" [scrollWindow]="false">
+      <div footer-grid-list>
+        <box-loading *ngIf="links?.next"></box-loading>
+      </div>
+    </w-grid-list>
+    <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
+      [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
+      <button *ngIf="actionNoData" class="btn btn-outline-primary" (click)="toolbar.doAction({action: 'openMediaSelectModal'})">
+        <i class="fa fa-plus"></i> {{actionNoData}}
+      </button>
+    </box-no-data>
+    <ng-template #modalContainer></ng-template>
+  </div>
+  <div class="page-over-full-info">
+    <media-detail-info #mediaInfo (event)="doToolbarEvent($event)"></media-detail-info>
+  </div>
+</div>

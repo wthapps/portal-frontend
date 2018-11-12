@@ -1,15 +1,22 @@
-<div class="text-center" *ngIf="message[0] && message[0].display">
-  <p>
-    <span class="avatar-xs ml-a mr-a">
+<div class="message-item-content-request">
+  <div class="media-avatar" *ngIf="message && message[0] && message[0].display">
+    <div class="media-avatar-img avatar-sm">
       <img [src]="message[0].display.image" alt="">
-    </span>
-  </p>
-  <p>
-    <a [routerLink]="['/profile', message[0].display.uuid]" class="link-text text-bold">
-      {{ message[0].display.name }}</a> would like add you on WTH!Chat
-  </p>
-  <small class="text-fade">{{ message[0].created_at | timeFormat }}</small>
-  <p>{{ message[0].message }}</p>
-  <button class="btn btn-outline-primary mr10" (click)="onAccept()">Accept</button>
-  <button type="button" class="btn btn-outline-default" (click)="onDecline()">Ignore</button>
+    </div>
+    <div class="media-avatar-body">
+      <h4 class="media-avatar-heading">
+        <a [routerLink]="['/profile', message[0].display.uuid]" href="#">{{ message[0].display.name }}</a>
+      </h4>
+      <p>{{ message[0].display.name }} sent you a chat invitation</p>
+      <!--<small class="text-fade">{{ message[0].created_at | timeFormat }}</small>-->
+      <div>
+        <button class="btn btn-outline-primary mr10" (click)="onAccept()">
+          <i class="fa fa-check"></i> Accept
+        </button>
+        <button type="button" class="btn btn-outline-default" (click)="onDecline()">
+          <i class="fa fa-times"></i> Decline
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

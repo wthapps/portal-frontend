@@ -1,3 +1,4 @@
+import { SoStorageService } from './../shared/services/social-storage.service';
 import { Component, ViewChild } from '@angular/core';
 import { PostListComponent } from '../shared/second-routes/post/post-list.component';
 import { SocialService } from '../shared/services/social.service';
@@ -15,6 +16,7 @@ export class ZSocialHomeComponent {
 
   constructor(
     public authService: AuthService,
+    public soStorageService: SoStorageService,
     private socialService: SocialService
   ) {
     this.socialService.community.currentCommunity = undefined;

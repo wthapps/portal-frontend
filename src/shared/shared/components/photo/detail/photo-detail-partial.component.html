@@ -5,20 +5,19 @@
         <i class="fa fa-arrow-left"></i>
       </button>
       <span class="divider"></span>
-      <span class="btn btn-text hidden-xs"><i class="fa fa-picture-o"></i> {{ photo?.name }}.{{ photo?.extension }}</span>
+      <span class="btn btn-text hidden-xs">
+        <i class="fa fa-picture-o"></i> {{ photo?.name }}.{{ photo?.extension }}</span>
     </div>
     <div class="image-viewer-header-right">
       <ng-container *ngFor="let menu of menus">
-        <button *ngIf="!menu?.dropdown && menu.display" (click)="doAction({action: menu?.action, params: menu?.params})"
-                pTooltip="{{ menu.toolTip }}"
-                tooltipPosition="bottom" class="btn btn-default" type="button">
+        <button *ngIf="!menu?.dropdown && menu.display" (click)="doAction({action: menu?.action, params: menu?.params})" pTooltip="{{ menu.toolTip }}"
+          tooltipPosition="bottom" class="btn btn-default" type="button">
           <i *ngIf="menu?.action=='favourite'" class="fa" [ngClass]="!photo.favorite ? 'fa-star-o': 'fa-star'"></i>
           <i *ngIf="menu?.action!='favourite'" [ngClass]="menu.iconClass"></i>
         </button>
 
         <div *ngIf="menu?.dropdown" class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i [ngClass]="menu.iconClass"></i>
           </button>
           <ul *ngIf="menu?.parent" class="dropdown-menu dropdown-menu-right">
@@ -33,10 +32,6 @@
     </div>
   </div>
 
-  <div class="visible-xs-block text-center p10 text-white">
-    <i class="fa fa-picture-o"></i> {{ photo?.name }}.{{ photo?.extension }}
-  </div>
-
   <div class="image-viewer-content">
     <ng-container *ngIf="loadingImg">
       <box-loading></box-loading>
@@ -47,37 +42,41 @@
     </div>
 
     <div class="image-viewer-content-nav">
-      <a *ngIf="hasPreviousItem" draggable="false" href="javascript:void(0);" (click)="onMove(false)"
-         pTooltip="{{ tooltip.previous }}" tooltipPosition="bottom">
+      <a *ngIf="hasPreviousItem" draggable="false" href="javascript:void(0);" (click)="onMove(false)" pTooltip="{{ tooltip.previous }}"
+        tooltipPosition="bottom">
         <i class="fa fa-angle-left"></i>
       </a>
-      <a *ngIf="hasNextItem" draggable="false" href="javascript:void(0);" (click)="onMove()"
-         pTooltip="{{ tooltip.next }}" tooltipPosition="bottom">
+      <a *ngIf="hasNextItem" draggable="false" href="javascript:void(0);" (click)="onMove()" pTooltip="{{ tooltip.next }}" tooltipPosition="bottom">
         <i class="fa fa-angle-right"></i>
       </a>
     </div>
 
     <div class="image-viewer-content-action">
-      <a draggable="false" href="javascript:;" (click)="onZoomOut()"
-         pTooltip="{{ tooltip.zoomOut }}" tooltipPosition="top"><i class="fa fa-minus"></i></a>
-      <a draggable="false" href="javascript:;" (click)="onRefresh()"
-         pTooltip="{{ tooltip.resetZoom }}" tooltipPosition="top"><i class="fa fa-refresh"></i></a>
-      <a draggable="false" href="javascript:;" (click)="onZoomIn()"
-         pTooltip="{{ tooltip.zoomIn }}" tooltipPosition="top"><i class="fa fa-plus"></i></a>
+      <a draggable="false" href="javascript:;" (click)="onZoomOut()" pTooltip="{{ tooltip.zoomOut }}" tooltipPosition="top">
+        <i class="fa fa-minus"></i>
+      </a>
+      <a draggable="false" href="javascript:;" (click)="onRefresh()" pTooltip="{{ tooltip.resetZoom }}" tooltipPosition="top">
+        <i class="fa fa-refresh"></i>
+      </a>
+      <a draggable="false" href="javascript:;" (click)="onZoomIn()" pTooltip="{{ tooltip.zoomIn }}" tooltipPosition="top">
+        <i class="fa fa-plus"></i>
+      </a>
     </div>
   </div>
   <div class="image-viewer-info">
-    <h3>Information <a href="javascript:;" draggable="false" (click)="doAction({action: 'viewInfo'})"><i
-      class="fa fa-times"></i></a></h3>
-    <div class="photo-detail-info-title">
-      <h4><i class="fa fa-file-text-o"></i> Details</h4>
-      <a href="javascript:;"
-         draggable="false"
-         (click)="doAction({action: 'openModal', params: {modalName: 'editInfoModal'}, data: photo})">
-        Edit
+    <h3>Information
+      <a href="javascript:;" draggable="false" (click)="doAction({action: 'viewInfo'})">
+        <i class="fa fa-times"></i>
       </a>
+    </h3>
+    <div class="photo-detail-info-title">
+      <h4>
+        <i class="fa fa-file-text-o"></i> Details</h4>
+      <button class="btn btn-default" (click)="doAction({action: 'openModal', params: {modalName: 'editInfoModal'}, data: photo})">
+        <i class="fa fa-pencil"></i>
+      </button>
     </div>
-    <dl class="dl-horizontal">
+    <dl>
       <dt>Name</dt>
       <dd>{{ photo.name }}</dd>
       <dt>Description</dt>
@@ -91,44 +90,52 @@
       <dt>Uploaded</dt>
       <dd>{{ photo.created_at | timeFormat }}</dd>
     </dl>
+    <hr/>
+
     <div class="photo-detail-info-title">
-      <h4><i class="fa fa-tag"></i> Tag </h4>
-      <a href="javascript:;" draggable="false"
-         (click)="doAction({action: 'openModal', params: {modalName: 'taggingModal' }})">Edit</a>
+      <h4>
+        <i class="fa fa-tag"></i> Tag </h4>
+      <button class="btn btn-default" (click)="doAction({action: 'openModal', params: {modalName: 'taggingModal' }})">
+        <i class="fa fa-pencil"></i>
+      </button>
     </div>
     <div class="tags-text">
       <span *ngFor="let tag of photo.json_tags">{{ tag.name }}</span>
     </div>
 
-
-    <div class="photo-detail-info-title">
-      <h4>Sharing</h4>
-      <a href="javascript:;" draggable="false"
-         (click)="doAction({action: 'openModal', params: {modalName: 'sharingModal' }})">Edit</a>
-    </div>
+    <hr>
     <dl>
-      <dt>Owner</dt>
-      <dd>
-        <ul class="list-unstyled recipients">
-          <li>
-            <a [href]="profileUrl + photo?.owner?.uuid">
-              <img width="24" [src]="photo.owner.profile_image" alt="{{ photo.owner?.name }}"
-                   title="{{ photo.owner?.name }}"> {{ photo.owner?.name }}
-            </a>
-          </li>
-        </ul>
-      </dd>
 
-      <dt>Shared with</dt>
+      <dt>
+        <h4>
+          <i class="wthico-album"></i> Album</h4>
+      </dt>
       <dd>
-        <ul class="list-unstyled recipients" *ngIf="photo.json_shares.length > 0">
-          <li *ngFor="let recipient of photo?.json_shares">
-            <a [href]="profileUrl + recipient?.uuid">
-              <img width="24" [src]="recipient?.profile_image" title="{{ recipient?.name }}">
-              {{ recipient.name }}
-            </a>
-          </li>
-        </ul>
+        <div>
+
+          <ul class="list-unstyled albums">
+            <li *ngFor="let album of objects">
+              <div class="album-card">
+                <div class="album-card-image" (click)="viewAlbumDetails(album)">
+                  <img [src]="album.thumbnail_url" alt="{{ album.name }}" title="{{ album.name }}">
+                </div>
+                <div class="album-card-content">
+                  <div class="album-card-content-name" (click)="viewAlbumDetails(album)">
+                    <span> {{ album.name }} </span>
+                  </div>
+                  <div class="album-card-content-created-date">
+                    <span> {{ album.created_at | date: 'MMM dd, yyyy'}} </span>
+                    <i *ngIf="album.object_type=='sharing'" class="fw fw-shared-with-me"></i>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <div *ngIf="showMore">
+            <a href="javascript:void(0);" (click)="loadMoreAlbums(index)">more</a>
+          </div>
+        </div>
       </dd>
     </dl>
   </div>

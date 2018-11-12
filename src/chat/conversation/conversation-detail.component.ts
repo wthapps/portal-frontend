@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/toPromise';
+import { Store } from '@ngrx/store';
+import { Subscription, Observable } from 'rxjs';
+
 
 import { ChatService } from '../shared/services/chat.service';
 import { MessageListComponent } from '../shared/message/message-list.component';
@@ -12,18 +13,17 @@ import {
   CommonEvent,
   CommonEventAction,
   CommonEventService,
-  PhotoService
+  PhotoService, UserService, ChatCommonService
 } from '@wth/shared/services';
 import { CHAT_ACTIONS, FORM_MODE } from '@wth/shared/constant';
-import { Store } from '@ngrx/store';
-import * as fromConversations from './../../core/store/chat/conversations.reducer';
-import { User } from '@shared/shared/models';
+import { User } from '@wth/shared/shared/models';
+import { WUploader } from '@shared/services/w-uploader';
+import { Message } from '@chat/shared/models/message.model';
 
 declare var _: any;
 declare var $: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'conversation-detail',
   templateUrl: 'conversation-detail.component.html'
 })
@@ -31,43 +31,40 @@ export class ConversationDetailComponent
   implements CommonEventAction, OnInit, OnDestroy {
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
-  item: any;
   events: any;
 
   commonEventSub: Subscription;
+  contactSelect$: Observable<any>;
+  currentMessages$: Observable<any>;
+  chatContactList$: Observable<any>;
+  currentUser$: Observable<User>;
   tokens: any;
+
 
   constructor(
     private chatService: ChatService,
     private commonEventService: CommonEventService,
+    private chatCommonService: ChatCommonService,
     private router: Router,
     private route: ActivatedRoute,
-    private photoService: PhotoService,
-    private store: Store<any>,
-    private conversationService: ConversationService
+    private userService: UserService,
+    private conversationService: ConversationService,
+    private uploader: WUploader
   ) {
-    // this.store.select('conversations').subscribe((state: any) => {
-    //   console.log(state);
-    // });
+    this.currentUser$ = userService.profile$;
   }
 
   ngOnInit() {
-    this.route.params.forEach((params: any) => {
-      let contact = this.chatService.getContactSelect().value;
-      if (contact) {
-        this.chatService.getMessages(contact.group_json.id);
-        if (contact.history) {
-          this.chatService.updateHistory(contact);
-        }
-      }
-    });
+    this.contactSelect$ = this.chatService.getContactSelectAsync();
+    this.currentMessages$ = this.chatService.getCurrentMessagesAsync();
+    this.chatContactList$ = this.chatService.getChatConversationsAsync();
 
     this.commonEventSub = this.commonEventService
-      .filter((event: CommonEvent) => event.channel == 'chatCommonEvent')
+      .filter((event: CommonEvent) => event.channel === 'chatCommonEvent')
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
       });
-    this.item = this.chatService.getCurrentMessages();
+
   }
 
   doEvent(event: CommonEvent) {
@@ -79,7 +76,7 @@ export class ConversationDetailComponent
         });
         this.messageEditor.focus();
         // Real copy
-        let temp = $('<input>');
+        const temp = $('<input>');
         $('body').append(temp);
         temp.val(event.payload.message).select();
         document.execCommand('copy');
@@ -102,19 +99,24 @@ export class ConversationDetailComponent
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD:
         break;
-      case CHAT_ACTIONS.CHAT_MESSAGE_CANCEL:
+      case CHAT_ACTIONS.CHAT_MESSAGE_CANCEL: {
+        const { message_type, meta_data, file, group_id, id } = event.payload;
+        if (message_type === 'file' && file && meta_data.file) {
+          this.uploader.cancel(meta_data.file);
+        }
         this.conversationService
-          .cancelUpload(event.payload.group_id, event.payload.id)
+          .cancelUpload(group_id, id)
           .toPromise()
           .then((response: any) => {
             console.log('cancel ok!!!!');
           });
+        }
         break;
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
         this.conversationService
           .deleteMessage(event.payload.group_id, event.payload.id)
           .toPromise()
-          .then((response: any) => {
+          .then((res: any) => {
             console.log('delete ok!!!!');
           });
 
@@ -122,10 +124,34 @@ export class ConversationDetailComponent
     }
   }
 
+
+  buildMessage(event: any): any {
+    const message = new Message();
+
+    if (event.action === 'progress') {
+      message.message_type = 'file';
+      message.content_type = event.payload.content_type;
+
+    }
+    return message;
+  }
+
+  createMessage(message: any) {
+  }
+
+  updateMessage(message: any) {
+
+  }
+
+  deleteMessage(message: any) {
+
+  }
+
+
   drop(e: any) {
     e.preventDefault();
     e.stopPropagation();
-    let data = e.dataTransfer.files;
+    const data = e.dataTransfer.files;
     if (data.length > 0) {
       this.chatService.createUploadingFile(data);
     }

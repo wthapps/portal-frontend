@@ -8,16 +8,14 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Subscription ,  Observable ,  Subject, BehaviorSubject } from 'rxjs';
+import { takeUntil, combineLatest, map } from 'rxjs/operators';
 
-import { ZContactService, ITEM_PER_PAGE } from '../../shared/services/contact.service';
+import { ZContactService, ITEM_PER_PAGE, MY_CONTACTS, OTHER_CONTACTS } from '../../shared/services/contact.service';
 import { ContactAddGroupModalComponent } from '../../shared/modal/contact-add-group/contact-add-group-modal.component';
 import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
 import { InvitationCreateModalComponent } from '../../../shared/shared/components/invitation/invitation-create-modal.component';
-import { WthConfirmService } from '../../../shared/shared/components/confirmation/wth-confirm.service';
 import { LoadingService } from '../../../shared/shared/components/loading/loading.service';
 import { InvitationService } from '../../../shared/shared/components/invitation/invitation.service';
 import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
@@ -30,12 +28,10 @@ import {
   CommonEventAction,
   CommonEventService
 } from '@wth/shared/services';
-import { routeAnimation } from '@wth/shared/shared/animations/route.animation';
-import { takeUntil } from 'rxjs/operators';
+import { Contact } from '@contacts/contact/contact.model';
 
 declare var _: any;
 @Component({
-
   selector: 'z-contact-list',
   templateUrl: 'contact-list.component.html'
   // animations: [routeAnimation]
@@ -45,20 +41,20 @@ export class ZContactListComponent
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
 
-  page: number = 1;
 
   contacts: any = [];
   filteredContacts: Array<any> = new Array<any>();
-  actionsToolbarEvent: Subscription;
-  tokens: any;
-  tokensActionsBar: any;
   contact$: Observable<any>;
   originalContacts: any = [];
-  loaded: boolean = false;
+  loaded = false;
+  pageTitle: string;
 
-  linkSocial: string = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
-  linkChat: string = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
+  linkSocial = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
+  linkChat = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
   _contact: any = _contact;
+  label$: Observable<string> ;
+  inOtherPage = false;
+  private pageSubject: BehaviorSubject<number> = new BehaviorSubject<number>(1);
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -67,7 +63,6 @@ export class ZContactListComponent
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private wthConfirmService: WthConfirmService,
     private groupService: GroupService,
     private loadingService: LoadingService,
     private commonEventService: CommonEventService,
@@ -76,25 +71,38 @@ export class ZContactListComponent
   ) {
     this.commonEventService
       .filter(
-        (event: CommonEvent) => event.channel == Constants.contactEvents.common
+        (event: CommonEvent) => event.channel === Constants.contactEvents.common
       )
       .pipe(takeUntil(this.destroySubject))
       .subscribe((event: CommonEvent) => {
         this.doEvent(event);
       });
-    this.page = 1;
+    // this.page = 1;
     this.contact$ = this.contactService.contacts$;
+    this.label$ = this.route.paramMap.pipe(
+      map(paramMap => paramMap.get('group'))
+    );
+    this.route.data
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe(data => {
+      if (data && data.page) {
+        this.inOtherPage = (data.page === OTHER_CONTACTS);
+        this.pageTitle = this.inOtherPage ? 'Other contacts' :
+          this.route.snapshot.paramMap.get('group') || 'All contacts';
+        this.contactService.setCurrentPage(data.page);
+      }
+    });
   }
 
   ngOnInit() {
     this.commonEventService
       .filter(
         (event: CommonEvent) =>
-          event.channel == Constants.contactEvents.actionsToolbar
+          event.channel === Constants.contactEvents.actionsToolbar
       )
       .pipe(takeUntil(this.destroySubject))
       .subscribe((event: CommonEvent) => {
-        let tmp = _.cloneDeep(this.contactService.selectedObjects);
+        const tmp = _.cloneDeep(this.contactService.selectedObjects);
         this.contactService.selectedObjects = [event.payload];
         this.doActionsToolbar(event);
         this.contactService.selectedObjects = tmp;
@@ -105,22 +113,27 @@ export class ZContactListComponent
       if (params['search']) {
         this.contactService.search({ search_value: params['search'] });
       } else {
+        const category = location.pathname === '/others' ? 'others' : 'myContacts';
+        let group = '';
         switch (params['group']) {
           case 'all contacts':
           case 'undefined':
-            this.contactService.filter({ group: undefined });
+            group = undefined;
             break;
           default:
-            this.contactService.filter({ group: params['group'] });
+            group = params['group'];
             break;
         }
+        this.contactService.filter({ category: category, group: group });
       }
     });
 
     this.contactService.contacts$
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe((contacts: any[]) => {
-        this.contacts = contacts.slice(0, ITEM_PER_PAGE * this.page);
+      .pipe(
+        combineLatest(this.pageSubject),
+        takeUntil(this.destroySubject))
+      .subscribe(([contacts, page]) => {
+        this.contacts = contacts.slice(0, ITEM_PER_PAGE * page);
         this.loadingService.stop();
       });
   }
@@ -140,7 +153,8 @@ export class ZContactListComponent
   }
 
   confirmDeleteContacts() {
-    this.contactService.confirmDeleteContacts();
+    this.contactService.confirmDeleteContacts()
+    .then(ct => this.router.navigate(['contacts']));
   }
 
   ngOnDestroy() {
@@ -149,13 +163,18 @@ export class ZContactListComponent
   }
 
   onLoadMore() {
-    this.page += 1;
-    this.contactService.onLoadMore();
+    this.pageSubject.next(this.pageSubject.getValue() + 1);
   }
 
-  viewContactDetail(contactId: any) {
-    this.router.navigate(['contacts/detail/' + contactId]).then();
+  onItemSelected(contact: Contact) {
+    this.contactService.viewContactDetail(contact);
   }
+
+  viewContactDetail(contact: Contact) {
+    this.contactService.viewContactDetail(contact);
+  }
+
+
 
   editContact(contactId: any) {
     this.router.navigate(['contacts/' + contactId]).then();
@@ -167,7 +186,7 @@ export class ZContactListComponent
         let groups: any[] = [];
         if (this.contactService.selectedObjects.length > 1) {
           groups = _contact.getSameLables(this.contactService.selectedObjects);
-        } else if (this.contactService.selectedObjects.length == 1) {
+        } else if (this.contactService.selectedObjects.length === 1) {
           groups = this.contactService.selectedObjects[0].groups;
           event.mode = 'edit';
         }
@@ -182,7 +201,7 @@ export class ZContactListComponent
       // this will handle all cases as: favourite, add to group
       // after updating, deleting, importing we must update local CONTACT list data
       case 'contact:contact:update':
-        let selectedObjects =
+        const selectedObjects =
           event.payload && event.payload.selectedObjects
             ? event.payload.selectedObjects
             : this.contactService.selectedObjects;
@@ -191,22 +210,12 @@ export class ZContactListComponent
           console.log(res);
         });
         break;
-      case 'invitation:send_to_recipients':
-        this.invitationService
-          .create({ recipients: event.payload })
-          .subscribe((response: any) => {
-            // this.invitationModal.close();
-            this.toaster.success(
-              'You have just sent invitation(s) successfully!'
-            );
-          });
-        break;
     }
   }
 
-  toggleGroup(name: string) {
-    let group = _.find(this.groupService.getAllGroupSyn(), (group: any) => {
-      return group.name == name;
+  toggleGroup(name: string): void {
+    const group = _.find(this.groupService.getAllGroupSyn(), (gr: any) => {
+      return gr.name === name;
     });
     if (
       _contact.isContactsHasGroupName(this.contactService.selectedObjects, name)
@@ -226,102 +235,67 @@ export class ZContactListComponent
   }
 
   doActionsToolbar(event: any) {
-    if (event.action == 'favourite') {
-      // this.toggleGroupB(this.contactService.selectedObjects, 'favourite');
-      this.toggleGroup('favourite');
-    }
-
-    if (event.action == 'blacklist') {
-      this.toggleGroup('blacklist');
-    }
-
-    if (event.action == 'tag') {
-      this.doEvent({ action: 'open_add_group_modal' });
-    }
-
-    if (event.action == 'delete') {
-      this.contactService.confirmDeleteContacts(
-        this.contactService.selectedObjects
-      );
-    }
-
-    if (event.action == 'social') {
-      if (
-        this.contactService.selectedObjects &&
-        this.contactService.selectedObjects[0].wthapps_user &&
-        this.contactService.selectedObjects[0].wthapps_user.uuid
-      ) {
-        window.location.href =
+    switch (event.action) {
+      case 'favourite':
+        this.toggleGroup('favourite');
+        break;
+      case 'blacklist':
+        this.toggleGroup('blacklist');
+        break;
+      case 'tag':
+        this.doEvent({ action: 'open_add_group_modal' });
+        break;
+      case 'delete':
+        this.confirmDeleteContacts();
+        break;
+      case 'social':
+        if (this.contactService.selectedObjects &&
+            this.contactService.selectedObjects[0].wthapps_user &&
+            this.contactService.selectedObjects[0].wthapps_user.uuid) {
+          window.location.href =
           this.linkSocial +
           this.contactService.selectedObjects[0].wthapps_user.uuid;
-      }
-    }
+        }
+        break;
 
-    if (event.action == 'chat') {
-      if (
-        this.contactService.selectedObjects &&
-        this.contactService.selectedObjects[0].wthapps_user &&
-        this.contactService.selectedObjects[0].wthapps_user.uuid
-      ) {
-        window.location.href =
+      case 'chat':
+        if (this.contactService.selectedObjects &&
+            this.contactService.selectedObjects[0].wthapps_user &&
+            this.contactService.selectedObjects[0].wthapps_user.uuid) {
+          window.location.href =
           this.linkChat +
           this.contactService.selectedObjects[0].wthapps_user.uuid;
-      }
-    }
-
-    if (event.action == 'view_detail') {
-      this.viewContactDetail(this.contactService.selectedObjects[0].id);
-    }
-
-    if (event.action == 'edit_contact') {
-      this.router
-        .navigate([
-          'contacts',
-          this.contactService.selectedObjects[0].id,
-          { mode: 'edit' }
-        ])
-        .then();
-    }
-
-    if (event.action == 'invitation:open_modal') {
-      let recipients: Array<Recipient> = new Array<Recipient>();
-      let objects: any[] = _.get(
-        event,
-        'payload.objects',
-        this.contactService.selectedObjects
-      );
-      _.forEach(objects, (contact: any) => {
-        if (contact.wthapps_user == null) {
-          _.forEach(contact.emails, (email: any) => {
-            recipients.push(
-              new Recipient({
-                email: email.value,
-                fullName: contact.name,
-                contactId: contact.id
-              })
-            );
-          });
         }
-      });
-      this.invitationModal.open({ data: recipients });
+        break;
+
+      case 'view_detail':
+        this.viewContactDetail(this.contactService.selectedObjects[0]);
+        break;
+
+      case 'edit_contact':
+        this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, 'edit']).then();
+        break;
+      case 'invitation:open_modal':
+        const recipients: Array<Recipient> = new Array<Recipient>();
+        const objects: any[] = _.get(event, 'payload.objects', this.contactService.selectedObjects);
+
+        _.forEach(objects, (contact: any) => {
+          if (contact.wthapps_user == null) {
+            _.forEach(contact.emails, (email: any) => {
+              recipients.push(
+                new Recipient({
+                  email: email.value,
+                  fullName: contact.name,
+                  contactId: contact.id
+                })
+              );
+            });
+          }
+        });
+        this.invitationModal.open({ data: recipients });
+        break;
     }
   }
-
-  // showInvitation(): boolean {
-  //   let result = true;
-  //   _.forEach(this.contactService.selectedObjects, (contact: any) => {
-  //       if (contact.wthapps_user != null) {
-  //         result = false;
-  //         return;
-  //       }
-  //       if (contact.emails.length == 0 || contact.emails[0].value == '') {
-  //         result = false;
-  //         return;
-  //       }
-  //   });
-  //   return result;
-  // }
-
   addTags(event: any) {
     this.modal.open();
   }

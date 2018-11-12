@@ -1,7 +1,8 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WCountriesModule } from '@shared/components/w-countries/w-countries.module';
 import { CookieModule } from 'ngx-cookie';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { BsModalModule } from 'ng2-bs3-modal';
@@ -44,7 +45,6 @@ import { BoxLoadingModule } from './shared/components/box-loading/box-loading.mo
 import { BoxNoDataModule } from './shared/components/box-no-data/box-no-data.module';
 import { DirectiveModule } from './shared/directive/directive.module';
 import { HttpClientModule } from '@angular/common/http';
-import { Ng2CableModule } from 'ng2-cable';
 import { DataTableModule } from 'primeng/components/datatable/datatable';
 import { ImageCropperModule } from '@shared/shared/components/image-cropper/image-cropper.module';
 import { MenuContainerModule } from '@shared/shared/components/menu-container/menu-container.module';
@@ -56,6 +56,12 @@ import { ComponentsModule } from '@shared/components/components.module';
 import { AccordionModule } from 'primeng/components/accordion/accordion';
 import { ModalModule } from '@wth/shared/components/modal/modal.module';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
+import { WEditorModule } from '@shared/components/w-editor/w-editor.module';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { StickyModule } from 'ng2-sticky-kit';
+import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
+import { WUserModule } from '@shared/components/w-user/w-user.module';
+import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -71,13 +77,14 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
     // BrowserAnimationsModule,
     CookieModule.forRoot(),
     InfiniteScrollModule,
-    Ng2CableModule,
 
     PartialModule,
-    //Custom modules
+    // Custom modules
     ModalModule,
     WMediaSelectionModule,
-    WNavTabModule
+    WNavTabModule,
+    WEditorModule,
+    ScrollToModule.forRoot()
   ],
   declarations: [],
   exports: [
@@ -90,7 +97,6 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 
     // Third parties modules
     BsModalModule,
-    Ng2CableModule,
 
     // WTHApps modules
     LoadingModule,
@@ -136,13 +142,19 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
     MenuContainerModule,
     NotificationListModule,
     WTHEmojiModule,
+    ScrollToModule,
+    StickyModule,
 
     // Custom modules
     ModalModule,
     WMediaSelectionModule,
+    WObjectListModule,
+    WCountriesModule,
     WNavTabModule,
+    WLeftMenuModule,
     ComponentsModule,
-
+    WEditorModule,
+    WUserModule,
     // Pipe
     PipeModule,
 
@@ -154,46 +166,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [
-        // ApiBaseService,
-        // ClientDetectorService,
-        // LoadingService,
-        // ServiceManager,
-        // UserService,
-        // AuthGuard,
-        // AuthService,
-        // WthInterceptor,
-        // CountryService,
-        // ConfirmationService,
-        // WthConfirmService,
-        // CookieService,
-        // StorageService,
-        // HandlerService,
-        // WTHNavigateService,
-        // NotificationService,
-        // NotificationChannelService,
-        // ConnectionNotificationService,
-        // AppearancesChannelService,
-        // ChannelService,
-        // PhotoModalDataService,
-        // PhotoUploadService,
-        // UrlService,
-        // DateService,
-        // ZSharedReportService,
-        // ChatCommonService,
-        // PhotoService,
-        // SuggestionService,
-        // CommonEventService,
-        // GenericFileService,
-        // ToastsService,
-        // MessageService,
-        // WObjectListService,
-        // WMediaSelectionService,
-        // DomService,
-        // ApiProxyService,
-        // FileUploaderService,
-        // WindowService
-      ]
+      providers: []
     };
   }
 }

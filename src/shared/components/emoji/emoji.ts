@@ -36,3 +36,9 @@ export interface WTHEmojiCategory {
   regional: WTHEmoji;
   modifier: WTHEmoji;
 }
+
+export interface WTHEmojiCateCode {
+  category: string;
+  code: string;
+  diversity?: string;
+}

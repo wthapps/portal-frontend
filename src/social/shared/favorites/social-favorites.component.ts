@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { empty } from 'rxjs/observable/empty';
+import { Observable, EMPTY } from 'rxjs';
+
 
 import { SocialService } from '../services/social.service';
 
@@ -18,7 +18,7 @@ declare let _: any;
 export class ZSocialFavoritesComponent {
   tooltip: any = Constants.tooltip;
 
-  favorites$: Observable<any> = empty();
+  favorites$: Observable<any> = EMPTY;
   readonly profileUrl: string = '/' + Constants.urls.profile;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
 

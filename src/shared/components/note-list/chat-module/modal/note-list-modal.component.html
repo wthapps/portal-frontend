@@ -26,13 +26,10 @@
         <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)" [placeholder]="'Search something'"
           [showSearchClearText]="true"></textbox-search>
       </div>
-      <!-- <div *ngIf="insertEnable" class="insertHeader">
-        <button type="button" name="button" (click)="insertNotes()"> Insert </button>
-      </div> -->
-      <w-object-toolbar-selected *ngIf="insertEnable">
-        <button (click)="insertNotes()" class="btn btn-outline-default" type="button">Insert</button>
-      </w-object-toolbar-selected>
     </bs-modal-header>
+    <w-object-toolbar-selected *ngIf="insertEnable" [selectedObjects]="selectedObjects">
+      <button (click)="insertNotes()" class="btn btn-outline-default" type="button">Insert</button>
+    </w-object-toolbar-selected>
     <bs-modal-body>
       <div class="clearfix" style="position: relative; z-index: 99999">
         <z-shared-breadcrumb [models]="breadcrumb" class="note-breadcrumb" (onBreadcrumbAction)="onBreadcrumbAction($event)"></z-shared-breadcrumb>

@@ -10,11 +10,12 @@ export class PostService {
   }
 
   list(queryParams: any = null): any {
-    if (typeof queryParams == 'object') {
-      if (queryParams['uuid'] == undefined) {
+    if (typeof queryParams === 'object') {
+      if (!queryParams['uuid']) {
         return this.api.get(this.url, {page_index: queryParams['page_index'], limit: queryParams['limit']});
       } else {
-        return this.api.get(`zone/social_network/user_posts/${queryParams['uuid']}`, {type: queryParams['type'], page_index: queryParams['page_index'], limit: queryParams['limit']});
+        return this.api.get(`zone/social_network/user_posts/${queryParams['uuid']}`, {type: queryParams['type'],
+         page_index: queryParams['page_index'], limit: queryParams['limit']});
       }
     }
   }
@@ -28,13 +29,12 @@ export class PostService {
   }
 
   add(item: any): any {
-    let body: any = JSON.stringify(item);
+    const body: any = JSON.stringify(item);
     return this.api.post(this.url, body);
   }
 
   update(item: any): any {
-    console.log('updateing .............', item);
-    let body: any = JSON.stringify(item);
+    const body: any = JSON.stringify(item);
     return this.api.put(`${this.url}/${item.uuid}`, body);
   }
 

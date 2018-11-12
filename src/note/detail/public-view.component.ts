@@ -9,11 +9,8 @@ import {
 import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subject ,  Subscription ,  of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs/observable/of';
 import {
   takeUntil,
   switchMap,
@@ -31,14 +28,12 @@ import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import { PhotoUploadService } from '@shared/services/photo-upload.service';
-import { GenericFile } from '@shared/shared/models/generic-file.model';
-import { GenericFileService } from '@shared/services/generic-file.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
-import { CommonEventService, UrlService } from '@wth/shared/services';
+import { CommonEventService, UrlService, WthConfirmService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
 import { noteConstants } from '@notes/shared/config/constants';
 import { Counter } from '@wth/core/quill/modules/counter';
@@ -47,8 +42,6 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import ImageBlot from '@wth/core/quill/blots/image';
 import IconBlot from '@wth/core/quill/blots/icon';
-import DividerBlot from '@wth/core/quill/blots/divider';
-import { Font, Size } from '@wth/core/quill/blots/font-size';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 
@@ -66,7 +59,11 @@ export class ZNotePublicViewComponent implements OnInit, AfterViewInit {
   tooltip: any = Constants.tooltip;
   note: any;
 
-  constructor(private apiBaseService: ApiBaseService, private urlService: UrlService) {}
+  constructor(
+    private apiBaseService: ApiBaseService,
+    private wthConfirmService: WthConfirmService,
+    private router: Router,
+    private urlService: UrlService) {}
 
   ngOnInit() {
 
@@ -75,6 +72,11 @@ export class ZNotePublicViewComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.apiBaseService.get(`note/notes/show_public/${this.urlService.getId()}`).subscribe(res => {
       this.note = res.data;
+      if (this.note && this.note.length == 0) {
+        this.raiseError();
+        return;
+      }
+
       const modules: any = {
         modules: {
           toolbar: {
@@ -87,8 +89,37 @@ export class ZNotePublicViewComponent implements OnInit, AfterViewInit {
       };
       var quill = new Quill('#quill-editor', modules);
       document.querySelector('.ql-editor').innerHTML = res.data.content;
-    })
+    }, err => {
+      this.wthConfirmService.confirm({
+        message:
+          'You are in deleted note or invalid permission',
+        header: 'Note not found',
+        rejectLabel: null,
+        accept: () => {
+          this.router.navigate(['my-note']);
+        },
+        reject: () => {
+          this.router.navigate(['my-note']);
+        }
+      });
+
+    });
   }
+  raiseError() {
+    this.wthConfirmService.confirm({
+      message:
+        'You are in deleted note or invalid permission',
+      header: 'Note not found',
+      rejectLabel: null,
+      accept: () => {
+        this.router.navigate(['my-note']);
+      },
+      reject: () => {
+        this.router.navigate(['my-note']);
+      }
+    });
+  }
+
 
   download(file: any) {
     this.apiBaseService

@@ -1,67 +1,79 @@
 <div class="btn-group header-nav-notification visible-xs-inline-block">
-  <button (click)="gotoChat()" type="button" class="btn btn-default dropdown-toggle" pTooltip="{{ tooltip.notifications }}"
-    tooltipPosition="bottom">
+  <button (click)="gotoChat()" type="button" class="btn btn-default dropdown-toggle"
+          pTooltip="{{ tooltip.notifications }}"
+          tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
     <span *ngIf="notificationCount > 0" class="notification-num">
-      {{notificationCount}}
+      {{notificationCount | maxCount: 10}}
     </span>
   </button>
 </div>
 
 <div class="btn-group header-nav-notification hidden-xs" id="chat-header-notification">
-  <button (click)="toggleViewNotifications()" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-    aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
+  <button (click)="toggleViewNotifications()" type="button" class="btn btn-default dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.chat }}" tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
     <span *ngIf="notificationCount > 0" class="notification-num">
-      {{notificationCount}}
+      {{notificationCount | maxCount: 10}}
     </span>
   </button>
   <div class="nav-notification-list dropdown-menu dropdown-menu-right" (click)="hideActionsMenu($event)">
     <div class="nav-notification-list-header">
       <nav class="nav-tabs-wrap p10 clearfix">
         <div class="pull-right">
-          <a href="javascript:void" (click)="markAllAsRead()"> Mark all as read </a>
+          <a href="javascript:void(0)" (click)="markAllAsRead()"> Mark all as read </a>
         </div>
       </nav>
     </div>
-    <div class="nav-notification-list-content" lockYOffset="30" observeAttributes="true" infinite-scroll [scrollWindow]="false"
-      (scrolled)="getMore()">
+    <div class="nav-notification-list-content" lockYOffset="30" observeAttributes="true" infinite-scroll
+         [scrollWindow]="false"
+         (scrolled)="getMore()">
 
       <div class="notification-list notification-list-xs">
-        <div *ngFor="let conversation of conversations" class="noti-item can-click" [ngClass]="conversation.group_user.notification_count > 0 ? 'conversation_active' : ''">
+        <div *ngFor="let conversation of conversations" class="noti-item can-click"
+             [ngClass]="conversation?.notification_count > 0 ? 'conversation_active' : ''">
           <div class="noti-item-avatar">
-            <img *ngIf="conversation.group_type != 'multiple'" class="avatar-xs" [src]="conversation.group_user.display.image" alt="">
-            <img *ngIf="conversation.group_type == 'multiple'" class="avatar-xs" [src]="conversation.image" alt="">
+            <img *ngIf="conversation.group_type != 'multiple'" class="avatar-xs" [src]="conversation.display.image"
+                 alt="">
+            <img *ngIf="conversation.group_type == 'multiple'" class="avatar-xs" [src]="conversation?.group_json?.image"
+                 alt="">
           </div>
           <div class="noti-item-content" (click)="navigate(conversation)">
             <div>
-              <span *ngIf="conversation.group_type != 'multiple'" class="bold">{{conversation.group_user.display.name}}</span>
-              <span *ngIf="conversation.group_type == 'multiple'" class="bold">{{(conversation.name || conversation.users_name) | maxLength:30}}</span>
+              <span *ngIf="conversation.group_type != 'multiple'" class="bold">{{conversation.display.name}}</span>
+              <span *ngIf="conversation.group_type == 'multiple'" class="bold">{{(conversation.group_json.name || conversation.group_json.users_name) | maxLength:30}}</span>
               <br>
-              <span *ngIf="conversation.message" class="pt5 message">
-                <span *ngIf="conversation.message.message_type == 'text'" [innerHtml]="conversation.message.message | wthEmojis | linkify | stripHtml | safeHtml"></span>
-                <span *ngIf="conversation.message.message_type == 'request'"> Sent a request </span>
-                <span *ngIf="conversation.message.message_type == 'file'"> Sent a file </span>
+              <span *ngIf="conversation.latest_message as latest_message" class="pt5 message emojione-sm">
+                <span *ngIf="latest_message?.message_type == 'text'"
+                      [innerHtml]="latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify | safeHtml"></span>
+                <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
+                <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
               </span>
               <br>
-              <small *ngIf="conversation.message" class="text-fade"> {{conversation.message.created_at | timeFormat}} </small>
+              <small *ngIf="conversation.latest_message" class="text-fade"> {{conversation?.latest_message?.created_at |
+                timeFormat}}
+              </small>
             </div>
           </div>
           <div class="noti-item-action">
             <div class="dropdown-submenu">
-              <button type="button" class="btn btn-default dropdown-toggle" pTooltip="{{ tooltip.moreActions }}" tooltipPosition="bottom"
-                (click)="subToggle($event)">
+              <button type="button" class="btn btn-default dropdown-toggle" pTooltip="{{ tooltip.moreActions }}"
+                      tooltipPosition="bottom"
+                      (click)="subToggle($event)">
                 <i class="fa fa-ellipsis-v" style="pointer-events: none"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-right" style="width: auto !important; top: 22px">
                 <li>
-                  <a href="javascript:void" (click)="markAsRead(conversation); parentHide($event);">Mark as read</a>
+                  <a href="javascript:;" (click)="markAsRead(conversation); parentHide($event);">Mark as read</a>
                 </li>
                 <li>
-                  <a *ngIf="conversation.group_user.notification" href="javascript:void" (click)="updateNotification(conversation); parentHide($event);">
-                  Disable notification</a>
-                  <a *ngIf="!conversation.group_user.notification" href="javascript:void" (click)="updateNotification(conversation); parentHide($event);">
-                  Enable notification</a>
+                  <a *ngIf="conversation.notification" href="javascript:;"
+                     (click)="updateNotification(conversation); parentHide($event);">
+                    Disable notification</a>
+                  <a *ngIf="!conversation.notification" href="javascript:;"
+                     (click)="updateNotification(conversation); parentHide($event);">
+                    Enable notification</a>
                 </li>
               </ul>
             </div>

@@ -1,7 +1,7 @@
 import { Processable } from './processable';
 import { ServiceManager } from '../../services';
 
-declare let _:any;
+declare let _: any;
 
 export class ChatSendMessage implements Processable {
   constructor(private serviceManager: ServiceManager) {

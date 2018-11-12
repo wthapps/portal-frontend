@@ -1,24 +1,26 @@
 <form>
   <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <bs-modal-header [showDismiss]="true">
-      <h4 class="modal-title"> <i class="fa fa-plus"></i> Add To Conversation </h4>
+      <h4 class="modal-title">Add To Conversation </h4>
     </bs-modal-header>
     <bs-modal-body>
       <div class="form-group">
-        <input type="text" name="name" class="form-control" placeholder="Name" value="">
+        <input type="text" name="name" class="form-control" placeholder="Conversation name" value="">
       </div>
       <div class="content-overflow" style="max-height: 300px;">
-        <div class="media media-middle media-user-list media-user-list-hover" *ngFor="let contact of contactItem.value.data | chatGroupMultiple">
-          <div class="pull-right">
-            <input class="new-contact" name="friend" type="checkbox" [(ngModel)]="contact.checked">
+        <ng-container *ngIf="contactItem?.value?.data">
+          <div class="media media-middle media-user-list media-user-list-hover" *ngFor="let contact of contactItem?.value?.data | chatGroupMultiple">
+            <div class="pull-right">
+              <input class="new-contact" name="friend" type="checkbox" [(ngModel)]="contact.checked">
+            </div>
+            <div class="media-body">
+              <z-chat-share-user [data]="contact" [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
+            </div>
+            <div class="media-right">
+              <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
+            </div>
           </div>
-          <div class="media-body">
-            <z-chat-share-user [data]="contact"></z-chat-share-user>
-          </div>
-          <div class="media-right">
-            <span class="badge badge-wth" *ngIf="contact.notification_count > 0">{{ contact.notification_count }}</span>
-          </div>
-        </div>
+        </ng-container>
       </div>
     </bs-modal-body>
     <bs-modal-footer>

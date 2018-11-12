@@ -30,6 +30,7 @@ build/Release
 # Commenting this out is preferred by some people, see
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
 node_modules
+node_modules_bk
 typings
 ts-node
 
@@ -51,6 +52,9 @@ test
 tmp
 package-lock.json
 yarn.lock
+deploy/build_all.sh
+deploy/deploy_all.sh
+
 
 gulpfile.js
 gulpfile.js.map
@@ -66,9 +70,12 @@ bower_components
 /src/html/assets/.tmp/
 /tools/env/dev.ts
 /deploy-*.sh
+/deploy/*local.sh
 /src/client/assets/.tmp/
 
 *_BAK*
 /src/html/
 ts-node*
 firefox_root
+start*.sh
+src/environments/environment.ts

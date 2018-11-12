@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Media } from '@shared/shared/models/media.model';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 
 @Component({

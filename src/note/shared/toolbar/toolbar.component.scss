@@ -18,7 +18,7 @@
       left: 0;
       right: 0;
       white-space: nowrap;
-      li {
+      > li {
         .btn-group {
           .btn {
             max-width: 180px;
@@ -34,6 +34,19 @@
               right: 8px;
               top: 50%;
               margin-top: -3px;
+            }
+          }
+        }
+        @media (max-width: $screen-sm-max) {
+          display: none;
+          &:before {
+            display: none;
+          }
+          &:last-child {
+            display: block;
+            .dropdown-menu-right {
+              left: 0;
+              right: auto;
             }
           }
         }

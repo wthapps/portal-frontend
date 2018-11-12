@@ -68,7 +68,7 @@ export class ZContactShareImportContactComponent implements OnInit, OnDestroy {
   // Format: { name }
   selectProvider(options: any) {
     this.optionSelected.emit(options);
-    if (options.provider == 'import_file' || options.provider == 'apple')
+    if (options.provider === 'import_file' || options.provider === 'apple')
       return;
     this.modal.close().then();
   }

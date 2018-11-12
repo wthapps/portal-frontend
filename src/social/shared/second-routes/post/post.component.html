@@ -1,11 +1,7 @@
-
-<so-post-header [user]="user" [item]="itemDisplay" [type]="type"></so-post-header>
-<so-post-body [item]="itemDisplay" [originalPost]="item" [type]="type"></so-post-body>
-<so-post-footer *ngIf="showComments == true" #postFooter
-                [user]="user"
-                [item]="itemDisplay"
-                [type]="type"
-                (eventEmitter)="onActions($event)">
+<so-post-header [user]="user" [item]="itemDisplay" [privacyName]="privacyName" [type]="type"></so-post-header>
+<so-post-body [item]="itemDisplay" [originalPost]="item" [type]="type" [emojiMap]="emojiMap"></so-post-body>
+<so-post-footer *ngIf="showComments == true" #postFooter [user]="user" [item]="itemDisplay" [type]="type" [emojiMap]="emojiMap"
+  (eventEmitter)="onActions($event)">
 
 </so-post-footer>
 <ng-template #modalContainer></ng-template>

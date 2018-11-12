@@ -1,7 +1,7 @@
 import { ElementRef } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/fromEvent';
+import { Observable, fromEvent } from 'rxjs';
+import  { map } from 'rxjs/operators';
+
 
 declare var jQuery: any;
 
@@ -64,13 +64,13 @@ export class ModalInstance {
     this.$modal = jQuery(this.element.nativeElement);
     this.$modal.appendTo('body');
 
-    this.shown = Observable.fromEvent(this.$modal, this.shownEventName)
-      .map(() => {
+    this.shown = fromEvent(this.$modal, this.shownEventName).pipe(
+      map(() => {
         this.visible = true;
-      });
+      }));
 
-    this.hidden = Observable.fromEvent(this.$modal, this.hiddenEventName)
-      .map(() => {
+    this.hidden = fromEvent(this.$modal, this.hiddenEventName)
+      .pipe(map(() => {
         let result = (!this.result || this.result === ModalResult.None)
           ? ModalResult.Dismiss : this.result;
 
@@ -78,7 +78,7 @@ export class ModalInstance {
         this.visible = false;
 
         return result;
-      });
+      }));
   }
 
   private resetData() {

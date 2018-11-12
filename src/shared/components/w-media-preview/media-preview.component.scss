@@ -1,0 +1,206 @@
+@import "../../../assets/styles/global";
+
+.image-viewer-content-fixed {
+  @include flexbox;
+  @include align-items(center);
+  .embed-responsive-item {
+    width: 100%;
+  }
+}
+
+.image-viewer-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100vh;
+  max-height: 100vh;
+  z-index: 1002;
+  background-color: #242424;
+  @include flexbox;
+  @include flex-direction(column);
+
+  .image-viewer-header {
+    @include flexbox;
+    @include justify-content(space-between);
+    background-color: #292929;
+    padding: $grid-gutter-width/2;
+    .btn {
+      color: #ffffff;
+      &:hover, &:focus {
+        &:not(.btn-text) {
+          background-color: rgba(#ffffff, 0.3);
+        }
+      }
+    }
+  }
+
+  .image-viewer-content {
+    @include flex(1);
+    position: relative;
+
+    .box-loading {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: #000;
+      z-index: 10;
+      @include flexbox;
+      @include align-items(center);
+      i {
+        @include align-self(center);
+        margin: auto;
+      }
+    }
+
+  }
+  .image-viewer-content-fixed {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+  .image-viewer-content-nav {
+    a {
+      @include center(false, true);
+      z-index: 100;
+      left: $grid-gutter-width/2;
+      &.right {
+        left: auto;
+        right: $grid-gutter-width/2;
+      }
+      i {
+        font-size: 50px;
+      }
+    }
+  }
+  .image-viewer-content-action {
+    @include center(true, false);
+    bottom: 5%;
+    z-index: 100;
+    font-size: 0;
+  }
+  .image-viewer-content-action, .image-viewer-content-nav {
+    a {
+      display: inline-block;
+      color: #9b9b9b;
+      background-color: rgba(#000, 0.6);
+      width: 60px;
+      height: 60px;
+      line-height: 60px - 2px;
+      text-align: center;
+      @include opacity(0.5);
+      &:hover, &:focus {
+        color: #ffffff;
+        @include opacity(1);
+      }
+      @media (max-width: $screen-xs-max) {
+        width: 50px;
+        height: 50px;
+        line-height: 50px - 2px;
+      }
+    }
+    i {
+      font-size: 18px;
+      color: inherit;
+      line-height: inherit;
+    }
+  }
+  .image-viewer-info {
+    width: $photo-detail-info-width;
+    right: -$photo-detail-info-width;
+    @include transition($transition-base);
+    //height: calc(100vh - 65px);
+    height: 100vh;
+    overflow: auto;
+    background-color: #ffffff;
+    padding: 15px;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    word-break: break-all;
+    h3 {
+      margin: -15px -15px 15px;
+      padding: 15px;
+      line-height: 34px;
+      @include clearfix;
+      @include box-shadow($box-shadow-bottom);
+      a {
+        float: right;
+        color: $text-color-fade;
+      }
+    }
+    hr {
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+    .tags-text {
+      span {
+        color: #9b9b9b;
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
+    dl {
+      &.dl-horizontal {
+        dt {
+          width: 80px;
+        }
+        dd {
+          margin-left: 100px;
+        }
+      }
+      dt {
+        margin-bottom: 10px;
+      }
+      dd {
+        ul {
+          @include clearfix;
+          li {
+            float: left;
+            margin: 0 5px 5px 0;
+          }
+        }
+      }
+    }
+    .photo-detail-info-title {
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid $line;
+      @include clearfix;
+      h4 {
+        margin: 0;
+        padding: 0;
+        float: left;
+      }
+      a {
+        float: right;
+      }
+    }
+  }
+  &.active-info {
+    .image-viewer-info {
+      right: 0;
+    }
+    .image-viewer-content-fixed {
+      left: -$photo-detail-info-width/2;
+    }
+    .image-viewer-content-action, .image-viewer-header {
+      padding-right: $photo-detail-info-width;
+    }
+    .image-viewer-content-nav a:last-child {
+      right: $photo-detail-info-width;
+    }
+  }
+}
+
+
+

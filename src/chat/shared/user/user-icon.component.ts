@@ -1,23 +1,26 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+
 import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'z-chat-share-user-icon',
   templateUrl: 'user-icon.component.html',
-  styleUrls: ['user.component.scss']
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ZChatShareUserIconComponent implements OnInit {
   @Input() image: any;
   @Input() name: any;
-  @Input() groupType: any;
+  @Input() groupType: any; // couple, stranger
   @Input() userId: any;
   @Input() size: string = 'xs'; //xs, xsm, sm, md, lg
-  usersOnlineItem: any;
+  usersOnlineItem$: Observable<any>;
 
   constructor(private chatService: ChatService) {
   }
 
   ngOnInit() {
-    this.usersOnlineItem = this.chatService.getUsersOnline();
+    this.usersOnlineItem$ = this.chatService.getUsersOnline();
   }
 }

@@ -1,7 +1,4 @@
-import {
-  Component, ViewEncapsulation, OnInit, OnDestroy, HostListener, ViewChild,
-  Input
-} from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Constants } from '../../constant/config/constants';
 import { WTHNavigateService } from '../../services/wth-navigate.service';
 import { ChannelService } from '../../channels/channel.service';
@@ -10,7 +7,6 @@ import { ConnectionNotificationService } from '@wth/shared/services/connection-n
 import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
 import { AuthService } from '@wth/shared/services';
 import { User } from '@wth/shared/shared/models';
-import { Renderer2 } from '@angular/core';
 
 declare var $: any;
 declare var _: any;
@@ -28,6 +24,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() loggedIn: boolean;
   @Input() hasSearch: Boolean = true;
+  @Input() auth: any;
+  @Input() showSideBar: Boolean = true;
+
   @ViewChild('notifications')
   notificationListComponent: NotificationListComponent;
 
@@ -44,7 +43,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   clickedOutside($event: any) {
     // here you can hide your menu
     this.showSearchMobile = false;
-    this.renderer.removeClass(document.body, 'left-sidebar-open');
   }
 
   constructor(
@@ -54,7 +52,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public connectionService: ConnectionNotificationService,
     public notificationService: NotificationService,
     public authService: AuthService
-  ) {}
+  ) {
+    // console.log('authservice:::', this.authService.jwt, this.authService.user);
+    // if (this.authService.jwt) {
+    //   this.authService.validateToken();
+    // }
+  }
 
   ngOnInit(): void {
     this.channelService.subscribe();

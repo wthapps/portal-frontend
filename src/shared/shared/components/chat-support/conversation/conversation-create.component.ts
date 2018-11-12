@@ -58,7 +58,6 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
 
     // (<MessageListComponent>this.componentRef.instance).messages = this.messages;
 
-    // this.chatSupportChannel.subscribe();
 
   }
 
@@ -82,7 +81,6 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
     //   .subscribe(
     //     (response: any) => {
     //       var conversation: any = response.data;
-    //       // this.chatSupportChannel.subscribe(conversation.uuid, 'cs');
     //
     //       // console.log('app after', App);
     //
@@ -113,7 +111,6 @@ export class ConversationCreateComponent implements OnInit, AfterViewInit, ChatS
         (response: any) => {
           let message = response.data;
 
-          // this.chatSupportChannel.subscribe(message.conversation.uuid, 'cs');
 
           // App.csNotification.sendMessage(message.conversation.uuid, {type: event.type, body: event.body});
 

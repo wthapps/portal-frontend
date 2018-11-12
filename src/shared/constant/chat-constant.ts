@@ -5,6 +5,22 @@ export class ChatConstant {
   public static profileUrl = '/profile';
 }
 
+export const CHAT_CONVERSATIONS = 'chat_conversations';
+export const CHAT_RECENT_CONVERSATIONS = 'chat_recent_conversations';
+export const CHAT_FAVOURITE_CONVERSATIONS = 'chat_favourite_conversations';
+export const CHAT_HISTORY_CONVERSATIONS = 'chat_history_conversations';
+export const CONVERSATION_SELECT = 'conversation_select';
+export const CURRENT_CHAT_MESSAGES = 'current_chat_messages';
+export const USERS_ONLINE = 'users_online';
+export const NUMBER_MESSAGE = 'number_message';
+export const INCOMING_MESSAGE = 'incoming_message';
+
+export const ACTION = {
+  ADD: 'ADD',
+  EDIT: 'EDIT',
+  DELETE: 'DELETE'
+};
+
 export const FORM_MODE = {
   CREATE: 'CREATE',
   EDIT: 'EDIT'

@@ -1,5 +1,4 @@
-<bs-modal #modal cssClass="modal-social modal-long" [keyboard]="false"
-          [backdrop]="'static'" [animation]="false" style="display: inline;">
+<bs-modal #modal cssClass="modal-social modal-long" [keyboard]="false" [backdrop]="'static'" [animation]="false" style="display: inline;">
   <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title text-left"><i class="fa fa-share-alt"></i> Share Activities</h4>
   </bs-modal-header>
@@ -26,8 +25,8 @@
           </div>
           <div class="z-social-media-right">
             <div class="dropdown pull-right">
-              <button aria-expanded="true" aria-haspopup="true" class="btn btn-default dropdown-toggle"
-                      data-toggle="dropdown" type="button" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+              <button aria-expanded="true" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                type="button" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
                 <i class="fa fa-ellipsis-v"></i>
               </button>
             </div>
@@ -44,8 +43,7 @@
           <div class="z-social-post">
             <div class="z-social-post-content">
               <div class="z-social-post-txt">
-                <div class="z-social-post-txt-in">
-                  {{ item.description }}
+                <div class="z-social-post-txt-in" [innerHTML]="item.description">
                 </div>
               </div>
               <div class="z-social-post-tag">
@@ -54,7 +52,7 @@
                 </a>
               </div>
               <div class="form-group">
-                Shared from <a href="#">{{ item.parent_post.owner.name }}</a>
+                Shared from <a href="#">{{ item?.parent_post?.owner?.name }}</a>
               </div>
             </div>
           </div>
@@ -70,5 +68,3 @@
 
   </bs-modal-footer>
 </bs-modal>
-
-

@@ -1,7 +1,11 @@
 @import '../../scss/global';
 
 .sortbar-wrap {
-  margin-top: -15px;
+  margin: 0 0 15px;
+  @media (min-width: $screen-sm-min) {
+    margin-top: -15px;
+    margin-bottom: 0;
+  }
 }
 
 .sortbar-slider {

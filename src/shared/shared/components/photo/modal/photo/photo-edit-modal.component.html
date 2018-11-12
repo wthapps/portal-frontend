@@ -1,41 +1,39 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
   <bs-modal-header [showDismiss]="true">
-    <h4 class="modal-title">Edit photo</h4>
+    <h4 class="modal-title">Edit Photo</h4>
   </bs-modal-header>
   <form [formGroup]="form" novalidate>
     <bs-modal-body>
       <div class="row">
         <div class="col-sm-8">
-          <div class="form-group"
-               [ngClass]="{'has-error': (!name.valid && name.touched),'has-success': (name.valid && name.touched)}">
+          <div class="form-group" [ngClass]="{'has-error': (!name.valid && name.touched),'has-success': (name.valid && name.touched)}">
             <label for="edit-photo-name">Name</label>
             <input [formControl]="name" type="text" class="form-control" id="edit-photo-name" placeholder="Name">
             <div *ngIf="!name.valid && name.touched">
-          <span *ngIf="!name.valid && name.errors.required" class="help-block">
-            Name is required
-          </span>
+              <span *ngIf="!name.valid && name.errors.required" class="help-block">
+                Name is required
+              </span>
             </div>
           </div>
         </div>
         <div class="col-sm-4">
-          <label>Date Created</label>
-          <div>
-            <p-calendar class="input-block" inputStyleClass="form-control" formControlName="date"></p-calendar>
+          <div class="form-group">
+            <label>Date Created</label>
+            <p-calendar class="d-block" inputStyleClass="form-control" formControlName="date"></p-calendar>
           </div>
         </div>
       </div>
 
       <div class="form-group">
         <label for="edit-photo-description">Description</label>
-        <textarea [formControl]="description" rows="3" class="form-control" id="edit-photo-description"
-                  placeholder=""></textarea>
+        <textarea [formControl]="description" rows="3" class="form-control" id="edit-photo-description" placeholder=""></textarea>
       </div>
     </bs-modal-body>
     <bs-modal-footer>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
-              (click)="modal.close()">Cancel</button>
-      <button type="button" [disabled]="!form.valid || form.pristine"
-              (click)="onSubmit(form.value)" class="btn btn-outline-primary btn-min">Save</button>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel
+      </button>
+      <button type="button" [disabled]="!form.valid || form.pristine" (click)="onSubmit(form.value)" class="btn btn-outline-primary btn-min">Save
+      </button>
     </bs-modal-footer>
   </form>
 </bs-modal>

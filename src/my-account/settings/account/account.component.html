@@ -6,7 +6,7 @@
       <!-- - 8 days left-->
     </p>
     <p>
-      <a [routerLink]="['/account/plans']" class="btn btn-outline-primary btn-min"><i class="fa fa-arrow-circle-up"></i> Upgrade</a>
+      <a [routerLink]="['/account/billing/plan']" class="btn btn-outline-primary btn-min"><i class="fa fa-arrow-circle-up"></i> Upgrade</a>
     </p>
   </div>
   <div *ngIf="!userService.getSyncProfile()?.plan?.is_trial">

@@ -1,0 +1,62 @@
+<h3>
+  Information
+  <a href="javascript:void(0);" class="pull-right text-inherit" (click)="doAction({action: 'toggleDetailsInfo'})">
+    <i class="fa fa-times"></i>
+  </a>
+</h3>
+<ng-container *ngIf="object">
+  <div class="photo-detail-info-title">
+    <h4>
+      <i class="fa fa-info-circle"></i> Details
+      <button class="btn btn-default" *ngIf="object?.capabilities?.canEdit"
+         (click)="doAction({action: 'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </h4>
+  </div>
+  <dl>
+    <dt>Name</dt>
+    <dd>
+      {{ object.name }}
+    </dd>
+  </dl>
+  <hr/>
+
+  <div class="photo-detail-info-title">
+    <h4><i class="fa fa-share"></i> Sharing</h4>
+
+    <dl>
+      <dd>
+        <ul class="list-unstyled recipients">
+          <li>
+            <a href="javascript:void(0)">
+              <img width="34" [src]="object?.owner?.profile_image"
+                   [alt]="object?.owner?.name"
+                   [title]="object?.owner?.name">
+            </a>
+          </li>
+          <li>
+            <div class="vertical"></div>
+          </li>
+
+          <li *ngFor="let contact of recipients">
+            <a href="javascript:void(0);" (click)="doAction({
+               action: 'openModal',
+               payload: {
+                  modalName: 'sharingModal',
+                  selectedObjects: [object],
+                  updateListObjects: [object],
+                  mode: 2,
+                  sharing: object
+               }})">
+              <img width="34" [src]="contact?.profile_image" title="{{ contact?.name }}">
+            </a>
+          </li>
+
+        </ul>
+      </dd>
+    </dl>
+  </div>
+
+
+</ng-container>

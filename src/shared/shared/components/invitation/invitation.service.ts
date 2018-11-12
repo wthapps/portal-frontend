@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseEntityService } from '../../../services/base-entity-service';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { Invitation } from './invitation.model';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class InvitationService extends BaseEntityService<Invitation> {
@@ -25,6 +25,6 @@ export class InvitationService extends BaseEntityService<Invitation> {
   }
 
   multiDelete(body: any): Observable<any> {
-    return this.api.post(this.url+ '/multi_delete', body);
+    return this.api.post(this.url + '/multi_delete', body);
   }
 }

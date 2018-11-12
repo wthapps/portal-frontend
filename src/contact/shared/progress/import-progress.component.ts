@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { GoogleApiService } from '../services/google-api.service';
 import { ModalDockComponent } from '../../../shared/shared/components/modal/dock.component';
 import { LoadingService } from '../../../shared/shared/components/loading/loading.service';
@@ -8,12 +9,15 @@ import { ContactAddGroupModalComponent } from '../modal/contact-add-group/contac
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 import { CommonEvent } from '../../../shared/services/common-event/common-event';
 import { GenericFile } from '../../../shared/shared/models/generic-file.model';
-import { FileReaderUtil } from "@shared/shared/utils/file/file-reader.util";
-import { FileUploadPolicy } from "@shared/policies/file-upload.policy";
+import { FileReaderUtil } from '@shared/shared/utils/file/file-reader.util';
+import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
+import { WUploader } from '@shared/services/w-uploader';
 
+const IDLE_TIME_MS = 10000;
 @Component({
   selector: 'z-contact-share-import-progress',
-  templateUrl: 'import-progress.component.html'
+  templateUrl: 'import-progress.component.html',
+  styleUrls: ['import-progress.component.scss']
 })
 
 export class ZContactShareImportProgressComponent implements OnDestroy {
@@ -30,28 +34,49 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
 
   importSubscription: Subscription;
   importStatus: any;
-  successfulNum: number = 0;
-  failedNum: number = 0;
+  successfulNum = 0;
+  failedNum = 0;
+  importInfo: any;
+  destroy$ = new Subject();
+  timeoutRef: any;
+
 
   constructor(
     private contactService: ZContactService,
     public gapi: GoogleApiService,
     public loadingService: LoadingService,
-    private commonEventService: CommonEventService
+    private commonEventService: CommonEventService,
+    private uploader: WUploader
   ) {
     this.importSubscription = this.commonEventService.filter(
-      (event: CommonEvent) => event.channel == 'contact:contact:actions').subscribe((event: CommonEvent) => {
+      (event: CommonEvent) => event.channel === 'contact:contact:actions').subscribe((event: CommonEvent) => {
       this.doEvent(event);
+    });
+
+    this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe((event: any) => {
+      this.importFile(event);
     });
   }
 
   ngOnDestroy() {
     this.importSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  clearTimeout() {
+    if (this.timeoutRef)
+      clearTimeout(this.timeoutRef);
+  }
+
+  autoClose() {
+    this.clearTimeout();
+    this.timeoutRef = setTimeout(() => this.modalDock.close(), IDLE_TIME_MS);
   }
 
   // TODO move this logic to ContactService
   import(event: any) {
-    switch(event.payload.provider) {
+    switch (event.payload.provider) {
       case 'google':
         this.importGoogleContacts();
         break;
@@ -60,7 +85,26 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
       case 'microsoft':
         break;
       case 'import_from_file':
-        this.importFile(event.payload);
+        this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+          allowedFileTypes: [
+            'text/x-vcard',
+            'application/vcard',
+            'text/anytext',
+            'text/directory',
+            '.csv',
+            '.xls',
+            '.xlsx',
+            'text/csv',
+            'application/csv',
+            'application/x-versit',
+            'application/excel',
+            'application/vnd.msexcel',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          ],
+          maxNumberOfFiles: 1
+        });
+        this.importInfo = event.payload;
         break;
     }
   }
@@ -72,54 +116,58 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
       this.modalDock.open();
       this.importStatus = this.IMPORT_STATUS.importing;
       const data = await this.gapi.startImportContact(user);
-      let result = undefined;
-      console.debug(data);
-      if(data !== undefined) {
+      let result;
+      if (data !== undefined) {
         this.importedContacts = data;
         this.successfulNum = this.gapi.totalImporting;
         this.contactService.addMoreContacts(data);
         result = await this.importDone();
       } else {
-        let err: any = new Error('import contact have no data');
+        const err: any = new Error('import contact have no data');
         result = await this.importDone(err);
       }
       return result;
-    }
-    catch (err) {
+    } catch (err) {
       console.warn('importContact err: ', err);
       this.importStatus = this.IMPORT_STATUS.error;
       return this.importDone(err);
-    };
+    } finally {
+      this.autoClose();
+    }
   }
 
-  importFile(payload: any) {
-    FileReaderUtil.readMultiple(payload.event.files).then((events: any) => {
-      let file: any = payload.event.files[0];
-      let genericFile = new GenericFile({
-        file: events[0].target.result,
-        name: file.name,
-        content_type: file.type,
-        importing: true
-      });
-      if (!FileUploadPolicy.isAllow(genericFile)) {
-        this.commonEventService.broadcast({channel: 'LockMessage', payload: [genericFile]});
-        return;
-      }
-      this.modalDock.open();
-      this.importStatus = this.IMPORT_STATUS.importing;
-      // update current message and broadcast on server
-      this.contactService.import({
-        import_info: { provider: payload.provider,  type: payload.type, name: payload.name, file: genericFile}
-      }).subscribe((response: any) => {
-          this.successfulNum = response.data.length;
-          this.contactService.addMoreContacts(response.data);
-          this.importDone();
-        },
-        (error: any) => {
-          this.importStatus = this.IMPORT_STATUS.error;
-          this.importDone(error);
-        });
-    })
+  importFile(event: any) {
+    switch (event.action) {
+      case 'start':
+        this.modalDock.open();
+        this.importStatus = this.IMPORT_STATUS.importing;
+        break;
+      case 'error':
+        console.log('import error:::', event);
+        break;
+      case 'success':
+        const file = event.payload.resp;
+        this.contactService.import({
+          import_info: {
+            provider: this.importInfo.provider,
+            type: this.importInfo.type,
+            name: this.importInfo.name
+          },
+          file: file
+        }).subscribe((response: any) => {
+            this.successfulNum = response.data.length;
+            this.contactService.addMoreContacts(response.data);
+            this.importDone();
+            this.autoClose();
+          },
+          (error: any) => {
+            this.importStatus = this.IMPORT_STATUS.error;
+            this.importDone(error);
+            this.autoClose();
+          });
+        break;
+
+    }
   }
 
   open(options?: any) {

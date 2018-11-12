@@ -15,7 +15,8 @@ import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
 import { WthConfirmModule } from '@wth/shared/shared/components/confirmation/wth-confirm.module';
-import { Ng2CableModule } from 'ng2-cable';
+//import { Ng2CableModule } from 'ng2-cable';
+import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -28,7 +29,7 @@ import { Ng2CableModule } from 'ng2-cable';
     FormsModule,
     // BrowserModule,
     HttpClientModule,
-    Ng2CableModule,
+    //Ng2CableModule,
 
     CookieModule.forRoot()
   ],
@@ -47,12 +48,13 @@ import { Ng2CableModule } from 'ng2-cable';
     // CheckboxModule,
     // RadioButtonModule,
     AutoCompleteModule,
-    Ng2CableModule,
+    //Ng2CableModule,
 
     TooltipModule,
 
     WthConfirmModule,
     BoxLoadingModule,
+    WLeftMenuModule,
 
     // Pipe
     PipeModule,

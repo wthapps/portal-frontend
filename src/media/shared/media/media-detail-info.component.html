@@ -1,0 +1,74 @@
+<h3>
+  Information
+  <a href="javascript:void(0);" class="pull-right text-inherit" (click)="doAction({action: 'toggleInfo'})">
+    <i class="fa fa-times"></i>
+  </a>
+</h3>
+<ng-container *ngIf="object">
+  <div class="photo-detail-info-title">
+    <h4>
+      <i class="fa fa-info-circle"></i> Details
+      <button class="btn btn-default" (click)="doAction({action: 'openModal', payload: {modalName: 'editInfoModal', selectedObject: object }})">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </h4>
+  </div>
+  <dl>
+    <dt>Description</dt>
+    <dd>
+      {{ object.description }}
+    </dd>
+  </dl>
+  <div class="photo-detail-info-title">
+    <h4>
+      <i class="fa fa-tag"></i> Tag
+      <!-- <button class="btn btn-default" (click)="doAction({
+          action: 'openModal',
+          payload: {
+              modalName: 'taggingModal',
+              selectedObjects: [object],
+              updateListObjects: [object]
+          }})">
+        <i class="fa fa-pencil"></i> -->
+      <!-- </button> -->
+    </h4>
+  </div>
+  <!-- <div class="tags-text" *ngFor="let tag of object.json_tags">
+    <span>{{ tag.name }}</span>
+  </div> -->
+  <hr/>
+  <div class="photo-detail-info-title">
+    <h4>
+      <i class="fa fa-share"></i> Sharing</h4>
+
+    <dl>
+      <dd>
+        <ul class="list-unstyled recipients">
+          <li>
+            <a href="javascript:void(0)">
+              <!-- <img width="34" [src]="object?.owner?.profile_image" [alt]="object?.owner?.name" [title]="object?.owner?.name"> -->
+            </a>
+          </li>
+          <li>
+            <div class="vertical"></div>
+          </li>
+
+          <li *ngFor="let contact of users">
+            <a href="javascript:void(0);" (click)="doAction({
+               action: 'openModal',
+               payload: {
+                  modalName: 'sharingModal',
+                  selectedObjects: [object],
+                  updateListObjects: [object],
+                  mode: share ? 2 : 1,
+                  sharing: share
+               }})">
+              <img width="34" [src]="contact?.profile_image" title="{{ contact?.name }}">
+            </a>
+          </li>
+
+        </ul>
+      </dd>
+    </dl>
+  </div>
+</ng-container>

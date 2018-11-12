@@ -1,0 +1,96 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" [cssClass]="'modal-contact-list'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title"> Select Contact </h4>
+  </bs-modal-header>
+
+  <!-- <form novalidate> -->
+  <bs-modal-body>
+    <div class="text-fade" style="margin-bottom: 10px">
+      Invite people from your WTHContacts to join WTHApps. Everyone you invite will receive a welcome email and a 30 days Free
+      Trial. Thanks!
+    </div>
+    <!-- <div class="form-group">
+        <p-autoComplete #auto placeholder="Select for contact" [multiple]="true" [minLength]="1" field="name" [suggestions]="contacts"
+          (onSelect)="selectUser($event)" (onUnselect)="deselectUser($event)" (completeMethod)="searchContacts()">
+          <ng-template ngFor let-user pTemplate="item">
+            {{user}}
+            <div class="ui-help-clearfix user-row">
+              <div class="name">
+                <a class="text-link" href="javascript:void(0)">
+                  <p class="mb0">{{ user.name }}</p>
+                </a>
+              </div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+      </div> -->
+    <div class="form-group">
+      <p-autoComplete #auto placeholder="Enter name or email" [multiple]="true" [minLength]="1" field="name" [(ngModel)]="selectedUsers"
+        [suggestions]="suggestedUsers" (onSelect)="selectUser($event)" (onUnselect)="deselectUser($event)" (completeMethod)="onSearch($event)">
+        <ng-template let-user pTemplate="item">
+          <div class="ui-help-clearfix user-row">
+            <div class="avatar">
+              <a href="javascript:void(0)">
+                <img class="img-circle small" [alt]="user.name" [src]="user.profile_image">
+              </a>
+            </div>
+            <div class="name">
+              <a class="text-link" href="javascript:void(0)">
+                <p class="mb0">{{ user.name }}</p>
+              </a>
+              <span *ngIf="user.new" class="text-color-light text-small"> new person</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+    <hr>
+    <ng-container *ngIf="true; else loadingBlock">
+      <!-- style="max-height: 500px" -->
+      <div class="content-overflow">
+        <div class="row media-user-list-group" *ngIf="contacts">
+          <div class="col-sm-12" *ngFor="let user of contacts | wthFilterBy:'name':filter">
+            <div class="media media-user-list media-middle">
+              <div class="media-body">
+                <div class="media-user media-user-xs">
+                  <div class="media-user-avatar avatar-xs">
+                    <img [src]="user?.profile_image" alt="">
+                  </div>
+                  <div class="media-user-name">
+                    <p>{{ user.name }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="media-right no-wrap">
+                <p-checkbox name="groupname" [(ngModel)]="user.selected" binary="true" (onChange)="onCheckboxChange(user)"></p-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #loadingBlock>
+      <box-loading></box-loading>
+    </ng-template>
+
+
+  </bs-modal-body>
+
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
+    <button type="button" class="btn btn-outline-primary btn-min" (click)="openCreate($event)">
+      Next
+    </button>
+  </bs-modal-footer>
+  <!-- </form> -->
+
+</bs-modal>
+<div class="btn-group header-nav-apps">
+  <button (click)="openModal()" aria-haspopup="true" class="btn btn-default dropdown-toggle"
+          pTooltip="Invite to WTHApps"
+          tooltipPosition="bottom"
+    type="button">
+    <i class="fa fa-paper-plane"></i>
+  </button>
+</div>
+<invitation-create-modal #create (event) = "onInvited($event)"></invitation-create-modal>

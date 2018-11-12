@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { ApiBaseService, UserService } from '@wth/shared/services';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
@@ -161,7 +162,7 @@ export class SoCommunityService  {
   }
 
   getCommunity(uuid: string) {
-    return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}`).take(1);
+    return this.apiBaseService.get(`${this.soCommunitiesUrl}/${uuid}`).pipe(take(1));
   }
 
   getTabItems(uuid: string, tabName: string) {
@@ -176,7 +177,7 @@ export class SoCommunityService  {
     return this.apiBaseService.put(`${this.soCommunitiesUrl}/${uuid}`, body);
   }
 
-  resetSettings(uuid:string ) {
+  resetSettings(uuid: string ) {
     return this.apiBaseService.put(`${this.soCommunitiesUrl}/${uuid}/reset_settings`);
   }
 }

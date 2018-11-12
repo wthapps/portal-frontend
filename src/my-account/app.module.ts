@@ -10,7 +10,7 @@ import { MySharedModule } from './shared/shared.module';
 import { SharedModule } from '@shared/shared.module';
 import { CoreModule } from '@core/core.module';
 
-import { MyHomeModule } from './home/home.module';
+// import { MyHomeModule } from './home/home.module';
 import { MyAppsModule } from './apps/apps.module';
 import { MyBillingModule } from './billing/billing.module';
 import { MyMyAppsModule } from './my-apps/my-apps.module';
@@ -18,7 +18,6 @@ import { MyPaymentModule } from './payment/payment.module';
 import { MySettingModule } from './settings/setting.module';
 import { MyPlansModule } from './plans/plans.module';
 import { MyAdminModule } from './admin/admin.module';
-import { WelcomeModule } from './welcome/welcome.module';
 import { MyAccountMyProfileModule } from './my-profile/my-profile.module';
 import { FooterModule } from '@wth/shared/partials/footer/footer.module';
 import { StoreModule } from '@ngrx/store';
@@ -28,16 +27,15 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers, metaReducers, appEffects } from './store';
 import { ConfirmationModule } from './confirmation/confirmation.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { DashboardModule } from '@account/dashboard/dashboard.module';
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpClientModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
-
     AppRoutingModule,
-    MyHomeModule,
+    // MyHomeModule,
+    DashboardModule,
     MyAppsModule,
     MyBillingModule,
     MyMyAppsModule,
@@ -46,7 +44,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     MySettingModule,
     MyAdminModule,
     MyAccountMyProfileModule,
-    WelcomeModule,
     ConfirmationModule,
 
     FooterModule,
@@ -60,7 +57,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
       : []
   ],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   providers: [
     {
       provide: APP_BASE_HREF,

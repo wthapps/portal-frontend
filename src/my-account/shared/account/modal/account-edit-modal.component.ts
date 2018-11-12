@@ -71,8 +71,11 @@ export class AccountEditModalComponent implements OnInit {
         'id': [this.item.id, Validators.compose([
           Validators.required
         ])],
-        'name': [this.item.name, Validators.compose([
-          Validators.required
+        'first_name': [this.item.first_name, Validators.compose([
+          Validators.required, CustomValidator.blanked
+        ])],
+        'last_name': [this.item.last_name, Validators.compose([
+          Validators.required, CustomValidator.blanked
         ])],
         'email': [this.item.email, Validators.compose([
           Validators.required
@@ -98,10 +101,12 @@ export class AccountEditModalComponent implements OnInit {
 
   save() {
     // this.mode = 'view';
+    let account = this.form.value;
+    account.name = `${account.first_name} ${account.last_name}`;
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:update',
-      payload: {data: this.form.value}
+      payload: {data: account}
     });
     this.modal.close().then();
   }
@@ -115,9 +120,9 @@ export class AccountEditModalComponent implements OnInit {
   }
 
   togglePassword(event: any): void {
-    var target = event.target || event.srcElement || event.currentTarget;
-    let inputPass = $(target).prev();
-    if (inputPass.attr('type') == 'password') {
+    const target = event.target || event.srcElement || event.currentTarget;
+    const inputPass = $(target).prev();
+    if (inputPass.attr('type') === 'password') {
       inputPass.attr('type', 'text');
       $(target).addClass('active');
     } else {

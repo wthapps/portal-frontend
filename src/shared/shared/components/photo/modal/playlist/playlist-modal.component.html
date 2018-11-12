@@ -1,0 +1,67 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title"> Add to Playlist</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <a class="btn btn-outline-primary" data-toggle="dropdown" href="#" (click)="onCreateNew()">
+      <i class="fa fa-plus"></i> Create New Playlist
+    </a>
+    <hr>
+    <div class="content-overflow" style="max-height: 300px;">
+      <div class="pl30 pr30">
+        <div class="row-img list" *ngIf="playlists">
+          <div class="row-img-item" *ngFor="let data of playlists; let i = index;">
+            <div class="photo-box can-click" id="photo-box-img-{{ data.id }}" (click)="add(data)">
+              <div class="photo-box-figure">
+                <figure class="img-center-dv">
+                  <div class="photo-box-figure-in">
+                    <img alt="" class="img-center" draggable="false" [src]="data.thumbnail_url">
+                  </div>
+                </figure>
+                <div class="photo-box-name">
+                  <span>
+                    {{ data.name }}
+                  </span>
+                </div>
+                <div class="photo-box-size no-wrap">
+                  <span *ngIf="data.child_count > 1">{{ data.child_count }} videos</span>
+                  <span *ngIf="data.child_count <= 1">{{ data.child_count || 0 }} video</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="text-center p20">
+      <button class="btn btn-outline-primary" *ngIf="nextLink != null" type="button" (click)="onLoadMore($event)">
+        Load more
+      </button>
+    </div>
+  </bs-modal-body>
+</bs-modal>
+
+
+<div class="toast-wrap-bottom toast-upload-wrap" id="added-to-album-toast" *ngIf="showToast">
+  <div class="toast-wrap-bottom-item">
+    <div class="toast-wrap-bottom-header">
+      <button class="toast-wrap-bottom-close" type="button">
+        <i class="fa fa-times" (click)="showToast = false"></i>
+      </button>
+      Added to Album
+    </div>
+    <div class="toast-wrap-bottom-content">
+      <div class="media">
+        <div class="media-body">
+          <p>{{ selectedPhotos?.length }} item{{ (selectedPhotos?.length>1)?'s':'' }} are added to {{ selectedAlbum?.name }}</p>
+          <div class="text-right">
+            <a href="javascript:void(0)" (click)="view()">View</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #modalContainer></ng-template>

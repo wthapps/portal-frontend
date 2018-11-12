@@ -18,7 +18,7 @@ import { Constants } from '../../../../constant/config/constants';
 })
 export class ProfileComponent {
   @Input() item: any;
-  @Input() editable: boolean = false;
+  @Input() editable = false;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constants: any = Constants;

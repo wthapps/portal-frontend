@@ -1,24 +1,96 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>Notes</title>
-  <base href="/">
+        <meta charset="utf-8">
+        <title>Notes</title>
+        <base href="/">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="shortcut icon" href="https://cdn-apps.wthapps.com/favicons/favicon.ico">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <link rel="shortcut icon" href="https://cdn-apps.wthapps.com/favicons/favicon.ico">
 
 
 
-  <script src="https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js"
-          integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"
-          integrity="sha256-IyWBFJYclFY8Pn32bwWdSHmV4B9M5mby5bhPHEmeY8w=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"
-          integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js" integrity="sha256-IyWBFJYclFY8Pn32bwWdSHmV4B9M5mby5bhPHEmeY8w="
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8="
+                crossorigin="anonymous"></script>
+
+        <style type="text/css">
+                body,
+                html {
+                        height: 100%;
+                }
+
+                .app-loading {
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100%;
+                }
+
+                .app-loading .spinner {
+                        height: 200px;
+                        width: 200px;
+                        animation: rotate 2s linear infinite;
+                        transform-origin: center center;
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        margin: auto;
+                }
+
+                .app-loading .spinner .path {
+                        stroke-dasharray: 1, 200;
+                        stroke-dashoffset: 0;
+                        animation: dash 1.5s ease-in-out infinite;
+                        stroke-linecap: round;
+                        stroke: #ddd;
+                }
+
+                @keyframes rotate {
+                        100% {
+                                transform: rotate(360deg);
+                        }
+                }
+
+                @keyframes dash {
+                        0% {
+                                stroke-dasharray: 1, 200;
+                                stroke-dashoffset: 0;
+                        }
+
+                        50% {
+                                stroke-dasharray: 89, 200;
+                                stroke-dashoffset: -35px;
+                        }
+
+                        100% {
+                                stroke-dasharray: 89, 200;
+                                stroke-dashoffset: -124px;
+                        }
+                }
+        </style>
 </head>
+
 <body>
-  <app-root></app-root>
+        <app-root>
+                <!-- loading layout replaced by app after startupp -->
+                <div class="app-loading">
+                        <div class="logo"></div>
+                        <svg class="spinner" viewBox="25 25 50 50">
+                                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2"
+                                        stroke-miterlimit="10" />
+                        </svg>
+                </div>
+        </app-root>
 </body>
+
 </html>

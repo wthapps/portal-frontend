@@ -125,7 +125,7 @@ $wobject-checkbox: 30px;
     }
     .wobject-row-toolbar {
       display: block;
-      padding: 5px 15px 5px;
+      padding: 5px 10px 5px;
       @include clearfix;
     }
   }
@@ -325,8 +325,14 @@ $wobject-checkbox: 30px;
         @include align-items(center);
         .wobject-box-img {
           margin-right: 5px;
+          height: 30px;
+          width: 30px;
+          position: relative;
+          overflow: hidden;
           img {
-            height: 30px;
+            width: 100%;
+            height: auto;
+            @include center();
           }
         }
         .wobject-box-name {
@@ -351,6 +357,14 @@ $wobject-checkbox: 30px;
       }
     }
   }
+}
+
+.box-loading-more {
+  text-align: center;
+  background-color: inherit;
+  width: 100%;
+  margin-top: -15px;
+  color: $text-color-light;
 }
 
 

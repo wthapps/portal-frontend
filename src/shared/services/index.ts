@@ -14,10 +14,10 @@ export * from './date.service';
 export * from './deactivate-confirm.service';
 export * from './generic-file.service';
 export * from './handler.service';
+export * from './message.service';
 export * from './notification.service';
 export * from './photo.service';
 export * from './album.service';
-export * from './photo-modal-data.service';
 export * from './photo-upload.service';
 export * from './service-manager';
 export * from './storage.service';
@@ -26,5 +26,6 @@ export * from './url.service';
 export * from './user.service';
 export * from './wth-interceptor';
 export * from './wth-navigate.service';
+
 
 export * from '../shared/components/confirmation/wth-confirm.service';

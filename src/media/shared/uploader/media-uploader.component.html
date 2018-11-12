@@ -1,34 +1,30 @@
-<!--<div class="dropzone dropzone-overlap"-->
-     <!--(drop)="onDrop($event)"-->
-     <!--(dragenter)="dragenter()"-->
-     <!--(dragleave)="dragleave()"-->
-     <!--(dragover)="dragover($event)">-->
-
-  <!--<div class="dropzone-overlap-txt">-->
-    <!--<i class="fa fa-cloud-upload"></i>-->
-    <!--<p>Drag file anywhere to upload</p>-->
-  <!--</div>-->
-<!--</div>-->
-
 <wth-modal-dock #modalDock>
   <wth-modal-dock-header [loading]="(step==1)">
     <span *ngIf="step==1">Uploading</span>
-    <span *ngIf="step==2"><i class="fa fa-check"></i> Uploaded</span>
-    <span *ngIf="step==3"><i class="fa fa-exclamation-triangle"></i> Can not be uploaded</span>
-    <span *ngIf="step==4"><i class="fa fa-exclamation-triangle"></i> Upload canceled</span>
+    <span *ngIf="step==2">
+      <i class="fa fa-check"></i> Uploaded</span>
+    <span *ngIf="step==3">
+      <i class="fa fa-exclamation-triangle"></i> Can not be uploaded</span>
+    <span *ngIf="step==4">
+      <i class="fa fa-exclamation-triangle"></i> Upload canceled</span>
   </wth-modal-dock-header>
   <wth-modal-dock-body>
     <div class="media" *ngIf="step==1 || step==2 || step==4">
       <div class="media-left">
         <div class="img-box" style="width: 100px;">
-          <img draggable="false" class="img-box-item" [src]="current_photo" *ngIf="current_photo" alt="">
+          <!--<img draggable="false" class="img-box-item" [src]="current_photo" *ngIf="current_photo" alt="">-->
+          <img draggable="false" class="img-box-item" [src]="uploadURL" alt="" *ngIf="uploadURL">
         </div>
       </div>
       <div class="media-body">
-        <div *ngIf="step==1">Uploading to Photo</div>
-        <div *ngIf="step==2">Photo uploaded</div>
-        <div *ngIf="step==4">{{ uploaded_num }} photo<span *ngIf="uploaded_num>1">s</span> uploaded</div>
-
+        <div *ngIf="step==1 && !isVideos">Uploading to Photo</div>
+        <div *ngIf="step==1 && isVideos">Uploading to Videos</div>
+        <div *ngIf="step==2 && !isVideos">Photo uploaded</div>
+        <div *ngIf="step==2 && isVideos">Video uploaded</div>
+        <div *ngIf="step==4 && !isVideos">{{ uploaded_num }} photo
+          <span *ngIf="uploaded_num>1">s</span> uploaded</div>
+        <div *ngIf="step==4 && isVideos">{{ uploaded_num }} video
+          <span *ngIf="uploaded_num>1">s</span> uploaded</div>
         <p *ngIf="step!=4" class="h3 m0 text-normal">{{ uploaded_num }} of {{ files_num }}</p>
         <p *ngIf="step==4" class="h3 m0 text-normal">{{ stopped_num }} cancelled</p>
       </div>
@@ -40,29 +36,38 @@
       </div>
     </div>
 
-    <input #inputfiles type="file" id="inputfiles" multiple="multiple" accept="image/*" style="display: none;"
-           autofocus="true" (change)="chooseFiles($event)"/>
-
   </wth-modal-dock-body>
   <wth-modal-dock-footer [inline]="true">
     <div *ngIf="step==uploadSteps.init">
-      <a href="javascript:;" (click)="stop($event)">
+      <a href="javascript:void(0);" (click)="stop($event)">
         Stop
       </a>
     </div>
 
-    <div *ngIf="step==uploadSteps.uploaded || step==uploadSteps.stop">
-      <a class="mr20" href="javascript:void(0);"
-         (click)="onAction({action: 'openModal', payload: {modalName: 'createAlbumModal', selectedObjects: photos }})">
+    <div *ngIf="step==uploadSteps.uploaded && !isVideos">
+      <a *ngIf="step==uploadSteps.uploaded" class="mr20" href="javascript:void(0);" (click)="createAlbum()">
         Create Album
       </a>
-      <a href="javascript:void(0);"
+      <a *ngIf="step==uploadSteps.uploaded" href="javascript:void(0);"
          (click)="onAction({action: 'openModal', payload: {modalName: 'addToAlbumModal', selectedObjects: photos }})">
         Add to Album
       </a>
       <div class="text-right mb10">
-        <a href="javascript:void(0);" (click)="retryUpload($event)"
-           *ngIf="pending_files.length > 0 && (step==uploadSteps.error || step==uploadSteps.stop)">
+        <a *ngIf="pending_files.length > 0 && (step==uploadSteps.error)" href="javascript:void(0);"
+           (click)="retryUpload($event)" >
+          Retry ( {{ pending_files.length }} files )
+        </a>
+      </div>
+    </div>
+    <div *ngIf="step==uploadSteps.uploaded && isVideos">
+      <a *ngIf="step==uploadSteps.uploaded" class="mr20" href="javascript:;" (click)="createPlaylist()">
+        Create Playlist
+      </a>
+      <a *ngIf="step==uploadSteps.uploaded" href="javascript:;" (click)="addPlaylist()">
+        Add to Playlist
+      </a>
+      <div class="text-right mb10">
+        <a *ngIf="pending_files.length > 0 && (step==uploadSteps.error || step==uploadSteps.stop)" href="javascript:void(0);" (click)="retryUpload($event)" >
           Retry ( {{ pending_files.length }} files )
         </a>
       </div>

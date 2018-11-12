@@ -1,10 +1,12 @@
+<div class="menuleft-logo">
+  <img src="/assets/images_new/logo-note.png" alt="">
+</div>
 <div class="menuleft-item" [routerLinkActive]="['active']">
   <span *ngIf="noteFoldersTree.length > 0" (click)="showFolderTree = !showFolderTree" class="can-click menuleft-item-open">
     <i class="fa" [ngClass]="{'fa-chevron-right': !showFolderTree, 'fa-chevron-down' : showFolderTree}"></i>
   </span>
-  <a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']"
-     (click)="onNoteClick($event)" href="javascript:void(0);">
-    <i class="{{ noteMenu[0].icon }}"></i> {{ noteMenu[0].name }}
+  <a [routerLink]="[myNoteMenu?.link]" [routerLinkActive]="['active']" (click)="onCloseMenu()" href="javascript:void(0);">
+    <i class="{{ myNoteMenu?.icon }}"></i> {{ myNoteMenu?.name }}
   </a>
 </div>
 
@@ -13,46 +15,12 @@
 </div>
 
 <ng-container *ngFor="let note of noteMenu;let i = index;">
-  <div class="menuleft-item" *ngIf="note.name != '' && i > 0" [routerLinkActive]="['active']"
-       [ngClass]="{'hidden': note.link == '/search'}">
-    <a *ngIf="note.link != '#'" [routerLink]="[note.link]" [queryParams]="{}" (click)="onNoteClick($event)"
-       href="javascript:;">
+  <div class="menuleft-item" *ngIf="note.name != ''" [routerLinkActive]="['active']" [ngClass]="{'hidden': note.link == '/search'}">
+    <a *ngIf="note.link != '#'" [routerLink]="[note.link]" [queryParams]="{}" (click)="onCloseMenu()" href="javascript:;">
       <i class="{{ note.icon }}"></i> {{ note.name }}
     </a>
-    <a *ngIf="note.link == '#'" (click)="doEvent({action: note.action})" href="javascript:;">
+    <a *ngIf="note.link == '#'" (click)="doEvent({action: note.action}); onCloseMenu()" href="javascript:;">
       <i class="{{ note.icon }}"></i> {{ note.name }}
     </a>
   </div>
 </ng-container>
-
-<!--
-
-<div class="menuleft-nav-sub-item" [routerLinkActive]="['active']">
-  <a [routerLink]="[noteMenu[0].link]" [routerLinkActive]="['active']"
-     (click)="onNoteClick($event)" href="javascript:void(0);">
-    <i class="{{ noteMenu[0].icon }}"></i> {{ noteMenu[0].name }}
-  </a>
-</div>
-<ng-template ngFor let-folder [ngForOf]="noteFolders" let-i="index">
-
-</ng-template>
-<div class="menuleft-nav-sub-item well-folder-tree-left-wrap">
-  <div class="well-folder-tree">
-    <p-panelMenu [(model)]="noteFoldersTree"></p-panelMenu>
-  </div>
-</div>
-
-<ng-template ngFor let-note [ngForOf]="noteMenu" let-i="index">
-  <div class="menuleft-nav-sub-item" *ngIf="note.name != '' && i > 0" [routerLinkActive]="['active']"
-       [ngClass]="{'hidden': note.link == '/search'}">
-    <a *ngIf="note.link != '#'" draggable="false" [routerLink]="[note.link]" [queryParams]="{}"
-       (click)="onNoteClick($event)" href="javascript:;">
-      <i class="{{ note.icon }}"></i> {{ note.name }}
-    </a>
-    <a *ngIf="note.link == '#'" class="can-click" draggable="false" (click)="doEvent({action: note.action})">
-      <i class="{{ note.icon }}"></i> {{ note.name }}
-    </a>
-  </div>
-  <div class="divider" *ngIf="note.name == ''"></div>
-</ng-template>
--->

@@ -5,6 +5,10 @@
 }
 
 .page-content {
+  @media (max-width: $screen-xs-max) {
+    border-bottom: 1px solid $line;
+  }
+
   .page-content-txt {
     h4 {
       font-size: 21px;
@@ -765,7 +769,7 @@ $bubbleUp-ul: 62px;
 .container {
   &.d-flex {
     @media (max-width: $screen-xs-max) {
-      display: block;
+      display: block !important;
     }
   }
 }

@@ -1,7 +1,10 @@
 @import '../assets/styles/global';
 
-.main-page-body {
-  padding-bottom: 50px;
+.main-page-body .page-body-content.has-page-body-control {
+  height: calc(100vh - #{$header-height} - #{$page-body-control-height});
+  @include flexbox;
+  @include flex-direction(column);
+  overflow: auto;
 }
 
 @media (max-width: $screen-xs-max) {
@@ -10,7 +13,6 @@
       min-width: auto;
     }
     &.page-body-control-nav-action {
-      float: none;
       .page-body-control-menu {
         float: none;
         text-align: right;

@@ -7,7 +7,10 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { HeaderComponent } from './header.component';
 import { NotificationListModule } from '@shared/shared/components/notification-list/notification-list.module';
-import { ComponentsModule } from "@shared/components/components.module";
+import { ComponentsModule } from '@shared/components/components.module';
+import { InviteContactComponent } from '@shared/partials/invite-contact/invite-contact.component';
+import { BsModalModule } from 'ng2-bs3-modal';
+import { InviteContactModule } from '@shared/partials/invite-contact/invite-contact.module';
 
 @NgModule({
   imports: [
@@ -16,16 +19,12 @@ import { ComponentsModule } from "@shared/components/components.module";
     TooltipModule,
     InfiniteScrollModule,
     ComponentsModule,
+    BsModalModule,
+    InviteContactModule,
     NotificationListModule
   ],
-  declarations: [
-    HeaderComponent
-  ],
-  exports: [
-    HeaderComponent
-  ],
+  declarations: [HeaderComponent],
+  exports: [HeaderComponent],
   providers: []
 })
-
-export class HeaderModule {
-}
+export class HeaderModule {}

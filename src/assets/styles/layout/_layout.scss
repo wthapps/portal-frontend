@@ -9,38 +9,13 @@
   min-height: 100vh;
   @include flex(1);
   @include flex-basis(auto);
-  position: relative;
-
-  //for child
+  position: relative; //for child
   @include flexbox;
   @include flex-direction(column);
   .main-page {
     @include flex(1);
     @include flex-basis(auto);
     position: relative;
-
-  }
-  .main-page-left {
-    display: none;
-    @media (min-width: $screen-md-min) {
-      display: block;
-      width: $main-page-left;
-      overflow: auto;
-      position: fixed;
-      top: $header-height;
-      left: 0;
-      bottom: 0;
-      z-index: 10;
-      background-color: #ffffff;
-      @include box-shadow(2px 2px 4px 0px rgba(73, 73, 73, 0.40));
-      .main-page-left-in {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-    }
   }
 }
 
@@ -60,33 +35,37 @@
     display: block;
     z-index: 30;
     @include clearfix;
-    @include box-shadow($box-shadow-bottom);
-
+    border-bottom: 1px solid $line;
     @media (min-width: $screen-md-min) {
       left: $main-page-left;
       padding: 15px 30px;
     }
-
     & + .page-body-content {
       margin-top: $page-body-control-height;
     }
-
     &.has-page-body-sidebar {
       margin-left: $main-page-left-sm;
       @media (min-width: $screen-md-min) {
         margin-left: $main-page-left;
       }
     }
-
+    @media (min-width: $screen-sm-min) {
+      .nav-tabs-wrap {
+        margin: -15px;
+        padding: 0;
+        .nav-tabs > li > a {
+          padding: 15px;
+        }
+      }
+    }
     a {
       -moz-user-select: -moz-none;
       -khtml-user-select: none;
       -webkit-user-select: none;
-
       /*
-        Introduced in IE 10.
-        See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
-      */
+  Introduced in IE 10.
+  See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+*/
       -ms-user-select: none;
       user-select: none;
     }
@@ -110,23 +89,28 @@
     }
   }
   .page-body-content-in {
-    padding: 30px;
-    //height: calc(100vh - 114px);
+    padding: 15px; //height: calc(100vh - 114px);
     background: inherit;
+    @media (min-width: $screen-sm-min) {
+      padding: 30px;
+    }
   }
 }
 
 .page-body-control-nav {
   float: left;
-
   h4 {
     margin: 0;
     line-height: 34px;
     @media (min-width: $screen-sm-min) {
-      font-size: 24px;
+      font-size: 18px;
     }
   }
-
+  .btn {
+    i {
+      line-height: inherit;
+    }
+  }
   .page-body-control-menu {
     margin: 0;
     padding: 0;
@@ -135,6 +119,7 @@
     > li {
       float: left;
       margin-right: 10px;
+      margin-left: 0;
       &:last-child {
         margin-right: 0;
       }
@@ -144,12 +129,11 @@
         border-right: 1px solid $text-color;
       }
     }
-
-    &.text-disable, & .text-disable {
+    &.text-disable,
+    & .text-disable {
       pointer-events: none;
     }
   }
-
   &.page-body-control-nav-right {
     float: right;
     .page-body-control-menu {
@@ -183,6 +167,7 @@
 
 .page-body-nav {
   @include flexbox;
+  @include justify-content(space-between);
   .page-body-nav-left {
     @include flex(1);
   }
@@ -199,5 +184,5 @@
   border-top: 1px solid $line;
   @include flexbox;
   @include flex-flow(row wrap);
-  @include box-shadow($box-shadow-bottom);
+  border-bottom: 1px solid $line;
 }

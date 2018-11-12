@@ -1,19 +1,19 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+// import { NgModule } from '@angular/core';
+// import { RouterModule } from '@angular/router';
 
-import { AuthGuard } from '@shared/services';
+// import { AuthGuard } from '@shared/services';
 
-@NgModule({
-  imports: [
-    RouterModule.forChild([
-      {
-        path: '',
-        redirectTo: '/welcome',
-        pathMatch: 'full',
-        canActivate: [AuthGuard]
-      }
-    ])
-  ],
-  exports: [RouterModule]
-})
-export class MyHomeRoutingModule {}
+// @NgModule({
+//   imports: [
+//     RouterModule.forChild([
+//       {
+//         path: '',
+//         redirectTo: '/dashboard',
+//         pathMatch: 'full',
+//         canActivate: [AuthGuard]
+//       }
+//     ])
+//   ],
+//   exports: [RouterModule]
+// })
+// export class MyHomeRoutingModule {}

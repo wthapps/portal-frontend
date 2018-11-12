@@ -9,12 +9,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Subscription ,  Observable ,  Subject ,  timer } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
-import { timer } from 'rxjs/observable/timer';
 import { ConfirmDialogModel } from '../shared/shared/models/confirm-dialog.model';
 import { Constants } from '../shared/constant/config/constants';
 
@@ -75,7 +71,7 @@ export class AppComponent
     console.log('Environment config', Config, this.confirmDialog);
     this.commonEventService
       .filter(
-        (event: CommonEvent) => event.channel == Constants.contactEvents.common
+        (event: CommonEvent) => event.channel === Constants.contactEvents.common
       ).pipe(
         takeUntil(this.destroySubject)
       )
@@ -103,8 +99,9 @@ export class AppComponent
 
     this.groupService
       .getAllGroups()
-      .then((groups: any[]) => console.debug('getAllGroups: ', groups))
+      .then((groups: any[]) => console.log('getAllGroups: ', groups))
       .then(() => this.contactService.initialLoad())
+      .then(() => this.contactService.loadUserSetttings())
       .then(() => timer(GAPI_TIMEOUT).subscribe(_ => this.googleApiService.handleClientLoad()));
   }
 
@@ -137,7 +134,7 @@ export class AppComponent
         this.modal.open();
         break;
       case 'contact:group:delete':
-        let group = this.getGroup(event.payload.selectedItem);
+        const group = this.getGroup(event.payload.selectedItem);
         this.groupService.delete(group.id).subscribe((res: any) => {
           console.log(res);
         });
@@ -150,7 +147,7 @@ export class AppComponent
   }
 
   private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(
+    const modalComponentFactory = this.resolver.resolveComponentFactory(
       component
     );
     this.modalContainer.clear();

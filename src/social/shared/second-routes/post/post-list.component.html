@@ -4,21 +4,26 @@
     <div class="z-social-media">
       <div class="z-social-media-left">
         <a href="javascript:void(0);" (click)="viewProfile(user.uuid)">
-        <div class="avatar-xs">
-          <img [src]="user.profile_image" alt="Avatar Image">
-        </div>
+          <div class="avatar-xs">
+            <img [src]="user.profile_image" alt="Avatar Image">
+          </div>
         </a>
       </div>
       <div class="z-social-media-body">
-        <div class="z-social-media-inputpost inputpost-new">
-          <div class="mb10">
-            <div contenteditable="true" class="form-control" rows="3" placeholder="Share your ideas"
-                      (focus)="postEditModal.open()"></div>
-          </div>
-          <button class="btn btn-outline-default" type="button"
-                  (click)="postEditModal.open({community: community, mode: 'add', isShare: false})">
-            <i class="fa fa-camera"></i> Add Photo
-          </button>
+        <div class="z-social-media-inputpost form-group">
+          <span class="z-social-media-inputpost-icon">
+            <button class="btn btn-default" (click)="postEditModal.open({community: community, mode: 'add', isShare: false, addingPhotos: true})"
+              pTooltip="{{ tooltip.addPhoto }}" tooltipPosition="top">
+              <i class="fa fa-camera"></i>
+            </button>
+            <div class="btn-group dropup">
+<button type="button" class="btn btn-default dropdown-toggle" (click)="postEditModal.open({community: community, mode: 'add', isShare: false, addingPhotos: false, showEmoji: true})"
+  data-toggle="dropdown" pTooltip="{{ tooltip.emoticons }}" tooltipPosition="top">
+                <i class="fa fa-smile-o"></i>
+              </button>
+            </div>
+          </span>
+          <div contenteditable="true" class="form-control" placeholder="Share your ideas" (focus)="postEditModal.open()"></div>
         </div>
       </div>
     </div>
@@ -29,15 +34,10 @@
 
 <div id="post-list-component">
   <ng-container *ngIf="!loading">
-    <div class="panel panel-default mb15" *ngFor="let item of items;">
+    <div class="panel panel-default mb15" *ngFor="let item of posts;">
       <div class="panel-body">
-        <so-post [user]="user"
-                 [item]="item"
-                 [showComments]="showComments"
-                 (onDeleted)="deletedPost($event, item)"
-                 (onUpdated)="updatedPost($event)"
-                 (modalOpened)="openEditModal($event)"
-                 (photoModalOpened)="openPhotoModal($event)">
+        <so-post [user]="user" [item]="item" [showComments]="showComments" [emojiMap]="emojiMap$ | async" (onDeleted)="deletedPost($event, item)"
+          (onUpdated)="updatedPost($event)" (modalOpened)="openEditModal($event)" (photoModalOpened)="openPhotoModal($event)">
         </so-post>
       </div>
     </div>
@@ -54,9 +54,8 @@
   </div>
 </div>
 
-<div class="view-all" *ngIf="nextLink != undefined">
+<!-- <div class="view-all" *ngIf="nextLink != undefined">
   <a href="javascript:;" (click)="viewMorePosts()">View All</a>
-</div>
+</div> -->
 <!--Edit post modal. This modal will handle add new, edit post and share-->
-<so-post-edit #postEditModal [soProfile]="soProfile$ | async" (saved)="save($event)" (onUpdated)="update($event)"
-              (dismissed)="dismiss($event)"></so-post-edit>
+<so-post-edit #postEditModal [soProfile]="soProfile$ | async" (saved)="save($event)" (onUpdated)="update($event)" (dismissed)="dismiss($event)"></so-post-edit>

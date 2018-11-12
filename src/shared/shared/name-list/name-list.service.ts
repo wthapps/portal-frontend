@@ -1,6 +1,7 @@
+import { throwError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 // import 'rxjs/add/operator/do';  // for debugging
 
 /**
@@ -14,7 +15,7 @@ export class NameListService {
    * @param {Http} http - The injected Http.
    * @constructor
    */
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
   /**
    * Returns an Observable for the HTTP GET request for the JSON resource.
@@ -36,7 +37,7 @@ export class NameListService {
     let errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg); // log to console instead
-    return Observable.throw(errMsg);
+    return throwError(errMsg);
   }
 }
 

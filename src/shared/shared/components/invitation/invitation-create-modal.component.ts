@@ -1,3 +1,5 @@
+import { ToastsService } from './../toast/toast-message.service';
+import { InvitationService } from './invitation.service';
 import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -7,7 +9,7 @@ import { CustomValidator } from '../../validator/custom.validator';
 declare var _: any;
 
 @Component({
-    selector: 'invitation-create-modal',
+  selector: 'invitation-create-modal',
   templateUrl: 'invitation-create-modal.component.html'
 })
 
@@ -18,10 +20,13 @@ export class InvitationCreateModalComponent implements OnInit {
 
   form: FormGroup;
   deleteObjects: any = [];
-  type: string = 'items';
-  noOfCtrl: number = 3;
+  type = 'items';
+  noOfCtrl = 3;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private invitationService: InvitationService,
+    private toaster: ToastsService
+  ) {
   }
 
   ngOnInit() {
@@ -32,7 +37,7 @@ export class InvitationCreateModalComponent implements OnInit {
   }
 
   open(options?: any) {
-    if(options.data == undefined) {
+    if (options.data === undefined) {
       this.initialize();
     } else {
       this.data = options.data;
@@ -47,7 +52,7 @@ export class InvitationCreateModalComponent implements OnInit {
 
   initialize() {
     const control = <FormArray>this.form.get(this.type);
-    for ( let i = 0; i < control.controls.length; i++ )
+    for (let i = 0; i < control.controls.length; i++)
       control.removeAt(0);
     for (let i = 0; i < this.noOfCtrl; i++) {
       this.add();
@@ -66,13 +71,15 @@ export class InvitationCreateModalComponent implements OnInit {
     if (item) {
       return this.fb.group({
         email: [item.email, Validators.compose([Validators.required, CustomValidator.emailFormat])],
-        fullName: [item.fullName, Validators.compose([Validators.required])],
+        firstName: [item.firstName, Validators.compose([Validators.required, CustomValidator.blanked])],
+        lastName: [item.lastName, Validators.compose([Validators.required, CustomValidator.blanked])],
         contactId: [item.contactId]
       });
     } else {
       return this.fb.group({
         email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])],
-        fullName: ['', Validators.compose([Validators.required])],
+        firstName: ['', Validators.compose([Validators.required, CustomValidator.blanked])],
+        lastName: ['', Validators.compose([Validators.required, CustomValidator.blanked])],
         contactId: [null]
       });
     }
@@ -94,17 +101,24 @@ export class InvitationCreateModalComponent implements OnInit {
       case 'invitation:send_to_recipients':
         // remove items whose email is empty
         _.remove(data, (item: any) => {
-          if(item.email != '') {
-            item.fullName = item.email.split('@')[0];
-          }
-          return item.email == '';
+          // if (item.email !== '') {
+          //   item.firstName = item.email.split('@')[0];
+          // }
+          return item.email === '';
         });
         options['payload'] = data;
         this.modal.close();
-        this.event.emit(options);
+        data.map(r => {
+          if (r.firstName !== '' && r.lastName !== '') {
+            r.fullName = `${r.firstName} ${r.lastName}`;
+          }
+        });
+        this.sendInvitations(data);
+        this.removeAll();
+        // this.event.emit(options);
         break;
       case 'cancel':
-        this.modal.close(null).then();
+        this.modal.close(null);
         this.removeAll();
         break;
       default:
@@ -122,7 +136,7 @@ export class InvitationCreateModalComponent implements OnInit {
     control.removeAt(i);
     if (item && item.id && item.id.value) {
       _.forEach(this.data, (data: any) => {
-        if (data.id == item.id.value) {
+        if (data.id === item.id.value) {
           data._destroy = true;
           this.deleteObjects.push(data);
         }
@@ -137,20 +151,32 @@ export class InvitationCreateModalComponent implements OnInit {
     control.reset();
   }
 
+  sendInvitations(data: any): Promise<any> {
+    return this.invitationService
+      .create({ recipients: data })
+      .toPromise().then((response: any) => {
+        // this.invitationModal.close();
+        this.event.emit({action: 'invitation:send_successfully', payload: response.data});
+        this.toaster.success(
+          'You have just sent invitation(s) successfully!'
+        );
+      });
+  }
+
   getFormControls() {
     return (<FormArray>this.form.get(this.type)).controls;
   }
 
   validItems(): boolean {
     let result = false;
-    let items = this.form.value.items;
+    const items = this.form.value.items;
 
-    if(items.length == 0) return false;
-    if(items.length == 1) {
+    if (items.length === 0) return false;
+    if (items.length === 1) {
       return this.form.valid;
     }
     _.forEach(this.form.value.items, (item: any) => {
-      if(item.email != '' && item.fullName != '') {
+      if (item.email !== '' && item.fistName !== '' && item.lastName !== '') {
         result = true;
       }
     });

@@ -2,6 +2,7 @@ import {
   Component, Input, Output, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 import { SocialService } from '../../services/social.service';
 import { SocialFavoriteService } from '../../services/social-favorites.service';
@@ -103,7 +104,7 @@ export class ZSocialShareProfileCommunityComponent {
   }
 
   getUserSettings(uuid: any) {
-    this.socialService.community.getUserSettings(uuid).take(1).toPromise().then(
+    this.socialService.community.getUserSettings(uuid).pipe(take(1)).toPromise().then(
       (res: any) => {
         console.log('inside getUserSettings', res);
         this.userSettings = res.data;

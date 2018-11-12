@@ -1,18 +1,17 @@
 import { Action, createSelector } from '@ngrx/store';
-import * as folder from '../actions/folder';
-
+import * as fromFolder from '../actions/folder';
 
 export interface Folder {
-  id: number,
-  uuid: string,
-  name: string,
-  folders: Folder[]
+  id: number;
+  uuid: string;
+  name: string;
+  folders: Folder[];
 }
 
 export interface State {
-  folders: {[id: number]: Folder},
-  currentFolder: Folder | null,
-  currentFolderPath: {id: number, label: string}[]
+  folders: { [id: number]: Folder };
+  currentFolder: Folder | null;
+  currentFolderPath: { id: number, label: string }[];
 }
 
 export const initialState: State = {
@@ -22,32 +21,40 @@ export const initialState: State = {
 };
 
 // TODO
-export function reducer(state = initialState, action: folder.Actions): State {
+export function reducer(
+  state = initialState,
+  action: fromFolder.Actions
+): State {
   switch (action.type) {
-    case folder.FOLDERS_DELETED: {
+    case fromFolder.FOLDERS_DELETED: {
       return state;
     }
-    case folder.FOLDER_ADDED: {
-      return {...state};
+    case fromFolder.FOLDER_ADDED: {
+      return { ...state };
     }
-    case folder.FOLDER_UPDATED: {
-      return {...state, folders: action['payload']};
+    case fromFolder.FOLDER_UPDATED: {
+      return { ...state, folders: action['payload'] };
     }
-    case folder.SET_FOLDER_PATH_AND_UPDATE_CURRENT: {
-      let convertedPath: any[] = action['payload'];
-      let curr: any = convertedPath[convertedPath.length - 1];
-      return {...state, currentFolderPath: convertedPath, currentFolder: curr};
+    case fromFolder.SET_FOLDER_PATH_AND_UPDATE_CURRENT: {
+      const convertedPath: any[] = action['payload'];
+      const curr: any = convertedPath[convertedPath.length - 1];
+      return {
+        ...state,
+        currentFolderPath: convertedPath,
+        currentFolder: curr
+      };
     }
-    case folder.UPDATE_FOLDER_PATH: {
-      let folderPath: any = [...state.currentFolderPath];
+    case fromFolder.UPDATE_FOLDER_PATH: {
+      const folderPath: any = [...state.currentFolderPath];
       folderPath.forEach((val: any, idx: any) => {
-        if(val.id == action.payload.id)
+        if (val.id === action.payload.id) {
           folderPath[idx] = action.payload;
+        }
       });
-      return {...state, currentFolderPath: folderPath};
+      return { ...state, currentFolderPath: folderPath };
     }
-    case folder.LOAD_SUCCESS: {
-      return {...state, folders: action['payload']};
+    case fromFolder.LOAD_SUCCESS: {
+      return { ...state, folders: action['payload'] };
     }
     default:
       return state;
@@ -60,12 +67,14 @@ export const getCurrentFolderPath = (state: State) => state.currentFolderPath;
 
 export const getFoldersTree = (state: State) => {
   // Convert original HASH folders to an sorted ARRAY folders
-  let cloneFolders: any[] = [];
-  Object.keys(state.folders).forEach((idx: any) => cloneFolders.push(state.folders[idx]));
+  const cloneFolders: any[] = [];
+  Object.keys(state.folders).forEach((idx: any) =>
+    cloneFolders.push(state.folders[idx])
+  );
   return cloneFolders;
 };
 
 export function mapFolderToItem(folder: Folder) {
-  let item: any = {label: folder.name, icon: 'fa-folder-o'};
+  const item: any = { label: folder.name, icon: 'fa-folder-o' };
   return item;
 }

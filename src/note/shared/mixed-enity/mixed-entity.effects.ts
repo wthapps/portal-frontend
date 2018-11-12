@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  EMPTY } from 'rxjs';
 import { map, concatMap, catchError } from 'rxjs/operators';
-import { empty } from 'rxjs/observable/empty';
 import { Action } from '@ngrx/store';
 
 import { MixedEntityAction } from './mixed-entity.action';
@@ -21,7 +20,7 @@ export class MixedEntityEffects {
       map((response: any) => {
         return MixedEntityAction.getAllSuccess(response.data);
       }),
-      catchError(() => empty())
+      catchError(() => EMPTY)
     );
 
   constructor(private actions: Actions<ActionBase>, private mixedEntityService: MixedEntityService) { }

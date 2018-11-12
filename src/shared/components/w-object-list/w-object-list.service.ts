@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 declare let _: any;
 
@@ -8,22 +8,22 @@ export class WObjectListService {
   view$: any;
   private viewSubject: BehaviorSubject<string> = new BehaviorSubject<string>('grid');
 
-  selectedObjects$: any;
+  selectedObjects$: Observable<any>;
   private selectedObjectsSubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
-  groupBy$: any;
+  groupBy$: Observable<any>;
   private groupBySubject: BehaviorSubject<any> = new BehaviorSubject<any>('object_type');
 
-  sortBy$: any;
+  sortBy$: Observable<any>;
   private sortBySubject: BehaviorSubject<any> = new BehaviorSubject<any>('created_at');
 
-  sortOrder$: any;
-  private sortOrderSubject: BehaviorSubject<any> = new BehaviorSubject<any>('desc');
+  sortOrder$: Observable<'asc' | 'desc' | boolean>;
+  private sortOrderSubject: BehaviorSubject<'asc' | 'desc' | boolean> = new BehaviorSubject<any>('desc');
 
-  multipleSelection$: any;
+  multipleSelection$: Observable<any>;
   private multipleSelectionSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  objectsDisabled$: any;
+  objectsDisabled$: Observable<any>;
   private objectsDisabledSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   selectedEvent: EventEmitter<any> = new EventEmitter<any>();
@@ -44,7 +44,7 @@ export class WObjectListService {
   }
 
   addItem(item: any) {
-    let items = this.selectedObjectsSubject.getValue().concat([item]);
+    const items = this.selectedObjectsSubject.getValue().concat([item]);
     this.selectedObjectsSubject.next(items);
   }
 
@@ -52,7 +52,7 @@ export class WObjectListService {
     if (_.find(this.selectedObjectsSubject.getValue(), {'id': item.id})) {
       _.remove(this.selectedObjectsSubject.getValue(), {'id': item.id});
     } else {
-      let items = this.selectedObjectsSubject.getValue().concat([item]);
+      const items = this.selectedObjectsSubject.getValue().concat([item]);
       this.selectedObjectsSubject.next(items);
     }
   }
@@ -69,7 +69,7 @@ export class WObjectListService {
     this.sortBySubject.next(sortBy);
   }
 
-  setSortOrder(sortOrder: string) {
+  setSortOrder(sortOrder: 'asc' | 'desc' | boolean) {
     this.sortOrderSubject.next(sortOrder);
   }
 
@@ -82,11 +82,15 @@ export class WObjectListService {
   }
 
   removeItem(id: any) {
-    _.remove(this.selectedObjectsSubject.getValue(), {'id': id});
+    // _.remove(this.selectedObjectsSubject.getValue(), {'id': id});
+    const filteredItems = this.selectedObjectsSubject.getValue().filter(item => item.id !== id);
+    this.selectedObjectsSubject.next(filteredItems);
   }
 
   clear() {
-    this.selectedObjectsSubject.next([]);
+    if (this.selectedObjectsSubject.getValue().length !== 0) {
+      this.selectedObjectsSubject.next([]);
+    }
     this.selectedEvent.emit({ type: 'close' });
   }
 

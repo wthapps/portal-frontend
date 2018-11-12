@@ -1,21 +1,18 @@
 import { Injectable } from '@angular/core';
+import { Observable ,  BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie';
 
 import { UserService } from './user.service';
-import { CookieService } from 'ngx-cookie';
 import { ApiBaseService } from './apibase.service';
-import { Observable } from 'rxjs/Observable';
 import { Constants } from '@wth/shared/constant';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { WindowService } from '@wth/shared/services/window.service';
 
-const PROFILE = 'profile';
 const PPROFILE = 'pProfile'; // public profile
 const SETTINGS = 'settings';
 const CONSTANTS = 'constants';
 const VERSION = 'version';
 const APPS = 'apps';
-const JWT = 'jwt';
-const LOGGEDIN = 'logged_in';
 
 @Injectable()
 export class AuthService {
@@ -38,13 +35,31 @@ export class AuthService {
     private windowService: WindowService,
     private userService: UserService // TODO will be remove after refactoring by AuthService
   ) {
+
     this.loggedIn$ = this._loggedIn$.asObservable();
     this.user$ = this._user$.asObservable();
 
-    this.jwt = cookieService.get(JWT);
-    this.loggedIn = Boolean(cookieService.get(LOGGEDIN));
+    this.jwt = cookieService.get(Constants.cookieKeys.jwt);
+    this.loggedIn = Boolean(cookieService.get(Constants.cookieKeys.loggedIn));
+
+    // if (this.jwt) {
+    //
+    //   this.api.post(`users/current_session/profile`, {jwt: this.jwt}).subscribe((response) => {
+    //     console.log('profile response::::');
+    //     this.loggedIn = true;
+    //     this._loggedIn$.next(this.loggedIn);
+    //     this.user = response.data;
+    //     this._user$.next(this.user);
+    //     this.storeLoggedInInfo();
+    //   }, (error) => {
+    //     this.loggedIn = false;
+    //     this._loggedIn$.next(this.loggedIn);
+    //     this.deleteLoggedInInfo();
+    //   });
+    // }
+
     if (this.loggedIn) {
-      let profile = cookieService.get(PROFILE);
+      let profile = cookieService.get(Constants.cookieKeys.profile);
       if (!profile) {
         this.loggedIn = false;
         this.deleteAuthInfo();
@@ -53,27 +68,10 @@ export class AuthService {
         this._user$.next(this.user);
       }
       this._loggedIn$.next(this.loggedIn);
-      //
-      // this.api.post(`users/current_session/profile`, {jwt: `${cookieService.get(JWT)}`}).subscribe((response) => {
-      //   this.loggedIn = true;
-      //   this._loggedIn$.next(this.loggedIn);
-      //   // this.loggedIn$ = this._loggedIn$.asObservable();
-      //   this.user = response.data;
-      //   this._user$.next(this.user);
-      //   // this.user$ = this._user$.asObservable();
-      //   this.storeLoggedInInfo();
-      // }, (error) => {
-      //   this.loggedIn = false;
-      //   this._loggedIn$.next(this.loggedIn);
-      //   // this.loggedIn$ = this._loggedIn$.asObservable();
-      //
-      //   this.deleteLoggedInInfo();
-      // });
+
     } else {
       this.loggedIn = false;
       this._loggedIn$.next(this.loggedIn);
-      // this.loggedIn$ = this._loggedIn$.asObservable();
-
       this.deleteLoggedInInfo();
     }
     this.windowService.watchStorage().subscribe((payload: any) => {
@@ -86,14 +84,14 @@ export class AuthService {
   }
 
   login(payload: any): Observable<any> {
-    return this.api.post('users/sign_in', payload).map((response: any) => {
+    return this.api.post('users/sign_in', payload).pipe(map((response: any) => {
       this.jwt = response.token;
       this.loggedIn = true;
       this._loggedIn$.next(true);
       this.user = response.data;
       this._user$.next(this.user);
       this.storeAuthInfo();
-    });
+    }));
   }
 
   logout(): void {
@@ -119,6 +117,22 @@ export class AuthService {
     return this.loggedIn && this.jwt && this.user;
   }
 
+  validateToken() {
+    if (this.jwt) {
+      this.api.post(`users/current_session/profile`, {jwt: this.jwt}).subscribe((response) => {
+        this.loggedIn = true;
+        this._loggedIn$.next(this.loggedIn);
+        this.user = response.data;
+        this._user$.next(this.user);
+        this.storeLoggedInInfo();
+      }, (error) => {
+        this.loggedIn = false;
+        this._loggedIn$.next(this.loggedIn);
+        this.deleteLoggedInInfo();
+      });
+    }
+  }
+
   private storeAuthInfo() {
     let cookieOptionsArgs = {
       ...Constants.cookieOptionsArgs,
@@ -129,17 +143,17 @@ export class AuthService {
     this.storeLoggedInInfo();
 
     // store in session
-    this.cookieService.put(JWT, this.jwt, cookieOptionsArgs);
-    this.cookieService.put(LOGGEDIN, `${this.loggedIn}`, cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.jwt, this.jwt, cookieOptionsArgs);
+    this.cookieService.put(Constants.cookieKeys.loggedIn, `${this.loggedIn}`, cookieOptionsArgs);
     this.cookieService.put(
-      PROFILE,
+      Constants.cookieKeys.profile,
       `${JSON.stringify(this.user)}`,
       cookieOptionsArgs
     );
   }
 
   private storeLoggedInInfo() {
-    localStorage.setItem(PROFILE, JSON.stringify(this.user));
+    localStorage.setItem(Constants.cookieKeys.profile, JSON.stringify(this.user));
     localStorage.setItem(SETTINGS, '{}');
     localStorage.setItem(PPROFILE, '{}');
     localStorage.setItem(CONSTANTS, '{}');
@@ -156,17 +170,17 @@ export class AuthService {
     this.deleteLoggedInInfo();
 
     // delete cookie datawt
-    this.cookieService.remove(JWT, cookieOptionsArgs);
-    this.cookieService.remove(LOGGEDIN, cookieOptionsArgs);
-    this.cookieService.remove(PROFILE, cookieOptionsArgs);
+    this.cookieService.remove(Constants.cookieKeys.jwt, cookieOptionsArgs);
+    this.cookieService.remove(Constants.cookieKeys.loggedIn, cookieOptionsArgs);
+    this.cookieService.remove(Constants.cookieKeys.profile, cookieOptionsArgs);
   }
 
   private deleteLoggedInInfo() {
     let keys: Array<string> = [
-      PROFILE,
+      Constants.cookieKeys.profile,
       PPROFILE,
       SETTINGS,
-      LOGGEDIN,
+      Constants.cookieKeys.loggedIn,
       CONSTANTS,
       VERSION,
       APPS

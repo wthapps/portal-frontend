@@ -93,9 +93,9 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           detail: true,
           detailObjects: action.payload.data,
           detailObject: null,
-          currentLinkDetail: action.payload.page_metadata.links.self,
-          nextLinkDetail: action.payload.page_metadata.links.next,
-          linksDetail: action.payload.page_metadata.links
+          currentLinkDetail: action.payload.meta.links.self,
+          nextLinkDetail: action.payload.meta.links.next,
+          linksDetail: action.payload.meta.links
         });
       } else {
         result = Object.assign({}, state, {
@@ -105,9 +105,9 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
           object: null,
           detailObjects: [],
           detailObject: null,
-          currentLink: action.payload.page_metadata.links.self,
-          nextLink: action.payload.page_metadata.links.next,
-          links: action.payload.page_metadata.links
+          currentLink: action.payload.meta.links.self,
+          nextLink: action.payload.meta.links.next,
+          links: action.payload.meta.links
         });
       }
       return result;
@@ -129,14 +129,14 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
         obj.selected = false;
         if (state.detail) {
           cloneState.detailObjects.push(obj);
-          cloneState.currentLinkDetail = action.payload.page_metadata.links.self;
-          cloneState.nextLinkDetail = action.payload.page_metadata.links.next;
-          cloneState.linksDetail = action.payload.page_metadata.links;
+          cloneState.currentLinkDetail = action.payload.meta.links.self;
+          cloneState.nextLinkDetail = action.payload.meta.links.next;
+          cloneState.linksDetail = action.payload.meta.links;
         } else {
           cloneState.objects.push(obj);
-          cloneState.currentLink = action.payload.page_metadata.links.self;
-          cloneState.nextLink = action.payload.page_metadata.links.next;
-          cloneState.links = action.payload.page_metadata.links;
+          cloneState.currentLink = action.payload.meta.links.self;
+          cloneState.nextLink = action.payload.meta.links.next;
+          cloneState.links = action.payload.meta.links;
         }
       });
 
@@ -154,8 +154,8 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       //     detail: true,
       //     detailObjects: action.payload.data,
       //     detailObject: null,
-      //     currentLinkDetail: action.payload.page_metadata.links.self,
-      //     nextLinkDetail: action.payload.page_metadata.links.next
+      //     currentLinkDetail: action.payload.meta.links.self,
+      //     nextLinkDetail: action.payload.meta.links.next
       //   });
       // } else {
       //   result = Object.assign({}, state, {
@@ -165,8 +165,8 @@ export function reducer(state = INITIAL_STATE, action: actions.Actions): State {
       //     object: null,
       //     detailObjects: [],
       //     detailObject: null,
-      //     currentLink: action.payload.page_metadata.links.self,
-      //     nextLink: action.payload.page_metadata.links.next
+      //     currentLink: action.payload.meta.links.self,
+      //     nextLink: action.payload.meta.links.next
       //   });
       // }
       // return result;

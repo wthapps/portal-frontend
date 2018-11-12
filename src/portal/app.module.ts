@@ -1,4 +1,3 @@
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_BASE_HREF } from '@angular/common';
@@ -7,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from '../core/core.module';
 import { PortalSharedModule } from './shared/shared.module';
 
-import {environment} from '@env/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeModule } from './home/home.module';
@@ -24,6 +22,7 @@ import { SubscribeModule } from './sub_unsub/subscribe.module';
 import { SupportModule } from './support/support.module';
 import { NotificationModule } from './notifications/notifications.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { FaqModule } from '@portal/faq/faq.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -45,11 +44,11 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     SubscribeModule,
     SupportModule,
     NotificationModule,
+    FaqModule,
 
     PortalSharedModule.forRoot(),
     CoreModule.forRoot(),
-    SharedServicesModule.forRoot(),
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
+    SharedServicesModule.forRoot()
   ],
   providers: [
     {

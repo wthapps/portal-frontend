@@ -11,6 +11,7 @@ export class Message {
   is_quote: boolean;
   sending_status: number;
   status: string;
+  meta_data: any;
   deleted: boolean;
   created_at: string;
   updated_at: string;
@@ -19,7 +20,7 @@ export class Message {
     this.id             = obj && obj.id             || 0;
     this.uuid           = obj && obj.uuid           || '';
     this.message        = obj && obj.message        || '';
-  this.message_type     = obj && obj.message_type   || 'text';
+    this.message_type   = obj && obj.message_type   || 'text';
     this.content_type   = obj && obj.content_type   || 'text';
     this.original_type  = obj && obj.original_type  || '';
     this.group          = obj && obj.group          || null;
@@ -29,5 +30,6 @@ export class Message {
     this.sending_status = obj && obj.sending_status || 1;
     this.status         = obj && obj.status         || 'sending';
     this.deleted        = obj && obj.deleted        || false;
+    this.meta_data      = obj && obj.meta_data      || {};
   }
 }

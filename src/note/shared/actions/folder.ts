@@ -137,5 +137,6 @@ export class UpdateFolderPath implements Action {
 }
 
 // TODO: Add RouterState | Activated Route
-export type Actions = Add | Update | FoldersUpdated | FolderUpdated | FolderAdded | Delete | MultiDelete | FoldersDeleted | LoadAll | LoadSuccess | ChangeSortOrder
-  | Select | DeselectAll | SetCurrentFolder | SetCurrentFolderPathAndUpdateCurrent | UpdateCurrentFolder | UpdateFolderPath;
+export type Actions = Add | Update | FoldersUpdated | FolderUpdated | FolderAdded | Delete | MultiDelete |
+ FoldersDeleted | LoadAll | LoadSuccess | ChangeSortOrder | Select | DeselectAll | SetCurrentFolder |
+  SetCurrentFolderPathAndUpdateCurrent | UpdateCurrentFolder | UpdateFolderPath;

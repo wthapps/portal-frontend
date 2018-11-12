@@ -8,69 +8,70 @@
   <div class="photo-detail-info-title">
     <h4>
       <i class="fa fa-info-circle"></i> Details
-      <a href="javascript:void(0);"
-         (click)="doAction({action: 'openModal', payload: {modalName: 'editInfoModal', selectedObject: object }})">Edit</a>
+      <button class="btn btn-default" (click)="doAction({action: 'openModal', payload: {modalName: 'editInfoModal', selectedObject: object }})">
+        <i class="fa fa-pencil"></i>
+      </button>
     </h4>
   </div>
-  <dl class="dl-horizontal">
+  <dl>
     <dt>Description</dt>
     <dd>
       {{ object.description }}
     </dd>
   </dl>
+  <hr/>
   <div class="photo-detail-info-title">
-    <h4><i class="fa fa-tag"></i> Tag
-      <a href="javascript:void(0);"
-         (click)="doAction({
+    <h4>
+      <i class="fa fa-tag"></i> Tag
+      <button class="btn btn-default" (click)="doAction({
           action: 'openModal',
           payload: {
               modalName: 'taggingModal',
               selectedObjects: [object],
               updateListObjects: [object]
-          }})">Edit</a>
+          }})">
+        <i class="fa fa-pencil"></i>
+      </button>
     </h4>
   </div>
-  <!--<div class="tags-text" *ngFor="let tag of album.json_tags">-->
-  <!--<span>{{ tag }}</span>-->
-  <!--</div>-->
+  <div class="tags-text" *ngFor="let tag of object.json_tags">
+    <span>{{ tag.name }}</span>
+  </div>
+  <hr/>
   <div class="photo-detail-info-title">
-    <h4><i class="fa fa-share"></i> Sharing
-      <a href="javascript:void(0);"
-         (click)="doAction({
-       action: 'openModal',
-       payload: {
-          modalName: 'sharingModal',
-          selectedObjects: [object],
-          updateListObjects: [object]
-       }})">Edit</a>
-    </h4>
-  </div>
-  <dl>
-    <dt>Owner</dt>
-    <dd>
-      <ul class="list-unstyled recipients">
-        <li>
-          <a [href]="profileUrl + object?.owner?.uuid">
-            <img width="24" [src]="object?.owner?.profile_image"
-                 [alt]="object?.owner?.name"
-                 [title]="object?.owner?.name">
-            {{ object?.owner.name }}
-          </a>
-        </li>
-      </ul>
-    </dd>
+    <h4>
+      <i class="fa fa-share"></i> Sharing</h4>
 
-    <dt>Shared with</dt>
-    <dd>
-      <ul class="list-unstyled recipients">
-        <li *ngFor="let contact of object?.json_shares">
-          <a [href]="profileUrl + contact?.uuid">
-            <img width="24" [src]="contact?.profile_image" title="{{ contact?.name }}">
-            {{ contact?.name }}
-          </a>
-        </li>
-      </ul>
-    </dd>
-  </dl>
+    <dl>
+      <dd>
+        <ul class="list-unstyled recipients">
+          <li>
+            <a href="javascript:void(0)">
+              <!-- <img width="34" [src]="object?.owner?.profile_image" [alt]="object?.owner?.name" [title]="object?.owner?.name"> -->
+            </a>
+          </li>
+          <li>
+            <div class="vertical"></div>
+          </li>
+
+          <li *ngFor="let contact of object?.json_shares">
+            <a href="javascript:void(0);" (click)="doAction({
+               action: 'openModal',
+               payload: {
+                  modalName: 'sharingModal',
+                  selectedObjects: [object],
+                  updateListObjects: [object],
+                  mode: share ? 2 : 1,
+                  sharing: share
+               }})">
+              <img width="34" [src]="contact?.profile_image" title="{{ contact?.name }}">
+            </a>
+          </li>
+
+        </ul>
+      </dd>
+    </dl>
+  </div>
+
 
 </ng-container>

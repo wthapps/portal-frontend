@@ -4,23 +4,23 @@
 
 <div class="navbar-form navbar-left hidden-xs navbar-form-search">
   <div class="navbar-searchTop" (click)="clickedInside($event)">
-    <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)"
-                    (onKeyUpEvent)="onKey($event)"
+    <textbox-search #textbox (onEnterEvent)="onEnter(textbox.search)" (onEscapeEvent)="onEscape($event)"
+                    (onKeyUpEvent)="onKey(textbox.search)"
                     [placeholder]="'Search something'" [showSearchAdvanced]="false"
-                    (onSearchAdvancedEvent)="onSearchAdvanced($event)">
+                    (onSearchAdvancedEvent)="onSearchAdvanced(textbox.search)">
 
       <div class="input-group-suggestions" *ngIf="show && !searchAdvanced">
         <div class="list-group">
-          <a *ngFor="let s of suggestions" href="javascript:;" class="list-group-item" (click)="setText(data)">
+          <a *ngFor="let s of suggestions" href="javascript:;" class="list-group-item" (click)="navigateTo(s)">
             <span>
-              <i *ngIf="s.object_type == 'Note::Folder'" class="fa fa-folder-o"></i>
-              <i *ngIf="s.object_type == 'Note::Note'" class="fa fa-file"></i>
+              <i *ngIf="s.object_type == OBJECT_TYPE.FOLDER" class="fa fa-folder-o"></i>
+              <i *ngIf="s.object_type == OBJECT_TYPE.NOTE" class="fa fa-file"></i>
             </span>
             <span class="avatar-name-txt"> {{ s.name }} </span>
           </a>
         </div>
         <div class="list-group-footer">
-          <a class="d-block" href="javascript:;" (click)="onEnter($event)">
+          <a class="d-block" href="javascript:;" (click)="onEnter(textbox.search)">
             Show more result
           </a>
         </div>

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { take } from 'rxjs/operators';
 
 import { ApiBaseService } from '@wth/shared/services';
 import { UserService } from '@shared/services/user.service';
@@ -29,7 +30,7 @@ export class SoUserService {
   }
 
   update(body: any) {
-    return this.apiBaseService.put(`${soUsersUrl}/update`, body).take(1);
+    return this.apiBaseService.put(`${soUsersUrl}/update`, body).pipe(take(1));
   }
 
   reset_setting() {
@@ -37,15 +38,15 @@ export class SoUserService {
   }
 
   addFriend(uuid: any) {
-    return this.apiBaseService.post(`${soInvitationsUrl}`, {uuid: uuid}).take(1);
+    return this.apiBaseService.post(`${soInvitationsUrl}`, {uuid: uuid}).pipe(take(1));
   }
 
   unfriend(uuid: any) {
-    return this.apiBaseService.delete(`${soInvitationsUrl}/unfriend/${uuid}`).take(1);
+    return this.apiBaseService.delete(`${soInvitationsUrl}/unfriend/${uuid}`).pipe(take(1));
   }
 
   unfollow(uuid: any) {
-    return this.apiBaseService.post(`${soInvitationsUrl}/unfollow`, {uuid: uuid}).take(1);
+    return this.apiBaseService.post(`${soInvitationsUrl}/unfollow`, {uuid: uuid}).pipe(take(1));
   }
 
   follow(uuid: any) {
@@ -76,7 +77,7 @@ export class SoUserService {
   }
 
   getFavourite(uuid: any, type: string) {
-    return this.apiBaseService.get(`${soFavouritesUrl}/${uuid}`, {type: type}).take(1);
+    return this.apiBaseService.get(`${soFavouritesUrl}/${uuid}`, {type: type}).pipe(take(1));
   }
 
   toggleFavourites(uuid: any, type: string) {

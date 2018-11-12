@@ -6,29 +6,30 @@ import { Constants } from '../../../constant/config/constants';
 
 export class SoPost extends BaseInput implements FromData {
   uuid: string;
-  description: string = '';
+  description = '';
   owner: SoUser = new SoUser();
   comments: Array<SoComment> = new Array<SoComment>();
   parent_post: any ;
   photos: Array<any> = [];
+  resources: Array<any> = []; // include photos and videos
   tags: Array<any> = [];
   tags_json: Array<any> = [];
   likes: Array<any> = [];
   dislikes: Array<any> = [];
   shares: Array<any> = [];
   reactions: Array<any> = [];
-  adult: boolean = false;
-  is_owner: boolean = false;
+  adult = false;
+  is_owner = false;
   // privacy: string = 'public';
   privacy: string = Constants.soPostPrivacy.public.data;
   custom_objects: Array<any> = [];
-  disable_comment: boolean = false;
-  disable_share: boolean = false;
-  mute: boolean = false;
-  like_count: number = 0;
-  dislike_count: number = 0;
-  share_count: number = 0;
-  comment_count: number = 0;
+  disable_comment = false;
+  disable_share = false;
+  mute = false;
+  like_count = 0;
+  dislike_count = 0;
+  shared_count = 0;
+  comment_count = 0;
 
   from(fields: any) {
     if (fields) {

@@ -1,16 +1,15 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Subject ,  Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Constants } from '@shared/constant/config/constants';
 import { Store } from '@ngrx/store';
 import * as fromShareModal from '../../reducers/share-modal';
 import { AutoComplete } from 'primeng/primeng';
-import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
+
+declare var $: any;
 
 @Component({
   selector: 'z-note-shared-modal-sharing',
@@ -18,7 +17,7 @@ import { SharingService } from '@wth/shared/shared/components/photo/modal/sharin
   styleUrls: ['sharing.component.scss']
 })
 
-export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
+export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('auto') auto: AutoComplete;
 
@@ -32,56 +31,79 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   //   deleting: 90
   // };
 
-  filteredContacts: any = [];
-  selectedContacts: any = [];
-  sharedSharings: any = [];
+  users: any = [];
+  selectedUsers: any = [];
+  sharings: any = [];
+  newUsers: Array<any> = [];
+  updatedUsers: Array<any> = [];
+  deletedUsers: Array<any> = [];
+  sharedUsers: Array<any> = [];
   sharedObjects: any = [];
-  changed: boolean = false;
-  showCancelButton: boolean = false;
-  mode: string = 'create';
-
+  changed = false;
+  showCancelButton = false;
+  mode = 'create';
+  loading = false;
   contactTerm$ = new Subject<string>();
+
+  roles = [
+    {id: 1, name: 'view', display_name: 'Can view'},
+    {id: 2, name: 'download', display_name: 'Can download'},
+    {id: 3, name: 'edit', display_name: 'Can edit'}
+    // {id: 4, name: 'full', display_name: 'Full Access'}
+  ];
+  role = this.roles[0];
 
   subscription: Subscription;
   searchSubscription: Subscription;
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
 
-  constructor(private commonEventService: CommonEventService,
-              private apiBaseService: ApiBaseService,
-              private store: Store<any>,
-              private mediaSharingService: SharingService) {
+  constructor(private apiBaseService: ApiBaseService, private store: Store<any>) {
     this.subscription = store.select('share').subscribe((state: any) => {
-      this.selectedContacts = state.current.selectedContacts;
-      this.sharedSharings = state.current.sharedSharings;
+      this.selectedUsers = state.current.selectedContacts;
+      this.sharings = state.current.sharedSharings;
+      this.sharings.forEach(s => this.sharedUsers.push({ ...s.recipient, role: s.permission }));
       this.changed = state.changed;
       this.showCancelButton = state.showCancelButton;
-      if(this.auto) {
-        this.auto.value = this.selectedContacts;
+      if (this.auto) {
+        this.auto.value = this.selectedUsers;
         this.auto.onModelChange(this.auto.value);
         }
       });
     this.searchSubscription = this.contactTerm$.pipe(
       debounceTime(Constants.searchDebounceTime),
       distinctUntilChanged(),
-      switchMap((term: any) => this.mediaSharingService.getContacts(term.query))
-    ).subscribe((res: any) => {
-      console.log(res);
-      const selectedContactIds = this.selectedContacts.map(ct => ct.id);
-      const sharedContactIds = this.sharedSharings.map(ss => ss.recipient.id);
-      if(res.data)
-        this.filteredContacts = res.data.reduce((acc, ct) => {
-            if (ct.wthapps_user && !selectedContactIds.includes(ct.id) && !sharedContactIds.includes(ct.wthapps_user.id))
-              acc.push(ct.wthapps_user);
-              return acc;
-        }, []);
-      }, (error: any)=> {
+      switchMap((term: any) => this.apiBaseService.get(`account/search?q=${term.query}`)))
+      .subscribe((res: any) => {
+        const selectedIds = this.selectedUsers.map(ct => ct.id);
+        const sharedIds = this.sharings.map(ss => ss.recipient.id);
+        this.users = res.data.filter(ct => !selectedIds.includes(ct.id) && !sharedIds.includes(ct.id));
+      },
+(error: any) => {
         console.log('error', error);
       }
-      );
+    );
 
   }
 
   ngOnInit(): void {
+
+  }
+
+  ngAfterViewInit() {
+    $(document).ready(function() {
+      $('.dropdown').on('show.bs.dropdown', function() {
+        alert('The dropdown is about to be shown.');
+      });
+      $('.dropdown').on('shown.bs.dropdown', function() {
+        alert('The dropdown is now fully shown.');
+      });
+      $('.dropdown').on('hide.bs.dropdown', function(e) {
+        alert('The dropdown is about to be hidden.');
+      });
+      $('.dropdown').on('hidden.bs.dropdown', function() {
+        alert('The dropdown is now fully hidden.');
+      });
+    });
   }
 
   ngOnDestroy() {
@@ -90,15 +112,20 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   }
 
   open() {
+    this.resetUserLists();
+    this.users = [];
     this.modal.open();
-    if (this.sharedObjects.length == 1) {
+    this.loading = true;
+    if (this.sharedObjects.length === 1) {
       this.apiBaseService.post(`note/sharings/get_sharing_info_object`, {object_id: this.sharedObjects[0].id, object_type: this.sharedObjects[0].object_type}).subscribe((res: any) => {
         this.store.dispatch({type: fromShareModal.SET_SHARED_SHARINGS, payload: res.data});
         if (res.data.length > 0) {
           this.mode = 'edit';
         }
+        this.loading = false;
       });
     } else {
+      this.loading = false;
       this.store.dispatch({type: fromShareModal.SET_SHARED_SHARINGS, payload: []});
     }
   }
@@ -107,21 +134,28 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
     this.modal.close();
   }
 
-  selectContact(contact: any) {
-    this.store.dispatch({type: fromShareModal.ADD_SELECTED_CONTACT, payload: contact});
+  selectUser(user: any) {
+    this.store.dispatch({type: fromShareModal.ADD_SELECTED_CONTACT, payload: user});
+    this.newUsers.push({...user, permission: this.role.name});
+  }
+
+  deselectUser(user: any) {
+    this.store.dispatch({type: fromShareModal.REMOVE_SELECTED_CONTACT, payload: user});
+    const removedIndex = this.newUsers.map((item: any) => {
+      return item.id;
+    }).indexOf(user.id);
+    this.newUsers.splice(removedIndex, 1);
   }
 
   remove(sharing: any) {
     sharing = {...sharing, _destroy: true};
     this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: sharing});
-  }
-
-  removeSelected(contact: any) {
-    this.store.dispatch({type: fromShareModal.REMOVE_SELECTED_CONTACT, payload: contact});
+    this.deletedUsers.push(sharing.recipient);
   }
 
   cancel() {
     this.store.dispatch({type: fromShareModal.CANCEL_ACTIONS});
+    this.resetUserLists();
   }
 
   cancelRemove(sharing: any) {
@@ -129,15 +163,39 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
     this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: sharing});
   }
 
-  changePermission(sharing: any, permission: any) {
-    sharing = {...sharing, permission: permission};
-    this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: sharing});
+  changeRole(role: any, sharing: any = null) {
+    if (!sharing) {
+      this.role = role;
+    } else if (role.name !== sharing.permission) {
+      sharing = {...sharing, permission: role.name};
+      this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: sharing});
+      const updatedIndex = this.updatedUsers.map((item: any) => {
+        return item.id;
+      }).indexOf(sharing.recipient.id);
+      if (updatedIndex < 0) {
+        this.updatedUsers.push({...sharing.recipient, permission: role.name});
+      } else {
+        if (sharing.permission === role.name) {
+          this.updatedUsers.splice(updatedIndex, 1);
+        } else {
+          this.updatedUsers[updatedIndex].permission = role.name;
+        }
+      }
+    }
+  }
+
+  get updating(): boolean {
+    return (this.updatedUsers.length + this.deletedUsers.length) > 0 ? true : false;
   }
 
   save() {
-    if(this.mode == 'create') {
+    if (this.mode === 'create') {
       this.store.dispatch({type: fromShareModal.SAVE});
-      this.apiBaseService.post(`note/sharings`, {objects: this.sharedObjects, sharings: this.sharedSharings}).subscribe((res: any) => {
+      this.apiBaseService.post(`note/sharings`, {
+        objects: this.sharedObjects,
+        sharings: this.sharings,
+        users: this.newUsers
+      }).subscribe((res: any) => {
         if (res.data.length > 0) {
           this.mode = 'edit';
         }
@@ -151,11 +209,24 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
       // Only update single object
       this.store.dispatch({type: fromShareModal.SAVE});
       for (let object of this.sharedObjects) {
-        this.apiBaseService.put(`note/sharings/${object.id}`, {object: object, sharings: this.sharedSharings}).subscribe((res: any) => {
+        this.apiBaseService.put(`note/sharings/${object.id}`, {
+          object: object,
+          sharings: this.sharings,
+          users: this.newUsers,
+          deleted_users: this.deletedUsers,
+          updated_users: this.updatedUsers
+        }).subscribe((res: any) => {
           this.store.dispatch({type: fromShareModal.SET_SHARED_SHARINGS, payload: res.data});
           this.store.dispatch({type: fromShareModal.SAVE});
+          this.resetUserLists();
         });
       }
     }
+  }
+
+  resetUserLists() {
+    this.newUsers = [];
+    this.updatedUsers = [];
+    this.deletedUsers = [];
   }
 }

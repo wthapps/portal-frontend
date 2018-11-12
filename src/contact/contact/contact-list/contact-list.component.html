@@ -1,23 +1,28 @@
-<z-contact-shared-toolbar>
-  <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
+<z-contact-shared-toolbar [pageTitle]="((label$ | async) || pageTitle) | maxLength: 50 | titleCase">
+  <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action" *ngIf="contactService.selectedObjects && contactService.selectedObjects.length > 0">
 
-    <z-contact-shared-actions-bar [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
-      [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
-      [showViewDetail]="false" [showEdit]="false" [showInvitation]="false" [number]="contactService.selectedObjects.length"
-      [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')" [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'blacklist')"
-      (eventOut)="doActionsToolbar($event)"></z-contact-shared-actions-bar>
+    <z-contact-shared-actions-bar [showSocial]="contactService?.selectedObjects?.length==1 && (contactService?.selectedObjects | isContactInternal)"
+      [showChat]="contactService?.selectedObjects?.length==1 && (contactService?.selectedObjects | isContactInternal)" [showViewDetail]="false"
+      [showEdit]="false" [showInvitation]="false" [showAddToContacts]="inOtherPage" [showMergeContacts]="true" [toggleFavourite]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'favourite')"
+      [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects, 'blacklist')" (eventOut)="doActionsToolbar($event)"></z-contact-shared-actions-bar>
   </div>
 </z-contact-shared-toolbar>
-<div id="contact-list" class="page-body-content has-page-body-control" lockYOffset="10" observeAttributes="true" infinite-scroll
-  [scrollWindow]="true" (scrolled)="onLoadMore()">
+<div id="contact-list" class="page-body-content has-page-body-control"
+     lockYOffset="10"
+     observeAttributes="true"
+     infinite-scroll
+     [infiniteScrollDistance]="2"
+     [infiniteScrollThrottle]="50"
+     [scrollWindow]="false"
+     (scrolled)="onLoadMore()">
 
   <div class="page-body-content-in" *ngIf="loaded && contacts.length==0">
     <box-no-data [icon]="'fa fa-address-book-o'" [title]="'There are no Contacts!'" [subTitle]="'Upload or import contact.'">
     </box-no-data>
   </div>
-  <ng-container *ngIf="contacts.length>=1">
-    <z-contact-shared-list [data]="contacts"></z-contact-shared-list>
-  </ng-container>
+  <div class="page-body-content-in" *ngIf="contacts.length>=1">
+    <z-contact-shared-list [data]="contacts" [contactsSortBy]="contactService.contactsSortBy" (itemSelected)="onItemSelected($event)"></z-contact-shared-list>
+  </div>
 </div>
 
 

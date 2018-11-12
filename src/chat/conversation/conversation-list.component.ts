@@ -1,15 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
+import { UserService } from '@shared/services';
 import { ChatService } from '../shared/services/chat.service';
-import { Store } from '@ngrx/store';
 
 @Component({
-  moduleId: module.id,
   templateUrl: 'conversation-list.component.html'
 })
 export class ConversationListComponent implements OnInit {
   selectContact: any;
+  conversations: any;
 
-  constructor(private chatService: ChatService) {}
+  constructor(
+    public userService: UserService,
+    private chatService: ChatService,
+    private addContactService: ZChatShareAddContactService
+  ) {
+  }
 
   ngOnInit() {
     this.selectContact = this.chatService.getContactSelect();
@@ -17,8 +23,16 @@ export class ConversationListComponent implements OnInit {
       this.chatService.router.navigate([
         `${this.chatService.constant.conversationUrl}/${
           this.selectContact.value.id
-        }`
+          }`
       ]);
     }
+
+    this.chatService.getConversationsAsync().subscribe((res: any) => {
+      this.conversations = res.value.data;
+    });
+  }
+
+  onAddContact() {
+    this.addContactService.open('addContact');
   }
 }

@@ -4,7 +4,7 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 
 @Injectable()
 export class ContactService {
-  url: string = 'feedbacks/';
+  readonly url = 'feedbacks/';
 
   constructor(private apiBaseService: ApiBaseService) {}
 

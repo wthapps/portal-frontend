@@ -5,7 +5,7 @@ import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oaut
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 
 import { Constants } from '../../../shared/constant/config/constants';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 declare var _: any;
 
@@ -16,15 +16,15 @@ declare var _: any;
 })
 export class ZContactSharedToolbarComponent implements OnInit {
   @HostBinding('class') cssClass = 'page-body-control';
-  @ViewChild('importContactSelect') importContactSelect: ZContactShareImportContactComponent;
-  @ViewChild('iCloudOAuthModal') iCloudOAuthModal: ICloudOAuthComponent;
 
-  @Input() pageTitle: string = ''; // TODO will be removed
-  @Input() hasBack: boolean = false;
+  @Input() pageTitle = ''; // TODO will be removed
+  @Input() hasBack = false;
   @Input() currentPage: string;
   selectedContact: string;
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
+  readonly otherContactsInfo = 'Other Contacts are people you interacted with but did not add them to your Contacts books';
+  readonly OTHER_CONTACTS = 'Other Contacts';
 
   constructor(
     public contactService: ZContactService,
@@ -37,36 +37,15 @@ export class ZContactSharedToolbarComponent implements OnInit {
     this.selectedContact = '3 contacts';
   }
 
-  openAddModal() {
-    console.log('openAddModal');
-  }
-
-
-  openImportContactModal(options?: any) {
-    this.importContactSelect.modal.open(options);
-  }
-
   back() {
     this.location.back();
   }
 
-  onImportOptionSelected(event: any) {
-    switch (event.provider) {
-      case 'google':
-      case 'apple':
-      case 'microsoft':
-      case 'linkedin':
-      case 'import_from_file':
-        this.commonEventService.broadcast({
-          channel: 'contact:contact:actions',
-          action: 'contact:contact:import_contact',
-          payload: event
-        });
-        break;
-      default:
-        console.warn('Unhandled import option: ', event.provider);
-        break;
-    }
+  toggleSelectAll() {
+    this.contactService.toggleSelectAll();
   }
 
+  deselectAll() {
+    this.contactService.clearSelected();
+  }
 }

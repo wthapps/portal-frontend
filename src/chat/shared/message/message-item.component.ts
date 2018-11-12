@@ -1,78 +1,74 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
-import { Constants, CHAT_ACTIONS } from '@wth/shared/constant';
-import { CommonEvent, CommonEventService } from '@wth/shared/services';
-import { MessageService } from '@chat/shared/message/message.service';
+import { Constants, CHAT_ACTIONS, ChatConstant, CONVERSATION_SELECT } from '@wth/shared/constant';
+import { CommonEvent, CommonEventService, WMessageService, StorageService } from '@wth/shared/services';
 
 declare var _: any;
+
+const MEDIA_PATH_MAPPINGS = {
+  'Media::Photo': 'photos',
+  'Media::Video': 'videos'
+};
 
 @Component({
   selector: 'message-item',
   templateUrl: 'message-item.component.html',
-  styleUrls: ['message-item.component.scss']
+  styleUrls: ['message-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessageItemComponent implements OnInit {
   @Input() message: any;
+  @Input() byMe: boolean;
   @Input() prevMessage: any;
   @Input() contactItem: any;
+  @Input() emojiMap: any;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
-  tooltip: any = Constants.tooltip;
-  noteUrl: any = Constants.baseUrls.note;
 
-  actions = CHAT_ACTIONS;
-
-  profileUrl: any = '';
+  readonly tooltip: any = Constants.tooltip;
+  readonly noteUrl: any = Constants.baseUrls.note;
+  readonly socialUrl: any = Constants.baseUrls.social;
+  readonly actions = CHAT_ACTIONS;
+  readonly profileUrl: any = ChatConstant.profileUrl;
+  readonly NO_ACTION_MESSAGES = ['message_deleted', 'message_cancel', 'request', 'request_accepted'];
 
   private modifiedMessage: any;
 
   constructor(
     private router: Router,
     private chatService: ChatService,
+    private storageService: StorageService,
     private pubSubEventService: CommonEventService,
-    private messageService: MessageService
+    private messageService: WMessageService
   ) {
-    this.profileUrl = this.chatService.constant.profileUrl;
+    // this.profileUrl = this.chatService.constant.profileUrl;
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getContactSelect();
-    // ByMe
-    if (this.message.display && this.message.display.id) {
-      this.message.byMe =
-        this.chatService.userService.getSyncProfile().id ==
-        this.message.display.id;
-    } else {
-      this.message.file = {
-        thumbnail_url:
-          'https://s3-us-west-2.amazonaws.com/env-staging-oregon/portal-frontend/system/thumbnails/generic_files_upload_default.png'
-      };
-    }
   }
 
   onPreviewPhoto(message: any) {
-    this.router.navigate([
-      {
-        outlets: {
-          modal: [
-            'photos',
-            message.file.id,
-            {
-              ids: [message.file.id],
-              message: message.id,
-              prevUrl: '/conversations'
-            }
-          ]
-        }
+    const currentConversation = this.storageService.get(CONVERSATION_SELECT);
+    this.router.navigate([{
+      outlets: {
+        modal: [
+          'preview',
+          message.file.uuid,
+          {
+            object: 'conversation',
+            parent_uuid: _.get(currentConversation, 'group.uuid'),
+            only_preview: true
+          }
+        ]
       }
-    ]);
+    }], { queryParamsHandling: 'preserve', preserveFragment: true });
   }
 
   doAction(event: CommonEvent) {
-    var editingEvent = _.cloneDeep(event); // this helps current value doesn't change when users edit message
+    const editingEvent = _.cloneDeep(event); // this helps current value doesn't change when users edit message
 
     this.pubSubEventService.broadcast(editingEvent);
   }
@@ -117,7 +113,7 @@ export class MessageItemComponent implements OnInit {
     });
   }
 
-  cancle() {
+  cancel() {
     this.doAction({
       channel: 'chatCommonEvent',
       action: CHAT_ACTIONS.CHAT_MESSAGE_CANCEL,
@@ -138,11 +134,12 @@ export class MessageItemComponent implements OnInit {
   }
 
   onShareContact(data: any) {
-    if (data.action == 'cancel') {
+    if (data.action === 'cancel') {
       this.delete();
     }
-    if (data.action == 'resend') {
-      this.chatService.shareContact([this.message.display.share_contact.id]);
+    if (data.action === 'resend') {
+      // this.chatService.shareContact([this.message.display.share_contact.id]);
+      this.chatService.selectContactByPartnerId(this.message.display.share_contact.id);
     }
   }
 
@@ -153,9 +150,9 @@ export class MessageItemComponent implements OnInit {
       return true;
     }
     if (
-      this.message.display &&
-      this.prevMessage.display &&
-      this.message.display.id === this.prevMessage.display.id
+      this.message.user &&
+      this.prevMessage.user &&
+      this.message.user.id === this.prevMessage.user.id
     ) {
       return false;
     }
@@ -178,8 +175,8 @@ export class MessageItemComponent implements OnInit {
   }
 
   onImgLoaded() {
-    setTimeout(() => {
-      this.messageService.scrollToBottom();
-    }, 200);
+    // setTimeout(() => {
+    //   this.messageService.scrollToBottom();
+    // }, 200);
   }
 }

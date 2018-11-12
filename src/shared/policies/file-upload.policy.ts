@@ -1,22 +1,25 @@
 import { FileUtil } from '@shared/shared/utils/file/file.util';
+import { BlackListPolicy } from '@shared/policies/black-list-policy';
+import { SizePolicy } from '@shared/policies/size-policy';
 
 export class FileUploadPolicy {
-  static blackList = ['exe', 'msi', 'dmg', 'deb', 'run', 'bat', 'out'];
-
-  static isAllow(file: any, policies: any = this.blackList) {
+  static isAllow(file: any, policies: any[] = []) {
     return this.allow(file, policies).allow;
   }
 
-  static allow(file: any, policies: any = this.blackList) {
-    let e = FileUtil.getExtension(file);
-    file.allow = !this.blackList.some((item: any) => item == e);
+  static allow(file: any, policies: any[] = []) {
+    file.allow = true;
+    file.validateErrors = [];
+    policies.forEach(p => p.validate(file));
     return file;
   }
 
-  static allowMultiple(files: any, policies: any = this.blackList) {
+  static allowMultiple(files: any, policies: any[] = []) {
     if (!files || files.length < 1) {
       throw Error('files are empty');
     }
-    return Object.keys(files).map((key: any) => this.allow(files[key]));
+    return Object.keys(files).map((key: any) =>
+      this.allow(files[key], policies)
+    );
   }
 }

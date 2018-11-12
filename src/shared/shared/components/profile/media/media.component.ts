@@ -10,11 +10,11 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '../../../validator/custom.validator';
 import { ApiBaseService } from '../../../../services/apibase.service';
 import { ProfileFormMixin } from '../../../mixins/form/profile/profile-form.mixin';
-import { Mixin } from '../../../../design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '../../../../design-patterns/decorator/mixin-decorator';
 
 declare var _: any;
 
-@Mixin([ProfileFormMixin])
+@Mixins([ProfileFormMixin])
 @Component({
     selector: 'partials-profile-media',
   templateUrl: 'media.component.html'

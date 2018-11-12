@@ -6,7 +6,8 @@ import {
   AfterViewInit, ViewEncapsulation
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { ChatService } from './shared/services/chat.service';
 import { ConfirmDialogModel } from '@wth/shared/shared/models/confirm-dialog.model';
@@ -46,7 +47,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.chatService.initalize();
 
     this.routerSubscription = this.router.events
-      .filter(event => event instanceof NavigationEnd)
+      .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });

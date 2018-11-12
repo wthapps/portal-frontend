@@ -1,0 +1,10 @@
+<p-autoComplete [(ngModel)]="selectedItems"
+                [suggestions]="filteredDataMultiple"
+                (completeMethod)="filterDataMultiple($event)"
+                (onSelect)="onSelect($event)"
+                styleClass="wid100"
+                [minLength]="1"
+                placeholder=""
+                field="name"
+                [multiple]="true">
+</p-autoComplete>

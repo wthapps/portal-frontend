@@ -1,22 +1,19 @@
 <z-chat-contact-navigation class="page-body-control" [tab]="'all'" [count]="count"></z-chat-contact-navigation>
 
-<div class="page-body-content has-page-body-control" *ngIf="contactItem && contactItem.value && contactItem.value.data">
+<div class="page-body-content has-page-body-control" *ngIf="contact$">
   <div class="page-body-content-in">
     <div class="row media-user-row-group">
       <div class="col-sm-12"
-           *ngFor="let contact of contactItem.value.data | chatGroupCouple:contactItem.value.data.length">
+           *ngFor="let contact of contact$">
         <div class="media media-user-list">
           <div class="media-body">
-            <z-chat-share-user [data]="contact" [size]="'xs'"></z-chat-share-user>
+            <w-user-chat [user]="contact" [size]="'xs'"></w-user-chat>
           </div>
           <div class="media-right no-wrap">
             <button class="btn btn-default" type="button" (click)="chatContactActions.onSelect(contact)">
-              <i class="fa fa-comment"></i>
+              <i class="fa fa-comments-o"></i>
             </button>
-            <button type="button" class="btn btn-default" (click)="chatContactActions.onFavorite()">
-              <i class="fa" [ngClass]="contact.favourite? 'fa-star': 'fa-star-o'"></i>
-            </button>
-            <z-chat-contact-actions #chatContactActions [contact]="contact"></z-chat-contact-actions>
+            <w-user-actions #chatContactActions [contact]="contact"></w-user-actions>
           </div>
         </div>
       </div>
@@ -26,7 +23,7 @@
 
 <!--<z-chat-share-add-contact #addContact></z-chat-share-add-contact>-->
 
-<div class="page-body-content has-page-body-control" *ngIf="contactItem && !contactItem.value">
+<div class="page-body-content has-page-body-control" *ngIf="!contact$">
   <div class="page-body-content-in">
     <div class="inside-loading">
       <div class="pt20 pb20"></div>
@@ -35,8 +32,8 @@
 </div>
 
 <div class="page-body-content has-page-body-control"
-     *ngIf="contactItem && contactItem.value && contactItem.value.data && (contactItem.value.data | chatGroupCouple:contactItem.value.data.length).length == 0 ">
+     *ngIf="contact$ && contact$.length === 0">
   <div class="page-body-content-in">
-    No data
+    There is no contact!
   </div>
 </div>

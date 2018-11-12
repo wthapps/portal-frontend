@@ -5,8 +5,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsModalModule } from 'ng2-bs3-modal';
 
 import { EditNameModalComponent } from '@wth/shared/components/modal';
-import { LockUploadModalComponent } from "@shared/components/modal/lock-upload-modal.component";
-import { PipeModule } from "@shared/shared/pipe/pipe.module";
+import { LockUploadModalComponent } from '@shared/components/modal/lock-upload-modal.component';
+import { PipeModule } from '@shared/shared/pipe/pipe.module';
+import { ModalService } from '@shared/components/modal/modal-service';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ export class ModalModule {
     return {
       ngModule: ModalModule,
       providers: [
+        ModalService
       ]
     };
   }

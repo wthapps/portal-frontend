@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import {
-  FormGroup,
-  AbstractControl,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HandleReCaptchaMixin } from '@portal/shared/mixins/handle-login-recaptcha.mixin';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Constants } from '../../shared/constant/config/constants';
 
 import { UserService } from '../../shared/services/user.service';
-import { CustomValidator } from '../../shared/shared/validator/custom.validator';
-import { ToastsService } from '../../shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
-import { Constants } from '../../shared/constant/config/constants';
+import { CustomValidator } from '../../shared/shared/validator/custom.validator';
+import { environment } from '@env/environment';
 
 declare var $: any;
 
@@ -23,9 +20,10 @@ declare var $: any;
   templateUrl: 'register.component.html',
   styleUrls: ['register.component.scss']
 })
-export class RegisterComponent {
-  errorMessage: string = '';
-  sex: number = 0;
+@Mixins([HandleReCaptchaMixin])
+export class RegisterComponent implements HandleReCaptchaMixin {
+  errorMessage = '';
+  sex = 0;
 
   tooltip: any = Constants.tooltip;
 
@@ -37,18 +35,18 @@ export class RegisterComponent {
   birthday_day: AbstractControl;
   birthday_month: AbstractControl;
   birthday_year: AbstractControl;
-  //sexInput:AbstractControl;
   accepted: AbstractControl;
 
-  submitted: boolean = false;
+  submitted = false;
   invitationUuid: string;
+  notRobot: boolean = false;
+  siteKey = environment.keys.recaptcha_site_key;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private toastsService: ToastsService,
     private loadingService: LoadingService
   ) {
     /*if (this.userService.loggedIn) {
@@ -56,8 +54,8 @@ export class RegisterComponent {
      }*/
 
     this.form = fb.group({
-      first_name: ['', Validators.compose([Validators.required])],
-      last_name: ['', Validators.compose([Validators.required])],
+      first_name: ['', Validators.compose([Validators.required, CustomValidator.blanked])],
+      last_name: ['', Validators.compose([Validators.required, CustomValidator.blanked])],
       email: [
         '',
         Validators.compose([Validators.required, CustomValidator.emailFormat])
@@ -74,7 +72,6 @@ export class RegisterComponent {
       birthday_day: ['0'],
       birthday_month: ['0'],
       birthday_year: ['0'],
-      //'sex': [],
       accepted: [false, Validators.compose([Validators.nullValidator])]
     });
 
@@ -92,6 +89,9 @@ export class RegisterComponent {
     });
   }
 
+  handleCaptcha: (event: any) => void;
+  handleCaptchaExpire: (event: any) => void;
+
   onSubmit(values: any): void {
     this.submitted = true;
     if (this.form.valid) {
@@ -100,7 +100,7 @@ export class RegisterComponent {
 
       values.sex = this.sex;
 
-      let body = JSON.stringify({
+      const body = JSON.stringify({
         first_name: values.first_name,
         last_name: values.last_name,
         email: values.email,
@@ -116,22 +116,18 @@ export class RegisterComponent {
       this.userService.signup('users', body).subscribe(
         result => {
           this.loadingService.stop();
-          // this.router.navigateByUrl('/welcome');
-          window.location.href = Constants.baseUrls.myAccount;
+          window.location.href = Constants.baseUrls.myAccount + '/dashboard';
         },
         error => {
           // stop loading
           this.loadingService.stop();
 
-          console.log('error:', error);
-          let err = error;
+          const err = error;
 
-          this.errorMessage = err.error;
-          //TODO refactoring code check signup
+          this.errorMessage = err.error.error;
           if (error.status === 422) {
             this.errorMessage = 'Email has already been taken';
           }
-          this.toastsService.danger(this.errorMessage);
         }
       );
     }

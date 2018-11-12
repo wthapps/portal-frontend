@@ -8,6 +8,8 @@ import {
   FormControl
 } from '@angular/forms';
 
+import { takeUntil } from 'rxjs/operators';
+
 import { ReCaptchaComponent } from 'angular2-recaptcha/lib/captcha.component';
 
 import { ContactService } from './contact.service';
@@ -20,7 +22,7 @@ import { CustomValidator } from '@shared/shared/validator/custom.validator';
 import { environment } from '@env/environment';
 
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import 'rxjs/add/operator/takeUntil';
+
 
 /**
  * This class represents the lazy loaded AboutComponent.
@@ -110,9 +112,8 @@ export class ContactComponent implements OnInit, OnDestroy {
       values.recaptcha_response = this.recaptchaResponse;
 
       const body = JSON.stringify(values);
-      this.contactService
-        .createFeedback(body)
-        .takeUntil(componentDestroyed(this))
+      this.contactService.createFeedback(body)
+        .pipe(takeUntil(componentDestroyed(this)))
         .subscribe(
           (res: any) => {
             this.loadingService.stop();

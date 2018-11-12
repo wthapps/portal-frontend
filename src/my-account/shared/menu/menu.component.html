@@ -37,14 +37,14 @@
         <li [routerLinkActive]="['active']">
           <a [routerLink]="['/billing/subscription']">Current subscription</a>
         </li>
-        <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/billing/subscription_history']">Subscription history</a>
-        </li>
         <!--<li [routerLinkActive]="['active']">-->
-          <!--<a [routerLink]="['/billing/plan']">Plan</a>-->
+          <!--<a [routerLink]="['/billing/subscription_history']">Subscription history</a>-->
         <!--</li>-->
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/billing/payment_method']">Payment method</a>
+          <a [routerLink]="['/billing/plan']">Current Plan</a>
+        </li>
+        <li [routerLinkActive]="['active']">
+          <a [routerLink]="['/billing/payment_methods']">Payment methods</a>
         </li>
         <li [routerLinkActive]="['active']"><a [routerLink]="['/billing/history']">Billing History</a></li>
       </ul>

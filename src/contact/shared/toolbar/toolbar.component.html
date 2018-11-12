@@ -6,27 +6,28 @@
       </button>
     </li>
   </ul>
-  <ul [ngClass]="{'hidden-xs': contactService.selectedObjects.length > 0 || currentPage === 'detail'}" class="page-body-control-menu"
-    *ngIf="pageTitle==''">
-    <li>
-      <button type="button" class="btn btn-outline-primary" [routerLink]="['/contacts', 'new']">
-        <i class="fa fa-plus"></i> New Contact</button>
-    </li>
-    <li>
-      <button type="button" class="btn btn-outline-default" (click)="openImportContactModal()">
-        <i class="fa fa-download"></i> Import</button>
-    </li>
-  </ul>
-  <!--TODO remove-->
-  <ul class="page-body-control-menu" *ngIf="pageTitle!=''">
-    <li>
-      <h4>{{ pageTitle }}</h4>
-    </li>
-  </ul>
+
+  <div *ngIf="pageTitle!='' && contactService.selectedObjects.length == 0;else templateShowSelected" class="inline-block">
+    <h4>{{ pageTitle | titleCase }}
+      <button *ngIf="pageTitle===OTHER_CONTACTS" class="btn btn-default" [pTooltip]="otherContactsInfo" tooltipPosition="bottom">
+        <i class="fa fa-info-circle"></i>
+      </button>
+    </h4>
+
+  </div>
+
 </div>
 
 <ng-content></ng-content>
 
-<z-contact-share-import-contact #importContactSelect (optionSelected)="onImportOptionSelected($event)"></z-contact-share-import-contact>
-
-<icloud-oauth-modal #iCloudOAuthModal></icloud-oauth-modal>
+<ng-template #templateShowSelected>
+  <div class="select-all-div">
+    <span class="deselect-all" (click)="deselectAll()">
+      <i class="fa fa-close"></i>
+    </span>
+    <div class="select-all-cb" [ngClass]="{'active': (contactService?.isSelectAll$ | async)}">
+      <i (click)="toggleSelectAll()" class="fa fa-check"></i>
+      <span class="btn btn-text pl10 pr0">{{ contactService?.selectedObjects?.length }} selected</span>
+    </div>
+  </div>
+</ng-template>

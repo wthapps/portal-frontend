@@ -41,11 +41,11 @@ $note-editor-aside-w: 400px;
   }
   .note-editor-header-action-right {
     @include order(1);
-    ul {
+    ul:not(.dropdown-menu) {
       margin: 0 15px 0 0;
       padding: 0;
       list-style-type: none;
-      li {
+      > li {
         float: left;
       }
     }
@@ -53,6 +53,15 @@ $note-editor-aside-w: 400px;
   .note-editor-header-input {
     @include flex(1);
     padding: 0 $grid-gutter-width/2;
+    @media (max-width: $screen-xs-max) {
+      padding-left: 0;
+    }
+    h4 {
+      height: 100%;
+      margin: 0;
+      @include flexbox;
+      @include align-items(center);
+    }
   }
 }
 
@@ -66,7 +75,7 @@ $note-editor-aside-w: 400px;
   @include flex(1);
   @include flexbox;
   @include flex-direction(column);
-
+  overflow: hidden;
   position: relative;
   background-color: #f6f6f6;
   .container-fluid {
@@ -197,5 +206,88 @@ $note-editor-aside-w: 400px;
   .printable {
     //visibility: visible;
     display: block;
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .note-editor-nav {
+    display: none;
+  }
+
+  .note-editor-header {
+    padding: 5px;
+    border-bottom: 1px solid $line;
+    .page-body-control-menu {
+      margin: 0;
+    }
+    .btn-outline-primary {
+      display: none;
+    }
+  }
+  .note-editor-content {
+    .note-editor-toolbar {
+      @include order(2);
+      background-color: #ffffff;
+
+      .container-fluid {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+
+      .ql-format-group-mobile-content {
+        background: #fbfbfb;
+        margin: 0 -8px -8px;
+        padding: 8px;
+        border-top: 1px solid $line;
+      }
+      .ql-formats {
+        position: relative;
+        .btn-show-format {
+          &:before {
+            @include center(true, false);
+            bottom: -9px;
+            content: '';
+            @include make-arrow('top', #cdcdcd, 10px, 10px)
+          }
+          &:after {
+            @include center(true, false);
+            bottom: -10px;
+            content: '';
+            @include make-arrow('top', #fbfbfb, 10px, 10px)
+          }
+        }
+      }
+    }
+
+    .ql-snow .ql-picker.ql-expanded .ql-picker-options {
+      top: auto;
+      bottom: 100%;
+    }
+
+    .note-editor-body {
+      margin: 0;
+      padding: 0;
+    }
+    #quill-container-wrapper {
+      margin: 0 auto;
+      width: 100%;
+      padding: 0;
+    }
+    #quill-editor {
+      border-width: 0;
+    }
+    .ql-editor {
+      min-height: 100vh;
+      p {
+        font-size: 14pt;
+      }
+    }
+  }
+  #quill-toolbar.ql-toolbar .ql-formats .ql-picker.ql-font {
+    min-width: 95px;
+  }
+
+  #counter {
+    display: none;
   }
 }

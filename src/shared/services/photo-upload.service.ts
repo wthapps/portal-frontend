@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
+import { throwError, Observable, from } from 'rxjs';
+import { filter, delay, take, mergeMap } from 'rxjs/operators';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/delay';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/mergeMap';
+
+
+
+
 
 import { ApiBaseService } from './apibase.service';
 import { Constants } from '../constant/config/constants';
@@ -17,7 +16,8 @@ declare let _: any;
 declare let Promise: any;
 declare let window: any;
 
-// export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp', 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
+// export const EXT_LIST: any = ['jpeg', 'jpg', 'exif', 'tiff', 'gif', 'bmp',
+// 'png', 'ppm', 'pgm', 'pbm', 'pnm', 'webp', 'hdr', 'heif', 'bat'];
 
 @Injectable()
 export class PhotoUploadService {
@@ -36,53 +36,11 @@ export class PhotoUploadService {
     private apiService: ApiBaseService,
     private userService: UserService
   ) {
-    this.loadConfigOnce();
-  }
-
-  loadConfigOnce() {
-    // if (!this.albumTempBucketName || !this.bucketRegion)
-    //   this.loadConfig();
-  }
-
-  loadConfig() {
-    // ONLY load config 1 time
-    this.apiService
-      .post(`${this.soPhotoUrl}/get_aws_config`)
-      .filter(() => this.userService.loggedIn)
-      .delay(3000) // Delay this action 3s to prevent slow loading at initial time
-      .take(1)
-      .subscribe(
-        (data: any) => {
-          this.albumTempBucketName = data.tempBucket;
-          this.bucketRegion = data.region;
-          this.bucketSubFolder = data.bucketSubFolder;
-          this.identityPoolId = data.identityPoolId;
-
-          this.init();
-        },
-        (err: any) => {
-          console.error('Error loading config', err);
-        }
-      );
-  }
-
-  init(): void {
-    AWS.config.update({
-      region: this.bucketRegion,
-      credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: this.identityPoolId
-      })
-    });
-
-    this.s3 = new AWS.S3({
-      apiVersion: '2006-03-01',
-      params: { Bucket: this.albumTempBucketName }
-    });
   }
 
   getPhoto(photo: any): Promise<any> {
     return new Promise((resolve: any) => {
-      let reader: FileReader = new FileReader();
+      const reader: FileReader = new FileReader();
 
       reader.onload = (data: any) => {
         resolve(data.target['result']);
@@ -106,13 +64,12 @@ export class PhotoUploadService {
    */
   uploadPhotos(photos: Array<any>): Observable<any> {
     if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
-      let err_msg = 'The File APIs are not fully supported in this browser.';
-      return Observable.throw(err_msg);
+      const err_msg = 'The File APIs are not fully supported in this browser.';
+      return throwError(err_msg);
     }
 
     // ONLY Process 4 photos at a time
-    return Observable.from(photos)
-      .mergeMap(
+    return from(photos).pipe(mergeMap(
         (photo: any) => this.readFile(photo),
         (photo: any, data: any) => {
           // below code handles rename when pasting on Notes
@@ -128,19 +85,19 @@ export class PhotoUploadService {
           };
         },
         this.MAX_FILES
-      )
-      .mergeMap((combinedData: any) =>
+      ),
+      mergeMap((combinedData: any) =>
           this.apiService.post('media/photos', combinedData),
         (combinedData: any, returnData: any) => {
           return { originPhoto: combinedData, data: returnData.data };
         },
         this.MAX_FILES
-      );
+      ));
   }
 
   readFile(file: any): Promise<any> {
     return new Promise((resolve: any, reject: any) => {
-      let reader: FileReader = new FileReader();
+      const reader: FileReader = new FileReader();
 
       reader.onload = (data: any) => {
         resolve(data.target['result']);

@@ -1,15 +1,15 @@
 import { Component, OnDestroy, Renderer2 } from '@angular/core';
-import { Constants } from '@wth/shared/constant';
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { Observable ,  interval ,  Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
+import { Constants } from '@wth/shared/constant';
 import { WTHNavigateService, UserService } from '@wth/shared/services';
 
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-
 import * as fromRoot from '../reducers/index';
-import { interval } from 'rxjs/observable/interval';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { SocialFavoriteService } from './../services/social-favorites.service';
 import { POSTS_COUNT_LOAD } from '../reducers/index';
 import { POSTS_COUNT_LOAD_DONE } from '../reducers/index';
 import { SHORTCUT_LOAD } from '@social/shared/reducers';
@@ -30,7 +30,7 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
   newPostsCount$: Observable<any>;
   uuid: string;
 
-  shortcutsExpand: boolean = false;
+  shortcutsExpand = false;
   readonly COUNT_DISPLAY: any = {
     '0': ' ',
     '10': '10+'
@@ -41,10 +41,13 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
               private router: Router,
               private route: ActivatedRoute,
               private navigateService: WTHNavigateService,
+              private soFavoriteService: SocialFavoriteService,
               private renderer: Renderer2,
               private store: Store<any>) {
     [this.homeMenuItem, this.communitiesMenuItem, ...this.socialMenu] = Constants.socialMenuItems;
-    this.store.dispatch({type: fromRoot.SHORTCUT_LOAD});
+    soFavoriteService.loadFavourites().then(_ =>
+      this.store.dispatch({type: fromRoot.SHORTCUT_LOAD})
+      );
     this.shortcuts$ = this.store.select(fromRoot.getShortcuts);
     this.newPostsCount$ = this.store.select(fromRoot.getNewPostsCount);
     this.uuid = this.userService.getSyncProfile().uuid;
@@ -61,7 +64,7 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
   }
 
   onSubMenu(link: string) {
-    if (this.router.url.indexOf('communities') == -1) {
+    if (this.router.url.indexOf('communities') === -1) {
       this.clearOutlets().then(() => this.navigateService.navigateOrRedirect(link));
     }
   }
@@ -71,7 +74,7 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
   }
 
   reloadHome() {
-    let time = new Date().getTime();
+    const time = new Date().getTime();
     this.store.dispatch({type: POSTS_COUNT_LOAD_DONE, payload: 0});
     this.router.navigate(['/home'], {queryParams: {r: time}, relativeTo: this.route})
       .then(() => this.clearOutlets());
@@ -82,7 +85,6 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
       takeUntil(this.destroySubject)
     )
       .subscribe(() => {
-        console.debug('counting ...');
         this.store.dispatch({type: POSTS_COUNT_LOAD});
         this.store.dispatch({type: SHORTCUT_LOAD});
       });

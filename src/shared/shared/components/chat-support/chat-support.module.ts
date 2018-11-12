@@ -9,7 +9,6 @@ import { ConversationCreateComponent } from './conversation/conversation-create.
 import { ConversationEditComponent } from './conversation/conversation-edit.component';
 
 import { ChatSupportDirective } from './chat-support.directive';
-import { ChatSupportChannel } from './shared/channel/chat-support.channel';
 import { AppearanceChannel } from './shared/channel/appearance.channel';
 
 import { WthChatBoxDirective } from './shared/wth-chat-box.directive';
@@ -51,14 +50,13 @@ import { ChatSupportUserInfoComponent } from './chat-support-user-info.component
     WthChatBoxDirective
   ],
   providers: [
-    ChatSupportChannel,
     AppearanceChannel,
     NotificationChannel,
     MessageService,
     ConversationService,
     CookieService
   ],
-  entryComponents:[
+  entryComponents: [
     ConversationListComponent,
     ConversationCreateComponent,
     ConversationEditComponent,

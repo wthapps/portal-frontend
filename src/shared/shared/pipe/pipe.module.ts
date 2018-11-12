@@ -18,18 +18,24 @@ import { BytesPipe } from './bytes.pipe';
 import { SafeHtmlPipe } from './safeHtml.pipe';
 import { TimeFormatPipe } from './time-format.pipe';
 import { LinkifyPipe } from './linkify.pipe';
-import { PhoneCodeCountriesPipe, PhoneCodeFlagPipe, PhoneCodeToDisplayCodePipe } from './phone-to-flag.pipe';
+import {
+  PhoneCodeCountriesPipe,
+  PhoneCodeFlagPipe,
+  PhoneCodeToDisplayCodePipe,
+  PhoneCodeOnlyFlagPipe
+} from './phone-to-flag.pipe';
 import { MapToIterablePipe } from '@shared/shared/pipe/map-to-iterable.pipe';
 import { FreeSpacePipe } from '@shared/shared/pipe/free-space.pipe';
 import { GroupByMapPipe } from '@shared/shared/pipe/group-by-map.pipe';
 import { KeysPipe } from '@shared/shared/pipe/keys.pipe';
-import { StripHtmlPipe } from "@shared/shared/pipe/strip-html.pipe";
+import { StripHtmlPipe } from '@shared/shared/pipe/strip-html.pipe';
+import { MaxCountPipe } from '@wth/shared/shared/pipe/max-count.pipe';
+import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.pipe';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   declarations: [
+    AddFirstCharacterPipe,
     GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,
@@ -51,12 +57,15 @@ import { StripHtmlPipe } from "@shared/shared/pipe/strip-html.pipe";
     FreeSpacePipe,
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
+    PhoneCodeOnlyFlagPipe,
     MapToIterablePipe,
+    MaxCountPipe,
     StripHtmlPipe,
     PhoneCodeToDisplayCodePipe,
     KeysPipe
   ],
   exports: [
+    AddFirstCharacterPipe,
     GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,
@@ -79,12 +88,12 @@ import { StripHtmlPipe } from "@shared/shared/pipe/strip-html.pipe";
     StripHtmlPipe,
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
+    PhoneCodeOnlyFlagPipe,
     MapToIterablePipe,
+    MaxCountPipe,
     PhoneCodeToDisplayCodePipe,
     KeysPipe
   ],
   providers: []
 })
-
-export class PipeModule {
-}
+export class PipeModule {}

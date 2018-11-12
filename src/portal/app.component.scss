@@ -1,5 +1,15 @@
 @import '../assets/styles/global';
 
+.header {
+  .header-nav-left .navbar-brand {
+    @media (max-width: $screen-xs-max) {
+      @include flexbox;
+      @include flex-direction(column);
+      @include justify-content(center);
+    }
+  }
+}
+
 .hero-banner {
   background-image: url('../assets/images_new/home/hero-banner.jpg');
   -webkit-background-size: cover;

@@ -12,7 +12,6 @@ import {
   SimpleChanges,
   OnDestroy,
   ViewEncapsulation,
-  ElementRef,
   Renderer2
 } from '@angular/core';
 
@@ -26,6 +25,7 @@ import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/mo
 
 declare let $: any;
 declare let _: any;
+const viewSize = 5;
 
 @Component({
   selector: 'photo-detail-partial',
@@ -33,9 +33,8 @@ declare let _: any;
   styleUrls: ['photo-detail-partial.component.scss'],
   encapsulation: ViewEncapsulation.None,
   entryComponents: [
+    PhotoEditModalComponent,
     SharingModalComponent,
-    // PhotoEditModalComponent,
-    // AddToAlbumModalComponent,
     TaggingModalComponent
   ]
 })
@@ -52,6 +51,7 @@ export class PhotoDetailPartialComponent
   @Input() batchItems: Array<any> = [];
   @Input() isOwner: boolean;
   @Input() recipients: Array<any> = [];
+  @Input() albums: Array<any> = [];
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('modalContainer', { read: ViewContainerRef })
@@ -79,6 +79,10 @@ export class PhotoDetailPartialComponent
 
   capabilities: any = this.defaultCapabilities;
   profileUrl = `${Constants.baseUrls.social}/profile/`;
+  mediaUrl = Constants.baseUrls.media;
+  showMore = false;
+  index = 0;
+  objects = [];
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -124,11 +128,16 @@ export class PhotoDetailPartialComponent
       }
     }
 
+    if (this.albums.length > 0) {
+      this.loadMoreAlbums(this.index);
+    }
+
 
     this.loadMenu();
   }
 
   ngAfterViewInit() {
+
 
   }
 
@@ -139,7 +148,7 @@ export class PhotoDetailPartialComponent
 
   loadMenu() {
     this.menus = new Array<any>();
-    let canDelete = this.module !== 'social';
+    const canDelete = this.module !== 'social';
 
     this.menus = [
       {
@@ -348,6 +357,21 @@ export class PhotoDetailPartialComponent
     });
   }
 
+  viewAlbumDetails(album: any) {
+    this.event.emit({ action: 'viewAlbumDetails', payload: {item: album, returnUrl: location.pathname}});
+  }
+
+  loadMoreAlbums(index: number) {
+    for (let i = index; (i < index + viewSize) && i < this.albums.length; i++) {
+      this.showMore = i < this.albums.length - 1 ? true : false;
+      if (i >= index + viewSize) {
+        break;
+      }
+      this.objects.push(this.albums[i]);
+      this.index ++;
+    }
+  }
+
   private stop() {
     if (this.cropper) {
       this.loadingImg = true;
@@ -373,7 +397,7 @@ export class PhotoDetailPartialComponent
 
   private showInfo() {
     this.showDetail = !this.showDetail;
-    if (this.recipients.length == 0 && this.showDetail == true) {
+    if (this.recipients.length === 0 && this.showDetail) {
       this.event.emit({ action: 'media:photo:load_sharing_info' });
     }
   }

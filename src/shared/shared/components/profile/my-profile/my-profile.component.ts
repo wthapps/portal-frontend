@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { UserService } from '@shared/services/user.service';

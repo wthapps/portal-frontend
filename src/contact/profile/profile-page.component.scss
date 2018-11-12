@@ -1,0 +1,33 @@
+@import '../../assets/styles/global';
+:host {
+  display: block;
+  & /deep/ {
+    .btn-text {
+      line-height: 1.7;
+      color: #9b9b9b;
+      font-weight: normal;
+    }
+  }
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.select-all-div {
+  @media (min-width : $screen-lg-min) {
+    padding-left: 20px;
+  }
+
+  @media (min-width: $screen-md-max) and (max-width: $screen-lg) {
+    padding-left: 25px;
+  }
+
+  @media (min-width: $screen-sm-max) and (max-width: $screen-md) {
+    padding-left: 40px;
+  }
+  @media (max-width: $screen-sm) {
+    margin-left: 6px;
+  }
+
+}

@@ -27,6 +27,7 @@ import { ModalModule } from '@shared/modals/modals.module';
 import { ZNoteContainerComponent } from '@notes/shared/containers/note-container.component';
 import { StoreModule } from '@ngrx/store/store';
 import { ZNoteShareProgressComponent } from '@notes/shared/progress/note-progress.component';
+import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -51,7 +52,8 @@ import { ZNoteShareProgressComponent } from '@notes/shared/progress/note-progres
     ZNoteSharedBreadcrumbComponent,
     ZNoteSharedHeaderComponent,
     ZNoteShareProgressComponent,
-    ZNoteSharedLeftMenuComponent
+    ZNoteSharedLeftMenuComponent,
+    ZNoteSharedModalEditNameComponent
   ],
   exports: [
     SharedModule,
@@ -72,7 +74,8 @@ import { ZNoteShareProgressComponent } from '@notes/shared/progress/note-progres
     ZNoteSharedModalSharingComponent,
     ZNoteSharedBreadcrumbComponent,
     ZNoteShareProgressComponent,
-    ZNoteSharedLeftMenuComponent
+    ZNoteSharedLeftMenuComponent,
+    ZNoteSharedModalEditNameComponent
   ]
 })
 export class ZNoteSharedModule {

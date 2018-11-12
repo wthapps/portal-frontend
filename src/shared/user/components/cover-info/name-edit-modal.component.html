@@ -1,0 +1,57 @@
+<form [formGroup]="userForm" novalidate (ngSubmit)="onSubmit()">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header>
+      <button aria-label="Close" class="close" (click)="close()">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title text-left">Edit Name</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+      <div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': (f.first_name.errors && f.first_name.touched)}">
+              <label for="first_name">First name</label>
+              <input type="text" class="form-control" id="first_name" placeholder="First name"
+                     formControlName="first_name">
+              <div *ngIf="f.first_name.errors && f.first_name.touched">
+                <span *ngIf="f.first_name.errors.required" class="help-block">First name is required</span>
+                <span *ngIf="f.first_name.errors.blanked" class="help-block">Last name is blanked</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': (f.last_name.errors && f.last_name.touched)}">
+              <label for="last_name">Last name</label>
+              <input type="text" class="form-control" id="last_name" placeholder="Last name"
+                     formControlName="last_name">
+              <div *ngIf="f.last_name.errors && f.last_name.touched">
+                <span *ngIf="f.last_name.errors.required" class="help-block">Last name is required</span>
+                <span *ngIf="f.last_name.errors.blanked" class="help-block">Last name is blanked</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!nameOnly">
+          <div class="col-md-12">
+            <div class="form-group" [ngClass]="{'has-error': (f.nickname.errors && f.nickname.touched)}">
+            <label for="nickname">Nick name</label>
+            <input type="text" class="form-control" id="nickname" placeholder="Nick name"
+                   formControlName="nickname">
+              <div *ngIf="f.nickname.errors && f.nickname.touched">
+                <span *ngIf="f.nickname.errors.blanked" class="help-block">Nick name is blanked</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+      <button type="submit" class="btn btn-outline-primary btn-min"
+              [disabled]="!userForm.valid || userForm.pristine" (click)="onSubmit(userForm.value)">Done
+      </button>
+    </bs-modal-footer>
+  </bs-modal>
+</form>

@@ -15,7 +15,7 @@
               <div class="photo-box-figure">
                 <figure class="img-center-dv">
                   <div class="photo-box-figure-in">
-                    <img alt="" class="img-center" draggable="false" [src]="data.photo_default">
+                    <img alt="" class="img-center" draggable="false" [src]="data.thumbnail_url">
                   </div>
                 </figure>
                 <div class="photo-box-name">
@@ -24,8 +24,8 @@
                   </span>
                 </div>
                 <div class="photo-box-size no-wrap">
-                  <span *ngIf="data.photo_number>1">{{ data.photo_number }} photos</span>
-                  <span *ngIf="data.photo_number<=1">{{ data.photo_number }} photo</span>
+                  <span *ngIf="data.child_count > 1">{{ data.child_count }} photos</span>
+                  <span *ngIf="data.child_count <= 1">{{ data.child_count }} photo</span>
                 </div>
               </div>
             </div>

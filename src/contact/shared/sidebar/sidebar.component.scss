@@ -1,0 +1,79 @@
+@import '../../../shared/scss/global';
+
+:host {
+  display: block;
+  li > a {
+    display: block;
+    padding: 8px 15px;
+    font-weight: bold;
+    &.sub-item {
+      padding-left: 25px;
+    }
+  }
+}
+
+.well-folder-tree-left-wrap {
+  .well-folder-tree {
+    width: 100%;
+  }
+  &, &:hover {
+    background-color: transparent;
+  }
+}
+
+a {
+  text-transform: capitalize;
+}
+
+.menuleft-header-nav {
+  @include flexbox;
+  @include justify-content(left);
+  a {
+    padding: 8px 15px;
+    color: inherit;
+    display: inline-block;
+    text-decoration: none;
+  }
+}
+
+[aria-expanded="false"] {
+  .fa-chevron-up {
+    display: none;
+  }
+  .fa-chevron-down {
+    display: inline-block;
+  }
+}
+
+[aria-expanded="true"] {
+  .fa-chevron-up {
+    display: inline-block;
+  }
+  .fa-chevron-down {
+    display: none;
+  }
+}
+
+.sub-item {
+  padding-left: 10px;
+}
+
+.show {
+  display: inherit;
+}
+
+.new-btn {
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.menuleft-item-divider {
+  border-top: 1px solid $line;
+  border-bottom: 1px solid $line;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  & + .menuleft-item-divider {
+    margin-top: -11px;
+  }
+}

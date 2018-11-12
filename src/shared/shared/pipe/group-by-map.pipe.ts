@@ -18,15 +18,20 @@ import * as _ from 'lodash';
   name: 'groupByMap'
 })
 export class GroupByMapPipe implements PipeTransform {
-
-  transform(value: any, objectKey?: any, orderBy?: string, objectKeyIn?: any, orderByIn?: string): any {
+  transform(
+    value: any,
+    objectKey?: any,
+    orderBy?: 'asc' | 'desc' | boolean,
+    objectKeyIn?: any,
+    orderByIn?: 'asc' | 'desc' | boolean
+  ): any {
     const result = _.chain(value)
       .groupBy(objectKey)
       .map((v, k) => {
         if (objectKeyIn) {
-          return {key: k, value: _.orderBy(v, [objectKeyIn], [orderByIn])};
+          return { key: k, value: _.orderBy(v, [objectKeyIn], [orderByIn]) };
         } else {
-          return {key: k, value: v};
+          return { key: k, value: v };
         }
       })
       .value();
@@ -36,5 +41,4 @@ export class GroupByMapPipe implements PipeTransform {
       return _.orderBy(result, ['key'], [orderBy]);
     }
   }
-
 }

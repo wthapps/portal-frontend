@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject ,  Observable } from 'rxjs';
 
 
 import { InvitationService } from '@wth/shared/shared/components/invitation/invitation.service';
@@ -11,7 +11,6 @@ import { CommonEventService } from '@wth/shared/services/common-event/common-eve
 import { AccountService } from '../../shared/account/account.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { UserService } from '@wth/shared/services/user.service';
-import { Observable } from 'rxjs/Observable';
 import { Store, select } from '@ngrx/store';
 
 import * as fromRoot from '../../store';

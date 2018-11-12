@@ -1,0 +1,17 @@
+@import "../../../assets/styles/global";
+
+.w-editor {
+  display: block;
+  border: 1px solid $line;
+  border-radius: $border-radius-base;
+  .ui-widget-header {
+    display: none;
+  }
+  .ql-container {
+    border-width: 0;
+  }
+  .ql-editor {
+    min-height: 27px;
+    padding: 8px 10px 6px;
+  }
+}

@@ -1,48 +1,31 @@
 import {
+  AfterViewChecked,
+  AfterViewInit,
   Component,
-  forwardRef,
-  Input,
-  Output,
   ElementRef,
   EventEmitter,
-  Renderer,
-  ViewChild,
-  OnInit,
+  forwardRef,
+  Input,
   OnChanges,
+  OnInit,
+  Output,
+  Renderer,
   SimpleChanges,
-  AfterViewInit,
-  AfterViewChecked
+  ViewChild
 } from '@angular/core';
 
-import {
-  FormControl,
-  NG_VALUE_ACCESSOR
-} from '@angular/forms';
-
-import {
-  PLACEHOLDER,
-  SECONDARY_PLACEHOLDER,
-  KEYDOWN,
-  KEYUP,
-  MAX_ITEMS_WARNING,
-  FOCUS
-} from './helpers/constants';
-
-import {
-  backSpaceListener,
-  autoSearchListener,
-  customSeparatorKeys,
-  addListener
-  // onAutocompleteItemClicked
-} from './helpers/events-actions';
-
-// import { Ng2Dropdown } from 'ng2-material-dropdown';
-import { SearchInputAccessor } from './helpers/accessor';
-import { getAction } from './helpers/keypress-actions';
-import { SearchFormComponent } from './search-form/search-form.component';
+import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import 'rxjs/add/operator/debounceTime';
 import { ApiBaseService } from '../../../../services/apibase.service';
+// import { Ng2Dropdown } from 'ng2-material-dropdown';
+import { SearchInputAccessor } from './helpers/accessor';
+
+import { FOCUS, KEYDOWN, KEYUP, MAX_ITEMS_WARNING, PLACEHOLDER, SECONDARY_PLACEHOLDER } from './helpers/constants';
+
+import { addListener, backSpaceListener, customSeparatorKeys } from './helpers/events-actions';
+import { getAction } from './helpers/keypress-actions';
+import { SearchFormComponent } from './search-form/search-form.component';
 
 declare var _: any;
 
@@ -111,7 +94,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @desc sets if searchable is enabled. By default it's not.
    * @type {boolean}
    */
-  @Input() searchable: boolean = false;
+  @Input() searchable = false;
 
   /**
    * @name searchItems
@@ -133,26 +116,26 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name onlyFromAutocomplete
    * @type {Boolean}
    */
-  @Input() onlyFromAutocomplete: boolean = false;
+  @Input() onlyFromAutocomplete = false;
 
   /**
    * @name errorMessages
    * @type {Map<string, string>}
    */
-  @Input() errorMessages: {[key: string]: string} = {};
+  @Input() errorMessages: { [key: string]: string } = {};
 
   /**
    * @name theme
    * @type {string}
    */
-  @Input() theme: string = 'default';
+  @Input() theme = 'default';
 
   /**
    * - show autocomplete dropdown if the value of input is empty
    * @name showDropdownIfEmpty
    * @type {boolean}
    */
-  @Input() showDropdownIfEmpty: boolean = false;
+  @Input() showDropdownIfEmpty = false;
 
   // outputs
 
@@ -160,7 +143,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @name onTextChangeDebounce
    * @type {number}
    */
-  @Input() onTextChangeDebounce: number = 250;
+  @Input() onTextChangeDebounce = 250;
 
   /**
    * - custom id assigned to the input
@@ -253,7 +236,6 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   @ViewChild(SearchFormComponent) inputForm: SearchFormComponent;
 
 
-
   /**
    * list of items that match the current value of the input (for autocomplete)
    * @name itemsSearching
@@ -283,9 +265,9 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
    * @type []
    */
   private listeners = {
-    [KEYDOWN]: <{(fun: any): any}[]>[],
-    [KEYUP]: <{(fun: any): any}[]>[],
-    change: <{(fun: any): any}[]>[]
+    [KEYDOWN]: <((fun: any) => any)[]>[],
+    [KEYUP]: <((fun: any) => any)[]>[],
+    change: <((fun: any) => any)[]>[]
   };
 
   constructor(private element: ElementRef, private renderer: Renderer, private apiService: ApiBaseService) {
@@ -306,7 +288,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   removeItem(item: any): void {
 
     // remove selected item from list item
-    if (_.find(this.itemsSearching, item) != undefined) {
+    if (_.find(this.itemsSearching, item) !== undefined) {
       item.selected = false;
     }
 
@@ -535,18 +517,20 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
   // }
 
   toggleSelectItem(item: any, event: any): void {
-    if (_.find(this.selectedItems, item) == undefined) {
+    if (_.find(this.selectedItems, item) === undefined) {
       this.selectedItems.push(item);
-
+      item.selected = true;
     } else {
       // _.pullAllWith(this.items, item, (i) => {return (i.id == item.id); });
-      this.selectedItems = this.selectedItems.filter(_item => { return _item !== item;} );
+
+      this.selectedItems = this.selectedItems.filter(_item => _item !== item);
+      item.selected = false;
     }
     this.onSelected.emit(this.selectedItems);
   }
 
   handleKeyPress() {
-  //
+    //
   }
 
   registerEvent(eventName: string, callback: any) {
@@ -591,7 +575,7 @@ export class ListComponent extends SearchInputAccessor implements OnInit, OnChan
 
     // this.onTextChange.emit(searchName );
     // console.log(this.inputForm.value.value);
-    this.onTextChange.emit(this.inputForm.value.value );
+    this.onTextChange.emit(this.inputForm.value.value);
   }
 
 

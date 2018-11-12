@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Constants } from "@shared/constant";
+import { Constants } from '@shared/constant';
 
 @Component({
   selector: 'apps-navigation',
@@ -7,8 +7,8 @@ import { Constants } from "@shared/constant";
   styleUrls: ['./apps-navigation.component.css']
 })
 export class AppsNavigationComponent implements OnInit {
-  tooltip: any = Constants.tooltip;
-  urls: any = Constants.baseUrls;
+  readonly tooltip: any = Constants.tooltip;
+  readonly urls: any = Constants.baseUrls;
 
   constructor() {
   }

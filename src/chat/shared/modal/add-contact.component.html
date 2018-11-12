@@ -1,46 +1,64 @@
-<form>
-  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <bs-modal-header [showDismiss]="true">
-      <h4 class="modal-title"><i class="fa fa-weixin"></i> {{ title }}</h4>
-    </bs-modal-header>
-    <bs-modal-body>
-      <div class="form-group">
-        <input type="text" name="name" class="form-control" placeholder="Name" [(ngModel)]="filter">
-      </div>
-      <div class="content-overflow" style="max-height: 300px;">
+<!--<form>-->
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title"> {{ title }}</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div class="form-group">
+      <p-autoComplete #auto placeholder="Enter name or email" [multiple]="true" [minLength]="1" field="name" [(ngModel)]="selectedUsers"
+        [suggestions]="suggestedUsers" (onSelect)="selectUser($event)" (onUnselect)="deselectUser($event)" (completeMethod)="search$.next($event)">
+        <ng-template let-user pTemplate="item">
+          <div class="ui-help-clearfix user-row">
+            <div class="avatar">
+              <a href="javascript:void(0)">
+                <img class="img-circle small" [alt]="user.name" [src]="user.profile_image">
+              </a>
+            </div>
+            <div class="name">
+              <a class="text-link" href="javascript:void(0)">
+                <p class="mb0">{{ user.name }}</p>
+              </a>
+              <span *ngIf="user.new" class="text-color-light text-small"> new person</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+    <ng-container *ngIf="!loading; else loadingBlock">
+      <div class="content-overflow">
         <div class="row media-user-list-group" *ngIf="contacts">
-          <div class="col-sm-12"
-               *ngFor="let contact of contacts | wthFilterBy:'name':filter">
+          <div class="col-sm-12" *ngFor="let user of contacts | wthFilterBy:'name':filter">
             <div class="media media-user-list media-middle">
               <div class="media-body">
-                <z-chat-share-user-icon [image]="contact?.profile_image"
-                                        [name]="contact.name"
-                                        [size]="'xs'"
-                                        [groupType]="'couple'"
-                                        [userId]="contact.id">
+                <z-chat-share-user-icon [image]="user?.profile_image" [name]="user.name" [size]="'xs'" [groupType]="'couple'" [userId]="user.id">
                 </z-chat-share-user-icon>
               </div>
               <div class="media-right no-wrap">
-                <input [disabled]="contact.inConversation" class="new-contact" name="friend" type="checkbox" [checked]="contact.checked" (click)="checkBox(contact)">
+                <label class="w-container">
+                  <input [disabled]="user.inConversation" class="new-contact w-checkbox" name="friend" type="checkbox" [checked]="user.selected"
+                    (click)="toggleUserSelection(user)">
+                  <span class="w-checkmark"></span>
+                </label>
               </div>
             </div>
           </div>
         </div>
 
-        <div *ngIf="contacts && (contacts | wthFilterBy:'name':filter | arrayLength) == 0"
-             class="text-center">
-          <p>There is no contact</p>
-          <p>You can find more people through search</p>
-          <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="search()"><i
-            class="fa fa-plus"></i> Add New Contact
-          </button>
+        <div *ngIf="contacts && (contacts | wthFilterBy:'name':filter | arrayLength) == 0" class="text-center">
+          <p>You have no contact</p>
+          <p>You can search more people on WTHApps in above searchbox</p>
         </div>
 
       </div>
-    </bs-modal-body>
-    <bs-modal-footer>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
-      <button type="submit" class="btn btn-outline-primary btn-min" (click)="add()">Done</button>
-    </bs-modal-footer>
-  </bs-modal>
-</form>
+    </ng-container>
+
+    <ng-template #loadingBlock>
+      <box-loading></box-loading>
+    </ng-template>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="close()">Cancel</button>
+    <button type="submit" [disabled]="!selectedUsers.length" class="btn btn-outline-primary btn-min" (click)="add()">Done</button>
+  </bs-modal-footer>
+</bs-modal>
+<!--</form>-->

@@ -1,8 +1,8 @@
 import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
-import { distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { distinctUntilChanged, debounceTime, switchMap, take } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 
@@ -99,6 +99,17 @@ export class SharingModalComponent implements OnDestroy {
       recipients: []
     };
 
+    if (this.selectedItems.length > 0 && this.selectedItems[0].object_type === 'album') {
+      this.apiBaseService.get(`media/albums/${this.selectedItems[0].uuid}/share`)
+        .subscribe(response => {
+          this.sharing = response.data;
+          this.mode = this.operation.edit;
+          this.getRecipients();
+        }, error => {
+          this.mode = this.operation.create;
+        });
+    }
+
     this.modal.open(options).then((res: any) => {
       if (this.mode !== this.operation.create) {
         // this.getShared();
@@ -147,7 +158,11 @@ export class SharingModalComponent implements OnDestroy {
       return;
     }
     this.role = this.roles.filter(r => r.id === role.id)[0];
-    this.hasChanged = true;
+    if (this.mode === this.operation.create) {
+      this.hasChanged = this.selectedContacts.length > 0 ? true : false;
+    } else {
+      this.hasChanged = true;
+    }
   }
 
   toggleRemoving(event: any, id: number) {
@@ -184,7 +199,7 @@ export class SharingModalComponent implements OnDestroy {
             objects: [item],
             recipients: _.map(this.selectedContacts, 'id')
           };
-          this.mediaSharingService.create(body).take(1).subscribe((response: any) => {
+          this.mediaSharingService.create(body).pipe(take(1)).subscribe((response: any) => {
             this.showMessage();
             this.sharedContacts.push(...this.selectedContacts);
               this.resetData();
@@ -205,7 +220,7 @@ export class SharingModalComponent implements OnDestroy {
             recipients: _.map(this.selectedContacts, 'id')
           };
         // Only subscribe to this action once`
-        this.mediaSharingService.create(body).take(1).subscribe((response: any) => {
+        this.mediaSharingService.create(body).pipe(take(1)).subscribe((response: any) => {
           this.showMessage();
           this.sharedContacts.push(...this.selectedContacts);
             this.resetData();
@@ -222,6 +237,7 @@ export class SharingModalComponent implements OnDestroy {
     } else if (this.mode === this.operation.edit) {
       let body = {
         id: this.sharing.id,
+        role_id: this.role.id,
         recipients: _.xor(_.concat(_.map(this.sharedContacts, 'id'),
           _.map(this.selectedContacts, 'id')), this.removedContacts)
       };
@@ -237,48 +253,15 @@ export class SharingModalComponent implements OnDestroy {
         });
       } else {
         this.apiBaseService.post(`media/sharings/update_attributes`, body).subscribe((res: any) => {
-          // this.showMessage('You have just updated share successful');
+          this.showMessage('You have just updated share successful');
           this.sharedContacts = res.recipients;
+          this.sharing.role_id = this.role.id;
           this.resetData();
           this.updateSelectedItems({contacts: this.sharedContacts});
           this.commonEventService.broadcast({channel: 'media:photo:update_recipients', payload: this.sharedContacts});
         });
       }
-
-
-      // if (!this.sharing) {
-      //
-      //   let body = {
-      //     multiple: true,
-      //     objects: _.map(this.selectedItems, 'id'),
-      //     recipients: _.xor(_.concat(_.map(this.sharedContacts, 'id'),
-      //       _.map(this.selectedContacts, 'id')), this.removedContacts)
-      //   };
-      //
-      //   this.mediaSharingService.update(body).take(1).subscribe(
-      //     (response: any) => {
-      //       this.showMessage('You have just updated share successful');
-      //       this.sharedContacts = response.data;
-      //       this.resetData();
-      //       this.updateSelectedItems({contacts: this.sharedContacts});
-      //       this.event.emit({action: 'media:photo:update_recipients', payload: {data: this.sharedContacts}});
-      //     },
-      //     (error: any) => {
-      //       console.log('error', error);
-      //     });
-      // }
     }
-
-
-    // if (this.sharing && this.mode === this.operation.edit) {
-    //   this.sharing.role_id = this.role.id;
-    //
-    //   this.event.emit({
-    //     action: 'editInfo',
-    //     params: {selectedObject: this.sharing}
-    //   });
-    //   this.resetData();
-    // }
 
     if (this.mode === this.operation.read) {
       this.modal.close().then(() =>
@@ -313,6 +296,7 @@ export class SharingModalComponent implements OnDestroy {
       return c['id'] == contact['id'];
     });
     this.setMode();
+
   }
 
   searchContact(event: any) {
@@ -332,9 +316,13 @@ export class SharingModalComponent implements OnDestroy {
   }
 
   private setMode() {
-    let count = this.removedContacts.length + this.selectedContacts.length;
+    const count = this.removedContacts.length + this.selectedContacts.length;
     this.deleting = this.removedContacts.length > 0 ? true: false;
-    this.hasChanged = this.mode != this.operation.read ? true : false;
+    if (this.mode === this.operation.create) {
+      this.hasChanged = count > 0 ? true: false;
+    } else {
+      this.hasChanged = this.mode != this.operation.read ? true : false;
+    }
   }
 
   private showMessage(message: string = 'You have just created share successful') {

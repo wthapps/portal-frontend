@@ -9,7 +9,8 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { FileReaderUtil } from '@shared/shared/utils/file/file-reader.util';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
-import * as Boom from 'boom';
+// import * as Boom from 'boom';
+import { BlackListPolicy } from '@shared/policies/black-list-policy';
 
 @Component({
   selector: 'w-upload',
@@ -41,7 +42,7 @@ export class WUploadComponent {
     // validate acceptable
     const errorFiles: any = []
     Object.keys(e.target.files).forEach(k => {
-      if (!FileUploadPolicy.isAllow(e.target.files[k])) {
+      if (!FileUploadPolicy.isAllow(e.target.files[k], [new BlackListPolicy])) {
         errorFiles.push(e.target.files[k]);
         this.existErrors = true;
       }
@@ -50,7 +51,9 @@ export class WUploadComponent {
       // reset error
       this.existErrors = false;
       // submit error
-      this.errorHandler.emit({ ...Boom.notAcceptable('files are in blacklist').output.payload, files: errorFiles});
+      // this.errorHandler.emit({ ...Boom.notAcceptable('files are in blacklist').output.payload, files: errorFiles});
+      this.errorHandler.emit({error: 'files are in blacklist', files: errorFiles});
+
       return;
     }
     // continue if without error
@@ -58,9 +61,9 @@ export class WUploadComponent {
       if (progressEvents && progressEvents.length > 0) {
         this.responses = progressEvents.map((event, key) => {
           return { result: event.target.result, name: e.target.files[key].name, type: e.target.files[key].type};
-        })
+        });
         this.uploadHandler.emit(this.responses);
       }
-    })
+    });
   }
 }

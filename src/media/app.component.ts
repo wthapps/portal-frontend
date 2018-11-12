@@ -7,8 +7,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/filter';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { Constants, Config } from '@wth/shared/constant';
 import { ConfirmDialogModel } from '@wth/shared/shared/models/confirm-dialog.model';
@@ -18,6 +18,7 @@ import { State } from './shared/store';
 import { Store } from '@ngrx/store';
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+import { WUploader } from '@shared/services/w-uploader';
 
 /**
  * This class represents the main application component.
@@ -39,8 +40,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public authService: AuthService,
     private router: Router,
-    private wthConfirmService: WthConfirmService,
-    mediaStore: Store<State>
+    private wthConfirmService: WthConfirmService
   ) {
     this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
       this.confirmDialog = res;
@@ -49,10 +49,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.routerSubscription = this.router.events
-      .filter(event => event instanceof NavigationEnd)
+      .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
+    // fix scroll to top after changing route
+    this.router.events.subscribe(evt => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      window.scrollTo(0, 0);
+    });
   }
 
   ngAfterViewInit() {

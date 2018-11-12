@@ -74,7 +74,7 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
       acceptLabel: 'Delete',
       rejectLabel: 'Cancel',
       message: `All notes and folders in your trash will be permanently deleted.
-      <br/>&emsp;<b>This action cannot be undoed</b>
+      <br/>&emsp;<b>This action cannot be undone</b>
       `,
       header: 'Empty Trash',
       accept: () => {
@@ -94,7 +94,7 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
   isOnlyNote(): boolean {
     let result = true;
     _.forEach(this.selectedObjects, (item: any) => {
-      if (item.object_type == 'Note::Folder') {
+      if (item.object_type === 'Note::Folder') {
         result = false;
         return;
       }
@@ -105,7 +105,7 @@ export class ZNoteSharedTrashActionBarComponent implements OnInit {
   isOnlyFolder(): boolean {
     let result = true;
     _.forEach(this.selectedObjects, (item: any) => {
-      if (item.object_type == 'Note::Note') {
+      if (item.object_type === 'Note::Note') {
         result = false;
         return;
       }

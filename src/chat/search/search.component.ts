@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
-import { ChatService } from '../shared/services/chat.service';
+import { Component, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
+import { ChatService } from '../shared/services/chat.service';
+import { ZChatShareEditConversationComponent } from '@chat/shared/modal/edit-conversation.component';
 
 @Component({
   selector: 'z-chat-search',
@@ -8,6 +11,7 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrls: ['search.component.scss']
 })
 export class ZChatSearchComponent {
+  @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
   conversations: any;
   name: any;
   events: any;
@@ -15,9 +19,9 @@ export class ZChatSearchComponent {
 
   constructor(private chatService: ChatService, private router: Router) {
     this.events = this.router.events
-      .filter((event: any) => event instanceof NavigationEnd)
+      .pipe(filter((event: any) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        let paths = event.url
+        const paths = event.url
           .toString()
           .split('/')[1]
           .split('?');
@@ -43,4 +47,10 @@ export class ZChatSearchComponent {
       this.getConversations();
     }, 300);
   }
+
+  onEditConversation(contact: any) {
+    this.editConversation.conversation = contact;
+    this.editConversation.open();
+  }
+
 }

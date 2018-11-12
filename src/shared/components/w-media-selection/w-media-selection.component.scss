@@ -9,6 +9,7 @@
   z-index: 10;
   padding: 10px 15px;
   background-color: #ffffff;
+  @include border-top-radius($border-radius-large);
   .modal-media-search-in {
     position: relative;
     max-width: 500px;
@@ -18,20 +19,13 @@
 }
 
 .modal-media-selection {
-
-  .btn-search {
-    margin: -5px 15px -15px;
-  }
-  .nav-tabs-wrap {
-    margin: -15px;
-    padding: 0 15px;
-  }
   .modal-body {
     padding: 0;
   }
   .media-selection-toolbar {
     padding: 5px 15px;
     position: relative;
+    background-color: #ffffff;
     @include clearfix;
     @include box-shadow($box-shadow-bottom-sm);
     .media-selection-toolbar-left {
@@ -51,10 +45,12 @@
   .media-selection-content {
     height: 400px;
     position: relative;
+    @include border-bottom-radius($border-radius-large);
     @include flexbox();
     @include justify-content(space-around);
     .wobject-view {
       @include flex(1);
+      width: 100%;
     }
   }
 
@@ -74,14 +70,24 @@
   //  }
   //}
 
+  @media (min-width: $screen-sm-min) {
+    .btn-search {
+      margin: -5px 15px -15px;
+    }
+    .nav-tabs-wrap {
+      margin: 0 -15px;
+      padding: 0 15px;
+    }
+  }
+
   @media (min-width: $screen-md-min) {
     width: $container-md;
   }
 
   @media (max-width: $screen-xs-max) {
     .nav-tabs-wrap {
-      margin-top: -5px;
-      margin-bottom: -5px;
+      padding: 0;
+      margin-bottom: 10px;
     }
     .wobject-list {
       .wobject-owner, .wobject-create-date, .wobject-file-size, .wobject-wobject-action {
@@ -107,6 +113,7 @@
         left: 0;
         right: 0;
         font-size: 0;
+        @include border-bottom-radius($border-radius-large);
         .dz-message {
           position: absolute;
           top: 0;

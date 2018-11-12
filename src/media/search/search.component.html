@@ -1,8 +1,8 @@
-<ng-template #leftActionsTemplate>
+<ng-template #leftMenuTemplate>
   <ul class="page-body-control-menu">
     <li class="divider">
       <a class="btn btn-default" draggable="false" href="javascript:void(0);" (click)="doEvent({action: 'goBack'})"
-         pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
+        pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
         <i class="fa fa-arrow-left"></i>
       </a>
     </li>
@@ -18,117 +18,50 @@
 </ng-template>
 
 <ng-template #objectActionsTemplate>
-  <ul class="page-body-control-menu" [ngClass]="{'text-disable': noSelectedObjects}"
-      [class.disabled]="noSelectedObjects">
-    <li *ngIf="validateObjects(toolbar.selectedObjects)">
-      <a class="btn btn-default" draggable="false" pTooltip="{{ tooltip.share}}" tooltipPosition="bottom"
-         href="javascript:void(0);"
-         (click)="toolbar.doAction({action: 'openModal',
-         payload: {modalName: 'sharingModal', selectedObjects: toolbar.selectedObjects}})">
-        <i class="fa fa-share-alt"></i>
-      </a>
-    </li>
+  <ul class="page-body-control-menu">
+    <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+      <li *ngIf="!action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+        <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false" pTooltip="{{action.val.tooltip}}"
+          tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
+          <i class="{{action.val.iconClass}}"></i>
+        </button>
+      </li>
+    </ng-template>
 
-    <li *ngIf="!!toolbar.selectedObjects.length">
-      <a class="btn btn-default" href="javascript:void(0);" draggable="false"
-         *ngIf="toolbar.favoriteAll"
-         (click)="toolbar.doAction({
-           action: 'favourite',
-           payload: { mode: 'remove',
-           multiItem: true,
-           selectedObjects: toolbar.selectedObjects }})"
-         pTooltip="{{ tooltip.removeFromFavourites }}"
-         tooltipPosition="bottom">
-        <i class="fa fa-star"></i>
-      </a>
-      <a class="btn btn-default" href="javascript:void(0);" draggable="false"
-         *ngIf="!toolbar.favoriteAll"
-         (click)="toolbar.doAction({
-           action: 'favourite',
-           payload: { mode: 'add',
-           multiItem: true,
-           selectedObjects: toolbar.selectedObjects }})"
-         pTooltip="{{ tooltip.addToFavorites }}"
-         tooltipPosition="bottom">
-        <i class="fa fa-star-o"></i>
-      </a>
-    </li>
-    <li *ngIf="!!toolbar.selectedObjects.length">
-      <a class="btn btn-default" href="javascript:;" draggable="false"
-         (click)="toolbar.doAction({action: 'openModal',
-         payload: { modalName: 'taggingModal', selectedObjects: toolbar.selectedObjects }})"
-         pTooltip="{{ tooltip.tag}}" tooltipPosition="bottom">
-        <i class="fa fa-tag"></i></a>
-    </li>
-    <li *ngIf="!!toolbar.selectedObjects.length">
-      <a class="btn btn-default" href="javascript:;" draggable="false"
-         (click)="toolbar.doAction({action: 'deleteMedia', payload: {selectedObjects: toolbar.selectedObjects}})"
-         pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
-        <i class="fa fa-trash-o"></i></a>
-    </li>
-
-    <li class="dropdown action" *ngIf="!!toolbar.selectedObjects.length">
-      <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-         pTooltip="{{ tooltip.moreAction}}" tooltipPosition="bottom">
+    <li class="dropdown action">
+      <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction}}"
+        tooltipPosition="bottom">
         <i class="fa fa-ellipsis-v"></i>
       </a>
       <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-
-        <li>
-          <a href="javascript:void(0);" draggable="false"
-             (click)="toolbar.doAction({action: 'download', payload: {selectedObjects: selectedObjects}})">
-            <i class="fa fa-download"></i> Download</a>
-        </li>
-        <li *ngIf="toolbar.hasOneObject" href="javascript:void(0);" draggable="false" >
-          <a (click)="toolbar.doAction({
-            action: 'openModal',
-            payload: {modalName: 'editInfoModal', selectedObject: toolbar.selectedObjects[0]}
-          })" >
-            <i class="fa fa-edit"></i> Edit Information
-          </a>
-        </li>
-        <li *ngIf="toolbar.hasOneObject" href="javascript:void(0);" draggable="false" >
-          <a (click)="toolbar.doAction({
-            action: 'viewDetails',
-            payload: { selectedObject: toolbar.selectedObjects[0] }
-          })" >
-            <i class="fa fa-info-circle"></i> View Detail
-          </a>
-        </li>
-
+        <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+          <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+            <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"
+              href="javascript:void(0);" (click)="action.val.action()">
+              <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
+            </a>
+          </li>
+        </ng-template>
       </ul>
     </li>
   </ul>
 </ng-template>
 
-<w-toolbar #toolbar
-           [view]="gridlist.view"
-           [selectedObjects]="gridlist.selectedObjects"
-           [leftActionsTemplate]="leftActionsTemplate"
-           [objectActionsTemplate]="objectActionsTemplate"
-           (event)="gridlist.doEvent($event)">
+<w-toolbar #toolbar [object]="object" [viewMode]="viewMode" [selectedObjects]="selectedObjects" [objectActionsTemplate]="objectActionsTemplate"
+  [leftActionsTemplate]="leftMenuTemplate" (event)="doToolbarEvent($event)">
 </w-toolbar>
 
-<w-grid-list #gridlist
-             [objects]="objects$|async"
-             [nextLink]="nextLink$|async"
-             (event)="doEvent($event)"
-             (selectedObjectsChanged)="toolbar.updateSelectedObjects($event)">
-
-
+<w-grid-list #gridlist [objects]="objects" [view]="viewMode" (event)="doListEvent($event)">
 </w-grid-list>
 <!--no data region-->
-<div class="zone-no-photo text-center" *ngIf="!gridlist.objects.length && !(loading$|async)">
+<div class="zone-no-photo text-center" *ngIf="objects.length == 0 && !loading">
   <div>
-    <h2><i class="fa fa-search"></i></h2>
+    <h2>
+      <i class="fa fa-search"></i>
+    </h2>
     <h3>Data not matched</h3>
     <h4>Please change your search criteria!</h4>
   </div>
 </div>
 
 <ng-template #modalContainer></ng-template>
-
-
-
-
-

@@ -1,253 +1,297 @@
 .form-control {
-  @include box-shadow(0 0 0 transparent);
-  &.has-loading {
-    background-image: url($w-icons-path + '/loading.gif');
-    background-repeat: no-repeat;
-    background-position: right center;
-    -webkit-background-size: 24px 24px;
-    background-size: 24px 24px;
-  }
+    @include box-shadow(0 0 0 transparent);
+    &.has-loading {
+        background-image: url($w-icons-path + '/loading.gif');
+        background-repeat: no-repeat;
+        background-position: right center;
+        -webkit-background-size: 24px 24px;
+        background-size: 24px 24px;
+    }
 }
 
 .form-control-block {
-  display: block;
+    display: block;
 }
 
 .form-control-full {
-  width: 100%;
+    width: 100%;
 }
 
 .form-horizontal {
-  .control-label {
-    @media (min-width: 768px) {
-      text-align: left;
+    .control-label {
+        @media (min-width: 768px) {
+            text-align: left;
+        }
     }
-  }
 }
 
 .help-block[hidden] {
-  display: none;
+    display: none;
 }
 
-.form-group {
-  position: relative;
-  @include box-shadow(0 0 0 transparent);
-  &:before {
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    position: absolute;
-    top: 33px;
-    right: 10px;
-    z-index: 10;
-    font-size: 18px;
-  }
-  &.no-label:before {
-    top: 9px;
-  }
-  &.has-password:before {
-    display: none;
-  }
 
-  &.has-error:not(.has-select) {
+/**
+<div class="form-group no-label"
+     [ngClass]="{'has-error': (!name.valid && name.touched),'has-success': (name.valid && name.touched)}">
+  <input autofocus [formControl]="name" type="text" class="form-control" placeholder="">
+  <div *ngIf="!name.valid && name.touched">
+    <span *ngIf="!name.valid && name.errors.required" class="help-block">
+      Name is required
+    </span>
+  </div>
+</div>
+ */
+
+.form-group {
+    position: relative;
+    @include box-shadow(0 0 0 transparent);
     &:before {
-      content: "\f057";
-      color: $alert-danger-text;
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        position: absolute;
+        top: 33px;
+        right: 10px;
+        z-index: 10;
+        font-size: 18px;
     }
-  }
-  &.has-success:not(.has-select) {
-    &:before {
-      content: "\f058";
-      color: $alert-success-text;
+    &.no-label:before {
+        top: 9px;
     }
-  }
-  .hideShowPassword-toggle {
-    cursor: pointer;
-    display: inline-block;
-    position: absolute;
-    top: 28px;
-    right: 7px;
-    z-index: 11;
-    border-width: 0;
-    font-size: 18px;
-    &:before {
-      font: normal normal normal 14px/1 FontAwesome;
-      font-size: inherit;
-      text-rendering: auto;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      content: "\f06e";
-      color: $input-color;
+    &.has-password:before {
+        display: none;
     }
-    &.active {
-      &:before {
-        content: "\f070";
-      }
+    &.has-error:not(.has-select) {
+        &:before {
+            content: "\f06a";
+            color: $alert-danger-text;
+        }
     }
-    &:hover, &:focus {
-      outline: 0 none;
+    &.has-success:not(.has-select) {
+        &:before {
+            content: "\f058";
+            color: $alert-success-text;
+        }
     }
-  }
-  .sr-only ~ .hideShowPassword-toggle {
-    top: 5px;
-  }
+    .hideShowPassword-toggle {
+        cursor: pointer;
+        display: inline-block;
+        position: absolute;
+        top: 32px;
+        right: 7px;
+        z-index: 11;
+        border-width: 0;
+        font-size: 18px;
+        &:before {
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            content: "\f06e";
+            color: $input-color;
+        }
+        &.active {
+            &:before {
+                content: "\f070";
+            }
+        }
+        &:hover,
+        &:focus {
+            outline: 0 none;
+        }
+    }
+    .sr-only~.hideShowPassword-toggle {
+        top: 5px;
+    }
 }
 
 .form-validation {
-  padding: 5px 15px 0 50px;
-  position: relative;
-  border: 1px solid #cdcdcd;
-  border-radius: $border-radius-base;
-  margin-bottom: $form-group-margin-bottom;
-  .help-block {
-    color: $text-color;
-  }
-  &.has-error {
-    border-color: $brand-danger;
-    &:before {
-      @extend .fa;
-      @extend .fa-exclamation-circle;
-      position: absolute;
-      left: 15px;
-      top: 10px;
-      font-size: 20px;
-      color: $brand-danger;
+    padding: 5px 15px 0 50px;
+    position: relative;
+    border: 1px solid #cdcdcd;
+    border-radius: $border-radius-base;
+    margin-bottom: $form-group-margin-bottom;
+    .help-block {
+        color: $text-color;
     }
-  }
+    &.has-error {
+        border-color: $brand-danger;
+        &:before {
+            @extend .fa;
+            @extend .fa-exclamation-circle;
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            font-size: 20px;
+            color: $brand-danger;
+        }
+    }
 }
 
 .textarea-autoheight {
-  overflow: hidden;
-  word-wrap: break-word;
-  resize: none !important;
-  padding-right: 50px;
+    overflow: hidden;
+    word-wrap: break-word;
+    resize: none !important;
+    padding-right: 50px;
 }
 
 textarea {
-  resize: vertical;
+    resize: vertical;
 }
 
 .form-control-autoheight {
-  @extend .form-control;
-  padding-top: 0;
-  padding-bottom: 0;
-  line-height: 16px;
+    @extend .form-control;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 16px;
 }
 
 .form-control-phone-country {
-  background-color: red;
-
-  input.ui-autocomplete-input {
-    height: 34px !important;
-  }
-
-  .ui-autocomplete {
-    &.ui-widget {
-      .ui-inputtext {
-        width: 100%;
-        min-width: initial;
-        border-radius: $border-radius-base;
-        line-height: 18px;
-        border-color: $input-border;
-        &.ng-invalid {
-          border-color: $state-danger-text;
-        }
-      }
-      .ui-autocomplete-dropdown {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: transparent;
-        border-color: transparent;
-        color: $text-color;
-        min-width: 34px;
-        z-index: 10;
-      }
+    background-color: red;
+    input.ui-autocomplete-input {
+        height: 34px !important;
     }
-  }
-  .ui-autocomplete-panel {
-    min-width: 390px;
-    font-size: 12px;
-    @media (max-width: $screen-xs-max) {
-      min-width: 260px;
-    }
-    .ui-autocomplete-list {
-      li .clearfix {
-        @include flexbox;
-        @include align-items(start);
-        span {
-          &.pull-left {
-            @include flex(1);
-          }
-        }
-      }
-    }
-    img {
-      margin-right: 5px;
-    }
-    span {
-      line-height: 20px;
-
-    }
-  }
-  &.ng-invalid {
     .ui-autocomplete {
-      &.ui-widget {
-        .ui-inputtext {
-          border-color: $state-danger-text;
+        &.ui-widget {
+            .ui-inputtext {
+                width: 100%;
+                min-width: initial;
+                border-radius: $border-radius-base;
+                line-height: 18px;
+                border-color: $input-border;
+                &.ng-invalid {
+                    border-color: $state-danger-text;
+                }
+            }
+            .ui-autocomplete-dropdown {
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: transparent;
+                border-color: transparent;
+                color: $text-color;
+                min-width: 34px;
+                z-index: 10;
+            }
         }
-      }
     }
-  }
+    .ui-autocomplete-panel {
+        min-width: 390px;
+        font-size: 12px;
+        @media (max-width: $screen-xs-max) {
+            min-width: 260px;
+        }
+        .ui-autocomplete-list {
+            li .clearfix {
+                @include flexbox;
+                @include align-items(start);
+                span {
+                    &.pull-left {
+                        @include flex(1);
+                    }
+                }
+            }
+        }
+        img {
+            margin-right: 5px;
+        }
+        span {
+            line-height: 20px;
+        }
+    }
+    &.ng-invalid {
+        .ui-autocomplete {
+            &.ui-widget {
+                .ui-inputtext {
+                    border-color: $state-danger-text;
+                }
+            }
+        }
+    }
 }
 
 .textarea-editor-input {
-  min-height: 34px;
-  height: auto;
-  word-break: break-word;
+    min-height: 34px;
+    height: auto;
+    word-break: break-word;
 }
 
 .commentContent-editor-input {
-  &:before {
-    float: left;
-  }
-  &:after {
-    content: '';
-    height: 10px;
-    width: 85px;
-    display: inline-block;
-  }
+    &:before {
+        float: left;
+    }
+    &:after {
+        content: '';
+        height: 10px;
+        width: 85px;
+        display: inline-block;
+    }
 }
 
 .textarea-editor-view {
-  word-break: break-word;
-  > div > br {
-    display: none;
-  }
+    word-break: break-word;
+    >div>br {
+        display: none;
+    }
 }
 
 .input-group-search-header {
-
-  .input-group {
-    .input-group-btn {
-      min-width: 34px;
+    .input-group {
+        .input-group-btn {
+            min-width: 34px;
+        }
     }
-  }
-
-  .input-group-form {
-    p-autocomplete {
-      .ui-autocomplete-multiple-container li {
-        display: inline-block;
-      }
-      input[type="text"] {
-        width: 100%;
-        display: block;
-        margin: 0;
-        min-width: 220px;
-      }
+    .input-group-form {
+        p-autocomplete {
+            .ui-autocomplete-multiple-container li {
+                display: inline-block;
+            }
+            input[type="text"] {
+                width: 100%;
+                display: block;
+                margin: 0;
+                min-width: 220px;
+            }
+        }
     }
-  }
 }
 
+.input-group-wrap-search {
+    border: 1px solid $input-border;
+    border-radius: $input-border-radius;
+    .form-control {
+        border-width: 0;
+        @include box-shadow(none);
+        padding-left: 0;
+    }
+    .btn {
+        background-color: transparent;
+        &:hover,
+        &:focus {
+            background-color: transparent;
+            color: $color-inverse;
+            @include box-shadow(none);
+        }
+    }
+    .input-group {
+        .input-group-btn {
+            min-width: 34px;
+        }
+    }
+    .input-group-form {
+        p-autocomplete {
+            .ui-autocomplete-multiple-container li {
+                display: inline-block;
+            }
+            input[type="text"] {
+                width: 100%;
+                display: block;
+                margin: 0;
+                min-width: 220px;
+            }
+        }
+    }
+}

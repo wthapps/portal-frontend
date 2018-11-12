@@ -24,7 +24,6 @@ import { ChatSupportDirective } from './chat-support.directive';
 
 
 import { AppearanceChannel } from './shared/channel/appearance.channel';
-import { ChatSupportChannel } from './shared/channel/chat-support.channel';
 import { NotificationChannel } from './shared/channel/notification.channel';
 import { ApiBaseService } from '../../../services/apibase.service';
 import { Constants } from '../../../constant/config/constants';
@@ -75,7 +74,6 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
               private cookie: CookieService,
               private api: ApiBaseService,
-              private chatSupportChannel: ChatSupportChannel,
               private appearanceChannel: AppearanceChannel,
               private notificationChannel: NotificationChannel) {
   }
@@ -92,7 +90,6 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
     //
     //         }
     //         console.log('notification has data changed', response);
-    //         // this.chatSupportChannel.subscribe(response.conversation.uuid, 'cs');
     //
     //       });
     // }
@@ -130,7 +127,6 @@ export class CoreChatSupportComponent implements OnInit, AfterViewInit {
       console.log('current window', this.currentWindow);
 
       // this.appearanceChannel.subscribe('cs');
-      // this.chatSupportChannel.subscribe();
 
       if (this.supporters == undefined) {
         this.api.get(`users/supporters`)

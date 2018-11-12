@@ -14,7 +14,7 @@ import { CustomValidator } from '../../validator/custom.validator';
 import { Constants } from '../../../constant/config/constants';
 import { forEach } from '@angular/router/src/utils/collection';
 // import { ProfileFormMixin } from '../../mixins/form/profile/profile-form.mixin';
-// import { Mixin } from '../../../design-patterns/decorator/mixin-decorator';
+// import { Mixins  } from '../../../design-patterns/decorator/mixin-decorator';
 
 declare var _: any;
 
@@ -30,8 +30,8 @@ export class InvitationCreatePartialComponent implements OnInit, OnChanges {
 
   form: FormGroup;
   deleteObjects: any = [];
-  type: string = 'items';
-  noOfCtrl: number = 3;
+  type = 'items';
+  noOfCtrl = 3;
 
   // removeItem: (i: number, item: any) => void;
   // onSubmit: (values: any) => void;
@@ -50,7 +50,7 @@ export class InvitationCreatePartialComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['data'] != undefined && changes['data'].currentValue != undefined) {
+    if (changes['data'] !== undefined && changes['data'].currentValue !== undefined) {
       this.data = changes['data'].currentValue;
       this.initialize();
     }
@@ -95,15 +95,15 @@ export class InvitationCreatePartialComponent implements OnInit, OnChanges {
 
 
   doEvent(options: any) {
-    let data = this.form.value.items;
+    const data = this.form.value.items;
     switch (options.action) {
       case 'done':
         // remove items whose email is empty
         _.remove(data, (item: any) => {
-          if(item.email != '') {
+          if (item.email !== '') {
             item.fullName = item.email.split('@')[0];
           }
-          return item.email == '';
+          return item.email === '';
         });
         options['payload'] = data;
         this.event.emit(options);
@@ -126,7 +126,7 @@ export class InvitationCreatePartialComponent implements OnInit, OnChanges {
     control.removeAt(i);
     if (item && item.id && item.id.value) {
       _.forEach(this.data, (data: any) => {
-        if (data.id == item.id.value) {
+        if (data.id === item.id.value) {
           data._destroy = true;
           this.deleteObjects.push(data);
         }

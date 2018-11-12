@@ -4,7 +4,7 @@
   </div>
   <div class="component-listbox-name">
     <!-- Contact -->
-    <a *ngIf="!data.settings" href="javascript:;" class="link-text contact-listbox-block-link" [routerLink]="['/contacts/detail', data.id]">
+    <a *ngIf="!data.settings" href="javascript:void(0);" class="link-text contact-listbox-block-link" [routerLink]="['/contacts/',data.id, {mode: 'view'}]">
       <figure class="avatar-xs media-user">
         <img [src]="data.profile_image" alt="">
 
@@ -31,10 +31,10 @@
   </div>
   <div class="component-listbox-phone">
     <ul class="list-unstyled m0">
-      <li *ngIf="data.emails && data.emails.length > 0">
+      <li *ngIf="data.phones && data.phones.length > 0">
         <img *ngIf="(countriesCode$ | async) && data.phones[0] && data.phones[0].country_alpha_code && data.phones[0].country_alpha_code | phoneCodeFlag:(countriesCode$ | async)"
-          src="assets/images/flags/{{data.phones[0]?.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg" width="30"
-          alt=""> {{ data.phones[0]?.value }}
+          src="assets/images/flags/{{data.phones[0]?.country_alpha_code | phoneCodeFlag:(countriesCode$ | async)}}.svg"
+          width="30" alt=""> {{ data.phones[0]?.value }}
       </li>
     </ul>
   </div>
@@ -42,15 +42,17 @@
   <div class="component-listbox-date"></div>
   <!-- Actions for contact -->
   <div class="component-listbox-action" *ngIf="!data.settings">
-    <z-contact-shared-actions-bar [data]="data" [showQuickInvitation]="data.wthapps_user == null" [showNumber]="false" [showSocial]="data | isContactInternal"
-      [showChat]="data | isContactInternal" [showInvitation]="data.wthapps_user == null" [toggleFavourite]="data | contactHasGroup:'favourite'"
-      [toggleBlacklist]="data | contactHasGroup:'blacklist'" (eventOut)="doActionsToolbar($event)">
+    <z-contact-shared-actions-bar [data]="data" [showQuickInvitation]="data.wthapps_user == null" [showNumber]="false"
+      [showSocial]="data | isContactInternal" [showChat]="data | isContactInternal" [showInvitation]="data | canInvite"
+      [toggleFavourite]="data | contactHasGroup:'favourite' " [showFavorite]="data?.my_contact" [showAddToContacts]="!data?.my_contact"
+      [toggleBlacklist]="data |
+contactHasGroup:'blacklist'" (eventOut)="doActionsToolbar($event)">
     </z-contact-shared-actions-bar>
   </div>
   <!-- Actions for user -->
   <div class="component-listbox-action" *ngIf="data.settings">
-    <button *ngIf="!saved" class="btn btn-outline-default pull-right" type="button" (click)="saveContact()">
-      <i class="fa fa-plus"></i> Save to Contact </button>
+    <button *ngIf="!saved" class="btn btn-default pull-right" type="button" (click)="saveContact()" pTooltip="Add to my contacts">
+      <i class="fa fa-user-plus"></i></button>
     <span *ngIf="saved">Saved</span>
   </div>
 </div>

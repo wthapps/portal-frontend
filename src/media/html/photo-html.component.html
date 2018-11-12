@@ -1,0 +1,63 @@
+<div class="page-body-control">
+  asdfasdf
+</div>
+<div class="page-body-content has-page-body-control">
+  <ng-container *ngIf="medias$ | async as mediasList; else templateloading">
+    <ng-container *ngIf="mediasList?.length; else templateNodata">
+      <w-object-list class="media-selection-content gray-light" [viewMode]="view$ | async" [data]="mediasList"
+        [isLoading]="isLoading" [sortInline]="false" (completeSort)="onCompleteSort($event)" (completeLoadMore)="onCompleteLoadMore($event)"
+        (completeDoubleClick)="onCompleteDoubleClick($event)">
+        <ng-template #columnBox let-item>
+
+          <!-- ------------ Album view ------------- -->
+          <ng-container *ngIf="item.object_type == 'album'">
+            <div class="wobject-box-img">
+              <img [src]="item.thumbnail_url" alt="">
+              <div class="wmedia-box-info">{{ item.photo_number }} photo
+                <span *ngIf="item.photo_number>1">s</span>
+              </div>
+            </div>
+            <div class="wobject-box-name">
+              <span>{{ item.name }}</span>
+              <div class="wobject-box-action">
+                <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}"></i>
+              </div>
+            </div>
+          </ng-container>
+
+
+          <!-- ------------ Photo view ------------- -->
+          <ng-container *ngIf="item.object_type == 'photo'">
+            <div class="wobject-box-img">
+              <img [src]="item.thumbnail_url" alt="">
+            </div>
+            <div class="wobject-box-name">
+
+              <span>{{ item.name }}.{{ item.extension }}</span>
+              <div class="wobject-box-action">
+                <i class="fa fa-star" (click)="testasasfd()" [ngClass]="{'fa-star-o': !item.favorite}"></i>
+              </div>
+            </div>
+          </ng-container>
+        </ng-template>
+        <ng-template #columnFileSize let-item>
+          <span *ngIf="item.object_type == 'album'">{{ item.photo_number }} file
+            <span *ngIf="item.photo_number>1">s</span>
+          </span>
+          <span *ngIf="item.object_type == 'photo'">{{ item.size | bytes:0 }}</span>
+        </ng-template>
+      </w-object-list>
+    </ng-container>
+    <ng-template #templateNodata>
+      <div class="media-selection-content gray-light">
+        <box-no-data [icon]="'fa fa-picture-o'" [title]="'There are no photos!'" [subTitle]="'There are no photos. Try to upload a file.'">
+        </box-no-data>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-template #templateloading>
+    <div class="media-selection-content gray-light">
+      <box-loading></box-loading>
+    </div>
+  </ng-template>
+</div>

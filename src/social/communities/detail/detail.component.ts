@@ -1,26 +1,26 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs/operators';
+import { Observable ,  Subject } from 'rxjs';
+import { combineLatest, take } from 'rxjs/operators';
+
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
+import { AuthService, UserService } from '@shared/services';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { Constants } from '@wth/shared/constant';
+import { fadeInAnimation } from '@wth/shared/shared/animations/route.animation';
+import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
+import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
+import { User } from '@wth/shared/shared/models';
+import { SHORTCUT_ADD_MULTI_DONE } from '../../shared/reducers/index';
+import { PostListComponent } from '../../shared/second-routes/post/post-list.component';
+import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
+import { SocialService } from '../../shared/services/social.service';
 
 import { ZSocialCommunityFormEditComponent } from '../shared/form/edit.component';
 import { ZSocialCommunityFormPreferenceComponent } from '../shared/form/preferences.component';
-import { SocialService } from '../../shared/services/social.service';
-import { PostListComponent } from '../../shared/second-routes/post/post-list.component';
-import { SocialFavoriteService } from '../../shared/services/social-favorites.service';
-import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
-import { User } from '@wth/shared/shared/models';
-import { AuthService, UserService } from '@shared/services';
-import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
-import { Constants } from '@wth/shared/constant';
-import { SHORTCUT_ADD_MULTI_DONE } from '../../shared/reducers/index';
-import { fadeInAnimation } from '@wth/shared/shared/animations/route.animation';
-import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
+import { SoStorageService } from '@social/shared/services/social-storage.service';
 
 declare let _: any;
 declare let $: any;
@@ -41,7 +41,47 @@ const EMPTY_DEFAULT_TABS: any = {
   styleUrls: ['detail.component.scss']
 })
 export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
-  errorMessage: string = '';
+  tabs: WTab[] = [
+    {
+      name: 'Post',
+      link: 'post',
+      icon: null,
+      number: null,
+      type: 'tab'
+    },
+    {
+      name: 'About',
+      link: 'about',
+      icon: null,
+      number: null,
+      type: 'tab'
+    },
+    {
+      name: 'Members',
+      link: 'members',
+      icon: null,
+      number: null,
+      type: 'tab'
+    },
+    {
+      name: 'Invitations',
+      link: 'invitations',
+      icon: null,
+      number: null,
+      type: 'tab'
+    },
+    {
+      name: 'Join Requests',
+      link: 'join_requests',
+      icon: null,
+      number: null,
+      type: 'tab'
+    }
+  ];
+  currentTab: String = 'post'; // upload, photos, albums, albums_detail, favourites, shared_with_me
+
+
+  errorMessage = '';
 
   tooltip: any = Constants.tooltip;
 
@@ -53,40 +93,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     join_requests: 'join_requests',
     blacklist: 'blacklist'
   };
-
-  tabs: WTab[] = [
-    {
-      name: 'Post',
-      link: 'post',
-      icon: null,
-      type: 'tab'
-    },
-    {
-      name: 'About',
-      link: 'about',
-      icon: null,
-      type: 'tab'
-    },
-    {
-      name: 'Members',
-      link: 'members',
-      icon: null,
-      type: 'tab'
-    },
-    {
-      name: 'Invitations',
-      link: 'invitations',
-      icon: null,
-      type: 'tab'
-    },
-    {
-      name: 'Join Requests',
-      link: 'join_requests',
-      icon: null,
-      type: 'tab'
-    }
-  ];
-
 
   tabData: any = [
     {
@@ -114,7 +120,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     }*/
   ];
 
-  selectedTab: string = 'post';
+  selectedTab = 'post';
   selectedTabTitle: any;
 
   community: any = null;
@@ -123,12 +129,12 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   invitationId: string;
   joinRequestId: string;
   tabItems: Array<any> = [];
-  isAdmin: boolean = false;
-  isMember: boolean = false;
-  is_close: boolean = true;
+  isAdmin = false;
+  isMember = false;
+  is_close = true;
   favourite: any;
   userSettings: any;
-  loading: boolean = true;
+  loading = true;
 
   activeTabs: any = EMPTY_DEFAULT_TABS;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
@@ -143,6 +149,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(public authService: AuthService,
+              public soStorageService: SoStorageService,
               private route: ActivatedRoute,
               private router: Router,
               private userService: UserService,
@@ -166,7 +173,6 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         }
         this.selectedTab = queryParamMap.get('tab');
         this.selectedTabTitle = _.find(this.tabData, ['key', (this.selectedTab || 'post')]);
-        console.debug(paramMap, queryParamMap, this.selectedTab);
         return [this.uuid, this.selectedTab];
       })
     ).subscribe(() => {
@@ -212,7 +218,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   getUserSettings(uuid: any) {
-    this.socialService.community.getUserSettings(uuid).take(1).subscribe(
+    this.socialService.community.getUserSettings(uuid).toPromise().then(
       (res: any) => {
         this.userSettings = res.data;
       }
@@ -220,7 +226,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   toggleComNotification(uuid: any) {
-    this.socialService.community.toggleComNotification(uuid).subscribe(
+    this.socialService.community.toggleComNotification(uuid).toPromise().then(
       (res: any) => {
         this.userSettings = res.data;
       }
@@ -234,7 +240,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   onCoverAction(event: any) {
-    if (event.action == 'updateItem') {
+    if (event.action === 'updateItem') {
       this.updateCommunity(event.body);
     }
   }
@@ -242,38 +248,39 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   updateCommunity(body: any): void {
 
     this.socialService.community.updateCommunity(this.community.uuid, body)
-      .subscribe((result: any) => {
-          console.log('update community sucess: ', result);
-          let toastMsg = '';
-          if (_.has(body, 'profile_image'))
-            toastMsg = 'You have updated profile image successfully';
-          else if (_.has(body, 'cover_image'))
-            toastMsg = 'You have updated cover image of this community successfully';
-          else
-            toastMsg = result.message;
+      .toPromise().then((result: any) => {
+        let toastMsg = '';
+        if (_.has(body, 'file'))
+          toastMsg = 'You have updated profile image successfully';
+        else if (_.has(body, 'cover_image'))
+          toastMsg = 'You have updated cover image of this community successfully';
+        else
+          toastMsg = result.message;
 
-          this.toastsService.success(toastMsg);
-          this.favoriteService.updateFavorite(result.data, 'community');
-        },
-        error => {
-          this.toastsService.danger(this.errorMessage);
-          console.log(error);
-        }
-      );
+        Object.assign(this.community, { ...result.data });
+
+        this.toastsService.success(toastMsg);
+        this.favoriteService.updateFavorite(result.data, 'community');
+      },
+      error => {
+        this.toastsService.danger(this.errorMessage);
+        console.log(error);
+      }
+    );
   }
 
   askToJoin() {
     this.socialService.community.askToJoin(this.uuid)
-      .subscribe((result: any) => {
-          this.joinRequestId = result.data.id;
-        },
-        (error: any) => {
-          console.log('error', error);
-        });
+      .toPromise().then((result: any) => {
+        this.joinRequestId = result.data.id;
+      },
+      (error: any) => {
+        console.log('error', error);
+      });
   }
 
   cancelJoinRequest(joinRequestId: any) {
-    this.socialService.community.cancelJoinRequest(this.uuid, joinRequestId).subscribe(
+    this.socialService.community.cancelJoinRequest(this.uuid, joinRequestId).toPromise().then(
       (res: any) => {
         this.joinRequestId = undefined;
 
@@ -289,20 +296,20 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   cancelInvitation(invitationId: any) {
     $('#invitation_' + invitationId).remove();
     this.socialService.community.cancelInvitation(this.uuid, invitationId)
-      .subscribe(
-        (res: any) => {
-          // Update invitation count
-          this.community.invitation_count -= 1;
-        },
-        error => {
-          this.errorMessage = <any>error;
-        }
-      );
+      .toPromise().then(
+      (res: any) => {
+        // Update invitation count
+        this.community.invitation_count -= 1;
+      },
+      error => {
+        this.errorMessage = <any>error;
+      }
+    );
   }
 
   acceptJoinRequest(item: any) {
     $('#invitation_' + item.id).remove();
-    this.socialService.community.acceptJoinRequest(this.uuid, item.inviter.uuid).subscribe(
+    this.socialService.community.acceptJoinRequest(this.uuid, item.inviter.uuid).toPromise().then(
       (res: any) => {
         // Update join request count
         this.community.join_request_count -= 1;
@@ -346,7 +353,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       message: `Are you sure to change role of member ${this.user ? this.user.name : ''} to admin?`,
       header: 'Make admin',
       accept: () => {
-        this.socialService.community.makeAdmin(this.uuid, user.uuid).subscribe(
+        this.socialService.community.makeAdmin(this.uuid, user.uuid).toPromise().then(
           (res: any) => {
             this.toastsService.success(`You have changed ${this.user ? this.user.name : ''} role to ADMIN successfully`);
             $('#user_' + user.uuid).find('span.member-role').text('Admin');
@@ -362,22 +369,22 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   chooseMembers() {
-    this.users.open({url: `zone/social_network/users_search/users_not_in_community/${this.uuid}`});
+    this.users.open({ url: `zone/social_network/users_search/users_not_in_community/${this.uuid}` });
 
   }
 
   inviteMembers(response: any) {
     let user_ids = _.map(response.items, 'uuid');
     this.socialService.community.inviteMembers(this.uuid, user_ids)
-      .subscribe((result: any) => {
-          console.log('invited friends');
-          this.getTabItems(this.uuid, this.selectedTab);
-          this.community.invitation_count += user_ids.length;
-          console.log('get tab items for: ' + this.selectedTab);
-        },
-        error => {
-          console.log('error', error);
-        });
+      .toPromise().then((result: any) => {
+        console.log('invited friends');
+        this.getTabItems(this.uuid, this.selectedTab);
+        this.community.invitation_count += user_ids.length;
+        console.log('get tab items for: ' + this.selectedTab);
+      },
+      error => {
+        console.log('error', error);
+      });
   }
 
   onReportMember(reportee_id: string, reason: string = '') {
@@ -417,7 +424,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
         this.community.canEdit = this.isAdmin;
 
         if (res.shortcut) {
-          this.store.dispatch({type: SHORTCUT_ADD_MULTI_DONE, payload: res.shortcut});
+          this.store.dispatch({ type: SHORTCUT_ADD_MULTI_DONE, payload: res.shortcut });
         }
       },
       error => {
@@ -437,7 +444,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(
         (res: any) => {
-          if ([this.tab.about, this.tab.post].indexOf(this.selectedTab) == -1)
+          if ([this.tab.about, this.tab.post].indexOf(this.selectedTab) === -1)
             this.tabItems = res.data;
           // Update member_count, invitation_count, join_request_count
           switch (this.selectedTab) {
@@ -459,7 +466,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   private setTabVisibility() {
-    this.activeTabs = {...EMPTY_DEFAULT_TABS, [this.selectedTab || this.tab.post]: true};
+    this.activeTabs = { ...EMPTY_DEFAULT_TABS, [this.selectedTab || this.tab.post]: true };
   }
 
 }

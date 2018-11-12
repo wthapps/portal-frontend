@@ -1,7 +1,30 @@
+@import '../../shared/scss/_custom-variables';
+
+$component-action: 100px;
+
 :host /deep/ {
+  .media-body {
+    width: 300px;
+  }
+
   .media-user {
     .media-user-name {
       width: 200px;
+    }
+  }
+
+  .media-left > p {
+    padding-top: 10px;
+  }
+
+  .truncate {
+    width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: $screen-sm-min) {
+      width: $component-action;
     }
   }
 }

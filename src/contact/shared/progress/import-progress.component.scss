@@ -1,0 +1,13 @@
+@import '../../../assets/styles/global';
+
+.dock-body-import {
+  .body-message {
+    padding: 10px;
+    color: $text-color;
+    .body-number {
+      color: $text-color;
+      font-size: 20px;
+    }
+  }
+}
+

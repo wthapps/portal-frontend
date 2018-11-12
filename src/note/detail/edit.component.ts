@@ -1,19 +1,8 @@
-import {
-  Component,
-  ViewChild,
-  SimpleChanges,
-  OnInit,
-  ViewEncapsulation,
-  AfterViewInit
-} from '@angular/core';
-import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
+import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { Store } from '@ngrx/store';
-import { of } from 'rxjs/observable/of';
+import { Observable ,  Subject ,  Subscription ,  of, fromEvent, merge } from 'rxjs';
 import {
   takeUntil,
   switchMap,
@@ -25,15 +14,14 @@ import {
   tap
 } from 'rxjs/operators';
 
+import { Store } from '@ngrx/store';
 import * as fromRoot from '../shared/reducers/index';
 import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
 import { PhotoUploadService } from '@shared/services/photo-upload.service';
-import { GenericFile } from '@shared/shared/models/generic-file.model';
-import { GenericFileService } from '@shared/services/generic-file.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
@@ -47,13 +35,15 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import ImageBlot from '@wth/core/quill/blots/image';
 import IconBlot from '@wth/core/quill/blots/icon';
-import DividerBlot from '@wth/core/quill/blots/divider';
-import { Font, Size } from '@wth/core/quill/blots/font-size';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
+import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit.component';
+import { BlackListPolicy } from '@shared/policies/black-list-policy';
+import { SizePolicy } from '@shared/policies/size-policy';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
+const LINK_PATTERN = /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b\/?/im;
 
 @Component({
   selector: 'z-note-detail-edit',
@@ -61,21 +51,25 @@ declare let _: any;
   styleUrls: ['edit.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
+export class ZNoteDetailEditComponent
+  implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BsModalComponent) modal: BsModalComponent;
+  @ViewChild('modalEditName') modalEditName: ZNoteSharedModalEditNameComponent;
 
   note: Note = new Note();
   currentTab: any = 'note';
-  hasShowComment: boolean = false;
-  orderDesc: boolean = false;
-  hasSortBy: boolean = false;
-  noteChanged: boolean = false;
+  hasShowComment = false;
+  orderDesc = false;
+  hasSortBy = false;
+  noteChanged = false;
   customEditor: any;
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
 
-  subPage: string = noteConstants.PAGE_NOTE_EDIT;
+  showFormatGroupMobile = false;
 
-  buttonControl: string = '';
+  readonly subPage = noteConstants.PAGE_NOTE_EDIT;
+
+  buttonControl = '';
 
   form: FormGroup;
   name: AbstractControl;
@@ -87,10 +81,10 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   private closeSubject: Subject<any> = new Subject<any>();
   private noSaveSubject: Subject<any> = new Subject<any>();
   private destroySubject: Subject<any> = new Subject<any>();
-  private editMode: string = Constants.modal.add;
+  private editMode = Constants.modal.add;
   private parentId: string;
   private noSave$: Observable<any>;
-  private defaultImg: string = Constants.img.default;
+  private defaultImg = Constants.img.default;
   private editorElement: any;
   private copiedFormat: any = {};
   private isCopied: boolean;
@@ -103,11 +97,11 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
+    private renderer: Renderer2,
     private noteService: ZNoteService,
     protected router: Router,
     private route: ActivatedRoute,
     private store: Store<any>,
-    private fileService: GenericFileService,
     private apiBaseService: ApiBaseService,
     private clientDetectorService: ClientDetectorService,
     private photoService: PhotoService,
@@ -116,26 +110,29 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     private fileUploaderService: FileUploaderService,
     private commonEventService: CommonEventService
   ) {
-    this.noSave$ = Observable.merge(
+    this.renderer.addClass(document.body, 'modal-open');
+    this.noSave$ = merge(
       this.noSaveSubject.asObservable(),
       this.destroySubject,
       this.closeSubject
     );
 
-    let getOs: any = this.clientDetectorService.getOs();
-    this.buttonControl = getOs.name == 7 ? '⌘' : 'ctrl';
+    const getOs: any = this.clientDetectorService.getOs();
+    this.buttonControl = getOs.name === 7 ? '⌘' : 'ctrl';
   }
 
   ngOnInit() {
     this.assignFormValue(null);
     this.context$ = this.store.select('context');
     this.commonEventService
-      .filter((e: any) => e.channel == 'noteActionsBar')
+      .filter((e: any) => e.channel === 'noteActionsBar')
       .pipe(takeUntil(this.destroySubject))
       .subscribe((e: any) => {
         switch (e.action) {
           case 'note:note_edit:close':
-            this.router.navigate([{ outlets: { detail: null } }]);
+            this.router.navigate([{ outlets: { detail: null } }], {
+              queryParamsHandling: 'preserve' , preserveFragment: true
+            });
             break;
           case 'note:note_edit:print':
             this.print();
@@ -149,16 +146,16 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.route.paramMap
       .pipe(
         combineLatest(this.context$),
-        switchMap(([paramMap, context]: any) => {
-          let noteId = paramMap.get('id');
+        switchMap(([paramMap, ctx]: any) => {
+          const noteId = paramMap.get('id');
           this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
           if (!!noteId) {
-            if (context.page == noteConstants.PAGE_TRASH) {
-              return this.noteService.get(noteId).map(res => res.data);
+            if (ctx.page === noteConstants.PAGE_TRASH) {
+              return this.noteService.get(noteId).pipe(map(res => res.data));
             } else {
               return this.noteService
                 .getNoteAvailable(noteId)
-                .map(res => res.data);
+                .pipe(map(res => res.data));
             }
           } else {
             return of(new Note());
@@ -190,10 +187,6 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     );
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    console.log('ngOnChanges:', changes);
-  }
-
   ngOnDestroy() {
     this.closeSubject.next('');
     this.closeSubject.unsubscribe();
@@ -204,19 +197,18 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
   registerAutoSave() {
     // Auto save
-    Observable.merge(
+    merge(
       this.form.valueChanges,
-      Observable.fromEvent(this.customEditor, 'text-change')
+      fromEvent(this.customEditor, 'text-change')
     )
       .pipe(
-        // tap(() => (this.noteChanged = true)),
-        takeUntil(Observable.merge(this.noSave$, this.closeSubject)),
+        takeUntil(merge(this.noSave$, this.closeSubject)),
         debounceTime(DEBOUNCE_MS),
-        takeUntil(Observable.merge(this.noSave$, this.closeSubject))
+        takeUntil(merge(this.noSave$, this.closeSubject))
       )
       .subscribe(() => {
         this.noteChanged = true;
-        if (this.editMode == Constants.modal.add && !this.note.id) {
+        if (this.editMode === Constants.modal.add && !this.note.id) {
           this.onFirstSave();
         } else {
           this.updateNote();
@@ -231,17 +223,40 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       }
     });
 
-    var bindings = {
-      enter: {
-        key: 13,
-        collapsed: true,
-        prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b\/?/,
-        handler: function h(range, context) {
-          this.addHyperLink(range, context);
+    const bindings = {
+      custom_enter: {
+        key: 'Enter',
+        shiftKey: null,
+        prefix: LINK_PATTERN,
+        handler: (range, ctx) => {
+          this.addHyperLink(range, ctx);
           return true;
-        }.bind(this)
+        }
       }
     };
+
+    const Font = Quill.import('formats/font');
+    Font.whitelist = [
+      'gotham',
+      'georgia',
+      'helvetica',
+      'courier-new',
+      'times-new-roman',
+      'trebuchet',
+      'verdana'
+    ];
+
+    const Size = Quill.import('attributors/style/size');
+    Size.whitelist = ['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt'];
+    // Size.whitelist = ['8px', '10px', '12px', '14px', '18px', '24px', '36px'];
+
+    const BlockEmbed = Quill.import('blots/block/embed');
+
+    class DividerBlot extends BlockEmbed {
+    }
+
+    DividerBlot.blotName = 'divider';
+    DividerBlot.tagName = 'hr';
 
     Quill.register(Font, true);
     Quill.register(Size, true);
@@ -250,14 +265,12 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     Quill.register('modules/counter', Counter, true);
     Quill.register('modules/customImage', CustomImage, true);
 
-    let modules: any = {
+    const modules: any = {
       modules: {
-        toolbar: {
-          container: '#quill-toolbar'
+        toolbar: '#quill-toolbar',
+        keyboard: {
+          bindings: bindings
         },
-        // keyboard: {
-        //   bindings: bindings
-        // },
         counter: {
           container: '#counter',
           unit: 'word'
@@ -288,13 +301,13 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       scrollingContainer: '#scrolling-container'
     };
 
-    if (this.note.permission == 'view') {
+    if (this.note.permission === 'view') {
       modules.modules.imageResize = null;
       modules.placeholder = '';
     }
     this.customEditor = new Quill('#quill-editor', modules);
-    if (this.note.permission == 'view') this.customEditor.disable();
-    if (!this.note.permission || this.note.permission != 'view')
+    if (this.note.permission === 'view') this.customEditor.disable();
+    if (!this.note.permission || this.note.permission !== 'view')
       $('#quill-toolbar').show();
 
     this.editorElement = document.querySelector('div.ql-editor');
@@ -319,7 +332,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   extendClipboard(self: any) {
-    var Clipboard = Quill.import('modules/clipboard');
+    const Clipboard = Quill.import('modules/clipboard');
 
     class PlainClipboard extends Clipboard {
       onPaste(e: any) {
@@ -329,45 +342,42 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
           this.container.style.position = 'fixed';
           this.container.style.zIndex = '-1';
 
-          var dataClipboard1 = e.clipboardData.types;
-
+          const dataClipboard1 = e.clipboardData.types;
+          let fileClipboard: any;
           if (dataClipboard1[0].match('Files')) {
             if (e.clipboardData.items[0].type.match('image/*')) {
-              var fileClipboard = e.clipboardData.items[0].getAsFile();
+              fileClipboard = e.clipboardData.items[0].getAsFile();
             }
           }
 
           if (e.defaultPrevented || !this.quill.isEnabled()) return;
-          let range = this.quill.getSelection();
+          const range = this.quill.getSelection();
           let delta = new Delta().retain(range.index);
-          console.debug('onPaste: ', e);
-          // let scrollTop = this.quill.scrollingContainer.scrollTop;
-          // this.scrollTop = scrollTop;
-          // this.container.focus(); // comment out to prevent scroll to top
+          const scrollTop = this.quill.scrollingContainer.scrollTop;
+          this.container.focus();
           this.quill.selection.update(Quill.sources.SILENT);
           setTimeout(() => {
             if (dataClipboard1[0].match('text/*')) {
               delta = delta.concat(this.convert()).delete(range.length);
               this.quill.updateContents(delta, Quill.sources.USER);
-              // this.quill.setSelection(delta.length() - range.length, Quill.sources.SILENT);
+              this.quill.setSelection(
+                delta.length() - range.length,
+                Quill.sources.SILENT
+              );
+              this.quill.scrollingContainer.scrollTop = scrollTop;
               this.quill.focus();
-              // this.quill.scrollingContainer.scrollTop = scrollTop;
-              // this.scrollTop = null;
-              // this.quill.selection.scrollIntoView();
             } else {
-              if (fileClipboard.type.match('image/*')) {
-                // var reader = new FileReader();
-                // reader.onload = (e: any) => {
-                let ids = [];
-                const randId = `img_${new Date().getTime()}`;
+              if (fileClipboard && fileClipboard.type.match('image/*')) {
+                const ids = [];
+                let randId = `img_${new Date().getTime()}`;
                 self.insertFakeImage(randId);
                 ids.push(randId);
                 // let file = e.target['result'];
-                let files = [fileClipboard];
+                const files = [fileClipboard];
                 self.photoUploadService
                   .uploadPhotos(files)
                   .subscribe((res: any) => {
-                    const randId = ids.shift();
+                    randId = ids.shift();
                     $(`i#${randId}`).after(
                       `<img src="${res.data.url}" data-id="${res.data.id}" />`
                     );
@@ -395,20 +405,17 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.customEditor.keyboard.addBinding({
       key: ' ',
       collapsed: true,
-      prefix: /\b(www\.\S*\.\S*|https?:\/\/\S*\.\S*(\.\S*)?)\b\/?$/,
-      handler: function(range, context) {
-        this.addHyperLink(range, context);
-      }.bind(this)
+      prefix: LINK_PATTERN,
+      handler: (range, ctx) => {
+        this.addHyperLink(range, ctx);
+      }
     });
   }
 
-  addHyperLink(range, context) {
-    console.debug('Delta: ', new Delta());
-
-    let [line, offset] = this.customEditor.getLine(range.index);
-    let link = context.prefix.split(' ').pop();
-    console.debug('range ', range, context, link);
-    let fullUrl = link.includes('http') ? link : `https://${link}`;
+  addHyperLink(range, ctx) {
+    const [line, offset] = this.customEditor.getLine(range.index);
+    const link = ctx.prefix.split(' ').pop();
+    const fullUrl = link.includes('http') ? link : `https://${link}`;
 
     this.customEditor.updateContents(
       new Delta()
@@ -422,7 +429,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   onToEditor(e: any) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       // enter
       $('.ql-editor').focus();
     }
@@ -430,7 +437,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
   registerImageBlot() {
     Quill.register(ImageBlot);
-    var toolbar = this.customEditor.getModule('toolbar');
+    const toolbar = this.customEditor.getModule('toolbar');
     toolbar.addHandler('image', () => this.selectInlinePhotos4Note());
   }
 
@@ -451,11 +458,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
   // id: placeholder when fake images
   // data-id: real WTH photo id for editing
-  insertInlineImage(
-    id: any,
-    url: string = this.defaultImg,
-    dataId: string = null
-  ) {
+  insertInlineImage(id: any, url = this.defaultImg, dataId = null) {
     const range = this.customEditor.getSelection(true);
     this.customEditor.insertText(range.index, '\n', Quill.sources.USER);
     this.customEditor.insertEmbed(
@@ -476,7 +479,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.mediaSelectionService.open();
     this.mediaSelectionService.setMultipleSelection(true);
 
-    let close$: Observable<any> = Observable.merge(
+    const close$: Observable<any> = merge(
       this.mediaSelectionService.open$,
       componentDestroyed(this)
     );
@@ -488,7 +491,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         );
       });
 
-    let ids: string[] = [];
+    const ids: string[] = [];
     this.mediaSelectionService.uploadingMedias$
       .pipe(
         takeUntil(close$),
@@ -510,7 +513,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   copyFormat() {
-    let formats = this.customEditor.getFormat(
+    const formats = this.customEditor.getFormat(
       this.customEditor.selection.savedRange.index,
       this.customEditor.selection.savedRange.length
     );
@@ -519,22 +522,19 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     });
     this.copiedFormat = formats;
     this.isCopied = true;
-    console.debug('copyFormat: ', formats, this.customEditor.selection);
   }
 
   listenImageChanges() {
     this.photoService.modifiedPhotos$
       .pipe(takeUntil(this.destroySubject.asObservable()))
       .subscribe((object: any) => {
-        console.debug('modifiedPhotos - note: ', object);
         switch (object.action) {
           case 'update':
-            let updatedPhoto = object.payload.photo;
+            const updatedPhoto = object.payload.photo;
             $(`img[data-id=${updatedPhoto.id}]`).attr('src', updatedPhoto.url);
             break;
           case 'delete':
-            console.debug('unimplemented DELETE photo in post: ', object);
-            let photoId = object.payload.photo.id;
+            const photoId = object.payload.photo.id;
             $(`img[data-id=${photoId}]`).remove();
             break;
           default:
@@ -552,12 +552,12 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     this.customEditor.on('selection-change', (range, oldRange, source) => {
       if (this.isCopied && range) {
         let sIndex, sLength;
-        if (range.length == 0) {
-          var prefix = this.customEditor
+        if (range.length === 0) {
+          const prefix = this.customEditor
             .getText(0, range.index)
             .split(/\W/)
             .pop();
-          var suffix = this.customEditor
+          const suffix = this.customEditor
             .getText(range.index)
             .split(/\W/)
             .shift();
@@ -578,10 +578,8 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   doubleClickImage(event: any) {
-    let photoId: string = event.target.dataset.id;
+    const photoId = event.target.dataset.id;
     if (photoId && photoId !== 'null') {
-      // $('#modal-note-edit').css('z-index', '0');
-      // $('.modal-backdrop').css('z-index', '0');
       this.router.navigate(
         [
           {
@@ -623,9 +621,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   updateCurrentNote(): void {
     this.store
       .select(fromRoot.getCurrentNote)
-      .pipe(takeUntil(Observable.merge(this.closeSubject, this.destroySubject)))
+      .pipe(takeUntil(merge(this.closeSubject, this.destroySubject)))
       .subscribe((note: Note) => {
-        if (note != undefined) {
+        if (note !== undefined) {
           this.updateFormValue(note);
         }
       });
@@ -667,15 +665,19 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   divider() {
-    let range = this.customEditor.getSelection(true);
-    this.customEditor.insertText(range.index, '\n', Quill.sources.USER);
+    const range = this.customEditor.getSelection(true);
+    const offset = 0;
+    // this.customEditor.insertText(range.index, '\n', Quill.sources.USER);
     this.customEditor.insertEmbed(
-      range.index + 1,
+      range.index + offset,
       'divider',
       true,
       Quill.sources.USER
     );
-    this.customEditor.setSelection(range.index + 2, Quill.sources.SILENT);
+    this.customEditor.setSelection(
+      range.index + offset + 1,
+      Quill.sources.SILENT
+    );
   }
 
   /*
@@ -693,24 +695,24 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   selectFiles(event: any) {
-    let files = event.target.files;
-    if (files.length == 0) {
+    const files = event.target.files;
+    if (files.length === 0) {
       return;
     }
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files);
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(10000000, {only: /video\//g})]);
     this.note.attachments = [
       ...this.note.attachments,
-      ...filesAddedPolicy.filter(file => file.allow == true)
+      ...filesAddedPolicy.filter(file => file.allow === true)
     ];
 
     for (let i = 0; i < files.length; i++) {
-      let f = files[i];
-      let sub = this.fileUploaderService
+      const f = files[i];
+      const sub = this.fileUploaderService
         .uploadGenericFile(f)
         .subscribe((response: any) => {
           if (!response.error) {
             this.note.attachments = this.note.attachments.map(att => {
-              if (att.name == response.data.full_name && !att.uuid)
+              if (att.name === response.data.full_name && !att.uuid)
                 return response.data;
               return att;
             });
@@ -720,7 +722,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
       this.uploadSubscriptions[f.name] = sub;
     }
-    const filesNotAllow = filesAddedPolicy.filter(file => file.allow == false);
+    const filesNotAllow = filesAddedPolicy.filter(file => file.allow === false);
     if (filesNotAllow.length > 0)
       this.commonEventService.broadcast({
         channel: 'LockMessage',
@@ -730,8 +732,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
   selectPhotos() {
     // this.photoSelectDataService.open({return: true});
-    this.mediaSelectionService.open();
-    this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({ allowSelectMultiple: true });
 
     this.selectPhotos4Attachments();
   }
@@ -742,9 +743,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       value.tags.length > 0 ||
       value.attachments.length > 0 ||
       (this.editorElement.innerHTML.length > 0 &&
-        this.editorElement.innerHTML != '<p><br></p>')
+        this.editorElement.innerHTML !== '<p><br></p>')
     ) {
-      if (this.editMode == Constants.modal.add) {
+      if (this.editMode === Constants.modal.add) {
         if (this.note.permission !== 'view') {
           this.store.dispatch(
             new note.Add({
@@ -755,7 +756,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
           );
         }
       } else {
-        if (this.note.permission != 'view' && this.noteChanged) {
+        if (this.note.permission !== 'view') {
           this.store.dispatch(
             new note.Update({
               ...value,
@@ -770,19 +771,19 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   onModalClose(options = null) {
-    if (options) {
-      this.router.navigate([{ outlets: { detail: null } }], options);
-    } else {
-      this.router.navigate([{ outlets: { detail: null } }]);
-    }
+    const qOptions = options
+      ? { ...options, queryParamsHandling: 'merge' }
+      : { queryParamsHandling: 'merge' };
+    this.router.navigate([{ outlets: { detail: null } }], qOptions);
     this.closeSubject.next('');
+    this.renderer.removeClass(document.body, 'modal-open');
   }
 
   /**
    * Save post and change to EDIT mode
    */
   onFirstSave() {
-    if (this.editMode == Constants.modal.add) {
+    if (this.editMode === Constants.modal.add) {
       this.noteService
         .create({
           ...this.form.value,
@@ -794,7 +795,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
           this.note = res.data;
           this.editMode = Constants.modal.edit;
           this.store.dispatch(new note.MultiNotesAdded([res['data']]));
-          this.router.navigate([
+          return this.router.navigate([
             { outlets: { detail: ['notes', this.note.id] } }
           ]);
         });
@@ -808,13 +809,13 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
         object_type: file.object_type
       })
       .subscribe((res: any) => {
-        var blob = new Blob([res], { type: file.content_type });
+        const blob = new Blob([res], { type: file.content_type });
         saveAs(blob, `${file.name}.${file.extension}`);
       });
   }
 
   fileAttachmentClick(file: any) {
-    if (file.object_type == 'photo') {
+    if (file.object_type === 'photo') {
       $('#modal-note-edit').css('z-index', '0');
       $('.modal-backdrop').css('z-index', '0');
       this.router.navigate([
@@ -824,7 +825,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
   }
 
   print() {
-    let editor: any = document.querySelector('div.ql-editor');
+    const editor: any = document.querySelector('div.ql-editor');
 
     if (!document.querySelector('.printable')) {
       $('body').after(
@@ -833,24 +834,28 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
     }
     document.querySelector('.printable > .ql-editor').innerHTML =
       editor.innerHTML;
-    let printable: any = document.querySelector('.printable > .ql-editor');
+    const printable: any = document.querySelector('.printable > .ql-editor');
     printable.innerHTML = editor.innerHTML;
     window.print();
   }
 
   downloadAttachments() {
     if (this.note.attachments) {
-      for (let att of this.note.attachments) {
+      for (const att of this.note.attachments) {
         this.download(att);
       }
     }
   }
 
-  private selectPhotos4Attachments() {
-    this.mediaSelectionService.open();
-    this.mediaSelectionService.setMultipleSelection(true);
+  onSaveName(event: any) {
+    this.note.name = event;
+    this.form.controls['name'].setValue(event);
+  }
 
-    let close$: Observable<any> = Observable.merge(
+  private selectPhotos4Attachments() {
+    this.mediaSelectionService.open({ allowSelectMultiple: true });
+
+    let close$: Observable<any> = merge(
       this.mediaSelectionService.open$,
       componentDestroyed(this)
     );
@@ -866,9 +871,9 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
       .subscribe((files: any) => {
         this.note.attachments.push(...files);
         _.forEach(files, (file: any) => {
-          let sub = this.photoUploadService.uploadPhotos(files).subscribe(
+          const sub = this.photoUploadService.uploadPhotos(files).subscribe(
             (response: any) => {
-              let index = _.indexOf(this.note.attachments, file);
+              const index = _.indexOf(this.note.attachments, file);
               this.note.attachments[index] = response.data;
               this.form.controls['attachments'].setValue(this.note.attachments);
             },
@@ -884,7 +889,7 @@ export class ZNoteDetailEditComponent implements OnInit, AfterViewInit {
 
   private updateNote() {
     if (!this.note.id) return;
-    let noteObj: any = Object.assign({}, this.note, this.form.value, {
+    const noteObj: any = Object.assign({}, this.note, this.form.value, {
       content: this.editorElement.innerHTML
     });
     this.store.dispatch(new note.Update(noteObj));

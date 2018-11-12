@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ZContactSearchRoutingModule } from '@contacts/search/search-routing.module';
 import { ContactSearchComponent } from '@contacts/search/search.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { InvitationModule } from '@shared/shared/components/invitation/invitation.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     ReactiveFormsModule,
     BsModalModule,
     ZContactSearchRoutingModule,
+    InvitationModule,
     InfiniteScrollModule,
     ContactSharedModule
   ],

@@ -1,9 +1,4 @@
-<div
-  class="page-body-content gray-light"
-  lockYOffset="20"
-  observeAttributes="true"
-  infinite-scroll
-  [scrollWindow]="true"
+<div class="page-body-content gray-light" lockYOffset="20" observeAttributes="true" infinite-scroll [scrollWindow]="true"
   (scrolled)="onLoadMore()">
   <div class="page-body-content-in zone-social">
     <div class="zone-social-in">
@@ -17,8 +12,9 @@
               </div>
               <div class="z-shared-info">
                 <ul>
-                  <li>{{ community?.users?.length }} {{ (community?.users && community?.users.length >= 2) ? 'members' :
-                    'member' }}
+                  <li>
+                    {{ community?.users?.length }}
+                    {{ (community?.users && community?.users.length >= 2) ? 'members' : 'member' }}
                   </li>
                   <li *ngIf="is_close">
                     Private
@@ -30,20 +26,18 @@
 
             <div class="hd-item-action-right-bottom">
               <div class="btn-group">
-                <button class="btn btn-outline-default" type="button" (click)="chooseMembers($event)"
-                        data-toggle="modal"
-                        data-target="#modal-social-share-com" *ngIf="isMember">
+                <button class="btn btn-outline-default" type="button" (click)="chooseMembers($event)" data-toggle="modal"
+                  data-target="#modal-social-share-com" *ngIf="isMember">
                   <i class="fa fa-user-plus"></i> Invite Member
                 </button>
-                <button class="btn btn-outline-default" type="button" (click)="askToJoin()"
-                        *ngIf="!isMember && !joinRequestId">
+                <button class="btn btn-outline-default" type="button" (click)="askToJoin()" *ngIf="!isMember && !joinRequestId">
                   <i class="fa fa-user-plus"></i> Ask to join
                 </button>
               </div>
 
               <div class="btn-group" *ngIf="!isMember && joinRequestId != undefined">
                 <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                  aria-haspopup="true" aria-expanded="false">
                   Asked to join <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-custom">
@@ -55,7 +49,7 @@
 
               <div class="btn-group" *ngIf="!isMember && invitationId != undefined">
                 <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                  aria-haspopup="true" aria-expanded="false">
                   Invited to join <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-custom">
@@ -68,25 +62,25 @@
               <!--community menu-->
               <div class="btn-group" *ngIf="isMember">
                 <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)"
-                        pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top">
+                  aria-haspopup="true" aria-expanded="true" (click)="getUserSettings(community?.uuid)" pTooltip="{{ tooltip.moreAction }}"
+                  tooltipPosition="top">
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right">
                   <li *ngIf="isAdmin"><a href="javascript:;" (click)="onEdit()">Edit Information</a></li>
                   <li><a href="javascript:;" (click)="toggleComNotification(community?.uuid)">
-                    {{ userSettings?.mute ? 'Enable' : 'Disable' }} notifications </a>
+                      {{ userSettings?.mute ? 'Enable' : 'Disable' }} notifications </a>
                   </li>
                   <li><a href="javascript:;" (click)="onPreference()">Preferences</a></li>
                   <li *ngIf="isAdmin"><a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab: 'members'}">Manage
-                    members</a>
+                      members</a>
                   </li>
                   <li role="separator" class="divider"></li>
-                  <li>
-                    <a href="javascript:;" (click)="addFavourite(uuid)"> Favourites
-                      <i class="fa pull-right" [ngClass]="userSettings?.favorite ? 'fa-star': 'fa-star-o'"></i>
-                    </a>
-                  </li>
+                  <!--<li>-->
+                  <!--<a href="javascript:;" (click)="addFavourite(uuid)"> Favourites-->
+                  <!--<i class="fa pull-right" [ngClass]="userSettings?.favorite ? 'fa-star': 'fa-star-o'"></i>-->
+                  <!--</a>-->
+                  <!--</li>-->
                   <li><a href="javascript:;" (click)="confirmLeaveCommunity()">Leave community</a></li>
                   <li><a href="javascript:;" (click)="onReport()">Report community</a></li>
                   <li *ngIf="isAdmin"><a href="javascript:;" (click)="onDelete()">Delete community</a></li>
@@ -98,21 +92,25 @@
 
         </cover-profile>
 
+        <!--<w-nav-tab [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)"></w-nav-tab>-->
+
         <nav class="nav-tabs-wrap clearfix">
           <div class="pull-left btn-group hidden-md hidden-lg mt10 mb10">
             <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
+              aria-expanded="false">
               {{ selectedTabTitle?.value }} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
               <ng-template ngFor let-itab [ngForOf]="tabData" *ngIf="isAdmin">
                 <li>
-                  <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="itab.key !== tab.post ? {tab:itab.key} : {}">{{ itab.value }}</a>
+                  <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="itab.key !== tab.post ? {tab:itab.key} : {}">{{
+                    itab.value }}</a>
                 </li>
               </ng-template>
               <ng-template ngFor let-itab [ngForOf]="tabData" *ngIf="!isAdmin">
                 <li *ngIf="itab.key != 'invitations' && itab.key != 'join_requests'">
-                  <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="itab.key !== tab.post ? {tab:itab.key} : {}">{{ itab.value }}</a>
+                  <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="itab.key !== tab.post ? {tab:itab.key} : {}">{{
+                    itab.value }}</a>
                 </li>
               </ng-template>
             </ul>
@@ -123,14 +121,13 @@
               <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{}">Post</a>
             </li>
             <li [ngClass]="selectedTab=='about'? 'active': ''">
-              <!--<a [routerLink]="['/'+ communitiesUrl+ '/'+ uuid]" [queryParams]="{tab:'about'}">About</a>-->
               <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'about'}">About</a>
             </li>
             <li [ngClass]="selectedTab=='members'? 'active': ''">
               <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'members'}">
                 Members
                 <span *ngIf="community?.member_count" class="badge-right">{{ community?.member_count }}</span>
-               </a>
+              </a>
             </li>
             <li [ngClass]="selectedTab=='invitations'? 'active': ''" *ngIf="isAdmin">
               <a [routerLink]="[communitiesUrl, uuid]" [queryParams]="{tab:'invitations'}">
@@ -144,20 +141,14 @@
                 <span *ngIf="community?.join_request_count" class="badge-right">{{ community?.join_request_count }}</span>
               </a>
             </li>
-            <!--<li [ngClass]="selectedTab=='blacklist'? 'active': ''" *ngIf="isAdmin">-->
-            <!--<a [routerLink]="['/', communitiesUrl, uuid]" [queryParams]="{tab:'blacklist'}">Blacklist</a>-->
-            <!--</li>-->
           </ul>
 
         </nav>
       </div>
 
       <!--post list-->
-      <so-post-list *ngIf="activeTabs.post" #posts
-                    [user]="authService.user$|async"
-                    [type]="'community'"
-                    [canCreatePost]="isMember"
-                    [community]="community"></so-post-list>
+      <so-post-list *ngIf="activeTabs.post" #posts [user]="authService.user$|async" [posts]="soStorageService.postList$  | async"
+        [type]="'community'" [canCreatePost]="isMember" [community]="community"></so-post-list>
 
       <!--about-->
       <div class="panel panel-default" *ngIf="activeTabs.about">
@@ -190,90 +181,88 @@
         <entity-select #users type='member_invite' (onSelected)="inviteMembers($event)"></entity-select>
       </div>
 
-      <div class="panel panel-default" *ngIf="isMember && !activeTabs.about && !activeTabs.post">
-        <ul class="list-group" *ngIf="selectedTab == 'members'">
-          <ng-template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
-            <li class="list-group-item" >
-              <div class="dropdown pull-right">
-                <!--<span class="text-fade member-role">{{ community.user.uuid == community.community.admin.uuid ? MEMBER_ROLE.Admin : MEMBER_ROLE.Member}}</span>-->
-                <span class="text-fade member-role">{{ (item?.role === 1) ? 'Admin' :'Member' }}</span>
-                <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true" >
-                  <i class="fa fa-ellipsis-v"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-custom">
-                  <li><a href="javascript:;" (click)="makeAdmin(item?.user)" *ngIf="isAdmin">Make Admin</a></li>
-                  <li><a href="javascript:;" (click)="deleteMember(item?.user)" *ngIf="isAdmin">Remove</a></li>
-                  <li><a href="javascript:;" (click)="onReportMember(item?.user.uuid)">Report
-                    Member</a>
-                  </li>
-                  <li><a href="javascript:;" *ngIf="isAdmin">Blacklist</a></li>
-                </ul>
-              </div>
-              <a [routerLink]="['/profile', item?.user?.uuid]">
-                <img [alt]="item?.user?.name" [src]="item?.user?.profile_image" title="" width="30">
-                <span>{{ item?.user.name }}</span>
-              </a>
-            </li>
-          </ng-template>
-        </ul>
-
-        <ul class="list-group" *ngIf="activeTabs.invitations">
-          <ng-template *ngIf="tabItems" ngFor let-item [ngForOf]="tabItems">
-            <li class="list-group-item" data-id="invitation_{{ item.id }}">
-                <div class="dropdown pull-right">
-                  <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">CANCEL</a>
+      <ng-container *ngIf="isMember && !activeTabs.about && !activeTabs.post">
+        <ng-container *ngIf="tabItems">
+          <div class="panel panel-default" *ngIf="selectedTab == 'members'">
+            <ul class="list-group">
+              <li *ngFor="let item of tabItems" class="list-group-item">
+                <div class="media-avatar">
+                  <a class="media-avatar-img avatar-xs" [routerLink]="['/profile', item?.user?.uuid]" href="#">
+                    <img [src]="item?.user?.profile_image" alt="">
+                  </a>
+                  <div class="media-avatar-body align-self-center">{{ item?.user.name }}</div>
+                  <div class="media-avatar-action">
+                    <div class="d-flex">
+                      <span class="text-fade member-role align-self-center">
+                        {{ (item?.role === 1) ? 'Admin' :'Member' }}
+                      </span>
+                      <div class="btn-group dropup ml10">
+                        <button class="btn btn-outline-default dropdown-toggle" aria-expanded="false" aria-haspopup="true"
+                          data-toggle="dropdown" type="button">
+                          <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                          <li><a href="javascript:;" (click)="makeAdmin(item?.user)" *ngIf="isAdmin">Make Admin</a></li>
+                          <li><a href="javascript:;" (click)="deleteMember(item?.user)" *ngIf="isAdmin">Remove</a></li>
+                          <li><a href="javascript:;" (click)="onReportMember(item?.user.uuid)">Report Member</a></li>
+                          <li><a href="javascript:;" *ngIf="isAdmin">Blacklist</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              <a [routerLink]="['/profile', item?.accepter?.uuid]">
-                <img [alt]="item?.accepter.name" [src]="item?.accepter?.profile_image" title="" width="30">
-                <span>{{ item?.accepter.name }}</span>
-              </a>
-            </li>
-          </ng-template>
-        </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="panel panel-default" *ngIf="activeTabs.invitations">
+            <ul class="list-group">
+              <li *ngFor="let item of tabItems" class="list-group-item" data-id="invitation_{{ item.id }}">
+                <div class="media-avatar">
+                  <a class="media-avatar-img avatar-xs" [routerLink]="['/profile', item?.accepter?.uuid]" href="#">
+                    <img [src]="item?.accepter?.profile_image" alt="">
+                  </a>
+                  <div class="media-avatar-body align-self-center">{{ item?.accepter.name }}</div>
+                  <div class="media-avatar-action">
+                    <button class="btn btn-link" (click)="cancelInvitation(item.id)" type="button">CANCEL</button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="panel panel-default" *ngIf="activeTabs.joinRequests">
+            <ul class="list-group">
+              <li *ngFor="let item of tabItems" class="list-group-item" data-id="invitation_{{ item.id }}">
+                <div class="media-avatar">
+                  <a class="media-avatar-img avatar-xs" [routerLink]="['/profile', item?.inviter?.uuid]" href="#">
+                    <img [src]="item?.inviter.profile_image" alt="">
+                  </a>
+                  <div class="media-avatar-body align-self-center">{{ item?.inviter.name }}</div>
+                  <div class="media-avatar-action">
+                    <div class="d-flex">
+                      <button class="btn btn-link" (click)="acceptJoinRequest(item)" type="button">ACCEPT</button>
+                      <button class="btn btn-link" (click)="cancelInvitation(item.id)" type="button">REJECT</button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </ng-container>
+      </ng-container>
 
-        <ul class="list-group" *ngIf="activeTabs.joinRequests">
-          <ng-template ngFor let-item [ngForOf]="tabItems">
-            <li class="list-group-item" data-id="invitation_{{ item.id }}">
-              <div class="dropdown pull-right">
-                <!--<a href="#" class="btn btn-link">ACCEPT</a>-->
-                <!--<a href="#" class="btn btn-link">DENY</a>-->
-                <!--<a href="#" class="btn btn-link">REQUESTED</a>-->
-                <a href="javascript:;" class="btn btn-link" (click)="acceptJoinRequest(item)">ACCEPT</a>
-                <a href="javascript:;" class="btn btn-link" (click)="cancelInvitation(item.id)">REJECT</a>
-              </div>
-              <a [routerLink]="['/profile', item?.inviter?.uuid]">
-                <img [alt]="item?.inviter.name" [src]="item?.inviter.profile_image" title="" width="30">
-                <span>{{ item?.inviter.name }}</span>
-              </a>
-            </li>
-          </ng-template>
-        </ul>
-      </div>
     </div>
     <z-social-favorites #favorites></z-social-favorites>
   </div>
 
   <ng-template [ngIf]="community">
-    <z-social-community-form-edit
-      #modalEdit
-      [data]="community"
-      [action]="'edit'"
-      (updated)="onUpdated($event)">
+    <z-social-community-form-edit #modalEdit [data]="community" [action]="'edit'" (updated)="onUpdated($event)">
     </z-social-community-form-edit>
 
-    <z-social-community-form-preference
-      #modalPreference
-      [data]="community"
-      (updated)="onUpdated($event)">
+    <z-social-community-form-preference #modalPreference [data]="community" (updated)="onUpdated($event)">
     </z-social-community-form-preference>
   </ng-template>
 
-  <z-social-community-form-edit
-    #modalEdit
-    [data]="community"
-    [action]="'edit'"
-    (updated)="onUpdated($event)">
+  <z-social-community-form-edit #modalEdit [data]="community" [action]="'edit'" (updated)="onUpdated($event)">
   </z-social-community-form-edit>
 
   <wth-zone-report></wth-zone-report>

@@ -8,29 +8,8 @@
       <p class="bold">Default phone number country code</p>
       <div class="row">
         <div class="col-sm-6">
-          <div class="form-group no-label">
-            <p-autoComplete class="form-control-phone-country" formControlName="phone_default_code"
-                            [suggestions]="filteredCountriesCode"
-                            (completeMethod)="filterCountriesCode($event)" [size]="30"
-                            [minLength]="1" placeholder="Select your country" [dropdown]="true"
-                            (onDropdownClick)="handleDropdownClick()">
-              <ng-template ngFor let-code let-i="index" pTemplate="item">
-                <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
-              </ng-template>
-            </p-autoComplete>
-          </div>
-        </div>
-      </div>
-
-      <p class="bold">List sort by</p>
-      <div class="row">
-        <div class="col-xs-12">
-          <p-radioButton name="contacts_sort_by" value="first_name" group="First Name"
-                         formControlName="contacts_sort_by"></p-radioButton>
-        </div>
-        <div class="col-xs-12">
-          <p-radioButton name="contacts_sort_by" value="last_name" group="Last Name"
-                         formControlName="contacts_sort_by"></p-radioButton>
+          <w-countries [country]="form.value.phone_default_code" (completeChange)="onCompleteChange($event)"></w-countries>
+          <input type="hidden" formControlName="phone_default_code">
         </div>
       </div>
 
@@ -39,7 +18,7 @@
     <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
 
-      <button type="button" (click)="submit()" [disabled]="!form.valid || form.pristine"
+      <button type="submit" (click)="submit(form.value)" [disabled]="!form.valid"
               class="btn btn-outline-primary btn-min">Done
       </button>
     </bs-modal-footer>

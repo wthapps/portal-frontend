@@ -5,7 +5,7 @@ import { Constants } from '../constant/config/constants';
 import { NotificationChannelService } from '../channels/notification-channel.service';
 import { WTHNavigateService } from './wth-navigate.service';
 import { CommonNotificationInterface } from '@wth/shared/services/common-notification.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AuthService } from '@wth/shared/services/auth.service';
 
 /**

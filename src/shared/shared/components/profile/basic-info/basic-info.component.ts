@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { Constants } from '../../../../constant/config/constants';
 import { CustomValidator } from '../../../validator/custom.validator';
@@ -10,7 +11,6 @@ import { LoadingService } from '../../loading/loading.service';
 import { ToastsService } from '../../toast/toast-message.service';
 import { AddressModel, EmailModel, PhoneModel, ProfileModel } from '../../../models/profile/profile.model';
 
-``
 
 declare let _: any;
 
@@ -158,7 +158,7 @@ export class PartialsBasicInfoComponent implements OnInit, OnDestroy {
 
   handleSelectCropEvent() {
     this.commonEventService.filter((event: any) => event.channel == 'SELECT_CROP_EVENT')
-      .takeUntil(this.destroySubject)
+      .pipe(takeUntil(this.destroySubject))
       .subscribe((event: any) => {
         this.doEvent(event);
       });

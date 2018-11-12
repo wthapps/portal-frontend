@@ -1,22 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { ChatService } from '../shared/services/chat.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 
 @Component({
-  moduleId: module.id,
   selector: 'z-chat-setting',
   templateUrl: 'setting.component.html'
 })
-export class ZChatSettingComponent implements OnInit {
+export class ZChatSettingComponent implements OnInit, OnDestroy {
   form: FormGroup;
   import_information: AbstractControl;
   online: AbstractControl;
   time_to_history: AbstractControl;
   privacy: string;
   setting: any;
+
+  private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(
     private fb: FormBuilder,
@@ -26,7 +30,7 @@ export class ZChatSettingComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.chatService.getSetting().subscribe((res: any) => {
+    this.chatService.getSetting().toPromise().then((res: any) => {
       this.setting = res.data;
       this.form = this.fb.group({
         import_information: this.setting.import_information,
@@ -38,12 +42,22 @@ export class ZChatSettingComponent implements OnInit {
       this.online = this.form.controls['online'];
       this.time_to_history = this.form.controls['time_to_history'];
       this.privacy = this.setting.privacy;
+
+      this.form.valueChanges.pipe(
+        takeUntil(this.destroySubject)
+      ).subscribe(val => this.onSubmit(val));
     });
+
+  }
+
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   onSubmit(value: any) {
     value.privacy = this.privacy;
-    this.chatService.updateSetting(value).subscribe((res: any) => {
+    this.chatService.updateSetting(value).toPromise().then((res: any) => {
       this.setting = res.data;
     });
   }

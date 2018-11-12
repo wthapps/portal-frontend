@@ -9,7 +9,7 @@ import { MyTransactionDetailsComponent } from './transaction/details.component';
 import { MySubscriptionComponent } from '@account/billing/subscription/subscription.component';
 import { MySubscriptionHistoryComponent } from '@account/billing/subscription/subscription-history.component';
 import { MyPlanComponent } from '@account/billing/plan/plan.component';
-import { PaymentMethodComponent } from '@account/billing/payment-method/payment-method.component';
+import { PaymentMethodListComponent } from '@account/billing/payment-method/payment-method-list.component';
 
 @NgModule({
   imports: [
@@ -24,7 +24,7 @@ import { PaymentMethodComponent } from '@account/billing/payment-method/payment-
             path: 'subscription_history',
             component: MySubscriptionHistoryComponent
           },
-          { path: 'payment_method', component: PaymentMethodComponent },
+          { path: 'payment_methods', component: PaymentMethodListComponent },
           { path: 'plan', component: MyPlanComponent },
           { path: 'history', component: MyBillingHistoryComponent },
           { path: '', component: MyBillingHistoryComponent },

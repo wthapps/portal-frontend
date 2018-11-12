@@ -3,14 +3,10 @@
     <note-shared-header class="header-nav-left"></note-shared-header>
   </w-header>
   <main class="main">
-    <div class="main-page-left">
-      <aside class="main-page-left-in aside-menu">
-        <z-shared-menu>
-          <z-note-shared-left-menu></z-note-shared-left-menu>
-        </z-shared-menu>
-      </aside>
-    </div>
-    <div class="main-page-body">
+    <w-left-menu>
+      <z-note-shared-left-menu></z-note-shared-left-menu>
+    </w-left-menu>
+    <div class="main-page-body gray-light">
       <ng-template #modalContainer></ng-template>
       <router-outlet name="modal"></router-outlet>
       <router-outlet name="detail"></router-outlet>
@@ -20,7 +16,6 @@
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
   <wth-confirm></wth-confirm>
-  <!--<h-file-select></h-file-select>-->
   <h-file-select-crop></h-file-select-crop>
   <z-note-share-progress></z-note-share-progress>
   <w-media-selection></w-media-selection>
@@ -35,3 +30,6 @@
   }
   ]">
 </wth-introduction>
+
+<div class="w-uploader-file-input-container">
+</div>

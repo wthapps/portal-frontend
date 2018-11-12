@@ -1,25 +1,33 @@
-<form *ngIf="item.value">
+<form>
   <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-    <bs-modal-header [showDismiss]="true">
-      <h4 class="modal-title"><i class="fa fa-plus"></i> Edit Conversation </h4>
-    </bs-modal-header>
-    <bs-modal-body>
-      <div class="media media-user-list">
-        <div class="media-left">
-          <z-chat-share-user [data]="item.value" [size]="'sm'" [displayUserName]=false></z-chat-share-user>
-        </div>
-        <div class="media-body">
-          <div class="form-group">
-            <input type="text" name="name" class="form-control" placeholder="Name"
-                   [(ngModel)]="item.value.display.name">
+    <ng-container *ngIf="conversation">
+      <bs-modal-header [showDismiss]="true">
+        <h4 class="modal-title">Group Settings</h4>
+      </bs-modal-header>
+      <bs-modal-body>
+        <div class="media media-user-list">
+          <div class="media-left">
+            <z-chat-share-user [data]="conversation" [size]="'sm'" [displayUserName]=false [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
+          </div>
+          <div class="media-body">
+            <div class="form-group">
+              <input type="text" name="name" class="form-control" placeholder="Name" [(ngModel)]="name">
+            </div>
           </div>
         </div>
-      </div>
-    </bs-modal-body>
-    <bs-modal-footer>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
-              (click)="modal.close()">Cancel</button>
-      <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit()">Done</button>
-    </bs-modal-footer>
+        <hr/>
+        <h4>General Settings</h4>
+        <div class="form-group">
+          <div class="inputSwitch-wrap">
+            <p-inputSwitch [(ngModel)]="allow_add" [style]="{width: '50px'}" name="allow_add"></p-inputSwitch>
+            <span>Allow member to add new members</span>
+          </div>
+        </div>
+      </bs-modal-body>
+      <bs-modal-footer>
+        <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="modal.close()">Cancel</button>
+        <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSubmit()">Save</button>
+      </bs-modal-footer>
+    </ng-container>
   </bs-modal>
 </form>

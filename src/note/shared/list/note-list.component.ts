@@ -1,6 +1,6 @@
 import { Component, Input, ViewEncapsulation, OnInit, ChangeDetectionStrategy, HostListener, OnChanges } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { Note } from '@shared/shared/models/note.model';
@@ -33,12 +33,13 @@ export class NoteListComponent implements OnInit {
   @Input() page: string;
   @Input() groupBy: string = 'date';
 
-  noteConstants: NoteConstants = noteConstants;
+  readonly noteConstants: NoteConstants = noteConstants;
   loading$: Observable<boolean>;
   pressingCtrlKey: boolean;
   readonly DATE_MAP: any = noteConstants.DATE_MAP;
   readonly DATE_ARR: string[] = Object.keys(this.DATE_MAP);
   readonly SHARE_PAGES: string[] = [noteConstants.PAGE_SHARED_WITH_ME, noteConstants.PAGE_SHARED_BY_ME];
+  readonly OBJECT_TYPE = noteConstants.OBJECT_TYPE;
 
   readonly VIEW_MODE = {
     GRID: 'grid',

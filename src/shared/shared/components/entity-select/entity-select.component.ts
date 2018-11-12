@@ -1,6 +1,5 @@
 import { Component, ViewChild, Output, EventEmitter, OnInit, Input, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject ,  Subscription } from 'rxjs';
 import { switchMap, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
@@ -51,6 +50,7 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
   @ViewChild('list') list: ListComponent;
 
   @Input() type: string;
+  @Input() placeholder = 'Search';
   @Input() mode: string = MODE_TYPE.add;
   titleIcon: string;
   title: string;
@@ -75,12 +75,12 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(DEBOUNCE_TIME),
         distinctUntilChanged(),
-        switchMap(term => this.apiService.get(this.url, {'search_name': (term == undefined ? '' : term)}))
+        switchMap(term => this.apiService.get(this.url, {'search_name': term || ''}))
 
       )
       .subscribe((res: any) => {
           this.updateData(res['data']);
-        }, (error: any)=> {
+        }, (error: any) => {
           console.log('error', error);
         }
       );
@@ -91,8 +91,9 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.termSubscription && !this.termSubscription.closed)
+    if (this.termSubscription && !this.termSubscription.closed) {
       this.termSubscription.unsubscribe();
+    }
   }
 
   changeEntity(newType: string = '') {
@@ -100,7 +101,7 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
       this.selectedItems.length = 0;
       this.type = _.clone(newType); // Make sure newType value immutable when modal close
     }
-    let entity = _.filter(ENTITY_ATTRS, {type: this.type});
+    const entity = _.filter(ENTITY_ATTRS, {type: this.type});
     this.title = entity[0].title;
     this.titleIcon = entity[0].titleIcon;
     this.url = entity[0].defaultUrl;
@@ -110,22 +111,23 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
   }
 
   open(options: any = {url: undefined, type: '', data: []}, mode: string = 'add') {
-    if (options.type != undefined && options.type != '')
+    if (options.type && options.type !== '') {
       this.changeEntity(options.type);
+    }
 
     this.items.length = 0;
     this.resubscribe();
 
-    if (options.url != undefined && options.url != '') {
+    if (options.url && options.url !== '') {
       this.url = options.url;
     }
 
     // Clear selected items
-    if (mode == MODE_TYPE.add) {
+    if (mode === MODE_TYPE.add) {
       this.selectedItems.length = 0;
     }
 
-    if (mode == MODE_TYPE.edit) {
+    if (mode === MODE_TYPE.edit) {
       this.selectedItems = _.get(options, 'data', []).slice();
     }
 
@@ -171,29 +173,32 @@ export class EntitySelectComponent implements OnInit, OnDestroy {
     this.termSubscription.unsubscribe();
   }
 
-  private updateData(data: any) {
+  private updateData(data: any[]) {
     if (this.selectedItems.length === 0) {
       this.items = data;
     } else {
-      // TODO: shorten the syntax ???
-      this.items.length = 0;
-      this.items.push(...this.selectedItems);
+      // this.items.length = 0;
+      // this.items.push(...this.selectedItems);
+      // for (let i = 0; i < this.items.length; i++) {
+      //   this.items[i].selected = true;
+      // }
 
-      for (let i = 0; i < this.items.length; i++) {
-        this.items[i].selected = true;
-      }
+      // for (let j = 0; j < data.length; j++) {
+      //   let match = false;
+      //   for (let i = 0; i < this.selectedItems.length; i++) {
+      //     if (this.items[i].uuid === data[j].uuid) {
+      //       match = true;
+      //       break;
+      //     }
+      //   }
+      //   if (!match)
+      //     this.items.push(data[j]);
+      // }
 
-      for (let j = 0; j < data.length; j++) {
-        var match = false;
-        for (let i = 0; i < this.selectedItems.length; i++) {
-          if (this.items[i].uuid === data[j].uuid) {
-            match = true;
-            break;
-          }
-        }
-        if (!match)
-          this.items.push(data[j]);
-      }
+      this.items = this.selectedItems.map(item => ({...item, selected: true}));
+      const selectedUuids = this.items.map(item => item.uuid);
+      const newItems = data.filter(item => !selectedUuids.includes(item));
+      this.items.concat(newItems);
     }
 
     this.itemNames = _.map(data, 'name');

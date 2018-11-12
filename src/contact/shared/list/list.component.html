@@ -1,25 +1,39 @@
-<div class="component-listbox-list">
-  <div class="component-listbox-header" *ngIf="showHeader">
-    <div class="component-listbox-row" [ngClass]="{'active': (contactService.isSelectAll$ | async)}">
-      <div class="component-listbox-input">
-        <i (click)="onSelectedAll()" class="fa fa-check"></i>
-      </div>
-      <div class="component-listbox-name">
-        <span class="can-click contact-listbox-block-link" (click)="onSort('name')" pTooltip="{{ tooltip.reverseSortDirection }}"
-          tooltipPosition="top">Name
-          <i class="fa" [ngClass]="{'fa-arrow-up': (desc$ | async), 'fa-arrow-down': !(desc$ | async)}"></i>
-        </span>
-      </div>
-      <div class="component-listbox-email">
-        Email
-      </div>
-      <div class="component-listbox-phone">
-        Phone Number
-      </div>
-      <div class="component-listbox-description"></div>
-      <div class="component-listbox-date"></div>
-      <div class="component-listbox-action"></div>
-    </div>
+<ng-container *ngIf="data | addFirstCharacter | groupByMap:'first_character':'asc':'name':'asc' as newData">
+  <div class="contact-bar">
+    <a *ngFor="let objects of newData; trackBy: trackByGroup" [ngx-scroll-to]="'#contact-' + objects.key"
+      [ngx-scroll-to-offset]="0" [ngx-scroll-to-duration]="0" href="javascript:;">
+      {{ objects.key }}
+    </a>
   </div>
-  <z-contact-shared-item *ngFor="let item of data; trackBy: trackItem" [data]="item"></z-contact-shared-item>
-</div>
+
+
+  <dl *ngFor="let objects of newData; trackBy: trackByGroup" id="contact-{{ objects.key }}" class="contact-dl">
+    <!--<dt sticky [sticky-offset-top]="114"><span>{{ objects.key }}</span></dt>-->
+    <dt><span>{{ objects.key }}</span></dt>
+    <dd *ngFor="let item of objects.value; trackBy: trackByItem " [ngClass]="{active: item.selected}">
+      <div class="contact-dl-input">
+        <i (click)="onChecked(item)" class="fa fa-check"></i>
+      </div>
+      <div class="contact-dl-name" (click)="onItemSelected(item)">
+        <figure class="avatar-xs mr10">
+          <img class="img-circle" alt="" [src]="item.profile_image">
+        </figure>
+        <div class="name"><span> {{ item | contactNamePipe: contactsSortBy}} </span></div>
+      </div>
+      <div class="contact-dl-email">
+        <p class="m0" *ngFor="let email of item.emails">{{ email.value }}</p>
+      </div>
+      <div class="contact-dl-phone">
+        <p class="m0" *ngFor="let phone of item.phones">{{ phone.value }}</p>
+      </div>
+      <div class="contact-dl-action">
+        <z-contact-shared-actions-bar [data]="item" [showQuickInvitation]="item.wthapps_user == null" [showNumber]="false"
+          [showSocial]="item | isContactInternal" [showChat]="item | isContactInternal" [showInvitation]="item | canInvite "
+          [showEdit]="!isStranger" [showFavorite]="!isStranger" [isStranger]="isStranger" [showAddToContacts]="!item.my_contact"
+          [toggleFavourite]="item | contactHasGroup:'favourite'" [toggleBlacklist]="item | contactHasGroup:'blacklist'"
+          (eventOut)="doActionsToolbar($event)">
+        </z-contact-shared-actions-bar>
+      </div>
+    </dd>
+  </dl>
+</ng-container>

@@ -1,33 +1,26 @@
-import {
-  Component,
-  ViewChild,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  OnDestroy,
-  ElementRef,
-  ViewEncapsulation
-} from '@angular/core';
-import { FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { WUploader } from '@shared/services/w-uploader';
+import { LoadingService } from '@shared/shared/components/loading/loading.service';
+import { SoPost } from '@shared/shared/models';
+import TextLengthValidatior from '@social/shared/hooks/validators/text-lenght.validator';
+import { ZSocialSharedPrivacyComponent } from '@social/shared/modal-privacy/privacy.component';
+import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
+import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
+import { Constants } from '@wth/shared/constant';
+import { UserService } from '@wth/shared/services';
+import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
+import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subject ,  Subscription, merge } from 'rxjs';
 import { takeUntil, filter, map, tap, take } from 'rxjs/operators';
 
+
 import { SocialService } from '../../services/social.service';
-import { BsModalComponent } from 'ng2-bs3-modal';
-import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
-import { SoPost } from '@shared/shared/models';
-import { Constants } from '@wth/shared/constant';
-import { PhotoUploadService, UserService } from '@wth/shared/services';
-import { LoadingService } from '@shared/shared/components/loading/loading.service';
-import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
-import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
+import { MODEL_TYPE } from './../../../../shared/constant/config/constants';
 
 @Component({
   selector: 'so-post-edit',
@@ -35,29 +28,39 @@ import { MiniEditor } from '@wth/shared/shared/components/mini-editor/mini-edito
   styleUrls: ['post-edit.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class PostEditComponent implements OnInit, OnDestroy {
+export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
+  @ViewChild('privacyModal') privacyModal: ZSocialSharedPrivacyComponent;
 
-  mode: string = 'add'; // add or edit
-  isShare: boolean = false; // if we are creating a new share that means isShare's value is 'true'
+  mode = 'add'; // add or edit
+  editorLimit = 3000;
+  editorError = '';
+  editorErrorMessage = 'The maximum limit for a post is ' + this.editorLimit + ' characters. Please make your post shorter.';
+  isShare = false; // if we are creating a new share that means isShare's value is 'true'
   @Input() photos: Array<any> = new Array<any>();
   @Input() community: any;
   @Input() soProfile: any;
-  @Input() showTag: boolean = true;
-  @Input() showAddPhotosButton: boolean = true;
+  @Input() showTag = true;
+  @Input() showAddPhotosButton = true;
   @Input() link: any = null;
 
 
-  @ViewChild(MiniEditor) editor: MiniEditor;
-  // @ViewChild('editor') editor: MiniEditor; // Replaced by MiniEditor
+  @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
 
   @Output() onMoreAdded: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdated: EventEmitter<any> = new EventEmitter<any>();
   @Output() saved: EventEmitter<any> = new EventEmitter<any>();
   @Output() dismissed: EventEmitter<any> = new EventEmitter<any>();
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
+  readonly postPrivacy: any = Constants.soPostPrivacy;
+  readonly SEARCH_PLACEHOLDER = {
+    customFriend: 'Search for friends',
+    custom_friend: 'Search for friends',
+    customCommunity: 'Search for community',
+    custom_community: 'Search for community'
+  };
 
   post: SoPost;
   files: Array<any> = new Array<any>();
@@ -79,11 +82,16 @@ export class PostEditComponent implements OnInit, OnDestroy {
   privacyClassIcon: string;
   privacyName: string;
   profile$: Observable<any>;
+  selectEmojiSub: Subscription;
+  textValidator: TextLengthValidatior = new TextLengthValidatior(this.editorLimit);
 
+  readonly MODEL = MODEL_TYPE;
   readonly soPostPrivacy: any = Constants.soPostPrivacy;
 
+  private uploadingPhotos: Array<any> = [];
   private destroySubject: Subject<any> = new Subject<any>();
-  private uploadSubscriptions: { [filename: string]: Subscription } = {};
+  private sub: Subscription;
+  private close$: Observable<any>;
 
   constructor(
     private fb: FormBuilder,
@@ -91,10 +99,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
     private loadingService: LoadingService,
     private socialService: SocialService,
     private mediaSelectionService: WMediaSelectionService,
-    // private photoSelectDataService: PhotoModalDataService,
-    private photoUploadService: PhotoUploadService,
     private emojiService: WTHEmojiService,
-    private userService: UserService
+    private userService: UserService,
+    private uploader: WUploader
   ) {
   }
 
@@ -105,27 +112,26 @@ export class PostEditComponent implements OnInit, OnDestroy {
       tags: [this.post.tags],
       photos: [this.post.photos, null]
     });
-    // this.descCtrl = this.form.controls['description'];
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
-    // this.currentUser = this.userService.getSyncProfile();
     this.profile$ = this.userService.getAsyncProfile();
+    this.sub = this.uploader.event$.subscribe(event => {
+      this.handleUploadFiles(event);
+    });
+
+    this.close$ = merge(
+      this.mediaSelectionService.open$,
+      componentDestroyed(this)
+    );
   }
 
   ngOnChanges() {
-    console.debug('on changes ...');
-    this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
     this.privacyName = this.getPrivacyName(this.post);
-  }
-
-  handleKeyUp(event: any) {
-    console.debug('on handleKeyUp ... ');
-    this.hasChange = true;
   }
 
   viewProfile(uuid: string = this.userService.getSyncProfile().uuid) {
     this.router
-      .navigate([{outlets: {detail: null}}], {
+      .navigate([{ outlets: { detail: null } }], {
         queryParamsHandling: 'preserve',
         preserveFragment: true
       })
@@ -134,15 +140,23 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   showEmojiBtn(event: any) {
     this.emojiService.show(event);
-    this.emojiService.selectedEmoji$.take(1).subscribe(data => {
-      this.editor.addEmoj(data.shortname);
-      this.hasChange = true;
-    });
+
+    if (this.selectEmojiSub && !this.selectEmojiSub.closed)
+      this.selectEmojiSub.unsubscribe();
+    this.selectEmojiSub = this.emojiService.selectedEmoji$
+      .pipe(
+        take(1))
+      .subscribe(data => {
+        this.editor.addEmoj(data.shortname);
+        this.hasChange = true;
+      });
   }
 
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
+    if (this.sub && !this.sub.closed)
+      this.sub.unsubscribe();
   }
 
   open(
@@ -150,6 +164,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       mode: 'add',
       isShare: false,
       addingPhotos: false,
+      showEmoji: false,
       post: null,
       parent: null
     }
@@ -158,12 +173,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.post = new SoPost();
     if (this.socialService.community.currentCommunity) {
       this.post.privacy = Constants.soPostPrivacy.customCommunity.data;
-      this.post.custom_objects.length = 0;
-      this.post.custom_objects.push(
-        this.socialService.community.currentCommunity
-      ); // Default share new post to current community
+      this.post.custom_objects = [this.socialService.community.currentCommunity];
     } else {
-      let defaultPrivacy: string = _.get(
+      const defaultPrivacy: string = _.get(
         this.soProfile,
         'settings.viewable_post.value'
       );
@@ -174,6 +186,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
     this.mode = options.mode;
     this.isShare = options.isShare;
+    this.editorError = '';
 
     if (options.post != null) {
       this.post = _.cloneDeep(options.post);
@@ -183,30 +196,26 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.setItemDescription('');
     }
 
-    if (options.parent != null) {
-      this.parent = options.parent;
-    }
-    this.privacyClassIcon = this.getPrivacyClassIcon(this.post);
+    this.parent = options.parent;
     this.privacyName = this.getPrivacyName(this.post);
 
     this.form = this.fb.group({
-      // 'description': [this.post.description, Validators.compose([Validators.required])],
       tags: [_.map(this.post.tags, 'name'), null],
       photos: [this.post.photos, null]
     });
-    // this.descCtrl = this.form.controls['description'];
     this.setItemDescription(this.post.description);
 
     this.editor.focus();
     this.tagsCtrl = this.form.controls['tags'];
     this.photosCtrl = this.form.controls['photos'];
-    if (options.addingPhotos) {
-      // this.photoSelectDataService.open({return: false});
-      this.mediaSelectionService.setMultipleSelection(true);
-      this.mediaSelectionService.open();
-    } else {
-      this.modal.open();
-    }
+
+    this.modal.open()
+      .then(_ => {
+        if (options.addingPhotos)
+          this.addMorePhoto();
+        if (options.showEmoji)
+          this.showEmojiBtn(null);
+      });
 
     // Clear pending files in case of failure
     this.files.length = 0;
@@ -215,18 +224,18 @@ export class PostEditComponent implements OnInit, OnDestroy {
   close() {
     this.modal.close();
     this.mediaSelectionService.close();
-    // this.photoSelectDataService.close();
-    // $('.modal-backdrop').remove();
   }
 
   done(item: any) {
-    // this.setItemDescriptionFromDom();
-    let options: any = {
+    // Exclude unfinished uploading videos / photos from creating / updating a post
+    const photos = this.post.photos.filter(p => p.uuid).map(p => ({ ...p, model: p.model || MODEL_TYPE[p.object_type] }));
+    const options: any = {
       mode: this.mode,
       item: {
         uuid: this.post.uuid,
         description: this.description,
-        photos_json: this.post.photos, // TODO refactor on view formControl=photosCtrl
+        photos_json: photos, // TODO refactor on view formControl=photosCtrl
+        resources_attributes: [],
         tags_json: this.post.tags,
         privacy: this.post.privacy,
         adult: this.post.adult,
@@ -240,39 +249,11 @@ export class PostEditComponent implements OnInit, OnDestroy {
       isShare: this.isShare
     };
 
+    this.uploadingPhotos = [];
     this.saved.emit(options);
     this.mediaSelectionService.close();
-    // this.photoSelectDataService.close();
 
     this.modal.close();
-
-    // this.textarea.nativeElement.style.heigth = '50px';
-    // console.log(this.textarea.nativeElement.style.heigth);
-  }
-
-  uploadFiles(files: Array<any>) {
-    if (files.length <= 0) return;
-    let subscription = this.photoUploadService.uploadPhotos(files).subscribe(
-      (res: any) => {
-        this.files.shift(); // remove file was uploaded
-        // Only add distinct photos into post edit
-        this.post.photos.unshift(res.data);
-        this.uploadedPhotos.push(res.data);
-      },
-      (err: any) => {
-        console.log('Error when uploading files ', err);
-      }
-    );
-
-    this.uploadSubscriptions[files[0].name] = subscription;
-  }
-
-  cancelUploading(file: any) {
-    _.pull(this.files, file);
-    if (file.name && this.uploadSubscriptions[file.name]) {
-      this.uploadSubscriptions[file.name].unsubscribe();
-      delete this.uploadSubscriptions[file.name];
-    }
   }
 
   doEvents(response: any) {
@@ -284,8 +265,67 @@ export class PostEditComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleUploadFiles(event: any) {
+    let file;
+    let photo;
+    let index = -1;
+    switch (event.action) {
+      case 'start':
+        this.uploadingPhotos = [];
+        this.files = [];
+        break;
+      case 'progress':
+        file = event.payload.file;
+        // this.post.photos.unshift(file);
+        console.log('file:::', event.payload);
+        if (this.post.photos && this.post.photos.length > 0) {
+          let hasPhoto = false;
+          this.post.photos.forEach(p => {
+            if (p.id === file.id) {
+              hasPhoto = true;
+              return;
+            }
+          });
+          if (!hasPhoto) {
+            this.post.photos.unshift(file);
+          }
+        } else {
+          this.post.photos.unshift(file);
+        }
+
+        break;
+      case 'success':
+        // replace uploading photo by real photo
+
+        file = event.payload.file;
+        photo = event.payload.resp;
+        console.log('file success:::', file);
+        console.log('photo success:::', photo);
+        index = this.post.photos.findIndex(p => p.id === file.id);
+        if (index >= 0) {
+          this.post.photos[index] = photo;
+        }
+        this.uploadingPhotos.push(photo);
+        this.files.push(file);
+
+        break;
+    }
+  }
+
   removePhoto(photo: any, event: any) {
     this.backupPhotos = this.post.photos;
+
+    // cancel uploading photo/video or delete selected photo
+    const index = this.uploadingPhotos.findIndex(p => p.id === photo.id);
+    if (index >= 0) {
+      this.uploader.cancel(this.files[index]);
+      this.uploadingPhotos.splice(index, 1);
+      this.files.splice(index, 1);
+    } else if (photo.meta) {
+      this.uploader.cancel(photo);
+      this.uploadingPhotos.splice(index, 1);
+      this.files.splice(index, 1);
+    }
     this.post.photos = _.pull(this.post.photos, photo);
   }
 
@@ -299,38 +339,22 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.modal.open();
   }
 
-  addMorePhoto(event: any) {
+  addMorePhoto(event?: any) {
     this.onMoreAdded.emit(true);
-    this.mediaSelectionService.open();
-    this.mediaSelectionService.setMultipleSelection(true);
+    // this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({ filter: 'photo', allowSelectMultiple: true, allowCancelUpload: true });
 
-    let close$: Observable<any> = Observable.merge(
-      this.mediaSelectionService.open$,
-      componentDestroyed(this)
-    );
     this.mediaSelectionService.selectedMedias$
-      .pipe(takeUntil(close$), filter(items => items.length > 0))
+      .pipe(takeUntil(this.close$), filter(items => items.length > 0))
       .subscribe(items => {
-        this.post.photos = _.uniqBy(_.flatten([this.post.photos, items]), 'id');
-      });
-
-    this.mediaSelectionService.uploadingMedias$
-      .pipe(
-        takeUntil(close$),
-        map(([file, dataUrl]) => file),
-        filter(file => this.photoUploadService.isValidImage(file)),
-        tap(file => {
-          this.files.push(file);
-          this.modal.open();
-        })
-      )
-      .subscribe((item: any[]) => {
-        this.uploadFiles([item]);
+        this.post.photos = _.uniqBy(_.flatten([this.post.photos, items]), 'uuid');
       });
   }
 
   dismiss(photos: any) {
-    // this.photos.length = 0;
+    if (this.uploadingPhotos.length > 0) {
+      this.uploader.cancelAll(true);
+    }
     this.dismissed.emit(photos);
     this.modal.close(null).then();
     this.mediaSelectionService.close();
@@ -338,21 +362,21 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
   customPrivacy(type: string, event: any) {
     event.preventDefault();
-    let mode: string = 'edit';
+    let mode = 'edit';
     if (this.post.privacy !== type) mode = 'add';
 
+    this.privacyCustomModal.placeholder = this.SEARCH_PLACEHOLDER[type] || 'Search';
     this.privacyCustomModal.open(
-      {type: type, data: this.post.custom_objects},
+      { type: type, data: this.post.custom_objects },
       mode
     );
   }
 
   selectedItems(response: any) {
     this.update(
-      {privacy: response.type, custom_objects: response.items},
+      { privacy: response.type, custom_objects: response.items },
       null
     );
-    // this.custom_objects = response.items;
   }
 
   /**
@@ -367,7 +391,6 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.post.tags,
       _.find(this.post.tags, ['name', tag])
     );
-    console.log('tag remove', tag, this.post.tags);
   }
 
   update(attr: any = {}, event: any) {
@@ -375,26 +398,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
       event.preventDefault();
     }
 
-    this.post = {...this.post, ...attr};
+    this.post = { ...this.post, ...attr };
     this.privacyName = this.getPrivacyName(this.post);
-  }
-
-  private getPrivacyClassIcon(post: any): string {
-    let privacy = !post || post.privacy == '' ? 'public' : post.privacy;
-    switch (privacy) {
-      case Constants.soPostPrivacy.friends.data:
-        return 'fa-users';
-      case Constants.soPostPrivacy.public.data:
-        return 'fa-globe';
-      case Constants.soPostPrivacy.personal.data:
-        return 'fa-lock';
-      case Constants.soPostPrivacy.customFriend.data:
-        return 'fa-user-times';
-      case Constants.soPostPrivacy.customCommunity.data:
-        return 'fa-group';
-    }
-    return '';
-    // return `Constants.soPostPrivacy.${post.privacy}.class`;
   }
 
   loading() {
@@ -405,12 +410,25 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.loadingService.stop('#loading');
   }
 
+  onTextChange(event) {
+    this.hasChange = true;
+    if (event.status.error) {
+      this.editorError = 'editor-error';
+    } else {
+      this.editorError = '';
+    }
+  }
+
+  onOpenPrivacyModal(type: string) {
+    this.privacyModal.open(type);
+  }
+
   private setItemDescription(value: any) {
     this.description = value;
   }
 
   private getPrivacyName(post: any): string {
-    let privacy = !post || post.privacy == '' ? 'public' : post.privacy;
+    const privacy = !post || post.privacy === '' ? 'public' : post.privacy;
     if (
       privacy === Constants.soPostPrivacy.customCommunity.data &&
       post.custom_objects.length === 1

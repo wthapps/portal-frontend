@@ -1,7 +1,8 @@
 import { BaseEntity } from '../../shared/shared/models/base-entity.model';
 
 export class Email extends BaseEntity {
-  category: string = 'work';
-  value: string = '';
-  primary: boolean = false;
+  category = 'work';
+  value = '';
+  primary = false;
+  wthapps_user: any;
 }

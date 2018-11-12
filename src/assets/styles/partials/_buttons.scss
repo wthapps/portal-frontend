@@ -149,6 +149,17 @@
   }
 }
 
+.btn-text-link {
+  padding-left: 0;
+  padding-right: 0;
+  color: inherit;
+  &, &:hover, &:focus, &:active {
+    background-color: transparent;
+    @include box-shadow(none);
+    border-color: transparent;
+  }
+}
+
 .btn-outline-default {
   @include button-outline($btn-default-color);
   border-color: #9B9B9B;

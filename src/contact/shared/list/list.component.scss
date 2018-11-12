@@ -1,90 +1,114 @@
 @import '../../../shared/scss/global';
 
-$component-name: auto;
-$component-owner: 200px;
-$component-email: 200px;
-$component-phone: 200px;
-$component-action: 320px;
-
-.component-listbox-list {
-  .component-listbox-name {
-    width: $component-name;
-  }
-
-  .component-listbox-owner {
-    width: $component-owner;
-  }
-
-  .component-listbox-email {
-    width: $component-email;
-  }
-
-  .component-listbox-phone {
-    width: $component-email;
-  }
-
-  .component-listbox-action {
-    width: 110px;
-    @media (min-width: $screen-sm-min) {
-      width: $component-action;
-    }
-  }
-}
-
-.component-listbox-action {
-  @include clearfix;
-  .page-body-control-menu {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    @include clearfix;
-    text-align: right;
-    > li {
+.contact-dl {
+  position: relative;
+  margin-bottom: 0;
+  dt {
+    position: absolute;
+    left: auto !important;
+    right: auto !important;
+    padding: 10px 0;
+    span {
+      line-height: 34px;
       display: inline-block;
+      text-transform: uppercase;
+      font-weight: bold;
     }
   }
-}
-
-.component-listbox-list {
-  .component-listbox-name {
-    .contact-listbox-block-link {
-      @include flexbox;
-      @include align-items(center);
-      .media-user {
-        margin-right: 5px;
-      }
+  dd {
+    @include flexbox;
+    @include align-items(center);
+    margin-left: 20px;
+    border-bottom: 1px solid $line;
+    padding: 10px;
+    @media (min-width: $screen-sm-min) {
+      margin-left: 40px;
+    }
+    > div {
+      margin: 0 5px;
+    }
+  }
+  .contact-dl-name {
+    @include flex(1);
+    @include flexbox;
+    @include align-items(center);
+    .name {
+      @include flex(1);
+      position: relative;
+      height: 20px;
       span {
-        @include flex(1);
+        position: absolute;
+        left: 0;
+        right: 0;
+        display: block;
+        overflow: hidden;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    &:hover{
+      cursor: pointer;
+    }
+  }
+  .contact-dl-email {
+    width: 250px;
+    display: none;
+    @media (min-width: $screen-lg-min) {
+      display: block;
+    }
+  }
+  .contact-dl-phone {
+    width: 130px;
+    display: none;
+    @media (min-width: $screen-lg-min) {
+      display: block;
+    }
+  }
+  .contact-dl-action {
+    @include flexbox;
+    @include justify-content(flex-end);
+    @media (min-width: $screen-sm-min) {
+      width: 200px;
+    }
+  }
+
+  .contact-dl-input {
+    i {
+      border: 1px solid #4a4a4a;
+      border-radius: 2px;
+      cursor: pointer;
+      color: #ffffff;
+      &:before {
+        visibility: hidden;
       }
     }
   }
-  .component-listbox-description {
-    display: none !important;
-  }
-  .component-listbox-date {
-    display: none !important;
-  }
-
-  @media (max-width: $screen-xs-max) {
-    .component-listbox-email,
-    .component-listbox-phone {
-      display: none !important;
-    }
-    .component-listbox-input {
-      width: 40px;
-    }
-    .page-body-control-menu {
-      > li:not(.dropdown) {
-        display: none;
-        &:nth-child(2) {
-          display: inline-block;
+  dd.active {
+    background-color: #F2F2F2;
+    .contact-dl-input {
+      i {
+        background-color: $theme-color;
+        border-color: $theme-color;
+        &:before {
+          visibility: visible;
         }
       }
     }
   }
+}
 
-  .media-user {
-    display: inline-block;
-    vertical-align: middle;
+.contact-bar {
+  @include center(false, true);
+  position: fixed;
+  right: 15px;
+  left: auto;
+  z-index: 100;
+  a {
+    display: block;
+    padding: 0 5px;
+    text-transform: uppercase;
+    text-decoration: none;
   }
 }

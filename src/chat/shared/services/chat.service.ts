@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ChatContactService } from './chat-contact.service';
 import { Message } from '../models/message.model';
@@ -14,19 +14,28 @@ import {
   HandlerService,
   PhotoUploadService,
   StorageService,
-  UserService
+  UserService, WMessageService, StorageItem
 } from '@wth/shared/services';
-import { ChatConstant } from '@wth/shared/constant';
-import { GenericFile } from '@wth/shared/shared/models/generic-file.model';
-import { FileReaderUtil } from '@shared/shared/utils/file/file-reader.util';
+import {
+  ChatConstant, CHAT_CONVERSATIONS, CHAT_RECENT_CONVERSATIONS,
+  CHAT_FAVOURITE_CONVERSATIONS, CHAT_HISTORY_CONVERSATIONS, CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, USERS_ONLINE,
+  NUMBER_MESSAGE
+} from '@wth/shared/constant';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
-import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
 import { Store } from '@ngrx/store';
-import * as fromConversations from './../../../core/store/chat/conversations.reducer';
-import * as fromConversationsUsers from './../../../core/store/chat/conversations_users.reducer';
+import { map } from 'rxjs/operators/map';
+import { ConversationService } from '@chat/shared/services';
+import { Conversation } from '@chat/shared/models/conversation.model';
+import { BlackListPolicy } from '@shared/policies/black-list-policy';
+import { SizePolicy } from '@shared/policies/size-policy';
+import { from } from 'rxjs/observable/from';
+import { mergeMap } from 'rxjs/operators';
+
 
 declare var _: any;
+declare var Promise: any;
+export const CONCURRENT_UPLOAD = 2;
 
 @Injectable()
 export class ChatService {
@@ -44,43 +53,34 @@ export class ChatService {
     public store: Store<any>,
     public handler: HandlerService,
     public fileUploaderService: FileUploaderService,
-    private fileService: GenericFileService
+    private messageService: WMessageService,
+    private fileService: GenericFileService,
+    private conversationService: ConversationService
   ) {
     // =============================
-    this.storage.save('chat_conversations', null);
-    this.storage.save('chat_recent_conversations', null);
-    this.storage.save('chat_favourite_conversations', null);
-    this.storage.save('chat_history_conversations', null);
-    this.storage.save('conversation_select', null);
-    this.storage.save('current_chat_messages', null);
-    this.storage.save('users_online', []);
-    this.storage.save('number_message', 20);
     this.constant = ChatConstant;
+
+    // trigger changes in chat notification data
+    this.storage.getAsync(CHAT_CONVERSATIONS).subscribe((value: any) => {
+      if (value && value.data) {
+        this.handler.triggerEvent('on_conversation_changes', value.data);
+      }
+    });
   }
 
   initalize() {
     this.subscribeNotification();
-    // this.apiBaseService
-    //   .addCommand(ConversationApiCommands.getConversations())
-    //   .subscribe(res => {
-    //     this.store.dispatch({
-    //       type: fromConversations.SET_CHAT_CONVERSATIONS,
-    //       payload: res.data
-    //     });
-    //     this.store.dispatch({
-    //       type: fromConversationsUsers.SET_CHAT_CONVERSATIONS_USERS,
-    //       payload: res.included
-    //     });
-    //   });
+    // Init get data
+    this.getConversationsAsync().subscribe();
   }
 
   getConversations(option: any = {}) {
-    let res: any = this.storage.find('chat_conversations');
+    const res: any = this.storage.find(CHAT_CONVERSATIONS);
     if (res && res.value && !option.forceFromApi) {
       return res;
     } else {
-      this.apiBaseService.get('zone/chat/contacts').subscribe((res: any) => {
-        this.storage.save('chat_conversations', res);
+      this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: any) => {
+        this.storage.save(CHAT_CONVERSATIONS, conv);
         this.chatCommonService.setRecentConversations();
         this.chatCommonService.setFavouriteConversations();
         this.chatCommonService.setHistoryConversations();
@@ -90,42 +90,55 @@ export class ChatService {
     }
   }
 
-  getConversationsAsync(option: any = {}) {
+  getConversationsAsync(option: any = {}): Observable<StorageItem> {
     return new Observable((observer: any) => {
-      const res: any = this.storage.find('chat_conversations');
+      const res: any = this.storage.find(CHAT_CONVERSATIONS);
       if (res && res.value && !option.forceFromApi) {
         observer.next(res);
+        observer.complete();
       } else {
-        this.apiBaseService.get('zone/chat/contacts').subscribe((res: any) => {
-          this.storage.save('chat_conversations', res);
+        this.apiBaseService.get(option.url || 'zone/chat/contacts').toPromise().then((conv: any) => {
+          this.storage.save(CHAT_CONVERSATIONS, conv);
           this.chatCommonService.setRecentConversations();
           this.chatCommonService.setFavouriteConversations();
           this.chatCommonService.setHistoryConversations();
-          observer.next(this.storage.find('chat_conversations'));
+          observer.next(this.storage.find(CHAT_CONVERSATIONS));
+          observer.complete();
         });
       }
     });
   }
 
-  getUserContacts(option: any = {}) {
+  // For detecting users in Chat contact in order to detect online / offline user status
+  getChatConversationsAsync(): Observable<{[partner_id: string]: any}> {
+    const currentUser = this.userService.getSyncProfile();
+    return this.storage.getAsync(CHAT_CONVERSATIONS).pipe(
+      map((item: any) => (!_.get(item, 'data') ? {}
+      : item.data.reduce((r, a) => ({...r, [a.partner_id]: a}), {}))),
+      // includes all contacts that have couple conversation with current user
+      map((item: any) => ({...item, [currentUser.id]: currentUser})) // includes current user id as well
+    );
+  }
+
+  getUserContacts(option: any = {}): Observable<any> {
     return this.apiBaseService.get('contact/contacts/internal_contacts');
   }
 
-  getRecentConversations() {
-    return this.storage.find('chat_recent_conversations');
+  getRecentConversations(): Observable<any> {
+    return this.storage.getAsync(CHAT_RECENT_CONVERSATIONS);
   }
 
-  getFavouriteConversations() {
-    return this.storage.find('chat_favourite_conversations');
+  getFavouriteConversations(): Observable<any> {
+    return this.storage.getAsync(CHAT_FAVOURITE_CONVERSATIONS);
   }
 
-  getHistoryConversations() {
+  getHistoryConversations(): Observable<any> {
     // return this.storage.find('chat_history_conversations');
-    return this.storage.find('chat_conversations');
+    return this.storage.getAsync(CHAT_HISTORY_CONVERSATIONS);
   }
 
   selectContact(contact: any) {
-    // this.storage.save('conversation_select', contact);
+    // this.storage.save(CONVERSATION_SELECT, contact);
     this.handler.triggerEvent('on_conversation_select', contact);
   }
 
@@ -134,15 +147,16 @@ export class ChatService {
       'remove_notification_after_select',
       'on_conversation_select',
       (contact: any) => {
-        if (contact.notification_count > 0)
+        if (contact.notification_count > 0) {
           this.markAsRead(contact.group_json.id);
+        }
       }
     );
   }
 
   selectContactByPartnerId(id: any) {
-    let conversations: any = this.storage.find('chat_conversations').value;
-    let contact: any = _.find(conversations.data, { partner_id: id });
+    const conversations: any = this.storage.find(CHAT_CONVERSATIONS).value;
+    const contact: any = _.find(conversations.data, { partner_id: id });
     if (contact) {
       this.selectContact(contact);
       this.router.navigate([`${this.constant.conversationUrl}/${contact.id}`]);
@@ -150,43 +164,50 @@ export class ChatService {
   }
 
   getContactByPartnerId(id: any) {
-    let conversations: any = this.storage.find('chat_conversations').value;
+    const conversations: any = this.storage.find(CHAT_CONVERSATIONS).value;
     return _.find(conversations.data, { partner_id: id });
   }
 
-  getContactSelect() {
-    return this.storage.find('conversation_select');
+  getContactSelect(): any {
+    return this.storage.find(CONVERSATION_SELECT);
   }
 
-  getMessages(groupId: number, options: any = {}) {
-    let item: any = this.storage.find('chat_messages_group_' + groupId);
-    if (item && item.value) {
-      if (this.storage.find('conversation_select').value.group_id == groupId) {
-        this.storage.save('current_chat_messages', item.value);
-      }
+  getContactSelectAsync(): Observable<any> {
+    return this.storage.getAsync(CONVERSATION_SELECT);
+  }
+
+  getMessages(groupId: number, options: any = {}): Promise<any> {
+    const messages: any = this.storage.getValue('chat_messages_group_' + groupId);
+    if (messages && this.storage.getValue(CONVERSATION_SELECT).group_id === groupId && !options.force) {
+      this.storage.save(CURRENT_CHAT_MESSAGES, messages);
+      return Promise.resolve(messages);
     } else {
-      this.storage.save('current_chat_messages', null);
-      this.apiBaseService
+      this.storage.save(CURRENT_CHAT_MESSAGES, null);
+      return this.apiBaseService
         .get('zone/chat/message/' + groupId, options)
-        .subscribe((res: any) => {
+        .toPromise()
+        .then((res: any) => {
           this.storage.save('chat_messages_group_' + groupId, res);
           if (
-            this.storage.find('conversation_select').value &&
-            this.storage.find('conversation_select').value.group_id == groupId
+            this.storage.find(CONVERSATION_SELECT).value &&
+            this.storage.find(CONVERSATION_SELECT).value.group_id === groupId
           ) {
-            this.storage.save('current_chat_messages', res);
+            this.storage.save(CURRENT_CHAT_MESSAGES, res);
           }
-        });
+        })
+      ;
     }
   }
 
-  getCurrentMessages() {
-    return this.storage.find('current_chat_messages');
+  getCurrentMessagesAsync() {
+    return this.storage.getAsync(CURRENT_CHAT_MESSAGES);
   }
 
   isExistingData(key: string) {
-    let data = this.storage.find(key);
-    if (data == null) return false;
+    const data = this.storage.find(key);
+    if (data == null) {
+      return false;
+    }
     return true;
   }
 
@@ -199,7 +220,7 @@ export class ChatService {
   }
 
   getLatestGroupId(): any {
-    let recentContacts = this.storage.find('chat_recent_conversations');
+    const recentContacts = this.storage.find(CHAT_RECENT_CONVERSATIONS);
     return _.map(recentContacts.value, 'group_id')[0];
   }
 
@@ -207,124 +228,139 @@ export class ChatService {
     return this.apiBaseService.get('zone/chat/message/' + groupId);
   }
 
-  sendMessage(groupId: any, data: any, option: any = {}, callback?: any) {
-    this.apiBaseService
-      .post('zone/chat/message', { group_id: groupId, data: data })
-      .subscribe((res: any) => {
-        if (callback) {
-          callback(res);
-        }
-      });
+  createMessage(groupId: any = null, data: any, option: any = {}): Observable<any> {
+    // TODO this will be remvoe after getting groupId from UI
+    const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+    return this.apiBaseService.post('zone/chat/message', { group_id: conversationId, data: data });
   }
 
-  sendTextMessage(message: any, option: any = {}, callback?: any) {
-    let item = this.storage.find('conversation_select');
+  sendMessage(groupId: any = null, data: any, option: any = {}): Promise<any> {
+    // TODO this will be remvoe after getting groupId from UI
+    const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+
+    return this.apiBaseService
+      .post('zone/chat/message', { group_id: conversationId, data: data })
+      .toPromise();
+  }
+
+  sendTextMessage(message: any, option: any = {}): Promise<any> {
+    const item = this.storage.find(CONVERSATION_SELECT);
     if (item && item.value && message) {
-      let item = this.storage.find('conversation_select');
-      this.sendMessage(
+      return this.sendMessage(
         item.value.group_json.id,
         { message: message, type: 'text' },
-        option,
-        callback
+        option
       );
     }
+    return Promise.resolve(null);
   }
 
   updateMessage(conversationId: any, message: any): Observable<any> {
-    return this.apiBaseService.put(
-      `zone/chat/conversations/${conversationId}/messages`,
+    return this.apiBaseService.put(   `zone/chat/conversations/${conversationId}/messages`,
       { message: message }
     );
   }
 
-  uploadPhotoOnWeb(photo: any) {
-    let groupId = this.storage.find('conversation_select').value.group_json.id;
-    this.sendMessage(groupId, { type: 'file', id: photo.id, object: 'Photo' });
+  uploadMediaOnWeb(media: any): Promise<any> {
+    const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+    return this.sendMessage(groupId, { type: 'file', id: media.id, object: media.object_type || 'Photo' });
   }
 
   createUploadingFile(files?: any) {
-    let filesAddedPolicy = FileUploadPolicy.allowMultiple(files);
-    filesAddedPolicy.forEach((file: any) => {
-      let groupId = this.storage.find('conversation_select').value.group_json
-        .id;
-      let message: Message = new Message({
-        message: 'Sending file.....',
-        message_type: 'file',
-        content_type: 'media/generic'
-      });
-      if (file.allow) {
-        this.sendMessage(groupId, message, null, (response: any) => {
-          file.parent = {
-            id: response.data.id,
-            uuid: '',
-            type: 'Chat::Message'
-          };
-          this.fileUploaderService
-            .uploadGenericFile(file)
-            .subscribe((res: any) =>
-              console.log('send file successfully', res)
-            );
-        });
-      }
+    const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json
+      .id;
+    const message: Message = new Message({
+      message: 'Sending file.....',
+      message_type: 'file',
+      content_type: 'media/generic'
     });
-    let tmp = filesAddedPolicy.filter((item: any) => !item.allow);
-    if (tmp && tmp.length > 0)
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(10000000, { only: /video\//g })]);
+    const validFiles = filesAddedPolicy.filter((item: any) => item.allow);
+
+    // upload multiple files in batch of CONCURRENT_UPLOAD, usually set as 4
+    from(validFiles).pipe(
+      mergeMap(file => this.sendMessage(groupId, message, null),
+      (file, response) => {
+        return Object.assign(file, {parent: {
+                  id: response.data.id,
+                  uuid: '',
+                  type: 'Chat::Message'}});
+      },
+      CONCURRENT_UPLOAD
+      ),
+      mergeMap(file => this.fileUploaderService.uploadGenericFile(file),
+        (file, response) => (response),
+        CONCURRENT_UPLOAD
+      )
+    ).subscribe(res => {
+      console.log('send file successfully', res);
+              setTimeout(() => this.messageService.scrollToBottom(), 500);
+    });
+
+    const tmp = filesAddedPolicy.filter((item: any) => !item.allow);
+    if (tmp && tmp.length > 0) {
       this.commonEventService.broadcast({
         channel: 'LockMessage',
         payload: tmp
       });
+    }
   }
 
-  getUsersOnline() {
-    return this.storage.find('users_online');
+  getUsersOnline(): Observable<any> {
+    return this.storage.getAsync(USERS_ONLINE);
   }
 
-  loadMoreMessages(callback: any = null) {
-    let current = this.storage.find('current_chat_messages').value || {};
-    let currentMessages: any = current.data || [];
-    let page: any = 1;
-    if (current.page_metadata) page = parseInt(current.page_metadata.page) + 1;
-    let body: any = { page: page };
-    let groupId: any = this.storage.find('conversation_select').value.group_json
+  loadMoreMessages(): Promise<any> {
+    const groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
       .id;
-    this.apiBaseService
+    // const current = this.storage.find(CURRENT_CHAT_MESSAGES).value || {};
+    const current = this.storage.getValue('chat_messages_group_' + groupId);
+    const currentMessages: any = current.data || [];
+    let page: any = 1;
+    if (current && current.meta && +current.meta.page < +current.meta.page_count) {
+      page = +current.meta.page + 1;
+    } else {
+      return Promise.resolve({data: []});
+    }
+    const body: any = { page: page };
+    return this.apiBaseService
       .get('zone/chat/message/' + groupId, body)
-      .subscribe((res: any) => {
-        res.data = _chat.combineMessages(currentMessages, res.data);
-        this.storage.save('chat_messages_group_' + groupId, res);
-        if (
-          this.storage.find('conversation_select').value.group_id == groupId
-        ) {
-          this.storage.save('current_chat_messages', res);
-        }
-        if (callback) callback();
+      .toPromise().then((res: any) => {
+        const combinedData = _chat.combineMessages(currentMessages, res.data);
+        this.storage.save('chat_messages_group_' + groupId, { ...res, data: combinedData});
+        // if (
+        //   +this.storage.find(CONVERSATION_SELECT).value.group_id === +groupId
+        // ) {
+        //   this.storage.save(CURRENT_CHAT_MESSAGES, {...res, metadata: res.metadata});
+        // }
+        return res;
       });
   }
 
   searchMessages(text: any) {
-    let currentMessages: any = this.storage.find('current_chat_messages').value
+    const currentMessages: any = this.storage.find(CURRENT_CHAT_MESSAGES).value
       .data;
-    let page: any = parseInt(
-      this.storage.find('current_chat_messages').value.page_metadata.page
+    const page: any = +(
+      this.storage.find(CURRENT_CHAT_MESSAGES).value.meta.page
     );
-    let body: any = { q: 'message:1' };
-    let groupId: any = this.storage.find('conversation_select').value.group_json
+    const body: any = { q: 'message:1' };
+    const groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
       .id;
 
-    let sequenceCall = (nextPage: any, currentPage: any): any => {
-      if (nextPage == currentPage) {
+    const sequenceCall = (nextPage: any, currentPage: any): any => {
+      if (nextPage === currentPage) {
         return [];
       }
       this.apiBaseService
         .get('zone/chat/message/' + groupId, { page: nextPage })
         .subscribe((res: any) => {
           res.data = _chat.combineMessages(
-            this.storage.find('current_chat_messages').value.data,
+            this.storage.find(CURRENT_CHAT_MESSAGES).value.data,
             res.data
           );
           this.storage.save('chat_messages_group_' + groupId, res);
-          this.storage.save('current_chat_messages', res);
-          sequenceCall(parseInt(res.page_metadata.page) + 1, currentPage);
+          this.storage.save(CURRENT_CHAT_MESSAGES, res);
+          sequenceCall(+(res.meta.page) + 1, currentPage);
         });
     };
 
@@ -333,13 +369,13 @@ export class ChatService {
       .subscribe((res: any) => {
         res.data = _chat.combineMessages(currentMessages, res.data);
         this.storage.save('chat_messages_group_' + groupId, res);
-        this.storage.save('current_chat_messages', res);
-        sequenceCall(res.page_metadata.page, page);
+        this.storage.save(CURRENT_CHAT_MESSAGES, res);
+        sequenceCall(res.meta.page, page);
       });
   }
 
   addGroupUserFavorite(contact: any) {
-    let body: any = { favourite: !contact.favourite };
+    const body: any = { favourite: !contact.favourite };
     this.updateGroupUser(contact.group_id, body);
     contact.favourite = !contact.favourite;
   }
@@ -354,8 +390,8 @@ export class ChatService {
 
   updateNotification(contact: any, data: any) {
     this.storage.find(
-      'conversation_select'
-    ).value.notification = !this.storage.find('conversation_select').value
+      CONVERSATION_SELECT
+    ).value.notification = !this.storage.find(CONVERSATION_SELECT).value
       .notification;
     this.updateGroupUser(contact.group_id, data);
   }
@@ -365,8 +401,9 @@ export class ChatService {
   }
 
   updateDisplay(contact: any, data: any) {
-    this.updateGroupUser(contact.group_id, data, (res: any) => {
-      this.updateDisplayNotification(contact.group_json.id);
+    this.updateGroupUser(contact.group_id, data)
+      .then((res: any) => {
+      return this.updateDisplayNotification(contact.group_json.id);
     });
   }
 
@@ -374,31 +411,36 @@ export class ChatService {
     this.updateGroupUser(contact.group_id, { history: false });
   }
 
-  leaveConversation(contact: any) {
-    this.updateGroupUser(contact.group_id, { leave: true }, (res: any) => {
-      this.chatCommonService.updateConversationBroadcast(contact.group_id);
-    });
+  leaveConversation(contact: any): Promise<any> {
+    return this.updateGroupUser(contact.group_id, { leave: true })
+      .then(() => this.chatCommonService.updateConversationBroadcast(contact.group_id))
+      .then(() => {
+          this.storage.removeItemOfKey(CHAT_RECENT_CONVERSATIONS, contact);
+          // this.selectContact(nextRecentConversation);
+          const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value
+          && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
+          return nextRecentConversation ? this.router.navigate([ChatConstant.conversationUrl, nextRecentConversation.id])
+            : this.router.navigate([ChatConstant.conversationUrl]);
+        });
   }
 
-  removeFromConversation(contact: any, userId: any) {
-    this.updateGroupUser(
+  removeFromConversation(contact: any, userId: any): Promise<any> {
+    return this.updateGroupUser(
       contact.group_id,
-      { remove_from_conversation: true, user_id: userId },
-      (res: any) => {
-        this.chatCommonService.updateConversationBroadcast(contact.group_id);
+      { remove_from_conversation: true, user_id: userId })
+      .then((res: any) => {
+        return this.chatCommonService.updateConversationBroadcast(contact.group_id);
       }
     );
   }
 
-  updateGroupUser(groupId: any, data: any, callback?: any) {
-    this.apiBaseService
+  updateGroupUser(groupId: any, data: any) {
+    return this.apiBaseService
       .put('zone/chat/group_user/' + groupId, data)
-      .subscribe((res: any) => {
-        this.storage.save('chat_conversations', res);
+      .toPromise().then((res: any) => {
+        this.storage.save(CHAT_CONVERSATIONS, res);
         this.chatCommonService.updateAll();
-        if (callback) {
-          callback(res);
-        }
+        return res;
       });
   }
 
@@ -407,18 +449,18 @@ export class ChatService {
     if (group) {
       groupId = group;
     } else {
-      groupId = this.storage.find('conversation_select').value.group_json.id;
+      groupId = this.storage.find(CONVERSATION_SELECT).value.group_json.id;
     }
-    let body = { friends: friends };
+    const body = { add_members: true, user_ids: friends };
     this.apiBaseService
-      .put('zone/chat/group/' + groupId, body)
+      .put(`zone/chat/group/${groupId}`, body)
       .subscribe((res: any) => {
         this.chatCommonService.updateConversationBroadcast(groupId);
       });
   }
 
   addMemberGroups(friendId: any, groupIds: any) {
-    for (let groupId of groupIds) {
+    for (const groupId of groupIds) {
       this.addMembersGroup([friendId], groupId);
     }
   }
@@ -438,9 +480,10 @@ export class ChatService {
   acceptRequest(contact: any) {
     this.updateGroupUser(
       contact.group_id,
-      { accept_friend: true },
-      (res: any) => {
+      { accept_friend: true })
+      .then((res: any) => {
         contact.active = true;
+        this.getMessages(contact.group_id, { force: true });
       }
     );
   }
@@ -448,21 +491,26 @@ export class ChatService {
   declineRequest(contact: any, setDefaultOnSelect: boolean = true) {
     this.updateGroupUser(
       contact.group_id,
-      { status: 'decline' },
-      (res: any) => {
-        if (setDefaultOnSelect) {
-          this.chatCommonService.setDefaultSelectContact();
-        }
+      { status: 'decline' })
+      .then((res: any) => {
+        // if (setDefaultOnSelect) {
+        //   this.chatCommonService.setDefaultSelectContact();
+        // }
+        const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value
+        && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
+
+        this.chatCommonService.updateAll();
+        return this.router.navigate([ChatConstant.conversationUrl, _.get(nextRecentConversation, 'id', '')]);
       }
     );
   }
 
-  searchUsers(name: any) {
+  searchUsers(name: any): Observable<any> {
     return this.apiBaseService.post('users/search', { q: `name:${name}` });
   }
 
   shareContact(ids: any) {
-    let item = this.storage.find('conversation_select');
+    const item = this.storage.find(CONVERSATION_SELECT);
     this.apiBaseService
       .post('zone/chat/contact/share', {
         group_id: item.value.group_json.id,
@@ -488,27 +536,29 @@ export class ChatService {
   markAsRead(groupId: any) {
     this.apiBaseService
       .post('zone/chat/notification/mark_as_read', { id: groupId })
-      .subscribe((res: any) => {
-        let item = this.storage.find('chat_conversations');
+      .toPromise().then((res: any) => {
+        const item = this.storage.find(CHAT_CONVERSATIONS);
         if (item && item.value) {
-          let contact = _.find(item.value.data, (contact: any) => {
-            if (contact.group_json.id == groupId) return contact;
+          const contact = _.find(item.value.data, (ct: any) => {
+            if (ct.group_json.id === groupId) {
+              return ct;
+            }
           });
           if (contact) {
             contact.notification_count = 0;
           }
         }
+        this.chatCommonService.updateAll();
       });
   }
 
-  updateDisplayNotification(groupId: any) {
-    this.apiBaseService
+  updateDisplayNotification(groupId: any): Promise<any
+    > {
+    return this.apiBaseService
       .post('zone/chat/notification/broadcard_group_user_display', {
         group_id: groupId
       })
-      .subscribe((res: any) => {
-        // console.log(res);
-      });
+      .toPromise();
   }
 
   getOwnUserProfile() {
@@ -532,4 +582,15 @@ export class ChatService {
         return res;
       });
   }
+
+  // *************************************************************************************
+  // Start onversation region
+  // All of method of conversation here
+  createConversation(payload: any) {
+    this.conversationService.create(payload).subscribe(response => {
+      this.chatCommonService.updateConversationBroadcast(response.data.id);
+    });
+  }
+  // End conversation region
+  // *************************************************************************************
 }

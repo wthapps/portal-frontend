@@ -1,7 +1,8 @@
-<z-chat-share-toolbar class="page-body-control"></z-chat-share-toolbar>
+<z-chat-share-toolbar [contactSelect]="contactSelect$ | async" [chatContactList]="chatContactList$ | async" class="page-body-control"></z-chat-share-toolbar>
 
 <div class="page-body-content has-page-body-control" (drop)="drop($event)" (dragover)="drag($event)" (dragenter)="drag($event)">
-  <message-list class="message-list-body" #messageList></message-list>
-  <message-editor #messageEditor></message-editor>
+  <message-list [contactItem]="contactSelect$ | async" [currentUser]="currentUser$ | async" class="message-list-body" #messageList></message-list>
+  <message-editor #messageEditor [isDisabled]="!( contactSelect$ | async)?.active || ( contactSelect$ | async)?.black_list"
+    [contactSelect]="( contactSelect$ | async)"></message-editor>
+  <message-assets [chatContactList]="chatContactList$ | async"></message-assets>
 </div>
-

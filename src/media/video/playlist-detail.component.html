@@ -1,0 +1,153 @@
+<ng-template #leftMenuTemplate>
+  <ul class="page-body-control-menu">
+    <li class="divider">
+      <a class="btn btn-default" draggable="false" href="javascript:void(0);" (click)="back()" pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
+        <i class="fa fa-arrow-left"></i>
+      </a>
+    </li>
+
+    <li class="hidden-xs hidden-sm">
+      <!-- (dblclick)="" -->
+      <a class="btn btn-inline" draggable="false" href="javascript:void(0);" title="Double click to edit" (dblclick)="editName(object)">
+        {{object?.name}}
+      </a>
+    </li>
+  </ul>
+</ng-template>
+<ng-template #leftSubMenuTemplate>
+  <ul class="page-body-control-menu">
+    <li class="divider">
+      <a class="btn btn-default" href="javascript:;" (click)="deSelect()" draggable="false" pTooltip="{{ tooltip.close }}" tooltipPosition="bottom">
+        <i class="fa fa-times"></i>
+      </a>
+    </li>
+    <li class="hidden-xs hidden-sm">
+      <span class="btn btn-text">{{ selectedObjects.length }} selected</span>
+    </li>
+  </ul>
+</ng-template>
+<div class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
+  <div class="page-over-full-header">
+    <ng-template #objectActionsTemplate>
+      <ul class="page-body-control-menu">
+        <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+          <li *ngIf="!action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+            <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false" pTooltip="{{action.val.tooltip}}"
+              tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
+              <i class="{{action.val.iconClass}}"></i>
+            </button>
+          </li>
+        </ng-template>
+
+        <li class="dropdown action">
+          <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction}}"
+            tooltipPosition="bottom">
+            <i class="fa fa-ellipsis-v"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+            <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+              <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+                <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"
+                  href="javascript:void(0);" (click)="action.val.action()">
+                  <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
+                </a>
+              </li>
+            </ng-template>
+          </ul>
+        </li>
+      </ul>
+    </ng-template>
+
+    <w-toolbar #toolbar [object]="object" [viewMode]="viewMode" [selectedObjects]="selectedObjects" [objectActionsTemplate]="objectActionsTemplate"
+      [leftActionsTemplate]="hasSelectedObjects? leftSubMenuTemplate : leftMenuTemplate" (event)="doToolbarEvent($event)">
+    </w-toolbar>
+
+    <w-grid-list #gridlist [view]="viewMode" [objects]="objects" (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
+    </w-grid-list>
+    <div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
+      <box-loading></box-loading>
+    </div>
+    <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
+      [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
+      <button class="btn btn-outline-primary" (click)="openSelectedModal()">
+        <i class="fa fa-cloud-upload"></i> Upload Video</button>
+    </box-no-data>
+    <ng-template #modalContainer></ng-template>
+  </div>
+  <!-- <div class="page-over-full-info">
+    <media-detail-info #mediaInfo (event)="doToolbarEvent($event)"></media-detail-info>
+  </div> -->
+  <div *ngIf="object" class="page-over-full-info">
+    <h3>Information
+      <a href="javascript:; " draggable="false " (click)="showDetailsInfo = !showDetailsInfo">
+        <i class="fa fa-times "></i>
+      </a>
+    </h3>
+    <div class="photo-detail-info-title ">
+      <h4>
+        <i class="fa fa-info-circle"></i> Details</h4>
+      <button class="btn btn-default pull-right" (click)="openEditModal(object) ">
+        <i class="fa fa-pencil "></i>
+      </button>
+    </div>
+    <dl>
+      <div class="row">
+        <dt class="col-sm-4">Name</dt>
+        <dd class="col-sm-8">{{ object.name }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Description</dt>
+        <dd class="col-sm-8">{{ object.description }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Type</dt>
+        <dd class="col-sm-8">{{ object.extension }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Type</dt>
+        <dd class="col-sm-8">{{ object.extension }}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Size</dt>
+        <dd class="col-sm-8">{{ object.size | bytes:3}}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Dimensions</dt>
+        <dd class="col-sm-8">{{ object.dimensions}}</dd>
+      </div>
+      <div class="row">
+        <dt class="col-sm-4">Uploaded</dt>
+        <dd class="col-sm-8">{{ object.created_at | timeFormat}}</dd>
+      </div>
+    </dl>
+    <hr/>
+    <dl>
+      <dt>
+        <h4>
+          <i class="wthico-album"></i>
+          <span *ngIf="object.model == 'Media::Photo'"> Album </span>
+          <span *ngIf="object.model == 'Media::Video'"> Playlist </span>
+        </h4>
+      </dt>
+      <dd>
+        <div>
+          <ul class="list-unstyled albums ">
+            <li *ngFor="let parent of object.parents" class="row">
+              <div class="media">
+                <img class="col-sm-4" [src]="parent.thumbnail_url" alt="Generic placeholder image">
+                <div class="col-sm-8">
+                  <h5 class="mt-0">{{ parent.name }}</h5>
+                  <span> {{ parent.created_at | date: 'MMM dd, yyyy'}} </span>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <div *ngIf="showMore ">
+            <a href="javascript:void(0); " (click)="loadMoreAlbums(index) ">more</a>
+          </div>
+        </div>
+      </dd>
+    </dl>
+  </div>
+</div>

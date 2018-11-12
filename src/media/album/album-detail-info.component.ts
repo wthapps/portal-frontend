@@ -9,7 +9,6 @@ import { Album } from '../shared/model/album.model';
 import { Constants } from '@shared/constant';
 
 @Component({
-  moduleId: module.id,
   selector: 'album-detail-info',
   templateUrl: 'album-detail-info.component.html',
   styleUrls: ['album-detail-info.component.scss']
@@ -21,13 +20,16 @@ export class AlbumDetailInfoComponent implements OnChanges {
   @Output() showFormEdit: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
-  albumData: Album = null;
-
   profileUrl = `${Constants.baseUrls.social}/profile/`;
+  share: any = null;
 
   updateProperties(properties: any) {
     if (properties.hasOwnProperty('object')) {
       this.object = properties.object;
+    }
+
+    if (properties.hasOwnProperty('share')) {
+      this.share = properties.share;
     }
   }
 
@@ -36,9 +38,6 @@ export class AlbumDetailInfoComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    // if(this.album.id != null) {
-    //   this.renderForm();
-    // }
   }
 
   onShowEditInfo() {

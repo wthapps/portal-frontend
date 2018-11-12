@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, EventEmitter, Output, OnInit } from '@angular/core';
 import { NoteBreadcrumb } from './breadcrumb';
 import { Router } from '@angular/router';
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'z-shared-breadcrumb',

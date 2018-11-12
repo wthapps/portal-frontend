@@ -39,7 +39,8 @@
 }
 
 .media-form {
-  &, .media-body {
+  &,
+  .media-body {
     overflow: visible;
   }
 }
@@ -58,7 +59,208 @@
 }
 
 .media-no-hidden {
-  &, .media-body {
+  &,
+  .media-body {
     overflow: visible;
+  }
+}
+
+$media-user-status-w: 18px;
+$media-user-status-pos: $media-user-status-w - 3px;
+.media-user-status {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: $media-user-status-w;
+  height: $media-user-status-w;
+  border-radius: 50%;
+  border: 3px solid #FFF;
+  background-color: $user-offline;
+  &.online {
+    background-color: $user-online;
+  }
+  i {
+    @include center();
+    color: $color-inverse;
+  }
+}
+
+.media-user-stranger {
+  background-color: transparent;
+  i {
+    @include center();
+    color: $color-inverse;
+    background-color: #ffffff;
+  }
+}
+
+.media-user {
+  overflow: visible;
+  position: relative;
+  .media-user-status {
+    right: auto;
+  }
+  .media-user-name {
+    position: absolute;
+    right: 0;
+    top: 0;
+    line-height: 1.1;
+    p {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      font-weight: bold;
+    }
+    small {
+      @include opacity(0.6);
+    }
+  }
+  .avatar-xs {
+    & + .media-user-name {
+      @include center(false, true);
+      left: $avatar-xs + 10px;
+    }
+    & ~ .media-user-status {
+      left: $avatar-xs - $media-user-status-pos;
+    }
+  }
+  .avatar-xsm {
+    & + .media-user-name {
+      left: $avatar-xsm + 10px;
+    }
+    & ~ .media-user-status {
+      left: $avatar-xsm - $media-user-status-pos;
+    }
+  }
+  .avatar-sm {
+    & + .media-user-name {
+      left: $avatar-sm + 10px;
+    }
+    & ~ .media-user-status {
+      left: $avatar-sm - $media-user-status-pos;
+    }
+  }
+  .avatar-md {
+    & + .media-user-name {
+      left: $avatar-md + 10px;
+    }
+    & ~ .media-user-status {
+      left: $avatar-md - $media-user-status-pos;
+    }
+  }
+  .avatar-lg {
+    & + .media-user-name {
+      left: $avatar-lg + 10px;
+    }
+    & ~ .media-user-status {
+      left: $avatar-lg - $media-user-status-pos;
+    }
+  }
+}
+
+.user-row {
+  @include flexbox;
+  display: block;
+  width: 100%;
+  .user-avatar {
+    position: relative;
+    margin-right: 10px;
+    width: 34px;
+    height: 34px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+  .user-name {
+    @include flexbox;
+    width: 100%;
+    height: 20px;
+    position: relative;
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      position: absolute;
+      left: 0;
+      right: 0;
+    }
+  }
+  .user-body {
+    @include flex(1);
+    word-break: break-word;
+    p {
+      margin: 0;
+    }
+  }
+}
+
+.media-avatar-list {
+  .media-avatar {
+    & + .media-avatar {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid $line;
+    }
+  }
+}
+
+.media-avatar {
+  @include flexbox;
+  width: 100%;
+  & + .media-avatar {
+    margin-top: 10px;
+  }
+  .media-avatar-img-wrap {
+    position: relative;
+    margin-right: 10px;
+    .media-avatar-img {
+      margin-right: 0;
+    }
+    .media-avatar-status {
+      border: 3px solid #FFF;
+      position: absolute;
+      bottom: -3px;
+      right: -3px;
+    }
+  }
+  .media-avatar-img {
+    margin-right: 10px;
+    position: relative;
+  }
+  .media-avatar-body {
+    @include flex(1);
+    .media-avatar-status {
+      width: 10px;
+      height: 10px;
+    }
+  }
+  // .media-avatar-action {}
+  .media-avatar-heading {
+    margin: 0 0 10px;
+    font-size: 24px;
+    padding: 0;
+  }
+  .media-avatar-status {
+    width: $media-user-status-w;
+    height: $media-user-status-w;
+    border-radius: 50%;
+    background-color: $user-offline;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    &.online {
+      background-color: $user-online;
+    }
+    i {
+      @include center();
+      color: $color-inverse;
+    }
   }
 }

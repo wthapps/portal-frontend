@@ -1,12 +1,15 @@
 export class Media {
   id: number;
   name: string;
+  model: string;
+  uuid: string;
   description: string;
   owner: any;
   photos: any;
   photo_number: number;
   created_at: any;
   photo_default: any;
+  sharing_type: string;
   favorite: boolean;
   tags: any = [];
   tags_json: any = [];
@@ -19,6 +22,7 @@ export class Media {
   json_shares: any;
   content_type: string;
   object_type: string;
+  child_count: number;
 
   constructor(fields: {
     id?: number,
@@ -29,6 +33,7 @@ export class Media {
     photo_number?: number,
     created_at?: any,
     photo_default?: any,
+    sharing_type?: string,
     favorite?: boolean,
     tags?: any,
     tags_json?: any,
@@ -40,7 +45,8 @@ export class Media {
     url?: string,
     json_shares?: any,
     content_type?: string,
-    object_type?: string
+    object_type?: string,
+    child_count?: number
   }) {
     if (fields) {
       Object.assign(this, fields);

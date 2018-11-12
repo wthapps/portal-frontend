@@ -1,5 +1,6 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 import { BaseEntityService } from '@shared/services/base-entity-service';
 import { ApiBaseService } from '@shared/services/apibase.service';
@@ -26,6 +27,6 @@ export class ZFolderService extends BaseEntityService<any> {
 
   private handleError(error: Response) {
     console.error(error);
-    return Observable.throw(error.json().error || 'Server error');
+    return observableThrowError(error.json().error || 'Server error');
   }
 }

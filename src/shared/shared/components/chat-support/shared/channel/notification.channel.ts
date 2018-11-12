@@ -3,15 +3,13 @@
  */
 
 import { Injectable }     from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable ,  Observer } from 'rxjs';
 
 import { CookieService } from 'ngx-cookie';
 
 import { CableService } from '../../../../../channels/cable.service';
 import { UserService } from '../../../../../services/user.service';
 import { ApiBaseService } from '../../../../../services/apibase.service';
-import { Constants } from '../../../../../constant/config/constants';
 import { ApiConfig } from '../../../../../constant/config/api.config';
 
 declare let App: any;
@@ -31,10 +29,6 @@ export class NotificationChannel extends CableService {
   }
 
   subscribe(type?: string) {
-    let cId: string = this.cookie.get(Constants.cookieKeys.chatSupportId); // wthapps chat support id
-
-    this.createConnectionInstance(cId, type);
-
     var self = this;
 
     (function () {

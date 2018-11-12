@@ -8,13 +8,13 @@ import {
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { PartialsProfileService } from '../profile.service';
-import { Mixin } from '../../../../design-patterns/decorator/mixin-decorator';
+import { Mixins  } from '../../../../design-patterns/decorator/mixin-decorator';
 import { ProfileFormMixin } from '../../../mixins/form/profile/profile-form.mixin';
 import { ProfileFormCustomSubmitMixin } from '../../../mixins/form/profile/profile-form-custom-submit.mixin';
 
 declare var _: any;
 
-@Mixin([ProfileFormMixin, ProfileFormCustomSubmitMixin])
+@Mixins([ProfileFormMixin, ProfileFormCustomSubmitMixin])
 @Component({
   selector: 'partials-profile-edu',
   templateUrl: 'education.component.html'

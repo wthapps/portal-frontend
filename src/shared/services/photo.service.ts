@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/takeUntil';
+import { BehaviorSubject ,  Subject ,  Observable } from 'rxjs';
+
 
 import { ApiBaseService } from './apibase.service';
 import { WthConfirmService } from '../shared/components/confirmation/wth-confirm.service';
@@ -38,7 +36,7 @@ export class PhotoService {
   setModifiedPhotos(
     options: any = { action: null, payload: { post_id: null, photo: null } }
   ) {
-    console.debug('photo service - setModifiedPhotos: ', options);
+    console.log ('photo service - setModifiedPhotos: ', options);
     this.modifiedPhotosSubject.next(options);
   }
 
@@ -63,7 +61,7 @@ export class PhotoService {
   }
 
   actionOneFavourite(item: any) {
-    let body = {
+    const body = {
       ids: [item.id],
       setFavourite: item.favorite ? false : true
     };
@@ -71,7 +69,7 @@ export class PhotoService {
   }
 
   actionAllFavourite(items: any, setFavourite: boolean) {
-    let body = {
+    const body = {
       ids: _.map(items, 'id'),
       setFavourite: setFavourite
       // setFavourite: (setFavourite ? true : false) // if there was one item's favorite is false
@@ -121,7 +119,7 @@ export class PhotoService {
         header: 'Delete photo',
         message: `Are you sure to delete photo ${photo.name} ?`,
         accept: () => {
-          let body = JSON.stringify({ ids: [photo.id] });
+          const body = JSON.stringify({ ids: [photo.id] });
           this.deletePhoto(body)
             .toPromise()
             .then((res: any) => {

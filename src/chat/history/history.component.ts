@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatContactActionsComponent } from '../shared/contact-action/contact-actions.component';
 
@@ -11,7 +14,8 @@ declare var _: any;
   styleUrls: ['history.component.scss']
 })
 export class ZChatHistoryComponent implements OnInit {
-  contactItem: any;
+  contactItem$: Observable<any>;
+  usersOnlineItem$: Observable<any>;
   configActions: any = {
     history: true
   };
@@ -19,6 +23,7 @@ export class ZChatHistoryComponent implements OnInit {
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
-    this.contactItem = this.chatService.getHistoryConversations();
+    this.contactItem$ = this.chatService.getHistoryConversations();
+    this.usersOnlineItem$ = this.chatService.getUsersOnline();
   }
 }

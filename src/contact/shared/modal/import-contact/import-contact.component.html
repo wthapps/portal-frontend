@@ -1,8 +1,7 @@
 <form>
   <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <bs-modal-header [showDismiss]="true">
-      <h4 class="modal-title">
-        <i class="fa fa-plus"></i> Import Contact</h4>
+      <h4 class="modal-title">Import Contact</h4>
     </bs-modal-header>
     <bs-modal-body>
       <p>Import your contacts from other account</p>
@@ -23,12 +22,7 @@
 
       <ul class="list-unstyled list-import-wrapper">
         <li>
-          <div class="d-flex can-click">
-            <div>
-              <h-file-upload #fileUpload styleClass="h-ui-file-upload" customUpload="true" mode="basic" accept=".vcf,.csv,.xls,.xlsx" [icon]="'fa-download'"
-                [chooseLabel]="'Import from file'" (onSelect)="selectProvider({name: 'import_from_file', provider: 'import_from_file', event: $event}); fileUpload.clear();">
-              </h-file-upload>
-            </div>
+          <div class="d-flex can-click" (click)="selectProvider({name: 'import_from_file', provider: 'import_from_file', event: $event});">
             <div class="list-import-text">
               Import from file
               <div class="text-fade">

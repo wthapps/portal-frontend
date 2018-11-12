@@ -1,0 +1,141 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <button *ngIf="editable" class="btn btn-default pull-right" (click)="onOpenModal()">
+      <i class="fa fa-pencil"></i>
+    </button>
+    <h3 class="panel-title">Basic Information</h3>
+  </div>
+  <div class="panel-body">
+
+    <dl>
+      <dd>
+        {{ data.about }}
+      </dd>
+      <p *ngIf="!data.about" class="text-fade">
+          Tell us more about yourself
+      </p>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Company</dt>
+      <dd>{{ data.company || 'None' }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Occupation</dt>
+      <dd>{{ data.occupation || 'None' }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Gender</dt>
+      <dd>{{ constants.sex[data.sex] || 'None' }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Birthday</dt>
+      <dd *ngIf="data.birthday">{{ (data.birthday | timeFormat) || 'None' }}</dd>
+      <dd *ngIf="!data.birthday">None</dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt>Nationality</dt>
+      <dd>{{ data.nationality || 'None' }}</dd>
+    </dl>
+  </div>
+</div>
+
+
+<form [formGroup]="form" novalidate>
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title text-left">Basic Information</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+      <div class="form-group">
+        <label>About</label>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="media media-form">
+              <div class="media-body">
+                <textarea class="form-control" rows="2" [formControl]="about"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Company</label>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="media media-form">
+              <div class="media-body">
+                <input type="text" name="name" class="form-control" [formControl]="company"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Occupation</label>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="media media-form">
+              <div class="media-body">
+                <input type="text" name="name" class="form-control" [formControl]="occupation"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Gender</label>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="media media-form">
+              <div class="media-body">
+                <select name="name" class="form-control" [formControl]="sex">
+                  <option value="1"> Male</option>
+                  <option value="2"> Female</option>
+                  <option value="3"> Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Birthday</label>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="media media-form">
+              <div class="media-body">
+                <input type="date" name="birthday" id="birthday" class="form-control" [formControl]="birthday"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nationality</label>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="media media-form">
+              <div class="media-body">
+                <select name="nationality" class="form-control" id="phone_prefix" [formControl]="nationality">
+                  <option value="">Select your country</option>
+                  <option *ngFor="let c of countriesCode" value="{{ c.code }}">{{ c.name }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+      <button type="submit" [disabled]="form.pristine || !form.valid" class="btn btn-outline-primary btn-min" (click)="onSubmit(form.value)">Done</button>
+
+    </bs-modal-footer>
+  </bs-modal>
+</form>

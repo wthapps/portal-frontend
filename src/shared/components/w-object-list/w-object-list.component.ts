@@ -2,9 +2,10 @@ import {
   Component, Input, Output, ContentChild, TemplateRef, AfterViewInit,
   AfterContentChecked, ViewEncapsulation, EventEmitter, OnDestroy, OnChanges, SimpleChanges
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import 'rxjs/add/operator/takeUntil';
+
 
 import * as DragSelect from 'dragselect/dist/DragSelect.js';
 
@@ -23,16 +24,22 @@ declare let _: any;
 export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentChecked {
   @Input() data: Media[];
   @Input() sortInline: Boolean = true;
+  @Input() scrollWindow: Boolean = false;
+  @Input() isLoading: Boolean = false;
+  @Input() viewMode = 'grid';
   @Output() completeLoadMore: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   @Output() completeSort: EventEmitter<any> = new EventEmitter<any>(null);
   @Output() completeDoubleClick: EventEmitter<any> = new EventEmitter<any>(null);
+  @Output() selectedObjectsChanged: EventEmitter<any> = new EventEmitter<any>(null);
+  @Output() clickedItem: EventEmitter<any> = new EventEmitter<any>(null);
+  @Output() dbClickedItem: EventEmitter<any> = new EventEmitter<any>(null);
 
   @ContentChild('columnBox') columnBoxTmpl: TemplateRef<any>;
   @ContentChild('columnFileSize') columnFileSizeTmpl: TemplateRef<any>;
   @ContentChild('columnAction') columnActionTmpl: TemplateRef<any>;
 
   dragSelect: any;
-  view$: Observable<string>;
+  // view$: Observable<string>;
   selectedObjects: any;
 
   objectsDisabled: any;
@@ -42,33 +49,36 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   hasMultipleSelection: Boolean = true;
   groupBy: string;
   sortBy: string;
-  sortOrder: string;
+  sortOrder: 'asc' | 'desc' | boolean;
 
   constructor(private objectListService: WObjectListService) {
-    this.view$ = this.objectListService.view$;
+    // this.view$ = this.objectListService.view$;
 
     this.objectListService.objectsDisabled$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.objectsDisabled = res);
 
     this.objectListService.selectedObjects$
-      .takeUntil(componentDestroyed(this))
-      .subscribe(res => this.selectedObjects = res);
+      .pipe(takeUntil(componentDestroyed(this)))
+      .subscribe(res => {
+        this.selectedObjects = res;
+        this.selectedObjectsChanged.emit(this.selectedObjects);
+      });
 
     this.objectListService.groupBy$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.groupBy = res);
 
     this.objectListService.sortBy$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.sortBy = res);
 
     this.objectListService.sortOrder$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.sortOrder = res);
 
     this.objectListService.multipleSelection$
-      .takeUntil(componentDestroyed(this))
+      .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.hasMultipleSelection = res);
 
   }
@@ -76,13 +86,14 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   ngOnChanges(changes: SimpleChanges): void {
     this.totalObjectsDisabled = 0;
 
-    for (let object_type of this.objectsDisabled) {
-      let totalObjectsDisabled = _.filter(this.data, (media: Media) => (media.object_type === object_type));
+    for (const object_type of this.objectsDisabled) {
+      const totalObjectsDisabled = _.filter(this.data, (media: Media) => (media.object_type === object_type));
       this.totalObjectsDisabled = this.totalObjectsDisabled + totalObjectsDisabled.length;
     }
   }
 
   ngOnDestroy(): void {
+    // this.objectListService.clear();
   }
 
   ngAfterContentChecked(): void {
@@ -125,7 +136,8 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onMultiSelected(item: any) {
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0
+     || !this.hasMultipleSelection) {
       this.objectListService.clear();
       this.objectListService.addItem(
         {
@@ -158,10 +170,12 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
 
   onDoubleClick(item: any) {
     this.completeDoubleClick.emit(item);
+    this.dbClickedItem.emit(item);
   }
 
   onClick(item: any) {
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || !this.hasMultipleSelection) {
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0
+     || !this.hasMultipleSelection) {
       this.objectListService.clear();
       this.objectListService.addItem(
         {
@@ -170,6 +184,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
         }
       );
       this.completeDoubleClick.emit(item);
+      this.clickedItem.emit();
     }
     return false;
   }
@@ -179,7 +194,6 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onLoadMore() {
-    console.log('onLoadMore');
     this.completeLoadMore.emit(true);
   }
 
@@ -210,7 +224,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   isActive(item: any) {
-    return (_.find(this.selectedObjects, {'id': item.id}));
+    return (_.find(this.selectedObjects, {'id': item.id}) || item.selected);
   }
 
   isSelected(item: any) {

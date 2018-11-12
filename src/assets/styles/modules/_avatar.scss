@@ -4,12 +4,12 @@
   position: relative;
   display: block;
   overflow: hidden;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
   img {
-    width: auto;
-    height: 100%;
+    width: 100%;
+    height: auto;
     @include center();
   }
 }

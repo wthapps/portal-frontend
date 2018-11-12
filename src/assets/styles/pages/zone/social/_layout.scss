@@ -138,15 +138,12 @@
   input[readonly] {
     background-color: white;
   }
-
-  &.inputpost-new {
-    .z-social-media-inputpost-icon {
-      bottom: 7px;
-    }
-  }
   .z-social-media-inputpost-icon {
     position: absolute;
-    bottom: 4px;
+    bottom: 0;
+    height: 34px;
+    @include flexbox;
+    @include align-items(center);
     font-size: 20px;
     right: 10px;
     z-index: 2;

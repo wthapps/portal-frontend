@@ -11,7 +11,6 @@ declare var _: any;
  * This class represents the navigation bar component.
  */
 @Component({
-  moduleId: module.id,
   selector: 'media-shared-header',
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.scss'],
@@ -69,11 +68,11 @@ export class ZMediaSharedHeaderComponent implements OnInit {
   clickedInside($event: Event) {
     $event.preventDefault();
     $event.stopPropagation();  // <- that will stop propagation on lower layers
-    console.log('CLICKED INSIDE');
   }
 
-  onEnter(e: any) {
+  onEnter(search: any) {
     this.show = false;
+    this.search = search;
     this.serviceManager.getRouter().navigate([`/search`], {queryParams: {q: this.search}});
   }
 
@@ -82,14 +81,13 @@ export class ZMediaSharedHeaderComponent implements OnInit {
     this.show = false;
   }
 
-  onKey(e: any) {
-    console.log(e);
-    if (!e.search) {
+  onKey(search: any) {
+    if (!search) {
       this.show = false;
       return;
     }
     this.show = true;
-    this.search = e.search;
+    this.search = search;
     this.serviceManager.getApi().post(`media/search/suggestions`, {
       q: `name:${this.search}`
     }).subscribe(
@@ -106,7 +104,6 @@ export class ZMediaSharedHeaderComponent implements OnInit {
   }
 
   onSearchAdvanced(e: any) {
-    console.log(e);
     this.searchAdvanced = e.searchAdvanced;
   }
 

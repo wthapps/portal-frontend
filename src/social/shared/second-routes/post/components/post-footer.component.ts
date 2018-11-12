@@ -3,9 +3,11 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnChanges
+  OnInit, OnDestroy, ChangeDetectionStrategy
 } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Subject } from 'rxjs/Subject';
 
 import {
   DeleteCommentEvent,
@@ -19,22 +21,24 @@ import { PostComponent } from '../post.component';
 import { PostService } from '../shared/post.service';
 import { SoComment, SoPost } from '@wth/shared/shared/models';
 import { PhotoService, UserService } from '@shared/services';
-import { Constants } from '@wth/shared/constant';
+import { Constants, MODEL_TYPE } from '@wth/shared/constant';
+import { WTHEmojiCateCode } from '@wth/shared/components/emoji/emoji';
 
 declare var _: any;
 
 @Component({
   selector: 'so-post-footer',
-  templateUrl: 'post-footer.component.html',
+  templateUrl: 'post-footer.component.html'
 })
-export class PostFooterComponent implements OnChanges {
+export class PostFooterComponent implements OnInit, OnDestroy {
   @Input() user: any;
   @Input() item: SoPost;
   @Input() type: string;
+  @Input() emojiMap: { [name: string]: WTHEmojiCateCode };
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
-  commentEditorMode = CommentEditorMode;
+  readonly commentEditorMode = CommentEditorMode;
 
-  actions = {
+  readonly actions = {
     onDeleteComment: 1,
     onEditComment: 2,
     onDeleteReply: 3,
@@ -43,13 +47,12 @@ export class PostFooterComponent implements OnChanges {
     onShowPhotoDetail: 7
   };
 
-  showInfo: boolean = false;
-  totalComment: number = 1;
-  commentPageIndex: number = 0;
-  loadingDone: boolean = false;
+  commentPageIndex = 0;
   readonly commentLimit: number = Constants.soCommentLimit;
+  readonly tooltip: any = Constants.tooltip;
+  readonly MODEL = MODEL_TYPE;
 
-  tooltip: any = Constants.tooltip;
+  private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(private router: Router,
               private postService: PostService,
@@ -58,12 +61,12 @@ export class PostFooterComponent implements OnChanges {
               public postItem: PostComponent) {
   }
 
-  ngOnChanges(data: any) {
-    if (this.type == 'info') {
-      this.showInfo = true;
-    }
-    this.totalComment = +this.item.comment_count;
-    this.loadingDone = (this.totalComment === 0 ) || (this.totalComment <= _.get(this.item, 'comments.length', 0));
+  ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   viewProfile(uuid: string) {
@@ -80,32 +83,40 @@ export class PostFooterComponent implements OnChanges {
   }
 
   onActions(action: any, params?: any) {
-    let type = params.commentType;
-    let data = params.data;
-    let comment = params.comment;
+    console.log('action::::', action, params);
+    const { data, comment, parent, commentType } = params;
     switch (action) {
       case this.actions.onDeleteComment:
         this.eventEmitter.emit(new DeleteCommentEvent(data));
         break;
       case this.actions.onEditComment:
-        let currentComment = data;
-        let commentType = type;
+        const currentComment = data;
         currentComment.isEditting = true;
         break;
       case this.actions.onDeleteReply:
         this.eventEmitter.emit(new DeleteReplyEvent({reply_uuid: data.uuid}));
         break;
       case this.actions.onCreateComment:
-        let parent = params.parent;
-        let parentType = params.parentType;
         _.set(parent, 'isCreatingNewReply', true);
         break;
       case this.actions.openLikeDislike:
-        this.postItem.openLikeDislike(data, type);
+        this.postItem.openLikeDislike(data, commentType);
         break;
       case this.actions.onShowPhotoDetail:
-        // this.router.navigate([{outlets: {modal: ['comments', data, 'photos', type, {ids: [type]}]}}]);
-        this.router.navigate([{outlets: {modal: ['photos', type, {ids: [type], post_uuid: this.item.uuid}]}}]);
+        // this.router.navigate([{outlets: {modal: ['photos', type, {ids: [type], post_uuid: this.item.uuid}]}}]);
+        this.router.navigate([{
+          outlets: {
+            modal: [
+              'preview',
+              comment.photo.uuid || data,
+              {
+                object: 'comment',
+                parent_uuid: comment.uuid,
+                only_preview: true
+              }
+            ]
+          }
+        }], { queryParamsHandling: 'preserve', preserveFragment: true });
         break;
     }
   }
@@ -122,7 +133,6 @@ export class PostFooterComponent implements OnChanges {
     }
 
     this.eventEmitter.emit(event);
-    // this.viewAllComments();
   }
 
   mapComment(comment: any) {
@@ -134,18 +144,16 @@ export class PostFooterComponent implements OnChanges {
   }
 
   getMoreComments() {
-    let body = {'post_uuid': this.item.uuid, 'page_index': this.commentPageIndex, 'limit': this.commentLimit};
+    const body = {'post_uuid': this.item.uuid, 'page_index': this.commentPageIndex, 'limit': this.commentLimit};
     this.postService.loadComments(body)
       .toPromise().then((result: any) => {
-          if (this.commentPageIndex == 0) {
+          if (this.commentPageIndex === 0) {
             // this.item.comments.length = 0; // Clear comments data in the first loading
             this.item.comments = _.map(result.data.comments, this.mapComment);
           } else {
-            let cloneItem = this.item.comments.push(..._.map(result.data.comments, this.mapComment));
+            const cloneItem = this.item.comments.push(..._.map(result.data.comments, this.mapComment));
             this.item = _.clone(cloneItem); // clone this item to notify parent components
           }
-          if (result.loading_done)
-            this.loadingDone = result.loading_done;
 
           this.commentPageIndex += 1;
 
@@ -160,7 +168,7 @@ export class PostFooterComponent implements OnChanges {
   }
 
   totalRepliesInWords(replies: any) {
-    let repCount = replies.length > 1 ? 'replies' : 'reply';
+    const repCount = replies.length > 1 ? 'replies' : 'reply';
     return `${replies.length} ${repCount}`;
   }
 

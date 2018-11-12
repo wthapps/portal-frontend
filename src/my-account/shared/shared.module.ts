@@ -19,6 +19,7 @@ import { SubscriptionService } from './subscription/subscription.service';
 import { SharedModule } from '@shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { AccountConfirmPasswordModalComponent } from '@account/shared/account/modal/account-confirm-password-modal.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -44,6 +45,7 @@ import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
     AccountRequestSendModalComponent,
     AccountRequestAcceptModalComponent,
     AccountListEditModalComponent,
+    AccountConfirmPasswordModalComponent,
     SubscriptionEditModalComponent
   ],
   exports: [
@@ -55,6 +57,7 @@ import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
     AccountRequestSendModalComponent,
     AccountRequestAcceptModalComponent,
     AccountListEditModalComponent,
+    AccountConfirmPasswordModalComponent,
     SubscriptionEditModalComponent,
     SharedModule
   ]

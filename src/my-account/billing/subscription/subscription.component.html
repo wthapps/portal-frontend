@@ -1,12 +1,30 @@
 <div class="box-panel">
-  <h3 class="box-panel-title">{{ pageTitle }}</h3>
-  <!--<h4 class="box-panel-subtitle">Profile Picture</h4>-->
-  <!--<div class="media media-upload-profile">-->
+  <h3 class="box-panel-title">Current Subscription</h3>
 
-  <!--</div>-->
-  <!--<hr class="line">-->
-  <!--<h4 class="box-panel-subtitle">Personal Information</h4>-->
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-3 text-right" >
+          <div>Plan type:</div>
+          <div>Number of accounts:</div>
+          <div>Total billing amount:</div>
+          <div>Payment method:</div>
+          <div>Next billing date:</div>
+        </div>
+
+        <div class="col-xs-3 text-left pl0">
+          <div> {{ plan?.description }} &nbsp; <a [routerLink]="['/billing/plan']">Change</a></div>
+          <div> 0  <a [routerLink]="['/admin/accounts']">Change</a></div>
+          <div><b> {{ subscription?.amount }}/month </b></div>
+          <div><span>Visa</span> &nbsp; <a [routerLink]="['/billing/payment_methods']">Change</a></div>
+          <div><b> {{ subscription?.next_billing_date | date: 'MMM d, y' }} </b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <a href="javascript:void(0);" class="btn btn-outline-primary btn-min">Cancel Subscription</a>
+  </div>
 
 </div>
 
-<!--<wth-upload-image #uploadProfile (imageClicked)='onImageClicked($event)'></wth-upload-image>-->

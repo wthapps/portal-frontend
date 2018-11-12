@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { ChatSupportBaseComponent } from '../chat-support-base.component';
 
-import { ChatSupportChannel } from '../shared/channel/chat-support.channel';
 import { AppearanceChannel } from '../shared/channel/appearance.channel';
 import { ApiBaseService } from '../../../../services/apibase.service';
 import { UserService } from '../../../../services/user.service';
@@ -28,7 +27,6 @@ export class ConversationListComponent implements ChatSupportBaseComponent, OnIn
   supporter: boolean;
 
   constructor(private api: ApiBaseService,
-              private chatSupportChannel: ChatSupportChannel,
               private appearanceChannel: AppearanceChannel,
               private userService: UserService) {
   }
@@ -48,7 +46,6 @@ export class ConversationListComponent implements ChatSupportBaseComponent, OnIn
     // subscribe chat support channel
     // this.appearanceChannel.subscribe('cs');
 
-    // this.chatSupportChannel.subscribe('cs');
 
     // get all registered accounts that are different supporters
     this.api.get(`users/list_account_type`)

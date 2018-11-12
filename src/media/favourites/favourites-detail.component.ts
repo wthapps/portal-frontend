@@ -40,7 +40,7 @@ export class ZMediaFavoriteDetailComponent implements OnInit {
       .toPromise()
       .then((res: any) => {
         this.data = res.data;
-        // this.nextLink = res.page_metadata.links.next;
+        // this.nextLink = res.meta.links.next;
       });
   }
 
@@ -53,7 +53,7 @@ export class ZMediaFavoriteDetailComponent implements OnInit {
         _.map(res.data, (v: any) => {
           this.data.push(v);
         });
-        // this.nextLink = res.page_metadata.links.next;
+        // this.nextLink = res.meta.links.next;
       });
   }
 

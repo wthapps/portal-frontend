@@ -34,9 +34,9 @@ export class ZSocialSharedHeaderComponent implements OnInit {
     });
   }
 
-  onSearchAdvanced(e: any) {
-    this.searchAdvanced = e.searchAdvanced;
-  }
+  // onSearchAdvanced(e: any) {
+  //   this.searchAdvanced = e.searchAdvanced;
+  // }
 
   clickedInside($event: Event) {
     $event.preventDefault();
@@ -47,25 +47,24 @@ export class ZSocialSharedHeaderComponent implements OnInit {
     this.show = false;
   }
 
-  onEnter(e: any) {
+  onEnter(search: string) {
     this.show = false;
     let paths = location.pathname.toString().split('/');
     let term = 'all';
     if (paths[1] === 'search' && paths[2] !== '') {
       term = paths[2].split(';')[0];
     }
-    // console.log('actived link:::', this.router.isActive(this.router.createUrlTree(['search', term]), true));
-    this.router.createUrlTree(['search', term]);
+    this.search = search;
     this.router.navigate(['/search', term, {q: this.search}], {queryParams: {q: this.search}});
   }
 
-  onKey(e: any) {
-    if (!e.search) {
+  onKey(search: any) {
+    if (!search) {
       this.show = false;
       return;
     }
     this.show = true;
-    this.search = e.search;
+    this.search = search;
     this.api.post(`zone/social_network/search`, {
       q: `${this.search}`,
       types: ['members', 'communities']

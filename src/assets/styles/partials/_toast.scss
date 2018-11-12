@@ -126,13 +126,20 @@
 
 .toast-wrap-bottom {
   position: fixed;
-  right: 10px;
-  bottom: 10px;
-  z-index: 200;
+  right: 0;
+  bottom: 0;
+  z-index: 1003;
+  @media (min-width: $screen-sm-min) {
+    right: 10px;
+    bottom: 10px;
+  }
   .toast-wrap-bottom-item {
-    margin-bottom: 10px;
-    width: 370px;
+
+    max-width: 370px;
     border: 1px solid #d8d8d8;
+    @media (min-width: $screen-sm-min) {
+      margin-bottom: 10px;
+    }
   }
   .toast-wrap-bottom-header {
     line-height: 20px;

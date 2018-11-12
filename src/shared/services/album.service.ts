@@ -1,4 +1,3 @@
-import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 
 import { Injectable } from '@angular/core';

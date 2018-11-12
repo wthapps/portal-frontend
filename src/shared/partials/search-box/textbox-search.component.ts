@@ -8,7 +8,7 @@ import {
   ViewEncapsulation,
   Renderer2
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { Constants } from '../../constant/config/constants';
@@ -42,7 +42,7 @@ export class TextBoxSearchComponent implements OnInit {
   constructor(private renderer: Renderer2) {}
 
   ngOnInit() {
-    Observable.fromEvent(this.input.nativeElement, 'keyup')
+    fromEvent(this.input.nativeElement, 'keyup')
       .pipe(debounceTime(this.debounceTime))
       .subscribe((keyboardEvent: any) => {
         this.onKeyUp(keyboardEvent);
@@ -56,7 +56,7 @@ export class TextBoxSearchComponent implements OnInit {
       return;
     }
     // Escape key
-    if (e.code === 27) {
+    if (e.keyCode === 27) {
       this.onEscape();
       return;
     }

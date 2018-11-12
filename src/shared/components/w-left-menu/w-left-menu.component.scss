@@ -1,0 +1,228 @@
+@import "../../../assets/styles/global";
+
+$active-color: red;
+.main-left-menu {
+  display: none;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1010;
+  width: 100%;
+  @media (min-width: $screen-md-min) {
+    display: block;
+    z-index: 40;
+    top: $header-height;
+    width: $main-page-left;
+  }
+}
+
+.menuleft-container {
+  width: $main-page-left-sm;
+  position: absolute;
+  z-index: 10;
+  left: -100%;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+  border-right: 1px solid $line;
+  background-color: #ffffff;
+  @include flexbox;
+  @include flex-direction(column);
+  @include transition($transition-base);
+
+  @media (min-width: $screen-md-min) {
+    left: 0;
+    width: $main-page-left;
+  }
+  .menuleft-content {
+    @include flex(1);
+  }
+  .menuleft-footer {
+    padding: 5px 10px;
+  }
+
+  .menuleft-logo {
+    display: none;
+    padding: 15px;
+    img {
+      height: 24px;
+    }
+    @media (max-width: $screen-xs-max) {
+      display: block;
+    }
+  }
+
+  .menuleft-bottom {
+    padding: 5px 10px;
+  }
+  .menuleft-item {
+    @include flexbox;
+    @include justify-content(space-between);
+    a {
+      @include flex(1);
+      color: inherit;
+      text-decoration: none;
+      padding: 8px 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      &:hover,
+      &:focus,
+      &:active,
+      &:active:focus {
+        outline: none;
+      }
+    }
+    .menuleft-item-action {
+      display: none;
+      span {
+        display: inline-block;
+        padding: 8px;
+        &:hover {
+          color: $theme-color;
+        }
+      }
+    }
+    &:hover {
+      //background-color: #e5e5e5;
+      .menuleft-item-action {
+        display: block;
+      }
+      > a {
+        color: $theme-color;
+      }
+    }
+    &.active {
+      //background-color: #e5e5e5;
+      > a {
+        color: $theme-color;
+      }
+    }
+  }
+
+  .ui-panelmenu {
+    .ui-menu-parent .ui-menu-list {
+      margin: 0;
+    }
+    .ui-panelmenu-header,
+    .ui-panelmenu-content {
+      &,
+      &.ui-state-active {
+        margin: 0;
+        padding: 0;
+        border-width: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        background-color: transparent;
+        a {
+          background-color: transparent;
+          color: $text-color;
+          &.active {
+            color: $theme-color;
+          }
+        }
+      }
+    }
+    .ui-panelmenu-header {
+      a {
+        padding-left: 30px;
+      }
+    }
+    .ui-menuitem {
+      .ui-menuitem-link {
+        padding-left: 45px;
+      }
+      .ui-menuitem {
+        .ui-menuitem-link {
+          padding-left: 60px;
+        }
+        .ui-menuitem {
+          .ui-menuitem-link {
+            padding-left: 75px;
+          }
+          .ui-menuitem {
+            .ui-menuitem-link {
+              padding-left: 90px;
+            }
+            .ui-menuitem {
+              .ui-menuitem-link {
+                padding-left: 105px;
+              }
+              .ui-menuitem {
+                .ui-menuitem-link {
+                  padding-left: 120px;
+                }
+                .ui-menuitem {
+                  .ui-menuitem-link {
+                    padding-left: 135px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .fa-caret-right {
+      &:before {
+        content: '\f054';
+      }
+    }
+
+    .fa-caret-down {
+      &:before {
+        content: '\f078';
+      }
+    }
+    .ui-menuitem-text,
+    .ui-menuitem-link,
+    .ui-panelmenu-headerlink-hasicon {
+      white-space: nowrap;
+      overflow: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+
+      &.active {
+        color: $theme-color !important;
+        span {
+          color: $theme-color !important;
+        }
+      }
+    }
+    
+    .ui-menuitem-link, .ui-panelmenu-header, .ui-panelmenu-header-link {
+      &.ui-state-active {
+        color: $active-color;
+      }
+      a.ui-state-active {
+        color: $active-color;
+      }
+    }
+  }
+}
+
+.menuleft-dismiss {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  background-color: rgba($modal-backdrop-bg, $modal-backdrop-opacity);
+  @media (min-width: $screen-md-min) {
+    display: none;
+  }
+}
+
+.left-sidebar-open {
+  .main-left-menu {
+    display: block;
+  }
+  .menuleft-container {
+    left: 0;
+  }
+}

@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { SocialService } from '../../../shared/services/social.service';

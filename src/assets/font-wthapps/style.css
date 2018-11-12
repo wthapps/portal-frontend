@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'wthapps';
-  src:  url('fonts/wthapps.eot?eud6ke');
-  src:  url('fonts/wthapps.eot?eud6ke#iefix') format('embedded-opentype'),
-    url('fonts/wthapps.ttf?eud6ke') format('truetype'),
-    url('fonts/wthapps.woff?eud6ke') format('woff'),
-    url('fonts/wthapps.svg?eud6ke#wthapps') format('svg');
+  src:  url('fonts/wthapps.eot?fdpyvh');
+  src:  url('fonts/wthapps.eot?fdpyvh#iefix') format('embedded-opentype'),
+    url('fonts/wthapps.ttf?fdpyvh') format('truetype'),
+    url('fonts/wthapps.woff?fdpyvh') format('woff'),
+    url('fonts/wthapps.svg?fdpyvh#wthapps') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.wthico-merge:before {
+  content: "\e902";
+  color: #4a4a4a;
+}
 .wthico-shared-with-me:before {
   content: "\e901";
   color: #9b9b9b;

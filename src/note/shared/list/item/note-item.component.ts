@@ -11,7 +11,7 @@ import {
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
@@ -24,7 +24,6 @@ import { UserService } from '@wth/shared/services';
 @Component({
   selector: 'note-item',
   templateUrl: 'note-item.component.html'
-  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NoteItemComponent implements OnInit, OnDestroy {
   @Input() data: Note = new Note();

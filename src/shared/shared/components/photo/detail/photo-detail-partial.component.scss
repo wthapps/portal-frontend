@@ -26,6 +26,14 @@
         }
       }
     }
+    @media (max-width: $screen-xs-max) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
   }
 
   .image-viewer-content {
@@ -65,7 +73,7 @@
       @include center(false, true);
       z-index: 100;
       left: $grid-gutter-width/2;
-      &:last-child {
+      &.right {
         left: auto;
         right: $grid-gutter-width/2;
       }
@@ -107,8 +115,7 @@
     }
   }
   .image-viewer-info {
-    width: $photo-detail-info-width;
-    right: -$photo-detail-info-width;
+
     @include transition($transition-base);
     //height: calc(100vh - 65px);
     height: 100vh;
@@ -119,6 +126,12 @@
     top: 0;
     z-index: 100;
     word-break: break-all;
+    width: 100%;
+    right: -100%;
+    @media (min-width: $screen-sm-min) {
+      width: $photo-detail-info-width;
+      right: -$photo-detail-info-width;
+    }
     h3 {
       margin: -15px -15px 15px;
       padding: 15px;
@@ -157,7 +170,7 @@
         ul {
           @include clearfix;
           li {
-            float: left;
+            //float: left;
             margin: 0 5px 5px 0;
           }
         }
@@ -166,14 +179,13 @@
     .photo-detail-info-title {
       margin-bottom: 10px;
       padding-bottom: 10px;
-      border-bottom: 1px solid $line;
       @include clearfix;
       h4 {
         margin: 0;
         padding: 0;
         float: left;
       }
-      a {
+      a, button {
         float: right;
       }
     }
@@ -182,17 +194,50 @@
     .image-viewer-info {
       right: 0;
     }
-    .image-viewer-content-fixed {
-      left: -$photo-detail-info-width/2;
-    }
-    .image-viewer-content-action, .image-viewer-header {
-      padding-right: $photo-detail-info-width;
-    }
-    .image-viewer-content-nav a:last-child {
-      right: $photo-detail-info-width;
+    @media (min-width: $screen-sm-min) {
+      .image-viewer-content-fixed {
+        left: -$photo-detail-info-width/2;
+      }
+      .image-viewer-content-action, .image-viewer-header {
+        padding-right: $photo-detail-info-width;
+      }
+      .image-viewer-content-nav a:last-child {
+        right: $photo-detail-info-width;
+      }
     }
   }
 }
 
+.albums {
+  //max-height: 300px;
+  //overflow-y: auto;
+}
 
+.album-card {
+  height: 44px;
+  width: 100%;
+  display: flex;
+  .album-card-image, .album-card-content {
+    display: table-cell;
+    cursor: pointer;
+  }
+  .album-card-image, img {
+    height: 34px;
+    width: 34px;
+  }
+  .album-card-content {
+    padding: 0 0 0 5px;
+    .album-card-content-name {
+      span {
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+    .album-card-content-created-date {
+      span {
+        font-size: 10px;
+      }
+    }
+  }
+}
 

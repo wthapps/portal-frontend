@@ -1,15 +1,10 @@
-<div class="page-body-content"
-     lockYOffset="20"
-     observeAttributes="true"
-     infinite-scroll
-     [scrollWindow]="true"
-     (scrolled)="onLoadMore()">
+<div class="page-body-content" lockYOffset="20" observeAttributes="true" infinite-scroll [scrollWindow]="true"
+  (scrolled)="onLoadMore()">
   <div class="page-body-content-in">
     <div class="zone-social-in">
-      <so-post-list #posts [user]="authService.user$|async" [type]="'user_and_friend'"></so-post-list>
+      <so-post-list #posts [user]="authService.user$|async" [posts]="soStorageService.postList$  | async" [type]="'user_and_friend'"></so-post-list>
     </div>
-    <z-social-favorites ></z-social-favorites>
+    <z-social-favorites></z-social-favorites>
   </div>
   <wth-zone-report></wth-zone-report>
 </div>
-

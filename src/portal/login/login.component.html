@@ -5,7 +5,9 @@
         <h2 class="h1">Log in</h2>
         <p class="h4">Welcome back</p>
       </div>
-
+      <p *ngIf="errorMessage" class="text-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ errorMessage }}
+      </p>
       <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
         <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
           <label for="email">Email</label>
@@ -36,10 +38,10 @@
           <button [disabled]="!form.valid" type="submit" class="btn btn-block btn-primary">Log in</button>
         </div>
 
-        <div class="checkbox">
-          <a class="forgot pull-right" [routerLink]="['/recovery/forgottenpassword']">Forgot password?</a>
+        <div class="checkbox clearfix">
+          <a class="pull-right" [routerLink]="['/recovery/forgottenpassword']">Forgot password?</a>
           <!--<label>-->
-            <!--<input type="checkbox"> Remember me-->
+          <!--<input type="checkbox"> Remember me-->
           <!--</label>-->
         </div>
       </form>

@@ -1,6 +1,6 @@
 import { Component, AfterViewChecked, HostBinding } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { fadeInAnimation } from '../../shared/shared/animations/route.animation';
 

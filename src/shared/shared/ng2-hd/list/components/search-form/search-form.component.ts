@@ -17,7 +17,7 @@ import {
 } from '@angular/forms';
 
 @Component({
-    selector: 'search-form',
+  selector: 'search-form',
   templateUrl: 'search-form.component.html'
 })
 export class SearchFormComponent implements OnInit {

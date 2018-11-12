@@ -1,0 +1,32 @@
+<bs-modal #myModal>
+  <bs-modal-header>
+    <h4 *ngIf="type === 'custom_friend'" class="modal-title">Share with friends</h4>
+    <h4 *ngIf="type === 'custom_community'" class="modal-title">Share in community</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p *ngIf="type === 'custom_friend'">
+      Enter friends you want to share with.
+      <br>Your friend will also receive notification on this post.
+    </p>
+    <p *ngIf="type === 'custom_community'">
+      You can only shar your post in one community at a time. <br>
+      To share with many communities, please create a separate post for each.
+    </p>
+    <p-autoComplete [(ngModel)]="selectedItems"
+                    [suggestions]="filteredDataMultiple"
+                    (completeMethod)="filterDataMultiple($event)"
+                    styleClass="wid100"
+                    [minLength]="1"
+                    placeholder=""
+                    field="name"
+                    [multiple]="true">
+    </p-autoComplete>
+
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="myModal.dismiss()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-outline-primary btn-min" (click)="onSave()">Ok</button>
+  </bs-modal-footer>
+</bs-modal>

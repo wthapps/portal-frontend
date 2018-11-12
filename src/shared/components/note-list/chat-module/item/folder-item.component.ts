@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 
 import { Constants } from '@shared/constant/config/constants';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { UrlService, UserService, ApiBaseService } from '@shared/services';
 import { noteConstants } from '@notes/shared/config/constants';

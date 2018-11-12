@@ -1,111 +1,330 @@
-import {Component, ComponentFactoryResolver, OnDestroy, OnInit} from '@angular/core';
+import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
-import { Observable } from 'rxjs/Observable';
-import { Constants } from '@wth/shared/constant';
+import { Observable } from 'rxjs';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import * as appStore from '../shared/store';
-import { Store } from '@ngrx/store';
 import {
   GetAll,
   Favorite,
+  Update,
   AddSuccess,
-  DeleteMany
+  DeleteMany,
+  Download
 } from '../shared/store/media/media.actions';
-import { MediaActionHandler } from '@media/shared/media';
+import { Constants } from '@wth/shared/constant';
+import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
+import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ApiBaseService } from '@shared/services';
-import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
+import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
+import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
+import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
+import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
+import { mediaConstants } from '@media/shared/config/constants';
+import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 
+@Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, MediaAdditionalListMixin])
 @Component({
-  moduleId: module.id,
-  selector: 'me-shared-with-me',
-  templateUrl: 'shared-with-me.component.html'
+  selector: 'me-sharings',
+  templateUrl: '../shared/list/list.component.html'
 })
-export class ZMediaSharedWithMeComponent extends MediaActionHandler implements OnInit, OnDestroy {
-  objects$: Observable<any>;
-  loading$: Observable<any>;
-  nextLink$: Observable<any>;
+export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
+SharingModalMixin,
+MediaModalMixin,
+MediaDownloadMixin,
+MediaAdditionalListMixin {
+  objects: any;
+  links: any;
+  hasSelectedObjects: boolean;
+  selectedObjects: any = [];
+  favoriteAll: any;
+  loading: boolean;
   tooltip: any = Constants.tooltip;
+  viewModes: any = { grid: 'grid', list: 'list', timeline: 'timeline' };
+  viewMode: any = this.viewModes.grid;
+  menuActions: any = {};
+  modalIns: any;
+  iconNoData: any = 'fw fw-shared-with-me';
+  titleNoData: any = 'There are no media shared with you!';
+  subTitleNoData: any = 'Media can be shared to your connected contact.';
+  modalRef: any;
+  sorting: any;
+  endLoading: any;
+  disableMoreAction = false;
 
-  private path = 'media/sharings/shared_with_me';
-  private sub: any;
+  @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+
   constructor(
-    protected store: Store<appStore.State>,
-    protected resolver: ComponentFactoryResolver,
-    private mediaUploaderDataService: MediaUploaderDataService,
-    private router: Router,
-    private apiBaseService: ApiBaseService,
-    private confirmService: WthConfirmService
+    public resolver: ComponentFactoryResolver,
+    public mediaUploaderDataService: MediaUploaderDataService,
+    public sharingModalService: SharingModalService,
+    public apiBaseService: ApiBaseService,
+    public router: Router,
+    public toastsService: ToastsService,
+    public confirmService: WthConfirmService,
+    public sharingService: SharingService
   ) {
-    super(resolver, store);
-
-    this.objects$ = this.store.select(appStore.selectObjects);
-    this.nextLink$ = this.store.select(appStore.selectNextLink);
-    this.loading$ = this.store.select(appStore.selectLoading);
-
-    this.sub = this.mediaUploaderDataService.action$
-      .takeUntil(this.destroySubject)
-      .subscribe((event: any) => {
-        this.doEvent(event);
-      });
   }
+
+  validateActions: (menuActions: any, role_id: number) => any;
 
   ngOnInit() {
-    this.doEvent({ action: 'getAll', payload: {path: this.path, queryParams: {}}});
+    this.loadObjects();
+    this.menuActions = this.getMenuActions();
   }
 
-  doEvent(event: any) {
-    super.doEvent(event);
+  loadObjects(opts: any = {}) {
+    this.loading = true;
+    this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
+    this.apiBaseService.get('media/sharings/shared_with_me', opts).subscribe(res => {
+      this.objects = res.data;
+      this.links = res.meta.links;
+      this.loading = false;
+      this.loadingEnd();
+    });
+  }
 
-    switch (event.action) {
-      case 'sort':
-        this.store.dispatch(new GetAll({path: this.path, queryParams: {...event.payload.queryParams}}));
+  loadMoreObjects: (input?: any) => void;
+
+  loadingEnd: () => void;
+
+  viewDetail(input?: any) {
+    /* this method is load detail object */
+    this.router.navigate(['/shared', input]);
+  }
+
+  selectedObjectsChanged: (objectsChanged?: any) => void;
+
+  toggleFavorite: (items?: any) => void;
+
+  onListChanges(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
-      case 'openUploadModal':
-        this.mediaUploaderDataService.onShowUp();
+      case 'selectedObjectsChanged':
+        let hasDownload = true;
+        if (this.selectedObjects && this.selectedObjects.length > 1) {
+          this.menuActions.share.active = false;
+          this.menuActions.shareMobile.active = false;
+
+          this.selectedObjects.forEach(object => {
+            if (object.recipient.role_id < 2) {
+              hasDownload = false;
+              return;
+            }
+          });
+          this.disableMoreAction = !hasDownload;
+
+        } else {
+          this.menuActions.share.active = true;
+          this.menuActions.shareMobile.active = true;
+        }
+        // Check permission
+        if (this.selectedObjects && this.selectedObjects.length === 1) {
+          this.validateActions(this.menuActions, this.selectedObjects[0].recipient.role_id);
+          this.disableMoreAction = (Object.keys(this.menuActions)
+          .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
+        }
+        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
-      case 'addAlbumSuccessful':
-        this.store.dispatch(new AddSuccess(event.payload));
-        break;
-      case 'favourite':
-        this.store.dispatch(new Favorite(event.payload));
-        break;
-      case 'viewDetails':
-        this.viewDetails(event.payload);
-        break;
-      case 'preview':
-        this.preview(event.payload);
-        break;
-      // this will remove selected items from current list
-      // Those item will disappear from the list
-      case 'deleteMedia':
-        this.confirmService.confirm({
-          header: 'Delete sharing',
-          acceptLabel: 'Delete',
-          message: `Are you sure to delete selected sharing(s). Those item(s) will disappear permanent in this page.`,
-          accept: () => {
-            this.store.dispatch(new DeleteMany({...event.payload}));
-          }});
+      default:
         break;
     }
   }
 
-  viewDetails(payload: any) {
-    const object = payload.selectedObject;
-      this.router.navigate(['shared', object.uuid], {queryParams: {returnUrl: this.router.url}});
+  deleteObjects: (term: any) => void;
+
+  doListEvent(e: any) {
+    switch (e.action) {
+      case 'getMore':
+        this.loadMoreObjects();
+        break;
+      case 'favorite':
+        this.toggleFavorite(e.payload);
+        break;
+      case 'viewDetails':
+        this.viewDetail(e.payload.selectedObject.uuid);
+        break;
+      case 'openModal':
+        this.openEditModal(e.payload.selectedObject);
+        this.modalIns.event.subscribe(ev => this.doModalAction(ev));
+        break;
+      case 'sort':
+        this.sorting = e.payload.queryParams;
+        this.loadObjects(this.sorting);
+        break;
+      case 'clickOnItem':
+      case 'clickOnCircle':
+        this.selectedObjectsChanged();
+        break;
+    }
   }
 
-  preview(payload: any) {
+  doModalAction(e: any) {
+    switch (e.action) {
+      case 'editName':
+        this.apiBaseService.put(`media/sharings/${e.params.selectedObject.id}`, e.params.selectedObject).subscribe(res => {
+          this.toastsService.success('Updated successfully');
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
+  doToolbarEvent(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        this.toggleFavorite();
+        break;
+      case 'changeView':
+        this.changeViewMode(e.payload);
+        break;
+    }
+  }
+
+  downloadMediaCustom() {
+    this.apiBaseService.get(`media/sharings/${this.selectedObjects[0].uuid}/objects`).subscribe(res => {
+      this.downloadMedia(res.data);
+    });
+  }
+  downloadMedia: (media) => void;
+
+  openModalShare: (array?: any) => void;
+
+  onSaveShare: (input: any) => void;
+  onEditShare: (input: any, sharing: any) => void;
+
+  viewDetails(payload: any) {
     const object = payload.selectedObject;
-    this.apiBaseService.get(`media/sharings/${object.uuid}/full_details`).subscribe((response: any) => {
-      this.router.navigate(['photos', response.data[0].uuid, {
-        batchQuery: `media/media?type=photo&sharing=${object.id}`,
-        mode: 0
-      }], {queryParams: {returnUrl: this.router.url}});
+    this.router.navigate(['shared', object.uuid]);
+  }
+
+  changeViewMode: (mode: any) => void;
+
+  loadModalComponent: (component: any) => void;
+
+  openEditModal: (object: any) => void;
+  onAfterEditModal() {
+
+  }
+
+  openEditModalCustom() {
+    if (this.selectedObjects && this.selectedObjects.length === 1) {
+      this.openEditModal(this.selectedObjects[0]);
+      this.modalIns.event.subscribe(e => this.doModalAction(e));
+    }
+  }
+
+  deleteShareWithMe() {
+    this.confirmService.confirm({
+      header: 'Delete',
+      acceptLabel: 'Delete',
+      message: `Are you sure to delete ${this.selectedObjects.length} sharings`,
+      accept: () => {
+        this.apiBaseService.post(`media/sharings/delete_sharings_with_me`, { sharings: this.selectedObjects }).subscribe(res => {
+          this.loadObjects();
+        });
+      }
     });
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+  getMenuActions() {
+    return {
+      share: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
+        inDropDown: false, // Outside dropdown list
+        action: this.openModalShare.bind(this),
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.share,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      shareMobile: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
+        // needPermission: 'view',
+        inDropDown: true, // Inside dropdown list
+        // action: this.openModalShare.bind(this),
+        class: '',
+        mobile: true,
+        liclass: 'visible-xs-block',
+        tooltip: this.tooltip.share,
+        title: 'Share',
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-share-alt'
+      },
+      favorite: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: this.toggleFavorite.bind(this),
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.addToFavorites,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-star'
+      },
+      delete: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
+        // needPermission: 'view',
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          // this.deleteObjects.bind(this, 'sharings');
+          this.deleteShareWithMe();
+        },
+        class: 'btn btn-default',
+        liclass: 'hidden-xs',
+        tooltip: this.tooltip.delete,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      },
+      edit: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
+        inDropDown: true, // Outside dropdown list
+        action: this.openEditModalCustom.bind(this),
+        class: '',
+        liclass: '',
+        title: 'Edit Information',
+        tooltip: this.tooltip.edit,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-edit'
+      },
+      download: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
+        inDropDown: true, // Outside dropdown list
+        action: this.downloadMediaCustom.bind(this),
+        class: '',
+        liclass: '',
+        title: 'Download',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-download'
+      },
+      deleteMobile: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
+        inDropDown: true, // Inside dropdown list
+        action: () => { this.deleteShareWithMe(); },
+        class: '',
+        mobile: true,
+        liclass: 'visible-xs-block',
+        title: 'Delete',
+        tooltip: this.tooltip.delete,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-trash'
+      }
+    };
   }
 }

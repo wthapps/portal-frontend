@@ -7,18 +7,18 @@
     <span *ngIf="importStatus==IMPORT_STATUS.cancelled">Import cancelled</span>
   </wth-modal-dock-header>
   <wth-modal-dock-body>
-    <div class="media"
+    <div class="media dock-body-import"
          *ngIf="importStatus==IMPORT_STATUS.importing || importStatus==IMPORT_STATUS.cancelled  || importStatus==IMPORT_STATUS.done ">
-      <div *ngIf="importStatus==IMPORT_STATUS.importing">
+      <div class="body-message" *ngIf="importStatus==IMPORT_STATUS.importing">
         Importing {{ gapi.totalImporting > 0 ? 'total ' + gapi.totalImporting + ' contacts' : '' }} ...
       </div>
-      <div *ngIf="importStatus==IMPORT_STATUS.done">
+      <div class="body-message" *ngIf="importStatus==IMPORT_STATUS.done">
         Contacts imported
-        <h3 class="mt-0 mb-0">{{ successfulNum }}</h3>
+        <div class="body-number">{{ successfulNum }}</div>
       </div>
-      <div *ngIf="importStatus==IMPORT_STATUS.cancelled">
+      <div class="body-message" *ngIf="importStatus==IMPORT_STATUS.cancelled">
         Contacts cancelled
-        <h3 class="mt-0 mb-0">{{ gapi.totalImporting }}</h3>
+        <div class="body-number">{{ gapi.totalImporting }}</div>
       </div>
     </div>
 

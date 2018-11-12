@@ -9,8 +9,8 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/filter';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import {
   AccountListEditModalComponent,
@@ -25,14 +25,12 @@ import { WthConfirmService } from '../shared/shared/components/confirmation/wth-
 import { SubscriptionService } from './shared/subscription/subscription.service';
 import { ToastsService } from '../shared/shared/components/toast/toast-message.service';
 import { AccountService } from './shared/account/account.service';
-import { Config } from '@shared/constant/config/env.config';
 import { Store } from '@ngrx/store';
 import * as fromRoot from './store';
 import * as fromAccount from './store/account';
 import { AuthService, UserService } from '@wth/shared/services';
 import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
 
-declare let $: any;
 
 /**
  * This class represents the main application component.
@@ -73,7 +71,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private store: Store<fromRoot.State>
   ) {
     this.commonEventService
-      .filter((event: any) => event.channel == 'my_account')
+      .filter((event: any) => event.channel === 'my_account')
       .subscribe((event: any) => {
         this.doEvent(event);
       });
@@ -83,7 +81,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.currentUser = this.userService.getSyncProfile();
 
     this.routerSubscription = this.router.events
-      .filter(event => event instanceof NavigationEnd)
+      .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
@@ -126,12 +124,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       case 'my_account:account:update':
         this.store.dispatch(new fromAccount.Update(event.payload.data));
-        // this.accountService.update(event.payload.data).subscribe(
-        //   (response: any) => {
-        //     console.log('update_account:::', response.data);
-        //     this.toastsService.success('You have just update account successfully!');
-        //   });
-
         break;
       case 'my_account:account:open_request_ownership_modal':
         this.loadModalComponent(AccountRequestOwnershipModalComponent);
@@ -188,7 +180,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(
+    const modalComponentFactory = this.resolver.resolveComponentFactory(
       component
     );
     this.modalContainer.clear();

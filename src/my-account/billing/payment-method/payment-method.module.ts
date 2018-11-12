@@ -1,20 +1,24 @@
 import { NgModule } from '@angular/core';
 import { MySharedModule } from '@account/shared/shared.module';
 import { SharedModule } from '@wth/shared/shared.module';
-import { PaymentMethodComponent } from './payment-method.component';
-// import { PaymentMethodRoutingModule } from './payment-method-routing.module';
+import { PaymentMethodListComponent } from './payment-method-list.component';
+import { PaymentMethodAddModalComponent } from './payment-method-add-modal.component';
+
+import { CreditCardModule } from '@account/shared/credit-card';
 
 @NgModule({
   imports: [
-    // PaymentMethodRoutingModule,
+    CreditCardModule,
     MySharedModule,
     SharedModule
   ],
   declarations: [
-    PaymentMethodComponent
+    PaymentMethodListComponent,
+    PaymentMethodAddModalComponent
   ],
   exports: [
-    PaymentMethodComponent
+    PaymentMethodListComponent,
+    PaymentMethodAddModalComponent
   ],
   providers: []
 })

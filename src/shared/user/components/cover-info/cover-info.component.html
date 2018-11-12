@@ -1,0 +1,49 @@
+<div class="w-user-cover-info">
+  <div class="w-user-cover-info-wrapper">
+    <div class="w-cover-image-action">
+      <!--<button class="btn btn-outline-primary" (click)="changeCoverImage($event)" title="Change Cover Image">-->
+        <!--<i class="fa fa-camera"></i>-->
+      <!--</button>-->
+    </div>
+    <div class="w-cover-action">
+      <button class="pull-right btn btn-default" (click)="openModal()">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </div>
+    <div class="w-cover-image" id="cover_image">
+      <img class="img-bg img-full no-user-selected" [src]="user?.cover_image" alt="">
+    </div>
+
+    <div class="w-user-info">
+      <div class="z-social-media z-social-media-md">
+          <div class="w-user-avatar can-click" (click)="changeProfileImage($event)" id="profile_image">
+            <div class="avatar-md">
+              <img [src]="user?.profile_image" class="no-user-selected">
+              <span class="w-user-avatar-cover">
+                <i class="fa fa-camera"></i>
+              </span>
+            </div>
+          </div>
+
+
+        <div class="w-user-name">
+          <div class="z-heading" [title]="user.name">
+            <div class="z-name"> {{ user?.name }}</div>
+          </div>
+          <div class="z-shared-info">
+            <ul>
+              <li>{{ user?.nickname }}</li>
+            </ul>
+          </div>
+          <div class="z-shared-description"></div>
+        </div>
+
+        <div class="w-user-actions">
+          <!--<button class="btn btn-default" (click)="openModal()">-->
+            <!--<i class="fa fa-pencil"></i>-->
+          <!--</button>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

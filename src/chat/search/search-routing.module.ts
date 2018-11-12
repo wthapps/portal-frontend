@@ -7,7 +7,7 @@ import { ZChatSearchComponent } from './search.component';
   imports: [
     RouterModule.forChild([
       {
-        path: 'search',
+        path: '',
         component: ZChatSearchComponent,
         canActivate: [AuthGuard]
       }

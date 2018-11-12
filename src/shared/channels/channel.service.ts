@@ -18,24 +18,24 @@ export class ChannelService extends CableService {
   }
 
   subscribe() {
-    // TODO fix replace this by ng2cable
-    // console.log('channel service:::', App);
     if (this.userService.loggedIn && this.userService.getSyncProfile()) {
       this.createConnectionInstance(this.userService.getSyncProfile().uuid);
-      let thisCopy = this;
+
+      const self = this;
+
       App.channel = App.cable.subscriptions.create(
-        { channel: 'CommonChannel' },
+        'CommonChannel',
         {
-          connected: function() {
+          connected: () => {
             console.log('connected');
           },
-          disconnected: function() {
+          disconnected: () => {
             console.log('disconnected');
           },
-          received: function(data: any) {
+          received: (data: any) => {
             console.log('received', data);
             let factory = new ChannelActionFactoryService();
-            let action = factory.create(data, thisCopy.serviceManager);
+            let action = factory.create(data, self.serviceManager);
             if (action) {
               if (action.process) {
                 action.process(data);

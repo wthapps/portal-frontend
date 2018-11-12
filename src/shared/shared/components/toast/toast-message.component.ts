@@ -26,7 +26,7 @@
 //   clickToClose: false
 // });
 
-import {AfterViewInit, Component} from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { Message } from 'primeng/components/common/message';
 
 @Component({
@@ -35,7 +35,7 @@ import { Message } from 'primeng/components/common/message';
   styleUrls: ['toast-message.component.scss']
 })
 export class ToastsComponent {
-  life: number = 3000;
+  life = 3000;
   msgs: Message[] = [];
 
   constructor() {}

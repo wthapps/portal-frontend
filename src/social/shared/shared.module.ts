@@ -1,39 +1,55 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { ZSocialSharedAutoCompleteSharedComponent } from '@social/shared/auto-complete-shared/auto-complete-shared.component';
+import { ZSocialSharedPrivacyComponent } from '@social/shared/modal-privacy/privacy.component';
 import { ZSocialFavoritesComponent } from './favorites/social-favorites.component';
 
 import { SocialService } from './services/social.service';
 import { SoCommunityService } from './services/community.service';
 
-import { PostModule } from './second-routes/post/post.module';
-
-import { PostDetailComponent } from './second-routes/post/post-detail.component';
-import { PostDetailPhotoComponent } from './second-routes/post/post-detail-photo.component';
-import { PostListComponent } from './second-routes/post/post-list.component';
-import { ZSocialMembersComponent } from '../friends/members.component';
 import { ZSocialProfileService } from '../profile/profile.service';
 import { SocialFavoriteService } from './services/social-favorites.service';
 import { ZSocialShareProfileModule } from './user/list.module';
-import { ZSocialShareCommunityFormEditComponent } from './form/edit-community.component';
-import { ZSocialShareCommunityFormPreferenceComponent } from './form/preferences-community.component';
-import { SocialDataService } from './services/social-data.service';
 import { SoUserService } from './services/social-user.service';
 import { SoPostService } from './services/social-post.service';
 import { ZSocialSharedHeaderComponent } from './header/header.component';
 import { StepByStepGuideModule } from './step-by-step-guide/step-by-step-guide.module';
 import { Ng2HdModule } from '@wth/shared/shared/ng2-hd';
 import { CoverProfileModule } from '@wth/shared/shared/components/cover-profile/cover-profile.module';
-import { SharedModule } from '@wth/shared/shared.module';
-import { PostComponent } from './second-routes/post/post.component';
-import { PostHeaderComponent } from './second-routes/post/components/post-header.component';
-import { PostBodyComponent } from './second-routes/post/components/post-body.component';
-import { PostFooterComponent } from './second-routes/post/components/post-footer.component';
-import { ZSocialSharedNewsFeedComponent } from './news-feed/news-feed.component';
 import { ZSocialLeftMenuComponent } from './component/social-left-menu.component';
 import { SoShortcutService } from './services/shortcut.service';
 import { ZSocialShortcutSettingComponent } from './shortcut-setting/shortcut-setting.component';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
-import { ZSocialCoverComponent } from '@social/shared/cover/cover.component';
 import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-loading.module';
+import { WthCommonModule } from '@shared/common/wth-common.module';
+import { ModalModule } from '@shared/components/modal/modal.module';
+import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
+import { ComponentsModule } from '@shared/components/components.module';
+import { FileModule } from '@shared/shared/components/file/file.module';
+import { PartialModule } from '@shared/partials';
+import { ModalDockModule } from '@shared/shared/components/modal/dock.module';
+import { ZSharedMenuModule } from '@shared/shared/components/menu/menu.module';
+import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TagInputModule } from 'ngx-chips';
+import {
+  InputSwitchModule,
+  CheckboxModule,
+  RadioButtonModule,
+  AutoCompleteModule,
+  CalendarModule,
+  PanelMenuModule,
+  TooltipModule
+} from 'primeng/primeng';
+import { ZSharedReportModule } from '@shared/shared/components/zone/report/report.module';
+import { PipeModule } from '@shared/shared/pipe/pipe.module';
+import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
+import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.module';
+import { ZSocialMembersComponent } from '@social/friends/members.component';
+import { ZSocialShareCommunityFormEditComponent } from '@social/shared/form/edit-community.component';
+import { ZSocialShareCommunityFormPreferenceComponent } from '@social/shared/form/preferences-community.component';
+import { SoStorageService } from './services/social-storage.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -41,69 +57,115 @@ import { BoxLoadingModule } from '@wth/shared/shared/components/box-loading/box-
 
 @NgModule({
   imports: [
-    // HdModalModule,
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    // Wth common module
+    WthCommonModule,
+
+    // custom component
     Ng2HdModule,
+    ModalModule,
+    PipeModule,
+    WMediaSelectionModule,
+    ComponentsModule,
+    FileModule,
+    PartialModule,
     CoverProfileModule,
-    PostModule,
+    ModalDockModule,
+    ZSharedMenuModule,
+    WNavTabModule,
+    ZSharedReportModule,
+
     ZSocialShareProfileModule,
     MiniEditorModule,
     BoxLoadingModule,
-    SharedModule
+    PartialsPhotoModule,
+    WTHEmojiModule,
+
+    // third party libs
+    TagInputModule,
+    InputSwitchModule,
+    CheckboxModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    CalendarModule,
+    PanelMenuModule,
+    TooltipModule
   ],
   declarations: [
     ZSocialFavoritesComponent,
 
     ZSocialMembersComponent,
-    // List Posts
-    PostListComponent,
-    PostComponent,
-    PostHeaderComponent,
-    PostBodyComponent,
-    PostFooterComponent,
-    PostDetailComponent,
-    PostDetailPhotoComponent,
-
-    // Search
-    // ZSocialSearchResultComponent,
-
-    // Community
-    ZSocialShareCommunityFormEditComponent,
-    ZSocialShareCommunityFormPreferenceComponent,
 
     ZSocialSharedHeaderComponent,
-    ZSocialSharedNewsFeedComponent,
     ZSocialShortcutSettingComponent,
     //  Left menu
     ZSocialLeftMenuComponent,
 
-    ZSocialCoverComponent
+    // Community partial components
+    ZSocialShareCommunityFormEditComponent,
+    ZSocialShareCommunityFormPreferenceComponent,
+    ZSocialSharedAutoCompleteSharedComponent,
+    ZSocialSharedPrivacyComponent
   ],
   exports: [
-    ZSocialFavoritesComponent,
-    PostListComponent,
-    PostComponent,
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
 
+    // Wth common module
+    WthCommonModule,
+
+    // custom component
     Ng2HdModule,
-    PostModule,
-    BoxLoadingModule,
+    ModalModule,
+    WMediaSelectionModule,
+    ComponentsModule,
+    FileModule,
+    PartialModule,
+    CoverProfileModule,
+    ModalDockModule,
+    ZSharedMenuModule,
+    WNavTabModule,
+    ZSharedReportModule,
+
+    PipeModule,
     ZSocialShareProfileModule,
+    MiniEditorModule,
+    BoxLoadingModule,
+    PartialsPhotoModule,
+    WTHEmojiModule,
+
+    // third party libs
+    TagInputModule,
+    InputSwitchModule,
+    CheckboxModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    CalendarModule,
+    PanelMenuModule,
+    TooltipModule,
+
+    ZSocialFavoritesComponent,
 
     StepByStepGuideModule,
 
-    // Community
-    ZSocialShareCommunityFormEditComponent,
-    ZSocialShareCommunityFormPreferenceComponent,
-
+    ZSocialMembersComponent,
     ZSocialSharedHeaderComponent,
-    ZSocialSharedNewsFeedComponent,
     ZSocialShortcutSettingComponent,
-
-    MiniEditorModule,
 
     //  Left menu
     ZSocialLeftMenuComponent,
 
-    ZSocialCoverComponent
+    // Community partial components
+    ZSocialShareCommunityFormEditComponent,
+    ZSocialShareCommunityFormPreferenceComponent,
+    ZSocialSharedAutoCompleteSharedComponent,
+    ZSocialSharedPrivacyComponent
   ]
 })
 export class ZSocialSharedModule {
@@ -117,7 +179,7 @@ export class ZSocialSharedModule {
         SoCommunityService,
         ZSocialProfileService,
         SocialFavoriteService,
-        SocialDataService,
+        SoStorageService,
         SoShortcutService
       ]
     };

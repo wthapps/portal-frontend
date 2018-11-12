@@ -1,0 +1,43 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title"> {{title}} </h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <form [formGroup]="form" novalidate>
+      <div class="form-group">
+        <label for="album-name">Name</label>
+        <input [formControl]="name" type="text" class="form-control" [placeholder]="namePlaceholder">
+      </div>
+      <div class="form-group">
+        <label for="album-description">Description</label>
+        <input [formControl]="description" type="text" class="form-control" placeholder="Description">
+      </div>
+
+      <div class="form-group">
+
+        <div class="row-img row-img-10 grid" *ngIf="arrayItems">
+          <div *ngFor="let p of arrayItems" class="row-img-item">
+            <div class="photo-box">
+              <div class="photo-box-action">
+                <i class="fa fa-remove" (click)="remove(p,$event)"></i>
+              </div>
+              <div class="photo-box-figure">
+                <figure class="img-center-dv">
+                  <div class="photo-box-figure-in">
+                    <img class="img-center" draggable="false" [src]="p['thumbnail_url']" alt="">
+                  </div>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="close()">Cancel</button>
+    <button [disabled]="!form.valid" type="submit" class="btn btn-outline-primary btn-min" (click)="create(form.value)">
+      Done
+    </button>
+  </bs-modal-footer>
+</bs-modal>

@@ -13,7 +13,7 @@ export class ConstantsBase {
     cdn: Config.CDN
   };
   cdn: any = Config.CDN;
-  currentVersion: string = '2018 WTHApps - v1.2.13';
+  currentVersion: string = '2018 WTHApps - v1.3.4.a7';
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
@@ -21,12 +21,14 @@ export class ConstantsBase {
     path: '/',
     domain: Config.DOMAIN
   };
+
   cookieKeys: any = {
     chatSupportId: 'wthapps-cs-id',
-    chatSupportMemId: 'wthapps-cs-mem-id',
     chatSupportCurrentWindow: 'wthapps-cs-cw',
     clientToken: 'wthapps-ct',
-    profile: 'wthapps-pro',
+    profile: this.getKeyByEnv('profile'),
+    loggedIn: this.getKeyByEnv('logged_in'),
+    jwt: this.getKeyByEnv('jwt'),
     payment: 'wthapps-pm'
   };
   operations: any = {
@@ -48,6 +50,7 @@ export class ConstantsBase {
     InternalServerError: 200,
     Created: 201,
     Conflict: 409,
+    NotAcceptable: 406,
     ExpectationFailed: 417,
     PaymentRequired: 402
   };
@@ -70,13 +73,13 @@ export class ConstantsBase {
   windows: any = {
     scrollBarWidth: () => {
       // Create the measurement node
-      let scrollDiv = document.createElement('div');
+      const scrollDiv = document.createElement('div');
       scrollDiv.className = 'scrollbar-measure';
       document.body.appendChild(scrollDiv);
 
       // Get the scrollbar width
-      let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-      //console.warn(scrollbarWidth); // Mac:  15
+      const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+      // console.warn(scrollbarWidth); // Mac:  15
 
       // Delete the DIV
       document.body.removeChild(scrollDiv);
@@ -194,8 +197,10 @@ export class ConstantsBase {
 
   pictureMenuItems: any = [
     { name: 'Photos', link: '/photos', icon: 'fa fa-photo' },
-    { name: 'Albums', link: '/albums', icon: 'fa fa-file-photo-o' },
-    { name: 'Videos', link: '/videos', icon: 'fa fa-camera' },
+    { name: 'Albums', link: '/albums', icon: 'wthico-album' },
+    { name: 'Videos', link: '/videos', icon: 'fa fa-video-camera' },
+    { name: 'Playlists', link: '/playlists', icon: 'fa fa-file-video-o' },
+
     { name: 'Favourites', link: '/favourites', icon: 'fa fa-star' },
     {
       name: 'Shared with me',
@@ -203,7 +208,8 @@ export class ConstantsBase {
       icon: 'fw fw-shared-with-me'
     },
     { name: 'Shared by me', link: '/shared-by-me', icon: 'fa fa-share-alt' },
-    { name: 'Search', link: '/search', icon: 'fa fa-search' }
+    { name: 'Search', link: '/search', icon: 'fa fa-search' },
+    { name: 'Trash', link: '/trash', icon: 'fa fa-trash' }
   ];
 
   socialMenuItems: any = [
@@ -238,7 +244,7 @@ export class ConstantsBase {
   };
 
   urls: any = {
-    default: Config.SUB_DOMAIN.SOCIAL,
+    default: `${Config.SUB_DOMAIN.MYACCOUNT}/dashboard` ,
     zoneSoPosts: 'zone/social_network/posts',
     zoneSoComments: 'zone/social_network/comments',
     zoneSoMyPosts: 'zone/social_network/my_posts',
@@ -423,7 +429,12 @@ export class ConstantsBase {
     add: 'Add',
     addLabel: 'Add label',
     addPeople: 'Add people',
+    addMembers: 'Add Members',
+    sendRequest: 'Send request',
+    findContacts: 'Find Contacts',
     addPhoto: 'Add photo',
+    addPhotos: 'Add photos',
+    addVideos: 'Add videos',
     addMorePhotos: 'Add more photos',
     addTag: 'Add Tag',
     addToAlbum: 'Add to album',
@@ -452,10 +463,13 @@ export class ConstantsBase {
     markAsUnread: 'Mark as unread',
     mergeContacts: 'Merge duplicate contacts',
     moreAction: 'More action',
+    more: 'More',
     new: 'New',
     next: 'Next',
     notification: 'Notification',
     notifications: 'Notifications',
+    chat: 'Chat',
+    inviteToWTHApps: 'Invite to WTHApps',
     preview: 'Preview',
     previous: 'Previous',
     rangeSliderView: 'Range slider view',
@@ -496,7 +510,9 @@ export class ConstantsBase {
     previewSharing: 'Preview sharing',
     deleteSharing: 'Delete Sharing',
     doubleClickToEdit: 'Double click to edit',
-    addToSharing: 'Add to sharing'
+    addToSharing: 'Add to sharing',
+    addToContacts: 'Add to contacts',
+    wthContacts: 'Public contact information of other users from WTH!Apps.'
   };
 
   confirmDialog: any = {
@@ -520,8 +536,12 @@ export class ConstantsBase {
     note: '6',
     myAccount: '7'
   };
+
+  private getKeyByEnv(key: string): string {
+    return (((Config.ENV !== 'STAG') && (Config.ENV !== 'TEST')) ? key : `${key}_${Config.ENV.toLowerCase()}`);
+  }
 }
-let Constants = new ConstantsBase();
+const Constants = new ConstantsBase();
 export { Constants };
 
 export let PhotoAction = {
@@ -537,4 +557,9 @@ export let MediaType = {
   playlist: 'playlist',
   favourites: 'favourites',
   sharedWithMe: 'sharedWithMe'
+};
+
+export const MODEL_TYPE = {
+  photo: 'Media::Photo',
+  video: 'Media::Video'
 };

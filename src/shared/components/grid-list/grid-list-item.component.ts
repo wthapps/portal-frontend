@@ -1,5 +1,6 @@
 import { Component, Input, EventEmitter, Output, HostBinding, OnChanges, ViewEncapsulation } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
+import { UserService } from '@shared/services';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -13,6 +14,8 @@ export class WGridListItemComponent {
   @Input() object: any;
 
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
+
+  constructor(private userService: UserService) {}
 
   time = +new Date();
   readonly DEFAULT_IMAGE = Constants.img.default;
@@ -30,11 +33,11 @@ export class WGridListItemComponent {
   }
 
   select(item: any) {
-    this.doAction({action: 'select', payload: {selectedObjects: [item], clearAll: false }});
+    this.doAction({ action: 'clickOnItem', payload: { object: item } });
   }
 
-  toggleSelection(item: any, event: any) {
-    this.doAction({action: item.selected ? 'deselect' : 'select', payload: { selectedObjects: [item], checkbox: true}});
+  clickOnCircle(item: any, event: any) {
+    this.doAction({action: 'clickOnCircle', payload: {object: item}});
     event.stopPropagation();
   }
 
