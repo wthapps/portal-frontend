@@ -72,6 +72,12 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   ) {
     this.createForm();
     this.stripHtml = new StripHtmlPipe();
+
+    this.close$ = merge(
+      this.mediaSelectionService.open$,
+      this.destroy$
+    );
+
   }
 
   ngOnInit() {
@@ -225,11 +231,6 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
 
   onOpenSelectPhotos() {
     this.mediaSelectionService.open({ allowSelectMultiple: true, allowCancelUpload: true });
-
-    this.close$ = merge(
-      this.mediaSelectionService.open$,
-      this.destroy$
-    );
 
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.close$), filter((items: any[]) => items.length > 0))

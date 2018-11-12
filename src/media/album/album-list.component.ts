@@ -4,9 +4,10 @@ import {
   ComponentFactoryResolver,
   OnDestroy,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  ViewEncapsulation
 } from '@angular/core';
-import { Router, Resolve } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
@@ -19,7 +20,6 @@ import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
-import { LocationCustomService } from '@media/shared/service/location-custom.service';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
@@ -28,7 +28,9 @@ declare var _: any;
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin])
 @Component({
-  templateUrl: '../shared/list/list.component.html'
+  templateUrl: '../shared/list/list.component.html',
+  styleUrls: [ './album-list.component.scss' ],
+  encapsulation: ViewEncapsulation.None
 })
 export class AlbumListComponent implements OnInit,
   MediaBasicListMixin,
@@ -53,9 +55,9 @@ export class AlbumListComponent implements OnInit,
   menuActions: any = {};
   modalIns: any;
   modalRef: any;
-  readonly iconNoData: any = 'wthico-album';
+  readonly iconNoData: any = 'wthico-album gray';
   readonly titleNoData: any = 'There are no albums!';
-  readonly subTitleNoData: any = 'Try to create a album';
+  readonly subTitleNoData: any = 'Try to create an album';
   readonly actionNoData: any = 'Create Album';
   sorting: any;
   endLoading: any;
@@ -79,6 +81,8 @@ export class AlbumListComponent implements OnInit,
 
   loadModalComponent: (component: any) => void;
   openEditModal: (object: any) => void;
+
+  onDoneAlbum: (e: any) => void;
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -115,13 +119,6 @@ export class AlbumListComponent implements OnInit,
       default:
         break;
     }
-  }
-
-  onDoneAlbum(e: any) {
-    this.apiBaseService.post(`media/albums`, { name: e.parents[0].name, description: e.parents[0].description,
-       photos: e.children.map(el => el.id) }).subscribe(res => {
-      this.loadObjects();
-    });
   }
 
   getMenuActions() {
@@ -265,6 +262,12 @@ export class AlbumListComponent implements OnInit,
   doEvent(event) {
     const {action} = event;
     console.log('doEvent action: ', action);
+    switch (action) {
+      case 'noData': {
+        this.openCreateAlbumModal([]);
+      }
+      break;
+    }
   }
 
 

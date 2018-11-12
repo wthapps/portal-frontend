@@ -55,13 +55,14 @@ export class WUploader {
         maxNumberOfFiles: options.maxNumberOfFiles,
         maxFileSize: options.maxFileSize
       },
-      onBeforeFileAdded: (currentFile, files) => this.verifyUpload(currentFile, files, options.maxFileSize, options.allowedFileTypes, options.preventedFileTypes),
+      onBeforeFileAdded: (currentFile, files) => this.verifyUpload(currentFile, files, options.maxFileSize,
+         options.allowedFileTypes, options.preventedFileTypes),
     };
 
     this.uppy = Core(opts);
 
     if (mode === 'FileInput') {
-      let policies: any = [new BlackListPolicy(), new SizePolicy(10000000, {only: /video\//g})];
+      const policies: any = [new BlackListPolicy(), new SizePolicy(10000000, {only: /video\//g})];
       this.uppy.use(FileInputCustom, {
         target: selector,
         replaceTargetContent: true,
@@ -104,7 +105,6 @@ export class WUploader {
     });
 
     this.uppy.on('upload-progress', (file, progress) => {
-      let url = '';
       const reader = new FileReader();
       reader.addEventListener('load', () => {
         file.preview = reader.result;
@@ -145,12 +145,14 @@ export class WUploader {
     });
   }
 
-  verifyUpload(currentFile: any, files: Array<any>, maxFileSize: number, allowedFileTypes: Array<any>|null, preventedFileTypes: Array<any>|null) {
+  verifyUpload(currentFile: any, files: Array<any>, maxFileSize: number, allowedFileTypes: Array<any>|null,
+     preventedFileTypes: Array<any>|null) {
     if (maxFileSize) {
       const maxTotalFileSize = maxFileSize;
       let TotalFileSize = 0;
 
-      for (let key in files) {
+      // tslint:disable-next-line:forin
+      for (const key in files) {
         TotalFileSize = TotalFileSize + files[key].size;
       }
 

@@ -9,7 +9,6 @@ import { Album } from '../shared/model/album.model';
 import { Constants } from '@shared/constant';
 
 @Component({
-  moduleId: module.id,
   selector: 'album-detail-info',
   templateUrl: 'album-detail-info.component.html',
   styleUrls: ['album-detail-info.component.scss']

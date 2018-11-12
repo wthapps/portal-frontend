@@ -48,8 +48,8 @@ MediaAdditionalListMixin {
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
   modalIns: any;
-  iconNoData: any = 'fa fw-shared-with-me';
-  titleNoData: any = 'There no media shared with you!';
+  iconNoData: any = 'fw fw-shared-with-me';
+  titleNoData: any = 'There are no media shared with you!';
   subTitleNoData: any = 'Media can be shared to your connected contact.';
   modalRef: any;
   sorting: any;
