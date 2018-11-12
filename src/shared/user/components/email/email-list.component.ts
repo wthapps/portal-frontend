@@ -31,7 +31,10 @@ export class EmailListComponent implements OnInit, ProfileFormMixin {
 
   @HostBinding('class') class = 'field-group';
 
-  form: FormGroup;
+  form: FormGroup = this.fb.group({
+    emails: this.fb.array([
+    ])
+  });
   deleteObjects: any = [];
   type = 'emails';
 
@@ -90,5 +93,4 @@ export class EmailListComponent implements OnInit, ProfileFormMixin {
       this.addItem();
     }
   }
-
 }
