@@ -86,13 +86,16 @@ $active-color: red;
       }
     }
     &:hover {
-      background-color: #e5e5e5;
+      //background-color: #e5e5e5;
       .menuleft-item-action {
         display: block;
       }
+      > a {
+        color: $theme-color;
+      }
     }
     &.active {
-      background-color: #e5e5e5;
+      //background-color: #e5e5e5;
       > a {
         color: $theme-color;
       }

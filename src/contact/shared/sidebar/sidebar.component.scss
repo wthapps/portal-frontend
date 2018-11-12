@@ -36,8 +36,22 @@ a {
   }
 }
 
-.parent-item, .parent-item a:hover {
-  cursor: default;
+[aria-expanded="false"] {
+  .fa-chevron-up {
+    display: none;
+  }
+  .fa-chevron-down {
+    display: inline-block;
+  }
+}
+
+[aria-expanded="true"] {
+  .fa-chevron-up {
+    display: inline-block;
+  }
+  .fa-chevron-down {
+    display: none;
+  }
 }
 
 .sub-item {
@@ -56,4 +70,10 @@ a {
 .menuleft-item-divider {
   border-top: 1px solid $line;
   border-bottom: 1px solid $line;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  & + .menuleft-item-divider {
+    margin-top: -11px;
+  }
 }

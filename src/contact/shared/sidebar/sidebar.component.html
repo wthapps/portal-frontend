@@ -2,16 +2,9 @@
   <img src="/assets/images_new/logo-contact.png" alt="">
 </div>
 
-<!-- <div class="menuleft-item" [routerLinkActive]="['active']">
-  <a href="javascript:;" [routerLink]="['/contacts', 'new']" (click)="onCloseSidebar()">
-    <i class="fa fa-plus"></i> Contact
-  </a>
-</div> -->
-
-
 <div class="menuleft-item btn-group">
   <a type="button" class="new-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <i class="fa fa-plus"></i> <span class="hidden-xs">New</span>
+    <i class="fa fa-plus"></i> <span class="hidden-xs ml5">New</span>
   </a>
   <ul class="dropdown-menu dropdown-menu-sm">
     <li><a href="javascript:;" [routerLink]="['/contacts', 'new']" (click)="onCloseSidebar()">
@@ -33,32 +26,49 @@
       <i class="fa fa-address-book-o"></i> My Contacts ({{ contactService.myContactCount }})
     </a>
   </div>
-  <div class="menuleft-item" [routerLinkActive]="['active']"> 
-    <a [routerLink]="['profile']">
-      <i class="fa fa-user-o"></i> Profile
-    </a>
-  </div>
-  <div class="menuleft-item parent-item">
-    <a href="javascript:void(0)"><i class="fa fa-users"></i> Groups</a>
-  </div>
 
-  <ng-container *ngFor="let group of groups">
-    <div class="menuleft-item sub-item" [ngClass]="{'active' : (currentGroup === group?.name)}">
-      <a [routerLink]="['contacts', {group: group.name}]" (click)="doEvent({action: group?.action, event: $event})">
-        <i class="{{ group.icon }}"></i> {{ group.name | maxLength: 20}} ({{ group?.count }})
+  <ng-container *ngIf="groups && groups[0]">
+    <div class="menuleft-item" [ngClass]="{'active' : (currentGroup === groups[0]?.name)}">
+      <a href="#" [routerLink]="['contacts', {group: groups[0].name}]"
+         (click)="doEvent({action: groups[0]?.action, event: $event})">
+        <i class="{{ groups[0].icon }}"></i> {{ groups[0].name }} ({{ groups[0]?.count }})
       </a>
-      <div *ngIf="group.hasSubMenu" class="menuleft-item-action">
-      <span class="can-click"
-            (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
-            title="edit group name">
-        <i class="fa fa-pencil"></i>
-      </span>
-        <span class="can-click" (click)="deleteGroup(group)" title="delete group">
-        <i class="fa fa-trash"></i>
-      </span>
-      </div>
     </div>
   </ng-container>
+</div>
+<div class="menuleft-item-divider" *ngIf="groups && groups.length > 1">
+  <div class="menuleft-item parent-item">
+    <a data-toggle="collapse" aria-expanded="true" href="#collapseGroups">
+      <i class="fa fa-chevron-up" aria-hidden="true"></i>
+      <i class="fa fa-chevron-down" aria-hidden="true"></i>
+      Groups
+    </a>
+  </div>
+  <div class="collapse in" id="collapseGroups" aria-expanded="true">
+    <ng-container *ngFor="let group of groups; let i = index">
+      <ng-container *ngIf="i > 0">
+        <div class="menuleft-item sub-item" [ngClass]="{'active' : (currentGroup === group?.name)}">
+          <a href="#" [routerLink]="['contacts', {group: group.name}]"
+             (click)="doEvent({action: group?.action, event: $event})">
+            <!--<i class="{{ group.icon }}"></i> -->
+            <i class="fa fa-users"></i>
+            {{ group.name | maxLength: 20}} ({{ group?.count }})
+          </a>
+          <div *ngIf="group.hasSubMenu" class="menuleft-item-action">
+        <span class="can-click"
+              (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
+              title="edit group name">
+          <i class="fa fa-pencil"></i>
+        </span>
+            <span class="can-click" (click)="deleteGroup(group)" title="delete group">
+          <i class="fa fa-trash"></i>
+        </span>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
 </div>
 <!-- <div class="menuleft-item">
   <a (click)="doEvent({action: 'contact:group:open_modal_edit', payload:{mode: 'add'}, event: $event})"
