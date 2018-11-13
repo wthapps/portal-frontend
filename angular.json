@@ -886,8 +886,7 @@
             "polyfills": "src/contact/polyfills.ts",
             "assets": [
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
-              "src/contact/manifest.json",
-              "src/contact/sw.js"
+              "src/contact/manifest.json"
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
@@ -1066,7 +1065,8 @@
             "tsConfig": "src/note/tsconfig.app.json",
             "polyfills": "src/note/polyfills.ts",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
+              "src/note/manifest.json"
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
@@ -1133,6 +1133,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/note/../environments/environment.ts",
@@ -1150,6 +1151,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/note/../environments/environment.ts",
@@ -1223,7 +1225,9 @@
               },
               "src/note/styles/note.scss"
             ],
-            "assets": []
+            "assets": [
+              "src/note/manifest.json"
+            ]
           }
         },
         "lint": {
