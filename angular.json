@@ -916,8 +916,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": false,
-              "ngswConfigPath": "/src/ngsw-config.json",
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/contact/../environments/environment.ts",

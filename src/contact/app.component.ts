@@ -29,7 +29,12 @@ import {
   CommonEventService
 } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { PromptUpdateService } from './../shared/services/service-worker/prompt-update.service';
+import { UserService } from './../shared/services/user.service';s
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+import { User } from '@shared/shared/models';
+import { SwUpdate } from '@angular/service-worker';
+import { HeaderComponent } from '@shared/partials/header';
 
 const GAPI_TIMEOUT = 2000;
 
@@ -46,11 +51,16 @@ export class AppComponent
   modalContainer: ViewContainerRef;
   @ViewChild('introduction') introduction: IntroductionModalComponent;
 
+  @ViewChild('header') header: HeaderComponent;
+
   routerSubscription: Subscription;
   modalComponent: any;
   modal: any;
   groups: Group[] = [];
   groups$: Observable<any[]>;
+  user$: Observable<User>;
+  loggedIn: boolean;
+
   contactMenu: Array<any> = new Array<any>();
   contactEvents: any = Constants.contactEvents;
 
@@ -60,15 +70,29 @@ export class AppComponent
 
   constructor(
     public authService: AuthService,
+    private userService: UserService,
     private router: Router,
     private resolver: ComponentFactoryResolver,
     private commonEventService: CommonEventService,
     public contactService: ZContactService,
     private groupService: GroupService,
     private googleApiService: GoogleApiService,
+    private promptUpdate: PromptUpdateService,
+    private swUpdate: SwUpdate,
     private wthConfirmService: WthConfirmService
   ) {
     console.log('Environment config', Config, this.confirmDialog);
+    this.user$ = userService.profile$;
+    this.loggedIn = userService.loggedIn;
+    promptUpdate.checkForUpdate();
+
+    // Subscribe common channel in header component
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.checkForUpdate()
+      .then((res) => {
+        this.header.subscribeChanneService();
+      });
+    }
     this.commonEventService
       .filter(
         (event: CommonEvent) => event.channel === Constants.contactEvents.common
@@ -120,7 +144,6 @@ export class AppComponent
   }
 
   doEvent(event: CommonEvent) {
-    console.log('doEvent inside app component', event);
     switch (event.action) {
       case 'contact:group:open_modal_edit':
         this.loadModalComponent(GroupEditModalComponent);
@@ -136,7 +159,6 @@ export class AppComponent
       case 'contact:group:delete':
         const group = this.getGroup(event.payload.selectedItem);
         this.groupService.delete(group.id).subscribe((res: any) => {
-          console.log(res);
         });
         break;
     }

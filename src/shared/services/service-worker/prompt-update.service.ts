@@ -8,28 +8,22 @@ export class PromptUpdateService {
   constructor(private swUpdate: SwUpdate,
               private wthConfirmService: WthConfirmService) {
     swUpdate.available.subscribe(event => {
-      console.debug('Should prompt user for updates');
+      console.log('Should prompt user for updates');
 
-      wthConfirmService.confirm({
-        acceptLabel: 'Accept',
-        rejectLabel: 'Cancel',
-        message: 'There is a app version. Update now ?',
-        header: 'Update Available',
-        accept: () => {
-          swUpdate.activateUpdate().then(() => document.location.reload());
-        }
-      })
+      this.confirmUpdate();
     });
   }
 
   checkForUpdate() {
-    if(!this.swUpdate.isEnabled)
+    if (!this.swUpdate.isEnabled) {
       return;
+    }
 
     console.log('[App] checkForUpdate started');
     this.swUpdate.checkForUpdate()
       .then((res) => {
-        console.log('[App] checkForUpdate completed', res)
+        console.log('[App] checkForUpdate completed', res);
+        this.confirmUpdate();
       })
       .catch(err => {
         console.error(err);
@@ -37,13 +31,14 @@ export class PromptUpdateService {
   }
 
   activateUpdate() {
-    if(!this.swUpdate.isEnabled)
+    if (!this.swUpdate.isEnabled) {
       return;
+    }
 
-    console.log('[App] activateUpdate started')
+    console.log('[App] activateUpdate started');
     this.swUpdate.activateUpdate()
       .then(() => {
-        console.log('[App] activateUpdate completed')
+        console.log('[App] activateUpdate completed');
         // this.winRef.nativeWindow.location.reload();
       })
       .catch(err => {
@@ -51,4 +46,15 @@ export class PromptUpdateService {
       });
   }
 
+  private confirmUpdate() {
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Accept',
+      rejectLabel: 'Cancel',
+      message: 'There is a newer app version. Update now ?',
+      header: 'Update Available',
+      accept: () => {
+        this.swUpdate.activateUpdate().then(() => document.location.reload());
+      }
+    });
+  }
 }

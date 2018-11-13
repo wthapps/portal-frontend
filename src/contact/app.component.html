@@ -1,6 +1,6 @@
 <div class="wrapper">
-  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
-    <contact-shared-header class="header-nav-left"></contact-shared-header>
+  <w-header #header class="header" [serviceWorkerEnabled]="true">
+    <contact-shared-header class="header-nav-left" ></contact-shared-header>
   </w-header>
   <main class="main">
     <w-left-menu>

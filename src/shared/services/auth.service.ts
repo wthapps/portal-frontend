@@ -24,7 +24,7 @@ export class AuthService {
   EXP_TIME = 24 * 60 * 60 * 365 * 1000;
 
   user$: Observable<any>;
-  loggedIn$: Observable<any>;
+  loggedIn$: Observable<boolean>;
 
   private _user$: BehaviorSubject<any> = new BehaviorSubject({});
   private _loggedIn$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -59,7 +59,7 @@ export class AuthService {
     // }
 
     if (this.loggedIn) {
-      let profile = cookieService.get(Constants.cookieKeys.profile);
+      const profile = cookieService.get(Constants.cookieKeys.profile);
       if (!profile) {
         this.loggedIn = false;
         this.deleteAuthInfo();
@@ -134,7 +134,7 @@ export class AuthService {
   }
 
   private storeAuthInfo() {
-    let cookieOptionsArgs = {
+    const cookieOptionsArgs = {
       ...Constants.cookieOptionsArgs,
       expires: new Date(new Date().getTime() + this.EXP_TIME)
     };
@@ -162,7 +162,7 @@ export class AuthService {
   }
 
   private deleteAuthInfo() {
-    let cookieOptionsArgs = {
+    const cookieOptionsArgs = {
       ...Constants.cookieOptionsArgs,
       expires: new Date(new Date().getTime() + this.EXP_TIME)
     };
@@ -176,7 +176,7 @@ export class AuthService {
   }
 
   private deleteLoggedInInfo() {
-    let keys: Array<string> = [
+    const keys: Array<string> = [
       Constants.cookieKeys.profile,
       PPROFILE,
       SETTINGS,

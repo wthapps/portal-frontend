@@ -1,12 +1,12 @@
+import { UserService } from './../../services/user.service';
 import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Constants } from '../../constant/config/constants';
 import { WTHNavigateService } from '../../services/wth-navigate.service';
 import { ChannelService } from '../../channels/channel.service';
 import { NotificationService } from '../../services/notification.service';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
-import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
-import { AuthService } from '@wth/shared/services';
 import { User } from '@wth/shared/shared/models';
+import { Observable } from 'rxjs/Observable';
 
 declare var $: any;
 declare var _: any;
@@ -26,18 +26,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() hasSearch: Boolean = true;
   @Input() auth: any;
   @Input() showSideBar: Boolean = true;
+  @Input() serviceWorkerEnabled = false;
 
-  @ViewChild('notifications')
-  notificationListComponent: NotificationListComponent;
-
-  tooltip: any = Constants.tooltip;
-  defaultAvatar: string = Constants.img.avatar;
-  showUpdatedVersion: boolean = false;
-  showSearchMobile: boolean = false;
+  readonly tooltip: any = Constants.tooltip;
+  readonly defaultAvatar: string = Constants.img.avatar;
+  showUpdatedVersion = false;
+  showSearchMobile = false;
   newVersion: string;
   constants: any;
-  urls: any = Constants.baseUrls;
-  type: string = 'update'; // update , connection
+  readonly urls: any = Constants.baseUrls;
+  type = 'update'; // update , connection
+  user$: Observable<any>;
+  loggedIn$: Observable<boolean>;
 
   @HostListener('document:click', ['$event'])
   clickedOutside($event: any) {
@@ -51,20 +51,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     public connectionService: ConnectionNotificationService,
     public notificationService: NotificationService,
-    public authService: AuthService
+    private userService: UserService
   ) {
-    // console.log('authservice:::', this.authService.jwt, this.authService.user);
-    // if (this.authService.jwt) {
-    //   this.authService.validateToken();
-    // }
+    this.user$ = this.userService.profile$;
+    this.loggedIn = this.userService.loggedIn;
   }
 
   ngOnInit(): void {
-    this.channelService.subscribe();
+    if (!this.serviceWorkerEnabled) {
+    this.subscribeChanneService();
+    }
   }
 
   ngOnDestroy(): void {
     this.channelService.unsubscribe();
+  }
+
+  subscribeChanneService() {
+    console.log('subscribe channel service');
+    this.channelService.subscribe();
   }
 
   onShowSideBar(event: Event) {

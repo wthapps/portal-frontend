@@ -1,13 +1,9 @@
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ZContactSharedListV1Component } from '@contacts/shared/list/v1/list.component';
-import { CheckForUpdateService } from '@contacts/shared/services/check-for-update.service';
-import { LogUpdateService } from '@contacts/shared/services/log-update.service';
-import { PromptUpdateService } from '@contacts/shared/services/prompt-update.service';
 import { ZContactSharedSidebarComponent } from '@contacts/shared/sidebar/sidebar.component';
 import { ZContactSearchSharedToolbarComponent } from '@contacts/shared/toolbar/search.component';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
@@ -51,6 +47,9 @@ import { ZContactMenuService } from './services/contact-menu.service';
 import { ZContactService } from './services/contact.service';
 
 import { GoogleApiService } from './services/google-api.service';
+import { CheckForUpdateService } from '@shared/services/service-worker/check-for-update.service';
+import { LogUpdateService } from '@shared/services/service-worker/log-update.service';
+import { PromptUpdateService } from './../../shared/services/service-worker/prompt-update.service';
 import { ZContactSharedActionsBarComponent } from './toolbar/actions-bar.component';
 import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
 

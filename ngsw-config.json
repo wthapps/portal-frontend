@@ -21,27 +21,26 @@
     "resources": {
       "files": [
         "/assets/**"
+      ],
+      "urls": [
       ]
     }
   }],
   "dataGroups": [{
     "name": "api-freshness",
     "urls": [
-      "/zone/social_network/notifications/get_new_notifications/count",
-      "/zone/chat/notification/count",
-      "/contact/contacts/all",
-      "/contact/groups/all",
-      "/settings"    ],
+    ],
     "cacheConfig": {
       "maxSize": 30,
       "maxAge": "7d",
       "timeout": "60s",
       "strategy": "freshness"
     }
-    },
+  },
     {
       "name": "api-performance",
       "urls": [
+        "/settings"
       ],
       "cacheConfig": {
         "maxSize": 30,

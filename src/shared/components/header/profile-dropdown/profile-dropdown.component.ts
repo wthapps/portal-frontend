@@ -10,9 +10,9 @@ import { AuthService } from '@wth/shared/services';
 })
 export class ProfileDropDownComponent implements OnInit {
   @Input() user: User;
-  tooltip: any = Constants.tooltip;
-  urls: any = Constants.baseUrls;
-  defaultAvatar: string = Constants.img.avatar;
+  readonly tooltip: any = Constants.tooltip;
+  readonly urls: any = Constants.baseUrls;
+  readonly defaultAvatar: string = Constants.img.avatar;
 
   constructor(private authService: AuthService) {
   }
