@@ -22,6 +22,7 @@
     "start-chat": "ng serve chat --port 3020 --open",
     "start-chat-nr": "ng serve chat --port 3020 --live-reload false --open",
     "start-contact": "ng serve contact --port 3025 --open",
+    "start-contact-nr": "ng serve contact --port 3025 --live-reload false --open",
     "start-note": "ng serve note --port 3030 --open",
     "start-note-nr": "ng serve note --port 3030 --live-reload false --open",
     "prettier": "prettier {src,e2e}/**/**/*.{ts,scss} --write",
