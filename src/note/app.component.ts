@@ -31,6 +31,8 @@ import { noteConstants } from '@notes/shared/config/constants';
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { withLatestFrom, filter, takeUntil } from 'rxjs/operators';
+import { SwUpdate } from '@angular/service-worker';
+import { HeaderComponent } from '@shared/partials/header';
 
 declare var _: any;
 
@@ -54,6 +56,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('modalContainer', { read: ViewContainerRef })
   modalContainer: ViewContainerRef;
   @ViewChild('introduction') introduction: IntroductionModalComponent;
+  @ViewChild('header') header: HeaderComponent;
 
   modalComponent: any;
   modal: any;
@@ -71,8 +74,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private wthConfirmService: WthConfirmService,
     private store: Store<fromRoot.State>,
     private noteService: ZNoteService,
-    private mixedEntityService: MixedEntityService
+    private mixedEntityService: MixedEntityService,
+    private swUpdate: SwUpdate
   ) {
+    // Subscribe common channel in header component
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.checkForUpdate()
+      .then((res) => {
+        this.header.subscribeChanneService();
+      });
+    }
+
     this.commonEventService
       .filter(
         (event: any) =>

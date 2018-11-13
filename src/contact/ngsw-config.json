@@ -31,11 +31,12 @@
       "/zone/chat/notification/count",
       "/contact/contacts/all",
       "/contact/groups/all",
-      "/settings"    ],
+      "/settings"    
+    ],
     "cacheConfig": {
       "maxSize": 30,
       "maxAge": "7d",
-      "timeout": "60s",
+      "timeout": "120s",
       "strategy": "freshness"
     }
     },
@@ -46,7 +47,7 @@
       "cacheConfig": {
         "maxSize": 30,
         "maxAge": "7d",
-        "timeout": "60s",
+        "timeout": "120s",
         "strategy": "performance"
       }
     }]

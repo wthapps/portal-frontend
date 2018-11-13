@@ -30,7 +30,7 @@ import {
 } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { PromptUpdateService } from './../shared/services/service-worker/prompt-update.service';
-import { UserService } from './../shared/services/user.service';s
+import { UserService } from './../shared/services/user.service';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { User } from '@shared/shared/models';
 import { SwUpdate } from '@angular/service-worker';
@@ -58,8 +58,8 @@ export class AppComponent
   modal: any;
   groups: Group[] = [];
   groups$: Observable<any[]>;
-  user$: Observable<User>;
-  loggedIn: boolean;
+  user$: Observable<any>;
+  loggedIn$: Observable<boolean>;
 
   contactMenu: Array<any> = new Array<any>();
   contactEvents: any = Constants.contactEvents;
@@ -70,7 +70,6 @@ export class AppComponent
 
   constructor(
     public authService: AuthService,
-    private userService: UserService,
     private router: Router,
     private resolver: ComponentFactoryResolver,
     private commonEventService: CommonEventService,
@@ -78,13 +77,12 @@ export class AppComponent
     private groupService: GroupService,
     private googleApiService: GoogleApiService,
     private promptUpdate: PromptUpdateService,
-    private swUpdate: SwUpdate,
-    private wthConfirmService: WthConfirmService
+    private swUpdate: SwUpdate
   ) {
     console.log('Environment config', Config, this.confirmDialog);
-    this.user$ = userService.profile$;
-    this.loggedIn = userService.loggedIn;
-    promptUpdate.checkForUpdate();
+    this.user$ = authService.user$;
+    this.loggedIn$ = authService.loggedIn$;
+    // promptUpdate.checkForUpdate();
 
     // Subscribe common channel in header component
     if (this.swUpdate.isEnabled) {

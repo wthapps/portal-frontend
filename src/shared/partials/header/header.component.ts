@@ -36,8 +36,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constants: any;
   readonly urls: any = Constants.baseUrls;
   type = 'update'; // update , connection
-  user$: Observable<any>;
-  loggedIn$: Observable<boolean>;
 
   @HostListener('document:click', ['$event'])
   clickedOutside($event: any) {
@@ -50,11 +48,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private channelService: ChannelService,
     private renderer: Renderer2,
     public connectionService: ConnectionNotificationService,
-    public notificationService: NotificationService,
-    private userService: UserService
+    public notificationService: NotificationService
   ) {
-    this.user$ = this.userService.profile$;
-    this.loggedIn = this.userService.loggedIn;
   }
 
   ngOnInit(): void {

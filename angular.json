@@ -1115,6 +1115,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/note/../environments/environment.ts",

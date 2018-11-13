@@ -28,6 +28,7 @@ import { ZNoteDetailModule } from './detail/detail.module';
 import { ZNoteSharedByMeModule } from './shared-by-me/shared-by-me.module';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
@@ -62,7 +63,10 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
-      : []
+      : [],
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: environment.production
+    })
 
     // SharedModule.forRoot(),
   ],

@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
+  <w-header class="header" #header [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async" [serviceWorkerEnabled]="true">
     <note-shared-header class="header-nav-left"></note-shared-header>
   </w-header>
   <main class="main">
