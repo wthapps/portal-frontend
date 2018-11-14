@@ -27,12 +27,6 @@
     </a>
   </div>
 
-  <div class="menuleft-item" [routerLinkActive]="['active']">
-    <a [routerLink]="['profile']">
-      <i class="fa fa-user-o"></i> Profile
-    </a>
-  </div>
-
   <ng-container *ngIf="groups && groups[0]">
     <div class="menuleft-item" [ngClass]="{'active' : (currentGroup === groups[0]?.name)}">
       <a href="#" [routerLink]="['contacts', {group: groups[0].name}]"
@@ -41,6 +35,12 @@
       </a>
     </div>
   </ng-container>
+
+  <div class="menuleft-item" [routerLinkActive]="['active']">
+    <a [routerLink]="['profile']">
+      <i class="fa fa-user-o"></i> Profile
+    </a>
+  </div>
 </div>
 <div class="menuleft-item-divider" *ngIf="groups && groups.length > 1">
   <div class="menuleft-item parent-item">
