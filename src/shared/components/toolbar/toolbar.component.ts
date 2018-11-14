@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, CommonEventService } from '@shared/services';
-import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { Router } from '@angular/router';
@@ -73,7 +72,6 @@ AlbumCreateMixin {
     public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
     public mediaUploaderDataService: MediaUploaderDataService,
-    public playlistCreateModalService: PlaylistCreateModalService,
     private commonEventService: CommonEventService,
     private uploader: WUploader
     ) {

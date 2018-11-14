@@ -23,6 +23,11 @@ import { PlaylistModalService } from '@shared/shared/components/photo/modal/play
 import { Subscription } from 'rxjs';
 import { WUploader } from '@shared/services/w-uploader';
 import { ModalService } from '@shared/components/modal/modal-service';
+import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 
 declare var $: any;
 declare var _: any;
@@ -33,7 +38,8 @@ declare var _: any;
   templateUrl: 'media-uploader.component.html',
   styleUrls: ['media-uploader.component.scss'],
 })
-export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy {
+@Mixins([PlaylistAddMixin])
+export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy, PlaylistAddMixin {
   current_photo: any;
   step: number;
   files_num: number;
@@ -44,7 +50,6 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
   photos: Array<any> = [];
   files: Array<any>;
   isVideos: any;
-  subAddPlaylist: any;
   readonly uploadSteps: any = {
     closed: -1,
     begin: 0,
@@ -58,6 +63,9 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
   current_file: any;
   current_progress: any;
   uploadURL: any;
+  subAddPlaylist: any;
+  subOpenCreatePlaylist: any;
+  subCreatePlaylist: any;
 
   @Output() createNewAlbum: EventEmitter<any> = new EventEmitter<any>();
   @Output() addToAlbum: EventEmitter<any> = new EventEmitter<any>();
@@ -68,15 +76,25 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild('modalDock') modalDock: ModalDockComponent;
   private uploaderSub: any;
 
-  constructor(private apiBaseService: ApiBaseService,
+  constructor(public apiBaseService: ApiBaseService,
               private commonEventService: CommonEventService,
               private playlistCreateModalService: PlaylistCreateModalService,
               private playlistModalService: PlaylistModalService,
               private mediaUploadDataService: MediaUploaderDataService,
+              public mediaAddModalService: MediaAddModalService,
+              public mediaCreateModalService: MediaCreateModalService,
+              public toastsService: ToastsService,
+              public router: Router,
               private uploader: WUploader,
               private modalService: ModalService) {
     this.dragleave();
   }
+
+  openModalAddToPlaylist:(selectedObjects: any) => void;
+  onAddToPlaylist:(e: any) => void;
+  openCreatePlaylistModal:(selectedObjects: any) => void;
+  onDonePlaylist:(e: any) => void;
+  onAddedToPlaylist:(data: any) => void;
 
   ngOnInit() {
     this.step = this.uploadSteps.begin;
@@ -94,7 +112,6 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   close() {
-    console.log('close:::');
     if (this.step == this.uploadSteps.uploaded || this.step == this.uploadSteps.stop) {
       this.outEvent.emit({
         action: 'addPhoto',
@@ -147,17 +164,11 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   createPlaylist() {
-    this.playlistCreateModalService.open.next({selectedObjects: this.photos});
+    this.openCreatePlaylistModal(this.photos);
   }
 
   addPlaylist() {
-    if (this.subAddPlaylist) this.subAddPlaylist.unsubscribe();
-    this.playlistModalService.open.next({selectedObjects: this.photos});
-    this.subAddPlaylist = this.playlistModalService.onAdd$.pipe(take(1)).subscribe(e => {
-      this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: e, videos: this.photos }).subscribe(res => {
-        // this.modalIns.close();
-      });
-    });
+    this.openModalAddToPlaylist(this.photos);
   }
 
   // onCreateNewAlbum() {
