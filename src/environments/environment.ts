@@ -21,8 +21,8 @@ console.log('environment:::', environment);
 const host = 'localhost';
 
 export const ConfigByEnv: EnvConfig = {
-  CDN: `http://test.wthapps.com/assets`,
-  API: `http://api-test.wthapps.com`,
+  CDN: `http://${host}:4000/assets`,
+  API: `http://${host}:4000`,
   ENV: 'DEV',
   DOMAIN: 'localhost',
   SUB_DOMAIN: {

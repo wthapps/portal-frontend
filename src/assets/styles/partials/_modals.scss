@@ -85,3 +85,15 @@
     }
   }
 }
+
+.modal-header-nav {
+  @include flexbox;
+  @include justify-content(space-between);
+  @include align-items(center);
+  .modal-header-navbar {
+    margin: -5px 0;
+    padding: 0;
+    list-style-type: none;
+    @include flexbox;
+  }
+}

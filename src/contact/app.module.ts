@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { ContactHtmlModule } from '@contacts/html/contact-html.module';
 import { ContactSearchModule } from '@contacts/search/search.module';
 import { environment } from '@env/environment';
 // import { ContactHtmlModule } from '@contacts/html/contact-html.module';
@@ -40,6 +41,7 @@ import { ProfilePageModule } from '@contacts/profile/profile-page.module';
     ContactSearchModule,
     GroupModule,
     ModalModule,
+    ContactHtmlModule,
     // environment.production ? [] : ContactHtmlModule,
     ScrollToModule.forRoot(),
     ContactSharedModule.forRoot(),
