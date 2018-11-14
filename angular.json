@@ -944,6 +944,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/contact/../environments/environment.ts",
@@ -961,6 +962,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/contact/../environments/environment.ts",

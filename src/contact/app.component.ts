@@ -35,6 +35,9 @@ import { IntroductionModalComponent } from '@wth/shared/modals/introduction/intr
 import { User } from '@shared/shared/models';
 import { SwUpdate } from '@angular/service-worker';
 import { HeaderComponent } from '@shared/partials/header';
+import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
+import { LogUpdateService } from './../shared/services/service-worker/log-update.service';
+
 
 const GAPI_TIMEOUT = 2000;
 
@@ -76,8 +79,10 @@ export class AppComponent
     public contactService: ZContactService,
     private groupService: GroupService,
     private googleApiService: GoogleApiService,
+    public swUpdate: SwUpdate,
     private promptUpdate: PromptUpdateService,
-    private swUpdate: SwUpdate
+    private logUpdate: LogUpdateService,
+    private checkUpdate: CheckForUpdateService
   ) {
     console.log('Environment config', Config, this.confirmDialog);
     this.user$ = authService.user$;

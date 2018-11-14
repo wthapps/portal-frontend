@@ -33,6 +33,9 @@ import { IntroductionModalComponent } from '@wth/shared/modals/introduction/intr
 import { withLatestFrom, filter, takeUntil } from 'rxjs/operators';
 import { SwUpdate } from '@angular/service-worker';
 import { HeaderComponent } from '@shared/partials/header';
+import { PromptUpdateService } from '@shared/services/service-worker/prompt-update.service';
+import { LogUpdateService } from '@shared/services/service-worker/log-update.service';
+import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
 
 declare var _: any;
 
@@ -75,7 +78,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private store: Store<fromRoot.State>,
     private noteService: ZNoteService,
     private mixedEntityService: MixedEntityService,
-    private swUpdate: SwUpdate
+    public swUpdate: SwUpdate,
+    private promptUpdate: PromptUpdateService,
+    private logUpdate: LogUpdateService,
+    private checkUpdate: CheckForUpdateService
   ) {
     // Subscribe common channel in header component
     if (this.swUpdate.isEnabled) {
