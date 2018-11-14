@@ -23,6 +23,7 @@
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/cropperjs/dist/cropper.min.css",
@@ -126,6 +127,7 @@
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/cropperjs/dist/cropper.min.css",
@@ -195,6 +197,7 @@
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/my-account/styles/my-account.scss",
@@ -299,6 +302,7 @@
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/my-account/styles/my-account.scss"
@@ -367,6 +371,7 @@
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/media/styles/media.scss"
@@ -470,6 +475,7 @@
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/media/styles/media.scss"
@@ -537,6 +543,7 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
@@ -644,6 +651,7 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
@@ -713,6 +721,7 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
@@ -821,6 +830,7 @@
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
@@ -892,6 +902,7 @@
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/contact/styles/contact.scss"
@@ -1000,6 +1011,7 @@
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/contact/styles/contact.scss"
@@ -1212,6 +1224,7 @@
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/font-awesome/scss/font-awesome.scss",

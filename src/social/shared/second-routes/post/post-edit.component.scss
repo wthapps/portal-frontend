@@ -19,7 +19,12 @@
 
 .post-edit {  
   .dropdown-menu {
-    min-width: 190px;
+    min-width: 200px;
+    li {
+      span {
+        padding-left: 15px;
+      }
+    }
   }
 }
 

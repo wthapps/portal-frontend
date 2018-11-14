@@ -1,15 +1,15 @@
 <bs-modal #myModal>
   <bs-modal-header>
-    <h4 *ngIf="type === 'custom_friend'" class="modal-title">Share with friends</h4>
-    <h4 *ngIf="type === 'custom_community'" class="modal-title">Share in community</h4>
+    <h4 *ngIf="type === PRIVACY_TYPE.custom_friend" class="modal-title">Share with friends</h4>
+    <h4 *ngIf="type === PRIVACY_TYPE.custom_community" class="modal-title">Share in community</h4>
   </bs-modal-header>
   <bs-modal-body>
-    <p *ngIf="type === 'custom_friend'">
+    <p *ngIf="type === PRIVACY_TYPE.custom_friend">
       Enter friends you want to share with.
       <br>Your friend will also receive notification on this post.
     </p>
-    <p *ngIf="type === 'custom_community'">
-      You can only shar your post in one community at a time. <br>
+    <p *ngIf="type === PRIVACY_TYPE.custom_community">
+      You can only share your post in one community at a time. <br>
       To share with many communities, please create a separate post for each.
     </p>
     <p-autoComplete [(ngModel)]="selectedItems"
@@ -17,9 +17,12 @@
                     (completeMethod)="filterDataMultiple($event)"
                     styleClass="wid100"
                     [minLength]="1"
-                    placeholder=""
+                    [placeholder]="placeholder"
                     field="name"
                     [multiple]="true">
+        <ng-template let-item pTEmplate="filteredDataMultiple">
+          <span class="ui-autocomplete-token-label"> {{ item | maxLength: 50 }} </span>
+        </ng-template>
     </p-autoComplete>
 
   </bs-modal-body>

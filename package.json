@@ -18,6 +18,7 @@
     "start-photo": "ng serve media --port 3010 --open",
     "start-photo-nr": "ng serve media --port 3010 --live-reload false --open",
     "start-social": "ng serve social --port 3015 --open",
+    "start-social-nr": "ng serve social --port 3015 --live-reload false --open",
     "start-chat": "ng serve chat --port 3020 --open",
     "start-chat-nr": "ng serve chat --port 3020 --live-reload false --open",
     "start-contact": "ng serve contact --port 3025 --open",
