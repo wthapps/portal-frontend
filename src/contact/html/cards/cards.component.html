@@ -1,0 +1,347 @@
+<div class="page-body-control">
+  <div class="page-body-control-nav"><h4>Cards <i class="fa fa-info-circle"></i></h4></div>
+</div>
+<div class="page-body-content has-page-body-control">
+  <div class="page-body-content-in">
+    <div class="card-list row">
+      <div class="col-sm-4">
+        <div class="card can-click" (click)="modalCard.open()">
+          <div class="card-body">
+            <div class="media-avatar align-items-center">
+              <div class="media-avatar-img-wrap">
+                <div class="media-avatar-img avatar-xs">
+                  <img
+                    src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1538712832.jpg"
+                    alt="">
+                </div>
+              </div>
+              <div class="media-avatar-body">
+                <p class="m0 text-bold text-fade">Public card</p>
+                <span>Albert Vo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card can-click" (click)="modalCard.open()">
+          <div class="card-body">
+            <div class="media-avatar align-items-center">
+              <div class="media-avatar-img-wrap">
+                <div class="media-avatar-img avatar-xs">
+                  <img
+                    src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1538712832.jpg"
+                    alt="">
+                </div>
+              </div>
+              <div class="media-avatar-body">
+                <p class="m0 text-bold text-fade">Public card</p>
+                <span>Albert Vo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card can-click" (click)="modalCard.open()">
+          <div class="card-body">
+            <div class="media-avatar align-items-center">
+              <div class="media-avatar-img-wrap">
+                <div class="media-avatar-img avatar-xs">
+                  <img
+                    src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1538712832.jpg"
+                    alt="">
+                </div>
+              </div>
+              <div class="media-avatar-body">
+                <p class="m0 text-bold text-fade">Public card</p>
+                <span>Albert Vo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h4>Private card <i class="fa fa-info-circle"></i></h4>
+    <div class="text-fade">
+      There are no private cards. <br>
+      Click “New private card” from New menu to create more private cards.
+    </div>
+    <div class="card-list row">
+      <div class="col-sm-4">
+        <div class="card can-click" (click)="modalCard.open()">
+          <div class="card-body">
+            <div class="media-avatar align-items-center">
+              <div class="media-avatar-img-wrap">
+                <div class="media-avatar-img avatar-xs">
+                  <img
+                    src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1538712832.jpg"
+                    alt="">
+                </div>
+              </div>
+              <div class="media-avatar-body">
+                <p class="m0 text-bold">Another private card</p>
+                <span>Albert Vo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<bs-modal #modalCard [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="false">
+    <div class="modal-header-nav">
+      <h4 class="modal-title">Public card</h4>
+      <ul class="modal-header-navbar">
+        <li>
+          <button (click)="modalCardEdit.open()" type="button" class="btn btn-default btn-default-no-border">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+        </li>
+        <li class="dropdown open">
+          <button class="btn btn-default btn-default-no-border" type="button" data-toggle="dropdown">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li>
+              <a href="#"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <button type="button" (click)="modalCard.dismiss()" class="btn btn-default btn-default-no-border">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </bs-modal-header>
+
+  <bs-modal-body>
+    <div class="pcard-cover bg-gray-light">
+      <div class="media-avatar align-items-center">
+        <div class="media-avatar-img-wrap">
+          <div class="media-avatar-img avatar-sm">
+            <img
+              src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1538712832.jpg"
+              alt="">
+          </div>
+        </div>
+        <div class="media-avatar-body">
+          <h4 class="m0">Albert Vo</h4>
+          <span>Nickname</span>
+        </div>
+      </div>
+    </div>
+    <div class="pcard-info-list">
+      <dl class="pcard-info">
+        <dt>Company</dt>
+        <dd>Company name</dd>
+        <dt>Occupation</dt>
+        <dd>Job sth</dd>
+      </dl>
+      <dl class="pcard-info">
+        <dt>Work</dt>
+        <dd>Company name</dd>
+      </dl>
+      <dl class="pcard-info">
+        <dt>Mobile</dt>
+        <dd>(+1) 01234567890</dd>
+        <dt>Fax</dt>
+        <dd>(+1) 01234567890</dd>
+      </dl>
+      <dl class="pcard-info">
+        <dt>Work</dt>
+        <dd>16215 Alton Parkway <br>
+          California Irvine 92618 <br>
+          USA
+        </dd>
+      </dl>
+    </div>
+  </bs-modal-body>
+</bs-modal>
+
+<bs-modal #modalCardEdit (onShow)="onShowModalEdit($event)" [keyboard]="false" [animation]="false"
+          [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="false">
+    <div class="modal-header-nav">
+      <h4 class="modal-title">Edit private card</h4>
+      <ul class="modal-header-navbar">
+        <li>
+          <button type="button" (click)="modalCardEdit.dismiss()" class="btn btn-default btn-default-no-border">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p class="text-fade">You can set card name and have different avatar for your information card</p>
+    <div class="pcard-cover">
+      <div class="media-avatar align-items-center">
+        <div class="media-avatar-img-wrap">
+          <div class="media-avatar-img avatar-sm">
+            <img
+              src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1538712832.jpg"
+              alt="">
+          </div>
+        </div>
+        <div class="media-avatar-body">
+          <input type="text" class="form-control" placeholder="">
+        </div>
+      </div>
+    </div>
+    <p class="text-fade">Selecte information for this card.</p>
+    <hr>
+    <div class="pcard-info-list">
+      <dl class="pcard-info-form">
+        <dt>
+          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
+          <p-checkbox name="group1" value="1" label="Name" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dt>
+          <p-checkbox name="group1" value="2" label="Fullname" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          Jaime Lannister
+        </dd>
+        <dt>
+          <p-checkbox name="group1" value="3" label="Nickname" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          Nickname
+        </dd>
+      </dl>
+      <dl class="pcard-info-form">
+        <dt>
+          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
+          <p-checkbox name="group2" value="4" label="Basic information" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dt>
+          <p-checkbox name="group2" value="5" label="About" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
+          dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+          suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+        </dd>
+        <dt>
+          <p-checkbox name="group2" value="6" label="Company" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          Company name
+        </dd>
+        <dt>
+          <p-checkbox name="group2" value="7" label="Occupation" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          Job sth
+        </dd>
+        <dt>
+          <p-checkbox name="group2" value="8" label="Gender" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          Male
+        </dd>
+        <dt>
+          <p-checkbox name="group2" value="9" label="Date of birth" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          July 27 1970
+        </dd>
+        <dt>
+          <p-checkbox name="group2" value="10" label="Nationality" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          Denmark
+        </dd>
+      </dl>
+      <dl class="pcard-info-form">
+        <dt>
+          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
+          <p-checkbox name="group3" value="11" label="Email" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dt>
+          <p-checkbox name="group3" value="12" label="Work" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          jaime.lannister@lannister.com
+        </dd>
+        <dt>
+          <p-checkbox name="group3" value="13" label="Personal" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          jaime@email.com
+        </dd>
+      </dl>
+      <dl class="pcard-info-form">
+        <dt>
+          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
+          <p-checkbox name="group4" value="14" label="Phone" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dt>
+          <p-checkbox name="group4" value="15" label="Mobile" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          (+1) 01234567890
+        </dd>
+        <dt>
+          <p-checkbox name="group4" value="16" label="Fax" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          (+1) 01234567890
+        </dd>
+      </dl>
+      <dl class="pcard-info-form">
+        <dt>
+          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
+          <p-checkbox name="group5" value="17" label="Addresses" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dt>
+          <p-checkbox name="group5" value="18" label="Home" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          14216 Kinton Parkway <br>
+          California Irvine 92618 <br>
+          USA
+        </dd>
+        <dt>
+          <p-checkbox name="group5" value="19" label="Work" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          14216 Kinton Parkway <br>
+          California Irvine 92618 <br>
+          USA
+        </dd>
+      </dl>
+      <dl class="pcard-info-form">
+        <dt>
+          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
+          <p-checkbox name="group6" value="20" label="Links" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dt>
+          <p-checkbox name="group6" value="21" label="Facebook" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          <a href="https://www.facebook.com/sth" target="_blank">https://www.facebook.com/sth</a>
+        </dd>
+        <dt>
+          <p-checkbox name="group6" value="22" label="Google Plus" [(ngModel)]="selectedValues"></p-checkbox>
+        </dt>
+        <dd>
+          <a href="https://www.plus.google.com/sth" target="_blank">https://www.plus.google.com/sth</a>
+        </dd>
+      </dl>
+    </div>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close()">Ok</button>
+  </bs-modal-footer>
+</bs-modal>

@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContactHtmlComponent } from '@contacts/html/contact-html.component';
+import { NgModule } from '@angular/core';
+import { ContactHtmlCardsComponent } from '@contacts/html/cards/cards.component';
 import { ContactHtmlRoutingModule } from '@contacts/html/contact-html-routing.module';
+import { ContactHtmlComponent } from '@contacts/html/contact-html.component';
 import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
@@ -11,11 +12,14 @@ import { SharedModule } from '@shared/shared.module';
     SharedModule
   ],
   declarations: [
-    ContactHtmlComponent
+    ContactHtmlComponent,
+    ContactHtmlCardsComponent
   ],
   exports: [
-    ContactHtmlComponent
+    ContactHtmlComponent,
+    ContactHtmlCardsComponent
   ],
   providers: []
 })
-export class ContactHtmlModule {}
+export class ContactHtmlModule {
+}

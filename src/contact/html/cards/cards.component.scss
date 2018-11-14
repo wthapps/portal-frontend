@@ -1,0 +1,53 @@
+@import "../../../assets/styles/global";
+
+.modal-body {
+  .pcard-cover {
+    margin-left: -$modal-inner-padding;
+    margin-right: -$modal-inner-padding;
+    margin-bottom: $modal-inner-padding;
+    padding: $modal-inner-padding;
+  }
+}
+
+.pcard-info-list {
+  dl {
+    margin-bottom: 0;
+    &:not(:last-child) {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid $line;
+    }
+  }
+  dd:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+.pcard-info {
+  @media (min-width: $screen-sm) {
+    dt {
+      float: left;
+      width: 130px;
+      clear: both;
+    }
+    dd {
+      margin-left: 150px;
+    }
+  }
+}
+
+.pcard-info-form {
+  padding-left: 25px;
+  dt {
+    clear: both;
+    position: relative;
+    .ui-chkbox {
+      position: absolute;
+      left: -25px;
+      top: 2px;
+    }
+    label {
+      float: left;
+    }
+  }
+}
