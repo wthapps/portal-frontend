@@ -33,7 +33,6 @@ import { PromptUpdateService } from './../shared/services/service-worker/prompt-
 import { UserService } from './../shared/services/user.service';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { User } from '@shared/shared/models';
-import { SwUpdate } from '@angular/service-worker';
 import { HeaderComponent } from '@shared/partials/header';
 import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
 import { LogUpdateService } from './../shared/services/service-worker/log-update.service';
@@ -79,23 +78,11 @@ export class AppComponent
     public contactService: ZContactService,
     private groupService: GroupService,
     private googleApiService: GoogleApiService,
-    public swUpdate: SwUpdate,
-    private promptUpdate: PromptUpdateService,
-    private logUpdate: LogUpdateService,
-    private checkUpdate: CheckForUpdateService
+    private promptUpdate: PromptUpdateService
   ) {
     console.log('Environment config', Config, this.confirmDialog);
     this.user$ = authService.user$;
     this.loggedIn$ = authService.loggedIn$;
-    // promptUpdate.checkForUpdate();
-
-    // Subscribe common channel in header component
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.checkForUpdate()
-      .then((res) => {
-        this.header.subscribeChanneService();
-      });
-    }
     this.commonEventService
       .filter(
         (event: CommonEvent) => event.channel === Constants.contactEvents.common

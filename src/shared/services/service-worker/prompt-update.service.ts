@@ -7,6 +7,7 @@ export class PromptUpdateService {
 
   constructor(private swUpdate: SwUpdate,
               private wthConfirmService: WthConfirmService) {
+    console.log('inside promp update service');
     swUpdate.available.subscribe(event => {
       console.log('Should prompt user for updates');
 

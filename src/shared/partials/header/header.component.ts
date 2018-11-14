@@ -7,6 +7,7 @@ import { NotificationService } from '../../services/notification.service';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 import { User } from '@wth/shared/shared/models';
 import { Observable } from 'rxjs/Observable';
+import { SwUpdate } from '@angular/service-worker';
 
 declare var $: any;
 declare var _: any;
@@ -26,7 +27,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() hasSearch: Boolean = true;
   @Input() auth: any;
   @Input() showSideBar: Boolean = true;
-  @Input() serviceWorkerEnabled = false;
 
   readonly tooltip: any = Constants.tooltip;
   readonly defaultAvatar: string = Constants.img.avatar;
@@ -47,15 +47,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private navigateService: WTHNavigateService,
     private channelService: ChannelService,
     private renderer: Renderer2,
+    private swUpdate: SwUpdate,
     public connectionService: ConnectionNotificationService,
     public notificationService: NotificationService
   ) {
   }
 
   ngOnInit(): void {
-    if (!this.serviceWorkerEnabled) {
+    if (!this.swUpdate.isEnabled) {
     this.subscribeChanneService();
+    } else {
+      this.swUpdate.checkForUpdate()
+      .then((res) => {
+        this.subscribeChanneService();
+      });
     }
+
   }
 
   ngOnDestroy(): void {

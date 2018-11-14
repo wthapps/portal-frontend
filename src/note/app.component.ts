@@ -31,7 +31,6 @@ import { noteConstants } from '@notes/shared/config/constants';
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { withLatestFrom, filter, takeUntil } from 'rxjs/operators';
-import { SwUpdate } from '@angular/service-worker';
 import { HeaderComponent } from '@shared/partials/header';
 import { PromptUpdateService } from '@shared/services/service-worker/prompt-update.service';
 import { LogUpdateService } from '@shared/services/service-worker/log-update.service';
@@ -78,18 +77,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private store: Store<fromRoot.State>,
     private noteService: ZNoteService,
     private mixedEntityService: MixedEntityService,
-    public swUpdate: SwUpdate,
-    private promptUpdate: PromptUpdateService,
-    private logUpdate: LogUpdateService,
-    private checkUpdate: CheckForUpdateService
+    private promptUpdate: PromptUpdateService
   ) {
-    // Subscribe common channel in header component
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.checkForUpdate()
-      .then((res) => {
-        this.header.subscribeChanneService();
-      });
-    }
 
     this.commonEventService
       .filter(
