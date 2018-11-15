@@ -40,10 +40,16 @@
     .photo-box-action {
       position: absolute;
       z-index: 3;
-      right: 5px;
+      left: 5px;
       top: 5px;
       line-height: 1;
       cursor: pointer;
+      background: red;
+      color: #fff;
+      width: 21px;
+      padding: 2px 3.5px;
+      border-radius: 50%;
+      border: 1px solid #fff;
     }
     .img-center-dv {
       padding-bottom: 75%;

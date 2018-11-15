@@ -4,6 +4,7 @@
   <input type="checkbox" class="read-more-state" attr.id="post-{{ item.uuid }}" />
   <ul class="z-social-comment-list media-list read-more-wrap">
 
+    <div class="blur-text">{{ item?.comment_count }} comments</div>
     <li class="media" *ngFor="let comment of item.comments; let i = index; trackBy: trackItem">
 
       <ng-container *ngIf="comment?.isEditting">
@@ -75,11 +76,17 @@
       </div>
 
 
+      <ng-container *ngIf="comment?.isCreatingNewReply">
+        <comment-item-editor style="display: block; margin-left: 50px; padding-top: 15px;" (eventEmitter)="onCallBack($event)" [parent]="comment"
+          [parentType]="'SocialNetwork::Comment'" [mode]="commentEditorMode.Add"></comment-item-editor>
+      </ng-container>
       <div class="media" *ngFor="let reply of comment.comments; let j = index; trackBy: trackItem">
         <!--Edit reply-->
         <ng-container *ngIf="reply?.isEditting">
-          <comment-item-editor style="display: block" (eventEmitter)="onCallBack($event)" [parent]="comment"
-            [parentType]="'SocialNetwork::Comment'" [originComment]="reply" [mode]="commentEditorMode.Edit"></comment-item-editor>
+          <div class="media-body">
+              <comment-item-editor style="display: block" (eventEmitter)="onCallBack($event)" [parent]="comment"
+                [parentType]="'SocialNetwork::Comment'" [originComment]="reply" [mode]="commentEditorMode.Edit"></comment-item-editor>
+          </div>
         </ng-container>
         <div *ngIf="!reply?.isEditting">
           <div class="media-left">
@@ -135,10 +142,6 @@
           </div>
         </div>
       </div>
-      <ng-container *ngIf="comment?.isCreatingNewReply">
-        <comment-item-editor style="display: block;" (eventEmitter)="onCallBack($event)" [parent]="comment"
-          [parentType]="'SocialNetwork::Comment'" [mode]="commentEditorMode.Add"></comment-item-editor>
-      </ng-container>
     </li>
   </ul>
   <div *ngIf="!item.commentLoadingDone" class="z-social-comment-more">

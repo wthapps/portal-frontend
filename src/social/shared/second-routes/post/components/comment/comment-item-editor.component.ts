@@ -117,11 +117,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   handleKeyUp(e: any) {
     if (e.keyCode === 13 && this.editorError === '') {
-      if (this.checkValidForm()) {
-        this.post(this.comment.content);
-      } else {
-        this.cancel();
-      }
+      this.handlePost();
       return;
     } else if (e.keyCode === 27) {
       this.cancel();
@@ -129,10 +125,18 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  handlePost() {
+    if (this.checkValidForm()) {
+      this.post(this.comment.content);
+    } else {
+      this.cancel();
+    }
+  }
+
   commentAction(photos?: any) {
     let commentEvent: any;
     const data: any = {};
-    if (photos) data.photo = photos[0].id;
+    if (photos) { data.photo = photos[0].id; }
     data.content = this.comment.content || '';
     if (this.mode === this.commentEditorMode.Add) {
       data.post_uuid = this.parent.uuid;
@@ -231,7 +235,58 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   }
 
-  post(comment?: any) {
+  doEvents(event: any) {
+    switch (event.action) {
+      case 'remove':
+        // this.setPhoto(null);
+        // this.files = null;
+        // this.hasUpdatedContent = (this.comment.content != '');
+        // break;
+      case 'cancelUploadingPhoto':
+      case 'cancelUpload':
+        this.setPhoto(null);
+        this.cancelUploadPhoto();
+        if (this.uploadSubscription) {
+          this.uploadSubscription.unsubscribe();
+        }
+        this.files = null;
+        this.hasUpdatedContent = (this.comment.content !== '');
+        break;
+    }
+  }
+
+  checkValidForm(): boolean {
+    // remove leading and trailing whitespaces: spaces, tabs, new lines from comment content before saving
+    return !!this.comment.content || !!this.comment.photo;
+  }
+
+  setCommentContent(value: any) {
+    this.comment.content = value;
+  }
+
+  showEmojiBtn(event: any) {
+    this.emojiService.show(event);
+
+    if (this.selectEmojiSub && !this.selectEmojiSub.closed) {
+      this.selectEmojiSub.unsubscribe();
+    }
+    this.selectEmojiSub = this.emojiService.selectedEmoji$.pipe(
+      take(1)
+    ).subscribe(data => {
+      this.editor.addEmoj(data.shortname);
+      this.hasUpdatedContent = true;
+    });
+  }
+
+  onTextChange(event) {
+    if (event.status.error) {
+      this.editorError = 'editor-error';
+    } else {
+      this.editorError = '';
+    }
+  }
+
+  private post(comment?: any) {
     let event: any = null;
 
     this.comment.content = comment || this.comment.content || '';
@@ -255,55 +310,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.setPhoto(null);
     this.files = null;
     this.hasUpdatedContent = false;
-  }
-
-  doEvents(event: any) {
-    switch (event.action) {
-      case 'remove':
-        // this.setPhoto(null);
-        // this.files = null;
-        // this.hasUpdatedContent = (this.comment.content != '');
-        // break;
-      case 'cancelUploadingPhoto':
-      case 'cancelUpload':
-        this.setPhoto(null);
-        this.cancelUploadPhoto();
-        if (this.uploadSubscription)
-          this.uploadSubscription.unsubscribe();
-        this.files = null;
-        this.hasUpdatedContent = (this.comment.content !== '');
-        break;
-    }
-  }
-
-  checkValidForm(): boolean {
-    // remove leading and trailing whitespaces: spaces, tabs, new lines from comment content before saving
-    return !!this.comment.content || !!this.comment.photo;
-  }
-
-  setCommentContent(value: any) {
-    this.comment.content = value;
-  }
-
-  showEmojiBtn(event: any) {
-    this.emojiService.show(event);
-
-    if (this.selectEmojiSub && !this.selectEmojiSub.closed)
-      this.selectEmojiSub.unsubscribe();
-    this.selectEmojiSub = this.emojiService.selectedEmoji$.pipe(
-      take(1)
-    ).subscribe(data => {
-      this.editor.addEmoj(data.shortname);
-      this.hasUpdatedContent = true;
-    });
-  }
-
-  onTextChange(event) {
-    if (event.status.error) {
-      this.editorError = 'editor-error';
-    } else {
-      this.editorError = '';
-    }
   }
 
   private setPhoto(photo: any) {

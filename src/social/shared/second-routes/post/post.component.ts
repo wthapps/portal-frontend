@@ -131,12 +131,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   updatePhoto(currentPhotos: any[], updatedPhoto: any): any[] {
-    return _.map(currentPhotos, (photo: any) => {
-      if ( photo.id === updatedPhoto.id )
-        return updatedPhoto;
-      else
-        return photo;
-      }
+    return _.map(currentPhotos, (photo: any) => (( photo.id === updatedPhoto.id ) ? updatedPhoto : photo)
     );
   }
 
@@ -193,7 +188,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
             const commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
               return newReply.parent.uuid === comment.uuid;
             });
-            this.item.comments[commentIndex].comments.push(newReply);
+            this.item.comments[commentIndex].comments.unshift(newReply);
           }
 
           this.updateStoragePost();
@@ -369,8 +364,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   private getPrivacyName(post: SoPost): string {
-    if (post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
+    if (post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1) {
       return post.custom_objects[0].name;
+    }
     return (post.privacy ? post.privacy.replace('_', ' ') : '');
   }
 
@@ -394,8 +390,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
             done = true;
             return;
           }
-          if (done)
+          if (done) {
             return;
+          }
         })
         ;
       });
