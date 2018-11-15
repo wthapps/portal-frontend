@@ -187,7 +187,7 @@
           <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">
             Cancel
           </button>
-          <button type="submit" class="btn btn-outline-primary btn-min" [disabled]="(!editor?.valid && post?.photos?.length <= 0 && !link) || editorError">
+          <button type="submit" class="btn btn-outline-primary btn-min ml10" [disabled]="(!editor?.valid && post?.photos?.length <= 0 && !link) || editorError || hasUploading">
             Done
           </button>
         </div>

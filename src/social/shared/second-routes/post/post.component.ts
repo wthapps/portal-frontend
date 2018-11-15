@@ -165,12 +165,12 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         this.loading.start();
         this.apiBaseService.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
           .toPromise().then((result: any) => {
-              this.toast.success('Deleted post successfully', 'Delete Post');
+              this.toast.success('Deleted post successfully');
               this.loading.stop();
               this.onDeleted.emit(result);
             },
             error => {
-              this.toast.danger('Deleted post error\n' + error, 'Delete Post');
+              this.toast.danger('Deleted post error\n' + error);
               this.loading.stop();
             }
           );

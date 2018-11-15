@@ -37,6 +37,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   editorError = '';
   editorErrorMessage = 'The maximum limit for a post is ' + this.editorLimit + ' characters. Please make your post shorter.';
   isShare = false; // if we are creating a new share that means isShare's value is 'true'
+  hasUploading = false;
   @Input() photos: Array<any> = new Array<any>();
   @Input() community: any;
   @Input() soProfile: any;
@@ -280,7 +281,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       case 'progress':
         file = event.payload.file;
         // this.post.photos.unshift(file);
-        console.log('file:::', event.payload);
         if (this.post.photos && this.post.photos.length > 0) {
           let hasPhoto = false;
           this.post.photos.forEach(p => {
@@ -295,22 +295,20 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         } else {
           this.post.photos.unshift(file);
         }
-
+        this.hasUploading = true;
         break;
       case 'success':
         // replace uploading photo by real photo
 
         file = event.payload.file;
         photo = event.payload.resp;
-        console.log('file success:::', file);
-        console.log('photo success:::', photo);
         index = this.post.photos.findIndex(p => p.id === file.id);
         if (index >= 0) {
           this.post.photos[index] = photo;
         }
         this.uploadingPhotos.push(photo);
         this.files.push(file);
-
+        this.hasUploading = false;
         break;
     }
   }
