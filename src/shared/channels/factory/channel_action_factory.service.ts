@@ -14,6 +14,7 @@ export class ChannelActionFactoryService {
   readonly appearance_new_user_offline = 'appearance_new_user_offline';
   readonly chat_send_message = 'chat_send_message';
   readonly chat_notification = 'chat_notification';
+  readonly chat_message_delete = 'CHAT_MESSAGE_DELETE';
   readonly common_notification: string = 'common_notification';
   action;
   data;
@@ -32,6 +33,7 @@ export class ChannelActionFactoryService {
       case this.appearance_new_user_offline:
         action = new AppearanceNewUserOffline(service);
         break;
+      case this.chat_message_delete:
       case this.chat_send_message:
         action = new ChatSendMessage(service);
         break;

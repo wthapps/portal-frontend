@@ -428,6 +428,7 @@ export class ChatService {
       contact.group_id,
       { remove_from_conversation: true, user_id: userId })
       .then((res: any) => {
+        // Update another conversations to update their status
         return this.chatCommonService.updateConversationBroadcast(contact.group_id);
       }
     );
@@ -587,6 +588,7 @@ export class ChatService {
   // All of method of conversation here
   createConversation(payload: any) {
     this.conversationService.create(payload).subscribe(response => {
+      // Update another conversations to update their status
       this.chatCommonService.updateConversationBroadcast(response.data.id);
     });
   }

@@ -5,7 +5,8 @@ import { HandlerService } from './handler.service';
 import { UserService } from '@wth/shared/services/user.service';
 import { WMessageService } from '@wth/shared/services/message.service';
 import { Router } from '@angular/router';
-import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, CHAT_CONVERSATIONS, INCOMING_MESSAGE, ACTION, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
+import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, CHAT_CONVERSATIONS, ACTION, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
+import { CommonEventService } from './common-event/common-event.service';
 
 declare var _: any;
 declare var Promise: any;
@@ -16,6 +17,7 @@ export class ChatCommonService {
     public storage: StorageService,
     public apiBaseService: ApiBaseService,
     public handler: HandlerService,
+    public commonEventService: CommonEventService,
     private messageService: WMessageService,
     private router: Router,
     private userService: UserService
@@ -63,6 +65,49 @@ export class ChatCommonService {
     this.storage.save('chat_history_conversations', historyContacts);
   }
 
+  updateContactSelect() {
+    const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
+    const chatContacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
+    if (chatContacts) {
+      let isSet = false;
+      for (let i = 0; i < chatContacts.length; i++) {
+        if (chatContacts[i] && contactSelect && chatContacts[i].id === contactSelect.id) {
+          this.storage.save(CONVERSATION_SELECT, chatContacts[i]);
+          isSet = true;
+        }
+      }
+      if (!isSet) {
+        this.setDefaultSelectContact();
+      }
+    }
+  }
+
+  setDefaultSelectContact(): Promise<any> {
+    const res: any = this.storage.find(CHAT_CONVERSATIONS);
+    if (res && res.value && res.value.data && res.value.data[0]) {
+      const defaultContact = res.value.data[0];
+      this.storage.save(CONVERSATION_SELECT, defaultContact);
+      this.handler.triggerEvent(
+        'on_default_conversation_select',
+        defaultContact
+      );
+      // Resolve default select contact id
+      return Promise.resolve(defaultContact.id);
+    } else {
+      // Resolve NO default select contact
+      this.storage.save(CONVERSATION_SELECT, null);
+      return Promise.resolve(null);
+    }
+  }
+
+  updateAll() {
+    this.setConversations();
+    this.setRecentConversations();
+    this.setFavouriteConversations();
+    this.setHistoryConversations();
+    this.updateContactSelect();
+  }
+
   moveFirstRecentList(groupId?: string): Promise<any> {
     const chat_conversations = this.storage.getValue(CHAT_CONVERSATIONS);
     const conversations: any = chat_conversations.data;
@@ -82,8 +127,8 @@ export class ChatCommonService {
 
   addMessage(groupId: any, data: any): void {
     const message = data.message;
-    message.links = data.links;
-    const currentMessageList = this.storage.getValue('chat_messages_group_' + groupId);
+    if(data.links) message.links = data.links;
+    const currentMessageList = this.storage.getValue(CHAT_MESSAGES_GROUP_ + groupId);
     const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
     const conversationsResponse = this.storage.getValue(CHAT_CONVERSATIONS);
 
@@ -92,6 +137,7 @@ export class ChatCommonService {
     const incomingConversation = conversationsResponse.data.find(conv => conv.group_json.id === groupId);
     // show conversation if deleting
     if (incomingConversation === undefined && contactSelect.group_type === 'couple') {
+      // Update another conversations to update their status
       this.updateConversationBroadcast(groupId);
     }
     if (currentMessageList) {
@@ -108,11 +154,18 @@ export class ChatCommonService {
       if (contactSelect.group_json.id === groupId) {
         // this.storage.save('current_chat_messages', currentMessageList);
         const action = isReplace ? ACTION.EDIT : ACTION.ADD;
-        this.storage.save(INCOMING_MESSAGE, { action, data: message });
+        // this.storage.save(INCOMING_MESSAGE, { action, data: message });
       }
       // // Scroll to bottom when user's own messages are arrived
       if (message.user_id === this.userService.getSyncProfile().id)
-        this.messageService.scrollToBottom();
+        // this.messageService.scrollToBottom();
+        this.commonEventService.broadcast(
+          {
+            channel: 'MessageListComponent',
+            action: 'scrollToBottom',
+            payload: true
+          }
+        )
     }
     if (incomingConversation && !incomingConversation.favourite) {
       this.moveFirstRecentList(groupId);
@@ -139,7 +192,7 @@ export class ChatCommonService {
     // // this.storage.save('chat_messages_group_' + groupId, items.value);
     // this.storage.save(CURRENT_CHAT_MESSAGES, items.value);
     if (contactSelect && contactSelect.group_json.id === groupId) {
-      this.storage.save(INCOMING_MESSAGE, { action: ACTION.EDIT, data });
+      // this.storage.save(INCOMING_MESSAGE, { action: ACTION.EDIT, data });
       console.log('sending messages to current group: ', { action: ACTION.EDIT, data });
     }
 
@@ -147,53 +200,10 @@ export class ChatCommonService {
       this.messageService.scrollToBottom();
   }
 
-  updateContactSelect() {
-    console.log('update contact select ...');
-    const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
-    const chatContacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
-    if (chatContacts) {
-      let isSet = false;
-      for (let i = 0; i < chatContacts.length; i++) {
-        if (chatContacts[i] && contactSelect && chatContacts[i].id === contactSelect.id) {
-          this.storage.save(CONVERSATION_SELECT, chatContacts[i]);
-          isSet = true;
-        }
-      }
-      if (!isSet) {
-        this.setDefaultSelectContact();
-      }
-    }
-  }
-
-  updateAll() {
-    this.setConversations();
-    this.setRecentConversations();
-    this.setFavouriteConversations();
-    this.setHistoryConversations();
-    this.updateContactSelect();
-  }
-
+  // Update another conversations to update their status
   updateConversationBroadcast(groupId: any): Promise<any> {
     return this.apiBaseService
       .post('zone/chat/notification/broadcard_contact', { group_id: groupId })
       .toPromise();
-  }
-
-  setDefaultSelectContact(): Promise<any> {
-    const res: any = this.storage.find(CHAT_CONVERSATIONS);
-    if (res && res.value && res.value.data && res.value.data[0]) {
-      const defaultContact = res.value.data[0];
-      this.storage.save(CONVERSATION_SELECT, defaultContact);
-      this.handler.triggerEvent(
-        'on_default_conversation_select',
-        defaultContact
-      );
-      // Resolve default select contact id
-      return Promise.resolve(defaultContact.id);
-    } else {
-      // Resolve NO default select contact
-      this.storage.save(CONVERSATION_SELECT, null);
-      return Promise.resolve(null);
-    }
   }
 }

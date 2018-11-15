@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ChatService } from '../services/chat.service';
 import { Constants, CHAT_ACTIONS, ChatConstant, CONVERSATION_SELECT } from '@wth/shared/constant';
 import { CommonEvent, CommonEventService, WMessageService, StorageService } from '@wth/shared/services';
+import { ConversationDetailComponent } from '@chat/conversation/conversation-detail.component';
 
 declare var _: any;
 
@@ -75,7 +76,7 @@ export class MessageItemComponent implements OnInit {
 
   copy() {
     this.doAction({
-      channel: 'chatCommonEvent',
+      channel: ConversationDetailComponent.name,
       action: CHAT_ACTIONS.CHAT_MESSAGE_COPY,
       payload: this.message
     });
@@ -83,7 +84,7 @@ export class MessageItemComponent implements OnInit {
 
   quote() {
     this.doAction({
-      channel: 'chatCommonEvent',
+      channel: ConversationDetailComponent.name,
       action: CHAT_ACTIONS.CHAT_MESSAGE_QUOTE,
       payload: this.message
     });
@@ -91,7 +92,7 @@ export class MessageItemComponent implements OnInit {
 
   edit() {
     this.doAction({
-      channel: 'chatCommonEvent',
+      channel: ConversationDetailComponent.name,
       action: CHAT_ACTIONS.CHAT_MESSAGE_EDIT,
       payload: this.message
     });
@@ -99,7 +100,7 @@ export class MessageItemComponent implements OnInit {
 
   delete() {
     this.doAction({
-      channel: 'chatCommonEvent',
+      channel: ConversationDetailComponent.name,
       action: CHAT_ACTIONS.CHAT_MESSAGE_DELETE,
       payload: this.message
     });
@@ -107,7 +108,7 @@ export class MessageItemComponent implements OnInit {
 
   download() {
     this.doAction({
-      channel: 'chatCommonEvent',
+      channel: ConversationDetailComponent.name,
       action: CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD,
       payload: this.message
     });

@@ -158,6 +158,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     this.apiBaseService
       .put(`zone/chat/group/${this.conversation.group_id}`, body)
       .subscribe((res: any) => {
+        // Update another conversations to update their status
         this.chatCommonService.updateConversationBroadcast(this.conversation.group_id).then((response: any) => {
           const conversation = response.data.own_group_user.group_json;
           this.members = conversation.users_json;

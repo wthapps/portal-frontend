@@ -314,7 +314,7 @@
   <div class="message-item-content">
     <div class="message-item-content-card" *ngIf="!(['notification', 'request_accepted'].includes(message.message_type))">
       <ng-container *ngFor="let link of message.links">
-        <div *ngIf="link.image && link.title">
+        <div *ngIf="link.image && link.title && !message.deleted">
           <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
         </div>
       </ng-container>

@@ -18,15 +18,13 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
-import { WMessageService } from '@wth/shared/services';
+import { WMessageService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
 import { Router } from '@angular/router';
 import { User } from '@wth/shared/shared/models';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
-import { INCOMING_MESSAGE, ACTION } from '@shared/constant';
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
-import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 declare var _: any;
 declare var $: any;
@@ -37,7 +35,7 @@ declare var $: any;
   styleUrls: ['message-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MessageListComponent implements OnInit, OnDestroy, OnChanges {
+export class MessageListComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
   @ViewChild('listEl') listEl: ElementRef;
 
@@ -56,38 +54,41 @@ export class MessageListComponent implements OnInit, OnDestroy, OnChanges {
     private router: Router,
     private messageService: WMessageService,
     private storageService: StorageService,
+    public commonEventService: CommonEventService,
     private chatContactService: ChatContactService,
     private wthEmojiService: WTHEmojiService
   ) {
-    this.messageService.scrollToBottom$
-      .pipe(
-        takeUntil(this.destroySubject)
-      )
-      .subscribe((res: boolean) => {
-      if (res && this.listEl) {
-        this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
-      }
-    });
-
+    // this.messageService.scrollToBottom$
+    //   .pipe(
+    //     takeUntil(this.destroySubject)
+    //   )
+    //   .subscribe((res: boolean) => {
+    //   if (res && this.listEl) {
+    //     this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
+    //   }
+    // });
+    super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
-  ngOnDestroy() {
-    this.destroySubject.next('');
-    this.destroySubject.complete();
-  }
+  // ngOnDestroy() {
+  //   this.destroySubject.next('');
+  //   this.destroySubject.complete();
+  // }
+
   ngOnInit() {
     // setInterval(() => {
-    //   this.item = this.chatService.getCurrentMessages();
-    //   this.contactItem = this.chatService.getContactSelect();
-    //   this.ref.markForCheck();
-    // }, 200);
-  }
+      //   this.item = this.chatService.getCurrentMessages();
+      //   this.contactItem = this.chatService.getContactSelect();
+      //   this.ref.markForCheck();
+      // }, 200);
+    }
 
-  ngOnChanges() {
-    // console.log(this.currentMessages);
+  scrollToBottom(res: any) {
+    if (res && this.listEl) {
+      this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
+    }
   }
-
 
   onLoadMore() {
     // console.log('onLoadMore ...', this.listEl.nativeElement.scrollTop);

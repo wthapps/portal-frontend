@@ -19,7 +19,6 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { LongMessageModalComponent } from '@shared/components/modal/long-message-modal.component';
 import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
-import { ConversationDetailService } from '@chat/conversation/conversation-detail.service';
 import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 
 
