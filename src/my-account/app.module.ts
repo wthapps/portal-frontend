@@ -28,6 +28,7 @@ import { appReducers, metaReducers, appEffects } from './store';
 import { ConfirmationModule } from './confirmation/confirmation.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { DashboardModule } from '@account/dashboard/dashboard.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
@@ -53,6 +54,9 @@ import { DashboardModule } from '@account/dashboard/dashboard.module';
     CoreModule.forRoot(),
     StoreModule.forRoot(appReducers, { metaReducers }),
     EffectsModule.forRoot(appEffects),
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: environment.production
+    }),
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
       : []

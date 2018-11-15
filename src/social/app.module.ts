@@ -27,6 +27,7 @@ import { PostModule } from '@social/shared/second-routes/post';
 import { MiniEditorModule } from '@shared/shared/components/mini-editor/mini-editor.module';
 import { Ng2HdModule } from '@shared/shared/ng2-hd';
 import { ZSocialPhotoModule } from '@social/shared/second-routes/photo/photo.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
@@ -54,6 +55,9 @@ import { ZSocialPhotoModule } from '@social/shared/second-routes/photo/photo.mod
       SoProfileEffects,
       SocialPostsEffects
     ]),
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: environment.production
+    }),
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
       : []
