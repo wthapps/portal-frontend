@@ -28,10 +28,6 @@ import { ZNoteContainerComponent } from '@notes/shared/containers/note-container
 import { StoreModule } from '@ngrx/store/store';
 import { ZNoteShareProgressComponent } from '@notes/shared/progress/note-progress.component';
 import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit.component';
-import { CheckForUpdateService } from '@shared/services/service-worker/check-for-update.service';
-import { LogUpdateService } from './../../shared/services/service-worker/log-update.service';
-import { PromptUpdateService } from './../../shared/services/service-worker/prompt-update.service';
-
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -85,14 +81,7 @@ export class ZNoteSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZNoteSharedModule,
-      providers: [
-        ZNoteService,
-        ZFolderService,
-        MixedEntityService,
-        PromptUpdateService,
-        LogUpdateService,
-        CheckForUpdateService
-      ]
+      providers: [ZNoteService, ZFolderService, MixedEntityService]
     };
   }
 }

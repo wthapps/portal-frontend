@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { AuthService } from '@wth/shared/services';
+import { PromptUpdateService } from '@shared/services/service-worker/prompt-update.service';
 
 declare let $: any;
 
@@ -25,7 +26,8 @@ declare let $: any;
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router,
+    private prompUpdate: PromptUpdateService) {}
 
   ngOnInit() {
     // if (this.authService.loggedIn && this.authService.user && !this.authService.user.took_a_tour) {

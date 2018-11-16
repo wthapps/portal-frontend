@@ -88,7 +88,7 @@ export class ZContactListComponent
       if (data && data.page) {
         this.inOtherPage = (data.page === OTHER_CONTACTS);
         this.pageTitle = this.inOtherPage ? 'Other contacts' :
-          this.route.snapshot.paramMap.get('group') || 'All contacts';
+          this.route.snapshot.paramMap.get('group') || 'My contacts';
         this.contactService.setCurrentPage(data.page);
       }
     });

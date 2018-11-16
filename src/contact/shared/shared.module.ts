@@ -173,16 +173,7 @@ export class ContactSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ContactSharedModule,
-      providers: [
-        ZContactService,
-        GoogleApiService,
-        ZContactMenuService,
-
-        // Service Workers services
-        CheckForUpdateService,
-        LogUpdateService,
-        PromptUpdateService
-      ]
+      providers: [ZContactService, GoogleApiService, ZContactMenuService]
     };
   }
 }
