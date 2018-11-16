@@ -3,6 +3,7 @@
 </div>
 
 <div class="menuleft-chat-header">
+  {{contactSelect$ | async | json}}
   <div class="menuleft-chat-nav">
     <a href="javascript:void(0);" (click)="onAddContact(); onCloseMenu()">
       <i class="fa fa-plus"></i> Chat

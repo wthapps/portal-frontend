@@ -82,11 +82,14 @@ export class ConversationDetailComponent extends CommonEventHandler
   ngOnInit() {
     this.contactSelect$ = this.chatService.getContactSelectAsync();
     this.currentMessages$ = this.chatService.getCurrentMessagesAsync();
-
-    // this.contactSelect$.subscribe(contact => {
-    //   this.currentMessages = this.storage.getValue(CHAT_MESSAGES_GROUP_ + contact.group_id);
-    // })
     this.chatContactList$ = this.chatService.getChatConversationsAsync();
+    this.route.params.subscribe(params => {
+      console.log(params);
+      this.chatContactList$.subscribe(res => {
+        console.log(res);
+
+      })
+    })
   }
   ngOnDestroy() {
     this.commonEventSub.unsubscribe();

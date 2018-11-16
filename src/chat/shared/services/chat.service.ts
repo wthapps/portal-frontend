@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import {
   HandlerService,
   PhotoUploadService,
   StorageService,
-  UserService, WMessageService, StorageItem, ApiBaseService
+  UserService, WMessageService, StorageItem, ApiBaseService, CommonEventHandler
 } from '@wth/shared/services';
 import {
   ChatConstant, CHAT_CONVERSATIONS, CHAT_RECENT_CONVERSATIONS,
@@ -37,7 +37,7 @@ declare var Promise: any;
 export const CONCURRENT_UPLOAD = 2;
 
 @Injectable()
-export class ChatService {
+export class ChatService extends CommonEventHandler implements OnDestroy {
   public constant: any;
 
   constructor(
@@ -56,6 +56,7 @@ export class ChatService {
     private fileService: GenericFileService,
     private conversationService: ConversationService
   ) {
+    super(commonEventService);
     // =============================
     this.constant = ChatConstant;
 
@@ -137,8 +138,10 @@ export class ChatService {
   }
 
   selectContact(contact: any) {
-    // this.storage.save(CONVERSATION_SELECT, contact);
-    this.handler.triggerEvent('on_conversation_select', contact);
+    // this.handler.triggerEvent('on_conversation_select', contact);
+    if (contact.notification_count > 0) {
+      this.markAsRead(contact.group_json.id);
+    }
   }
 
   subscribeNotification() {

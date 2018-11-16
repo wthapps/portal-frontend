@@ -6,7 +6,7 @@ import { take, filter } from 'rxjs/operators';
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { ApiBaseService, StorageService, UrlService, WMessageService } from '@shared/services';
+import { ApiBaseService, StorageService, UrlService, WMessageService, CommonEventService } from '@shared/services';
 import { CONVERSATION_SELECT } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { Conversation } from '@chat/shared/models/conversation.model';
@@ -32,6 +32,7 @@ export class ZChatSidebarComponent implements OnInit {
   favouriteContacts$: Observable<any>;
   historyContacts$: Observable<any>;
   recentContacts$: Observable<any>;
+  contactSelect$: Observable<any>;
   historyShow: any = true;
   isRedirect: boolean;
   filter = 'All';
@@ -47,6 +48,7 @@ export class ZChatSidebarComponent implements OnInit {
     private urlService: UrlService,
     private storageService: StorageService,
     private renderer: Renderer2,
+    private commonEventService: CommonEventService,
     private addContactService: ZChatShareAddContactService,
     private wthEmojiService: WTHEmojiService,
     private modalService: ModalService,
@@ -56,63 +58,64 @@ export class ZChatSidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: any) => {
-        if (this.urlService.parse().paths[0] === 'conversations') {
-          const conversationId = this.urlService.parse().paths[1];
-          this.chatService
-            .getConversationsAsync()
-            .subscribe((res: any) => {
-              if (!(res && res.value && res.value.data)) {
-                return;
-              }
-              const conversations = res.value.data;
-              const mostRecent = conversations[0];
+    // this.router.events
+    //   .pipe(filter(event => event instanceof NavigationEnd))
+    //   .subscribe((event: any) => {
+    //     if (this.urlService.parse().paths[0] === 'conversations') {
+    //       const conversationId = this.urlService.parse().paths[1];
+    //       this.chatService
+    //         .getConversationsAsync()
+    //         .subscribe((res: any) => {
+    //           if (!(res && res.value && res.value.data)) {
+    //             return;
+    //           }
+    //           const conversations = res.value.data;
+    //           const mostRecent = conversations[0];
 
-              if (conversationId && !Number.isInteger(+conversationId)) {
-                return;
-              }
-              if (conversationId) {
-                let validConversation = false;
-                conversations.forEach(contact => {
-                  if (
-                    contact.id === +conversationId
-                  ) {
-                    this.selectConversation(contact);
-                    validConversation = true;
-                    return;
-                  }
-                });
+    //           if (conversationId && !Number.isInteger(+conversationId)) {
+    //             return;
+    //           }
+    //           if (conversationId) {
+    //             let validConversation = false;
+    //             conversations.forEach(contact => {
+    //               if (
+    //                 contact.id === +conversationId
+    //               ) {
+    //                 this.selectConversation(contact);
+    //                 validConversation = true;
+    //                 return;
+    //               }
+    //             });
 
-                if (!validConversation && mostRecent) {
-                  this.selectConversation(mostRecent);
-                }
-              } else {
-                if (mostRecent) {
-                  this.selectConversation(mostRecent);
-                }
-              }
-            });
-        }
-      });
+    //             if (!validConversation && mostRecent) {
+    //               this.selectConversation(mostRecent);
+    //             }
+    //           } else {
+    //             if (mostRecent) {
+    //               this.selectConversation(mostRecent);
+    //             }
+    //           }
+    //         });
+    //     }
+    //   });
 
     this.recentContacts$ = this.chatService.getRecentConversations();
     this.favouriteContacts$ = this.chatService.getFavouriteConversations();
     this.historyContacts$ = this.chatService.getHistoryConversations();
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
+    this.contactSelect$ = this.chatService.getContactSelectAsync();
   }
 
-  selectConversation(conversation: Conversation) {
-    this.chatService.router.navigate([
-      `${this.chatService.constant.conversationUrl}/${
-        conversation.id
-        }`
-    ]);
-    this.storageService.save(CONVERSATION_SELECT, conversation);
-    this.chatService.selectContact(conversation);
-    this.chatService.getMessages(conversation.group_json.id);
-  }
+  // selectConversation(conversation: Conversation) {
+  //   this.chatService.router.navigate([
+  //     `${this.chatService.constant.conversationUrl}/${
+  //       conversation.id
+  //       }`
+  //   ]);
+  //   this.storageService.save(CONVERSATION_SELECT, conversation);
+  //   // this.chatService.selectContact(conversation);
+  //   this.chatService.getMessages(conversation.group_json.id);
+  // }
 
   doFilter(param) {
     if (param === 'unread') {

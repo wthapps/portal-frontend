@@ -12,6 +12,8 @@ export class CommonEventHandler implements OnDestroy {
     this.commonEventSub = this.commonEventService
       .filter((event: CommonEvent) => event.channel === this.constructor.name)
       .subscribe((event: CommonEvent) => {
+        console.log(event);
+
         this[event.action](event.payload);
       });
   }
