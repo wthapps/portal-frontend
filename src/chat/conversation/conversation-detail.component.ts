@@ -36,6 +36,7 @@ export class ConversationDetailComponent extends CommonEventHandler
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
   events: any;
+  currentMessages: any;
 
   contactSelect$: Observable<any>;
   currentMessages$: Observable<any>;
@@ -81,6 +82,10 @@ export class ConversationDetailComponent extends CommonEventHandler
   ngOnInit() {
     this.contactSelect$ = this.chatService.getContactSelectAsync();
     this.currentMessages$ = this.chatService.getCurrentMessagesAsync();
+
+    // this.contactSelect$.subscribe(contact => {
+    //   this.currentMessages = this.storage.getValue(CHAT_MESSAGES_GROUP_ + contact.group_id);
+    // })
     this.chatContactList$ = this.chatService.getChatConversationsAsync();
   }
   ngOnDestroy() {

@@ -23,6 +23,7 @@ import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 
 
 declare var $: any;
+declare var _: any;
 
 @Component({
   selector: 'message-editor',

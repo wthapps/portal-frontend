@@ -1,6 +1,7 @@
 import { StorageService, WMessageService, CommonEventService, ApiBaseService, UserService } from "@shared/services";
 import { CHAT_CONVERSATIONS, CONVERSATION_SELECT, ACTION, CHAT_MESSAGES_GROUP_, CURRENT_CHAT_MESSAGES } from "@shared/constant";
 
+declare var _: any;
 
 export class ChatMessageMixin {
   constructor(public storage: StorageService,
