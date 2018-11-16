@@ -1,3 +1,5 @@
+@import "../../../../../../shared/scss/global";
+
 .comment-editor-button-region {
   padding-top: 5px;
 }
@@ -12,4 +14,14 @@
 .editor-error{
   border: 1px solid red;
   border-radius: 4px !important;
+}
+
+.message-editor-form {
+  border: 1px solid #ccc;
+  -webkit-border-radius: $input-border-radius;
+  -moz-border-radius: $input-border-radius;
+  border-radius: $input-border-radius;
+  margin: 0;
+  padding: 0;
+
 }

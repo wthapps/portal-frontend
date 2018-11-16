@@ -7,7 +7,7 @@
     </a>
   </div>
   <div class="z-social-media-body">
-    <form novalidate>
+    <form novalidate class="message-editor-form" >
 
       <div class="z-social-media-inputpost form-group">
         <span class="z-social-media-inputpost-icon">
@@ -22,14 +22,14 @@
           </div>
         </span>
 
-        <mini-editor [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" placeholder="Add a comment" [style]="{'height':'auto', 'min-height': '27px'}"
+        <mini-editor [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" placeholder="Add a comment" [style]="{'height':'auto', 'min-height': '27px', 'border': 'none'}"
           (onKeyUp)="handleKeyUp($event)" [styleClass]="editorError" (onTextChange)="onTextChange($event)" [validators]="[textValidator]">
           <p-header>
           </p-header>
         </mini-editor>
+
       </div>
       <p *ngIf="editorError" class="text-danger">{{editorErrorMessage}}</p>
-
 
       <photo-item-preview [photo]="comment?.photo" [files]="files" (events)="doEvents($event)"></photo-item-preview>
 
