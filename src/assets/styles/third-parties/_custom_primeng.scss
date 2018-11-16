@@ -155,6 +155,7 @@ $ui-inputswitch-w: 24px;
 
   .ui-tooltip-text {
     background-color: #ffffff;
+    color: $text-color;
     font-size: 12px;
     line-height: 1.4;
     padding: 5px;
@@ -163,16 +164,16 @@ $ui-inputswitch-w: 24px;
     border-radius: 4px;
   }
   &.ui-tooltip-top .ui-tooltip-arrow {
-    border-top-color: rgba(#000, 0.6);
+    border-top-color: #ffffff;
   }
   &.ui-tooltip-bottom .ui-tooltip-arrow {
-    border-bottom-color: rgba(#000, 0.6);
+    border-bottom-color: #ffffff;
   }
   &.ui-tooltip-left {
-    border-left-color: rgba(#000, 0.6);
+    border-left-color: #ffffff;
   }
   &.ui-tooltip-right {
-    border-right-color: rgba(#000, 0.6);
+    border-right-color: #ffffff;
   }
 }
 
@@ -515,7 +516,7 @@ $ui-inputswitch-w: 24px;
       &:after {
         content: '×';
       }
-      .fa {
+      .fa, span {
         display: none;
       }
     }
