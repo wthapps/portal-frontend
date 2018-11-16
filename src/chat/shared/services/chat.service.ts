@@ -17,8 +17,9 @@ import {
 } from '@wth/shared/services';
 import {
   ChatConstant, CHAT_CONVERSATIONS, CHAT_RECENT_CONVERSATIONS,
-  CHAT_FAVOURITE_CONVERSATIONS, CHAT_HISTORY_CONVERSATIONS, CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, USERS_ONLINE,
-  NUMBER_MESSAGE
+  CHAT_FAVOURITE_CONVERSATIONS, CHAT_HISTORY_CONVERSATIONS, CONVERSATION_SELECT, USERS_ONLINE,
+  NUMBER_MESSAGE,
+  CHAT_MESSAGES_GROUP_
 } from '@wth/shared/constant';
 import { FileUploaderService } from '@shared/services/file/file-uploader.service';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
@@ -138,7 +139,6 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   selectContact(contact: any) {
-    // this.handler.triggerEvent('on_conversation_select', contact);
     if (contact.notification_count > 0) {
       this.markAsRead(contact.group_json.id);
     }
@@ -179,30 +179,34 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   getMessages(groupId: number, options: any = {}): Promise<any> {
-    const messages: any = this.storage.getValue('chat_messages_group_' + groupId);
-    if (messages && this.storage.getValue(CONVERSATION_SELECT).group_id === groupId && !options.force) {
-      this.storage.save(CURRENT_CHAT_MESSAGES, messages);
+    const messages: any = this.storage.getValue(CHAT_MESSAGES_GROUP_ + groupId);
+    if (messages && !options.force) {
+      this.commonEventService.broadcast({
+        channel: 'ConversationDetailComponent',
+        action: 'updateCurrent'
+      });
       return Promise.resolve(messages);
-    } else {
-      this.storage.save(CURRENT_CHAT_MESSAGES, null);
-      return this.apiBaseService
-        .get('zone/chat/message/' + groupId, options)
-        .toPromise()
-        .then((res: any) => {
-          this.storage.save('chat_messages_group_' + groupId, res);
-          if (
-            this.storage.find(CONVERSATION_SELECT).value &&
-            this.storage.find(CONVERSATION_SELECT).value.group_id === groupId
-          ) {
-            this.storage.save(CURRENT_CHAT_MESSAGES, res);
-          }
-        })
-      ;
     }
+    return this.apiBaseService
+      .get('zone/chat/message/' + groupId, options)
+      .toPromise()
+      .then((res: any) => {
+        this.storage.save(CHAT_MESSAGES_GROUP_ + groupId, res);
+        this.commonEventService.broadcast({
+          channel: 'ConversationDetailComponent',
+          action: 'updateCurrent'
+        });
+      });
   }
 
-  getCurrentMessagesAsync() {
-    return this.storage.getAsync(CURRENT_CHAT_MESSAGES);
+  setConversationSelectedByGroupId(id: number) {
+    this.getConversationsAsync().toPromise().then(res =>{
+      let selectedContact:any = res.value.data.find(contact => contact.group_id == id);
+      if (selectedContact) {
+        this.storage.save(CONVERSATION_SELECT, selectedContact);
+        this.getMessages(selectedContact.group_id);
+      }
+    })
   }
 
   isExistingData(key: string) {
@@ -315,7 +319,6 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   loadMoreMessages(): Promise<any> {
     const groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
       .id;
-    // const current = this.storage.find(CURRENT_CHAT_MESSAGES).value || {};
     const current = this.storage.getValue('chat_messages_group_' + groupId);
     const currentMessages: any = current.data || [];
     let page: any = 1;
@@ -330,49 +333,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
       .toPromise().then((res: any) => {
         const combinedData = _chat.combineMessages(currentMessages, res.data);
         this.storage.save('chat_messages_group_' + groupId, { ...res, data: combinedData});
-        // if (
-        //   +this.storage.find(CONVERSATION_SELECT).value.group_id === +groupId
-        // ) {
-        //   this.storage.save(CURRENT_CHAT_MESSAGES, {...res, metadata: res.metadata});
-        // }
         return res;
-      });
-  }
-
-  searchMessages(text: any) {
-    const currentMessages: any = this.storage.find(CURRENT_CHAT_MESSAGES).value
-      .data;
-    const page: any = +(
-      this.storage.find(CURRENT_CHAT_MESSAGES).value.meta.page
-    );
-    const body: any = { q: 'message:1' };
-    const groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
-      .id;
-
-    const sequenceCall = (nextPage: any, currentPage: any): any => {
-      if (nextPage === currentPage) {
-        return [];
-      }
-      this.apiBaseService
-        .get('zone/chat/message/' + groupId, { page: nextPage })
-        .subscribe((res: any) => {
-          res.data = _chat.combineMessages(
-            this.storage.find(CURRENT_CHAT_MESSAGES).value.data,
-            res.data
-          );
-          this.storage.save('chat_messages_group_' + groupId, res);
-          this.storage.save(CURRENT_CHAT_MESSAGES, res);
-          sequenceCall(+(res.meta.page) + 1, currentPage);
-        });
-    };
-
-    this.apiBaseService
-      .get('zone/chat/message/' + groupId, body)
-      .subscribe((res: any) => {
-        res.data = _chat.combineMessages(currentMessages, res.data);
-        this.storage.save('chat_messages_group_' + groupId, res);
-        this.storage.save(CURRENT_CHAT_MESSAGES, res);
-        sequenceCall(res.meta.page, page);
       });
   }
 
@@ -399,7 +360,11 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   deleteContact(contact: any) {
-    this.updateGroupUser(contact.group_id, { deleted: true });
+    this.updateGroupUser(contact.group_id, { deleted: true }).then(res => {
+      this.getConversationsAsync({ forceFromApi: true}).toPromise().then(res => {
+        this.router.navigate(['/conversations'])
+      })
+    })
   }
 
   updateDisplay(contact: any, data: any) {

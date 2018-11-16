@@ -7,7 +7,6 @@ import { ChatService } from '../shared/services/chat.service';
   templateUrl: 'conversation-list.component.html'
 })
 export class ConversationListComponent implements OnInit {
-  selectContact: any;
   conversations: any;
 
   constructor(
@@ -18,17 +17,15 @@ export class ConversationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectContact = this.chatService.getContactSelect();
-    if (this.selectContact && this.selectContact.value) {
-      this.chatService.router.navigate([
-        `${this.chatService.constant.conversationUrl}/${
-          this.selectContact.value.id
-          }`
-      ]);
-    }
-
     this.chatService.getConversationsAsync().subscribe((res: any) => {
       this.conversations = res.value.data;
+      if (this.conversations && this.conversations.length > 0) {
+        this.chatService.router.navigate([
+          `${this.chatService.constant.conversationUrl}/${
+            this.conversations[0].group_id
+            }`
+        ]);
+      }
     });
   }
 

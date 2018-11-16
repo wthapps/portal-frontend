@@ -15,7 +15,7 @@ import {
   CommonEventService,
   PhotoService, UserService, ChatCommonService, StorageService, WMessageService, ApiBaseService
 } from '@wth/shared/services';
-import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, CURRENT_CHAT_MESSAGES } from '@wth/shared/constant';
+import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
 import { User } from '@wth/shared/shared/models';
 import { WUploader } from '@shared/services/w-uploader';
 import { Message } from '@chat/shared/models/message.model';
@@ -37,10 +37,11 @@ export class ConversationDetailComponent extends CommonEventHandler
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
   events: any;
   currentMessages: any;
-
+  groupId: any;
   contactSelect$: Observable<any>;
   currentMessages$: Observable<any>;
   chatContactList$: Observable<any>;
+  chatConversations$: Observable<any>;
   currentUser$: Observable<User>;
   tokens: any;
   sub: any;
@@ -81,19 +82,21 @@ export class ConversationDetailComponent extends CommonEventHandler
 
   ngOnInit() {
     this.contactSelect$ = this.chatService.getContactSelectAsync();
-    this.currentMessages$ = this.chatService.getCurrentMessagesAsync();
+    this.chatConversations$ = this.chatService.getConversationsAsync();
     this.chatContactList$ = this.chatService.getChatConversationsAsync();
     this.route.params.subscribe(params => {
-      console.log(params);
-      this.chatContactList$.subscribe(res => {
-        console.log(res);
-
-      })
-    })
+      this.groupId = params.id;
+      this.chatService.setConversationSelectedByGroupId(params.id);
+    });
   }
+
+  updateCurrent() {
+    this.currentMessages$ = this.storage.getAsync(CHAT_MESSAGES_GROUP_ + this.groupId);
+  }
+
   ngOnDestroy() {
-    this.commonEventSub.unsubscribe();
-    this.sub.unsubscribe();
+    if (this.commonEventSub) this.commonEventSub.unsubscribe();
+    if (this.sub) this.sub.unsubscribe();
   }
 
   deleteMessage(message: any) {
@@ -101,7 +104,7 @@ export class ConversationDetailComponent extends CommonEventHandler
           .deleteMessage(message.group_id, message.id)
           .toPromise()
           .then((res: any) => {
-            this.updateCurrentMessage();
+            // this.updateCurrentMessage();
           });
   }
   copyMessage(message: any) {
@@ -123,7 +126,6 @@ export class ConversationDetailComponent extends CommonEventHandler
           mode: FORM_MODE.EDIT
         });
         this.messageEditor.focus();
-        this.updateCurrentMessage();
   }
   cancleMessage(message: any) {
     const { message_type, meta_data, file, group_id, id } = message;
@@ -134,73 +136,8 @@ export class ConversationDetailComponent extends CommonEventHandler
       .cancelUpload(group_id, id)
       .toPromise()
       .then((response: any) => {
-        this.updateCurrentMessage();
       });
   }
-
-  // doEvent(event: CommonEvent) {
-  //   switch (event.action) {
-  //     case CHAT_ACTIONS.CHAT_MESSAGE_COPY:
-  //       this.messageEditor.updateAttributes({
-  //         message: event.payload,
-  //         mode: FORM_MODE.CREATE
-  //       });
-  //       this.messageEditor.focus();
-  //       // Real copy
-  //       const temp = $('<input>');
-  //       $('body').append(temp);
-  //       temp.val(event.payload.message).select();
-  //       document.execCommand('copy');
-  //       temp.remove();
-  //       break;
-  //     case CHAT_ACTIONS.CHAT_MESSAGE_QUOTE:
-  //       _.assign(event.payload, { is_quote: true });
-  //       this.messageEditor.updateAttributes({
-  //         message: event.payload,
-  //         mode: FORM_MODE.CREATE
-  //       });
-  //       this.messageEditor.focus();
-  //       break;
-  //     case CHAT_ACTIONS.CHAT_MESSAGE_EDIT:
-  //       this.messageEditor.updateAttributes({
-  //         message: event.payload,
-  //         mode: FORM_MODE.EDIT
-  //       });
-  //       this.messageEditor.focus();
-  //       this.updateCurrentMessage();
-  //       break;
-  //     case CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD:
-  //       break;
-  //     case CHAT_ACTIONS.CHAT_MESSAGE_CANCEL: {
-  //       const { message_type, meta_data, file, group_id, id } = event.payload;
-  //       if (message_type === 'file' && file && meta_data.file) {
-  //         this.uploader.cancel(meta_data.file);
-  //       }
-  //       this.conversationService
-  //         .cancelUpload(group_id, id)
-  //         .toPromise()
-  //         .then((response: any) => {
-  //           this.updateCurrentMessage();
-  //         });
-  //       }
-  //       break;
-  //     case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
-  //       this.conversationService
-  //         .deleteMessage(event.payload.group_id, event.payload.id)
-  //         .toPromise()
-  //         .then((res: any) => {
-  //           this.updateCurrentMessage();
-  //         });
-
-  //       break;
-  //   }
-  // }
-
-  private updateCurrentMessage() {
-    const groupId = this.storage.getValue(CONVERSATION_SELECT).group_id;
-    this.storage.find(CURRENT_CHAT_MESSAGES).value.data = _.cloneDeep(this.storage.getValue(CHAT_MESSAGES_GROUP_ + groupId)).data;
-  }
-
 
   buildMessage(event: any): any {
     const message = new Message();

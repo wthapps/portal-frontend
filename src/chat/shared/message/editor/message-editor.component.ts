@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
-import { Constants, FORM_MODE, CURRENT_CHAT_MESSAGES, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
+import { Constants, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
 import { ApiBaseService, WMessageService, StorageService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
@@ -121,7 +121,6 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         this.notesListModal.close();
         notes.forEach(note => {
           this.chatMessageService.createFileMessage(note).subscribe(res => {
-            this.storage.find(CURRENT_CHAT_MESSAGES).value.data.push(res.data)
           });
         });
       });
@@ -243,7 +242,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
       CONCURRENT_UPLOAD
       )
     ).subscribe((val) => {
-      this.storage.find(CURRENT_CHAT_MESSAGES).value.data.push(val.data);
+      // send message channel will do it
     });
   }
 
@@ -281,7 +280,6 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         this.chatMessageService.create(null, message).subscribe(res => {
           this.uploadingMessages[id] = { ...res.data, content_type: meta.type};
           this.updateUploadingMessage(id);
-          this.updateCurrentMessage();
         })
       }
         break;
@@ -294,7 +292,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         const { id } = event.payload.file;
         this.uploadedFiles[id] = event.payload.resp;
         setTimeout(() => {
-          this.updateCurrentMessage();
+          // send message channel will do it
         }, 2000);
         if (!this.uploadingMessages[id]) {
           return;
@@ -304,11 +302,6 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         break;
       }
     }
-  }
-
-  private updateCurrentMessage() {
-    const groupId = this.storage.getValue(CONVERSATION_SELECT).group_id;
-    this.storage.find(CURRENT_CHAT_MESSAGES).value.data = _.cloneDeep(this.storage.getValue(CHAT_MESSAGES_GROUP_ + groupId)).data;
   }
 
   private updateUploadingMessage(fileId: string) {
@@ -328,13 +321,12 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         .updateMessage(this.message.group_id, this.message)
         .subscribe((response: any) => {
           this.mode = FORM_MODE.CREATE;
-          this.updateCurrentMessage();
           this.resetEditor();
         });
     } else {
       this.messageService.scrollToBottom();
       this.chatMessageService.createTextMessage(this.message.message).subscribe(res => {
-        this.updateCurrentMessage();
+        // send message channel will do it
       })
 
       this.resetEditor();

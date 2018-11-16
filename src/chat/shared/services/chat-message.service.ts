@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ApiBaseService, StorageService } from "@shared/services";
-import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES } from "@shared/constant";
+import { CONVERSATION_SELECT } from "@shared/constant";
 import { of } from "rxjs";
 
 @Injectable()

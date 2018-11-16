@@ -1,5 +1,5 @@
 import { StorageService, WMessageService, CommonEventService, ApiBaseService, UserService } from "@shared/services";
-import { CHAT_CONVERSATIONS, CONVERSATION_SELECT, ACTION, CHAT_MESSAGES_GROUP_, CURRENT_CHAT_MESSAGES } from "@shared/constant";
+import { CHAT_CONVERSATIONS, CONVERSATION_SELECT, ACTION, CHAT_MESSAGES_GROUP_ } from "@shared/constant";
 
 declare var _: any;
 
@@ -21,10 +21,7 @@ export class ChatMessageMixin {
       }
     }
 
-    // // this.storage.save('chat_messages_group_' + groupId, items.value);
-    // this.storage.save(CURRENT_CHAT_MESSAGES, items.value);
     if (contactSelect && contactSelect.group_json.id === groupId) {
-      // this.storage.save(INCOMING_MESSAGE, { action: ACTION.EDIT, data });
       console.log('sending messages to current group: ', { action: ACTION.EDIT, data });
     }
 
@@ -70,10 +67,6 @@ export class ChatMessageMixin {
         if (!isReplace) {
           currentMessageList.data.push(message);
         }
-      }
-      // selecting this group, update current message
-      if (contactSelect.group_json.id === groupId) {
-        this.storage.save(CURRENT_CHAT_MESSAGES, _.cloneDeep(currentMessageList));
       }
     }
   }

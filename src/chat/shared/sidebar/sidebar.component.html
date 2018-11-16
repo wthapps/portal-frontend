@@ -3,7 +3,6 @@
 </div>
 
 <div class="menuleft-chat-header">
-  {{contactSelect$ | async | json}}
   <div class="menuleft-chat-nav">
     <a href="javascript:void(0);" (click)="onAddContact(); onCloseMenu()">
       <i class="fa fa-plus"></i> Chat
@@ -114,7 +113,7 @@
         </small>
         <!-- {{conversation.latest_message}} -->
         <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
-        <a class="media-chat-user-link" [routerLink]="[chatService.constant.conversationUrl, conversation.id]"
+        <a class="media-chat-user-link"
            (click)="onSelect(conversation); onCloseMenu()"
            href="javascript:;"></a>
       </div>

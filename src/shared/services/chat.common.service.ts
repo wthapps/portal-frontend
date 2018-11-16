@@ -5,7 +5,7 @@ import { HandlerService } from './handler.service';
 import { UserService } from '@wth/shared/services/user.service';
 import { WMessageService } from '@wth/shared/services/message.service';
 import { Router } from '@angular/router';
-import { CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, CHAT_CONVERSATIONS, ACTION, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
+import { CONVERSATION_SELECT, CHAT_CONVERSATIONS, ACTION, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
 import { CommonEventService } from './common-event/common-event.service';
 
 declare var _: any;
@@ -152,9 +152,7 @@ export class ChatCommonService {
         currentMessageList.data.push(message);
       }
       if (contactSelect.group_json.id === groupId) {
-        // this.storage.save('current_chat_messages', currentMessageList);
         const action = isReplace ? ACTION.EDIT : ACTION.ADD;
-        // this.storage.save(INCOMING_MESSAGE, { action, data: message });
       }
       // // Scroll to bottom when user's own messages are arrived
       if (message.user_id === this.userService.getSyncProfile().id)
@@ -175,7 +173,6 @@ export class ChatCommonService {
         conversation.latest_message = message;
     }
     this.setAllConversations(conversationsResponse);
-    this.storage.find(CURRENT_CHAT_MESSAGES).value.data = _.cloneDeep(this.storage.getValue(CHAT_MESSAGES_GROUP_ + groupId)).data;
   }
 
   updateItemInList(groupId: any, data: any) {
@@ -190,7 +187,6 @@ export class ChatCommonService {
     }
 
     // // this.storage.save('chat_messages_group_' + groupId, items.value);
-    // this.storage.save(CURRENT_CHAT_MESSAGES, items.value);
     if (contactSelect && contactSelect.group_json.id === groupId) {
       // this.storage.save(INCOMING_MESSAGE, { action: ACTION.EDIT, data });
       console.log('sending messages to current group: ', { action: ACTION.EDIT, data });
