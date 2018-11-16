@@ -1,4 +1,4 @@
-<p-confirmDialog header="Confirmation" width="600" #cd>
+<p-confirmDialog header="Confirmation" width="600" #cd [baseZIndex]="2000">
   <p-footer>
     <button *ngIf="(confirmInfo$ | async)?.rejectLabel"class="btn btn-outline-default btn-min" type="button" icon="fa-close"
             (click)="cd.reject()">{{ (confirmInfo$ | async)?.rejectLabel }}</button>

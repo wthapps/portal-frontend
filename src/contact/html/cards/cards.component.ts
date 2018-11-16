@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ConfirmationService } from 'primeng/api';
 
 declare var $: any;
 
@@ -11,7 +12,7 @@ declare var $: any;
 export class ContactHtmlCardsComponent implements OnInit {
   selectedValues: string[] = [];
 
-  constructor() {
+  constructor(private confirmationService: ConfirmationService) {
   }
 
   ngOnInit() {
@@ -23,5 +24,15 @@ export class ContactHtmlCardsComponent implements OnInit {
     setTimeout(() => {
       $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
     }, 0);
+  }
+
+  onDelete() {
+    this.confirmationService.confirm({
+      header: 'Delete information card',
+      message: `Deleted this card will remove it from shared user’s contact book. <br> This action can’t be undone.`,
+      accept: () => {
+        // Actual logic to perform a confirmation
+      }
+    });
   }
 }

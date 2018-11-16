@@ -1,10 +1,15 @@
 <div class="page-body-control">
-  <div class="page-body-control-nav"><h4>Cards <i class="fa fa-info-circle"></i></h4></div>
+  <div class="page-body-control-nav">
+    <h4>
+      Cards
+      <i class="fa fa-info-circle text-fade" pTooltip="Cards store information from your profile." tooltipPosition="bottom"></i>
+    </h4>
+  </div>
 </div>
 <div class="page-body-content has-page-body-control">
   <div class="page-body-content-in">
     <div class="card-list row">
-      <div class="col-sm-4">
+      <div class="col-sm-4 mb15">
         <div class="card can-click" (click)="modalCard.open()">
           <div class="card-body">
             <div class="media-avatar align-items-center">
@@ -23,7 +28,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-4 mb15">
         <div class="card can-click" (click)="modalCard.open()">
           <div class="card-body">
             <div class="media-avatar align-items-center">
@@ -42,7 +47,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-4 mb15">
         <div class="card can-click" (click)="modalCard.open()">
           <div class="card-body">
             <div class="media-avatar align-items-center">
@@ -62,13 +67,14 @@
         </div>
       </div>
     </div>
-    <h4>Private card <i class="fa fa-info-circle"></i></h4>
+    <h4>Private card
+      <i class="fa fa-info-circle text-fade" pTooltip="Private help you share private contact information with other users."></i></h4>
     <div class="text-fade">
       There are no private cards. <br>
       Click “New private card” from New menu to create more private cards.
     </div>
     <div class="card-list row">
-      <div class="col-sm-4">
+      <div class="col-sm-4 mb15">
         <div class="card can-click" (click)="modalCard.open()">
           <div class="card-body">
             <div class="media-avatar align-items-center">
@@ -110,7 +116,7 @@
               <a href="#"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
             </li>
             <li>
-              <a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+              <a (click)="onDelete()" href="#"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
             </li>
           </ul>
         </li>
