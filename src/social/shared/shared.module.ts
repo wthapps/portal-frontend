@@ -50,6 +50,7 @@ import { ZSocialMembersComponent } from '@social/friends/members.component';
 import { ZSocialShareCommunityFormEditComponent } from '@social/shared/form/edit-community.component';
 import { ZSocialShareCommunityFormPreferenceComponent } from '@social/shared/form/preferences-community.component';
 import { SoStorageService } from './services/social-storage.service';
+import { ZSocialSharedSettingsComponent } from './modal/settings/settings.component';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -109,6 +110,7 @@ import { SoStorageService } from './services/social-storage.service';
     ZSocialShareCommunityFormEditComponent,
     ZSocialShareCommunityFormPreferenceComponent,
     ZSocialSharedAutoCompleteSharedComponent,
+    ZSocialSharedSettingsComponent,
     ZSocialSharedPrivacyComponent
   ],
   exports: [
@@ -165,6 +167,7 @@ import { SoStorageService } from './services/social-storage.service';
     ZSocialShareCommunityFormEditComponent,
     ZSocialShareCommunityFormPreferenceComponent,
     ZSocialSharedAutoCompleteSharedComponent,
+    ZSocialSharedSettingsComponent,
     ZSocialSharedPrivacyComponent
   ]
 })

@@ -7,6 +7,7 @@ import { LoadingService } from '@wth/shared/shared/components/loading/loading.se
 import { UserService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { fadeInAnimation } from '@wth/shared/shared/animations/route.animation';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'z-social-community-list',
@@ -31,6 +32,8 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   constructor(
     private loadingService: LoadingService,
     private socialService: SocialService,
+    private router: Router,
+    private route: ActivatedRoute,
     private userService: UserService
   ) {}
 

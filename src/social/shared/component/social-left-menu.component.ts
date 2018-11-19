@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Observable ,  interval ,  Subject } from 'rxjs';
@@ -14,6 +14,7 @@ import { POSTS_COUNT_LOAD } from '../reducers/index';
 import { POSTS_COUNT_LOAD_DONE } from '../reducers/index';
 import { SHORTCUT_LOAD } from '@social/shared/reducers';
 import { SHORTCUT_ACCESSED } from '@social/shared/reducers';
+import { ZSocialSharedSettingsComponent } from './../modal/settings/settings.component';
 
 @Component({
   selector: 'z-social-left-menu',
@@ -22,10 +23,10 @@ import { SHORTCUT_ACCESSED } from '@social/shared/reducers';
 })
 
 export class ZSocialLeftMenuComponent implements OnDestroy {
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   homeMenuItem: any;
   communitiesMenuItem: any;
-  socialMenu = Constants.socialMenuItems;
+  socialMenu = [];
   shortcuts$: Observable<any>;
   newPostsCount$: Observable<any>;
   uuid: string;

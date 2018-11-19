@@ -1,0 +1,15 @@
+a.dropdown {
+  border: #ccc solid 1px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  text-decoration: none;
+}
+
+ul.dropdown-menu {
+  li {
+    span {
+      width: 15px;
+    }
+  }
+}

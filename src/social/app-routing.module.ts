@@ -31,11 +31,11 @@ export const routes: Routes = [
     loadChildren: './my-profile/my-profile.module#ZSocialMyProfileModule',
     canActivate: [AuthGuard]
   },
-  {
-    path: 'settings',
-    component: ZSocialSettingComponent,
-    canActivate: [AuthGuard]
-  },
+  // {
+  //   path: 'settings',
+  //   component: ZSocialSettingComponent,
+  //   canActivate: [AuthGuard]
+  // },
   {
     path: 'posts/:id',
     redirectTo: '/home(detail:posts/:id)',

@@ -1,0 +1,45 @@
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
+    </bs-modal-header>
+
+    <bs-modal-body>
+      <div class="panel-body" *ngIf="user.settings">
+          <h3>General Settings</h3>
+          <div class="form-group">
+            <div class="inputSwitch-wrap">
+              <p-inputSwitch [(ngModel)]="user?.settings?.hide_adult_content.value"
+                             (ngModelChange)="updateSettings({hide_adult_content: user.settings.hide_adult_content})"></p-inputSwitch>
+              <span>
+                Hide all adult content
+              </span>
+            </div>
+          </div>
+          <hr>
+          <h3>Post settings</h3>
+          <p class="bold">Default post settings</p>
+          <p>You can manage who will able to see your posts. This setting remembers your selection so future posts will
+            be shared with the same choice unless you change it.</p>
+          <div class="row">
+            <div class="col-sm-6">
+              <div>
+                <a href="javascript:;" data-toggle="dropdown" style="display: block; padding: 5px"><i [class]="POST_PRIVACIES[user.settings.viewable_post.value]?.css"></i> {{ user.settings.viewable_post.value | titleCase }} <span
+                  class="caret"></span></a>
+                <ul class="dropdown-menu dropup-menu dropdown-menu-check" aria-labelledby="dropdownMenu">
+                  <li *ngFor="let pr of PRIVACIES"><a href="javascript:;"
+                         (click)="user.settings.viewable_post.value = pr; updateSettings({viewable_post: user.settings.viewable_post})">
+                    <span><i [class]="POST_PRIVACIES[pr]?.css"></i></span> {{ POST_PRIVACIES[pr]?.text | titleCase }} <i class="fa fa-check" *ngIf="user.settings.viewable_post.value === pr"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+    </bs-modal-body>
+
+    <bs-modal-footer>
+      <button class="btn btn-link pull-left" (click)="resetSettings()">Reset Default</button>
+      <button class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
+      <button class="btn btn-outline-primary btn-min mr10" (click)="save()">Save</button>
+      
+    </bs-modal-footer>
+  </bs-modal>

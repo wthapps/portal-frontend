@@ -61,5 +61,11 @@
   </div>
 </ng-container>
 
+<div class="menuleft-item" (click)="socialSettting.modal.open()">
+  <a draggable="false" href="javascript:;">
+    <i class="fa fa-cog"></i> Settings
+  </a>
+</div>
 
 <z-social-shortcut-setting #shortcutSetting></z-social-shortcut-setting>
+<z-social-shared-setting #socialSettting ></z-social-shared-setting>
