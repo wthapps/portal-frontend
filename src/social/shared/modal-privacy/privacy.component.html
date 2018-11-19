@@ -20,8 +20,26 @@
                     [placeholder]="placeholder"
                     field="name"
                     [multiple]="true">
-        <ng-template let-item pTEmplate="filteredDataMultiple">
-          <span class="ui-autocomplete-token-label"> {{ item | maxLength: 50 }} </span>
+        <ng-template let-selItem pTemplate="selectedItem">
+          <span class="ui-autocomplete-token-label"> {{ selItem?.name | maxLength: 20 }} </span>
+        </ng-template> 
+        <ng-template let-data pTemplate="item">
+          <div class="media media-no-hidden">
+            <div class="media-left">
+              <span class="avatar-xs">
+                <img [src]="data?.profile_image" alt="{{ data?.name }}">
+              </span>
+            </div>
+            <div class="media-body middle">
+              <span class="media-heading m0">
+                {{ data?.name | maxLength: 50 }}
+              </span>
+              <div class="text-fade">
+              </div>
+            </div>
+            <div class="media-right">
+            </div>
+          </div>
         </ng-template>
     </p-autoComplete>
 
