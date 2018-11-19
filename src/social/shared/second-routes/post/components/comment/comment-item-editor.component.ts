@@ -127,10 +127,15 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   handlePost() {
     if (this.checkValidForm()) {
-      this.post(this.comment.content);
+      this.post(this.comment.content.trim());
+      this.focus();
     } else {
       this.cancel();
     }
+  }
+
+  focus() {
+    this.editor.focus();
   }
 
   commentAction(photos?: any) {

@@ -3,7 +3,7 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnInit, OnDestroy, ChangeDetectionStrategy
+  OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -16,7 +16,7 @@ import {
   DeleteReplyEvent,
   ViewMoreCommentsEvent
 } from '../../../events/social-events';
-import { CommentEditorMode } from './comment/comment-item-editor.component';
+import { CommentEditorMode, CommentItemEditorComponent } from './comment/comment-item-editor.component';
 import { PostComponent } from '../post.component';
 import { PostService } from '../shared/post.service';
 import { SoComment, SoPost } from '@wth/shared/shared/models';
@@ -28,7 +28,8 @@ declare var _: any;
 
 @Component({
   selector: 'so-post-footer',
-  templateUrl: 'post-footer.component.html'
+  templateUrl: 'post-footer.component.html',
+  styleUrls: ['post-footer.component.scss']
 })
 export class PostFooterComponent implements OnInit, OnDestroy {
   @Input() user: any;
@@ -36,6 +37,7 @@ export class PostFooterComponent implements OnInit, OnDestroy {
   @Input() type: string;
   @Input() emojiMap: { [name: string]: WTHEmojiCateCode };
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('commentCreate') commentCreate: CommentItemEditorComponent;
   readonly commentEditorMode = CommentEditorMode;
 
   readonly actions = {
@@ -83,7 +85,6 @@ export class PostFooterComponent implements OnInit, OnDestroy {
   }
 
   onActions(action: any, params?: any) {
-    console.log('action::::', action, params);
     const { data, comment, parent, commentType } = params;
     switch (action) {
       case this.actions.onDeleteComment:
@@ -131,8 +132,8 @@ export class PostFooterComponent implements OnInit, OnDestroy {
       event.data.isEditting = false;
       return;
     }
-
     this.eventEmitter.emit(event);
+    this.commentCreate.focus();
   }
 
   mapComment(comment: any) {

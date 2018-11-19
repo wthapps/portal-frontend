@@ -1,6 +1,6 @@
 <div *ngIf="!item.disable_comment" class="z-social-comment">
   <!--Add new comment-->
-  <comment-item-editor (eventEmitter)="onCallBack($event)" [parent]="item" [mode]="commentEditorMode.Add"></comment-item-editor>
+  <comment-item-editor #commentCreate (eventEmitter)="onCallBack($event)" [parent]="item" [mode]="commentEditorMode.Add"></comment-item-editor>
   <input type="checkbox" class="read-more-state" attr.id="post-{{ item.uuid }}" />
   <ul class="z-social-comment-list media-list read-more-wrap">
 
@@ -42,7 +42,7 @@
               </li>
             </ul>
           </div>
-          <div class="media-body-action dropdown pull-right" *ngIf="user?.uuid == comment.owner.uuid">
+          <div class="media-body-action hover-visible dropdown pull-right" *ngIf="user?.uuid == comment.owner.uuid">
             <button class="btn btn-sm btn-default" data-toggle="dropdown" pTooltip="{{  tooltip.edit  }}"
               tooltipPosition="top">
               <i class="fa fa-pencil"></i>
@@ -100,7 +100,7 @@
             <h4 class="media-heading"><a href="javascript:;" (click)="viewProfile(reply.owner.uuid)">{{
                 reply.owner.name }}</a>
               <span class="media-heading-time">{{ reply.created_at | timeFormat }}</span>
-              <div class="media-body-action dropdown pull-right" *ngIf="user?.uuid == reply.owner.uuid">
+              <div class="media-body-action hover-visible dropdown pull-right" *ngIf="user?.uuid == reply.owner.uuid">
                 <button class="btn btn-sm btn-default" data-toggle="dropdown" pTooltip="{{  tooltip.edit  }}"
                   tooltipPosition="top">
                   <i class="fa fa-pencil"></i>

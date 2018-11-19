@@ -116,10 +116,12 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.quill)
+    if (!this.quill) {
     return;
-    if (changes['isDisabled'] !== undefined)
+    }
+    if (changes['isDisabled'] !== undefined) {
       this.enableOrDisableQuill(changes['isDisabled'].currentValue);
+    }
   }
 
   enableOrDisableQuill(disabled) {
@@ -142,10 +144,10 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
       html = null;
     }
     let status: any = {error: false};
-    if (this.validators){
+    if (this.validators) {
       this.validators.forEach(v => {
         status = v.validate({text: text, html: html});
-      })
+      });
     }
     this.onTextChange.emit({
       htmlValue: html,
@@ -169,10 +171,11 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
     this.value = value;
 
     if (this.quill) {
-      if (value)
+      if (value) {
         this.quill.pasteHTML(value);
-      else
+      } else {
         this.quill.setText('');
+      }
     }
   }
 
@@ -196,10 +199,11 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
     this._readonly = val;
 
     if (this.quill) {
-      if (this._readonly)
+      if (this._readonly) {
         this.quill.disable();
-      else
+      } else {
         this.quill.enable();
+      }
     }
   }
 }
