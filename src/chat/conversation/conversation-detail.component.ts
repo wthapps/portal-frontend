@@ -127,7 +127,7 @@ export class ConversationDetailComponent extends CommonEventHandler
         });
         this.messageEditor.focus();
   }
-  cancleMessage(message: any) {
+  cancelMessage(message: any) {
     const { message_type, meta_data, file, group_id, id } = message;
     if (message_type === 'file' && file && meta_data.file) {
       this.uploader.cancel(meta_data.file);

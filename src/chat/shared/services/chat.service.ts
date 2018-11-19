@@ -161,7 +161,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     const contact: any = _.find(conversations.data, { partner_id: id });
     if (contact) {
       this.selectContact(contact);
-      this.router.navigate([`${this.constant.conversationUrl}/${contact.id}`]);
+      this.router.navigate([`${this.constant.conversationUrl}/${contact.group_id}`]);
     }
   }
 

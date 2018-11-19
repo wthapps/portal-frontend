@@ -49,6 +49,8 @@ export class MessageItemComponent implements OnInit {
   }
 
   ngOnInit() {
+    // console.log(this.message);
+
   }
 
   onPreviewPhoto(message: any) {
@@ -116,7 +118,7 @@ export class MessageItemComponent implements OnInit {
 
   cancel() {
     this.doAction({
-      channel: 'chatCommonEvent',
+      channel: ConversationDetailComponent.name,
       action: CHAT_ACTIONS.CHAT_MESSAGE_CANCEL,
       payload: this.message
     });
@@ -130,7 +132,7 @@ export class MessageItemComponent implements OnInit {
     });
   }
 
-  onAdd(data: any) {
+  onAdd() {
     this.onAddContact.emit(this.message.display.share_contact);
   }
 
