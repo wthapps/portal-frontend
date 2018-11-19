@@ -52,7 +52,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     StoreModule.forRoot(ChatStore),
     SharedModule.forRoot(),
     ServiceWorkerModule.register('/ngsw-worker.js', {
-      enabled: environment.production
+      enabled: false
     }),
 
     !environment.production
