@@ -367,6 +367,9 @@ $wobject-checkbox: 30px;
       }
     }
   }
+  .photo-box-name {
+    word-break: break-word;
+  }
 }
 
 @media (max-width: $screen-xs-max) {

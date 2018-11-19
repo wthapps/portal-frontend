@@ -14,7 +14,6 @@ import {
 import { Subject } from 'rxjs';
 
 
-
 import { Constants } from '@wth/shared/constant';
 
 declare var _: any;
@@ -24,7 +23,7 @@ declare var $: any;
   encapsulation: ViewEncapsulation.None,
   selector: 'w-grid-list',
   templateUrl: 'grid-list.component.html',
-  styleUrls: ['grid-list.component.scss'],
+  styleUrls: ['grid-list.component.scss']
 })
 
 export class WGridListComponent implements OnDestroy, OnChanges {
@@ -35,7 +34,7 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   @Input() scrollWindow: Boolean = true;
   @Input() hideScale: Boolean = false;
   @Input() viewSize: number = Constants.mediaSliderViewNumber.default;
-  @Input() sorting: any = {sort_name: "Date", sort: "desc"};
+  @Input() sorting: any = { sort_name: 'Date', sort: 'desc' };
 
   @Input() view: string = 'grid';
   @Input() objects: Array<any> = new Array<any>();
@@ -95,7 +94,7 @@ export class WGridListComponent implements OnDestroy, OnChanges {
     //     }
     //   });
     // }
-    if(changes.view) {
+    if (changes.view) {
       this.view = changes.view.currentValue;
       if (this.view === 'grid') {
         this.groupByTime = '';
@@ -179,25 +178,28 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   }
 
   private deSelectAll() {
-    this.objects = this.objects.map(ob => {ob.selected = false; return ob});
+    this.objects = this.objects.map(ob => {
+      ob.selected = false;
+      return ob;
+    });
   }
 
   private selectObject(object: any) {
     this.objects = this.objects.map(ob => {
-      if(ob.id == object.id) {
+      if (ob.id == object.id) {
         ob.selected = true;
       }
-      return ob
+      return ob;
     });
   }
 
-  private toggleObject(object){
+  private toggleObject(object) {
     this.objects = this.objects.map(ob => {
-      if(ob.id == object.id) {
+      if (ob.id == object.id) {
         ob.selected = !ob.selected;
       }
       return ob;
-    })
+    });
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {

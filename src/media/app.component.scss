@@ -344,7 +344,14 @@ $photo-box-img-owner: 150px;
     }
 
     .photo-box-name {
-
+      word-break: break-word;
+      padding-right: 10px;
+      min-height: 30px;
+      @include flexbox;
+      @include align-items(center);
+      i {
+        margin-right: 5px;
+      }
     }
     .photo-box-owner {
       width: $photo-box-img-owner;
