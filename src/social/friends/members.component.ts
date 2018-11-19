@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 
 import { take, finalize } from 'rxjs/operators';
 
@@ -32,9 +32,9 @@ export class ZSocialMembersComponent implements OnInit {
   list: any = [];
   notifications: any = [];
   newNotifications: any = [];
-  currentState: string = FRIEND_TABS.friends; //followers, followings, blacklists
-  currentStateTitle: string = 'FRIENDS'; //followers, followings, blacklists
-  currentStateTitleNumber: number = 0; //followers, followings, blacklists
+  currentState: string = FRIEND_TABS.friends; // followers, followings, blacklists
+  currentStateTitle = 'FRIENDS'; // followers, followings, blacklists
+  currentStateTitleNumber = 0; // followers, followings, blacklists
   favourite: any;
   nextLink: string;
   totalFriends: number;
@@ -52,6 +52,7 @@ export class ZSocialMembersComponent implements OnInit {
     private zoneReportService: ZSharedReportService,
     private favoriteService: SocialFavoriteService,
     private loadingService: LoadingService,
+    private renderer: Renderer2,
     public userService: UserService
   ) {}
 
@@ -61,7 +62,7 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   getDataList(tab: string, forceOption: boolean = false) {
-    if (this.currentState === tab && !forceOption) return;
+    if (this.currentState === tab && !forceOption) { return; }
     this.currentState = tab;
     this.startLoading();
     switch (tab) {
@@ -130,7 +131,6 @@ export class ZSocialMembersComponent implements OnInit {
           .getPendingRequests()
           .toPromise()
           .then((res: any) => {
-            console.debug('this.list - ', this.list, res);
             this.list = res.data;
             this.stopLoading();
           })
@@ -144,12 +144,12 @@ export class ZSocialMembersComponent implements OnInit {
 
   startLoading() {
     this.loading = true;
-    if (this.showLoading) this.loadingService.start('#users-list');
+    if (this.showLoading) { this.loadingService.start('#users-list'); }
   }
 
   stopLoading() {
     this.loading = false;
-    if (this.showLoading) this.loadingService.stop('#users-list');
+    if (this.showLoading) { this.loadingService.stop('#users-list'); }
   }
 
   onAction(event?: any) {
@@ -169,10 +169,12 @@ export class ZSocialMembersComponent implements OnInit {
         this.totalFollowings -= 1;
         break;
       case fromMember.ACTIONS.DELETE:
-        if (this.currentState == FRIEND_TABS.pending)
+        if (this.currentState === FRIEND_TABS.pending) {
           this.totalPendingRequests -= 1;
-        if (this.currentState == FRIEND_TABS.received)
+        }
+        if (this.currentState === FRIEND_TABS.received) {
           this.totalReceivedRequests -= 1;
+        }
         break;
       default:
         break;
@@ -225,6 +227,8 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   focusSearchFriends() {
-    $('#searchTopHeader').focus();
+    // $('input#search').focus();
+    const element = this.renderer.selectRootElement('#search');
+    setTimeout(() => element.focus(), 0);
   }
 }

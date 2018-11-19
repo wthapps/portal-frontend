@@ -18,13 +18,13 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   @ViewChild('modalPreference')
   modalPreference: ZSocialCommunityFormPreferenceComponent;
 
-  errorMessage: string = '';
+  errorMessage = '';
   myList: any = [];
   list: any = [];
   currentItem: any = null;
-  action: string = 'create';
+  action = 'create';
   favourite: any;
-  loading: boolean = true;
+  loading = true;
   readonly communitiesUrl: string = '/' + Constants.urls.communities;
   // readonly soCommunitiesUrl: string = '/' + Constants.urls.zoneSoCommunities;
 
@@ -43,7 +43,7 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
   getList() {
     // this.loadingService.start('#communites-list');
 
-    let myuuid = this.userService.getSyncProfile().uuid;
+    const myuuid = this.userService.getSyncProfile().uuid;
     // var _this_community = this;
     this.loading = true;
     this.socialService.community
@@ -54,7 +54,7 @@ export class ZSocialCommunityListComponent implements OnInit, OnDestroy {
           this.myList.length = 0;
           this.list.length = 0;
           _.map(res.data, (v: any) => {
-            if (v.admin.uuid == myuuid) {
+            if (v.admin.uuid === myuuid) {
               this.myList.push(v);
             } else {
               this.list.push(v);

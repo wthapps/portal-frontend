@@ -22,8 +22,8 @@ declare let _: any;
   encapsulation: ViewEncapsulation.None
 })
 export class TextBoxSearchComponent implements OnInit {
-  @Input() search: string = '';
-  @Input() placeholder: string = '';
+  @Input() search = '';
+  @Input() placeholder = '';
   @Input() showSearchAdvanced: Boolean = false;
   @Input() showSearchClearText: Boolean = false;
   @Input() debounceTime: any = 300;
@@ -35,7 +35,7 @@ export class TextBoxSearchComponent implements OnInit {
 
   @ViewChild('input') input: any;
 
-  searchAdvanced: boolean = false;
+  searchAdvanced = false;
 
   tooltip: any = Constants.tooltip;
 

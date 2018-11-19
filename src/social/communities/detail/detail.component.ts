@@ -177,8 +177,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
       })
     ).subscribe(() => {
       this.setTabVisibility();
-      if (this.selectedTab !== undefined)
+      if (this.selectedTab) {
         this.getTabItems(this.uuid, this.selectedTab);
+      }
     });
   }
 
@@ -250,12 +251,13 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
     this.socialService.community.updateCommunity(this.community.uuid, body)
       .toPromise().then((result: any) => {
         let toastMsg = '';
-        if (_.has(body, 'file'))
+        if (_.has(body, 'file')) {
           toastMsg = 'You have updated profile image successfully';
-        else if (_.has(body, 'cover_image'))
+        } else if (_.has(body, 'cover_image')) {
           toastMsg = 'You have updated cover image of this community successfully';
-        else
+        } else {
           toastMsg = result.message;
+             }
 
         Object.assign(this.community, { ...result.data });
 
@@ -374,7 +376,7 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   inviteMembers(response: any) {
-    let user_ids = _.map(response.items, 'uuid');
+    const user_ids = _.map(response.items, 'uuid');
     this.socialService.community.inviteMembers(this.uuid, user_ids)
       .toPromise().then((result: any) => {
         console.log('invited friends');
@@ -403,8 +405,9 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
   }
 
   onLoadMore() {
-    if (this.activeTabs.post)
+    if (this.activeTabs.post) {
       this.posts.viewMorePosts();
+    }
   }
 
   private getCommunity(uuid: string): Promise<any> {
@@ -437,15 +440,17 @@ export class ZSocialCommunityDetailComponent implements OnInit, OnDestroy {
 
   private getTabItems(uuid: string, tabName: string): void {
     this.tabItems.length = 0;
-    if (!tabName)
+    if (!tabName) {
       return;
+    }
 
     this.socialService.community.getTabItems(uuid, tabName)
       .toPromise()
       .then(
         (res: any) => {
-          if ([this.tab.about, this.tab.post].indexOf(this.selectedTab) === -1)
+          if ([this.tab.about, this.tab.post].indexOf(this.selectedTab) === -1) {
             this.tabItems = res.data;
+          }
           // Update member_count, invitation_count, join_request_count
           switch (this.selectedTab) {
             case this.tab.members:

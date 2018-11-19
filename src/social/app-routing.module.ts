@@ -16,21 +16,25 @@ export const routes: Routes = [
   },
   { path: 'home', component: ZSocialHomeComponent, canActivate: [AuthGuard] },
   {
-    path: '',
-    canActivate: [AuthGuard],
-    children: [
-      { path: 'friends', component: ZSocialMembersComponent },
-      {
-        path: 'notifications',
-        loadChildren:
-          './notifications/notifications.module#ZSocialNotificationModule'
-      },
-      {
-        path: 'my-profile',
-        loadChildren: './my-profile/my-profile.module#ZSocialMyProfileModule'
-      },
-      { path: 'settings', component: ZSocialSettingComponent }
-    ]
+    path: 'friends',
+    component: ZSocialMembersComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'notifications',
+    loadChildren:
+      './notifications/notifications.module#ZSocialNotificationModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'my-profile',
+    loadChildren: './my-profile/my-profile.module#ZSocialMyProfileModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'settings',
+    component: ZSocialSettingComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'posts/:id',

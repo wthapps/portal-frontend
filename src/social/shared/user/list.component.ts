@@ -20,9 +20,9 @@ import { User } from '@wth/shared/shared/models';
 export class ZSocialShareProfileListComponent implements OnInit, OnChanges {
   @Input() data: any;
   @Input() type: string; // members, member, communities, community
-  @Input() layout: string = 'list-group'; // row
+  @Input() layout = 'list-group'; // row
   @Input() user: User;
-  @Input() class: string = 'list-group-item'; // col-xs-6
+  @Input() class = 'list-group-item'; // col-xs-6
   @Output() outEvent: EventEmitter<any> = new EventEmitter();
 
   @HostBinding('class') classHost = this.layout;
@@ -49,6 +49,6 @@ export class ZSocialShareProfileListComponent implements OnInit, OnChanges {
   }
 
   removeItem(data: any) {
-    _.remove(this.data, (c: any) => c.uuid == data.uuid);
+    _.remove(this.data, (c: any) => c.uuid === data.uuid);
   }
 }
