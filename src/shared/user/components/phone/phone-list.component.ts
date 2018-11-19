@@ -34,6 +34,8 @@ export class PhoneListComponent implements OnInit, ProfileFormMixin {
   @HostBinding('class') class = 'field-group';
 
   form: FormGroup;
+  phones: FormArray;
+
   type = 'phones';
 
   countriesCode: any;
@@ -52,9 +54,7 @@ export class PhoneListComponent implements OnInit, ProfileFormMixin {
 
   constructor(private fb: FormBuilder, private countryService: CountryService, private apiBaseService: ApiBaseService) {
     this.form = fb.group({
-      'phones': fb.array([
-        this.initItem(),
-      ])
+      phones: fb.array([ this.initItem() ])
     });
   }
 
@@ -74,43 +74,47 @@ export class PhoneListComponent implements OnInit, ProfileFormMixin {
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
+        id: [item.id, Validators.compose([Validators.required])],
         category: [item.category, Validators.compose([Validators.required])],
         country_alpha_code: [item.country_alpha_code],
-        id: [item.id, Validators.compose([Validators.required])],
         value: [item.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
       });
     } else {
       return this.fb.group({
         category: ['mobile', Validators.compose([Validators.required])],
         country_alpha_code: [''],
-        value: ['', Validators.compose([Validators.required, CustomValidator.phoneFormat])]
+        value: ['', Validators.compose([Validators.required, Validators.maxLength(20), CustomValidator.phoneFormat])]
       });
     }
   }
 
   addItem(item?: any) {
-    const control = <FormArray>this.form.controls['phones'];
+    this.phones = <FormArray>this.form.controls.phones;
     if (item) {
-      control.push(this.initItem(item));
+      this.phones.push(this.initItem(item));
     } else {
-      control.push(this.initItem());
+      this.phones.push(this.initItem());
     }
   }
 
   onOpenModal() {
     this.modal.open();
     this.removeAll();
-    _.map(this.data.phones, (v: any)=> {
-      this.addItem(v);
-    });
-    this.addItem();
+    if (this.data.phones.length > 0) {
+      this.data.phones.map(v => {
+        this.addItem(v);
+      });
+    } else {
+      this.addItem();
+    }
   }
 
   filterCountriesCode(event: any) {
     this.filteredCountriesCode = [];
+    let brand;
     for (let i = 0; i < this.countriesNameCode.length; i++) {
-      let brand = this.countriesNameCode[i];
-      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
+      brand = this.countriesNameCode[i];
+      if (brand.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
         this.filteredCountriesCode.push(brand);
       }
     }

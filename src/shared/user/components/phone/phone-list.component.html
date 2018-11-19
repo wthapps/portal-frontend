@@ -41,7 +41,7 @@
     </bs-modal-header>
     <bs-modal-body>
       <div formArrayName="phones">
-        <div *ngFor="let add_phone of getFormControls(); let i=index" class="media media-no-hidden mt0">
+        <div *ngFor="let add_phone of form.controls.phones['controls']; let i=index" class="media media-no-hidden mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-2">
@@ -68,7 +68,7 @@
                                   [suggestions]="filteredCountriesCode"
                                   (completeMethod)="filterCountriesCode($event)" [size]="30"
                                   [minLength]="1" placeholder="Select your country"
-                                  [dropdown]="true">
+                                  [dropdown]="true" [forceSelection]="true">
                     <ng-template ngFor let-code let-i="index" pTemplate="item">
                       <div [innerHtml]="code | phoneCodeCountries:countriesCode"></div>
                     </ng-template>
@@ -87,13 +87,18 @@
                   'has-success': (add_phone['controls'].value.valid
                   && add_phone['controls'].value.touched
                   && form.value.phones[i].value.length > 1)}">
-                  <input type="text" class="form-control" formControlName="value" placeholder="">
+                  <input type="tel" class="form-control" formControlName="value" placeholder="Phone number">
                   <div
                     *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched">
                     <span
                       *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.errors.phoneFormat"
                       class="help-block text-danger">
-                      Phone is not valid
+                      Phone number is not valid.
+                    </span>
+                    <span
+                      *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.errors.maxlength"
+                      class="help-block text-danger">
+                      Phone number max length is 20 characters.
                     </span>
                   </div>
                 </div>
@@ -113,7 +118,7 @@
     </bs-modal-body>
     <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
-      <button type="submit" class="btn btn-outline-primary btn-min pull-right ml10"
+      <button type="submit" class="btn btn-outline-primary btn-min pull-right ml10" [disabled]="!form.valid"
               (click)="onSubmit(form.value)">Done
       </button>
     </bs-modal-footer>

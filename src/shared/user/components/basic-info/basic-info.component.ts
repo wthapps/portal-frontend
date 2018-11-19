@@ -6,6 +6,8 @@ import {
   FormArray, AbstractControl, FormControl
 } from '@angular/forms';
 
+import { Observable } from 'rxjs';
+
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { ProfileService } from '../profile/profile.service';
 import { Constants } from '../../../constant/config/constants';
@@ -19,13 +21,12 @@ declare var _: any;
 })
 
 export class BasicInfoComponent implements OnInit {
-  @Input('data') data: any;
   @ViewChild('modal') modal: BsModalComponent;
+  @Input() data: any;
   @Input() editable: boolean;
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constants = Constants;
-  countriesCode: any;
 
   form: FormGroup;
   first_name: AbstractControl;
@@ -40,14 +41,15 @@ export class BasicInfoComponent implements OnInit {
   description: AbstractControl;
   birthday: AbstractControl;
   nationality: AbstractControl;
+  countries$: Observable<any>;
 
   constructor(private fb: FormBuilder,
               private profileService: ProfileService,
               private countryService: CountryService) {
     this.form = fb.group({
-      about: [''],
-      company: [''],
-      occupation: [''],
+      about: ['', Validators.maxLength(500)],
+      company: ['', Validators.maxLength(100)],
+      occupation: ['', Validators.maxLength(100)],
       sex: [''],
       birthday: [''],
       nationality: ['']
@@ -62,10 +64,7 @@ export class BasicInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.countryService.getCountries().subscribe(
-      (data: any) => {
-        this.countriesCode = data;
-      });
+    this.countries$ = this.countryService.getCountries();
   }
 
 
@@ -80,6 +79,19 @@ export class BasicInfoComponent implements OnInit {
     (<FormControl>this.nationality).setValue(this.data.nationality);
 
     this.modal.open();
+  }
+
+  getCountryName(countries: Array<any>, code: any): any {
+    let result = null;
+    if (countries && countries.length > 0) {
+      countries.forEach(c => {
+        if (c.code === code) {
+          result = c;
+          return;
+        }
+      });
+    }
+    return result ? result.name : null;
   }
 
   onSubmit(values: any): void {

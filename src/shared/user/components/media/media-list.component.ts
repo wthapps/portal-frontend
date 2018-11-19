@@ -11,8 +11,6 @@ import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { ProfileFormMixin } from '../../../shared/mixins/form/profile/profile-form.mixin';
 import { Mixins  } from '../../../design-patterns/decorator/mixin-decorator';
 
-declare var _: any;
-
 @Mixins([ProfileFormMixin])
 @Component({
   selector: 'w-user-media',
@@ -20,8 +18,9 @@ declare var _: any;
 })
 
 export class MediaListComponent implements ProfileFormMixin {
-  @Input('data') data: any;
   @ViewChild('modal') modal: BsModalComponent;
+
+  @Input() data: any;
   @Input() editable: boolean;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
@@ -30,7 +29,7 @@ export class MediaListComponent implements ProfileFormMixin {
 
   form: FormGroup;
   deleteObjects: any = [];
-  type: string = 'media';
+  type = 'media';
 
   mediaType: any = [
     {
@@ -74,12 +73,12 @@ export class MediaListComponent implements ProfileFormMixin {
       return this.fb.group({
         category: [item.category, Validators.compose([Validators.required])],
         id: [item.id, Validators.compose([Validators.required])],
-        value: [item.value, Validators.compose([Validators.required, CustomValidator.urlFormat])]
+        value: [item.value, Validators.compose([Validators.required, Validators.maxLength(250), CustomValidator.urlFormat])]
       });
     } else {
       return this.fb.group({
         category: ['facebook', Validators.compose([Validators.required])],
-        value: ['', Validators.compose([Validators.required, CustomValidator.urlFormat])]
+        value: ['', Validators.compose([Validators.required, Validators.maxLength(250), CustomValidator.urlFormat])]
       });
     }
   }
@@ -96,9 +95,12 @@ export class MediaListComponent implements ProfileFormMixin {
   onOpenModal() {
     this.modal.open();
     this.removeAll();
-    _.map(this.data.media, (v: any)=> {
-      this.addItem(v);
-    });
-    this.addItem();
+    if (this.data.media.length > 0) {
+      this.data.media.map(v => {
+        this.addItem(v);
+      });
+    } else {
+      this.addItem();
+    }
   }
 }

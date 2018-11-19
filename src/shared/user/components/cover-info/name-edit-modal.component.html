@@ -16,7 +16,8 @@
                      formControlName="first_name">
               <div *ngIf="f.first_name.errors && f.first_name.touched">
                 <span *ngIf="f.first_name.errors.required" class="help-block">First name is required</span>
-                <span *ngIf="f.first_name.errors.blanked" class="help-block">Last name is blanked</span>
+                <span *ngIf="f.first_name.errors.blanked" class="help-block">Firs name is blanked</span>
+                <span *ngIf="f.first_name.errors.maxlength" class="help-block">First name max length is 50 characters</span>
               </div>
             </div>
           </div>
@@ -29,6 +30,7 @@
               <div *ngIf="f.last_name.errors && f.last_name.touched">
                 <span *ngIf="f.last_name.errors.required" class="help-block">Last name is required</span>
                 <span *ngIf="f.last_name.errors.blanked" class="help-block">Last name is blanked</span>
+                <span *ngIf="f.last_name.errors.maxlength" class="help-block">Last name max length is 50 characters</span>
               </div>
             </div>
           </div>
@@ -41,6 +43,7 @@
                    formControlName="nickname">
               <div *ngIf="f.nickname.errors && f.nickname.touched">
                 <span *ngIf="f.nickname.errors.blanked" class="help-block">Nick name is blanked</span>
+                <span *ngIf="f.nickname.errors.maxlength" class="help-block">Nick name max length is 250 characters</span>
               </div>
             </div>
           </div>

@@ -61,14 +61,14 @@ export class NameEditModalComponent {
   private createUserForm(user: any, nameOnly?: boolean): FormGroup {
     if (nameOnly) {
       return this.fb.group({
-        first_name: [user.first_name, [Validators.required, CustomValidator.blanked]],
-        last_name: [user.last_name, [Validators.required, CustomValidator.blanked]],
+        first_name: [user.first_name, [Validators.required, Validators.maxLength(50), CustomValidator.blanked]],
+        last_name: [user.last_name, [Validators.required, Validators.maxLength(50), CustomValidator.blanked]],
       });
     } else {
       return this.fb.group({
-        first_name: [user.first_name, [Validators.required, CustomValidator.blanked]],
-        last_name: [user.last_name, [Validators.required, CustomValidator.blanked]],
-        nickname: [user.nickname, [CustomValidator.blanked]],
+        first_name: [user.first_name, [Validators.required, Validators.maxLength(50), CustomValidator.blanked]],
+        last_name: [user.last_name, [Validators.required, Validators.maxLength(50), CustomValidator.blanked]],
+        nickname: [user.nickname, [Validators.maxLength(250), CustomValidator.blanked]],
       });
     }
   }

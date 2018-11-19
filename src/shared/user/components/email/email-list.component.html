@@ -62,8 +62,13 @@
                     <span
                       *ngIf="!item['controls'].value.valid && item['controls'].value.errors.emailFormat"
                       class="help-block text-danger">
-                      Email is not valid
+                      Email is not valid format
                     </span>
+                    <span
+                      *ngIf="!item['controls'].value.valid && item['controls'].value.errors.maxlength"
+                      class="help-block text-danger">
+                      Email max length is 100 characters
+                  </span>
                   </div>
                 </div>
               </div>
@@ -82,7 +87,7 @@
     </bs-modal-body>
     <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
-      <button type="submit" class="btn btn-outline-primary btn-min"
+      <button type="submit" class="btn btn-outline-primary btn-min" [disabled]="!form.valid"
               (click)="onSubmit(form.value)">Done
       </button>
     </bs-modal-footer>

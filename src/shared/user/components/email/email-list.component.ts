@@ -63,12 +63,12 @@ export class EmailListComponent implements OnInit, ProfileFormMixin {
       return this.fb.group({
         category: [item.category, Validators.compose([Validators.required])],
         id: [item.id, Validators.compose([Validators.required])],
-        value: [item.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
+        value: [item.value, Validators.compose([Validators.required, Validators.maxLength(100), CustomValidator.emailFormat])]
       });
     } else {
       return this.fb.group({
         category: ['work', Validators.compose([Validators.required])],
-        value: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])]
+        value: ['', Validators.compose([Validators.required, Validators.maxLength(100), CustomValidator.emailFormat])]
       });
     }
   }

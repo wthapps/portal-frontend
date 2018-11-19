@@ -64,6 +64,10 @@
                       class="help-block text-danger">
                       Link is not valid
                     </span>
+                    <span *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.touched"
+                      class="help-block text-danger">
+                      Link max length is 250 characters
+                    </span>
                   </div>
                 </div>
               </div>
@@ -82,7 +86,7 @@
     </bs-modal-body>
     <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
-      <button type="submit" class="btn btn-outline-primary btn-min"
+      <button type="submit" class="btn btn-outline-primary btn-min" [disabled]="!form.valid"
               (click)="onSubmit(form.value)">Done
       </button>
     </bs-modal-footer>

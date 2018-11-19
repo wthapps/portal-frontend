@@ -12,11 +12,13 @@
       <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
         <ng-template ngFor let-item [ngForOf]="data.addresses">
           <dt>{{ item.category | keyToValue:addressType:'category':'name' }}</dt>
-          <dd>
+          <dd class="pt10">
             <div *ngIf="item.address_line1">{{ item.address_line1 }}</div>
             <div *ngIf="item.address_line2">{{ item.address_line2 }}</div>
-            <div *ngIf="item.city || item.province || item.postcode">{{ item?.city }} {{ item?.province }} {{ item?.postcode }}</div>
-            <div *ngIf="item.country">{{ item.address_line1 }}</div>            
+            <div *ngIf="item.city"> {{ item?.city }}</div>
+            <div *ngIf="item.province"> {{ item?.province }} </div>
+            <div *ngIf="item.postcode"> {{ item?.postcode }} </div>
+            <div *ngIf="item.country">{{ item.country }}</div>            
           </dd>
         </ng-template>
       </dl>

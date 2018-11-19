@@ -34,7 +34,7 @@
     </dl>
     <dl class="dl-horizontal">
       <dt>Nationality</dt>
-      <dd>{{ data.nationality || 'None' }}</dd>
+      <dd>{{ getCountryName((countries$ | async), data.nationality) || 'None' }}</dd>
     </dl>
   </div>
 </div>
@@ -123,7 +123,7 @@
               <div class="media-body">
                 <select name="nationality" class="form-control" id="phone_prefix" [formControl]="nationality">
                   <option value="">Select your country</option>
-                  <option *ngFor="let c of countriesCode" value="{{ c.code }}">{{ c.name }}</option>
+                  <option *ngFor="let c of (countries$ | async)" value="{{ c.code }}">{{ c.name }}</option>
                 </select>
               </div>
             </div>
