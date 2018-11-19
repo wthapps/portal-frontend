@@ -55,7 +55,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     StoreModule.forRoot(appReducers, { metaReducers }),
     EffectsModule.forRoot(appEffects),
     ServiceWorkerModule.register('/ngsw-worker.js', {
-      enabled: environment.production
+      enabled: false
     }),
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
