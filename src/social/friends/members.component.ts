@@ -227,8 +227,7 @@ export class ZSocialMembersComponent implements OnInit {
   }
 
   focusSearchFriends() {
-    // $('input#search').focus();
-    const element = this.renderer.selectRootElement('#search');
+    const element = this.renderer.selectRootElement('input[name=search]');
     setTimeout(() => element.focus(), 0);
   }
 }

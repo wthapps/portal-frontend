@@ -15,13 +15,13 @@
   </div>
   <div class="media-right" style="min-width: 275px;">
     <div class="pull-right no-wrap">
-      <div class="btn-group" role="group" aria-label="" *ngIf="data?.uuid !== user?.uuid">
-        <ng-template [ngIf]="data.friend_status == friendStatus.stranger">
+      <div class="btn-group" role="group" aria-label="" *ngIf="data?.uuid !== user?.uuid && data.friend_status !== friendStatus.accepted">
+        <ng-template [ngIf]="data.friend_status === friendStatus.stranger">
           <button class="btn btn-outline-default" type="button" (click)="addFriend(data)">
             <i class="fa fa-user-plus"></i> Add Friend
           </button>
         </ng-template>
-        <ng-template [ngIf]="data.friend_status == friendStatus.pending">
+        <ng-template [ngIf]="data.friend_status === friendStatus.pending">
           <div class="btn-group">
             <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -35,7 +35,7 @@
           </div>
         </ng-template>
 
-        <div class="btn-group" role="group" *ngIf="data.friend_status == friendStatus.accepted">
+        <div class="btn-group" role="group" *ngIf="data.friend_status === friendStatus.accepted">
           <button class="btn btn-outline-default dropdown-toggle" type="button" data-toggle="dropdown">
             <i class="fa fa-check"></i> Friend <span class="caret"></span>
           </button>
@@ -67,7 +67,7 @@
       </div>
 
       <!--menu-->
-      <div class="btn-group" *ngIf="data.friend_status == friendStatus.accepted">
+      <div class="btn-group" *ngIf="data.friend_status === friendStatus.accepted">
         <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction }}" tooltipPosition="top"
                 (click)="getFavourite(data, 'friend')">
