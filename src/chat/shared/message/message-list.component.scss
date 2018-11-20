@@ -162,6 +162,10 @@ $message-item-content-card-right-xs: 25px;
     .photo-box-figure-in {
       height: 320px;
       width: 430px;
+      @media (max-width: $screen-sm-min) {
+        height: 293px;
+        width: 293px;
+      }
       overflow: hidden;
       position: relative;
       img {
@@ -242,7 +246,7 @@ $message-item-content-card-right-xs: 25px;
       @include border-right-radius(0);
       @include border-left-radius(8px);
       @include border-bottom-radius(8px);
-      text-align: right;
+      text-align: left;
       float: right;
       background-color: #ADE4FF;
     }
@@ -250,7 +254,7 @@ $message-item-content-card-right-xs: 25px;
       @include border-right-radius(0);
       @include border-left-radius(8px);
       @include border-bottom-radius(8px);
-      text-align: right;
+      text-align: left;
       background-color: #ffffff;
       float: right;
     }
@@ -259,7 +263,10 @@ $message-item-content-card-right-xs: 25px;
     }
   }
   &.message-item-left {
-    padding-left: 50px;
+    padding-left: 10px;
+    @media (min-width: $screen-sm-min) {
+      padding-left: 40px;
+    }
     .message-item-owner {
       margin-right: $message-item-content-card-right-xs;
       .message-item-owner-name {
@@ -275,7 +282,7 @@ $message-item-content-card-right-xs: 25px;
       @include border-right-radius(0);
       @include border-left-radius(8px);
       @include border-bottom-radius(8px);
-      text-align: right;
+      text-align: left;
       float: left;
       background-color: #ffffff;
       margin-left: 25px;
@@ -287,7 +294,7 @@ $message-item-content-card-right-xs: 25px;
       @include border-right-radius(0);
       @include border-left-radius(8px);
       @include border-bottom-radius(8px);
-      text-align: right;
+      text-align: left;
       float: left;
       background-color: #ffffff;
       margin-left: 25px;

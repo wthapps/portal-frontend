@@ -1,10 +1,10 @@
-<!-- Text message -->
-<div *ngIf="message.message_type == 'text'">
+<!-- Template message -->
+<div *ngIf="['text', 'file', 'share_contact_message', 'request'].includes(message.message_type)">
   <div class="message-item row" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
     <div class="message-item-date" *ngIf="hasShowDate()">
       <span>{{ message.created_at | timeFormat:'day' }}</span>
     </div>
-    <div class="message-item-content-container col-sm-11 col-xs-11 nopadding row" >
+    <div class="message-item-content-container col-sm-11 col-xs-11 nopadding row">
       <div *ngIf="!byMe" class="message-item-owner">
         <h6 class="message-item-owner-name">
           <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength: 50}} </a>
@@ -16,237 +16,202 @@
           </span>
         </figure>
       </div>
-      <div class="message-item-content" *ngIf="message.message_type == 'text'" style="padding: 10px">
-        <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
-      </div>
-      <div *ngFor="let link of message.links" style="width: 80%; padding: 3px" style="clear: both">
-        <div *ngIf="link.image && link.title && !message.deleted">
-          <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
-        </div>
-      </div>
+      <!-- container template dynamic here -->
+      <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemContentText : ''"></ng-container>
+      <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemContentFile : ''"></ng-container>
+      <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemContentContact : ''"></ng-container>
+      <ng-container *ngTemplateOutlet="message.message_type == 'request' ? messageItemContentRequest : ''"></ng-container>
     </div>
     <div class="message-item-menu dropdown col-sm-1 col-xs-1" *ngIf="byMe" style="padding: 5px !important">
-      <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
-      <!--text message menu actions-->
-      <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
-        <li *ngIf="!message.file">
-          <a href="javascript:;" (click)="copy()">Copy</a>
-        </li>
-        <!--comment out this menu because this function is not working now-->
-        <li *ngIf="!message.file && byMe">
-          <a href="javascript:;" (click)="edit()">Edit</a>
-        </li>
-        <li *ngIf="!message.file && byMe">
-          <a href="javascript:;" (click)="delete()">Delete</a>
-        </li>
-      </ul>
+      <!-- container template dynamic here -->
+      <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemMenuText : ''"></ng-container>
+      <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemMenuFile : ''"></ng-container>
+      <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemMenuContact : ''"></ng-container>
     </div>
   </div>
 </div>
+
+<!-- Text message -->
+<ng-template #messageItemContentText>
+  <div class="message-item-content" style="padding: 10px">
+    <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
+  </div>
+  <div *ngFor="let link of message.links" style="width: 80%; padding: 3px" style="clear: both">
+    <div *ngIf="link.image && link.title && !message.deleted">
+      <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
+    </div>
+  </div>
+</ng-template>
+<ng-template #messageItemMenuText>
+  <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
+  <!--text message menu actions-->
+  <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.message_type == 'text'">
+    <li *ngIf="!message.file">
+      <a href="javascript:;" (click)="copy()">Copy</a>
+    </li>
+    <!--comment out this menu because this function is not working now-->
+    <li *ngIf="!message.file && byMe">
+      <a href="javascript:;" (click)="edit()">Edit</a>
+    </li>
+    <li *ngIf="!message.file && byMe">
+      <a href="javascript:;" (click)="delete()">Delete</a>
+    </li>
+  </ul>
+</ng-template>
 
 <!-- File message -->
-<div *ngIf="message.message_type == 'file'">
-  <div class="message-item row" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
-    <div class="message-item-date" *ngIf="hasShowDate()">
-      <span>{{ message.created_at | timeFormat:'day' }}</span>
-    </div>
-    <div class="message-item-content-container col-sm-11 col-xs-11 nopadding" >
-      <div *ngIf="!byMe" class="message-item-owner">
-        <h6 class="message-item-owner-name">
-          <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength: 50}} </a>
-          <small class="text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
-        </h6>
-        <figure class="message-item-owner-avatar">
-          <span class="avatar-xs">
-            <img [src]="message.user?.profile_image" alt="">
-          </span>
-        </figure>
-      </div>
-      <!-- photo type-->
-      <div class="message-item-file message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
-        <figure>
-          <a href="javascript:void(0);" (click)="onPreviewPhoto(message)">
-            <img [src]="message.file?.url" alt="">
-          </a>
-        </figure>
-      </div>
-      <!-- video type-->
-      <div class="message-item-file message-item-content-photo" *ngIf="message.file_type == 'Media::Video'">
-        <figure>
-          <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
-            <img [src]="message.file?.thumbnail_url" alt="">
-            <i class="fa fa-play-circle-o"></i>
-          </div>
-        </figure>
-      </div>
-      <!-- file type-->
-      <div class="message-item-file message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
-        <a class="media-div link-text" [href]="message.file?.url" target="_blank" download>
-          <div class="pull-left">
-            <i class="fa fa-file-o"></i>
-          </div>
-          <div class="media-div-body">
-            <div class="media-div-heading">{{ message.file?.full_name }}</div>
-            <div class="text-fade">{{ message.file?.size | bytes:3 }}</div>
-          </div>
-        </a>
-      </div>
-      <!-- note type-->
-      <div class="message-item-file message-item-content-note" *ngIf="message.file_type == 'Note::Note'">
-        <a class="d-block" [href]="noteUrl + '/notes/public/' + message?.uuid" target="_blank">
-          <h5>
-            <i class="fa fa-file"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
-          </h5>
-          <div class="message-item-content-note-in" [innerHTML]="message.file?.content"></div>
-        </a>
-      </div>
-
-      <!--show sending -->
-      <div *ngIf="message.sending_status == 1" class="message-item-file">
-        <div class="media-div link-text" style="padding: 10px">
-          <div class="pull-left">
-            <i class="fa fa-spinner fa-spin fa-fw"></i>
-          </div>
-          <div class="media-div-body">
-            <div class="media-div-heading">{{ message.message }}</div>
-          </div>
-        </div>
-      </div>
-      <!--show failed sending -->
-      <div *ngIf="message.sending_status == -1" class="message-item-file">
-        <div class="media-div link-text" style="padding: 10px">
-          <div class="pull-left">
-            <i class="fa fa-file-o"></i>
-          </div>
-          <div class="media-div-body">
-            <div class="media-div-heading">Failed sending file</div>
-          </div>
-        </div>
-      </div>
-      <!--cancel message type-->
-      <div *ngIf="message.sending_status == 2" class="message-item-file">
-        <div class="media-div link-text" style="padding: 10px">
-          <div class="pull-left">
-            <i class="fa fa-file-o"></i>
-          </div>
-          <div class="media-div-body">
-            <span>Cancelled sending a file</span>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="message.sending_status == 3" class="message-item-file">
-        <div class="media-div link-text" style="padding: 10px">
-          <div class="pull-left">
-            <i class="fa fa-file-o"></i>
-          </div>
-          <div class="media-div-body">
-            <span>{{ message.message }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="message-item-menu dropdown col-sm-1 col-xs-1" *ngIf="byMe" style="padding: 5px !important">
-      <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
-      <!--photos menu actions-->
-      <!--videos menu actions-->
-      <ul class="dropdown-menu dropdown-menu-right" *ngIf="['file'].includes(message.message_type) ">
-        <li *ngIf="message.file && message.message_type !== 'message_deleted'">
-          <a [href]="message.file.url" target="_blank" download>
-            Download
-          </a>
-        </li>
-        <li *ngIf="byMe">
-          <a href="javascript:;" (click)="delete()">Remove</a>
-        </li>
-      </ul>
-      <!--sending message menu-->
-      <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.sending_status == 1">
-        <li>
-          <a (click)="cancel()" target="_blank">
-            Cancel
-          </a>
-        </li>
-      </ul>
-    </div>
+<ng-template #messageItemContentFile>
+  <!-- photo type-->
+  <div class="message-item-file message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
+    <figure>
+      <a href="javascript:void(0);" (click)="onPreviewPhoto(message)">
+        <img [src]="message.file?.url" alt="">
+      </a>
+    </figure>
   </div>
-</div>
-
-<!--share contact type-->
-<div *ngIf="message.message_type == 'share_contact_message'">
-  <div class="message-item row" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
-    <div class="message-item-date" *ngIf="hasShowDate()">
-      <span>{{ message.created_at | timeFormat:'day' }}</span>
-    </div>
-    <div class="message-item-content-container col-sm-11 col-xs-11 nopadding row">
-      <div *ngIf="!byMe" class="message-item-owner">
-        <h6 class="message-item-owner-name">
-          <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength: 50}} </a>
-          <small class="text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
-        </h6>
-        <figure class="message-item-owner-avatar">
-          <span class="avatar-xs">
-            <img [src]="message.user?.profile_image" alt="">
-          </span>
-        </figure>
+  <!-- video type-->
+  <div class="message-item-file message-item-content-photo" *ngIf="message.file_type == 'Media::Video'">
+    <figure>
+      <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
+        <img [src]="message.file?.thumbnail_url" alt="">
+        <i class="fa fa-play-circle-o"></i>
       </div>
-      <div class="message-item-file message-item-content-contact-sharing">
-          <span class="avatar-xs pull-left" style="margin-right: 5px" >
-            <img [src]="message?.display?.share_contact?.profile_image" alt="">
-          </span>
-          <span style="margin-right: 10px">
-            {{message?.display?.share_contact?.name}}
-          </span>
-          <span class="can-click">
-            <i class="fa fa-comment-o" (click)="onAdd()"></i>
-          </span>
-      </div>
-    </div>
-    <div class="message-item-menu dropdown col-sm-1 col-xs-1" *ngIf="byMe" style="padding: 5px !important">
-      <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
-      <!--text message menu actions-->
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li *ngIf="!message.file">
-          <a href="javascript:;" (click)="remove()">Remove</a>
-        </li>
-      </ul>
-    </div>
+      <!-- <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
+        <img [src]="message.file?.thumbnail_url" alt="">
+        <i class="fa fa-play-circle-o"></i>
+      </div> -->
+    </figure>
   </div>
-</div>
-
-<!--request contact type-->
-<div *ngIf="message.message_type == 'request'">
-  <div class="message-item row" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
-    <div class="message-item-date" *ngIf="hasShowDate()">
-      <span>{{ message.created_at | timeFormat:'day' }}</span>
-    </div>
-    <div class="message-item-content-container col-sm-11 col-xs-11 nopadding row">
-      <div *ngIf="!byMe" class="message-item-owner">
-        <h6 class="message-item-owner-name">
-          <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength: 50}} </a>
-          <small class="text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
-        </h6>
-        <figure class="message-item-owner-avatar">
-          <span class="avatar-xs">
-            <img [src]="message.user?.profile_image" alt="">
-          </span>
-        </figure>
+  <!-- file type-->
+  <div class="message-item-file message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
+    <a class="media-div link-text" [href]="message.file?.url" target="_blank" download>
+      <div class="pull-left">
+        <i class="fa fa-file-o"></i>
       </div>
-      <div class="message-item-file message-item-content-contact-sharing" style="width: 100%; text-align: left">
-          <span class="avatar-xs pull-left" style="margin-right: 5px" >
-            <img [src]="message.receiver?.profile_image" alt="">
-          </span>
-          <span>
-            {{message.receiver?.name}}
-          </span>
-          <div>
-            <small class="text-fade">Requested</small>
-          </div>
+      <div class="media-div-body">
+        <div class="media-div-heading">{{ message.file?.full_name }}</div>
+        <div class="text-fade">{{ message.file?.size | bytes:3 }}</div>
+      </div>
+    </a>
+  </div>
+  <!-- note type-->
+  <div class="message-item-file message-item-content-note" *ngIf="message.file_type == 'Note::Note'">
+    <a class="d-block" [href]="noteUrl + '/notes/public/' + message?.uuid" target="_blank">
+      <h5>
+        <i class="fa fa-file"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
+      </h5>
+      <div class="message-item-content-note-in" [innerHTML]="message.file?.content"></div>
+    </a>
+  </div>
+
+  <!--show sending -->
+  <div *ngIf="message.sending_status == 1" class="message-item-file">
+    <div class="media-div link-text" style="padding: 10px">
+      <div class="pull-left">
+        <i class="fa fa-spinner fa-spin fa-fw"></i>
+      </div>
+      <div class="media-div-body">
+        <div class="media-div-heading">{{ message.message }}</div>
       </div>
     </div>
   </div>
-</div>
+  <!--show failed sending -->
+  <div *ngIf="message.sending_status == -1" class="message-item-file">
+    <div class="media-div link-text" style="padding: 10px">
+      <div class="pull-left">
+        <i class="fa fa-file-o"></i>
+      </div>
+      <div class="media-div-body">
+        <div class="media-div-heading">Failed sending file</div>
+      </div>
+    </div>
+  </div>
+  <!--cancel message type-->
+  <div *ngIf="message.sending_status == 2" class="message-item-file">
+    <div class="media-div link-text" style="padding: 10px">
+      <div class="pull-left">
+        <i class="fa fa-file-o"></i>
+      </div>
+      <div class="media-div-body">
+        <span>Cancelled sending a file</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="message.sending_status == 3" class="message-item-file">
+    <div class="media-div link-text" style="padding: 10px">
+      <div class="pull-left">
+        <i class="fa fa-file-o"></i>
+      </div>
+      <div class="media-div-body">
+        <span>{{ message.message }}</span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- File message menu-->
+<ng-template #messageItemMenuFile>
+  <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
+  <!--photos menu actions-->
+  <!--videos menu actions-->
+  <ul class="dropdown-menu dropdown-menu-right" *ngIf="['file'].includes(message.message_type) ">
+    <li *ngIf="message.file && message.message_type !== 'message_deleted'">
+      <a [href]="message.file.url" target="_blank" download>
+        Download
+      </a>
+    </li>
+    <li *ngIf="byMe">
+      <a href="javascript:;" (click)="delete()">Delete</a>
+    </li>
+  </ul>
+  <!--sending message menu-->
+  <ul class="dropdown-menu dropdown-menu-right" *ngIf="message.sending_status == 1">
+    <li>
+      <a (click)="cancel()" target="_blank">
+        Cancel
+      </a>
+    </li>
+  </ul>
+</ng-template>
+
+<!--Share contact message-->
+<ng-template #messageItemContentContact>
+  <div class="message-item-file message-item-content-contact-sharing">
+    <span class="avatar-xs pull-left" style="margin-right: 5px">
+      <img [src]="message?.display?.share_contact?.profile_image" alt="">
+    </span>
+    <span style="margin-right: 10px">
+      {{message?.display?.share_contact?.name}}
+    </span>
+    <span class="can-click">
+      <i class="fa fa-comment-o" (click)="onAdd()"></i>
+    </span>
+  </div>
+</ng-template>
+<!--Share contact menu-->
+<ng-template #messageItemMenuContact>
+  <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
+  <!--text message menu actions-->
+  <ul class="dropdown-menu dropdown-menu-right">
+    <li *ngIf="!message.file">
+      <a href="javascript:;" (click)="remove()">Delete</a>
+    </li>
+  </ul>
+</ng-template>
+
+<!--Request contact message-->
+<ng-template #messageItemContentRequest>
+  <div class="message-item-file message-item-content-contact-sharing" style="width: 100%; text-align: left">
+    <span class="avatar-xs pull-left" style="margin-right: 5px">
+      <img [src]="message.receiver?.profile_image" alt="">
+    </span>
+    <span>
+      {{message.receiver?.name}}
+    </span>
+    <div>
+      <small class="text-fade">Requested</small>
+    </div>
+  </div>
+</ng-template>
 
 <div *ngIf="['notification', 'request_accepted'].includes(message.message_type)" class="p20 text-center">
   <div *ngIf="message.message_type === 'notification'">

@@ -43,7 +43,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   readonly tooltip: any = Constants.tooltip;
   emojiData: any = [];
   mode: string;
-  placeholder = 'Type message here';
+  placeholder = 'Type a message';
   placeholderBl = 'You can\'t chat with blacklisted contact. Remove from blacklist to continue';
 
   message: Message = new Message();

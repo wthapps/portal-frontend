@@ -42,6 +42,7 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   @Input() currentMessages: any;
   @Input() contactItem: any;
   @Input() currentUser: User;
+  @Input() channel: string = 'MessageListComponent';
   emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
   prevMessage: any;
   readonly scrollDistance: number = 1000;

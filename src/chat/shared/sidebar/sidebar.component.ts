@@ -14,6 +14,7 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { ModalService } from '@shared/components/modal/modal-service';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
+import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class ZChatSidebarComponent implements OnInit {
   historyShow: any = true;
   isRedirect: boolean;
   filter = 'All';
-  emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
+  emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
 
   searching = false;
   searchConversations: Array<any> = [];
@@ -67,10 +68,10 @@ export class ZChatSidebarComponent implements OnInit {
 
   doFilter(param) {
     if (param === 'unread') {
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][gt][notification_count]=0'})
-      .subscribe((res: any) => {
-        this.filter = 'Unread';
-      });
+      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][gt][notification_count]=0' })
+        .subscribe((res: any) => {
+          this.filter = 'Unread';
+        });
     }
     if (param === 'all') {
       this.chatService.getConversationsAsync({ forceFromApi: true }).subscribe((res: any) => {
@@ -78,22 +79,24 @@ export class ZChatSidebarComponent implements OnInit {
       });
     }
     if (param === 'sent') {
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=sent_request'})
-      .subscribe((res: any) => {
-        this.filter = 'Sent Request';
-      });
+      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=sent_request' })
+        .subscribe((res: any) => {
+          this.filter = 'Sent Request';
+        });
     }
     if (param === 'pending') {
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=pending'})
-      .subscribe((res: any) => {
-        this.filter = 'Pending Request';
-      });
+      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=pending' })
+        .subscribe((res: any) => {
+          this.filter = 'Pending Request';
+        });
     }
   }
 
-  onSelect(contact: any) {
+  onSelect(event: any, contact: any) {
+    event.preventDefault();
+    event.stopPropagation();
     $('#chat-message-text').focus();
-    if(contact.deleted) {
+    if (contact.deleted) {
       this.chatService.updateGroupUser(contact.group_id, { deleted: false }).then(res => {
         this.chatService.getConversationsAsync({ forceFromApi: true }).toPromise().then(res => {
           this.router.navigate(['/conversations', contact.group_id]);
@@ -110,7 +113,12 @@ export class ZChatSidebarComponent implements OnInit {
   }
 
   openContactModal() {
-    this.modalService.open({selectedTab: 'all'});
+    this.commonEventService.broadcast({
+      channel: 'ContactListModalComponent',
+      action: 'open',
+      payload: { selectedTab: 'all' },
+      from: 'ZChatSidebarComponents'
+    });
   }
 
   onFavourite(conversation: any) {
@@ -131,9 +139,13 @@ export class ZChatSidebarComponent implements OnInit {
    */
 
   search(keyword: string) {
+    if (keyword == '') {
+      this.clearSearch({});
+      return;
+    }
     this.searching = true;
     this.searched = false;
-    this.apiBaseService.get('zone/chat/search', {q: keyword}).subscribe((res: any) => {
+    this.apiBaseService.get('zone/chat/search', { q: keyword }).subscribe((res: any) => {
       this.searchConversations = res.data;
       this.searched = true;
     });

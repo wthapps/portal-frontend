@@ -40,6 +40,7 @@ export const CONCURRENT_UPLOAD = 2;
 @Injectable()
 export class ChatService extends CommonEventHandler implements OnDestroy {
   public constant: any;
+  public channel = 'ChatService';
 
   constructor(
     public storage: StorageService,

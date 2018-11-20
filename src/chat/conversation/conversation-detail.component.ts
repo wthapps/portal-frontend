@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -35,6 +35,7 @@ export class ConversationDetailComponent extends CommonEventHandler
   implements ChatMessageMixin, OnInit, OnDestroy {
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
+  @Input() channel = 'ConversationDetailComponent';
   events: any;
   currentMessages: any;
   groupId: any;

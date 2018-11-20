@@ -5,12 +5,13 @@ import { OnDestroy } from '@angular/core';
 
 export class CommonEventHandler implements OnDestroy {
   commonEventSub: any;
+  channel: string = 'CommonEventHandler';
   constructor(public commonEventService: CommonEventService) {
     this.listen();
   }
   listen() {
     this.commonEventSub = this.commonEventService
-      .filter((event: CommonEvent) => event.channel === this.constructor.name)
+      .filter((event: CommonEvent) => event.channel === this.channel)
       .subscribe((event: CommonEvent) => {
         this[event.action](event.payload);
       });

@@ -100,7 +100,7 @@
 </div>
 
 <ng-template #conversationTemplate let-conversation="conversation">
-  <div class="media-chat-user" [routerLinkActive]="['active']">
+  <div class="media-chat-user" [routerLink]="['/conversations', conversation.group_id]" [routerLinkActive]="['active']">
     <z-chat-share-user-avatar class="media-chat-user-row"
                               [isStranger]="conversation.group_type === 'couple' && !conversation?.active"
                               [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
@@ -114,7 +114,7 @@
         <!-- {{conversation.latest_message}} -->
         <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
         <a class="media-chat-user-link"
-           (click)="onSelect(conversation); onCloseMenu()"
+           (click)="onSelect($event, conversation); onCloseMenu()"
            href="javascript:;"></a>
       </div>
       <div class="user-action">
