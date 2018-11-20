@@ -22,6 +22,7 @@ import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/m
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WUploader } from '@shared/services/w-uploader';
 import TextLengthValidatior from '@social/shared/hooks/validators/text-lenght.validator';
+import { htmlTrim } from '@shared/shared/utils/utils';
 
 
 export enum CommentEditorMode {
@@ -127,7 +128,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   handlePost() {
     if (this.checkValidForm()) {
-      this.post(this.comment.content.trim());
+      this.post(htmlTrim(this.comment.content));
       this.focus();
     } else {
       this.cancel();

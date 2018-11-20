@@ -20,6 +20,7 @@ import { takeUntil, filter, take } from 'rxjs/operators';
 
 import { SocialService } from '../../services/social.service';
 import { MODEL_TYPE } from './../../../../shared/constant/config/constants';
+import { htmlTrim } from '@shared/shared/utils/utils';
 
 @Component({
   selector: 'so-post-edit',
@@ -237,7 +238,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       mode: this.mode,
       item: {
         uuid: this.post.uuid,
-        description: this.description,
+        description: htmlTrim(this.description),
         photos_json: photos, // TODO refactor on view formControl=photosCtrl
         resources_attributes: [],
         tags_json: this.post.tags,

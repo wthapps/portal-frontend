@@ -51,8 +51,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   @Output() modalOpened: EventEmitter<any> = new EventEmitter<any>();
   @Output() photoModalOpened: EventEmitter<any> = new EventEmitter<any>();
 
-  commentEditor: CommentItemEditorComponent;
-
   itemDisplay: any;
   privacyName: string;
   commentLoadingDone = false;
@@ -317,7 +315,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   private updateStoragePost() {
-    this.soStorageService.updatePost(_.cloneDeep(this.item));
+    // this.soStorageService.updatePost(_.cloneDeep(this.item));
   }
 
   private mapDisplay(): any {

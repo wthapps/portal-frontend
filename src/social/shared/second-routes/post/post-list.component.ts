@@ -156,8 +156,9 @@ export class PostListComponent implements OnInit, OnDestroy {
           this.soStorageService.createPost(newPost);
           this.postEditModal.close();
           this.postIsEmpty = false;
-          if (DEFAULT_PRIVACY_SETTINGS.includes(response.data.privacy))
+          if (DEFAULT_PRIVACY_SETTINGS.includes(response.data.privacy)) {
             this.store.dispatch({ type: SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE, payload: response.data.privacy });
+          }
         },
           (error: any) => {
             console.log('error', error);
@@ -178,8 +179,9 @@ export class PostListComponent implements OnInit, OnDestroy {
           }
           this.soStorageService.updatePost(editedItem);
 
-          if (DEFAULT_PRIVACY_SETTINGS.includes(response.data.privacy))
+          if (DEFAULT_PRIVACY_SETTINGS.includes(response.data.privacy)) {
             this.store.dispatch({ type: SO_PROFILE_SETTING_PRIVACY_UPDATE_DONE, payload: response.data.privacy });
+          }
 
         },
           (error: any) => {
@@ -214,13 +216,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   updatedPost(event: any, post: any) {
-    // this.posts = _.map(this.posts, (item: any) => {
-    //   if (item.id === post.id)
-    //     return post;
-    //   else
-    //     return item;
-    // });
-    this.soStorageService.updatePost(post);
+    this.posts = _.map(this.posts, (item: any) => {
+      return (item.id === post.id) ? post : item;
+    });
+    // this.soStorageService.updatePost(post);
   }
 
   deletedPost(event: any, post: any) {
