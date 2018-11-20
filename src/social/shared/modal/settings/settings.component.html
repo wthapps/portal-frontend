@@ -21,16 +21,17 @@
           <p>You can manage who will able to see your posts. This setting remembers your selection so future posts will
             be shared with the same choice unless you change it.</p>
           <div class="row">
-            <div class="col-sm-6">
-              <div>
-                <a href="javascript:;" data-toggle="dropdown" style="display: block; padding: 5px"><i [class]="POST_PRIVACIES[user.settings.viewable_post.value]?.css"></i> {{ user.settings.viewable_post.value | titleCase }} <span
-                  class="caret"></span></a>
-                <ul class="dropdown-menu dropup-menu dropdown-menu-check" aria-labelledby="dropdownMenu">
-                  <li *ngFor="let pr of PRIVACIES"><a href="javascript:;"
-                         (click)="user.settings.viewable_post.value = pr; updateSettings({viewable_post: user.settings.viewable_post})">
-                    <span><i [class]="POST_PRIVACIES[pr]?.css"></i></span> {{ POST_PRIVACIES[pr]?.text | titleCase }} <i class="fa fa-check" *ngIf="user.settings.viewable_post.value === pr"></i></a></li>
-                </ul>
-              </div>
+            <div class="col-sm-6">                
+                <p-dropdown [options]="postPrivacies" [(ngModel)]="selectedPrivacy" (onChange)="updateSettings({viewable_post: selectedPrivacy.data})" optionLabel="text" [style]="{'width':'250px'}">
+                    <ng-template let-item pTemplate="selectedItem">
+                      <div>  <i [class]="item?.value?.css"></i> {{ item?.label | titleCase }} </div>
+                    </ng-template>
+                    <ng-template let-pr pTemplate="item">
+                        <div class="ui-helper-clearfix pt5 pb5">
+                            <i style="width: 15px" [class]="pr?.value?.css"></i> {{ pr?.label | titleCase }}
+                        </div>
+                    </ng-template>
+                </p-dropdown>
             </div>
           </div>
         </div>

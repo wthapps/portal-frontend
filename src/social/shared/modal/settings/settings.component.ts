@@ -1,13 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { WthConfirmService } from '@shared/services';
+
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { SoUser } from '@shared/shared/models';
-import { SocialService } from '@social/shared/services/social.service';
 import { Store } from '@ngrx/store';
+
+import { SoUser } from '@shared/shared/models';
+import { WthConfirmService } from '@shared/services';
+import { SocialService } from '@social/shared/services/social.service';
 import { SO_PROFILE_UPDATE_DONE } from '@social/shared/reducers';
 import { Constants } from '@shared/constant';
 
-
+interface Privacy {
+  css: string;
+  text: string;
+  data: string;
+}
 @Component({
   selector: 'z-social-shared-setting',
   templateUrl: 'settings.component.html',
@@ -18,13 +24,15 @@ export class ZSocialSharedSettingsComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
   user: SoUser = new SoUser();
   loading = true;
+  postPrivacies: Privacy[] = [];
+  selectedPrivacy: Privacy;
+
   readonly PRIVACIES: string[] = ['public', 'friends', 'personal'];
   readonly PRIVACY_NAMES: any = {
     public: 'Public',
     friends: 'Friends',
     personal: 'Personal'
   };
-  readonly POST_PRIVACIES = Constants.soPostPrivacy;
 
   constructor(
     private socialService: SocialService,
@@ -32,6 +40,7 @@ export class ZSocialSharedSettingsComponent implements OnInit {
     private wthConfirmService: WthConfirmService
   ) {
     //
+    this.postPrivacies = this.PRIVACIES.map(pr => Constants.soPostPrivacy[pr]);
   }
 
   ngOnInit() {
@@ -41,6 +50,7 @@ export class ZSocialSharedSettingsComponent implements OnInit {
       .toPromise()
       .then((res: any) => {
         this.user = new SoUser().from(res.data);
+        this.setSelectedPrivacy();
         this.loading = false;
       })
       .catch(err => this.loading = false);
@@ -48,6 +58,11 @@ export class ZSocialSharedSettingsComponent implements OnInit {
 
   open() {
     this.modal.open();
+  }
+
+  updatePrivacy(event) {
+    this.user.settings.viewable_post.value = this.selectedPrivacy.data;
+    this.updateSettings(this.user.settings);
   }
 
   resetSettings() {
@@ -62,6 +77,7 @@ export class ZSocialSharedSettingsComponent implements OnInit {
           .toPromise()
           .then((res: any) => {
             this.user = new SoUser().from(res.data);
+            this.setSelectedPrivacy();
             this.store.dispatch({
               type: SO_PROFILE_UPDATE_DONE,
               payload: res.data
@@ -88,6 +104,11 @@ export class ZSocialSharedSettingsComponent implements OnInit {
   }
 
   save() {
-    console.log('updating settings');
+    this.updateSettings(this.user.settings);
+    this.modal.close();
+  }
+
+  private setSelectedPrivacy() {
+    this.selectedPrivacy = Constants.soPostPrivacy[this.user.settings.viewable_post.value];
   }
 }

@@ -40,7 +40,8 @@ import {
   AutoCompleteModule,
   CalendarModule,
   PanelMenuModule,
-  TooltipModule
+  TooltipModule,
+  DropdownModule
 } from 'primeng/primeng';
 import { ZSharedReportModule } from '@shared/shared/components/zone/report/report.module';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
@@ -92,6 +93,7 @@ import { ZSocialSharedSettingsComponent } from './modal/settings/settings.compon
     CheckboxModule,
     RadioButtonModule,
     AutoCompleteModule,
+    DropdownModule,
     CalendarModule,
     PanelMenuModule,
     TooltipModule
@@ -148,6 +150,7 @@ import { ZSocialSharedSettingsComponent } from './modal/settings/settings.compon
     CheckboxModule,
     RadioButtonModule,
     AutoCompleteModule,
+    DropdownModule,
     CalendarModule,
     PanelMenuModule,
     TooltipModule,
