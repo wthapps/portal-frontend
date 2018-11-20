@@ -36,6 +36,7 @@ import { User } from '@shared/shared/models';
 import { HeaderComponent } from '@shared/partials/header';
 import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
 import { LogUpdateService } from './../shared/services/service-worker/log-update.service';
+import { CardEditModalComponent } from './card/components';
 
 
 const GAPI_TIMEOUT = 2000;
@@ -52,6 +53,8 @@ export class AppComponent
   @ViewChild('modalContainer', { read: ViewContainerRef })
   modalContainer: ViewContainerRef;
   @ViewChild('introduction') introduction: IntroductionModalComponent;
+  @ViewChild('cardEditModal') cardEditModal: CardEditModalComponent;
+
 
   @ViewChild('header') header: HeaderComponent;
 
@@ -152,6 +155,10 @@ export class AppComponent
         });
         break;
     }
+  }
+
+  createCard() {
+    this.cardEditModal.open({mode: 'create', payload: null});
   }
 
   private getGroup(name: string): Group {

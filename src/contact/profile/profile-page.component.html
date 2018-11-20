@@ -3,7 +3,23 @@
   </div>
 </z-contact-shared-toolbar>
 <div class="page-body-content has-page-body-control">
-  <div class="page-body-content-in">
-    <w-user-profile></w-user-profile>
+  <div class="contact-edit-page page-body-content-in">
+    <w-user-profile class="contact-edit-content"></w-user-profile>
+    <div class="contact-edit-aside">
+      <h4>Cards <i class="fa fa-info-circle text-fade" pTooltip="Cards store information from your profile."
+        tooltipPosition="bottom"></i>
+      </h4>
+      <div class="card-list row">
+        <div class="col-sm-12 mb15">
+          <card-item (view)="cardDetailModal.open({payload: $event})"></card-item>
+        </div>
+        <div class="col-sm-12 mb15">
+          <card-item (view)="cardDetailModal.open({payload: $event})"></card-item>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<w-card-detail-modal #cardDetailModal (edit)="cardEditModal.open()"></w-card-detail-modal>
+<w-card-edit-modal #cardEditModal></w-card-edit-modal>

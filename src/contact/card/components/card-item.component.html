@@ -1,0 +1,18 @@
+<div class="card can-click" (click)="onClick()">
+  <div class="card-body">
+    <div class="media-avatar align-items-center">
+      <div class="media-avatar-img-wrap">
+        <div class="media-avatar-img avatar-xs">
+          <img [src]="card?.profile_image" [alt]="card?.name">
+        </div>
+      </div>
+      <div class="media-avatar-body">
+        <p class="m0 text-bold text-fade">Private card name</p>
+        <span>
+          <a [routerLink]="['1', 'detail']"> {{ card?.name }} </a>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+      

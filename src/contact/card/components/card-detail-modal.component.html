@@ -1,0 +1,74 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="false">
+    <div class="modal-header-nav">
+      <h4 class="modal-title">Public card</h4>
+      <ul class="modal-header-navbar">
+        <li>
+          <button (click)="onEdit()" type="button" class="btn btn-default btn-default-no-border">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+        </li>
+        <li class="dropdown open">
+          <button class="btn btn-default btn-default-no-border" type="button" data-toggle="dropdown">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li>
+              <a href="javascript:void(0);" (click)="onExport()"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
+            </li>
+            <li>
+              <a href="javascript:void(0);" (click)="onDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <button type="button" (click)="modal.dismiss()" class="btn btn-default btn-default-no-border">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </bs-modal-header>
+
+  <bs-modal-body>
+    <div class="pcard-cover bg-gray-light">
+      <div class="media-avatar align-items-center">
+        <div class="media-avatar-img-wrap">
+          <div class="media-avatar-img avatar-sm">
+            <img [src]="card?.profile_image" [alt]="card?.name">
+          </div>
+        </div>
+        <div class="media-avatar-body">
+          <h4 class="m0"> {{ card?.name }} </h4>
+          <span> {{ card?.nickname }} </span>
+        </div>
+      </div>
+    </div>
+    <div class="pcard-info-list">
+      <dl class="pcard-info">
+        <dt>Company</dt>
+        <dd>Company name</dd>
+        <dt>Occupation</dt>
+        <dd>Job sth</dd>
+      </dl>
+      <dl class="pcard-info">
+        <dt>Work</dt>
+        <dd>Company name</dd>
+      </dl>
+      <dl class="pcard-info">
+        <dt>Mobile</dt>
+        <dd>(+1) 01234567890</dd>
+        <dt>Fax</dt>
+        <dd>(+1) 01234567890</dd>
+      </dl>
+      <dl class="pcard-info">
+        <dt>Work</dt>
+        <dd>16215 Alton Parkway <br>
+          California Irvine 92618 <br>
+          USA
+        </dd>
+      </dl>
+    </div>
+  </bs-modal-body>
+</bs-modal>
+

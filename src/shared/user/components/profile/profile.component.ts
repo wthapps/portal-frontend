@@ -41,7 +41,6 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(profile: any) {
-    console.log('you are updating profile', profile);
     this.userService.update(profile).subscribe((res: any) => {
 
     });

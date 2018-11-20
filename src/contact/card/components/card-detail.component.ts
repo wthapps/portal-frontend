@@ -4,12 +4,12 @@ import { ConfirmationService } from 'primeng/api';
 declare var $: any;
 
 @Component({
-  selector: 'app-contact-html-cards',
-  templateUrl: 'cards.component.html',
-  styleUrls: ['cards.component.scss'],
+  selector: 'card-detail',
+  templateUrl: 'card-detail.component.html',
+  styleUrls: ['card-detail.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ContactHtmlCardsComponent implements OnInit {
+export class CardDetailComponent implements OnInit {
   selectedValues: string[] = [];
 
   constructor(private confirmationService: ConfirmationService) {

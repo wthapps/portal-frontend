@@ -36,7 +36,7 @@ export class AddressListComponent implements OnInit, ProfileFormMixin {
     },
     {
       category: 'work',
-      name: 'work'
+      name: 'Work'
     },
     {
       category: 'other',
@@ -69,7 +69,7 @@ export class AddressListComponent implements OnInit, ProfileFormMixin {
         id: [item.id, Validators.compose([Validators.required])],
         category: [item.category, Validators.compose([Validators.required])],
         address_line1: [item.address_line1, Validators.compose([Validators.required])],
-        po_box: [item.po_box],
+        address_line2: [item.address_line2, Validators.compose([])],
         city: [item.city],
         province: [item.province],
         postcode: [item.postcode],
@@ -80,7 +80,7 @@ export class AddressListComponent implements OnInit, ProfileFormMixin {
       return this.fb.group({
         category: ['home', Validators.compose([Validators.required])],
         address_line1: ['', Validators.compose([Validators.required])],
-        po_box: [''],
+        address_line2: ['', Validators.compose([])],
         city: [''],
         province: [''],
         postcode: [''],

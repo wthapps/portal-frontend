@@ -4,10 +4,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { ContactHtmlModule } from '@contacts/html/contact-html.module';
+import { CardModule } from '@contacts/card/card.module';
 import { ContactSearchModule } from '@contacts/search/search.module';
 import { environment } from '@env/environment';
-// import { ContactHtmlModule } from '@contacts/html/contact-html.module';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { WthCommonModule } from '@wth/shared/common/wth-common.module';
 import { ModalModule } from '@wth/shared/modals/modals.module';
@@ -41,7 +40,7 @@ import { ProfilePageModule } from '@contacts/profile/profile-page.module';
     ContactSearchModule,
     GroupModule,
     ModalModule,
-    ContactHtmlModule,
+    CardModule,
     // environment.production ? [] : ContactHtmlModule,
     ScrollToModule.forRoot(),
     ContactSharedModule.forRoot(),
