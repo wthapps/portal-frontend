@@ -36,9 +36,9 @@
               </div>
             </a>
             <div class="z-shared-with dropdown post-edit">
-              <a href="return false;" class="dropdown-toggle blue" data-toggle="dropdown" style="text-transform: capitalize;"
-                aria-haspopup="true" aria-expanded="true">
-                <i class="fa" [ngClass]="postPrivacy[post?.privacy]?.css"></i> {{ privacyName }} </a>
+              <a href="return false;" class="dropdown-toggle blue" data-toggle="dropdown" style="text-transform: capitalize;" 
+                aria-haspopup="true" aria-expanded="true" pTooltip="{{ privacyName }}" tooltipPosition="bottom">
+                <i class="fa" [ngClass]="postPrivacy[post?.privacy]?.css"></i> {{ privacyName | maxLength: 50 }} </a>
               <ul class="dropdown-menu">
                 <li><span> Who will see this</span></li>
                 <li>

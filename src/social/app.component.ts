@@ -30,12 +30,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('introduction') introduction: IntroductionModalComponent;
 
   routerSubscription: Subscription;
-  // currentRoute: string = 'primary';
-  activeOutlets: {[id: string]: boolean} = {'primary': true};
-  primaryFirstLoad: boolean = false;
+  activeOutlets: {[id: string]: boolean} = {'primary': true, 'detail': false, 'modal': false};
   readonly PRIMARY: string = 'primary';
-
-  // confirmInfo$: Observable<ConfirmInfo>;
 
   constructor(public authService: AuthService, private router: Router) {}
 
@@ -63,19 +59,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onActivate(event) {
-    if(!event || !event.route || event.route.outlet === this.PRIMARY) {
-      this.primaryFirstLoad ? this.router.navigate([{ outlets: { modal: null, detail: null } }]) : this.primaryFirstLoad = true;
+    const outlet = (!event || !event.route) ? this.PRIMARY : event.route.outlet;
+    this.activeOutlets[outlet] = true;
+    if ( outlet === this.PRIMARY && (this.activeOutlets['modal'] || this.activeOutlets['detail']) ) {
+      this.router.navigate([{ outlets: { modal: null, detail: null } }]);
       return;
     }
-    // this.currentRoute = event.route.outlet;
-    this.activeOutlets[event.route.outlet] = true;
   }
 
   onDeactivate(event) {
-    if(!event || !event.route) {
-      return;
-    }
-    this.activeOutlets[event.route.outlet] = false;
+    const outlet = (!event || !event.route) ? this.PRIMARY : event.route.outlet;
+    this.activeOutlets[outlet] = false;
   }
 
   ngOnDestroy() {

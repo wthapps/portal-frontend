@@ -66,7 +66,8 @@ export class ZSocialLeftMenuComponent implements OnDestroy {
 
   onSubMenu(link: string) {
     if (this.router.url.indexOf('communities') === -1) {
-      this.clearOutlets().then(() => this.navigateService.navigateOrRedirect(link));
+      // this.clearOutlets().then(() => this.navigateService.navigateOrRedirect(link));
+      this.navigateService.navigateOrRedirect(link);
     }
   }
 
