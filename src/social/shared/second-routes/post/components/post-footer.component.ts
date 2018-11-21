@@ -3,7 +3,7 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild
+  OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, ViewChildren, QueryList
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -14,7 +14,9 @@ import {
   CancelEditCommentEvent,
   CancelReplyCommentEvent,
   DeleteReplyEvent,
-  ViewMoreCommentsEvent
+  ViewMoreCommentsEvent,
+  ReplyCreateEvent,
+  CommentCreateEvent
 } from '../../../events/social-events';
 import { CommentEditorMode, CommentItemEditorComponent } from './comment/comment-item-editor.component';
 import { PostComponent } from '../post.component';
@@ -38,6 +40,7 @@ export class PostFooterComponent implements OnInit, OnDestroy {
   @Input() emojiMap: { [name: string]: WTHEmojiCateCode };
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('commentCreate') commentCreate: CommentItemEditorComponent;
+  @ViewChildren('replyCreate') replyCreateList: QueryList<CommentItemEditorComponent>;
   readonly commentEditorMode = CommentEditorMode;
 
   readonly actions = {
@@ -121,6 +124,10 @@ export class PostFooterComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleShowReplies(comment) {
+    this.postItem.toggleShowReplies(comment);
+  }
+
 
   onCallBack(event: any) {
     if (event instanceof CancelEditCommentEvent) {
@@ -131,8 +138,15 @@ export class PostFooterComponent implements OnInit, OnDestroy {
       event.data.isEditting = false;
       return;
     }
+    if (event instanceof ReplyCreateEvent) {
+      const { parentId } = event.data;
+      const replyCreate = this.replyCreateList.find(rep => rep.parent.uuid === parentId);
+      replyCreate.focus();
+    }
+    if (event instanceof CommentCreateEvent) {
+      this.commentCreate.focus();
+    }
     this.eventEmitter.emit(event);
-    this.commentCreate.focus();
   }
 
   mapComment(comment: any) {
@@ -168,10 +182,10 @@ export class PostFooterComponent implements OnInit, OnDestroy {
 
   }
 
-  totalRepliesInWords(replies: any) {
-    const repCount = replies.length > 1 ? 'replies' : 'reply';
-    return `${replies.length} ${repCount}`;
-  }
+  // totalRepliesInWords(replies: any) {
+  //   const repCount = replies.length > 1 ? 'replies' : 'reply';
+  //   return `${replies.length} ${repCount}`;
+  // }
 
   focusCommentCreate() {
     this.commentCreate.focus();

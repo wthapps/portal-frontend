@@ -139,33 +139,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     this.editor.focus();
   }
 
-  commentAction(photos?: any) {
-    let commentEvent: any;
-    const data: any = {};
-    if (photos) { data.photo = photos[0].id; }
-    data.content = this.comment.content || '';
-    if (this.mode === this.commentEditorMode.Add) {
-      data.post_uuid = this.parent.uuid;
-      commentEvent = new CommentCreateEvent(data);
-    }
-    if (this.mode === this.commentEditorMode.Edit) {
-      data.uuid = this.comment.uuid;
-      commentEvent = new CommentUpdateEvent(data);
-    }
-    if (this.mode === this.commentEditorMode.Reply) {
-      data.comment_uuid = this.comment.uuid;
-      data.post_uuid = this.parent.uuid;
-      commentEvent = new ReplyCreateEvent(data);
-    }
-    if (this.mode === this.commentEditorMode.EditReply) {
-      data.comment_uuid = this.comment.uuid;
-      data.reply_uuid = this.reply.uuid;
-      commentEvent = new ReplyUpdateEvent(data);
-    }
-    this.eventEmitter.emit(commentEvent);
-    this.comment.content = '';
-  }
-
   onOpenPhotoSelect() {
     this.mediaSelectionService.open({filter: 'photo', allowSelectMultiple: false, allowCancelUpload: true});
 
@@ -296,17 +269,21 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     let event: any = null;
 
     this.comment.content = comment || this.comment.content || '';
-    if (this.mode === CommentEditorMode.Add) {
+    if (this.mode === CommentEditorMode.Add || this.mode === CommentEditorMode.Reply) {
       // add new comment/reply to post
       this.comment.parent = this.parent;
       this.comment.parentId = this.parent.uuid;
       this.comment.parentType = this.parentType;
 
 
-      _.set(this.originComment, 'isCreatingNewReply', false);
-      event = new CommentCreateEvent({...this.comment});
-
-    } else if (this.mode === CommentEditorMode.Edit) {
+      _.set(this.originComment, 'isCreatingNewReply', true);
+      if ( this.mode === CommentEditorMode.Add ) {
+        event = new CommentCreateEvent({...this.comment});
+      }
+      if (this.mode === CommentEditorMode.Reply) {
+        event = new ReplyCreateEvent({...this.comment});
+      }
+    } else if (this.mode === CommentEditorMode.Edit || this.mode === CommentEditorMode.EditReply) {
 
       // update current comment/reply
       event = new CommentUpdateEvent(this.comment);
