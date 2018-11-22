@@ -1,49 +1,41 @@
-<form>
-  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" cssClass="modal-media-selection">
-    <bs-modal-header [showDismiss]="true">
-      <div *ngIf="navEnable" class="nav-tabs-wrap">
-        <ul class="nav nav-tabs">
-          <li [ngClass]="actives[0]? 'active' : ''">
-            <a href="javascript:void(0)" (click)="tabMyNote($event)">
-              <i class="fa fa-file"></i> My Note </a>
-          </li>
-          <li [ngClass]="actives[1]? 'active' : ''">
-            <a href="javascript:void(0)" (click)="tabFavourites()">
-              <i class="fa fa-star"></i>Favourites </a>
-          </li>
-          <li [ngClass]="actives[2]? 'active' : ''">
-            <a href="javascript:void(0)" (click)="tabSharedWithMe()">
-              <i class="fw fw-shared-with-me"></i> Shared with me </a>
-          </li>
-          <li style="float: right;">
-            <button class="btn btn-default" type="button" (click)="searchClick()" tooltipPosition="bottom">
-              <i class="fa fa-search"></i>
-            </button>
-          </li>
-        </ul>
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" cssClass="modal-media-selection">
+  <bs-modal-header [showDismiss]="true">
+    <div *ngIf="searchShow" class="modal-media-search">
+      <div class="modal-media-search-in">
+        <textbox-search [placeholder]="'Search something'" [showSearchClearText]="true"
+                        (onEnterEvent)="onSearchEnter($event)" (onEscapeEvent)="onSearchEscape($event)">
+        </textbox-search>
       </div>
-      <div *ngIf="searchEnable" class="searchHeader">
-        <textbox-search #textbox (onEnterEvent)="onEnter($event)" (onEscapeEvent)="onEscape($event)" [placeholder]="'Search something'"
-          [showSearchClearText]="true"></textbox-search>
-      </div>
-    </bs-modal-header>
-    <w-object-toolbar-selected *ngIf="insertEnable" [selectedObjects]="selectedObjects">
+    </div>
+
+    <button (click)="searchShow = true" class="btn btn-search btn-default pull-right" type="button">
+      <i class="fa fa-search"></i>
+    </button>
+
+    <w-nav-tab [ngClass]="{'invisible': searchShow}" [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)">
+    </w-nav-tab>
+
+    <w-object-toolbar-selected [selectedObjects]="selectedObjects" *ngIf="insertEnable">
       <button (click)="insertNotes()" class="btn btn-outline-default" type="button">Insert</button>
     </w-object-toolbar-selected>
-    <bs-modal-body>
-      <div class="clearfix" style="position: relative; z-index: 99999">
-        <z-shared-breadcrumb [models]="breadcrumb" class="note-breadcrumb" (onBreadcrumbAction)="onBreadcrumbAction($event)"></z-shared-breadcrumb>
-        <chat-note-shared-toolbar #toolbar (events)="doEvent($event)"></chat-note-shared-toolbar>
-      </div>
 
-      <!-- <div class="content-overflow" style="max-height: 600px;margin-right: 0px" infiniteScroll infiniteScrollDistance="1" infiniteScrollUpDistance="1"
-        [scrollWindow]="true" (scrolled)="loadMore()" (scrolledUp)="loadMore()"> -->
-      <div class="content-overflow" style="max-height: 600px;margin-right: 0px; background-color: #f6f6f6" infiniteScroll [scrollWindow]="false"
-        [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50" (scrolled)="loadMore()">
-        <div>
-          <share-chat-note-list [viewOption]="toolbar.viewMode" class="wobject-grid has-scrollbar"></share-chat-note-list>
-        </div>
+  </bs-modal-header>
+
+
+
+  <bs-modal-body>
+    <div class="clearfix" style="position: relative; z-index: 99999">
+      <z-shared-breadcrumb [models]="breadcrumb" class="note-breadcrumb" (onBreadcrumbAction)="onBreadcrumbAction($event)"></z-shared-breadcrumb>
+      <chat-note-shared-toolbar #toolbar (events)="doEvent($event)"></chat-note-shared-toolbar>
+    </div>
+
+    <!-- <div class="content-overflow" style="max-height: 600px;margin-right: 0px" infiniteScroll infiniteScrollDistance="1" infiniteScrollUpDistance="1"
+      [scrollWindow]="true" (scrolled)="loadMore()" (scrolledUp)="loadMore()"> -->
+    <div class="content-overflow" style="max-height: 600px;margin-right: 0px; background-color: #f6f6f6" infiniteScroll [scrollWindow]="false"
+         [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50" (scrolled)="loadMore()">
+      <div>
+        <share-chat-note-list [viewOption]="toolbar.viewMode" class="wobject-grid has-scrollbar"></share-chat-note-list>
       </div>
-    </bs-modal-body>
-  </bs-modal>
-</form>
+    </div>
+  </bs-modal-body>
+</bs-modal>
