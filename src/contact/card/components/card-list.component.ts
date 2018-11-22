@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 
 import { CardService } from '../card.service';
 import { Observable } from 'rxjs';
+import { AuthService } from '@shared/services';
+import { ProfileService } from '@shared/user/services';
+import { CardEditModalComponent } from './card-edit-modal.component';
 
 
 declare var $: any;
@@ -13,16 +16,24 @@ declare var $: any;
   encapsulation: ViewEncapsulation.None
 })
 export class CardListComponent implements OnInit {
-  selectedValues: string[] = [];
-
+  @ViewChild('cardEditModal') cardEditModal: CardEditModalComponent;
   cards$: Observable<Array<any>>;
+  profile$: Observable<any>;
 
-  constructor(private confirmationService: ConfirmationService, private cardService: CardService) {
+  constructor(
+    private authService: AuthService,
+    private cardService: CardService,
+    private profileService: ProfileService,
+    private confirmationService: ConfirmationService) {
+
     this.cards$ = this.cardService.getItems();
+    this.profile$ = this.profileService.getProfile();
+
   }
 
   ngOnInit() {
-    this.cardService.getCards({});
+    this.cardService.getCards(this.authService.user.uuid);
+    this.profileService.get(this.authService.user.uuid);
   }
 
   onShowModalEdit(event: any) {
@@ -32,7 +43,7 @@ export class CardListComponent implements OnInit {
       $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
     }, 0);
   }
-
+  
   onDelete() {
     this.confirmationService.confirm({
       header: 'Delete information card',
@@ -42,4 +53,9 @@ export class CardListComponent implements OnInit {
       }
     });
   }
+
+  openEditModal(payload: any) {
+    this.cardEditModal.open({...payload, mode: 'edit'});
+  }
+
 }

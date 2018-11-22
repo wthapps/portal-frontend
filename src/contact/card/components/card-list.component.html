@@ -2,33 +2,37 @@
   <div class="page-body-control-nav">
     <h4>
       Cards
-      <i class="fa fa-info-circle text-fade" pTooltip="Cards store information from your profile."
+      <i class="fa fa-info-circle text-fade" pTooltip="Your Public Card is the default card for your public information on all apps on the WTHApps site. You can also have private cards that you can share."
          tooltipPosition="bottom"></i>
     </h4>
   </div>
 </div>
 <div class="page-body-content has-page-body-control">
-  <div class="page-body-content-in">
+  <div class="page-body-content-in pt15">
+    <h4>Public Card
+      <i class="fa fa-info-circle text-fade"
+          pTooltip="Your Public Card is the default card for your public information on all apps on the WTHApps site." tooltipPosition="bottom"></i>
+    </h4>
     <div class="card-list row">
       <div class="col-sm-4 mb15">
-        <card-item [card]="(cards$ | async)[0]" (view)="cardDetailModal.open({payload: $event})"></card-item>
+        <card-item [card]="(cards$ | async)[0]" (view)="cardDetailModal.open({payload: $event, cardType: 'public'})"></card-item>
       </div>      
     </div>
-    <h4>Private card
+    <h4>Private Cards
       <i class="fa fa-info-circle text-fade"
-         pTooltip="Private help you share private contact information with other users." tooltipPosition="bottom"></i>
+         pTooltip="Private Card help you share private contact information with other users." tooltipPosition="bottom"></i>
     </h4>
-    <div class="text-fade">
+    <!-- <div class="text-fade">
       There are no private cards. <br>
       Click “New private card” from New menu to create more private cards.
-    </div>
+    </div> -->
     <div class="card-list row">
       <div class="col-sm-4 mb15" *ngFor="let c of (cards$ | async)">
-        <card-item [card]="c" (view)="cardDetailModal.open({payload: $event})"></card-item>
+        <card-item [card]="c" (view)="cardDetailModal.open({payload: $event, cardType: 'private'})"></card-item>
       </div>      
     </div>
   </div>
 </div>
 
-<w-card-detail-modal #cardDetailModal (edit)="cardEditModal.open({mode: 'edit', payload: $event})"></w-card-detail-modal>
-<w-card-edit-modal #cardEditModal></w-card-edit-modal>
+<w-card-detail-modal #cardDetailModal (edit)="openEditModal($event)"></w-card-detail-modal>
+<w-card-edit-modal #cardEditModal [profile]="(profile$ | async)"></w-card-edit-modal>

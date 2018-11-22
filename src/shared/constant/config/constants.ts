@@ -396,6 +396,42 @@ export class ConstantsBase {
       name: 'Other'
     }
   ];
+  addressType: any = [
+    {
+      category: 'home',
+      name: 'Home'
+    },
+    {
+      category: 'work',
+      name: 'Work'
+    },
+    {
+      category: 'other',
+      name: 'Other'
+    }
+  ];
+  mediaType: any = [
+    {
+      category: 'facebook',
+      name: 'Facebook'
+    },
+    {
+      category: 'google_plus',
+      name: 'Google Plus'
+    },
+    {
+      category: 'twitter',
+      name: 'Twitter'
+    },
+    {
+      category: 'linkedin',
+      name: 'LinkedIn'
+    },
+    {
+      category: 'other',
+      name: 'Other'
+    },
+  ];
   phoneCategories: any = [
     { value: 'mobile', text: 'Mobile' },
     { value: 'home', text: 'Home' },

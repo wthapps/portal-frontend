@@ -25,7 +25,9 @@ export class ZContactSharedToolbarComponent implements OnInit {
   readonly tooltip: any = Constants.tooltip;
   readonly otherContactsInfo = 'Other Contacts are people you interacted with but did not add them to your Contacts books';
   readonly OTHER_CONTACTS = 'Other Contacts';
-
+  readonly PROFILE = 'Profile';
+  readonly PROFILE_TOOLTIP = 'This is your personal information area for different apps in WTHApps.';
+  
   constructor(
     public contactService: ZContactService,
     public location: Location,

@@ -45,24 +45,14 @@
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-2">
-                <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_phone['controls'].category.valid
-                  && add_phone['controls'].category.touched),
-                  'has-success': (add_phone['controls'].category.valid
-                  && add_phone['controls'].category.touched
-                  && form.value.phones[i].category && form.value.phones[i].category.length > 1)}">
+                <div class="form-group no-label">
                   <select class="form-control" name="name" formControlName="category">
                     <option *ngFor="let et of phoneType" value="{{ et.category }}">{{ et.name }}</option>
                   </select>
                 </div>
               </div>
               <div class="col-sm-5">
-                <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_phone['controls'].country_alpha_code.valid
-                  && add_phone['controls'].country_alpha_code.touched),
-                  'has-success': (add_phone['controls'].country_alpha_code.valid
-                  && add_phone['controls'].country_alpha_code.touched
-                  && form.value.phones[i].country_alpha_code && form.value.phones[i].country_alpha_code.length>1)}">
+                <div class="form-group no-label">
 
                   <p-autoComplete class="form-control-phone-country" formControlName="country_alpha_code"
                                   [suggestions]="filteredCountriesCode"
@@ -93,12 +83,12 @@
                     <span
                       *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.errors.phoneFormat"
                       class="help-block text-danger">
-                      Phone number is not valid.
+                      Phone number is not valid
                     </span>
                     <span
                       *ngIf="!add_phone['controls'].value.valid && add_phone['controls'].value.errors.maxlength"
                       class="help-block text-danger">
-                      Phone number max length is 20 characters.
+                      Phone number max length is 20 characters
                     </span>
                   </div>
                 </div>

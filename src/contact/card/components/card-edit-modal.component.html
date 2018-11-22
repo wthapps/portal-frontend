@@ -30,141 +30,127 @@
     <div class="pcard-info-list">
       <dl class="pcard-info-form">
         <dt>
-          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
-          <p-checkbox name="group1" value="1" label="Name" [(ngModel)]="selectedValues"></p-checkbox>
-        </dt>
-        <dt>
-          <p-checkbox name="group1" value="2" label="Fullname" [(ngModel)]="selectedValues"></p-checkbox>
+          <p-checkbox name="group1" value="name" label="Name" [(ngModel)]="selectedFields"></p-checkbox>
         </dt>
         <dd>
           Jaime Lannister
         </dd>
         <dt>
-          <p-checkbox name="group1" value="3" label="Nickname" [(ngModel)]="selectedValues"></p-checkbox>
+          <p-checkbox name="group1" value="nickname" label="Nickname" [(ngModel)]="selectedFields"></p-checkbox>
         </dt>
         <dd>
-          Nickname
+          {{ profile?.nickname }}
         </dd>
       </dl>
       <dl class="pcard-info-form">
         <dt>
-          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
-          <p-checkbox name="group2" value="4" label="Basic information" [(ngModel)]="selectedValues"></p-checkbox>
+          <label>Basic Information</label>
         </dt>
         <dt>
-          <p-checkbox name="group2" value="5" label="About" [(ngModel)]="selectedValues"></p-checkbox>
+          <p-checkbox name="group2" value="about" label="About" [(ngModel)]="selectedFields"></p-checkbox>
         </dt>
         <dd>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
-          dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-          suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+          {{ profile?.about }}
         </dd>
         <dt>
-          <p-checkbox name="group2" value="6" label="Company" [(ngModel)]="selectedValues"></p-checkbox>
+          <p-checkbox name="group2" value="company" label="Company" [(ngModel)]="selectedFields"></p-checkbox>
         </dt>
         <dd>
-          Company name
+          {{ profile?.company }}
         </dd>
         <dt>
-          <p-checkbox name="group2" value="7" label="Occupation" [(ngModel)]="selectedValues"></p-checkbox>
+          <p-checkbox name="group2" value="occupation" label="Occupation" [(ngModel)]="selectedFields"></p-checkbox>
         </dt>
         <dd>
-          Job sth
+           {{ profile?.occupation }}
         </dd>
         <dt>
-          <p-checkbox name="group2" value="8" label="Gender" [(ngModel)]="selectedValues"></p-checkbox>
+          <p-checkbox name="group2" value="sex" label="Gender" [(ngModel)]="selectedFields"></p-checkbox>
         </dt>
         <dd>
-          Male
+          {{ profile?.sex }}
         </dd>
         <dt>
-          <p-checkbox name="group2" value="9" label="Date of birth" [(ngModel)]="selectedValues"></p-checkbox>
+          <p-checkbox name="group2" value="birthday" label="Date of birth" [(ngModel)]="selectedFields"></p-checkbox>
         </dt>
         <dd>
-          July 27 1970
+          {{ profile?.birthday }}    
         </dd>
         <dt>
-          <p-checkbox name="group2" value="10" label="Nationality" [(ngModel)]="selectedValues"></p-checkbox>
+          <p-checkbox name="group2" value="nationality" label="Nationality" [(ngModel)]="selectedFields"></p-checkbox>
         </dt>
         <dd>
-          Denmark
+          {{ profile?.nationality }}
         </dd>
       </dl>
       <dl class="pcard-info-form">
         <dt>
-          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
-          <p-checkbox name="group3" value="11" label="Email" [(ngModel)]="selectedValues"></p-checkbox>
+          <label>Emails</label>      
         </dt>
-        <dt>
-          <p-checkbox name="group3" value="12" label="Work" [(ngModel)]="selectedValues"></p-checkbox>
-        </dt>
-        <dd>
-          jaime.lannister@lannister.com
-        </dd>
-        <dt>
-          <p-checkbox name="group3" value="13" label="Personal" [(ngModel)]="selectedValues"></p-checkbox>
-        </dt>
-        <dd>
-          jaime@email.com
-        </dd>
+
+        <ng-container *ngIf="profile && profile.emails && profile.emails.length > 0">
+          <ng-template ngFor let-item [ngForOf]="profile.emails" let-i="index" [ngForTrackBy]="trackByFn">
+            <dt>
+              <p-checkbox name="phones" [value]="'phone:' + item.category" 
+                          [label]="item.category | keyToValue: emailType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
+            </dt>
+            <dd>
+              <p><a style="text-transform: lowercase;" href="mailto:{{ item.value }}">{{ item.value }}</a></p>
+            </dd>                
+          </ng-template>
+        </ng-container>
       </dl>
       <dl class="pcard-info-form">
         <dt>
-          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
-          <p-checkbox name="group4" value="14" label="Phone" [(ngModel)]="selectedValues"></p-checkbox>
+          <label>Phones</label>
         </dt>
-        <dt>
-          <p-checkbox name="group4" value="15" label="Mobile" [(ngModel)]="selectedValues"></p-checkbox>
-        </dt>
-        <dd>
-          (+1) 01234567890
-        </dd>
-        <dt>
-          <p-checkbox name="group4" value="16" label="Fax" [(ngModel)]="selectedValues"></p-checkbox>
-        </dt>
-        <dd>
-          (+1) 01234567890
-        </dd>
+        <ng-container *ngIf="profile && profile.phones && profile.phones.length > 0">
+          <ng-template ngFor let-item [ngForOf]="profile.phones" let-i="index" [ngForTrackBy]="trackByFn">
+            <dt>
+              <p-checkbox name="phones" [value]="'phone:' + item.category" 
+                          [label]="item.category | keyToValue:phoneType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
+            </dt>
+            <dd>
+                {{ item.value }}
+            </dd>                
+          </ng-template>
+        </ng-container>        
       </dl>
       <dl class="pcard-info-form">
         <dt>
-          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
-          <p-checkbox name="group5" value="17" label="Addresses" [(ngModel)]="selectedValues"></p-checkbox>
+          <label>Addresses</label>
         </dt>
-        <dt>
-          <p-checkbox name="group5" value="18" label="Home" [(ngModel)]="selectedValues"></p-checkbox>
-        </dt>
-        <dd>
-          14216 Kinton Parkway <br>
-          California Irvine 92618 <br>
-          USA
-        </dd>
-        <dt>
-          <p-checkbox name="group5" value="19" label="Work" [(ngModel)]="selectedValues"></p-checkbox>
-        </dt>
-        <dd>
-          14216 Kinton Parkway <br>
-          California Irvine 92618 <br>
-          USA
-        </dd>
+        <ng-container *ngIf="profile && profile.addresses && profile.addresses.length > 0">
+            <ng-template ngFor let-item [ngForOf]="profile.addresses" let-i="index" [ngForTrackBy]="trackByFn">
+              <dt>
+                <p-checkbox name="addresses" [value]="'address:' + item.category" 
+                            [label]="item.category | keyToValue: addressType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
+              </dt>
+              <dd>
+                <div *ngIf="item.address_line1">{{ item.address_line1 }}</div>
+                <div *ngIf="item.address_line2">{{ item.address_line2 }}</div>
+                <div *ngIf="item.city"> {{ item?.city }}</div>
+                <div *ngIf="item.province"> {{ item?.province }} </div>
+                <div *ngIf="item.postcode"> {{ item?.postcode }} </div>
+                <div *ngIf="item.country">{{ item.country }}</div>        
+              </dd>                
+            </ng-template>
+          </ng-container>        
       </dl>
       <dl class="pcard-info-form">
         <dt>
-          <!--<p-checkbox [formControl]="myFormGroup.controls['cities']"></p-checkbox>-->
-          <p-checkbox name="group6" value="20" label="Links" [(ngModel)]="selectedValues"></p-checkbox>
+          <label>Links</label>
         </dt>
-        <dt>
-          <p-checkbox name="group6" value="21" label="Facebook" [(ngModel)]="selectedValues"></p-checkbox>
-        </dt>
-        <dd>
-          <a href="https://www.facebook.com/sth" target="_blank">https://www.facebook.com/sth</a>
-        </dd>
-        <dt>
-          <p-checkbox name="group6" value="22" label="Google Plus" [(ngModel)]="selectedValues"></p-checkbox>
-        </dt>
-        <dd>
-          <a href="https://www.plus.google.com/sth" target="_blank">https://www.plus.google.com/sth</a>
-        </dd>
+        <ng-container *ngIf="profile && profile.media">
+          <ng-template ngFor let-item [ngForOf]="profile.media" [ngForTrackBy]="trackByFn">
+              <dt>
+                <p-checkbox name="group6" [value]="'media:' + item.category" [label]="item.category | keyToValue:mediaType:'category':'name'" [(ngModel)]="selectedFields">
+                    
+                </p-checkbox>
+              </dt>
+              <dd><p><a href="{{ item.value }}" target="_blank" rel="noopener" style="text-transform: lowercase">{{ item.value }}</a></p></dd>
+          </ng-template>  
+        </ng-container>      
       </dl>
     </div>
   </bs-modal-body>

@@ -12,8 +12,10 @@ export class CardDetailModalComponent {
   @Output() export = new EventEmitter<any>();
 
   card: any;
+  cardType: string = 'public' || 'private';
   open(options: any): void {
     this.card = options.payload;
+    this.cardType = options.cardType;
     this.modal.open();
   }
 
@@ -22,14 +24,14 @@ export class CardDetailModalComponent {
   }
 
   onEdit() {
-    this.edit.emit(this.card);
+    this.edit.emit({card: this.card, cardType: this.cardType});
   }
 
   onDelete() {
-    this.delete.emit(this.card);
+    this.delete.emit({card: this.card, cardType: this.cardType});
   }
 
   onExport() {
-    this.export.emit(this.card);
+    this.export.emit({card: this.card, cardType: this.cardType});
   }
 }

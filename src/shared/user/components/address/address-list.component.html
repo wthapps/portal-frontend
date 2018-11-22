@@ -46,12 +46,7 @@
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-3">
-                <div class="form-group no-label" [ngClass]="{
-                  'has-error': (!add_address.controls.category.valid
-                  && add_address.controls.category.touched),
-                  'has-success': (add_address.controls.category.valid
-                  && add_address.controls.category.touched
-                  && form.value.addresses[i].category.length>1)}">
+                <div class="form-group no-label">
                   <select class="form-control" name="name" formControlName="category">
                     <option *ngFor="let et of addressType" value="{{ et.category }}">{{ et.name }}</option>
                   </select>

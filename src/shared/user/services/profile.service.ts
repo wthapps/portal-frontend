@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService } from '../../../services/apibase.service';
-import { UserService } from '../../../services/user.service';
-import { Communication } from '@shared/shared/helpers/communication/communication';
+import { ApiBaseService, UserService } from '@shared/services';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable()
-export class ProfileService extends Communication {
+export class ProfileService {
 
   profile$: Observable<any>;
   private _profile: Subject<any> = new Subject<any>();
   private url = 'zone/social_networkd/users/';
   constructor(private apiBaseService: ApiBaseService,
               private userService: UserService) {
-    super();
     this.profile$ = this._profile.asObservable();
   }
 
@@ -39,6 +36,10 @@ export class ProfileService extends Communication {
 
   setProfile(profile: any) {
     this._profile.next(Object.assign({}, profile));
+  }
+
+  getProfile(): Observable<any> {
+    return this.profile$;
   }
 
 }

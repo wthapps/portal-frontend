@@ -10,7 +10,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { ProfileFormMixin } from '../../../shared/mixins/form/profile/profile-form.mixin';
 import { Mixins  } from '../../../design-patterns/decorator/mixin-decorator';
-
+import { Constants } from '@shared/constant';
 @Mixins([ProfileFormMixin])
 @Component({
   selector: 'w-user-media',
@@ -31,28 +31,7 @@ export class MediaListComponent implements ProfileFormMixin {
   deleteObjects: any = [];
   type = 'media';
 
-  mediaType: any = [
-    {
-      category: 'facebook',
-      name: 'Facebook'
-    },
-    {
-      category: 'google_plus',
-      name: 'Google Plus'
-    },
-    {
-      category: 'twitter',
-      name: 'Twitter'
-    },
-    {
-      category: 'linkedin',
-      name: 'LinkedIn'
-    },
-    {
-      category: 'other',
-      name: 'Other'
-    },
-  ];
+  mediaType = Constants.mediaType;
 
   removeItem: (i: number, item: any) => void;
   onSubmit: (values: any) => void;
@@ -71,14 +50,14 @@ export class MediaListComponent implements ProfileFormMixin {
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        category: [item.category, Validators.compose([Validators.required])],
+        category: [item.category],
         id: [item.id, Validators.compose([Validators.required])],
-        value: [item.value, Validators.compose([Validators.required, Validators.maxLength(250), CustomValidator.urlFormat])]
+        value: [item.value, Validators.compose([Validators.maxLength(250), CustomValidator.urlFormat])]
       });
     } else {
       return this.fb.group({
         category: ['facebook', Validators.compose([Validators.required])],
-        value: ['', Validators.compose([Validators.required, Validators.maxLength(250), CustomValidator.urlFormat])]
+        value: ['', Validators.compose([Validators.maxLength(250), CustomValidator.urlFormat])]
       });
     }
   }

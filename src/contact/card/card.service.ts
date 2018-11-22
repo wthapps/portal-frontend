@@ -29,14 +29,20 @@ export class CardService extends BaseEntityService<any> {
     protected apiBaseService: ApiBaseService
   ) {
     super(apiBaseService);
-    this.url = 'account/accounts/12345/cards';
-
     this.items$ = this.itemsSubject.asObservable();
     this.item$ = this.itemSubject.asObservable();
     this.selectedAll$ = this.selectedAll.asObservable();
   }
 
-  getCards(query: any) {
+  getCards(accountId: string) {
+    this.setUrl(accountId);
+    this.getAll({}).subscribe(response => {
+      this.itemsSubject.next(response.data);
+    });
+  }
+
+  getCard(accountId: string, id: string) {
+    this.setUrl(accountId);
     super.getAll({}).subscribe(response => {
       this.itemsSubject.next(response.data);
     });
@@ -44,5 +50,9 @@ export class CardService extends BaseEntityService<any> {
 
   getItems(): Observable<Array<any>> {
     return this.items$;
+  }
+
+  setUrl(accountId: string) {
+    this.url = `account/accounts/${accountId}/cards`;
   }
 }

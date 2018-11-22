@@ -9,7 +9,7 @@ import {
 import { Observable } from 'rxjs';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { ProfileService } from '../profile/profile.service';
+import { ProfileService } from '@shared/user/services';
 import { Constants } from '../../../constant/config/constants';
 import { CountryService } from '../../../shared/components/countries/countries.service';
 

@@ -75,15 +75,15 @@ export class PhoneListComponent implements OnInit, ProfileFormMixin {
     if (item) {
       return this.fb.group({
         id: [item.id, Validators.compose([Validators.required])],
-        category: [item.category, Validators.compose([Validators.required])],
+        category: [item.category],
         country_alpha_code: [item.country_alpha_code],
-        value: [item.value, Validators.compose([Validators.required, CustomValidator.phoneFormat])]
+        value: [item.value, Validators.compose([CustomValidator.phoneFormat])]
       });
     } else {
       return this.fb.group({
-        category: ['mobile', Validators.compose([Validators.required])],
+        category: ['mobile'],
         country_alpha_code: [''],
-        value: ['', Validators.compose([Validators.required, Validators.maxLength(20), CustomValidator.phoneFormat])]
+        value: ['', Validators.compose([Validators.maxLength(20), CustomValidator.phoneFormat])]
       });
     }
   }

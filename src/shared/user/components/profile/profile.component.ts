@@ -7,7 +7,7 @@ import { UserService } from '@shared/services/user.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { WModalService } from '@shared/modal';
 import { NameEditModalComponent } from '@shared/user/components/cover-info/name-edit-modal.component';
-import { ProfileService } from '@shared/user/components/profile/profile.service';
+import { ProfileService } from '@shared/user/services/profile.service';
 
 
 @Component ({

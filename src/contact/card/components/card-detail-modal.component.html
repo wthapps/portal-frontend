@@ -1,7 +1,7 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <bs-modal-header [showDismiss]="false">
     <div class="modal-header-nav">
-      <h4 class="modal-title">Public card</h4>
+      <h4 class="modal-title text-capitalize">{{ cardType }} Card</h4>
       <ul class="modal-header-navbar">
         <li>
           <button (click)="onEdit()" type="button" class="btn btn-default btn-default-no-border">
@@ -17,7 +17,7 @@
               <a href="javascript:void(0);" (click)="onExport()"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
             </li>
             <li>
-              <a href="javascript:void(0);" (click)="onDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+              <a *ngIf="cardType ==='private'" href="javascript:void(0);" (click)="onDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
             </li>
           </ul>
         </li>

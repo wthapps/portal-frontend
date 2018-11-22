@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Constants } from '@shared/constant';
 @Component({
   selector: 'w-card-edit-modal',
   templateUrl: 'card-edit-modal.component.html',
@@ -7,17 +8,24 @@ import { Component, OnInit, ViewEncapsulation, Output, EventEmitter, ViewChild }
 })
 export class CardEditModalComponent {
   @ViewChild('modal') modal: any;
+  @Input() profile: any;
 
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
-  selectedValues: string[] = [];
+  selectedFields: string[] = [];
 
   card: any;
+  phoneType = Constants.phoneType;
+  emailType = Constants.emailType;
+  addressType = Constants.addressType;
+  mediaType = Constants.mediaType;
+
   private mode: string = 'create' || 'edit';
 
   open(options: any): void {
     this.mode = options.mode;
-    this.card = options.payload;
+    this.card = options.card;
+    this.selectedFields = this.card.public_fields;
     this.modal.open();
   }
 
