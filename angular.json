@@ -541,6 +541,7 @@
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
             ],
             "styles": [
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/primeicons/primeicons.css",
@@ -548,8 +549,7 @@
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "src/social/styles/social.scss",
-              "src/assets/styles/styles-app-loading.scss"
+              "src/social/styles/social.scss"
             ],
             "scripts": [
               "node_modules/moment/min/moment.min.js",
@@ -719,6 +719,7 @@
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
             ],
             "styles": [
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
               "node_modules/primeicons/primeicons.css",
@@ -726,8 +727,7 @@
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "src/chat/styles/chat.scss",
-              "src/assets/styles/styles-app-loading.scss"
+              "src/chat/styles/chat.scss"
             ],
             "scripts": [
               "node_modules/moment/min/moment.min.js",
