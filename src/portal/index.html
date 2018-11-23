@@ -31,7 +31,7 @@
       height: 100%;
     }
 
-    .app-loading, .container {
+    .app-loading, .app-loading .loading-box {
       position: relative;
       display: flex;
       flex-direction: column;
@@ -39,14 +39,14 @@
       justify-content: center;
     }
 
-    .container {
-      height: 100%;
-      overflow: hidden;
+    .app-loading .loading-box  {
+      width: 200px;
+      height: 200px;
     }
 
     .app-loading {
-      width: 200px;
-      height: 200px;
+      height: 100%;
+      overflow: hidden;
     }
     
     .app-loading .spinner {
@@ -99,8 +99,8 @@
 
   <app-root>
     <!-- loading layout replaced by app after startupp -->
-    <div class="container">
-      <div class="app-loading">
+    <div class="app-loading">
+      <div class="loading-box">
         <div class="logo"></div>
         <svg class="spinner" viewBox="25 25 50 50">
           <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
