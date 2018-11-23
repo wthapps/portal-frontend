@@ -2,7 +2,7 @@
   <div class="page-body-control-nav">
     <h4>
       Cards
-      <i class="fa fa-info-circle text-fade" pTooltip="Your Public Card is the default card for your public information on all apps on the WTHApps site. You can also have private cards that you can share."
+      <i class="fa fa-info-circle text-fade" [pTooltip]="CARD_TOOLTIP"
          tooltipPosition="bottom"></i>
     </h4>
   </div>
@@ -11,7 +11,7 @@
   <div class="page-body-content-in pt15">
     <h4>Public Card
       <i class="fa fa-info-circle text-fade"
-          pTooltip="Your Public Card is the default card for your public information on all apps on the WTHApps site." tooltipPosition="bottom"></i>
+          [pTooltip]="PUBLIC_CARD_TOOLTIP" tooltipPosition="bottom"></i>
     </h4>
     <div class="card-list row">
       <div class="col-sm-4 mb15">
@@ -20,7 +20,7 @@
     </div>
     <h4>Private Cards
       <i class="fa fa-info-circle text-fade"
-         pTooltip="Private Card help you share private contact information with other users." tooltipPosition="bottom"></i>
+         [pTooltip]="PRIVATE_CARD_TOOLTIP" tooltipPosition="bottom"></i>
     </h4>
     <!-- <div class="text-fade">
       There are no private cards. <br>
@@ -35,4 +35,4 @@
 </div>
 
 <w-card-detail-modal #cardDetailModal (edit)="openEditModal($event)"></w-card-detail-modal>
-<w-card-edit-modal #cardEditModal [profile]="(profile$ | async)"></w-card-edit-modal>
+<w-card-edit-modal #cardEditModal [profile]="(profile$ | async)" (save)="onSave($event)"></w-card-edit-modal>

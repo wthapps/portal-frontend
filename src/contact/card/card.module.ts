@@ -8,14 +8,12 @@ import {
   CardDetailModalComponent,
   CardEditModalComponent
 } from '@contacts/card/components';
-import { CardDetailComponent } from '@contacts/card/components/card-detail.component';
 
 import { CardRoutingModule } from '@contacts/card/card-routing';
-import { CardService } from '@contacts/card';
+import { CardService } from './card.service';
 import { BsModalModule } from 'ng2-bs3-modal';
-import { CheckboxModule } from 'primeng/primeng';
+import { CheckboxModule, TooltipModule } from 'primeng/primeng';
 
-import { SharedModule } from '@shared/shared.module';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 
 @NgModule({
@@ -25,22 +23,20 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
     CardRoutingModule,
     BsModalModule,
     CheckboxModule,
+    TooltipModule,
     PipeModule,
-    // SharedModule
   ],
   declarations: [
     CardItemComponent,
     CardDetailModalComponent,
     CardEditModalComponent,
     CardListComponent,
-    CardDetailComponent,
   ],
   exports: [
     CardItemComponent,
     CardDetailModalComponent,
     CardEditModalComponent,
     CardListComponent,
-    CardDetailComponent,
   ],
   providers: [
     CardService

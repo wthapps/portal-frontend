@@ -15,6 +15,7 @@ export class CardEditModalComponent {
   selectedFields: string[] = [];
 
   card: any;
+  cardType: string = 'public' || 'private';
   phoneType = Constants.phoneType;
   emailType = Constants.emailType;
   addressType = Constants.addressType;
@@ -25,6 +26,7 @@ export class CardEditModalComponent {
   open(options: any): void {
     this.mode = options.mode;
     this.card = options.card;
+    this.cardType = options.cardType;
     this.selectedFields = this.card.public_fields;
     this.modal.open();
   }
@@ -34,8 +36,8 @@ export class CardEditModalComponent {
   }
 
   onSave() {
-    this.save.emit(this.card);
-    this.close();
+    this.card.public_fields = this.selectedFields;
+    this.save.emit({mode: this.mode, card: this.card});
   }
 
   onCancel() {

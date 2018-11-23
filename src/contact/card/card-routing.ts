@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CardListComponent } from '@contacts/card/components/card-list.component';
-import { CardDetailComponent } from '@contacts/card/components/card-detail.component';
 
 
 @NgModule({
@@ -10,10 +9,6 @@ import { CardDetailComponent } from '@contacts/card/components/card-detail.compo
       {
         path: '',
         component: CardListComponent
-      },
-      {
-        path: ':id/detail',
-        component: CardDetailComponent
       },
     ])
   ],

@@ -1,7 +1,7 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <bs-modal-header [showDismiss]="false">
     <div class="modal-header-nav">
-      <h4 class="modal-title">Edit private card</h4>
+      <h4 class="modal-title">Edit {{ cardType }} card</h4>
       <ul class="modal-header-navbar">
         <li>
           <button type="button" (click)="close()" class="btn btn-default btn-default-no-border">
@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="media-avatar-body">
-          <input type="text" class="form-control" placeholder="Card name" [value]="card?.name">
+          <input type="text" class="form-control" placeholder="Card name" [value]="card?.name" [readOnly]="cardType === 'private'">
         </div>
       </div>
     </div>
