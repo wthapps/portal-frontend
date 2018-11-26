@@ -208,6 +208,7 @@ export class ZMediaAlbumDetailComponent
   }
 
   openSelectedModal() {
+    // this.mediaSelectionService.setMultipleSelection(true);
     this.mediaSelectionService.open({
       hiddenTabs: ['videos', 'playlists'],
       selectedTab: 'photos',

@@ -118,7 +118,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
     if (dragBodyScroll) {
       this.hasScrollbar = (dragBodyScroll.scrollHeight > dragBodyScroll.clientHeight);
     }
-
+    // this.dragSelect.stop();
   }
 
   onDragSelected(data: any) {
@@ -136,6 +136,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onMultiSelected(item: any) {
+    console.log('onMultiSelected');
     if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0
      || !this.hasMultipleSelection) {
       this.objectListService.clear();
@@ -174,6 +175,8 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onClick(item: any) {
+    console.log('onClick');
+
     if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0
      || !this.hasMultipleSelection) {
       this.objectListService.clear();

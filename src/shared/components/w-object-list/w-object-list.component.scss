@@ -151,7 +151,8 @@ $wobject-checkbox: 30px;
         position: absolute;
         top: 5px;
         left: 5px + 10px;
-        pointer-events: none;
+        // remove because need to check
+        // pointer-events: none;
         visibility: hidden;
         i {
           width: 24px;
@@ -164,14 +165,14 @@ $wobject-checkbox: 30px;
           }
         }
       }
-
+      // change top 30px and height 80% because need check on circle
       .wobject-click {
-        top: 0;
+        top: 30px;
         left: 0;
         right: 0;
         bottom: 0;
         width: 100%;
-        height: 100%;
+        height: 80%;
       }
       &:hover, &.active {
         .wobject-row-checkbox {
