@@ -49,6 +49,7 @@ import { ModalService } from '@shared/components/modal/modal-service';
 import { PromptUpdateService } from './services/service-worker/prompt-update.service';
 import { CheckForUpdateService } from './services/service-worker/check-for-update.service';
 import { LogUpdateService } from './services/service-worker/log-update.service';
+import { SwPushService } from './services/service-worker/sw-push.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -120,7 +121,8 @@ export class SharedServicesModule {
         // Service worker related modules
         PromptUpdateService,
         LogUpdateService,
-        CheckForUpdateService
+        CheckForUpdateService,
+        SwPushService
       ]
     };
   }

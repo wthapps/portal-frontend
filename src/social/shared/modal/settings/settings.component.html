@@ -4,7 +4,7 @@
     </bs-modal-header>
 
     <bs-modal-body >
-      <div class="" *ngIf="user.settings">
+      <ng-container *ngIf="user.settings">
           <h3>General Settings</h3>
           <div class="form-group">
             <div class="inputSwitch-wrap">
@@ -34,7 +34,7 @@
                 </p-dropdown>
             </div>
           </div>
-        </div>
+        </ng-container>
     </bs-modal-body>
 
     <bs-modal-footer>

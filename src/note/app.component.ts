@@ -35,6 +35,7 @@ import { HeaderComponent } from '@shared/partials/header';
 import { PromptUpdateService } from '@shared/services/service-worker/prompt-update.service';
 import { LogUpdateService } from '@shared/services/service-worker/log-update.service';
 import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
+import { SwPushService } from '@shared/services/service-worker/sw-push.service';
 
 declare var _: any;
 
@@ -77,6 +78,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private store: Store<fromRoot.State>,
     private noteService: ZNoteService,
     private mixedEntityService: MixedEntityService,
+    private swPush: SwPushService,
     private promptUpdate: PromptUpdateService
   ) {
 
@@ -118,6 +120,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
       this.introduction.open();
     }
+
+    this.swPush.pushMessage();
   }
 
   ngOnDestroy() {
