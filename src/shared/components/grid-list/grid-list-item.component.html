@@ -5,41 +5,24 @@
   </div>
 
   <!--type == 'photo', 'video' -->
+  <!-- dont remove (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})" it impact list view -->
   <div *ngIf="object.model == 'Media::Photo' || object.model == 'Media::Video'" class="photo-box-figure"
-       (click)="select(object)">
+       (click)="select(object)" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
     <div class="photo-box-input" (click)="clickOnCircle(object, $event)">
       <i class="fa fa-check"></i>
     </div>
-    <!--(dblclick)="doAction({action:'previewAllPhotos', payload: {selectedObject: object}})"-->
-    <figure class="img-center-dv can-click"
-            (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
+    <figure class="img-center-dv can-click">
       <div class="photo-box-figure-in">
         <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url" alt="">
         <i *ngIf="object.model == 'Media::Video'" class="fa fa-play-circle-o"></i>
       </div>
     </figure>
-    <!--<div class="photo-box-name">
-      <span class="can-click" title="Double click to edit name" (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
-        <i *ngIf="object.model == 'Media::Photo'" class="fa fa-photo"></i>
-        <i *ngIf="object.model == 'Media::Video'" class="fa fa-video-camera"></i>
-        <div style="
-        text-overflow: ellipsis;
-        width: 300px;
-        display: block;
-        overflow: hidden;">
-          {{ object.name }}.{{ object.extension}}
-        </div>
+    <div class="photo-box-name">
+      <!-- <i *ngIf="object.model == 'Media::Photo'" class="fa fa-photo"></i>
+      <i *ngIf="object.model == 'Media::Video'" class="fa fa-video-camera"></i> -->
+      <span (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
+        {{ object.name }}.{{ object.extension}}
       </span>
-      <div class="hidden">
-        <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
-        <i *ngIf="object.favorite" class="fa fa-star"></i>
-      </div>
-    </div>-->
-    <div class="photo-box-name"
-         (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
-      <i *ngIf="object.model == 'Media::Photo'" class="fa fa-photo"></i>
-      <i *ngIf="object.model == 'Media::Video'" class="fa fa-video-camera"></i>
-      {{ object.name }}.{{ object.extension}}
       <div class="hidden">
         <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
         <i *ngIf="object.favorite" class="fa fa-star"></i>
@@ -55,13 +38,13 @@
   </div>
 
   <!--type == 'album'-->
+  <!-- dont remove (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})" it impact list view -->
   <div *ngIf="object.model == 'Media::Album' || object.model == 'Common::Sharing' || object.model == 'Media::Playlist'"
-       class="photo-box-figure" (click)="select(object)">
+       class="photo-box-figure" (click)="select(object)" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
     <div class="photo-box-input" (click)="clickOnCircle(object, $event)">
       <i class="fa fa-check"></i>
     </div>
-    <figure class="img-center-dv can-click"
-            (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
+    <figure class="img-center-dv can-click">
       <div class="photo-box-figure-in">
         <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url + '?t=' + time" alt="">
       </div>
@@ -79,8 +62,8 @@
         </span>
       </div>
     </figure>
-    <div class="photo-box-name" title="Double click to edit name" (dblclick)="editName(object, $event)">
-      <span class="can-click">
+    <div class="photo-box-name" title="Double click to edit name">
+      <span class="can-click" (dblclick)="editName(object, $event)">
         <i class="wthico-album"></i> {{ object.name }}
       </span>
       <div class="hidden">

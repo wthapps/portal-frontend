@@ -1,5 +1,5 @@
 import { ApiBaseService } from '@shared/services';
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -7,7 +7,7 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { Router } from '@angular/router';
 import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 
 @Mixins([AlbumCreateMixin])
 /* AlbumAddMixin This is album add methods, to
@@ -22,6 +22,7 @@ export class AlbumAddMixin implements AlbumCreateMixin {
   subAddAlbum: Subscription;
   subOpenCreateAlbum: Subscription;
   subCreateAlbum: Subscription;
+  destroy$: Subject<any>;
 
   // openModalAddToAlbum:(selectedObjects: any) => void;
   // onAddToAlbum:(e: any) => void;
@@ -40,11 +41,12 @@ export class AlbumAddMixin implements AlbumCreateMixin {
       buttonTitle: 'Create New Album',
       unit: 'photo'
     });
-    this.subAddAlbum = this.mediaAddModalService.onAdd$.pipe(take(1)).subscribe(e => {
+    this.subAddAlbum = this.mediaAddModalService.onAdd$.pipe(take(1)).pipe(takeUntil(this.destroy$)).subscribe(e => {
       this.onAddToAlbum({parents: [e], children: selectedObjects});
     });
     this.subOpenCreateAlbum = this.mediaAddModalService.onOpenCreateNew$
       .pipe(take(1))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(e => {
         this.openCreateAlbumModal(selectedObjects);
       });

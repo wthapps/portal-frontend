@@ -23,6 +23,7 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { WUploader } from '@shared/services/w-uploader';
+import { Subject } from 'rxjs';
 
 declare var _: any;
 @Mixins([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
@@ -61,6 +62,7 @@ MediaModalMixin {
   modalRef: any;
   endLoading: any;
   sorting: any =  {sort_name: "Date", sort: "desc"};
+  destroy$ = new Subject();
 
   private sub: any;
 
@@ -82,6 +84,11 @@ MediaModalMixin {
 
   ngOnInit() {
     this.loadObjects();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadObjects(opts: any = {}) {
@@ -220,11 +227,6 @@ custom method please overwirte any method*/
       default:
         break;
     }
-  }
-
-
-  ngOnDestroy() {
-    // this.sub.unsubscribe();
   }
 
   /* MediaListMixin This is media list methods, to

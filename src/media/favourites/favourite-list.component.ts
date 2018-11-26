@@ -64,6 +64,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
   iconNoData: any = 'fa fa-star';
   sorting: any;
   endLoading: any;
+  disableMoreAction: boolean = true;
 
   constructor(
     public apiBaseService: ApiBaseService,

@@ -33,11 +33,11 @@
 
 <!-- Text message -->
 <ng-template #messageItemContentText>
-  <div class="message-item-content" style="padding: 10px">
+  <div class="message-item-content message-padding">
     <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
   </div>
-  <div *ngFor="let link of message.links" style="width: 80%; padding: 3px" style="clear: both">
-    <div *ngIf="link.image && link.title && !message.deleted">
+  <div *ngFor="let link of message.links" style="clear: both">
+    <div *ngIf="link.image && link.title && !message.deleted" class="message-padding">
       <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
     </div>
   </div>
@@ -76,17 +76,13 @@
         <img [src]="message.file?.thumbnail_url" alt="">
         <i class="fa fa-play-circle-o"></i>
       </div>
-      <!-- <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
-        <img [src]="message.file?.thumbnail_url" alt="">
-        <i class="fa fa-play-circle-o"></i>
-      </div> -->
     </figure>
   </div>
   <!-- file type-->
   <div class="message-item-file message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
     <a class="media-div link-text" [href]="message.file?.url" target="_blank" download>
       <div class="pull-left">
-        <i class="fa fa-file-o"></i>
+        <i class="fa fa-file-archive-o"></i>
       </div>
       <div class="media-div-body">
         <div class="media-div-heading">{{ message.file?.full_name }}</div>
@@ -106,7 +102,7 @@
 
   <!--show sending -->
   <div *ngIf="message.sending_status == 1" class="message-item-file">
-    <div class="media-div link-text" style="padding: 10px">
+    <div class="media-div link-text message-padding">
       <div class="pull-left">
         <i class="fa fa-spinner fa-spin fa-fw"></i>
       </div>
@@ -117,7 +113,7 @@
   </div>
   <!--show failed sending -->
   <div *ngIf="message.sending_status == -1" class="message-item-file">
-    <div class="media-div link-text" style="padding: 10px">
+    <div class="media-div link-text message-padding">
       <div class="pull-left">
         <i class="fa fa-file-o"></i>
       </div>
@@ -128,7 +124,7 @@
   </div>
   <!--cancel message type-->
   <div *ngIf="message.sending_status == 2" class="message-item-file">
-    <div class="media-div link-text" style="padding: 10px">
+    <div class="media-div link-text message-padding">
       <div class="pull-left">
         <i class="fa fa-file-o"></i>
       </div>
@@ -138,7 +134,7 @@
     </div>
   </div>
   <div *ngIf="message.sending_status == 3" class="message-item-file">
-    <div class="media-div link-text" style="padding: 10px">
+    <div class="media-div link-text message-padding">
       <div class="pull-left">
         <i class="fa fa-file-o"></i>
       </div>

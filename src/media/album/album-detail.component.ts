@@ -102,6 +102,7 @@ export class ZMediaAlbumDetailComponent
   subCreateAlbum: any;
   endLoading: any;
   returnUrls: any;
+  destroy$ = new Subject();
   // ============
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -110,7 +111,7 @@ export class ZMediaAlbumDetailComponent
 
   private uploadingFiles: Array<any> = [];
   private objectType = 'Media::Photo';
-  private destroy$ = new Subject();
+
 
   constructor(public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
@@ -135,6 +136,11 @@ export class ZMediaAlbumDetailComponent
       this.loadObject(p.uuid);
     });
     this.returnUrls = this.route.snapshot.queryParams.returnUrls;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   doListEvent(event: any) {
@@ -204,6 +210,7 @@ export class ZMediaAlbumDetailComponent
   openSelectedModal() {
     this.mediaSelectionService.open({
       hiddenTabs: ['videos', 'playlists'],
+      selectedTab: 'photos',
       filter: 'photo',
       allowCancelUpload: true,
       allowedFileTypes: ['image/*']
@@ -211,7 +218,7 @@ export class ZMediaAlbumDetailComponent
     if (this.subSelect) { this.subSelect.unsubscribe(); }
     this.subSelect = this.mediaSelectionService.selectedMedias$.pipe(
       filter(photos => photos.length > 0)
-    ).subscribe(photos => {
+    ).pipe(takeUntil(this.destroy$)).subscribe(photos => {
         this.onAddToAlbum({parents: [this.object], children: photos});
         // this.objects = [...photos.filter(p => p.model === this.objectType), ...this.objects];
         // this.loadObjects(this.object.uuid);
@@ -735,10 +742,5 @@ export class ZMediaAlbumDetailComponent
         iconClass: 'fa fa-times'
       }
     };
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

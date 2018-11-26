@@ -24,6 +24,7 @@ import { MediaViewMixin } from '@shared/mixin/media-view.mixin';
 import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
 import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
 import { PlaylistCreateMixin } from '@shared/mixin/playlist/playlist-create.mixin';
+import { Subject } from 'rxjs';
 
 @Mixins([MediaViewMixin, AlbumAddMixin, AlbumCreateMixin, PlaylistCreateMixin])
 @Component({
@@ -63,6 +64,7 @@ AlbumCreateMixin {
   subCreatePlaylist: any;
 
   uppy: any;
+  destroy$ = new Subject();
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -96,6 +98,12 @@ AlbumCreateMixin {
     });
   }
 
+  ngOnDestroy() {
+    if (this.subUploader) { this.subUploader.unsubscribe(); }
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   upload(content_types: any = []) {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
       allowedFileTypes: content_types,
@@ -107,10 +115,6 @@ AlbumCreateMixin {
       allowedFileTypes: content_types,
       video: true
     });
-  }
-
-  ngOnDestroy() {
-    if (this.subUploader) { this.subUploader.unsubscribe(); }
   }
 
   doAction(event: any) {

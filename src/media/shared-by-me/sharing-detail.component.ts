@@ -93,6 +93,7 @@ export class ZMediaSharingDetailComponent
   subSelect: any;
   endLoading: any;
   returnUrls: any;
+  destroy$ = new Subject();
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
@@ -100,7 +101,6 @@ export class ZMediaSharingDetailComponent
   private uploadingFiles: Array<any> = [];
   private photoSharingTypes: Array<any> = ['Media::Photo', 'Media::Album'];
   private videoSharingTypes: Array<any> = ['Media::Media', 'Media::Playlist'];
-  private destroy$ = new Subject();
 
   constructor(public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,

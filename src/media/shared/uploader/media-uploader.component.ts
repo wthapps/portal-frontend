@@ -20,7 +20,7 @@ import { ApiBaseService } from '@wth/shared/services';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 import { PlaylistModalService } from '@shared/shared/components/photo/modal/playlist/playlist-modal.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { WUploader } from '@shared/services/w-uploader';
 import { ModalService } from '@shared/components/modal/modal-service';
 import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
@@ -66,6 +66,7 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy,
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
+  destroy$ = new Subject();
 
   @Output() createNewAlbum: EventEmitter<any> = new EventEmitter<any>();
   @Output() addToAlbum: EventEmitter<any> = new EventEmitter<any>();
@@ -103,6 +104,12 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy,
     this.uploaderSub = this.uploader.event$.subscribe(event => {
       this.updateUploadStatus(event);
     });
+  }
+
+  ngOnDestroy() {
+    this.uploaderSub.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngAfterViewInit() {
@@ -236,9 +243,4 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy,
   hasSuccessful() {
     return this.photos.length > 0 ? true : false;
   }
-
-  ngOnDestroy() {
-    this.uploaderSub.unsubscribe();
-  }
-
 }

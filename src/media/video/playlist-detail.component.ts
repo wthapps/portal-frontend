@@ -87,11 +87,11 @@ PlaylistAddMixin, MediaDownloadMixin {
   returnUrls: any;
   sharings: any;
   endLoading: any;
+  destroy$ = new Subject();
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
   @ViewChild('coverModal') coverModal: BsModalComponent;
-  private destroy$ = new Subject();
   private uploadingFiles: Array<any> = [];
   private objectType = 'Media::Video';
 
@@ -143,6 +143,14 @@ PlaylistAddMixin, MediaDownloadMixin {
     });
 
     this.returnUrls = this.route.snapshot.queryParams.returnUrls;
+  }
+
+  ngOnDestroy() {
+    if (this.subSelect) {
+      this.subSelect.unsubscribe();
+    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   doListEvent(e: any) {
@@ -738,13 +746,5 @@ PlaylistAddMixin, MediaDownloadMixin {
         iconClass: 'fa fa-times'
       }
     };
-  }
-
-  ngOnDestroy() {
-    if (this.subSelect) {
-      this.subSelect.unsubscribe();
-    }
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

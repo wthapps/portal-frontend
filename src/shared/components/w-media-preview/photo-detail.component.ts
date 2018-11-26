@@ -30,6 +30,7 @@ import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal
 import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
+import { Subject } from 'rxjs';
 
 @Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin, MediaListDetailMixin])
 @Component({
@@ -42,7 +43,7 @@ import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
     // AddToAlbumModalComponent
   ]
 })
-export class PhotoDetailComponent implements OnInit,
+export class PhotoDetailComponent implements OnInit, OnDestroy,
   MediaAdditionalListMixin,
   SharingModalMixin,
   MediaDownloadMixin,
@@ -69,6 +70,8 @@ export class PhotoDetailComponent implements OnInit,
   returnUrls: any;
   sharings: any = [];
   listIds: DoublyLinkedLists;
+  destroy$ = new Subject();
+
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   validateActions: (menuActions: any, role_id: number) => any;
@@ -139,6 +142,11 @@ export class PhotoDetailComponent implements OnInit,
           }
         });
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadObject:(input?: any) => void;
