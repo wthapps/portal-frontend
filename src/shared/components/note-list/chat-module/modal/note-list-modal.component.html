@@ -12,7 +12,8 @@
       <i class="fa fa-search"></i>
     </button>
 
-    <w-nav-tab [ngClass]="{'invisible': searchShow}" [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)">
+    <w-nav-tab [ngClass]="{'invisible': searchShow}" [tabs]="tabs" [setTabActive]="currentTab"
+               (currentTab)="tabAction($event)">
     </w-nav-tab>
 
     <w-object-toolbar-selected [selectedObjects]="selectedObjects" *ngIf="insertEnable">
@@ -22,20 +23,17 @@
   </bs-modal-header>
 
 
-
   <bs-modal-body>
-    <div class="clearfix" style="position: relative; z-index: 99999">
-      <z-shared-breadcrumb [models]="breadcrumb" class="note-breadcrumb" (onBreadcrumbAction)="onBreadcrumbAction($event)"></z-shared-breadcrumb>
+    <div class="media-selection-toolbar note-selection-toolbar">
+      <z-shared-breadcrumb [models]="breadcrumb" class="note-breadcrumb"
+                           (onBreadcrumbAction)="onBreadcrumbAction($event)"></z-shared-breadcrumb>
       <chat-note-shared-toolbar #toolbar (events)="doEvent($event)"></chat-note-shared-toolbar>
     </div>
-
-    <!-- <div class="content-overflow" style="max-height: 600px;margin-right: 0px" infiniteScroll infiniteScrollDistance="1" infiniteScrollUpDistance="1"
-      [scrollWindow]="true" (scrolled)="loadMore()" (scrolledUp)="loadMore()"> -->
-    <div class="content-overflow" style="max-height: 600px;margin-right: 0px; background-color: #f6f6f6" infiniteScroll [scrollWindow]="false"
+    <div class="media-selection-content note-selection-content gray-light"
+         infiniteScroll
+         [scrollWindow]="false"
          [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50" (scrolled)="loadMore()">
-      <div>
-        <share-chat-note-list [viewOption]="toolbar.viewMode" class="wobject-grid has-scrollbar"></share-chat-note-list>
-      </div>
+      <share-chat-note-list [viewOption]="toolbar.viewMode" class="wobject-grid has-scrollbar"></share-chat-note-list>
     </div>
   </bs-modal-body>
 </bs-modal>
