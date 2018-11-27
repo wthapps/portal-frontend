@@ -49,12 +49,14 @@ export class WObjectListService {
   }
 
   addOrRemoveItem(item: any) {
+    let items;
     if (_.find(this.selectedObjectsSubject.getValue(), {'id': item.id})) {
-      _.remove(this.selectedObjectsSubject.getValue(), {'id': item.id});
+      items = this.selectedObjectsSubject.getValue();
+      items = items.filter(i => i.id !== item.id);
     } else {
-      const items = this.selectedObjectsSubject.getValue().concat([item]);
-      this.selectedObjectsSubject.next(items);
+      items = this.selectedObjectsSubject.getValue().concat([item]);
     }
+    this.selectedObjectsSubject.next(items);
   }
 
   setSelectedObjects(items: any) {

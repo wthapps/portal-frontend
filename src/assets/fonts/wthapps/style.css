@@ -90,3 +90,10 @@
 .wthico-pinterest-p:before {
   content: "\f231";
 }
+.wthico-megaphone:before {
+  content: "\e903";
+}
+.wthico-megaphone-mute:before {
+  content: "\e904";
+}
+
