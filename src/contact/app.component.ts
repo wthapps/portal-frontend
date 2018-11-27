@@ -116,10 +116,11 @@ export class AppComponent
         document.body.scrollTop = 0;
       });
 
+    this.contactService.initialLoad();
+
     this.groupService
       .getAllGroups()
-      .then((groups: any[]) => console.log('getAllGroups: ', groups))
-      .then(() => this.contactService.initialLoad())
+      // .then(() => this.contactService.initialLoad())
       .then(() => this.contactService.loadUserSetttings())
       .then(() => timer(GAPI_TIMEOUT).subscribe(_ => this.googleApiService.handleClientLoad()));
   }
