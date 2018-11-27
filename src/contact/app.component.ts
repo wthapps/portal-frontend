@@ -37,6 +37,7 @@ import { HeaderComponent } from '@shared/partials/header';
 import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
 import { LogUpdateService } from './../shared/services/service-worker/log-update.service';
 import { CardEditModalComponent } from './card/components';
+import { SwPushService } from '@shared/services/service-worker/sw-push.service';
 
 
 const GAPI_TIMEOUT = 2000;
@@ -81,6 +82,7 @@ export class AppComponent
     public contactService: ZContactService,
     private groupService: GroupService,
     private googleApiService: GoogleApiService,
+    private swPush: SwPushService,
     private promptUpdate: PromptUpdateService
   ) {
     console.log('Environment config', Config, this.confirmDialog);

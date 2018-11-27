@@ -5,8 +5,8 @@ import { ApiBaseService } from '../apibase.service';
 
 @Injectable()
 export class SwPushService {
-  public_key: string = environment.keys.recaptcha_site_key;
-  readonly url: string = 'notification_subscription';
+  public_key: string = environment.keys.vapid_public_key;
+  readonly url: string = 'common/notification_subscriptions';
 
   constructor(private swPush: SwPush,
     private api: ApiBaseService ) {

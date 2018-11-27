@@ -120,8 +120,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {
       this.introduction.open();
     }
-
-    this.swPush.pushMessage();
   }
 
   ngOnDestroy() {
