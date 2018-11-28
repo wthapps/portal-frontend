@@ -20,7 +20,7 @@
     <div class="photo-box-name">
       <!-- <i *ngIf="object.model == 'Media::Photo'" class="fa fa-photo"></i>
       <i *ngIf="object.model == 'Media::Video'" class="fa fa-video-camera"></i> -->
-      <span class="can-click" (dblclick)="editName(object, $event)">
+      <span (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
         {{ object.name }}.{{ object.extension}}
       </span>
       <div class="hidden">
