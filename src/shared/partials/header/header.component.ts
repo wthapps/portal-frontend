@@ -1,3 +1,4 @@
+import { ApiBaseService } from './../../services/apibase.service';
 import { UserService } from './../../services/user.service';
 import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Constants } from '../../constant/config/constants';
@@ -8,6 +9,8 @@ import { ConnectionNotificationService } from '@wth/shared/services/connection-n
 import { User } from '@wth/shared/shared/models';
 import { Observable } from 'rxjs/Observable';
 import { SwUpdate } from '@angular/service-worker';
+import { AuthService } from '@shared/services';
+import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
 
 declare var $: any;
 declare var _: any;
@@ -36,6 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constants: any;
   readonly urls: any = Constants.baseUrls;
   type = 'update'; // update , connection
+  notificationCount = 0;
 
   @HostListener('document:click', ['$event'])
   clickedOutside($event: any) {
@@ -48,6 +52,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private channelService: ChannelService,
     private renderer: Renderer2,
     private swUpdate: SwUpdate,
+    private authService: AuthService,
+    private apiBaseService: ApiBaseService,
     public connectionService: ConnectionNotificationService,
     public notificationService: NotificationService
   ) {
@@ -63,10 +69,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
     }
 
+    if (this.authService.isAuthenticated()) {
+      this.countCommonNotification().then(() => this.countChatNotification());
+    }
+
   }
 
   ngOnDestroy(): void {
     this.channelService.unsubscribe();
+  }
+
+  countCommonNotification(): Promise<any> {
+    return this.notificationService.getNewNotificationCounts().toPromise()
+      .then(res => {
+        this.connectionService.newNotifCount = res.data.connection_count;
+        this.notificationService.newNotifCount = res.data.update_count;
+      });
+  }
+
+  countChatNotification(): void {
+    this.apiBaseService
+        .addCommand(ConversationApiCommands.notificationsCount())
+        .subscribe((res: any) => {
+          this.notificationCount = res.data.count;
+        });
   }
 
   subscribeChanneService() {

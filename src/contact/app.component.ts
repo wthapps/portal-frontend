@@ -115,13 +115,6 @@ export class AppComponent
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
-
-    this.groupService
-      .getAllGroups()
-      .then((groups: any[]) => console.log('getAllGroups: ', groups))
-      .then(() => this.contactService.initialLoad())
-      .then(() => this.contactService.loadUserSetttings())
-      .then(() => timer(GAPI_TIMEOUT).subscribe(_ => this.googleApiService.handleClientLoad()));
   }
 
   ngAfterViewInit() {
@@ -131,6 +124,11 @@ export class AppComponent
     ) {
       this.introduction.open();
     }
+
+    this.contactService.initialLoad()
+    .then(() => this.groupService.getAllGroups())
+    .then(() => this.contactService.loadUserSetttings())
+    .then(() => timer(GAPI_TIMEOUT).subscribe(_ => this.googleApiService.handleClientLoad()));
   }
 
   ngOnDestroy() {

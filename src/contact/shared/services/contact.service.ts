@@ -62,7 +62,7 @@ export class ZContactService extends BaseEntityService<any> {
     private wthConfirmService: WthConfirmService
   ) {
     super(apiBaseService);
-    this.url = 'contact/contacts';
+    this.url = 'contact/wcontacts';
 
     this.listenToList = this.listenToListSource.asObservable();
     this.listenToItem = this.listenToItemSource.asObservable();
@@ -97,9 +97,9 @@ export class ZContactService extends BaseEntityService<any> {
 
   syncSelectedContacts(): void {
     this.contactsSubject.subscribe((contacts: Contact[]) => {
-      if (contacts.length === 0 )
+      if (contacts.length === 0 ) {
         this.selectedObjects.length = 0;
-      else {
+      } else {
         const contactIds = contacts.map(ct => ct.id);
         this.selectedObjects = this.selectedObjects.filter(o => contactIds.includes(o.id));
       }
@@ -115,7 +115,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   loadUserSetttings(): Promise<any> {
     return this.apiBaseService
-      .get(`contact/contacts/settings`)
+      .get(`${this.url}/settings`)
       .toPromise()
       .then((res: any) => {
         this.userSettings = res.data;
@@ -153,11 +153,11 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   getWthContact(id): Observable<any> {
-    return this.apiBaseService.get(`contact/contacts/show_user`, { id });
+    return this.apiBaseService.get(`${this.url}/show_user`, { id });
   }
 
   checkEmails(payload: any) {
-    return this.apiBaseService.post(`contact/contacts/check_emails`, payload);
+    return this.apiBaseService.post(`${this.url}/check_emails`, payload);
   }
 
   changeSortOption(order?: string) {
@@ -347,7 +347,7 @@ export class ZContactService extends BaseEntityService<any> {
     } else {
       contacts = _.filter(this.contacts, (contact: any) => {
         const cgroups = _.map(contact.groups, 'name');
-        if (_.indexOf(cgroups, group) > -1) return contact;
+        if (_.indexOf(cgroups, group) > -1) { return contact; }
       });
     }
 
@@ -518,7 +518,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private followingLoad(url: string) {
-    if (!_.isEmpty(url))
+    if (!_.isEmpty(url)) {
       this.apiBaseService
         .post(url)
         .toPromise()
@@ -527,7 +527,7 @@ export class ZContactService extends BaseEntityService<any> {
           this.nextLink = _.get(res, 'meta.links.next');
           this.followingLoad(this.nextLink);
         });
-    else this.notifyContactsObservers();
+    } else { this.notifyContactsObservers(); }
   }
 
   createCallback(contact: any): void {
@@ -536,11 +536,11 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private updateCallback(contact: any): void {
-    if (contact && contact.length === 0)
+    if (contact && contact.length === 0) {
       return;
+    }
     this.contacts = _.map(this.contacts, (ct: any) => {
-      if (contact.id === ct.id) return contact;
-      else return ct;
+      return (contact.id === ct.id) ? contact : ct;
     });
 
     _.forEach(this.selectedObjects, (selected: any, index: number) => {

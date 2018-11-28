@@ -1,22 +1,26 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ApiBaseService } from '@shared/services';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { ZContactService } from '@contacts/shared/services/contact.service';
+import { Subject } from 'rxjs/Subject';
 
 
 @Component({
-
   selector: 'z-contact-shared-setting',
   templateUrl: 'settings.component.html'
 })
 
-export class ZContactSharedSettingsComponent implements OnInit {
+export class ZContactSharedSettingsComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   item: any;
   form: FormGroup;
   phone_default_code: AbstractControl;
 
+  private destroySubject: Subject<any> = new Subject();
+
   constructor(private fb: FormBuilder,
+              private contactService: ZContactService,
               private apiBaseService: ApiBaseService) {
     // Init default
     this.form = this.fb.group({
@@ -27,11 +31,16 @@ export class ZContactSharedSettingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.apiBaseService.get(`contact/contacts/settings`).subscribe((res: any) => {
+    this.apiBaseService.get(`contact/wcontacts/settings`).subscribe((res: any) => {
       if (res.data && res.data.phone_default_code) {
         (<FormControl>this.phone_default_code).setValue(res.data.phone_default_code);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   onCompleteChange(country: string) {
@@ -39,7 +48,7 @@ export class ZContactSharedSettingsComponent implements OnInit {
   }
 
   submit(value: any) {
-    this.apiBaseService.post(`contact/contacts/update_settings`, { contact_setting_attributes: value })
+    this.apiBaseService.post(`contact/wcontacts/update_settings`, { contact_setting_attributes: value })
       .subscribe((res: any) => {
         console.log('settings', res);
       });

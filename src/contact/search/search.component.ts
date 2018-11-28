@@ -235,7 +235,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
     const tmp = [...this.contactService.selectedObjects];
     this.contactService.selectedObjects = [];
     tmp.forEach(data => {
-      this.apiBaseService.post(`contact/contacts/save`, data).subscribe(res => {
+      this.apiBaseService.post(`contact/wcontacts/save`, data).subscribe(res => {
         this.contacts = this.contacts.map(contact => {
           if (contact.settings && contact.id === res.data.wthapps_user_id) {
             res.data.selected = data.selected;

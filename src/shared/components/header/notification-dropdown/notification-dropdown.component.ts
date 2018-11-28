@@ -37,13 +37,14 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    if (this.authService.isAuthenticated()) {
-      this.notificationService.getNewNotificationCounts().toPromise()
-        .then(res => {
-          this.connectionService.newNotifCount = res.data.connection_count;
-          this.notificationService.newNotifCount = res.data.update_count;
-        });
-    }
+    // This function is relocated to w-header components for PWA bug fixes
+    // if (this.authService.isAuthenticated()) {
+    //   this.notificationService.getNewNotificationCounts().toPromise()
+    //     .then(res => {
+    //       this.connectionService.newNotifCount = res.data.connection_count;
+    //       this.notificationService.newNotifCount = res.data.update_count;
+    //     });
+    // }
   }
 
   ngAfterViewInit(): void {
