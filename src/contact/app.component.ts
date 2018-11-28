@@ -127,8 +127,10 @@ export class AppComponent
 
     this.contactService.initialLoad()
     .then(() => this.groupService.getAllGroups())
-    .then(() => this.contactService.loadUserSetttings())
-    .then(() => timer(GAPI_TIMEOUT).subscribe(_ => this.googleApiService.handleClientLoad()));
+    .then(() => {
+      timer(GAPI_TIMEOUT).subscribe(_ => this.googleApiService.handleClientLoad());
+      this.contactService.loadUserSetttings();
+    });
   }
 
   ngOnDestroy() {
