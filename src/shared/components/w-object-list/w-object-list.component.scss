@@ -36,7 +36,7 @@ $wobject-checkbox: 30px;
     }
   }
   .wobject-row-body {
-    @include flex(1);
+    max-height: 100%;
     overflow: auto;
   }
 
@@ -78,6 +78,7 @@ $wobject-checkbox: 30px;
     }
   }
   .wobject-row {
+    word-break: break-word;
     &.active .wobject-row-checkbox i, & .wobject-row-checkbox i.active {
       background-color: $theme-color !important;
       border-color: $theme-color !important;
