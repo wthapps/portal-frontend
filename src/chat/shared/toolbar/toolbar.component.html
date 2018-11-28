@@ -21,6 +21,10 @@
         tooltipPosition="top">
         <i class="fa" [ngClass]="contactSelect.favourite? 'fa-star': 'fa-star-o'"></i>
       </button>
+      <button type="button" class="btn btn-default" (click)="toogleNotification()" pTooltip="{{ (contactSelect.notification) ? tooltip.disable_notification : tooltip.enable_notification }}"
+        tooltipPosition="top">
+        <i class="fa" [ngClass]="contactSelect.notification? 'fw fw-megaphone': 'fw fw-megaphone-mute'"></i>
+      </button>
       <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
           tooltipPosition="top">
@@ -46,14 +50,13 @@
           <li *ngIf="contactSelect.group_json.group_type == 'couple'">
             <a [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a>
           </li>
-          <!--show if current is one user-->
-          <li role="separator" class="divider"></li>
+          <!-- <li role="separator" class="divider"></li>
           <li *ngIf="contactSelect.notification">
             <a href="javascript:;" (click)="disableNotification()">Disable Notification</a>
           </li>
           <li *ngIf="!contactSelect.notification">
             <a href="javascript:;" (click)="enableNotification()">Enable Notification</a>
-          </li>
+          </li> -->
         </ul>
       </div>
       <button class="btn btn-default" (click)="onShowAssets()" type="button">

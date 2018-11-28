@@ -39,6 +39,9 @@
   .menuleft-chat-content {
     @include flex(1);
     overflow: auto;
+    .conversation-label {
+      margin: 10px;
+    }
   }
 
   .menu-left-item {
@@ -126,6 +129,7 @@
       max-height: 25px;
       line-height: 25px;
       overflow: hidden;
+      text-overflow: ellipsis;
       .wth-emoji {
         padding-top: 0;
         padding-bottom: 0;

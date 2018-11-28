@@ -136,10 +136,18 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onMultiSelected(item: any) {
-    console.log('onMultiSelected');
+    if (!this.hasMultipleSelection) {
+      this.objectListService.clear();
+      this.objectListService.addItem(
+        {
+          id: item.id,
+          object_type: item.object_type,
+        }
+      );
+      return;
+    }
 
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0
-     || !this.hasMultipleSelection) {
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0) {
       this.objectListService.clear();
       this.objectListService.addItem(
         {
@@ -176,10 +184,18 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onClick(item: any) {
-    console.log('onClick');
+    if (!this.hasMultipleSelection) {
+      this.objectListService.clear();
+      this.objectListService.addItem(
+        {
+          id: item.id,
+          object_type: item.object_type,
+        }
+      );
+      return;
+    }
 
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0
-     || !this.hasMultipleSelection) {
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0) {
       this.objectListService.clear();
       this.objectListService.addItem(
         {
