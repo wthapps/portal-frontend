@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable ,  Subject ,  BehaviorSubject } from 'rxjs';
-import { map, retry, timeout } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { GroupService } from '../../group/group.service';
 import { Router } from '@angular/router';
@@ -97,9 +97,9 @@ export class ZContactService extends BaseEntityService<any> {
 
   syncSelectedContacts(): void {
     this.contactsSubject.subscribe((contacts: Contact[]) => {
-      if (contacts.length === 0 ) {
+      if (contacts.length === 0 )
         this.selectedObjects.length = 0;
-      } else {
+      else {
         const contactIds = contacts.map(ct => ct.id);
         this.selectedObjects = this.selectedObjects.filter(o => contactIds.includes(o.id));
       }
@@ -110,17 +110,14 @@ export class ZContactService extends BaseEntityService<any> {
   // Change get all URL to support caching by SW
   getAll(options?: any, url?: any): Observable<any> {
     const path = url || `${this.url}/all`;
-    return this.apiBaseService.post(path, options).pipe(
-      retry(3)
-    );
+    return this.apiBaseService.post(path, options);
   }
 
-  loadUserSetttings(): void {
-    this.apiBaseService
+  loadUserSetttings(): Promise<any> {
+    return this.apiBaseService
       .get(`contact/contacts/settings`)
-      .pipe(
-        retry(3)
-      ).subscribe((res: any) => {
+      .toPromise()
+      .then((res: any) => {
         this.userSettings = res.data;
       });
   }
@@ -350,7 +347,7 @@ export class ZContactService extends BaseEntityService<any> {
     } else {
       contacts = _.filter(this.contacts, (contact: any) => {
         const cgroups = _.map(contact.groups, 'name');
-        if (_.indexOf(cgroups, group) > -1) { return contact; }
+        if (_.indexOf(cgroups, group) > -1) return contact;
       });
     }
 
@@ -446,12 +443,14 @@ export class ZContactService extends BaseEntityService<any> {
       });
   }
 
-  initialLoad(): void {
+  initialLoad(): Promise<any> {
     if (this.initLoadSubject.getValue() === true) {
       this.initLoadSubject.next(true);
+      return Promise.resolve(this.contacts);
     }
-    this.getAll()
-      .subscribe((res: any) => {
+    return this.getAll()
+      .toPromise()
+      .then((res: any) => {
         this.contacts = res.data;
         this.notifyContactsObservers();
         this.initLoadSubject.next(true);
@@ -519,7 +518,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private followingLoad(url: string) {
-    if (!_.isEmpty(url)) {
+    if (!_.isEmpty(url))
       this.apiBaseService
         .post(url)
         .toPromise()
@@ -528,7 +527,7 @@ export class ZContactService extends BaseEntityService<any> {
           this.nextLink = _.get(res, 'meta.links.next');
           this.followingLoad(this.nextLink);
         });
-    } else { this.notifyContactsObservers(); }
+    else this.notifyContactsObservers();
   }
 
   createCallback(contact: any): void {
@@ -537,11 +536,11 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private updateCallback(contact: any): void {
-    if (contact && contact.length === 0) {
+    if (contact && contact.length === 0)
       return;
-    }
     this.contacts = _.map(this.contacts, (ct: any) => {
-      return (contact.id === ct.id) ? contact : ct;
+      if (contact.id === ct.id) return contact;
+      else return ct;
     });
 
     _.forEach(this.selectedObjects, (selected: any, index: number) => {
