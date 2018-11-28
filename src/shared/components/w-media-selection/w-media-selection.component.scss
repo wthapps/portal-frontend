@@ -43,7 +43,10 @@
     }
   }
   .media-selection-content {
-    height: 400px;
+    height: 750px;
+    @media (max-height: $screen-md-min) {
+      height: 500px;
+    }
     position: relative;
     @include border-bottom-radius($border-radius-large);
     @include flexbox();

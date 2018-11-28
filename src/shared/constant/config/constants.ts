@@ -499,6 +499,8 @@ export class ConstantsBase {
     more: 'More',
     new: 'New',
     next: 'Next',
+    enable_notification: 'Enable notification',
+    disable_notification: 'Disable notification',
     notification: 'Notification',
     notifications: 'Notifications',
     chat: 'Chat',
