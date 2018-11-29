@@ -8,7 +8,7 @@
       === 'edit' ? 'Save' : 'Create' }}
     </button>
 
-    <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min" (click)="goBack()">Cancel
+    <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min ml10" (click)="goBack()">Cancel
     </button>
 
     <z-contact-shared-actions-bar *ngIf="isWthContact || (mode === 'view' && !viewOnly)" [showViewDetail]="false"

@@ -22,6 +22,28 @@
       "files": [
         "/assets/**"
       ]
-    }
+    }}],
+    "dataGroups": [{
+      "name": "api-freshness",
+      "urls": [],
+      "cacheConfig": {
+        "maxSize": 30,
+        "maxAge": "7d",
+        "timeout": "120s",
+        "strategy": "freshness"
+      }
+      },
+      {
+        "name": "api-performance",
+        "urls": [
+          "contact/wcontacts/settings",
+          "contact/groups/all"
+        ],
+        "cacheConfig": {
+          "maxSize": 30,
+          "maxAge": "7d",
+          "timeout": "120s",
+          "strategy": "performance"
+        }
   }]
 }

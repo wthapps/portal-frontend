@@ -105,8 +105,9 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
         if (this.isWthContact) {
           this.viewOnly = true;
           this.getWthContact(id);
-        } else
+        } else {
           this.get(id);
+        }
       }
 
       if (this.mode === 'view') {
