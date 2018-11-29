@@ -1,0 +1,38 @@
+<span (click)="loadData('todayilearned')" class="label label-default">todayilearned</span>
+<span (click)="loadData('gifs')" class="label label-primary">gifs</span>
+<span (click)="loadData('trashy')" class="label label-success">trashy</span>
+<span (click)="loadData('gaming')" class="label label-info">gaming</span>
+<span (click)="loadData('aww')" class="label label-warning">aww</span>
+<span (click)="loadData('PrequelMemes')" class="label label-danger">PrequelMemes</span>
+
+<ng-container *ngIf="data$ | async as list; else templateloading">
+  <div *ngIf="list?.length > 0; else templateNodata"
+    infinite-scroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    [scrollWindow]="true"
+    (scrolled)="onLoadMore()">
+    <div *ngFor="let item of list; trackBy:item?.data.id" class="media m20">
+      <div *ngIf="item.data?.thumbnail" class="media-left">
+        <img width="140" [src]="item.data?.thumbnail" alt="">
+      </div>
+      <div class="media-body">
+        <p>{{ item.data.title }}</p>
+      </div>
+    </div>
+
+    <box-loading *ngIf="isLoading"></box-loading>
+
+  </div>
+
+  <ng-template #templateNodata>
+    <div class="text-center">
+      <box-no-data [icon]="'fa fa-picture-o'" [subTitle]="'There is no photo'"></box-no-data>
+    </div>
+  </ng-template>
+</ng-container>
+<ng-template #templateloading>
+  <div class="text-center">
+    <box-loading></box-loading>
+  </div>
+</ng-template>
