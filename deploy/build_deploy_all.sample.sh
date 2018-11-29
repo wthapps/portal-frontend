@@ -26,8 +26,8 @@ esac
 
 
 BK=`date '+%Y-%m-%d_%H%M%S'`
-echo " ===== Start create Backup folder $TARGET_MACHINE:$TARGET_FOLDER/$BK ... "
-ssh -i $PEM_KEY $TARGET_MACHINE "mkdir -p $TARGET_FOLDER/${ENV}_${BK}"
+# echo " ===== Start create Backup folder $TARGET_MACHINE:$TARGET_FOLDER/$BK ... "
+# ssh -i $PEM_KEY $TARGET_MACHINE "mkdir -p $TARGET_FOLDER/${ENV}_${BK}"
 
 proceed() {
   var=$1
@@ -37,7 +37,7 @@ proceed() {
 
 
   echo " ===== Start backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
-  ssh -i $PEM_KEY $TARGET_MACHINE "cp -rf $TARGET_FOLDER/$var $TARGET_FOLDER/$BK" &&
+  ssh -i $PEM_KEY $TARGET_MACHINE "cp -rf $TARGET_FOLDER/$var $TARGET_FOLDER/${ENV}_${var}_${BK}" &&
   echo " ===== Finish backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
 
 
