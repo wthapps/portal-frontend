@@ -35,20 +35,45 @@ export class CardService extends BaseEntityService<any> {
     this.url = 'account/cards';
   }
 
+  getItem(): Observable<any> {
+    return this.item$;
+  }
+
+  getItems(): Observable<Array<any>> {
+    return this.items$;
+  }
+
+  getCard(id: any) {
+    this.get(id).subscribe(response => {
+      this.itemSubject.next(response.data);
+    });
+  }
+
   getCards() {
     this.getAll().subscribe(response => {
       this.itemsSubject.next(response.data);
     });
   }
 
-  getCard(accountId: string, id: string) {
-    super.getAll({}).subscribe(response => {
-      this.itemsSubject.next(response.data);
+  createCard(card: any) {
+    this.create({card: card}).subscribe(response => {
+      this.itemSubject.next(response.data);
+      this.itemsSubject.next([response.data, ...this.itemsSubject.getValue()]);
     });
   }
 
-  getItems(): Observable<Array<any>> {
-    return this.items$;
+  updateCard(card: any) {
+    this.apiBaseService.patch(`${this.url}/${card.uuid}`, card).subscribe(response => {
+      this.itemSubject.next(response.data);
+      const items = this.itemsSubject.getValue();
+      items.forEach(item => {
+        if (item.uuid === response.data.uuid) {
+          item.card_name = response.data.card_name;
+          return;
+        }
+      });
+      this.itemsSubject.next(items);
+    });
   }
 
   setUrl(accountId: string) {

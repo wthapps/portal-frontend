@@ -19,7 +19,7 @@
     <li>
         <a (click)="onCreateCard()"
            href="javascript:void(0)">
-          <i class="fa fa-address-card"></i> Private Card
+          <i class="fa fa-address-card"></i> Business Card
         </a>
       </li>
   </ul>
@@ -46,11 +46,11 @@
       <i class="fa fa-user-o"></i> Profile
     </a>
   </div>
-  <div class="menuleft-item" [routerLinkActive]="['active']">
-      <a [routerLink]="['cards']">
-        <i class="fa fa-address-card"></i> Cards
-      </a>
-    </div>
+  <!--<div class="menuleft-item" [routerLinkActive]="['active']">-->
+    <!--<a [routerLink]="['cards']">-->
+      <!--<i class="fa fa-address-card"></i> Shared Cards-->
+    <!--</a>-->
+  <!--</div>-->
 </div>
 <div class="menuleft-item-divider" *ngIf="groups && groups.length > 1">
   <div class="menuleft-item parent-item">

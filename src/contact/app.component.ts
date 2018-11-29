@@ -38,6 +38,8 @@ import { CheckForUpdateService } from './../shared/services/service-worker/check
 import { LogUpdateService } from './../shared/services/service-worker/log-update.service';
 import { CardEditModalComponent } from './card/components';
 import { SwPushService } from '@shared/services/service-worker/sw-push.service';
+import { ProfileService } from '@shared/user/services';
+import { CardService } from '@contacts/card';
 
 
 const GAPI_TIMEOUT = 2000;
@@ -65,6 +67,7 @@ export class AppComponent
   groups: Group[] = [];
   groups$: Observable<any[]>;
   user$: Observable<any>;
+  profile$: Observable<any>;
   loggedIn$: Observable<boolean>;
 
   contactMenu: Array<any> = new Array<any>();
@@ -81,13 +84,16 @@ export class AppComponent
     private commonEventService: CommonEventService,
     public contactService: ZContactService,
     private groupService: GroupService,
+    private profileService: ProfileService,
     private googleApiService: GoogleApiService,
     private swPush: SwPushService,
-    private promptUpdate: PromptUpdateService
+    private promptUpdate: PromptUpdateService,
+    private cardService: CardService
   ) {
-    console.log('Environment config', Config, this.confirmDialog);
     this.user$ = authService.user$;
     this.loggedIn$ = authService.loggedIn$;
+    this.profile$ = this.profileService.getProfile();
+
     this.commonEventService
       .filter(
         (event: CommonEvent) => event.channel === Constants.contactEvents.common
@@ -162,7 +168,22 @@ export class AppComponent
   }
 
   createCard() {
-    this.cardEditModal.open({mode: 'create', payload: null});
+    this.profileService.get(this.authService.user.uuid);
+    this.cardEditModal.open({mode: 'create', card: null, cardType: 'business'});
+  }
+
+  onSave(payload: any) {
+    if (payload.mode === 'edit') {
+      console.log('updating card:::', payload.card);
+      this.cardService.update(payload.card).subscribe(response => {
+        console.log('response');
+      });
+
+    } else if (payload.mode === 'create') {
+      console.log('create card:::', payload.card);
+      this.cardService.createCard(payload.card);
+      this.cardEditModal.close();
+    }
   }
 
   private getGroup(name: string): Group {

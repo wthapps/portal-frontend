@@ -28,7 +28,7 @@
     </div> -->
     <div class="card-list row">
       <div class="col-sm-4 mb15" *ngFor="let c of (cards$ | async)">
-        <card-item [card]="c" (view)="cardDetailModal.open({payload: $event, cardType: 'private'})"></card-item>
+        <card-item [card]="c" (view)="cardDetailModal.open({payload: $event, cardType: 'business'})"></card-item>
       </div>      
     </div>
   </div>

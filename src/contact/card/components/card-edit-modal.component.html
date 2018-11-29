@@ -1,7 +1,10 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <bs-modal-header [showDismiss]="false">
     <div class="modal-header-nav">
-      <h4 class="modal-title">Edit {{ cardType }} card</h4>
+      <h4 class="modal-title text-capitalize">
+        <input class="text-capitalize" type="text" placeholder="Untitled Card"
+               [value]="card?.card_name" [(ngModel)]="cardName">
+      </h4>
       <ul class="modal-header-navbar">
         <li>
           <button type="button" (click)="close()" class="btn btn-default btn-default-no-border">
@@ -12,117 +15,118 @@
     </div>
   </bs-modal-header>
   <bs-modal-body>
-    <p class="text-fade">You can set card name and have different avatar for your information card</p>
     <div class="pcard-cover">
       <div class="media-avatar align-items-center">
         <div class="media-avatar-img-wrap">
           <div class="media-avatar-img avatar-sm">
-            <img [src]="card?.profile_image" alt="">
+            <img *ngIf="card || profile"  [src]="card?.profile_image || profile?.profile_image" alt="">
+
+            <span class="w-user-avatar-cover"><i class="fa fa-camera"></i></span>
           </div>
         </div>
         <div class="media-avatar-body">
-          <input type="text" class="form-control" placeholder="Card name" [value]="card?.name" [readOnly]="cardType === 'private'">
+          <div class="z-heading z-name text-bold text-1-line">
+            <p>{{ profile?.name }}</p>
+          </div>
+          <div>
+            <p-checkbox name="basicInfo" value="company" [(ngModel)]="selectedFields"></p-checkbox>
+            <span>
+              {{ profile?.company }}
+            </span>
+            <p-checkbox name="basicInfo" value="occupation" [(ngModel)]="selectedFields"></p-checkbox>
+            <span>
+              {{ profile?.occupation }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
-    <p class="text-fade">Selecte information for this card.</p>
-    <hr>
     <div class="pcard-info-list">
-      <dl class="pcard-info-form">
-        <dt>
-          <p-checkbox name="group1" value="name" label="Name" [(ngModel)]="selectedFields"></p-checkbox>
-        </dt>
-        <dd>
-          Jaime Lannister
-        </dd>
-        <dt>
-          <p-checkbox name="group1" value="nickname" label="Nickname" [(ngModel)]="selectedFields"></p-checkbox>
-        </dt>
-        <dd>
-          {{ profile?.nickname }}
-        </dd>
-      </dl>
-      <dl class="pcard-info-form">
-        <dt>
-          <label>Basic Information</label>
-        </dt>
-        <dt>
-          <p-checkbox name="group2" value="about" label="About" [(ngModel)]="selectedFields"></p-checkbox>
-        </dt>
-        <dd>
-          {{ profile?.about }}
-        </dd>
-        <dt>
-          <p-checkbox name="group2" value="company" label="Company" [(ngModel)]="selectedFields"></p-checkbox>
-        </dt>
-        <dd>
-          {{ profile?.company }}
-        </dd>
-        <dt>
-          <p-checkbox name="group2" value="occupation" label="Occupation" [(ngModel)]="selectedFields"></p-checkbox>
-        </dt>
-        <dd>
-           {{ profile?.occupation }}
-        </dd>
-        <dt>
-          <p-checkbox name="group2" value="sex" label="Gender" [(ngModel)]="selectedFields"></p-checkbox>
-        </dt>
-        <dd>
-          {{ profile?.sex }}
-        </dd>
-        <dt>
-          <p-checkbox name="group2" value="birthday" label="Date of birth" [(ngModel)]="selectedFields"></p-checkbox>
-        </dt>
-        <dd>
-          {{ profile?.birthday }}    
-        </dd>
-        <dt>
-          <p-checkbox name="group2" value="nationality" label="Nationality" [(ngModel)]="selectedFields"></p-checkbox>
-        </dt>
-        <dd>
-          {{ profile?.nationality }}
-        </dd>
-      </dl>
-      <dl class="pcard-info-form">
-        <dt>
-          <label>Emails</label>      
-        </dt>
 
+      <dl class="pcard-info">
+        <dt>
+          <button class="btn btn-default icon">
+            <i class="fa fa-info-circle"></i>
+          </button>
+          <p-checkbox name="basicInfo" value="about" label="About" [(ngModel)]="selectedFields"></p-checkbox>
+
+        </dt>
+        <dd>
+          <div class=""> {{ profile?.about }} </div>
+        </dd>
+      </dl>
+      <dl class="pcard-info">
+        <dt>
+          <button class="btn btn-default icon">
+            <i class="fa fa-transgender"></i>
+          </button>
+          <p-checkbox name="basicInfo" value="sex" label="Gender" [(ngModel)]="selectedFields"></p-checkbox>
+        </dt>
+        <dd>
+          <div> {{ profile?.sex }} </div>
+        </dd>
+      </dl>
+      <dl class="pcard-info">
+        <dt>
+          <button class="btn btn-default icon">
+            <i class="fa fa-birthday-cake"></i>
+          </button>
+          <p-checkbox name="basicInfo" value="birthday" label="Birthday" [(ngModel)]="selectedFields"></p-checkbox>
+        </dt>
+        <dd>
+          <div> {{ profile?.birthday }} </div>
+        </dd>
+      </dl>
+      <dl class="pcard-info">
+        <dt>
+          <button class="btn btn-default icon">
+            <i class="fa fa-flag"></i>
+          </button>
+          <p-checkbox name="basicInfo" value="nationality" label="Nationality" [(ngModel)]="selectedFields"></p-checkbox>
+        </dt>
+        <dd>
+          <div> {{ profile?.nationality || 'None' }} </div>
+        </dd>
+      </dl>
+      <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.emails && profile.emails.length > 0">
           <ng-template ngFor let-item [ngForOf]="profile.emails" let-i="index" [ngForTrackBy]="trackByFn">
             <dt>
-              <p-checkbox name="phones" [value]="'phone:' + item.category" 
+              <button class="btn btn-default icon">
+                <i *ngIf="i === 0" class="fa fa-envelope"></i>
+              </button>
+              <p-checkbox name="emails" [value]="'email:' + item.category"
                           [label]="item.category | keyToValue: emailType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
             </dt>
             <dd>
-              <p><a style="text-transform: lowercase;" href="mailto:{{ item.value }}">{{ item.value }}</a></p>
+              <div><p><a style="text-transform: lowercase;" href="mailto:{{ item.value }}">{{ item.value }}</a></p></div>
             </dd>                
           </ng-template>
         </ng-container>
       </dl>
-      <dl class="pcard-info-form">
-        <dt>
-          <label>Phones</label>
-        </dt>
+      <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.phones && profile.phones.length > 0">
           <ng-template ngFor let-item [ngForOf]="profile.phones" let-i="index" [ngForTrackBy]="trackByFn">
             <dt>
+              <button class="btn btn-default icon">
+                <i *ngIf="i === 0" class="fa fa-phone"></i>
+              </button>
               <p-checkbox name="phones" [value]="'phone:' + item.category" 
                           [label]="item.category | keyToValue:phoneType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
             </dt>
             <dd>
-                {{ item.value }}
+              <div> {{ item.value }} </div>
             </dd>                
           </ng-template>
         </ng-container>        
       </dl>
-      <dl class="pcard-info-form">
-        <dt>
-          <label>Addresses</label>
-        </dt>
+      <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.addresses && profile.addresses.length > 0">
             <ng-template ngFor let-item [ngForOf]="profile.addresses" let-i="index" [ngForTrackBy]="trackByFn">
               <dt>
+                <button class="btn btn-default icon">
+                  <i *ngIf="i === 0" class="fa fa-map-marker"></i>
+                </button>
                 <p-checkbox name="addresses" [value]="'address:' + item.category" 
                             [label]="item.category | keyToValue: addressType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
               </dt>
@@ -137,18 +141,20 @@
             </ng-template>
           </ng-container>        
       </dl>
-      <dl class="pcard-info-form">
-        <dt>
-          <label>Links</label>
-        </dt>
+      <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.media">
-          <ng-template ngFor let-item [ngForOf]="profile.media" [ngForTrackBy]="trackByFn">
+          <ng-template ngFor let-item [ngForOf]="profile.media" let-i="index" [ngForTrackBy]="trackByFn">
               <dt>
-                <p-checkbox name="group6" [value]="'media:' + item.category" [label]="item.category | keyToValue:mediaType:'category':'name'" [(ngModel)]="selectedFields">
+                <button class="btn btn-default icon">
+                  <i *ngIf="i === 0" class="fa fa-link"></i>
+                </button>
+                <p-checkbox name="media" [value]="'media:' + item.category" [label]="item.category | keyToValue:mediaType:'category':'name'" [(ngModel)]="selectedFields">
                     
                 </p-checkbox>
               </dt>
-              <dd><p><a href="{{ item.value }}" target="_blank" rel="noopener" style="text-transform: lowercase">{{ item.value }}</a></p></dd>
+              <dd>
+                <div><p><a href="{{ item.value }}" target="_blank" rel="noopener" style="text-transform: lowercase">{{ item.value }}</a></p></div>
+              </dd>
           </ng-template>  
         </ng-container>      
       </dl>

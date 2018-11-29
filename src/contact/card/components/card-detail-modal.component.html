@@ -1,7 +1,7 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <bs-modal-header [showDismiss]="false">
     <div class="modal-header-nav">
-      <h4 class="modal-title text-capitalize">{{ cardType }} Card</h4>
+      <h4 class="modal-title text-capitalize">{{ card?.card_name }} </h4>
       <ul class="modal-header-navbar">
         <li>
           <button (click)="onEdit()" type="button" class="btn btn-default btn-default-no-border">
@@ -17,7 +17,7 @@
               <a href="javascript:void(0);" (click)="onExport()"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
             </li>
             <li>
-              <a *ngIf="cardType ==='private'" href="javascript:void(0);" (click)="onDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+              <a *ngIf="cardType ==='business'" href="javascript:void(0);" (click)="onDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
             </li>
           </ul>
         </li>
@@ -35,39 +35,82 @@
       <div class="media-avatar align-items-center">
         <div class="media-avatar-img-wrap">
           <div class="media-avatar-img avatar-sm">
-            <img [src]="card?.profile_image" [alt]="card?.name">
+            <img *ngIf="card" [src]="card?.profile_image" [alt]="card?.name">
           </div>
         </div>
         <div class="media-avatar-body">
           <h4 class="m0"> {{ card?.name }} </h4>
-          <span> {{ card?.nickname }} </span>
+          <span> {{ card?.occupation }} {{ card?.company }}</span>
         </div>
       </div>
     </div>
     <div class="pcard-info-list">
-      <dl class="pcard-info">
-        <dt>Company</dt>
-        <dd>Company name</dd>
-        <dt>Occupation</dt>
-        <dd>Job sth</dd>
-      </dl>
-      <dl class="pcard-info">
-        <dt>Work</dt>
-        <dd>Company name</dd>
-      </dl>
-      <dl class="pcard-info">
-        <dt>Mobile</dt>
-        <dd>(+1) 01234567890</dd>
-        <dt>Fax</dt>
-        <dd>(+1) 01234567890</dd>
-      </dl>
-      <dl class="pcard-info">
-        <dt>Work</dt>
-        <dd>16215 Alton Parkway <br>
-          California Irvine 92618 <br>
-          USA
-        </dd>
-      </dl>
+      <ng-container *ngIf="card && card.emails && card.emails.length > 0">
+        <ng-template ngFor let-item [ngForOf]="card.emails" let-i="index" [ngForTrackBy]="trackByFn">
+          <dl class="pcard-info">
+            <dt>
+              <button *ngIf="i===0" class="btn btn-default icon">
+                <i class="fa fa-envelope-o"></i>
+              </button>
+              <label *ngIf="i===0"> Email </label>
+
+            </dt>
+            <dd><a [href]="'mailto:' + item.value">{{ item.value }}</a></dd>
+          </dl>
+        </ng-template>
+      </ng-container>
+
+      <ng-container *ngIf="card && card.phones && card.phones.length > 0">
+        <ng-template ngFor let-item [ngForOf]="card.phones" let-i="index" [ngForTrackBy]="trackByFn">
+          <dl class="pcard-info">
+            <dt>
+              <button *ngIf="i===0" class="btn btn-default icon">
+                <i class="fa fa-phone"></i>
+              </button>
+              <label *ngIf="i===0"> Phone </label>
+
+            </dt>
+            <dd> {{ item.value }} </dd>
+          </dl>
+        </ng-template>
+      </ng-container>
+
+      <ng-container *ngIf="card && card.addresses && card.addresses.length > 0">
+        <ng-template ngFor let-item [ngForOf]="card.addresses" let-i="index" [ngForTrackBy]="trackByFn">
+          <dl class="pcard-info">
+            <dt>
+              <button *ngIf="i===0" class="btn btn-default icon">
+                <i class="fa fa-map-marker"></i>
+              </button>
+              <label *ngIf="i===0"> Address </label>
+            </dt>
+            <dd>
+              <div *ngIf="item.address_line1">{{ item.address_line1 }}</div>
+              <div *ngIf="item.address_line2">{{ item.address_line2 }}</div>
+              <div *ngIf="item.city"> {{ item?.city }}</div>
+              <div *ngIf="item.province"> {{ item?.province }} </div>
+              <div *ngIf="item.postcode"> {{ item?.postcode }} </div>
+              <div *ngIf="item.country">{{ item.country }}</div>
+            </dd>
+          </dl>
+        </ng-template>
+      </ng-container>
+
+      <ng-container *ngIf="card && card.media && card.media.length > 0">
+        <ng-template ngFor let-item [ngForOf]="card.media" let-i="index" [ngForTrackBy]="trackByFn">
+          <dl class="pcard-info">
+            <dt>
+              <button *ngIf="i===0" class="btn btn-default icon">
+                <i class="fa fa-link"></i>
+              </button>
+              <label *ngIf="i===0"> Link </label>
+
+            </dt>
+            <dd><a [href]="item.value">{{ item.value }}</a></dd>
+          </dl>
+        </ng-template>
+      </ng-container>
+
     </div>
   </bs-modal-body>
 </bs-modal>

@@ -15,7 +15,7 @@
   <z-contact-share-import-progress></z-contact-share-import-progress>
   <z-contact-share-merge-progress></z-contact-share-merge-progress>
   <wth-confirm></wth-confirm>
-  <!-- <w-card-edit-modal #cardEditModal></w-card-edit-modal> -->
+  <w-card-edit-modal #cardEditModal [profile]="(profile$ | async)" (save)="onSave($event)"></w-card-edit-modal>
 </div>
 
 <ng-template #modalContainer></ng-template>

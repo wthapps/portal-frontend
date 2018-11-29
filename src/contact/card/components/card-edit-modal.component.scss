@@ -1,5 +1,11 @@
 @import "../../../assets/styles/global";
 
+/* override model title */
+.modal-title, .modal-title input {
+  display: block;
+  width: 100%;
+  border: none;
+}
 .pcard-cover {
   @media (max-width: $screen-xs-max) {
     .media-avatar {
@@ -26,13 +32,13 @@
   dl {
     margin-bottom: 0;
     &:not(:last-child) {
-      margin-bottom: 15px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid $line;
+      //margin-bottom: 5px;
+      padding-bottom: 0px;
+      //border-bottom: 1px solid $line;
     }
   }
   dd:not(:last-child) {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
   }
 }
 
@@ -40,11 +46,18 @@
   @media (min-width: $screen-sm) {
     dt {
       float: left;
-      width: 130px;
+      width: 135px;
       clear: both;
+      .icon {
+        width: 40px;
+      }
     }
     dd {
       margin-left: 150px;
+      //div {
+      //  padding-top: 6px;
+      //}
+      padding-top: 7px;
     }
   }
 }

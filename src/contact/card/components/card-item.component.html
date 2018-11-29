@@ -7,9 +7,15 @@
         </div>
       </div>
       <div class="media-avatar-body">
-        <p class="m0 text-bold text-fade">Private card name</p>
-        <span> {{ card?.name }}
-        </span>
+        <ng-container *ngIf="card.card_type === 'public'">
+          <p class="m0 text-bold text-fade">{{ card?.name}}</p>
+          <span>&nbsp;</span>
+        </ng-container>
+        <ng-container *ngIf="card.card_type === 'business'">
+          <p class="m0 text-bold text-fade"> {{ card?.card_name }} </p>
+          <span> {{ card?.name }} </span>
+        </ng-container>
+
       </div>
     </div>
   </div>
