@@ -81,7 +81,7 @@ export class GroupService extends BaseEntityService<Group> {
     const menus: any = {};
     for (let ci = 0; ci < contacts.length; ci++) {
       _.each(contacts[ci].groups, (l: any) => {
-        if (!l) return;
+        if (!l) { return; }
         if (menus[`${l.name}`]) {
           menus[`${l.name}`].count += 1;
         } else {
@@ -93,11 +93,11 @@ export class GroupService extends BaseEntityService<Group> {
 
     // Update group count
     const cMenus = _.map(this.groupsSubject.getValue(), (m: any) => {
-      if (menus[m.name])
+      if (menus[m.name]) {
         return Object.assign(m, { count: menus[m.name].count });
-      else if (m.name === 'all contacts')
+      } else if (m.name === 'all contacts') {
         return Object.assign(m, { count: contacts.length });
-      else return Object.assign(m, { count: 0 });
+      } else { return Object.assign(m, { count: 0 }); }
     });
 
     this.notifyGroupObservers(cMenus);
@@ -143,8 +143,9 @@ export class GroupService extends BaseEntityService<Group> {
 
   updateMenu(menu: any): Promise<any> {
     const menus: any[] = _.map(this.groupsSubject.getValue(), (m: any) => {
-      if (m.id === menu.id) return Object.assign(m, menu);
-      else return m;
+      // if (m.id === menu.id) return Object.assign(m, menu);
+      // else return m;
+      return (m.id === menu.id) ? Object.assign(m, menu) : m;
     });
 
     return this.notifyGroupObservers(menus);

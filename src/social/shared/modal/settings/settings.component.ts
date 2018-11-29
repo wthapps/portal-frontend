@@ -51,6 +51,10 @@ export class ZSocialSharedSettingsComponent implements OnInit {
       .then((res: any) => {
         this.user = new SoUser().from(res.data);
         this.setSelectedPrivacy();
+        this.store.dispatch({
+          type: SO_PROFILE_UPDATE_DONE,
+          payload: res.data
+        });
         this.loading = false;
       })
       .catch(err => this.loading = false);

@@ -1,4 +1,3 @@
-import { CustomValidator } from './../../shared/shared/validator/custom.validator';
 import { Component, Input, OnInit, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import {
   AbstractControl,
@@ -9,6 +8,7 @@ import {
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 
+import { CustomValidator } from './../../shared/shared/validator/custom.validator';
 import { WthAppsBaseModal } from '../../shared/shared/interfaces/wthapps-base-modal';
 import { Group } from './group.model';
 import { GroupService } from './group.service';
