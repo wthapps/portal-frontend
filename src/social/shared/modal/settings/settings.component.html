@@ -22,7 +22,7 @@
             be shared with the same choice unless you change it.</p>
           <div class="row">
             <div class="col-sm-6">                
-                <p-dropdown [options]="postPrivacies" [(ngModel)]="selectedPrivacy" (onChange)="updateSettings({viewable_post: selectedPrivacy.data})" optionLabel="text" [style]="{'width':'250px'}">
+                <p-dropdown [options]="postPrivacies" [(ngModel)]="selectedPrivacy" (onChange)="user.settings.viewable_post = {value: selectedPrivacy.data}; updateSettings({viewable_post: user.settings.viewable_post})" optionLabel="text" [style]="{'width':'250px'}">
                     <ng-template let-item pTemplate="selectedItem">
                       <div>  <i [class]="item?.value?.css"></i> {{ item?.label | titleCase }} </div>
                     </ng-template>

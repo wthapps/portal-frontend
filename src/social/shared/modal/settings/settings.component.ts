@@ -89,7 +89,7 @@ export class ZSocialSharedSettingsComponent implements OnInit {
 
   updateSettings(settings: any) {
     this.socialService.user
-      .update({ settings: settings })
+      .update({ settings })
       .subscribe((res: any) => {
         this.user = new SoUser().from(res.data);
         this.store.dispatch({

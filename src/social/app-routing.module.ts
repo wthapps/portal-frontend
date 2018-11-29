@@ -3,9 +3,7 @@ import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { ZSocialHomeComponent } from './home/home.component';
 import { ZSocialMembersComponent } from './friends/members.component';
 import { PostDetailComponent } from './shared/second-routes/post/post-detail.component';
-import { ZSocialSettingComponent } from './settings/setting.component';
 import { AuthGuard } from '@wth/shared/services';
-import { environment } from '@env/environment';
 
 export const routes: Routes = [
   {
@@ -31,11 +29,6 @@ export const routes: Routes = [
     loadChildren: './my-profile/my-profile.module#ZSocialMyProfileModule',
     canActivate: [AuthGuard]
   },
-  // {
-  //   path: 'settings',
-  //   component: ZSocialSettingComponent,
-  //   canActivate: [AuthGuard]
-  // },
   {
     path: 'posts/:id',
     redirectTo: '/home(detail:posts/:id)',
