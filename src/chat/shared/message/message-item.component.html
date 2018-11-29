@@ -4,7 +4,7 @@
     <div class="message-item-date" *ngIf="hasShowDate()">
       <span>{{ message.created_at | timeFormat:'day' }}</span>
     </div>
-    <div class="message-item-content-container col-sm-11 col-xs-11 nopadding row">
+    <div class="message-item-content-container col-sm-11 col-xs-11 nopadding">
       <div *ngIf="!byMe" class="message-item-owner">
         <h6 class="message-item-owner-name">
           <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength: 50}} </a>
@@ -33,9 +33,10 @@
 
 <!-- Text message -->
 <ng-template #messageItemContentText>
-  <div class="message-item-content message-padding">
+  <div class="wapper message-item-content message-padding">
     <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
   </div>
+  <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i>
   <div *ngFor="let link of message.links" style="clear: both">
     <div *ngIf="link.image && link.title && !message.deleted" class="message-padding">
       <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
@@ -62,7 +63,7 @@
 <!-- File message -->
 <ng-template #messageItemContentFile>
   <!-- photo type-->
-  <div class="message-item-file message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
+  <div class="wapper message-item-file message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
     <figure>
       <a href="javascript:void(0);" (click)="onPreviewPhoto(message)">
         <img [src]="message.file?.url" alt="">
@@ -70,7 +71,7 @@
     </figure>
   </div>
   <!-- video type-->
-  <div class="message-item-file message-item-content-photo" *ngIf="message.file_type == 'Media::Video'">
+  <div class="wapper message-item-file message-item-content-photo" *ngIf="message.file_type == 'Media::Video'">
     <figure>
       <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
         <img [src]="message.file?.thumbnail_url" alt="">
@@ -79,7 +80,7 @@
     </figure>
   </div>
   <!-- file type-->
-  <div class="message-item-file message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
+  <div class="wapper message-item-file message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
     <a class="media-div link-text" [href]="message.file?.url" target="_blank" download>
       <div class="pull-left">
         <i class="fa fa-file-archive-o"></i>
@@ -91,7 +92,7 @@
     </a>
   </div>
   <!-- note type-->
-  <div class="message-item-file message-item-content-note" *ngIf="message.file_type == 'Note::Note'">
+  <div class="wapper message-item-file message-item-content-note" *ngIf="message.file_type == 'Note::Note'">
     <a class="d-block" [href]="noteUrl + '/notes/public/' + message?.uuid" target="_blank">
       <h5>
         <i class="fa fa-file"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
@@ -171,7 +172,7 @@
 
 <!--Share contact message-->
 <ng-template #messageItemContentContact>
-  <div class="message-item-file message-item-content-contact-sharing">
+  <div class="wapper message-item-file message-item-content-contact-sharing">
     <span class="avatar-xs pull-left" style="margin-right: 5px">
       <img [src]="message?.display?.share_contact?.profile_image" alt="">
     </span>

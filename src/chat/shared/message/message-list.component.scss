@@ -47,8 +47,10 @@ $message-item-content-card-right-xs: 25px;
     }
   }
 
-  .message-item-content {
+  .wapper {
     word-break: break-word;
+    max-width: 85%;
+    // width: 80%;
   }
 
   .nopadding {
@@ -131,7 +133,6 @@ $message-item-content-card-right-xs: 25px;
         display: none;
       }
     }
-
   }
 
   .message-item-status {
@@ -261,11 +262,14 @@ $message-item-content-card-right-xs: 25px;
     .message-item-status {
       text-align: right;
     }
+    .icon-edited {
+      float: right;
+    }
   }
   &.message-item-left {
     padding-left: 10px;
     @media (min-width: $screen-sm-min) {
-      padding-left: 40px;
+      padding-left: 0px;
     }
     .message-item-owner {
       margin-right: $message-item-content-card-right-xs;
@@ -305,6 +309,10 @@ $message-item-content-card-right-xs: 25px;
     .message-item-status {
       text-align: right;
     }
+  }
+
+  .icon-edited {
+    padding: 0 5px;
   }
 }
 
