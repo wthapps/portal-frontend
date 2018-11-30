@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CardService } from '../card';
-import { CardEditModalComponent } from '@contacts/card/components';
+import { CardService } from '../shared/card';
+import { CardEditModalComponent } from '@contacts/shared/card/components';
 import { ProfileService } from '@shared/user/services';
-import { AuthService } from '@shared/services';
+import { AuthService, WthConfirmService } from '@shared/services';
 
 @Component ({
   selector: 'w-user-profile-page',
@@ -24,7 +24,8 @@ export class ProfilePageComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private cardService: CardService,
-              private profileService: ProfileService) {
+              private profileService: ProfileService,
+              private confirmationService: WthConfirmService) {
     this.cards$ = this.cardService.getItems();
     this.card$ = this.cardService.getItem();
   }
@@ -56,5 +57,22 @@ export class ProfilePageComponent implements OnInit {
   editCard(payload: any) {
     this.profileService.get(this.authService.user.uuid);
     this.cardEditModal.open({...payload, mode: 'edit'});
+  }
+
+  exportCard(card: any) {
+    this.cardService.exportCard(card);
+    this.cardDetailModal.close();
+  }
+
+  deleteCard(card: any) {
+    this.confirmationService.confirm({
+      header: 'Delete Card',
+      message: `Deleted this card will remove it from shared user’s contact book. <br> This action can’t be undone.`,
+      accept: () => {
+        this.cardService.deleteCard(card);
+        this.cardDetailModal.close();
+      }
+    });
+
   }
 }

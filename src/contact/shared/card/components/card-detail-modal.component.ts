@@ -1,4 +1,10 @@
 import { Component, ViewEncapsulation, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+
+import { PUBLIC, BUSINESS, NONE } from '../card.constant';
+import { Constants } from '@shared/constant';
+import { CountryService } from '@shared/shared/components/countries/countries.service';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'w-card-detail-modal',
   templateUrl: 'card-detail-modal.component.html',
@@ -12,7 +18,14 @@ export class CardDetailModalComponent {
   @Output() delete = new EventEmitter<any>();
   @Output() export = new EventEmitter<any>();
 
-  cardType: string = 'public' || 'business';
+  readonly PUBLIC_PROFILE = 'Public Profile';
+  readonly PUBLIC = PUBLIC;
+  readonly BUSINESS = BUSINESS;
+  readonly NONE = NONE;
+  readonly SEX = Constants.sex;
+
+  constructor(private countryService: CountryService) {}
+
   open(options: any): void {
     this.modal.open();
   }
@@ -22,14 +35,18 @@ export class CardDetailModalComponent {
   }
 
   onEdit() {
-    this.edit.emit({card: this.card, cardType: this.cardType});
+    this.edit.emit({card: this.card});
   }
 
   onDelete() {
-    this.delete.emit({card: this.card, cardType: this.cardType});
+    this.delete.emit(this.card);
   }
 
   onExport() {
-    this.export.emit({card: this.card, cardType: this.cardType});
+    this.export.emit(this.card);
+  }
+
+  getCountry(code: string): Observable<any> {
+    return this.countryService.getCountry(code);
   }
 }

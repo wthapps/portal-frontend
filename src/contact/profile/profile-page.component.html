@@ -39,5 +39,10 @@
   </div>
 </div>
 
-<w-card-detail-modal #cardDetailModal [card]="card$ | async" (edit)="editCard($event)"></w-card-detail-modal>
+<w-card-detail-modal #cardDetailModal [card]="card$ | async"
+                     (edit)="editCard($event)"
+                     (delete)="deleteCard($event)"
+                     (export)="exportCard($event)">
+
+</w-card-detail-modal>
 <w-card-edit-modal #cardEditModal [profile]="profile$ | async" (save)="saveCard($event)"></w-card-edit-modal>

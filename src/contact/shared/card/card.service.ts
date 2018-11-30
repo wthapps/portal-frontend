@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable ,  Subject ,  BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiBaseService, BaseEntityService } from '@wth/shared/services';
-import { _wu } from '@wth/shared/shared/utils/utils';
-import { Contact } from '@contacts/contact/contact.model';
-import { MaxLengthPipe } from '@shared/shared/pipe/max-length.pipe';
+import { ApiBaseService, BaseEntityService } from '../../../shared/services';
+import { _wu } from '../../../shared/shared/utils/utils';
+import { Contact } from '../../contact/contact.model';
+import { MaxLengthPipe } from '../../../shared/shared/pipe/max-length.pipe';
 
 declare var _: any;
 declare var Promise: any;
@@ -32,7 +32,7 @@ export class CardService extends BaseEntityService<any> {
     this.items$ = this.itemsSubject.asObservable();
     this.item$ = this.itemSubject.asObservable();
     this.selectedAll$ = this.selectedAll.asObservable();
-    this.url = 'account/cards';
+    this.url = 'contact/cards';
   }
 
   getItem(): Observable<any> {
@@ -45,11 +45,17 @@ export class CardService extends BaseEntityService<any> {
 
   getCard(id: any) {
     this.get(id).subscribe(response => {
-      this.itemSubject.next(response.data);
+      this.itemSubject.next(response.data.attributes);
     });
   }
 
   getCards() {
+    this.getAll().subscribe(response => {
+      this.itemsSubject.next(response.data);
+    });
+  }
+
+  getSharedCards() {
     this.getAll().subscribe(response => {
       this.itemsSubject.next(response.data);
     });
@@ -64,11 +70,11 @@ export class CardService extends BaseEntityService<any> {
 
   updateCard(card: any) {
     this.apiBaseService.patch(`${this.url}/${card.uuid}`, card).subscribe(response => {
-      this.itemSubject.next(response.data);
+      this.itemSubject.next(response.data.attributes);
       const items = this.itemsSubject.getValue();
       items.forEach(item => {
-        if (item.uuid === response.data.uuid) {
-          item.card_name = response.data.card_name;
+        if (item.uuid === response.data.attributes.uuid) {
+          item.card_name = response.data.attributes.card_name;
           return;
         }
       });
@@ -76,6 +82,21 @@ export class CardService extends BaseEntityService<any> {
     });
   }
 
-  setUrl(accountId: string) {
+  exportCard(card: any) {
+    console.log('your are exporting card:::', card);
+  }
+
+  deleteCard(card: any) {
+    this.delete(card.uuid).subscribe(response => {
+      const items = this.itemsSubject.getValue();
+      items.forEach((item, index) => {
+        if (item.uuid === card.uuid) {
+          items.splice(index, 1);
+          this.itemsSubject.next(items);
+          return;
+        }
+      });
+
+    });
   }
 }

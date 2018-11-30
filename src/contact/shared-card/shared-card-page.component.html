@@ -1,0 +1,17 @@
+<div class="page-body-control">
+  <div class="page-body-control-nav">
+    <h4> Shared Cards </h4>
+  </div>
+</div>
+<div class="page-body-content has-page-body-control">
+  <div class="page-body-content-in pt15">
+    <div class="card-list row">
+      <div class="col-sm-4 mb15" *ngFor="let c of (cards$ | async)">
+        <card-item [card]="c" (view)="viewCard($event)"></card-item>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<w-card-detail-modal #cardDetailModal [card]="card$ | async"></w-card-detail-modal>
+<!--<w-card-edit-modal #cardEditModal [profile]="(profile$ | async)" (save)="onSave($event)"></w-card-edit-modal>-->

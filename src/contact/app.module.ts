@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { CardModule } from '@contacts/card/card.module';
+import { CardModule } from '@contacts/shared/card/card.module';
 import { ContactSearchModule } from '@contacts/search/search.module';
 import { environment } from '@env/environment';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';

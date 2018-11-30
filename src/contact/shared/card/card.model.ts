@@ -1,4 +1,4 @@
-export interface Card {
+export class Card {
     uuid: string;
     card_name: string;
     card_type: string;

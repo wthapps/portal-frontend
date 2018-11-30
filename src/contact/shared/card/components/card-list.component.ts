@@ -3,8 +3,8 @@ import { ConfirmationService } from 'primeng/api';
 
 import { CardService } from '../card.service';
 import { Observable } from 'rxjs';
-import { AuthService } from '@shared/services';
-import { ProfileService } from '@shared/user/services';
+import { AuthService } from '../../../../shared/services';
+import { ProfileService } from '../../../../shared/user/services';
 import { CardEditModalComponent } from './card-edit-modal.component';
 
 

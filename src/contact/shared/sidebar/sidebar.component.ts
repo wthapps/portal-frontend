@@ -11,7 +11,7 @@ import { GroupService } from '../../group/group.service';
 import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oauth.component';
 import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
 import { ZContactService } from '../services/contact.service';
-import { CardEditModalComponent } from '@contacts/card/components';
+import { CardEditModalComponent } from '@contacts/shared/card/components';
 
 
 declare var _: any;

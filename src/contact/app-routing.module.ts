@@ -20,7 +20,7 @@ import { ProfilePageComponent } from '@contacts/profile/profile-page.component';
       },
       {
         path: 'cards',
-        loadChildren: './card/card.module#CardModule'
+        loadChildren: './shared-card/shared-card-page.module#SharedCardPageModule'
       }
     ])
   ],

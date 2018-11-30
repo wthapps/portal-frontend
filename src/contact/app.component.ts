@@ -36,10 +36,10 @@ import { User } from '@shared/shared/models';
 import { HeaderComponent } from '@shared/partials/header';
 import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
 import { LogUpdateService } from './../shared/services/service-worker/log-update.service';
-import { CardEditModalComponent } from './card/components';
+import { CardEditModalComponent } from './shared/card/components';
 import { SwPushService } from '@shared/services/service-worker/sw-push.service';
 import { ProfileService } from '@shared/user/services';
-import { CardService } from '@contacts/card';
+import { CardService } from '@contacts/shared/card';
 
 
 const GAPI_TIMEOUT = 2000;
