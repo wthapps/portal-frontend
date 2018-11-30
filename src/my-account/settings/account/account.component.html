@@ -24,7 +24,7 @@
         <div class="form-group has-password" [ngClass]="{'has-error': (!oldPassword.valid && oldPassword.touched)}">
           <label for="oldPassword">Current Password</label>
           <input [formControl]="oldPassword" type="password" class="form-control" id="oldPassword"
-                 placeholder="Input Old Password">
+                 placeholder="Enter your current password">
           <span (click)="hideShowPassword($event)" class="hideShowPassword-toggle"
                 pTooltip="{{ tooltip.showPassword }}" tooltipPosition="top"></span>
           <div *ngIf="!oldPassword.valid && oldPassword.touched">

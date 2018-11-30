@@ -73,9 +73,9 @@ export class PhoneCodeToDisplayCodePipe implements PipeTransform {
     const phoneCode = _.find(data, ['code', key.toUpperCase()]);
     return (
       '<div class="clearfix">' +
-      '<img class="pull-left" width=\'30\' src=\'assets/images/flags/' +
+      "<img class=\"pull-left\" width='30' src='assets/images/flags/" +
       phoneCode.code.toLowerCase() +
-      '.svg\' alt=\'\'>' +
+      ".svg' alt=''>" +
       '<span class="pull-left">' +
       phoneCode.name +
       '</span>' +
