@@ -87,8 +87,9 @@ export class AppComponent
     private profileService: ProfileService,
     private googleApiService: GoogleApiService,
     private swPush: SwPushService,
-    private promptUpdate: PromptUpdateService,
-    private cardService: CardService
+    private cardService: CardService,
+    private checkUpdate: CheckForUpdateService,
+    private promptUpdate: PromptUpdateService
   ) {
     this.user$ = authService.user$;
     this.loggedIn$ = authService.loggedIn$;

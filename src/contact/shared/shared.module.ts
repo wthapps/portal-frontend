@@ -3,7 +3,6 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ZContactSharedListV1Component } from '@contacts/shared/list/v1/list.component';
 import { ZContactSharedSidebarComponent } from '@contacts/shared/sidebar/sidebar.component';
 import { ZContactSearchSharedToolbarComponent } from '@contacts/shared/toolbar/search.component';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
@@ -19,7 +18,6 @@ import { PartialModule } from '@wth/shared/partials';
 import { CoverProfileModule } from '@wth/shared/shared/components/cover-profile/cover-profile.module';
 import { FileModule } from '@wth/shared/shared/components/file/file.module';
 import { ZSharedMenuModule } from '@wth/shared/shared/components/menu/menu.module';
-// import { ZMyProfileComponent } from '@wth/shared/shared/components/profile/my-profile/my-profile.component';
 import { ModalDockModule } from '@wth/shared/shared/components/modal/dock.module';
 import { StickyModule } from 'ng2-sticky-kit';
 import { TagInputModule } from 'ngx-chips';
@@ -47,11 +45,9 @@ import { ZContactMenuService } from './services/contact-menu.service';
 import { ZContactService } from './services/contact.service';
 
 import { GoogleApiService } from './services/google-api.service';
-import { CheckForUpdateService } from '@shared/services/service-worker/check-for-update.service';
-import { LogUpdateService } from '@shared/services/service-worker/log-update.service';
-import { PromptUpdateService } from './../../shared/services/service-worker/prompt-update.service';
 import { ZContactSharedActionsBarComponent } from './toolbar/actions-bar.component';
 import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -64,6 +60,7 @@ import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
     FormsModule,
     ReactiveFormsModule,
     ZContactPipeModule,
+    ScrollingModule,
 
     // Wth common module
     WthCommonModule,
@@ -107,7 +104,6 @@ import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
     ZContactSharedSidebarComponent,
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
-    ZContactSharedListV1Component,
 
     // modal here
     ContactAddGroupModalComponent,
@@ -157,7 +153,6 @@ import { ZContactSharedToolbarComponent } from './toolbar/toolbar.component';
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
     ZContactSearchSharedToolbarComponent,
-    ZContactSharedListV1Component,
 
     // // my profile
     // ZMyProfileComponent,
