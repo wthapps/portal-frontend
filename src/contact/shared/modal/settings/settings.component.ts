@@ -43,8 +43,8 @@ export class ZContactSharedSettingsComponent implements OnInit, OnDestroy {
     this.destroySubject.complete();
   }
 
-  onCompleteChange(country: string) {
-    (<FormControl>this.phone_default_code).setValue(country);
+  onCompleteChange(country: any) {
+    (<FormControl>this.phone_default_code).setValue(country.value);
   }
 
   submit(value: any) {

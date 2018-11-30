@@ -238,7 +238,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  onCompleteChange(country: any, i: number) {
+  onCompleteChange(country: any) {
     this.form.controls['phone_prefix'].setValue(country.code);
     this.phoneChanged = true;
   }

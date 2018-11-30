@@ -393,8 +393,8 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  onCompleteChange(country: string, i: number) {
+  onCompleteChange(country: any, i: number) {
     const controlArray = <FormArray>this.form.get('phones');
-    controlArray.controls[i].get('country_alpha_code').setValue(country);
+    controlArray.controls[i].get('country_alpha_code').setValue(country.value);
   }
 }
