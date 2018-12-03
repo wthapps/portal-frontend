@@ -31,7 +31,7 @@ export class ChatNoteListModalComponent implements OnInit {
     {
       name: 'My Note',
       link: 'my_note',
-      icon: 'fa fa-file',
+      icon: 'icon-zone-note',
       number: null,
       type: 'tab'
     },

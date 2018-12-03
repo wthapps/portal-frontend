@@ -9,7 +9,7 @@
           <div class="media-left can-click" (click)="openMediaSelection()">
             <z-chat-share-user [data]="conversation" [size]="'sm'" [displayUserName]=false [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
           </div>
-          <div class="media-body">
+          <div class="media-body vertical-bottom">
             <div class="form-group">
               <input type="text" name="name" class="form-control" placeholder="Name" [(ngModel)]="name">
             </div>

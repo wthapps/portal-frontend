@@ -92,7 +92,7 @@ export class ConstantsBase {
       name: 'My Notes',
       value: 'My notes',
       link: '/my-note',
-      icon: 'fa fa-sticky-note'
+      icon: 'icon-zone-note'
     },
     { name: 'Recent', value: 'recent', link: '/recent', icon: 'fa fa-clock-o' },
     {

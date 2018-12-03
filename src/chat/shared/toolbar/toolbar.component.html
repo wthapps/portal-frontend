@@ -31,20 +31,19 @@
           <i class="fa fa-ellipsis-v"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
-          <li>
-            <a href="javascript:;" (click)="sendContact()">Send Contact</a>
-          </li>
-          <li role="separator" class="divider"></li>
           <!--show if current isn't one user-->
-          <li *ngIf="contactSelect.group_json.group_type === 'multiple' && userService.profile.id == contactSelect.group_json.creator_id">
-            <a href="javascript:void(0);" (click)="onEditConversation()">Group Settings</a>
-          </li>
+          <ng-container *ngIf="contactSelect.group_json.group_type === 'multiple' && userService.profile.id == contactSelect.group_json.creator_id">
+            <li>
+              <a href="javascript:void(0);" (click)="onEditConversation()">Group settings</a>
+            </li>
+            <li role="separator" class="divider"></li>
+          </ng-container>
           <li *ngIf="contactSelect.group_json.group_type == 'multiple'">
-            <a href="javascript:;" (click)="leaveConversation()">Leave Conversation</a>
+            <a href="javascript:;" (click)="leaveConversation()">Leave chat</a>
           </li>
           <!--show if current isn't one user-->
           <li>
-            <a href="javascript:;" (click)="onDeleteConversation()">Hide Conversation</a>
+            <a href="javascript:;" (click)="onDeleteConversation()">Hide chat</a>
           </li>
           <!--show if current is one user-->
           <li *ngIf="contactSelect.group_json.group_type == 'couple'">

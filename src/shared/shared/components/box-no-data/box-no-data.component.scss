@@ -1,20 +1,5 @@
 @import '../../../scss/global';
 
-/**
-<div class="box-no-data">
-  <h2>
-    <i class="fa fa-sticky-note" aria-hidden="true"></i>
-  </h2>
-  <h3>There is no note!</h3>
-  <h4>Try to update create one</h4>
-  <p>
-    <a class="btn btn-outline-primary" (click)="onNewNote()" href="javascript:;">
-      <i class="fa fa-plus" aria-hidden="true"></i> New note
-    </a>
-  </p>
-</div>
- */
-
 .box-no-data {
   text-align: center;
   color: #9b9b9b;

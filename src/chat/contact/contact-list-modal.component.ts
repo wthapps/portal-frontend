@@ -52,6 +52,13 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
       link: null,
       icon: null,
       number: null
+    },
+    {
+      id: 'wthapps',
+      name: 'WTHApps',
+      link: null,
+      icon: null,
+      number: null
     }
   ];
   showSearch: boolean;
@@ -119,6 +126,10 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
           this.mapResponseToContacts(response);
           this.loading = false;
         });
+        break;
+      case 'wthapps':
+        this.displaySearch();
+        this.loading = false;
         break;
       default:
         this.apiBaseService.get(`account/users/my_contacts`)

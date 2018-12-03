@@ -95,7 +95,7 @@
   <div class="wapper message-item-file message-item-content-note" *ngIf="message.file_type == 'Note::Note'">
     <a class="d-block" [href]="noteUrl + '/notes/public/' + message?.uuid" target="_blank">
       <h5>
-        <i class="fa fa-file"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
+        <i class="icon-zone-note"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
       </h5>
       <div class="message-item-content-note-in" [innerHTML]="message.file?.content"></div>
     </a>
