@@ -12,6 +12,7 @@ export class SwPushService {
     private api: ApiBaseService ) {
     console.log('inside SwPush service ...');
     this.requestSubscription();
+    this.handleClicks();
   }
 
   requestSubscription() {
@@ -28,6 +29,19 @@ export class SwPushService {
           console.error('error: ', err);
         });
     }
+  }
+
+  handleClicks() {
+    this.swPush.notificationClicks.subscribe(({action, notification}) => {
+      console.log('you clicked: ', action, notification);
+      const selectedAction = notification.data.actions.find(a => a.action === action);
+      if (selectedAction) {
+        const {method, full_link} = selectedAction;
+        if (method === 'navigate') {
+          window.open(full_link, '_blank');
+        }
+      }
+    });
   }
 
   createSubscription(module_name: string, subscription: PushSubscription): Promise<any> {
