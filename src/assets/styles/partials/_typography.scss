@@ -271,5 +271,35 @@ h1, h2, h3, h4, h5, h6,
       @extend .fa;
       @extend .fa-chevron-right;
     }
+    > dl {
+      position: relative;
+      &:before {
+        content: '';
+        background-color: #D8D8D8;
+        width: 3px;
+        position: absolute;
+        top: 0;
+        left: -18px;
+        bottom: 0;
+      }
+      dt {
+        font-weight: normal;
+        position: relative;
+        padding-top: 5px;
+        margin-bottom: ($line-height-computed / 2);
+        margin-top: ($line-height-computed / 2);
+        &:before {
+          content: '';
+          background-color: $light-grey;
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          position: absolute;
+          left: -24px;
+          top: 8px;
+          border: 3px solid #FFF;
+        }
+      }
+    }
   }
 }
