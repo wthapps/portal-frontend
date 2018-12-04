@@ -24,7 +24,6 @@
 }
 
 .note-selection-content {
-  max-height: 300px;
   overflow: auto;
   .wobject-grid {
     width: 100%;
@@ -36,6 +35,13 @@
   .component-listbox-list .component-listbox-row > div {
     &.component-listbox-action {
       display: none;
+    }
+    @media (max-width: $screen-xs-max) {
+      &.component-listbox-owner,
+      &.component-listbox-description,
+      &.component-listbox-date {
+        display: none;
+      }
     }
   }
 }

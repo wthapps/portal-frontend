@@ -55,8 +55,8 @@
       <div class="component-listbox-action">&nbsp;</div>
     </div>
   </div>
-  <div class="p10 clearfix">
-    <div class="pull-right can-click" *ngIf="viewOption == VIEW_MODE.GRID" (click)="toogleSorting()">
+  <div *ngIf="viewOption == VIEW_MODE.GRID" class="p10 clearfix">
+    <div class="pull-right can-click" (click)="toogleSorting()">
       Name
       <i class="fa" [ngClass]="{'fa-arrow-up': sort.name == 'asc', 'fa-arrow-down': sort.name == 'decs'}"></i>
     </div>

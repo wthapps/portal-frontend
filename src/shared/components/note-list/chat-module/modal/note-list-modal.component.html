@@ -1,4 +1,4 @@
-<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" cssClass="modal-media-selection">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" cssClass="modal-media-selection modal-full-height">
   <bs-modal-header [showDismiss]="true">
     <div *ngIf="searchShow" class="modal-media-search">
       <div class="modal-media-search-in">
@@ -12,7 +12,7 @@
       <i class="fa fa-search"></i>
     </button>
 
-    <w-nav-tab [ngClass]="{'invisible': searchShow}" [tabs]="tabs" [setTabActive]="currentTab"
+    <w-nav-tab [ngClass]="{'invisible': searchShow}" [break]="2" [tabs]="tabs" [setTabActive]="currentTab"
                (currentTab)="tabAction($event)">
     </w-nav-tab>
 
