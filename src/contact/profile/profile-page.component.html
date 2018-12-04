@@ -6,8 +6,9 @@
   <div class="contact-edit-page page-body-content-in">
     <w-user-profile class="contact-edit-content"></w-user-profile>
     <div class="contact-edit-aside">
-      <h4>Public Profile <i class="fa fa-info-circle text-fade" [pTooltip]="PUBLIC_CARD"
-        tooltipPosition="bottom"></i>
+      <h4>Public Profile <button class="btn btn-default" [pTooltip]="PUBLIC_CARD" tooltipPosition="bottom">
+        <i class="fa fa-info-circle text-fade"></i>
+      </button>
       </h4>
       <div class="card-list row">
         <ng-template ngFor let-c [ngForOf]="cards$ | async">
@@ -18,8 +19,9 @@
           </ng-container>
         </ng-template>
       </div>
-      <h4>Business Cards <i class="fa fa-info-circle text-fade" [pTooltip]="BIZ_CARD"
-                   tooltipPosition="bottom"></i>
+      <h4>Business Cards
+        <button class="btn btn-default" [pTooltip]="BIZ_CARD"
+                tooltipPosition="bottom"><i class="fa fa-info-circle text-fade"></i></button>
         <button class="btn btn-default pull-right create-card" (click)="createCard()"
                 [pTooltip]="'Create Business Card'"  tooltipPosition="bottom">
           <i class="fa fa-plus text-fade"></i>
@@ -41,8 +43,10 @@
 
 <w-card-detail-modal #cardDetailModal [card]="card$ | async"
                      (edit)="editCard($event)"
+                     (share)="selectUsers($event)"
                      (delete)="deleteCard($event)"
                      (export)="exportCard($event)">
 
 </w-card-detail-modal>
 <w-card-edit-modal #cardEditModal [profile]="profile$ | async" (save)="saveCard($event)"></w-card-edit-modal>
+<w-contact-selection #contactSelectionModal [contacts]="users$|async" (selected)="shareCard($event)"></w-contact-selection>

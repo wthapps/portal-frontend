@@ -40,17 +40,17 @@
       </a>
     </div>
   </ng-container>
+  <div class="menuleft-item" [routerLinkActive]="['active']">
+    <a [routerLink]="['cards','shared']">
+      <i class="fa fa-share-alt"></i> Shared Cards
+    </a>
+  </div>
 
   <div class="menuleft-item" [routerLinkActive]="['active']">
     <a [routerLink]="['profile']">
       <i class="fa fa-user-o"></i> Profile
     </a>
   </div>
-  <!--<div class="menuleft-item" [routerLinkActive]="['active']">-->
-    <!--<a [routerLink]="['cards']">-->
-      <!--<i class="fa fa-address-card"></i> Shared Cards-->
-    <!--</a>-->
-  <!--</div>-->
 </div>
 <div class="menuleft-item-divider" *ngIf="groups && groups.length > 1">
   <div class="menuleft-item parent-item">

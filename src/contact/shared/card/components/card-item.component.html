@@ -3,7 +3,7 @@
     <div class="media-avatar align-items-center">
       <div class="media-avatar-img-wrap">
         <div class="media-avatar-img avatar-xs">
-          <img [src]="card?.profile_image" [alt]="card?.name">
+          <img *ngIf="card && card.profile_image" [src]="card?.profile_image" [alt]="card?.name">
         </div>
       </div>
       <div class="media-avatar-body">

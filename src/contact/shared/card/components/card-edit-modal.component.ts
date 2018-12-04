@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
-import { Observable, from } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 
 import { Constants } from '../../../../shared/constant';
 import { PUBLIC, BUSINESS, UNTITILED, NONE } from '../card.constant';
@@ -91,12 +91,8 @@ export class CardEditModalComponent {
 
   hasChange(card): Observable<boolean> {
     if (!card) {
-      return new Observable(observer => {
-        observer.next(false);
-      });
+      return of(true);
     }
-    return new Observable(observer => {
-      observer.next((this.selectedFields.toString() !== card.public_fields.toString()) || (this.cardName !== card.card_name));
-    });
+    return of((this.selectedFields.toString() !== card.public_fields.toString()) || (this.cardName !== card.card_name));
   }
 }

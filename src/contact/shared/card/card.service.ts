@@ -51,12 +51,13 @@ export class CardService extends BaseEntityService<any> {
 
   getCards() {
     this.getAll().subscribe(response => {
-      this.itemsSubject.next(response.data);
+      const cards = response.data.map(c => c.attributes);
+      this.itemsSubject.next(cards);
     });
   }
 
   getSharedCards() {
-    this.getAll().subscribe(response => {
+    this.getAll({}, 'contact/cards/shared').subscribe(response => {
       this.itemsSubject.next(response.data);
     });
   }
@@ -70,6 +71,20 @@ export class CardService extends BaseEntityService<any> {
 
   updateCard(card: any) {
     this.apiBaseService.patch(`${this.url}/${card.uuid}`, card).subscribe(response => {
+      this.itemSubject.next(response.data.attributes);
+      const items = this.itemsSubject.getValue();
+      items.forEach(item => {
+        if (item.uuid === response.data.attributes.uuid) {
+          item.card_name = response.data.attributes.card_name;
+          return;
+        }
+      });
+      this.itemsSubject.next(items);
+    });
+  }
+
+  shareCard(card: any, users: any) {
+    this.apiBaseService.post(`${this.url}/${card.uuid}/share`, {users: users}).subscribe(response => {
       this.itemSubject.next(response.data.attributes);
       const items = this.itemsSubject.getValue();
       items.forEach(item => {

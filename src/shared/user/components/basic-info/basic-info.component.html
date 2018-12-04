@@ -14,12 +14,12 @@
       </dd>
     </dl>
     <dl class="dl-horizontal">
-      <dt>Company</dt>
-      <dd>{{ data.company || 'None' }}</dd>
+      <dt>Title</dt>
+      <dd>{{ data.occupation || 'None' }}</dd>
     </dl>
     <dl class="dl-horizontal">
-      <dt>Occupation</dt>
-      <dd>{{ data.occupation || 'None' }}</dd>
+      <dt>Company</dt>
+      <dd>{{ data.company || 'None' }}</dd>
     </dl>
     <dl class="dl-horizontal">
       <dt>Gender</dt>
@@ -58,12 +58,12 @@
       </div>
 
       <div class="form-group">
-        <label>Company</label>
+        <label>Title</label>
         <div class="row">
           <div class="col-xs-12">
             <div class="media media-form">
               <div class="media-body">
-                <input type="text" name="name" class="form-control" [formControl]="company"/>
+                <input type="text" name="name" class="form-control" [formControl]="occupation"/>
               </div>
             </div>
           </div>
@@ -71,12 +71,12 @@
       </div>
 
       <div class="form-group">
-        <label>Occupation</label>
+        <label>Company</label>
         <div class="row">
           <div class="col-xs-12">
             <div class="media media-form">
               <div class="media-body">
-                <input type="text" name="name" class="form-control" [formControl]="occupation"/>
+                <input type="text" name="name" class="form-control" [formControl]="company"/>
               </div>
             </div>
           </div>

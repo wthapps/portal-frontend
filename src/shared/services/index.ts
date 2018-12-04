@@ -26,6 +26,7 @@ export * from './url.service';
 export * from './user.service';
 export * from './wth-interceptor';
 export * from './wth-navigate.service';
+export * from './account.service';
 
 
 export * from '../shared/components/confirmation/wth-confirm.service';

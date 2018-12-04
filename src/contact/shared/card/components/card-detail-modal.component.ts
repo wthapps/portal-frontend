@@ -15,6 +15,7 @@ export class CardDetailModalComponent {
   @ViewChild('modal') modal: any;
   @Input() card: any;
   @Output() edit = new EventEmitter<any>();
+  @Output() share = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() export = new EventEmitter<any>();
 
@@ -36,6 +37,10 @@ export class CardDetailModalComponent {
 
   onEdit() {
     this.edit.emit({card: this.card});
+  }
+
+  onShare() {
+    this.share.emit({card: this.card});
   }
 
   onDelete() {
