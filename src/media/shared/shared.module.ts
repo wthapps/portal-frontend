@@ -21,6 +21,7 @@ import { MediaModalModule } from '@media/shared/modal/modal.module';
 import { MediaModalListComponent } from './media-modal-list/media-modal-list.component';
 
 import { HasMoreActionsPipe } from './pipes/has-more-actions.pipe';
+import { MediaUploaderV1Component } from './uploader/v1/media-uploader-v1.component';
 
 TagInputModule.withDefaults({
   tagInput: {
@@ -42,6 +43,7 @@ TagInputModule.withDefaults({
   ],
   declarations: [
     MediaUploaderComponent,
+    MediaUploaderV1Component,
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
     MediaDetailInfoComponent,
@@ -57,6 +59,7 @@ TagInputModule.withDefaults({
     AlbumModalModule,
     MediaModalModule,
     MediaUploaderComponent,
+    MediaUploaderV1Component,
     MediaModalListComponent,
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,

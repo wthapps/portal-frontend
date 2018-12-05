@@ -217,6 +217,7 @@ export class ZMediaAlbumDetailComponent
       selectedTab: 'photos',
       filter: 'photo',
       allowCancelUpload: true,
+      maxNumberOfFiles: 4,
       allowedFileTypes: ['image/*']
     });
     if (this.subSelect) { this.subSelect.unsubscribe(); }

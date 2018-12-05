@@ -180,22 +180,29 @@ export class WUploader {
     return true;
   }
 
+  retryUpload(fileId) {
+    this.uppy.retryUpload(fileId);
+  }
+
   /**
    * Cancel upload a specific file
    * @param file
    */
   cancel(file: any) {
-    const canceledFiles = [];
+    try {
+      const canceledFiles = [];
 
-    if (!file.progress.uploadComplete) {
-      canceledFiles.push({id: file.id, name: file.name, file_upload_id: `${file.id}-${file.meta.current_date}`});
-      this.uppy.removeFile(file.id);
-    }
-
-    if (canceledFiles.length > 0) {
-      this.api.post('common/files/cancel_upload', {files: canceledFiles}).subscribe(response => {
-        // console.log('cancel upload successful:::', response);
-      });
+      if (!file.progress.uploadComplete) {
+        canceledFiles.push({id: file.id, name: file.name, file_upload_id: `${file.id}-${file.meta.current_date}`});
+        this.uppy.removeFile(file.id);
+      }
+      if (canceledFiles.length > 0) {
+        this.api.post('common/files/cancel_upload', {files: canceledFiles}).subscribe(response => {
+          // console.log('cancel upload successful:::', response);
+        });
+      }
+    } catch (ex) {
+      console.error('Cancel error: ', ex);
     }
   }
 

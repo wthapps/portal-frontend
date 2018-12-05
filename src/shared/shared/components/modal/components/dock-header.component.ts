@@ -34,6 +34,6 @@ export class ModalDockHeaderComponent {
   }
 
   toggleCollapse() {
-    if(this.hasCollapse) this.modalDock.toggleCollapse();
+    if(this.hasCollapse) { this.modalDock.toggleCollapse(); }
   }
 }

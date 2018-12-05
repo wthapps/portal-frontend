@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { ModalDockComponent } from '../dock.component';
 
@@ -6,7 +6,7 @@ import { ModalDockComponent } from '../dock.component';
     selector: 'wth-modal-dock-body',
   template: `
         <!--<div class="modal-dock-body" *ngIf="!modalDock.collapse">-->
-        <div class="modal-dock-body" *ngIf="!modalDock.collapse">
+        <div class="modal-dock-body" [class]="cssClass" *ngIf="!modalDock.collapse">
             <ng-content></ng-content>
         </div>
     `,
@@ -14,6 +14,8 @@ import { ModalDockComponent } from '../dock.component';
 })
 
 export class ModalDockBodyComponent {
+  @Input() cssClass = '';
+
   constructor(public modalDock: ModalDockComponent) {
   }
 }

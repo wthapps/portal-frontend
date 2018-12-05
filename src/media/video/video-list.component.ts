@@ -226,7 +226,8 @@ custom method please overwirte any method*/
 
   upload(content_types: any = []) {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-      allowedFileTypes: content_types
+      allowedFileTypes: content_types,
+      maxNumberOfFiles: 4
     });
   }
 

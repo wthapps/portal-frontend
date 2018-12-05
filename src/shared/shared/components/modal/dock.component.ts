@@ -8,13 +8,13 @@ import { Component, Input, HostBinding } from '@angular/core';
 
 export class ModalDockComponent {
   @HostBinding('class') classes = 'modal-dock-wrap';
-  @Input() cssClass: string = 'hidden';
+  @Input() cssClass = 'hidden';
 
-  collapse: boolean = false;
-  show: boolean = false;
+  collapse = false;
+  show = false;
 
-  open(cssClass:any = '') {
-    this.cssClass = cssClass
+  open(cssClass = '') {
+    this.cssClass = cssClass;
   }
 
   close() {

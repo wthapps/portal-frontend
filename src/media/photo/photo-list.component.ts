@@ -30,6 +30,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 
 
 declare var _: any;
+const MAX_CONCURRENT_FILES = 4;
 @Mixins([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
 @Component({
   moduleId: module.id,
@@ -90,7 +91,8 @@ MediaModalMixin {
 
   ngOnInit() {
     this.loadObjects();
-    this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').pipe(takeUntil(this.destroy$)).subscribe((event: any) => {
+    this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').pipe(
+      takeUntil(this.destroy$)).subscribe((event: any) => {
       this.doListEvent(event);
     });
     this.menuActions = this.getMenuActions();
@@ -194,11 +196,12 @@ custom method please overwirte any method*/
     }
   }
 
-  upload(content_types: any = []) {
-    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-      allowedFileTypes: content_types
-    });
-  }
+  // upload(content_types: any = []) {
+  //   this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+  //     allowedFileTypes: content_types,
+  //     maxNumberOfFiles: MAX_CONCURRENT_FILES
+  //   });
+  // }
 
   onListChanges(e: any) {
     switch (e.action) {

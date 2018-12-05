@@ -477,6 +477,7 @@ export class ConstantsBase {
     back: 'Back',
     cancelUploading: 'Cancel uploading',
     changeView: 'Change view',
+    collapse: 'Collapse',
     close: 'Close',
     create: 'Create',
     crop: 'Crop',

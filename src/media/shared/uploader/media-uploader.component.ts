@@ -122,13 +122,13 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   ngAfterViewInit() {
-    let _thisPicture = this;
+    const _thisPicture = this;
     $('body').bind('dragover', _thisPicture.dragover);
 
   }
 
   close() {
-    if (this.step == this.uploadSteps.uploaded || this.step == this.uploadSteps.stop) {
+    if (this.step === this.uploadSteps.uploaded || this.step === this.uploadSteps.stop) {
       this.outEvent.emit({
         action: 'addPhoto',
         data: this.photos
@@ -151,7 +151,7 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy,
   // Retry upload pending files
   retryUpload(event: any) {
     event.preventDefault();
-    if(this.pending_files[0].type.includes('video/')) {
+    if (this.pending_files[0].type.includes('video/')) {
       this.pending_files.forEach(f => {
         this.apiBaseService.post(`media/videos`, f).subscribe(res => {
         });
@@ -219,6 +219,7 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   updateUploadStatus(event) {
+    console.log(event);
 
     switch (event.action) {
       case 'start':
