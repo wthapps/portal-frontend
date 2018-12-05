@@ -22,6 +22,7 @@ export class InvitationCreateModalComponent implements OnInit {
   deleteObjects: any = [];
   type = 'items';
   noOfCtrl = 3;
+  back = false;
 
   constructor(private fb: FormBuilder,
     private invitationService: InvitationService,
@@ -43,6 +44,7 @@ export class InvitationCreateModalComponent implements OnInit {
       this.data = options.data;
       this.fillData();
     }
+    this.back = options.back;
     this.modal.open(options).then();
   }
 
@@ -88,10 +90,14 @@ export class InvitationCreateModalComponent implements OnInit {
   add(item?: any) {
     const control = <FormArray>this.form.controls[this.type];
     if (item) {
-      control.insert(0, this.create(item));
+      control.push(this.create(item));
     } else {
-      control.insert(0, this.create());
+      control.push(this.create());
     }
+  }
+
+  onBack() {
+    this.event.emit({action: 'back'});
   }
 
 

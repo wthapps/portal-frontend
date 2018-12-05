@@ -123,7 +123,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   getUserContacts(option: any = {}): Observable<any> {
-    return this.apiBaseService.get('contact/contacts/internal_contacts');
+    return this.apiBaseService.get('contact/wcontacts/internal_contacts');
   }
 
   getRecentConversations(): Observable<any> {

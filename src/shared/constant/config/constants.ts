@@ -266,7 +266,7 @@ export class ConstantsBase {
     album: 'album',
     photo: 'photo',
     chatConversation: 'conversations',
-    contacts: 'contact/contacts'
+    contacts: 'contact/wcontacts'
   };
   sex: any = ['', 'Male', 'Female', 'Other'];
   communityRole: any = {
