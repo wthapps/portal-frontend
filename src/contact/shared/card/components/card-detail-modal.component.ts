@@ -35,8 +35,8 @@ export class CardDetailModalComponent {
     this.modal.close();
   }
 
-  onEdit() {
-    this.edit.emit({card: this.card});
+  onEdit(editImage: boolean = false) {
+    this.edit.emit({card: this.card, editImage: editImage});
   }
 
   onShare() {

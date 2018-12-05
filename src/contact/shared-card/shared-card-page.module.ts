@@ -9,6 +9,7 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { SharedCardPageComponent } from './shared-card-page.component';
 import { SharedCardPageRoutingModule } from './shared-card-page-routing';
 import { CardModule, CardService } from '@contacts/shared/card';
+import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { CardModule, CardService } from '@contacts/shared/card';
     TooltipModule,
     PipeModule,
 
+    BoxNoDataModule,
     CardModule,
     SharedCardPageRoutingModule,
   ],

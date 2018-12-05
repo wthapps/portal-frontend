@@ -51,6 +51,19 @@ export class PhoneCodeFlagPipe implements PipeTransform {
   }
 }
 
+@Pipe({
+  name: 'phoneDialCode'
+})
+export class PhoneDialCodePipe implements PipeTransform {
+  transform(key: any): string {
+    if (key) {
+      return `(+${key.split(' (+')[1]}`;
+    } else {
+      return '';
+    }
+  }
+}
+
 const PHONE_CODE_REGEX = /\([^\)]*\)/;
 
 // Aghanistan (+83) => +83

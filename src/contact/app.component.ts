@@ -69,7 +69,7 @@ export class AppComponent
   user$: Observable<any>;
   profile$: Observable<any>;
   loggedIn$: Observable<boolean>;
-
+  sharedCardNum$: Observable<number>;
   contactMenu: Array<any> = new Array<any>();
   contactEvents: any = Constants.contactEvents;
 
@@ -94,6 +94,7 @@ export class AppComponent
     this.user$ = authService.user$;
     this.loggedIn$ = authService.loggedIn$;
     this.profile$ = this.profileService.getProfile();
+    this.sharedCardNum$ = this.cardService.sharedCardNum$;
 
     this.commonEventService
       .filter(
@@ -122,6 +123,7 @@ export class AppComponent
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
+    this.cardService.getSharedCardNum();
   }
 
   ngAfterViewInit() {

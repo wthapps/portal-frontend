@@ -18,7 +18,7 @@ export class CropImageComponent implements AfterViewInit {
   @Output() changeImageEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() doneEvent: EventEmitter<string> = new EventEmitter<string>();
 
-  curImage: string = "";
+  curImage = '';
   cropper: any = null;
 
   readonly DEFAULT_IMG: string = Constants.img.avatar;
@@ -42,7 +42,7 @@ export class CropImageComponent implements AfterViewInit {
   }
 
   open(file?: any) {
-    if(file !== undefined) {
+    if (file !== undefined) {
       this.curImage = file;
       this.initCropper();
     }

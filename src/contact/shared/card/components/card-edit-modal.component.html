@@ -21,8 +21,6 @@
         <div class="media-avatar-img-wrap">
           <div class="media-avatar-img avatar-sm">
             <img *ngIf="(card && card.profile_image) || profile"  [src]="card?.profile_image || profile?.profile_image" alt="">
-
-            <span class="w-user-avatar-cover"><i class="fa fa-camera"></i></span>
           </div>
         </div>
         <div class="media-avatar-body">
@@ -114,7 +112,7 @@
                           [label]="item.category | keyToValue:phoneType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
             </dt>
             <dd>
-              <div> {{ item.value }} </div>
+              <div> {{ item.country_alpha_code | phoneDialCode }} {{ item.value }} </div>
             </dd>                
           </ng-template>
         </ng-container>        

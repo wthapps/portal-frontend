@@ -42,12 +42,12 @@
   </ng-container>
   <div class="menuleft-item" [routerLinkActive]="['active']">
     <a [routerLink]="['cards','shared']">
-      <i class="fa fa-share-alt"></i> Shared Cards
+      <i class="fa fa-address-card"></i> Shared Cards ({{ sharedCardNum }})
     </a>
   </div>
 
   <div class="menuleft-item" [routerLinkActive]="['active']">
-    <a [routerLink]="['profile']">
+    <a [routerLink]="['profile']" (click)="onCloseSidebar()">
       <i class="fa fa-user-o"></i> Profile
     </a>
   </div>

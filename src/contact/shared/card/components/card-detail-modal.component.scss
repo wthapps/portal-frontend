@@ -64,3 +64,27 @@
     }
   }
 }
+
+
+
+.w-user-avatar-cover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(#ffffff, 0.5);
+  @include transition($transition-base);
+  @include opacity(0);
+  i {
+    font-size: 36px;
+    @include center();
+  }
+}
+.media-avatar-img-wrap {
+  &:hover, &:focus {
+    .w-user-avatar-cover {
+      @include opacity(1);
+    }
+  }
+}

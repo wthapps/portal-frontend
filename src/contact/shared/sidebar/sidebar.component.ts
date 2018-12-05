@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Renderer2, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
@@ -25,7 +25,8 @@ export class ZContactSharedSidebarComponent implements OnInit, OnDestroy {
   @ViewChild('importContactSelect') importContactSelect: ZContactShareImportContactComponent;
   @ViewChild('iCloudOAuthModal') iCloudOAuthModal: ICloudOAuthComponent;
   @ViewChild('modalSettings') modalSettings: ZContactSharedSettingsComponent;
-  
+
+  @Input() sharedCardNum: number;
   @Output() createCard = new EventEmitter<any>();
 
   groups: Group[];

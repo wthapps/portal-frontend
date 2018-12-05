@@ -119,3 +119,7 @@
     overflow: auto;
   }
 }
+
+.modal-on-top {
+  z-index: 2000;
+}

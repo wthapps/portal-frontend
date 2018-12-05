@@ -100,7 +100,9 @@ export class CoverInfoComponent implements OnInit {
     switch (event.action) {
       case 'SELECT_CROP:DONE':
         // Change user profile
-        this.updateProfileImageBase64(event.payload);
+        if (!event.card) {
+          this.updateProfileImageBase64(event.payload);
+        }
         break;
       default:
         break;

@@ -7,6 +7,7 @@ import { ContactSharedModule } from '@contacts/shared/shared.module';
 import { CardModule } from '@contacts/shared/card';
 import { WContactSelectionModule } from '@shared/components/w-contact-selection/w-contact-selection.module';
 import { AccountService } from '@shared/services';
+import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,8 @@ import { AccountService } from '@shared/services';
     ProfileModule,
     ContactSharedModule,
     ProfilePageRouting,
+
+    BoxNoDataModule,
     CardModule,
     WContactSelectionModule,
   ],

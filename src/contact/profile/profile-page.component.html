@@ -11,13 +11,13 @@
       </button>
       </h4>
       <div class="card-list row">
-        <ng-template ngFor let-c [ngForOf]="cards$ | async">
-          <ng-container *ngIf="c.card_type === 'public'">
+        <!--<ng-template ngFor let-c [ngForOf]="cards$ | async">-->
+          <!--<ng-container *ngIf="c.card_type === 'public'">-->
             <div class="col-sm-12 mb15" >
-              <card-item [card]="c" (view)="viewCard($event)"></card-item>
+              <card-item [card]="publicCard$|async" (view)="viewCard($event)"></card-item>
             </div>
-          </ng-container>
-        </ng-template>
+          <!--</ng-container>-->
+        <!--</ng-template>-->
       </div>
       <h4>Business Cards
         <button class="btn btn-default" [pTooltip]="BIZ_CARD"
@@ -29,12 +29,20 @@
       </h4>
 
       <div class="card-list row">
-        <ng-template ngFor let-c [ngForOf]="cards$ | async">
-          <ng-container *ngIf="c.card_type === 'business'">
-            <div class="col-sm-12 mb15">
-              <card-item [card]="c" (view)="viewCard($event)"></card-item>
-            </div>
-          </ng-container>
+        <ng-container *ngIf="(cards$ | async).length > 0 else noData">
+          <ng-template ngFor let-c [ngForOf]="cards$ | async">
+            <!--<ng-container *ngIf="c.card_type === 'business'">-->
+              <div class="col-sm-12 mb15">
+                <card-item [card]="c" (view)="viewCard($event)"></card-item>
+              </div>
+            <!--</ng-container>-->
+          </ng-template>
+        </ng-container>
+        <ng-template #noData>
+          <box-no-data [icon]="'fa fa-address-card xs'"
+                       [title]="'There are no Cards!'"
+                       [subTitle]="'All of your business cards'">
+          </box-no-data>
         </ng-template>
       </div>
     </div>

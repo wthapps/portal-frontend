@@ -15,6 +15,9 @@
     padding: 0;
     i {
       font-size: 120px;
+      &.xs{
+        font-size: 60px;
+      }
     }
   }
   h3 {

@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import { CardService } from '../shared/card';
 import { CardEditModalComponent } from '@contacts/shared/card/components';
 import { ProfileService } from '@shared/user/services';
-import { AccountService, ApiBaseService, AuthService, WthConfirmService } from '@shared/services';
+import { AccountService, ApiBaseService, AuthService, CommonEventService, WthConfirmService } from '@shared/services';
 import { WContactSelectionComponent } from '@shared/components/w-contact-selection/w-contact-selection.component';
 
 @Component ({
@@ -11,7 +13,7 @@ import { WContactSelectionComponent } from '@shared/components/w-contact-selecti
   templateUrl: 'profile-page.component.html',
   styleUrls: ['profile-page.component.scss']
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
   @ViewChild('cardEditModal') cardEditModal: CardEditModalComponent;
   @ViewChild('cardDetailModal') cardDetailModal: CardEditModalComponent;
   @ViewChild('contactSelectionModal') contactSelectionModal: WContactSelectionComponent;
@@ -21,7 +23,9 @@ export class ProfilePageComponent implements OnInit {
   card$: Observable<any>;
   profile$: Observable<any>;
   users$: Observable<Array<any>>;
-  currentCard: any
+  currentCard: any;
+  publicCard$: Observable<any>;
+  destroy$ = new Subject();
 
   readonly BIZ_CARD = `Business Cards help you share private contact information with other users`;
   readonly PUBLIC_CARD = `Your Public Profile is the default card for your public information on all apps on the WTHApps site`;
@@ -30,10 +34,14 @@ export class ProfilePageComponent implements OnInit {
               private cardService: CardService,
               private profileService: ProfileService,
               private confirmationService: WthConfirmService,
-              private accountService: AccountService) {
-    this.cards$ = this.cardService.getItems();
+              private accountService: AccountService,
+              private commonEventService: CommonEventService) {
+    this.cards$ = this.cardService.businessCards$;
+    this.publicCard$ = this.cardService.publicCard$;
+
     this.card$ = this.cardService.getItem();
     this.users$ = this.accountService.getItems();
+    this.handleSelectCropEvent();
   }
   
   ngOnInit(): void {
@@ -61,8 +69,20 @@ export class ProfilePageComponent implements OnInit {
   }
 
   editCard(payload: any) {
-    this.profileService.get(this.authService.user.uuid);
-    this.cardEditModal.open({...payload, mode: 'edit'});
+    if (payload.editImage) {
+      this.commonEventService.broadcast({
+        channel: 'SELECT_CROP_EVENT',
+        action: 'SELECT_CROP:OPEN',
+        payload: {
+          currentImage: this.authService.user.profile_image,
+          card: payload.card
+        },
+      });
+      this.cardDetailModal.close();
+    } else {
+      this.profileService.get(this.authService.user.uuid);
+      this.cardEditModal.open({...payload, mode: 'edit'});
+    }
   }
 
   selectUsers(payload: any) {
@@ -74,6 +94,7 @@ export class ProfilePageComponent implements OnInit {
 
   shareCard(payload: any) {
     this.cardService.shareCard(this.currentCard, payload.selectedUsers);
+    this.contactSelectionModal.close();
   }
 
   exportCard(card: any) {
@@ -90,6 +111,29 @@ export class ProfilePageComponent implements OnInit {
         this.cardDetailModal.close();
       }
     });
+  }
 
+  handleSelectCropEvent() {
+    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
+      .pipe(takeUntil(this.destroy$)).subscribe((event: any) => {
+        this.doEvent(event);
+      });
+  }
+
+  doEvent(event: any) {
+    switch (event.action) {
+      case 'SELECT_CROP:DONE':
+        if (event.card) {
+          this.cardService.updateCard({...event.card, avatar: event.payload});
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
