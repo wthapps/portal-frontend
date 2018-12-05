@@ -49,7 +49,7 @@
         Create Album
       </a>
       <a *ngIf="step==uploadSteps.uploaded" href="javascript:void(0);"
-         (click)="onAction({action: 'openModal', payload: {modalName: 'addToAlbumModal', selectedObjects: photos }})">
+         (click)="addAlbum()">
         Add to Album
       </a>
       <div class="text-right mb10">

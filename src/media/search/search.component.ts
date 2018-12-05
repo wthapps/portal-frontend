@@ -28,6 +28,7 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/config/constants';
 import { Location } from '@angular/common';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
   moduleId: module.id,
@@ -87,6 +88,7 @@ export class ZMediaSearchComponent implements
     public apiBaseService: ApiBaseService,
     public resolver: ComponentFactoryResolver,
     public confirmService: WthConfirmService,
+    public localStorageService: LocalStorageService,
     // public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public route: ActivatedRoute,
@@ -97,16 +99,10 @@ export class ZMediaSearchComponent implements
   onAddedToPlaylist: (data: any) => void;
 
   ngOnInit() {
-    // this.route.params.subscribe(p => {
-    //   // this.loadObjects(p.uuid);
-    //   // this.loadObject(p.uuid);
-    //   console.log(p);
-
-    // });
     this.route.queryParams.subscribe(p => {
-      console.log(p);
       this.loadObjects(p);
     });
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   doListEvent(e: any) {

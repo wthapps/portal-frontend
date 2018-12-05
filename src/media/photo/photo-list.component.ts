@@ -26,6 +26,7 @@ import { WUploader } from '@shared/services/w-uploader';
 import { mediaConstants } from '@media/shared/config/constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 
 declare var _: any;
@@ -83,6 +84,7 @@ MediaModalMixin {
     public router: Router,
     private commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
+    public localStorageService: LocalStorageService,
     private uploader: WUploader
   ) {}
 
@@ -92,6 +94,7 @@ MediaModalMixin {
       this.doListEvent(event);
     });
     this.menuActions = this.getMenuActions();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   ngOnDestroy() {
@@ -278,7 +281,7 @@ custom method please overwirte any method*/
           this.viewDetail(this.selectedObjects[0].uuid);
         },
         class: 'btn btn-default',
-        liclass: 'hidden-xs',
+        liclass: '',
         tooltip: this.tooltip.preview,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-eye'

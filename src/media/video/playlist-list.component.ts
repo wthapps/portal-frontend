@@ -29,6 +29,8 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
 import { PlaylistCreateMixin } from '@shared/mixin/playlist/playlist-create.mixin';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { mediaConstants } from '@media/shared/config/constants';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 declare var _: any;
 
@@ -80,6 +82,7 @@ MediaModalMixin {
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
+    public localStorageService: LocalStorageService,
     public objectListService: WObjectListService,
     public locationCustomService: LocationCustomService,
     public mediaCreateModalService: MediaCreateModalService,
@@ -94,6 +97,7 @@ MediaModalMixin {
   ngOnInit() {
     this.loadObjects();
     this.menuActions = this.getMenuActions();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   onListChanges(e: any) {
@@ -123,6 +127,19 @@ MediaModalMixin {
 
   getMenuActions() {
     return {
+      preview: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.viewDetail(this.selectedObjects[0].uuid);
+        },
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.preview,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-eye'
+      },
       share: {
         active: true,
         // needPermission: 'view',

@@ -1,5 +1,6 @@
 import { ApiBaseService, WthConfirmService } from "@shared/services";
 import { Constants } from "@shared/constant";
+import { LocalStorageService } from "angular-2-local-storage";
 /* MediaListMixin This is media list methods, to
 custom method please overwirte any method*/
 export class MediaBasicListMixin {
@@ -15,7 +16,9 @@ export class MediaBasicListMixin {
   sorting: any = {};
   endLoading: any;
 
-  constructor(public apiBaseService: ApiBaseService, public confirmService: WthConfirmService) {}
+  constructor(public apiBaseService: ApiBaseService,
+    public confirmService: WthConfirmService,
+    public localStorageService: LocalStorageService) {}
 
   loadObjects(input?: any) {
     /* this method is load objects to display on init */
@@ -98,6 +101,7 @@ export class MediaBasicListMixin {
   }
 
   changeViewMode(mode: any) {
+    this.localStorageService.add('media_view_mode', mode);
     this.viewMode = mode;
   }
 };

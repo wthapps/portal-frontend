@@ -97,6 +97,7 @@
     "actioncable": "5.1.2",
     "adyen-cse-js": "git+https://github.com/Adyen/adyen-cse-web.git#0_1_23",
     "adyen-cse-web": "git+https://github.com/Adyen/adyen-cse-web.git#0_1_23",
+    "angular-2-local-storage": "^2.0.0",
     "angular2-hotkeys": "2.0.3",
     "angular2-recaptcha": "1.1.0",
     "boom": "^7.2.2",

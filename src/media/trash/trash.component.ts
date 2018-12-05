@@ -24,6 +24,7 @@ import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { WUploader } from '@shared/services/w-uploader';
 import { Subject } from 'rxjs';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 declare var _: any;
 @Mixins([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
@@ -77,6 +78,7 @@ MediaModalMixin {
     public mediaCreateModalService: MediaCreateModalService,
     public resolver: ComponentFactoryResolver,
     public router: Router,
+    public localStorageService: LocalStorageService,
     private commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
     private uploader: WUploader
@@ -84,6 +86,7 @@ MediaModalMixin {
 
   ngOnInit() {
     this.loadObjects();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   ngOnDestroy() {

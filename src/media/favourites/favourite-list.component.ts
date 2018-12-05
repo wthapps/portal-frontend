@@ -30,6 +30,7 @@ import { SharingModalResult } from '@shared/shared/components/photo/modal/sharin
 import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { mediaConstants } from '@media/shared/config/constants';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaAdditionalListMixin, MediaDownloadMixin])
 @Component({
@@ -71,6 +72,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
     private router: Router,
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
+    public localStorageService: LocalStorageService,
     public confirmService: WthConfirmService,
     public resolver: ComponentFactoryResolver
   ) {
@@ -131,6 +133,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
   ngOnInit() {
     this.loadObjects();
     this.menuActions = this.getMenuActions();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   doListEvent(e: any) {
@@ -223,6 +226,19 @@ export class ZMediaFavoriteListComponent implements OnInit,
 
   getMenuActions() {
     return {
+      preview: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.viewDetails({selectedObject: this.selectedObjects[0]});
+        },
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.preview,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-eye'
+      },
       favourite: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,

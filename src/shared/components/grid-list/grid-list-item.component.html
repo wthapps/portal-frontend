@@ -5,7 +5,6 @@
   </div>
 
   <!--type == 'photo', 'video' -->
-  <!-- dont remove (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})" it impact list view -->
   <div *ngIf="object.model == 'Media::Photo' || object.model == 'Media::Video'" class="photo-box-figure"
        (click)="select(object)" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
     <div class="photo-box-input" (click)="clickOnCircle(object, $event)">
@@ -17,9 +16,7 @@
         <i *ngIf="object.model == 'Media::Video'" class="fa fa-play-circle-o"></i>
       </div>
     </figure>
-    <div class="photo-box-name">
-      <!-- <i *ngIf="object.model == 'Media::Photo'" class="fa fa-photo"></i>
-      <i *ngIf="object.model == 'Media::Video'" class="fa fa-video-camera"></i> -->
+    <!-- <div class="photo-box-name">
       <span class="can-click" (dblclick)="editName(object, $event)">
         {{ object.name }}.{{ object.extension}}
       </span>
@@ -27,7 +24,29 @@
         <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
         <i *ngIf="object.favorite" class="fa fa-star"></i>
       </div>
-    </div>
+    </div> -->
+    <ng-container *ngIf="object.role_id && object.role_id < 3">
+      <div class="photo-box-name">
+        <span class="can-click">
+          {{ object.name }}.{{ object.extension}}
+        </span>
+        <div class="hidden">
+          <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
+          <i *ngIf="object.favorite" class="fa fa-star"></i>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!object.role_id || object.role_id >= 3">
+      <div class="photo-box-name" title="Double click to edit name">
+        <span class="can-click" (dblclick)="editName(object, $event)">
+          {{ object.name }}.{{ object.extension}}
+        </span>
+        <div class="hidden">
+          <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
+          <i *ngIf="object.favorite" class="fa fa-star"></i>
+        </div>
+      </div>
+    </ng-container>
     <div class="photo-box-owner">
       <span *ngIf="object.owner">
         {{object.owner.id == userService.profile.id ? 'me' : object.owner.name}}
@@ -38,7 +57,6 @@
   </div>
 
   <!--type == 'album'-->
-  <!-- dont remove (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})" it impact list view -->
   <div *ngIf="object.model == 'Media::Album' || object.model == 'Common::Sharing' || object.model == 'Media::Playlist'"
        class="photo-box-figure" (click)="select(object)" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
     <div class="photo-box-input" (click)="clickOnCircle(object, $event)">
@@ -62,16 +80,27 @@
         </span>
       </div>
     </figure>
-    <div class="photo-box-name" title="Double click to edit name">
-      <span class="can-click" (dblclick)="editName(object, $event)">
-        <i class="wthico-album"></i> {{ object.name }}
-      </span>
-      <div class="hidden">
-        <!--data return doesn't have json_shares-->
-        <!--<i *ngIf="object.json_shares" class="fa fa-user-plus"></i>-->
-        <i *ngIf="object.favorite" class="fa fa-star"></i>
+
+    <ng-container *ngIf="object.role_id && object.role_id < 3">
+      <div class="photo-box-name">
+        <span class="can-click">
+          <i class="wthico-album"></i> {{ object.name }}
+        </span>
+        <div class="hidden">
+          <i *ngIf="object.favorite" class="fa fa-star"></i>
+        </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="!object.role_id || object.role_id >= 3">
+      <div class="photo-box-name" title="Double click to edit name">
+        <span class="can-click" (dblclick)="editName(object, $event)">
+          <i class="wthico-album"></i> {{ object.name }}
+        </span>
+        <div class="hidden">
+          <i *ngIf="object.favorite" class="fa fa-star"></i>
+        </div>
+      </div>
+    </ng-container>
     <div class="photo-box-owner">{{ object.owner?.name }}</div>
     <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
     <div class="photo-box-size">{{ object.child_count }}</div>

@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
 
 
 import { Constants } from '@wth/shared/constant';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 declare var _: any;
 declare var $: any;
@@ -26,7 +27,7 @@ declare var $: any;
   styleUrls: ['grid-list.component.scss']
 })
 
-export class WGridListComponent implements OnDestroy, OnChanges {
+export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
   @Input() moreActionsTemplate: TemplateRef<any>;
@@ -65,6 +66,12 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   private pressingCtrlKey: boolean = false;
   private destroySubject: Subject<any> = new Subject<any>();
 
+  /**
+   *
+   */
+  constructor(private localStorageService: LocalStorageService) {
+  }
+
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
     if (this.pressedCtrlKey(ke)) {
@@ -82,6 +89,10 @@ export class WGridListComponent implements OnDestroy, OnChanges {
     if (ke.keyCode === 27) {
       this.deSelectAll();
     }
+  }
+
+  ngOnInit() {
+    this.viewSize = this.localStorageService.get('media_slider_val') || Constants.mediaSliderViewNumber.default;
   }
 
 
@@ -178,28 +189,25 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   }
 
   private deSelectAll() {
-    this.objects = this.objects.map(ob => {
+    this.objects.forEach(ob => {
       ob.selected = false;
-      return ob;
-    });
+    })
   }
 
   private selectObject(object: any) {
-    this.objects = this.objects.map(ob => {
+    this.objects.forEach(ob => {
       if (ob.id == object.id) {
         ob.selected = true;
       }
-      return ob;
-    });
+    })
   }
 
   private toggleObject(object) {
-    this.objects = this.objects.map(ob => {
+    this.objects.forEach(ob => {
       if (ob.id == object.id) {
         ob.selected = !ob.selected;
       }
-      return ob;
-    });
+    })
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {

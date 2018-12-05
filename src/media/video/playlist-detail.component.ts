@@ -30,6 +30,7 @@ import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.
 import { WUploader } from '@shared/services/w-uploader';
 import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { LocalStorageService } from 'angular-2-local-storage';
 declare var _: any;
 @Mixins([MediaBasicListMixin,
   MediaAdditionalListMixin,
@@ -104,6 +105,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     public confirmService: WthConfirmService,
     public mediaSelectionService: WMediaSelectionService,
     public router: Router,
+    public localStorageService: LocalStorageService,
     public route: ActivatedRoute,
     public locationCustomService: LocationCustomService,
     public location: Location,
@@ -143,6 +145,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     });
 
     this.returnUrls = this.route.snapshot.queryParams.returnUrls;
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   ngOnDestroy() {

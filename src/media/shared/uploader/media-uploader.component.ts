@@ -28,6 +28,7 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
+import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
 
 declare var $: any;
 declare var _: any;
@@ -38,8 +39,8 @@ declare var _: any;
   templateUrl: 'media-uploader.component.html',
   styleUrls: ['media-uploader.component.scss'],
 })
-@Mixins([PlaylistAddMixin])
-export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy, PlaylistAddMixin {
+@Mixins([PlaylistAddMixin, AlbumAddMixin])
+export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy, PlaylistAddMixin, AlbumAddMixin {
   current_photo: any;
   step: number;
   files_num: number;
@@ -76,6 +77,9 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy,
 
   @ViewChild('modalDock') modalDock: ModalDockComponent;
   private uploaderSub: any;
+  subAddAlbum: Subscription;
+  subOpenCreateAlbum: Subscription;
+  subCreateAlbum: Subscription;
 
   constructor(public apiBaseService: ApiBaseService,
               private commonEventService: CommonEventService,
@@ -96,6 +100,11 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy,
   openCreatePlaylistModal:(selectedObjects: any) => void;
   onDonePlaylist:(e: any) => void;
   onAddedToPlaylist:(data: any) => void;
+  openModalAddToAlbum:(selectedObjects: any) => void;
+  onAddToAlbum:(e: any) => void;
+  openCreateAlbumModal:(selectedObjects: any) => void;
+  onDoneAlbum:(e: any) => void;
+  onAddedToAlbum:(data: any) => void;
 
   ngOnInit() {
     this.step = this.uploadSteps.begin;
@@ -166,8 +175,12 @@ export class MediaUploaderComponent implements OnInit, AfterViewInit, OnDestroy,
     this.mediaUploadDataService.onAction(options);
   }
 
-  createAlbum(isPlaylist: boolean = false) {
+  createAlbum() {
     this.modalService.open({modalName: 'createAlbumModal', selectedObjects: this.photos});
+  }
+
+  addAlbum() {
+    this.openModalAddToAlbum(this.photos);
   }
 
   createPlaylist() {

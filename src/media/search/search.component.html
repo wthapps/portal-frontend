@@ -1,7 +1,7 @@
 <ng-template #leftMenuTemplate>
   <ul class="page-body-control-menu">
     <li class="divider">
-      <a class="btn btn-default" draggable="false" href="javascript:void(0);" (click)="doEvent({action: 'goBack'})"
+      <a class="btn btn-default" draggable="false" href="javascript:void(0);" (click)="back()"
         pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
         <i class="fa fa-arrow-left"></i>
       </a>
@@ -54,7 +54,7 @@
 <w-grid-list #gridlist [objects]="objects" [view]="viewMode" (event)="doListEvent($event)">
 </w-grid-list>
 <!--no data region-->
-<div class="zone-no-photo text-center" *ngIf="objects.length == 0 && !loading">
+<div class="zone-no-photo text-center" *ngIf="objects && objects.length == 0 && !loading">
   <div>
     <h2>
       <i class="fa fa-search"></i>

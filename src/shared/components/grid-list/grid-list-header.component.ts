@@ -1,5 +1,6 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { Constants } from '../../constant/config/constants';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 declare var _: any;
 
@@ -22,8 +23,16 @@ export class WGridListHeaderComponent {
   sliderMin: number = Constants.mediaSliderViewNumber.min;
   sliderMax: number = Constants.mediaSliderViewNumber.max;
 
+  /**
+   *
+   */
+  constructor(private localStorageService: LocalStorageService) {
+    this.sliderVal = localStorageService.get('media_slider_val') || Constants.mediaSliderViewNumber.default;
+  }
+
   zoom(event: any) {
     this.sliderVal = event.value;
+    this.localStorageService.add('media_slider_val', this.sliderVal);
     this.event.emit({action: 'zoom', payload: { viewSize: event.value }});
   }
 

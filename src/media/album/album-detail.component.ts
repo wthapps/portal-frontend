@@ -40,6 +40,7 @@ import { Subject } from 'rxjs/Subject';
 import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 declare var _: any;
 @Mixins([
@@ -124,6 +125,7 @@ export class ZMediaAlbumDetailComponent
     public router: Router,
     public route: ActivatedRoute,
     public location: Location,
+    public localStorageService: LocalStorageService,
     public urlService: UrlService,
     private uploader: WUploader) { }
 
@@ -136,6 +138,7 @@ export class ZMediaAlbumDetailComponent
       this.loadObject(p.uuid);
     });
     this.returnUrls = this.route.snapshot.queryParams.returnUrls;
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   ngOnDestroy() {

@@ -45,9 +45,14 @@ import {
 import { WMediaPreviewModule } from '@shared/components/w-media-preview/media-preview.module';
 import { ZMediaTrashModule } from '@media/trash/trash.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 @NgModule({
   imports: [
+    LocalStorageModule.withConfig({
+      prefix: 'my-app',
+      storageType: 'localStorage'
+    }),
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
