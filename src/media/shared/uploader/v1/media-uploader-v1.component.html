@@ -23,7 +23,7 @@
           </td>
     
           <!-- Actions -->
-          <td class="vam" [ngSwitch]="upload_hash[file?.id]?.status"> 
+          <td class="vam pull-right" [ngSwitch]="upload_hash[file?.id]?.status"> 
             <span *ngSwitchCase="this.upload_steps.uploaded" class="fwb gray">
               Done
             </span>

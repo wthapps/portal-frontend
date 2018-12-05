@@ -98,39 +98,16 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
   ngAfterViewInit() {
   }
 
-  close() {
-    this.clearItems();
-  }
-
-  stop(event: any) {
-    event.preventDefault();
-  }
-
-
   retry(file) {
     const {id, name} = file;
-    console.log('Retry file ', name, id);
-
     Object.assign(this.upload_hash[id], {status: this.upload_steps.init});
     this.uploader.retryUpload(id);
   }
 
   cancel(file) {
     const {name, id} = file;
-    console.log('Cancel file ', name, id);
-
     Object.assign(this.upload_hash[id], {status: this.upload_steps.error});
     this.uploader.cancel(file);
-  }
-
-  onAction(options?: any): void {
-    // close uploading form
-    if ( _.get(options, 'action') !== 'updateMediaList') {
-      // this.modalDock.close();
-    }
-
-    // this.outEvent.emit(options);
-    this.mediaUploadDataService.onAction(options);
   }
 
   updateUploadStatus(event) {
@@ -176,9 +153,6 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
   clearItems() {
     this.upload_hash = {};
     this.upload_arr = [];
-  }
-
-  hasSuccessful() {
   }
 
   private whichType(object_type: string) {

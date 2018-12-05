@@ -196,12 +196,12 @@ custom method please overwirte any method*/
     }
   }
 
-  // upload(content_types: any = []) {
-  //   this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-  //     allowedFileTypes: content_types,
-  //     maxNumberOfFiles: MAX_CONCURRENT_FILES
-  //   });
-  // }
+  upload(content_types: any = []) {
+    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      allowedFileTypes: content_types,
+      maxNumberOfFiles: MAX_CONCURRENT_FILES
+    });
+  }
 
   onListChanges(e: any) {
     switch (e.action) {
