@@ -99,13 +99,13 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
   }
 
   retry(file) {
-    const {id, name} = file;
+    const {id} = file;
     Object.assign(this.upload_hash[id], {status: this.upload_steps.init});
     this.uploader.retryUpload(id);
   }
 
   cancel(file) {
-    const {name, id} = file;
+    const {id} = file;
     Object.assign(this.upload_hash[id], {status: this.upload_steps.error});
     this.uploader.cancel(file);
   }
@@ -125,14 +125,20 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
         break;
       case 'progress': {
         const {file} = event.payload;
-        this.upload_hash[file.id].status = this.upload_steps.init;
+        if (!this.upload_hash[file.id] || this.upload_hash[file.id].status === this.upload_steps.error) {
+          return;
+        }
+        Object.assign(this.upload_hash[file.id], {status: this.upload_steps.init});
 
         this.uploadingCount();
       }
         break;
       case 'success': {
         const {file} = event.payload;
-        this.upload_hash[file.id].status = this.upload_steps.uploaded;
+        if (!this.upload_hash[file.id]) {
+          return;
+        }
+        Object.assign(this.upload_hash[file.id], {status: this.upload_steps.uploaded});
 
         this.uploadingCount();
         this.uploaded_num += 1;
@@ -140,7 +146,10 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
         break;
       case 'error': {
         const {file} = event.payload;
-        this.upload_hash[file.id].status = this.upload_steps.error;
+        if (!this.upload_hash[file.id]) {
+          return;
+        }
+        Object.assign(this.upload_hash[file.id], {status: this.upload_steps.error});
         this.uploadingCount();
       }
         break;

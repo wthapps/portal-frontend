@@ -189,6 +189,9 @@ export class WUploader {
    * @param file
    */
   cancel(file: any) {
+    if (!file) {
+      return;
+    }
     try {
       const canceledFiles = [];
 
