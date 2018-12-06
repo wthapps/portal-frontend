@@ -11,6 +11,7 @@ import { CardDetailModalComponent } from '@contacts/shared/card/components';
 @Component({
   selector: 'shared-card-page',
   templateUrl: 'shared-card-page.component.html',
+  styleUrls: ['shared-card-page.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class SharedCardPageComponent implements OnInit {
@@ -19,6 +20,9 @@ export class SharedCardPageComponent implements OnInit {
   cards$: Observable<Array<any>>;
   card$: Observable<any>;
   profile$: Observable<any>;
+  sortField = 'created_at'
+  sortFieldName = 'Recent shared';
+  sortDesc = true;
 
   constructor(private authService: AuthService,
               private cardService: CardService,
@@ -30,11 +34,24 @@ export class SharedCardPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cardService.getSharedCards();
+    this.cardService.getSharedCards({});
   }
 
   viewCard(card: any) {
     this.cardService.getCard(card.uuid);
     this.cardDetailModal.open({});
+  }
+
+  changeSortDirection() {
+    this.sortDesc = !this.sortDesc;
+    const query = {sortby: this.sortDesc ? `-${this.sortDesc}` : `+${this.sortField}`};
+    this.cardService.getSharedCards(query);
+  }
+
+  changeSortField(field: string) {
+    this.sortField = field;
+    this.sortFieldName = this.sortField === 'card_name' ? 'Card name' : this.sortField === 'owner_name' ? 'Owner name' : 'Recent shared';
+    const query = {sortby: this.sortDesc ? `-${this.sortDesc}` : `+${this.sortField}`};
+    this.cardService.getSharedCards(query);
   }
 }

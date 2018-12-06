@@ -41,7 +41,9 @@
         <div class="media-avatar-img-wrap">
           <div class="media-avatar-img avatar-sm" (click)="onEdit(true)">
             <img *ngIf="card" [src]="card?.profile_image" [alt]="card?.name">
-            <span class="w-user-avatar-cover"><i class="fa fa-camera"></i></span>
+            <span *ngIf="card && card.is_owner" class="w-user-avatar-cover">
+              <i class="fa fa-camera"></i>
+            </span>
           </div>
         </div>
         <div class="media-avatar-body">
@@ -51,20 +53,6 @@
       </div>
     </div>
     <div class="pcard-info-list">
-      <ng-container *ngIf="card && card.about">
-        <dl class="pcard-info">
-          <dt>
-            <button class="btn btn-default icon">
-              <i class="fa fa-sticky-note-o"></i>
-            </button>
-            <label>About</label>
-          </dt>
-          <dd>
-            <div> {{ card?.about || NONE }} </div>
-          </dd>
-        </dl>
-      </ng-container>
-
       <ng-container *ngIf="card && card.sex">
         <dl class="pcard-info">
           <dt>
@@ -101,6 +89,19 @@
           </dt>
           <dd>
             <div> {{ (getCountry(card?.nationality) | async).name || NONE }} </div>
+          </dd>
+        </dl>
+      </ng-container>
+      <ng-container *ngIf="card && card.about">
+        <dl class="pcard-info">
+          <dt>
+            <button class="btn btn-default icon">
+              <i class="fa fa-sticky-note-o"></i>
+            </button>
+            <label>About</label>
+          </dt>
+          <dd>
+            <div> {{ card?.about || NONE }} </div>
           </dd>
         </dl>
       </ng-container>

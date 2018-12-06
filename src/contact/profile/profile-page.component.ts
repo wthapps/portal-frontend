@@ -6,7 +6,8 @@ import { CardService } from '../shared/card';
 import { CardEditModalComponent } from '@contacts/shared/card/components';
 import { ProfileService } from '@shared/user/services';
 import { AccountService, ApiBaseService, AuthService, CommonEventService, WthConfirmService } from '@shared/services';
-import { WContactSelectionComponent } from '@shared/components/w-contact-selection/w-contact-selection.component';
+import { ShareEditorComponent } from '@shared/components/editors/share/share-editor.component';
+// import { WContactSelectionComponent } from '@shared/components/w-contact-selection/w-contact-selection.component';
 
 @Component ({
   selector: 'w-user-profile-page',
@@ -16,7 +17,9 @@ import { WContactSelectionComponent } from '@shared/components/w-contact-selecti
 export class ProfilePageComponent implements OnInit, OnDestroy {
   @ViewChild('cardEditModal') cardEditModal: CardEditModalComponent;
   @ViewChild('cardDetailModal') cardDetailModal: CardEditModalComponent;
-  @ViewChild('contactSelectionModal') contactSelectionModal: WContactSelectionComponent;
+  // @ViewChild('contactSelectionModal') contactSelectionModal: WContactSelectionComponent;
+  @ViewChild('shareEditor') shareEditor: ShareEditorComponent;
+
 
 
   cards$: Observable<Array<any>>;
@@ -89,12 +92,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
     this.currentCard = payload.card;
     this.accountService.search();
-    this.contactSelectionModal.open({title: 'Select Contact'});
+    this.shareEditor.open({
+      title: 'Share card',
+      object: payload.card
+    });
+    // this.contactSelectionModal.open({title: 'Select Contact'});
   }
 
   shareCard(payload: any) {
-    this.cardService.shareCard(this.currentCard, payload.selectedUsers);
-    this.contactSelectionModal.close();
+    this.cardService.shareCard(this.currentCard, payload);
+    this.shareEditor.close();
   }
 
   exportCard(card: any) {

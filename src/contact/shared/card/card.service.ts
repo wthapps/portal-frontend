@@ -74,8 +74,8 @@ export class CardService extends BaseEntityService<any> {
     });
   }
 
-  getSharedCards() {
-    this.getAll({}, 'contact/cards/shared').subscribe(response => {
+  getSharedCards(query: any) {
+    this.getAll(query, 'contact/cards/shared').subscribe(response => {
       this.itemsSubject.next(response.data);
     });
   }
@@ -105,18 +105,24 @@ export class CardService extends BaseEntityService<any> {
     });
   }
 
-  shareCard(card: any, users: any) {
-    this.apiBaseService.post(`${this.url}/${card.uuid}/share`, {users: users}).subscribe(response => {
-      this.itemSubject.next(response.data.attributes);
+  shareCard(card: any, payload: any) {
+    this.apiBaseService.post(`${this.url}/${card.uuid}/share`, payload).subscribe(response => {
+      const sharedCard = response.data.attributes;
       const items = this.itemsSubject.getValue();
+
+      this.itemSubject.next(sharedCard);
       items.forEach(item => {
-        if (item.uuid === response.data.attributes.uuid) {
-          item.card_name = response.data.attributes.card_name;
+        if (item.uuid === sharedCard.uuid) {
+          item.card_name = sharedCard.card_name;
           return;
         }
       });
       this.itemsSubject.next(items);
-      this.toastService.success('You shared card successfully!');
+      if (payload.newUsers.length > 0) {
+        this.toastService.success('You shared card successfully!');
+      } else {
+        this.toastService.success('You update shared card successfully!');
+      }
     });
   }
 

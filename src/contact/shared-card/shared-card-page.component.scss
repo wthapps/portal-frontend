@@ -1,0 +1,11 @@
+@import '../../assets/styles/variables';
+
+
+.btn-outline-default, .btn-outline-default:hover {
+  border-color:$btn-default-border;
+  text-align: left;
+  width: 150px;
+  .caret {
+    margin-top: 8px;
+  }
+}

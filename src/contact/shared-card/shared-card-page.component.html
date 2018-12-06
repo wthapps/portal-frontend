@@ -5,6 +5,35 @@
 </div>
 <div class="page-body-content has-page-body-control">
   <div class="page-body-content-in pt15">
+
+    <ng-container *ngIf="(cards$|async).length > 0">
+      <div class="form-group">
+        <label class="text-bold">Sort by</label>
+
+        <div class="btn-group ml10">
+          <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ sortFieldName }}
+            <span class="caret pull-right"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-left">
+            <li (click)="changeSortField('card_name')">
+              <a href="javascript:void(0)"> Card name  <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === 'card_name'}"></i></a>
+            </li>
+            <li (click)="changeSortField('owner_name')">
+              <a href="javascript:void(0)"> Owner name  <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === 'owner_name'}"></i></a>
+            </li>
+            <li (click)="changeSortField('created_at')">
+              <a href="javascript:void(0)"> Recent shared  <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === 'created_at'}"></i></a>
+            </li>
+          </ul>
+
+        </div>
+          <button type="button" class="btn btn-default" (click)="changeSortDirection()">
+            <i *ngIf="sortDesc" class="fa fa-arrow-down" [pTooltip]="'Sort Ascending'"  tooltipPosition="bottom"></i>
+            <i *ngIf="!sortDesc" class="fa fa-arrow-up" [pTooltip]="'Sort Descending'"  tooltipPosition="bottom"></i>
+          </button>
+      </div>
+    </ng-container>
     <ng-container *ngIf="((cards$|async).length > 0) else noData">
       <div class="card-list row">
         <div class="col-sm-4 mb15" *ngFor="let c of (cards$ | async)">

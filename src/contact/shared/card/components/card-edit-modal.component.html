@@ -43,18 +43,6 @@
       <dl class="pcard-info">
         <dt>
           <button class="btn btn-default icon">
-            <i class="fa fa-sticky-note-o"></i>
-          </button>
-          <p-checkbox name="basicInfo" value="about" label="About" [(ngModel)]="selectedFields"></p-checkbox>
-
-        </dt>
-        <dd>
-          <div class=""> {{ profile?.about || NONE }} </div>
-        </dd>
-      </dl>
-      <dl class="pcard-info">
-        <dt>
-          <button class="btn btn-default icon">
             <i class="fa fa-transgender"></i>
           </button>
           <p-checkbox name="basicInfo" value="sex" label="Gender" [(ngModel)]="selectedFields"></p-checkbox>
@@ -85,6 +73,19 @@
           <div> {{ (getCountry(profile?.nationality) | async)?.name || NONE }} </div>
         </dd>
       </dl>
+      <dl class="pcard-info">
+        <dt>
+          <button class="btn btn-default icon">
+            <i class="fa fa-sticky-note-o"></i>
+          </button>
+          <p-checkbox name="basicInfo" value="about" label="About" [(ngModel)]="selectedFields"></p-checkbox>
+
+        </dt>
+        <dd>
+          <div class=""> {{ profile?.about || NONE }} </div>
+        </dd>
+      </dl>
+
       <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.emails && profile.emails.length > 0">
           <ng-template ngFor let-item [ngForOf]="profile.emails" let-i="index" [ngForTrackBy]="trackByFn">

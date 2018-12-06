@@ -42,6 +42,7 @@ export class BasicInfoComponent implements OnInit {
   birthday: AbstractControl;
   nationality: AbstractControl;
   countries$: Observable<any>;
+  currentDate = new Date().toISOString().split('T')[0];
 
   constructor(private fb: FormBuilder,
               private profileService: ProfileService,
