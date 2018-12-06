@@ -71,14 +71,14 @@
             {{ group.name | maxLength: 20}} ({{ group?.count }})
           </a>
           <div *ngIf="group.hasSubMenu" class="menuleft-item-action">
-        <span class="can-click"
-              (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
-              title="edit group name">
-          <i class="fa fa-pencil"></i>
-        </span>
-            <span class="can-click" (click)="deleteGroup(group)" title="delete group">
-          <i class="fa fa-trash"></i>
-        </span>
+          <span class="can-click"
+                (click)="doEvent({action:'contact:group:open_modal_edit', payload: {mode: 'edit', selectedItem: group.name}})"
+                title="edit group name">
+            <i class="fa fa-pencil"></i>
+          </span>
+              <span class="can-click" (click)="deleteGroup(group)" title="delete group">
+            <i class="fa fa-trash"></i>
+          </span>
           </div>
         </div>
       </ng-container>

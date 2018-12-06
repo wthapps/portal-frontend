@@ -59,11 +59,12 @@
   }
   .info {
     height: 70px;
-    display: table-cell;
-    width: 500px;
-    vertical-align: middle;
+    width: 100%;
     background-color: #f7f7f7;
     padding: 0 10px;
+    @include flexbox;
+    @include justify-content(center);
+    @include align-items(center);
   }
   .list-styled {
     text-align: left;

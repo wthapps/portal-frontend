@@ -76,7 +76,9 @@ $active-color: red;
       }
     }
     .menuleft-item-action {
-      display: none;
+      @media (min-width: $screen-sm-min) {
+        display: none;
+      }
       span {
         display: inline-block;
         padding: 8px;
@@ -85,13 +87,15 @@ $active-color: red;
         }
       }
     }
-    &:hover {
-      //background-color: #e5e5e5;
-      .menuleft-item-action {
-        display: block;
-      }
-      > a {
-        color: $theme-color;
+    @media (min-width: $screen-sm-min) {
+      &:hover {
+        //background-color: #e5e5e5;
+        .menuleft-item-action {
+          display: block;
+        }
+        > a {
+          color: $theme-color;
+        }
       }
     }
     &.active {
@@ -193,7 +197,7 @@ $active-color: red;
         }
       }
     }
-    
+
     .ui-menuitem-link, .ui-panelmenu-header, .ui-panelmenu-header-link {
       &.ui-state-active {
         color: $active-color;
