@@ -51,6 +51,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 @Component({
   moduleId: module.id,
   selector: 'me-sharing-detail',
+  styleUrls: ['sharing-detail.component.scss'],
   templateUrl: '../shared/list/parent-detail.component.html'
 })
 export class ZMediaSharingDetailComponent

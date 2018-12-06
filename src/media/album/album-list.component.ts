@@ -125,6 +125,16 @@ export class AlbumListComponent implements OnInit,
     }
   }
 
+  shareSelectedObject() {
+    this.openModalShare([this.selectedObjects[0].sharing_object]);
+    const sub = this.sharingModalService.update$.subscribe(res => {
+      if (!this.selectedObjects[0].sharing_object) {
+        this.selectedObjects[0].sharing_object = res.sharing_object;
+      }
+      sub.unsubscribe();
+    })
+  }
+
   getMenuActions() {
     return {
       preview: {
@@ -145,7 +155,7 @@ export class AlbumListComponent implements OnInit,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
         action: () => {
-          this.openModalShare([this.selectedObjects[0].sharing_object]);
+          this.shareSelectedObject();
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
@@ -157,7 +167,9 @@ export class AlbumListComponent implements OnInit,
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
-        action: this.openModalShare.bind(this),
+        action: () => {
+          this.shareSelectedObject();
+        },
         class: '',
         liclass: 'visible-xs-block',
         tooltip: this.tooltip.share,

@@ -378,6 +378,12 @@ PlaylistAddMixin, MediaDownloadMixin {
 
   openModalShareParent() {
     this.openModalShare([this.object.sharing_object]);
+    const sub = this.sharingModalService.update$.subscribe(res => {
+      if (!this.object.sharing_object) {
+        this.object.sharing_object = res.sharing_object;
+      }
+      sub.unsubscribe();
+    });
   }
 
   onSaveShare(e: any) {

@@ -119,8 +119,8 @@ MediaModalMixin {
       message: `Selected photos or videos in your Trash will be deleted permanently. This action can't be undone`,
       accept: () => {
         this.objects = this.objects.filter(ob => {
-          return this.selectedObjects.some(s => {
-            return (s.id !== ob.id || s.model !== ob.model)
+          return !this.selectedObjects.some(s => {
+            return (s.id == ob.id && s.model == ob.model)
           })
         })
         this.apiBaseService.post(`media/trashes/really_destroy`, { objects: this.selectedObjects.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
