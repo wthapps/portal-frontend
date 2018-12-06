@@ -101,7 +101,8 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
   retry(file) {
     const {id} = file;
     Object.assign(this.upload_hash[id], {status: this.upload_steps.init});
-    this.uploader.retryUpload(id);
+    // this.uploader.retryUpload(id);
+    this.uploader.addFile(file);
   }
 
   cancel(file) {

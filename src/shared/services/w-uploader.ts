@@ -184,6 +184,10 @@ export class WUploader {
     this.uppy.retryUpload(fileId);
   }
 
+  addFile(file) {
+    this.uppy.addFile(file);
+  }
+
   /**
    * Cancel upload a specific file
    * @param file
