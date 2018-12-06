@@ -26,9 +26,9 @@ export class ModalDockComponent {
 
   toggleCollapse() {
     if (this.collapse) {
-      this.cssClass = '';
+      this.cssClass = this.cssClass.replace('modal-dock-collapse', '');
     } else {
-      this.cssClass = 'modal-dock-collapse';
+      this.cssClass = `${this.cssClass} modal-dock-collapse`;
     }
     this.collapse = !this.collapse;
   }

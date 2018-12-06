@@ -1,19 +1,5 @@
 @import "../../../../assets/styles/global";
 
-.cl-danger {
-  color: $color-inverse;
-}
-
-.modal-dock-body {
-
-  &.blur {
-    clear: #9b9b9b;
-  }
-}
-
-.p0 {
-  padding: 0;
-}
 
 .vam {
   vertical-align: middle;
@@ -21,14 +7,6 @@
 
 .fwb {
   font-weight: bold;
-}
-
-.gray {
-  color: $text-color-light;
-}
-
-.pending {
-  color: $color-link;
 }
 
 :host ::ng-deep .media-uploader-dock {

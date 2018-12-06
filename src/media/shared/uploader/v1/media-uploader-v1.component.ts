@@ -58,8 +58,8 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
     photo: 'fa fa-picture-o',
     video: 'fa fa-video-camera',
     file: 'fa fa-file',
-    error: 'fa fa-exclamation-triangle cl-danger',
-    loading: 'fa fa-spinner'
+    error: 'fa fa-exclamation-triangle text-danger',
+    loading: 'fa fa-spinner fa-spin'
   };
 
   current_file: any;
