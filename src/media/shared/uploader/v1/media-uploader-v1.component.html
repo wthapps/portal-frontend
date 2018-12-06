@@ -20,6 +20,9 @@
             <span *ngSwitchCase="this.upload_steps.init" class="text-muted">
                 <i [class]="icon_hash.loading"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }} 
             </span>
+            <span *ngSwitchDefault class="text-muted">
+                <i [class]="icon_hash[upload_hash[file?.id].file_type]"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }} 
+              </span>
           </td>
     
           <!-- Actions -->

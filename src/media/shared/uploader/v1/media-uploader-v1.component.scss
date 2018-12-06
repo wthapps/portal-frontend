@@ -21,6 +21,8 @@
 
     .modal-dock-body {
       padding: 0;
+      overflow-y: scroll;
+      max-height:200px;
     }
   }
 }
