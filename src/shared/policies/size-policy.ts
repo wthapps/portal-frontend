@@ -1,11 +1,13 @@
 import { FileUtil } from '@shared/shared/utils/file/file.util';
 
+const MAX_SIZE_IN_MB = 35;
 export class SizePolicy {
-  size: number;
   opts: any;
   fileType: any = 'file';
-  constructor(size: any = 10000000, opts: any = {}) {
-    this.size = size;
+  private sizeInMb: number;
+
+  constructor(sizeInMb: any = 35, opts: any = {}) {
+    this.sizeInMb = sizeInMb;
     this.opts = opts;
   }
 
@@ -18,13 +20,14 @@ export class SizePolicy {
     if (file.type.match(/video/g)) {
       this.fileType = 'Video';
     }
-    if (file.size > this.size) {
+    if (file.size > FileUtil.mbyte_to_byte(this.sizeInMb)) {
       file.allow = false;
       file.validateErrors = file.validateErrors
         ? [...file.validateErrors, 'size']
         : ['size'];
-      file.validateText = `This ${this.fileType.toLowerCase()} you have selected is too large. The maximum for file size is ${this
-        .size / 1000000}MB.`;
+      file.validateText = `This ${this.fileType.toLowerCase()} you have selected is too large. The maximum for file size is ${
+        this.sizeInMb
+      } MB.`;
       file.validateTitle = `${this.fileType} can\'t not be upload`;
     }
     return file;

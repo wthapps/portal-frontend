@@ -699,7 +699,7 @@ export class ZNoteDetailEditComponent
     if (files.length === 0) {
       return;
     }
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(10000000, {only: /video\//g})]);
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35, {only: /video\//g})]);
     this.note.attachments = [
       ...this.note.attachments,
       ...filesAddedPolicy.filter(file => file.allow === true)

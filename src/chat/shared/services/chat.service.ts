@@ -281,7 +281,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
       message_type: 'file',
       content_type: 'media/generic'
     });
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(10000000, { only: /video\//g })]);
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35, { only: /video\//g })]);
     const validFiles = filesAddedPolicy.filter((item: any) => item.allow);
 
     // upload multiple files in batch of CONCURRENT_UPLOAD, usually set as 4

@@ -62,7 +62,7 @@ export class WUploader {
     this.uppy = Core(opts);
 
     if (mode === 'FileInput') {
-      const policies: any = [new BlackListPolicy(), new SizePolicy(10000000, {only: /video\//g})];
+      const policies: any = [new BlackListPolicy(), new SizePolicy(35, {only: /video\//g})];
       this.uppy.use(FileInputCustom, {
         target: selector,
         replaceTargetContent: true,
