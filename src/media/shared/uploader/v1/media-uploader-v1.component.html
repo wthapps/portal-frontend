@@ -1,11 +1,11 @@
-<wth-modal-dock #modalDock>
+<wth-modal-dock #modalDock (closeEvent)="clearItems();">
   <wth-modal-dock-header [hasCollapse]="false">
     <div *ngIf="uploading_num > 0"> Uploading {{uploading_num}} items</div>
     <div *ngIf="uploading_num === 0"> Uploaded {{uploaded_num}} items</div>       
-    <i dock-header-action class="fa " (click)="modalDock.toggleCollapse()" [ngClass]="{'fa-chevron-down': modalDock.collapse, 'fa-chevron-up': !modalDock.collapse }"
+    <i dock-header-action class="fa " (click)="modalDock.toggleCollapse()" [ngClass]="{'fa-chevron-down': !modalDock.collapse, 'fa-chevron-up': modalDock.collapse }"
     pTooltip="{{tooltip.collapse}}" tooltipPosition="top"></i>
   </wth-modal-dock-header>
-  <wth-modal-dock-body [cssClass]="pd0">
+  <wth-modal-dock-body>
     <table class="table table-middle wth-table table-hover">
       <tbody>
         <tr *ngFor="let file of upload_arr" [ngClass]="{'blur': upload_hash[file?.id]?.status === this.upload_steps.init}">

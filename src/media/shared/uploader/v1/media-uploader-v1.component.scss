@@ -30,3 +30,19 @@
 .pending {
   color: $color-link;
 }
+
+:host ::ng-deep .media-uploader-dock {
+  .modal-dock-content {
+    .modal-dock-header {
+      background: unset !important;
+
+      .modal-dock-header-title, .modal-dock-header-action {
+        color: unset !important;
+      }
+    } 
+
+    .modal-dock-body {
+      padding: 0;
+    }
+  }
+}

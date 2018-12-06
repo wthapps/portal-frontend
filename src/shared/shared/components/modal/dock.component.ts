@@ -1,4 +1,5 @@
-import { Component, Input, HostBinding } from '@angular/core';
+import { Component, Input, HostBinding, Output, EventEmitter } from '@angular/core';
+
 
 @Component({
     selector: 'wth-modal-dock',
@@ -9,6 +10,7 @@ import { Component, Input, HostBinding } from '@angular/core';
 export class ModalDockComponent {
   @HostBinding('class') classes = 'modal-dock-wrap';
   @Input() cssClass = 'hidden';
+  @Output() closeEvent: EventEmitter<any> = new EventEmitter<any>();
 
   collapse = false;
   show = false;
@@ -19,6 +21,7 @@ export class ModalDockComponent {
 
   close() {
     this.cssClass = 'hidden';
+    this.closeEvent.emit('');
   }
 
   toggleCollapse() {

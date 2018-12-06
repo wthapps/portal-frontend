@@ -120,7 +120,7 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
           this.upload_arr.push(file);
         }
         this.upload_hash[file.id] = {...file, file_type, status: this.upload_steps.begin};
-        this.modalDock.open();
+        this.modalDock.open('media-uploader-dock');
       }
         break;
       case 'progress': {
@@ -152,7 +152,10 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
 
   clearItems() {
     this.upload_hash = {};
-    this.upload_arr = [];
+    this.upload_arr.length = 0;
+    this.uploaded_num = 0;
+    this.uploading_num = 0;
+    this.uploader.cancelAll(true);
   }
 
   private whichType(object_type: string) {

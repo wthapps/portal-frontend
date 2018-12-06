@@ -36,8 +36,6 @@
       {
         "name": "api-performance",
         "urls": [
-          "contact/wcontacts/settings",
-          "contact/groups/all"
         ],
         "cacheConfig": {
           "maxSize": 30,

@@ -211,6 +211,9 @@ export class WUploader {
    * @param {boolean} cancelAll - Specific true if you want to delete all files
    */
   cancelAll(cancelAll: boolean = false) {
+    if (!this.uppy) {
+      return;
+    }
     const files = this.uppy.getFiles();
     let canceledFiles = [];
 
