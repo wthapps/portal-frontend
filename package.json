@@ -14,6 +14,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "start-portal": "ng serve portal --port 3000 --open",
+    "start-portal-nr": "ng serve portal --port 3000 --live-reload false --open",
     "start-account": "ng serve my-account --port 3005 --open",
     "start-photo": "ng serve media --port 3010 --open",
     "start-photo-nr": "ng serve media --port 3010 --live-reload false --open",
