@@ -89,6 +89,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
         (res: any) => {
           if (res && res.meta) {
             this.next = res.meta.links.next;
+            this.url = this.next;
           }
         },
         err => console.log(err),
@@ -133,5 +134,6 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
 
   dismiss(event: any): void {
     console.log('Post Photo Select Component DISMISSED', event);
+    this.noteSelectionService.clear();
   }
 }

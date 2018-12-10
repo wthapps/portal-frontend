@@ -1,4 +1,4 @@
-<bs-modal #modal cssClass="modal-media-selection modal-full-height"
+<bs-modal #modal cssClass="modal-selection modal-note-selection modal-full-height"
           [keyboard]="false"
           [animation]="false"
           [backdrop]="'static'"
@@ -25,7 +25,7 @@
   <bs-modal-body>
     <ng-container *ngIf="(notes$ | async) as notesList; else templateloading">
       <ng-container *ngIf="notesList?.length > 0; else templateNodata">
-        <div class="media-selection-toolbar">
+        <div class="modal-selection-toolbar">
           <w-object-toolbar-view class="pull-right"></w-object-toolbar-view>
         </div>
         <w-object-list class="media-selection-content gray-light"
@@ -37,10 +37,23 @@
                        (completeLoadMore)="onCompleteLoadMore($event)"
                        (completeDoubleClick)="onCompleteDoubleClick($event)">
           <ng-template #columnBox let-item>
-            {{ item | json }}
+            <!-- ------------ Note view ------------- -->
+            <ng-container *ngIf="item.object_type == 'Note::Note'">
+              <div class="wobject-box-name">
+                <i class="icon-zone-note mr5"></i> {{ item.object.name ? item.object.name : 'Untitled' }}
+              </div>
+              <div class="wobject-box-description" [innerHTML]="item?.object?.content">
+              </div>
+            </ng-container>
+            <!-- ------------ Folder view ------------- -->
+            <ng-container *ngIf="item.object_type == 'Note::Folder'">
+              <div class="wobject-box-name">
+                <i class="fa fa-folder-o mr5"></i> {{ item.object.name ? item.object.name : 'Untitled' }}
+              </div>
+            </ng-container>
           </ng-template>
           <ng-template #columnFileSize let-item>
-            {{ item | json }}
+            <!--{{ item | json }}-->
           </ng-template>
         </w-object-list>
       </ng-container>
@@ -63,8 +76,10 @@
       </ng-template>
     </ng-container>
     <ng-template #templateloading>
-      <div class="text-center">
-        <box-loading></box-loading>
+      <div class="media-selection-content gray-light">
+        <div class="align-self-center">
+          <box-loading></box-loading>
+        </div>
       </div>
     </ng-template>
   </bs-modal-body>
