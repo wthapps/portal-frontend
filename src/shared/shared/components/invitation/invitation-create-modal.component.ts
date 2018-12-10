@@ -98,6 +98,8 @@ export class InvitationCreateModalComponent implements OnInit {
 
   onBack() {
     this.event.emit({action: 'back'});
+    let control = <FormArray>this.form.get(this.type);
+    this.removeAll();
   }
 
 

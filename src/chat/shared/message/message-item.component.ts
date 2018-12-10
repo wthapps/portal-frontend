@@ -78,7 +78,7 @@ export class MessageItemComponent implements OnInit {
 
   copy() {
     this.doAction({
-      channel: ConversationDetailComponent.name,
+      channel: 'ConversationDetailComponent',
       action: CHAT_ACTIONS.CHAT_MESSAGE_COPY,
       payload: this.message
     });
@@ -86,7 +86,7 @@ export class MessageItemComponent implements OnInit {
 
   quote() {
     this.doAction({
-      channel: ConversationDetailComponent.name,
+      channel: 'ConversationDetailComponent',
       action: CHAT_ACTIONS.CHAT_MESSAGE_QUOTE,
       payload: this.message
     });
@@ -94,7 +94,7 @@ export class MessageItemComponent implements OnInit {
 
   edit() {
     this.doAction({
-      channel: ConversationDetailComponent.name,
+      channel: 'ConversationDetailComponent',
       action: CHAT_ACTIONS.CHAT_MESSAGE_EDIT,
       payload: this.message
     });
@@ -102,7 +102,7 @@ export class MessageItemComponent implements OnInit {
 
   delete() {
     this.doAction({
-      channel: ConversationDetailComponent.name,
+      channel: 'ConversationDetailComponent',
       action: CHAT_ACTIONS.CHAT_MESSAGE_DELETE,
       payload: this.message
     });
@@ -110,7 +110,7 @@ export class MessageItemComponent implements OnInit {
 
   download() {
     this.doAction({
-      channel: ConversationDetailComponent.name,
+      channel: 'ConversationDetailComponent',
       action: CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD,
       payload: this.message
     });
@@ -118,7 +118,7 @@ export class MessageItemComponent implements OnInit {
 
   cancel() {
     this.doAction({
-      channel: ConversationDetailComponent.name,
+      channel: 'ConversationDetailComponent',
       action: CHAT_ACTIONS.CHAT_MESSAGE_CANCEL,
       payload: this.message
     });
