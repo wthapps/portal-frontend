@@ -64,19 +64,22 @@
           </i>
         </a>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-          <li *ngIf="viewMode !== 'grid'">
+          <li [ngClass]="{'active-item': viewMode === viewModes.grid}">
             <a (click)="changeViewMode(viewModes.grid)" href="javascript:void(0);" draggable="false">
               <i class="fa fa-th-large"></i> Grid
+              <i *ngIf="viewMode === viewModes.grid" class="fa fa-check pull-right"></i>
             </a>
           </li>
-          <li *ngIf="viewMode !== 'list'">
+          <li [ngClass]="{'active-item': viewMode === viewModes.list}">
             <a (click)="changeViewMode(viewModes.list)" href="javascript:void(0);" draggable="false">
               <i class="fa fa-th-list"></i> List
+              <i *ngIf="viewMode === viewModes.list" class="fa fa-check pull-right"></i>
             </a>
           </li>
-          <li *ngIf="viewMode !== 'timeline'">
+          <li [ngClass]="{'active-item': viewMode === viewModes.timeline}">
             <a (click)="changeViewMode(viewModes.timeline)" href="javascript:void(0);" draggable="false">
               <i class="fa fa-align-left"></i> Timeline
+              <i *ngIf="viewMode === viewModes.timeline" class="fa fa-check pull-right"></i>
             </a>
           </li>
         </ul>

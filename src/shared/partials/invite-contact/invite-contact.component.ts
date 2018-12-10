@@ -23,7 +23,7 @@ export class InviteContactComponent implements OnInit {
   ngOnInit() {}
 
   openModal() {
-    this.apiBaseService.get(`contact/wcontacts/contacts_not_wthuser`).subscribe(res => {
+    this.apiBaseService.get(`contact/wcontacts/contacts_not_wthuser`, {sort_name: 'name', sort: 'asc'}).subscribe(res => {
       this.contacts = res.data.filter(e => !e.wthapps_user);
     })
     this.modal.open();

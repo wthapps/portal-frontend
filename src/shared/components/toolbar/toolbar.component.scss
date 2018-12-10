@@ -32,3 +32,13 @@
     display: none;
   }
 }
+.dropdown-menu {
+  .active-item {
+    a {
+      color: $theme-color;
+    }
+    a:hover {
+      color: $theme-color;
+    }
+  }
+}

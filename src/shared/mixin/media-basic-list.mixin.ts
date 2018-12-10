@@ -82,22 +82,35 @@ export class MediaBasicListMixin {
   }
 
   deleteObjects(term: any = 'items') {
-    this.confirmService.confirm({
-      header: 'Delete',
-      acceptLabel: 'Delete',
-      message: `Are you sure to delete ${this.selectedObjects.length} ${term}` + (this.selectedObjects.length > 1 ? 's' : ''),
-      accept: () => {
-        this.loading = true;
-        this.objects = this.objects.filter(ob => {
-          return !this.selectedObjects.map(s => s.uuid).includes(ob.uuid);
-        });
-        this.apiBaseService.post(`media/media/delete`, {objects: this.selectedObjects}).subscribe(res => {
-          this.loading = false;
-          this.hasSelectedObjects = false;
-          this.selectedObjects = [];
-        })
-      }
-    });
+    let isIgnoreConfirmFile = this.selectedObjects.some(ob => { return ob.model == 'Media::Photo' || ob.model == 'Media::Video'});
+    if (isIgnoreConfirmFile) {
+      this.loading = true;
+      this.objects = this.objects.filter(ob => {
+        return !this.selectedObjects.map(s => s.uuid).includes(ob.uuid);
+      });
+      this.apiBaseService.post(`media/media/delete`, { objects: this.selectedObjects }).subscribe(res => {
+        this.loading = false;
+        this.hasSelectedObjects = false;
+        this.selectedObjects = [];
+      })
+    } else {
+      this.confirmService.confirm({
+        header: 'Delete',
+        acceptLabel: 'Delete',
+        message: `Are you sure to delete ${this.selectedObjects.length} ${term}` + (this.selectedObjects.length > 1 ? 's' : ''),
+        accept: () => {
+          this.loading = true;
+          this.objects = this.objects.filter(ob => {
+            return !this.selectedObjects.map(s => s.uuid).includes(ob.uuid);
+          });
+          this.apiBaseService.post(`media/media/delete`, { objects: this.selectedObjects }).subscribe(res => {
+            this.loading = false;
+            this.hasSelectedObjects = false;
+            this.selectedObjects = [];
+          })
+        }
+      });
+    }
   }
 
   changeViewMode(mode: any) {
