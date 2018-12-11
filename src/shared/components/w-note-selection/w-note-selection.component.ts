@@ -79,7 +79,12 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     this.modal.open().then();
     this.url = '/note/v1/mixed_entities?parent_id=null';
     this.next = this.url;
+    this.initView();
     this.getData();
+  }
+
+  initView() {
+    this.objectListService.setSortOrderGroup('asc');
   }
 
   getData() {

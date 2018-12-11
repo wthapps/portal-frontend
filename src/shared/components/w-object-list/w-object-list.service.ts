@@ -17,6 +17,9 @@ export class WObjectListService {
   sortBy$: Observable<any>;
   private sortBySubject: BehaviorSubject<any> = new BehaviorSubject<any>('created_at');
 
+  sortOrderGroup$: Observable<'asc' | 'desc' | boolean>;
+  private sortOrderGroupSubject: BehaviorSubject<'asc' | 'desc' | boolean> = new BehaviorSubject<any>('asc');
+
   sortOrder$: Observable<'asc' | 'desc' | boolean>;
   private sortOrderSubject: BehaviorSubject<'asc' | 'desc' | boolean> = new BehaviorSubject<any>('desc');
 
@@ -36,6 +39,7 @@ export class WObjectListService {
 
     this.groupBy$ = this.groupBySubject.asObservable();
     this.sortBy$ = this.sortBySubject.asObservable();
+    this.sortOrderGroup$ = this.sortOrderGroupSubject.asObservable();
     this.sortOrder$ = this.sortOrderSubject.asObservable();
   }
 
@@ -50,7 +54,7 @@ export class WObjectListService {
 
   addOrRemoveItem(item: any) {
     let items;
-    if (_.find(this.selectedObjectsSubject.getValue(), {'id': item.id})) {
+    if (_.find(this.selectedObjectsSubject.getValue(), { 'id': item.id })) {
       items = this.selectedObjectsSubject.getValue();
       items = items.filter(i => i.id !== item.id);
     } else {
@@ -69,6 +73,11 @@ export class WObjectListService {
 
   setSortBy(sortBy: string) {
     this.sortBySubject.next(sortBy);
+  }
+
+
+  setSortOrderGroup(sortOrderGroup: 'asc' | 'desc' | boolean) {
+    this.sortOrderGroupSubject.next(sortOrderGroup);
   }
 
   setSortOrder(sortOrder: 'asc' | 'desc' | boolean) {

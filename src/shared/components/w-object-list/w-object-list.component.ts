@@ -49,6 +49,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   hasMultipleSelection: Boolean = true;
   groupBy: string;
   sortBy: string;
+  sortOrderGroup: 'asc' | 'desc' | boolean;
   sortOrder: 'asc' | 'desc' | boolean;
 
   constructor(private objectListService: WObjectListService) {
@@ -76,6 +77,10 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
     this.objectListService.sortOrder$
       .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.sortOrder = res);
+
+    this.objectListService.sortOrderGroup$
+      .pipe(takeUntil(componentDestroyed(this)))
+      .subscribe(res => this.sortOrderGroup = res);
 
     this.objectListService.multipleSelection$
       .pipe(takeUntil(componentDestroyed(this)))
