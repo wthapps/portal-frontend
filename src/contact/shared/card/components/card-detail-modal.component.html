@@ -1,7 +1,7 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <bs-modal-header [showDismiss]="false">
     <div class="modal-header-nav">
-      <h4 *ngIf="card" class="modal-title">{{ card?.card_type === PUBLIC ? PUBLIC_PROFILE : card?.card_name }} </h4>
+      <h4 *ngIf="card" class="modal-title">{{ card?.card_type === BUSINESS ? card?.card_name : PUBLIC_PROFILE }} </h4>
       <ul class="modal-header-navbar">
         <li *ngIf="card && card.is_owner">
           <button (click)="onEdit()" type="button" class="btn btn-default btn-default-no-border">
@@ -39,12 +39,19 @@
     <div class="pcard-cover bg-gray-light">
       <div class="media-avatar align-items-center">
         <div class="media-avatar-img-wrap">
-          <div class="media-avatar-img avatar-sm" (click)="onEdit(true)">
-            <img *ngIf="card" [src]="card?.profile_image" [alt]="card?.name">
-            <span *ngIf="card && card.is_owner" class="w-user-avatar-cover">
-              <i class="fa fa-camera"></i>
-            </span>
-          </div>
+          <ng-container *ngIf="card && card.is_owner && card.card_type ==='business' else readonlyCard">
+            <div class="media-avatar-img avatar-sm" (click)="onEdit(true)">
+              <img [src]="card?.profile_image" [alt]="card?.name">
+              <span class="w-user-avatar-cover">
+                <i class="fa fa-camera"></i>
+              </span>
+            </div>
+          </ng-container>
+          <ng-template #readonlyCard>
+            <div class="media-avatar-img avatar-sm">
+              <img *ngIf="card" [src]="card?.profile_image" [alt]="card?.name">
+            </div>
+          </ng-template>
         </div>
         <div class="media-avatar-body">
           <h4 class="m0"> {{ card?.name }} </h4>

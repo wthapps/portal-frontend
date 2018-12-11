@@ -11,7 +11,7 @@
         <label class="text-bold">Sort by</label>
 
         <div class="btn-group ml10">
-          <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button type="button" class="btn btn-outline-default dropdown-toggle btn-sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{ sortFieldName }}
             <span class="caret pull-right"></span>
           </button>
@@ -19,18 +19,18 @@
             <li (click)="changeSortField('card_name')">
               <a href="javascript:void(0)"> Card name  <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === 'card_name'}"></i></a>
             </li>
-            <li (click)="changeSortField('owner_name')">
+            <li (click)="changeSortField('user_name')">
               <a href="javascript:void(0)"> Owner name  <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === 'owner_name'}"></i></a>
             </li>
-            <li (click)="changeSortField('created_at')">
+            <li (click)="changeSortField('updated_at')">
               <a href="javascript:void(0)"> Recent shared  <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === 'created_at'}"></i></a>
             </li>
           </ul>
 
         </div>
           <button type="button" class="btn btn-default" (click)="changeSortDirection()">
-            <i *ngIf="sortDesc" class="fa fa-arrow-down" [pTooltip]="'Sort Ascending'"  tooltipPosition="bottom"></i>
-            <i *ngIf="!sortDesc" class="fa fa-arrow-up" [pTooltip]="'Sort Descending'"  tooltipPosition="bottom"></i>
+            <i *ngIf="!sortDesc" class="fa fa-arrow-down" [pTooltip]="'Sort Ascending'"  tooltipPosition="bottom"></i>
+            <i *ngIf="sortDesc" class="fa fa-arrow-up" [pTooltip]="'Sort Descending'"  tooltipPosition="bottom"></i>
           </button>
       </div>
     </ng-container>

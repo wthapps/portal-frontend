@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
 
 import { Observable } from 'rxjs';
 
@@ -20,7 +19,7 @@ export class SharedCardPageComponent implements OnInit {
   cards$: Observable<Array<any>>;
   card$: Observable<any>;
   profile$: Observable<any>;
-  sortField = 'created_at'
+  sortField = 'updated_at';
   sortFieldName = 'Recent shared';
   sortDesc = true;
 
@@ -44,14 +43,15 @@ export class SharedCardPageComponent implements OnInit {
 
   changeSortDirection() {
     this.sortDesc = !this.sortDesc;
-    const query = {sortby: this.sortDesc ? `-${this.sortDesc}` : `+${this.sortField}`};
+    const query = {sort: `${this.sortField}:${this.sortDesc ? 'desc' : 'asc'}`};
     this.cardService.getSharedCards(query);
   }
 
   changeSortField(field: string) {
     this.sortField = field;
-    this.sortFieldName = this.sortField === 'card_name' ? 'Card name' : this.sortField === 'owner_name' ? 'Owner name' : 'Recent shared';
-    const query = {sortby: this.sortDesc ? `-${this.sortDesc}` : `+${this.sortField}`};
+    this.sortDesc = true;
+    this.sortFieldName = this.sortField === 'card_name' ? 'Card name' : this.sortField === 'user_name' ? 'Owner name' : 'Recent shared';
+    const query = {sort: `${this.sortField}:${this.sortDesc ? 'desc' : 'asc'}`};
     this.cardService.getSharedCards(query);
   }
 }

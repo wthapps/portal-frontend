@@ -27,7 +27,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   profile$: Observable<any>;
   users$: Observable<Array<any>>;
   currentCard: any;
-  publicCard$: Observable<any>;
   destroy$ = new Subject();
 
   readonly BIZ_CARD = `Business Cards help you share private contact information with other users`;
@@ -39,35 +38,53 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
               private confirmationService: WthConfirmService,
               private accountService: AccountService,
               private commonEventService: CommonEventService) {
-    this.cards$ = this.cardService.businessCards$;
-    this.publicCard$ = this.cardService.publicCard$;
-
-    this.card$ = this.cardService.getItem();
+    this.cards$ = this.cardService.items$;
     this.users$ = this.accountService.getItems();
+    this.profile$ = this.profileService.myProfile$;
+
     this.handleSelectCropEvent();
   }
   
   ngOnInit(): void {
     this.cardService.getCards();
-    this.profile$ = this.profileService.getProfile();
+    this.profileService.getMyProfile();
+    // this.profile$ = this.profileService.getProfile();
+  }
+
+  closeCard(card: any) {
+    this.cardService.setCard(null);
   }
 
   saveCard(payload: any) {
+    const card = payload.card;
+
     if (payload.mode === 'edit') {
-      this.cardService.updateCard(payload.card);
+      if (card.card_type === 'public') {
+        this.profileService.updateCard(card);
+      } else {
+        this.cardService.updateCard(card);
+      }
     } else if (payload.mode === 'create') {
-      this.cardService.createCard(payload.card);
+      this.cardService.createCard(card);
     }
     this.cardEditModal.close();
   }
 
   createCard() {
-    this.profileService.get(this.authService.user.uuid);
+    // this.profileService.get(this.authService.user.uuid);
+    // this.profileService.getMyProfile();
     this.cardEditModal.open({mode: 'create', card: null, cardType: 'business'});
   }
 
   viewCard(card: any) {
-    this.cardService.getCard(card.uuid);
+    if (card.card_type === 'business') {
+      this.card$ = this.cardService.getItem();
+      this.cardService.getCard(card.uuid);
+    } else {
+      this.card$ = this.profileService.profile$;
+      this.profileService.getProfileNew(card.uuid);
+    }
+
     this.cardDetailModal.open({});
   }
 
@@ -83,7 +100,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       });
       this.cardDetailModal.close();
     } else {
-      this.profileService.get(this.authService.user.uuid);
+      // this.profileService.get(this.authService.user.uuid);
+      // this.profileService.getMyProfile();
       this.cardEditModal.open({...payload, mode: 'edit'});
     }
   }

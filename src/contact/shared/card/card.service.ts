@@ -29,20 +29,14 @@ export class CardService extends BaseEntityService<any> {
   private itemSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private selectedAll: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private sharedCardNumSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  private publicCardSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  private businessCardsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
 
-  constructor(
-    protected apiBaseService: ApiBaseService,
-    private toastService: ToastsService
-  ) {
+  constructor(protected apiBaseService: ApiBaseService,
+              private toastService: ToastsService) {
     super(apiBaseService);
     this.items$ = this.itemsSubject.asObservable();
     this.item$ = this.itemSubject.asObservable();
     this.selectedAll$ = this.selectedAll.asObservable();
     this.sharedCardNum$ = this.sharedCardNumSubject.asObservable();
-    this.publicCard$ = this.publicCardSubject.asObservable();
-    this.businessCards$ = this.businessCardsSubject.asObservable();
     this.url = 'contact/cards';
   }
 
@@ -60,12 +54,20 @@ export class CardService extends BaseEntityService<any> {
     });
   }
 
+  setCard(card: any) {
+    this.itemSubject.next(card);
+  }
+
+
   getCards() {
     this.getAll().subscribe(response => {
       const cards = response.data.map(c => c.attributes);
-      this.itemsSubject.next(cards);
-      this.parseCardbyType(cards);
+      this.setCards(cards);
     });
+  }
+
+  setCards(cards: Array<any>) {
+    this.itemsSubject.next(cards);
   }
 
   getSharedCardNum() {
@@ -76,21 +78,22 @@ export class CardService extends BaseEntityService<any> {
 
   getSharedCards(query: any) {
     this.getAll(query, 'contact/cards/shared').subscribe(response => {
-      this.itemsSubject.next(response.data);
+      this.setCards(response.data);
+      this.sharedCardNumSubject.next(response.data.length);
     });
   }
 
   createCard(card: any) {
     this.create({card: card}).subscribe(response => {
-      this.itemSubject.next(response.data);
-      // this.itemsSubject.next([response.data, ...this.itemsSubject.getValue()]);
-      this.businessCardsSubject.next([response.data, ...this.businessCardsSubject.getValue()]);
+      const newCard = response.data;
+      this.setCard(newCard);
+      this.setCards([newCard, ...this.itemsSubject.getValue()]);
     });
   }
 
   updateCard(card: any) {
     this.apiBaseService.patch(`${this.url}/${card.uuid}`, card).subscribe(response => {
-      this.itemSubject.next(response.data.attributes);
+      this.setCard(response.data.attributes);
       const items = this.itemsSubject.getValue();
       items.forEach(item => {
         if (item.uuid === response.data.attributes.uuid) {
@@ -99,8 +102,7 @@ export class CardService extends BaseEntityService<any> {
           return;
         }
       });
-      this.itemsSubject.next(items);
-      this.parseCardbyType(items);
+      this.setCards(items);
       this.toastService.success('You updated card successfully!');
     });
   }
@@ -110,14 +112,14 @@ export class CardService extends BaseEntityService<any> {
       const sharedCard = response.data.attributes;
       const items = this.itemsSubject.getValue();
 
-      this.itemSubject.next(sharedCard);
+      this.setCard(sharedCard);
       items.forEach(item => {
         if (item.uuid === sharedCard.uuid) {
           item.card_name = sharedCard.card_name;
           return;
         }
       });
-      this.itemsSubject.next(items);
+      this.setCards(items);
       if (payload.newUsers.length > 0) {
         this.toastService.success('You shared card successfully!');
       } else {
@@ -132,11 +134,11 @@ export class CardService extends BaseEntityService<any> {
 
   deleteCard(card: any) {
     this.delete(card.uuid).subscribe(response => {
-      const items = this.businessCardsSubject.getValue();
+      const items = this.itemsSubject.getValue();
       items.forEach((item, index) => {
         if (item.uuid === card.uuid) {
           items.splice(index, 1);
-          this.businessCardsSubject.next(items);
+          this.setCards(items);
           return;
         }
       });
@@ -144,15 +146,4 @@ export class CardService extends BaseEntityService<any> {
     });
   }
 
-  private parseCardbyType(cards: Array<any>) {
-    const bizCards = [];
-    cards.forEach(c => {
-      if (c.card_type === 'public') {
-        this.publicCardSubject.next(c);
-      } else {
-        bizCards.push(c);
-      }
-    });
-    this.businessCardsSubject.next(bizCards);
-  }
 }

@@ -18,6 +18,7 @@ export class CardDetailModalComponent {
   @Output() share = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() export = new EventEmitter<any>();
+  @Output() closed = new EventEmitter<any>();
 
   readonly PUBLIC_PROFILE = 'Public Profile';
   readonly PUBLIC = PUBLIC;
@@ -32,6 +33,7 @@ export class CardDetailModalComponent {
   }
 
   close(): void {
+    this.closed.emit(true);
     this.modal.close();
   }
 

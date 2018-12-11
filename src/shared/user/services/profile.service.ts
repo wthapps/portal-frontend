@@ -1,16 +1,24 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseService, UserService } from '@shared/services';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 @Injectable()
 export class ProfileService {
 
   profile$: Observable<any>;
-  private _profile: Subject<any> = new Subject<any>();
+  myProfile$: Observable<any>;
+
+  private _profile = new Subject<any>();
+  private _myProfile = new Subject<any>();
+
   private url = 'zone/social_networkd/users/';
+  private newUrl = 'account/profiles';
   constructor(private apiBaseService: ApiBaseService,
-              private userService: UserService) {
+              private userService: UserService,
+              private toastService: ToastsService) {
     this.profile$ = this._profile.asObservable();
+    this.myProfile$ = this._myProfile.asObservable();
   }
 
   get(id: string) {
@@ -19,8 +27,30 @@ export class ProfileService {
     });
   }
 
+  getProfileNew(id: string) {
+    return this.apiBaseService.get(`${this.newUrl}/${id}`).subscribe(response => {
+      this.setProfile(response.data.attributes);
+    });
+  }
+
   getMyProfile() {
-    return this.apiBaseService.get(`zone/social_network/users/${this.userService.getSyncProfile().uuid}`);
+    return this.apiBaseService.get(`${this.newUrl}/my_profile`).subscribe(response => {
+      this._myProfile.next(response.data.attributes);
+    });
+  }
+
+  updateCard(profile: any) {
+    return this.apiBaseService.patch(`${this.newUrl}/${profile.uuid}?is_card=true`, profile).subscribe(response => {
+      this.setProfile(response.data.attributes);
+      this.toastService.success('You updated card successfully!');
+    });
+  }
+
+  updateProfile(profile: any) {
+    return this.apiBaseService.patch(`${this.newUrl}/${profile.uuid}`, profile).subscribe(response => {
+      this.setProfile(response.data.attributes);
+      this.toastService.success('You updated profile successfully!');
+    });
   }
 
   updateMyProfile(body: any) {
@@ -35,7 +65,7 @@ export class ProfileService {
   }
 
   setProfile(profile: any) {
-    this._profile.next(Object.assign({}, profile));
+    this._profile.next(profile);
   }
 
   getProfile(): Observable<any> {

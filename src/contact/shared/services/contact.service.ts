@@ -141,7 +141,7 @@ export class ZContactService extends BaseEntityService<any> {
       })
         .then((response: any) => {
           if (response.data) {
-            obs.next(response.data);
+            obs.next(response.data.attributes);
           }
           obs.complete();
         })
