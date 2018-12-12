@@ -13,6 +13,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "start-sample": "ng serve sample --port 2500 --open",
     "start-portal": "ng serve portal --port 3000 --open",
     "start-portal-nr": "ng serve portal --port 3000 --live-reload false --open",
     "start-account": "ng serve my-account --port 3005 --open",

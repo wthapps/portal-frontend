@@ -1283,6 +1283,155 @@
           }
         }
       }
+    },
+    "sample": {
+      "root": "src",
+      "sourceRoot": "src/sample",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/sample",
+            "index": "src/sample/index.html",
+            "main": "src/sample/main.ts",
+            "polyfills": "src/sample/polyfills.ts",
+            "tsConfig": "src/sample/tsconfig.app.json",
+            "assets": [
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+            ],
+            "styles": [
+              "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/cropperjs/dist/cropper.min.css",
+              "src/sample/styles/sample.scss"
+            ],
+            "scripts": [
+              "node_modules/cropperjs/dist/cropper.min.js",
+              "src/shared/channels/common.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "serviceWorker": true,
+              "fileReplacements": [
+                {
+                  "replace":
+                  "src/sample/../environments/environment.ts",
+                  "with":
+                  "src/sample/../environments/environment.prod.ts"
+                }
+              ]
+            },
+            "stag": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/sample/../environments/environment.ts",
+                  "with": "src/sample/../environments/environment.stag.ts"
+                }
+              ]
+            },
+            "test": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/sample/../environments/environment.ts",
+                  "with": "src/sample/../environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "sample:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "sample:build:production"
+            },
+            "stag": {
+              "browserTarget": "sample:build:stag"
+            },
+            "test": {
+              "browserTarget": "sample:build:test"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "sample:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/sample/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/sample/polyfills.ts",
+            "tsConfig": "src/sample/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/cropperjs/dist/cropper.min.js",
+              "src/shared/channels/common.js"
+            ],
+            "styles": [
+              "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/cropperjs/dist/cropper.min.css",
+              "src/sample/styles/sample.scss"
+            ],
+            "assets": [
+  
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "portal-frontend",
