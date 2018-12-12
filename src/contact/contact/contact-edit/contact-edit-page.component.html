@@ -31,78 +31,16 @@
       </ng-container>
     </div>
     <div class="contact-edit-aside">
-      <!--<h4>WTH Profiles-->
-        <!--<i class="fa fa-info-circle" pTooltip="Profiles were found in WTHApps using contact info entered"-->
-          <!--tooltipPosition="bottom"></i>-->
-      <!--</h4>-->
-      <!--<ng-container *ngFor="let email of emails">-->
-        <!--<div *ngIf="email.wthapps_user" class="user-row">-->
-          <!--<div class="avatar">-->
-            <!--<a [href]="urls.social + '/profile/' + email.wthapps_user.uuid" target="_blank">-->
-              <!--<img class="img-circle" width="34" alt="" [src]="email.wthapps_user.profile_image">-->
-            <!--</a>-->
-          <!--</div>-->
-          <!--<div class="name">-->
-            <!--<a class="text-link" [href]="urls.social + '/profile/' + email.wthapps_user?.uuid" target="_blank">-->
-              <!--<p class="mb0">{{ email.wthapps_user.name}}</p>-->
-            <!--</a>-->
-            <!--<span>{{ email.value }}</span>-->
-          <!--</div>-->
-          <!--<div class="action">-->
-            <!--<a class="btn btn-outline-default" [href]="urls.chat" target="_blank" pTooltip="Send message"-->
-              <!--tooltipPosition="left">-->
-              <!--<i class="fa fa-comments-o"></i>-->
-            <!--</a>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</ng-container>-->
-      <!--<h4 class="regular-email">-->
-        <!--Regular email-->
-        <!--<i class="fa fa-info-circle" pTooltip="Entered information didn't match any WTHApps profiles" tooltipPosition="bottom"></i>-->
-      <!--</h4>-->
-      <!--<ng-container *ngFor="let email of emails">-->
-        <!--<div *ngIf="email.wthapps_user == null" class="user-row">-->
-          <!--&lt;!&ndash; <div class="avatar">-->
-            <!--<img class="img-circle" width="34" alt="" [src]="avatarDefault">-->
-          <!--</div> &ndash;&gt;-->
-          <!--<div class="name">-->
-            <!--<span>{{ email.value }}</span>-->
-          <!--</div>-->
-          <!--<div class="action">-->
-            <!--<button class="btn btn-default" pTooltip="Invite to WTHApps" tooltipPosition="left" (click)="invite(email)">-->
-              <!--<i class="fa fa-envelope-o"></i>-->
-            <!--</button>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</ng-container>-->
 
       <h4>WTH Profile</h4>
       <div class="card-list row">
         <div class="col-sm-12 mb15" >
-          <card-item [card]="contact.profile" (view)="viewCard($event)"></card-item>
+          <card-item *ngIf="contact && contact.profile" [card]="contact.profile" (view)="viewCard($event)"></card-item>
+          <div *ngIf="contact && !contact.profile">
+            There is no WTH Profile
+          </div>
         </div>
       </div>
-      <!--<ng-container *ngFor="let email of emails">-->
-        <!--<div *ngIf="email.wthapps_user" class="user-row">-->
-          <!--<div class="avatar">-->
-            <!--<a [href]="urls.social + '/profile/' + email.wthapps_user.uuid" target="_blank">-->
-              <!--<img class="img-circle" width="34" alt="" [src]="email.wthapps_user.profile_image">-->
-            <!--</a>-->
-          <!--</div>-->
-          <!--<div class="name">-->
-            <!--<a class="text-link" [href]="urls.social + '/profile/' + email.wthapps_user?.uuid" target="_blank">-->
-              <!--<p class="mb0">{{ email.wthapps_user.name}}</p>-->
-            <!--</a>-->
-            <!--<span>{{ email.value }}</span>-->
-          <!--</div>-->
-          <!--<div class="action">-->
-            <!--<a class="btn btn-outline-default" [href]="urls.chat" target="_blank" pTooltip="Send message"-->
-               <!--tooltipPosition="left">-->
-              <!--<i class="fa fa-comments-o"></i>-->
-            <!--</a>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</ng-container>-->
 
       <h4 class="regular-email">Business Cards</h4>
       <div class="card-list row">
