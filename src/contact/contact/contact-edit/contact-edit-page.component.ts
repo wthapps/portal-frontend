@@ -19,6 +19,7 @@ import { CommonEvent } from '@shared/services';
 import { CardService } from '@contacts/shared/card';
 import { Observable } from 'rxjs';
 import { CardEditModalComponent } from '@contacts/shared/card/components';
+import { ProfileService } from '@shared/user/services';
 
 declare var _: any;
 
@@ -79,12 +80,13 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
     private contactService: ZContactService,
     private groupService: GroupService,
     private cardService: CardService,
+    private profileService: ProfileService,
     private location: Location,
     private route: ActivatedRoute,
     private commonEventService: CommonEventService,
     private toastsService: ToastsService
   ) {
-    this.card$ = this.cardService.getItem();
+
     this.commonEventService
       .filter(
         (event: CommonEvent) => event.channel === Constants.contactEvents.common
@@ -266,7 +268,13 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   }
 
   viewCard(card: any) {
-    this.cardService.getCard(card.uuid);
+    if (card.card_type === 'business') {
+      this.card$ = this.cardService.getItem();
+      this.cardService.getCard(card.uuid);
+    } else {
+      this.card$ = this.profileService.profile$;
+      this.profileService.getProfileNew(card.uuid);
+    }
     this.cardDetailModal.open({});
   }
 

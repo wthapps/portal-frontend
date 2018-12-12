@@ -9,29 +9,29 @@
 
     <dl class="dl-horizontal">
       <dt>Title</dt>
-      <dd>{{ data.occupation || 'None' }}</dd>
+      <dd>{{ data?.occupation || 'None' }}</dd>
     </dl>
     <dl class="dl-horizontal">
       <dt>Company</dt>
-      <dd>{{ data.company || 'None' }}</dd>
+      <dd>{{ data?.company || 'None' }}</dd>
     </dl>
     <dl class="dl-horizontal">
       <dt>Gender</dt>
-      <dd>{{ constants.sex[data.sex] || 'None' }}</dd>
+      <dd>{{ constants.sex[data?.sex] || 'None' }}</dd>
     </dl>
     <dl class="dl-horizontal">
       <dt>Birthday</dt>
-      <dd *ngIf="data.birthday">{{ (data.birthday | timeFormat) || 'None' }}</dd>
-      <dd *ngIf="!data.birthday">None</dd>
+      <dd *ngIf="data?.birthday">{{ (data?.birthday | timeFormat) || 'None' }}</dd>
+      <dd *ngIf="!data?.birthday">None</dd>
     </dl>
     <dl class="dl-horizontal">
       <dt>Nationality</dt>
-      <dd>{{ getCountryName((countries$ | async), data.nationality) || 'None' }}</dd>
+      <dd>{{ getCountryName((countries$ | async), data?.nationality) || 'None' }}</dd>
     </dl>
     <dl class="dl-horizontal">
       <dt>About</dt>
       <dd>
-        {{ data.about || 'None'}}
+        {{ data?.about || 'None'}}
       </dd>
     </dl>
   </div>

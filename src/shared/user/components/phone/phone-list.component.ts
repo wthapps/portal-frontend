@@ -9,7 +9,6 @@ import {
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { CountryService } from '../../../shared/components/countries/countries.service';
-import { ApiBaseService } from '../../../services/apibase.service';
 import { Constants } from '../../../constant/config/constants';
 import { Mixins  } from '../../../design-patterns/decorator/mixin-decorator';
 import { ProfileFormMixin } from '../../../shared/mixins/form/profile/profile-form.mixin';
@@ -52,7 +51,7 @@ export class PhoneListComponent implements OnInit, ProfileFormMixin {
   removeAll: () => void;
   getFormControls: () => any;
 
-  constructor(private fb: FormBuilder, private countryService: CountryService, private apiBaseService: ApiBaseService) {
+  constructor(private fb: FormBuilder, private countryService: CountryService) {
     this.form = fb.group({
       phones: fb.array([ this.initItem() ])
     });

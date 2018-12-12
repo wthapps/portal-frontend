@@ -85,7 +85,7 @@ export class CardService extends BaseEntityService<any> {
 
   createCard(card: any) {
     this.create({card: card}).subscribe(response => {
-      const newCard = response.data;
+      const newCard = response.data.attributes;
       this.setCard(newCard);
       this.setCards([newCard, ...this.itemsSubject.getValue()]);
     });

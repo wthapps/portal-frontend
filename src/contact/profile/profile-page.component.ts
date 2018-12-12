@@ -5,9 +5,17 @@ import { takeUntil } from 'rxjs/operators';
 import { CardService } from '../shared/card';
 import { CardEditModalComponent } from '@contacts/shared/card/components';
 import { ProfileService } from '@shared/user/services';
-import { AccountService, ApiBaseService, AuthService, CommonEventService, WthConfirmService } from '@shared/services';
+import {
+  AccountService,
+  AuthService,
+  CommonEventService,
+  UserService,
+  WthConfirmService
+} from '@shared/services';
 import { ShareEditorComponent } from '@shared/components/editors/share/share-editor.component';
 // import { WContactSelectionComponent } from '@shared/components/w-contact-selection/w-contact-selection.component';
+
+declare var $: any;
 
 @Component ({
   selector: 'w-user-profile-page',
@@ -30,14 +38,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   destroy$ = new Subject();
 
   readonly BIZ_CARD = `Business Cards help you share private contact information with other users`;
-  readonly PUBLIC_CARD = `Your Public Profile is the default card for your public information on all apps on the WTHApps site`;
+  readonly PUBLIC_CARD = `All the information in your Public Profile card will be public`;
 
   constructor(private authService: AuthService,
               private cardService: CardService,
               private profileService: ProfileService,
+              private userService: UserService,
               private confirmationService: WthConfirmService,
               private accountService: AccountService,
               private commonEventService: CommonEventService) {
+
     this.cards$ = this.cardService.items$;
     this.users$ = this.accountService.getItems();
     this.profile$ = this.profileService.myProfile$;
@@ -48,7 +58,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cardService.getCards();
     this.profileService.getMyProfile();
-    // this.profile$ = this.profileService.getProfile();
   }
 
   closeCard(card: any) {
@@ -138,19 +147,41 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     });
   }
 
+  changeAvatar(profile: any) {
+    this.commonEventService.broadcast({
+      channel: 'SELECT_CROP_EVENT',
+      action: 'SELECT_CROP:OPEN',
+      payload: {
+        currentImage: profile.profile_image,
+        user: profile
+      }
+    });
+  }
+
+  updateProfile(profile: any) {
+    this.profileService.updateProfile(profile);
+  }
+
   handleSelectCropEvent() {
     this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
       .pipe(takeUntil(this.destroy$)).subscribe((event: any) => {
-        this.doEvent(event);
+        this.handleUpdateAvatar(event);
       });
   }
 
-  doEvent(event: any) {
+  handleUpdateAvatar(event: any) {
     switch (event.action) {
       case 'SELECT_CROP:DONE':
         if (event.card) {
           this.cardService.updateCard({...event.card, avatar: event.payload});
-        }
+        } else if (event.user) {
+          this.userService.update({uuid: event.user.uuid, image: event.payload})
+            .subscribe((result: any) => {
+                this.profileService.getMyProfile();
+              },
+              error => {}
+            );
+          }
         break;
       default:
         break;

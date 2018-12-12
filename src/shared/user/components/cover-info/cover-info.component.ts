@@ -1,11 +1,7 @@
-import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-
-
-import { UserService } from '@wth/shared/services';
-import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/merge';
@@ -24,7 +20,7 @@ import { WModalService } from '@shared/modal/w-modal-service';
   styleUrls: ['cover-info.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class CoverInfoComponent implements OnInit {
+export class CoverInfoComponent implements OnDestroy {
   @Input() user: any;
   @Input() editable = true;
   @Input() nameOnly = false;
@@ -32,6 +28,8 @@ export class CoverInfoComponent implements OnInit {
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() onOpenModal: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onChangeAvatar: EventEmitter<any> = new EventEmitter<any>();
+
 
   destroySubject: Subject<any> = new Subject<any>();
 
@@ -44,19 +42,10 @@ export class CoverInfoComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private modalService: WModalService,
-    private loadingService: LoadingService,
-    private apiBaseService: ApiBaseService,
-    private userService: UserService,
-    private toastsService: ToastsService,
     private commonEventService: CommonEventService
     ) {
-      this.handleSelectCropEvent();
 
     }
-
-  ngOnInit() {
-
-  }
 
   ngOnDestroy() {
     this.destroySubject.next('');
@@ -75,42 +64,8 @@ export class CoverInfoComponent implements OnInit {
 
   }
 
-
-
-
   changeProfileImage(event: any): void {
-    event.preventDefault();
-    // this.uploadProfile.modal.open();
-    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT',
-     action: 'SELECT_CROP:OPEN', payload: {currentImage: this.userService.getSyncProfile().profile_image} });
-
-  }
-
-  handleSelectCropEvent() {
-    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
-      .takeUntil(this.destroySubject)
-      .subscribe((event: any) => {
-        this.doEvent(event);
-      });
-  }
-
-
-  doEvent(event: any) {
-    // console.log(event);
-    switch (event.action) {
-      case 'SELECT_CROP:DONE':
-        // Change user profile
-        if (!event.card) {
-          this.updateProfileImageBase64(event.payload);
-        }
-        break;
-      default:
-        break;
-    }
-  }
-
-  updateProfileImageBase64(img: string): void {
-    this.updateUser(JSON.stringify({image: img}));
+    this.onChangeAvatar.emit(this.user);
   }
 
   private createUserForm(nameOnly: boolean): FormGroup {
@@ -128,22 +83,5 @@ export class CoverInfoComponent implements OnInit {
     }
   }
 
-  private updateUser(body: string): void {
-    this.userService.update(body)
-      .subscribe((result: any) => {
-          // stop loading
-          this.loadingService.stop();
-          this.toastsService.success(result.message);
 
-          //  reload profile image
-          // $('img.lazyloaded').addClass('lazyload');
-        },
-        error => {
-          // stop loading
-          this.loadingService.stop();
-          this.toastsService.danger(error);
-          console.log(error);
-        }
-      );
-  }
 }

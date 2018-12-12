@@ -1,10 +1,21 @@
-import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef, AfterViewInit
+} from '@angular/core';
 
-import { Observable, from, of } from 'rxjs';
+import { Observable, from, of, interval } from 'rxjs';
 
 import { Constants } from '../../../../shared/constant';
 import { PUBLIC, BUSINESS, UNTITILED, NONE } from '../card.constant';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
+import { BsModalComponent } from 'ng2-bs3-modal';
+
 
 @Component({
   selector: 'w-card-edit-modal',
@@ -13,7 +24,9 @@ import { CountryService } from '@shared/shared/components/countries/countries.se
   encapsulation: ViewEncapsulation.None
 })
 export class CardEditModalComponent {
-  @ViewChild('modal') modal: any;
+  @ViewChild('modal') modal: BsModalComponent;
+  @ViewChild('modal') nameEl: ElementRef;
+
   @Input() profile: any;
 
   @Output() save = new EventEmitter<any>();
@@ -27,6 +40,7 @@ export class CardEditModalComponent {
   emailType = Constants.emailType;
   addressType = Constants.addressType;
   mediaType = Constants.mediaType;
+  focus = false;
   readonly PUBLIC = PUBLIC;
   readonly BUSINESS = BUSINESS;
   readonly NONE = NONE;
@@ -39,18 +53,20 @@ export class CardEditModalComponent {
   };
   private mode: string = 'create' || 'edit';
 
-  constructor(private countryService: CountryService) {  }
+  constructor(private countryService: CountryService) {}
+
 
   open(options: any): void {
     this.mode = options.mode;
     this.card = options.card || this.DEFAULT_CARD;
     this.selectedFields = this.card.public_fields;
     this.cardName = this.card.card_name;
-
     this.modal.open();
+    this.focus = true;
   }
 
   close(): void {
+    this.focus = false;
     this.modal.close();
   }
 
@@ -58,20 +74,7 @@ export class CardEditModalComponent {
     if (this.mode === 'create') {
       this.card = {
         card_type: 'business',
-        name: this.profile.name,
-        first_name: this.profile.first_name,
-        last_name: this.profile.last_name,
-        nickname: this.profile.nickname,
-        email: this.profile.email,
-        phone_number: this.profile.phone_number,
-        link: this.profile.link,
-        birthday: this.profile.birthday,
-        sex: this.profile.sex,
-        profile_image: this.profile.profile_image,
-        cover_image: this.profile.cover_image,
-        company: this.profile.company,
-        occupation: this.profile.occupation,
-        nationality: this.profile.nationality,
+        card_name: '',
         public_fields: this.selectedFields,
       };
     }

@@ -4,12 +4,16 @@
 </z-contact-shared-toolbar>
 <div class="page-body-content has-page-body-control">
   <div class="contact-edit-page page-body-content-in">
-    <w-user-profile class="contact-edit-content"></w-user-profile>
+    <w-user-profile class="contact-edit-content" [data]="profile$|async"
+                    (update)="updateProfile($event)"
+                    (changeAvatar)="changeAvatar($event)">
+
+    </w-user-profile>
     <div class="contact-edit-aside">
       <h4>Public Profile
-        <!--<button class="btn btn-default" [pTooltip]="PUBLIC_CARD" tooltipPosition="bottom">-->
-          <!--<i class="fa fa-info-circle text-fade"></i>-->
-        <!--</button>-->
+        <button class="btn btn-default" [pTooltip]="PUBLIC_CARD" tooltipPosition="bottom">
+          <i class="fa fa-info-circle text-fade"></i>
+        </button>
       </h4>
       <div class="card-list row">
         <div class="col-sm-12 mb15" >

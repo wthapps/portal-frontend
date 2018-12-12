@@ -26,6 +26,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
 
   currentImage: string;
   card = null;
+  user = null;
 
   close$: Observable<any>;
   destroySubject: Subject<any> = new Subject<any>();
@@ -61,6 +62,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
       case 'SELECT_CROP:OPEN':
         this.currentImage = event.payload.currentImage;
         this.card = event.payload.card || null;
+        this.user = event.payload.user || null;
         let edit: any = true;
         if (event.payload.editCurrentMode === false) {
           edit = event.payload.editCurrentMode;
@@ -134,7 +136,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   }
 
   onDone(image: string) {
-    this.dispatchEvent({action: 'SELECT_CROP:DONE', payload: image, card: this.card});
+    this.dispatchEvent({action: 'SELECT_CROP:DONE', payload: image, card: this.card, user: this.user});
   }
 
 

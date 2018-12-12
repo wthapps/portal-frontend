@@ -2,8 +2,12 @@
   <bs-modal-header [showDismiss]="false">
     <div class="modal-header-nav">
       <h4 class="modal-title text-capitalize">
-        <input *ngIf="card && card.card_type === BUSINESS" type="text"
-               placeholder="Untitled Card" [value]="card?.card_name" [(ngModel)]="cardName">
+        <ng-container *ngIf="card && card.card_type === BUSINESS" >
+          <input [autofocus]="focus" *ngIf="card && card.card_type === BUSINESS" type="text" placeholder="Untitled Card"
+                 [value]="card?.card_name"
+                 [(ngModel)]="cardName" #nameEl >
+        </ng-container>
+
         <label *ngIf="card && card.card_type === PUBLIC"> {{ cardName }}</label>
       </h4>
       <ul class="modal-header-navbar">

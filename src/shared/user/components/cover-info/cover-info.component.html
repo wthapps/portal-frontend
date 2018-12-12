@@ -18,7 +18,7 @@
       <div class="z-social-media z-social-media-md">
           <div class="w-user-avatar can-click" (click)="changeProfileImage($event)" id="profile_image">
             <div class="avatar-md">
-              <img [src]="user?.profile_image" class="no-user-selected">
+              <img *ngIf="user && user.profile_image" [src]="user?.profile_image" class="no-user-selected">
               <span class="w-user-avatar-cover">
                 <i class="fa fa-camera"></i>
               </span>
@@ -27,7 +27,7 @@
 
 
         <div class="w-user-name">
-          <div class="z-heading" [title]="user.name">
+          <div class="z-heading" [title]="user?.name">
             <div class="z-name"> {{ user?.name }}</div>
           </div>
           <div class="z-shared-info">

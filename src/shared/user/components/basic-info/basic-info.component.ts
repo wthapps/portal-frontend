@@ -9,11 +9,9 @@ import {
 import { Observable } from 'rxjs';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { ProfileService } from '@shared/user/services';
 import { Constants } from '../../../constant/config/constants';
 import { CountryService } from '../../../shared/components/countries/countries.service';
 
-declare var _: any;
 
 @Component({
   selector: 'w-user-basic-info',
@@ -24,7 +22,7 @@ export class BasicInfoComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
   @Input() data: any;
   @Input() editable: boolean;
-  @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() updated: EventEmitter<any> = new EventEmitter<any>();
 
   constants = Constants;
 
@@ -44,9 +42,7 @@ export class BasicInfoComponent implements OnInit {
   countries$: Observable<any>;
   currentDate = new Date().toISOString().split('T')[0];
 
-  constructor(private fb: FormBuilder,
-              private profileService: ProfileService,
-              private countryService: CountryService) {
+  constructor(private fb: FormBuilder, private countryService: CountryService) {
     this.form = fb.group({
       about: ['', Validators.maxLength(500)],
       company: ['', Validators.maxLength(100)],
@@ -97,7 +93,8 @@ export class BasicInfoComponent implements OnInit {
 
   onSubmit(values: any): void {
 
-    const body = {
+    const user = {
+      uuid: this.data.uuid,
       about: values.about,
       company: values.company,
       occupation: values.occupation,
@@ -106,10 +103,8 @@ export class BasicInfoComponent implements OnInit {
       sex: values.sex
     };
 
-    this.profileService.updateMyProfile(body).subscribe((res: any) => {
-      this.data = res.data;
-      this.outEvent.emit(res.data);
-      this.modal.close();
-    });
+    this.updated.emit(user);
+    this.modal.close();
+
   }
 }

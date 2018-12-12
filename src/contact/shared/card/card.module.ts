@@ -15,6 +15,7 @@ import {
 
 import { CardRoutingModule } from './card-routing';
 import { CardService } from './card.service';
+import { AutofocusModule } from '@shared/directives/autofocus';
 
 
 
@@ -27,6 +28,7 @@ import { CardService } from './card.service';
     CheckboxModule,
     TooltipModule,
     PipeModule,
+    AutofocusModule
   ],
   declarations: [
     CardItemComponent,

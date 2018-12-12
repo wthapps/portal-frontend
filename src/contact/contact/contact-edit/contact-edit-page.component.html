@@ -77,27 +77,32 @@
       <!--</ng-container>-->
 
       <h4>WTH Profile</h4>
-      <ng-container *ngFor="let email of emails">
-        <div *ngIf="email.wthapps_user" class="user-row">
-          <div class="avatar">
-            <a [href]="urls.social + '/profile/' + email.wthapps_user.uuid" target="_blank">
-              <img class="img-circle" width="34" alt="" [src]="email.wthapps_user.profile_image">
-            </a>
-          </div>
-          <div class="name">
-            <a class="text-link" [href]="urls.social + '/profile/' + email.wthapps_user?.uuid" target="_blank">
-              <p class="mb0">{{ email.wthapps_user.name}}</p>
-            </a>
-            <span>{{ email.value }}</span>
-          </div>
-          <div class="action">
-            <a class="btn btn-outline-default" [href]="urls.chat" target="_blank" pTooltip="Send message"
-               tooltipPosition="left">
-              <i class="fa fa-comments-o"></i>
-            </a>
-          </div>
+      <div class="card-list row">
+        <div class="col-sm-12 mb15" >
+          <card-item [card]="contact.profile" (view)="viewCard($event)"></card-item>
         </div>
-      </ng-container>
+      </div>
+      <!--<ng-container *ngFor="let email of emails">-->
+        <!--<div *ngIf="email.wthapps_user" class="user-row">-->
+          <!--<div class="avatar">-->
+            <!--<a [href]="urls.social + '/profile/' + email.wthapps_user.uuid" target="_blank">-->
+              <!--<img class="img-circle" width="34" alt="" [src]="email.wthapps_user.profile_image">-->
+            <!--</a>-->
+          <!--</div>-->
+          <!--<div class="name">-->
+            <!--<a class="text-link" [href]="urls.social + '/profile/' + email.wthapps_user?.uuid" target="_blank">-->
+              <!--<p class="mb0">{{ email.wthapps_user.name}}</p>-->
+            <!--</a>-->
+            <!--<span>{{ email.value }}</span>-->
+          <!--</div>-->
+          <!--<div class="action">-->
+            <!--<a class="btn btn-outline-default" [href]="urls.chat" target="_blank" pTooltip="Send message"-->
+               <!--tooltipPosition="left">-->
+              <!--<i class="fa fa-comments-o"></i>-->
+            <!--</a>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</ng-container>-->
 
       <h4 class="regular-email">Business Cards</h4>
       <div class="card-list row">
@@ -113,7 +118,7 @@
         <ng-template #noData>
           <box-no-data [icon]="'fa fa-address-card xs'"
                        [title]="'There are no Cards!'"
-                       [subTitle]="'All of business cards this person shared with you'">
+                       [subTitle]="'Business cards this person shared with you'">
           </box-no-data>
         </ng-template>
       </div>
