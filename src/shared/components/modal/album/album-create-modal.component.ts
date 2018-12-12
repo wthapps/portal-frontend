@@ -70,7 +70,7 @@ export class AlbumCreateModalComponent implements OnInit, OnDestroy {
 
   open(options?: any) {
     // Get selected photo object list
-    this.selectedPhotos = _.filter(options.selectedObjects, {'object_type' : 'photo'});
+    this.selectedPhotos = _.filter(options.selectedObjects, { 'object_type': 'Media::Photo'});
     this.modal.open().then();
     this.modal.element.nativeElement.style.display = 'inline';
 

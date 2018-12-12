@@ -25,20 +25,20 @@
     padding: 10px 15px;
     display: block;
   }
+  .dropdown-menu {
+    .active-item {
+      a {
+        color: $theme-color;
+      }
+      a:hover {
+        color: $theme-color;
+      }
+    }
+  }
 }
 
 .ui-fileupload {
   .ui-fileupload-content, button {
     display: none;
-  }
-}
-.dropdown-menu {
-  .active-item {
-    a {
-      color: $theme-color;
-    }
-    a:hover {
-      color: $theme-color;
-    }
   }
 }

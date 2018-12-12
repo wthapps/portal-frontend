@@ -306,9 +306,9 @@
                   </thead>
                   <tbody>
                   <tr *ngFor="let att of note.attachments">
-                    <td [ngClass]="{'can-click': att.object_type == 'photo'}" (click)="fileAttachmentClick(att)">
-                      <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
-                      <i *ngIf="att.thumbnail_url && att.object_type !== 'photo'" class="fa fa-file"></i>
+                    <td [ngClass]="{'can-click': att.object_type == 'Media::Photo'}" (click)="fileAttachmentClick(att)">
+                      <i *ngIf="att.thumbnail_url && att.object_type == 'Media::Photo'" class="fa fa-picture-o"></i>
+                      <i *ngIf="att.thumbnail_url && att.object_type !== 'Media::Photo'" class="fa fa-file"></i>
                       <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
                       {{ att.name }}
                     </td>

@@ -93,8 +93,8 @@
             <!-------------- End File view --------------->
           </ng-template>
           <ng-template #columnFileSize let-item>
-            <span *ngIf="item.object_type == 'album'">{{ item.photo_number }} file<span *ngIf="item.photo_number>1">s</span></span>
-            <span *ngIf="item.object_type == 'photo'">{{ item.size | bytes:0 }}</span>
+            <span *ngIf="item.object_type == 'Media::Video'">{{ item.photo_number }} file<span *ngIf="item.photo_number>1">s</span></span>
+            <span *ngIf="item.object_type == 'Media::Photo'">{{ item.size | bytes:0 }}</span>
           </ng-template>
         </w-object-list>
 

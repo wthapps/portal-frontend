@@ -259,7 +259,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   onCompleteDoubleClick(item: Media) {
-    if (item.object_type === 'album' || item.object_type === 'Media::Playlist' || item.model === 'Common::Sharing') {
+    if (item.object_type === 'Media::Album' || item.object_type === 'Media::Playlist' || item.model === 'Common::Sharing') {
       if (this.currentTab === 'albums') {
         this.currentTab = 'albums_detail';
       } else if (this.currentTab === 'favourites') {

@@ -1,7 +1,7 @@
-<wth-modal-dock #modalDock (closeEvent)="clearItems();">
+<wth-modal-dock #modalDock (closeEvent)="close();">
   <wth-modal-dock-header [hasCollapse]="false">
     <div *ngIf="uploading_num > 0"> Uploading {{uploading_num}} items</div>
-    <div *ngIf="uploading_num === 0"> Uploaded {{uploaded_num}} items</div>       
+    <div *ngIf="uploading_num === 0"> Uploaded {{uploaded_num}} items</div>
     <i dock-header-action class="fa " (click)="modalDock.toggleCollapse()" [ngClass]="{'fa-chevron-down': !modalDock.collapse, 'fa-chevron-up': modalDock.collapse }"
     pTooltip="{{tooltip.collapse}}" tooltipPosition="top"></i>
   </wth-modal-dock-header>
@@ -12,21 +12,21 @@
           <!-- Icon and file name -->
           <td [ngSwitch]="upload_hash[file?.id].status" class="vam">
             <span *ngSwitchCase="this.upload_steps.uploaded">
-                <i [class]="icon_hash[upload_hash[file?.id].file_type]"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }} 
+                <i [class]="icon_hash[upload_hash[file?.id].file_type]"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }}
             </span>
             <span *ngSwitchCase="this.upload_steps.error" class="text-muted">
-                <i [class]="icon_hash.error"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }} 
+                <i [class]="icon_hash.error"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }}
             </span>
             <span *ngSwitchCase="this.upload_steps.init" class="text-muted">
-                <i [class]="icon_hash.loading"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }} 
+                <i [class]="icon_hash.loading"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }}
             </span>
             <span *ngSwitchDefault class="text-muted">
-                <i [class]="icon_hash[upload_hash[file?.id].file_type]"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }} 
+                <i [class]="icon_hash[upload_hash[file?.id].file_type]"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }}
               </span>
           </td>
-    
+
           <!-- Actions -->
-          <td class="vam" [ngSwitch]="upload_hash[file?.id]?.status"> 
+          <td class="vam" [ngSwitch]="upload_hash[file?.id]?.status">
             <span *ngSwitchCase="this.upload_steps.uploaded" class="fwb text-muted pull-right">
               Done
             </span>
@@ -45,3 +45,16 @@
     </table>
   </wth-modal-dock-body>
 </wth-modal-dock>
+
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header>
+    Header
+  </bs-modal-header>
+  <bs-modal-body>
+    Body
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button class="btn">No</button>
+    <button class="btn" (click)="clearItems(); modal.close()">Cancel Upload</button>
+  </bs-modal-footer>
+</bs-modal>

@@ -66,6 +66,7 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
   current_progress: any;
   destroy$ = new Subject();
   readonly tooltip: any = Constants.tooltip;
+  @ViewChild('modal') modal: any;
 
   @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -165,7 +166,15 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
     this.upload_arr.length = 0;
     this.uploaded_num = 0;
     this.uploading_num = 0;
-    this.uploader.cancelAll(true);
+    this.uploader.cancelAll();
+  }
+
+  close() {
+    const files = this.uploader.getFiles();
+    const filesNotComplete = files.filter(f => !f.progress.uploadComplete);
+    if (filesNotComplete && filesNotComplete.length > 0) {
+      this.modal.open();
+    }
   }
 
   private whichType(object_type: string) {

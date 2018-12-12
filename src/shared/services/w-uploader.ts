@@ -297,6 +297,10 @@ export class WUploader {
     }
   }
 
+  getFiles() {
+    return this.uppy.getFiles();
+  }
+
   upload() {
     this.uppy.upload();
   }

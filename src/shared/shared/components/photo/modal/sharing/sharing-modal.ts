@@ -1,4 +1,4 @@
-// Ex: {"role_id"=>1, "objects"=>[{"id"=>527, "object_type"=>"photo"}], "recipients"=>[7]}
+// Ex: {"role_id"=>1, "objects"=>[{"id"=>527, "object_type"=>"Media::Photo"}], "recipients"=>[7]}
 export interface CreateCommonSharing {
   // role id mean you share with permission
   role_id: number;
