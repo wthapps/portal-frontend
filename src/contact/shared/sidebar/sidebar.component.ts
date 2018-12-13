@@ -11,8 +11,6 @@ import { GroupService } from '../../group/group.service';
 import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oauth.component';
 import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
 import { ZContactService } from '../services/contact.service';
-import { CardEditModalComponent } from '@contacts/shared/card/components';
-
 
 declare var _: any;
 
@@ -28,6 +26,8 @@ export class ZContactSharedSidebarComponent implements OnInit, OnDestroy {
 
   @Input() sharedCardNum: number;
   @Output() createCard = new EventEmitter<any>();
+  @Output() reloaded = new EventEmitter<any>();
+
 
   groups: Group[];
   hostname: String = '';
@@ -71,6 +71,11 @@ export class ZContactSharedSidebarComponent implements OnInit, OnDestroy {
       this.commonEventService.broadcast({ channel: 'contactCommonEvent', action: event.action, payload: event.payload });
       this.commonEventService.broadcast({ channel: 'menuCommonEvent', action: event.action, payload: event.payload });
     }
+  }
+
+  onReload() {
+    this.onCloseSidebar();
+    this.reloaded.emit({sharedCardNum: true});
   }
 
   onCreateCard() {

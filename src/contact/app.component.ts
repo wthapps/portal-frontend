@@ -87,7 +87,7 @@ export class AppComponent
     private profileService: ProfileService,
     private googleApiService: GoogleApiService,
     private swPush: SwPushService,
-    private cardService: CardService,
+    public cardService: CardService,
     // private checkUpdate: CheckForUpdateService,
     private promptUpdate: PromptUpdateService
   ) {
@@ -167,6 +167,12 @@ export class AppComponent
         this.groupService.delete(group.id).subscribe((res: any) => {
         });
         break;
+    }
+  }
+
+  reload(payload: any) {
+    if (payload.sharedCardNum) {
+      this.cardService.getSharedCardNum();
     }
   }
 

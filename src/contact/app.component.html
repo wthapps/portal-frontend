@@ -4,7 +4,11 @@
   </w-header>
   <main class="main">
     <w-left-menu>
-      <z-contact-shared-sidebar (createCard) = "createCard()" [sharedCardNum]="sharedCardNum$|async"></z-contact-shared-sidebar>
+      <z-contact-shared-sidebar [sharedCardNum]="sharedCardNum$|async"
+                                (createCard) = "createCard()"
+                                (reloaded)="reload($event)"
+
+      ></z-contact-shared-sidebar>
     </w-left-menu>
     <div class="main-page-body">
       <router-outlet></router-outlet>

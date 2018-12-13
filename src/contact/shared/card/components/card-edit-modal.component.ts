@@ -20,8 +20,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 @Component({
   selector: 'w-card-edit-modal',
   templateUrl: 'card-edit-modal.component.html',
-  styleUrls: ['card-edit-modal.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['card-edit-modal.component.scss']
 })
 export class CardEditModalComponent {
   @ViewChild('modal') modal: BsModalComponent;

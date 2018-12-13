@@ -118,7 +118,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   selectUsers(payload: any) {
 
     this.currentCard = payload.card;
-    this.accountService.search();
     this.shareEditor.open({
       title: 'Share card',
       object: payload.card

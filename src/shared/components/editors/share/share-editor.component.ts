@@ -78,7 +78,7 @@ export class ShareEditorComponent implements OnInit, OnDestroy {
   }
 
   complete(e: any) {
-    this.apiBaseService.get(`account/search?q=${e.query}`).subscribe(res => {
+    this.apiBaseService.get(`account/search?q=${e.query}&size=150`).subscribe(res => {
       const selectedIds = this.newUsers.map(ct => ct.id);
       const sharedIds = this.sharedUsers.map(sc => sc.user.id);
       this.users = res.data.filter(ct => !selectedIds.includes(ct.id) && !sharedIds.includes(ct.id));

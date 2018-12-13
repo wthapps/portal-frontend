@@ -22,16 +22,13 @@ export class CardService extends BaseEntityService<any> {
   item$: Observable<boolean>
   selectedAll$: Observable<boolean>;
   sharedCardNum$: Observable<number>;
-  publicCard$: Observable<any>;
-  businessCards$: Observable<any[]>;
 
   private itemsSubject: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
   private itemSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private selectedAll: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private sharedCardNumSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
-  constructor(protected apiBaseService: ApiBaseService,
-              private toastService: ToastsService) {
+  constructor(protected apiBaseService: ApiBaseService, private toastService: ToastsService) {
     super(apiBaseService);
     this.items$ = this.itemsSubject.asObservable();
     this.item$ = this.itemSubject.asObservable();
@@ -78,8 +75,8 @@ export class CardService extends BaseEntityService<any> {
 
   getSharedCards(query: any) {
     this.getAll(query, 'contact/cards/shared').subscribe(response => {
-      this.setCards(response.data);
-      this.sharedCardNumSubject.next(response.data.length);
+      const cards = response.data.map(c => c.attributes);
+      this.setCards(cards);
     });
   }
 

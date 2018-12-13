@@ -41,7 +41,7 @@
     </div>
   </ng-container>
   <div class="menuleft-item" [routerLinkActive]="['active']">
-    <a [routerLink]="['cards','shared']">
+    <a [routerLink]="['cards','shared']" (click)="onReload()">
       <i class="fa fa-address-card"></i> Shared Cards ({{ sharedCardNum }})
     </a>
   </div>
