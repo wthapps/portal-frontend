@@ -114,7 +114,7 @@ export class MediaBasicListMixin {
   }
 
   changeViewMode(mode: any) {
-    this.localStorageService.add('media_view_mode', mode);
+    this.localStorageService.set('media_view_mode', mode);
     this.viewMode = mode;
   }
 };

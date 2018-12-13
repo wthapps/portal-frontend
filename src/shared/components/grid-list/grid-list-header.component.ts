@@ -32,7 +32,7 @@ export class WGridListHeaderComponent {
 
   zoom(event: any) {
     this.sliderVal = event.value;
-    this.localStorageService.add('media_slider_val', this.sliderVal);
+    this.localStorageService.set('media_slider_val', this.sliderVal);
     this.event.emit({action: 'zoom', payload: { viewSize: event.value }});
   }
 

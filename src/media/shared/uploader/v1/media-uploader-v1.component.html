@@ -47,14 +47,16 @@
 </wth-modal-dock>
 
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
-  <bs-modal-header>
-    Header
+  <bs-modal-header [showDismiss]="true">
+    <h4>
+      Cancel uploads
+    </h4>
   </bs-modal-header>
   <bs-modal-body>
-    Body
+    Your uploads aren't complete. Do you want to cancel all ongoing uploads ?
   </bs-modal-body>
   <bs-modal-footer>
-    <button class="btn">No</button>
-    <button class="btn" (click)="clearItems(); modal.close()">Cancel Upload</button>
+    <button class="btn btn-outline-default btn-min">Continue uploads</button>
+    <button class="btn btn-outline-primary btn-min" (click)="clearItems(); modal.close()">Cancel uploads</button>
   </bs-modal-footer>
 </bs-modal>
