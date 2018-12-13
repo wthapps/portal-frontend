@@ -35,7 +35,8 @@ const MAX_CONCURRENT_FILES = 4;
 @Component({
   moduleId: module.id,
   selector: 'me-photo-list',
-  templateUrl: 'photo-list.component.html'
+  templateUrl: '../shared/list/list.component.html'
+  // templateUrl: 'photo-list.component.html'
 })
 export class ZMediaPhotoListComponent implements OnInit, OnDestroy,
 SharingModalMixin,
@@ -108,7 +109,7 @@ MediaModalMixin {
     this.loading = true;
     opts = {...opts, model: 'Media::Photo'};
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
-    this.apiBaseService.get('media/media', opts).subscribe(res => {
+    this.apiBaseService.get('media/media/index_combine', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
