@@ -19,13 +19,14 @@ export class SharedCardPageComponent implements OnInit {
   cards$: Observable<Array<any>>;
   card$: Observable<any>;
   profile$: Observable<any>;
-  sortField = 'updated_at';
+
   sortFieldName = 'Recent shared';
   sortDesc = true;
 
   CARD_NAME = 'card_name';
   USER_NAME = 'users.name';
-  UPDATED_AT = 'updated_at';
+  UPDATED_AT = 'con_shared_cards.updated_at';
+  sortField = this.UPDATED_AT;
 
   constructor(private authService: AuthService,
               private cardService: CardService,
@@ -37,7 +38,7 @@ export class SharedCardPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cardService.getSharedCards({});
+    this.cardService.getSharedCards({sort: this.sortField + ':desc'});
   }
 
   viewCard(card: any) {
@@ -54,7 +55,8 @@ export class SharedCardPageComponent implements OnInit {
   changeSortField(field: string) {
     this.sortField = field;
     this.sortDesc = true;
-    this.sortFieldName = this.sortField === 'card_name' ? 'Card name' : this.sortField === 'user_name' ? 'Owner name' : 'Recent shared';
+    this.sortFieldName = this.sortField === this.CARD_NAME ? 'Card name' :
+                         this.sortField === this.USER_NAME ? 'Owner name' : 'Recent shared';
     const query = {sort: `${this.sortField}:${this.sortDesc ? 'desc' : 'asc'}`};
     this.cardService.getSharedCards(query);
   }
