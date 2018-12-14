@@ -110,7 +110,7 @@ export class ShareEditorComponent implements OnInit, OnDestroy {
 
     this.deletedUsers.forEach((u, i) => {
       if (u.id === user.id) {
-        this.sharedUsers.splice(i, 1);
+        this.deletedUsers.splice(i, 1);
         existingUser = false;
         return;
       }
@@ -120,7 +120,7 @@ export class ShareEditorComponent implements OnInit, OnDestroy {
     }
     user.removed = !user.removed;
 
-    this.hasChanged = this.deletedUsers.length > 0 ? true : false;
+    this.hasChanged = (this.deletedUsers.length > 0 || this.newUsers.length > 0) ? true : false;
   }
 
   changeRole(role: any, recipient: any = null) {

@@ -11,19 +11,26 @@
         <label class="text-bold">Sort by</label>
 
         <div class="btn-group ml10">
-          <button type="button" class="btn btn-outline-default dropdown-toggle btn-sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button type="button" class="btn btn-outline-default dropdown-toggle btn-sort" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
             {{ sortFieldName }}
             <span class="caret pull-right"></span>
           </button>
           <ul class="dropdown-menu dropdown-menu-left">
-            <li (click)="changeSortField('card_name')">
-              <a href="javascript:void(0)"> Card name  <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === 'card_name'}"></i></a>
+            <li (click)="changeSortField(CARD_NAME)">
+              <a href="javascript:void(0)"> Card name
+                <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === CARD_NAME}"></i>
+              </a>
             </li>
-            <li (click)="changeSortField('user_name')">
-              <a href="javascript:void(0)"> Owner name  <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === 'owner_name'}"></i></a>
+            <li (click)="changeSortField(USER_NAME)">
+              <a href="javascript:void(0)"> Owner name
+                <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === USER_NAME}"></i>
+              </a>
             </li>
-            <li (click)="changeSortField('updated_at')">
-              <a href="javascript:void(0)"> Recent shared  <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === 'created_at'}"></i></a>
+            <li (click)="changeSortField(UPDATED_AT)">
+              <a href="javascript:void(0)"> Recent shared
+                <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === UPDATED_AT}"></i>
+              </a>
             </li>
           </ul>
 

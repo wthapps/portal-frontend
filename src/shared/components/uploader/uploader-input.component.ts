@@ -25,9 +25,5 @@ export class WUploaderComponent {
     Object.keys(e.target.files).forEach(k => {
 
     });
-    if (this.existErrors) {
-      return;
-    }
-
   }
 }

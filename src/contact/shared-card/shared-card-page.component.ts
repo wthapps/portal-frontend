@@ -23,6 +23,10 @@ export class SharedCardPageComponent implements OnInit {
   sortFieldName = 'Recent shared';
   sortDesc = true;
 
+  CARD_NAME = 'card_name';
+  USER_NAME = 'users.name';
+  UPDATED_AT = 'updated_at';
+
   constructor(private authService: AuthService,
               private cardService: CardService,
               private profileService: ProfileService) {
