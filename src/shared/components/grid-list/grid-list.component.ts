@@ -196,7 +196,7 @@ export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
 
   private selectObject(object: any) {
     this.objects.forEach(ob => {
-      if (ob.id == object.id) {
+      if (ob.id == object.id && ob.object_type == object.object_type) {
         ob.selected = true;
       }
     })
@@ -204,7 +204,7 @@ export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
 
   private toggleObject(object) {
     this.objects.forEach(ob => {
-      if (ob.id == object.id) {
+      if (ob.id == object.id && ob.object_type == object.object_type ) {
         ob.selected = !ob.selected;
       }
     })

@@ -39,10 +39,10 @@ export class DoublyLinkedLists {
   }
 
   setCurrent(id: any) {
-    while (this.current.data !== id && this.current.next) {
+    while (this.current.data.id !== id && this.current.next) {
       this.current = this.current.next;
     }
-    if (this.current.data !== id && !this.current.next) {
+    if (this.current.data.id !== id && !this.current.next) {
       this.current = this.head;
     }
   }

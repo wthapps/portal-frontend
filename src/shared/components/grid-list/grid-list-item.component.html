@@ -69,14 +69,10 @@
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->
         <span *ngIf="object.child_count > 1">
-          {{ object.child_count }} {{ (object.object_type == 'Media::Playlist') || (['Media::Playlist',
-          'Media::Video'].includes(object.sharing_type))
-          ? 'videos' : 'photos' }}
+          {{ object.child_count }} photos
         </span>
         <span *ngIf="object.child_count <= 1">
-          {{ object.child_count }} {{ (object.object_type == 'Media::Playlist') || (['Media::Playlist',
-          'Media::Video'].includes(object.sharing_type))
-          ? 'video' : 'photo' }}
+          {{ object.child_count }} photo
         </span>
       </div>
     </figure>

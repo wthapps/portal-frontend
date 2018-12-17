@@ -14,20 +14,20 @@
       </button>
       <ul class="dropdown-menu">
         <li>
-          <a class="p0" href="javascript:void(0);" (click)="upload(['image/*'])">
+          <a class="p0" href="javascript:void(0);" (click)="upload(['image/*', 'video/mp4', 'video/x-m4v', 'video/*'])">
             <span class="fileinput-button">
-              <i class="fa fa-image"></i> Upload Photo
+              <i class="fa fa-image"></i> Upload Item
             </span>
           </a>
         </li>
 
-        <li>
+        <!-- <li>
           <a class="p0" href="javascript:void(0);" (click)="uploadVideo(['video/mp4','video/x-m4v','video/*'])">
             <span class="fileinput-button">
               <i class="fa fa-video-camera"></i> Upload Video
             </span>
           </a>
-        </li>
+        </li> -->
 
         <li>
           <a (click)="doAction({action: 'openModalCreateAlbumModal'})">

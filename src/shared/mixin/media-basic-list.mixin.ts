@@ -65,7 +65,7 @@ export class MediaBasicListMixin {
         .map(v => { return { id: v.id, object_type: v.model } })
     }).subscribe(res => {
       this.objects = this.objects.map(ob => {
-        let tmp = res.data.filter(d => d.id == ob.id);
+        let tmp = res.data.filter(d => d.id == ob.id && d.object_type == ob.object_type);
         if (tmp && tmp.length > 0) {
           ob.favorite = tmp[0].favorite;
         }

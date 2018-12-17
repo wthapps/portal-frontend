@@ -12,7 +12,7 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
-import { ApiBaseService, CommonEventService } from '@shared/services';
+import { ApiBaseService, CommonEventService, CommonEventHandler } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
@@ -38,7 +38,7 @@ const MAX_CONCURRENT_FILES = 4;
   templateUrl: '../shared/list/list.component.html'
   // templateUrl: 'photo-list.component.html'
 })
-export class ZMediaPhotoListComponent implements OnInit, OnDestroy,
+export class ZMediaPhotoListComponent extends CommonEventHandler implements OnInit, OnDestroy,
 SharingModalMixin,
 MediaBasicListMixin,
 AlbumAddMixin,
@@ -70,6 +70,7 @@ MediaModalMixin {
   menuActions: any;
   sorting: any =  {sort_name: 'Date', sort: 'desc'};
   destroy$ = new Subject();
+  channel: string = 'ZMediaPhotoListComponent';
 
   private sub: any;
 
@@ -84,11 +85,13 @@ MediaModalMixin {
     public mediaCreateModalService: MediaCreateModalService,
     public resolver: ComponentFactoryResolver,
     public router: Router,
-    private commonEventService: CommonEventService,
+    public commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
     public localStorageService: LocalStorageService,
     private uploader: WUploader
-  ) {}
+  ) {
+    super(commonEventService);
+  }
 
   ngOnInit() {
     this.loadObjects();
@@ -229,9 +232,12 @@ custom method please overwirte any method*/
   // tslint:disable-next-line:member-ordering
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
-    const data: any = { returnUrls: '/photos' , preview: true};
-    if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
+    let model = this.selectedObjects[0].object_type;
+    const data: any = { returnUrls: '/photos', preview: true, model: model};
+    // if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
+    if (this.selectedObjects && this.selectedObjects.length > 1) { data.objects = this.selectedObjects.map(s => `${s.uuid},${s.object_type}`); }
     this.router.navigate([`/photos/${id}`], {queryParams: data});
+    // this.router.navigate([`/videos/${id}`], {queryParams: data});
   }
 
   // ============= MediaListMixin ===============

@@ -198,8 +198,8 @@ export class ConstantsBase {
   pictureMenuItems: any = [
     { name: 'Photos', link: '/photos', icon: 'fa fa-photo' },
     { name: 'Albums', link: '/albums', icon: 'wthico-album' },
-    { name: 'Videos', link: '/videos', icon: 'fa fa-video-camera' },
-    { name: 'Playlists', link: '/playlists', icon: 'fa fa-file-video-o' },
+    // { name: 'Videos', link: '/videos', icon: 'fa fa-video-camera' },
+    // { name: 'Playlists', link: '/playlists', icon: 'fa fa-file-video-o' },
 
     { name: 'Favourites', link: '/favourites', icon: 'fa fa-star' },
     {

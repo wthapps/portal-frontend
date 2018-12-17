@@ -135,7 +135,7 @@
       <dd>
         <div>
           <ul class="list-unstyled albums">
-            <li *ngIf="sharingOwner" class="owner-avatar can-click" [ngClass]='{vertical: recipients && recipients.length > 0}'
+            <li *ngIf="sharingOwner" class="owner-avatar can-click pr5" [ngClass]='{vertical: recipients && recipients.length > 0}'
               pTooltip="{{sharingOwner.user.name}} is owner" tooltipPosition="bottom" (click)="openModalShareParent()">
               <div class="avatar-xs">
                 <img [src]="sharingOwner.user.profile_image" alt="">

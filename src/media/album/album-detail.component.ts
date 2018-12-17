@@ -51,10 +51,12 @@ declare var _: any;
   SharingModalMixin,
   AlbumAddMixin,
   MediaModalMixin,
+  MediaParentMixin,
   MediaDownloadMixin
 ])
 @Component({
-  templateUrl: '../shared/list/parent-detail.component.html'
+  templateUrl: '../shared/list/parent-detail.component.html',
+  styleUrls: ['album-detail.component.scss']
 })
 export class ZMediaAlbumDetailComponent
   implements
@@ -298,7 +300,7 @@ export class ZMediaAlbumDetailComponent
     this.loading = true;
     opts = { ...opts, model: 'Media::Album' };
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
-    this.apiBaseService.get(`media/media/${input}/objects`, opts).toPromise().then(res => {
+    this.apiBaseService.get(`media/albums/${input}/objects`, opts).toPromise().then(res => {
       this.objects = res.data;
       this.cloneObjects = _.cloneDeep(this.objects);
       this.links = res.meta.links;

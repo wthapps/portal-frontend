@@ -68,6 +68,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
   returnUrls: any;
+  model: any;
   sharings: any = [];
   listIds: DoublyLinkedLists;
   destroy$ = new Subject();
@@ -114,8 +115,9 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     this.returnUrls = this.route.snapshot.queryParams.returnUrls;
     this.route.params.pipe(
       combineLatest(this.route.queryParams)
-    ).subscribe(([p, params]) => {
-      this.apiBaseService.get(`media/media/${p.id}`, { model: 'Media::Photo' }).toPromise()
+      ).subscribe(([p, params]) => {
+      this.model = this.route.snapshot.queryParams.model || 'Media::Photo';
+      this.apiBaseService.get(`media/media/${p.id}`, { model: this.model }).toPromise()
         .then(res => {
           this.object = res.data;
           if (this.object.favorite) {
@@ -123,18 +125,29 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
           } else {
             this.menuActions.favorite.iconClass = 'fa fa-star-o';
           }
+          // reload video
+          if (this.model == 'Media::Video' && $('#video')[0]) $('#video')[0].load();
           this.validateActions(this.menuActions, this.object.permission.role_id);
           if (!this.listIds && params.preview) {
-            if (params.ids) {
-              this.listIds = new DoublyLinkedLists(params.ids.split(','));
-              this.listIds.setCurrent(this.object.id);
+            if (params.objects) {
+              // this.listIds = new DoublyLinkedLists(params.ids.split(','));
+              // this.listIds.setCurrent(this.object.id);
+              let objects = params.objects.map(ob => {
+                let tmp = ob.split(',');
+                return {
+                  id: tmp[0],
+                  model: tmp[1]
+                }
+              });
+              this.listIds = new DoublyLinkedLists(objects);
+              this.listIds.setCurrent(this.object.uuid);
             } else {
-              const query: any = { model: 'Media::Photo' };
+              let query: any = {};
               if (params.parent_id) query.parent = params.parent_id;
-              this.apiBaseService.get(`media/media/ids`, query).toPromise()
+              this.apiBaseService.get(`media/media/ids_combine`, query).toPromise()
                 .then(res2 => {
                   if (res2.data) {
-                    this.listIds = new DoublyLinkedLists(res2.data.map(d => d.uuid));
+                    this.listIds = new DoublyLinkedLists(res2.data.map(d => {return {id: d.uuid, model: d.model}}));
                     this.listIds.setCurrent(this.object.uuid);
                   }
                 });
@@ -403,12 +416,14 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
 
   onPrev() {
     this.listIds.prev();
-    this.router.navigate([`/photos/${this.listIds.current.data}`], { queryParamsHandling: 'merge' });
+    const url = '/photos/';
+    this.router.navigate([`${url + this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model }, queryParamsHandling: 'merge' });
   }
 
   onNext() {
     this.listIds.next();
-    this.router.navigate([`/photos/${this.listIds.current.data}`], { queryParamsHandling: 'merge' });
+    const url = '/photos/';
+    this.router.navigate([`${url + this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model}, queryParamsHandling: 'merge' });
   }
 
   back:() => void;
