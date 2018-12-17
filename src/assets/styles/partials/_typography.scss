@@ -30,9 +30,8 @@ a.disabled {
   position: relative;
   display: block;
   height: 0;
-  padding: 0;
+  padding: 0 0 75%;
   overflow: hidden;
-  padding-bottom: 75%;
   .img-box-item {
     @include center();
     width: 100%;
