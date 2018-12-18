@@ -10,6 +10,7 @@
     <div class="photo-box-input" (click)="clickOnCircle(object, $event)">
       <i class="fa fa-check"></i>
     </div>
+    <div (click)="doAction({action:'viewDetails', payload: {selectedObject: object }})" class="photo-box-mobile-select"></div>
     <figure class="img-center-dv can-click">
       <div class="photo-box-figure-in">
         <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url" alt="">
@@ -62,6 +63,7 @@
     <div class="photo-box-input" (click)="clickOnCircle(object, $event)">
       <i class="fa fa-check"></i>
     </div>
+    <div (click)="doAction({action:'viewDetails', payload: {selectedObject: object }})" class="photo-box-mobile-select"></div>
     <figure class="img-center-dv can-click">
       <div class="photo-box-figure-in">
         <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url + '?t=' + time" alt="">
