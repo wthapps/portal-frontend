@@ -1,9 +1,10 @@
-<wth-modal-dock #modalDock (closeEvent)="close();">
-  <wth-modal-dock-header [hasCollapse]="false">
+<wth-modal-dock #modalDock>
+  <wth-modal-dock-header [hasCollapse]="false" [hasCloseIcon]="false">
     <div *ngIf="uploading_num > 0"> Uploading {{uploading_num}} items</div>
     <div *ngIf="uploading_num === 0"> Uploaded {{uploaded_num}} items</div>
     <i dock-header-action class="fa " (click)="modalDock.toggleCollapse()" [ngClass]="{'fa-chevron-down': !modalDock.collapse, 'fa-chevron-up': modalDock.collapse }"
     pTooltip="{{tooltip.collapse}}" tooltipPosition="top"></i>
+    <i dock-header-action class="fa fa-times" (click)="close($event)"></i>
   </wth-modal-dock-header>
   <wth-modal-dock-body>
     <table class="table table-middle wth-table table-hover">
@@ -56,7 +57,7 @@
     Your uploads aren't complete. Do you want to cancel all ongoing uploads ?
   </bs-modal-body>
   <bs-modal-footer>
-    <button class="btn btn-outline-default btn-min">Continue uploads</button>
-    <button class="btn btn-outline-primary btn-min" (click)="clearItems(); modal.close()">Cancel uploads</button>
+    <button class="btn btn-outline-default btn-min" (click)="modal.close();">Continue uploads</button>
+    <button class="btn btn-outline-primary btn-min" (click)="clearItems(); modal.close(); modalDock.close()">Cancel uploads</button>
   </bs-modal-footer>
 </bs-modal>
