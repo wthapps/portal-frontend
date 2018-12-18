@@ -8,7 +8,8 @@ import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'z-contact-shared-setting',
-  templateUrl: 'settings.component.html'
+  templateUrl: 'settings.component.html',
+  styleUrls: ['settings.component.scss']
 })
 
 export class ZContactSharedSettingsComponent implements OnInit, OnDestroy {
@@ -16,6 +17,7 @@ export class ZContactSharedSettingsComponent implements OnInit, OnDestroy {
   item: any;
   form: FormGroup;
   phone_default_code: AbstractControl;
+  contacts_sort_by: AbstractControl;
 
   private destroySubject: Subject<any> = new Subject();
 
@@ -24,16 +26,19 @@ export class ZContactSharedSettingsComponent implements OnInit, OnDestroy {
               private apiBaseService: ApiBaseService) {
     // Init default
     this.form = this.fb.group({
-      'phone_default_code': ['Albania (+355)']
+      'phone_default_code': ['Albania (+355)'],
+      'contacts_sort_by': ['first_name']
     });
 
     this.phone_default_code = this.form.controls['phone_default_code'];
+    this.contacts_sort_by = this.form.controls['contacts_sort_by'];
   }
 
   ngOnInit() {
     this.apiBaseService.get(`contact/wcontacts/settings`).subscribe((res: any) => {
       if (res.data && res.data.phone_default_code) {
         (<FormControl>this.phone_default_code).setValue(res.data.phone_default_code);
+        (<FormControl>this.contacts_sort_by).setValue(res.data.contacts_sort_by);
       }
     });
   }
@@ -51,11 +56,28 @@ export class ZContactSharedSettingsComponent implements OnInit, OnDestroy {
     this.apiBaseService.post(`contact/wcontacts/update_settings`, { contact_setting_attributes: value })
       .subscribe((res: any) => {
         console.log('settings', res);
+        this.contactService.setUserSettings(res.data);
       });
     this.modal.close();
   }
 
+  resetSettings() {
+    this.apiBaseService.post(`contact/wcontacts/reset_settings`)
+      .subscribe((res: any) => {
+        (<FormControl>this.phone_default_code).setValue(res.data.phone_default_code);
+        (<FormControl>this.contacts_sort_by).setValue(res.data.contacts_sort_by);
+        this.contactService.setUserSettings(res.data);
+      });
+    // this.modal.close();
+  }
+
   open() {
     this.modal.open();
+  }
+
+  private setFormValue(data) {
+    (<FormControl>this.phone_default_code).setValue(data.phone_default_code);
+    (<FormControl>this.contacts_sort_by).setValue(data.contacts_sort_by);
+    this.contactService.setUserSettings(data);
   }
 }

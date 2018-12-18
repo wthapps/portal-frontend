@@ -12,10 +12,25 @@
           <input type="hidden" formControlName="phone_default_code">
         </div>
       </div>
+      <p class="bold pt15">Contact list sorts by</p>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="ui-g">
+              <div class="ui-g-12">
+                <p-radioButton name="sortBy" value="first_name" label="First Name" formControlName="contacts_sort_by" inputId="opt1"></p-radioButton>
+              </div>
+              <div class="ui-g-12">
+                  <p-radioButton name="sortBy" value="last_name" label="Last Name" formControlName="contacts_sort_by" inputId="opt2"></p-radioButton>
+              </div>
+          </div>
+        </div>
+      </div>
+
 
     </bs-modal-body>
 
     <bs-modal-footer>
+      <button class="btn btn-link pull-left" (click)="resetSettings()">Reset Default</button>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
 
       <button type="submit" (click)="submit(form.value)" [disabled]="!form.valid"
