@@ -35,7 +35,7 @@ export class ZContactSharedSettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.apiBaseService.get(`contact/wcontacts/settings`).subscribe((res: any) => {
+    this.contactService.getSettings().subscribe((res: any) => {
       if (res.data && res.data.phone_default_code) {
         (<FormControl>this.phone_default_code).setValue(res.data.phone_default_code);
         (<FormControl>this.contacts_sort_by).setValue(res.data.contacts_sort_by);

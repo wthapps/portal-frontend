@@ -138,8 +138,8 @@ export class AppComponent
     .then(() => this.groupService.getAllGroups())
     .then(() => {
       timer(GAPI_TIMEOUT).subscribe(_ => {
-          this.googleApiService.handleClientLoad();
           this.contactService.loadUserSetttings();
+          this.googleApiService.handleClientLoad();
         });
     });
   }

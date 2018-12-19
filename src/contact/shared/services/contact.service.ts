@@ -19,7 +19,15 @@ declare var Promise: any;
 export const ITEM_PER_PAGE = 50;
 export const OTHER_CONTACTS = 'others';
 export const MY_CONTACTS = 'contacts';
+const NAME_MAPPING = {
+  'first_name': 'name',
+  'last_name': 'family_name'
+};
 
+interface SortOption {
+  field: string;
+  desc: boolean;
+}
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
@@ -37,6 +45,7 @@ export class ZContactService extends BaseEntityService<any> {
   contacts$: Observable<any[]>;
   initLoad$: Observable<boolean>;
   orderDesc$: Observable<boolean>;
+  sortOption$: Observable<SortOption>;
   isSelectAll$: Observable<boolean>;
 
   private currentPage = 'contacts'; // 'others' || 'contacts'
@@ -47,6 +56,9 @@ export class ZContactService extends BaseEntityService<any> {
   );
   private orderDescSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(
     true
+  );
+  private sortOptionSubject: BehaviorSubject<SortOption> = new BehaviorSubject<SortOption>(
+    {field: 'name', desc: true}
   );
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
@@ -68,7 +80,8 @@ export class ZContactService extends BaseEntityService<any> {
     this.listenToItem = this.listenToItemSource.asObservable();
     this.contacts$ = this.contactsSubject.asObservable();
     this.initLoad$ = this.initLoadSubject.asObservable();
-    this.orderDesc$ = this.orderDescSubject.asObservable();
+    // this.orderDesc$ = this.orderDescSubject.asObservable();
+    this.sortOption$ = this.sortOptionSubject.asObservable();
     this.isSelectAll$ = this.isSelectAllSubject.asObservable();
     this.maxLengthPipe = new MaxLengthPipe();
 
@@ -114,12 +127,15 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   loadUserSetttings(): Promise<any> {
-    return this.apiBaseService
-      .get(`${this.url}/settings`)
+    return this.getSettings()
       .toPromise()
       .then((res: any) => {
         this.userSettings = res.data;
       });
+  }
+
+  getSettings(): Observable<any> {
+    return this.apiBaseService.post(`contact/contacts/settings`);
   }
 
   resetPageNumber() {
@@ -158,16 +174,6 @@ export class ZContactService extends BaseEntityService<any> {
 
   checkEmails(payload: any) {
     return this.apiBaseService.post(`${this.url}/check_emails`, payload);
-  }
-
-  changeSortOption(order?: string) {
-    if (order === undefined) {
-      this.orderDescSubject.next(!this.orderDescSubject.getValue());
-    } else {
-      this.orderDescSubject.next(order !== 'asc');
-    }
-
-    this.notifyContactsObservers();
   }
 
   addMoreContacts(data: any[]) {
@@ -382,7 +388,9 @@ export class ZContactService extends BaseEntityService<any> {
       contacts = this.inOtherPage() ? this.otherContacts : this.myContacts;
     }
 
-    const orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a, b, this.orderDescSubject.getValue()));
+    const {field, desc} = this.sortOptionSubject.getValue();
+    // const orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a, b, this.orderDescSubject.getValue()));
+    const orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a, b, desc, field));
     const selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
 
     const orderedContactsWSelected: any[] = orderedContacts.map(ct => {
@@ -461,6 +469,12 @@ export class ZContactService extends BaseEntityService<any> {
 
   setUserSettings(settings) {
     this.userSettings = settings;
+
+    // Change sort order of contact list
+    const {contacts_sort_by} = settings;
+    const sortOption = {... this.sortOptionSubject.getValue(), field: NAME_MAPPING[contacts_sort_by]};
+    this.sortOptionSubject.next(sortOption);
+    this.notifyContactsObservers();
   }
 
   addToMyContacts(contacts: Contact[] = this.selectedObjects): Promise<any> {

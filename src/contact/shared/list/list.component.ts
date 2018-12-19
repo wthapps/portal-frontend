@@ -17,18 +17,16 @@ export class ZContactSharedListComponent {
   @Input() data: Contact[];
   @Input() showHeader: any = true;
   @Input() isStranger = false;
-  @Input() contactsSortBy = 'first_name';
+  @Input() contactsSortBy = 'name';
   @Output() itemSelected: EventEmitter<Contact> = new EventEmitter<Contact>();
 
   // descending: boolean = false;
-  desc$: Observable<boolean>;
   // currentSort: string = 'name';
 
   readonly tooltip: any = Constants.tooltip;
 
   constructor(public contactService: ZContactService,
               private commonEventService: CommonEventService) {
-    this.desc$ = this.contactService.orderDesc$;
   }
 
   onChecked(item: Contact) {
