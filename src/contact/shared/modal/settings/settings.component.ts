@@ -26,7 +26,7 @@ export class ZContactSharedSettingsComponent implements OnInit, OnDestroy {
               private apiBaseService: ApiBaseService) {
     // Init default
     this.form = this.fb.group({
-      'phone_default_code': ['Albania (+355)'],
+      'phone_default_code': ['Canada (+1)'],
       'contacts_sort_by': ['first_name']
     });
 
@@ -37,8 +37,9 @@ export class ZContactSharedSettingsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.contactService.getSettings().subscribe((res: any) => {
       if (res.data && res.data.phone_default_code) {
-        (<FormControl>this.phone_default_code).setValue(res.data.phone_default_code);
-        (<FormControl>this.contacts_sort_by).setValue(res.data.contacts_sort_by);
+        // (<FormControl>this.phone_default_code).setValue(res.data.phone_default_code);
+        // (<FormControl>this.contacts_sort_by).setValue(res.data.contacts_sort_by);
+        this.setFormValue(res.data);
       }
     });
   }
@@ -64,9 +65,10 @@ export class ZContactSharedSettingsComponent implements OnInit, OnDestroy {
   resetSettings() {
     this.apiBaseService.post(`contact/wcontacts/reset_settings`)
       .subscribe((res: any) => {
-        (<FormControl>this.phone_default_code).setValue(res.data.phone_default_code);
-        (<FormControl>this.contacts_sort_by).setValue(res.data.contacts_sort_by);
-        this.contactService.setUserSettings(res.data);
+        // (<FormControl>this.phone_default_code).setValue(res.data.phone_default_code);
+        // (<FormControl>this.contacts_sort_by).setValue(res.data.contacts_sort_by);
+        // this.contactService.setUserSettings(res.data);
+        this.setFormValue(res.data);
       });
     // this.modal.close();
   }

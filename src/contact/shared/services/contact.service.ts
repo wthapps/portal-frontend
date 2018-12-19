@@ -130,12 +130,12 @@ export class ZContactService extends BaseEntityService<any> {
     return this.getSettings()
       .toPromise()
       .then((res: any) => {
-        this.userSettings = res.data;
+        this.setUserSettings(res.data);
       });
   }
 
   getSettings(): Observable<any> {
-    return this.apiBaseService.post(`contact/contacts/settings`);
+    return this.apiBaseService.post(`contact/wcontacts2/settings`);
   }
 
   resetPageNumber() {
