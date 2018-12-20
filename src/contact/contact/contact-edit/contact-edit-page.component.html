@@ -11,7 +11,7 @@
     <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min ml10" (click)="goBack()">Cancel
     </button>
 
-    <z-contact-shared-actions-bar *ngIf="isWthContact || (mode === 'view' && !viewOnly)" [showViewDetail]="false"
+    <z-contact-shared-actions-bar *ngIf="isWthContact || (mode === 'view' && !viewOnly)" [showViewDetail]="false" [contacts]="[contact]"
       [showNumber]="false" [showInvitation]="isWthContact" [showAddToContacts]="isWthContact || (!contact.my_contact && !viewOnly)"
       [showFavorite]="!isWthContact" [showEdit]="!isWthContact" [isStranger]="isWthContact" [toggleFavourite]="_contact.isContactsHasGroupName([contact], 'favourite') && !viewOnly && !isWthContact"
       [toggleBlacklist]="_contact.isContactsHasGroupName([contact], 'blacklist') && !viewOnly && !isWthContact"

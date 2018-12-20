@@ -198,6 +198,9 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.send();
   }
 
+  handleImagePaste(fileClipboard) {
+    console.log('handle image paste: ', fileClipboard);
+  }
 
   shareContacts() {
     this.addContactService.open('shareContact');
@@ -280,7 +283,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         this.chatMessageService.create(null, message).subscribe(res => {
           this.uploadingMessages[id] = { ...res.data, content_type: meta.type};
           this.updateUploadingMessage(id);
-        })
+        });
       }
         break;
       case 'start':
@@ -327,7 +330,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
       this.messageService.scrollToBottom();
       this.chatMessageService.createTextMessage(this.message.message).subscribe(res => {
         // send message channel will do it
-      })
+      });
 
       this.resetEditor();
     }

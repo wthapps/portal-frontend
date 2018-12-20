@@ -3,7 +3,7 @@
 
     <mini-editor #miniEditor *ngIf="contactSelect" [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" [placeholder]="contactSelect.black_list ? placeholderBl : placeholder"
       [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"
-      (onKeyUp)="handleKeyUp($event)">
+      (onKeyUp)="handleKeyUp($event)" (onImagePaste)="handleImagePaste($event)">
       <p-header>
       </p-header>
     </mini-editor>

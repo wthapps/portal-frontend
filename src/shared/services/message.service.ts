@@ -26,7 +26,7 @@ export class WMessageService extends BaseEntityService<any> {
   }
 
   notEmptyHtml(htmlContent: string): boolean {
-    return !!this.stripHtmlPipe.transform(htmlContent).trim();
+    return htmlContent && !!this.stripHtmlPipe.transform(htmlContent).trim();
   }
 
 }

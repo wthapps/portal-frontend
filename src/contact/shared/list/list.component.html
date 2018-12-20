@@ -27,7 +27,7 @@
         <p class="m0" *ngFor="let phone of item.phones">{{ phone.value }}</p>
       </div>
       <div class="contact-dl-action">
-        <z-contact-shared-actions-bar [data]="item" [showQuickInvitation]="item.wthapps_user == null" [showNumber]="false"
+        <z-contact-shared-actions-bar [data]="item" [contacts]="[item]" [showQuickInvitation]="item.wthapps_user == null" [showNumber]="false"
           [showSocial]="item | isContactInternal" [showChat]="item | isContactInternal" [showInvitation]="item | canInvite "
           [showEdit]="!isStranger" [showFavorite]="!isStranger" [isStranger]="isStranger" [showAddToContacts]="!item.my_contact"
           [toggleFavourite]="item | contactHasGroup:'favourite'" [toggleBlacklist]="item | contactHasGroup:'blacklist'"

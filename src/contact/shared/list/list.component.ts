@@ -1,7 +1,5 @@
 import { Component, Input, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 
-import { Observable } from 'rxjs';
-
 import { ZContactService } from '../services/contact.service';
 import { Constants } from '../../../shared/constant/config/constants';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
