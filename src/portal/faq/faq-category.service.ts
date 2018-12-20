@@ -2,21 +2,24 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiBaseService } from '@shared/services';
 
+
+
 @Injectable()
-export class FaqService {
-  faqs$: Observable<Array<any>>;
+export class FaqCategoryService {
 
-  private _faqs = new BehaviorSubject<Array<any>>([]);
+  categories$: Observable<Array<any>>;
 
-  private url = `landing/faqs`;
+  private _categories = new BehaviorSubject<Array<any>>([]);
+
+  private url = `landing/faq_categories`;
   constructor(private apiBaseService: ApiBaseService) {
-    this.faqs$ = this._faqs.asObservable();
+    this.categories$ = this._categories.asObservable();
   }
 
   getAll(query: any) {
     return this.apiBaseService.get(`${this.url}`, query).subscribe((response: any) => {
-      const faqs = response.data.map(c => c.attributes);
-      this._faqs.next(faqs);
+      const cats = response.data.map(c => c.attributes);
+      this._categories.next(cats);
     });
   }
 }

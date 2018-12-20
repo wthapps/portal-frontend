@@ -4,6 +4,7 @@ import { PortalSharedModule } from '@portal/shared/shared.module';
 import { FaqComponent } from '@portal/faq/faq.component';
 import { FaqService } from '@portal/faq/faq.service';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { FaqCategoryService } from '@portal/faq/faq-category.service';
 
 
 @NgModule({
@@ -12,9 +13,16 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
     PortalSharedModule,
     ScrollToModule.forRoot()
   ],
-  declarations: [FaqComponent],
-  exports: [FaqComponent],
-  providers: [FaqService]
+  declarations: [
+    FaqComponent
+  ],
+  exports: [
+    FaqComponent
+  ],
+  providers: [
+    FaqService,
+    FaqCategoryService,
+  ]
 })
 export class FaqModule {
 }
