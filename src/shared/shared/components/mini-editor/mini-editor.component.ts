@@ -171,7 +171,6 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
         try {
           // super.onPaste(e);
           // fix flash screen while paste into editor
-          console.log('on paste: ', e);
           this.container.style.position = 'fixed';
           this.container.style.zIndex = '-1';
 
@@ -201,7 +200,6 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
               this.quill.focus();
             } else {
               if (fileClipboard && fileClipboard.type.match('image/*')) {
-                console.log('image are pasted', fileClipboard);
                 self.onImagePaste.emit(fileClipboard);
               }
             }

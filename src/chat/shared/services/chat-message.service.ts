@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { ApiBaseService, StorageService } from "@shared/services";
-import { CONVERSATION_SELECT } from "@shared/constant";
-import { of } from "rxjs";
+import { Injectable } from '@angular/core';
+import { ApiBaseService, StorageService } from '@shared/services';
+import { CONVERSATION_SELECT } from '@shared/constant';
+import { of } from 'rxjs';
 
 @Injectable()
 export class ChatMessageService {
@@ -13,7 +13,7 @@ export class ChatMessageService {
       groupId || this.storage.find(CONVERSATION_SELECT).value.group_json.id;
 
     return this.apiBaseService
-      .post('zone/chat/message', { group_id: conversationId, data: data })
+      .post('zone/chat/message', { group_id: conversationId, data: data });
   }
 
   createTextMessage(message: any, option: any = {}) {

@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
-import { ApiBaseService, WMessageService, StorageService } from '@wth/shared/services';
+import { ApiBaseService, WMessageService, StorageService, PhotoUploadService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
@@ -71,6 +71,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     private addContactService:  ZChatShareAddContactService,
     private messageService: WMessageService,
     private chatMessageService: ChatMessageService,
+    private uploadService: PhotoUploadService,
     private uploader: WUploader,
     private emojiService: WTHEmojiService
   ) {
@@ -198,8 +199,21 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     this.send();
   }
 
-  handleImagePaste(fileClipboard) {
-    console.log('handle image paste: ', fileClipboard);
+  handleImagePaste(file) {
+    const { type} = file;
+      const message = new Message({
+        message: 'Sending file.....',
+        message_type: 'file',
+        content_type: type,
+        meta_data: {}
+      });
+
+    const fakeMessage = this.chatMessageService.create(null, message).toPromise();
+    const uploadedMessage = this.uploadService.uploadPhotos([file]).toPromise();
+    Promise.all([fakeMessage, uploadedMessage]).then(([fake, uploaded]) => {
+    const updateMessage = {...fake.data, file: uploaded.data, content_type: type};
+    this.messageService.update(updateMessage).toPromise();
+    });
   }
 
   shareContacts() {
