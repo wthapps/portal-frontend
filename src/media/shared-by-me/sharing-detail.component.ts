@@ -472,7 +472,7 @@ export class ZMediaSharingDetailComponent
         selectedTab: 'videos',
         hiddenTabs: ['photos', 'albums'],
         filter: 'video',
-        allowedFileType: ['video/*'],
+        allowedFileType: ['video/mp4', 'video/x-m4v', 'video/*'],
         allowCancelUpload: true,
         uploadButtonText: 'Upload videos',
         dragdropText: 'Drag your videos here'

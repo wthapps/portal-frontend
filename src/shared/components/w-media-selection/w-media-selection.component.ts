@@ -163,7 +163,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
     // set content type depend on open options
     if (options.hiddenTabs.includes('photos')) {
-      this.allowedFileTypes = ['video/*'];
+      this.allowedFileTypes = ['video/mp4', 'video/x-m4v', 'video/*'];
     } else if (options.hiddenTabs.includes('videos')) {
       this.allowedFileTypes = ['image/*'];
     } else {

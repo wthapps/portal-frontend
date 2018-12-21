@@ -40,6 +40,6 @@
 </div>
 <box-no-data *ngIf="objects && objects.length == 0" [title]="'There are no videos!'" [icon]="'fa fa-video-camera'"
   [subTitle]="'Try to upload a new video'" style="margin-top: 50px; display: block;">
-  <button class="btn btn-outline-primary" (click)="upload(['video/*'])"><i class="fa fa-cloud-upload"></i> Upload Video</button>
+  <button class="btn btn-outline-primary" (click)="upload(['video/mp4', 'video/x-m4v', 'video/*'])"><i class="fa fa-cloud-upload"></i> Upload Video</button>
 </box-no-data>
 <div #modalContainer></div>

@@ -8,11 +8,11 @@
     <div class="faq-content">
       <div class="faq-content-left">
         <ng-container *ngFor="let c of (categories$|async)">
-          <h3 [id]="c.uuid"> {{ c.name }} </h3>
+          <h3 [id]="c.uuid"> {{ c.name }}</h3>
           <p-accordion>
             <ng-container *ngFor="let f of (faq$|async)">
               <ng-container *ngIf="c.id === f.category_id">
-                <p-accordionTab [header]="f.question">
+                <p-accordionTab [header]="f.question" >
                   <div [innerHTML]="f.answer"></div>
                 </p-accordionTab>
               </ng-container>

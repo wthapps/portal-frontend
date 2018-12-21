@@ -36,7 +36,7 @@ export class WMediaSelectionService {
     hiddenTabs: [],
     allowSelectMultiple: true,
     allowCancelUpload: false,
-    allowedFileTypes: ['image/*', 'video/*'],
+    allowedFileTypes: ['image/*', 'video/mp4', 'video/x-m4v', 'video/*'],
     uploadButtonText: 'Upload photos',
     dragdropText: 'Drag your photos here'
   };
