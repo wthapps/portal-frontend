@@ -1,19 +1,7 @@
 <div class="box-panel">
-  <h3 class="box-panel-title">{{ pageTitle }}</h3>
-  <h4 class="box-panel-subtitle">Profile Picture</h4>
-  <div class="media-avatar">
-    <div class="media-avatar-img avatar-md">
-      <img class="lazyload" [src]="defaultAvatar" [attr.data-src]="(userService.getAsyncProfile() | async)?.profile_image" alt="">
-    </div>
-    <div class="media-avatar-body">
-      <p>Upload a photo (GIF, JPG or PNG) with the size of 150 X 150 or wider.</p>
-      <button (click)="uploadImage($event)" type="button" class="btn btn-outline-default btn-min">
-        <i class="fa fa-pencil"></i> Edit
-      </button>
-    </div>
-  </div>
-  <hr class="line">
-  <h4 class="box-panel-subtitle">Personal Information</h4>
+  <h3 class="box-panel-title">Personal information</h3>
+  <p class="text-fade">Your personal information on this page is private and used for WTHApps administrative and payment
+    purposes.</p>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
     <div class="row">
       <div class="col-xs-6 col-sm-4">
@@ -26,7 +14,7 @@
               <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">
                 First name is required
               </span>
-              <span *ngIf="!first_name.valid && first_name.errors.blanked" class="help-block">
+            <span *ngIf="!first_name.valid && first_name.errors.blanked" class="help-block">
                 First name is blanked
               </span>
           </div>
@@ -41,7 +29,7 @@
               <span *ngIf="!last_name.valid && last_name.errors.required" class="help-block">
                 Last name is required
               </span>
-              <span *ngIf="!last_name.valid && last_name.errors.blanked" class="help-block">
+            <span *ngIf="!last_name.valid && last_name.errors.blanked" class="help-block">
                 Last name is blanked
               </span>
           </div>
@@ -56,10 +44,16 @@
           <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
 
           <ng-container *ngIf="confirmedEmail; else sent_verify">
-            <div style="position: relative; top: -30px; right: 10px; float: right; color: green; font-size: 20px"><i class="fa fa-check-circle"></i></div>
+            <div style="position: relative; top: -30px; right: 10px; float: right; color: green; font-size: 20px"><i
+              class="fa fa-check-circle"></i></div>
           </ng-container>
 
-          <ng-template #sent_verify><button type=button (click)="sendVerifyEmail()" class="verify" style="height: 34px; position: relative; top: -34px; float: right; border-radius: 0px 4px 4px 0px; background: #eeeeee;">Verify Email</button></ng-template>
+          <ng-template #sent_verify>
+            <button type=button (click)="sendVerifyEmail()" class="verify"
+                    style="height: 34px; position: relative; top: -34px; float: right; border-radius: 0px 4px 4px 0px; background: #eeeeee;">
+              Verify Email
+            </button>
+          </ng-template>
           <div *ngIf="!email.valid && email.touched">
             <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
             <span *ngIf="!email.errors.required && email.errors.emailFormat" class="help-block">
@@ -75,7 +69,8 @@
           <label for="phone_number">Phone Number</label>
           <div class="row">
             <div class="col-xs-5">
-              <w-countries [countryCode]="userService.getSyncProfile().nationality.toLowerCase()" (completeChange)="onCompleteChange($event)"></w-countries>
+              <w-countries [countryCode]="userService.getSyncProfile().nationality.toLowerCase()"
+                           (completeChange)="onCompleteChange($event)"></w-countries>
               <input type="hidden" formControlName="phone_prefix">
             </div>
             <div class="col-xs-7">
@@ -91,41 +86,17 @@
         <div class="col-xs-8">
           <label>Birthday</label>
           <div class="row">
-            <div class="col-xs-4">
-              <select name="birthday_month" class="form-control" id="birthday_month" [formControl]="birthday_month">
-                <option value="0">Month</option>
-                <option value="1">Jan</option>
-                <option value="2">Feb</option>
-                <option value="3">Mar</option>
-                <option value="4">Apr</option>
-                <option value="5">May</option>
-                <option value="6">Jun</option>
-                <option value="7">Jul</option>
-                <option value="8">Aug</option>
-                <option value="9">Sept</option>
-                <option value="10">Oct</option>
-                <option value="11">Nov</option>
-                <option value="12">Dec</option>
-              </select>
-            </div>
-            <div class="col-xs-4">
-              <select name="birthday_day" class="form-control" id="birthday_day" [formControl]="birthday_day">
-                <option value="0">Day</option>
-                <option [value]="v" *ngFor="let v of validDays">{{ v }}</option>
-              </select>
-            </div>
-            <div class="col-xs-4">
-              <select name="birthday_year" class="form-control" id="birthday_year" [formControl]="birthday_year">
-                <option value="0">Year</option>
-                <option [value]="v" *ngFor="let v of validYears">{{v}}</option>
-              </select>
+            <div class="col-xs-12">
+              <p-calendar formControlName="birthday" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="{{ yearRange }}"></p-calendar>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <button [disabled]="!form.valid || (form.pristine && !phoneChanged)" type="submit" class="btn btn-outline-primary btn-min mb20">Update</button>
+    <button [disabled]="!form.valid || (form.pristine && !phoneChanged)" type="submit"
+            class="btn btn-outline-primary btn-min mb20">Update
+    </button>
   </form>
 </div>
 
-<!--<wth-upload-image #uploadProfile (imageClicked)='onImageClicked($event)'></wth-upload-image>-->

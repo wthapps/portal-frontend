@@ -71,6 +71,25 @@ $ui-inputswitch-w: 24px;
   }
 }
 
+.ui-inputtext {
+  @extend .form-control;
+}
+
+.ui-dropdown-panel .ui-dropdown-filter-container .ui-dropdown-filter-icon {
+  @include center(false, true);
+}
+
+.ui-calendar.ui-calendar-w-btn input {
+  padding-right: 34px + $padding-base-horizontal;
+}
+
+.ui-calendar .ui-calendar-button {
+  right: 0;
+  top: 0;
+  left: auto;
+  min-width: 34px;
+}
+
 // radiobutton
 // checkbox
 
