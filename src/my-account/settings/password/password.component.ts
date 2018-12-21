@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, AbstractControl } from "@angular/forms/";
-import { Constants } from "@shared/constant";
-import { CustomValidator } from "@shared/shared/validator/custom.validator";
-import { LoadingService } from "@shared/shared/components/loading/loading.service";
-import { UserService } from "@shared/services";
-import { ToastsService } from "@shared/shared/components/toast/toast-message.service";
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms/';
+import { Constants } from '@shared/constant';
+import { UserService } from '@shared/services';
+import { LoadingService } from '@shared/shared/components/loading/loading.service';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { CustomValidator } from '@shared/shared/validator/custom.validator';
 
 @Component({
   selector: 'app-password',
-  templateUrl: './password.component.html',
-  styleUrls: ['./password.component.css']
+  templateUrl: './password.component.html'
 })
 export class SettingsPasswordComponent implements OnInit {
   form: any;
@@ -54,10 +53,10 @@ export class SettingsPasswordComponent implements OnInit {
             this.loadingService.stop();
             if (result.success) {
               this.toastsService.success(result.message);
-              //console.log('change password:', result.message);
+              // console.log('change password:', result.message);
             } else {
               this.toastsService.danger('Your password is incorrect');
-              //console.log('change password error:', result.message);
+              // console.log('change password error:', result.message);
             }
           },
           error => {
