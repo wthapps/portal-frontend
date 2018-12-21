@@ -34,6 +34,7 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   // Order
   @Input() order = false;
   @Input() data: any = {};
+  @Input() contacts: any = [];
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
   emitEvent: (value: any) => void;
@@ -57,10 +58,12 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
     this.contactService.sendRequest(contact);
   }
 
-  addToMyContacts(contacts): void {
+  addToMyContacts(contacts: any[] = this.contacts): void {
+    if (contacts.length === 0) { return; }
     this.contactService.addToMyContacts(contacts).then(res => {
-      if (res)
+      if (res) {
         this.toastsService.success('You added others to your contacts successful!');
+      }
     });
   }
 }

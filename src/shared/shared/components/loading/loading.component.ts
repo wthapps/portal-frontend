@@ -26,7 +26,7 @@ declare var $: any;
   styleUrls: ['loading.component.scss']
 })
 export class LoadingComponent implements OnInit {
-  display: boolean = false;
+  display = false;
 
   constructor(private loadingService: LoadingService) {
     loadingService.set = this.activate.bind(this);
@@ -37,14 +37,13 @@ export class LoadingComponent implements OnInit {
   }
 
   activate(action: boolean, el: string) {
-    let promise = new Promise<boolean>(() => {
+    const promise = new Promise<boolean>(() => {
       this.show(action, el);
     });
     return promise;
   }
 
   private show(action: boolean, el: string) {
-    console.debug('inside loading show: ', action, el);
     if (el && $(el).length) {
       if (action) {
         $(el).wrap('<div class="inside-loading"></div>');

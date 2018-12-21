@@ -3,7 +3,7 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnInit, OnDestroy, ChangeDetectionStrategy
+  OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, ViewChildren, QueryList
 } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -14,9 +14,11 @@ import {
   CancelEditCommentEvent,
   CancelReplyCommentEvent,
   DeleteReplyEvent,
-  ViewMoreCommentsEvent
+  ViewMoreCommentsEvent,
+  ReplyCreateEvent,
+  CommentCreateEvent
 } from '../../../events/social-events';
-import { CommentEditorMode } from './comment/comment-item-editor.component';
+import { CommentEditorMode, CommentItemEditorComponent } from './comment/comment-item-editor.component';
 import { PostComponent } from '../post.component';
 import { PostService } from '../shared/post.service';
 import { SoComment, SoPost } from '@wth/shared/shared/models';
@@ -28,7 +30,8 @@ declare var _: any;
 
 @Component({
   selector: 'so-post-footer',
-  templateUrl: 'post-footer.component.html'
+  templateUrl: 'post-footer.component.html',
+  styleUrls: ['post-footer.component.scss']
 })
 export class PostFooterComponent implements OnInit, OnDestroy {
   @Input() user: any;
@@ -36,6 +39,8 @@ export class PostFooterComponent implements OnInit, OnDestroy {
   @Input() type: string;
   @Input() emojiMap: { [name: string]: WTHEmojiCateCode };
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('commentCreate') commentCreate: CommentItemEditorComponent;
+  @ViewChildren('replyCreate') replyCreateList: QueryList<CommentItemEditorComponent>;
   readonly commentEditorMode = CommentEditorMode;
 
   readonly actions = {
@@ -47,7 +52,6 @@ export class PostFooterComponent implements OnInit, OnDestroy {
     onShowPhotoDetail: 7
   };
 
-  commentPageIndex = 0;
   readonly commentLimit: number = Constants.soCommentLimit;
   readonly tooltip: any = Constants.tooltip;
   readonly MODEL = MODEL_TYPE;
@@ -83,7 +87,6 @@ export class PostFooterComponent implements OnInit, OnDestroy {
   }
 
   onActions(action: any, params?: any) {
-    console.log('action::::', action, params);
     const { data, comment, parent, commentType } = params;
     switch (action) {
       case this.actions.onDeleteComment:
@@ -121,6 +124,10 @@ export class PostFooterComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleShowReplies(comment) {
+    this.postItem.toggleShowReplies(comment);
+  }
+
 
   onCallBack(event: any) {
     if (event instanceof CancelEditCommentEvent) {
@@ -131,7 +138,14 @@ export class PostFooterComponent implements OnInit, OnDestroy {
       event.data.isEditting = false;
       return;
     }
-
+    if (event instanceof ReplyCreateEvent) {
+      const { parentId } = event.data;
+      const replyCreate = this.replyCreateList.find(rep => rep.parent.uuid === parentId);
+      replyCreate.focus();
+    }
+    if (event instanceof CommentCreateEvent) {
+      this.commentCreate.focus();
+    }
     this.eventEmitter.emit(event);
   }
 
@@ -144,18 +158,19 @@ export class PostFooterComponent implements OnInit, OnDestroy {
   }
 
   getMoreComments() {
-    const body = {'post_uuid': this.item.uuid, 'page_index': this.commentPageIndex, 'limit': this.commentLimit};
+    const body = {'post_uuid': this.item.uuid, 'page_index': this.item.commentPageIndex, 'limit': this.commentLimit};
     this.postService.loadComments(body)
       .toPromise().then((result: any) => {
-          if (this.commentPageIndex === 0) {
+          const newComments = _.map(result.data.comments, this.mapComment);
+          if (this.item.commentPageIndex === 0) {
             // this.item.comments.length = 0; // Clear comments data in the first loading
-            this.item.comments = _.map(result.data.comments, this.mapComment);
+            this.item.comments = newComments;
           } else {
-            const cloneItem = this.item.comments.push(..._.map(result.data.comments, this.mapComment));
-            this.item = _.clone(cloneItem); // clone this item to notify parent components
+            this.item.comments.push(...newComments);
+            this.item = _.clone(this.item); // clone this item to notify parent components
           }
 
-          this.commentPageIndex += 1;
+          this.item.commentPageIndex += 1;
 
           //  Update comments for (parent) post component
           this.eventEmitter.emit(new ViewMoreCommentsEvent(this.item));
@@ -167,9 +182,13 @@ export class PostFooterComponent implements OnInit, OnDestroy {
 
   }
 
-  totalRepliesInWords(replies: any) {
-    const repCount = replies.length > 1 ? 'replies' : 'reply';
-    return `${replies.length} ${repCount}`;
+  // totalRepliesInWords(replies: any) {
+  //   const repCount = replies.length > 1 ? 'replies' : 'reply';
+  //   return `${replies.length} ${repCount}`;
+  // }
+
+  focusCommentCreate() {
+    this.commentCreate.focus();
   }
 
 }

@@ -1,11 +1,21 @@
 
+// @font-face {
+//   font-family: 'wthapps';
+//   src:  url('#{$fw-font-path}/wthapps.eot?fdpyvh');
+//   src:  url('#{$fw-font-path}/wthapps.eot?fdpyvh#iefix') format('embedded-opentype'),
+//   url('#{$fw-font-path}/wthapps.ttf?fdpyvh') format('truetype'),
+//   url('#{$fw-font-path}/wthapps.woff?fdpyvh') format('woff'),
+//   url('#{$fw-font-path}/wthapps.svg?fdpyvh#wthapps') format('svg');
+//   font-weight: normal;
+//   font-style: normal;
+// }
 @font-face {
   font-family: 'wthapps';
-  src:  url('#{$fw-font-path}/wthapps.eot?fdpyvh');
-  src:  url('#{$fw-font-path}/wthapps.eot?fdpyvh#iefix') format('embedded-opentype'),
-  url('#{$fw-font-path}/wthapps.ttf?fdpyvh') format('truetype'),
-  url('#{$fw-font-path}/wthapps.woff?fdpyvh') format('woff'),
-  url('#{$fw-font-path}/wthapps.svg?fdpyvh#wthapps') format('svg');
+  src:  url('#{$fw-font-path}/wthapps.eot?esvtc9');
+  src:  url('#{$fw-font-path}/wthapps.eot?esvtc9#iefix') format('embedded-opentype'),
+    url('#{$fw-font-path}/wthapps.ttf?esvtc9') format('truetype'),
+    url('#{$fw-font-path}/wthapps.woff?esvtc9') format('woff'),
+    url('#{$fw-font-path}/wthapps.svg?esvtc9#wthapps') format('svg');
   font-weight: normal;
   font-style: normal;
 }

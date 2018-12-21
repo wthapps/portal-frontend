@@ -31,6 +31,11 @@ import { noteConstants } from '@notes/shared/config/constants';
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { withLatestFrom, filter, takeUntil } from 'rxjs/operators';
+import { HeaderComponent } from '@shared/partials/header';
+import { PromptUpdateService } from '@shared/services/service-worker/prompt-update.service';
+import { LogUpdateService } from '@shared/services/service-worker/log-update.service';
+import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
+import { SwPushService } from '@shared/services/service-worker/sw-push.service';
 
 declare var _: any;
 
@@ -54,6 +59,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('modalContainer', { read: ViewContainerRef })
   modalContainer: ViewContainerRef;
   @ViewChild('introduction') introduction: IntroductionModalComponent;
+  @ViewChild('header') header: HeaderComponent;
 
   modalComponent: any;
   modal: any;
@@ -71,8 +77,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private wthConfirmService: WthConfirmService,
     private store: Store<fromRoot.State>,
     private noteService: ZNoteService,
-    private mixedEntityService: MixedEntityService
+    private mixedEntityService: MixedEntityService,
+    private swPush: SwPushService,
+    private promptUpdate: PromptUpdateService
   ) {
+
     this.commonEventService
       .filter(
         (event: any) =>

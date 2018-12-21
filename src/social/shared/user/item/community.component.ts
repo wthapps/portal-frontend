@@ -78,11 +78,13 @@ export class ZSocialShareProfileCommunityComponent {
   onEdit() {
     this.loadModalComponent(ZSocialShareCommunityFormEditComponent);
     this.modal.onOpenModal(this.data);
+    this.modal.modal.element.nativeElement.style.display = 'inline';
   }
 
   onPreferences() {
     this.loadModalComponent(ZSocialShareCommunityFormPreferenceComponent);
     this.modal.onOpenModal(this.data);
+    this.modal.modal.element.nativeElement.style.display = 'inline';
   }
 
   onReport(uuid: any) {
@@ -122,7 +124,7 @@ export class ZSocialShareProfileCommunityComponent {
   }
 
   private loadModalComponent(component: any) {
-    let modalComponentFactory = this.resolver.resolveComponentFactory(component);
+    const modalComponentFactory = this.resolver.resolveComponentFactory(component);
     this.modalContainer.clear();
     this.modalComponent = this.modalContainer.createComponent(modalComponentFactory);
     this.modal = this.modalComponent.instance;

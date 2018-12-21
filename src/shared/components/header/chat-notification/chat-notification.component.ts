@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CHAT_CONVERSATIONS, Constants } from '@shared/constant';
 import { WTHNavigateService } from '@shared/services/wth-navigate.service';
 import { Router } from '@angular/router';
@@ -26,7 +26,7 @@ export class ChatNotificationComponent implements OnInit {
   readonly defaultAvatar: string = Constants.img.avatar;
   readonly urls: any = Constants.baseUrls;
   conversations: any = [];
-  notificationCount = 0;
+  @Input() notificationCount = 0;
   links: any;
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
 
@@ -47,13 +47,14 @@ export class ChatNotificationComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.authService.isAuthenticated()) {
-      this.apiBaseService
-        .addCommand(ConversationApiCommands.notificationsCount())
-        .subscribe((res: any) => {
-          this.notificationCount = res.data.count;
-        });
-    }
+    // This function is relocated to w-header components for PWA bug fixes
+    // if (this.authService.isAuthenticated()) {
+    //   this.apiBaseService
+    //     .addCommand(ConversationApiCommands.notificationsCount())
+    //     .subscribe((res: any) => {
+    //       this.notificationCount = res.data.count;
+    //     });
+    // }
     this.handlerService.addListener(
       'remove_notification_after_select_header',
       'on_conversation_select',

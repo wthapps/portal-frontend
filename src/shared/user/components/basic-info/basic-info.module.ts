@@ -16,9 +16,6 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
     // third party libraries
     BsModalModule,
     PipeModule,
-
-    
-    
   ],
   declarations: [
     BasicInfoComponent,

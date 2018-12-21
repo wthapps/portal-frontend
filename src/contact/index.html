@@ -8,10 +8,12 @@
   <base href="/">
 
   <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
   <link rel="apple-touch-icon" sizes="180x180" href="https://cdn-apps.wthapps.com/favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" href="https://cdn-apps.wthapps.com/favicons/favicon-32x32.png" sizes="32x32">
   <link rel="icon" type="image/png" href="https://cdn-apps.wthapps.com/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="assets/images/favicons/android-chrome-192x192.png" sizes="192x192">
   <link rel="manifest" href="manifest.json">
   <link rel="mask-icon" href="https://cdn-apps.wthapps.com/favicons/safari-pinned-tab.svg" color="#5bbad5">
   <link rel="shortcut icon" href="https://cdn-apps.wthapps.com/favicons/favicon.ico">
@@ -32,13 +34,22 @@
       height: 100%;
     }
 
-    .app-loading {
+    .app-loading, .app-loading .loading-box {
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+    }
+
+    .app-loading .loading-box {
+      width: 200px;
+      height: 200px;
+    }
+
+    .app-loading {
       height: 100%;
+      overflow: hidden;
     }
 
     .app-loading .spinner {
@@ -85,27 +96,29 @@
       }
     }
   </style>
-
 </head>
 
 <body>
-  <app-root>
-    <!-- loading layout replaced by app after startupp -->
-    <div class="app-loading">
+
+<app-root>
+  <!-- loading layout replaced by app after startupp -->
+  <div class="app-loading">
+    <div class="loading-box">
       <div class="logo"></div>
       <svg class="spinner" viewBox="25 25 50 50">
-        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
       </svg>
     </div>
-  </app-root>
+  </div>
+</app-root>
 
-  <noscript>
-    <!-- anchor linking to external file -->
-    <a href="https://www.wthapps.com/">Welcome to WTH!Apps Home</a>
-  </noscript>
+<noscript>
+  <!-- anchor linking to external file -->
+  <a href="https://www.wthapps.com/">Welcome to WTH!Apps Home</a>
+</noscript>
 
-  <script src="https://apis.google.com/js/api.js" async></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/4.0.1/lazysizes.min.js" async=""></script>
+<script src="https://apis.google.com/js/api.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/4.0.1/lazysizes.min.js" integrity="sha256-mP1tN6TUnhZRrt9JhXuwIfbGEFjCYqoB7SRE0/gcXzk=" crossorigin="anonymous" async=""></script>
 
 
 </body>

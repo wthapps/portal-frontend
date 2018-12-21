@@ -22,6 +22,8 @@ import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
+import { mediaConstants } from '@media/shared/config/constants';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
 @Component({
@@ -54,6 +56,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
     public sharingModalService: SharingModalService,
     public apiBaseService: ApiBaseService,
     public router: Router,
+    public localStorageService: LocalStorageService,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
     public sharingService: SharingService
@@ -63,6 +66,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   ngOnInit() {
     this.loadObjects();
     this.menuActions = this.getMenuActions();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   loadObjects(opts: any = {}) {
@@ -84,7 +88,21 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   }
 
   selectedObjectsChanged:(objectsChanged?: any) => void;
-  onAfterEditModal: () => void;
+  onAfterEditModal() {
+    this.modalIns.event.subscribe(event => {
+      switch (event.action) {
+        case 'editInfo':
+          this.apiBaseService.put(`media/sharings/${event.params.selectedObject.id}`,
+            {
+              name: event.params.selectedObject.name,
+              description: event.params.selectedObject.description
+            })
+            .subscribe(res => {
+              // this.object = res.data;
+            });
+      }
+    });
+  };
 
   toggleFavorite:(items?: any) => void;
 
@@ -192,6 +210,19 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
 
   getMenuActions() {
     return {
+      preview: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.viewDetail(this.selectedObjects[0].uuid);
+        },
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.preview,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-eye'
+      },
       share: {
         active: true,
         // needPermission: 'view',

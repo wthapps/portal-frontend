@@ -1,0 +1,46 @@
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" cssClass="social-settings">
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
+    </bs-modal-header>
+
+    <bs-modal-body >
+      <ng-container *ngIf="user.settings">
+          <h3>General Settings</h3>
+          <div class="form-group">
+            <div class="inputSwitch-wrap">
+              <p-inputSwitch [(ngModel)]="user?.settings?.hide_adult_content.value"
+                             (ngModelChange)="updateSettings({hide_adult_content: user.settings.hide_adult_content})"></p-inputSwitch>
+              <span>
+                Hide all adult content
+              </span>
+            </div>
+          </div>
+          <hr>
+          <h3>Post settings</h3>
+          <p class="bold">Default post settings</p>
+          <p>You can manage who are able to see your posts. This setting remembers your selection so future posts will
+            be shared with the same choice unless you change it.</p>
+          <div class="row">
+            <div class="col-sm-6">                
+                <p-dropdown [options]="postPrivacies" [(ngModel)]="selectedPrivacy" (onChange)="user.settings.viewable_post = {value: selectedPrivacy.data}; updateSettings({viewable_post: user.settings.viewable_post})" optionLabel="text" [style]="{'width':'250px'}">
+                    <ng-template let-item pTemplate="selectedItem">
+                      <div>  <i [class]="item?.value?.css"></i> {{ item?.label | titleCase }} </div>
+                    </ng-template>
+                    <ng-template let-pr pTemplate="item">
+                        <div class="ui-helper-clearfix pt5 pb5">
+                            <i style="width: 15px" [class]="pr?.value?.css"></i> {{ pr?.label | titleCase }}
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+          </div>
+        </ng-container>
+    </bs-modal-body>
+
+    <bs-modal-footer>
+      <button class="btn btn-link pull-left" (click)="resetSettings()">Reset Default</button>
+      <button class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
+      <button class="btn btn-outline-primary btn-min mr10" (click)="save()">Save</button>
+      
+    </bs-modal-footer>
+  </bs-modal>

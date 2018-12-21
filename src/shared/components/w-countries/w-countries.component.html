@@ -3,8 +3,8 @@
               [(ngModel)]="selectedCountry"
               [style]="{'width':'100%'}" filter="true">
     <ng-template let-item pTemplate="selectedItem">
-      <img width="30" src="/assets/images/flags/{{country.code}}.svg">
-      {{country.value}}
+      <img width="30" src="/assets/images/flags/{{item.code}}.svg">
+      {{item.value}}
     </ng-template>
     <ng-template let-country pTemplate="item">
       <div class="country-dropdown-item">

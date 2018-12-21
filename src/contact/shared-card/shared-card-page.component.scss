@@ -1,0 +1,11 @@
+@import '../../assets/styles/variables';
+
+
+.btn-sort, .btn-sort:hover {
+  border-color:$btn-default-border;
+  text-align: left;
+  width: 150px;
+  .caret {
+    margin-top: 8px;
+  }
+}

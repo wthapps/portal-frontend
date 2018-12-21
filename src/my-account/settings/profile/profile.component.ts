@@ -61,6 +61,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   submitted = false;
   confirmedEmail: any = null;
   verified = false;
+  phoneChanged = false;
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(public userService: UserService,
@@ -235,6 +236,11 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.apiBaseService.post(`users/confirmation`).subscribe((res: any) => {
       this.toastsService.success('A verification email was sent to your email address');
     });
+  }
+
+  onCompleteChange(country: any) {
+    this.form.controls['phone_prefix'].setValue(country.code);
+    this.phoneChanged = true;
   }
 
   private range (start: number, end: number) {

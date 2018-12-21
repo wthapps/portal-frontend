@@ -1,6 +1,9 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { fadeInAnimation } from '../../shared/shared/animations/route.animation';
 import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
+import { Observable } from 'rxjs';
+import { FaqService } from '@portal/faq/faq.service';
+import { FaqCategoryService } from '@portal/faq/faq-category.service';
 
 /**
  * This class represents the lazy loaded AboutComponent.
@@ -15,12 +18,16 @@ import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scrol
 export class FaqComponent implements OnInit {
   @HostBinding('@fadeInAnimation') fadeInAnimation = true;
 
-  constructor(private scrollToService: ScrollToService) {
-
+  categories$: Observable<Array<any>>;
+  faq$: Observable<Array<any>>;
+  constructor(private scrollToService: ScrollToService, private faqService: FaqService, private categoryService: FaqCategoryService) {
+    this.categories$ = this.categoryService.categories$;
+    this.faq$ = this.faqService.faqs$;
   }
 
   ngOnInit(): any {
-
+    this.categoryService.getAll({});
+    this.faqService.getAll({});
   }
 
   onScrollTo(target) {

@@ -1,0 +1,62 @@
+<wth-modal-dock #modalDock (closeEvent)="close();">
+  <wth-modal-dock-header [hasCollapse]="false">
+    <div *ngIf="uploading_num > 0"> Uploading {{uploading_num}} items</div>
+    <div *ngIf="uploading_num === 0"> Uploaded {{uploaded_num}} items</div>
+    <i dock-header-action class="fa " (click)="modalDock.toggleCollapse()" [ngClass]="{'fa-chevron-down': !modalDock.collapse, 'fa-chevron-up': modalDock.collapse }"
+    pTooltip="{{tooltip.collapse}}" tooltipPosition="top"></i>
+  </wth-modal-dock-header>
+  <wth-modal-dock-body>
+    <table class="table table-middle wth-table table-hover">
+      <tbody>
+        <tr *ngFor="let file of upload_arr" [ngClass]="{'text-muted': upload_hash[file?.id]?.status === this.upload_steps.init}">
+          <!-- Icon and file name -->
+          <td [ngSwitch]="upload_hash[file?.id].status" class="vam">
+            <span *ngSwitchCase="this.upload_steps.uploaded">
+                <i [class]="icon_hash[upload_hash[file?.id].file_type]"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }}
+            </span>
+            <span *ngSwitchCase="this.upload_steps.error" class="text-muted">
+                <i [class]="icon_hash.error"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }}
+            </span>
+            <span *ngSwitchCase="this.upload_steps.init" class="text-muted">
+                <i [class]="icon_hash.loading"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }}
+            </span>
+            <span *ngSwitchDefault class="text-muted">
+                <i [class]="icon_hash[upload_hash[file?.id].file_type]"></i> {{ upload_hash[file?.id]?.name | maxLength: 30 }}
+              </span>
+          </td>
+
+          <!-- Actions -->
+          <td class="vam" [ngSwitch]="upload_hash[file?.id]?.status">
+            <span *ngSwitchCase="this.upload_steps.uploaded" class="fwb text-muted pull-right">
+              Done
+            </span>
+            <span *ngSwitchCase="this.upload_steps.init" class="fwb text-muted pull-right">
+                <a href="#" (click)="cancel(file)">Stop</a>
+            </span>
+            <span *ngSwitchCase="this.upload_steps.error" class="fwb text-muted pull-right">
+              <a href="#" (click)="retry(file)">Retry</a>
+            </span>
+            <span *ngSwitchDefault class="fwb text-muted pull-right">
+              <a href="#" (click)="retry(file)">Retry</a>
+            </span>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+  </wth-modal-dock-body>
+</wth-modal-dock>
+
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4>
+      Cancel uploads
+    </h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    Your uploads aren't complete. Do you want to cancel all ongoing uploads ?
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button class="btn btn-outline-default btn-min">Continue uploads</button>
+    <button class="btn btn-outline-primary btn-min" (click)="clearItems(); modal.close()">Cancel uploads</button>
+  </bs-modal-footer>
+</bs-modal>

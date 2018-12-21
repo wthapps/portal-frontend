@@ -51,8 +51,6 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   @Output() modalOpened: EventEmitter<any> = new EventEmitter<any>();
   @Output() photoModalOpened: EventEmitter<any> = new EventEmitter<any>();
 
-  commentEditor: CommentItemEditorComponent;
-
   itemDisplay: any;
   privacyName: string;
   commentLoadingDone = false;
@@ -131,12 +129,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   updatePhoto(currentPhotos: any[], updatedPhoto: any): any[] {
-    return _.map(currentPhotos, (photo: any) => {
-      if ( photo.id === updatedPhoto.id )
-        return updatedPhoto;
-      else
-        return photo;
-      }
+    return _.map(currentPhotos, (photo: any) => (( photo.id === updatedPhoto.id ) ? updatedPhoto : photo)
     );
   }
 
@@ -165,12 +158,12 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
         this.loading.start();
         this.apiBaseService.delete(`${Constants.urls.zoneSoPosts}/${this.item['uuid']}`)
           .toPromise().then((result: any) => {
-              this.toast.success('Deleted post successfully', 'Delete Post');
+              this.toast.success('Deleted post successfully');
               this.loading.stop();
               this.onDeleted.emit(result);
             },
             error => {
-              this.toast.danger('Deleted post error\n' + error, 'Delete Post');
+              this.toast.danger('Deleted post error\n' + error);
               this.loading.stop();
             }
           );
@@ -180,26 +173,7 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
 
   onActions(event: BaseEvent) {
     if (event instanceof CommentCreateEvent) {
-      const self: any = this;
-      this.createComment(event.data).toPromise().then(
-        (res: any) => {
-          if (res.data.parent_type === 'SocialNetwork::Post') {
-            const comment = new SoComment().from(res.data);
-            _.uniqBy(this.item.comments.unshift(comment), 'uuid');
-            this.item.comment_count += 1;
-
-          } else if (res.data.parent_type === 'SocialNetwork::Comment') {
-            const newReply: any = res.data;
-            const commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
-              return newReply.parent.uuid === comment.uuid;
-            });
-            this.item.comments[commentIndex].comments.push(newReply);
-          }
-
-          this.updateStoragePost();
-          this.mapDisplay();
-        }
-      );
+      this.createCommentOrReply(event);
     }
     // Update a comment
     if (event instanceof CommentUpdateEvent) {
@@ -224,13 +198,14 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     }
     // Create a reply
     if (event instanceof ReplyCreateEvent) {
-      this.createReply(event.data).toPromise().then(
-        (res: any) => {
-          // this.item = new SoPost().from(res.data);
-          this.updateItemComments(res.data);
-          this.mapDisplay();
-        }
-      );
+      // this.createReply(event.data).toPromise().then(
+      //   (res: any) => {
+      //     // this.item = new SoPost().from(res.data);
+      //     this.updateItemComments(res.data);
+      //     this.mapDisplay();
+      //   }
+      // );
+      this.createCommentOrReply(event);
     }
 
     // Update a reply
@@ -268,11 +243,33 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     }
   }
 
-  syncComments(post: any) {
-    _.merge(this.item, post);
+  syncComments({comments}) {
+    // _.merge(this.item, post);
+    this.item.comments.push(...comments);
     this.mapDisplay();
   }
 
+  createCommentOrReply(event) {
+    this.createComment(event.data).toPromise().then(
+      (res: any) => {
+        if (res.data.parent_type === 'SocialNetwork::Post') {
+          const comment = new SoComment().from(res.data);
+          _.uniqBy(this.item.comments.unshift(comment), 'uuid');
+          this.item.comment_count += 1;
+
+        } else if (res.data.parent_type === 'SocialNetwork::Comment') {
+          const newReply: any = res.data;
+          const commentIndex = _.findIndex(this.item.comments, (comment: SoComment) => {
+            return newReply.parent.uuid === comment.uuid;
+          });
+          this.item.comments[commentIndex].comments.unshift(newReply);
+        }
+
+        this.updateStoragePost();
+        this.mapDisplay();
+      }
+    );
+  }
 
   openShare() {
     this.modalOpened.emit({mode: 'add', parent: this.item.parent_post || this.item, isShare: true});
@@ -321,8 +318,19 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     );
   }
 
+  toggleShowReplies(comment: SoComment) {
+    this.item.comments.forEach((cmt: SoComment, index: any) => {
+      if (cmt.uuid === comment.uuid) {
+        const { showReplies } = this.item.comments[index];
+        Object.assign(this.item.comments[index], {showReplies: !showReplies});
+      }
+    });
+    this.mapDisplay();
+  }
+
+
   private updateStoragePost() {
-    this.soStorageService.updatePost(_.cloneDeep(this.item));
+    // this.soStorageService.updatePost(_.cloneDeep(this.item));
   }
 
   private mapDisplay(): any {
@@ -369,8 +377,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
   }
 
   private getPrivacyName(post: SoPost): string {
-    if (post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1)
+    if (post.privacy === Constants.soPostPrivacy.customCommunity.data && post.custom_objects.length === 1) {
       return post.custom_objects[0].name;
+    }
     return (post.privacy ? post.privacy.replace('_', ' ') : '');
   }
 
@@ -394,8 +403,9 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
             done = true;
             return;
           }
-          if (done)
+          if (done) {
             return;
+          }
         })
         ;
       });
@@ -417,14 +427,15 @@ export class PostComponent extends BaseZoneSocialItem implements OnInit, OnChang
     _.forEach(this.item.comments, (comment: SoComment, index: any) => {
       // Update comment items
       if (data.parent_type !== 'SocialNetwork::Comment' && (comment.uuid === updatedComment.uuid)) {
-        this.item.comments[index] = updatedComment;
+        Object.assign(this.item.comments[index], updatedComment);
         return;
       }
       // Update the reply items
       if (data.parent_type === 'SocialNetwork::Comment' && comment.uuid === _.get(updatedComment, 'parent.uuid')) {
       _.forEach(this.item.comments[index].comments, (reply: SoComment, j: any) => {
         if (reply.uuid === _.get(updatedComment, 'uuid')) {
-          this.item.comments[index].comments[j] = updatedComment;
+          // this.item.comments[index].comments[j] = updatedComment;
+          Object.assign(this.item.comments[index].comments[j], updatedComment);
           return;
         }
         });

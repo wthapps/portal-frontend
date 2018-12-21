@@ -1,0 +1,67 @@
+<div class="page-body-control">
+  <div class="page-body-control-nav">
+    <h4> Shared Cards </h4>
+  </div>
+</div>
+<div class="page-body-content has-page-body-control">
+  <div class="page-body-content-in pt15">
+
+    <ng-container *ngIf="(cards$|async).length > 0">
+      <div class="form-group">
+        <label class="text-bold">Sort by</label>
+
+        <div class="btn-group ml10">
+          <button type="button" class="btn btn-outline-default dropdown-toggle btn-sort" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+            {{ sortFieldName }}
+            <span class="caret pull-right"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-left">
+            <li (click)="changeSortField(CARD_NAME)">
+              <a href="javascript:void(0)"> Card name
+                <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === CARD_NAME}"></i>
+              </a>
+            </li>
+            <li (click)="changeSortField(USER_NAME)">
+              <a href="javascript:void(0)"> Owner name
+                <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === USER_NAME}"></i>
+              </a>
+            </li>
+            <li (click)="changeSortField(UPDATED_AT)">
+              <a href="javascript:void(0)"> Recent shared
+                <i class="fa pull-right" [ngClass]="{'fa-check' : sortField === UPDATED_AT}"></i>
+              </a>
+            </li>
+          </ul>
+
+        </div>
+          <button type="button" class="btn btn-default" (click)="changeSortDirection()">
+            <i *ngIf="sortDesc" class="fa fa-arrow-down" [pTooltip]="'Sort Ascending'"  tooltipPosition="bottom"></i>
+            <i *ngIf="!sortDesc" class="fa fa-arrow-up" [pTooltip]="'Sort Descending'"  tooltipPosition="bottom"></i>
+          </button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="((cards$|async).length > 0) else noData">
+      <div class="card-list row">
+        <div class="col-sm-4 mb15" *ngFor="let c of (cards$ | async)">
+          <card-item [card]="c" (view)="viewCard($event)"></card-item>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #noData>
+      <box-no-data [icon]="'fa fa-address-card'"
+                   [title]="'There are no Cards!'"
+                   [subTitle]="'Business cards that people shared with you'">
+      </box-no-data>
+    </ng-template>
+  </div>
+
+
+
+</div>
+
+
+
+<w-card-detail-modal #cardDetailModal [card]="card$ | async"></w-card-detail-modal>
+<!--<w-card-edit-modal #cardEditModal [profile]="(profile$ | async)" (save)="onSave($event)"></w-card-edit-modal>-->

@@ -106,7 +106,7 @@ export class ApiBaseService {
     options: any = {}
   ): Observable<any> {
     this.buildOptions(options);
-    if (method == 'get' || method == 'delete') {
+    if (method === 'get' || method === 'delete') {
       return this.http[method](
         this.baseUrl + path + UrlConverterUtil.objectToUrl(body),
         this.options
@@ -146,7 +146,7 @@ export class ApiBaseService {
   }
 
   protected handleError(error: any | any): any {
-    if (error.status == 401) {
+    if (error.status === 401) {
       if (window.location.href.indexOf('login') < 0) {
         window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${
           window.location['href']

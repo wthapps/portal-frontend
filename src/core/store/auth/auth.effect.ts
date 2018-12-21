@@ -1,14 +1,10 @@
-
-
-
-import { Injectable }       from '@angular/core';
-import { Effect, Actions }  from '@ngrx/effects';
-import { Action }           from '@ngrx/store';
-import { Observable ,  of }       from 'rxjs';
-import * as actions         from './auth.action';
-import { Store }            from '@ngrx/store';
-import * as store           from '../index';
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { User } from '@wth/shared/shared/models';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import * as actions from './auth.action';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -29,8 +25,9 @@ export class AuthEffects {
 
   constructor(
     private actions$: Actions,
-    private authApiClient: any,
-    ) {}
+    private authApiClient: any
+  ) {
+  }
 
   /**
    * Login effect
@@ -38,12 +35,14 @@ export class AuthEffects {
   @Effect()
   login$: Observable<Action> = this.actions$
     .ofType(actions.ActionTypes.LOGIN)
-    .map((action: actions.Login) => action.payload)
-    .switchMap(state => {
-      return this.authApiClient.login(state)
-        .map(user    => new actions.LoginSuccess(new User(user)))
-        .catch(error => of(new actions.LoginFail()));
-    });
+    .pipe(
+      map((action: actions.Login) => action.payload),
+      switchMap(state => {
+        return this.authApiClient.login(state)
+          .map(user => new actions.LoginSuccess(new User(user)))
+          .catch(error => of(new actions.LoginFail()));
+      })
+    );
 
   /**
    * Logout effect
@@ -51,10 +50,12 @@ export class AuthEffects {
   @Effect()
   logout$: Observable<Action> = this.actions$
     .ofType(actions.ActionTypes.LOGOUT)
-    .map((action: actions.Logout) => null)
-    .switchMap(state => {
-      return this.authApiClient.logout()
-        .map(()      => new actions.LogoutSuccess())
-        .catch(error => of(new actions.LogoutFail()));
-    });
+    .pipe(
+      map((action: actions.Logout) => null),
+      switchMap(state => {
+        return this.authApiClient.logout()
+          .map(() => new actions.LogoutSuccess())
+          .catch(error => of(new actions.LogoutFail()));
+      })
+    );
 }

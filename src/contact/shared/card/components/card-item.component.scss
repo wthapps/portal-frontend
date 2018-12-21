@@ -1,0 +1,15 @@
+@import "../../../../assets/styles/global";
+
+.pcard-cover {
+  @media (max-width: $screen-xs-max) {
+    .media-avatar {
+      @include flex-direction(column);
+      text-align: center;
+      .media-avatar-img-wrap {
+        margin-bottom: 10px;
+        margin-right: 0;
+      }
+    }
+  }
+}
+

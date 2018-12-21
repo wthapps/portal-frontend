@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, CommonEventService } from '@shared/services';
-import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { Router } from '@angular/router';
@@ -25,6 +24,8 @@ import { MediaViewMixin } from '@shared/mixin/media-view.mixin';
 import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
 import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
 import { PlaylistCreateMixin } from '@shared/mixin/playlist/playlist-create.mixin';
+import { Subject } from 'rxjs';
+import { takeUntil, take, filter } from 'rxjs/operators';
 
 @Mixins([MediaViewMixin, AlbumAddMixin, AlbumCreateMixin, PlaylistCreateMixin])
 @Component({
@@ -64,6 +65,7 @@ AlbumCreateMixin {
   subCreatePlaylist: any;
 
   uppy: any;
+  destroy$ = new Subject();
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -73,7 +75,6 @@ AlbumCreateMixin {
     public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
     public mediaUploaderDataService: MediaUploaderDataService,
-    public playlistCreateModalService: PlaylistCreateModalService,
     private commonEventService: CommonEventService,
     private uploader: WUploader
     ) {
@@ -98,22 +99,29 @@ AlbumCreateMixin {
     });
   }
 
-  upload(content_types: any = []) {
-    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-      allowedFileTypes: content_types,
-      video: false
-    });
+  ngOnDestroy() {
+    if (this.subUploader) { this.subUploader.unsubscribe(); }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
-  uploadVideo(content_types: any = []) {
+
+  upload(content_types: any = []) {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
       allowedFileTypes: content_types,
       video: true
     });
+    this.uploader.event$.pipe(filter(e => e.action == 'complete')).pipe(take(1)).subscribe(res => {
+      this.commonEventService.broadcast(
+        { channel: 'ZMediaPhotoListComponent', action: 'loadObjects'}
+      )
+    })
   }
-
-  ngOnDestroy() {
-    if (this.subUploader) { this.subUploader.unsubscribe(); }
-  }
+  // uploadVideo(content_types: any = []) {
+  //   this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+  //     allowedFileTypes: content_types,
+  //     video: true
+  //   });
+  // }
 
   doAction(event: any) {
     if (event.action === 'favourite') {

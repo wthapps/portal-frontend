@@ -1,12 +1,12 @@
 <div class="media media-no-hidden" *ngIf="data">
   <div class="media-left can-click" (click)="viewComDetail(data)">
     <span class="avatar-sm">
-      <img [src]="data.profile_image" alt="{{ data.name }}">
+      <img [src]="data.profile_image" alt="{{ data.name | maxLength: 30 }}">
     </span>
   </div>
   <div class="media-body">
     <h5 class="media-heading m0">
-      <a [routerLink]="['/' + communitiesUrl, data.uuid]" class="link-text">{{ data.name }}</a>
+      <a [routerLink]="['/' + communitiesUrl, data.uuid]" class="link-text">{{ data.name | maxLength: 30 }}</a>
     </h5>
     <div class="text-fade">
       {{ data.member_count }} {{ data.member_count > 1 ? 'members': 'member' }}

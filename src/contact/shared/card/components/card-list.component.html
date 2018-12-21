@@ -1,0 +1,38 @@
+<div class="page-body-control">
+  <div class="page-body-control-nav">
+    <h4>
+      Cards
+      <i class="fa fa-info-circle text-fade" [pTooltip]="CARD_TOOLTIP"
+         tooltipPosition="bottom"></i>
+    </h4>
+  </div>
+</div>
+<div class="page-body-content has-page-body-control">
+  <div class="page-body-content-in pt15">
+    <h4>Public Card
+      <i class="fa fa-info-circle text-fade"
+          [pTooltip]="PUBLIC_CARD_TOOLTIP" tooltipPosition="bottom"></i>
+    </h4>
+    <div class="card-list row">
+      <div class="col-sm-4 mb15">
+        <card-item [card]="(cards$ | async)[0]" (view)="cardDetailModal.open({payload: $event, cardType: 'public'})"></card-item>
+      </div>      
+    </div>
+    <h4>Private Cards
+      <i class="fa fa-info-circle text-fade"
+         [pTooltip]="PRIVATE_CARD_TOOLTIP" tooltipPosition="bottom"></i>
+    </h4>
+    <!-- <div class="text-fade">
+      There are no private cards. <br>
+      Click “New private card” from New menu to create more private cards.
+    </div> -->
+    <div class="card-list row">
+      <div class="col-sm-4 mb15" *ngFor="let c of (cards$ | async)">
+        <card-item [card]="c" (view)="cardDetailModal.open({payload: $event, cardType: 'business'})"></card-item>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<w-card-detail-modal #cardDetailModal (edit)="openEditModal($event)"></w-card-detail-modal>
+<w-card-edit-modal #cardEditModal [profile]="(profile$ | async)" (save)="onSave($event)"></w-card-edit-modal>

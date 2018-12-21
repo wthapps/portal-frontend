@@ -3,6 +3,7 @@ import { Constants } from '@shared/constant';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { ApiBaseService } from '@shared/services';
 import { InvitationCreateModalComponent } from '@shared/shared/components/invitation/invitation-create-modal.component';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'invite-contact',
@@ -22,7 +23,7 @@ export class InviteContactComponent implements OnInit {
   ngOnInit() {}
 
   openModal() {
-    this.apiBaseService.get(`contact/contacts`).subscribe(res => {
+    this.apiBaseService.get(`contact/wcontacts/contacts_not_wthuser`, {sort_name: 'name', sort: 'asc'}).subscribe(res => {
       this.contacts = res.data.filter(e => !e.wthapps_user);
     })
     this.modal.open();
@@ -31,6 +32,7 @@ export class InviteContactComponent implements OnInit {
   openCreate(e: any) {
     this.modal.close();
     let data = [];
+    const tmp = [...this.selectedUsers];
     this.selectedUsers = [];
     this.contacts.filter(c => c.selected).forEach(c => {
       if(c.emails && c.emails.length > 0) {
@@ -41,7 +43,18 @@ export class InviteContactComponent implements OnInit {
         data.push({ fullName: c.name, contactId: c.id, email: ""});
       }
     });
-    this.createModal.open({data: data});
+    this.createModal.open({data: data, back: true});
+    this.createModal.event.pipe(take(1)).subscribe(data => {
+      if(data.action == 'back') {
+        this.onBack();
+        this.selectedUsers = tmp;
+      }
+    })
+  }
+
+  onBack() {
+    this.createModal.close();
+    this.modal.open();
   }
 
   selectUser(e: any) {

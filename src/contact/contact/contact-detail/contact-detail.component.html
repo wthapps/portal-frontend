@@ -1,7 +1,7 @@
 <ng-container *ngIf="data">
   <z-contact-shared-toolbar [currentPage]="'detail'" [hasBack]="true">
     <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
-      <z-contact-shared-actions-bar [showViewDetail]="false" [showAddToContacts]="showAddToContacts" [showNumber]="false"
+      <z-contact-shared-actions-bar [contacts]="[data]" [showViewDetail]="false" [showAddToContacts]="showAddToContacts" [showNumber]="false"
         [showTag]="false" [showSocial]="data | isContactInternal" [showChat]="data | isContactInternal"
         [showInvitation]="true" [toggleFavourite]="_contact.isContactsHasGroupName([data], 'favourite')"
         [toggleBlacklist]="_contact.isContactsHasGroupName([data], 'blacklist')" (eventOut)="doActionsToolbar($event)"></z-contact-shared-actions-bar>

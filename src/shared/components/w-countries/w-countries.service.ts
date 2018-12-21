@@ -8,9 +8,11 @@ import { Subject } from 'rxjs/Subject';
 
 
 export class CountryModel {
+  value: string;
+  label: string;
+  code: string;
   name: string;
   dial_code: string;
-  code: string;
 }
 
 /**
@@ -43,6 +45,8 @@ export class WCountriesService {
               // ...v,
               value: v.name + ' (' + v.dial_code + ')',
               label: v.name + ' (' + v.dial_code + ')',
+              name: v.name,
+              dial_code: v.dial_code,
               code: v.code.toLowerCase()
             };
           });

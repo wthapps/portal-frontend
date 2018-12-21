@@ -3,7 +3,7 @@
 
     <mini-editor #miniEditor *ngIf="contactSelect" [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" [placeholder]="contactSelect.black_list ? placeholderBl : placeholder"
       [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"
-      (onKeyUp)="handleKeyUp($event)">
+      (onKeyUp)="handleKeyUp($event)" (onImagePaste)="handleImagePaste($event)">
       <p-header>
       </p-header>
     </mini-editor>
@@ -16,11 +16,11 @@
         <ul class="dropdown-menu dropdown-menu-right" *ngIf="!isDisabled">
           <li>
             <a (click)="onOpenSelectPhotos()" href="javascript:;">
-              <i class="fa fa-photo"></i> Share photos</a>
+              <i class="icon-zone-media"></i> Share photos</a>
           </li>
           <li>
             <a (click)="noteSelectOpen()" href="javascript:;">
-              <i class="fa fa-file"></i> Share notes</a>
+              <i class="icon-zone-note"></i> Share notes</a>
           </li>
           <li>
             <a (click)="shareContacts()" href="javascript:;">

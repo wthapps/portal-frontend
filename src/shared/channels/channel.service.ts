@@ -18,8 +18,9 @@ export class ChannelService extends CableService {
   }
 
   subscribe() {
-    if (this.userService.loggedIn && this.userService.getSyncProfile()) {
-      this.createConnectionInstance(this.userService.getSyncProfile().uuid);
+    const profile = this.userService.getSyncProfile();
+    if (this.userService.loggedIn && profile) {
+      this.createConnectionInstance(profile.uuid);
 
       const self = this;
 
@@ -34,8 +35,8 @@ export class ChannelService extends CableService {
           },
           received: (data: any) => {
             console.log('received', data);
-            let factory = new ChannelActionFactoryService();
-            let action = factory.create(data, self.serviceManager);
+            const factory = new ChannelActionFactoryService();
+            const action = factory.create(data, self.serviceManager);
             if (action) {
               if (action.process) {
                 action.process(data);
@@ -48,6 +49,6 @@ export class ChannelService extends CableService {
   }
 
   unsubscribe() {
-    if (App.channel) App.channel.unsubscribe();
+    if (App.channel) { App.channel.unsubscribe(); }
   }
 }

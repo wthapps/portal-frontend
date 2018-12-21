@@ -169,11 +169,11 @@ export class ZNoteDetailEditComponent
           this.note = noteContent;
           this.store.dispatch(new note.NoteUpdated(this.note));
           this.initQuill();
-          if (currentFolder) this.parentId = currentFolder.id;
+          if (currentFolder) { this.parentId = currentFolder.id; }
           this.updateFormValue(this.note);
           // Reset content of elemenet div.ql-editor to prevent HTML data loss
           document.querySelector('.ql-editor').innerHTML = this.note.content;
-          if (this.note.permission !== 'view') this.registerAutoSave();
+          if (this.note.permission !== 'view') { this.registerAutoSave(); }
         },
         (error: any) => {
           this.onModalClose({ queryParams: { error: 'file_does_not_exist' } });
@@ -192,7 +192,7 @@ export class ZNoteDetailEditComponent
     this.closeSubject.unsubscribe();
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
-    if (this.timeInterval) clearInterval(this.timeInterval);
+    if (this.timeInterval) { clearInterval(this.timeInterval); }
   }
 
   registerAutoSave() {
@@ -306,9 +306,10 @@ export class ZNoteDetailEditComponent
       modules.placeholder = '';
     }
     this.customEditor = new Quill('#quill-editor', modules);
-    if (this.note.permission === 'view') this.customEditor.disable();
-    if (!this.note.permission || this.note.permission !== 'view')
+    if (this.note.permission === 'view') { this.customEditor.disable(); }
+    if (!this.note.permission || this.note.permission !== 'view') {
       $('#quill-toolbar').show();
+    }
 
     this.editorElement = document.querySelector('div.ql-editor');
 
@@ -350,7 +351,7 @@ export class ZNoteDetailEditComponent
             }
           }
 
-          if (e.defaultPrevented || !this.quill.isEnabled()) return;
+          if (e.defaultPrevented || !this.quill.isEnabled()) { return; }
           const range = this.quill.getSelection();
           let delta = new Delta().retain(range.index);
           const scrollTop = this.quill.scrollingContainer.scrollTop;
@@ -622,9 +623,9 @@ export class ZNoteDetailEditComponent
     this.store
       .select(fromRoot.getCurrentNote)
       .pipe(takeUntil(merge(this.closeSubject, this.destroySubject)))
-      .subscribe((note: Note) => {
-        if (note !== undefined) {
-          this.updateFormValue(note);
+      .subscribe((note2: Note) => {
+        if (note2 !== undefined) {
+          this.updateFormValue(note2);
         }
       });
   }
@@ -699,7 +700,7 @@ export class ZNoteDetailEditComponent
     if (files.length === 0) {
       return;
     }
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(10000000, {only: /video\//g})]);
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35, {only: /video\//g})]);
     this.note.attachments = [
       ...this.note.attachments,
       ...filesAddedPolicy.filter(file => file.allow === true)
@@ -712,8 +713,9 @@ export class ZNoteDetailEditComponent
         .subscribe((response: any) => {
           if (!response.error) {
             this.note.attachments = this.note.attachments.map(att => {
-              if (att.name === response.data.full_name && !att.uuid)
+              if (att.name === response.data.full_name && !att.uuid) {
                 return response.data;
+              }
               return att;
             });
             this.form.controls['attachments'].setValue(this.note.attachments);
@@ -723,11 +725,12 @@ export class ZNoteDetailEditComponent
       this.uploadSubscriptions[f.name] = sub;
     }
     const filesNotAllow = filesAddedPolicy.filter(file => file.allow === false);
-    if (filesNotAllow.length > 0)
+    if (filesNotAllow.length > 0) {
       this.commonEventService.broadcast({
         channel: 'LockMessage',
         payload: filesNotAllow
       });
+    }
   }
 
   selectPhotos() {
@@ -855,7 +858,7 @@ export class ZNoteDetailEditComponent
   private selectPhotos4Attachments() {
     this.mediaSelectionService.open({ allowSelectMultiple: true });
 
-    let close$: Observable<any> = merge(
+    const close$: Observable<any> = merge(
       this.mediaSelectionService.open$,
       componentDestroyed(this)
     );
@@ -888,7 +891,7 @@ export class ZNoteDetailEditComponent
   }
 
   private updateNote() {
-    if (!this.note.id) return;
+    if (!this.note.id) { return; }
     const noteObj: any = Object.assign({}, this.note, this.form.value, {
       content: this.editorElement.innerHTML
     });

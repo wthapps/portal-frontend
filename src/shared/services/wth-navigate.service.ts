@@ -50,7 +50,7 @@ export class WTHNavigateService {
     // Do not allow redirect to root path
     if (!_.isEmpty(path)) {
       if (path.indexOf('posts') > -1) {
-        let urls: string[] = path.split('/');
+        const urls: string[] = path.split('/');
         this.router.navigate([{ outlets: { detail: [...urls] } }], {
           queryParamsHandling: 'preserve',
           preserveFragment: true
@@ -60,7 +60,7 @@ export class WTHNavigateService {
           [path, { outlets: { modal: null, detail: null } }],
           { queryParams: queryParams }
         );
-        if (['/', ''].includes(path)) this.router.navigate(['']);
+        if (['/', ''].includes(path)) { this.router.navigate(['']); }
       }
     }
 
@@ -90,16 +90,17 @@ export class WTHNavigateService {
     let fullUrl = url;
 
     // Not support redirect to root path
-    if (!_.isEmpty(path)) fullUrl += '/' + path;
-    if (typeof body == 'object') {
+    if (!_.isEmpty(path)) { fullUrl += '/' + path; }
+    if (typeof body === 'object') {
       fullUrl += '?' + this.paramsToString(body);
     }
     return fullUrl;
   }
 
   private paramsToString(params: any): string {
-    let str: string = '';
-    for (let param in params) {
+    let str = '';
+    // tslint:disable-next-line:forin
+    for (const param in params) {
       str += param + '=' + params[param] + '&';
     }
     str = str.slice(0, -1);

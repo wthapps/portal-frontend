@@ -6,7 +6,7 @@ import { ModalService } from '@shared/components/modal/modal-service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Constants } from '@wth/shared/constant';
 
-import { ApiBaseService, AuthService, ChatCommonService } from '@wth/shared/services';
+import { ApiBaseService, AuthService, ChatCommonService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,11 +17,12 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['contact-list-modal.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ContactListModalComponent implements OnInit, OnDestroy {
+export class ContactListModalComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
 
   contacts: any;
   currentContacts: Array<any>;
+  channel: string = 'ContactListModalComponent';
 
   tabs: Array<any> = [
     {
@@ -51,6 +52,13 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
       link: null,
       icon: null,
       number: null
+    },
+    {
+      id: 'wthapps',
+      name: 'WTHApps',
+      link: null,
+      icon: null,
+      number: null
     }
   ];
   showSearch: boolean;
@@ -59,18 +67,21 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
   tooltip = Constants.tooltip;
   profileUrl = Constants.baseUrls.social + '/profile';
   selectedTab: string;
+  destroy$ = new Subject();
 
-  private destroy$ = new Subject();
   constructor(
     public apiBaseService: ApiBaseService,
     private chatContactService: ChatContactService,
     private modalService: ModalService,
     private conversationService: ConversationService,
     private chatCommonService: ChatCommonService,
+    public commonEventService: CommonEventService,
     private authService: AuthService,
     private toastsService: ToastsService,
     private chatService: ChatService
-  ) {}
+  ) {
+    super(commonEventService);
+  }
 
   ngOnInit() {
     this.modalService.open$.pipe(takeUntil(this.destroy$)).subscribe(payload => {
@@ -78,6 +89,12 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
       this.selectedTab = payload.selectedTab || 'all';
       this.selectCurrentTab(this.selectedTab);
     });
+  }
+
+  open(payload: any) {
+    this.modal.open(payload);
+    this.selectedTab = payload.selectedTab || 'all';
+    this.selectCurrentTab(this.selectedTab);
   }
 
   selectCurrentTab(tab: any) {
@@ -109,6 +126,10 @@ export class ContactListModalComponent implements OnInit, OnDestroy {
           this.mapResponseToContacts(response);
           this.loading = false;
         });
+        break;
+      case 'wthapps':
+        this.displaySearch();
+        this.loading = false;
         break;
       default:
         this.apiBaseService.get(`account/users/my_contacts`)

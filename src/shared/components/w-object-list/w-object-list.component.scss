@@ -36,7 +36,7 @@ $wobject-checkbox: 30px;
     }
   }
   .wobject-row-body {
-    @include flex(1);
+    max-height: 100%;
     overflow: auto;
   }
 
@@ -78,6 +78,7 @@ $wobject-checkbox: 30px;
     }
   }
   .wobject-row {
+    word-break: break-word;
     &.active .wobject-row-checkbox i, & .wobject-row-checkbox i.active {
       background-color: $theme-color !important;
       border-color: $theme-color !important;
@@ -101,7 +102,12 @@ $wobject-checkbox: 30px;
   }
 
   .wobject-row-title {
-    display: none;
+    width: 100%;
+    clear: both;
+    display: block;
+    span {
+      display: none;
+    }
   }
 
   &.has-scrollbar {
@@ -151,7 +157,8 @@ $wobject-checkbox: 30px;
         position: absolute;
         top: 5px;
         left: 5px + 10px;
-        pointer-events: none;
+        // remove because need to check
+        // pointer-events: none;
         visibility: hidden;
         i {
           width: 24px;
@@ -164,14 +171,13 @@ $wobject-checkbox: 30px;
           }
         }
       }
-
+      // change top 30px and height 80% because need check on circle
       .wobject-click {
-        top: 0;
+        top: 30px;
         left: 0;
         right: 0;
         bottom: 0;
         width: 100%;
-        height: 100%;
       }
       &:hover, &.active {
         .wobject-row-checkbox {
@@ -263,10 +269,11 @@ $wobject-checkbox: 30px;
 .wobject-timeline {
   @extend .wobject-grid;
   .wobject-row-title {
-    display: block;
-    width: 100%;
-    padding: 0 10px;
-    margin: 0 0 10px;
+    span {
+      display: inline-block;
+      padding: 0 10px;
+      margin: 0 0 10px;
+    }
   }
 }
 
@@ -357,14 +364,6 @@ $wobject-checkbox: 30px;
       }
     }
   }
-}
-
-.box-loading-more {
-  text-align: center;
-  background-color: inherit;
-  width: 100%;
-  margin-top: -15px;
-  color: $text-color-light;
 }
 
 

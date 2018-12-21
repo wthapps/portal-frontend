@@ -8,7 +8,7 @@
           <so-information>
             <div class="z-social-media-body">
               <div class="z-heading">
-                <div class="z-name"> {{ community?.name }}</div>
+                <div class="z-name" pTooltip="{{ community?.name }}" tooltipPosition="bottom"> {{ community?.name | maxLength: 50 }}</div>
               </div>
               <div class="z-shared-info">
                 <ul>

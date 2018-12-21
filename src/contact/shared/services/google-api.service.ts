@@ -57,7 +57,7 @@ export class GoogleApiService {
   }
 
   getGoogleApiConfig(): Promise<any> {
-    if(_.isEmpty(this.CREDENTIAL_KEYS)) {
+    if (_.isEmpty(this.CREDENTIAL_KEYS)) {
       return this.contactService.getGoogleApiConfig().toPromise()
         .then((res: any) => this.CREDENTIAL_KEYS = res.data);
     }

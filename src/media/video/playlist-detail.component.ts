@@ -30,6 +30,7 @@ import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.
 import { WUploader } from '@shared/services/w-uploader';
 import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { LocalStorageService } from 'angular-2-local-storage';
 declare var _: any;
 @Mixins([MediaBasicListMixin,
   MediaAdditionalListMixin,
@@ -87,11 +88,11 @@ PlaylistAddMixin, MediaDownloadMixin {
   returnUrls: any;
   sharings: any;
   endLoading: any;
+  destroy$ = new Subject();
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
   @ViewChild('coverModal') coverModal: BsModalComponent;
-  private destroy$ = new Subject();
   private uploadingFiles: Array<any> = [];
   private objectType = 'Media::Video';
 
@@ -104,6 +105,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     public confirmService: WthConfirmService,
     public mediaSelectionService: WMediaSelectionService,
     public router: Router,
+    public localStorageService: LocalStorageService,
     public route: ActivatedRoute,
     public locationCustomService: LocationCustomService,
     public location: Location,
@@ -143,6 +145,15 @@ PlaylistAddMixin, MediaDownloadMixin {
     });
 
     this.returnUrls = this.route.snapshot.queryParams.returnUrls;
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
+  }
+
+  ngOnDestroy() {
+    if (this.subSelect) {
+      this.subSelect.unsubscribe();
+    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   doListEvent(e: any) {
@@ -367,6 +378,12 @@ PlaylistAddMixin, MediaDownloadMixin {
 
   openModalShareParent() {
     this.openModalShare([this.object.sharing_object]);
+    const sub = this.sharingModalService.update$.subscribe(res => {
+      if (!this.object.sharing_object) {
+        this.object.sharing_object = res.sharing_object;
+      }
+      sub.unsubscribe();
+    });
   }
 
   onSaveShare(e: any) {
@@ -402,6 +419,7 @@ PlaylistAddMixin, MediaDownloadMixin {
       hiddenTabs: ['photos', 'albums'],
       filter: 'video',
       allowCancelUpload: true,
+      maxNumberOfFiles: 4,
       uploadButtonText: 'Upload videos',
       dragdropText: 'Drag your videos here'
     });
@@ -738,13 +756,5 @@ PlaylistAddMixin, MediaDownloadMixin {
         iconClass: 'fa fa-times'
       }
     };
-  }
-
-  ngOnDestroy() {
-    if (this.subSelect) {
-      this.subSelect.unsubscribe();
-    }
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

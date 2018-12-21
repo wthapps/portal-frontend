@@ -34,6 +34,8 @@ import { mediaConstants } from '@media/shared/config/constants';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { WUploader } from '@shared/services/w-uploader';
 import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
+import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Mixins([
   MediaBasicListMixin,
@@ -43,11 +45,13 @@ import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
   SharingModalMixin,
   PlaylistAddMixin,
   MediaParentMixin,
+  MediaModalMixin,
   MediaDownloadMixin
 ])
 @Component({
   moduleId: module.id,
   selector: 'me-sharing-detail',
+  styleUrls: ['sharing-detail.component.scss'],
   templateUrl: '../shared/list/parent-detail.component.html'
 })
 export class ZMediaSharingDetailComponent
@@ -59,6 +63,7 @@ export class ZMediaSharingDetailComponent
     MediaAdditionalListMixin,
     LoadModalAble,
     SharingModalMixin,
+    MediaModalMixin,
     PlaylistAddMixin,
     MediaDownloadMixin {
   objects: any;
@@ -93,6 +98,7 @@ export class ZMediaSharingDetailComponent
   subSelect: any;
   endLoading: any;
   returnUrls: any;
+  destroy$ = new Subject();
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;
@@ -100,7 +106,6 @@ export class ZMediaSharingDetailComponent
   private uploadingFiles: Array<any> = [];
   private photoSharingTypes: Array<any> = ['Media::Photo', 'Media::Album'];
   private videoSharingTypes: Array<any> = ['Media::Media', 'Media::Playlist'];
-  private destroy$ = new Subject();
 
   constructor(public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
@@ -111,6 +116,7 @@ export class ZMediaSharingDetailComponent
     public confirmService: WthConfirmService,
     public mediaSelectionService: WMediaSelectionService,
     public router: Router,
+    public localStorageService: LocalStorageService,
     public route: ActivatedRoute,
     public location: Location,
     private uploader: WUploader ) { }
@@ -122,6 +128,7 @@ export class ZMediaSharingDetailComponent
       this.loadObjects(p.uuid);
       this.loadObject(p.uuid);
     });
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   back:() => void;
@@ -260,6 +267,14 @@ export class ZMediaSharingDetailComponent
     } else {
       this.router.navigate([`videos/`, this.selectedObjects[0].uuid]);
     }
+  }
+
+  openEditModal: (object: any) => void;
+  onAfterEditModal() {
+    this.modalIns.event.subscribe(e => {
+      this.apiBaseService.put(`media/sharings/${this.object.id}`, this.object).subscribe(res => {
+      });
+    });
   }
 
   doNoData() {
@@ -457,7 +472,7 @@ export class ZMediaSharingDetailComponent
         selectedTab: 'videos',
         hiddenTabs: ['photos', 'albums'],
         filter: 'video',
-        allowedFileType: ['video/*'],
+        allowedFileType: ['video/mp4', 'video/x-m4v', 'video/*'],
         allowCancelUpload: true,
         uploadButtonText: 'Upload videos',
         dragdropText: 'Drag your videos here'

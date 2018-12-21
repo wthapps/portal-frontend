@@ -16,7 +16,7 @@
       </a>
       <div class="z-shared-with dropdown">
         <a class="text-capitalize" href="#" (click)="viewPrivacyCustom(item, modal)" data-toggle="dropdown">
-          <i class="{{ postPrivacy[item?.privacy]?.css }}"></i> {{ privacyName }}
+          <i class="{{ postPrivacy[item?.privacy]?.css }}"></i> {{ privacyName | maxLength: 50 }}
         </a>
       </div>
     </div>
@@ -126,7 +126,7 @@
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title text-left text-capitalize"> {{ privacyName }}</h4>
+    <h4 class="modal-title text-left text-capitalize"> {{ privacyName | maxLength: 50 }}</h4>
   </bs-modal-header>
   <bs-modal-body>
     <div class="media-avatar-list wth-scrollable" style="max-height: 300px;">
@@ -139,7 +139,7 @@
             <!--<div class="media-user-status"></div>-->
           </div>
           <div class="media-avatar-body">
-            {{ item.name }}
+            {{ item.name | maxLength: 50 }}
           </div>
           <div class="media-avatar-action"></div>
         </div>

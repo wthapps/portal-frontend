@@ -40,6 +40,7 @@ import { Subject } from 'rxjs/Subject';
 import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 declare var _: any;
 @Mixins([
@@ -50,10 +51,12 @@ declare var _: any;
   SharingModalMixin,
   AlbumAddMixin,
   MediaModalMixin,
+  MediaParentMixin,
   MediaDownloadMixin
 ])
 @Component({
-  templateUrl: '../shared/list/parent-detail.component.html'
+  templateUrl: '../shared/list/parent-detail.component.html',
+  styleUrls: ['album-detail.component.scss']
 })
 export class ZMediaAlbumDetailComponent
   implements
@@ -102,6 +105,7 @@ export class ZMediaAlbumDetailComponent
   subCreateAlbum: any;
   endLoading: any;
   returnUrls: any;
+  destroy$ = new Subject();
   // ============
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -110,7 +114,7 @@ export class ZMediaAlbumDetailComponent
 
   private uploadingFiles: Array<any> = [];
   private objectType = 'Media::Photo';
-  private destroy$ = new Subject();
+
 
   constructor(public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
@@ -123,6 +127,7 @@ export class ZMediaAlbumDetailComponent
     public router: Router,
     public route: ActivatedRoute,
     public location: Location,
+    public localStorageService: LocalStorageService,
     public urlService: UrlService,
     private uploader: WUploader) { }
 
@@ -135,6 +140,12 @@ export class ZMediaAlbumDetailComponent
       this.loadObject(p.uuid);
     });
     this.returnUrls = this.route.snapshot.queryParams.returnUrls;
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   doListEvent(event: any) {
@@ -202,16 +213,19 @@ export class ZMediaAlbumDetailComponent
   }
 
   openSelectedModal() {
+    // this.mediaSelectionService.setMultipleSelection(true);
     this.mediaSelectionService.open({
       hiddenTabs: ['videos', 'playlists'],
+      selectedTab: 'photos',
       filter: 'photo',
       allowCancelUpload: true,
+      maxNumberOfFiles: 4,
       allowedFileTypes: ['image/*']
     });
     if (this.subSelect) { this.subSelect.unsubscribe(); }
     this.subSelect = this.mediaSelectionService.selectedMedias$.pipe(
       filter(photos => photos.length > 0)
-    ).subscribe(photos => {
+    ).pipe(takeUntil(this.destroy$)).subscribe(photos => {
         this.onAddToAlbum({parents: [this.object], children: photos});
         // this.objects = [...photos.filter(p => p.model === this.objectType), ...this.objects];
         // this.loadObjects(this.object.uuid);
@@ -286,7 +300,7 @@ export class ZMediaAlbumDetailComponent
     this.loading = true;
     opts = { ...opts, model: 'Media::Album' };
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
-    this.apiBaseService.get(`media/media/${input}/objects`, opts).toPromise().then(res => {
+    this.apiBaseService.get(`media/albums/${input}/objects`, opts).toPromise().then(res => {
       this.objects = res.data;
       this.cloneObjects = _.cloneDeep(this.objects);
       this.links = res.meta.links;
@@ -448,6 +462,12 @@ export class ZMediaAlbumDetailComponent
 
   openModalShareParent() {
     this.openModalShare([this.object.sharing_object]);
+    const sub = this.sharingModalService.update$.subscribe(res => {
+      if (!this.object.sharing_object) {
+        this.object.sharing_object = res.sharing_object;
+      }
+      sub.unsubscribe();
+    });
   }
 
   openModalShare: (input: any) => void;
@@ -735,10 +755,5 @@ export class ZMediaAlbumDetailComponent
         iconClass: 'fa fa-times'
       }
     };
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

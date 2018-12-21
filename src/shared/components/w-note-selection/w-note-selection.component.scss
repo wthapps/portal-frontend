@@ -1,0 +1,24 @@
+@import "../../../assets/styles/global";
+@import "../w-object-list/w-object-list-modal.component";
+
+.modal-note-selection {
+  .wobject-box-description {
+    height: 80px;
+    overflow: hidden;
+    padding: 10px;
+    background-color: #ffffff;
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .wobject-grid .wobject-row-body .wobject-row,
+  .wobject-timeline .wobject-row-body .wobject-row {
+    width: percentage(1/4);
+  }
+  .wobject-list {
+    .wobject-box-description {
+      display: none;
+    }
+  }
+}
+

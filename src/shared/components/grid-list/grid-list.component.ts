@@ -14,8 +14,8 @@ import {
 import { Subject } from 'rxjs';
 
 
-
 import { Constants } from '@wth/shared/constant';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 declare var _: any;
 declare var $: any;
@@ -24,10 +24,10 @@ declare var $: any;
   encapsulation: ViewEncapsulation.None,
   selector: 'w-grid-list',
   templateUrl: 'grid-list.component.html',
-  styleUrls: ['grid-list.component.scss'],
+  styleUrls: ['grid-list.component.scss']
 })
 
-export class WGridListComponent implements OnDestroy, OnChanges {
+export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
   @Input() moreActionsTemplate: TemplateRef<any>;
@@ -35,7 +35,7 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   @Input() scrollWindow: Boolean = true;
   @Input() hideScale: Boolean = false;
   @Input() viewSize: number = Constants.mediaSliderViewNumber.default;
-  @Input() sorting: any = {sort_name: "Date", sort: "desc"};
+  @Input() sorting: any = { sort_name: 'Date', sort: 'desc' };
 
   @Input() view: string = 'grid';
   @Input() objects: Array<any> = new Array<any>();
@@ -66,6 +66,12 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   private pressingCtrlKey: boolean = false;
   private destroySubject: Subject<any> = new Subject<any>();
 
+  /**
+   *
+   */
+  constructor(private localStorageService: LocalStorageService) {
+  }
+
   @HostListener('document:keydown', ['$event'])
   onKeyDown(ke: KeyboardEvent) {
     if (this.pressedCtrlKey(ke)) {
@@ -85,6 +91,10 @@ export class WGridListComponent implements OnDestroy, OnChanges {
     }
   }
 
+  ngOnInit() {
+    this.viewSize = this.localStorageService.get('media_slider_val') || Constants.mediaSliderViewNumber.default;
+  }
+
 
   ngOnChanges(changes: SimpleChanges) {
     // if (changes['objects'] && changes['objects'].currentValue && changes['objects'].currentValue.length > 0) {
@@ -95,7 +105,7 @@ export class WGridListComponent implements OnDestroy, OnChanges {
     //     }
     //   });
     // }
-    if(changes.view) {
+    if (changes.view) {
       this.view = changes.view.currentValue;
       if (this.view === 'grid') {
         this.groupByTime = '';
@@ -179,24 +189,24 @@ export class WGridListComponent implements OnDestroy, OnChanges {
   }
 
   private deSelectAll() {
-    this.objects = this.objects.map(ob => {ob.selected = false; return ob});
+    this.objects.forEach(ob => {
+      ob.selected = false;
+    })
   }
 
   private selectObject(object: any) {
-    this.objects = this.objects.map(ob => {
-      if(ob.id == object.id) {
+    this.objects.forEach(ob => {
+      if (ob.id == object.id && ob.object_type == object.object_type) {
         ob.selected = true;
       }
-      return ob
-    });
+    })
   }
 
-  private toggleObject(object){
-    this.objects = this.objects.map(ob => {
-      if(ob.id == object.id) {
+  private toggleObject(object) {
+    this.objects.forEach(ob => {
+      if (ob.id == object.id && ob.object_type == object.object_type ) {
         ob.selected = !ob.selected;
       }
-      return ob;
     })
   }
 

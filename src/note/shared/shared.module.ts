@@ -28,7 +28,6 @@ import { ZNoteContainerComponent } from '@notes/shared/containers/note-container
 import { StoreModule } from '@ngrx/store/store';
 import { ZNoteShareProgressComponent } from '@notes/shared/progress/note-progress.component';
 import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit.component';
-
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */

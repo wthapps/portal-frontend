@@ -1,29 +1,47 @@
 @import '../../../../scss/global';
 
-:host {
-  display: block;
-}
-
-.note-breadcrumb {
-  float: left;
-}
-
-chat-note-shared-toolbar {
-  float: right;
-}
-
-.modal-media-selection {
-  .nav-tabs-wrap {
-    float: none;
+.note-selection-toolbar {
+  @include flexbox;
+  @include justify-content(space-between);
+  &:before, &:after {
+    display: none !important;
+  }
+  .breadcrumb-wrap {
+    .breadcrumb {
+      padding-left: 0 !important;
+      .btn {
+        padding-left: 0;
+        padding-right: 0;
+        color: $link-color;
+        &, &:hover, &:focus, &:active {
+          border-width: 0;
+          @include box-shadow(none);
+          background-color: transparent;
+        }
+      }
+    }
   }
 }
 
-.searchHeader {
-  float: left;
-  textbox-search {
-    .input-group-search-header .input-group {
-      width: 600px;
-      margin-left: 200px;
+.note-selection-content {
+  overflow: auto;
+  .wobject-grid {
+    width: 100%;
+    display: block;
+  }
+  .component-listbox-grid {
+    margin: 0;
+  }
+  .component-listbox-list .component-listbox-row > div {
+    &.component-listbox-action {
+      display: none;
+    }
+    @media (max-width: $screen-xs-max) {
+      &.component-listbox-owner,
+      &.component-listbox-description,
+      &.component-listbox-date {
+        display: none;
+      }
     }
   }
 }

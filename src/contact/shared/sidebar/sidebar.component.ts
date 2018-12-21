@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
@@ -12,7 +12,6 @@ import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oaut
 import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
 import { ZContactService } from '../services/contact.service';
 
-
 declare var _: any;
 
 @Component({
@@ -24,6 +23,11 @@ export class ZContactSharedSidebarComponent implements OnInit, OnDestroy {
   @ViewChild('importContactSelect') importContactSelect: ZContactShareImportContactComponent;
   @ViewChild('iCloudOAuthModal') iCloudOAuthModal: ICloudOAuthComponent;
   @ViewChild('modalSettings') modalSettings: ZContactSharedSettingsComponent;
+
+  @Input() sharedCardNum: number;
+  @Output() createCard = new EventEmitter<any>();
+  @Output() reloaded = new EventEmitter<any>();
+
 
   groups: Group[];
   hostname: String = '';
@@ -67,6 +71,15 @@ export class ZContactSharedSidebarComponent implements OnInit, OnDestroy {
       this.commonEventService.broadcast({ channel: 'contactCommonEvent', action: event.action, payload: event.payload });
       this.commonEventService.broadcast({ channel: 'menuCommonEvent', action: event.action, payload: event.payload });
     }
+  }
+
+  onReload() {
+    this.onCloseSidebar();
+    this.reloaded.emit({sharedCardNum: true});
+  }
+
+  onCreateCard() {
+    this.createCard.emit(true);
   }
 
   onShowSettings() {

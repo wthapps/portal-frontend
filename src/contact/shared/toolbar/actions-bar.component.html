@@ -1,7 +1,7 @@
 
 <ul class="page-body-control-menu pull-right">
   <li *ngIf="showAddToContacts">
-    <a href="javascript:void(0);" class="btn btn-default" (click)="addToMyContacts([data])" pTooltip="{{ tooltip.addToContacts }}"
+    <a href="javascript:void(0);" class="btn btn-default" (click)="addToMyContacts(contacts)" pTooltip="{{ tooltip.addToContacts }}"
       tooltipPosition="bottom">
       <i class="fa fa-user-plus" aria-hidden="true"></i>
     </a>

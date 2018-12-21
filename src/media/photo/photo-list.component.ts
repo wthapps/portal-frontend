@@ -12,7 +12,7 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
-import { ApiBaseService, CommonEventService } from '@shared/services';
+import { ApiBaseService, CommonEventService, CommonEventHandler } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
@@ -24,16 +24,21 @@ import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { WUploader } from '@shared/services/w-uploader';
 import { mediaConstants } from '@media/shared/config/constants';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 
 declare var _: any;
+const MAX_CONCURRENT_FILES = 4;
 @Mixins([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
 @Component({
   moduleId: module.id,
   selector: 'me-photo-list',
-  templateUrl: 'photo-list.component.html'
+  templateUrl: '../shared/list/list.component.html'
+  // templateUrl: 'photo-list.component.html'
 })
-export class ZMediaPhotoListComponent implements OnInit, OnDestroy,
+export class ZMediaPhotoListComponent extends CommonEventHandler implements OnInit, OnDestroy,
 SharingModalMixin,
 MediaBasicListMixin,
 AlbumAddMixin,
@@ -64,6 +69,8 @@ MediaModalMixin {
   endLoading: any;
   menuActions: any;
   sorting: any =  {sort_name: 'Date', sort: 'desc'};
+  destroy$ = new Subject();
+  channel: string = 'ZMediaPhotoListComponent';
 
   private sub: any;
 
@@ -78,24 +85,34 @@ MediaModalMixin {
     public mediaCreateModalService: MediaCreateModalService,
     public resolver: ComponentFactoryResolver,
     public router: Router,
-    private commonEventService: CommonEventService,
+    public commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
+    public localStorageService: LocalStorageService,
     private uploader: WUploader
-  ) {}
+  ) {
+    super(commonEventService);
+  }
 
   ngOnInit() {
     this.loadObjects();
-    this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').subscribe((event: any) => {
+    this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').pipe(
+      takeUntil(this.destroy$)).subscribe((event: any) => {
       this.doListEvent(event);
     });
     this.menuActions = this.getMenuActions();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadObjects(opts: any = {}) {
     this.loading = true;
     opts = {...opts, model: 'Media::Photo'};
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
-    this.apiBaseService.get('media/media', opts).subscribe(res => {
+    this.apiBaseService.get('media/media/index_combine', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
       this.loading = false;
@@ -185,7 +202,8 @@ custom method please overwirte any method*/
 
   upload(content_types: any = []) {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-      allowedFileTypes: content_types
+      allowedFileTypes: content_types,
+      maxNumberOfFiles: MAX_CONCURRENT_FILES
     });
   }
 
@@ -207,10 +225,6 @@ custom method please overwirte any method*/
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
   /* MediaListMixin This is media list methods, to
 custom method please overwirte any method*/
   // tslint:disable-next-line:member-ordering
@@ -218,9 +232,12 @@ custom method please overwirte any method*/
   // tslint:disable-next-line:member-ordering
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
-    const data: any = { returnUrls: '/photos' , preview: true};
-    if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
+    let model = this.selectedObjects[0].object_type;
+    const data: any = { returnUrls: '/photos', preview: true, model: model};
+    // if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
+    if (this.selectedObjects && this.selectedObjects.length > 1) { data.objects = this.selectedObjects.map(s => `${s.uuid},${s.object_type}`); }
     this.router.navigate([`/photos/${id}`], {queryParams: data});
+    // this.router.navigate([`/videos/${id}`], {queryParams: data});
   }
 
   // ============= MediaListMixin ===============
@@ -274,7 +291,7 @@ custom method please overwirte any method*/
           this.viewDetail(this.selectedObjects[0].uuid);
         },
         class: 'btn btn-default',
-        liclass: 'hidden-xs',
+        liclass: '',
         tooltip: this.tooltip.preview,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-eye'

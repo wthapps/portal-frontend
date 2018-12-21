@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { DomHandler } from 'primeng/components/dom/domhandler';
+import * as Delta from 'quill-delta/lib/delta';
 
 declare var Quill: any;
 
@@ -49,6 +50,7 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
   @Input() isDisabled = false;
 
   @Output() onInit: EventEmitter<any> = new EventEmitter();
+  @Output() onImagePaste: EventEmitter<any> = new EventEmitter();
 
   value: string;
   _readonly: boolean;
@@ -65,6 +67,7 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
   ngAfterViewInit() {
     this.editorElement = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-editor-content');
 
+    this.extendClipboard(this);
 
     this.quill = new Quill(this.editorElement, {
       modules: {
@@ -116,10 +119,12 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.quill)
+    if (!this.quill) {
     return;
-    if (changes['isDisabled'] !== undefined)
+    }
+    if (changes['isDisabled'] !== undefined) {
       this.enableOrDisableQuill(changes['isDisabled'].currentValue);
+    }
   }
 
   enableOrDisableQuill(disabled) {
@@ -142,10 +147,10 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
       html = null;
     }
     let status: any = {error: false};
-    if (this.validators){
+    if (this.validators) {
       this.validators.forEach(v => {
         status = v.validate({text: text, html: html});
-      })
+      });
     }
     this.onTextChange.emit({
       htmlValue: html,
@@ -156,6 +161,56 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
     this.onModelChange(html);
     this.onModelTouched();
     return false;
+  }
+
+  extendClipboard(self) {
+    const Clipboard = Quill.import('modules/clipboard');
+
+    class PlainClipboard extends Clipboard {
+      onPaste(e: any) {
+        try {
+          // super.onPaste(e);
+          // fix flash screen while paste into editor
+          this.container.style.position = 'fixed';
+          this.container.style.zIndex = '-1';
+
+          const dataClipboard1 = e.clipboardData.types;
+          let fileClipboard: any;
+          if (dataClipboard1[0].match('Files')) {
+            if (e.clipboardData.items[0].type.match('image/*')) {
+              fileClipboard = e.clipboardData.items[0].getAsFile();
+            }
+          }
+
+          if (e.defaultPrevented || !this.quill.isEnabled()) { return; }
+          const range = this.quill.getSelection();
+          let delta = new Delta().retain(range.index);
+          const scrollTop = this.quill.scrollingContainer.scrollTop;
+          this.container.focus();
+          this.quill.selection.update(Quill.sources.SILENT);
+          setTimeout(() => {
+            if (dataClipboard1[0].match('text/*')) {
+              delta = delta.concat(this.convert()).delete(range.length);
+              this.quill.updateContents(delta, Quill.sources.USER);
+              this.quill.setSelection(
+                delta.length() - range.length,
+                Quill.sources.SILENT
+              );
+              this.quill.scrollingContainer.scrollTop = scrollTop;
+              this.quill.focus();
+            } else {
+              if (fileClipboard && fileClipboard.type.match('image/*')) {
+                self.onImagePaste.emit(fileClipboard);
+              }
+            }
+          }, 1);
+        } catch (err) {
+          console.error('A wild bug appear. Watch out!! ', err);
+        }
+      }
+    }
+
+    Quill.register('modules/clipboard', PlainClipboard, true);
   }
 
   addEmoj(icon: any) {
@@ -169,10 +224,11 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
     this.value = value;
 
     if (this.quill) {
-      if (value)
+      if (value) {
         this.quill.pasteHTML(value);
-      else
+      } else {
         this.quill.setText('');
+      }
     }
   }
 
@@ -196,10 +252,11 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
     this._readonly = val;
 
     if (this.quill) {
-      if (this._readonly)
+      if (this._readonly) {
         this.quill.disable();
-      else
+      } else {
         this.quill.enable();
+      }
     }
   }
 }

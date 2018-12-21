@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ViewChild, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal
   templateUrl: 'toolbar.component.html'
 })
 
-export class ZMediaToolbarComponent {
+export class ZMediaToolbarComponent implements OnInit {
   @ViewChild('formAddAlbum') formAddAlbum: any;
   @ViewChild('formEditAlbum') formEditAlbum: any;
   @ViewChild('formEditName') formEditName: any;
@@ -50,6 +50,10 @@ export class ZMediaToolbarComponent {
         }
       }
     });
+  }
+
+  ngOnInit() {
+    // this.localStorageService.get
   }
 
   onAction(action: string) {

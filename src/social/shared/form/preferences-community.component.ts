@@ -25,13 +25,13 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
   @Input() data: any;
   @Output() setupDataUpdated: EventEmitter<any> = new EventEmitter<any>();
 
-  errorMessage: string = '';
-  isAdmin: boolean = false;
+  errorMessage = '';
+  isAdmin = false;
 
   form: FormGroup;
   setting_notification_posts: AbstractControl;
   setting_notification_request: AbstractControl;
-  hasChange: boolean = false;
+  hasChange = false;
 
 
   constructor(private fb: FormBuilder,
@@ -64,7 +64,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
 
     if (this.data.admin) {
       // check if admin
-      this.isAdmin = (this.data.admin.uuid == this.userService.getSyncProfile().uuid) ? true : false;
+      this.isAdmin = (this.data.admin.uuid === this.userService.getSyncProfile().uuid) ? true : false;
     }
 
     /*(<FormControl>this.setting_notification_posts).setValue(this.data.setting_notification_posts);*/
@@ -81,7 +81,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
   onSubmit(data: any): void {
     this.loadingService.start();
 
-    let body = JSON.stringify({
+    const body = JSON.stringify({
       // setting_notification_posts: this.setting_notification_posts,
       // setting_notification_request: this.setting_notification_request,
 
@@ -95,7 +95,7 @@ export class ZSocialShareCommunityFormPreferenceComponent implements OnInit, OnC
 
       // this.setupDataUpdated.emit(res.data);
       this.modal.close();
-    },(err: any) => {
+    }, (err: any) => {
       this.loadingService.stop();
       this.modal.close();
     });

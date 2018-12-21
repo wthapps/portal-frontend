@@ -51,6 +51,19 @@ export class PhoneCodeFlagPipe implements PipeTransform {
   }
 }
 
+@Pipe({
+  name: 'phoneDialCode'
+})
+export class PhoneDialCodePipe implements PipeTransform {
+  transform(key: any): string {
+    if (key) {
+      return `(+${key.split(' (+')[1]}`;
+    } else {
+      return '';
+    }
+  }
+}
+
 const PHONE_CODE_REGEX = /\([^\)]*\)/;
 
 // Aghanistan (+83) => +83
@@ -73,9 +86,9 @@ export class PhoneCodeToDisplayCodePipe implements PipeTransform {
     const phoneCode = _.find(data, ['code', key.toUpperCase()]);
     return (
       '<div class="clearfix">' +
-      '<img class="pull-left" width=\'30\' src=\'assets/images/flags/' +
+      "<img class=\"pull-left\" width='30' src='assets/images/flags/" +
       phoneCode.code.toLowerCase() +
-      '.svg\' alt=\'\'>' +
+      ".svg' alt=''>" +
       '<span class="pull-left">' +
       phoneCode.name +
       '</span>' +

@@ -7,9 +7,10 @@ declare let _: any;
 export class ContactNamePipe implements PipeTransform {
   transform(contact: Contact, contactsSortBy = 'first_name') {
     const {name, family_name} = contact;
-    if (!family_name || !family_name.trim())
+    if (!family_name || !family_name.trim()) {
       return name;
-    if (contactsSortBy === 'first_name') {
+    }
+    if (contactsSortBy === 'first_name' || contactsSortBy === 'name') {
       return `${name} ${family_name}`;
     } else {
       // Contacts sort by last name

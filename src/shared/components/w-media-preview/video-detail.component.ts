@@ -26,6 +26,7 @@ import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal
 import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
+import { Subject } from 'rxjs';
 
 
 @Mixins([SharingModalMixin, MediaDownloadMixin, MediaModalMixin, PlaylistAddMixin, MediaAdditionalListMixin, MediaPreviewMixin, MediaListDetailMixin])
@@ -39,7 +40,7 @@ import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
       // AddToAlbumModalComponent
     ]
 })
-export class ZVideoDetailComponent implements OnInit,
+export class ZVideoDetailComponent implements OnInit, OnDestroy,
   MediaAdditionalListMixin,
   SharingModalMixin,
   MediaDownloadMixin,
@@ -61,6 +62,7 @@ export class ZVideoDetailComponent implements OnInit,
   returnUrls: any;
   sharings: any = [];
   listIds: DoublyLinkedLists;
+  destroy$ = new Subject();
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -128,6 +130,11 @@ export class ZVideoDetailComponent implements OnInit,
       });
     });
   }
+
+ngOnDestroy() {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
 
   loadObject:(input: any) => void;
   toggleInfo:() => void;

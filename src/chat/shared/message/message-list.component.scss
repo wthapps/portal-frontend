@@ -11,13 +11,7 @@
   margin-right: auto;
   padding: 15px;
   .message-item-dv {
-    .dropdown-menu {
-    }
-
-    //& + .message-item-dv {
-    //  margin-top: 0px;
-    //}
-
+    padding: 3px;
   }
   .message-item-dv:not(:first-child):last-child {
     .dropdown-menu {
@@ -53,12 +47,15 @@ $message-item-content-card-right-xs: 25px;
     }
   }
 
-  .message-item-content {
-    position: relative;
-    padding-left: 50px;
-    @media (max-width: $screen-xs-max) {
-      padding-left: 30px;
-    }
+  .wapper {
+    word-break: break-word;
+    max-width: 85%;
+    // width: 80%;
+  }
+
+  .nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
   }
 
   .message-item-content-main {
@@ -78,7 +75,7 @@ $message-item-content-card-right-xs: 25px;
   .message-item-owner-avatar {
     position: absolute;
     left: 0;
-    top: 20px;
+    top: 30px;
     width: 50px;
     @media (max-width: $screen-xs-max) {
       width: 30px;
@@ -107,7 +104,7 @@ $message-item-content-card-right-xs: 25px;
   }
 
   .message-item-menu {
-    position: absolute;
+    // position: absolute;
     top: 0;
     right: 0;
     i {
@@ -136,7 +133,6 @@ $message-item-content-card-right-xs: 25px;
         display: none;
       }
     }
-
   }
 
   .message-item-status {
@@ -162,10 +158,15 @@ $message-item-content-card-right-xs: 25px;
     max-width: 430px;
     img {
       max-width: 100%;
+      border-radius: 5px;
     }
     .photo-box-figure-in {
       height: 320px;
       width: 430px;
+      @media (max-width: $screen-sm-min) {
+        height: 293px;
+        width: 293px;
+      }
       overflow: hidden;
       position: relative;
       img {
@@ -176,7 +177,7 @@ $message-item-content-card-right-xs: 25px;
   }
 
   .message-item-content-link {
-    max-width: 450px;
+    // max-width: 450px;
     display: block;
     img {
       width: 100%;
@@ -240,29 +241,78 @@ $message-item-content-card-right-xs: 25px;
     }
   }
   &.message-item-right {
-    .message-item-owner {
-      text-align: right;
-      margin-right: $message-item-content-card-right-xs;
-      .message-item-owner-name a, .message-item-owner-avatar {
-        display: none;
-      }
-      @media (min-width: $screen-sm-min) {
-        margin-right: $message-item-content-card-right;
-      }
-    }
-    .message-item-content-card {
-      text-align: right;
-    }
-    .message-item-content-main {
+    padding-left: 50px;
+
+    .message-item-content {
       @include border-right-radius(0);
       @include border-left-radius(8px);
       @include border-bottom-radius(8px);
       text-align: left;
+      float: right;
       background-color: #ADE4FF;
+    }
+    .message-item-file {
+      @include border-right-radius(0);
+      @include border-left-radius(8px);
+      @include border-bottom-radius(8px);
+      text-align: left;
+      background-color: #ffffff;
+      float: right;
     }
     .message-item-status {
       text-align: right;
     }
+    .icon-edited {
+      float: right;
+    }
+  }
+  &.message-item-left {
+    padding-left: 10px;
+    @media (min-width: $screen-sm-min) {
+      padding-left: 0px;
+    }
+    .message-item-owner {
+      margin-right: $message-item-content-card-right-xs;
+      .message-item-owner-name {
+        margin-left: 25px;
+        @media (min-width: $screen-sm-min) {
+          margin-left: 40px;
+        }
+      }
+
+    }
+
+    .message-item-content {
+      @include border-right-radius(0);
+      @include border-left-radius(8px);
+      @include border-bottom-radius(8px);
+      text-align: left;
+      float: left;
+      background-color: #ffffff;
+      margin-left: 25px;
+      @media (min-width: $screen-sm-min) {
+        margin-left: 40px;
+      }
+    }
+    .message-item-file {
+      @include border-right-radius(0);
+      @include border-left-radius(8px);
+      @include border-bottom-radius(8px);
+      text-align: left;
+      float: left;
+      background-color: #ffffff;
+      margin-left: 25px;
+      @media (min-width: $screen-sm-min) {
+        margin-left: 40px;
+      }
+    }
+    .message-item-status {
+      text-align: right;
+    }
+  }
+
+  .icon-edited {
+    padding: 0 5px;
   }
 }
 

@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { ApiBaseService } from '@shared/services';
@@ -10,6 +10,7 @@ import { ApiBaseService } from '@shared/services';
 custom method please overwirte any method*/
 export class AlbumCreateMixin {
   subCreateAlbum: Subscription;
+  // destroy$: any;
   constructor(
     public mediaCreateModalService: MediaCreateModalService,
     public router: Router,

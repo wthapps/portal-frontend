@@ -7,8 +7,9 @@ declare let App: any;
 @Injectable()
 export class CableService {
   createConnectionInstance(userId: any, type?: string, clientId?: string) {
-    if (App == undefined || App.cable == undefined) {
-      //TODO refactor all places that call this method for creating Connection Instance
+    if (!App || !App.cable) {
+      console.log('create connection instance ...');
+      // TODO refactor all places that call this method for creating Connection Instance
       App.cable = ActionCable.createConsumer(
         `${ApiConfig.url}cable?user_id=${userId}&t=${type}`
       );

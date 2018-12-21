@@ -7,7 +7,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { Router, Resolve } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 
 import { Constants } from '@wth/shared/constant';
@@ -29,6 +29,9 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
 import { PlaylistCreateMixin } from '@shared/mixin/playlist/playlist-create.mixin';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { mediaConstants } from '@media/shared/config/constants';
+import { LocalStorageService } from 'angular-2-local-storage';
+import { Subject } from 'rxjs';
 
 declare var _: any;
 
@@ -70,6 +73,7 @@ MediaModalMixin {
   subCreatePlaylist: any;
   sorting: any;
   endLoading: any;
+  destroy$ = new Subject();
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
@@ -80,6 +84,7 @@ MediaModalMixin {
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
+    public localStorageService: LocalStorageService,
     public objectListService: WObjectListService,
     public locationCustomService: LocationCustomService,
     public mediaCreateModalService: MediaCreateModalService,
@@ -94,6 +99,7 @@ MediaModalMixin {
   ngOnInit() {
     this.loadObjects();
     this.menuActions = this.getMenuActions();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   onListChanges(e: any) {
@@ -121,14 +127,37 @@ MediaModalMixin {
     }
   }
 
+  shareSelectedObject() {
+    this.openModalShare([this.selectedObjects[0].sharing_object]);
+    const sub = this.sharingModalService.update$.subscribe(res => {
+      if (!this.selectedObjects[0].sharing_object) {
+        this.selectedObjects[0].sharing_object = res.sharing_object;
+      }
+      sub.unsubscribe();
+    })
+  }
+
   getMenuActions() {
     return {
+      preview: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.viewDetail(this.selectedObjects[0].uuid);
+        },
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.preview,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-eye'
+      },
       share: {
         active: true,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
         action: () => {
-          this.openModalShare([this.selectedObjects[0].sharing_object]);
+          this.shareSelectedObject();
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
@@ -140,7 +169,9 @@ MediaModalMixin {
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
-        action: this.openModalShare.bind(this),
+        action: () => {
+          this.shareSelectedObject();
+        },
         class: '',
         liclass: 'visible-xs-block',
         tooltip: this.tooltip.share,

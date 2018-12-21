@@ -22,6 +22,7 @@ import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/m
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WUploader } from '@shared/services/w-uploader';
 import TextLengthValidatior from '@social/shared/hooks/validators/text-lenght.validator';
+import { htmlTrim } from '@shared/shared/utils/utils';
 
 
 export enum CommentEditorMode {
@@ -117,11 +118,7 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   handleKeyUp(e: any) {
     if (e.keyCode === 13 && this.editorError === '') {
-      if (this.checkValidForm()) {
-        this.post(this.comment.content);
-      } else {
-        this.cancel();
-      }
+      this.handlePost();
       return;
     } else if (e.keyCode === 27) {
       this.cancel();
@@ -129,31 +126,17 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  commentAction(photos?: any) {
-    let commentEvent: any;
-    const data: any = {};
-    if (photos) data.photo = photos[0].id;
-    data.content = this.comment.content || '';
-    if (this.mode === this.commentEditorMode.Add) {
-      data.post_uuid = this.parent.uuid;
-      commentEvent = new CommentCreateEvent(data);
+  handlePost() {
+    if (this.checkValidForm()) {
+      this.post(htmlTrim(this.comment.content));
+      this.focus();
+    } else {
+      this.cancel();
     }
-    if (this.mode === this.commentEditorMode.Edit) {
-      data.uuid = this.comment.uuid;
-      commentEvent = new CommentUpdateEvent(data);
-    }
-    if (this.mode === this.commentEditorMode.Reply) {
-      data.comment_uuid = this.comment.uuid;
-      data.post_uuid = this.parent.uuid;
-      commentEvent = new ReplyCreateEvent(data);
-    }
-    if (this.mode === this.commentEditorMode.EditReply) {
-      data.comment_uuid = this.comment.uuid;
-      data.reply_uuid = this.reply.uuid;
-      commentEvent = new ReplyUpdateEvent(data);
-    }
-    this.eventEmitter.emit(commentEvent);
-    this.comment.content = '';
+  }
+
+  focus() {
+    this.editor.focus();
   }
 
   onOpenPhotoSelect() {
@@ -231,32 +214,6 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
 
   }
 
-  post(comment?: any) {
-    let event: any = null;
-
-    this.comment.content = comment || this.comment.content || '';
-    if (this.mode === CommentEditorMode.Add) {
-      // add new comment/reply to post
-      this.comment.parent = this.parent;
-      this.comment.parentId = this.parent.uuid;
-      this.comment.parentType = this.parentType;
-
-
-      _.set(this.originComment, 'isCreatingNewReply', false);
-      event = new CommentCreateEvent({...this.comment});
-
-    } else if (this.mode === CommentEditorMode.Edit) {
-
-      // update current comment/reply
-      event = new CommentUpdateEvent(this.comment);
-    }
-    this.eventEmitter.emit(event);
-    this.comment.content = '';
-    this.setPhoto(null);
-    this.files = null;
-    this.hasUpdatedContent = false;
-  }
-
   doEvents(event: any) {
     switch (event.action) {
       case 'remove':
@@ -268,8 +225,9 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
       case 'cancelUpload':
         this.setPhoto(null);
         this.cancelUploadPhoto();
-        if (this.uploadSubscription)
+        if (this.uploadSubscription) {
           this.uploadSubscription.unsubscribe();
+        }
         this.files = null;
         this.hasUpdatedContent = (this.comment.content !== '');
         break;
@@ -288,8 +246,9 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
   showEmojiBtn(event: any) {
     this.emojiService.show(event);
 
-    if (this.selectEmojiSub && !this.selectEmojiSub.closed)
+    if (this.selectEmojiSub && !this.selectEmojiSub.closed) {
       this.selectEmojiSub.unsubscribe();
+    }
     this.selectEmojiSub = this.emojiService.selectedEmoji$.pipe(
       take(1)
     ).subscribe(data => {
@@ -304,6 +263,36 @@ export class CommentItemEditorComponent implements OnInit, OnDestroy {
     } else {
       this.editorError = '';
     }
+  }
+
+  private post(comment?: any) {
+    let event: any = null;
+
+    this.comment.content = comment || this.comment.content || '';
+    if (this.mode === CommentEditorMode.Add || this.mode === CommentEditorMode.Reply) {
+      // add new comment/reply to post
+      this.comment.parent = this.parent;
+      this.comment.parentId = this.parent.uuid;
+      this.comment.parentType = this.parentType;
+
+
+      _.set(this.originComment, 'isCreatingNewReply', true);
+      if ( this.mode === CommentEditorMode.Add ) {
+        event = new CommentCreateEvent({...this.comment});
+      }
+      if (this.mode === CommentEditorMode.Reply) {
+        event = new ReplyCreateEvent({...this.comment});
+      }
+    } else if (this.mode === CommentEditorMode.Edit || this.mode === CommentEditorMode.EditReply) {
+
+      // update current comment/reply
+      event = new CommentUpdateEvent(this.comment);
+    }
+    this.eventEmitter.emit(event);
+    this.comment.content = '';
+    this.setPhoto(null);
+    this.files = null;
+    this.hasUpdatedContent = false;
   }
 
   private setPhoto(photo: any) {

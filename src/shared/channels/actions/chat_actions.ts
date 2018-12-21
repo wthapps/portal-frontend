@@ -12,15 +12,11 @@ export class ChatActions {
     switch (response.action) {
       case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
       case CHAT_ACTIONS.CHAT_MESSAGE_UPDATE:
-        console.log('chat operation message', data);
         data['file'] = data.file || data.file_json;
-
-        this.serviceManager.getChatCommonService().updateItemInList(data.group_id, data);
+        // this.serviceManager.getChatCommonService().updateItemInList(data.group_id, data);
         break;
       default:
-        console.log('chat operation create', data);
-
-        this.serviceManager.getChatCommonService().addMessage(data.group, data);
+        // this.serviceManager.getChatCommonService().addMessage(data.group_id, data);
         break;
     }
 

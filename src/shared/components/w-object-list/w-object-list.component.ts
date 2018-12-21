@@ -49,6 +49,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   hasMultipleSelection: Boolean = true;
   groupBy: string;
   sortBy: string;
+  sortOrderGroup: 'asc' | 'desc' | boolean;
   sortOrder: 'asc' | 'desc' | boolean;
 
   constructor(private objectListService: WObjectListService) {
@@ -76,6 +77,10 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
     this.objectListService.sortOrder$
       .pipe(takeUntil(componentDestroyed(this)))
       .subscribe(res => this.sortOrder = res);
+
+    this.objectListService.sortOrderGroup$
+      .pipe(takeUntil(componentDestroyed(this)))
+      .subscribe(res => this.sortOrderGroup = res);
 
     this.objectListService.multipleSelection$
       .pipe(takeUntil(componentDestroyed(this)))
@@ -118,7 +123,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
     if (dragBodyScroll) {
       this.hasScrollbar = (dragBodyScroll.scrollHeight > dragBodyScroll.clientHeight);
     }
-
+    // this.dragSelect.stop();
   }
 
   onDragSelected(data: any) {
@@ -136,8 +141,18 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onMultiSelected(item: any) {
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0
-     || !this.hasMultipleSelection) {
+    if (!this.hasMultipleSelection) {
+      this.objectListService.clear();
+      this.objectListService.addItem(
+        {
+          id: item.id,
+          object_type: item.object_type,
+        }
+      );
+      return;
+    }
+
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0) {
       this.objectListService.clear();
       this.objectListService.addItem(
         {
@@ -174,8 +189,18 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onClick(item: any) {
-    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0
-     || !this.hasMultipleSelection) {
+    if (!this.hasMultipleSelection) {
+      this.objectListService.clear();
+      this.objectListService.addItem(
+        {
+          id: item.id,
+          object_type: item.object_type,
+        }
+      );
+      return;
+    }
+
+    if (_.indexOf(this.objectsDisabled, item.object_type) >= 0 || _.indexOf(this.objectsDisabled, item.model) >= 0) {
       this.objectListService.clear();
       this.objectListService.addItem(
         {

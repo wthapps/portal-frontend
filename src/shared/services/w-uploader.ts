@@ -62,7 +62,7 @@ export class WUploader {
     this.uppy = Core(opts);
 
     if (mode === 'FileInput') {
-      const policies: any = [new BlackListPolicy(), new SizePolicy(10000000, {only: /video\//g})];
+      const policies: any = [new BlackListPolicy(), new SizePolicy(35, {only: /video\//g})];
       this.uppy.use(FileInputCustom, {
         target: selector,
         replaceTargetContent: true,
@@ -180,22 +180,36 @@ export class WUploader {
     return true;
   }
 
+  retryUpload(fileId) {
+    this.uppy.retryUpload(fileId);
+  }
+
+  addFile(file) {
+    this.uppy.addFile(file);
+  }
+
   /**
    * Cancel upload a specific file
    * @param file
    */
   cancel(file: any) {
-    const canceledFiles = [];
-
-    if (!file.progress.uploadComplete) {
-      canceledFiles.push({id: file.id, name: file.name, file_upload_id: `${file.id}-${file.meta.current_date}`});
-      this.uppy.removeFile(file.id);
+    if (!file) {
+      return;
     }
+    try {
+      const canceledFiles = [];
 
-    if (canceledFiles.length > 0) {
-      this.api.post('common/files/cancel_upload', {files: canceledFiles}).subscribe(response => {
-        // console.log('cancel upload successful:::', response);
-      });
+      if (!file.progress.uploadComplete) {
+        canceledFiles.push({id: file.id, name: file.name, file_upload_id: `${file.id}-${file.meta.current_date}`});
+        this.uppy.removeFile(file.id);
+      }
+      if (canceledFiles.length > 0) {
+        this.api.post('common/files/cancel_upload', {files: canceledFiles}).subscribe(response => {
+          // console.log('cancel upload successful:::', response);
+        });
+      }
+    } catch (ex) {
+      console.error('Cancel error: ', ex);
     }
   }
 
@@ -204,6 +218,9 @@ export class WUploader {
    * @param {boolean} cancelAll - Specific true if you want to delete all files
    */
   cancelAll(cancelAll: boolean = false) {
+    if (!this.uppy) {
+      return;
+    }
     const files = this.uppy.getFiles();
     let canceledFiles = [];
 
@@ -278,6 +295,10 @@ export class WUploader {
       console.log('DragDrop target', target);
       this.initialize('DragDrop', target, options);
     }
+  }
+
+  getFiles() {
+    return this.uppy.getFiles();
   }
 
   upload() {

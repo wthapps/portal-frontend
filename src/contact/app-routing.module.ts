@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ProfileComponent } from '@shared/user';
 import { ProfilePageComponent } from '@contacts/profile/profile-page.component';
 
 @NgModule({
@@ -18,6 +17,10 @@ import { ProfilePageComponent } from '@contacts/profile/profile-page.component';
         path: 'profile',
         component: ProfilePageComponent
          // loadChildren: './profile/profile-page.module#ProfilePageModule'
+      },
+      {
+        path: 'cards',
+        loadChildren: './shared-card/shared-card-page.module#SharedCardPageModule'
       }
     ])
   ],

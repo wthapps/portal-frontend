@@ -10,11 +10,11 @@ import { PipeModule } from '../../../shared/pipe/pipe.module';
 import { CoverInfoModule } from '../cover-info';
 import { BasicInfoModule } from '../basic-info';
 import { ContactInfoModule } from '../contact-info';
-import { ProfileService } from './profile.service';
 import { FileModule } from '../../../shared/components/file/file.module';
 import { ProfileComponent } from './profile.component';
 import { ProfileRouting } from '@shared/user/components/profile/profile-routing';
 import { WModalService } from '@shared/modal';
+import { ProfileService } from '@shared/user/services';
 import { NameEditModalComponent } from '@shared/user/components/cover-info/name-edit-modal.component';
 
 

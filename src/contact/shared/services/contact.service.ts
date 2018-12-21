@@ -19,7 +19,15 @@ declare var Promise: any;
 export const ITEM_PER_PAGE = 50;
 export const OTHER_CONTACTS = 'others';
 export const MY_CONTACTS = 'contacts';
+const NAME_MAPPING = {
+  'first_name': 'name',
+  'last_name': 'family_name'
+};
 
+interface SortOption {
+  field: string;
+  desc: boolean;
+}
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
@@ -37,6 +45,7 @@ export class ZContactService extends BaseEntityService<any> {
   contacts$: Observable<any[]>;
   initLoad$: Observable<boolean>;
   orderDesc$: Observable<boolean>;
+  sortOption$: Observable<SortOption>;
   isSelectAll$: Observable<boolean>;
 
   private currentPage = 'contacts'; // 'others' || 'contacts'
@@ -47,6 +56,9 @@ export class ZContactService extends BaseEntityService<any> {
   );
   private orderDescSubject: BehaviorSubject<boolean> = new BehaviorSubject<any>(
     true
+  );
+  private sortOptionSubject: BehaviorSubject<SortOption> = new BehaviorSubject<SortOption>(
+    {field: 'name', desc: true}
   );
   private listenToListSource = new Subject<any>();
   private listenToItemSource = new Subject<any>();
@@ -62,13 +74,14 @@ export class ZContactService extends BaseEntityService<any> {
     private wthConfirmService: WthConfirmService
   ) {
     super(apiBaseService);
-    this.url = 'contact/contacts';
+    this.url = 'contact/wcontacts';
 
     this.listenToList = this.listenToListSource.asObservable();
     this.listenToItem = this.listenToItemSource.asObservable();
     this.contacts$ = this.contactsSubject.asObservable();
     this.initLoad$ = this.initLoadSubject.asObservable();
-    this.orderDesc$ = this.orderDescSubject.asObservable();
+    // this.orderDesc$ = this.orderDescSubject.asObservable();
+    this.sortOption$ = this.sortOptionSubject.asObservable();
     this.isSelectAll$ = this.isSelectAllSubject.asObservable();
     this.maxLengthPipe = new MaxLengthPipe();
 
@@ -97,9 +110,9 @@ export class ZContactService extends BaseEntityService<any> {
 
   syncSelectedContacts(): void {
     this.contactsSubject.subscribe((contacts: Contact[]) => {
-      if (contacts.length === 0 )
+      if (contacts.length === 0 ) {
         this.selectedObjects.length = 0;
-      else {
+      } else {
         const contactIds = contacts.map(ct => ct.id);
         this.selectedObjects = this.selectedObjects.filter(o => contactIds.includes(o.id));
       }
@@ -114,12 +127,15 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   loadUserSetttings(): Promise<any> {
-    return this.apiBaseService
-      .get(`contact/contacts/settings`)
+    return this.getSettings()
       .toPromise()
       .then((res: any) => {
-        this.userSettings = res.data;
+        this.setUserSettings(res.data);
       });
+  }
+
+  getSettings(): Observable<any> {
+    return this.apiBaseService.post(`contact/wcontacts2/settings`);
   }
 
   resetPageNumber() {
@@ -141,7 +157,7 @@ export class ZContactService extends BaseEntityService<any> {
       })
         .then((response: any) => {
           if (response.data) {
-            obs.next(response.data);
+            obs.next(response.data.attributes);
           }
           obs.complete();
         })
@@ -153,21 +169,11 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   getWthContact(id): Observable<any> {
-    return this.apiBaseService.get(`contact/contacts/show_user`, { id });
+    return this.apiBaseService.get(`${this.url}/show_user`, { id });
   }
 
   checkEmails(payload: any) {
-    return this.apiBaseService.post(`contact/contacts/check_emails`, payload);
-  }
-
-  changeSortOption(order?: string) {
-    if (order === undefined) {
-      this.orderDescSubject.next(!this.orderDescSubject.getValue());
-    } else {
-      this.orderDescSubject.next(order !== 'asc');
-    }
-
-    this.notifyContactsObservers();
+    return this.apiBaseService.post(`${this.url}/check_emails`, payload);
   }
 
   addMoreContacts(data: any[]) {
@@ -347,7 +353,7 @@ export class ZContactService extends BaseEntityService<any> {
     } else {
       contacts = _.filter(this.contacts, (contact: any) => {
         const cgroups = _.map(contact.groups, 'name');
-        if (_.indexOf(cgroups, group) > -1) return contact;
+        if (_.indexOf(cgroups, group) > -1) { return contact; }
       });
     }
 
@@ -382,7 +388,9 @@ export class ZContactService extends BaseEntityService<any> {
       contacts = this.inOtherPage() ? this.otherContacts : this.myContacts;
     }
 
-    const orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a, b, this.orderDescSubject.getValue()));
+    const {field, desc} = this.sortOptionSubject.getValue();
+    // const orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a, b, this.orderDescSubject.getValue()));
+    const orderedContacts: any[] = contacts.sort((a, b) => _wu.compareBy(a, b, desc, field));
     const selectedIds: any[] = _.map(this.selectedObjects, 'uuid');
 
     const orderedContactsWSelected: any[] = orderedContacts.map(ct => {
@@ -461,6 +469,12 @@ export class ZContactService extends BaseEntityService<any> {
 
   setUserSettings(settings) {
     this.userSettings = settings;
+
+    // Change sort order of contact list
+    const {contacts_sort_by} = settings;
+    const sortOption = {... this.sortOptionSubject.getValue(), field: NAME_MAPPING[contacts_sort_by]};
+    this.sortOptionSubject.next(sortOption);
+    this.notifyContactsObservers();
   }
 
   addToMyContacts(contacts: Contact[] = this.selectedObjects): Promise<any> {
@@ -518,7 +532,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private followingLoad(url: string) {
-    if (!_.isEmpty(url))
+    if (!_.isEmpty(url)) {
       this.apiBaseService
         .post(url)
         .toPromise()
@@ -527,7 +541,7 @@ export class ZContactService extends BaseEntityService<any> {
           this.nextLink = _.get(res, 'meta.links.next');
           this.followingLoad(this.nextLink);
         });
-    else this.notifyContactsObservers();
+    } else { this.notifyContactsObservers(); }
   }
 
   createCallback(contact: any): void {
@@ -536,11 +550,11 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   private updateCallback(contact: any): void {
-    if (contact && contact.length === 0)
+    if (contact && contact.length === 0) {
       return;
+    }
     this.contacts = _.map(this.contacts, (ct: any) => {
-      if (contact.id === ct.id) return contact;
-      else return ct;
+      return (contact.id === ct.id) ? contact : ct;
     });
 
     _.forEach(this.selectedObjects, (selected: any, index: number) => {

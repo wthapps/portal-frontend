@@ -49,12 +49,10 @@
 
 .wthico-shared-with-me:before {
   content: "\e901";
-  color: #9b9b9b;
 }
 
 .wthico-album:before {
   content: "\e900";
-  color: #4a4a4a;
 }
 
 .wthico-user:before {
@@ -127,4 +125,12 @@
 
 .wthico-pinterest-p:before {
   content: "\f231";
+}
+
+.wthico-megaphone:before {
+  content: "\e903";
+}
+
+.wthico-megaphone-mute:before {
+  content: "\e904";
 }

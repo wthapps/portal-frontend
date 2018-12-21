@@ -46,6 +46,10 @@ import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 import { WMessageService } from '@wth/shared/services/message.service';
 import { WUploader } from '@shared/services/w-uploader';
 import { ModalService } from '@shared/components/modal/modal-service';
+import { PromptUpdateService } from './services/service-worker/prompt-update.service';
+import { CheckForUpdateService } from './services/service-worker/check-for-update.service';
+import { LogUpdateService } from './services/service-worker/log-update.service';
+import { SwPushService } from './services/service-worker/sw-push.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -112,7 +116,13 @@ export class SharedServicesModule {
         FileUploaderService,
         WindowService,
         WUploader,
-        ModalService
+        ModalService,
+
+        // Service worker related modules
+        PromptUpdateService,
+        LogUpdateService,
+        CheckForUpdateService,
+        SwPushService
       ]
     };
   }

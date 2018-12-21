@@ -10,17 +10,17 @@ import { WTHEmojiService } from '@wth/shared/components/emoji/emoji.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { Constants } from '@wth/shared/constant';
 import { UserService } from '@wth/shared/services';
-import { EntitySelectComponent } from '@wth/shared/shared/components/entity-select/entity-select.component';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { Observable ,  Subject ,  Subscription, merge } from 'rxjs';
-import { takeUntil, filter, map, tap, take } from 'rxjs/operators';
+import { takeUntil, filter, take } from 'rxjs/operators';
 
 
 import { SocialService } from '../../services/social.service';
 import { MODEL_TYPE } from './../../../../shared/constant/config/constants';
+import { htmlTrim } from '@shared/shared/utils/utils';
 
 @Component({
   selector: 'so-post-edit',
@@ -30,7 +30,7 @@ import { MODEL_TYPE } from './../../../../shared/constant/config/constants';
 })
 export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
-  @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
+  // @ViewChild('privacyCustomModal') privacyCustomModal: EntitySelectComponent;
   @ViewChild('privacyModal') privacyModal: ZSocialSharedPrivacyComponent;
 
   mode = 'add'; // add or edit
@@ -38,6 +38,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   editorError = '';
   editorErrorMessage = 'The maximum limit for a post is ' + this.editorLimit + ' characters. Please make your post shorter.';
   isShare = false; // if we are creating a new share that means isShare's value is 'true'
+  hasUploading = false;
   @Input() photos: Array<any> = new Array<any>();
   @Input() community: any;
   @Input() soProfile: any;
@@ -141,8 +142,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   showEmojiBtn(event: any) {
     this.emojiService.show(event);
 
-    if (this.selectEmojiSub && !this.selectEmojiSub.closed)
+    if (this.selectEmojiSub && !this.selectEmojiSub.closed) {
       this.selectEmojiSub.unsubscribe();
+    }
     this.selectEmojiSub = this.emojiService.selectedEmoji$
       .pipe(
         take(1))
@@ -155,8 +157,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
-    if (this.sub && !this.sub.closed)
+    if (this.sub && !this.sub.closed) {
       this.sub.unsubscribe();
+    }
   }
 
   open(
@@ -211,10 +214,12 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
 
     this.modal.open()
       .then(_ => {
-        if (options.addingPhotos)
+        if (options.addingPhotos) {
           this.addMorePhoto();
-        if (options.showEmoji)
+        }
+        if (options.showEmoji) {
           this.showEmojiBtn(null);
+        }
       });
 
     // Clear pending files in case of failure
@@ -233,7 +238,7 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       mode: this.mode,
       item: {
         uuid: this.post.uuid,
-        description: this.description,
+        description: htmlTrim(this.description),
         photos_json: photos, // TODO refactor on view formControl=photosCtrl
         resources_attributes: [],
         tags_json: this.post.tags,
@@ -277,7 +282,6 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
       case 'progress':
         file = event.payload.file;
         // this.post.photos.unshift(file);
-        console.log('file:::', event.payload);
         if (this.post.photos && this.post.photos.length > 0) {
           let hasPhoto = false;
           this.post.photos.forEach(p => {
@@ -292,22 +296,20 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
         } else {
           this.post.photos.unshift(file);
         }
-
+        this.hasUploading = true;
         break;
       case 'success':
         // replace uploading photo by real photo
 
         file = event.payload.file;
         photo = event.payload.resp;
-        console.log('file success:::', file);
-        console.log('photo success:::', photo);
         index = this.post.photos.findIndex(p => p.id === file.id);
         if (index >= 0) {
           this.post.photos[index] = photo;
         }
         this.uploadingPhotos.push(photo);
         this.files.push(file);
-
+        this.hasUploading = false;
         break;
     }
   }
@@ -360,17 +362,17 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     this.mediaSelectionService.close();
   }
 
-  customPrivacy(type: string, event: any) {
-    event.preventDefault();
-    let mode = 'edit';
-    if (this.post.privacy !== type) mode = 'add';
+  // customPrivacy(type: string, event: any) {
+  //   event.preventDefault();
+  //   let mode = 'edit';
+  //   if (this.post.privacy !== type) { mode = 'add'; }
 
-    this.privacyCustomModal.placeholder = this.SEARCH_PLACEHOLDER[type] || 'Search';
-    this.privacyCustomModal.open(
-      { type: type, data: this.post.custom_objects },
-      mode
-    );
-  }
+  //   this.privacyCustomModal.placeholder = this.SEARCH_PLACEHOLDER[type] || 'Search';
+  //   this.privacyCustomModal.open(
+  //     { type: type, data: this.post.custom_objects },
+  //     mode
+  //   );
+  // }
 
   selectedItems(response: any) {
     this.update(
@@ -420,7 +422,8 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onOpenPrivacyModal(type: string) {
-    this.privacyModal.open(type);
+    const items = (type !== this.post.privacy) ? [] : this.post.custom_objects;
+    this.privacyModal.open(type, items);
   }
 
   private setItemDescription(value: any) {
@@ -432,8 +435,9 @@ export class PostEditComponent implements OnInit, OnChanges, OnDestroy {
     if (
       privacy === Constants.soPostPrivacy.customCommunity.data &&
       post.custom_objects.length === 1
-    )
+    ) {
       return post.custom_objects[0].name;
+    }
     return privacy.replace('_', ' ');
   }
 

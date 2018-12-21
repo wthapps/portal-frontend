@@ -22,6 +22,17 @@
   }
 }
 
-a {
-  text-transform: capitalize;
+.contact-edit-page {
+  @media (min-width: $screen-md-min) {
+    @include flexbox;
+    @include align-items(flex-start);
+    .contact-edit-content {
+      @include flex(1);
+      padding-right: $grid-gutter-width;
+    }
+    .contact-edit-aside {
+      width: 320px;
+    }
+  }
+
 }

@@ -30,6 +30,7 @@ export class SoPost extends BaseInput implements FromData {
   dislike_count = 0;
   shared_count = 0;
   comment_count = 0;
+  commentPageIndex = 0;
 
   from(fields: any) {
     if (fields) {

@@ -179,14 +179,15 @@ export module _wu {
     }
 
     const keys: string[] = key.split('.');
+    // tslint:disable-next-line:no-non-null-assertion
     let result: any = value[keys.shift()!];
 
-    for (const key of keys) {
+    for (const k of keys) {
       if (isNil(result) || !isObject(result)) {
         return undefined;
       }
 
-      result = result[key];
+      result = result[k];
     }
 
     return result;
@@ -249,7 +250,7 @@ export module _wu {
     }
 
     // Test for A's keys different from B.
-    var hasOwn = Object.prototype.hasOwnProperty;
+    const hasOwn = Object.prototype.hasOwnProperty;
     for (let i = 0; i < keysA.length; i++) {
       const key = keysA[i];
       if (!hasOwn.call(b, keysA[i]) || !deepEqual(a[key], b[key])) {
@@ -281,7 +282,7 @@ export module _wu {
 
   export class DeepWrapper {
 
-    public __isDeepObject__: boolean = true;
+    public __isDeepObject__ = true;
 
     constructor(public data: any) {
     }
@@ -310,7 +311,7 @@ export module _wu {
   }
 
   export function every(input: any, predicate: CollectionPredicate) {
-    if (!isArray(input) || !predicate || input.length == 0) {
+    if (!isArray(input) || !predicate || input.length === 0) {
       return false;
     }
     let result = true;
@@ -337,14 +338,14 @@ export module _wu {
   }
 
   export function toggleArrayObjects(arr: Object[], obj: Object, func: any) {
-    let index:any = -1;
-    for(let i in arr) {
-      if(func(arr[i])) {
+    let index: any = -1;
+    for (const i in arr) {
+      if (func(arr[i])) {
         index = i;
         break;
       }
     }
-    if (index == -1) {
+    if (index === -1) {
       arr.push(obj);
     } else {
       arr.splice(index, 1);
@@ -353,20 +354,27 @@ export module _wu {
 
   export function getValue(obj: any, field: any) {
     let val = obj && obj[field];
+    val = val || '';
     return (typeof val === 'string') ? val.toLowerCase() : val;
   }
 
   export function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'name'): number {
-    if (!objA || !objB) return;
-    let o = orderDesc ? 1 : -1;
+    if (!objA || !objB) { return; }
+    const o = orderDesc ? 1 : -1;
 
-    if(getValue(objA, field) > getValue(objB, field))
-      return 1*o;
-    else if(getValue(objA, field) < getValue(objB, field))
-      return -1*o;
+    if (getValue(objA, field) > getValue(objB, field)) {
+      return 1 * o;
+    } else if (getValue(objA, field) < getValue(objB, field)) {
+      return -1 * o;
+           }
 
     // Compare by id
     return compareBy(objA, objB, orderDesc, 'id');
   }
 
+}
+
+export function htmlTrim(htmlContent: string) {
+  const br = '<p><br></p>';
+  return htmlContent.trim().replace(/(<p><br><\/p>)+/g, br);
 }

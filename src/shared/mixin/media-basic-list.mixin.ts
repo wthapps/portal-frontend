@@ -1,5 +1,6 @@
 import { ApiBaseService, WthConfirmService } from "@shared/services";
 import { Constants } from "@shared/constant";
+import { LocalStorageService } from "angular-2-local-storage";
 /* MediaListMixin This is media list methods, to
 custom method please overwirte any method*/
 export class MediaBasicListMixin {
@@ -15,7 +16,9 @@ export class MediaBasicListMixin {
   sorting: any = {};
   endLoading: any;
 
-  constructor(public apiBaseService: ApiBaseService, public confirmService: WthConfirmService) {}
+  constructor(public apiBaseService: ApiBaseService,
+    public confirmService: WthConfirmService,
+    public localStorageService: LocalStorageService) {}
 
   loadObjects(input?: any) {
     /* this method is load objects to display on init */
@@ -62,7 +65,7 @@ export class MediaBasicListMixin {
         .map(v => { return { id: v.id, object_type: v.model } })
     }).subscribe(res => {
       this.objects = this.objects.map(ob => {
-        let tmp = res.data.filter(d => d.id == ob.id);
+        let tmp = res.data.filter(d => d.id == ob.id && d.object_type == ob.object_type);
         if (tmp && tmp.length > 0) {
           ob.favorite = tmp[0].favorite;
         }
@@ -79,25 +82,39 @@ export class MediaBasicListMixin {
   }
 
   deleteObjects(term: any = 'items') {
-    this.confirmService.confirm({
-      header: 'Delete',
-      acceptLabel: 'Delete',
-      message: `Are you sure to delete ${this.selectedObjects.length} ${term}` + (this.selectedObjects.length > 1 ? 's' : ''),
-      accept: () => {
-        this.loading = true;
-        this.objects = this.objects.filter(ob => {
-          return !this.selectedObjects.map(s => s.uuid).includes(ob.uuid);
-        });
-        this.apiBaseService.post(`media/media/delete`, {objects: this.selectedObjects}).subscribe(res => {
-          this.loading = false;
-          this.hasSelectedObjects = false;
-          this.selectedObjects = [];
-        })
-      }
-    });
+    let isIgnoreConfirmFile = this.selectedObjects.some(ob => { return ob.model == 'Media::Photo' || ob.model == 'Media::Video'});
+    if (isIgnoreConfirmFile) {
+      this.loading = true;
+      this.objects = this.objects.filter(ob => {
+        return !this.selectedObjects.map(s => s.uuid).includes(ob.uuid);
+      });
+      this.apiBaseService.post(`media/media/delete`, { objects: this.selectedObjects }).subscribe(res => {
+        this.loading = false;
+        this.hasSelectedObjects = false;
+        this.selectedObjects = [];
+      })
+    } else {
+      this.confirmService.confirm({
+        header: 'Delete',
+        acceptLabel: 'Delete',
+        message: `Are you sure to delete ${this.selectedObjects.length} ${term}` + (this.selectedObjects.length > 1 ? 's' : ''),
+        accept: () => {
+          this.loading = true;
+          this.objects = this.objects.filter(ob => {
+            return !this.selectedObjects.map(s => s.uuid).includes(ob.uuid);
+          });
+          this.apiBaseService.post(`media/media/delete`, { objects: this.selectedObjects }).subscribe(res => {
+            this.loading = false;
+            this.hasSelectedObjects = false;
+            this.selectedObjects = [];
+          })
+        }
+      });
+    }
   }
 
   changeViewMode(mode: any) {
+    this.localStorageService.set('media_view_mode', mode);
     this.viewMode = mode;
   }
 };

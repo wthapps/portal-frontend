@@ -1,22 +1,20 @@
-import { NgModule, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ChatNoteListComponent } from '@shared/components/note-list/chat-module/chat-note-list.component';
-import { ApiBaseService } from '@shared/services';
-import { FolderItemComponent } from '@shared/components/note-list/chat-module/item/folder-item.component';
+import { NgModule } from '@angular/core';
 import { AngularSharedModule } from '@shared/angular-shared.module';
-import { PipeModule } from '@shared/shared/pipe/pipe.module';
+import { ZSharedBreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
+import { ChatNoteListComponent } from '@shared/components/note-list/chat-module/chat-note-list.component';
+import { FolderItemComponent } from '@shared/components/note-list/chat-module/item/folder-item.component';
 import { NoteItemComponent } from '@shared/components/note-list/chat-module/item/note-item.component';
 import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
-import { BsModalModule } from 'ng2-bs3-modal';
-import { TextBoxSearchComponent } from '@shared/partials/search-box';
-import { PartialModule } from '@shared/partials';
 import { ChatNoteSharedToolBarComponent } from '@shared/components/note-list/chat-module/toolbar/toolbar.component';
-import { TooltipModule } from 'primeng/primeng';
-import { ZSharedBreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
+import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
+import { PartialModule } from '@shared/partials';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
+import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
+import { PipeModule } from '@shared/shared/pipe/pipe.module';
+import { BsModalModule } from 'ng2-bs3-modal';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   imports: [
@@ -28,6 +26,7 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
     InfiniteScrollModule,
     BoxNoDataModule,
     BoxLoadingModule,
+    WNavTabModule,
     TooltipModule
   ],
   declarations: [
@@ -40,4 +39,5 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
   ],
   exports: [ChatNoteListComponent, ChatNoteListModalComponent]
 })
-export class ChatNoteListModule {}
+export class ChatNoteListModule {
+}

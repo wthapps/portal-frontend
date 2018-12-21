@@ -14,7 +14,7 @@ export class PlaylistCreateMixin {
     public router: Router) {}
   openCreatePlaylistModal(selectedObjects: any) {
     if (this.subCreatePlaylist) { this.subCreatePlaylist.unsubscribe(); }
-    selectedObjects = selectedObjects.filter(s => s.model === 'Media::Video');
+    selectedObjects = selectedObjects.filter(s => (s.model === 'Media::Video' || s.object_type === 'Media::Video'));
     // tslint:disable-next-line:max-line-length
     this.mediaCreateModalService.open.next({ selectedObjects: selectedObjects, title: 'Create Playlist', namePlaceholder: 'Untitled Playlist' });
     this.subCreatePlaylist = this.mediaCreateModalService.onCreate$.pipe(take(1)).subscribe(e => {

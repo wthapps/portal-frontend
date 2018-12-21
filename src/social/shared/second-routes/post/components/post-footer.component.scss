@@ -1,0 +1,15 @@
+.media-heading-time {
+    font-size: 13px;
+}
+
+.media-body {
+    .hover-visible {
+        visibility: hidden;
+    }
+
+    &:hover {
+        .hover-visible {
+            visibility: visible;
+        }
+    }
+}

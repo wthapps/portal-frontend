@@ -22,7 +22,8 @@ import {
   PhoneCodeCountriesPipe,
   PhoneCodeFlagPipe,
   PhoneCodeToDisplayCodePipe,
-  PhoneCodeOnlyFlagPipe
+  PhoneCodeOnlyFlagPipe,
+  PhoneDialCodePipe
 } from './phone-to-flag.pipe';
 import { MapToIterablePipe } from '@shared/shared/pipe/map-to-iterable.pipe';
 import { FreeSpacePipe } from '@shared/shared/pipe/free-space.pipe';
@@ -58,6 +59,7 @@ import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
     PhoneCodeOnlyFlagPipe,
+    PhoneDialCodePipe,
     MapToIterablePipe,
     MaxCountPipe,
     StripHtmlPipe,
@@ -89,6 +91,7 @@ import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
     PhoneCodeOnlyFlagPipe,
+    PhoneDialCodePipe,
     MapToIterablePipe,
     MaxCountPipe,
     PhoneCodeToDisplayCodePipe,

@@ -11,12 +11,16 @@ import { Observable } from 'rxjs/Observable';
 })
 export class WCountriesComponent implements OnInit, OnChanges {
   @ViewChild('overlayPanel') overlayPanel: OverlayPanel;
-
+  //  Aland Islands (+358)
   @Input() country: string;
+  // ai, vn
+  @Input() countryCode: string;
   @Output() completeChange: EventEmitter<string> = new EventEmitter<string>();
 
   selectedCountry: string;
+  selectedCountryObject: any;
   countriesCode$: Observable<CountryModel[]>;
+  countriesCode: any;
 
   constructor(private countriesService: WCountriesService) {
     this.countriesCode$ = this.countriesService.countriesCode$;
@@ -24,15 +28,33 @@ export class WCountriesComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.countriesService.getCountries().subscribe();
+    this.countriesCode$.subscribe(res => {
+      if(res) {
+        this.countriesCode = res;
+      }
+      if (this.countryCode && res) {
+        if (res.find(r => r.code == this.countryCode)) {
+          this.selectedCountry = res.find(r => r.code == this.countryCode).value;
+          this.selectedCountryObject = res.find(r => r.code == this.countryCode);
+        } else {
+          this.selectedCountry = res[0].value;
+          this.selectedCountryObject = res[0];
+        }
+      }
+      if (this.country && res) {
+        this.selectedCountryObject = res.find((r: any) => r.value == this.country);
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes) {
+    if (changes && this.country) {
       this.selectedCountry = this.country;
     }
   }
 
   onComplete() {
-    this.completeChange.emit(this.selectedCountry);
+    this.selectedCountryObject = this.countriesCode.find((r: any) => r.value == this.selectedCountry);
+    this.completeChange.emit(this.selectedCountryObject);
   }
 }

@@ -36,9 +36,9 @@
               </div>
             </a>
             <div class="z-shared-with dropdown post-edit">
-              <a href="return false;" class="dropdown-toggle blue" data-toggle="dropdown" style="text-transform: capitalize;"
-                aria-haspopup="true" aria-expanded="true">
-                <i class="fa" [ngClass]="postPrivacy[post?.privacy]?.css"></i> {{ privacyName }} </a>
+              <a href="return false;" class="dropdown-toggle blue" data-toggle="dropdown" style="text-transform: capitalize;" 
+                aria-haspopup="true" aria-expanded="true" pTooltip="{{ privacyName }}" tooltipPosition="bottom">
+                <i class="fa" [ngClass]="postPrivacy[post?.privacy]?.css"></i> {{ privacyName | maxLength: 50 }} </a>
               <ul class="dropdown-menu">
                 <li><span> Who will see this</span></li>
                 <li>
@@ -62,14 +62,14 @@
                 <li role="separator" class="divider"></li>
                 <li>
                   <a (click)="onOpenPrivacyModal(soPostPrivacy.customFriend.data)" href="#">
-                    Custom Friends
+                    <i class="fa fa-share-alt"></i> Custom Friends
                     <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.customFriend.data"></i>
                   </a>
                 </li>
                 <li>
                   <a (click)="onOpenPrivacyModal(soPostPrivacy.customCommunity.data)" href="#">
-                    Custom Communities
-                    <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.customFriend.data"></i>
+                    <i class="fa fa-share-alt"></i> Custom Communities
+                    <i class="fa fa-check pull-right" *ngIf="post?.privacy === soPostPrivacy.customCommunity.data"></i>
                   </a>
                 </li>
               </ul>
@@ -187,7 +187,7 @@
           <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="dismiss(true)">
             Cancel
           </button>
-          <button type="submit" class="btn btn-outline-primary btn-min" [disabled]="(!editor?.valid && post?.photos?.length <= 0 && !link) || editorError">
+          <button type="submit" class="btn btn-outline-primary btn-min ml10" [disabled]="(!editor?.valid && post?.photos?.length <= 0 && !link) || editorError || hasUploading">
             Done
           </button>
         </div>
@@ -196,8 +196,8 @@
   </bs-modal-body>
 </bs-modal>
 
-<entity-select #privacyCustomModal type='custom_friend' [placeholder]="SEARCH_PLACEHOLDER[post.privacy] || 'Search'"
-  (onSelected)="selectedItems($event)"></entity-select>
+<!-- <entity-select #privacyCustomModal type='custom_friend' [placeholder]="SEARCH_PLACEHOLDER[post.privacy] || 'Search'"
+  (onSelected)="selectedItems($event)"></entity-select> -->
 
 
 <social-shared-privacy #privacyModal [selectedItems]="post.custom_objects" (onSelected)="selectedItems($event)">

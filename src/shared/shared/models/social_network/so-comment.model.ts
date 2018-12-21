@@ -9,22 +9,23 @@ export const CommentObjectType = {
 };
 
 export class SoComment extends BaseInput implements FromData {
-  uuid: string = '';
-  content: string = '';
+  uuid = '';
+  content = '';
   comments: Array<SoComment> = new Array<SoComment>();
-  comment_count: number = 0;
+  comment_count = 0;
   reactions: Array<any> = [];
   likes: Array<any> = [];
-  like_count: number = 0;
+  like_count = 0;
   dislikes: Array<any> = [];
-  dislike_count: number = 0;
+  dislike_count = 0;
   shares: Array<any> = [];
   // photos: Array<any> = [];
   photo: any = null;
   parent: any = null;
-  parentId: string = '';
-  parentType: string = ''; // value is SocialNetwork::Post or SocialNetwork::Comment
+  parentId = '';
+  parentType = ''; // value is SocialNetwork::Post or SocialNetwork::Comment
   owner: SoUser = new SoUser();
+  showReplies = false;
 
   from(fields: any) {
     if (fields) {

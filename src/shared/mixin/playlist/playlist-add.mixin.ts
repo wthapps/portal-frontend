@@ -1,6 +1,6 @@
 import { ApiBaseService } from '@shared/services';
 
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -8,6 +8,7 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { PlaylistCreateMixin } from '@shared/mixin/playlist/playlist-create.mixin';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Mixins([PlaylistCreateMixin])
 /* PlaylistAddMixin This is Playlist add methods, to
@@ -21,6 +22,7 @@ export class PlaylistAddMixin implements PlaylistCreateMixin {
   subAddPlaylist: any;
   subOpenCreatePlaylist: any;
   subCreatePlaylist: any;
+  destroy$: Subject<any>;
 
   // openModalAddToPlaylist:(selectedObjects: any) => void;
   // onAddToPlaylist:(e: any) => void;
@@ -39,11 +41,12 @@ export class PlaylistAddMixin implements PlaylistCreateMixin {
       buttonTitle: 'Create New Playlist',
       unit: 'photo'
     });
-    this.subAddPlaylist = this.mediaAddModalService.onAdd$.pipe(take(1)).subscribe(e => {
+    this.subAddPlaylist = this.mediaAddModalService.onAdd$.pipe(take(1)).pipe(takeUntil(this.destroy$)).subscribe(e => {
       this.onAddToPlaylist({parents: [e], children: selectedObjects});
     });
     this.subOpenCreatePlaylist = this.mediaAddModalService.onOpenCreateNew$
       .pipe(take(1))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(e => {
         this.openCreatePlaylistModal(selectedObjects);
       });
@@ -53,7 +56,7 @@ export class PlaylistAddMixin implements PlaylistCreateMixin {
     this.apiBaseService
       .post(`media/playlists/add_to_playlist`, {
         playlist: { id: e.parents[0].id },
-        videos: e.children.map(c => { return { id: c.id, model: c.model } })
+        videos: e.children.map(c => { return { id: c.id, model: c.model || 'Media::Video' } })
       })
       .subscribe(res => {
         this.toastsService.success('You just added to Playlist success');

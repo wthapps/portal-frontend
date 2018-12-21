@@ -24,7 +24,7 @@ import { Store } from '@ngrx/store';
 export class ZSocialShareCommunityFormEditComponent {
   @ViewChild('modal') modal: BsModalComponent;
   @Input() data: any = null;
-  @Input() action: string = 'update'; // update, create
+  @Input() action = 'update'; // update, create
   @Output() setupDataUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   form: FormGroup;
@@ -56,7 +56,7 @@ export class ZSocialShareCommunityFormEditComponent {
     control.reset();
   }
 
-  //additional_links
+  // additional_links
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
@@ -101,9 +101,9 @@ export class ZSocialShareCommunityFormEditComponent {
       (<FormControl>this.community_name).setValue(data.name);
       (<FormControl>this.tag_line).setValue(data.tag_line);
       (<FormControl>this.description).setValue(data.description);
-      let _this = this;
+      const _this = this;
       if (_.get(this.data, 'additional_links') !== undefined) {
-        _.map(this.data.additional_links, (v: any)=> {
+        _.map(this.data.additional_links, (v: any) => {
           _this.addItem(v);
         });
       }
@@ -122,21 +122,21 @@ export class ZSocialShareCommunityFormEditComponent {
 
 
   onSubmit(values: any): void {
-    let additional_links_filter: any = [];
-    _.map(values.additional_links, (v: any)=> {
+    const additional_links_filter: any = [];
+    _.map(values.additional_links, (v: any) => {
       if (v.url) {
         additional_links_filter.push(v);
       }
     });
 
-    let body = JSON.stringify({
+    const body = JSON.stringify({
       name: values.community_name,
       tag_line: values.tag_line,
       description: values.description,
       additional_links: additional_links_filter
     });
 
-    if (this.action == 'update') {
+    if (this.action === 'update') {
       this.communityService.updateCommunity(this.data.uuid, body).toPromise().then((res: any) => {
         this.setupDataUpdated.emit(res.data);
         this.modal.close();
@@ -146,9 +146,9 @@ export class ZSocialShareCommunityFormEditComponent {
         this.setupDataUpdated.emit(res.data);
 
         //  Update shortcut list if posible
-        console.debug('result: ', res);
-        if (res.shortcut)
+        if (res.shortcut) {
           this.store.dispatch({type: SHORTCUT_ADD_MULTI_DONE, payload: res.shortcut});
+        }
         this.modal.close();
       });
     }

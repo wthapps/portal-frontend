@@ -7,96 +7,27 @@
   <div class="container">
     <div class="faq-content">
       <div class="faq-content-left">
-        <h3 id="faq-dl-1">Account Management</h3>
-        <p-accordion>
-          <p-accordionTab header="Question number 1">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, atque dignissimos eius est ex fugiat
-            harum
-            inventore pariatur perspiciatis quia quisquam reiciendis repellat repellendus? Aliquid asperiores beatae
-            illum
-            omnis provident.
-          </p-accordionTab>
-          <p-accordionTab header="Question number 2">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, atque dignissimos eius est ex fugiat
-            harum
-            inventore pariatur perspiciatis quia quisquam reiciendis repellat repellendus? Aliquid asperiores beatae
-            illum
-            omnis provident.
-          </p-accordionTab>
-          <p-accordionTab header="Question number 3">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, atque dignissimos eius est ex fugiat
-            harum
-            inventore pariatur perspiciatis quia quisquam reiciendis repellat repellendus? Aliquid asperiores beatae
-            illum
-            omnis provident.
-          </p-accordionTab>
-        </p-accordion>
-        <h3 id="faq-dl-2">Account Management</h3>
-        <p-accordion>
-          <p-accordionTab header="Question number 1">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, atque dignissimos eius est ex fugiat
-            harum
-            inventore pariatur perspiciatis quia quisquam reiciendis repellat repellendus? Aliquid asperiores beatae
-            illum
-            omnis provident.
-          </p-accordionTab>
-          <p-accordionTab header="Question number 2">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, atque dignissimos eius est ex fugiat
-            harum
-            inventore pariatur perspiciatis quia quisquam reiciendis repellat repellendus? Aliquid asperiores beatae
-            illum
-            omnis provident.
-          </p-accordionTab>
-          <p-accordionTab header="Question number 3">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, atque dignissimos eius est ex fugiat
-            harum
-            inventore pariatur perspiciatis quia quisquam reiciendis repellat repellendus? Aliquid asperiores beatae
-            illum
-            omnis provident.
-          </p-accordionTab>
-        </p-accordion>
-        <h3 id="faq-dl-3">Account Management</h3>
-        <p-accordion>
-          <p-accordionTab header="Question number 1">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, atque dignissimos eius est ex fugiat
-            harum
-            inventore pariatur perspiciatis quia quisquam reiciendis repellat repellendus? Aliquid asperiores beatae
-            illum
-            omnis provident.
-          </p-accordionTab>
-          <p-accordionTab header="Question number 2">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, atque dignissimos eius est ex fugiat
-            harum
-            inventore pariatur perspiciatis quia quisquam reiciendis repellat repellendus? Aliquid asperiores beatae
-            illum
-            omnis provident.
-          </p-accordionTab>
-          <p-accordionTab header="Question number 3">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, atque dignissimos eius est ex fugiat
-            harum
-            inventore pariatur perspiciatis quia quisquam reiciendis repellat repellendus? Aliquid asperiores beatae
-            illum
-            omnis provident.
-          </p-accordionTab>
-        </p-accordion>
+        <ng-container *ngFor="let c of (categories$|async)">
+          <h3 [id]="c.uuid"> {{ c.name }}</h3>
+          <p-accordion>
+            <ng-container *ngFor="let f of (faq$|async)">
+              <ng-container *ngIf="c.id === f.category_id">
+                <p-accordionTab [header]="f.question" >
+                  <div [innerHTML]="f.answer"></div>
+                </p-accordionTab>
+              </ng-container>
+            </ng-container>
+          </p-accordion>
+        </ng-container>
+
       </div>
       <div class="faq-content-right">
         <div sticky sticky-offset-top="50" class="faq-content-right-fixed">
           <h4>Categories</h4>
           <ul class="list-unstyled">
-            <li>
-              <a (click)="onScrollTo('faq-dl-1')" href="javascript:;">
-                Account Management
-              </a>
-            </li>
-            <li>
-              <a (click)="onScrollTo('faq-dl-2')" href="javascript:;">
-                Account Management
-              </a>
-            </li>
-            <li>
-              <a (click)="onScrollTo('faq-dl-3')" href="javascript:;">
-                Account Management
+            <li *ngFor="let c of (categories$|async)">
+              <a (click)="onScrollTo(c.uuid)" href="#">
+                {{ c?.name }}
               </a>
             </li>
           </ul>

@@ -1,0 +1,79 @@
+@import "../../../../assets/styles/global";
+
+/* override model title */
+.modal-title, .modal-title input {
+  display: block;
+  width: 100%;
+  padding-left: 5px;
+}
+.pcard-cover {
+  @media (max-width: $screen-xs-max) {
+    .media-avatar {
+      @include flex-direction(column);
+      text-align: center;
+      .media-avatar-img-wrap {
+        margin-bottom: 10px;
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.modal-body {
+  .pcard-cover {
+    margin-left: -$modal-inner-padding;
+    margin-right: -$modal-inner-padding;
+    margin-bottom: $modal-inner-padding;
+    padding: $modal-inner-padding;
+  }
+}
+
+.pcard-info-list {
+  dl {
+    margin-bottom: 0;
+    &:not(:last-child) {
+      //margin-bottom: 5px;
+      padding-bottom: 0px;
+      //border-bottom: 1px solid $line;
+    }
+  }
+  dd:not(:last-child) {
+    margin-bottom: 0px;
+  }
+}
+
+.pcard-info {
+  @media (min-width: $screen-sm) {
+    dt {
+      float: left;
+      width: 145px;
+      clear: both;
+      .icon {
+        width: 40px;
+      }
+    }
+    dd {
+      margin-left: 150px;
+      //div {
+      //  padding-top: 6px;
+      //}
+      padding-top: 7px;
+    }
+  }
+}
+
+.pcard-info-form {
+  padding-left: 25px;
+  dt {
+    clear: both;
+    position: relative;
+    .ui-chkbox {
+      position: absolute;
+      left: -25px;
+      top: 2px;
+    }
+    & + dt {
+      margin-top: 10px;
+    }
+  }
+}

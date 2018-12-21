@@ -134,8 +134,8 @@ export class UserService {
   }
 
   getDefaultPayment(): Observable<Response> {
-    let userId = 1;
-    let path = 'users/' + userId + '/payments';
+    const userId = 1;
+    const path = 'users/' + userId + '/payments';
 
     return this.apiBaseService.post(path, []).pipe(map((res: any) => {
       if (res) {
@@ -149,7 +149,7 @@ export class UserService {
     return this._profile.getValue();
   }
 
-  getAsyncProfile() {
+  getAsyncProfile(): Observable<any> {
     return this.profile$;
   }
 

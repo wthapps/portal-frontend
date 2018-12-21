@@ -1,0 +1,82 @@
+<!--<form>-->
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title"> {{ title }}</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div class="form-group">
+      <w-search-box [placeholder]="'Search People'" [showSearchClearText]="true">
+      </w-search-box>
+
+    </div>
+
+    <ng-container *ngIf="selectingUsers && selectingUsers.length > 0">
+      <div>
+        <ul class="selecting-user">
+          <li *ngFor="let user of selectingUsers">
+            <div class="media-user media-user-xs">
+              <div class="media-user-avatar avatar-xs">
+                <img [src]="user?.profile_image" alt="">
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+
+
+
+    <ng-container *ngIf="!loading; else loadingBlock">
+      <div class="content-overflow">
+        <div class="row media-user-list-group" *ngIf="contacts">
+          <div class="col-sm-12" *ngFor="let user of contacts">
+            <div class="media media-user-list media-middle">
+              <div class="media-body">
+                <!--<z-chat-share-user-icon [image]="user?.profile_image" [name]="user.name" [size]="'xs'" [groupType]="'couple'" [userId]="user.id">-->
+                <!--</z-chat-share-user-icon>-->
+
+                <div class="media-user media-user-xs">
+                  <div class="media-user-avatar avatar-xs">
+                    <img [src]="user?.profile_image" alt="">
+                  </div>
+                  <div class="media-user-name">
+                    <p>{{ user?.name }}</p>
+                    <!--<ng-content></ng-content>-->
+                  </div>
+                  <!--<span *ngIf="groupType == 'couple'" class="media-user-status"-->
+                        <!--[ngClass]="{'online': (usersOnlineItem$ | async).includes(userId)}"></span>-->
+                  <!--<span *ngIf="groupType == 'stranger'" class="media-user-status media-user-stranger">-->
+                    <!--<i class="fa fa-question-circle"></i>-->
+                  <!--</span>-->
+                </div>
+
+              </div>
+              <div class="media-right no-wrap">
+                <label class="w-container">
+                  <input class="new-contact w-checkbox" name="friend" type="checkbox" [checked]="isSelectingUser(user)|async"
+                    (click)="toggleUserSelection(user)">
+                  <span class="w-checkmark"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="contacts && (contacts | wthFilterBy:'name':filter | arrayLength) == 0" class="text-center">
+          <p>You have no contact</p>
+          <p>You can search more people on WTHApps in above searchbox</p>
+        </div>
+
+      </div>
+    </ng-container>
+
+    <ng-template #loadingBlock>
+      <box-loading></box-loading>
+    </ng-template>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal" (click)="close()">Cancel</button>
+    <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSelected()">Done</button>
+  </bs-modal-footer>
+</bs-modal>
+<!--</form>-->

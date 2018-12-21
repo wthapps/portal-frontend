@@ -10,9 +10,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { CustomValidator } from '../../../shared/validator/custom.validator';
 import { ProfileFormMixin } from '../../../shared/mixins/form/profile/profile-form.mixin';
 import { Mixins  } from '../../../design-patterns/decorator/mixin-decorator';
-
-declare var _: any;
-
+import { Constants } from '@shared/constant';
 @Mixins([ProfileFormMixin])
 @Component({
   selector: 'w-user-media',
@@ -20,8 +18,9 @@ declare var _: any;
 })
 
 export class MediaListComponent implements ProfileFormMixin {
-  @Input('data') data: any;
   @ViewChild('modal') modal: BsModalComponent;
+
+  @Input() data: any;
   @Input() editable: boolean;
 
   @Output() eventOut: EventEmitter<any> = new EventEmitter<any>();
@@ -30,30 +29,9 @@ export class MediaListComponent implements ProfileFormMixin {
 
   form: FormGroup;
   deleteObjects: any = [];
-  type: string = 'media';
+  type = 'media';
 
-  mediaType: any = [
-    {
-      category: 'facebook',
-      name: 'Facebook'
-    },
-    {
-      category: 'google_plus',
-      name: 'Google Plus'
-    },
-    {
-      category: 'twitter',
-      name: 'Twitter'
-    },
-    {
-      category: 'linkedin',
-      name: 'LinkedIn'
-    },
-    {
-      category: 'other',
-      name: 'Other'
-    },
-  ];
+  mediaType = Constants.mediaType;
 
   removeItem: (i: number, item: any) => void;
   onSubmit: (values: any) => void;
@@ -72,14 +50,14 @@ export class MediaListComponent implements ProfileFormMixin {
   initItem(item?: any) {
     if (item) {
       return this.fb.group({
-        category: [item.category, Validators.compose([Validators.required])],
+        category: [item.category],
         id: [item.id, Validators.compose([Validators.required])],
-        value: [item.value, Validators.compose([Validators.required, CustomValidator.urlFormat])]
+        value: [item.value, Validators.compose([Validators.maxLength(250), CustomValidator.urlFormat])]
       });
     } else {
       return this.fb.group({
         category: ['facebook', Validators.compose([Validators.required])],
-        value: ['', Validators.compose([Validators.required, CustomValidator.urlFormat])]
+        value: ['', Validators.compose([Validators.maxLength(250), CustomValidator.urlFormat])]
       });
     }
   }
@@ -96,9 +74,12 @@ export class MediaListComponent implements ProfileFormMixin {
   onOpenModal() {
     this.modal.open();
     this.removeAll();
-    _.map(this.data.media, (v: any)=> {
-      this.addItem(v);
-    });
-    this.addItem();
+    if (this.data.media.length > 0) {
+      this.data.media.map(v => {
+        this.addItem(v);
+      });
+    } else {
+      this.addItem();
+    }
   }
 }

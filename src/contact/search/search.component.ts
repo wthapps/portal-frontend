@@ -70,7 +70,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub && !this.sub.closed) this.sub.unsubscribe();
+    if (this.sub && !this.sub.closed) { this.sub.unsubscribe(); }
   }
 
   getOtherContacts(params: any): void {
@@ -235,11 +235,11 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
     const tmp = [...this.contactService.selectedObjects];
     this.contactService.selectedObjects = [];
     tmp.forEach(data => {
-      this.apiBaseService.post(`contact/contacts/save`, data).subscribe(res => {
+      this.apiBaseService.post(`contact/wcontacts/save`, data).subscribe(res => {
         this.contacts = this.contacts.map(contact => {
           if (contact.settings && contact.id === res.data.wthapps_user_id) {
             res.data.selected = data.selected;
-            if (res.data.selected) this.contactService.selectedObjects.push(res.data);
+            if (res.data.selected) { this.contactService.selectedObjects.push(res.data); }
             this.contactService.createCallback(res.data);
             return res.data;
           }

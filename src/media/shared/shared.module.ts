@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { ZMediaSharedLeftMenuComponent } from '@media/shared/left-menu/left-menu.component';
-import { MediaUploaderComponent } from './uploader/media-uploader.component';
+// import { MediaUploaderComponent } from './uploader/media-uploader.component';
 import { AlbumService } from './service/album.service';
 import { MediaUploaderDataService } from './uploader/media-uploader-data.service';
 
@@ -21,6 +21,7 @@ import { MediaModalModule } from '@media/shared/modal/modal.module';
 import { MediaModalListComponent } from './media-modal-list/media-modal-list.component';
 
 import { HasMoreActionsPipe } from './pipes/has-more-actions.pipe';
+import { MediaUploaderV1Component } from './uploader/v1/media-uploader-v1.component';
 
 TagInputModule.withDefaults({
   tagInput: {
@@ -41,7 +42,8 @@ TagInputModule.withDefaults({
     SharedModule
   ],
   declarations: [
-    MediaUploaderComponent,
+    // MediaUploaderComponent,
+    MediaUploaderV1Component,
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,
     MediaDetailInfoComponent,
@@ -56,7 +58,8 @@ TagInputModule.withDefaults({
   exports: [
     AlbumModalModule,
     MediaModalModule,
-    MediaUploaderComponent,
+    // MediaUploaderComponent,
+    MediaUploaderV1Component,
     MediaModalListComponent,
     ZMediaSharedHeaderComponent,
     AlbumDetailInfoComponent,

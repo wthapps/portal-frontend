@@ -1,37 +1,53 @@
 <div class="photo-box" *ngIf="object" [ngClass]="{'selected': object.selected}" id="photo-box-img-{{ object.id }}">
   <div class="photo-box-action photo-box-action-right">
-    <i (click)="doAction({action:'favorite', payload: [object]})" class="fa" [ngClass]="object.favorite? 'fa-star': 'fa-star-o'"></i>
+    <i (click)="doAction({action:'favorite', payload: [object]})" class="fa"
+       [ngClass]="object.favorite? 'fa-star': 'fa-star-o'"></i>
   </div>
 
   <!--type == 'photo', 'video' -->
-  <div *ngIf="object.model == 'Media::Photo' || object.model == 'Media::Video'" class="photo-box-figure" (click)="select(object)">
+  <div *ngIf="object.model == 'Media::Photo' || object.model == 'Media::Video'" class="photo-box-figure"
+       (click)="select(object)" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
     <div class="photo-box-input" (click)="clickOnCircle(object, $event)">
       <i class="fa fa-check"></i>
     </div>
-    <!--(dblclick)="doAction({action:'previewAllPhotos', payload: {selectedObject: object}})"-->
-    <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
+    <div (click)="doAction({action:'viewDetails', payload: {selectedObject: object }})" class="photo-box-mobile-select"></div>
+    <figure class="img-center-dv can-click">
       <div class="photo-box-figure-in">
         <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url" alt="">
         <i *ngIf="object.model == 'Media::Video'" class="fa fa-play-circle-o"></i>
       </div>
     </figure>
-    <div class="photo-box-name">
-      <span class="can-click" title="Double click to edit name" (dblclick)="doAction({action:'openModal', payload: {modalName: 'editNameModal', selectedObject: object }})">
-        <i *ngIf="object.model == 'Media::Photo'" class="fa fa-photo"></i>
-        <i *ngIf="object.model == 'Media::Video'" class="fa fa-video-camera"></i>
-        <div style="
-        text-overflow: ellipsis;
-        width: 300px;
-        display: block;
-        overflow: hidden;">
-          {{ object.name }}.{{ object.extension}}
-        </div>
+    <!-- <div class="photo-box-name">
+      <span class="can-click" (dblclick)="editName(object, $event)">
+        {{ object.name }}.{{ object.extension}}
       </span>
       <div class="hidden">
         <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
         <i *ngIf="object.favorite" class="fa fa-star"></i>
       </div>
-    </div>
+    </div> -->
+    <ng-container *ngIf="object.role_id && object.role_id < 3">
+      <div class="photo-box-name">
+        <span class="can-click">
+          {{ object.name }}.{{ object.extension}}
+        </span>
+        <div class="hidden">
+          <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
+          <i *ngIf="object.favorite" class="fa fa-star"></i>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!object.role_id || object.role_id >= 3">
+      <div class="photo-box-name" title="Double click to edit name">
+        <span class="can-click" (dblclick)="editName(object, $event)">
+          {{ object.name }}.{{ object.extension}}
+        </span>
+        <div class="hidden">
+          <i *ngIf="object.json_shares?.length>1" class="fa fa-user-plus"></i>
+          <i *ngIf="object.favorite" class="fa fa-star"></i>
+        </div>
+      </div>
+    </ng-container>
     <div class="photo-box-owner">
       <span *ngIf="object.owner">
         {{object.owner.id == userService.profile.id ? 'me' : object.owner.name}}
@@ -43,38 +59,46 @@
 
   <!--type == 'album'-->
   <div *ngIf="object.model == 'Media::Album' || object.model == 'Common::Sharing' || object.model == 'Media::Playlist'"
-    class="photo-box-figure" (click)="select(object)">
+       class="photo-box-figure" (click)="select(object)" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
     <div class="photo-box-input" (click)="clickOnCircle(object, $event)">
       <i class="fa fa-check"></i>
     </div>
-    <figure class="img-center-dv can-click" (dblclick)="doAction({action:'viewDetails', payload: {selectedObject: object }})">
+    <div (click)="doAction({action:'viewDetails', payload: {selectedObject: object }})" class="photo-box-mobile-select"></div>
+    <figure class="img-center-dv can-click">
       <div class="photo-box-figure-in">
         <img draggable="false" class="img-center lazyload" [src]="object?.thumbnail_url + '?t=' + time" alt="">
       </div>
       <div class="photo-box-info">
         <!--{{ object.name }} <br>-->
         <span *ngIf="object.child_count > 1">
-          {{ object.child_count }} {{ (object.object_type == 'Media::Playlist') || (['Media::Playlist',
-          'Media::Video'].includes(object.sharing_type))
-          ? 'videos' : 'photos' }}
+          {{ object.child_count }} photos
         </span>
         <span *ngIf="object.child_count <= 1">
-          {{ object.child_count }} {{ (object.object_type == 'Media::Playlist') || (['Media::Playlist',
-          'Media::Video'].includes(object.sharing_type))
-          ? 'video' : 'photo' }}
+          {{ object.child_count }} photo
         </span>
       </div>
     </figure>
-    <div class="photo-box-name" title="Double click to edit name" (dblclick)="editName(object, $event)">
-      <span class="can-click">
-        <i class="wthico-album"></i> {{ object.name }}
-      </span>
-      <div class="hidden">
-        <!--data return doesn't have json_shares-->
-        <!--<i *ngIf="object.json_shares" class="fa fa-user-plus"></i>-->
-        <i *ngIf="object.favorite" class="fa fa-star"></i>
+
+    <ng-container *ngIf="object.role_id && object.role_id < 3">
+      <div class="photo-box-name">
+        <span class="can-click">
+          <i class="wthico-album"></i> {{ object.name }}
+        </span>
+        <div class="hidden">
+          <i *ngIf="object.favorite" class="fa fa-star"></i>
+        </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="!object.role_id || object.role_id >= 3">
+      <div class="photo-box-name" title="Double click to edit name">
+        <span class="can-click" (dblclick)="editName(object, $event)">
+          <i class="wthico-album"></i> {{ object.name }}
+        </span>
+        <div class="hidden">
+          <i *ngIf="object.favorite" class="fa fa-star"></i>
+        </div>
+      </div>
+    </ng-container>
     <div class="photo-box-owner">{{ object.owner?.name }}</div>
     <div class="photo-box-date">{{ object.created_at | date: 'MMM dd yyyy' }}</div>
     <div class="photo-box-size">{{ object.child_count }}</div>

@@ -44,9 +44,9 @@ export class CountryService {
    * @return {string[]} The Observable for the HTTP request.
    */
   getCountries(): Observable<any> {
-    if (this.countriesCodeSubject.getValue().length > 1)
+    if (this.countriesCodeSubject.getValue().length > 1) {
       return this.countriesCode$;
-
+    }
     return this.http.get('assets/data/countries.json').pipe(catchError(this.handleError));
   }
 

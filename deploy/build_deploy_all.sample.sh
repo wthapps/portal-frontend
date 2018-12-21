@@ -26,23 +26,35 @@ esac
 
 
 BK=`date '+%Y-%m-%d_%H%M%S'`
-echo " ===== Start create Backup folder $TARGET_MACHINE:$TARGET_FOLDER/$BK ... "
-ssh -i $PEM_KEY $TARGET_MACHINE "mkdir -p $TARGET_FOLDER/${ENV}_${BK}"
+# echo " ===== Start create Backup folder $TARGET_MACHINE:$TARGET_FOLDER/$BK ... "
+# ssh -i $PEM_KEY $TARGET_MACHINE "mkdir -p $TARGET_FOLDER/${ENV}_${BK}"
+
+proceed() {
+  var=$1
+  echo " ===== Start build module [$var] ... " &&
+  ng build $var -c $ENV || failed $var &&  
+  echo " ===== Finish build folder [$var] " &&
+
+
+  echo " ===== Start backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
+  ssh -i $PEM_KEY $TARGET_MACHINE "cp -rf $TARGET_FOLDER/$var $TARGET_FOLDER/${ENV}_${var}_${BK}" &&
+  echo " ===== Finish backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
+
+
+  echo " ===== Start deploying folder [$var] from /dist/$var/* to $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
+  rsync -avL --force --progress  -e "ssh -i $PEM_KEY" ./dist/$var/* $TARGET_MACHINE:$TARGET_FOLDER/$var &&
+  echo " ===== Finish deploy folder [$var] "
+}
+
+failed() {
+  app=$1
+  echo "=== FAILED at $app"
+  return 1
+}
 
 MODULES="portal chat contact media my-account note social"
 for var in $MODULES
 do
-   echo " ===== Start build module [$var] ... " &&
-   ng build --prod $var -c $ENV &&
-   echo " ===== Finish build folder [$var] " &&
-
-
-   echo " ===== Start backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
-   ssh -i $PEM_KEY $TARGET_MACHINE "cp -rf $TARGET_FOLDER/$var $TARGET_FOLDER/$BK" &&
-   echo " ===== Finish backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
-
-
-   echo " ===== Start deploying folder [$var] from /dist/$var/* to $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
-   rsync -avL --force --progress  -e "ssh -i $PEM_KEY" ./dist/$var/* $TARGET_MACHINE:$TARGET_FOLDER/$var &&
-   echo " ===== Finish deploy folder [$var] " &
+   proceed $var &
 done
+

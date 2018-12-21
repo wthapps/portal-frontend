@@ -9,6 +9,7 @@ import {
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { ProfileFormMixin } from '../../../shared/mixins/form/profile/profile-form.mixin';
 import { Mixins  } from '../../../design-patterns/decorator/mixin-decorator';
+import { Constants } from '@shared/constant';
 
 declare var _: any;
 
@@ -29,20 +30,7 @@ export class AddressListComponent implements OnInit, ProfileFormMixin {
 
   form: FormGroup;
 
-  addressType: any = [
-    {
-      category: 'home',
-      name: 'Home'
-    },
-    {
-      category: 'work',
-      name: 'work'
-    },
-    {
-      category: 'other',
-      name: 'Other'
-    }
-  ];
+  addressType = Constants.addressType;
   type = 'addresses';
   deleteObjects: any = [];
 
@@ -67,9 +55,9 @@ export class AddressListComponent implements OnInit, ProfileFormMixin {
     if (item) {
       return this.fb.group({
         id: [item.id, Validators.compose([Validators.required])],
-        category: [item.category, Validators.compose([Validators.required])],
-        address_line1: [item.address_line1, Validators.compose([Validators.required])],
-        po_box: [item.po_box],
+        category: [item.category],
+        address_line1: [item.address_line1],
+        address_line2: [item.address_line2],
         city: [item.city],
         province: [item.province],
         postcode: [item.postcode],
@@ -78,9 +66,9 @@ export class AddressListComponent implements OnInit, ProfileFormMixin {
       });
     } else {
       return this.fb.group({
-        category: ['home', Validators.compose([Validators.required])],
-        address_line1: ['', Validators.compose([Validators.required])],
-        po_box: [''],
+        category: ['home'],
+        address_line1: [''],
+        address_line2: [''],
         city: [''],
         province: [''],
         postcode: [''],

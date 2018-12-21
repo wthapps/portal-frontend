@@ -1,4 +1,3 @@
-import { INCOMING_MESSAGE } from './../constant/chat-constant';
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -8,7 +7,7 @@ import { empty } from 'rxjs/observable/empty';
 import { UserService } from './user.service';
 import {
   CHAT_CONVERSATIONS, CHAT_RECENT_CONVERSATIONS, CHAT_FAVOURITE_CONVERSATIONS,
-  CHAT_HISTORY_CONVERSATIONS, CONVERSATION_SELECT, CURRENT_CHAT_MESSAGES, USERS_ONLINE, NUMBER_MESSAGE
+  CHAT_HISTORY_CONVERSATIONS, CONVERSATION_SELECT, USERS_ONLINE, NUMBER_MESSAGE
 } from '@wth/shared/constant';
 
 declare var _: any;
@@ -19,10 +18,8 @@ const DEFAULT_STORAGES: {[name: string]: BehaviorSubject<any>} = {
   [CHAT_FAVOURITE_CONVERSATIONS]: new BehaviorSubject(null),
   [CHAT_HISTORY_CONVERSATIONS]: new BehaviorSubject(null),
   [CONVERSATION_SELECT]: new BehaviorSubject(null),
-  [CURRENT_CHAT_MESSAGES]: new BehaviorSubject(null),
   [USERS_ONLINE]: new BehaviorSubject([]),
-  [NUMBER_MESSAGE]: new BehaviorSubject(20),
-  [INCOMING_MESSAGE]: new BehaviorSubject({})
+  [NUMBER_MESSAGE]: new BehaviorSubject(20)
 };
 
 @Injectable()

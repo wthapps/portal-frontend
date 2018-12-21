@@ -23,7 +23,8 @@
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/cropperjs/dist/cropper.min.css",
               "src/portal/styles/portal.scss"
@@ -44,7 +45,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": false,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace":
@@ -126,7 +127,8 @@
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/cropperjs/dist/cropper.min.css",
               "src/portal/styles/portal.scss"
@@ -195,7 +197,8 @@
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/my-account/styles/my-account.scss",
               "node_modules/adyen-cse-web/js/addOns/adyen.cardtype.css"
@@ -299,7 +302,8 @@
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/my-account/styles/my-account.scss"
             ],
@@ -367,7 +371,8 @@
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/media/styles/media.scss"
             ],
@@ -470,7 +475,8 @@
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/media/styles/media.scss"
             ],
@@ -535,14 +541,15 @@
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
             ],
             "styles": [
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "src/social/styles/social.scss",
-              "src/assets/styles/styles-app-loading.scss"
+              "src/social/styles/social.scss"
             ],
             "scripts": [
               "node_modules/moment/min/moment.min.js",
@@ -644,7 +651,8 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
@@ -711,14 +719,15 @@
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
             ],
             "styles": [
+              "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
-              "src/chat/styles/chat.scss",
-              "src/assets/styles/styles-app-loading.scss"
+              "src/chat/styles/chat.scss"
             ],
             "scripts": [
               "node_modules/moment/min/moment.min.js",
@@ -821,7 +830,8 @@
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css",
@@ -886,14 +896,14 @@
             "polyfills": "src/contact/polyfills.ts",
             "assets": [
               { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
-              "src/contact/manifest.json",
-              "src/contact/sw.js"
+              "src/contact/manifest.json"
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/contact/styles/contact.scss"
             ],
@@ -916,8 +926,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": false,
-              "ngswConfigPath": "/src/ngsw-config.json",
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/contact/../environments/environment.ts",
@@ -935,6 +944,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/contact/../environments/environment.ts",
@@ -952,6 +962,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/contact/../environments/environment.ts",
@@ -1002,7 +1013,8 @@
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "src/contact/styles/contact.scss"
             ],
@@ -1067,12 +1079,13 @@
             "tsConfig": "src/note/tsconfig.app.json",
             "polyfills": "src/note/polyfills.ts",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
+              "src/note/manifest.json"
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/font-awesome/scss/font-awesome.scss",
               {
@@ -1116,6 +1129,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/note/../environments/environment.ts",
@@ -1133,6 +1147,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/note/../environments/environment.ts",
@@ -1150,6 +1165,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/note/../environments/environment.ts",
@@ -1210,7 +1226,8 @@
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
-              "node_modules/primeng/resources/themes/omega/theme.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/font-awesome/scss/font-awesome.scss",
               {
@@ -1223,7 +1240,9 @@
               },
               "src/note/styles/note.scss"
             ],
-            "assets": []
+            "assets": [
+              "src/note/manifest.json"
+            ]
           }
         },
         "lint": {
@@ -1257,6 +1276,155 @@
           "options": {
             "tsConfig": [
               "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "sample": {
+      "root": "src",
+      "sourceRoot": "src/sample",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/sample",
+            "index": "src/sample/index.html",
+            "main": "src/sample/main.ts",
+            "polyfills": "src/sample/polyfills.ts",
+            "tsConfig": "src/sample/tsconfig.app.json",
+            "assets": [
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+            ],
+            "styles": [
+              "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/cropperjs/dist/cropper.min.css",
+              "src/sample/styles/sample.scss"
+            ],
+            "scripts": [
+              "node_modules/cropperjs/dist/cropper.min.js",
+              "src/shared/channels/common.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "serviceWorker": true,
+              "fileReplacements": [
+                {
+                  "replace":
+                  "src/sample/../environments/environment.ts",
+                  "with":
+                  "src/sample/../environments/environment.prod.ts"
+                }
+              ]
+            },
+            "stag": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/sample/../environments/environment.ts",
+                  "with": "src/sample/../environments/environment.stag.ts"
+                }
+              ]
+            },
+            "test": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/sample/../environments/environment.ts",
+                  "with": "src/sample/../environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "sample:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "sample:build:production"
+            },
+            "stag": {
+              "browserTarget": "sample:build:stag"
+            },
+            "test": {
+              "browserTarget": "sample:build:test"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "sample:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/sample/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/sample/polyfills.ts",
+            "tsConfig": "src/sample/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/cropperjs/dist/cropper.min.js",
+              "src/shared/channels/common.js"
+            ],
+            "styles": [
+              "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/omega/theme.scss",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/cropperjs/dist/cropper.min.css",
+              "src/sample/styles/sample.scss"
+            ],
+            "assets": [
+  
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

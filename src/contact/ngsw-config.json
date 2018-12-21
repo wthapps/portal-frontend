@@ -22,33 +22,26 @@
       "files": [
         "/assets/**"
       ]
-    }
-  }],
-  "dataGroups": [{
-    "name": "api-freshness",
-    "urls": [
-      "/zone/social_network/notifications/get_new_notifications/count",
-      "/zone/chat/notification/count"
-    ],
-    "cacheConfig": {
-      "maxSize": 30,
-      "maxAge": "7d",
-      "timeout": "60s",
-      "strategy": "freshness"
-    }
-    },
-    {
-      "name": "api-performance",
-      "urls": [
-        "/contact/contacts/all",
-        "/contact/groups/all",
-        "/settings"
-      ],
+    }}],
+    "dataGroups": [{
+      "name": "api-freshness",
+      "urls": [],
       "cacheConfig": {
         "maxSize": 30,
         "maxAge": "7d",
-        "timeout": "60s",
-        "strategy": "performance"
+        "timeout": "120s",
+        "strategy": "freshness"
       }
-    }]
+      },
+      {
+        "name": "api-performance",
+        "urls": [
+        ],
+        "cacheConfig": {
+          "maxSize": 30,
+          "maxAge": "7d",
+          "timeout": "120s",
+          "strategy": "performance"
+        }
+  }]
 }

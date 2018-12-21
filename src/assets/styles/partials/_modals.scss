@@ -85,3 +85,41 @@
     }
   }
 }
+
+.modal-header-nav {
+  @include flexbox;
+  @include justify-content(space-between);
+  @include align-items(center);
+  .modal-header-navbar {
+    margin: -5px 0;
+    padding: 0;
+    list-style-type: none;
+    @include flexbox;
+  }
+}
+
+.modal-full-height {
+  .modal-content {
+    height: calc(100vh - 20px);
+    @include flexbox;
+    @include flex-direction(column);
+    @media (min-width: $screen-sm-min) {
+      height: calc(100vh - 60px);
+    }
+  }
+  bs-modal-body {
+    @include flex(1);
+    @include flexbox;
+    @include flex-direction(column);
+  }
+  .modal-body {
+    @include flexbox;
+    @include flex-direction(column);
+    height: 100%;
+    overflow: auto;
+  }
+}
+
+.modal-on-top {
+  z-index: 2000;
+}

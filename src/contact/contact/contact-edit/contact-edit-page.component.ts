@@ -16,6 +16,10 @@ import { GroupService } from '@contacts/group/group.service';
 import { InvitationCreateModalComponent } from '@shared/shared/components/invitation/invitation-create-modal.component';
 import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-add-group/contact-add-group-modal.component';
 import { CommonEvent } from '@shared/services';
+import { CardService } from '@contacts/shared/card';
+import { Observable } from 'rxjs';
+import { CardEditModalComponent } from '@contacts/shared/card/components';
+import { ProfileService } from '@shared/user/services';
 
 declare var _: any;
 
@@ -52,11 +56,11 @@ const DEFAULT_CONTACT_PARAMS = {
 })
 export class ZContactEditPageComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: ContactAddGroupModalComponent;
-
   @ViewChild('invitationModal') invitationModal: InvitationCreateModalComponent;
+  @ViewChild('cardDetailModal') cardDetailModal: CardEditModalComponent;
 
   contact: Contact = new Contact(DEFAULT_CONTACT_PARAMS);
-
+  card$: Observable<any>;
   emails = [];
   mode = 'view';
   pageTitle: string;
@@ -75,11 +79,14 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private contactService: ZContactService,
     private groupService: GroupService,
+    private cardService: CardService,
+    private profileService: ProfileService,
     private location: Location,
     private route: ActivatedRoute,
     private commonEventService: CommonEventService,
     private toastsService: ToastsService
   ) {
+
     this.commonEventService
       .filter(
         (event: CommonEvent) => event.channel === Constants.contactEvents.common
@@ -105,8 +112,9 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
         if (this.isWthContact) {
           this.viewOnly = true;
           this.getWthContact(id);
-        } else
+        } else {
           this.get(id);
+        }
       }
 
       if (this.mode === 'view') {
@@ -257,6 +265,17 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   goBack() {
     this.hasBack = true;
     this.location.back();
+  }
+
+  viewCard(card: any) {
+    if (card.card_type === 'business') {
+      this.card$ = this.cardService.getItem();
+      this.cardService.getCard(card.uuid);
+    } else {
+      this.card$ = this.profileService.profile$;
+      this.profileService.getProfileNew(card.uuid);
+    }
+    this.cardDetailModal.open({});
   }
 
   private get(id: number) {

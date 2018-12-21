@@ -23,6 +23,7 @@ import { environment } from '@env/environment';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
 import { ZChatProfileModule } from '@chat/profile/profile.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
@@ -50,6 +51,9 @@ import { ZChatProfileModule } from '@chat/profile/profile.module';
     SharedServicesModule.forRoot(),
     StoreModule.forRoot(ChatStore),
     SharedModule.forRoot(),
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: false
+    }),
 
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })

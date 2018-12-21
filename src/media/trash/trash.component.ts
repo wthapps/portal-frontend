@@ -23,6 +23,8 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { WUploader } from '@shared/services/w-uploader';
+import { Subject } from 'rxjs';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 declare var _: any;
 @Mixins([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
@@ -61,6 +63,7 @@ MediaModalMixin {
   modalRef: any;
   endLoading: any;
   sorting: any =  {sort_name: "Date", sort: "desc"};
+  destroy$ = new Subject();
 
   private sub: any;
 
@@ -75,6 +78,7 @@ MediaModalMixin {
     public mediaCreateModalService: MediaCreateModalService,
     public resolver: ComponentFactoryResolver,
     public router: Router,
+    public localStorageService: LocalStorageService,
     private commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
     private uploader: WUploader
@@ -82,6 +86,12 @@ MediaModalMixin {
 
   ngOnInit() {
     this.loadObjects();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadObjects(opts: any = {}) {
@@ -109,8 +119,8 @@ MediaModalMixin {
       message: `Selected photos or videos in your Trash will be deleted permanently. This action can't be undone`,
       accept: () => {
         this.objects = this.objects.filter(ob => {
-          return this.selectedObjects.some(s => {
-            return (s.id !== ob.id || s.model !== ob.model)
+          return !this.selectedObjects.some(s => {
+            return (s.id == ob.id && s.model == ob.model)
           })
         })
         this.apiBaseService.post(`media/trashes/really_destroy`, { objects: this.selectedObjects.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
@@ -220,11 +230,6 @@ custom method please overwirte any method*/
       default:
         break;
     }
-  }
-
-
-  ngOnDestroy() {
-    // this.sub.unsubscribe();
   }
 
   /* MediaListMixin This is media list methods, to

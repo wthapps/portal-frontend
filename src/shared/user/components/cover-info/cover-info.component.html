@@ -11,14 +11,14 @@
       </button>
     </div>
     <div class="w-cover-image" id="cover_image">
-      <img class="img-bg img-full no-user-selected" [src]="user?.cover_image" alt="">
+      <!--<img *ngIf="user" class="img-bg img-full no-user-selected" [src]="user?.cover_image" alt="">-->
     </div>
 
     <div class="w-user-info">
       <div class="z-social-media z-social-media-md">
           <div class="w-user-avatar can-click" (click)="changeProfileImage($event)" id="profile_image">
             <div class="avatar-md">
-              <img [src]="user?.profile_image" class="no-user-selected">
+              <img *ngIf="user && user.profile_image" [src]="user?.profile_image" class="no-user-selected">
               <span class="w-user-avatar-cover">
                 <i class="fa fa-camera"></i>
               </span>
@@ -27,7 +27,7 @@
 
 
         <div class="w-user-name">
-          <div class="z-heading" [title]="user.name">
+          <div class="z-heading" [title]="user?.name">
             <div class="z-name"> {{ user?.name }}</div>
           </div>
           <div class="z-shared-info">

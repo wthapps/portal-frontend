@@ -3,15 +3,15 @@
     <button *ngIf="mode === 'create'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts']">Cancel
     </button>
 
-    <button type="button" *ngIf="mode === 'create' || mode === 'edit'" [disabled]="!contactEdit?.name?.valid && !contactEdit?.family_name?.valid"
-      (click)="contactEdit.onSubmit(contactEdit?.form?.value)" class="btn btn-outline-primary btn-min ml10"> {{ mode
-      === 'edit' ? 'Save' : 'Create' }}
+    <button class="btn btn-outline-primary btn-min ml10" type="button" *ngIf="mode === 'create' || mode === 'edit'"
+            [disabled]="!contactEdit?.name?.valid && !contactEdit?.family_name?.valid"
+            (click)="contactEdit.onSubmit(contactEdit?.form?.value)" > {{ mode === 'edit' ? 'Save' : 'Create' }}
     </button>
 
-    <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min" (click)="goBack()">Cancel
+    <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min ml10" (click)="goBack()">Cancel
     </button>
 
-    <z-contact-shared-actions-bar *ngIf="isWthContact || (mode === 'view' && !viewOnly)" [showViewDetail]="false"
+    <z-contact-shared-actions-bar *ngIf="isWthContact || (mode === 'view' && !viewOnly)" [showViewDetail]="false" [contacts]="[contact]"
       [showNumber]="false" [showInvitation]="isWthContact" [showAddToContacts]="isWthContact || (!contact.my_contact && !viewOnly)"
       [showFavorite]="!isWthContact" [showEdit]="!isWthContact" [isStranger]="isWthContact" [toggleFavourite]="_contact.isContactsHasGroupName([contact], 'favourite') && !viewOnly && !isWthContact"
       [toggleBlacklist]="_contact.isContactsHasGroupName([contact], 'blacklist') && !viewOnly && !isWthContact"
@@ -31,50 +31,36 @@
       </ng-container>
     </div>
     <div class="contact-edit-aside">
-      <h4>WTH Profiles
-        <i class="fa fa-info-circle" pTooltip="Profiles were found in WTHApps using contact info entered"
-          tooltipPosition="bottom"></i>
-      </h4>
-      <ng-container *ngFor="let email of emails">
-        <div *ngIf="email.wthapps_user" class="user-row">
-          <div class="avatar">
-            <a [href]="urls.social + '/profile/' + email.wthapps_user.uuid" target="_blank">
-              <img class="img-circle" width="34" alt="" [src]="email.wthapps_user.profile_image">
-            </a>
-          </div>
-          <div class="name">
-            <a class="text-link" [href]="urls.social + '/profile/' + email.wthapps_user?.uuid" target="_blank">
-              <p class="mb0">{{ email.wthapps_user.name}}</p>
-            </a>
-            <span>{{ email.value }}</span>
-          </div>
-          <div class="action">
-            <a class="btn btn-outline-default" [href]="urls.chat" target="_blank" pTooltip="Send message"
-              tooltipPosition="left">
-              <i class="fa fa-comments-o"></i>
-            </a>
+
+      <h4>WTH Profile</h4>
+      <div class="card-list row">
+        <div class="col-sm-12 mb15" >
+          <card-item *ngIf="contact && contact.profile" [card]="contact.profile" (view)="viewCard($event)"></card-item>
+          <div *ngIf="contact && !contact.profile">
+            There is no WTH Profile
           </div>
         </div>
-      </ng-container>
-      <h4 class="regular-email">
-        Regular email
-        <i class="fa fa-info-circle" pTooltip="Entered information didn't match any WTHApps profiles" tooltipPosition="bottom"></i>
-      </h4>
-      <ng-container *ngFor="let email of emails">
-        <div *ngIf="email.wthapps_user == null" class="user-row">
-          <!-- <div class="avatar">
-            <img class="img-circle" width="34" alt="" [src]="avatarDefault">
-          </div> -->
-          <div class="name">
-            <span>{{ email.value }}</span>
-          </div>
-          <div class="action">
-            <button class="btn btn-default" pTooltip="Invite to WTHApps" tooltipPosition="left" (click)="invite(email)">
-              <i class="fa fa-envelope-o"></i>
-            </button>
-          </div>
-        </div>
-      </ng-container>
+      </div>
+
+      <h4 class="regular-email">Business Cards</h4>
+      <div class="card-list row">
+        <ng-container *ngIf="contact && contact.cards && contact.cards.length > 0 else noData">
+          <ng-template ngFor let-c [ngForOf]="contact.cards">
+            <!--<ng-container *ngIf="c.card_type === 'business'">-->
+            <div class="col-sm-12 mb15">
+              <card-item [card]="c" (view)="viewCard($event)"></card-item>
+            </div>
+            <!--</ng-container>-->
+          </ng-template>
+        </ng-container>
+        <ng-template #noData>
+          <box-no-data [icon]="'fa fa-address-card xs'"
+                       [title]="'There are no Cards!'"
+                       [subTitle]="'Business cards this person shared with you'">
+          </box-no-data>
+        </ng-template>
+      </div>
+
     </div>
   </div>
 
@@ -83,3 +69,6 @@
 <contact-add-group-modal #modal></contact-add-group-modal>
 
 <invitation-create-modal #invitationModal (event)="doEvent($event)"></invitation-create-modal>
+<w-card-detail-modal #cardDetailModal [card]="card$ | async">
+
+</w-card-detail-modal>

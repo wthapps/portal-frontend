@@ -13,7 +13,7 @@ export class ConstantsBase {
     cdn: Config.CDN
   };
   cdn: any = Config.CDN;
-  currentVersion: string = '2018 WTHApps - v1.3.4.a7';
+  currentVersion = '2018 WTHApps - v1.6.0';
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
@@ -92,7 +92,7 @@ export class ConstantsBase {
       name: 'My Notes',
       value: 'My notes',
       link: '/my-note',
-      icon: 'fa fa-sticky-note'
+      icon: 'icon-zone-note'
     },
     { name: 'Recent', value: 'recent', link: '/recent', icon: 'fa fa-clock-o' },
     {
@@ -198,8 +198,8 @@ export class ConstantsBase {
   pictureMenuItems: any = [
     { name: 'Photos', link: '/photos', icon: 'fa fa-photo' },
     { name: 'Albums', link: '/albums', icon: 'wthico-album' },
-    { name: 'Videos', link: '/videos', icon: 'fa fa-video-camera' },
-    { name: 'Playlists', link: '/playlists', icon: 'fa fa-file-video-o' },
+    // { name: 'Videos', link: '/videos', icon: 'fa fa-video-camera' },
+    // { name: 'Playlists', link: '/playlists', icon: 'fa fa-file-video-o' },
 
     { name: 'Favourites', link: '/favourites', icon: 'fa fa-star' },
     {
@@ -218,10 +218,7 @@ export class ConstantsBase {
     { name: 'Notifications', link: '/notifications', icon: 'fa fa-bell-o' },
     { name: 'Friends', link: '/friends', icon: 'fa fa-user-plus' },
     { name: 'News', link: '/news', icon: 'fa fa-newspaper-o' },
-    { name: 'My Page', link: '/profile', icon: 'fa fa-user-circle' },
-    { name: '', link: '', icon: '' },
-    { name: 'Settings', link: '/settings', icon: 'fa fa-cog' },
-    { name: '', link: '/search', icon: 'fa fa-search' }
+    { name: 'My Page', link: '/profile', icon: 'fa fa-user-circle' }
   ];
 
   pictureMenuActions: any = {
@@ -269,7 +266,7 @@ export class ConstantsBase {
     album: 'album',
     photo: 'photo',
     chatConversation: 'conversations',
-    contacts: 'contact/contacts'
+    contacts: 'contact/wcontacts'
   };
   sex: any = ['', 'Male', 'Female', 'Other'];
   communityRole: any = {
@@ -399,6 +396,42 @@ export class ConstantsBase {
       name: 'Other'
     }
   ];
+  addressType: any = [
+    {
+      category: 'home',
+      name: 'Home'
+    },
+    {
+      category: 'work',
+      name: 'Work'
+    },
+    {
+      category: 'other',
+      name: 'Other'
+    }
+  ];
+  mediaType: any = [
+    {
+      category: 'facebook',
+      name: 'Facebook'
+    },
+    {
+      category: 'google_plus',
+      name: 'Google Plus'
+    },
+    {
+      category: 'twitter',
+      name: 'Twitter'
+    },
+    {
+      category: 'linkedin',
+      name: 'LinkedIn'
+    },
+    {
+      category: 'other',
+      name: 'Other'
+    },
+  ];
   phoneCategories: any = [
     { value: 'mobile', text: 'Mobile' },
     { value: 'home', text: 'Home' },
@@ -444,6 +477,7 @@ export class ConstantsBase {
     back: 'Back',
     cancelUploading: 'Cancel uploading',
     changeView: 'Change view',
+    collapse: 'Collapse',
     close: 'Close',
     create: 'Create',
     crop: 'Crop',
@@ -466,6 +500,8 @@ export class ConstantsBase {
     more: 'More',
     new: 'New',
     next: 'Next',
+    enable_notification: 'Enable notification',
+    disable_notification: 'Disable notification',
     notification: 'Notification',
     notifications: 'Notifications',
     chat: 'Chat',

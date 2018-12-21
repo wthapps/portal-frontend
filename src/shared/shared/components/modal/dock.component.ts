@@ -1,4 +1,5 @@
-import { Component, Input, HostBinding } from '@angular/core';
+import { Component, Input, HostBinding, Output, EventEmitter } from '@angular/core';
+
 
 @Component({
     selector: 'wth-modal-dock',
@@ -8,24 +9,26 @@ import { Component, Input, HostBinding } from '@angular/core';
 
 export class ModalDockComponent {
   @HostBinding('class') classes = 'modal-dock-wrap';
-  @Input() cssClass: string = 'hidden';
+  @Input() cssClass = 'hidden';
+  @Output() closeEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  collapse: boolean = false;
-  show: boolean = false;
+  collapse = false;
+  show = false;
 
-  open(cssClass:any = '') {
-    this.cssClass = cssClass
+  open(cssClass = '') {
+    this.cssClass = cssClass;
   }
 
   close() {
     this.cssClass = 'hidden';
+    this.closeEvent.emit('');
   }
 
   toggleCollapse() {
     if (this.collapse) {
-      this.cssClass = '';
+      this.cssClass = this.cssClass.replace('modal-dock-collapse', '');
     } else {
-      this.cssClass = 'modal-dock-collapse';
+      this.cssClass = `${this.cssClass} modal-dock-collapse`;
     }
     this.collapse = !this.collapse;
   }

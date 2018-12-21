@@ -93,8 +93,8 @@
             <!-------------- End File view --------------->
           </ng-template>
           <ng-template #columnFileSize let-item>
-            <span *ngIf="item.object_type == 'album'">{{ item.photo_number }} file<span *ngIf="item.photo_number>1">s</span></span>
-            <span *ngIf="item.object_type == 'photo'">{{ item.size | bytes:0 }}</span>
+            <span *ngIf="item.object_type == 'Media::Video'">{{ item.photo_number }} file<span *ngIf="item.photo_number>1">s</span></span>
+            <span *ngIf="item.object_type == 'Media::Photo'">{{ item.size | bytes:0 }}</span>
           </ng-template>
         </w-object-list>
 
@@ -103,7 +103,7 @@
         <div class="message-assets-content bg-gray-light text-center">
           <box-no-data *ngIf="currentTab === 'photos'" [icon]="'fa fa-picture-o'" [subTitle]="'There is no photo'">
           </box-no-data>
-          <box-no-data *ngIf="currentTab === 'notes'" [icon]="'fa fa-sticky-note-o'" [subTitle]="'There is no note'">
+          <box-no-data *ngIf="currentTab === 'notes'" [icon]="'icon-zone-note'" [subTitle]="'There is no note'">
           </box-no-data>
           <box-no-data *ngIf="currentTab === 'files'" [icon]="'fa fa-file-archive-o'" [subTitle]="'There is no file'">
           </box-no-data>

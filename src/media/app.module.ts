@@ -44,9 +44,15 @@ import {
 } from '@shared/components/modal/album';
 import { WMediaPreviewModule } from '@shared/components/w-media-preview/media-preview.module';
 import { ZMediaTrashModule } from '@media/trash/trash.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 @NgModule({
   imports: [
+    LocalStorageModule.withConfig({
+      prefix: 'my-app',
+      storageType: 'localStorage'
+    }),
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -73,6 +79,9 @@ import { ZMediaTrashModule } from '@media/trash/trash.module';
     SharedServicesModule.forRoot(),
     StoreModule.forRoot(appStore),
     EffectsModule.forRoot(appEffects),
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: false
+    }),
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
       : []

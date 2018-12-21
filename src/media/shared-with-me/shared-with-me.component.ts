@@ -26,6 +26,7 @@ import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { mediaConstants } from '@media/shared/config/constants';
 import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, MediaAdditionalListMixin])
 @Component({
@@ -64,6 +65,7 @@ MediaAdditionalListMixin {
     public sharingModalService: SharingModalService,
     public apiBaseService: ApiBaseService,
     public router: Router,
+    public localStorageService: LocalStorageService,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
     public sharingService: SharingService
@@ -75,6 +77,7 @@ MediaAdditionalListMixin {
   ngOnInit() {
     this.loadObjects();
     this.menuActions = this.getMenuActions();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   loadObjects(opts: any = {}) {
@@ -236,6 +239,19 @@ MediaAdditionalListMixin {
 
   getMenuActions() {
     return {
+      preview: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.viewDetail(this.selectedObjects[0].uuid);
+        },
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.preview,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-eye'
+      },
       share: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,

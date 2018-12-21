@@ -29,7 +29,18 @@ import {
   CommonEventService
 } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { PromptUpdateService } from './../shared/services/service-worker/prompt-update.service';
+import { UserService } from './../shared/services/user.service';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+import { User } from '@shared/shared/models';
+import { HeaderComponent } from '@shared/partials/header';
+import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
+import { LogUpdateService } from './../shared/services/service-worker/log-update.service';
+import { CardEditModalComponent } from './shared/card/components';
+import { SwPushService } from '@shared/services/service-worker/sw-push.service';
+import { ProfileService } from '@shared/user/services';
+import { CardService } from '@contacts/shared/card';
+
 
 const GAPI_TIMEOUT = 2000;
 
@@ -45,12 +56,20 @@ export class AppComponent
   @ViewChild('modalContainer', { read: ViewContainerRef })
   modalContainer: ViewContainerRef;
   @ViewChild('introduction') introduction: IntroductionModalComponent;
+  @ViewChild('cardEditModal') cardEditModal: CardEditModalComponent;
+
+
+  @ViewChild('header') header: HeaderComponent;
 
   routerSubscription: Subscription;
   modalComponent: any;
   modal: any;
   groups: Group[] = [];
   groups$: Observable<any[]>;
+  user$: Observable<any>;
+  profile$: Observable<any>;
+  loggedIn$: Observable<boolean>;
+  sharedCardNum$: Observable<number>;
   contactMenu: Array<any> = new Array<any>();
   contactEvents: any = Constants.contactEvents;
 
@@ -65,10 +84,18 @@ export class AppComponent
     private commonEventService: CommonEventService,
     public contactService: ZContactService,
     private groupService: GroupService,
+    private profileService: ProfileService,
     private googleApiService: GoogleApiService,
-    private wthConfirmService: WthConfirmService
+    private swPush: SwPushService,
+    public cardService: CardService,
+    // private checkUpdate: CheckForUpdateService,
+    private promptUpdate: PromptUpdateService
   ) {
-    console.log('Environment config', Config, this.confirmDialog);
+    this.user$ = authService.user$;
+    this.loggedIn$ = authService.loggedIn$;
+    this.profile$ = this.profileService.getProfile();
+    this.sharedCardNum$ = this.cardService.sharedCardNum$;
+
     this.commonEventService
       .filter(
         (event: CommonEvent) => event.channel === Constants.contactEvents.common
@@ -96,13 +123,7 @@ export class AppComponent
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
-
-    this.groupService
-      .getAllGroups()
-      .then((groups: any[]) => console.log('getAllGroups: ', groups))
-      .then(() => this.contactService.initialLoad())
-      .then(() => this.contactService.loadUserSetttings())
-      .then(() => timer(GAPI_TIMEOUT).subscribe(_ => this.googleApiService.handleClientLoad()));
+    this.cardService.getSharedCardNum();
   }
 
   ngAfterViewInit() {
@@ -112,6 +133,15 @@ export class AppComponent
     ) {
       this.introduction.open();
     }
+
+    this.contactService.initialLoad()
+    .then(() => this.groupService.getAllGroups())
+    .then(() => {
+      timer(GAPI_TIMEOUT).subscribe(_ => {
+          this.contactService.loadUserSetttings();
+          this.googleApiService.handleClientLoad();
+        });
+    });
   }
 
   ngOnDestroy() {
@@ -120,7 +150,6 @@ export class AppComponent
   }
 
   doEvent(event: CommonEvent) {
-    console.log('doEvent inside app component', event);
     switch (event.action) {
       case 'contact:group:open_modal_edit':
         this.loadModalComponent(GroupEditModalComponent);
@@ -136,9 +165,33 @@ export class AppComponent
       case 'contact:group:delete':
         const group = this.getGroup(event.payload.selectedItem);
         this.groupService.delete(group.id).subscribe((res: any) => {
-          console.log(res);
         });
         break;
+    }
+  }
+
+  reload(payload: any) {
+    if (payload.sharedCardNum) {
+      this.cardService.getSharedCardNum();
+    }
+  }
+
+  createCard() {
+    this.profileService.get(this.authService.user.uuid);
+    this.cardEditModal.open({mode: 'create', card: null, cardType: 'business'});
+  }
+
+  onSave(payload: any) {
+    if (payload.mode === 'edit') {
+      console.log('updating card:::', payload.card);
+      this.cardService.update(payload.card).subscribe(response => {
+        console.log('response');
+      });
+
+    } else if (payload.mode === 'create') {
+      console.log('create card:::', payload.card);
+      this.cardService.createCard(payload.card);
+      this.cardEditModal.close();
     }
   }
 

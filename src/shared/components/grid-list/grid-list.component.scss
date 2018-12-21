@@ -30,106 +30,107 @@ $wobject-checkbox: 30px;
   background-color: rgba($theme-color, 0.1) !important;
 }
 
-.wobject-view {
-  * {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
+// I remove this because it overwrite w-object-list.component.scss
+// .wobject-view {
+//   * {
+//     -webkit-user-select: none;
+//     -moz-user-select: none;
+//     -ms-user-select: none;
+//     user-select: none;
+//   }
 
-  @include flexbox;
-  @include flex-direction(column);
-  .wobject-row-header {
-    .wobject-row-toolbar {
-      display: none;
-      .btn-group {
-        .btn {
-          border-width: 0;
-        }
-        .btn:first-child {
-          @include border-right-radius(0);
-          margin-right: -1px;
-        }
-      }
-    }
-  }
-  .wobject-row-body {
-    @include flex(1);
-    overflow: auto;
-  }
+//   @include flexbox;
+//   @include flex-direction(column);
+//   .wobject-row-header {
+//     .wobject-row-toolbar {
+//       display: none;
+//       .btn-group {
+//         .btn {
+//           border-width: 0;
+//         }
+//         .btn:first-child {
+//           @include border-right-radius(0);
+//           margin-right: -1px;
+//         }
+//       }
+//     }
+//   }
+//   .wobject-row-body {
+//     @include flex(1);
+//     overflow: auto;
+//   }
 
-  .wobject-box-img {
-    img {
-      background-color: transparent;
-      background-repeat: no-repeat;
-      background-position: center center;
-      -webkit-background-size: cover !important;
-      background-size: cover !important;
-    }
-    .wmedia-box-info {
-      display: none;
-    }
-  }
-  .wobject-click:not(.wobject-drag) + .wobject-row-checkbox, .wobject-row-checkbox.disabled {
-    pointer-events: none;
-    i {
-      @include opacity(0.1);
-      background-color: $line !important;
-    }
-  }
-  .wobject-row-checkbox {
-    text-align: center;
-    z-index: 2;
-    cursor: pointer;
-    i {
-      @include center();
-      z-index: 10;
-      text-align: center;
-      border: 1px solid #9b9b9b;
-      display: inline-block;
-      &:before {
-        visibility: hidden;
-      }
-    }
-    &:hover i, &:focus i {
-      border-color: $theme-color;
-    }
-  }
-  .wobject-row {
-    &.active .wobject-row-checkbox i, & .wobject-row-checkbox i.active {
-      background-color: $theme-color !important;
-      border-color: $theme-color !important;
-      color: #ffffff !important;
-      &:before {
-        visibility: visible;
-      }
-    }
-  }
+//   .wobject-box-img {
+//     img {
+//       background-color: transparent;
+//       background-repeat: no-repeat;
+//       background-position: center center;
+//       -webkit-background-size: cover !important;
+//       background-size: cover !important;
+//     }
+//     .wmedia-box-info {
+//       display: none;
+//     }
+//   }
+//   .wobject-click:not(.wobject-drag) + .wobject-row-checkbox, .wobject-row-checkbox.disabled {
+//     pointer-events: none;
+//     i {
+//       @include opacity(0.1);
+//       background-color: $line !important;
+//     }
+//   }
+//   .wobject-row-checkbox {
+//     text-align: center;
+//     z-index: 2;
+//     cursor: pointer;
+//     i {
+//       @include center();
+//       z-index: 10;
+//       text-align: center;
+//       border: 1px solid #9b9b9b;
+//       display: inline-block;
+//       &:before {
+//         visibility: hidden;
+//       }
+//     }
+//     &:hover i, &:focus i {
+//       border-color: $theme-color;
+//     }
+//   }
+//   .wobject-row {
+//     &.active .wobject-row-checkbox i, & .wobject-row-checkbox i.active {
+//       background-color: $theme-color !important;
+//       border-color: $theme-color !important;
+//       color: #ffffff !important;
+//       &:before {
+//         visibility: visible;
+//       }
+//     }
+//   }
 
-  .wobject-click {
-    position: absolute;
-    z-index: 1;
-    margin: 0;
-    padding: 0;
-    &, &:hover, &:focus, &:active {
-      background-color: transparent;
-      border-width: 0;
-      outline-width: 0;
-    }
-  }
+//   .wobject-click {
+//     position: absolute;
+//     z-index: 1;
+//     margin: 0;
+//     padding: 0;
+//     &, &:hover, &:focus, &:active {
+//       background-color: transparent;
+//       border-width: 0;
+//       outline-width: 0;
+//     }
+//   }
 
-  .wobject-row-title {
-    display: none;
-  }
+//   .wobject-row-title {
+//     display: none;
+//   }
 
-  &.has-scrollbar {
-    padding-right: 15px;
-    .wobject-row-body {
-      margin-right: -15px;
-    }
-  }
-}
+//   &.has-scrollbar {
+//     padding-right: 15px;
+//     .wobject-row-body {
+//       margin-right: -15px;
+//     }
+//   }
+// }
 
 /**
 *
@@ -137,237 +138,240 @@ $wobject-checkbox: 30px;
 *
 */
 
-.wobject-grid {
-  .wobject-row-header {
-    .wobject-row {
-      display: none;
-    }
-    .wobject-row-toolbar {
-      display: block;
-      padding: 5px 15px 5px;
-      @include clearfix;
-    }
-  }
-  .wobject-row-body {
-    padding: 0 5px 15px;
-    @include flexbox();
-    @include flex-flow(row wrap);
-    @include justify-content(initial);
-    @include align-items(flex-start);
+// .wobject-grid {
+//   .wobject-row-header {
+//     .wobject-row {
+//       display: none;
+//     }
+//     .wobject-row-toolbar {
+//       display: block;
+//       padding: 5px 15px 5px;
+//       @include clearfix;
+//     }
+//   }
+//   .wobject-row-body {
+//     padding: 0 5px 15px;
+//     @include flexbox();
+//     @include flex-flow(row wrap);
+//     @include justify-content(initial);
+//     @include align-items(flex-start);
 
-    .wobject-row {
-      margin: 0 0 20px;
-      padding: 0 10px;
-      position: relative;
-      width: percentage(2/12);
+//     .wobject-row {
+//       margin: 0 0 20px;
+//       padding: 0 10px;
+//       position: relative;
+//       width: percentage(2/12);
 
-      .wobject-row-checkbox {
-        width: 24px;
-        height: 24px;
-        position: absolute;
-        top: 5px;
-        left: 5px + 10px;
-        pointer-events: none;
-        visibility: hidden;
-        i {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          line-height: 22px;
-          @include box-shadow(0 0 2px rgba(0, 0, 0, .5));
-          &, &:hover, &:focus {
-            border: 2px solid #FFF;
-          }
-        }
-      }
+//       .wobject-row-checkbox {
+//         width: 24px;
+//         height: 24px;
+//         position: absolute;
+//         top: 5px;
+//         left: 5px + 10px;
+//         pointer-events: none;
+//         visibility: hidden;
+//         i {
+//           width: 24px;
+//           height: 24px;
+//           border-radius: 50%;
+//           line-height: 22px;
+//           @include box-shadow(0 0 2px rgba(0, 0, 0, .5));
+//           &, &:hover, &:focus {
+//             border: 2px solid #FFF;
+//           }
+//         }
+//       }
 
-      .wobject-click {
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
-      }
-      &:hover, &.active {
-        .wobject-row-checkbox {
-          visibility: visible;
-        }
-      }
+//       .wobject-click {
+//         top: 0;
+//         left: 0;
+//         right: 0;
+//         bottom: 0;
+//         width: 100%;
+//         height: 100%;
+//       }
+//       &:hover, &.active {
+//         .wobject-row-checkbox {
+//           visibility: visible;
+//         }
+//       }
 
-      .wobject-row-ui {
-        position: relative;
-        &:after {
-          content: '';
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          border: 2px solid transparent;
-        }
-      }
-      &.active {
-        .wobject-row-ui {
-          &:after {
-            border-color: $theme-color;
-          }
-        }
-      }
-    }
-  }
+//       .wobject-row-ui {
+//         position: relative;
+//         &:after {
+//           content: '';
+//           position: absolute;
+//           top: 0;
+//           right: 0;
+//           bottom: 0;
+//           left: 0;
+//           border: 2px solid transparent;
+//         }
+//       }
+//       &.active {
+//         .wobject-row-ui {
+//           &:after {
+//             border-color: $theme-color;
+//           }
+//         }
+//       }
+//     }
+//   }
 
-  .wobject-item {
-    @include box-shadow(0 2px 4px 0 rgba(164, 164, 164, 0.40));
-    .wobject-column {
-      display: none;
-    }
-    .wobject-box {
-      display: block;
-      .wobject-box-name {
-        display: block;
-        padding: 10px;
-        white-space: nowrap;
-        overflow: hidden;
-        -ms-text-overflow: ellipsis;
-        text-overflow: ellipsis;
-        background-color: #ffffff;
-      }
+//   .wobject-item {
+//     @include box-shadow(0 2px 4px 0 rgba(164, 164, 164, 0.40));
+//     .wobject-column {
+//       display: none;
+//     }
+//     .wobject-box {
+//       display: block;
+//       .wobject-box-name {
+//         display: block;
+//         padding: 10px;
+//         white-space: nowrap;
+//         overflow: hidden;
+//         -ms-text-overflow: ellipsis;
+//         text-overflow: ellipsis;
+//         background-color: #ffffff;
+//       }
 
-      .wobject-box-img {
-        padding-bottom: 75%;
-        position: relative;
-        overflow: hidden;
+//       .wobject-box-img {
+//         padding-bottom: 75%;
+//         position: relative;
+//         overflow: hidden;
 
-        img {
-          @include center();
-          width: 100%;
-          height: auto;
-        }
-        .wmedia-box-info {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          padding: 5px 8px;
-          line-height: 1.2;
-          background-color: rgba(#000, 0.5);
-          color: #ffffff;
-          display: block;
-        }
-      }
-    }
-    .wobject-box-action {
-      position: absolute;
-      top: 5px;
-      right: 5px + 10px;
-      z-index: 2;
-      i {
-        font-size: 24px;
-        color: #ffffff;
-        text-shadow: 0 0 2px rgba(0, 0, 0, .5);
-      }
-    }
-  }
-}
+//         img {
+//           @include center();
+//           width: 100%;
+//           height: auto;
+//         }
+//         .wmedia-box-info {
+//           position: absolute;
+//           bottom: 0;
+//           left: 0;
+//           right: 0;
+//           padding: 5px 8px;
+//           line-height: 1.2;
+//           background-color: rgba(#000, 0.5);
+//           color: #ffffff;
+//           display: block;
+//         }
+//       }
+//     }
+//     .wobject-box-action {
+//       position: absolute;
+//       top: 5px;
+//       right: 5px + 10px;
+//       z-index: 2;
+//       i {
+//         font-size: 24px;
+//         color: #ffffff;
+//         text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+//       }
+//     }
+//   }
+// }
 
 /**
 *
 * Timeline View
 *
 */
-.wobject-timeline {
-  @extend .wobject-grid;
-  .wobject-row-title {
-    display: block;
-    width: 100%;
-    padding: 0 10px;
-    margin: 0 0 10px;
-  }
-}
+// .wobject-timeline {
+//   @extend .wobject-grid;
+//   .wobject-row-title {
+//     display: block;
+//     width: 100%;
+//     padding: 0 10px;
+//     margin: 0 0 10px;
+//   }
+// }
 
-/**
-*
-* List View
-*
-*/
-.wobject-list {
-  background-color: #ffffff;
-  .wobject-row {
-    @include flexbox;
-    position: relative;
-    border-bottom: 1px solid $line;
-    .wobject-row-checkbox {
-      width: $wobject-checkbox;
-      position: relative;
-      i {
-        width: 18px;
-        height: 18px;
-        border-radius: 3px;
-        line-height: 16px;
-      }
-    }
-    .wobject-click {
-      top: 0;
-      left: $wobject-checkbox;
-      width: calc(100% - 30px);
-      height: 100%;
-    }
-    .wobject-row-ui {
-      @include flex(1);
-      position: relative;
-    }
-    .wobject-item {
-      @include flexbox();
-      @include justify-content(space-between);
-      @include align-items(center);
-      padding: 10px 0;
+// /**
+// *
+// * List View
+// *
+// */
+// .wobject-list {
+//   background-color: #ffffff;
+//   .wobject-row {
+//     @include flexbox;
+//     position: relative;
+//     border-bottom: 1px solid $line;
+//     .wobject-row-checkbox {
+//       width: $wobject-checkbox;
+//       position: relative;
+//       i {
+//         width: 18px;
+//         height: 18px;
+//         border-radius: 3px;
+//         line-height: 16px;
+//       }
+//     }
+//     .wobject-click {
+//       top: 0;
+//       left: $wobject-checkbox;
+//       width: calc(100% - 30px);
+//       height: 100%;
+//     }
+//     .wobject-row-ui {
+//       @include flex(1);
+//       position: relative;
+//     }
+//     .wobject-item {
+//       @include flexbox();
+//       @include justify-content(space-between);
+//       @include align-items(center);
+//       padding: 10px 0;
 
-      .wobject-file-size {
-        width: $wobject-file-size;
-        text-align: right;
-        padding-right: 10px;
-      }
-      .wobject-create-date {
-        width: $wobject-create-date;
-      }
-      .wobject-owner {
-        width: $wobject-owner;
-      }
-      .wobject-box {
-        width: $wobject-box;
-        @include flex(1);
-        @include flexbox();
-        @include align-items(center);
-        .wobject-box-img {
-          margin-right: 5px;
-          img {
-            height: 30px;
-          }
-        }
-        .wobject-box-name {
-          @include flex(1);
-        }
-        .wobject-box-action {
-          display: inline-block;
-        }
-      }
-    }
+//       .wobject-file-size {
+//         width: $wobject-file-size;
+//         text-align: right;
+//         padding-right: 10px;
+//       }
+//       .wobject-create-date {
+//         width: $wobject-create-date;
+//       }
+//       .wobject-owner {
+//         width: $wobject-owner;
+//       }
+//       .wobject-box {
+//         width: $wobject-box;
+//         @include flex(1);
+//         @include flexbox();
+//         @include align-items(center);
+//         .wobject-box-img {
+//           margin-right: 5px;
+//           img {
+//             height: 30px;
+//           }
+//         }
+//         .wobject-box-name {
+//           @include flex(1);
+//         }
+//         .wobject-box-action {
+//           display: inline-block;
+//         }
+//       }
+//     }
 
-    &.active {
-      .wobject-row-checkbox, .wobject-row-ui {
-        background-color: rgba(#d4d4d4, 0.5);
-      }
-    }
+//     &.active {
+//       .wobject-row-checkbox, .wobject-row-ui {
+//         background-color: rgba(#d4d4d4, 0.5);
+//       }
+//     }
 
-    .ds-hover {
-      & ~ .wobject-row-checkbox,
-      & ~ .wobject-row-ui {
-        background-color: rgba(#d4d4d4, 0.5);
-      }
-    }
-  }
-}
+//     .ds-hover {
+//       & ~ .wobject-row-checkbox,
+//       & ~ .wobject-row-ui {
+//         background-color: rgba(#d4d4d4, 0.5);
+//       }
+//     }
+//   }
+//   .photo-box-name {
+//     word-break: break-word;
+//   }
+// }
 
 @media (max-width: $screen-xs-max) {
   .row-img {

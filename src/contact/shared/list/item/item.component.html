@@ -42,7 +42,7 @@
   <div class="component-listbox-date"></div>
   <!-- Actions for contact -->
   <div class="component-listbox-action" *ngIf="!data.settings">
-    <z-contact-shared-actions-bar [data]="data" [showQuickInvitation]="data.wthapps_user == null" [showNumber]="false"
+    <z-contact-shared-actions-bar [data]="data" [contacts]="[data]" [showQuickInvitation]="data.wthapps_user == null" [showNumber]="false"
       [showSocial]="data | isContactInternal" [showChat]="data | isContactInternal" [showInvitation]="data | canInvite"
       [toggleFavourite]="data | contactHasGroup:'favourite' " [showFavorite]="data?.my_contact" [showAddToContacts]="!data?.my_contact"
       [toggleBlacklist]="data |

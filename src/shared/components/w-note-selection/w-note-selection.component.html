@@ -1,0 +1,86 @@
+<bs-modal #modal cssClass="modal-selection modal-note-selection modal-full-height"
+          [keyboard]="false"
+          [animation]="false"
+          [backdrop]="'static'"
+          (onDismiss)="dismiss($event)">
+  <bs-modal-header [showDismiss]="true">
+    <div *ngIf="searchShow" class="modal-media-search">
+      <div class="modal-media-search-in">
+        <textbox-search [placeholder]="'Search something'" [showSearchClearText]="true" [search]="searchText"
+                        (onEnterEvent)="onSearchEnter($event)" (onEscapeEvent)="onSearchEscape($event)">
+        </textbox-search>
+      </div>
+
+    </div>
+    <button (click)="searchShow = true" class="btn btn-search btn-default pull-right" type="button">
+      <i class="fa fa-search"></i>
+    </button>
+
+    <w-nav-tab [tabs]="tabs" [setTabActive]="currentTab" (currentTab)="tabAction($event)"></w-nav-tab>
+
+    <w-object-toolbar-selected [selectedObjects]="selectedNotes$ | async">
+      <button (click)="onInsert()" class="btn btn-outline-default" type="button">Insert</button>
+    </w-object-toolbar-selected>
+  </bs-modal-header>
+  <bs-modal-body>
+    <ng-container *ngIf="(notes$ | async) as notesList; else templateloading">
+      <ng-container *ngIf="notesList?.length > 0; else templateNodata">
+        <div class="modal-selection-toolbar">
+          <w-object-toolbar-view class="pull-right"></w-object-toolbar-view>
+        </div>
+        <w-object-list class="media-selection-content gray-light"
+                       [viewMode]="view$ | async"
+                       [data]="notesList"
+                       [sortInline]="false"
+                       [isLoading]="isLoading"
+                       (completeSort)="onCompleteSort($event)"
+                       (completeLoadMore)="onCompleteLoadMore($event)"
+                       (completeDoubleClick)="onCompleteDoubleClick($event)">
+          <ng-template #columnBox let-item>
+            <!-- ------------ Note view ------------- -->
+            <ng-container *ngIf="item.object_type == 'Note::Note'">
+              <div class="wobject-box-name">
+                <i class="icon-zone-note mr5"></i> {{ item.object.name ? item.object.name : 'Untitled' }}
+              </div>
+              <div class="wobject-box-description" [innerHTML]="item?.object?.content">
+              </div>
+            </ng-container>
+            <!-- ------------ Folder view ------------- -->
+            <ng-container *ngIf="item.object_type == 'Note::Folder'">
+              <div class="wobject-box-name">
+                <i class="fa fa-folder-o mr5"></i> {{ item.object.name ? item.object.name : 'Untitled' }}
+              </div>
+            </ng-container>
+          </ng-template>
+          <ng-template #columnFileSize let-item>
+            <!--{{ item | json }}-->
+          </ng-template>
+        </w-object-list>
+      </ng-container>
+      <ng-template #templateNodata>
+        <div class="media-selection-content gray-light" [ngSwitch]="currentTab">
+          <div class="align-self-center">
+            <box-no-data *ngSwitchCase="'my_note'" [icon]="'fa fa-photo'" [title]="'There is no photo!'"
+                         [subTitle]="'There is no photo.'">
+            </box-no-data>
+
+            <box-no-data *ngSwitchCase="'favourites'" [icon]="'fa fa-star'" [title]="'There is no favourite!'"
+                         [subTitle]="'There is no favourite.'">
+            </box-no-data>
+            <box-no-data *ngSwitchCase="'shared_with_me'" [icon]="'fw fw-shared-with-me'"
+                         [title]="'There is no shared with me!'"
+                         [subTitle]="'There is no shared with me.'">
+            </box-no-data>
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
+    <ng-template #templateloading>
+      <div class="media-selection-content gray-light">
+        <div class="align-self-center">
+          <box-loading></box-loading>
+        </div>
+      </div>
+    </ng-template>
+  </bs-modal-body>
+</bs-modal>

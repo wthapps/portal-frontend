@@ -27,6 +27,7 @@ import { SharingModalResult } from '@shared/shared/components/photo/modal/sharin
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { WUploader } from '@shared/services/w-uploader';
 import { mediaConstants } from '@media/shared/config/constants';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 declare var _: any;
 @Mixins([SharingModalMixin, MediaBasicListMixin, MediaViewMixin, LoadModalAble, MediaDownloadMixin])
@@ -74,6 +75,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
     public confirmService: WthConfirmService,
     private playlistModalService: PlaylistModalService,
     public resolver: ComponentFactoryResolver,
+    public localStorageService: LocalStorageService,
     private uploader: WUploader
               ) {}
 
@@ -83,6 +85,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
     this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').subscribe((event: any) => {
       this.doListEvent(event);
     });
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   loadModalComponent:(component: any) => void;
@@ -223,7 +226,8 @@ custom method please overwirte any method*/
 
   upload(content_types: any = []) {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-      allowedFileTypes: content_types
+      allowedFileTypes: content_types,
+      maxNumberOfFiles: 4
     });
   }
 
@@ -237,7 +241,7 @@ custom method please overwirte any method*/
           this.viewDetail(this.selectedObjects[0].uuid)
         },
         class: 'btn btn-default',
-        liclass: 'hidden-xs',
+        liclass: '',
         tooltip: this.tooltip.preview,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-eye'

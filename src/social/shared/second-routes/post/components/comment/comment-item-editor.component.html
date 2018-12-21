@@ -7,12 +7,12 @@
     </a>
   </div>
   <div class="z-social-media-body">
-    <form novalidate>
+    <form novalidate class="message-editor-form" >
 
       <div class="z-social-media-inputpost form-group">
         <span class="z-social-media-inputpost-icon">
           <button class="btn btn-default" (click)="onOpenPhotoSelect()" pTooltip="{{ tooltip.addPhoto }}" tooltipPosition="top">
-            <i class="fa fa-camera"></i>
+            <i class="fa fa-image"></i>
           </button>
           <div class="btn-group dropup">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.emoticons }}" tooltipPosition="top"
@@ -22,25 +22,28 @@
           </div>
         </span>
 
-        <mini-editor [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" placeholder="Add a comment" [style]="{'height':'auto', 'min-height': '27px'}"
+        <mini-editor [(ngModel)]="comment.content" [ngModelOptions]="{standalone: true}" placeholder="Add a comment" [style]="{'height':'auto', 'min-height': '27px', 'border': 'none'}"
           (onKeyUp)="handleKeyUp($event)" [styleClass]="editorError" (onTextChange)="onTextChange($event)" [validators]="[textValidator]">
           <p-header>
           </p-header>
         </mini-editor>
+
       </div>
       <p *ngIf="editorError" class="text-danger">{{editorErrorMessage}}</p>
 
-
       <photo-item-preview [photo]="comment?.photo" [files]="files" (events)="doEvents($event)"></photo-item-preview>
 
-      <div class="clearfix text-right comment-editor-button-region" *ngIf="(!(this.comment.content === '' && !this.hasUpdatedContent && !this.comment.photo) && mode == 0) || (mode != 0)">
+      <!-- <div class="clearfix text-right comment-editor-button-region" *ngIf="(!(this.comment.content === '' && !this.hasUpdatedContent && !this.comment.photo) && mode == 0) || (mode != 0)">
         <button class="btn btn-sm btn-outline-default" (click)="cancel()" href="javascript:;">Cancel
         </button>
 
         <button class="btn btn-sm btn-outline-default" (click)="post()" [disabled]="!(this.comment.content === '' && this.hasUpdatedContent && !!this.comment.photo) || editorError">Post
         </button>
-      </div>
+      </div> -->
 
     </form>
+    <div class="blur-text" *ngIf="comment?.content?.length > 0">
+      *Press Enter to <a href="javascript:;" (click)="handlePost()">post</a> or Esc to <a href="javascript:;" (click)="cancel()">cancel</a>
+    </div>
   </div>
 </div>

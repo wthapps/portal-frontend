@@ -13,7 +13,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ZSocialSharedModule } from './shared/shared.module';
 import { ZSocialHomeModule } from './home/home.module';
-import { SocialSettingsModule } from './settings/setting.module';
 import { CoreModule } from '@wth/core/core.module';
 import { ShortcutEffects } from './shared/effects/shortcut-effects';
 import { environment } from '@env/environment';
@@ -25,8 +24,8 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { WthCommonModule } from '@shared/common/wth-common.module';
 import { PostModule } from '@social/shared/second-routes/post';
 import { MiniEditorModule } from '@shared/shared/components/mini-editor/mini-editor.module';
-import { Ng2HdModule } from '@shared/shared/ng2-hd';
 import { ZSocialPhotoModule } from '@social/shared/second-routes/photo/photo.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
@@ -36,7 +35,6 @@ import { ZSocialPhotoModule } from '@social/shared/second-routes/photo/photo.mod
 
     AppRoutingModule,
     ZSocialHomeModule,
-    SocialSettingsModule,
     ModalModule,
     WthCommonModule,
     MiniEditorModule,
@@ -54,6 +52,9 @@ import { ZSocialPhotoModule } from '@social/shared/second-routes/photo/photo.mod
       SoProfileEffects,
       SocialPostsEffects
     ]),
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: false
+    }),
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
       : []

@@ -13,7 +13,7 @@ import { SO_PROFILE_UPDATE_DONE } from '../shared/reducers/index';
 })
 export class ZSocialSettingComponent implements OnInit {
   user: SoUser = new SoUser();
-  loading: boolean = true;
+  loading = true;
   readonly PRIVACIES: string[] = ['public', 'friends', 'personal'];
   readonly PRIVACY_NAMES: any = {
     public: 'Public',

@@ -23,6 +23,8 @@ import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
+import { mediaConstants } from '@media/shared/config/constants';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 declare var _: any;
 
@@ -91,6 +93,7 @@ export class AlbumListComponent implements OnInit,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
     public objectListService: WObjectListService,
+    public localStorageService: LocalStorageService,
     public mediaCreateModalService: MediaCreateModalService,
     public resolver: ComponentFactoryResolver
   ) {
@@ -101,6 +104,7 @@ export class AlbumListComponent implements OnInit,
   ngOnInit() {
     this.loadObjects();
     this.menuActions = this.getMenuActions();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   onListChanges(e: any) {
@@ -121,14 +125,37 @@ export class AlbumListComponent implements OnInit,
     }
   }
 
+  shareSelectedObject() {
+    this.openModalShare([this.selectedObjects[0].sharing_object]);
+    const sub = this.sharingModalService.update$.subscribe(res => {
+      if (!this.selectedObjects[0].sharing_object) {
+        this.selectedObjects[0].sharing_object = res.sharing_object;
+      }
+      sub.unsubscribe();
+    })
+  }
+
   getMenuActions() {
     return {
+      preview: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: false, // Outside dropdown list
+        action: () => {
+          this.viewDetail(this.selectedObjects[0].uuid);
+        },
+        class: 'btn btn-default',
+        liclass: '',
+        tooltip: this.tooltip.preview,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-eye'
+      },
       share: {
         active: true,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
         action: () => {
-          this.openModalShare([this.selectedObjects[0].sharing_object]);
+          this.shareSelectedObject();
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
@@ -140,7 +167,9 @@ export class AlbumListComponent implements OnInit,
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
-        action: this.openModalShare.bind(this),
+        action: () => {
+          this.shareSelectedObject();
+        },
         class: '',
         liclass: 'visible-xs-block',
         tooltip: this.tooltip.share,

@@ -94,9 +94,11 @@
     <div class="photo-detail-info-title">
       <h4>
         <i class="fa fa-info-circle"></i> Details</h4>
-      <button class="btn btn-default pull-right" (click)="openEditModal(object)">
-        <i class="fa fa-pencil"></i>
-      </button>
+        <ng-container *ngIf="!object.role_id || object.role_id >= 3">
+          <button class="btn btn-default pull-right" (click)="openEditModal(object)">
+            <i class="fa fa-pencil"></i>
+          </button>
+        </ng-container>
     </div>
     <dl>
       <div class="row">
@@ -113,7 +115,7 @@
       </div>
       <div class="row">
         <dt class="col-sm-6">Number of files</dt>
-        <dd class="col-sm-6">{{ object.child_count }}</dd>
+        <dd class="col-sm-6">{{ objects?.length || object.child_count }}</dd>
       </div>
       <div class="row">
         <dt class="col-sm-6">Created</dt>
@@ -133,19 +135,19 @@
       <dd>
         <div>
           <ul class="list-unstyled albums">
-            <li *ngIf="sharingOwner" class="row can-click" style="border-right: 2px solid gainsboro; padding: 0 5px"
+            <li *ngIf="sharingOwner" class="owner-avatar can-click pr5" [ngClass]='{vertical: recipients && recipients.length > 0}'
               pTooltip="{{sharingOwner.user.name}} is owner" tooltipPosition="bottom" (click)="openModalShareParent()">
               <div class="avatar-xs">
                 <img [src]="sharingOwner.user.profile_image" alt="">
               </div>
             </li>
-            <li *ngFor="let recipient of recipients" class="row can-click" pTooltip="{{recipient.user.name}}"
+            <li *ngFor="let recipient of recipients" class="can-click" pTooltip="{{recipient.user.name}}"
               tooltipPosition="bottom" (click)="openModalShareParent()">
               <div class="avatar-xs">
                 <img [src]="recipient.user.profile_image" alt="">
               </div>
             </li>
-            <li *ngIf="moreRecipients" class="row can-click" (click)="showMoreRecipients()">
+            <li *ngIf="moreRecipients" class="can-click" (click)="showMoreRecipients()">
               <div class="avatar-xs text-center" style="border: 1px solid grey">
                 <h5 style="position: relative; top: -2px">
                   {{moreRecipients.length}}+

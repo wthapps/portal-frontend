@@ -10,7 +10,7 @@ import { ZMediaPreviewComponent } from '@shared/components/w-media-preview/media
         path: 'preview/:id',
         component: ZMediaPreviewComponent,
         outlet: 'modal',
-        data: { object_type: 'video', show_menu_action: false },
+        data: { object_type: 'Media::Video', show_menu_action: false },
         canActivate: [AuthGuard]
       }
     ])

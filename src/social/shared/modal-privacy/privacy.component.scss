@@ -1,2 +1,11 @@
 @import "../../../assets/styles/global";
 
+.wid100 {
+    ul>li.ui-autocomplete-input-token>input {
+        width: 12em !important;
+    }
+}
+
+.middle {
+    vertical-align: middle;
+}

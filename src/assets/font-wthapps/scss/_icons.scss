@@ -6,7 +6,6 @@
 }
 .#{$fw-css-prefix}-album:before {
   content: "\e900";
-  color: #4a4a4a;
 }
 .#{$fw-css-prefix}-user:before {
   content: "\f007";
@@ -61,4 +60,10 @@
 }
 .#{$fw-css-prefix}-pinterest-p:before {
   content: "\f231";
+}
+.#{$fw-css-prefix}-megaphone:before {
+  content: "\e903";
+}
+.#{$fw-css-prefix}-megaphone-mute:before {
+  content: "\e904";
 }

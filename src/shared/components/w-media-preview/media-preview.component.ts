@@ -23,6 +23,7 @@ import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mi
 import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
 import { DoublyLinkedListsV2 } from '@shared/data-structures/link-list/doubly-linked-lists-v2';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Subject } from 'rxjs';
 
 const MODEL_MAP = {
   'photo': '::Media::Photo',
@@ -38,7 +39,7 @@ const MODEL_MAP = {
   templateUrl: './item-detail.component.html',
   styleUrls: ['media-preview.component.scss']
 })
-export class ZMediaPreviewComponent implements OnInit,
+export class ZMediaPreviewComponent implements OnInit, OnDestroy,
   MediaAdditionalListMixin,
   SharingModalMixin,
   MediaDownloadMixin,
@@ -69,6 +70,7 @@ export class ZMediaPreviewComponent implements OnInit,
   subAddAlbum: any;
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
+  destroy$ = new Subject();
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -141,6 +143,11 @@ export class ZMediaPreviewComponent implements OnInit,
           this.returnUrl = p.get('returnUrl') || this.returnUrl;
         });
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   openModalShareCustom() {

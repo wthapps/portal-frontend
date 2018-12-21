@@ -1,6 +1,6 @@
 <div *ngIf="data" class="media-avatar">
   <div *ngIf="displayAvatar" class="media-avatar-img-wrap">
-    <div class="media-avatar-img avatar-{{ size }}">
+    <div class="media-avatar-img avatar-{{ size }} avatar-chat">
       <img *ngIf="data.group_json?.group_type == 'couple'" [src]="data.display.image" alt="">
       <img *ngIf="data.group_json?.group_type == 'multiple'" [src]="data.group_json?.image" alt="">
     </div>
