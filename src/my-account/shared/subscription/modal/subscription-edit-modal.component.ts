@@ -1,10 +1,9 @@
-import { Component, Input, ViewChild, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
-import { BsModalComponent } from 'ng2-bs3-modal';
+import { AfterViewInit, Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Constants } from '@wth/shared/constant';
+import { ApiBaseService } from '@wth/shared/services';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService } from '@wth/shared/services';
-import { Constants } from '@wth/shared/constant';
+import { BsModalComponent } from 'ng2-bs3-modal';
 
 declare var _: any;
 declare let moment: any;
@@ -13,16 +12,15 @@ declare let moment: any;
 @Component({
   selector: 'subscription-edit-modal',
   templateUrl: 'subscription-edit-modal.component.html',
-  styleUrls: ['subscription-edit-modal.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['subscription-edit-modal.component.scss']
 })
 
 export class SubscriptionEditModalComponent implements OnInit, AfterViewInit {
   @Input() items: Array<any>;
   @ViewChild('modal') modal: BsModalComponent;
-
+  checked: boolean = true;
   mode: string = 'view';
-  accountAction: string = 'add'; //'add' or 'delete'
+  accountAction: string = 'add'; // 'add' or 'delete'
   operatingItems: Array<any>;
   subscription: any = {
     amount: 0,

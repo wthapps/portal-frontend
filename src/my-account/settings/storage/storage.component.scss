@@ -1,0 +1,32 @@
+@import "../../../assets/styles/global";
+
+.dl-storage-dt {
+  padding-left: 26px;
+  dt {
+    font-size: 18px;
+    position: relative;
+    font-weight: normal;
+    &:before {
+      content: '';
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      background-color: #DEDEDE;
+      position: absolute;
+      left: -26px;
+      top: 2px;
+    }
+    &.active {
+      &:before {
+        background-color: $theme-color;
+      }
+    }
+  }
+  dd {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+  dd + dt {
+    margin-top: 20px;
+  }
+}

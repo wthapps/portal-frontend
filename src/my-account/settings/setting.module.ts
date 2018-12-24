@@ -1,18 +1,19 @@
-import { NgModule } from '@angular/core';
+import { DeleteAccountComponent } from '@account/settings/delete-account/delete-account.component';
+import { SettingsPasswordComponent } from '@account/settings/password/password.component';
+import { MyStorageComponent } from '@account/settings/storage/storage.component';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { SharedModule } from '@wth/shared/shared.module';
 
-import { MySettingRoutingModule } from './setting-routing.module';
-import { MySettingComponent } from './setting.component';
-
-import { MyProfileComponent } from './profile/profile.component';
+import { MySharedModule } from '../shared/shared.module';
 import { MyAccountComponent } from './account/account.component';
 import { MyPreferencesComponent } from './preferences/preferences.component';
 
-import { MySharedModule } from '../shared/shared.module';
-import { SharedModule } from '@wth/shared/shared.module';
-import { SettingsPasswordComponent } from '@account/settings/password/password.component';
-import { DeleteAccountComponent } from '@account/settings/delete-account/delete-account.component';
-import { SharedServicesModule } from '@wth/shared/shared-services.module';
+import { MyProfileComponent } from './profile/profile.component';
+
+import { MySettingRoutingModule } from './setting-routing.module';
+import { MySettingComponent } from './setting.component';
 
 @NgModule({
   imports: [
@@ -28,8 +29,10 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
     SettingsPasswordComponent,
     MyAccountComponent,
     DeleteAccountComponent,
-    MyPreferencesComponent
+    MyPreferencesComponent,
+    MyStorageComponent
   ],
   exports: [MySettingComponent]
 })
-export class MySettingModule {}
+export class MySettingModule {
+}

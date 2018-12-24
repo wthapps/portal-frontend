@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subject ,  Observable } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 
 import { InvitationService } from '@wth/shared/shared/components/invitation/invitation.service';
@@ -57,7 +57,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUser = this.authService.user;
 
-    this.store.dispatch({type: fromAccount.ActionTypes.GET_ACCOUNTS, payload: {...this.userService.getSyncProfile()}});
+    this.store.dispatch({ type: fromAccount.ActionTypes.GET_ACCOUNTS, payload: { ...this.userService.getSyncProfile() } });
 
     this.api.get(`account/accounts/${this.currentUser.id}/subscription`).subscribe(
       (response: any) => {
@@ -111,7 +111,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_account_edit_modal',
-      payload: {mode: 'view', data: item}
+      payload: { mode: 'view', data: item }
     });
   }
 
@@ -120,7 +120,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_account_edit_modal',
-      payload: {mode: 'edit', data: item}
+      payload: { mode: 'edit', data: item }
     });
   }
 
@@ -133,7 +133,8 @@ export class AccountListComponent implements OnInit, OnDestroy {
         accountAction: 'delete',
         data: [item],
         accounts: this.items,
-        subscription: this.subscription}
+        subscription: this.subscription
+      }
     });
   }
 
@@ -168,26 +169,27 @@ export class AccountListComponent implements OnInit, OnDestroy {
 
   select(item: any) {
     let selectedItem = _.find(this.selectedItems, (i: any) => i.uuid === item.uuid);
-    if(!selectedItem) {
+    if (!selectedItem) {
       this.selectedItems.push(item);
-      item = Object.assign({},item, {selected: true});
-      if(this.selectedItems.length === this.items.length)
+      item = Object.assign({}, item, { selected: true });
+      if (this.selectedItems.length === this.items.length) {
         this.isSelectAll = true;
+      }
     } else {
       _.remove(this.selectedItems, (i: any) => i.uuid === item.uuid);
-      item = Object.assign({},item, {selected: false});
+      item = Object.assign({}, item, { selected: false });
       this.isSelectAll = false;
     }
   }
 
   selectAll() {
-    if(this.selectedItems.length !== this.items.length) {
+    if (this.selectedItems.length !== this.items.length) {
       this.selectedItems = [...this.items];
-      this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: true}));
+      this.items = _.map(this.items, (i: any) => Object.assign({}, i, { selected: true }));
       this.isSelectAll = true;
     } else {
       this.selectedItems.length = 0;
-      this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: false}));
+      this.items = _.map(this.items, (i: any) => Object.assign({}, i, { selected: false }));
       this.isSelectAll = false;
     }
   }

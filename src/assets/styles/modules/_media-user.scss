@@ -98,48 +98,9 @@ dl.media-user-list-group {
     overflow: hidden;
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
-    padding-left: 0px;
+    padding-left: 0;
   }
   .action {
     margin-left: 10px;
   }
-}
-
-.changing {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  border: 1px solid #FFD051;
-  padding: 6px 0 6px 10px;
-  border-radius: 2px;
-  web-kit-border-radius: 2px;
-  margin-right: 1px;
-}
-
-.w-list-scroll {
-  min-height: 300px;
-  max-height: 300px;
-  height: 300px;
-  overflow-y: auto;
-  .media, .media-body {
-    overflow: visible;
-  }
-  .media-right {
-    white-space: nowrap;
-  }
-}
-
-.text-color {
-  color: $text-color;
-}
-
-.text-color-light {
-  color: $text-color-light;
-}
-.text-normal {
-  font-size: 14px;
-}
-
-.text-small {
-  font-size: 12px;
 }

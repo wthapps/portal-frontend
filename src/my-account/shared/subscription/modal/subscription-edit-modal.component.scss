@@ -1,6 +1,16 @@
-#modal-subscription-edit {
-  //z-index: 1000;
-}
-#modal-subscription-edit + .modal-backdrop{
-  //z-index: 999;
+@import "../../../../assets/styles/global";
+
+.dl-horizontal {
+  margin-bottom: 0;
+  dt {
+    text-align: right;
+    font-weight: normal;
+    color: $text-muted;
+  }
+  dd {
+    margin-bottom: 10px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }

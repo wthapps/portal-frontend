@@ -98,8 +98,8 @@ $ui-inputswitch-w: 24px;
   &.ui-state-active,
   &.ui-state-active.ui-state-focus {
     background-color: #FFFFFF;
-    border-color: $input-color-active;
-    color: $input-color-active;
+    border-color: $color-success;
+    color: $color-success;
   }
   &.ui-state-focus {
     background-color: transparent;
@@ -116,9 +116,23 @@ $ui-inputswitch-w: 24px;
   height: 16px;
   border-width: 2px;
   .ui-radiobutton-icon {
-    @include center();
     margin: 0;
     padding: 0;
+    @include center();
+    width: 8px;
+    height: 8px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    &:before {
+      display: none;
+    }
+  }
+  &.ui-state-active {
+    border-width: 2px;
+    .ui-radiobutton-icon {
+      background-color: $color-success;
+    }
   }
 }
 
@@ -556,5 +570,31 @@ $ui-inputswitch-w: 24px;
   .ui-dropdown-label {
     line-height: 18px;
     padding: 7px 12px;
+  }
+}
+
+.list-group-radio {
+  .list-group-radio-item {
+    position: relative;
+    padding: 15px;
+    margin-bottom: 10px;
+    .ui-radiobutton-label {
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 10;
+        border: 1px solid $line;
+        cursor: pointer;
+      }
+      &.ui-label-active {
+        &:before {
+          border-color: $color-success;
+        }
+      }
+    }
   }
 }
