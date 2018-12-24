@@ -8,8 +8,8 @@ import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { AbstractClassPart } from '@angular/compiler/src/output/output_ast';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { Subject } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
-import { ApiBaseService } from '@shared/services';
+import { takeUntil, filter, take } from 'rxjs/operators';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 
 @Component({
   selector: 'z-chat-share-edit-conversation',
@@ -29,6 +29,7 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
   constructor(private chatService: ChatService,
     private mediaSelectionService: WMediaSelectionService,
     private apiBaseService: ApiBaseService,
+    private commonEventService: CommonEventService,
     private fb: FormBuilder)  {
 
   }
@@ -71,5 +72,24 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
       // detect to update
       this.conversation = {...this.conversation};
     });
+  }
+
+  startCrop(photo: any){
+    console.log(photo);
+
+    this.commonEventService.broadcast({
+      channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN',
+      payload: { currentImage: photo }
+    });
+    this.modal.close();
+    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
+      .pipe(take(1))
+      .subscribe((event: any) => {
+        // this.doEvent(event);
+        console.log(event);
+        if (event.action == "SELECT_CROP:DONE") {
+
+        }
+      });
   }
 }

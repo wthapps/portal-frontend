@@ -17,7 +17,7 @@
           <i class="fa fa-times"></i>
         </button>
 
-        <button *ngIf="showSearchAdvanced" class="btn btn-default" type="button" (click)="onShowSearchAdvanced()"
+        <button *ngIf="showSearchAdvanced && !(showSearchClearText || (search && search.length > 0))" class="btn btn-default" type="button" (click)="onShowSearchAdvanced()"
                 pTooltip="{{ tooltip.searchOptions }}" tooltipPosition="bottom">
           <i class="fa fa-sliders" aria-hidden="true"></i>
           <!--<i class="fa fa-caret-down" [ngClass]="{'fa-caret-up': searchAdvanced, 'fa-caret-down': !searchAdvanced}"></i>-->

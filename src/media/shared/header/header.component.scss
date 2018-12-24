@@ -1,8 +1,23 @@
 @import "../../../assets/styles/global";
 
-:host {
-  display: block;
-  float: left;
+.navbar-searchTop-advanced{
+  .ui-calendar{
+    display: block;
+    .ui-inputtext{
+      width: 100% !important;
+      padding-right: 2rem !important;
+    }
+    .ui-calendar-button{
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: transparent;
+      border-color: transparent;
+      color: $text-muted;
+      &:hover,&:focus{
+        background-color: $theme-color;
+        border-color: $theme-color;
+      }
+    }
+  }
 }
-
-

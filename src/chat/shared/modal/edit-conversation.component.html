@@ -6,7 +6,7 @@
       </bs-modal-header>
       <bs-modal-body>
         <div class="media media-user-list">
-          <div class="media-left can-click" (click)="openMediaSelection()">
+          <div class="media-left can-click" (click)="startCrop(conversation)">
             <z-chat-share-user [data]="conversation" [size]="'sm'" [displayUserName]=false [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
           </div>
           <div class="media-body vertical-bottom">

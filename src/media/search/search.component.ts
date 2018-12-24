@@ -14,7 +14,7 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, DateService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
@@ -89,6 +89,7 @@ export class ZMediaSearchComponent implements
     public resolver: ComponentFactoryResolver,
     public confirmService: WthConfirmService,
     public localStorageService: LocalStorageService,
+    public dateService: DateService,
     // public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public route: ActivatedRoute,
@@ -99,7 +100,7 @@ export class ZMediaSearchComponent implements
   onAddedToPlaylist: (data: any) => void;
 
   ngOnInit() {
-    this.route.queryParams.subscribe(p => {
+    this.route.queryParams.subscribe((p: any) => {
       this.loadObjects(p);
     });
     this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
@@ -160,6 +161,12 @@ export class ZMediaSearchComponent implements
   }
 
   loadObjects(input: any) {
+    let new_input = { ...input};
+    if(input.searchFrom || input.searchTo) {
+      new_input.searchFrom = new Date(input.searchFrom)
+      new_input.searchTo = new Date(input.searchTo)
+    }
+
     this.apiBaseService.get(`media/search`, input).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
@@ -174,10 +181,12 @@ export class ZMediaSearchComponent implements
   loadingEnd: (input?: any) => void;
 
   viewDetail(input?: any) {
-    if (this.selectedObjects[0].model === 'Media::Photo') {
+    if (this.selectedObjects[0].object_type === 'Media::Photo') {
       this.router.navigate([`photos/`, this.selectedObjects[0].uuid]);
-    } else {
+    } else if (this.selectedObjects[0].object_type === 'Media::Video') {
       this.router.navigate([`videos/`, this.selectedObjects[0].uuid]);
+    } else {
+      this.router.navigate([`albums/`, this.selectedObjects[0].uuid]);
     }
   }
 
