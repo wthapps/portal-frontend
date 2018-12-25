@@ -101,7 +101,7 @@
                           [label]="item.category | keyToValue: emailType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
             </dt>
             <dd>
-              <div><p><a style="text-transform: lowercase;" href="mailto:{{ item.value }}">{{ item.value }}</a></p></div>
+              <div><a style="text-transform: lowercase;" href="mailto:{{ item.value }}">{{ item.value }}</a></div>
             </dd>                
           </ng-template>
         </ng-container>
@@ -155,7 +155,7 @@
                 </p-checkbox>
               </dt>
               <dd>
-                <div><p><a href="{{ item.value }}" target="_blank" rel="noopener" style="text-transform: lowercase">{{ item.value }}</a></p></div>
+                <div><a href="{{ item.value }}" target="_blank" rel="noopener" style="text-transform: lowercase">{{ item.value }}</a></div>
               </dd>
           </ng-template>  
         </ng-container>      

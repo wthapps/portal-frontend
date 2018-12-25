@@ -33,7 +33,7 @@
     margin-bottom: 0;
     &:not(:last-child) {
       //margin-bottom: 5px;
-      padding-bottom: 0px;
+      padding-bottom: 10px;
       //border-bottom: 1px solid $line;
     }
   }
@@ -54,10 +54,7 @@
     }
     dd {
       margin-left: 150px;
-      //div {
-      //  padding-top: 6px;
-      //}
-      padding-top: 7px;
+      padding-top: 6px;
     }
   }
 }
