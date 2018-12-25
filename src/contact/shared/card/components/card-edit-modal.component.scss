@@ -34,11 +34,9 @@
     &:not(:last-child) {
       //margin-bottom: 5px;
       padding-bottom: 10px;
-      //border-bottom: 1px solid $line;
     }
   }
   dd:not(:last-child) {
-    margin-bottom: 0px;
   }
 }
 
@@ -55,6 +53,9 @@
     dd {
       margin-left: 150px;
       padding-top: 6px;
+      &.not-first-item {
+        padding-top: 14px;
+      }
     }
   }
 }
@@ -74,3 +75,9 @@
     }
   }
 }
+
+dt.not-first-item {
+  padding-top: 6px;
+}
+
+

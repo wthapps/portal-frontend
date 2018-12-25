@@ -93,14 +93,14 @@
       <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.emails && profile.emails.length > 0">
           <ng-template ngFor let-item [ngForOf]="profile.emails" let-i="index" [ngForTrackBy]="trackByFn">
-            <dt>
+            <dt [ngClass]="{'not-first-item' : i > 0 }">
               <button class="btn btn-default icon">
                 <i *ngIf="i === 0" class="fa fa-envelope"></i>
               </button>
               <p-checkbox name="emails" [value]="'email:' + item.category"
                           [label]="item.category | keyToValue: emailType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
             </dt>
-            <dd>
+            <dd [ngClass]="{'not-first-item' : i > 0 }">
               <div><a style="text-transform: lowercase;" href="mailto:{{ item.value }}">{{ item.value }}</a></div>
             </dd>                
           </ng-template>
@@ -109,14 +109,14 @@
       <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.phones && profile.phones.length > 0">
           <ng-template ngFor let-item [ngForOf]="profile.phones" let-i="index" [ngForTrackBy]="trackByFn">
-            <dt>
+            <dt [ngClass]="{'not-first-item' : i > 0 }">
               <button class="btn btn-default icon">
                 <i *ngIf="i === 0" class="fa fa-phone"></i>
               </button>
               <p-checkbox name="phones" [value]="'phone:' + item.category" 
                           [label]="item.category | keyToValue:phoneType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
             </dt>
-            <dd>
+            <dd [ngClass]="{'not-first-item' : i > 0 }">
               <div> {{ item.country_alpha_code | phoneDialCode }} {{ item.value }} </div>
             </dd>                
           </ng-template>
@@ -125,7 +125,7 @@
       <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.addresses && profile.addresses.length > 0">
             <ng-template ngFor let-item [ngForOf]="profile.addresses" let-i="index" [ngForTrackBy]="trackByFn">
-              <dt>
+              <dt [ngClass]="{'not-first-item' : i > 0 }">
                 <button class="btn btn-default icon">
                   <i *ngIf="i === 0" class="fa fa-map-marker"></i>
                 </button>
@@ -146,7 +146,7 @@
       <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.media">
           <ng-template ngFor let-item [ngForOf]="profile.media" let-i="index" [ngForTrackBy]="trackByFn">
-              <dt>
+              <dt [ngClass]="{'not-first-item' : i > 0 }">
                 <button class="btn btn-default icon">
                   <i *ngIf="i === 0" class="fa fa-link"></i>
                 </button>
@@ -154,7 +154,7 @@
                     
                 </p-checkbox>
               </dt>
-              <dd>
+              <dd [ngClass]="{'not-first-item' : i > 0 }">
                 <div><a href="{{ item.value }}" target="_blank" rel="noopener" style="text-transform: lowercase">{{ item.value }}</a></div>
               </dd>
           </ng-template>  

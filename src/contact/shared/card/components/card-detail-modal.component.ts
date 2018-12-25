@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
   selector: 'w-card-detail-modal',
   templateUrl: 'card-detail-modal.component.html',
   styleUrls: ['card-detail-modal.component.scss'],
-  encapsulation: ViewEncapsulation.None
 })
 export class CardDetailModalComponent {
   @ViewChild('modal') modal: any;
