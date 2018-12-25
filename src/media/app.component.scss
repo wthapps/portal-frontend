@@ -12,6 +12,10 @@
     left: 0;
   }
 
+  .info-toggle {
+    color: $theme-color;
+  }
+
   .page-body-content {
     overflow: auto;
     height: calc(100vh - 64px);
@@ -37,7 +41,8 @@
       padding: 15px;
       line-height: 34px;
       @include clearfix;
-      @include box-shadow($box-shadow-bottom);
+      // @include box-shadow($box-shadow-bottom);
+      border-bottom: 1px solid $line;
       a {
         float: right;
         color: $text-color-fade;

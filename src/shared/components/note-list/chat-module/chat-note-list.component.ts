@@ -85,7 +85,7 @@ export class ChatNoteListComponent implements OnInit {
     return ((ke.keyCode == 17 || ke.keyCode == 18 || ke.keyCode == 91 || ke.keyCode == 93 || ke.ctrlKey) ? true : false);
   }
 
-  toogleSorting() {
+  toggleSorting() {
     this.sort.name = this.sort.name == 'asc' ? 'decs' : 'asc';
     this.doSort();
   }

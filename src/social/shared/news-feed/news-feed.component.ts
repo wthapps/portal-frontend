@@ -82,7 +82,7 @@ export class ZSocialSharedNewsFeedComponent implements OnInit, OnChanges {
     });
   }
 
-  toogleFollow(channel: any) {
+  toggleFollow(channel: any) {
     this.apiBaseService.post(`zone/social_network/feeds/subscribe`, {id: channel.id}).subscribe((res: any) => {
       this.addChannels = this.addChannels.map((channel: any) => {
         if(channel.id == res.data.id) {

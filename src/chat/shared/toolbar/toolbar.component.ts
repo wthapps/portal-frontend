@@ -95,7 +95,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     this.chatService.addGroupUserFavorite(this.contactSelect);
   }
 
-  toogleNotification() {
+  toggleNotification() {
     this.chatService.updateNotification(this.contactSelect, { notification: !this.contactSelect.notification });
   }
 

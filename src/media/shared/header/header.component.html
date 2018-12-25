@@ -31,7 +31,7 @@
         </h4>
         <form [formGroup]="form" novalidate class="form-horizontal pt0">
           <div class="form-group">
-            <label for="date_modified" class="col-md-3 control-label">Date modified</label>
+            <label for="date_modified" class="col-md-3 control-label">Date created</label>
             <div class="col-md-9">
               <select [formControl]="searchDate" name="date_modified" id="date_modified" class="form-control">
                 <option *ngFor="let dataDate of searchDataDate" [value]="dataDate.key">{{ dataDate.value }}</option>

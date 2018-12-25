@@ -275,27 +275,6 @@ export class ZMediaAlbumDetailComponent
     }
   }
 
-  onListChanges(e: any) {
-    switch (e.action) {
-      case 'favorite':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
-        break;
-      case 'selectedObjectsChanged':
-        if (this.object.sharing_type === 'Media::Playlist' || this.object.sharing_type === 'Media::Video') {
-          this.subMenuActions.edit.title = 'Add to Playlist';
-          this.subMenuActions.remove.title = 'Remove from Playlist';
-        } else {
-          this.subMenuActions.edit.title = 'Add to Album';
-          this.subMenuActions.remove.title = 'Remove from Album';
-        }
-        this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
-        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
-        break;
-      default:
-        break;
-    }
-  }
-
   loadObjects(input: any, opts: any = {}) {
     this.loading = true;
     opts = { ...opts, model: 'Media::Album' };
@@ -365,6 +344,28 @@ export class ZMediaAlbumDetailComponent
   }
 
   selectedObjectsChanged: (objectsChanged?: any) => void;
+
+  onListChanges(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      case 'selectedObjectsChanged':
+        if (this.object.sharing_type === 'Media::Playlist' || this.object.sharing_type === 'Media::Video') {
+          this.subMenuActions.edit.title = 'Add to Playlist';
+          this.subMenuActions.remove.title = 'Remove from Playlist';
+        } else {
+          this.subMenuActions.edit.title = 'Add to Album';
+          this.subMenuActions.remove.title = 'Remove from Album';
+        }
+        this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
+        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
+        if(this.selectedObjects.length > 0) this.showDetailsInfo = false;
+        break;
+      default:
+        break;
+    }
+  }
 
   loadModalComponent: (component: any) => void;
   toggleInfo: () => void;
@@ -619,14 +620,14 @@ export class ZMediaAlbumDetailComponent
       info: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
-        inDropDown: true, // Outside dropdown list
+        inDropDown: false, // Outside dropdown list
         action: () => {
           this.toggleInfo();
           if (this.object.sharing_object) {
             this.getSharingParentInfo(this.object.sharing_object.sharing_id);
           }
         },
-        class: '',
+        class: 'btn btn-default info-toggle',
         liclass: '',
         title: 'View Information',
         tooltip: this.tooltip.info,

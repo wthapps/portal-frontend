@@ -134,7 +134,8 @@
       padding: 15px;
       line-height: 34px;
       @include clearfix;
-      @include box-shadow($box-shadow-bottom);
+      // @include box-shadow($box-shadow-bottom);
+      border-bottom: 1px solid $line;
       a {
         float: right;
         color: $text-color-fade;
@@ -201,6 +202,10 @@
     .image-viewer-content-nav a:last-child {
       right: $photo-detail-info-width;
     }
+  }
+
+  .info-toggle {
+    color: $theme-color !important;
   }
 }
 

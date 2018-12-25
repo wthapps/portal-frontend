@@ -36,12 +36,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'photo-detail',
   templateUrl: './item-detail.component.html',
-  styleUrls: ['photo-detail.component.scss'],
-  entryComponents: [
-    // MediaRenameModalComponent,
-    // PhotoEditModalComponent,
-    // AddToAlbumModalComponent
-  ]
+  styleUrls: ['photo-detail.component.scss']
 })
 export class PhotoDetailComponent implements OnInit, OnDestroy,
   MediaAdditionalListMixin,
@@ -369,14 +364,14 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
       info: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
-        inDropDown: true, // Outside dropdown list
+        inDropDown: false, // Outside dropdown list
         action: () => {
           this.showDetailsInfo = !this.showDetailsInfo;
           this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Photo' }).subscribe(res => {
             this.sharings = res.data;
           });
         },
-        class: '',
+        class: 'btn btn-default info-toggle',
         liclass: '',
         title: 'View Information',
         tooltip: this.tooltip.info,

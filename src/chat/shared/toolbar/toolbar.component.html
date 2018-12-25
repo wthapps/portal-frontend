@@ -21,7 +21,7 @@
         tooltipPosition="top">
         <i class="fa" [ngClass]="contactSelect.favourite? 'fa-star': 'fa-star-o'"></i>
       </button>
-      <button type="button" class="btn btn-default" (click)="toogleNotification()" pTooltip="{{ (contactSelect.notification) ? tooltip.disable_notification : tooltip.enable_notification }}"
+      <button type="button" class="btn btn-default" (click)="toggleNotification()" pTooltip="{{ (contactSelect.notification) ? tooltip.disable_notification : tooltip.enable_notification }}"
         tooltipPosition="top">
         <i class="fa" [ngClass]="contactSelect.notification? 'fw fw-megaphone': 'fw fw-megaphone-mute'"></i>
       </button>

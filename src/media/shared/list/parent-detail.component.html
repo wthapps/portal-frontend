@@ -37,7 +37,7 @@
     <ng-template #objectActionsTemplate>
       <ul class="page-body-control-menu">
         <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
-          <li *ngIf="!action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+          <li *ngIf="!action.val.inDropDown && action.val.active && action.key !== 'info'" class="{{action.val.liclass}}">
             <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false" pTooltip="{{action.val.tooltip}}"
               tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
               <i class="{{action.val.iconClass}}"></i>
@@ -59,6 +59,12 @@
               </li>
             </ng-template>
           </ul>
+        </li>
+        <li *ngIf="menuActions.info">
+          <button [disabled]="!menuActions.info.active" class="{{menuActions.info.class}}" draggable="false" pTooltip="{{menuActions.info.tooltip}}"
+            tooltipPosition="{{menuActions.info.tooltipPosition}}" href="javascript:void(0);" (click)="menuActions.info.action()">
+            <i class="{{menuActions.info.iconClass}}"></i>
+          </button>
         </li>
       </ul>
     </ng-template>

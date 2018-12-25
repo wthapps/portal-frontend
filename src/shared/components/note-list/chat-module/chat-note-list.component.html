@@ -10,7 +10,7 @@
                   [ngClass]="{'fa-arrow-up': !sortOption?.desc, 'fa-arrow-down': sortOption?.desc }"></i>
         </span>
       </div> -->
-      <div class="component-listbox-name can-click" (click)="toogleSorting()">
+      <div class="component-listbox-name can-click" (click)="toggleSorting()">
         Name
         <i class="fa" [ngClass]="{'fa-arrow-up': sort.name == 'asc', 'fa-arrow-down': sort.name == 'decs'}"></i>
       </div>
@@ -56,7 +56,7 @@
     </div>
   </div>
   <div *ngIf="viewOption == VIEW_MODE.GRID" class="p10 clearfix">
-    <div class="pull-right can-click" (click)="toogleSorting()">
+    <div class="pull-right can-click" (click)="toggleSorting()">
       Name
       <i class="fa" [ngClass]="{'fa-arrow-up': sort.name == 'asc', 'fa-arrow-down': sort.name == 'decs'}"></i>
     </div>

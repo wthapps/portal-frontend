@@ -139,7 +139,9 @@ export class ZMediaSharedHeaderComponent implements OnInit {
   }
 
   onSubmit(values: any) {
+    this.suggestions = [];
+    this.show = false;
     this.searchAdvanced = !this.searchAdvanced;
-    this.serviceManager.getRouter().navigate([`/search`], { queryParams: { searchDate: values.searchDate, searchFileTypes: values.searchFileTypes, searchFrom: values.searchFrom, searchTo: values.searchTo } });
+    this.serviceManager.getRouter().navigate([`/search`], { queryParams: { q: this.search, searchDate: values.searchDate, searchFileTypes: values.searchFileTypes, searchFrom: values.searchFrom, searchTo: values.searchTo } });
   }
 }
