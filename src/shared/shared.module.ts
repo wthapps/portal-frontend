@@ -54,6 +54,7 @@ import { PartialModule } from '@wth/shared/partials';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { ComponentsModule } from '@shared/components/components.module';
 import { AccordionModule } from 'primeng/components/accordion/accordion';
+import { ToastModule } from 'primeng/toast';
 import { ModalModule } from '@wth/shared/components/modal/modal.module';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 import { WEditorModule } from '@shared/components/w-editor/w-editor.module';
@@ -95,13 +96,14 @@ import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.modu
     ReactiveFormsModule,
     // BrowserAnimationsModule,
 
-    // Third parties modules
-    BsModalModule,
-
     // WTHApps modules
     LoadingModule,
     ToastsModule,
     ConfirmDialogModule,
+
+    // Third parties modules
+    BsModalModule,
+    ToastModule,
     InfiniteScrollModule,
     InputSwitchModule,
     CheckboxModule,

@@ -9,8 +9,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import {Message} from 'primeng//api';
-import {MessageService} from 'primeng/api';
+import {Message} from 'primeng/components/common/api';
+import {MessageService} from 'primeng/components/common/messageservice';
 
 import { ChatService } from './shared/services/chat.service';
 import { ConfirmDialogModel } from '@wth/shared/shared/models/confirm-dialog.model';
@@ -29,7 +29,7 @@ import { IntroductionModalComponent } from '@wth/shared/modals/introduction/intr
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('introduction') introduction: IntroductionModalComponent;
-
+  msgs: Message[] = [];
   routerSubscription: Subscription;
 
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
@@ -72,7 +72,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   showOfflineMessage() {
-    this.messageService.add({severity: 'error', summary: 'No internet connection', detail: 'Please check your connection and try again'});
+    // tslint:disable-next-line:max-line-length
+    this.messageService.add({severity: 'error', summary: 'No internet connection', detail: 'Please check your connection and try again', life: 3600 * 24});
   }
 
   clearOfflineMessage() {
