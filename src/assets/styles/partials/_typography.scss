@@ -39,10 +39,6 @@ a.disabled {
   }
 }
 
-.bold {
-  font-weight: bold;
-}
-
 .d-block {
   display: block;
 }
@@ -73,6 +69,26 @@ a.disabled {
 
 .text-fade {
   @include opacity(0.6);
+}
+
+.text-disable {
+  &, * {
+    cursor: not-allowed;
+    @include opacity(0.8);
+  }
+}
+
+.text-normal {
+  font-weight: normal;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-inherit {
+  color: inherit;
+  text-align: center;
 }
 
 .text-link {
@@ -138,13 +154,6 @@ a.disabled {
   }
 }
 
-.text-disable {
-  &, * {
-    cursor: not-allowed;
-    @include opacity(0.8);
-  }
-}
-
 .no-user-selected {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -162,19 +171,6 @@ a.disabled {
 
 .visibility-hidden {
   visibility: hidden;
-}
-
-.text-normal {
-  font-weight: normal;
-}
-
-.text-bold {
-  font-weight: bold;
-}
-
-.text-inherit {
-  color: inherit;
-  text-align: center;
 }
 
 .content-overflow {

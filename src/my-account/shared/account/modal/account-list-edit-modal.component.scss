@@ -1,15 +1,23 @@
-.modal-account-edit {
-}
-
-.account-birthday {
-  input {
-    width: 145px !important;
+.ma-account-list {
+  .action {
+    margin-left: 10px;
   }
 }
-.input-birthday {
-  width: 250px !important;
-}
 
-.no-label-birthday:before {
-  right: 10px;
+.ma-account-list-total {
+  background-color: #F6F6F6;
+  padding: 10px;
+  dl {
+    margin-bottom: 0;
+    font-size: 18px;
+    text-align: right;
+    dt {
+      &:not(.text-bold) {
+        font-weight: normal;
+      }
+    }
+    dd {
+      width: 180px;
+    }
+  }
 }

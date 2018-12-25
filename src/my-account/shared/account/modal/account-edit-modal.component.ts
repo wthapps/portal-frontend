@@ -1,14 +1,10 @@
-import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Constants } from '@wth/shared/constant/config/constants';
+import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
+import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
-import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
-import { Constants } from '@wth/shared/constant/config/constants';
-
-declare var _: any;
-declare var $: any;
-
 
 @Component({
   moduleId: module.id,
@@ -23,18 +19,28 @@ export class AccountEditModalComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
 
   form: FormGroup;
-  // name: AbstractControl;
-  // email: AbstractControl;
-  // password: AbstractControl;
+  first_name: AbstractControl;
+  last_name: AbstractControl;
+
   tooltip: any = Constants.tooltip;
   mode: string; // 'add', 'edit', 'view'
 
-  constructor(private fb: FormBuilder, private commonEventService: CommonEventService) {
+  constructor(private fb: FormBuilder,
+              private commonEventService: CommonEventService) {
+    this.form = fb.group({
+      'first_name': ['',
+        Validators.compose([Validators.required, CustomValidator.blanked])
+      ],
+      'last_name': ['',
+        Validators.compose([Validators.required, CustomValidator.blanked])
+      ]
+    });
 
+    this.first_name = this.form.controls['first_name'];
+    this.last_name = this.form.controls['last_name'];
   }
 
   ngOnInit() {
-    this.initialize();
   }
 
   /*
@@ -42,17 +48,12 @@ export class AccountEditModalComponent implements OnInit {
   * @data: array of item
   * @mode: add or edit or view. default is add
   * */
-  open(options: any = {data: undefined, mode: 'edit'}) {
+  open(options: any = { data: undefined, mode: 'edit' }) {
     this.mode = options.mode || 'edit';
     this.item = options.data;
-    this.initialize();
     if (options.data) {
-
-      // this.form.controls['name'].setValue(this.item.name);
-      // this.form.controls['name'].setValue(this.item.name);
-      // this.form.controls['email'].setValue(this.item.email);
-      // this.form.controls['password'].setValue(this.item.generated_password);
-      // this.form.controls['password'].setValue(item.name);
+      (<FormControl>this.first_name).setValue(this.item.first_name);
+      (<FormControl>this.last_name).setValue(this.item.last_name);
     }
     this.modal.open(options).then();
   }
@@ -65,70 +66,21 @@ export class AccountEditModalComponent implements OnInit {
     this.modal.close(options).then();
   }
 
-  initialize() {
-    if (this.form == undefined) {
-      this.form = this.fb.group({
-        'id': [this.item.id, Validators.compose([
-          Validators.required
-        ])],
-        'first_name': [this.item.first_name, Validators.compose([
-          Validators.required, CustomValidator.blanked
-        ])],
-        'last_name': [this.item.last_name, Validators.compose([
-          Validators.required, CustomValidator.blanked
-        ])],
-        'email': [this.item.email, Validators.compose([
-          Validators.required
-        ])]
-        // 'password': [this.item.generated_password, Validators.compose([
-        //   Validators.required,
-        //   Validators.minLength(8),
-        //   CustomValidator.lowercaseUppercase,
-        //   // CustomValidator.specialSymbolOrNumber
-        // ])]
-      });
-    }
-  }
-
   delete() {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:open_delete_modal',
-      payload: {mode: 'edit', accountAction: 'delete', data: [this.item], accounts: []}
+      payload: { mode: 'edit', accountAction: 'delete', data: [this.item], accounts: [] }
     });
   }
 
 
-  save() {
-    // this.mode = 'view';
-    let account = this.form.value;
-    account.name = `${account.first_name} ${account.last_name}`;
+  save(value: any) {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:account:update',
-      payload: {data: account}
+      payload: { data: {...this.item, name: `${value.first_name} ${value.last_name}`} }
     });
     this.modal.close().then();
   }
-
-  acceptRequestOwnership() {
-    this.commonEventService.broadcast({
-      channel: 'my_account',
-      action: 'my_account:account:open_accept_request_ownership_modal',
-      payload: {data: this.form.value}
-    });
-  }
-
-  togglePassword(event: any): void {
-    const target = event.target || event.srcElement || event.currentTarget;
-    const inputPass = $(target).prev();
-    if (inputPass.attr('type') === 'password') {
-      inputPass.attr('type', 'text');
-      $(target).addClass('active');
-    } else {
-      inputPass.attr('type', 'password');
-      $(target).removeClass('active');
-    }
-  }
-
 }

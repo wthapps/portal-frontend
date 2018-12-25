@@ -79,6 +79,12 @@ $ui-inputswitch-w: 24px;
   @include center(false, true);
 }
 
+.input-block {
+  .ui-calendar {
+    display: block;
+  }
+}
+
 .ui-calendar.ui-calendar-w-btn input {
   padding-right: 34px + $padding-base-horizontal;
 }

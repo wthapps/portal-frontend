@@ -183,7 +183,7 @@ export class MyAccountComponent implements OnInit {
    *
    * @returns {boolean|Promise<boolean>}
    */
-  //2 canDeactivate(): Promise<boolean> | boolean {
+  // 2 canDeactivate(): Promise<boolean> | boolean {
   //   return this.deactivateConfirmService.activate(this.formValue, this.form.value);
   // }
 }
