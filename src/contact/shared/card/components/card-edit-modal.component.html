@@ -93,7 +93,7 @@
       <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.emails && profile.emails.length > 0">
           <ng-template ngFor let-item [ngForOf]="profile.emails" let-i="index" [ngForTrackBy]="trackByFn">
-            <dt [ngClass]="{'not-first-item' : i > 0 }">
+            <dt>
               <button class="btn btn-default icon">
                 <i *ngIf="i === 0" class="fa fa-envelope"></i>
               </button>
@@ -109,7 +109,7 @@
       <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.phones && profile.phones.length > 0">
           <ng-template ngFor let-item [ngForOf]="profile.phones" let-i="index" [ngForTrackBy]="trackByFn">
-            <dt [ngClass]="{'not-first-item' : i > 0 }">
+            <dt>
               <button class="btn btn-default icon">
                 <i *ngIf="i === 0" class="fa fa-phone"></i>
               </button>
@@ -125,7 +125,7 @@
       <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.addresses && profile.addresses.length > 0">
             <ng-template ngFor let-item [ngForOf]="profile.addresses" let-i="index" [ngForTrackBy]="trackByFn">
-              <dt [ngClass]="{'not-first-item' : i > 0 }">
+              <dt>
                 <button class="btn btn-default icon">
                   <i *ngIf="i === 0" class="fa fa-map-marker"></i>
                 </button>
@@ -146,7 +146,7 @@
       <dl class="pcard-info">
         <ng-container *ngIf="profile && profile.media">
           <ng-template ngFor let-item [ngForOf]="profile.media" let-i="index" [ngForTrackBy]="trackByFn">
-              <dt [ngClass]="{'not-first-item' : i > 0 }">
+              <dt>
                 <button class="btn btn-default icon">
                   <i *ngIf="i === 0" class="fa fa-link"></i>
                 </button>

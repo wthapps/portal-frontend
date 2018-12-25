@@ -32,11 +32,12 @@
   dl {
     margin-bottom: 0;
     &:not(:last-child) {
-      //margin-bottom: 5px;
       padding-bottom: 10px;
     }
   }
   dd:not(:last-child) {
+    padding-top: 6px;
+    //margin-bottom: 10px;
   }
 }
 
@@ -48,6 +49,9 @@
       clear: both;
       .icon {
         width: 40px;
+      }
+      button {
+        min-height: 34px;
       }
     }
     dd {
@@ -76,8 +80,5 @@
   }
 }
 
-dt.not-first-item {
-  padding-top: 6px;
-}
 
 
