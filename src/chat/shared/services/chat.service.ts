@@ -30,7 +30,7 @@ import { Conversation } from '@chat/shared/models/conversation.model';
 import { BlackListPolicy } from '@shared/policies/black-list-policy';
 import { SizePolicy } from '@shared/policies/size-policy';
 import { from } from 'rxjs/observable/from';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, retry } from 'rxjs/operators';
 
 
 declare var _: any;
@@ -107,10 +107,12 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     const last_message = last[0].id;
     this.apiBaseService
       .get('zone/chat/message/' + group_id, {last_message})
-      .toPromise()
-      .then((res: any) => {
+      .pipe(
+        retry(3)
+      )
+      .subscribe((res: any) => {
         console.log('get messages from success: ', res);
-        messages_response.data.unshift(...res.data);
+        messages_response.data.push(...res.data);
         this.storage.save(CHAT_MESSAGES_GROUP_ + group_id, messages_response);
         this.commonEventService.broadcast({
           channel: 'ConversationDetailComponent',

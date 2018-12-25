@@ -5,6 +5,7 @@ export class ChatConstant {
   public static profileUrl = '/profile';
 }
 
+export const NETWORK_ONLINE = 'network_online';
 export const CHAT_CONVERSATIONS = 'chat_conversations';
 export const CHAT_MESSAGES_GROUP_ = 'chat_messages_group_';
 export const CHAT_RECENT_CONVERSATIONS = 'chat_recent_conversations';

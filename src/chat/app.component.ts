@@ -15,8 +15,8 @@ import {MessageService} from 'primeng/components/common/messageservice';
 import { ChatService } from './shared/services/chat.service';
 import { ConfirmDialogModel } from '@wth/shared/shared/models/confirm-dialog.model';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { Constants } from '@wth/shared/constant';
-import { AuthService } from '@wth/shared/services';
+import { Constants, NETWORK_ONLINE } from '@wth/shared/constant';
+import { AuthService, StorageService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 /**
  * This class represents the main application component.
@@ -39,11 +39,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private chatService: ChatService,
     private messageService: MessageService,
+    private storageService: StorageService,
     private wthConfirmService: WthConfirmService
   ) {
     this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
       this.confirmDialog = res;
     });
+    this.storageService.save(NETWORK_ONLINE, true);
   }
 
   ngOnInit() {
@@ -73,16 +75,23 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showOfflineMessage() {
     // tslint:disable-next-line:max-line-length
-    this.messageService.add({severity: 'error', summary: 'No internet connection', detail: 'Please check your connection and try again', life: 3600 * 24});
+    this.messageService.add({severity: 'error', summary: 'No internet connection', detail: 'Please check your connection and try again',
+    closable: false, life: 3600 * 24});
   }
 
   clearOfflineMessage() {
     this.messageService.clear();
   }
 
-  updateIndicator() {
-    console.log('on/off: ', navigator.onLine);
-    if (navigator.onLine) {
+  ngOnDestroy() {
+    this.routerSubscription.unsubscribe();
+  }
+
+  private updateIndicator() {
+    const online = navigator.onLine;
+    console.log('on/off: ', online);
+    this.setNetworkOnline(online);
+    if (online) {
       this.chatService.getOutOfDateMessages();
       this.clearOfflineMessage();
     } else {
@@ -90,7 +99,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
+  private setNetworkOnline(online: boolean) {
+    this.storageService.save(NETWORK_ONLINE, online);
   }
+
 }

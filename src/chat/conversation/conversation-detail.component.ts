@@ -15,7 +15,7 @@ import {
   CommonEventService,
   PhotoService, UserService, ChatCommonService, StorageService, WMessageService, ApiBaseService
 } from '@wth/shared/services';
-import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
+import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, NETWORK_ONLINE } from '@wth/shared/constant';
 import { User } from '@wth/shared/shared/models';
 import { WUploader } from '@shared/services/w-uploader';
 import { Message } from '@chat/shared/models/message.model';
@@ -44,6 +44,7 @@ export class ConversationDetailComponent extends CommonEventHandler
   chatContactList$: Observable<any>;
   chatConversations$: Observable<any>;
   currentUser$: Observable<User>;
+  networkOnline$: Observable<boolean>;
   tokens: any;
   sub: any;
 
@@ -62,23 +63,25 @@ export class ConversationDetailComponent extends CommonEventHandler
   ) {
     super(commonEventService);
     this.currentUser$ = userService.profile$;
+    this.networkOnline$ = this.storage.getAsync(NETWORK_ONLINE);
   }
 
-  updateItemInList:(groupId: any, data: any) => void;
-  updateConversationBroadcast:(groupId: any) => Promise<any>;
-  updateMessage:(groupId: any, data) => void;
+  updateItemInList: (groupId: any, data: any) => void;
+  updateConversationBroadcast: (groupId: any) => Promise<any>;
+  updateMessage: (groupId: any, data) => void;
 
   updateMessageHandler(data: any) {
     this.updateMessage(data.group_id, data);
     // // Scroll to bottom when user's own messages are arrived
-    if (data.message.user_id === this.userService.getSyncProfile().id)
+    if (data.message.user_id === this.userService.getSyncProfile().id) {
       this.commonEventService.broadcast(
         {
           channel: MessageListComponent.name,
           action: 'scrollToBottom',
           payload: true
         }
-      )
+      );
+    }
   }
 
   ngOnInit() {
@@ -96,8 +99,8 @@ export class ConversationDetailComponent extends CommonEventHandler
   }
 
   ngOnDestroy() {
-    if (this.commonEventSub) this.commonEventSub.unsubscribe();
-    if (this.sub) this.sub.unsubscribe();
+    if (this.commonEventSub) { this.commonEventSub.unsubscribe(); }
+    if (this.sub) { this.sub.unsubscribe(); }
   }
 
   deleteMessage(message: any) {
