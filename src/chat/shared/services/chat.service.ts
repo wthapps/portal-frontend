@@ -92,6 +92,33 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     }
   }
 
+  getOutOfDateMessages() {
+    const conversations_response = this.storage.getValue(CHAT_CONVERSATIONS);
+    const loaded_conversations = conversations_response.data.filter(conv => this.storage.getValue(CHAT_MESSAGES_GROUP_ + conv.group_id));
+    loaded_conversations.forEach(conv => this.getDisconnectedMessages(conv.group_id));
+  }
+
+  getDisconnectedMessages(group_id) {
+    const messages_response = this.storage.getValue(CHAT_MESSAGES_GROUP_ + group_id);
+    const last = messages_response.data.slice(-1);
+    if (last.length === 0 ) {
+      return;
+    }
+    const last_message = last[0].id;
+    this.apiBaseService
+      .get('zone/chat/message/' + group_id, {last_message})
+      .toPromise()
+      .then((res: any) => {
+        console.log('get messages from success: ', res);
+        messages_response.data.unshift(...res.data);
+        this.storage.save(CHAT_MESSAGES_GROUP_ + group_id, messages_response);
+        this.commonEventService.broadcast({
+          channel: 'ConversationDetailComponent',
+          action: 'updateCurrent'
+        });
+      });
+  }
+
   getConversationsAsync(option: any = {}): Observable<StorageItem> {
     return new Observable((observer: any) => {
       const res: any = this.storage.find(CHAT_CONVERSATIONS);
@@ -201,13 +228,13 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   setConversationSelectedByGroupId(id: number) {
-    this.getConversationsAsync().toPromise().then(res =>{
-      let selectedContact:any = res.value.data.find(contact => contact.group_id == id);
+    this.getConversationsAsync().toPromise().then(res => {
+      const selectedContact = res.value.data.find(contact => +contact.group_id === +id);
       if (selectedContact) {
         this.storage.save(CONVERSATION_SELECT, selectedContact);
         this.getMessages(selectedContact.group_id);
       }
-    })
+    });
   }
 
   isExistingData(key: string) {
@@ -361,11 +388,9 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   deleteContact(contact: any) {
-    this.updateGroupUser(contact.group_id, { deleted: true }).then(res => {
-      this.getConversationsAsync({ forceFromApi: true}).toPromise().then(res => {
-        this.router.navigate(['/conversations'])
-      })
-    })
+    this.updateGroupUser(contact.group_id, { deleted: true })
+    .then(res => this.getConversationsAsync({ forceFromApi: true}).toPromise())
+    .then(r2 => this.router.navigate(['/conversations']));
   }
 
   updateDisplay(contact: any, data: any) {

@@ -1,5 +1,9 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { MessageService } from 'primeng/components/common/messageservice';
+
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
 import { ZChatShareEditConversationComponent } from './modal/edit-conversation.component';
@@ -33,7 +37,7 @@ import { ChatMessageService } from './services/chat-message.service';
  */
 
 @NgModule({
-  imports: [SharedModule, ZChatMessageModule],
+  imports: [SharedModule, MessagesModule, MessageModule, ZChatMessageModule],
   declarations: [
     ZChatSidebarComponent,
     ZChatToolbarComponent,
@@ -57,6 +61,9 @@ import { ChatMessageService } from './services/chat-message.service';
     ChatGroupHistoryPipe
   ],
   exports: [
+    MessagesModule,
+    MessageModule,
+
     ZChatMessageModule,
     ZChatSidebarComponent,
     ZChatToolbarComponent,
@@ -90,6 +97,7 @@ export class ZChatSharedModule {
         ChatMessageService,
         ChatContactService,
         ChatCommonService,
+        MessageService,
         ZChatShareAddContactService
       ]
     };

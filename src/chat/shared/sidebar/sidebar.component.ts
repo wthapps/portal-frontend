@@ -98,9 +98,9 @@ export class ZChatSidebarComponent implements OnInit {
     $('#chat-message-text').focus();
     if (contact.deleted) {
       this.chatService.updateGroupUser(contact.group_id, { deleted: false }).then(res => {
-        this.chatService.getConversationsAsync({ forceFromApi: true }).toPromise().then(res => {
+        this.chatService.getConversationsAsync({ forceFromApi: true }).toPromise().then(r2 => {
           this.router.navigate(['/conversations', contact.group_id]);
-        })
+        });
       });
     } else {
       this.router.navigate(['/conversations', contact.group_id]);
@@ -139,7 +139,7 @@ export class ZChatSidebarComponent implements OnInit {
    */
 
   search(keyword: string) {
-    if (keyword == '') {
+    if (keyword === '') {
       this.clearSearch({});
       return;
     }
