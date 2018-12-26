@@ -109,10 +109,9 @@
       </a>
     </h3>
     <div class="photo-detail-info-title">
-      <h4>
-        <i class="fa fa-info-circle"></i> Details</h4>
+      <h4>Details</h4>
       <button class="btn btn-default pull-right" (click)="openEditModal(object)">
-        <i class="fa fa-pencil"></i>
+        <i class="text-fade fa fa-pencil"></i>
       </button>
     </div>
     <dl>
@@ -126,7 +125,9 @@
       </div>
       <div class="row">
         <dt class="col-sm-4">Type</dt>
-        <dd class="col-sm-8">{{ object.extension }}</dd>
+        <dd *ngIf="object.object_type == 'Media::Photo'" class="col-sm-8">Photo</dd>
+        <dd *ngIf="object.object_type == 'Media::Video'" class="col-sm-8">Video</dd>
+        <dd *ngIf="object.object_type == 'Media::Album'" class="col-sm-8">Album</dd>
       </div>
       <div class="row">
         <dt class="col-sm-4">Size</dt>
@@ -145,7 +146,7 @@
     <dl>
       <dt>
         <h4>
-          <i class="wthico-album"></i>
+          <!-- <i class="wthico-album"></i> -->
           <span *ngIf="object.model == 'Media::Photo'"> Album </span>
           <span *ngIf="object.model == 'Media::Video'"> Playlist </span>
         </h4>
@@ -153,10 +154,10 @@
       <dd>
         <div>
           <ul class="list-unstyled albums">
-            <li *ngFor="let album of object.parents" class="col-sm-6 can-click" style="margin: 0px">
+            <li *ngFor="let album of object.parents" class="list-parent-info can-click" style="margin: 0px">
               <div class="media" (click)="infoAlbumClick(album)">
                 <div class="media-left">
-                  <img style="width: 50px; height: 50px; padding: 0px" [src]="album.thumbnail_url" alt="Generic placeholder image">
+                  <img [src]="album.thumbnail_url" alt="Generic placeholder image">
                 </div>
                 <div class="media-body">
                   <h5 style="margin: 0px">{{ album.name }}</h5>
@@ -164,13 +165,11 @@
                 </div>
               </div>
             </li>
-            <li *ngFor="let sharing of sharings" class="col-sm-6 row can-click" style="margin: 0px">
+            <li *ngFor="let sharing of sharings" class="can-click" style="margin: 0px">
               <div class="media" (click)="infoAlbumClick(album)">
                 <div class="media-left">
-                  <img class="col-sm-4" style="width: 50px; height: 50px; padding: 0px" [src]="sharing.thumbnail_url"
-                    alt="Generic
-                placeholder image">
-
+                  <img [src]="sharing.thumbnail_url"
+                    alt="Generic placeholder image">
                 </div>
                 <div class="media-body">
                   <h5 style="margin: 0px">{{ sharing.name }}</h5>
