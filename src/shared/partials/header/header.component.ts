@@ -1,19 +1,11 @@
-import { ApiBaseService } from './../../services/apibase.service';
-import { UserService } from './../../services/user.service';
-import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Constants } from '../../constant/config/constants';
-import { WTHNavigateService } from '../../services/wth-navigate.service';
-import { ChannelService } from '../../channels/channel.service';
-import { NotificationService } from '../../services/notification.service';
+import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { SwUpdate } from '@angular/service-worker';
+import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
+import { Constants } from '@shared/constant';
+import { ApiBaseService, AuthService, NotificationService, WTHNavigateService } from '@shared/services';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 import { User } from '@wth/shared/shared/models';
-import { Observable } from 'rxjs/Observable';
-import { SwUpdate } from '@angular/service-worker';
-import { AuthService } from '@shared/services';
-import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
-
-declare var $: any;
-declare var _: any;
+import { ChannelService } from '../../channels/channel.service';
 
 /**
  * This class represents the navigation bar component.
@@ -61,12 +53,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (!this.swUpdate.isEnabled) {
-    this.subscribeChanneService();
+      this.subscribeChanneService();
     } else {
       this.swUpdate.checkForUpdate()
-      .then((res) => {
-        this.subscribeChanneService();
-      });
+        .then((res) => {
+          this.subscribeChanneService();
+        });
     }
 
     if (this.authService.isAuthenticated()) {
@@ -89,10 +81,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   countChatNotification(): void {
     this.apiBaseService
-        .addCommand(ConversationApiCommands.notificationsCount())
-        .subscribe((res: any) => {
-          this.notificationCount = res.data.count;
-        });
+      .addCommand(ConversationApiCommands.notificationsCount())
+      .subscribe((res: any) => {
+        this.notificationCount = res.data.count;
+      });
   }
 
   subscribeChanneService() {

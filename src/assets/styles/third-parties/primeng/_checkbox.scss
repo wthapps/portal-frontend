@@ -1,0 +1,49 @@
+.ui-chkbox {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  width: 20px;
+  height: 20px;
+  .ui-chkbox-box {
+    border: 1px solid #a6a6a6;
+    background-color: #ffffff;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 3px;
+    @include transition(background-color 0.2s, border-color 0.2s, box-shadow 0.2s);
+    &:not(.ui-state-disabled):hover {
+      border-color: #212121;
+    }
+    &.ui-state-focus {
+      border-color: $color-success;
+      background-color: #ffffff;
+      color: $color-success;
+      @include box-shadow(0 0 0 0.2em lighten($color-success, 20));
+    }
+    &.ui-state-active {
+      border-color: $color-success;
+      background-color: $color-success;
+      color: #ffffff;
+    }
+    &.ui-state-active:not(.ui-state-disabled):hover {
+      border-color: darken($color-success, 20);
+      background-color: darken($color-success, 20);
+      color: #ffffff;
+    }
+    &.ui-state-active.ui-state-focus {
+      border-color: $color-success;
+      background-color: $color-success;
+      color: #ffffff;
+    }
+    .ui-chkbox-icon {
+      overflow: hidden;
+      position: relative;
+      font-size: 18px;
+    }
+  }
+}
+
+.ui-chkbox-label {
+  margin: 0 0 0 0.5em;
+}

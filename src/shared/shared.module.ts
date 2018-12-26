@@ -15,6 +15,7 @@ import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { EditorModule } from 'primeng/components/editor/editor';
+import { TableModule } from 'primeng/table';
 
 import { PipeModule } from './shared/pipe/pipe.module';
 
@@ -115,6 +116,7 @@ import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.modu
     PanelMenuModule,
     DataTableModule,
     AccordionModule,
+    TableModule,
 
     WthConfirmModule,
     BoxLoadingModule,

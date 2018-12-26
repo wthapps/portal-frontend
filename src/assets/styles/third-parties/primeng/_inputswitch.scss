@@ -1,0 +1,55 @@
+
+p-inputswitch {
+  display: inline-block;
+  vertical-align: middle;
+  & + span {
+    margin-left: 5px;
+    display: inline-block;
+  }
+}
+
+.ui-inputswitch {
+  width: 3em;
+  height: 1.75em;
+  .ui-inputswitch-slider {
+    -moz-transition: background-color 0.2s;
+    -o-transition: background-color 0.2s;
+    -webkit-transition: background-color 0.2s;
+    transition: background-color 0.2s;
+    border-radius: 30px;
+    background: #cccccc;
+
+    &:before {
+      background-color: #ffffff;
+      height: 1.25em;
+      width: 1.25em;
+      left: 0.25em;
+      bottom: 0.25em;
+      border-radius: 50%;
+      -webkit-transition: 0.2s;
+      transition: 0.2s;
+    }
+  }
+  &.ui-inputswitch-checked {
+    .ui-inputswitch-slider:before {
+      @include transform(translateX(1.25em))
+    }
+  }
+  &.ui-inputswitch-focus {
+    .ui-inputswitch-slider {
+      background: #b7b7b7;
+    }
+  }
+  &:not(.ui-state-disabled):hover {
+    .ui-inputswitch-slider {
+      background-color: #b7b7b7;
+    }
+  }
+  &.ui-inputswitch-checked {
+    .ui-inputswitch-slider,
+    &:not(.ui-state-disabled):hover .ui-inputswitch-slider,
+    &.ui-inputswitch-focus .ui-inputswitch-slider {
+      background-color: $color-success;
+    }
+  }
+}
