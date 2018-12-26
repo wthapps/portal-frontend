@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { ChatContactService } from './chat-contact.service';
 import { Message } from '../models/message.model';
@@ -35,12 +35,14 @@ import { mergeMap, retry } from 'rxjs/operators';
 
 declare var _: any;
 declare var Promise: any;
-export const CONCURRENT_UPLOAD = 2;
+export const CONCURRENT_UPLOAD = 4;
+const MAX_RETRY = 3;
 
 @Injectable()
 export class ChatService extends CommonEventHandler implements OnDestroy {
   public constant: any;
   public channel = 'ChatService';
+  private disconnectApiMap: {[group_id: string]: number} = {};
 
   constructor(
     public storage: StorageService,
@@ -94,6 +96,8 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
 
   getOutOfDateMessages() {
     const conversations_response = this.storage.getValue(CHAT_CONVERSATIONS);
+    if (!conversations_response) { return; }
+    this.disconnectApiMap = {};
     const loaded_conversations = conversations_response.data.filter(conv => this.storage.getValue(CHAT_MESSAGES_GROUP_ + conv.group_id));
     loaded_conversations.forEach(conv => this.getDisconnectedMessages(conv.group_id));
   }
@@ -105,20 +109,28 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
       return;
     }
     const last_message = last[0].id;
+
+    // Retry maximum 3 tmes for each api calls
+    const retry_num = this.disconnectApiMap[group_id];
+    this.disconnectApiMap[group_id] = retry_num ? retry_num - 1 : MAX_RETRY;
+    if (this.disconnectApiMap[group_id] <=  0) { return ; }
     this.apiBaseService
       .get('zone/chat/message/' + group_id, {last_message})
-      .pipe(
-        retry(3)
-      )
-      .subscribe((res: any) => {
+      .toPromise().then((res: any) => {
         console.log('get messages from success: ', res);
-        messages_response.data.push(...res.data);
-        this.storage.save(CHAT_MESSAGES_GROUP_ + group_id, messages_response);
+        const data = _.uniqBy([...messages_response.data, ...res.data], 'id');
+        this.storage.save(CHAT_MESSAGES_GROUP_ + group_id, {...messages_response, data});
         this.commonEventService.broadcast({
           channel: 'ConversationDetailComponent',
           action: 'updateCurrent'
         });
+        delete this.disconnectApiMap[group_id];
+      })
+      .catch(err => {
+        console.error('get disconnected messages error for chat group id: ', group_id, err);
+        this.getDisconnectedMessages(group_id);
       });
+
   }
 
   getConversationsAsync(option: any = {}): Observable<StorageItem> {

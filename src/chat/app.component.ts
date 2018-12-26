@@ -18,6 +18,8 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { Constants, NETWORK_ONLINE } from '@wth/shared/constant';
 import { AuthService, StorageService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+
+declare const _: any;
 /**
  * This class represents the main application component.
  */
@@ -51,6 +53,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.chatService.initalize();
     this.handleOnlineOffline();
+    this.handleFocusBlur();
 
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -61,8 +64,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     if (
-      !this.authService.user.introduction ||
-      !this.authService.user.introduction.chat
+      // !this.authService.user.introduction ||
+      // !this.authService.user.introduction.chat
+      !_.get(this.authService, 'user.introduction.chat')
     ) {
       this.introduction.open();
     }
@@ -71,6 +75,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   handleOnlineOffline() {
     window.addEventListener('online', () => this.updateIndicator());
     window.addEventListener('offline', () => this.updateIndicator());
+  }
+
+  // Handle browser state when a document becomes visible or hidden - load disconnected messages in hidden state
+  handleFocusBlur() {
+    window.addEventListener('focus', () => this.handleBrowserState(true));
+    window.addEventListener('blur', () => this.handleBrowserState(false));
   }
 
   showOfflineMessage() {
@@ -85,6 +95,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
+  }
+
+  private handleBrowserState(isActive) {
+    if (isActive) {
+      this.chatService.getOutOfDateMessages();
+    }
   }
 
   private updateIndicator() {

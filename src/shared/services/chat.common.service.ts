@@ -127,13 +127,14 @@ export class ChatCommonService {
 
   addMessage(groupId: any, data: any): void {
     const message = data.message;
-    if(data.links) message.links = data.links;
+    if (data.links) { message.links = data.links; }
     const currentMessageList = this.storage.getValue(CHAT_MESSAGES_GROUP_ + groupId);
     const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
     const conversationsResponse = this.storage.getValue(CHAT_CONVERSATIONS);
 
-    if (!conversationsResponse || !conversationsResponse.data)
+    if (!conversationsResponse || !conversationsResponse.data) {
       return;
+    }
     const incomingConversation = conversationsResponse.data.find(conv => conv.group_json.id === groupId);
     // show conversation if deleting
     if (incomingConversation === undefined && contactSelect.group_type === 'couple') {
@@ -155,7 +156,7 @@ export class ChatCommonService {
         const action = isReplace ? ACTION.EDIT : ACTION.ADD;
       }
       // // Scroll to bottom when user's own messages are arrived
-      if (message.user_id === this.userService.getSyncProfile().id)
+      if (message.user_id === this.userService.getSyncProfile().id) {
         // this.messageService.scrollToBottom();
         this.commonEventService.broadcast(
           {
@@ -163,14 +164,16 @@ export class ChatCommonService {
             action: 'scrollToBottom',
             payload: true
           }
-        )
+        );
+      }
     }
     if (incomingConversation && !incomingConversation.favourite) {
       this.moveFirstRecentList(groupId);
     }
     for (const conversation of conversationsResponse.data) {
-      if (conversation.group_json.id === groupId)
+      if (conversation.group_json.id === groupId) {
         conversation.latest_message = message;
+      }
     }
     this.setAllConversations(conversationsResponse);
   }
@@ -192,8 +195,9 @@ export class ChatCommonService {
       console.log('sending messages to current group: ', { action: ACTION.EDIT, data });
     }
 
-    if (data && data.byMe)
+    if (data && data.byMe) {
       this.messageService.scrollToBottom();
+    }
   }
 
   // Update another conversations to update their status
