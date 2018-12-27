@@ -1,11 +1,16 @@
 import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { ChannelService } from '../../channels/channel.service';
+import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
+import { User } from '@wth/shared/shared/models';
 import { SwUpdate } from '@angular/service-worker';
 import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
 import { Constants } from '@shared/constant';
 import { ApiBaseService, AuthService, NotificationService, WTHNavigateService } from '@shared/services';
-import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
-import { User } from '@wth/shared/shared/models';
-import { ChannelService } from '../../channels/channel.service';
+import { PageVisibilityService } from '@shared/services/page-visibility.service';
+import { Subscription } from 'rxjs/Subscription';
+
+declare var $: any;
+declare var _: any;
 
 /**
  * This class represents the navigation bar component.
@@ -33,6 +38,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   type = 'update'; // update , connection
   notificationCount = 0;
 
+  private hiddenSubscription: Subscription;
+
   @HostListener('document:click', ['$event'])
   clickedOutside($event: any) {
     // here you can hide your menu
@@ -40,12 +47,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private navigateService: WTHNavigateService,
     private channelService: ChannelService,
     private renderer: Renderer2,
     private swUpdate: SwUpdate,
     private authService: AuthService,
     private apiBaseService: ApiBaseService,
+    private visibilityService: PageVisibilityService,
     public connectionService: ConnectionNotificationService,
     public notificationService: NotificationService
   ) {
@@ -65,10 +72,55 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.countCommonNotification().then(() => this.countChatNotification());
     }
 
+    // Handle disconnected network use-case
+    this.handleOnlineOffline();
+
+    // Handle page hidden case
+    this.hiddenSubscription = this.visibilityService.hiddenState$.subscribe(hidden => {
+      this.handleBrowserState(!hidden);
+    });
   }
 
   ngOnDestroy(): void {
     this.channelService.unsubscribe();
+    this.hiddenSubscription.unsubscribe();
+  }
+
+  handleOnlineOffline() {
+    window.addEventListener('online', () => this.updateNotifications());
+    window.addEventListener('offline', () => this.updateNotifications());
+  }
+
+  updateNotifications() {
+    const online = navigator.onLine;
+    if (online) {
+      this.updateDisconnectedData();
+    }
+  }
+
+  handleBrowserState(isActive) {
+    console.log('handle browser state: ', isActive);
+    if (isActive) {
+      this.updateDisconnectedData();
+    }
+  }
+
+  // TODO:
+  updateDisconnectedData() {
+    console.log('update disconnected data ...');
+
+    // connection / update notitications count
+    this.countCommonNotification()
+    .then(() => {
+      // connection notifications
+      this.notificationService.getDisconnectedNotifications();
+      // update notifications
+      this.connectionService.getDisconnectedNotifications();
+    });
+
+    // chat notifications
+    this.countChatNotification();
+
   }
 
   countCommonNotification(): Promise<any> {
@@ -88,14 +140,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   subscribeChanneService() {
-    console.log('subscribe channel service');
     this.channelService.subscribe();
   }
 
   onShowSideBar(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    console.log('show sidebar');
     this.renderer.addClass(document.body, 'left-sidebar-open');
   }
 

@@ -18,6 +18,7 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { Constants, NETWORK_ONLINE } from '@wth/shared/constant';
 import { AuthService, StorageService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+import { PageVisibilityService } from '@shared/services/page-visibility.service';
 
 declare const _: any;
 /**
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('introduction') introduction: IntroductionModalComponent;
   msgs: Message[] = [];
   routerSubscription: Subscription;
+  hiddenSubscription: Subscription;
 
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
 
@@ -42,6 +44,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private chatService: ChatService,
     private messageService: MessageService,
     private storageService: StorageService,
+    private visibilityService: PageVisibilityService,
     private wthConfirmService: WthConfirmService
   ) {
     this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
@@ -53,7 +56,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.chatService.initalize();
     this.handleOnlineOffline();
-    this.handleFocusBlur();
+
+    this.hiddenSubscription = this.visibilityService.hiddenState$.subscribe(hidden => {
+      this.handleBrowserState(!hidden);
+    });
 
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -73,14 +79,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   handleOnlineOffline() {
-    window.addEventListener('online', () => this.updateIndicator());
-    window.addEventListener('offline', () => this.updateIndicator());
-  }
-
-  // Handle browser state when a document becomes visible or hidden - load disconnected messages in hidden state
-  handleFocusBlur() {
-    window.addEventListener('focus', () => this.handleBrowserState(true));
-    window.addEventListener('blur', () => this.handleBrowserState(false));
+    window.addEventListener('online', () => this.updateChatMessages());
+    window.addEventListener('offline', () => this.updateChatMessages());
   }
 
   showOfflineMessage() {
@@ -95,6 +95,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
+    this.hiddenSubscription.unsubscribe();
   }
 
   private handleBrowserState(isActive) {
@@ -103,9 +104,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  private updateIndicator() {
+  private updateChatMessages() {
     const online = navigator.onLine;
-    console.log('on/off: ', online);
     this.setNetworkOnline(online);
     if (online) {
       this.chatService.getOutOfDateMessages();
