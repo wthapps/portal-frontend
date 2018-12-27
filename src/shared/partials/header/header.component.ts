@@ -105,22 +105,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  // TODO:
   updateDisconnectedData() {
     console.log('update disconnected data ...');
 
     // connection / update notitications count
     this.countCommonNotification()
     .then(() => {
-      // connection notifications
+      // get disconnected connection notifications data
       this.notificationService.getDisconnectedNotifications();
-      // update notifications
+      // get disconnected update notifications data
       this.connectionService.getDisconnectedNotifications();
     });
 
-    // chat notifications
     this.countChatNotification();
-
   }
 
   countCommonNotification(): Promise<any> {
