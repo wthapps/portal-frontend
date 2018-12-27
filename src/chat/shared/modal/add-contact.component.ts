@@ -7,10 +7,12 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { Constants } from '@shared/constant';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, ChatCommonService } from '@shared/services';
 import { ChatService } from '../services/chat.service';
 import { ConversationService } from '@chat/conversation/conversation.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
+import { ChatContactService } from '../services/chat-contact.service';
+import { ChatConversationService } from '../services/chat-conversation.service';
 
 
 declare var _: any;
@@ -42,8 +44,10 @@ export class ZChatShareAddContactComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
+    private chatContactService: ChatContactService,
     private apiBaseService: ApiBaseService,
-    private conversationService: ConversationService,
+    private chatConversationService: ChatConversationService,
+    private chatCommonService: ChatCommonService,
     private router: Router,
     private addContactService: ZChatShareAddContactService
   ) {
@@ -100,24 +104,6 @@ export class ZChatShareAddContactComponent implements OnInit {
       this.contacts = res.data;
       this.users = res.data;
       this.loading = false;
-      // if (this.title == 'Add To Conversation') {
-      //   this.conversationSelect = this.chatService.getContactSelect().value;
-      //   if (this.conversationSelect && this.conversationSelect.group_json.users_json) {
-      //
-      //     this.contacts = _.map(this.contacts, (contact: any) => {
-      //       for (let user of this.conversationSelect.group_json.users_json) {
-      //         contact.checked = false;
-      //         contact.inConversation = false;
-      //         if (contact.id === user.id) {
-      //           contact.checked = true;
-      //           contact.inConversation = true;
-      //           break;
-      //         }
-      //       }
-      //       return contact;
-      //     });
-      //   }
-      // }
     });
   }
 
@@ -127,8 +113,12 @@ export class ZChatShareAddContactComponent implements OnInit {
   }
 
   addContact() {
-    this.chatService.chatContactService.addContact(this.selectedUsers.map(user => user.id));
-    // this.chatService.createConversation(this.selectedUsers);
+    this.chatContactService.addContact(this.selectedUsers.map(user => user.id)).then(res => {
+      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res => {
+        this.chatCommonService.moveFirstRecentList(res.data.group_id);
+      });
+      this.chatConversationService.navigateToConversation(res.data.group_id);
+    });
     this.close();
   }
 

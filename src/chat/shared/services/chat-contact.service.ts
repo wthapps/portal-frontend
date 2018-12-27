@@ -18,18 +18,8 @@ export class ChatContactService {
 
   }
 
-  addContact(ids: any, text?: any, callback?: any) {
-    this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text: text}).subscribe(
-      (res: any) => {
-        // Update another conversations to update their status
-        this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res => {
-          this.chatCommonService.moveFirstRecentList(res.data.group_id);
-        });
-        if(callback) {
-          callback(res);
-        }
-      }
-    );
+  addContact(ids: any, text?: any): Promise<any>{
+    return this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text: text}).toPromise();
   }
 
   cancelContactRequest(contact: any): Promise<boolean> {

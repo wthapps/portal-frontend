@@ -180,7 +180,9 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
       switch (e.action) {
         case 'editInfo':
           this.apiBaseService.put(`media/photos/${this.object.id}`, e.params.selectedObject).subscribe(res => {
+            const parents = this.object.parents;
             this.object = res.data;
+            this.object.parents = parents;
           });
           break;
         default:
@@ -371,7 +373,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
             this.sharings = res.data;
           });
         },
-        class: 'btn btn-default info-toggle',
+        class: 'btn btn-default',
         liclass: '',
         title: 'View Information',
         tooltip: this.tooltip.info,

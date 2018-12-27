@@ -617,7 +617,7 @@ export class ZMediaSharingDetailComponent
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: this.toggleInfoCustom.bind(this),
-        class: 'btn bt-default info-toggle',
+        class: 'btn bt-default',
         liclass: '',
         title: 'View Information',
         tooltip: this.tooltip.info,

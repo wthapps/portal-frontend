@@ -31,6 +31,7 @@ import { ChatCommonService } from '@wth/shared/services';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 import { ChatMessageService } from './services/chat-message.service';
+import { ChatConversationService } from './services/chat-conversation.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -96,6 +97,7 @@ export class ZChatSharedModule {
         ChatService,
         ChatMessageService,
         ChatContactService,
+        ChatConversationService,
         ChatCommonService,
         MessageService,
         ZChatShareAddContactService
