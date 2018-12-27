@@ -5,11 +5,14 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active">
-        <a href="#invitationPending" aria-controls="invitationPending" role="tab" data-toggle="tab">Pending</a>
+        <a href="#invitationPending" aria-controls="invitationPending" role="tab" data-toggle="tab">
+          Pending <span *ngIf="invPending?.length > 0" class="text-muted">{{ invPending?.length }}</span>
+        </a>
       </li>
       <li role="presentation">
-        <a href="#invitationAccepted" aria-controls="invitationAccepted" role="tab" data-toggle="tab">Accepted
-          Invitation</a>
+        <a href="#invitationAccepted" aria-controls="invitationAccepted" role="tab" data-toggle="tab">
+          Accepted Invitation <span *ngIf="invAccepted?.length > 0" class="text-muted">{{ invAccepted?.length }}</span>
+        </a>
       </li>
     </ul>
 

@@ -1,8 +1,12 @@
+@import "primeng/utilities";
 @import "primeng/inputswitch";
 @import "primeng/checkbox";
 @import "primeng/radio";
 @import "primeng/table";
 @import "primeng/datepicker";
+@import "primeng/dialog";
+@import "primeng/autocomplete";
+@import "primeng/toast-message";
 
 .ui-inputtext {
   @extend .form-control;
