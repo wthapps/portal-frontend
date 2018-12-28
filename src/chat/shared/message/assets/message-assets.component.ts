@@ -120,9 +120,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
     this.medias$ = this.messageAssetsService.medias$;
     this.objectListService.setMultipleSelection(false);
-    this.addContactService.addMembers$.pipe(takeUntil(this.destroy$)).subscribe(users => {
-      this.onAddMember(users);
-    });
   }
 
   tabAction(event: WTab) {
@@ -153,23 +150,11 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     this.chatService.selectContactByPartnerId(user.id);
   }
 
-  onAddMember(members: Array<any>) {
-    const body = { add_members: true, user_ids: members.map(user => user.id) };
-    this.apiBaseService
-      .put(`zone/chat/group/${this.conversation.group_id}`, body)
-      .subscribe((res: any) => {
-        // Update another conversations to update their status
-        this.chatCommonService.updateConversationBroadcast(this.conversation.group_id).then((response: any) => {
-          const conversation = response.data.own_group_user.group_json;
-          this.members = conversation.users_json;
-        });
-      });
-  }
-
   onRemoveMember(user: any) {
     this.chatService.removeFromConversation(this.conversation, user.id).then((response: any) => {
-      const conversation = response.data.own_group_user.group_json;
-      this.members = conversation.users_json;
+      console.log(response);
+      // const conversation = response.data.own_group_user.group;
+      // this.members = conversation.users_json;
     });
   }
 
@@ -261,13 +246,13 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     let urlAPI = '';
     switch (this.currentTab) {
       case 'photos':
-        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=photo&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=photo&per_page=${this.pageSize}`;
         break;
       case 'notes':
-        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=note&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=note&per_page=${this.pageSize}`;
         break;
       default:
-        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=file&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=file&per_page=${this.pageSize}`;
         break;
     }
     return urlAPI;

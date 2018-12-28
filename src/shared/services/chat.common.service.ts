@@ -135,7 +135,7 @@ export class ChatCommonService {
     if (!conversationsResponse || !conversationsResponse.data) {
       return;
     }
-    const incomingConversation = conversationsResponse.data.find(conv => conv.group_json.id === groupId);
+    const incomingConversation = conversationsResponse.data.find(conv => conv.group.id === groupId);
     // show conversation if deleting
     if (incomingConversation === undefined && contactSelect.group_type === 'couple') {
       // Update another conversations to update their status
@@ -152,7 +152,7 @@ export class ChatCommonService {
       if (!isReplace) {
         currentMessageList.data.push(message);
       }
-      if (contactSelect.group_json.id === groupId) {
+      if (contactSelect.group.id === groupId) {
         const action = isReplace ? ACTION.EDIT : ACTION.ADD;
       }
       // // Scroll to bottom when user's own messages are arrived
@@ -171,7 +171,7 @@ export class ChatCommonService {
       this.moveFirstRecentList(groupId);
     }
     for (const conversation of conversationsResponse.data) {
-      if (conversation.group_json.id === groupId) {
+      if (conversation.group.id === groupId) {
         conversation.latest_message = message;
       }
     }
@@ -190,7 +190,7 @@ export class ChatCommonService {
     }
 
     // // this.storage.save('chat_messages_group_' + groupId, items.value);
-    if (contactSelect && contactSelect.group_json.id === groupId) {
+    if (contactSelect && contactSelect.group.id === groupId) {
       // this.storage.save(INCOMING_MESSAGE, { action: ACTION.EDIT, data });
       console.log('sending messages to current group: ', { action: ACTION.EDIT, data });
     }

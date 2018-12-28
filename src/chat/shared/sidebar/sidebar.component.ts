@@ -110,7 +110,12 @@ export class ZChatSidebarComponent implements OnInit {
   }
 
   onAddContact() {
-    this.addContactService.open('addContact');
+    // this.addContactService.open('addContact');
+    this.commonEventService.broadcast({
+        channel: 'ZChatShareAddContactComponent',
+        action: 'open',
+        payload: {option: 'addChat'}
+    });
   }
 
   openContactModal() {

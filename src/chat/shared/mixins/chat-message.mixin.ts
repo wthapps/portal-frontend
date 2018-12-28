@@ -21,7 +21,7 @@ export class ChatMessageMixin {
       }
     }
 
-    if (contactSelect && contactSelect.group_json.id === groupId) {
+    if (contactSelect && contactSelect.group.id === groupId) {
       console.log('sending messages to current group: ', { action: ACTION.EDIT, data });
     }
 
@@ -46,7 +46,7 @@ export class ChatMessageMixin {
     if (!conversationsResponse || !conversationsResponse.data)
       return;
     // conversation contain this message
-    const incomingConversation = conversationsResponse.data.find(conv => conv.group_json.id === groupId);
+    const incomingConversation = conversationsResponse.data.find(conv => conv.group.id === groupId);
     // show conversation if deleting
     if (incomingConversation === undefined && contactSelect.group_type === 'couple') {
       // Update another conversations to update their status

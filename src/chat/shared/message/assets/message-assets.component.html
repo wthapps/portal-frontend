@@ -26,7 +26,7 @@
                   <li *ngIf="showBlacklist">
                     <a href="javascript:void(0);" (click)="onAddToBlackList(user)">Blacklist</a>
                   </li>
-                  <li *ngIf="authService.user.id === conversation.group_json.creator_id && conversation.group_json.creator_id !== user.id">
+                  <li *ngIf="authService.user.id === conversation.group.creator_id && conversation.group.creator_id !== user.id">
                     <a href="javascript:void(0);" (click)="onRemoveMember(user)">Remove From Conversation</a>
                   </li>
                   <li *ngIf="authService.user.id === user.id">

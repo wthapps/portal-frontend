@@ -68,7 +68,7 @@ export class ChatNotificationComponent implements OnInit {
           this.notificationCount = 0;
         }
         this.conversations = this.conversations.map((conversation: any) => {
-          if (conversation.id === contact.group_json.id) {
+          if (conversation.id === contact.group.id) {
             conversation.notification_count = 0;
           }
           return conversation;
@@ -126,7 +126,7 @@ export class ChatNotificationComponent implements OnInit {
   }
 
   markAsRead(c: Conversation) {
-    const group_id = c.group_json.id;
+    const group_id = c.group.id;
     this.apiBaseService
       .addCommand(ConversationApiCommands.markAsRead({ id: group_id }))
       .subscribe((res: any) => {
@@ -148,7 +148,7 @@ export class ChatNotificationComponent implements OnInit {
   }
 
   updateNotification(c: Conversation) {
-    const group_id = c.group_json.id;
+    const group_id = c.group.id;
     this.apiBaseService
       .addCommand(
         ConversationApiCommands.updateNotification({
@@ -183,7 +183,7 @@ export class ChatNotificationComponent implements OnInit {
       case 'markAsRead': {
         chat_conversations = chat_conversations.map(
           (conversation: any) => {
-            if (conversation.group_json.id === params.id)
+            if (conversation.group.id === params.id)
               conversation.notification_count = 0;
             return conversation;
           }
@@ -193,7 +193,7 @@ export class ChatNotificationComponent implements OnInit {
       case 'updateNotification': {
         chat_conversations = chat_conversations.map(
           (conversation: any) => {
-            if (conversation.group_json.id === params.id)
+            if (conversation.group.id === params.id)
               conversation.notification = params.notification;
             return conversation;
           }

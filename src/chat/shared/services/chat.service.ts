@@ -182,7 +182,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
 
   selectContact(contact: any) {
     if (contact.notification_count > 0) {
-      this.markAsRead(contact.group_json.id);
+      this.markAsRead(contact.group.id);
     }
   }
 
@@ -192,7 +192,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
       'on_conversation_select',
       (contact: any) => {
         if (contact.notification_count > 0) {
-          this.markAsRead(contact.group_json.id);
+          this.markAsRead(contact.group.id);
         }
       }
     );
@@ -278,13 +278,13 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
 
   createMessage(groupId: any = null, data: any, option: any = {}): Observable<any> {
     // TODO this will be remvoe after getting groupId from UI
-    const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+    const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group.id;
     return this.apiBaseService.post('zone/chat/message', { group_id: conversationId, data: data });
   }
 
   sendMessage(groupId: any = null, data: any, option: any = {}): Promise<any> {
     // TODO this will be remvoe after getting groupId from UI
-    const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+    const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group.id;
 
     return this.apiBaseService
       .post('zone/chat/message', { group_id: conversationId, data: data })
@@ -295,7 +295,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     const item = this.storage.find(CONVERSATION_SELECT);
     if (item && item.value && message) {
       return this.sendMessage(
-        item.value.group_json.id,
+        item.value.group.id,
         { message: message, type: 'text' },
         option
       );
@@ -310,13 +310,12 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   uploadMediaOnWeb(media: any): Promise<any> {
-    const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+    const groupId = this.storage.find(CONVERSATION_SELECT).value.group.id;
     return this.sendMessage(groupId, { type: 'file', id: media.id, object: media.object_type || 'Photo' });
   }
 
   createUploadingFile(files?: any) {
-    const groupId = this.storage.find(CONVERSATION_SELECT).value.group_json
-      .id;
+    const groupId = this.storage.find(CONVERSATION_SELECT).value.group.id;
     const message: Message = new Message({
       message: 'Sending file.....',
       message_type: 'file',
@@ -359,8 +358,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   loadMoreMessages(): Promise<any> {
-    const groupId: any = this.storage.find(CONVERSATION_SELECT).value.group_json
-      .id;
+    const groupId: any = this.storage.find(CONVERSATION_SELECT).value.group.id;
     const current = this.storage.getValue('chat_messages_group_' + groupId);
     const currentMessages: any = current.data || [];
     let page: any = 1;
@@ -410,7 +408,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   updateDisplay(contact: any, data: any) {
     this.updateGroupUser(contact.group_id, data)
       .then((res: any) => {
-      return this.updateDisplayNotification(contact.group_json.id);
+      return this.updateDisplayNotification(contact.group.id);
     });
   }
 
@@ -457,7 +455,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     if (group) {
       groupId = group;
     } else {
-      groupId = this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+      groupId = this.storage.find(CONVERSATION_SELECT).value.group.id;
     }
     const body = { add_members: true, user_ids: friends };
     this.apiBaseService
@@ -521,7 +519,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     const item = this.storage.find(CONVERSATION_SELECT);
     this.apiBaseService
       .post('zone/chat/contact/share', {
-        group_id: item.value.group_json.id,
+        group_id: item.value.group.id,
         share_user_ids: ids
       })
       .subscribe((res: any) => {
@@ -529,7 +527,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
       });
     for (let i = 0; i < ids.length; i++) {
       if (item && item.value) {
-        this.sendMessage(item.value.group_json.id, {
+        this.sendMessage(item.value.group.id, {
           message: '',
           type: 'contact',
           contact: ids[i]
@@ -548,7 +546,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
         const item = this.storage.find(CHAT_CONVERSATIONS);
         if (item && item.value) {
           const contact = _.find(item.value.data, (ct: any) => {
-            if (ct.group_json.id === groupId) {
+            if (ct.group.id === groupId) {
               return ct;
             }
           });

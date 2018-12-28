@@ -35,9 +35,9 @@
       <button class="btn btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="showEmojiBtn($event)">
         <i class="fa fa-smile-o"></i>
       </button>
-      <button class="btn chat-message-action-send btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="validateAndSend()">
+      <a class="btn chat-message-action-send btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="validateAndSend()">
         <i class="fa fa-send"></i>
-      </button>
+      </a>
     </div>
   </form>
   <chat-note-list-modal #noteList (insertNoteEvent)="noteSelectOnInsert()">
