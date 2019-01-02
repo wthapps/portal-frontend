@@ -32,7 +32,8 @@ import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/
 import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 import { Subject } from 'rxjs';
 
-@Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin, MediaListDetailMixin])
+@Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin,
+   MediaListDetailMixin])
 @Component({
   selector: 'photo-detail',
   templateUrl: './item-detail.component.html',
@@ -86,8 +87,8 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     this.apiBaseService.get(`media/media/${this.object.uuid}`, { model: 'Media::Photo' }).toPromise()
       .then(res => {
         this.object = res.data;
-      })
-  };
+      });
+  }
 
 
   constructor(public apiBaseService: ApiBaseService,
@@ -121,28 +122,28 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
             this.menuActions.favorite.iconClass = 'fa fa-star-o';
           }
           // reload video
-          if (this.model == 'Media::Video' && $('#video')[0]) $('#video')[0].load();
+          if (this.model === 'Media::Video' && $('#video')[0]) { $('#video')[0].load(); }
           this.validateActions(this.menuActions, this.object.permission.role_id);
           if (!this.listIds && params.preview) {
             if (params.objects) {
               // this.listIds = new DoublyLinkedLists(params.ids.split(','));
               // this.listIds.setCurrent(this.object.id);
-              let objects = params.objects.map(ob => {
-                let tmp = ob.split(',');
+              const objects = params.objects.map(ob => {
+                const tmp = ob.split(',');
                 return {
                   id: tmp[0],
                   model: tmp[1]
-                }
+                };
               });
               this.listIds = new DoublyLinkedLists(objects);
               this.listIds.setCurrent(this.object.uuid);
             } else {
-              let query: any = {};
-              if (params.parent_id) query.parent = params.parent_id;
+              const query: any = {};
+              if (params.parent_id) { query.parent = params.parent_id; }
               this.apiBaseService.get(`media/media/ids_combine`, query).toPromise()
                 .then(res2 => {
                   if (res2.data) {
-                    this.listIds = new DoublyLinkedLists(res2.data.map(d => {return {id: d.uuid, model: d.model}}));
+                    this.listIds = new DoublyLinkedLists(res2.data.map(d => ({id: d.uuid, model: d.model})));
                     this.listIds.setCurrent(this.object.uuid);
                   }
                 });
@@ -157,9 +158,9 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     this.destroy$.complete();
   }
 
-  loadObject:(input?: any) => void;
+  loadObject: (input?: any) => void;
 
-  toggleInfo:() => void;
+  toggleInfo: () => void;
 
   openModalShareCustom() {
     this.openModalShare([this.object]);
@@ -408,20 +409,22 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-edit'
       }
-    }
+    };
   }
 
   onPrev() {
     this.listIds.prev();
     const url = '/photos/';
-    this.router.navigate([`${url + this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model }, queryParamsHandling: 'merge' });
+    this.router.navigate([`${url + this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model },
+     queryParamsHandling: 'merge' });
   }
 
   onNext() {
     this.listIds.next();
     const url = '/photos/';
-    this.router.navigate([`${url + this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model}, queryParamsHandling: 'merge' });
+    this.router.navigate([`${url + this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model},
+     queryParamsHandling: 'merge' });
   }
 
-  back:() => void;
+  back: () => void;
 }

@@ -52,9 +52,17 @@ failed() {
   return 1
 }
 
-MODULES="portal chat contact media my-account note social"
-for var in $MODULES
-do
-   proceed $var &
-done
+# MODULES="portal chat contact media my-account note social"
+multi_proceed() {
+  modules=$1
+  for var in $modules
+  do
+    proceed $var
+  done
+  wait
+  echo "=== Done multi  $modules ==="
+}
+
+# Process modules in batches. Ex:
+# multi_proceed "portal chat contact" && multi_proceed "my-account note social"
 
