@@ -1,16 +1,2 @@
 @import "../../../../assets/styles/global";
 
-.dl-horizontal {
-  margin-bottom: 0;
-  dt {
-    text-align: right;
-    font-weight: normal;
-    color: $text-muted;
-  }
-  dd {
-    margin-bottom: 10px;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-}

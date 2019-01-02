@@ -31,8 +31,16 @@
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, .125);
   border-radius: .25rem;
+  & + .card {
+    margin-top: 20px;
+  }
 }
 
 .card-body {
   padding: 10px;
+}
+
+.card-line {
+  clear: both;
+  margin: 10px -10px;
 }
