@@ -627,7 +627,7 @@ export class ZMediaAlbumDetailComponent
             this.getSharingParentInfo(this.object.sharing_object.sharing_id);
           }
         },
-        class: 'btn btn-default info-toggle',
+        class: 'btn btn-default',
         liclass: '',
         title: 'View Information',
         tooltip: this.tooltip.info,

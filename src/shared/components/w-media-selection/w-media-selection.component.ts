@@ -85,6 +85,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   selectedMedias$: Observable<Media[]>;
   multipleSelection$: Observable<boolean>;
   view$: Observable<string>;
+  initLoading = true;
 
   currentTab: string; // upload, photos, albums, albums_detail, favourites, shared_with_me
 
@@ -178,6 +179,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
     this.nextLink = this.buildNextLink(); // 'media/photos'
     this.isLoading = false;
+    this.initLoading = true;
     this.modal.open().then();
   }
 
@@ -190,25 +192,29 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     console.log('Post Photo Select Component DISMISSED', event);
   }
 
-  getObjects(override?: boolean) {
+  async getObjects(override?: boolean) {
     if (this.nextLink && !this.isLoading) {
       this.isLoading = true;
-      this.mediaSelectionService.getMedias(this.nextLink, override).toPromise().then(
-        (res: ResponseMetaData) => {
-          this.nextLink = res.meta.links.next;
-          this.isLoading = false;
-        }
-      );
+      const res = await this.mediaSelectionService.getMedias(this.nextLink, override).toPromise();
+      this.nextLink = res.meta.links.next;
+      this.isLoading = false;
+      this.initLoading = false;
+      return res;
+    } else {
+      this.initLoading = false;
+      return Promise.resolve(null);
     }
   }
 
-  tabAction(event: any) {
+  async tabAction(event: any) {
     this.mediaSelectionService.clear();
     this.currentTab = event.link;
+    this.initLoading = true;
 
     if (this.currentTab !== 'upload') {
       this.nextLink = this.buildNextLink();
-      this.getObjects(true);
+      const objects = await this.getObjects(true);
+      console.log('objects: ', objects);
 
       if (this.currentTab === 'albums' || this.currentTab === 'playlists'
         || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me'
@@ -373,11 +379,15 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'favourites':
-        if (this.filter === 'all') urlAPI = `media/favorites?active=1`;
-        if (this.filter === 'photo')
-        urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Album&filter[or][sharing_type]=Media::Album&filter[or][sharing_type]=Media::Photo`;
-        if (this.filter === 'video')
-        urlAPI = `media/favorites?filter[where][object_type]=Media::Video&filter[or][object_type]=Media::Playlist&filter[or][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist`;
+        if (this.filter === 'all') { urlAPI = `media/favorites?active=1`; }
+        if (this.filter === 'photo') {
+        urlAPI = `media/favorites?filter[where][object_type]=Media::Photo
+        &filter[or][object_type]=Media::Album&filter[or][sharing_type]=Media::Album&filter[or][sharing_type]=Media::Photo`;
+        }
+        if (this.filter === 'video') {
+        urlAPI = `media/favorites?filter[where][object_type]=Media::Video
+        &filter[or][object_type]=Media::Playlist&filter[or][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist`;
+        }
         break;
       case 'favourites_detail':
         switch (this.mediaParent.model) {
@@ -396,11 +406,13 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         }
         break;
       case 'shared_with_me':
-        if (this.filter === 'all') urlAPI = `media/sharings/shared_with_me?active=1`;
-        if (this.filter === 'photo')
+        if (this.filter === 'all') { urlAPI = `media/sharings/shared_with_me?active=1`; }
+        if (this.filter === 'photo') {
         urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Album`;
-        if (this.filter === 'video')
+        }
+        if (this.filter === 'video') {
         urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist`;
+        }
         break;
       case 'shared_with_me_detail':
         urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;

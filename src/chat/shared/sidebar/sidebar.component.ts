@@ -15,6 +15,7 @@ import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { ModalService } from '@shared/components/modal/modal-service';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
 import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
+import { ChatConversationService } from '../services/chat-conversation.service';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class ZChatSidebarComponent implements OnInit {
 
   constructor(
     public chatService: ChatService,
+    public chatConversationService: ChatConversationService,
     private router: Router,
     private urlService: UrlService,
     private storageService: StorageService,
@@ -99,17 +101,21 @@ export class ZChatSidebarComponent implements OnInit {
     if (contact.deleted) {
       this.chatService.updateGroupUser(contact.group_id, { deleted: false }).then(res => {
         this.chatService.getConversationsAsync({ forceFromApi: true }).toPromise().then(r2 => {
-          this.router.navigate(['/conversations', contact.group_id]);
+          this.chatConversationService.navigateToConversation(contact.group_id);
         });
       });
     } else {
-      this.router.navigate(['/conversations', contact.group_id]);
-      this.chatService.selectContact(contact);
+      this.chatConversationService.navigateToConversation(contact.group_id);
     }
   }
 
   onAddContact() {
-    this.addContactService.open('addContact');
+    // this.addContactService.open('addContact');
+    this.commonEventService.broadcast({
+        channel: 'ZChatShareAddContactComponent',
+        action: 'open',
+        payload: {option: 'addChat'}
+    });
   }
 
   openContactModal() {

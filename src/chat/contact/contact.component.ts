@@ -40,6 +40,6 @@ export class ZChatContactComponent implements OnInit {
 
   newContact() {
     this.addContact.type = 'addContact';
-    this.addContact.open();
+    this.addContact.open({});
   }
 }

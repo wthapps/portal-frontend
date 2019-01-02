@@ -11,7 +11,7 @@ import { Constants } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { UserService } from '@shared/services';
+import { UserService, CommonEventService } from '@shared/services';
 
 
 declare let $: any;
@@ -46,6 +46,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     private wthConfirmService: WthConfirmService,
     private addContactService: ZChatShareAddContactService,
+    private commonEventService: CommonEventService,
     private renderer: Renderer2,
     private messageAssetsService: MessageAssetsService) {
     this.profileUrl = this.chatService.constant.profileUrl;
@@ -79,7 +80,13 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   onAddMember() {
-    this.addContactService.open('addMember');
+    // this.addContactService.open('addMember');
+    this.commonEventService.broadcast({
+      channel: 'ZChatShareAddContactComponent',
+      action: 'open',
+      payload: {option: 'addMember'}
+    })
+
   }
 
   sendContact() {

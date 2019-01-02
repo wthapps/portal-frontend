@@ -55,7 +55,8 @@
       </div>
     </ng-container>
     <ng-container *ngIf="currentTab !== 'upload'">
-      <ng-container *ngIf="(medias$ | async) as mediasList;">
+      <box-loading *ngIf="initLoading"></box-loading>
+      <ng-container *ngIf="!initLoading && (medias$ | async) as mediasList;">
         <ng-container *ngIf="mediasList?.length; else templateNodata">
           <div class="modal-selection-toolbar">
             <div *ngIf="currentTab == 'albums_detail' ||

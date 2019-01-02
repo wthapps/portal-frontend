@@ -44,14 +44,14 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.chatService.updateDisplay(this.conversation, {display: {name: this.name}, allow_add: this.allow_add, image: this.imageUpdated});
+    this.chatService.updateDisplay(this.conversation, {display: {name: this.name}, allow_add: this.allow_add, image: this.imageUpdated, upload: true});
     this.modal.close();
   }
 
   open() {
     this.modal.open().then(e => {
-      this.allow_add = (this.conversation.group_json.allow_add || this.conversation.group_json.allow_add == 'true');
-      this.name = this.conversation.group_json.name;
+      this.allow_add = (this.conversation.group.allow_add || this.conversation.group.allow_add == 'true');
+      this.name = this.conversation.group.name;
     });
   }
 
@@ -68,15 +68,13 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
       filter(photos => photos.length > 0)
     ).pipe(takeUntil(this.destroy$)).subscribe(photos => {
       this.imageUpdated = photos[0].url;
-      this.conversation.group_json.image = this.imageUpdated;
+      this.conversation.group.profile_image = this.imageUpdated;
       // detect to update
       this.conversation = {...this.conversation};
     });
   }
 
   startCrop(photo: any){
-    console.log(photo);
-
     this.commonEventService.broadcast({
       channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN',
       payload: { currentImage: photo }
@@ -85,10 +83,13 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
     this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
       .pipe(take(1))
       .subscribe((event: any) => {
-        // this.doEvent(event);
-        console.log(event);
         if (event.action == "SELECT_CROP:DONE") {
-
+          // re-open
+          this.modal.open();
+          this.imageUpdated = event.payload;
+          this.conversation.group.profile_image = this.imageUpdated;
+          // detect to update
+          this.conversation = { ...this.conversation };
         }
       });
   }

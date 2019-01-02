@@ -3,17 +3,10 @@
     <div class="page-body-nav-left">
       <z-chat-share-user [data]="contactSelect" [displayAvatar]="false" [isStranger]="contactSelect?.group_type === 'couple' && !contactSelect?.active"
         [usersOnlineItem]="usersOnlineItem$ | async">
-        <!--<small *ngIf="contactSelect.group_json.member_count > 2"
-               [attr.title]="contactSelect.group_json | chatGroupMembers"
-               class="can-click" (click)="onShowMemberBar()">
-        </small>-->
-        <!--<small *ngIf="contactSelect && !(contactSelect?.group_type === 'couple' && !contactSelect?.active)">-->
-        <!--Active {{ contactSelect.group_json.interacted_at | timeFormat }}-->
-        <!--</small>-->
       </z-chat-share-user>
     </div>
     <div *ngIf="contactSelect && !contactSelect.black_list" class="page-body-nav-right">
-      <button *ngIf="contactSelect.group_json.group_type == 'multiple' && (userService.profile.id == contactSelect.group_json.creator_id || contactSelect.group_json.allow_add)"
+      <button *ngIf="contactSelect.group.group_type == 'multiple' && (userService.profile.id == contactSelect.group.creator_id || contactSelect.group.allow_add)"
         type="button" class="btn btn-default" (click)="onAddMember()" pTooltip="{{ tooltip.addMembers }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
@@ -32,13 +25,13 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <!--show if current isn't one user-->
-          <ng-container *ngIf="contactSelect.group_json.group_type === 'multiple' && userService.profile.id == contactSelect.group_json.creator_id">
+          <ng-container *ngIf="contactSelect.group.group_type === 'multiple' && userService.profile.id == contactSelect.group.creator_id">
             <li>
               <a href="javascript:void(0);" (click)="onEditConversation()">Group settings</a>
             </li>
             <li role="separator" class="divider"></li>
           </ng-container>
-          <li *ngIf="contactSelect.group_json.group_type == 'multiple'">
+          <li *ngIf="contactSelect.group.group_type == 'multiple'">
             <a href="javascript:;" (click)="leaveConversation()">Leave chat</a>
           </li>
           <!--show if current isn't one user-->
@@ -46,7 +39,7 @@
             <a href="javascript:;" (click)="onDeleteConversation()">Hide chat</a>
           </li>
           <!--show if current is one user-->
-          <li *ngIf="contactSelect.group_json.group_type == 'couple'">
+          <li *ngIf="contactSelect.group.group_type == 'couple'">
             <a [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a>
           </li>
           <!-- <li role="separator" class="divider"></li>
@@ -70,7 +63,7 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <!--show if current is one user-->
-          <li *ngIf="contactSelect.group_json.group_type == 'couple'">
+          <li *ngIf="contactSelect.group.group_type == 'couple'">
             <a [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a>
           </li>
         </ul>

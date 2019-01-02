@@ -21,7 +21,7 @@ declare let _: any;
 
 export class FileSelectCropComponent implements OnInit, OnDestroy {
   @ViewChild('cropImage') cropImage: CropImageComponent;
-  @Input() useNewPhotoSelect: boolean = true;
+  @Input() useNewPhotoSelect = true;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   currentImage: string;
@@ -86,7 +86,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
       // this.photoSelectDataService.open({editCurrentMode: editCurrentMode});
       // this.subscribePhotoSelectEvents();
     } else {
-      this.mediaSelectionService.open({ allowSelectMultiple: false });
+      this.mediaSelectionService.open({ allowSelectMultiple: false, hiddenTabs: ['videos', 'playlists']});
 
       const close$: Observable<any> = merge(this.mediaSelectionService.open$, componentDestroyed(this));
       this.mediaSelectionService.selectedMedias$.pipe(
@@ -113,7 +113,7 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
     if (files.length < 1) {
       console.warn('file-select-crop: next error: files should have at least 1 element');
     } else {
-      let img: string = files[0].thumbnail_url;
+      const img: string = files[0].thumbnail_url;
       this.cropImage.open(img);
       this.mediaSelectionService.close();
     }
@@ -138,17 +138,4 @@ export class FileSelectCropComponent implements OnInit, OnDestroy {
   onDone(image: string) {
     this.dispatchEvent({action: 'SELECT_CROP:DONE', payload: image, card: this.card, user: this.user});
   }
-
-
-  // private subscribePhotoSelectEvents() {
-  //
-  //   this.photoSelectDataService.nextObs$.takeUntil(this.close$).subscribe((photos: any) => {
-  //     this.next(photos);
-  //   });
-  //
-  //   this.photoSelectDataService.uploadObs$.takeUntil(this.close$).subscribe((files: any) => {
-  //     this.handleLocalImage(files);
-  //   });
-  // }
-
 }

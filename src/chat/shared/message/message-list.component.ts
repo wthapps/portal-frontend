@@ -109,9 +109,9 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   onAddContact(contact: any) {
     this.requestModal.contact = contact;
     // this.requestModal.modal.open();
-    this.chatContactService.addContact([contact.id], '', (res) => {
-      this.chatService.selectContactByPartnerId(contact.id);
-    });
+    // this.chatContactService.addContact([contact.id], '', (res) => {
+    //   this.chatService.selectContactByPartnerId(contact.id);
+    // });
   }
 
   doEvent(event: any) {

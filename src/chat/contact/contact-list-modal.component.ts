@@ -10,6 +10,7 @@ import { ApiBaseService, AuthService, ChatCommonService, CommonEventHandler, Com
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 
 @Component({
   selector: 'contact-list-modal',
@@ -73,7 +74,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
     public apiBaseService: ApiBaseService,
     private chatContactService: ChatContactService,
     private modalService: ModalService,
-    private conversationService: ConversationService,
+    private chatConversationService: ChatConversationService,
     private chatCommonService: ChatCommonService,
     public commonEventService: CommonEventService,
     private authService: AuthService,
@@ -167,24 +168,17 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
   // actions
 
   createConversation(contact: any) {
-    // this.conversationService.create([contact]).pipe(takeUntil(this.destroy$)).subscribe(response => {
-    //   // jump to created conversation
-    //   console.log('conversation created:::', response.data);
-    //   // close current modal
-    //   this.chatCommonService.updateConversationBroadcast(response.data.group_id);
-    //   this.modal.close();
-    // });
-    this.chatContactService.addContact([contact.id]);
-    this.modal.close();
-
+    this.sendRequest(contact);
   }
 
   sendRequest(contact: any) {
-    // this.modalService.open({modalName: 'ChatRequestModal', contact: contact});
-    this.chatContactService.addContact([contact.id], '', (res: any)=> {
-      this.chatService.selectContactByPartnerId(contact.id);
-      this.modal.close();
-    })
+    this.chatContactService.addContact([contact.id]).then(res => {
+      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res => {
+        this.chatCommonService.moveFirstRecentList(res.data.group_id);
+      });
+      this.chatConversationService.navigateToConversation(res.data.group_id);
+    });
+    this.modal.close();
   }
 
   toggleBlacklist(contact: any) {

@@ -44,7 +44,7 @@ export class ChatNotification implements Processable {
     const conversations = this.serviceManager.getStorageService().getValue(CHAT_CONVERSATIONS);
     if (conversations) {
       const contact = _.find(conversations.data,
-        (ct: any) =>  (ct.group_json.id.toString() === data.data.group_id.toString())
+        (ct: any) =>  (ct.group.id.toString() === data.data.group_id.toString())
       );
       if (contact && contact.notification) {
         if (contact.notification) contact.notification_count = data.data.count;

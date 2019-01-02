@@ -33,7 +33,7 @@
           </ng-template>
         </ul>
       </div>
-      <button [disabled]="!menuActions.info.active" class="{{menuActions.info.class}}"
+      <button [disabled]="!menuActions.info.active" class="{{menuActions.info.class}}" [ngClass]="{'info-toggle': showDetailsInfo}"
         draggable="false" pTooltip="{{menuActions.info.tooltip}}" tooltipPosition="{{menuActions.info.tooltipPosition}}" href="javascript:void(0);"
         (click)="menuActions.info.action()">
         <i class="{{menuActions.info.iconClass}}"></i>
@@ -56,7 +56,7 @@
     <ng-container>
       <div class="image-viewer-content-fixed" [ngStyle]="{'display': object.model == 'Media::Photo' ? 'block' : 'none'}">
         <!-- (load)="onStart($event)" -->
-        <img id="image-viewer" [src]="object.url" alt="" (load)="onStart($event)" (onChange)="onStart($event)">
+        <img id="image-viewer" [src]="object.url" [ngStyle]="{'visibility': 'hidden'}" alt="" (load)="onStart($event)" (onChange)="onStart($event)">
       </div>
       <ng-container *ngIf=" object && hasEditPhoto">
         <app-image-cropper [photo]="object.url" (onCompleteMethod)="doAction($event)"></app-image-cropper>
@@ -138,7 +138,7 @@
         <dd class="col-sm-8">{{ object.dimensions}}</dd>
       </div>
       <div class="row">
-        <dt class="col-sm-4">Uploaded</dt>
+        <dt class="col-sm-4">Created</dt>
         <dd class="col-sm-8">{{ object.created_at | timeFormat}}</dd>
       </div>
     </dl>

@@ -10,7 +10,7 @@ export class ChatMessageService {
   create(groupId: any = null, data: any, option: any = {}) {
     // TODO this will be remvoe after getting groupId from UI
     const conversationId =
-      groupId || this.storage.find(CONVERSATION_SELECT).value.group_json.id;
+      groupId || this.storage.find(CONVERSATION_SELECT).value.group.id;
 
     return this.apiBaseService
       .post('zone/chat/message', { group_id: conversationId, data: data });
@@ -20,7 +20,7 @@ export class ChatMessageService {
     const item = this.storage.find(CONVERSATION_SELECT);
     if (item && item.value && message) {
       return this.create(
-        item.value.group_json.id,
+        item.value.group.id,
         { message: message, type: 'text' },
         option
       );

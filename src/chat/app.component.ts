@@ -70,8 +70,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     if (
-      // !this.authService.user.introduction ||
-      // !this.authService.user.introduction.chat
       !_.get(this.authService, 'user.introduction.chat')
     ) {
       this.introduction.open();
@@ -100,7 +98,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private handleBrowserState(isActive) {
     if (isActive) {
-      this.chatService.getOutOfDateMessages();
+      this.getOutOfDateData();
     }
   }
 
@@ -108,11 +106,16 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     const online = navigator.onLine;
     this.setNetworkOnline(online);
     if (online) {
-      this.chatService.getOutOfDateMessages();
+      this.getOutOfDateData();
       this.clearOfflineMessage();
     } else {
       this.showOfflineMessage();
     }
+  }
+
+  private getOutOfDateData() {
+    this.chatService.getConversationsAsync({forceFromApi: true}).subscribe();
+    this.chatService.getOutOfDateMessages();
   }
 
   private setNetworkOnline(online: boolean) {

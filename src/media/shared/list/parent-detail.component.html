@@ -61,7 +61,7 @@
           </ul>
         </li>
         <li *ngIf="menuActions.info">
-          <button [disabled]="!menuActions.info.active" class="{{menuActions.info.class}}" draggable="false" pTooltip="{{menuActions.info.tooltip}}"
+          <button [disabled]="!menuActions.info.active" class="{{menuActions.info.class}}" [ngClass]="{'info-toggle': showDetailsInfo}" draggable="false" pTooltip="{{menuActions.info.tooltip}}"
             tooltipPosition="{{menuActions.info.tooltipPosition}}" href="javascript:void(0);" (click)="menuActions.info.action()">
             <i class="{{menuActions.info.iconClass}}"></i>
           </button>
@@ -98,8 +98,7 @@
       </a>
     </h3>
     <div class="photo-detail-info-title">
-      <h4>
-        <i class="fa fa-info-circle"></i> Details</h4>
+      <h4>Details</h4>
         <ng-container *ngIf="!object.role_id || object.role_id >= 3">
           <button class="btn btn-default pull-right" (click)="openEditModal(object)">
             <i class="fa fa-pencil"></i>
@@ -108,24 +107,26 @@
     </div>
     <dl>
       <div class="row">
-        <dt class="col-sm-6">Name</dt>
-        <dd class="col-sm-6">{{ object.name }}</dd>
+        <dt class="col-sm-4">Name</dt>
+        <dd class="col-sm-8">{{ object.name }}</dd>
       </div>
       <div class="row">
-        <dt class="col-sm-6">Description</dt>
-        <dd class="col-sm-6">{{ object.description }}</dd>
+        <dt class="col-sm-4">Description</dt>
+        <dd class="col-sm-8">{{ object.description }}</dd>
       </div>
       <div class="row">
-        <dt class="col-sm-6">Type</dt>
-        <dd class="col-sm-6">{{ object.extension }}</dd>
+        <dt class="col-sm-4">Type</dt>
+        <!-- <dd class="col-sm-6">{{ object.extension }}</dd> -->
+        <dd *ngIf="object.object_type == 'sharing'" class="col-sm-8">Sharing</dd>
+        <dd *ngIf="object.object_type == 'Media::Album'" class="col-sm-8">Album</dd>
       </div>
       <div class="row">
-        <dt class="col-sm-6">Number of files</dt>
-        <dd class="col-sm-6">{{ objects?.length || object.child_count }}</dd>
+        <dt class="col-sm-4">Items</dt>
+        <dd class="col-sm-8">{{ objects?.length || object.child_count }}</dd>
       </div>
       <div class="row">
-        <dt class="col-sm-6">Created</dt>
-        <dd class="col-sm-6">
+        <dt class="col-sm-4">Created</dt>
+        <dd class="col-sm-8">
           <span>{{ object.created_at | timeFormat}}</span>
         </dd>
       </div>
@@ -133,10 +134,7 @@
     <hr />
     <dl>
       <dt>
-        <h4>
-          <i class="wthico-album"></i>
-          <span> Sharings </span>
-        </h4>
+        <h4><span> Sharings </span></h4>
       </dt>
       <dd>
         <div>

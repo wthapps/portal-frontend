@@ -6,7 +6,7 @@
         <z-chat-share-user [data]="contact" [size]="'xs'" [usersOnlineItem]="usersOnlineItem$ | async"></z-chat-share-user>
       </div>
       <div class="media-left">
-        <span class="text-fade">{{ contact.group_json.updated_at | timeFormat }}</span>
+        <span class="text-fade">{{ contact.group.updated_at | timeFormat }}</span>
       </div>
       <div class="media-body">
         <p class="no-wrap">
