@@ -6,9 +6,9 @@ import { CommonEventService } from '@wth/shared/services/common-event/common-eve
 import { UserService } from '@wth/shared/services/user.service';
 import { CountryService } from '@wth/shared/shared/components/countries/countries.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
-import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
+import { MessageService } from 'primeng/api';
 
 import { Subject } from 'rxjs';
 
@@ -46,7 +46,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   constructor(public userService: UserService,
               private fb: FormBuilder,
               private countryService: CountryService,
-              private toastsService: ToastsService,
+              private messageService: MessageService,
               private apiBaseService: ApiBaseService,
               private urlService: UrlService,
               private commonEventService: CommonEventService,
@@ -55,8 +55,8 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
     const d = new Date();
     const yearRangeEnd = d.getFullYear();
-    const yearRangestar = yearRangeEnd - 100;
-    this.yearRange = `${yearRangestar}:${yearRangeEnd}`;
+    const yearRangestart = yearRangeEnd - 100;
+    this.yearRange = `${yearRangestart}:${yearRangeEnd}`;
 
     if (!this.userService.getSyncProfile().profile_image) {
       this.userService.getSyncProfile().profile_image = Constants.img.avatar;
@@ -94,10 +94,18 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // verified email
     if (this.urlService.getQuery() && this.urlService.getQuery().verified === 'true') {
-      this.toastsService.success('You have successfully verify your email address');
+      this.messageService.add({
+        severity: 'success',
+        summary: '',
+        detail: 'You have successfully verify your email address'
+      });
     }
     if (this.urlService.getQuery() && this.urlService.getQuery().verified === 'false') {
-      this.toastsService.danger('Cannot verify your email address. Please try again');
+      this.messageService.add({
+        severity: 'error',
+        summary: '',
+        detail: 'Cannot verify your email address. Please try again'
+      });
     }
     this.apiBaseService.post('users/get_user').subscribe((res: any) => {
       this.confirmedEmail = res.data.confirmed_at;
@@ -146,12 +154,20 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         .subscribe((result: any) => {
             // stop loading
             this.loadingService.stop();
-            this.toastsService.success(result.message);
+            this.messageService.add({
+              severity: 'success',
+              summary: '',
+              detail: result.message
+            });
           },
           error => {
             // stop loading
             this.loadingService.stop();
-            this.toastsService.danger(this.errorMessage);
+            this.messageService.add({
+              severity: 'error',
+              summary: '',
+              detail: this.errorMessage
+            });
             console.log(error);
           }
         );
@@ -160,7 +176,11 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
   sendVerifyEmail() {
     this.apiBaseService.post(`users/confirmation`).subscribe((res: any) => {
-      this.toastsService.success('A verification email was sent to your email address');
+      this.messageService.add({
+        severity: 'success',
+        summary: '',
+        detail: 'A verification email was sent to your email address'
+      });
     });
   }
 
