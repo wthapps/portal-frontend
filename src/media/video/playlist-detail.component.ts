@@ -419,7 +419,6 @@ PlaylistAddMixin, MediaDownloadMixin {
       hiddenTabs: ['photos', 'albums'],
       filter: 'video',
       allowCancelUpload: true,
-      maxNumberOfFiles: 4,
       uploadButtonText: 'Upload videos',
       dragdropText: 'Drag your videos here'
     });

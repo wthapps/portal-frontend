@@ -108,6 +108,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   // end search
 
   allowCancelUpload: boolean;
+  allowMixedContent = false;
   uploadButtonText: string;
   dragdropText: string;
   filter = 'all';
@@ -161,6 +162,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     this.allowCancelUpload = options.allowCancelUpload;
     this.uploadButtonText = options.uploadButtonText;
     this.dragdropText = options.dragdropText;
+    this.allowMixedContent = options.allowMixedContent;
 
     // set content type depend on open options
     if (options.hiddenTabs.includes('photos')) {
@@ -358,10 +360,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   private buildNextLink() {
     let urlAPI = '';
     console.log(this.currentTab);
+    const { allowMixedContent } = this.mediaSelectionService.getOptions();
 
     switch (this.currentTab) {
       case 'photos':
-        urlAPI = `media/photos?active=1`;
+        urlAPI = allowMixedContent ? 'media/media/index_combine?model=Media::Photo' : `media/photos?active=1`;
         break;
       case 'albums':
         urlAPI = `media/albums?active=1`;
@@ -376,7 +379,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         urlAPI = `media/playlists/${this.mediaParent.id}/videos?active=1`;
         break;
       case 'albums_detail':
-        urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
+        urlAPI = allowMixedContent ? `media/albums/${this.mediaParent.uuid}/objects?model=Media::Album` :
+         `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'favourites':
         if (this.filter === 'all') { urlAPI = `media/favorites?active=1`; }
