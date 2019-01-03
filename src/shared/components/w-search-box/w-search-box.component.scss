@@ -110,6 +110,7 @@
       right: 1px;
       top: 1px;
       z-index: 2;
+      @include flexbox;
       &.input-group-left {
         left: 1px;
         right: auto;
