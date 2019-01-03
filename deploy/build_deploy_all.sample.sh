@@ -57,7 +57,7 @@ multi_proceed() {
   modules=$1
   for var in $modules
   do
-    proceed $var
+    proceed $var &
   done
   wait
   echo "=== Done multi  $modules ==="
