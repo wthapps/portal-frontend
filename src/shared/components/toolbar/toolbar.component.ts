@@ -110,11 +110,11 @@ AlbumCreateMixin {
       allowedFileTypes: content_types,
       video: true
     });
-    this.uploader.event$.pipe(filter(e => e.action == 'complete')).pipe(take(1)).subscribe(res => {
+    this.uploader.event$.pipe(filter(e => e.action === 'complete'), take(1)).subscribe(res => {
       this.commonEventService.broadcast(
         { channel: 'ZMediaPhotoListComponent', action: 'loadObjects'}
-      )
-    })
+      );
+    });
   }
   // uploadVideo(content_types: any = []) {
   //   this.uploader.open('FileInput', '.w-uploader-file-input-container', {

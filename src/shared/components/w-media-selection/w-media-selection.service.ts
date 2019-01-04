@@ -16,7 +16,6 @@ const DEFAULT_OPTIONS = {
   hiddenTabs: [],
   allowSelectMultiple: true,
   allowCancelUpload: false,
-  allowMixedContent: false,
   allowedFileTypes: ['image/*', 'video/mp4', 'video/x-m4v', 'video/*'],
   uploadButtonText: 'Upload photos',
   dragdropText: 'Drag your photos here'
@@ -75,8 +74,7 @@ export class WMediaSelectionService {
   }
 
   getMedias(nextLink?: any, override?: boolean): Observable<any> {
-    const default_url = this.options.allowMixedContent ? 'media/media/index_combine?model=Media::Photo' : 'media/photos';
-    const link = nextLink ? nextLink : default_url;
+    const link = nextLink ? nextLink : 'media/photos';
     return this.apiBaseService.get(link).pipe(
       map((res: ResponseMetaData) => {
         const data = res.data.map((item) => ({...item, group_by_day: this.datePipe.transform(item.created_at, 'yyyy-MM-dd'),

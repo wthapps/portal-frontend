@@ -70,7 +70,7 @@ MediaModalMixin {
   menuActions: any;
   sorting: any =  {sort_name: 'Date', sort: 'desc'};
   destroy$ = new Subject();
-  channel: string = 'ZMediaPhotoListComponent';
+  channel = 'ZMediaPhotoListComponent';
 
   private sub: any;
 
@@ -231,7 +231,7 @@ custom method please overwirte any method*/
   // tslint:disable-next-line:member-ordering
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
-    let model = this.selectedObjects[0].object_type;
+    const model = this.selectedObjects[0].object_type;
     const data: any = { returnUrls: '/photos', preview: true, model: model};
     // if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
     if (this.selectedObjects && this.selectedObjects.length > 1) { data.objects = this.selectedObjects.map(s => `${s.uuid},${s.object_type}`); }

@@ -217,9 +217,8 @@ export class ZMediaAlbumDetailComponent
     this.mediaSelectionService.open({
       hiddenTabs: ['videos', 'playlists'],
       selectedTab: 'photos',
-      filter: 'photo',
+      filter: 'all',
       allowCancelUpload: true,
-      allowMixedContent: true,
       allowedFileTypes: ['image/*']
     });
     if (this.subSelect) { this.subSelect.unsubscribe(); }
