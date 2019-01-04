@@ -5,14 +5,14 @@
         [usersOnlineItem]="usersOnlineItem$ | async">
       </z-chat-share-user>
     </div>
-    <div *ngIf="contactSelect && !contactSelect.black_list" class="page-body-nav-right">
+    <div *ngIf="contactSelect && !contactSelect.blacklist" class="page-body-nav-right">
       <button *ngIf="contactSelect.group.group_type == 'multiple' && (userService.profile.id == contactSelect.group.creator_id || contactSelect.group.allow_add)"
         type="button" class="btn btn-default" (click)="onAddMember()" pTooltip="{{ tooltip.addMembers }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
-      <button type="button" class="btn btn-default" (click)="onFavorite()" pTooltip="{{ (contactSelect.favourite) ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
+      <button type="button" class="btn btn-default" (click)="onFavorite()" pTooltip="{{ (contactSelect.favorite) ? tooltip.removeFromFavorites : tooltip.addToFavorites }}"
         tooltipPosition="top">
-        <i class="fa" [ngClass]="contactSelect.favourite? 'fa-star': 'fa-star-o'"></i>
+        <i class="fa" [ngClass]="contactSelect.favorite? 'fa-star': 'fa-star-o'"></i>
       </button>
       <button type="button" class="btn btn-default" (click)="toggleNotification()" pTooltip="{{ (contactSelect.notification) ? tooltip.disable_notification : tooltip.enable_notification }}"
         tooltipPosition="top">
@@ -55,7 +55,7 @@
         <i [ngClass]="{'text-primary': openAssets}" class="fa fa-info-circle"></i>
       </button>
     </div>
-    <div *ngIf="contactSelect && contactSelect.black_list" class="page-body-nav-right">
+    <div *ngIf="contactSelect && contactSelect.blacklist" class="page-body-nav-right">
       <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
           tooltipPosition="top">

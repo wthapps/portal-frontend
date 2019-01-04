@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ChatGroupCouplePipe implements PipeTransform {
   transform(items: any[], detectChange: any) {
     return items.filter(
-      item => item.group.group_type == 'couple' && item.black_list == false
+      item => item.group.group_type == 'couple' && item.blacklist == false
     );
   }
 }

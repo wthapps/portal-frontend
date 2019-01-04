@@ -32,6 +32,8 @@ import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.serv
 import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 import { ChatMessageService } from './services/chat-message.service';
 import { ChatConversationService } from './services/chat-conversation.service';
+import { ChatGroupRecentPipe } from './pipe/chat-group-recent.pipe';
+import { ChatGroupFavoritePipe } from './pipe/chat-group-favorite.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -59,6 +61,8 @@ import { ChatConversationService } from './services/chat-conversation.service';
     ChatGroupSentRequestPipe,
     ChatGroupPendingPipe,
     ChatUserOnlinePipe,
+    ChatGroupRecentPipe,
+    ChatGroupFavoritePipe,
     ChatGroupHistoryPipe
   ],
   exports: [
@@ -85,6 +89,8 @@ import { ChatConversationService } from './services/chat-conversation.service';
     ChatGroupPendingPipe,
     ChatGroupMembersPipe,
     ChatUserOnlinePipe,
+    ChatGroupRecentPipe,
+    ChatGroupFavoritePipe,
     ChatGroupHistoryPipe
   ]
 })

@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular
 import { Router } from '@angular/router';
 
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
-import { Constants } from '@shared/constant';
+import { Constants, STORE_CONVERSATIONS } from '@shared/constant';
 import { ChatService } from '@chat/shared/services/chat.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService, AuthService, ChatCommonService, CommonEventService, UserService } from '@shared/services';
@@ -15,6 +15,7 @@ import { WObjectListService } from '@shared/components/w-object-list/w-object-li
 import { ConversationService } from '@chat/conversation/conversation.service';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 
 
 @Component({
@@ -71,6 +72,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   nextLink: string;
   isLoading: boolean;
   members: Array<any> = [];
+  conversations$: any;
   readonly noteUrl: any = `${Constants.baseUrls.note}/notes/public`;
   private destroy$ = new Subject<any>();
   private pageSize = 30;
@@ -86,6 +88,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private conversationService: ConversationService,
     private apiBaseService: ApiBaseService,
     private chatCommonService: ChatCommonService,
+    private store: Store<any>,
     private router: Router,
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
@@ -123,7 +126,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   tabAction(event: WTab) {
-    console.log(event);
     this.currentTab = event.link;
     if (this.currentTab !== 'members') {
       this.isLoading = false;
@@ -135,10 +137,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       }
     } else {
       this.isLoading = true;
-      this.conversationService.getMembers(this.conversation.group_id, {}).subscribe(response => {
-        this.members = response.data;
-        this.isLoading = false;
-      });
+      this.conversations$ = this.store.select(STORE_CONVERSATIONS);
     }
   }
 

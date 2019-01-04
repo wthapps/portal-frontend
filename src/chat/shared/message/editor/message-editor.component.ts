@@ -99,7 +99,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: any) {
-    if (changes && changes.contactSelect && changes.contactSelect.currentValue && changes.contactSelect.currentValue.black_list) {
+    if (changes && changes.contactSelect && changes.contactSelect.currentValue && changes.contactSelect.currentValue.blacklist) {
       this.setPlaceholder(this.placeholderBl);
     } else {
       this.setPlaceholder(this.placeholder);
@@ -121,8 +121,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         );
         this.notesListModal.close();
         notes.forEach(note => {
-          this.chatMessageService.createFileMessage(note).subscribe(res => {
-          });
+          this.chatMessageService.createFileMessage(note);
         });
       });
   }
@@ -208,10 +207,10 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         meta_data: {}
       });
 
-    const fakeMessage = this.chatMessageService.create(null, message).toPromise();
-    const uploadedMessage = this.uploadService.uploadPhotos([file]).toPromise();
+    const fakeMessage = this.chatMessageService.create(null, message);
+    const uploadedMessage = this.uploadService.uploadPhotos([file]);
     Promise.all([fakeMessage, uploadedMessage]).then(([fake, uploaded]) => {
-    const updateMessage = {...fake.data, file: uploaded.data, content_type: type};
+    const updateMessage = {...fake.data, file: uploaded['data'], content_type: type};
     this.messageService.update(updateMessage).toPromise();
     });
   }
@@ -294,7 +293,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
             meta_data: {file: {id, name, progress, meta }}
           });
 
-        this.chatMessageService.create(null, message).subscribe(res => {
+        this.chatMessageService.create(this.contactSelect.group_id, message).then(res => {
           this.uploadingMessages[id] = { ...res.data, content_type: meta.type};
           this.updateUploadingMessage(id);
         });
@@ -342,9 +341,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
         });
     } else {
       this.messageService.scrollToBottom();
-      this.chatMessageService.createTextMessage(this.message.message).subscribe(res => {
-        // send message channel will do it
-      });
+      this.chatMessageService.createTextMessage(this.message.message);
 
       this.resetEditor();
     }

@@ -35,10 +35,10 @@ export class ChannelActionFactoryService {
         break;
       case this.chat_message_delete:
       case this.chat_send_message:
-        action = new ChatSendMessage(service);
+        action = new ChatActions(service);
         break;
       case this.chat_notification:
-        action = new ChatNotification(service);
+        action = new ChatActions(service);
         break;
       case this.common_notification:
         action = new CommonNotification(service);

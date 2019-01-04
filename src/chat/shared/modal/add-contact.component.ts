@@ -127,9 +127,6 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
   }
 
   addMember() {
-    // const ids = this.selectedUsers.map(user => user.id);
-    // this.chatService.addMembersGroup(ids);
-    // this.addContactService.addMembers(this.selectedUsers);
     this.commonEventService.broadcast({
       channel: 'ChatConversationService',
       action: 'addMembers',

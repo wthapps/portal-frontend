@@ -15,6 +15,10 @@ export const CONVERSATION_SELECT = 'conversation_select';
 export const USERS_ONLINE = 'users_online';
 export const NUMBER_MESSAGE = 'number_message';
 
+export const STORE_CONVERSATIONS = 'conversations';
+export const STORE_CONTEXT = 'context';
+export const STORE_MESSAGES = 'messages';
+
 export const ACTION = {
   ADD: 'ADD',
   EDIT: 'EDIT',

@@ -1,13 +1,13 @@
 <div class="chat-message-container">
   <form [formGroup]="messageEditorForm" novalidate>
 
-    <mini-editor #miniEditor *ngIf="contactSelect" [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" [placeholder]="contactSelect.black_list ? placeholderBl : placeholder"
+    <mini-editor #miniEditor *ngIf="contactSelect" [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" [placeholder]="contactSelect.blacklist ? placeholderBl : placeholder"
       [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"
       (onKeyUp)="handleKeyUp($event)" (onImagePaste)="handleImagePaste($event)">
       <p-header>
       </p-header>
     </mini-editor>
-    <div *ngIf="contactSelect && !contactSelect.black_list" class="chat-message-action">
+    <div *ngIf="contactSelect && !contactSelect.blacklist" class="chat-message-action">
       <div class="btn-group dropup">
         <button type="button" class="btn btn-default dropdown-toggle" [attr.disabled]="isDisabled ? 'disabled' : null" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">

@@ -25,6 +25,7 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
+import { ChatMessageService } from '../services/chat-message.service';
 
 declare var _: any;
 declare var $: any;
@@ -57,6 +58,7 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
     private storageService: StorageService,
     public commonEventService: CommonEventService,
     private chatContactService: ChatContactService,
+    private chatMessageService: ChatMessageService,
     private wthEmojiService: WTHEmojiService
   ) {
     // this.messageService.scrollToBottom$
@@ -92,12 +94,7 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   }
 
   onLoadMore() {
-    // console.log('onLoadMore ...', this.listEl.nativeElement.scrollTop);
-    this.chatService.loadMoreMessages().then(res => {
-      // if (res.data && res.data.length > 0)
-      //   this.listEl.nativeElement.scrollTop += 100;
-      this.currentMessages.unshift(...res.data);
-    });
+    this.chatMessageService.loadMoreMessages();
   }
 
   scrollDown() {

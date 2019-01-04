@@ -7,7 +7,6 @@ import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { ApiBaseService, StorageService, UrlService, WMessageService, CommonEventService } from '@shared/services';
-import { CONVERSATION_SELECT } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { Conversation } from '@chat/shared/models/conversation.model';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
@@ -16,6 +15,8 @@ import { ModalService } from '@shared/components/modal/modal-service';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
 import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 import { ChatConversationService } from '../services/chat-conversation.service';
+import { Store } from '@ngrx/store';
+import { STORE_CONVERSATIONS } from '@shared/constant';
 
 
 @Component({
@@ -34,6 +35,8 @@ export class ZChatSidebarComponent implements OnInit {
   favouriteContacts$: Observable<any>;
   historyContacts$: Observable<any>;
   recentContacts$: Observable<any>;
+  contactItem$: Observable<any>;
+  conversations$: any;
   contactSelect$: Observable<any>;
   historyShow: any = true;
   isRedirect: boolean;
@@ -50,6 +53,7 @@ export class ZChatSidebarComponent implements OnInit {
     private router: Router,
     private urlService: UrlService,
     private storageService: StorageService,
+    private store: Store<any>,
     private renderer: Renderer2,
     private commonEventService: CommonEventService,
     private addContactService: ZChatShareAddContactService,
@@ -61,11 +65,10 @@ export class ZChatSidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.recentContacts$ = this.chatService.getRecentConversations();
-    this.favouriteContacts$ = this.chatService.getFavouriteConversations();
-    this.historyContacts$ = this.chatService.getHistoryConversations();
+    // this.contactItem$ = this.chatService.getConversationsAsync();
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
     this.contactSelect$ = this.chatService.getContactSelectAsync();
+    this.conversations$ = this.store.select(STORE_CONVERSATIONS);
   }
 
   doFilter(param) {
@@ -100,9 +103,9 @@ export class ZChatSidebarComponent implements OnInit {
     $('#chat-message-text').focus();
     if (contact.deleted) {
       this.chatService.updateGroupUser(contact.group_id, { deleted: false }).then(res => {
-        this.chatService.getConversationsAsync({ forceFromApi: true }).toPromise().then(r2 => {
+        this.chatConversationService.getConversations().then(r2 => {
           this.chatConversationService.navigateToConversation(contact.group_id);
-        });
+        })
       });
     } else {
       this.chatConversationService.navigateToConversation(contact.group_id);

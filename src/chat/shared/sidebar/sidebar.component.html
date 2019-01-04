@@ -73,25 +73,23 @@
   </div>
 </div>
 <div class="menuleft-chat-content">
-
   <ng-container *ngIf="!searching">
-    <ng-container *ngIf="(favouriteContacts$ | async)?.length > 0">
+    <ng-container *ngIf="((conversations$ | async)?.data | chatGroupFavorite)?.length > 0">
       <div class="text-bold text-1-line conversation-label">
         <p>Favorites</p>
       </div>
-      <ng-container *ngIf="favouriteContacts$ | async as favouriteContacts">
-        <div *ngFor="let contact of favouriteContacts" class="menu-left-item">
+      <ng-container *ngIf="((conversations$ | async)?.data | chatGroupFavorite)?.length > 0; else templateNoMessage">
+        <div *ngFor="let contact of ((conversations$ | async)?.data | chatGroupFavorite)" class="menu-left-item">
           <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
         </div>
       </ng-container>
     </ng-container>
-
-    <ng-container *ngIf="(recentContacts$ | async)?.length > 0">
+    <ng-container *ngIf="((conversations$ | async)?.data | chatGroupRecent)?.length > 0">
       <div class="text-bold text-1-line conversation-label">
         <p>Chats</p>
       </div>
-      <ng-container *ngIf="(recentContacts$ | async)?.length > 0; else templateNoMessage">
-        <div *ngFor="let contact of (recentContacts$ | async)" class="menu-left-item">
+      <ng-container *ngIf="((conversations$ | async)?.data | chatGroupRecent)?.length > 0; else templateNoMessage">
+        <div *ngFor="let contact of ((conversations$ | async)?.data | chatGroupRecent)" class="menu-left-item">
           <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
         </div>
       </ng-container>

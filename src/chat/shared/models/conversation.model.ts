@@ -54,7 +54,7 @@ export class Conversation extends BaseEntity {
   active: boolean;
   blacklist: boolean;
   display: ConversationDisplay;
-  favourite: boolean;
+  favorite: boolean;
   group_id: number;
   group_json: ChatGroup;
   group: ChatGroup;

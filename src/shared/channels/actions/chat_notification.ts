@@ -69,18 +69,6 @@ export class ChatNotification implements Processable {
     this.serviceManager.getChatCommonService().updateAll();
   }
 
-  // removeContact(data: any) {
-  //   console.log('remove contact yo ...', data);
-  //
-  //   let item = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
-  //
-  //   let index = _.findIndex(item.value.data, { id: data.data.group_user.id });
-  //   if (index !== -1) {
-  //     item.value.data.splice(index, 1);
-  //   }
-  //   this.serviceManager.getChatCommonService().updateAll();
-  // }
-
   updateConversationList(data: any) {
     const item = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
     item.value.data = data.data.group_users;

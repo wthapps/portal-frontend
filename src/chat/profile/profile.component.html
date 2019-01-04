@@ -9,7 +9,7 @@
       </button>
       <button *ngIf="actions.favorite" type="button" class="btn btn-default" (click)="onFavorite()">
         <!--<i class="fa fa-star-o"></i>-->
-        <i class="fa" [ngClass]="contact.favourite? 'fa-star': 'fa-star-o'"></i>
+        <i class="fa" [ngClass]="contact.favorite? 'fa-star': 'fa-star-o'"></i>
       </button>
       <button *ngIf="actions.add_to_contact" type="button" class="btn btn-outline-primary" (click)="onRequest(profile)"
               pTooltip="{{ tooltip.addPerson }}" tooltipPosition="top">

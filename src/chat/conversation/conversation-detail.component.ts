@@ -15,13 +15,17 @@ import {
   CommonEventService,
   PhotoService, UserService, ChatCommonService, StorageService, WMessageService, ApiBaseService
 } from '@wth/shared/services';
-import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, NETWORK_ONLINE } from '@wth/shared/constant';
+import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, NETWORK_ONLINE, STORE_CONVERSATIONS, STORE_CONTEXT } from '@wth/shared/constant';
 import { User } from '@wth/shared/shared/models';
 import { WUploader } from '@shared/services/w-uploader';
 import { Message } from '@chat/shared/models/message.model';
 import { CommonEventHandler } from '@shared/services/common-event/common-event.handler';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { ChatMessageMixin } from '@chat/shared/mixins/chat-message.mixin';
+import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
+import { merge, mergeMap, mergeMapTo, map, filter } from 'rxjs/operators';
+import { SET_SELECTED_CONVERSATION_CONTEXT } from '@core/store/chat/context.reducer';
+import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 
 declare var _: any;
 declare var $: any;
@@ -31,15 +35,14 @@ declare var $: any;
   templateUrl: 'conversation-detail.component.html'
 })
 @Mixins([ChatMessageMixin])
-export class ConversationDetailComponent extends CommonEventHandler
-  implements ChatMessageMixin, OnInit, OnDestroy {
+export class ConversationDetailComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
   @Input() channel = 'ConversationDetailComponent';
   events: any;
   currentMessages: any;
   groupId: any;
-  contactSelect$: Observable<any>;
+  selectedConversation: any;
   currentMessages$: Observable<any>;
   chatContactList$: Observable<any>;
   chatConversations$: Observable<any>;
@@ -51,12 +54,14 @@ export class ConversationDetailComponent extends CommonEventHandler
   constructor(
     private chatService: ChatService,
     public commonEventService: CommonEventService,
-    private chatCommonService: ChatCommonService,
+    private chatConversationService: ChatConversationService,
+    private chatMessageService: ChatMessageService,
     public wMessageService: WMessageService,
     private router: Router,
     private route: ActivatedRoute,
     public userService: UserService,
     public storage: StorageService,
+    public store: Store<any>,
     public apiBaseService: ApiBaseService,
     private conversationService: ConversationService,
     private uploader: WUploader
@@ -66,17 +71,18 @@ export class ConversationDetailComponent extends CommonEventHandler
     this.networkOnline$ = this.storage.getAsync(NETWORK_ONLINE);
   }
 
-  updateItemInList: (groupId: any, data: any) => void;
-  updateConversationBroadcast: (groupId: any) => Promise<any>;
-  updateMessage: (groupId: any, data) => void;
+  // updateItemInList: (groupId: any, data: any) => void;
+  // updateConversationBroadcast: (groupId: any) => Promise<any>;
+  // updateMessage: (groupId: any, data) => void;
 
   updateMessageHandler(data: any) {
-    this.updateMessage(data.group_id, data);
+    // this.updateMessage(data.group_id, data);
+    this.chatMessageService.addCurrentMessages(data);
     // // Scroll to bottom when user's own messages are arrived
     if (data.message.user_id === this.userService.getSyncProfile().id) {
       this.commonEventService.broadcast(
         {
-          channel: MessageListComponent.name,
+          channel: 'MessageListComponent',
           action: 'scrollToBottom',
           payload: true
         }
@@ -85,17 +91,35 @@ export class ConversationDetailComponent extends CommonEventHandler
   }
 
   ngOnInit() {
-    this.contactSelect$ = this.chatService.getContactSelectAsync();
-    this.chatConversations$ = this.chatService.getConversationsAsync();
+    // this.contactSelect$ = this.chatService.getContactSelectAsync();
+    // this.chatConversations$ = this.chatService.getConversationsAsync();
     this.chatContactList$ = this.chatService.getChatConversationsAsync();
-    this.route.params.subscribe(params => {
-      this.groupId = params.id;
-      this.chatService.setConversationSelectedByGroupId(params.id);
+    // SELECTED CONVERSATION
+    this.store.select(STORE_CONVERSATIONS).pipe(
+      // mergeMap with route params
+      mergeMap(conversations =>
+        this.route.params.pipe(map(p => {
+          return conversations.data.filter(c =>  c.group_id == p.id)
+        }))),
+      // filter res empty
+      filter(res => res && res.length > 0)
+      ).subscribe(res => {
+        this.store.dispatch({ type: SET_SELECTED_CONVERSATION_CONTEXT, payload: res[0]});
     });
+    // Get messages when select
+    this.chatConversationService.getSelectedConversation().subscribe(res => {
+      let tmp = this.selectedConversation || {};
+      this.selectedConversation = res;
+      if (tmp.group_id !== this.selectedConversation.group_id) {
+        this.chatMessageService.getMessages(this.selectedConversation.group_id);
+      }
+    });
+    // sync current message
+    this.currentMessages$ = this.chatMessageService.getCurrentMessages();
   }
 
   updateCurrent() {
-    this.currentMessages$ = this.storage.getAsync(CHAT_MESSAGES_GROUP_ + this.groupId);
+    // this.currentMessages$ = this.storage.getAsync(CHAT_MESSAGES_GROUP_ + this.groupId);
   }
 
   ngOnDestroy() {

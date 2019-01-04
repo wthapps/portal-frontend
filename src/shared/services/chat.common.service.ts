@@ -40,7 +40,7 @@ export class ChatCommonService {
     const contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     const recentContacts = _.filter(contacts, {
       favourite: false,
-      black_list: false,
+      blacklist: false,
       history: false
     });
     this.storage.save('chat_recent_conversations', recentContacts);
@@ -50,8 +50,8 @@ export class ChatCommonService {
   setFavouriteConversations() {
     const contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     const favouriteContacts = _.filter(contacts, {
-      favourite: true,
-      black_list: false
+      favorite: true,
+      blacklist: false
     });
     this.storage.save('chat_favourite_conversations', favouriteContacts);
   }
@@ -60,7 +60,7 @@ export class ChatCommonService {
     const contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     const historyContacts = _.filter(contacts, {
       history: true,
-      black_list: false
+      blacklist: false
     });
     this.storage.save('chat_history_conversations', historyContacts);
   }
@@ -108,21 +108,18 @@ export class ChatCommonService {
     this.updateContactSelect();
   }
 
-  moveFirstRecentList(groupId?: string): Promise<any> {
-    const chat_conversations = this.storage.getValue(CHAT_CONVERSATIONS);
-    const conversations: any = chat_conversations.data;
-    const latest_group = conversations.find(conv => conv.group_id === groupId);
-    const contactSelect: any = latest_group || this.storage.getValue(CONVERSATION_SELECT);
-    _.pullAllBy(
-      conversations,
-      [{ group_id: contactSelect.group_id }],
-      'group_id'
-    );
-    conversations.unshift(contactSelect);
-    _.uniqBy(conversations, 'id');
-
-    this.storage.save(CHAT_CONVERSATIONS, {...chat_conversations, data: conversations});
-    return this.setRecentConversations();
+  moveFirstRecentList(groupId?: string){
+    // const chat_conversations = this.storage.getValue(CHAT_CONVERSATIONS);
+    // const conversations: any = chat_conversations.data;
+    // const latest_group = conversations.find(conv => conv.group_id === groupId);
+    // const contactSelect: any = latest_group || this.storage.getValue(CONVERSATION_SELECT);
+    // _.pullAllBy(
+    //   conversations,
+    //   [{ group_id: contactSelect.group_id }],
+    //   'group_id'
+    // );
+    // conversations.unshift(contactSelect);
+    // _.uniqBy(conversations, 'id');
   }
 
   addMessage(groupId: any, data: any): void {
