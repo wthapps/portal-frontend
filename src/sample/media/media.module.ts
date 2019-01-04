@@ -1,13 +1,18 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SampleMediaComponent } from './media.component';
 
-import { MediaRoutingModule } from './media-routing.module';
+import { SampleMediaRoutingModule } from './media-routing.module';
+import { SliderModule } from 'primeng/slider';
+import { SampleSharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [],
   imports: [
-    CommonModule,
-    MediaRoutingModule
-  ]
+    SliderModule,
+    SampleSharedModule,
+    SampleMediaRoutingModule
+  ],
+  declarations: [SampleMediaComponent],
+  exports: [SampleMediaComponent]
 })
-export class MediaModule { }
+export class SampleMediaModule {
+}

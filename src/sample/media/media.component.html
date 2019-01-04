@@ -1,0 +1,62 @@
+<div class="media-main">
+  <div class="media-main-nav">
+    <h4 class="title">Photos</h4>
+    <div class="action">
+      <div class="slider">
+        <i class="fa fa-photo fz10"></i>
+        <p-slider [style]="{'width':'60px'}"
+                  [(ngModel)]="sliderView"
+                  [step]="1"
+                  [min]="1"
+                  [max]="4">
+        </p-slider>
+        <i class="fa fa-photo fz18"></i>
+      </div>
+      <div class="sort">
+        <a href="#"><span class="text-bold mr20">Name</span> <i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="media-main-content">
+    <div class="content-view content-grid content-grid-{{sliderView}}">
+      <div class="content-item">
+        <div class="item-actions">
+          <i class="item-checkbox"></i>
+        </div>
+        <div class="item-media">
+          <div class="item-media-img">
+            <img src="http://placehold.it/200x800" alt="">
+          </div>
+          <div class="item-media-name">
+            <span>an item name 01.png</span>
+          </div>
+        </div>
+      </div>
+      <div class="content-item">
+        <div class="item-media">
+          <div class="item-media-img">
+            <img src="http://placehold.it/800x200" alt="">
+            <i class="fa fa-play-circle-o" aria-hidden="true"></i>
+          </div>
+          <div class="item-media-name">
+            <span>an item name 01.png</span>
+          </div>
+        </div>
+      </div>
+      <div class="content-item">
+        <div class="item-media">
+          <div class="item-media-img">
+            <img src="http://placehold.it/100x100" alt="">
+          </div>
+          <div class="item-media-name">
+            <span>an item name 01.png</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <box-no-data [title]="'There are no items!'"
+                 [subTitle]="'Drop photos or videos here or use the “New” button to upload photos and videos.'"
+                 [icon]="'fa fa-photo'">
+    </box-no-data>
+  </div>
+</div>

@@ -230,3 +230,14 @@ $active-color: red;
     left: 0;
   }
 }
+
+.menuleft-item-divider {
+  border-top: 1px solid $line;
+  border-bottom: 1px solid $line;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  & + .menuleft-item-divider {
+    margin-top: -11px;
+  }
+}
