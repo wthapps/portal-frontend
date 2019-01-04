@@ -26,11 +26,9 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
 import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
-import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
-import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
-import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 import { Subject } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin,
    MediaListDetailMixin])
@@ -84,7 +82,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
   openCreateAlbumModal: (selectedObjects: any) => void;
   onDoneAlbum: (e: any) => void;
   onAddedToAlbum(data: any) {
-    this.apiBaseService.get(`media/media/${this.object.uuid}`, { model: 'Media::Photo' }).toPromise()
+    this.apiBaseService.get(`media/media/${this.object.uuid}`, { model: this.object.model || 'Media::Photo' }).toPromise()
       .then(res => {
         this.object = res.data;
       });
@@ -110,9 +108,9 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     this.menuActions = this.getMenuActions();
     this.returnUrls = this.route.snapshot.queryParams.returnUrls;
     this.route.params.pipe(
-      combineLatest(this.route.queryParams)
+      withLatestFrom(this.route.queryParams)
       ).subscribe(([p, params]) => {
-      this.model = this.route.snapshot.queryParams.model || 'Media::Photo';
+      this.model = this.route.snapshot.queryParams.model || this.object.model || 'Media::Photo';
       this.apiBaseService.get(`media/media/${p.id}`, { model: this.model }).toPromise()
         .then(res => {
           this.object = res.data;
@@ -370,7 +368,8 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
         inDropDown: false, // Outside dropdown list
         action: () => {
           this.showDetailsInfo = !this.showDetailsInfo;
-          this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Photo' }).subscribe(res => {
+          this.apiBaseService.get(`media/object/${this.object.id}/sharings`,
+           { model: this.object.model || 'Media::Photo' }).subscribe(res => {
             this.sharings = res.data;
           });
         },
@@ -414,16 +413,14 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
 
   onPrev() {
     this.listIds.prev();
-    const url = '/photos/';
-    this.router.navigate([`${url + this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model },
-     queryParamsHandling: 'merge' });
+    this.router.navigate([`../${this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model },
+      relativeTo: this.route, queryParamsHandling: 'merge'});
   }
 
   onNext() {
     this.listIds.next();
-    const url = '/photos/';
-    this.router.navigate([`${url + this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model},
-     queryParamsHandling: 'merge' });
+    this.router.navigate([`../${this.listIds.current.data.id}`],
+     { queryParams: { model: this.listIds.current.data.model}, relativeTo: this.route, queryParamsHandling: 'merge' });
   }
 
   back: () => void;
