@@ -54,6 +54,7 @@ export class MessageItemComponent implements OnInit {
   }
 
   onPreviewPhoto(message: any) {
+    if (!_.get(message, 'file.uuid')) { return; }
     const currentConversation = this.storageService.get(CONVERSATION_SELECT);
     this.router.navigate([{
       outlets: {

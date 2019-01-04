@@ -68,7 +68,7 @@ export class ChatNotificationComponent implements OnInit {
           this.notificationCount = 0;
         }
         this.conversations = this.conversations.map((conversation: any) => {
-          if (conversation.id === contact.group.id) {
+          if (conversation.id === contact.group_json.id) {
             conversation.notification_count = 0;
           }
           return conversation;
@@ -97,7 +97,7 @@ export class ChatNotificationComponent implements OnInit {
 
   gotoChat() {
     this.navigateService.navigateOrRedirect('conversations', 'chat');
-    $('#chat-header-notification').removeClass('open');
+    // $('#chat-header-notification').removeClass('open');
   }
 
   toggleViewNotifications() {
@@ -126,7 +126,7 @@ export class ChatNotificationComponent implements OnInit {
   }
 
   markAsRead(c: Conversation) {
-    const group_id = c.group.id;
+    const group_id = c.group_json.id;
     this.apiBaseService
       .addCommand(ConversationApiCommands.markAsRead({ id: group_id }))
       .subscribe((res: any) => {
@@ -148,7 +148,7 @@ export class ChatNotificationComponent implements OnInit {
   }
 
   updateNotification(c: Conversation) {
-    const group_id = c.group.id;
+    const group_id = c.group_json.id;
     this.apiBaseService
       .addCommand(
         ConversationApiCommands.updateNotification({
@@ -167,8 +167,9 @@ export class ChatNotificationComponent implements OnInit {
 
   updateChatStore(action: any, params: any = null): void {
     const chat_conversations_response = this.storageService.getValue(CHAT_CONVERSATIONS);
-    if (!chat_conversations_response || !chat_conversations_response.data)
+    if (!chat_conversations_response || !chat_conversations_response.data) {
       return;
+    }
     let chat_conversations = chat_conversations_response.data;
     switch (action) {
       case 'markAllAsRead': {
@@ -183,8 +184,9 @@ export class ChatNotificationComponent implements OnInit {
       case 'markAsRead': {
         chat_conversations = chat_conversations.map(
           (conversation: any) => {
-            if (conversation.group.id === params.id)
+            if (conversation.group_json.id === params.id) {
               conversation.notification_count = 0;
+            }
             return conversation;
           }
         );
@@ -193,8 +195,9 @@ export class ChatNotificationComponent implements OnInit {
       case 'updateNotification': {
         chat_conversations = chat_conversations.map(
           (conversation: any) => {
-            if (conversation.group.id === params.id)
+            if (conversation.group_json.id === params.id) {
               conversation.notification = params.notification;
+            }
             return conversation;
           }
         );
@@ -217,10 +220,18 @@ export class ChatNotificationComponent implements OnInit {
   navigate(conversation: any) {
     $('#chat-header-notification').removeClass('open');
     this.wthNavigateService.navigateOrRedirect(
-      `conversations/${conversation.id}`,
+      `conversations/${conversation.group_json.id}`,
       'chat'
     );
     this.handlerService.triggerEvent('on_conversation_select', conversation);
+  }
+
+  hideActionsMenu(e: any) {
+    e.stopPropagation();
+    e.preventDefault();
+    $('#chat-header-notification')
+      .find('ul.dropdown-menu')
+      .hide();
   }
 
   private subToggle(e: any) {
@@ -233,22 +244,5 @@ export class ChatNotificationComponent implements OnInit {
       .find('ul.dropdown-menu')
       .not($(e.target).next('ul'))
       .hide();
-  }
-
-  hideActionsMenu(e: any) {
-    e.stopPropagation();
-    e.preventDefault();
-    $('#chat-header-notification')
-      .find('ul.dropdown-menu')
-      .hide();
-  }
-
-  private parentHide(e: any) {
-    e.stopPropagation();
-    e.preventDefault();
-    $(e.target)
-      .parent()
-      .parent()
-      .toggle();
   }
 }
