@@ -44,7 +44,7 @@ export class PhotoEditModalComponent implements OnChanges, WthAppsBaseModal {
     this.date = this.form.controls['date'];
   }
 
-  ngOnChanges(data:any) {
+  ngOnChanges(data) {
     if (this.data) {
       // update form
       this.updateForm(this.data);
@@ -72,7 +72,7 @@ export class PhotoEditModalComponent implements OnChanges, WthAppsBaseModal {
     (<FormControl>this.description).setValue(values.description);
 
     if (values.created_at !== null) {
-      let created_at = new Date(values.created_at);
+      const created_at = new Date(values.created_at);
       (<FormControl>this.date).setValue(created_at);
     }
   }

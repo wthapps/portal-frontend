@@ -12,5 +12,5 @@ export class MediaConstants extends ConstantsBase {
     OWNER: 5
   };
 }
-let mediaConstants: MediaConstants = new MediaConstants();
+const mediaConstants: MediaConstants = new MediaConstants();
 export { mediaConstants };

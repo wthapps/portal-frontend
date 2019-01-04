@@ -15,16 +15,16 @@
 
     <w-nav-tab [tabs]="tabsFilter" [setTabActive]="currentTab" (currentTab)="tabAction($event)"></w-nav-tab>
 
-    <w-object-toolbar-selected [selectedObjects]="selectedMedias$ | async" *ngIf="currentTab == 'photos' ||
-      currentTab == 'albums_detail' ||
-      currentTab == 'favourites' ||
-      currentTab == 'favourites_detail' ||
-      currentTab == 'shared_with_me' ||
-      currentTab == 'videos' ||
-      currentTab == 'playlists' ||
-      currentTab == 'playlist_detail' ||
-      currentTab == 'search_detail' ||
-      currentTab == 'shared_with_me_detail'">
+    <w-object-toolbar-selected [selectedObjects]="selectedMedias$ | async" *ngIf="currentTab === 'photos' ||
+      currentTab === 'albums_detail' ||
+      currentTab === 'favourites' ||
+      currentTab === 'favourites_detail' ||
+      currentTab === 'shared_with_me' ||
+      currentTab === 'videos' ||
+      currentTab === 'playlists' ||
+      currentTab === 'playlist_detail' ||
+      currentTab === 'search_detail' ||
+      currentTab === 'shared_with_me_detail'">
       <button (click)="onInsert()" class="btn btn-outline-default" type="button">Insert</button>
     </w-object-toolbar-selected>
   </bs-modal-header>
@@ -55,50 +55,58 @@
       </div>
     </ng-container>
     <ng-container *ngIf="currentTab !== 'upload'">
+      <div class="modal-selection-toolbar">
+        <div *ngIf="currentTab === 'albums_detail' ||
+        currentTab === 'favourites_detail' ||
+        currentTab === 'playlist_detail' ||
+        currentTab === 'search_detail' ||
+        currentTab === 'shared_with_me_detail'"
+          class="modal-selection-toolbar-left pull-left">
+          <ul class="list-unstyled">
+            <li class="divider">
+              <button (click)="onTabBack()" class="btn btn-default" type="button">
+                <i class="fa fa-arrow-left"></i>
+              </button>
+            </li>
+            <li>
+              <span *ngIf="mediaParent" class="btn btn-text">{{ mediaParent?.name }}</span>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="currentTab === 'search'" class="modal-selection-toolbar-left pull-left">
+          <ul class="list-unstyled">
+            <li>
+              <span class="btn btn-text">Search result</span>
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="currentTab === 'favourites'" class="modal-selection-toolbar-left pull-left">
+            <div class="btn-group" role="group" aria-label="object-filter">
+              <button type="button" class="btn" [ngClass]="subFilter === 'photo' ? 'btn-danger' : 'btn-default'" (click)="onSubFilter('photo')">Photos</button>
+              <button type="button" class="btn" [ngClass]="subFilter === 'album' ? 'btn-danger' : 'btn-default'" (click)="onSubFilter('album')">Albums</button>
+            </div>
+          </div>
+        <w-object-toolbar-view [changeViewEnable]="false" [sortEnable]="true" (event)="onToolbarEvent($event)" class="pull-right"></w-object-toolbar-view>
+      </div>
       <box-loading *ngIf="initLoading"></box-loading>
       <ng-container *ngIf="!initLoading && (medias$ | async) as mediasList;">
+          
         <ng-container *ngIf="mediasList?.length; else templateNodata">
-          <div class="modal-selection-toolbar">
-            <div *ngIf="currentTab == 'albums_detail' ||
-            currentTab == 'favourites_detail' ||
-            currentTab == 'playlist_detail' ||
-            currentTab == 'search_detail' ||
-            currentTab == 'shared_with_me_detail'"
-              class="modal-selection-toolbar-left pull-left">
-              <ul class="list-unstyled">
-                <li class="divider">
-                  <button (click)="onTabBack()" class="btn btn-default" type="button">
-                    <i class="fa fa-arrow-left"></i>
-                  </button>
-                </li>
-                <li>
-                  <span *ngIf="mediaParent" class="btn btn-text">{{ mediaParent?.name }}</span>
-                </li>
-              </ul>
-            </div>
-            <div *ngIf="currentTab == 'search'" class="modal-selection-toolbar-left pull-left">
-              <ul class="list-unstyled">
-                <li>
-                  <span class="btn btn-text">Search result</span>
-                </li>
-              </ul>
-            </div>
-            <w-object-toolbar-view class="pull-right"></w-object-toolbar-view>
-          </div>
+          
           <w-object-list class="media-selection-content gray-light" [viewMode]="view$ | async" [data]="mediasList"
             [sortInline]="false" [isLoading]="isLoading" (completeSort)="onCompleteSort($event)" (completeLoadMore)="onCompleteLoadMore($event)"
             (completeDoubleClick)="onCompleteDoubleClick($event)">
             <ng-template #columnBox let-item>
 
               <!-- ------------ Album view ------------- -->
-              <ng-container *ngIf="item.object_type == 'Media::Album' || item.model == 'Media::Playlist' || item.model == 'Common::Sharing'">
+              <ng-container *ngIf="item.object_type === 'Media::Album' || item.model === 'Media::Playlist' || item.model === 'Common::Sharing'">
                 <div class="wobject-box-img">
                   <img [src]="item.thumbnail_url" alt="">
 
-                  <div *ngIf="item.model == 'Media::Playlist' || (item.model == 'Common::Sharing' && item.sharing_type == 'Media::Video')"
+                  <div *ngIf="item.model === 'Media::Playlist' || (item.model === 'Common::Sharing' && item.sharing_type === 'Media::Video')"
                     class="wmedia-box-info">{{ item.child_count }} video{{(item.child_count > 1) ? 's' :''}}
                   </div>
-                  <div *ngIf="item.model == 'Media::Album' || (item.model == 'Common::Sharing' && item.sharing_type == 'Media::Photo')"
+                  <div *ngIf="item.model === 'Media::Album' || (item.model === 'Common::Sharing' && item.sharing_type === 'Media::Photo')"
                     class="wmedia-box-info">{{ item.child_count }} photo{{(item.child_count > 1) ? 's' :''}}
                   </div>
                 </div>
@@ -112,7 +120,7 @@
 
 
               <!-- ------------ Photo, Video view ------------- -->
-              <ng-container *ngIf="item.object_type == 'Media::Photo' || item.model == 'Media::Video'">
+              <ng-container *ngIf="item.object_type === 'Media::Photo' || item.model === 'Media::Video'">
                 <div class="wobject-box-img">
                   <img [src]="item.thumbnail_url" alt="">
                 </div>
@@ -126,19 +134,19 @@
               </ng-container>
             </ng-template>
             <ng-template #columnFileSize let-item>
-              <span *ngIf="item.object_type == 'Media::Album'">{{ item.photo_number }} file
+              <span *ngIf="item.object_type === 'Media::Album'">{{ item.photo_number }} file
                 <span *ngIf="item.photo_number>1">s</span>
               </span>
-              <span *ngIf="item.object_type == 'Media::Photo'">{{ item.size | bytes:0 }}</span>
+              <span *ngIf="item.object_type === 'Media::Photo'">{{ item.size | bytes:0 }}</span>
             </ng-template>
           </w-object-list>
         </ng-container>
         <ng-template #templateNodata>
           <div *ngIf="mediaParent; else templateNodataDetail" class="media-selection-content gray-light">
-            <box-no-data *ngIf="mediaParent.model == 'Media::Playlist' || (mediaParent.model == 'Common::Sharing' && mediaParent.sharing_type == 'Media::Video')"
+            <box-no-data *ngIf="mediaParent.model === 'Media::Playlist' || (mediaParent.model === 'Common::Sharing' && mediaParent.sharing_type === 'Media::Video')"
               [icon]="'fa fa-picture-o'" [title]="'There is no video!'" [subTitle]="'There is no video.'">
             </box-no-data>
-            <box-no-data *ngIf="mediaParent.model == 'Media::Album' || (mediaParent.model == 'Common::Sharing' && mediaParent.sharing_type == 'Media::Photo')"
+            <box-no-data *ngIf="mediaParent.model === 'Media::Album' || (mediaParent.model === 'Common::Sharing' && mediaParent.sharing_type === 'Media::Photo')"
               [icon]="'fa fa-picture-o'" [title]="'There is no photo!'" [subTitle]="'There is no photo.'">
             </box-no-data>
           </div>

@@ -110,7 +110,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   allowCancelUpload: boolean;
   uploadButtonText: string;
   dragdropText: string;
-  filter = 'all';
+  filter: 'all' | 'photo' | 'video' = 'all';
+  subFilter: 'photo' | 'album' = 'photo';
+
   private allowedFileTypes: any;
   private sub: any;
 
@@ -192,6 +194,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     console.log('Post Photo Select Component DISMISSED', event);
   }
 
+  async onSubFilter(subFilter: 'photo' | 'album') {
+    this.subFilter = subFilter;
+    await this.tabAction({link: this.currentTab});
+  }
+
   async getObjects(override?: boolean) {
     if (this.nextLink && !this.isLoading) {
       this.isLoading = true;
@@ -206,7 +213,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  async tabAction(event: any) {
+  async tabAction(event: any = {link: this.currentTab}) {
     this.mediaSelectionService.clear();
     this.currentTab = event.link;
     this.initLoading = true;
@@ -355,13 +362,24 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     });
   }
 
+  onToolbarEvent(event) {
+    const { action, payload } = event;
+    switch (action) {
+      case 'sort': {
+        const {sort_name, sort_direction} = payload;
+        this.onCompleteSort({sortOrder: sort_direction, sortBy: sort_name});
+        break;
+      }
+    }
+  }
+
   private buildNextLink() {
     let urlAPI = '';
     console.log(this.currentTab);
 
     switch (this.currentTab) {
       case 'photos':
-        urlAPI = `media/photos?active=1`;
+        urlAPI = this.filter === 'all' ? 'media/media/index_combine?model=Media::Photo' : `media/photos?active=1`;
         break;
       case 'albums':
         urlAPI = `media/albums?active=1`;
@@ -376,17 +394,28 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         urlAPI = `media/playlists/${this.mediaParent.id}/videos?active=1`;
         break;
       case 'albums_detail':
-        urlAPI = `media/photos?active=1&album=${this.mediaParent.id}`;
+        urlAPI = this.filter === 'all' ? `media/albums/${this.mediaParent.uuid}/objects?model=Media::Album` :
+         `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'favourites':
-        if (this.filter === 'all') { urlAPI = `media/favorites?active=1`; }
-        if (this.filter === 'photo') {
-        urlAPI = `media/favorites?filter[where][object_type]=Media::Photo
-        &filter[or][object_type]=Media::Album&filter[or][sharing_type]=Media::Album&filter[or][sharing_type]=Media::Photo`;
+        if (this.filter === 'all') {
+          urlAPI = `media/favorites?active=1`;
+          if (this.subFilter === 'photo') {
+            // tslint:disable-next-line:max-line-length
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Video&filter[or][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Video`;
+          } else if (this.subFilter === 'album') {
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][sharing_type]=Media::Album`;
+          }
         }
-        if (this.filter === 'video') {
-        urlAPI = `media/favorites?filter[where][object_type]=Media::Video
-        &filter[or][object_type]=Media::Playlist&filter[or][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist`;
+        if (this.filter === 'photo') {
+          // tslint:disable-next-line:max-line-length
+          urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Album&filter[or][sharing_type]=Media::Album&filter[or][sharing_type]=Media::Photo`;
+          if (this.subFilter === 'photo') {
+            // tslint:disable-next-line:max-line-length
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][sharing_type]=Media::Photo`;
+          } else if (this.subFilter === 'album') {
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][sharing_type]=Media::Album`;
+          }
         }
         break;
       case 'favourites_detail':

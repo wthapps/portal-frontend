@@ -240,7 +240,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onOpenSelectPhotos() {
-    this.mediaSelectionService.open({ allowSelectMultiple: true, allowCancelUpload: true });
+    this.mediaSelectionService.open({ allowSelectMultiple: true, hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true });
 
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.close$), filter((items: any[]) => items.length > 0))

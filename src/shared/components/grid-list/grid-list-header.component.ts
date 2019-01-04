@@ -14,7 +14,7 @@ export class WGridListHeaderComponent {
   @Input() data: any;
   @Input() view: string;
   @Input() field: string;
-  @Input() hideScale: boolean = false;
+  @Input() hideScale = false;
   @Input() direction: string;
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
