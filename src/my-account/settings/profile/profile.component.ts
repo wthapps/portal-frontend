@@ -278,9 +278,17 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       email: this.changedEmailForm.value.email,
       password: payload.password
     }).subscribe(response => {
-      this.toastsService.success('You changed you email address successfully. A confirmation email sent out to new email address');
+      this.messageService.add({
+        severity: 'success',
+        summary: '',
+        detail: 'You changed you email address successfully. A confirmation email sent out to new email address'
+      });
     }, error => {
-      this.toastsService.danger('You changed email address unsuccessfully');
+      this.messageService.add({
+        severity: 'danger',
+        summary: '',
+        detail: 'You changed email address unsuccessfully'
+      });
     });
   }
 

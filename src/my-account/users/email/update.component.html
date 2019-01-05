@@ -6,7 +6,7 @@
         <h1>
           <i *ngIf="!loaded" class="fa fa-spinner"></i>
           <i *ngIf="loaded && !confirmed" class="fa fa-times-circle-o" style="color: red"></i>
-          <i *ngIf="!loaded && confirmed" class="fa fa-check-circle-o" style="color: green"></i>
+          <i *ngIf="loaded && confirmed" class="fa fa-check-circle-o" style="color: green"></i>
         </h1>
         <p class="h4"> {{ message }} </p>
       </div>
