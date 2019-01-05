@@ -14,11 +14,15 @@ import { MyProfileComponent } from './profile/profile.component';
 
 import { MySettingRoutingModule } from './setting-routing.module';
 import { MySettingComponent } from './setting.component';
+import { ModalModule } from '@shared/modals';
+import { AutofocusModule } from '@shared/directives/autofocus';
 
 @NgModule({
   imports: [
     CommonModule,
     MySettingRoutingModule,
+    ModalModule,
+    AutofocusModule,
     MySharedModule.forRoot(),
     SharedModule.forRoot(),
     SharedServicesModule.forRoot()

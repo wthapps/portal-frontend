@@ -1,6 +1,6 @@
 <ng-container *ngIf="countriesCode$ | async as countriesCode">
   <p-dropdown (onChange)="onComplete()" [options]="countriesCode"
-              [(ngModel)]="selectedCountry"
+              [(ngModel)]="selectedCountry" [autoDisplayFirst]="false" [placeholder]="'Select country'"
               [style]="{'width':'100%'}" filter="true">
     <ng-template let-item pTemplate="selectedItem">
       <img width="30" src="/assets/images/flags/{{item.code}}.svg">

@@ -29,6 +29,7 @@ import { MySettingModule } from './settings/setting.module';
 
 import { MySharedModule } from './shared/shared.module';
 import { appEffects, appReducers, metaReducers } from './store';
+import { UserModule } from '@account/users';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { appEffects, appReducers, metaReducers } from './store';
     MyAdminModule,
     MyAccountMyProfileModule,
     ConfirmationModule,
+    UserModule,
     FooterModule,
     MySharedModule.forRoot(),
     SharedModule.forRoot(),

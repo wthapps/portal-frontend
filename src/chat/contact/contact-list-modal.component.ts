@@ -104,7 +104,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
 
       case 'online':
         this.selectedTab = tab.id;
-        this.apiBaseService.get(`account/users/my_contacts/?online=true`)
+        this.apiBaseService.get(`account/users?category=my_contacts&online=true`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
           this.mapResponseToContacts(response);
           this.loading = false;
@@ -122,7 +122,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
 
       case 'blacklist':
         this.selectedTab = tab.id;
-        this.apiBaseService.get(`account/users/blacklist`)
+        this.apiBaseService.get(`account/users?category=blacklist`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
           this.mapResponseToContacts(response);
           this.loading = false;
@@ -133,7 +133,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
         this.loading = false;
         break;
       default:
-        this.apiBaseService.get(`account/users/my_contacts`)
+        this.apiBaseService.get(`account/users?category=my_contacts`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
           this.mapResponseToContacts(response);
           this.loading = false;

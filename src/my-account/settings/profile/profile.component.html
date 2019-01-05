@@ -1,8 +1,6 @@
 <div class="box-panel">
   <h3 class="box-panel-title">Personal information</h3>
-  <p class="text-fade">Your personal information on this page is private and used for WTHApps administrative and payment
-    purposes.</p>
-  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+  <form [formGroup]="form" novalidate>
     <div class="row">
       <div class="col-xs-6 col-sm-4">
         <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched),
@@ -38,9 +36,31 @@
     </div>
     <div class="row">
       <div class="col-xs-12 col-sm-8">
+        <div class="form-group" [ngClass]="{'has-error': (!user_name.valid && user_name.touched),
+        'has-success': (user_name.valid && user_name.touched)}">
+          <label for="user_name">Username</label>
+          <input [formControl]="user_name" type="text" class="form-control" id="user_name" placeholder="Username"
+                 (keyup)="checkTakenUsername($event)">
+          <div *ngIf="!user_name.valid && user_name.touched">
+            <span *ngIf="!user_name.valid && user_name.errors.required" class="help-block">
+              Username is required
+            </span>
+            <span *ngIf="!user_name.valid && user_name.errors.blanked" class="help-block">
+              Username is blanked
+            </span>
+            <span *ngIf="user_name.errors.taken" class="help-block">
+              Username is already taken
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-8">
         <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched),
         'has-success': (email.valid && email.touched)}">
-          <label class="sr-only" for="email">Email address</label>
+          <label for="email">Email address</label>
+          <a class="pull-right" (click)="openChangeEmailModal()" href="javascript:void(0)">Change Email</a>
           <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email">
 
           <ng-container *ngIf="confirmedEmail; else sent_verify">
@@ -65,17 +85,17 @@
     </div>
     <div class="form-group">
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-12 col-sm-8">
           <label for="phone_number">Phone Number</label>
           <div class="row">
-            <div class="col-xs-5">
+            <div class="col-xs-6">
               <w-countries [countryCode]="userService.getSyncProfile().nationality.toLowerCase()"
                            (completeChange)="onCompleteChange($event)"></w-countries>
               <input type="hidden" formControlName="phone_prefix">
             </div>
-            <div class="col-xs-7">
+            <div class="col-xs-6">
               <input type="text" class="form-control" id="phone_number" name="phone_number"
-                     [formControl]="phone_number">
+                     placeholder="Phone number" [formControl]="phone_number">
             </div>
           </div>
         </div>
@@ -83,20 +103,74 @@
     </div>
     <div class="form-group">
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-12 col-sm-8">
           <label>Birthday</label>
           <div class="row">
-            <div class="col-xs-12">
-              <p-calendar formControlName="birthday" [monthNavigator]="true" [yearNavigator]="true"
-                          yearRange="{{ yearRange }}"></p-calendar>
+            <div class="col-xs-6">
+              <input type="date" name="birthday" id="birthday" class="form-control"
+                     min="1900-01-01" [max]="currentDate" [formControl]="birthday"/>
+
             </div>
           </div>
         </div>
       </div>
     </div>
-    <button [disabled]="!form.valid || (form.pristine && !phoneChanged)" type="submit"
+    <button [disabled]="!form.valid || (form.pristine && !phoneChanged)" type="button" (click)="onSubmit(form.value)"
             class="btn btn-outline-primary btn-min mb20">Update
     </button>
+    <!--<button [disabled]="!form.touched" type="button" (click)="form.reset()"-->
+            <!--class="btn btn-outline-default btn-min mb20 ml10">Cancel-->
+    <!--</button>-->
   </form>
 </div>
 
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <form [formGroup]="changedEmailForm">
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title">Change email address</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+      <p>Enter your email address you want to change into</p>
+      <p>A confirmation email will be sent to this email address</p>
+      <div class="row">
+
+        <div class="col-xs-12">
+          <div class="form-group no-label"
+               [ngClass]="{'has-error': (!changedEmailForm.valid && changedEmailForm.touched && !changedEmailForm.pristine),
+                           'has-success': (changedEmailForm.valid && changedEmailForm.touched && !changedEmailForm.pristine)}">
+
+            <input type="email" formControlName="email" class="form-control" placeholder="Enter email"
+            (keyup)="checkTakenEmail($event)" autofocus/>
+            <div *ngIf="!changedEmailForm.valid && changedEmailForm.touched && !changedEmailForm.pristine">
+              <span *ngIf="!changedEmailForm.controls.email.valid && changedEmailForm.controls.email.errors.required"
+                    class="help-block">An email is required</span>
+              <span *ngIf="!changedEmailForm.controls.email.errors.required && changedEmailForm.controls.email.errors.emailFormat"
+                    class="help-block">
+                Email is invalid. eg. email@example.com
+              </span>
+              <span *ngIf="changedEmailForm.controls.email.errors.taken" class="help-block">
+                This email is already used in other account
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </bs-modal-body>
+
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="closeChangeEmailModal()">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-outline-primary btn-min"
+              (click)="openPasswordConfirmationModal()"
+              [disabled]="!changedEmailForm.valid || changedEmailForm.pristine">Next
+      </button>
+    </bs-modal-footer>
+  </form>
+</bs-modal>
+
+
+<w-password-confirmation-modal #passwordConfirmationModal (onNext)="changeEmail($event)">
+
+</w-password-confirmation-modal>
