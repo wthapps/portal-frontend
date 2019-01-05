@@ -88,9 +88,11 @@
       <div role="tabpanel" class="tab-pane" id="invitationAccepted">
         <ng-container *ngIf="invAccepted;else templateLoadingAccepted">
           <div class="form-group mt10">
-            <button type="button" class="btn btn-outline-primary mr5">
-              <i class="fa fa-envelope"></i> Invite new members
-            </button>
+            <invite-contact (invited)="doEvent($event)" class="pull-left mr5">
+              <button type="button" class="btn btn-outline-primary">
+                <i class="fa fa-envelope"></i> Invite new members
+              </button>
+            </invite-contact>
             <button [disabled]="selectedAccepted.length == 0" (click)="onRemove(selectedAccepted)"
                     *ngIf="invAccepted.length > 0" type="button"
                     class="btn btn-outline-default">
