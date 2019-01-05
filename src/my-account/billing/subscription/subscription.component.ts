@@ -11,6 +11,7 @@ declare let moment: any;
 
 export class MySubscriptionComponent implements OnInit {
   subscription: any;
+  editing;
   plan: any;
   paymentMethod: any;
 
