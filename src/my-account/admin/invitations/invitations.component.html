@@ -20,7 +20,7 @@
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="invitationPending">
         <ng-container *ngIf="invPending;else templateLoading">
-          <div class="form-group mt10">
+          <div class="form-group mt10 clearfix">
             <invite-contact (invited)="doEvent($event)" class="pull-left mr5">
               <button type="button" class="btn btn-outline-primary">
                 <i class="fa fa-envelope"></i> Invite new members
@@ -77,7 +77,7 @@
             </p-table>
           </ng-container>
           <ng-template #templatePendingNoData>
-            <p>There are no inviations.</p>
+            <p>There are no invitations.</p>
             <p>Click “Invite new members” to invite more friends to join WTH!Apps.</p>
           </ng-template>
         </ng-container>
@@ -87,14 +87,13 @@
       </div>
       <div role="tabpanel" class="tab-pane" id="invitationAccepted">
         <ng-container *ngIf="invAccepted;else templateLoadingAccepted">
-          <div class="form-group mt10">
+          <div class="form-group mt10 clearfix">
             <invite-contact (invited)="doEvent($event)" class="pull-left mr5">
               <button type="button" class="btn btn-outline-primary">
                 <i class="fa fa-envelope"></i> Invite new members
               </button>
             </invite-contact>
-            <button [disabled]="selectedAccepted.length == 0" (click)="onRemove(selectedAccepted)"
-                    *ngIf="invAccepted.length > 0" type="button"
+            <button [disabled]="selectedAccepted.length == 0" (click)="onRemove(selectedAccepted)" type="button"
                     class="btn btn-outline-default">
               Remove
             </button>
@@ -137,7 +136,7 @@
             </p-table>
           </ng-container>
           <ng-template #templateAcceptedNoData>
-            There are no accepted inviations.
+            There are no accepted invitations.
           </ng-template>
         </ng-container>
         <ng-template #templateLoadingAccepted>

@@ -1,39 +1,33 @@
 <form novalidate>
   <bs-modal #modal
-         [cssClass]="'modal-account-edit'"
-         [keyboard]="false"
-         [animation]="false"
-         [backdrop]="'static'" style="display: inline;" >
+            [cssClass]="'modal-account-edit'"
+            [keyboard]="false"
+            [animation]="false"
+            [backdrop]="'static'" style="display: inline;">
     <bs-modal-header>
-        <button aria-label="Close" class="close" (click)="close()">
-          <span aria-hidden="true">×</span>
-        </button>
+      <button aria-label="Close" class="close" (click)="close()">
+        <span aria-hidden="true">×</span>
+      </button>
       <h4 class="modal-title">Remove Account</h4>
     </bs-modal-header>
     <bs-modal-body>
-      <div class="padding10">
-        <div>
-          You are about to remove account list your list
-        </div>
-        <div>
-          This action can not be undo
-        </div>
-        <div>
-          *Removed user will remain on account list and be able to continue using until the end of billing cycle.
-        </div>
-        <div>
-          *Your subscription will be remove t at the end of your term.
-        </div>
-      </div>
+      <p>You are about to delete
+        <ng-container *ngIf="item && item.length > 0">
+        <span *ngFor="let acc of item" class="text-bold">
+          {{ acc?.name }} <ng-container *ngIf="item.length > 1">,</ng-container>
+        </span></ng-container>
+        from your list.
+      </p>
 
+      <p>This action cannot be undone.</p>
+
+      <p>Your subscription will be updated at the end of your subscription term. <br>
+        Deleted user's account will be active and accessible until the end of current billing cycle.</p>
     </bs-modal-body>
 
     <bs-modal-footer>
-    <div>
-        <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
-        <button class="btn btn-outline-primary btn-min pull-right" (click)="delete()">Remove</button>
-      </div>
+      <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
+      <button class="btn btn-outline-primary btn-min pull-right" (click)="delete()">Remove</button>
     </bs-modal-footer>
   </bs-modal>
-
 </form>
