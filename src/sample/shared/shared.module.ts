@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { DirectiveModule } from '@shared/shared/directive/directive.module';
+import { CheckboxModule } from 'primeng/primeng';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -23,6 +24,8 @@ import { DirectiveModule } from '@shared/shared/directive/directive.module';
     ReactiveFormsModule,
     BoxNoDataModule,
 
+    //
+    CheckboxModule,
     // Directive
     DirectiveModule
   ]

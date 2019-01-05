@@ -1,0 +1,62 @@
+@import "../global";
+
+.objects-main-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $zindex-modal-background - 1;
+  background-color: #ffffff;
+  box-shadow: 0 1px 0 0 #DEDEDE;
+  padding: $objects-main-menu-button-y 20px;
+  @include flexbox;
+  @include align-items(center);
+  @include justify-content(space-between);
+  .nav-selection-actions {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    @include flexbox;
+    @include align-items(center);
+    > .divider {
+      margin: 0 10px;
+      width: 1px;
+      height: $objects-main-menu-button-h;
+      background-color: $line;
+    }
+    .btn-icon {
+      background-color: transparent;
+      width: $objects-main-menu-button-h;
+      height: $objects-main-menu-button-h;
+      position: relative;
+      &, &:hover, &:focus, &:active, &:active:focus {
+        @include box-shadow(none);
+      }
+      &:hover {
+        background-color: #DEDEDE;
+      }
+      i {
+        @include center();
+        font-size: 18px;
+      }
+    }
+  }
+  &.active, &.bg-transparent {
+    background-color: $theme-color;
+    color: #ffffff;
+    box-shadow: 0 1px 0 0 $theme-color;
+    > .divider {
+      background-color: #FFFFFF;
+    }
+    .btn-icon {
+      color: #ffffff;
+      &:hover {
+        background-color: rgba(#fff, 0.3);
+      }
+    }
+  }
+  &.bg-transparent {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}

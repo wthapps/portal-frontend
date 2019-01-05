@@ -75,7 +75,7 @@
 <div class="menuleft-chat-content">
   <ng-container *ngIf="!searching">
     <ng-container *ngIf="((conversations$ | async)?.data | chatGroupFavorite)?.length > 0">
-      <div class="text-bold text-1-line conversation-label">
+      <div class="text-bold conversation-label">
         <p>Favorites</p>
       </div>
       <ng-container *ngIf="((conversations$ | async)?.data | chatGroupFavorite)?.length > 0; else templateNoMessage">
@@ -85,7 +85,7 @@
       </ng-container>
     </ng-container>
     <ng-container *ngIf="((conversations$ | async)?.data | chatGroupRecent)?.length > 0">
-      <div class="text-bold text-1-line conversation-label">
+      <div class="text-bold conversation-label">
         <p>Chats</p>
       </div>
       <ng-container *ngIf="((conversations$ | async)?.data | chatGroupRecent)?.length > 0; else templateNoMessage">
