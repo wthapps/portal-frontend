@@ -82,7 +82,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
   openCreateAlbumModal: (selectedObjects: any) => void;
   onDoneAlbum: (e: any) => void;
   onAddedToAlbum(data: any) {
-    this.apiBaseService.get(`media/media/${this.object.uuid}`, { model: this.object.model || 'Media::Photo' }).toPromise()
+    this.apiBaseService.get(`media/media/${this.object.uuid}`, { model: _.get(this.object, 'object_type', 'Media::Photo') }).toPromise()
       .then(res => {
         this.object = res.data;
       });
@@ -110,7 +110,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     this.route.params.pipe(
       withLatestFrom(this.route.queryParams)
       ).subscribe(([p, params]) => {
-      this.model = this.route.snapshot.queryParams.model || this.object.model || 'Media::Photo';
+      this.model = this.route.snapshot.queryParams.model || _.get(this.object, 'object_type', 'Media::Photo');
       this.apiBaseService.get(`media/media/${p.id}`, { model: this.model }).toPromise()
         .then(res => {
           this.object = res.data;
@@ -369,7 +369,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
         action: () => {
           this.showDetailsInfo = !this.showDetailsInfo;
           this.apiBaseService.get(`media/object/${this.object.id}/sharings`,
-           { model: this.object.model || 'Media::Photo' }).subscribe(res => {
+           { model: _.get(this.object, 'object_type', 'Media::Photo') }).subscribe(res => {
             this.sharings = res.data;
           });
         },

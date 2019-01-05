@@ -322,9 +322,11 @@ export class ZMediaAlbumDetailComponent
   loadingEnd: () => void;
 
   viewDetail() {
-    const data: any = { returnUrls: [...this.returnUrls, `/albums/${this.object.uuid}`] , preview: true, parent_id: this.object.id };
+    const data: any = { returnUrls: [...this.returnUrls, `/albums/${this.object.uuid}`], model: this.selectedObjects[0].object_type,
+     preview: true, parent_id: this.object.id };
     if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
-    this.router.navigate([`/photos/${this.selectedObjects[0].uuid}`], { queryParams: data });
+    this.router.navigate([`/photos/${this.selectedObjects[0].uuid}`],
+     { queryParams: data });
   }
 
   doNoData() {
