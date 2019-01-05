@@ -36,7 +36,10 @@
           </li>
           <!--show if current isn't one user-->
           <li>
-            <a href="javascript:;" (click)="onDeleteConversation()">Hide chat</a>
+            <a href="javascript:;" (click)="onHideConversation()">Hide chat</a>
+          </li>
+          <li>
+            <a href="javascript:;" (click)="onDeleteConversation()">Delete conversation</a>
           </li>
           <!--show if current is one user-->
           <li *ngIf="contactSelect.group.group_type == 'couple'">

@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store';
 import { SET_CHAT_MESSAGES, SET_CHAT_CURRENT_MESSAGES, ADD_CHAT_CURRENT_MESSAGES, MORE_CHAT_CURRENT_MESSAGES } from '@core/store/chat/messages.reducer';
 import { take, withLatestFrom, concatMap, map } from 'rxjs/operators';
 import { ChatConversationService } from './chat-conversation.service';
+import { SET_SELECTED_CONVERSATION } from '@core/store/chat/selected-conversation.reducer';
+import { SET_CHAT_CONVERSATIONS } from '@core/store/chat/conversations.reducer';
 
 @Injectable()
 export class ChatMessageService {
@@ -17,7 +19,7 @@ export class ChatMessageService {
   }
 
   createTextMessage(message: any, option: any = {}) {
-    this.chatConversationService.getSelectedConversation().pipe(take(1)).subscribe(sc => {
+    this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(sc => {
       if (sc) {
         this.create(
           sc.group_id,
@@ -30,7 +32,7 @@ export class ChatMessageService {
     });
   }
   createFileMessage(file: any) {
-    this.chatConversationService.getSelectedConversation().pipe(take(1)).subscribe(sc => {
+    this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(sc => {
       if (sc) {
         this.apiBaseService
           .post('zone/chat/message', {
@@ -47,7 +49,7 @@ export class ChatMessageService {
     });
   }
   createMediaMessage(media: any) {
-    return of(media).pipe(withLatestFrom(this.chatConversationService.getSelectedConversation()), map(([media, sc]) => {
+    return of(media).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([media, sc]) => {
       this.apiBaseService
         .post('zone/chat/message', {
           data: {
@@ -89,10 +91,27 @@ export class ChatMessageService {
   }
 
   addCurrentMessages(res: any){
-    this.store.dispatch({
-      type: ADD_CHAT_CURRENT_MESSAGES, payload: {
-        data: res.message
+    of(res).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([data, sc]) => {
+      // update deleted and hide conversation to show
+      this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe(conversations => {
+        conversations.data = conversations.data.map(c => {
+          if(c.group_id == data.group_id && c.deleted) {
+            c.deleted = false;
+          }
+          return c;
+        })
+        this.store.dispatch({
+          type: SET_CHAT_CONVERSATIONS, payload: conversations
+        });
+      })
+      // check current group chat and add message into
+      if (data.group_id == sc.group_id) {
+        this.store.dispatch({
+          type: ADD_CHAT_CURRENT_MESSAGES, payload: {data: data.message}
+        });
       }
+    })).toPromise().then(res => {
+
     })
   }
 }

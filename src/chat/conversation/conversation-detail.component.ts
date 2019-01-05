@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 
 
 import { ChatService } from '../shared/services/chat.service';
@@ -21,11 +21,10 @@ import { WUploader } from '@shared/services/w-uploader';
 import { Message } from '@chat/shared/models/message.model';
 import { CommonEventHandler } from '@shared/services/common-event/common-event.handler';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { ChatMessageMixin } from '@chat/shared/mixins/chat-message.mixin';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
-import { merge, mergeMap, mergeMapTo, map, filter } from 'rxjs/operators';
-import { SET_SELECTED_CONVERSATION_CONTEXT } from '@core/store/chat/context.reducer';
+import { merge, mergeMap, mergeMapTo, map, filter, withLatestFrom, combineLatest, takeUntil } from 'rxjs/operators';
 import { ChatMessageService } from '@chat/shared/services/chat-message.service';
+import { SET_SELECTED_CONVERSATION } from '@core/store/chat/selected-conversation.reducer';
 
 declare var _: any;
 declare var $: any;
@@ -34,7 +33,6 @@ declare var $: any;
   selector: 'conversation-detail',
   templateUrl: 'conversation-detail.component.html'
 })
-@Mixins([ChatMessageMixin])
 export class ConversationDetailComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
@@ -50,6 +48,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   networkOnline$: Observable<boolean>;
   tokens: any;
   sub: any;
+  sub2: any;
+  destroy$ = new Subject();
 
   constructor(
     private chatService: ChatService,
@@ -95,19 +95,16 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     // this.chatConversations$ = this.chatService.getConversationsAsync();
     this.chatContactList$ = this.chatService.getChatConversationsAsync();
     // SELECTED CONVERSATION
-    this.store.select(STORE_CONVERSATIONS).pipe(
-      // mergeMap with route params
-      mergeMap(conversations =>
-        this.route.params.pipe(map(p => {
-          return conversations.data.filter(c =>  c.group_id == p.id)
-        }))),
-      // filter res empty
-      filter(res => res && res.length > 0)
-      ).subscribe(res => {
-        this.store.dispatch({ type: SET_SELECTED_CONVERSATION_CONTEXT, payload: res[0]});
-    });
+    this.sub2 = this.chatConversationService.getStoreConversations().pipe(
+      combineLatest(this.route.params)
+    ).pipe(takeUntil(this.destroy$)).subscribe(([conversations, params]) => {
+      let conversation = conversations.data.filter(c => !c.blacklist && !c.left && !c.deleted).find(c => c.group_id == params.id);
+      if (conversation) {
+        this.store.dispatch({ type: SET_SELECTED_CONVERSATION, payload: conversation });
+      }
+    })
     // Get messages when select
-    this.chatConversationService.getSelectedConversation().subscribe(res => {
+    this.chatConversationService.getStoreSelectedConversation().pipe(takeUntil(this.destroy$)).subscribe(res => {
       let tmp = this.selectedConversation || {};
       this.selectedConversation = res;
       if (tmp.group_id !== this.selectedConversation.group_id) {
@@ -125,6 +122,9 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   ngOnDestroy() {
     if (this.commonEventSub) { this.commonEventSub.unsubscribe(); }
     if (this.sub) { this.sub.unsubscribe(); }
+    if (this.sub2) { this.sub2.unsubscribe(); }
+    this.destroy$.complete();
+    this.destroy$.next();
   }
 
   deleteMessage(message: any) {

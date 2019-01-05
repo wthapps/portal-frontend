@@ -103,7 +103,7 @@ export class ZChatSidebarComponent implements OnInit {
     $('#chat-message-text').focus();
     if (contact.deleted) {
       this.chatService.updateGroupUser(contact.group_id, { deleted: false }).then(res => {
-        this.chatConversationService.getConversations().then(r2 => {
+        this.chatConversationService.apiGetConversations().then(r2 => {
           this.chatConversationService.navigateToConversation(contact.group_id);
         })
       });

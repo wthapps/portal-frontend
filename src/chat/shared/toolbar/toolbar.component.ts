@@ -12,6 +12,7 @@ import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.serv
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { UserService, CommonEventService } from '@shared/services';
+import { ChatConversationService } from '../services/chat-conversation.service';
 
 
 declare let $: any;
@@ -44,6 +45,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   constructor(
     public userService: UserService,
     private chatService: ChatService,
+    private chatConversationService: ChatConversationService,
     private wthConfirmService: WthConfirmService,
     private addContactService: ZChatShareAddContactService,
     private commonEventService: CommonEventService,
@@ -107,16 +109,27 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   leaveConversation() {
-    this.chatService.leaveConversation(this.contactSelect);
+    this.chatConversationService.leaveConversation(this.contactSelect);
+  }
+
+  onHideConversation() {
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Hide',
+      message: 'Are you sure you want to hide this conversation?',
+      header: 'Hide Chat',
+      accept: () => {
+        this.chatConversationService.apHideConversation(this.contactSelect);
+      }
+    });
   }
 
   onDeleteConversation() {
     this.wthConfirmService.confirm({
-      acceptLabel: 'Hide',
-      message: 'Are you sure you want to hide this conversation?',
-      header: 'Hide Conversation',
+      acceptLabel: 'Delete',
+      message: 'This conversation will be delete from your message list only. not everyone else. This action can\'t be undone',
+      header: 'Delete Conversation',
       accept: () => {
-        this.chatService.deleteContact(this.contactSelect);
+        this.chatConversationService.apiDeleteConversation(this.contactSelect);
       }
     });
   }

@@ -27,7 +27,17 @@ export function reducer(state: any = empty(), action: any) {
       stateClone.meta = action.payload.meta;
       return stateClone;
     case ADD_CHAT_CURRENT_MESSAGES:
-      stateClone.data = [...stateClone.data, action.payload.data];
+      // repalce action
+      let isReplaced = false;
+      stateClone.data = stateClone.data.map(message => {
+        if (message.id == action.payload.data.id) {
+          isReplaced = true;
+          return action.payload.data;
+        } else {
+          return message;
+        }
+      })
+      if (!isReplaced) stateClone.data = [...stateClone.data, action.payload.data];
       return stateClone;
     case ADD_CHAT_MESSAGES:
       stateClone = [...action.payload];

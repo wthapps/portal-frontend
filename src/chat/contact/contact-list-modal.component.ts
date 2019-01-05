@@ -211,7 +211,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
           return;
         }
       });
-      this.chatService.getConversations({ forceFromApi: true});
+      this.chatConversationService.apiGetConversations();
     });
   }
 

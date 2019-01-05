@@ -4,6 +4,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
 
 import { ChatService } from '../services/chat.service';
+import { ChatConversationService } from '../services/chat-conversation.service';
 
 declare var _:any;
 
@@ -19,12 +20,12 @@ export class ZChatShareAddToConversationComponent implements OnInit {
   usersOnlineItem$: Observable<any>;
 
 
-  constructor(private chatService: ChatService ) {
+  constructor(private chatService: ChatService, private chatConversationService: ChatConversationService ) {
 
   }
 
   ngOnInit() {
-    this.contactItem = this.chatService.getConversations();
+    this.contactItem = this.chatConversationService.apiGetConversations();
     this.usersOnlineItem$ = this.chatService.getUsersOnline()
   }
 

@@ -66,36 +66,29 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     super(commonEventService);
     // =============================
     this.constant = ChatConstant;
-
-    // trigger changes in chat notification data
-    this.storage.getAsync(CHAT_CONVERSATIONS).subscribe((value: any) => {
-      if (value && value.data) {
-        this.handler.triggerEvent('on_conversation_changes', value.data);
-      }
-    });
   }
 
   initalize() {
     this.subscribeNotification();
     // Init get data
-    this.chatConversationService.getConversations();
+    this.chatConversationService.apiGetConversations();
   }
 
-  getConversations(option: any = {}) {
-    // const res: any = this.storage.find(CHAT_CONVERSATIONS);
-    // if (res && res.value && !option.forceFromApi) {
-    //   return res;
-    // } else {
-    //   this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: any) => {
-    //     this.storage.save(CHAT_CONVERSATIONS, conv);
-    //     this.chatCommonService.setRecentConversations();
-    //     this.chatCommonService.setFavouriteConversations();
-    //     this.chatCommonService.setHistoryConversations();
-    //     this.chatCommonService.setDefaultSelectContact();
-    //   });
-    //   return res;
-    // }
-  }
+  // getConversations(option: any = {}) {
+  //   // const res: any = this.storage.find(CHAT_CONVERSATIONS);
+  //   // if (res && res.value && !option.forceFromApi) {
+  //   //   return res;
+  //   // } else {
+  //   //   this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: any) => {
+  //   //     this.storage.save(CHAT_CONVERSATIONS, conv);
+  //   //     this.chatCommonService.setRecentConversations();
+  //   //     this.chatCommonService.setFavouriteConversations();
+  //   //     this.chatCommonService.setHistoryConversations();
+  //   //     this.chatCommonService.setDefaultSelectContact();
+  //   //   });
+  //   //   return res;
+  //   // }
+  // }
 
   getOutOfDateMessages() {
     const conversations_response = this.storage.getValue(CHAT_CONVERSATIONS);
@@ -388,18 +381,18 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     this.updateGroupUser(contact.group_id, { history: false });
   }
 
-  leaveConversation(contact: any): Promise<any> {
-    return this.updateGroupUser(contact.group_id, { leave: true })
-      .then(() => this.chatCommonService.updateConversationBroadcast(contact.group_id))
-      .then(() => {
-          this.storage.removeItemOfKey(CHAT_RECENT_CONVERSATIONS, contact);
-          // this.selectContact(nextRecentConversation);
-          const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value
-          && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
-          return nextRecentConversation ? this.router.navigate([ChatConstant.conversationUrl, nextRecentConversation.id])
-            : this.router.navigate([ChatConstant.conversationUrl]);
-        });
-  }
+  // leaveConversation(contact: any): Promise<any> {
+  //   return this.updateGroupUser(contact.group_id, { leave: true })
+  //     .then(() => this.chatCommonService.updateConversationBroadcast(contact.group_id))
+  //     .then(() => {
+  //         this.storage.removeItemOfKey(CHAT_RECENT_CONVERSATIONS, contact);
+  //         // this.selectContact(nextRecentConversation);
+  //         const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value
+  //         && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
+  //         return nextRecentConversation ? this.router.navigate([ChatConstant.conversationUrl, nextRecentConversation.id])
+  //           : this.router.navigate([ChatConstant.conversationUrl]);
+  //       });
+  // }
 
   removeFromConversation(contact: any, userId: any): Promise<any> {
     return this.updateGroupUser(

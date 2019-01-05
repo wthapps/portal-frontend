@@ -31,7 +31,7 @@
       </ng-container>
 
       <ng-container *ngIf="data.group.group_type == 'multiple'">
-        {{ data.group.member_count }} members
+        {{ data.group?.users_json?.length }} members
       </ng-container>
 
     </ng-container>

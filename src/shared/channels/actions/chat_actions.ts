@@ -37,7 +37,11 @@ export class ChatActions {
       this.updateConversationList(response);
     }
     if (response.action === 'chat_notification' && response.data.type == 'notification_message') {
-      this.addNotificationMessage(response);
+      this.serviceManager.getCommonEventService().broadcast({
+        channel: 'ConversationDetailComponent',
+        action: 'updateMessageHandler',
+        payload: response.data
+      })
     }
   }
 

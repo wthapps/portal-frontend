@@ -31,12 +31,16 @@ export function reducer(state: any = empty(), action: any) {
       });
       return stateClone;
     case UPDATE_CHAT_CONVERSATIONS:
-      stateClone.data = stateClone.data.map(c => {
-        if(c.group_id == action.payload.group_id) {
-          c = action.payload;
-        }
-        return c;
-      });
+      if (stateClone.data.find(c => c.group_id == action.payload.group_id)) {
+        stateClone.data = stateClone.data.map(c => {
+          if(c.group_id == action.payload.group_id) {
+            c = action.payload;
+          }
+          return c;
+        });
+      } else {
+        stateClone.data = [action.payload, ...stateClone.data]
+      }
       return stateClone;
     case SET_CHAT_SELECTED:
       stateClone.selected = action.payload;

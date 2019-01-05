@@ -16,6 +16,7 @@ export const USERS_ONLINE = 'users_online';
 export const NUMBER_MESSAGE = 'number_message';
 
 export const STORE_CONVERSATIONS = 'conversations';
+export const STORE_SELECTED_CONVERSATION = 'selectedConversation';
 export const STORE_CONTEXT = 'context';
 export const STORE_MESSAGES = 'messages';
 

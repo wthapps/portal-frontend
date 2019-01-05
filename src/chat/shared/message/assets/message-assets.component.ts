@@ -14,8 +14,9 @@ import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { ConversationService } from '@chat/conversation/conversation.service';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 
 
 @Component({
@@ -85,7 +86,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private addContactService: ZChatShareAddContactService,
     private messageAssetsService: MessageAssetsService,
     private objectListService: WObjectListService,
-    private conversationService: ConversationService,
+    private chatConversationService: ChatConversationService,
     private apiBaseService: ApiBaseService,
     private chatCommonService: ChatCommonService,
     private store: Store<any>,
@@ -110,16 +111,26 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   open() {
-    this.chatService.getContactSelectAsync()
-      .subscribe((res: any) => {
-        this.conversation = res;
-        if (this.conversation && this.conversation.group_type === 'couple') {
-          this.tabs = this.tabsPhoto;
-        } else {
-          this.tabs = this.tabsMember;
-        }
-        this.tabAction(this.tabs[0]);
-      });
+    // this.chatService.getContactSelectAsync()
+    //   .subscribe((res: any) => {
+    //     this.conversation = res;
+    //     if (this.conversation && this.conversation.group_type === 'couple') {
+    //       this.tabs = this.tabsPhoto;
+    //     } else {
+    //       this.tabs = this.tabsMember;
+    //     }
+    //     this.tabAction(this.tabs[0]);
+      // });
+
+    this.chatConversationService.getStoreSelectedConversation().subscribe(sc => {
+      this.conversation = sc;
+      if (this.conversation && this.conversation.group_type === 'couple') {
+        this.tabs = this.tabsPhoto;
+      } else {
+        this.tabs = this.tabsMember;
+      }
+      this.tabAction(this.tabs[0]);
+    })
 
     this.medias$ = this.messageAssetsService.medias$;
     this.objectListService.setMultipleSelection(false);
@@ -172,7 +183,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       message: 'Are you sure you want to leave this conversation?',
       header: 'Leave Conversation',
       accept: () => {
-        this.chatService.leaveConversation(this.conversation);
+        this.chatConversationService.leaveConversation(this.conversation);
       }
     });
   }
