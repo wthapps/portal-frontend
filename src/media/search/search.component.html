@@ -54,6 +54,8 @@
 <w-grid-list #gridlist [objects]="objects" [view]="viewMode" (event)="doListEvent($event)">
 </w-grid-list>
 <!--no data region-->
+<box-loading *ngIf="links?.next"></box-loading>
+
 <div class="zone-no-photo text-center" *ngIf="objects && objects.length == 0 && !loading">
   <div>
     <h2>
