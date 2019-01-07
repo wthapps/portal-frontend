@@ -9,7 +9,7 @@ import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, AuthService, ChatCommonService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Subject, Subscription } from 'rxjs';
-import { takeUntil, debounceTime, switchMap } from 'rxjs/operators';
+import { takeUntil, debounceTime, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 
 @Component({
@@ -95,10 +95,10 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
 
     // Handle key search event
     this.keySearchSubscription = this.keySearchSubject.pipe(
-      debounceTime(400),
+      debounceTime(40),
       takeUntil(this.destroy$),
+      distinctUntilChanged(),
       switchMap(key => {
-        this.keyword = key;
         this.loading = true;
         return this.apiBaseService.get(`chat/contacts/new/search?q=${key}`);
       })).subscribe(response => {
