@@ -1,7 +1,7 @@
 import { Component, ViewChild, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { TextBoxSearchComponent } from '@wth/shared/partials/search-box/textbox-search.component';
-import { ServiceManager } from '@wth/shared/services';
+import { ServiceManager, CommonEventService } from '@wth/shared/services';
 import { ActivatedRoute, Params } from '@angular/router';
 
 
@@ -62,7 +62,10 @@ export class ZMediaSharedHeaderComponent implements OnInit {
     this.searchAdvanced = false;
   }
 
-  constructor(public serviceManager: ServiceManager, private route: ActivatedRoute,
+  constructor(
+    public serviceManager: ServiceManager,
+    private route: ActivatedRoute,
+    private commonEventService: CommonEventService,
   ) {
     this.createForm();
   }
@@ -87,7 +90,13 @@ export class ZMediaSharedHeaderComponent implements OnInit {
 
   onEscape(e?: any) {
     console.log('inside onEscape', e);
+    this.commonEventService.broadcast({
+      channel: 'HeaderComponent',
+      action: 'clickedOutside',
+      payload: {}
+    })
     this.show = false;
+    this.search = '';
   }
 
   onKey(search: any) {
@@ -143,5 +152,11 @@ export class ZMediaSharedHeaderComponent implements OnInit {
     this.show = false;
     this.searchAdvanced = !this.searchAdvanced;
     this.serviceManager.getRouter().navigate([`/search`], { queryParams: { q: this.search, searchDate: values.searchDate, searchFileTypes: values.searchFileTypes, searchFrom: values.searchFrom, searchTo: values.searchTo } });
+  }
+
+  onReset(){
+    this.form.reset();
+    this.searchDate.setValue(this.searchDataDate[0].key);
+    this.searchFileTypes.setValue(this.searchDataType[0].key);
   }
 }

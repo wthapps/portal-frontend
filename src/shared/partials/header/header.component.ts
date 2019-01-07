@@ -5,7 +5,7 @@ import { User } from '@wth/shared/shared/models';
 import { SwUpdate } from '@angular/service-worker';
 import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
 import { Constants } from '@shared/constant';
-import { ApiBaseService, AuthService, NotificationService, WTHNavigateService } from '@shared/services';
+import { ApiBaseService, AuthService, NotificationService, WTHNavigateService, CommonEventHandler, CommonEventService } from '@shared/services';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -21,12 +21,13 @@ declare var _: any;
   styleUrls: ['header.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() loggedIn: boolean;
   @Input() hasSearch: Boolean = true;
   @Input() auth: any;
   @Input() showSideBar: Boolean = true;
+  channel = 'HeaderComponent';
 
   readonly tooltip: any = Constants.tooltip;
   readonly defaultAvatar: string = Constants.img.avatar;
@@ -54,8 +55,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private apiBaseService: ApiBaseService,
     private visibilityService: PageVisibilityService,
     public connectionService: ConnectionNotificationService,
+    public commonEventService: CommonEventService,
     public notificationService: NotificationService
   ) {
+    super(commonEventService);
   }
 
   ngOnInit(): void {

@@ -1,7 +1,6 @@
 <a [routerLink]="['/']" class="navbar-brand" href="#">
   <img src="/assets/images/logo-zone-small.png" alt="WTHApps">
 </a>
-
 <div class="navbar-form navbar-left hidden-xs navbar-form-search">
   <div class="navbar-searchTop" (click)="clickedInside($event)">
     <textbox-search #textbox (onEnterEvent)="onEnter(textbox.search)" (onEscapeEvent)="onEscape($event)"
@@ -97,7 +96,7 @@
           </div> -->
 
           <div class="clearfix text-right">
-            <button type="reset" class="btn btn-outline-default mr10">Reset</button>
+            <button type="reset" class="btn btn-outline-default mr10" (click)="onReset()">Reset</button>
             <button type="submit" class="btn btn-primary" (click)="onSubmit(form.value)">Search</button>
           </div>
         </form>
