@@ -7,7 +7,7 @@ import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core
 })
 export class UserChatComponent implements OnInit {
   @Input() user: any;
-  @Input() size: string = 'xs'; //xs, xsm, sm, md, lg
+  @Input() size = 'xs'; //xs, xsm, sm, md, lg
 
   constructor() {
   }

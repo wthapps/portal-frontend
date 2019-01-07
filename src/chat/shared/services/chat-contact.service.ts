@@ -18,7 +18,7 @@ export class ChatContactService {
 
   }
 
-  addContact(ids: any, text?: any): Promise<any>{
+  addContact(ids: any, text?: any): Promise<any> {
     return this.apiBaseService.post('zone/chat/create_contact', {user_id: ids, text: text}).toPromise();
   }
 

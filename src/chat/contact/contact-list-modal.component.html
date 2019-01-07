@@ -13,13 +13,12 @@
       </button> -->
     </div>
     <textbox-search *ngIf="showSearch" [placeholder]="'Find Contact'" [showSearchClearText]="true" [search]="keyword" (onEscapeEvent)="hideSearch($event)"
-      (onEnterEvent)="search($event)">
+      (onEnterEvent)="search($event)" (onKeyUpEvent)="handleKeyUp($event)">
     </textbox-search>
 
-    <ng-container *ngIf="!loading; else loadingBlock">
       <div class="list-group" *ngIf="contacts">
-        <div class="list-group-item" *ngIf="contacts.length === 0;else templateData">
-          <box-no-data [icon]="'fa fa-address-book-o'" [subTitle]="'There is no Contact'">
+        <div class="list-group-item" *ngIf="(!loading && contacts.length === 0);else templateData">
+          <box-no-data [icon]="'fa fa-user-plus'" [subTitle]="'Search for new chat contacts'">
           </box-no-data>
         </div>
         <ng-template #templateData>
@@ -29,20 +28,16 @@
             </button>
 
             <!--show actions for new person-->
-            <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="sendRequest(contact)" pTooltip="{{ tooltip.sendRequest }}"
+            <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="sendRequest(contact)" [pTooltip]="tooltip.sendRequest"
               tooltipPosition="top">
-              <i class="fa fa-user-plus"></i>
+              <i class="fa fa-comments-o"></i>
             </button>
             <w-user-actions #chatContactActions [contact]="contact" [profileUrl]="profileUrl" (onConversate)="createConversation($event)"
               (onToggleBlacklist)="toggleBlacklist($event)" (onReport)="report($event)" (onRemove)="remove($event)"></w-user-actions>
           </w-user-chat>
         </ng-template>
       </div>
-    </ng-container>
-
-    <ng-template #loadingBlock>
-      <box-loading></box-loading>
-    </ng-template>
+      <box-loading *ngIf="loading"></box-loading>
   </bs-modal-body>
 
 </bs-modal>
