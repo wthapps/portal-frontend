@@ -80,7 +80,7 @@ export class MyAccountComponent implements OnInit {
         old_password: old_password,
         password: password
       });
-      this.userService.changePassword(`users/${this.userService.getSyncProfile().id}`, body)
+      this.userService.changePassword(body)
         .subscribe((result: any) => {
             // stop loading
             this.loadingService.stop();

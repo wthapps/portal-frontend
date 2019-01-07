@@ -3,8 +3,8 @@ import { AbstractControl, FormBuilder, Validators } from '@angular/forms/';
 import { Constants } from '@shared/constant';
 import { UserService } from '@shared/services';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
-import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { CustomValidator } from '@shared/shared/validator/custom.validator';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-password',
@@ -18,7 +18,7 @@ export class SettingsPasswordComponent implements OnInit {
   baseUrls: any = Constants.baseUrls;
 
 
-  constructor(private fb: FormBuilder, private loadingService: LoadingService, private userService: UserService, private toastsService: ToastsService) {
+  constructor(private fb: FormBuilder, private loadingService: LoadingService, private userService: UserService, private messageService: MessageService) {
     this.form = fb.group({
       'oldPassword': ['', Validators.compose([Validators.required])],
       'password': ['', Validators.compose([
@@ -38,40 +38,31 @@ export class SettingsPasswordComponent implements OnInit {
   onSubmit(values: any): void {
     // Set value after updating form (checking user leave this page)
     if (this.form.valid) {
-      let old_password = values.oldPassword;
-      let password = values.password;
-      // start loading
-      this.loadingService.start();
-
-      let body = JSON.stringify({
-        old_password: old_password,
-        password: password
-      });
-      this.userService.changePassword(`users/${this.userService.getSyncProfile().id}`, body)
-        .subscribe((result: any) => {
-            // stop loading
-            this.loadingService.stop();
-            if (result.success) {
-              this.toastsService.success(result.message);
-              // console.log('change password:', result.message);
-            } else {
-              this.toastsService.danger('Your password is incorrect');
-              // console.log('change password error:', result.message);
-            }
-          },
-          error => {
-            // stop loading
-            this.loadingService.stop();
-            this.toastsService.danger(error.message);
-          }
-        );
+      this.userService.changePassword({
+        old_password: values.oldPassword,
+        password: values.password
+      }).subscribe((result: any) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Change password',
+            detail: 'Your password was changed'
+          });
+        },
+        error => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Change password failed',
+            detail: error.error.error
+          });
+        }
+      );
     }
   }
 
   hideShowPassword(event: any): void {
-    var target = event.target || event.srcElement || event.currentTarget;
-    let inputPass = $(target).prev();
-    if (inputPass.attr('type') == 'password') {
+    const target = event.target || event.srcElement || event.currentTarget;
+    const inputPass = $(target).prev();
+    if (inputPass.attr('type') === 'password') {
       inputPass.attr('type', 'text');
       $(target).addClass('active');
     } else {

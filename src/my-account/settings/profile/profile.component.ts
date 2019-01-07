@@ -286,9 +286,9 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       });
     }, error => {
       this.messageService.add({
-        severity: 'danger',
+        severity: 'error',
         summary: 'Changed email failed',
-        detail: 'Your changed email address unsuccessfully'
+        detail: 'You changed email address unsuccessfully'
       });
     });
   }

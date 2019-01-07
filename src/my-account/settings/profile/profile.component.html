@@ -136,12 +136,12 @@
 
         <div class="col-xs-12">
           <div class="form-group no-label"
-               [ngClass]="{'has-error': (!changedEmailForm.valid && changedEmailForm.touched && !changedEmailForm.pristine),
-                           'has-success': (changedEmailForm.valid && changedEmailForm.touched && !changedEmailForm.pristine)}">
+               [ngClass]="{'has-error': (!changedEmailForm.valid && !changedEmailForm.pristine),
+                           'has-success': (changedEmailForm.valid && !changedEmailForm.pristine)}">
 
             <input type="email" formControlName="email" class="form-control" placeholder="Enter email"
             (keyup)="checkTakenEmail($event)" autofocus/>
-            <div *ngIf="!changedEmailForm.valid && changedEmailForm.touched && !changedEmailForm.pristine">
+            <div *ngIf="!changedEmailForm.valid && !changedEmailForm.pristine">
               <span *ngIf="!changedEmailForm.controls.email.valid && changedEmailForm.controls.email.errors.required"
                     class="help-block">An email is required</span>
               <span *ngIf="!changedEmailForm.controls.email.errors.required && changedEmailForm.controls.email.errors.emailFormat"

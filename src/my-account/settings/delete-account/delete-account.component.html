@@ -3,15 +3,44 @@
   <p>To delete your account - we make it easy.</p>
 
   <p>Your account and all details will be deleted after 14 days. If you change your mind within 14 days, simply log back
-    into your account, come to this 'Delete account' page and hit the 'Restore account' button.
+    into your account.
   </p>
   <p>We do not provide refunds for your remaining subscription.
   </p>
   <p>Please make sure you really want to delete your account. We cannot restore your account once your account is
-    delete.
+    deleted.
   </p>
   <p>See our <a [href]="host + '/faq'">FAQ</a> page for more details on shared data and how this data is treated when you delete your account.</p>
   <div class="form-group">
-    <button type="submit" class="btn btn-outline-primary btn-min mr20" (click)="onDelete()">Delete Account</button>
+    <button type="button" class="btn btn-outline-primary btn-min mr20" (click)="openPasswordConfirmationModal()">Delete Account</button>
   </div>
 </div>
+
+<w-password-confirmation-modal #passwordConfirmationModal (onNext)="delete($event)">
+
+</w-password-confirmation-modal>
+
+
+<bs-modal #deleteAccountModal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title">Delete account</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+      <div class="row">
+        <div class="col-xs-12">
+          <p>
+            Your account has been deactivated.
+          </p>
+          <p>After 14 days, your account and all information will be deleted.
+             If you want to reactive your account, simply log in with your email address and password.
+          </p>
+        </div>
+      </div>
+    </bs-modal-body>
+
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-primary btn-min"
+              (click)="submit()">OK
+      </button>
+    </bs-modal-footer>
+</bs-modal>

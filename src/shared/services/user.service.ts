@@ -105,11 +105,8 @@ export class UserService {
   /*
    * change current password
    */
-  changePassword(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.patch(path, body).pipe(map(res => {
-      if (res) {
-        console.log('changePassword:', res);
-      }
+  changePassword(body: any): Observable<any> {
+    return this.apiBaseService.patch('users/password/change', body).pipe(map(res => {
       return res;
     }));
   }
@@ -122,6 +119,15 @@ export class UserService {
       }
       return res;
     }));
+  }
+
+  // permanently delete account
+  deleteAccount(password: any): Observable<any> {
+    return this.apiBaseService
+      .patch(`users/delete_account`, {password: password})
+      .pipe(map((res: any) => {
+        return res;
+      }));
   }
 
   deleteUserInfo() {
