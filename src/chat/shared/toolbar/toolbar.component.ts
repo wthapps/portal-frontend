@@ -126,7 +126,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   onDeleteConversation() {
     this.wthConfirmService.confirm({
       acceptLabel: 'Delete',
-      message: 'This conversation will be delete from your message list only. not everyone else. This action can\'t be undone',
+      message: 'This conversation will be deleted from your message list only. not everyone else.<br><br> This action can\'t be undone',
       header: 'Delete Conversation',
       accept: () => {
         this.chatConversationService.apiDeleteConversation(this.contactSelect);
