@@ -29,7 +29,7 @@ import { ConversationService } from '@chat/shared/services';
 import { BlackListPolicy } from '@shared/policies/black-list-policy';
 import { SizePolicy } from '@shared/policies/size-policy';
 import { from } from 'rxjs/observable/from';
-import { mergeMap, retry } from 'rxjs/operators';
+import { mergeMap, retry, take } from 'rxjs/operators';
 import { SET_CHAT_CONVERSATIONS } from '@core/store/chat/conversations.reducer';
 import { ChatConversationService } from './chat-conversation.service';
 import { ChatMessageService } from './chat-message.service';
@@ -91,42 +91,43 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   // }
 
   getOutOfDateMessages() {
-    const conversations_response = this.storage.getValue(CHAT_CONVERSATIONS);
-    if (!conversations_response) { return; }
-    this.disconnectApiMap = {};
-    const loaded_conversations = conversations_response.data.filter(conv => this.storage.getValue(CHAT_MESSAGES_GROUP_ + conv.group_id));
-    loaded_conversations.forEach(conv => this.getDisconnectedMessages(conv.group_id));
+    this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe((converstions: any) => {
+
+      this.disconnectApiMap = {};
+      // const loaded_conversations = converstions.data.filter(conv => this.storage.getValue(CHAT_MESSAGES_GROUP_ + conv.group_id));
+      // loaded_conversations.forEach(conv => this.getDisconnectedMessages(conv.group_id));
+      this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(conv => {
+        this.getDisconnectedMessages(conv.group_id)
+      })
+    })
   }
 
   getDisconnectedMessages(group_id) {
-    const messages_response = this.storage.getValue(CHAT_MESSAGES_GROUP_ + group_id);
-    const last = messages_response.data.slice(-1);
-    if (last.length === 0 ) {
-      return;
-    }
-    const last_message = last[0].id;
+    this.chatMessageService.getCurrentMessages().pipe(take(1)).subscribe(messages => {
+      const last = messages.data.slice(-1);
+      if (last.length === 0) {
+        return;
+      }
+      const last_message = last[0].id;
 
-    // Retry maximum 3 tmes for each api calls
-    const retry_num = this.disconnectApiMap[group_id];
-    this.disconnectApiMap[group_id] = retry_num ? retry_num - 1 : MAX_RETRY;
-    if (this.disconnectApiMap[group_id] <=  0) { return ; }
-    this.apiBaseService
-      .get('zone/chat/message/' + group_id, {last_message})
-      .toPromise().then((res: any) => {
-        console.log('get messages from success: ', res);
-        const data = _.uniqBy([...messages_response.data, ...res.data], 'id');
-        this.storage.save(CHAT_MESSAGES_GROUP_ + group_id, {...messages_response, data});
-        this.commonEventService.broadcast({
-          channel: 'ConversationDetailComponent',
-          action: 'updateCurrent'
+      // Retry maximum 3 tmes for each api calls
+      const retry_num = this.disconnectApiMap[group_id];
+      this.disconnectApiMap[group_id] = retry_num ? retry_num - 1 : MAX_RETRY;
+      if (this.disconnectApiMap[group_id] <= 0) { return; }
+      this.apiBaseService
+        .get('zone/chat/message/' + group_id, { last_message })
+        .toPromise().then((res: any) => {
+          console.log('get messages from success: ', res);
+          res.data.forEach(message => {
+            this.chatMessageService.addCurrentMessages({ message: message });
+          })
+          delete this.disconnectApiMap[group_id];
+        })
+        .catch(err => {
+          console.error('get disconnected messages error for chat group id: ', group_id, err);
+          this.getDisconnectedMessages(group_id);
         });
-        delete this.disconnectApiMap[group_id];
-      })
-      .catch(err => {
-        console.error('get disconnected messages error for chat group id: ', group_id, err);
-        this.getDisconnectedMessages(group_id);
-      });
-
+    })
   }
 
   getConversationsAsync(option: any = {}): Observable<StorageItem> {

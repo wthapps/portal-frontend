@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiBaseService, ChatCommonService, StorageService, UserService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
-import { CONVERSATION_SELECT, STORE_CONVERSATIONS, STORE_CONTEXT, STORE_SELECTED_CONVERSATION } from '@shared/constant';
+import { CONVERSATION_SELECT, STORE_CONVERSATIONS, STORE_CONTEXT, STORE_SELECTED_CONVERSATION, STORE_MESSAGES } from '@shared/constant';
 import { takeUntil, filter, map, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { SET_CHAT_CONVERSATIONS, ADD_CHAT_CONVERSATION_NOTIFICATION, UPDATE_CHAT_CONVERSATIONS, SET_CHAT_SELECTED } from '@core/store/chat/conversations.reducer';
@@ -83,9 +83,13 @@ export class ChatConversationService extends CommonEventHandler {
   }
 
   apiDeleteConversation(contact: any) {
-    this.apiUpdateGroupUser(contact.group_id, { deleted: true })
-      .then(res => this.apiGetConversations())
-      .then(r2 => this.router.navigate(['/conversations']));
+    of(contact).pipe(withLatestFrom(this.store.select(STORE_MESSAGES)), map(([contact, messages]) => {
+      this.apiUpdateGroupUser(contact.group_id, { deleted: true, notification_count: 0, message_from: messages.data[messages.data.length - 1].id + 1 })
+        .then(res => this.apiGetConversations())
+        .then(r2 => this.router.navigate(['/conversations']));
+    })).toPromise().then(res => {
+
+    })
   }
 
   apHideConversation(contact: any) {

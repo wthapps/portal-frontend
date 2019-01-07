@@ -49,7 +49,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   tokens: any;
   sub: any;
   sub2: any;
-  destroy$ = new Subject();
+  sub3: any;
+  destroy$ = new Subject<any>();
 
   constructor(
     private chatService: ChatService,
@@ -71,10 +72,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.networkOnline$ = this.storage.getAsync(NETWORK_ONLINE);
   }
 
-  // updateItemInList: (groupId: any, data: any) => void;
-  // updateConversationBroadcast: (groupId: any) => Promise<any>;
-  // updateMessage: (groupId: any, data) => void;
-
   updateMessageHandler(data: any) {
     // this.updateMessage(data.group_id, data);
     this.chatMessageService.addCurrentMessages(data);
@@ -95,7 +92,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     // this.chatConversations$ = this.chatService.getConversationsAsync();
     this.chatContactList$ = this.chatService.getChatConversationsAsync();
     // SELECTED CONVERSATION
-    this.sub2 = this.chatConversationService.getStoreConversations().pipe(
+    this.chatConversationService.getStoreConversations().pipe(
       combineLatest(this.route.params)
     ).pipe(takeUntil(this.destroy$)).subscribe(([conversations, params]) => {
       let conversation = conversations.data.filter(c => !c.blacklist && !c.left && !c.deleted).find(c => c.group_id == params.id);
@@ -104,7 +101,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       }
     })
     // Get messages when select
-    this.chatConversationService.getStoreSelectedConversation().pipe(takeUntil(this.destroy$)).subscribe(res => {
+    this.sub3 = this.chatConversationService.getStoreSelectedConversation().pipe(takeUntil(this.destroy$)).subscribe(res => {
       let tmp = this.selectedConversation || {};
       this.selectedConversation = res;
       if (tmp.group_id !== this.selectedConversation.group_id) {
@@ -123,8 +120,9 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     if (this.commonEventSub) { this.commonEventSub.unsubscribe(); }
     if (this.sub) { this.sub.unsubscribe(); }
     if (this.sub2) { this.sub2.unsubscribe(); }
-    this.destroy$.complete();
+    if (this.sub3) { this.sub3.unsubscribe(); }
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   deleteMessage(message: any) {

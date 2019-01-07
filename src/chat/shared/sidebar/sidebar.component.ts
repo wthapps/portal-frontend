@@ -102,13 +102,15 @@ export class ZChatSidebarComponent implements OnInit {
     event.stopPropagation();
     $('#chat-message-text').focus();
     if (contact.deleted) {
-      this.chatService.updateGroupUser(contact.group_id, { deleted: false }).then(res => {
+      this.chatConversationService.apiUpdateGroupUser(contact.group_id, { deleted: false, notification_count: 0 }).then(res => {
         this.chatConversationService.apiGetConversations().then(r2 => {
           this.chatConversationService.navigateToConversation(contact.group_id);
         })
       });
     } else {
-      this.chatConversationService.navigateToConversation(contact.group_id);
+      this.chatConversationService.apiUpdateGroupUser(contact.group_id, { notification_count: 0 }).then(res => {
+        this.chatConversationService.navigateToConversation(contact.group_id);
+      })
     }
   }
 

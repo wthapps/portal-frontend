@@ -103,9 +103,10 @@ export class ChatMessageService {
         this.store.dispatch({
           type: SET_CHAT_CONVERSATIONS, payload: conversations
         });
-      })
+      });
+
       // check current group chat and add message into
-      if (data.group_id == sc.group_id) {
+      if (data.message.group_id == sc.group_id) {
         this.store.dispatch({
           type: ADD_CHAT_CURRENT_MESSAGES, payload: {data: data.message}
         });

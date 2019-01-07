@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { AppearanceNewUserOnline } from '../actions/appearance_new_user_online';
 import { AppearanceAllUsersOnline } from '../actions/appearance_all_users_online';
 import { AppearanceNewUserOffline } from '../actions/appearance_new_user_offline';
-import { ChatSendMessage } from '../actions/chat_send_message';
-import { ChatNotification } from '../actions/chat_notification';
 import { ChatActions } from '../actions/chat_actions';
 import { CommonNotification } from '../actions/common_notification';
 

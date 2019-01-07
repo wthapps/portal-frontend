@@ -19,6 +19,7 @@ import { Constants, NETWORK_ONLINE } from '@wth/shared/constant';
 import { AuthService, StorageService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
+import { ChatConversationService } from './shared/services/chat-conversation.service';
 
 declare const _: any;
 /**
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private chatService: ChatService,
     private messageService: MessageService,
     private storageService: StorageService,
+    private chatConversationService: ChatConversationService,
     private visibilityService: PageVisibilityService,
     private wthConfirmService: WthConfirmService
   ) {
@@ -114,7 +116,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private getOutOfDateData() {
-    this.chatService.getConversationsAsync({forceFromApi: true}).subscribe();
+    // this.chatService.getConversationsAsync({forceFromApi: true}).subscribe();
+    this.chatConversationService.apiGetConversations();
     this.chatService.getOutOfDateMessages();
   }
 
